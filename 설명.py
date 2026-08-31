@@ -822,6 +822,143 @@ class 대화기억:
 
 
 # 주어를 생략한 후속 질문. NPC 대화는 이 모양으로 흘러간다.
+_제목줄 = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
+_번호줄 = re.compile(r"^\s*(\d+)[.)]\s+(.+)$")
+_불릿줄 = re.compile(r"^\s*[-*]\s+(.+)$")
+_코드울 = re.compile(r"^\s*```")
+
+
+def 절차읽기(경로들):
+    """문서에서 순서 있는 대목을 뽑는다. -> [{제목, 단계[], 출처, 결}]
+
+    절차는 관계로 흩어 놓으면 순서를 잃는다. '판정 밴드를 추가하려면' 의 답은
+    'judge 를 고치고, 대사 키를 넣고, 검사를 더한다' 인데, 각각을 따로 아는
+    것과 순서를 아는 것은 다르다.
+
+    그래서 원문의 순서를 그대로 들고 온다. 번호 목록·불릿·bash 블록은 이미
+    순서가 있는 글이고, 쪼개지 않고 통째로 보관하면 지어낼 여지가 없으면서
+    순서가 살아 있다.
+
+    이어지는 줄은 앞 항목에 붙인다. 마크다운은 한 항목을 여러 줄에 걸쳐
+    쓰는 일이 흔해서, 안 붙이면 '회귀 문항이 1개 늘고,' 처럼 문장이 잘린다.
+
+    제목은 상위 제목까지 함께 들고 있는다('개발 > 8. 기여하기 좋은 곳').
+    절 제목만으로는 무엇에 대한 절차인지 모를 때가 많다."""
+    묶음 = []
+    for p in (경로들 if isinstance(경로들, (list, tuple)) else [경로들]):
+        p = _길(p)
+        대상 = ([os.path.join(p, f) for f in sorted(os.listdir(p))
+                 if f.endswith(".md")] if os.path.isdir(p) else [p])
+        for f in 대상:
+            이름 = os.path.splitext(os.path.basename(f))[0]
+            위 = {}                      # 깊이 -> 제목
+            제목, 깊이, 단계, 코드안 = None, 0, [], False
+            표줄, 산문 = set(), []
+            def 맺기():
+                if 제목 and len(단계) >= 2:
+                    길 = [위[d] for d in sorted(위) if d < 깊이] + [제목]
+                    묶음.append({"제목": " > ".join([이름] + 길[-2:]),
+                                 "단계": list(단계), "출처": 이름,
+                                 # 표는 절차가 아니라 조회다. 순서가 뜻이 없고
+                                 # 묻는 사람이 원하는 것은 맞는 한 줄이다.
+                                 "표": len(표줄) > len(단계) // 2,
+                                 # 매칭은 절 전체로, 답은 단계로. 'PR 전에 위
+                                 # 넷이 통과해야' 는 산문에 있어서, 산문을
+                                 # 안 보면 'PR 전에' 라는 물음이 못 찾는다.
+                                 "본문": " ".join(산문)[:600]})
+            for 줄 in open(f, encoding="utf-8").read().split(chr(10)):
+                if _코드울.match(줄):
+                    코드안 = not 코드안
+                    continue
+                m = _제목줄.match(줄)
+                if m and not 코드안:
+                    맺기()
+                    깊이 = len(m.group(1))
+                    for d in [k for k in 위 if k >= 깊이]:
+                        위.pop(d)
+                    제목, 단계, 표줄, 산문 = m.group(2).strip(), [], set(), []
+                    위[깊이] = 제목
+                    continue
+                if 코드안:
+                    t = 줄.strip()
+                    if t and not t.startswith("#"):
+                        단계.append(t)
+                    continue
+                m = _번호줄.match(줄) or _불릿줄.match(줄)
+                if m:
+                    t = m.group(m.lastindex).strip()
+                    if len(t) > 4:
+                        단계.append(t)
+                elif 줄.strip().startswith("|") and 줄.count("|") >= 3:
+                    # 표도 절차다. 이 저장소 문서는 '무엇을 하려면 어디를
+                    # 본다' 를 표로 적는다 — 표를 버리면 그 답이 통째로 없다.
+                    칸 = [c.strip() for c in 줄.strip().strip("|").split("|")]
+                    if 칸 and not all(set(c) <= set("-: ") for c in 칸):
+                        t = " — ".join(c for c in 칸 if c)
+                        if len(t) > 4:
+                            단계.append(t)
+                            표줄.add(len(단계) - 1)
+                elif 단계 and 줄.startswith(("  ", "\t")) and 줄.strip():
+                    단계[-1] = 단계[-1].rstrip() + " " + 줄.strip()
+                elif 줄.strip():
+                    산문.append(줄.strip())
+            맺기()
+    return 묶음
+
+
+def 절차찾기(묶음, 질문, 최소=0.35):
+    """질문에 맞는 절차. 뜻과 글자를 함께 본다.
+
+    뜻(임베딩)만 보면 'PR 전에 뭘 해야 해' 가 '불변식' 절로 샜다. 절차를
+    묻는 말에는 'PR'·'판정 밴드' 처럼 그대로 적힌 낱말이 들어 있는 일이
+    많아, 글자가 겹치는지를 함께 봐야 한다."""
+    if not 묶음:
+        return None
+    v = _vec(질문)
+    낱말 = [w for w in re.findall(r"[가-힣A-Za-z]{2,}", 질문)
+            if not any(t in w or w in t for t in (말투.get("질문틀") or []))]
+    최고, 점 = None, 최소
+    for x in 묶음:
+        단계글 = " ".join(x["단계"])[:400]
+        산문글 = x.get("본문", "")[:400]
+        # 제목이 가장 세고 산문이 가장 약하다. 제목이 '무엇을 하는 대목인가'
+        # 이고 산문은 곁가지라, 산문을 같은 무게로 보면 엉뚱한 절로 샌다.
+        뜻 = max(float(_vec(x["제목"]) @ v),
+                 0.9 * float(_vec(단계글) @ v) if 단계글 else 0.0,
+                 0.5 * float(_vec(산문글) @ v) if 산문글 else 0.0)
+        본문 = x["제목"] + " " + 단계글 + " " + 산문글
+        겹침 = (sum(1 for w in 낱말 if w in 본문) / len(낱말)) if 낱말 else 0.0
+        후보 = 뜻 + 0.25 * 겹침      # 글자가 겹치면 조금 밀어준다
+        if 후보 > 점:
+            최고, 점 = x, 후보
+    return 최고
+
+
+def 절차답(x, 배수=1, 질문=None):
+    """원문 그대로 낸다. 지어낸 것이 없다.
+
+    절차는 순서가 뜻이므로 차례대로 낸다. 표는 순서가 뜻이 없고 묻는 사람이
+    원하는 것은 맞는 한 줄이라, 가장 가까운 줄을 앞세우고 나머지를 곁들인다."""
+    줄 = ["%s" % x["제목"]]
+    끝 = 6 * 배수
+    단계 = x["단계"]
+    if x.get("표") and 질문:
+        v = _vec(질문)
+        차례 = sorted(range(len(단계)),
+                      key=lambda i: -float(_vec(단계[i]) @ v))
+        고름 = [단계[i] for i in 차례[:끝]]
+        줄.append("  → " + 고름[0])
+        for t in 고름[1:3 * 배수]:
+            줄.append("    (곁: %s)" % t)
+        return chr(10).join(줄)
+    for i, t in enumerate(단계[:끝], 1):
+        줄.append("  %d. %s" % (i, t))
+    if len(단계) > 끝:
+        줄.append("  … 그 밖에 %d단계 더 (자세히 라고 하면 더 봅니다)"
+                  % (len(단계) - 끝))
+    return chr(10).join(줄)
+
+
 def 대화질문(질문, 기억):
     """대화 자체에 대한 물음이면 대화 기억에서 답한다. -> 답 또는 None.
 
@@ -1239,6 +1376,23 @@ def _selfcheck():
             # 문서 그래프는 호출 구조를 모른다. 두 그래프가 겹치지 않는다.
             assert 물어보기(_dg, "judge 는 뭘 호출해")[0] != "설명"
 
+        # 절차: 순서가 뜻이다. 원문의 순서를 그대로 들고 온다.
+        if os.path.exists(_길("개발.md")):
+            _묶 = 절차읽기(["개발.md", "README.md"])
+            assert len(_묶) >= 10, len(_묶)
+            _x = 절차찾기(_묶, "PR 전에 뭘 해야 해")
+            assert _x and "개발 흐름" in _x["제목"], _x and _x["제목"]
+            _답 = 절차답(_x, 질문="PR 전에 뭘 해야 해")
+            # 순서가 살아 있다. --check 가 --regress 보다 먼저 나와야 한다.
+            assert _답.index("--check") < _답.index("--regress"), _답
+            # 단계는 원문 그대로다. 지어낸 것이 없다.
+            assert all(t in open(_길("개발.md"), encoding="utf-8").read()
+                       for t in _x["단계"][:3]), _x["단계"][:3]
+            # 표는 절차가 아니라 조회다. 맞는 줄이 앞에 온다.
+            _t = 절차찾기(_묶, "인코더를 바꾸려면")
+            if _t and _t.get("표"):
+                assert "인코더" in 절차답(_t, 질문="인코더를 바꾸려면").split(chr(10))[1]
+
     # 조립이 곧 말이다. 관계를 엮으면 원문에 없던 문장이 나오고, 각 홉은
     # 전부 특정 엣지에서 온다 — 지어낸 것이 아니라 아는 것을 엮은 것이다.
     _조 = {"역할": "요리사", "목표": None, "설명그래프": True, "개념엣지": [],
@@ -1366,6 +1520,23 @@ if __name__ == "__main__":
     인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
     if "--check" in sys.argv:
         _selfcheck()
+        sys.exit(0)
+
+    if "--절차" in sys.argv:
+        if len(인자) < 2:
+            print('사용법: python 설명.py --절차 <문서.md 또는 폴더> "질문"')
+            sys.exit(1)
+        문서 = [x for x in 인자[:-1]]
+        질문 = 인자[-1]
+        묶음 = 절차읽기(문서)
+        print("절차 %d개 (표 %d개)"
+              % (len(묶음), sum(1 for x in 묶음 if x.get("표"))))
+        틀 = 말투.get("_자세히")
+        배수 = 3 if (틀 and 틀.search(질문)) else 1
+        x = 절차찾기(묶음, 질문)
+        print()
+        print("Q %s" % 질문)
+        print(절차답(x, 배수, 질문) if x else "  맞는 절차를 찾지 못했습니다.")
         sys.exit(0)
 
     if "--score" in sys.argv:
