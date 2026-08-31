@@ -1,0 +1,8 @@
+[
+  {"graph": "사건_대표이사어깨흔듦.kg", "expected": "win"},
+  {"graph": "사건_위법체포저항.kg", "expected": "win"},
+  {"graph": "사건_손목제압.kg", "expected": "win"},
+  {"graph": "사건_식당싸움방어.kg", "expected": "win"},
+  {"graph": "사건_침대위과도.kg", "expected": "loss"},
+  {"graph": "사건_이혼소송중남편.kg", "expected": "loss"}
+]
