@@ -927,6 +927,31 @@ def 절차찾기(묶음, 질문, 최소=0.35, 개수=1):
     v = _vec(질문)
     낱말 = [w for w in re.findall(r"[가-힣A-Za-z]{2,}", 질문)
             if not any(t in w or w in t for t in (말투.get("질문틀") or []))]
+    # 자료에 아예 없는 말이 남으면 딴 얘기다 — 그래프 쪽 _모르는말 과 같은
+    # 수법이다. 이 문이 없으면 '코틀린 퀵정렬' 에 러스트 코드를 내준다.
+    # 다국어 코드 자료로 재보니 없는 조합 5개를 5개 다 지어냈다.
+    바다 = 묶음[0].get("_바다")
+    if 바다 is None:
+        바다 = " ".join(x["제목"] + " " + x.get("본문", "") + " "
+                        + " ".join(x["단계"]) for x in 묶음)
+        묶음[0]["_바다"] = 바다
+    어미 = 말투.get("어미") or []
+    떼는조사 = 말투.get("떼는조사") or []
+
+    def 아나(w, 글):
+        if any(w.endswith(e) for e in 어미):
+            return True     # 서술어는 딴 얘기의 증거가 못 된다
+        # 조사만 뗀다. 아무 데서나 자르면 '자바스크립트로' 가 '자바' 로
+        # 걸려서 자바 코드를 내주고, 두 글자에서 멈추면 'C로' 가 안 걸린다.
+        # 띄어쓰기는 뜻이 아니다 — 자료의 '이진 검색' 과 물음의 '이진검색'
+        # 은 같은 말이다. 뗀 채로 견준다.
+        붙 = 글.replace(" ", "")
+        if w in 붙:
+            return True
+        return any(w.endswith(j) and w[:-len(j)] in 붙 for j in 떼는조사)
+    if not all(아나(w, 바다) for w in 낱말):
+        return None if 개수 == 1 else []
+
     점수 = []
     for x in 묶음:
         단계글 = " ".join(x["단계"])[:400]
@@ -940,7 +965,16 @@ def 절차찾기(묶음, 질문, 최소=0.35, 개수=1):
         겹침 = (sum(1 for w in 낱말 if w in 본문) / len(낱말)) if 낱말 else 0.0
         점수.append((뜻 + 0.25 * 겹침, x))   # 글자가 겹치면 조금 밀어준다
     점수.sort(key=lambda p: -p[0])
-    골라 = [x for c, x in 점수[:개수] if c >= 최소]
+    # 자료에는 있는데 고른 절에는 없고 다른 절 제목에 있는 말 — 묻는 사람은
+    # 그 다른 절을 물었고 거기에 답이 없다. '러스트로 BFS' 가 그렇다.
+    제목바다 = " ".join(y["제목"] for y in 묶음)
+
+    def 어긋나(x):
+        글 = x["제목"] + " " + x.get("본문", "") + " " + " ".join(x["단계"])
+        남 = [w for w in 낱말
+             if not any(w.endswith(e) for e in 어미) and not 아나(w, 글)]
+        return any(아나(w, 제목바다) for w in 남)
+    골라 = [x for c, x in 점수[:개수] if c >= 최소 and not 어긋나(x)]
     if 개수 == 1:
         return 골라[0] if 골라 else None
     return 골라
