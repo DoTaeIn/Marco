@@ -30,6 +30,11 @@ def 말투읽기(언어):
     return json.load(io.open(_길("말투/코드/%s.json" % 언어), encoding="utf-8"))
 
 
+def 말투들():
+    return sorted(x[:-5] for x in os.listdir(_길("말투/코드"))
+                  if x.endswith(".json"))
+
+
 def 알고읽기(경로):
     return json.load(io.open(_길(경로), encoding="utf-8"))
 
@@ -176,8 +181,7 @@ def 회귀(폴더="알고리즘", 언어들=None):
     나머지는 이 파일이 지었다. 자료에 없던 조합도 돈다 — 그것이 고르기와
     짓기의 차이다."""
     if 언어들 is None:
-        언어들 = sorted(x[:-5] for x in os.listdir(_길("말투/코드"))
-                        if x.endswith(".json"))
+        언어들 = [x for x in 말투들() if not 말투읽기(x).get("산문")]
     산, 전 = 0, 0
     for f in sorted(os.listdir(_길(폴더))):
         if not f.endswith(".json"):
@@ -208,7 +212,255 @@ def _자체검사():
         assert 글.count("return") >= 2, 글
     지 = 짓기(알고읽기("알고리즘/최대공약수.json"), 말투읽기("powershell"))
     assert "(gcd $b ($a % $b))" in 지, 지    # 부르는 자리 구분자가 다르다
+    # 왕복 - 찍은 산문을 도로 뜯으면 처음 설계도가 그대로 나와야 한다
+    한 = 말투읽기("한국어")
+    뜯 = 알고뜯기(한, 짓기(알, 한))
+    for k in ("이름", "입력", "반환형", "몸"):
+        assert 뜯[k] == 알[k], (k, 뜯[k])
     print("selfcheck ok")
+
+
+# ── 거꾸로: 산문에서 설계도를 뜯어낸다 ──────────────────────────────
+#
+# 찍는 데 쓴 틀을 그대로 뒤집어 쓴다. 틀이 하나뿐이니 찍기와 읽기가 어긋날
+# 수 없다 — 어긋나면 왕복이 깨져서 바로 안다.
+#
+# 왕복이 곧 채점기다. 설계도 → 한국어 → 설계도 → 코드 → 실행 을 돌려
+# 답이 그대로 맞으면 제대로 읽은 것이다. 사람이 봐줄 필요가 없다.
+
+
+def _쪼개(틀):
+    """틀을 글자 조각과 구멍으로 가른다. '({0}이 {1}과 같으)' 는
+    ['(', '이 ', '과 같으)'] 와 ['0', '1'] 이 된다."""
+    조각, 구멍, 남 = [], [], 틀
+    while True:
+        i = 남.find("{")
+        if i < 0:
+            조각.append(남)
+            return 조각, 구멍
+        j = 남.index("}", i)
+        조각.append(남[:i])
+        구멍.append(남[i + 1:j])
+        남 = 남[j + 1:]
+
+
+def _맞춰(틀, 글):
+    """글을 틀에 맞춰 구멍의 내용을 뽑는다. 없으면 None.
+
+    괄호 깊이를 센다. 안 세면 '((a의 mid번째)이 target과 같으)' 에서
+    안쪽 괄호의 글자가 바깥 틀의 글자로 잘못 걸린다."""
+    조각, 구멍 = _쪼개(틀)
+    if not 글.startswith(조각[0]):
+        return None
+    자리, 값 = len(조각[0]), []
+    for k in range(1, len(조각)):
+        찾을 = 조각[k]
+        깊이, 여기, 찾음 = 0, 자리, -1
+        while 여기 < len(글):
+            # 맞춰본 뒤에 깊이를 옮긴다. 먼저 옮기면 여는 괄호로 시작하는
+            # 조각('(' 하나짜리)이 제 자리에서 안 걸린다.
+            if 깊이 == 0 and 찾을 and 글.startswith(찾을, 여기):
+                찾음 = 여기
+                break
+            c = 글[여기]
+            if c == "(":
+                깊이 += 1
+            elif c == ")":
+                깊이 -= 1
+                if 깊이 < 0:
+                    return None
+            여기 += 1
+        if 찾을 == "":                      # 마지막 조각이 비면 끝까지
+            찾음 = len(글)
+        if 찾음 < 0 or 찾음 <= 자리:
+            return None
+        값.append(글[자리:찾음])
+        자리 = 찾음 + len(찾을)
+    if 자리 != len(글):
+        return None
+    return dict(zip(구멍, 값)) if 구멍 else {}
+
+
+def 식뜯기(말투, 글):
+    """산문 한 토막을 식으로. 잎이 아니면 반드시 괄호로 싸여 있다."""
+    글 = 글.strip()
+    if not 글.startswith("("):
+        try:
+            return ["수", int(글)]
+        except ValueError:
+            return ["이름", 글]
+    부름틀 = 말투.get("호출식")
+    if 부름틀:
+        m = _맞춰(부름틀, 글)
+        if m and "이름" in m:
+            인자 = _깊이나누기(m["인자"], _인자사이(말투))
+            return ["부름", m["이름"]] + [식뜯기(말투, x) for x in 인자]
+    for 꼴, 틀 in 말투["식"].items():
+        if 꼴 in ("이름", "수"):
+            continue
+        m = _맞춰(틀, 글)
+        if m is not None:
+            차례 = sorted(m, key=int)
+            return [꼴] + [식뜯기(말투, m[k]) for k in 차례]
+    raise ValueError("못 읽는 식: %s" % 글)
+
+
+def _깊이나누기(글, 사이):
+    """괄호 밖에서만 가른다."""
+    깊이, 자리, 난 = 0, 0, []
+    i = 0
+    while i < len(글):
+        c = 글[i]
+        if c == "(":
+            깊이 += 1
+        elif c == ")":
+            깊이 -= 1
+        if 깊이 == 0 and 글.startswith(사이, i):
+            난.append(글[자리:i])
+            i += len(사이)
+            자리 = i
+            continue
+        i += 1
+    난.append(글[자리:])
+    return [x for x in 난 if x.strip()]
+
+
+def _벗기(줄들, 칸):
+    return [x[len(칸):] if x.startswith(칸) else x for x in 줄들]
+
+
+def 몸뜯기(말투, 줄들):
+    """들여쓰기로 블록을 가른다. 찍을 때 쓴 그 들여쓰기다."""
+    칸 = 말투["들여쓰기"]
+    몸, i = [], 0
+    while i < len(줄들):
+        줄 = 줄들[i]
+        if not 줄.strip():
+            i += 1
+            continue
+        속 = []
+        j = i + 1
+        while j < len(줄들) and (줄들[j].startswith(칸) or not 줄들[j].strip()):
+            속.append(줄들[j])
+            j += 1
+        속 = _벗기(속, 칸)
+
+        머리 = 말투["반복"].split("\n")[0]
+        m = _맞춰(머리, 줄)
+        if m is not None:
+            몸.append(["반복", 식뜯기(말투, m["조건"]), 몸뜯기(말투, 속)])
+            i = j
+            continue
+        머리 = 말투["분기"].split("\n")[0]
+        m = _맞춰(머리, 줄)
+        if m is not None:
+            그럼 = 몸뜯기(말투, 속)
+            아니면 = []
+            가름 = 말투["분기아니면"].split("\n")[2]
+            if j < len(줄들) and 줄들[j].strip() == 가름.strip():
+                k = j + 1
+                안 = []
+                while k < len(줄들) and (줄들[k].startswith(칸)
+                                         or not 줄들[k].strip()):
+                    안.append(줄들[k])
+                    k += 1
+                아니면 = 몸뜯기(말투, _벗기(안, 칸))
+                j = k
+            몸.append(["분기", 식뜯기(말투, m["조건"]), 그럼, 아니면])
+            i = j
+            continue
+        for 꼴 in ("선언", "대입", "색인대입", "반환"):
+            m = _맞춰(말투[꼴], 줄)
+            if m is None:
+                continue
+            if 꼴 == "선언":
+                몸.append(["선언", m["이름"], "정수", 식뜯기(말투, m["식"])])
+            elif 꼴 == "대입":
+                몸.append(["대입", m["이름"], 식뜯기(말투, m["식"])])
+            elif 꼴 == "색인대입":
+                몸.append(["색인대입", 식뜯기(말투, m["열"]),
+                           식뜯기(말투, m["자리"]), 식뜯기(말투, m["식"])])
+            else:
+                몸.append(["반환", 식뜯기(말투, m["식"])])
+            break
+        else:
+            raise ValueError("못 읽는 줄: %s" % 줄)
+        i += 1
+    return 몸
+
+
+def 알고뜯기(말투, 글):
+    """산문 한 벌을 설계도로."""
+    줄들 = 글.rstrip().split("\n")
+    머리 = 말투["함수"].split("\n")[0]
+    m = _맞춰(머리, 줄들[0].strip())
+    if m is None:
+        raise ValueError("머리를 못 읽는다: %s" % 줄들[0])
+    거꾸로형 = {v: k for k, v in 말투["형"].items()}
+    입력 = []
+    for t in _깊이나누기(m["입력"], 말투["입력사이"]):
+        s = _맞춰(말투["입력항"], t.strip())
+        if s is None:
+            raise ValueError("입력을 못 읽는다: %s" % t)
+        입력.append([s["이름"], 거꾸로형.get(s["형"], s["형"])])
+    알고 = {"이름": m["이름"], "입력": 입력,
+            "반환형": 거꾸로형.get(m["반환형"], m["반환형"]),
+            "몸": 몸뜯기(말투, _벗기(줄들[1:], 말투["들여쓰기"]))}
+    # 산문에는 변수의 형이 안 적힌다. 길이·색인을 받는 이름은 열이다.
+    열이름 = set(n for n, t in 입력 if t == "정수열")
+    _형채우기(알고["몸"], 열이름)
+    return 알고
+
+
+def _형채우기(몸, 열이름):
+    for 문 in 몸:
+        if 문[0] == "선언":
+            문[2] = "정수열" if (문[3][0] == "이름"
+                                 and 문[3][1] in 열이름) else "정수"
+        for x in 문:
+            if isinstance(x, list) and x and isinstance(x[0], list):
+                _형채우기(x, 열이름)
+
+
+def 왕복(폴더="알고리즘", 언어="한국어"):
+    """설계도 → 산문 → 설계도. 그리고 뜯어낸 것으로 코드를 찍어 돌린다.
+
+    앞의 견줌이 읽기가 맞았는지 보고, 뒤의 실행이 그 읽은 것이 진짜 도는
+    물건인지 본다. 둘 다 사람 없이 매겨진다."""
+    말투 = 말투읽기(언어)
+    같, 전, 산, 벌 = 0, 0, 0, 0
+    쓸언어 = [x for x in 말투들()
+              if x != 언어 and not 말투읽기(x).get("산문")]
+    for f in sorted(os.listdir(_길(폴더))):
+        if not f.endswith(".json"):
+            continue
+        원 = 알고읽기(os.path.join(폴더, f))
+        산문 = 짓기(원, 말투)
+        전 += 1
+        try:
+            뜯 = 알고뜯기(말투, 산문)
+        except Exception as e:
+            print("  X %-14s 못 읽음 — %s" % (원["이름"], e))
+            continue
+        꼭 = ["이름", "입력", "반환형", "몸"]
+        맞 = all(뜯[k] == 원[k] for k in 꼭)
+        같 += 맞
+        print("  %s %-14s 왕복 %s" % ("O" if 맞 else "X", 원["이름"],
+                                      "같음" if 맞 else "다름"))
+        if not 맞:
+            for k in 꼭:
+                if 뜯[k] != 원[k]:
+                    print("      %s: %s" % (k, json.dumps(뜯[k],
+                                                          ensure_ascii=False)[:160]))
+            continue
+        뜯["시험"] = 원.get("시험", [])       # 시험은 산문에 안 적힌다
+        for r in 재기(뜯, 쓸언어):
+            벌 += 1
+            산 += (r["탈"] is None and r["맞"] == r["전체"])
+    print()
+    print("  왕복 같음 %d/%d · 뜯은 설계도로 찍어 도는 벌 %d/%d"
+          % (같, 전, 산, 벌))
+    return 같, 전, 산, 벌
 
 
 if __name__ == "__main__":
@@ -216,6 +468,14 @@ if __name__ == "__main__":
         _자체검사()
         sys.exit(0)
     인자 = [x for x in sys.argv[1:] if not x.startswith("--")]
+    if "--왕복" in sys.argv:
+        같, 전, 산, 벌 = 왕복()
+        sys.exit(0 if (같 == 전 and 산 == 벌) else 1)
+    if "--읽기" in sys.argv:
+        말투 = 말투읽기("한국어")
+        글 = io.open(_길(인자[0]), encoding="utf-8").read()
+        print(json.dumps(알고뜯기(말투, 글), ensure_ascii=False, indent=2))
+        sys.exit(0)
     if "--regress" in sys.argv:
         산, 전 = 회귀()
         sys.exit(0 if 산 == 전 else 1)
