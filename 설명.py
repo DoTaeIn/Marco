@@ -589,6 +589,29 @@ class 대화기억:
     def 뜨거운(self, 개수=5):
         return sorted(self.값, key=lambda n: -self.값[n])[:개수]
 
+    def 저장(self, 경로, 출처=None):
+        """대화를 파일로. 활성값 뭉치는 원본 그래프 위의 부분그래프 선택이라,
+        어느 그래프의 어느 노드가 얼마나 살아 있는지만 적으면 그대로 복원된다.
+
+        그래서 대화가 옮겨 다닌다 — 저장하고 이어서 하거나, 남에게 건네
+        같은 맥락에서 계속하게 할 수 있다. 원본 그래프는 안 건드린다."""
+        json.dump({"출처": 출처, "턴": self.turn,
+                   "감쇠": self.감쇠, "무게": self.무게, "최소": self.최소,
+                   "활성": self.값, "흐름": self.흐름},
+                  open(경로, "w", encoding="utf-8"),
+                  ensure_ascii=False, indent=1)
+        return 경로
+
+    @classmethod
+    def 읽기(cls, 경로):
+        d = json.load(open(_길(경로), encoding="utf-8"))
+        기 = cls(d.get("감쇠", 0.75), d.get("무게", 0.15), d.get("최소", 0.02))
+        기.값 = dict(d.get("활성", {}))
+        기.turn = d.get("턴", 0)
+        기.흐름 = [tuple(x) for x in d.get("흐름", [])]
+        기.출처 = d.get("출처")
+        return 기
+
 
 # 주어를 생략한 후속 질문. NPC 대화는 이 모양으로 흘러간다.
 def _맥락채우기(질문, 기억):
@@ -818,6 +841,17 @@ def _selfcheck():
         # 문턱은 못 낮춘다 — 아까 무슨 이야기를 했다는 이유로 답이 새면 안 된다.
         for _잡 in ("피카츄가 뭐야", "주식 시장 전망"):
             assert 물어보기(요g, _잡, 기)[0] == "미지", (_잡, 물어보기(요g, _잡, 기))
+        # 대화는 파일로 옮겨 다닌다. 활성값 뭉치가 원본 그래프 위의 부분그래프
+        # 선택이라, 어느 노드가 얼마나 살아 있는지만 적으면 그대로 복원된다.
+        _대화 = "_대화시험.json"
+        기.저장(_대화, "자료/예시_요리/지식그래프.json")
+        _다시 = 대화기억.읽기(_대화)
+        assert _다시.값 == 기.값 and _다시.turn == 기.turn, (_다시.값, 기.값)
+        assert _다시.뜨거운(1) == 기.뜨거운(1)
+        assert _다시.출처 == "자료/예시_요리/지식그래프.json"
+        # 이어받은 기억으로 주어 없는 질문이 풀린다
+        assert _맥락채우기("왜 그래야 해", _다시)[1] == 기.뜨거운(1)[0]
+        os.remove(_대화)
 
     # 조립이 곧 말이다. 관계를 엮으면 원문에 없던 문장이 나오고, 각 홉은
     # 전부 특정 엣지에서 온다 — 지어낸 것이 아니라 아는 것을 엮은 것이다.
@@ -988,11 +1022,27 @@ if __name__ == "__main__":
         관계[r] = 관계.get(r, 0) + 1
     print("  관계: " + ", ".join("%s %d" % kv for kv in
                                  sorted(관계.items(), key=lambda t: -t[1])[:6]))
-    기억 = 대화기억()
+    대화파일 = (sys.argv[sys.argv.index("--대화") + 1]
+                if "--대화" in sys.argv else None)
+    기억 = (대화기억.읽기(대화파일)
+            if 대화파일 and os.path.exists(_길(대화파일)) else 대화기억())
+    if 기억.turn:
+        print("  [이어서] %d턴째 · 살아 있는 것: %s"
+              % (기억.turn, ", ".join(기억.뜨거운()) or "없음"))
     while True:
         q = input("\n> ").strip()
         if q in ("종료", "q", ""):
+            if 대화파일:
+                기억.저장(대화파일, 인자[0])
+                print("  %s 에 저장했습니다." % 대화파일)
             break
+        if q.startswith("저장"):
+            경로 = (q.split(None, 1)[1].strip() if len(q.split()) > 1
+                    else (대화파일 or "대화.json"))
+            기억.저장(경로, 인자[0])
+            print("  %s 에 저장했습니다. 다음에 --대화 %s 로 이어서 하십시오."
+                  % (경로, 경로))
+            continue
         if q in ("기억", "맥락"):
             print("  지금 살아 있는 것: " + (", ".join(기억.뜨거운()) or "없음")
                   + "   (%d턴째)" % 기억.turn)
