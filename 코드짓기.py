@@ -15,6 +15,7 @@
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -37,6 +38,50 @@ def 말투들():
 
 def 알고읽기(경로):
     return json.load(io.open(_길(경로), encoding="utf-8"))
+
+
+_조사짝 = {"을": ("을", "를"), "이": ("이", "가"), "은": ("은", "는"),
+           "와": ("과", "와"), "으로": ("으로", "로")}
+_표 = re.compile(r"\{~(을|이|은|와|으로)\}")
+
+
+def _받침(글, 자리):
+    """조사 앞 글자에 받침이 있나. 닫는 괄호와 빈칸은 건너뛴다 —
+    'target(정수)' 뒤에 붙는 조사는 '수' 를 보고 골라야 한다."""
+    i = 자리 - 1
+    while i >= 0 and 글[i] in ") ]\"'":
+        i -= 1
+    if i < 0:
+        return True
+    c = 글[i]
+    if "가" <= c <= "힣":
+        return (ord(c) - 0xAC00) % 28 != 0
+    if c.isdigit():
+        return c in "01367"          # 영 일 삼 육 칠 팔 에 받침이 있다
+    return c.lower() not in "aeiouy"  # 로마자는 소리로 가른다
+
+
+def _조사맞춤(글):
+    """{~을} 같은 자리를 앞 글자에 맞춰 을/를로 굳힌다."""
+    while True:
+        m = _표.search(글)
+        if not m:
+            return 글
+        있, 없 = _조사짝[m.group(1)]
+        골 = 있 if _받침(글, m.start()) else 없
+        글 = 글[:m.start()] + 골 + 글[m.end():]
+
+
+def _틀변형(틀):
+    """읽을 때는 둘 다 받는다. 사람은 '정수를' 이라 쓰고 틀은 '정수을'
+    이라 적혀 있어도 같은 말이다."""
+    m = _표.search(틀)
+    if not m:
+        return [틀]
+    난 = []
+    for 골 in _조사짝[m.group(1)]:
+        난 += _틀변형(틀[:m.start()] + 골 + 틀[m.end():])
+    return 난
 
 
 def _채움(틀, **칸):
@@ -130,6 +175,8 @@ def 짓기(알고, 말투):
         틀 = (말투["열시험줄"] if 알고["반환형"] == "정수열"
               else 말투["시험줄"])
         시험.append(_채움(틀, 호출=호출))
+    함수 = _조사맞춤(함수)
+    시험 = [_조사맞춤(x) for x in 시험]
     깊 = 말투.get("겉들여쓰기", 0)
     시깊 = 말투.get("시험들여쓰기", 0)
     return _채움(말투["겉"],
@@ -245,6 +292,16 @@ def _쪼개(틀):
 
 
 def _맞춰(틀, 글):
+    if "{~" in 틀:
+        for x in _틀변형(틀):
+            m = _맞춰(x, 글)
+            if m is not None:
+                return m
+        return None
+    return _맞춰하나(틀, 글)
+
+
+def _맞춰하나(틀, 글):
     """글을 틀에 맞춰 구멍의 내용을 뽑는다. 없으면 None.
 
     괄호 깊이를 센다. 안 세면 '((a의 mid번째)이 target과 같으)' 에서
@@ -369,7 +426,7 @@ def 몸뜯기(말투, 줄들):
             몸.append(["분기", 식뜯기(말투, m["조건"]), 그럼, 아니면])
             i = j
             continue
-        for 꼴 in ("선언", "대입", "색인대입", "반환"):
+        for 꼴 in ("선언", "색인대입", "대입", "반환"):   # 좁은 틀을 먼저
             m = _맞춰(말투[꼴], 줄)
             if m is None:
                 continue
@@ -390,8 +447,22 @@ def 몸뜯기(말투, 줄들):
 
 
 def 알고뜯기(말투, 글):
-    """산문 한 벌을 설계도로."""
-    줄들 = 글.rstrip().split("\n")
+    """산문 한 벌을 설계도로.
+
+    '시험: [5] -> 120' 줄은 따로 걷는다. 무엇을 하는지는 산문이
+    말하지만 무엇이 맞는지는 말하지 않는다 — 그건 채점기의 몫이다."""
+    줄들, 시험 = [], []
+    for 줄 in 글.rstrip().split(chr(10)):
+        if 줄.strip().startswith("시험:"):
+            왼, _, 오 = 줄.split(":", 1)[1].partition("->")
+            오 = 오.strip()
+            시험.append({"인자": json.loads(왼.strip()),
+                         "기대": json.loads(오)
+                         if 오[:1] in "-0123456789[" else 오})
+        else:
+            줄들.append(줄)
+    while 줄들 and not 줄들[-1].strip():
+        줄들.pop()
     머리 = 말투["함수"].split("\n")[0]
     m = _맞춰(머리, 줄들[0].strip())
     if m is None:
@@ -405,7 +476,8 @@ def 알고뜯기(말투, 글):
         입력.append([s["이름"], 거꾸로형.get(s["형"], s["형"])])
     알고 = {"이름": m["이름"], "입력": 입력,
             "반환형": 거꾸로형.get(m["반환형"], m["반환형"]),
-            "몸": 몸뜯기(말투, _벗기(줄들[1:], 말투["들여쓰기"]))}
+            "몸": 몸뜯기(말투, _벗기(줄들[1:], 말투["들여쓰기"])),
+            "시험": 시험}
     # 산문에는 변수의 형이 안 적힌다. 길이·색인을 받는 이름은 열이다.
     열이름 = set(n for n, t in 입력 if t == "정수열")
     _형채우기(알고["몸"], 열이름)
@@ -420,6 +492,38 @@ def _형채우기(몸, 열이름):
         for x in 문:
             if isinstance(x, list) and x and isinstance(x[0], list):
                 _형채우기(x, 열이름)
+
+
+def 산문회귀(폴더="알고리즘/산문", 언어="한국어"):
+    """사람이 손으로 쓴 한국어를 그대로 코드로 만들어 돌린다.
+
+    왕복과 다르다. 왕복은 제가 찍은 산문을 도로 읽는 것이라 문체가 제
+    것이다. 여기 든 글은 사람이 쓴 것이고 조사도 사람 마음대로다 —
+    '정수를' 이라 써도 틀에는 '정수을' 이라 적혀 있다."""
+    말투 = 말투읽기(언어)
+    쓸언어 = [x for x in 말투들()
+              if x != 언어 and not 말투읽기(x).get("산문")]
+    산, 벌 = 0, 0
+    터 = _길(폴더)
+    if not os.path.isdir(터):
+        return 0, 0
+    for f in sorted(os.listdir(터)):
+        if not f.endswith(".txt"):
+            continue
+        글 = io.open(os.path.join(터, f), encoding="utf-8").read()
+        try:
+            알고 = 알고뜯기(말투, 글)
+        except Exception as e:
+            print("  X %-20s 못 읽음 — %s" % (f, e))
+            벌 += len(쓸언어)
+            continue
+        print("%s ← %s" % (알고["이름"], f))
+        for r in 재기(알고, 쓸언어):
+            벌 += 1
+            산 += (r["탈"] is None and r["맞"] == r["전체"])
+        print()
+    print("  사람이 쓴 한국어에서 도는 벌 %d/%d" % (산, 벌))
+    return 산, 벌
 
 
 def 왕복(폴더="알고리즘", 언어="한국어"):
@@ -468,6 +572,9 @@ if __name__ == "__main__":
         _자체검사()
         sys.exit(0)
     인자 = [x for x in sys.argv[1:] if not x.startswith("--")]
+    if "--산문" in sys.argv:
+        산, 벌 = 산문회귀()
+        sys.exit(0 if (벌 and 산 == 벌) else 1)
     if "--왕복" in sys.argv:
         같, 전, 산, 벌 = 왕복()
         sys.exit(0 if (같 == 전 and 산 == 벌) else 1)
