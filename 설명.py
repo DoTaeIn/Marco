@@ -10,7 +10,7 @@
 import json, os, re, sys
 from collections import deque
 
-from 인코더 import DEVICE, _길, _model, _vec, 숫자가리기, 조각내기
+from 인코더 import DEVICE, MODEL, _길, _model, _vec, 숫자가리기, 조각내기
 
 def graphify읽기(경로, 최대=1200):
     """graphify graph.json -> 이 엔진이 쓸 수 있는 형태.
@@ -375,7 +375,13 @@ def 길설명(g, 길):
 
 
 def 지식준비(g):
-    """설명 그래프에 벡터를 붙인다. 개념망이 있으면 그것으로 어휘를 넓힌다."""
+    """설명 그래프에 벡터를 붙인다. 개념망이 있으면 그것으로 어휘를 넓힌다.
+
+    노드 7천 개를 매번 인코딩하면 그래프 여는 데 23초가 걸린다. 게임의 NPC 나
+    터미널 도구로 쓰려면 그 시간이 곧 시작 지연이다. engine.py 가 하던 대로
+    내용 해시를 키로 디스크에 캐시한다 — 그래프를 고치면 해시가 바뀌어
+    자동으로 다시 만들어진다."""
+    import hashlib
     import numpy as np
     하위 = {}
     for a, r, b in g.get("개념엣지", []):
@@ -390,8 +396,24 @@ def 지식준비(g):
         예시 += [x for x in 하위.get(n, [])[:8] if x not in 예시]
         구간.append((len(문장), len(문장) + len(예시)))
         문장 += [숫자가리기(x) for x in 예시]
-    V = np.array(_model().encode(문장, normalize_embeddings=True,
-                                 batch_size=64, show_progress_bar=False))
+    키 = hashlib.sha1(("\n".join(문장) + MODEL).encode("utf-8")).hexdigest()[:16]
+    캐시 = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        ".vec_설명_%s.npz" % 키)
+    V = None
+    if os.path.exists(캐시):
+        try:
+            V = np.load(캐시, allow_pickle=False)["V"]
+            if len(V) != len(문장):
+                V = None
+        except Exception:
+            V = None                       # 캐시가 깨졌으면 그냥 다시 만든다
+    if V is None:
+        V = np.array(_model().encode(문장, normalize_embeddings=True,
+                                     batch_size=64, show_progress_bar=False))
+        try:
+            np.savez_compressed(캐시, V=V)
+        except OSError:
+            pass
     g["vec"] = {n: V[i:j] for n, (i, j) in zip(이름들, 구간)}
     return g
 
@@ -1027,6 +1049,14 @@ def _selfcheck():
     # 설명 채점: 목표 없는 모드의 정답지. 원문 자체를 정답으로 쓴다.
     # 이름으로 물으면 거의 다 맞고(조회 경로), 이름을 지우면 크게 떨어진다
     # (임베딩 매칭만의 실력). 그 격차가 이 모드에서 개선할 자리다.
+    # 벡터 캐시가 결과를 바꾸지 않는다. 두 번 열어 같은 벡터가 나와야 한다.
+    _요p = _길("자료/예시_요리/지식그래프.json")
+    if os.path.exists(_요p):
+        import numpy as np
+        _a, _b = 열기(_요p), 열기(_요p)
+        _n = list(_a["vec"])[0]
+        assert np.allclose(_a["vec"][_n], _b["vec"][_n]), "캐시가 벡터를 바꾼다"
+
     요리 = _길("자료/예시_요리/지식그래프.json")
     if os.path.exists(요리):
         _r = 설명채점(열기(요리))
