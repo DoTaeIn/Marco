@@ -1,0 +1,48 @@
+{
+  "이름": "english",
+  "_설명": "Same engine, different language. Nothing in 설명.py changes — only this file.",
+
+  "이음규칙": "없음",
+  "_이음규칙": "English does not inflect the verb to join clauses; the connective word does the work. So no conjugation rule.",
+
+  "조사붙임": false,
+  "조사짝": {},
+  "붙일조사": [],
+  "_조사": "English has no particle agreement. Both tables stay empty and the engine skips that step.",
+
+  "이음말": {},
+
+  "주어없음": "^\\s*(why|when|how|where|who|what|and it|then)\\b|^\\s*(그건|그게)",
+
+  "관계말": {
+    "contains": ["contains %s", "is inside %s"],
+    "references": ["references %s", "is referenced by %s"],
+    "conceptually_related_to": ["is related to %s", "is related to %s"],
+    "semantically_similar_to": ["is similar to %s", "is similar to %s"],
+    "imports": ["imports %s", "is imported by %s"],
+    "imports_from": ["imports from %s", "is imported from by %s"],
+    "calls": ["calls %s", "is called by %s"],
+    "extends": ["extends %s", "is extended by %s"],
+    "cites": ["cites %s", "is cited by %s"],
+    "shares_data_with": ["shares data with %s", "shares data with %s"],
+    "rationale_for": ["is the rationale for %s", "has rationale %s"],
+    "method": ["is a method of %s", "has method %s"],
+    "설명함": ["covers %s", "is covered in the passage about %s"],
+    "같은조문": ["appears with %s", "appears with %s"],
+    "재료": ["goes into %s", "takes %s"],
+    "이유": ["leads to %s", "is due to %s"],
+    "시점": ["depends on when %s", "must be timed for %s"],
+    "대체": ["can replace %s", "can be replaced by %s"],
+    "죄형": ["is punished by %s", "punishes %s"],
+    "예외": ["has the exception %s", "is an exception to %s"],
+    "근거": ["is the basis for %s", "follows %s"],
+    "제외": ["excludes %s", "is excluded by %s"],
+    "준용": ["applies %s", "is applied by %s"],
+    "정의": ["means %s", "is defined as %s"]
+  },
+  "관계말없음": "is in a %2$s relation with %1$s",
+
+  "주어틀": "%s ",
+  "마침표": ".",
+  "이음표": ", and "
+}
