@@ -14,6 +14,9 @@
 # graphify 중간 캐시
 graphify-out/cache/
 
+AGENTS.md
+CLAUDE.md
+GEMINI.md
 
 
 # --- 자체 검사가 만드는 임시 파일 ---
