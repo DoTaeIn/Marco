@@ -400,10 +400,13 @@ def 지식준비(g):
     키 = hashlib.sha1(("\n".join(문장) + MODEL).encode("utf-8")).hexdigest()[:16]
     캐시 = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                         ".vec_설명_%s.npz" % 키)
+    # 압축하지 않고 저장하면 mmap 으로 열 수 있다. 7,195노드 벡터가 28.5MB 인데
+    # 통째로 램에 올릴 이유가 없다 — 한 번에 보는 것은 행렬 한 판뿐이다.
+    # 방향.md 의 층 구조가 원래 이것을 노렸다(SSD 순차 I/O, 콜드 66ms).
     V = None
     if os.path.exists(캐시):
         try:
-            V = np.load(캐시, allow_pickle=False)["V"]
+            V = np.load(캐시, allow_pickle=False, mmap_mode="r")["V"]
             if len(V) != len(문장):
                 V = None
         except Exception:
@@ -412,7 +415,7 @@ def 지식준비(g):
         V = np.array(_model().encode(문장, normalize_embeddings=True,
                                      batch_size=64, show_progress_bar=False))
         try:
-            np.savez_compressed(캐시, V=V)
+            np.savez(캐시, V=V)            # 압축하면 mmap 이 안 된다
         except OSError:
             pass
     g["vec"] = {n: V[i:j] for n, (i, j) in zip(이름들, 구간)}
