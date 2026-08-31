@@ -138,5 +138,7 @@
     "s"
   ],
   "대화질문": "earlier|before|what did i|so far|first question|typo",
-  "_대화질문": "대화 자체에 대한 물음. 지식 그래프가 아니라 대화 기억에서 답한다."
+  "_대화질문": "대화 자체에 대한 물음. 지식 그래프가 아니라 대화 기억에서 답한다.",
+  "자세히": "in detail|detailed|everything|tell me more|elaborate",
+  "_자세히": "이 말이 걸리면 답을 길게 낸다. 자를 자리를 몇 배로 늘릴 뿐이라 지어내는 것은 없다."
 }

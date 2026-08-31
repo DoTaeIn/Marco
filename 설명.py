@@ -69,6 +69,7 @@ def 말투읽기(이름=None):
                        if 말.get("조사붙임") and 말.get("붙일조사") else None)
     말["_주어없음"] = re.compile(말["주어없음"]) if 말.get("주어없음") else None
     말["_대화질문"] = (re.compile(말["대화질문"]) if 말.get("대화질문") else None)
+    말["_자세히"] = re.compile(말["자세히"]) if 말.get("자세히") else None
     return 말
 
 
@@ -234,11 +235,16 @@ def 발췌고르기(g, 이름, 질문=None, 뜻=None):
     return best
 
 
-def 설명(g, 이름, 뜻="정의", 최대이웃=5, 질문=None):
+def 설명(g, 이름, 뜻="정의", 최대이웃=5, 질문=None, 배수=1):
     """노드를 묻는 방식에 맞춰 설명한다. 생성이 아니라 조립이다.
 
     조사는 조립한 부분에만 맞춘다. 인용한 원문은 한 글자도 건드리지 않는다 —
-    '그 밖에 이 법에 따라' 의 '이' 를 조사로 보고 '가' 로 고친 적이 있다."""
+    '그 밖에 이 법에 따라' 의 '이' 를 조사로 보고 '가' 로 고친 적이 있다.
+
+    배수는 '자세히' 라고 물었을 때 자를 자리를 몇 배로 늘릴지다. 이웃과
+    발췌를 더 붙일 뿐 없던 것을 만들지 않는다 — 길게 답한다고 근거가
+    묽어지면 안 된다. 감지어는 말투 파일에 있다."""
+    최대이웃 = 최대이웃 * 배수
     나감, 들옴 = _인접(g)
     나가는, 들어오는 = 나감.get(이름, []), 들옴.get(이름, [])
     m = g["메타"].get(이름, {})
@@ -263,7 +269,7 @@ def 설명(g, 이름, 뜻="정의", 최대이웃=5, 질문=None):
                       % (이름, ", ".join(x for _, x in 근거)))
         else:
             줄.append("%s 에 대한 근거는 그래프에 없습니다." % 이름)
-            이웃 = [y for _, y in 나가는[:3]]
+            이웃 = [y for _, y in 나가는[:3 * 배수]]
             if 이웃:
                 줄.append("대신 %s 와 이어져 있습니다." % ", ".join(이웃))
         return 맺기(줄)
@@ -300,7 +306,7 @@ def 설명(g, 이름, 뜻="정의", 최대이웃=5, 질문=None):
         if 어디:
             줄.append("— %s%s" % (어디,
                       " 외 %d곳" % (모두 - 1) if 모두 > 1 else ""))
-        곁 = [y for r, y in 나가는 if r == "설명함"][:4] or              [y for r, y in 나가는][:4]
+        곁 = [y for r, y in 나가는 if r == "설명함"][:4 * 배수] or              [y for r, y in 나가는][:4 * 배수]
         if 곁:
             줄.append("함께 나오는 것: %s." % ", ".join(곁))
         return (원문 + " " + 맺기(줄)).rstrip()
@@ -309,7 +315,7 @@ def 설명(g, 이름, 뜻="정의", 최대이웃=5, 질문=None):
         줄.append("%s 는 %s 에서 다룹니다%s."
                   % (이름, _대목이름(정의처[0]),
                      " (외 %d곳)" % (len(정의처) - 1) if len(정의처) > 1 else ""))
-        다룸 = [y for r, y in 나가는 if r == "설명함"][:5]
+        다룸 = [y for r, y in 나가는 if r == "설명함"][:5 * 배수]
         if 다룸:
             줄.append("그 대목은 %s 를 함께 다룹니다." % ", ".join(다룸))
         return 맺기(줄)
@@ -325,9 +331,9 @@ def 설명(g, 이름, 뜻="정의", 최대이웃=5, 질문=None):
         머리 += " (%s%s)" % (m["file"], (" " + m["loc"]) if m.get("loc") else "")
     줄.append(머리 + ".")
     if 나가는:
-        줄.append(" ".join(관계문장(r, y, True) + "." for r, y in 나가는[:3]))
+        줄.append(" ".join(관계문장(r, y, True) + "." for r, y in 나가는[:3 * 배수]))
     if 들어오는:
-        줄.append(" ".join(관계문장(r, x, False) + "." for r, x in 들어오는[:2]))
+        줄.append(" ".join(관계문장(r, x, False) + "." for r, x in 들어오는[:2 * 배수]))
     if not 나가는 and not 들어오는:
         줄.append("연결된 것이 없습니다.")
     return 맺기(줄)
@@ -880,6 +886,8 @@ def 물어보기(g, 질문, 기억=None):
         if 답:
             return "대화", 답, None
     질문, _채운주어 = _맥락채우기(질문, 기억)
+    틀자세히 = 말투.get("_자세히")
+    배수 = 3 if (틀자세히 and 틀자세히.search(질문)) else 1
     뜻 = 의도(질문)
     A_MIN, OK_MIN = g["임계값"]["A_MIN"], g["임계값"]["OK_MIN"]
 
@@ -933,7 +941,7 @@ def 물어보기(g, 질문, 기억=None):
                     return ("A", "혹시 %s 말씀입니까?" % 바꾼.strip(), None)
                 return ("미지", "그건 이 그래프에 없는 이야기입니다."
                         " (%s 을(를) 모릅니다)" % ", ".join(모름[:3]), None)
-            return "설명", 설명(g, 주제, 뜻, 질문=질문), 주제
+            return "설명", 설명(g, 주제, 뜻, 질문=질문, 배수=배수), 주제
 
     best, score = None, 0.0
     for 조각 in 조각내기(질문):
@@ -984,7 +992,7 @@ def 물어보기(g, 질문, 기억=None):
                       {x for _, x in 들옴.get(best, ())})[:3]
         꼬리 = (" %s 근처 이야기입니다." % ", ".join(이웃)) if 이웃 else ""
         return "A", 조사맞추기("혹시 %s 말씀입니까?%s" % (best, 꼬리)), best
-    return "설명", 설명(g, best, 뜻, 질문=질문), best
+    return "설명", 설명(g, best, 뜻, 질문=질문, 배수=배수), best
 
 
 def 설명채점(g, 최대=400):
@@ -1208,6 +1216,18 @@ def _selfcheck():
         # 대화 기억이 없으면 대화 질문도 없다 — 없는 것을 지어내지 않는다
         assert 대화질문("아까 뭐 물어봤지", None) is None
         assert 대화질문("아까 뭐 물어봤지", 대화기억()) is None
+
+        # 자기 코드 그래프. 관계가 calls/contains/rationale_for 라 말투 표에 있다.
+        _코 = _길("graphify-out/graph.json")
+        if os.path.exists(_코):
+            _cg = 열기(_코)
+            _짧 = 물어보기(_cg, "judge 가 뭐야")[1] or ""
+            _긺 = 물어보기(_cg, "judge 가 뭐야 자세히")[1] or ""
+            assert "engine.py" in _짧, _짧          # 파일과 줄을 댄다
+            assert len(_긺) > len(_짧) * 1.5, (len(_짧), len(_긺))
+            # 길게 답한다고 없던 것을 만들지 않는다. 늘어난 것은 전부 실제 엣지다.
+            assert "호출합니다" in _긺
+            assert 물어보기(_cg, "judge 랑 match 무슨 관계야")[0] == "경로"
 
     # 조립이 곧 말이다. 관계를 엮으면 원문에 없던 문장이 나오고, 각 홉은
     # 전부 특정 엣지에서 온다 — 지어낸 것이 아니라 아는 것을 엮은 것이다.
