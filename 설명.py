@@ -959,6 +959,73 @@ def 절차답(x, 배수=1, 질문=None):
     return chr(10).join(줄)
 
 
+_코드이름 = re.compile(r"`([A-Za-z_가-힣][A-Za-z0-9_가-힣]*)\(?\)?`"
+                      r"|\b([a-z_][a-z0-9_]{3,})\(\)")
+
+
+def _코드찾기(코드g, 이름):
+    """코드 그래프에서 이름에 맞는 노드. 함수명은 표기가 흔들린다."""
+    후보 = [이름, 이름.rstrip("()"), 이름 + "()"]
+    for n in 코드g["노드"]:
+        라벨 = 코드g["메타"].get(n, {}).get("label") or n
+        if 라벨 in 후보 or n in 후보 or n.split("_")[-1] in 후보:
+            return n
+    return None
+
+
+def 엮은답(질문, 절차묶음, 코드g=None, 배수=1):
+    """절차와 코드를 엮어 한 답으로 낸다.
+
+    문서는 '무엇을 어떤 순서로' 를 알고, 코드 그래프는 '그것이 어디 있고
+    무엇을 건드리는지' 를 안다. 둘을 따로 물으면 사람이 머리로 이어야 한다.
+
+    엮되 지어내지 않는다. 단계는 문서 원문 그대로이고, 위치와 호출은 코드
+    그래프의 엣지 그대로다. 조각마다 어디서 왔는지가 남는다."""
+    x = 절차찾기(절차묶음, 질문)
+    if not x:
+        return None
+    줄 = ["## %s" % x["제목"], ""]
+    끝 = 6 * 배수
+    단계 = x["단계"]
+    if x.get("표"):
+        v = _vec(질문)
+        단계 = sorted(단계, key=lambda t: -float(_vec(t) @ v))[:끝]
+    else:
+        단계 = 단계[:끝]
+
+    본것 = set()
+    for i, t in enumerate(단계, 1):
+        줄.append("%d. %s" % (i, t))
+        if not 코드g:
+            continue
+        이름들 = [a or b for a, b in _코드이름.findall(t)]
+        for 이름 in 이름들[:3 * 배수]:
+            if 이름 in 본것:
+                continue
+            본것.add(이름)
+            n = _코드찾기(코드g, 이름)
+            if not n:
+                continue
+            m = 코드g["메타"].get(n, {})
+            자리 = "%s %s" % (m.get("file", ""), m.get("loc", "")) if m.get("file") else ""
+            나감, 들옴 = _인접(코드g)
+            부름 = [y for r, y in 나감.get(n, ()) if r == "calls"][:3 * 배수]
+            불림 = [y for r, y in 들옴.get(n, ()) if r == "calls"][:2 * 배수]
+            조각 = ["   · `%s`" % 이름]
+            if 자리:
+                조각.append("— %s" % 자리.strip())
+            if 부름:
+                조각.append("· 부른다: %s" % ", ".join(부름))
+            if 불림:
+                조각.append("· 불린다: %s" % ", ".join(불림))
+            if len(조각) > 1:
+                줄.append(" ".join(조각))
+    if len(x["단계"]) > 끝:
+        줄.append("")
+        줄.append("… 그 밖에 %d단계 더." % (len(x["단계"]) - 끝))
+    return chr(10).join(줄)
+
+
 def 대화질문(질문, 기억):
     """대화 자체에 대한 물음이면 대화 기억에서 답한다. -> 답 또는 None.
 
@@ -1393,6 +1460,18 @@ def _selfcheck():
             if _t and _t.get("표"):
                 assert "인코더" in 절차답(_t, 질문="인코더를 바꾸려면").split(chr(10))[1]
 
+            # 절차와 코드를 엮는다. 문서는 '무엇을 어떤 순서로' 를 알고
+            # 코드 그래프는 '그것이 어디 있고 무엇을 건드리는지' 를 안다.
+            if os.path.exists(_길("graphify-out/graph.json")):
+                _cg2 = 열기("graphify-out/graph.json")
+                _엮 = 엮은답("매칭 방식을 바꾸려면", _묶, _cg2, 배수=3)
+                assert _엮, "엮은 답이 없다"
+                # 문서 단계에 코드 위치가 붙는다 — 둘 다 원문/엣지 그대로다
+                assert "engine.py" in _엮, _엮[:200]
+                assert "부른다" in _엮 or "불린다" in _엮, _엮[:200]
+                # 코드 그래프가 없어도 절차만으로 답한다
+                assert 엮은답("매칭 방식을 바꾸려면", _묶, None)
+
     # 조립이 곧 말이다. 관계를 엮으면 원문에 없던 문장이 나오고, 각 홉은
     # 전부 특정 엣지에서 온다 — 지어낸 것이 아니라 아는 것을 엮은 것이다.
     _조 = {"역할": "요리사", "목표": None, "설명그래프": True, "개념엣지": [],
@@ -1520,6 +1599,22 @@ if __name__ == "__main__":
     인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
     if "--check" in sys.argv:
         _selfcheck()
+        sys.exit(0)
+
+    if "--코딩" in sys.argv:
+        if len(인자) < 1:
+            print('사용법: python 설명.py --코딩 "판정 밴드를 추가하려면"')
+            sys.exit(1)
+        질문 = 인자[-1]
+        문서 = 인자[:-1] or ["개발.md", "README.md", "그래프_README.md"]
+        묶음 = 절차읽기([f for f in 문서 if os.path.exists(_길(f))])
+        코드 = None
+        if os.path.exists(_길("graphify-out/graph.json")):
+            코드 = 열기("graphify-out/graph.json")
+        틀 = 말투.get("_자세히")
+        배수 = 3 if (틀 and 틀.search(질문)) else 1
+        답 = 엮은답(질문, 묶음, 코드, 배수)
+        print(답 or "맞는 절차를 찾지 못했습니다.")
         sys.exit(0)
 
     if "--절차" in sys.argv:

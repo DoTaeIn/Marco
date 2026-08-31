@@ -250,6 +250,7 @@ python 설명.py   --draw 자료/법지식/지식그래프.json        # 그래�
 python 설명.py   <그래프> --대화 대화.json                # 맥락을 저장하며 대화
 python 설명.py   --score 자료/법지식/지식그래프.json    # 목표 없는 모드 채점
 python 설명.py   --절차 개발.md README.md "PR 전에 뭘 해야 해"   # 순서 있는 답
+python 설명.py   --코딩 "매칭 방식을 바꾸려면 자세히"        # 절차 + 코드 위치
 python engine.py --suggest   그래프/graph.kg 자료/     # 반복되는 미지 발화 → 노드 후보
 python engine.py --relations 그래프/graph.kg 자료/     # 원문 표지 → 의미 관계 후보 (종류까지)
 python engine.py --edges     그래프/graph.kg 자료/     # 원문 공기 → 논증 엣지 후보
