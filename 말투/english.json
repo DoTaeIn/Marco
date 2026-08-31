@@ -136,5 +136,7 @@
     "ed",
     "ly",
     "s"
-  ]
+  ],
+  "대화질문": "earlier|before|what did i|so far|first question|typo",
+  "_대화질문": "대화 자체에 대한 물음. 지식 그래프가 아니라 대화 기억에서 답한다."
 }
