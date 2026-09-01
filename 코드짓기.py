@@ -12,9 +12,11 @@
 문장은 사람이 봐줘야 하지만 코드는 아니다. 창작 루프를 여기서 먼저 만드는
 이유가 그것이다.
 """
+import copy
 import io
 import json
 import os
+import random
 import re
 import subprocess
 import sys
@@ -567,11 +569,296 @@ def 왕복(폴더="알고리즘", 언어="한국어"):
     return 같, 전, 산, 벌
 
 
+# ── 생각: 머릿속으로 셈하고, 틀리면 고쳐서 다시 ────────────────────
+#
+# 토큰 기반 AI 의 생각은 토큰 하나씩 고르며 되풀이하는 것이다. 우리의
+# 생각은 이 단계들을 오가며 되풀이하는 것이다. 다른 점은 뒤지는 자리다 —
+# 토큰 공간은 5만 차원이고 설계도 공간은 작고 구조가 있다.
+#
+# 뒤지려면 빨라야 한다. 매번 파이썬을 띄우면 한 번에 50ms 라 생각을 몇 번
+# 못 한다. 그래서 설계도를 머릿속에서 바로 셈한다. 답이 나오면 그때 진짜
+# 언어로 찍어 돌려 확인한다 — 머릿속 셈이 틀렸을 수도 있으니.
+
+
+class _돌아옴(Exception):
+    def __init__(self, 값):
+        self.값 = 값
+
+
+def 셈하기(알고, 인자, 벽=200000):
+    """설계도를 그 자리에서 셈한다. 벽은 무한 되풀이를 끊는다."""
+    남 = [벽]
+
+    def 식(e, 방):
+        꼴 = e[0]
+        if 꼴 == "이름":
+            return 방[e[1]]
+        if 꼴 == "수":
+            return e[1]
+        if 꼴 == "부름":
+            return 셈하기(알고, [식(x, 방) for x in e[2:]], 남[0])
+        a = 식(e[1], 방)
+        if 꼴 == "길이":
+            return len(a)
+        b = 식(e[2], 방)
+        if 꼴 == "색인":
+            return a[b]
+        if 꼴 == "더하기":
+            return a + b
+        if 꼴 == "빼기":
+            return a - b
+        if 꼴 == "곱하기":
+            return a * b
+        if 꼴 == "몫":
+            return a // b
+        if 꼴 == "나머지":
+            return a % b
+        if 꼴 == "==":
+            return a == b
+        if 꼴 == "<":
+            return a < b
+        if 꼴 == "<=":
+            return a <= b
+        if 꼴 == ">":
+            return a > b
+        raise KeyError(꼴)
+
+    def 몸(문들, 방):
+        for f in 문들:
+            남[0] -= 1
+            if 남[0] <= 0:
+                raise TimeoutError("벽")
+            꼴 = f[0]
+            if 꼴 in ("선언", "대입"):
+                방[f[1]] = 식(f[-1], 방)
+            elif 꼴 == "색인대입":
+                식(f[1], 방)[식(f[2], 방)] = 식(f[3], 방)
+            elif 꼴 == "반환":
+                raise _돌아옴(식(f[1], 방))
+            elif 꼴 == "반복":
+                while 식(f[1], 방):
+                    남[0] -= 1
+                    if 남[0] <= 0:
+                        raise TimeoutError("벽")
+                    몸(f[2], 방)
+            elif 꼴 == "분기":
+                몸(f[2] if 식(f[1], 방) else (f[3] if len(f) > 3 else []), 방)
+            else:
+                raise KeyError(꼴)
+
+    방 = {n: (list(v) if isinstance(v, list) else v)
+          for (n, _t), v in zip(알고["입력"], 인자)}
+    try:
+        몸(알고["몸"], 방)
+    except _돌아옴 as r:
+        return r.값
+    return None
+
+
+def 머릿속점수(알고, 끊기=False):
+    """머릿속으로만 채점한다. 실행기를 안 띄우니 1000배 빠르다.
+
+    뒤질 때는 만점인지만 알면 되므로 첫 실패에서 끊는다. 후보 대부분은
+    첫 시험에서 떨어지니 이것만으로 시험 수에 안 끌려간다."""
+    맞 = 0
+    for c in 알고.get("시험", ()):
+        try:
+            난 = 셈하기(알고, copy.deepcopy(c["인자"]))
+        except Exception:
+            if 끊기:
+                return 맞
+            continue
+        기대 = c["기대"]
+        if isinstance(난, list):
+            난 = ", ".join(str(x) for x in 난)
+        if str(난) != str(기대):
+            if 끊기:
+                return 맞
+            continue
+        맞 += 1
+    return 맞
+
+
+_바꿈 = {"<": ("<=",), "<=": ("<",), ">": ("<", "<="), "==": ("<", ">"),
+         "더하기": ("빼기",), "빼기": ("더하기",)}
+
+
+def _경로들(몸, 앞=()):
+    """설계도 안의 모든 마디 자리. 여기가 고칠 수 있는 자리다."""
+    for i, x in enumerate(몸):
+        if not isinstance(x, list):
+            continue
+        yield 앞 + (i,)
+        for p in _경로들(x, 앞 + (i,)):
+            yield p
+
+
+def _짚기(몸, 경로):
+    x = 몸
+    for i in 경로:
+        x = x[i]
+    return x
+
+
+def 이웃(알고):
+    """한 군데만 고친 설계도들. 흔한 잘못을 되돌리는 손질만 한다 —
+    하나 차이(0/1), 부등호 갈아끼우기, 더하기/빼기 뒤집기."""
+    for 경로 in list(_경로들(알고["몸"])):
+        마디 = _짚기(알고["몸"], 경로)
+        if not 마디 or not isinstance(마디[0], str):
+            continue
+        꼴 = 마디[0]
+        고침 = []
+        if 꼴 == "수" and isinstance(마디[1], int):
+            고침 = [("수", 마디[1] + 1), ("수", 마디[1] - 1)]
+        elif 꼴 in _바꿈:
+            고침 = [(x, None) for x in _바꿈[꼴]]
+        for 새꼴, 새값 in 고침:
+            벌 = copy.deepcopy(알고)
+            m = _짚기(벌["몸"], 경로)
+            m[0] = 새꼴
+            if 새값 is not None:
+                m[1] = 새값
+            yield 벌, "%s → %s%s" % (꼴, 새꼴,
+                                     "" if 새값 is None else " %s" % 새값)
+
+
+def 고치기(알고, 깊이=2, 벽=4000):
+    """틀렸으면 고쳐서 다시. 이것이 이 엔진의 생각이다.
+
+    채점기가 공짜라서 뒤질 수 있다. 사람한테 물어볼 필요가 없다.
+    돌려주는 것은 (고친 설계도, 손질 자취) 이고, 못 고치면 (None, 시도수).
+    """
+    만점 = len(알고.get("시험", ()))
+    if not 만점:
+        return None, 0
+    if 머릿속점수(알고, True) == 만점:
+        return 알고, []
+    본것 = {json.dumps(알고["몸"], ensure_ascii=False)}
+    앞줄 = [(알고, [])]
+    셈 = 0
+    for _ in range(깊이):
+        다음 = []
+        for 후보, 자취 in 앞줄:
+            for 벌, 말 in 이웃(후보):
+                열쇠 = json.dumps(벌["몸"], ensure_ascii=False)
+                if 열쇠 in 본것:
+                    continue
+                본것.add(열쇠)
+                셈 += 1
+                if 셈 > 벽:
+                    return None, 셈
+                if 머릿속점수(벌, True) == 만점:
+                    return 벌, 자취 + [말]
+                다음.append((벌, 자취 + [말]))
+        앞줄 = 다음
+    return None, 셈
+
+
+def 부수기(알고, 몇, 난수):
+    """일부러 망가뜨린다. 고치기를 재려면 고칠 것이 있어야 한다."""
+    벌 = copy.deepcopy(알고)
+    for _ in range(몇):
+        후보 = list(이웃(벌))
+        if not 후보:
+            return None
+        벌 = 난수.choice(후보)[0]
+    만점 = len(알고.get("시험", ()))
+    return 벌 if 머릿속점수(벌, True) < 만점 else None
+
+
+def 고침회귀(폴더="알고리즘", 몇벌=8, 씨=7, 스스로시험=12):
+    """망가뜨린 설계도를 혼자 고쳐내는가. 그리고 고친 것이 진짜로 도는가.
+
+    두 가지를 갈라 센다.
+      통과    시험을 다 맞히는 무언가를 찾았다.
+      복구    그것이 원본과 글자 그대로 같다.
+    둘이 크게 벌어지면 시험이 프로그램을 못 묶고 있다는 뜻이다. 사람이
+    쓴 시험 셋으로는 통과 94%에 복구 56% 였다. 제가 지은 시험 열둘을
+    보태면 복구가 75%로 오른다 - 시험은 사람 없이 늘릴 수 있다.
+    """
+    난수 = random.Random(씨)
+    산, 똑, 전 = 0, 0, 0
+    확인 = None
+    for f in sorted(os.listdir(_길(폴더))):
+        if not f.endswith(".json"):
+            continue
+        알고 = 알고읽기(os.path.join(폴더, f))
+        if 스스로시험:
+            지은 = 시험짓기(알고, 스스로시험)
+            if len(지은) >= 5:
+                알고 = dict(알고, 시험=알고.get("시험", []) + 지은)
+        원 = json.dumps(알고["몸"], ensure_ascii=False)
+        for 깊 in (1, 2):
+            난 = 0
+            for _ in range(몇벌 * 6):
+                if 난 >= 몇벌:
+                    break
+                깨 = 부수기(알고, 깊, 난수)
+                if 깨 is None:
+                    continue
+                난 += 1
+                전 += 1
+                고친, _자취 = 고치기(깨, 깊이=깊)
+                if 고친 is None:
+                    continue
+                산 += 1
+                똑 += (json.dumps(고친["몸"], ensure_ascii=False) == 원)
+                if 확인 is None:
+                    확인 = (알고, 고친)
+    print("  망가뜨린 설계도 %d벌 → 통과 %d (%.0f%%) · 원본 복구 %d (%.0f%%)"
+          % (전, 산, 100.0 * 산 / max(전, 1), 똑, 100.0 * 똑 / max(전, 1)))
+
+    # 머릿속 셈이 맞았는지는 진짜로 돌려봐야 안다.
+    돎 = 0
+    if 확인:
+        원알, 고친 = 확인
+        고친 = dict(고친, 시험=원알.get("시험", [])[:3] or 원알["시험"][:3])
+        쓸 = [x for x in 말투들() if not 말투읽기(x).get("산문")]
+        print("  고친 설계도를 진짜 언어로 찍어 돌린다 (%s):" % 고친["이름"])
+        for r in 재기(고친, 쓸):
+            돎 += (r["탈"] is None and r["맞"] == r["전체"])
+    return 산, 똑, 전, 돎
+
+
+def 시험짓기(알고, 몇=20, 씨=3):
+    """제가 제 시험을 짓는다. 아무 값이나 넣고 머릿속으로 돌린 답을 적는다.
+
+    사람이 시험을 세 개밖에 안 써주면 그 셋만 통과하는 딴 프로그램이
+    수두룩하다 — 고치기가 88% 통과하는데 원본 복구는 64% 였다. 시험은
+    많을수록 프로그램을 좁게 묶는다. 그리고 이건 사람 없이 늘릴 수 있다."""
+    난수 = random.Random(씨)
+    난것 = []
+    for _ in range(몇 * 4):
+        if len(난것) >= 몇:
+            break
+        인자 = []
+        for _n, t in 알고["입력"]:
+            if t == "정수열":
+                인자.append([난수.randint(-20, 20)
+                             for _ in range(난수.randint(1, 7))])
+            else:
+                인자.append(난수.randint(0, 30))
+        try:
+            답 = 셈하기(알고, copy.deepcopy(인자), 20000)
+        except Exception:
+            continue
+        if 답 is None:
+            continue
+        if isinstance(답, list):
+            답 = ", ".join(str(x) for x in 답)
+        난것.append({"인자": 인자, "기대": 답})
+    return 난것
+
+
 if __name__ == "__main__":
     if "--check" in sys.argv:
         _자체검사()
         sys.exit(0)
     인자 = [x for x in sys.argv[1:] if not x.startswith("--")]
+    if "--고치기" in sys.argv:
+        산, 똑, 전, 돎 = 고침회귀()
+        sys.exit(0 if (전 and 산 and 돎) else 1)
     if "--산문" in sys.argv:
         산, 벌 = 산문회귀()
         sys.exit(0 if (벌 and 산 == 벌) else 1)
