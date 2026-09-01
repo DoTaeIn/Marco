@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>유리상자</title>
+<style>
+  :root{
+    --바탕:#0e1116; --판:#151a21; --판2:#1b222b; --줄:#273040;
+    --글:#e6edf3; --흐림:#8b98a9; --더흐림:#57647a;
+    --초록:#3fb950; --노랑:#d29922; --빨강:#f85149; --파랑:#58a6ff; --보라:#bc8cff;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--바탕);color:var(--글);overflow:hidden;
+    font:14px/1.6 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",
+    "Pretendard","Noto Sans KR",Segoe UI,sans-serif;}
+  .틀{display:grid;grid-template-columns:340px minmax(0,1fr);height:100vh}
+  @media (max-width:880px){.틀{grid-template-columns:1fr;height:auto}
+    body{overflow:auto}}
+
+  .왼{display:flex;flex-direction:column;border-right:1px solid var(--줄);min-height:0}
+  .머리{padding:13px 16px;border-bottom:1px solid var(--줄);background:var(--판)}
+  .머리 h1{margin:0;font-size:15px}
+  .밑{margin-top:3px;font-size:11.5px;color:var(--흐림)}
+  .말들{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;
+    gap:12px;min-height:0}
+  .말{max-width:92%;padding:9px 12px;border-radius:12px;white-space:pre-wrap;
+    word-break:break-word;font-size:13.5px}
+  .나{align-self:flex-end;background:#1f4b7d;border-bottom-right-radius:4px}
+  .쟤{align-self:flex-start;background:var(--판2);border:1px solid var(--줄);
+    border-bottom-left-radius:4px}
+  .꼬리{display:block;margin-top:6px;font-size:11px;color:var(--흐림)}
+  .입력칸{display:flex;gap:7px;padding:12px;border-top:1px solid var(--줄);background:var(--판)}
+  .입력칸 input{flex:1;min-width:0;background:var(--바탕);border:1px solid var(--줄);
+    color:var(--글);border-radius:9px;padding:9px 11px;font:inherit;outline:none}
+  .입력칸 input:focus{border-color:var(--파랑)}
+  .입력칸 button{background:var(--파랑);color:#04121f;border:0;border-radius:9px;
+    padding:0 15px;font:600 13.5px/1 inherit;cursor:pointer}
+  .입력칸 button:disabled{opacity:.45;cursor:default}
+  .보기말{padding:0 16px 10px;display:flex;flex-wrap:wrap;gap:5px}
+  .보기말 button{background:var(--판2);border:1px solid var(--줄);color:var(--흐림);
+    border-radius:20px;padding:4px 10px;font:11.5px inherit;cursor:pointer}
+  .보기말 button:hover{border-color:var(--파랑);color:var(--글)}
+
+  .오{display:grid;grid-template-rows:1fr 1fr;min-height:0;min-width:0}
+  @media (max-width:880px){.오{grid-template-rows:520px 520px}}
+  .뷰{position:relative;min-height:0;min-width:0;border-bottom:1px solid var(--줄);
+    overflow:hidden}
+  .뷰 svg{display:block;width:100%;height:100%}
+  .뷰머리{position:absolute;left:14px;top:11px;z-index:3;pointer-events:none}
+  .뷰이름{font-size:12.5px;font-weight:600}
+  .뷰밑{font-size:11px;color:var(--더흐림);margin-top:1px;max-width:52ch}
+  .범례{position:absolute;right:14px;top:11px;z-index:3;display:flex;gap:11px;
+    flex-wrap:wrap;justify-content:flex-end;pointer-events:none;max-width:56%}
+  .범{display:flex;align-items:center;gap:4px;font-size:10.5px;color:var(--더흐림)}
+  .점{width:8px;height:8px;border-radius:50%}
+  .수치{position:absolute;left:14px;bottom:11px;z-index:3;font-size:11px;
+    color:var(--더흐림);pointer-events:none;line-height:1.7}
+  .수치 b{color:var(--글);font-weight:600}
+  text{font-family:inherit;pointer-events:none;user-select:none}
+</style>
+</head>
+<body>
+<div class="틀">
+  <div class="왼">
+    <div class="머리">
+      <h1>유리상자</h1>
+      <div class="밑" id="터정보">그래프 읽는 중…</div>
+    </div>
+    <div class="말들" id="말들"></div>
+    <div class="보기말" id="보기말"></div>
+    <div class="입력칸">
+      <input id="입력" placeholder="주장을 펼쳐 보십시오" autocomplete="off">
+      <button id="보냄">보냄</button>
+    </div>
+  </div>
+  <div class="오">
+    <div class="뷰" id="뷰1">
+      <div class="뷰머리">
+        <div class="뷰이름">지식그래프 — 이번 발화에 어디가 켜졌나</div>
+        <div class="뷰밑">노드 밝기 = 코사인 유사도. 굵은 선 = 목표까지 밟은 근거 경로.</div>
+      </div>
+      <div class="범례">
+        <span class="범"><i class="점" style="background:var(--초록)"></i>OK_MIN 위</span>
+        <span class="범"><i class="점" style="background:var(--노랑)"></i>A_MIN 위</span>
+        <span class="범"><i class="점" style="background:var(--보라)"></i>증거</span>
+        <span class="범"><i class="점" style="background:var(--빨강)"></i>널 클래스</span>
+      </div>
+      <div class="수치" id="수치1"></div>
+      <svg id="svg1"></svg>
+    </div>
+    <div class="뷰" id="뷰2" style="border-bottom:0">
+      <div class="뷰머리">
+        <div class="뷰이름">대화그래프 — 지금까지 쌓인 것</div>
+        <div class="뷰밑">요건마다 다른 증거가 필요합니다. 매 턴 최대 이분 매칭을 다시 구합니다.</div>
+      </div>
+      <div class="범례">
+        <span class="범"><i class="점" style="background:var(--초록)"></i>확보</span>
+        <span class="범"><i class="점" style="background:var(--빨강)"></i>자책</span>
+        <span class="범"><i class="점" style="background:#2b3542"></i>아직</span>
+      </div>
+      <div class="수치" id="수치2"></div>
+      <svg id="svg2"></svg>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+const 만들 = (t, c, x) => { const e = document.createElement(t);
+  if (c) e.className = c; if (x !== undefined) e.textContent = x; return e; };
+const S = (t, a = {}) => { const e = document.createElementNS(NS, t);
+  for (const k in a) e.setAttribute(k, a[k]); return e; };
+const 자르기 = (s, n) => s.length > n ? s.slice(0, n - 1) + "…" : s;
+
+let 얼개 = null, 마지막 = null, 배치1 = null;
+
+/* ── 힘 배치 ──
+   한 번 돌려 좌표를 굳힌다. 매 턴 다시 흔들면 같은 노드가 딴 자리로 가서
+   무엇이 켜졌는지 눈으로 못 좇는다 — 자리가 고정돼야 변화가 보인다. */
+function 배치(마디들, 이음들, 폭, 높, 반복 = 320) {
+  const P = new Map();
+  마디들.forEach((n, i) => {
+    const a = (i / 마디들.length) * Math.PI * 2;
+    P.set(n.이름, {x: 폭/2 + Math.cos(a)*폭/3.4, y: 높/2 + Math.sin(a)*높/3.4,
+                   vx: 0, vy: 0, 층: n.층});
+  });
+  const 칸 = {"증거": .11, "사례": .35, "개념": .60, "요건": .80};
+  for (let t = 0; t < 반복; t++) {
+    const 힘 = t / 반복;
+    for (const [, p] of P) { p.vx *= .82; p.vy *= .82; }
+    const 배열 = [...P.values()];
+    for (let i = 0; i < 배열.length; i++)
+      for (let j = i + 1; j < 배열.length; j++) {
+        const a = 배열[i], b = 배열[j];
+        let dx = b.x - a.x, dy = b.y - a.y, d2 = dx*dx + dy*dy || 1;
+        if (d2 > 62500) continue;
+        const f = 3600 / d2, d = Math.sqrt(d2);
+        dx /= d; dy /= d;
+        a.vx -= dx*f; a.vy -= dy*f; b.vx += dx*f; b.vy += dy*f;
+      }
+    for (const [s, , d] of 이음들) {
+      const a = P.get(s), b = P.get(d); if (!a || !b) continue;
+      const dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1;
+      const f = (l - 112) * .011;
+      a.vx += dx/l*f; a.vy += dy/l*f; b.vx -= dx/l*f; b.vy -= dy/l*f;
+    }
+    for (const [이름, p] of P) {
+      const 목 = 폭 * (이름 === 얼개.목표 ? .95 : (칸[p.층] ?? .5));
+      p.vx += (목 - p.x) * .035 * (0.35 + 힘);
+      p.vy += (높/2 - p.y) * .004;
+      p.x += p.vx; p.y += p.vy;
+      p.x = Math.max(60, Math.min(폭 - 60, p.x));
+      p.y = Math.max(46, Math.min(높 - 24, p.y));
+    }
+  }
+  return P;
+}
+
+/* ── 뷰 1: 지식그래프 ── */
+function 지식그래프그리기(t) {
+  const svg = $("#svg1"), 뷰 = $("#뷰1");
+  const 폭 = 뷰.clientWidth, 높 = 뷰.clientHeight;
+  if (!폭 || !높) return;
+  svg.setAttribute("viewBox", `0 0 ${폭} ${높}`);
+  svg.innerHTML = "";
+  if (!배치1) 배치1 = 배치(얼개.마디, 얼개.엣지, 폭, 높);
+  const P = 배치1;
+
+  const 점수 = new Map((t?.주장순위 || []).map(([n, v]) => [n, v]));
+  const 널 = new Map((t?.널순위 || []).map(([n, v]) => [n, v]));
+  const A = 얼개.임계값.A_MIN, OK = 얼개.임계값.OK_MIN;
+  const 길 = new Set((t?.경로 || []).map(([s, , d]) => s + "→" + d));
+  const 길마디 = new Set();
+  (t?.경로 || []).forEach(([s, , d]) => { 길마디.add(s); 길마디.add(d); });
+  const 증거이름 = t?.증거?.이름 || null;
+  // 임계값 아래여도 1등만은 띄운다. 미지일 때 화면이 통째로 깜깜하면
+  // "왜 모른다고 했는지" 가 안 보인다 — 아무것도 선을 못 넘었다는 것이
+  // 바로 그 답의 근거다.
+  const 주1 = t?.이긴것 || null, 널1 = t?.널순위?.[0]?.[0] || null;
+
+  const 엣지층 = S("g"), 마디층 = S("g");
+  svg.appendChild(엣지층); svg.appendChild(마디층);
+
+  for (const [s, r, d] of 얼개.엣지) {
+    const a = P.get(s), b = P.get(d); if (!a || !b) continue;
+    const 밟음 = 길.has(s + "→" + d);
+    엣지층.appendChild(S("line", {x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+      stroke: 밟음 ? "#3fb950" : (r === "부정" ? "#5a2b33" : "#222c3a"),
+      "stroke-width": 밟음 ? 2.6 : 1,
+      "stroke-dasharray": r === "부정" ? "3,3" : "",
+      opacity: 밟음 ? .95 : .5}));
+  }
+  for (const n of 얼개.마디) {
+    const p = P.get(n.이름); if (!p) continue;
+    const v = 점수.get(n.이름) ?? (n.이름 === 증거이름 ? (t?.증거?.점수 ?? 0) : 0);
+    const 널값 = 널.get(n.이름) ?? 0;
+    const 목표 = n.이름 === 얼개.목표;
+    let 빛 = "#2b3542", r = 5, 테 = 0;
+    if (목표) { 빛 = "#3fb950"; r = 10; }
+    else if (n.이름 === 증거이름) { 빛 = "#bc8cff"; r = 8; 테 = 1; }
+    else if (널값 >= A) { 빛 = "#f85149"; r = 6 + 널값*3; }
+    else if (n.이름 === 널1 && 널값 > 0) { 빛 = "#8c4440"; r = 5 + 널값*3; }
+    else if (v >= OK) { 빛 = "#3fb950"; r = 6 + v*5; 테 = n.이름 === t?.이긴것 ? 1 : 0; }
+    else if (v >= A) { 빛 = "#d29922"; r = 5.5 + v*4; }
+    else if (v > 0) { 빛 = "#3c4b60"; r = 4 + v*3; }
+
+    if (테) 마디층.appendChild(S("circle", {cx: p.x, cy: p.y, r: r + 5,
+      fill: "none", stroke: 빛, "stroke-width": 1.4, opacity: .55}));
+    마디층.appendChild(S("circle", {cx: p.x, cy: p.y, r, fill: 빛,
+      opacity: (v >= A || 목표 || n.이름 === 증거이름 || 널값 >= A) ? 1 : .5}));
+
+    const 아래1등 = n.이름 === 주1 || n.이름 === 널1;
+    if (목표 || v >= A || 널값 >= A || 아래1등 || 길마디.has(n.이름) || n.층 === "요건") {
+      const 글 = S("text", {x: p.x + r + 4, y: p.y + 3.5,
+        fill: (v >= A || 목표 || 널값 >= A) ? "#e6edf3"
+              : 아래1등 ? "#8b98a9" : "#57647a",
+        "font-size": 목표 ? 12 : 10.5,
+        "font-weight": (목표 || n.이름 === 주1) ? 700 : 400});
+      const 값 = n.이름 === 널1 ? 널값 : v;
+      글.textContent = 자르기(n.이름, 14) +
+        ((값 >= A || 아래1등) ? "  " + 값.toFixed(2) : "");
+      마디층.appendChild(글);
+    }
+  }
+  // 널 클래스는 논증 그래프의 일부가 아니라 거부 영역이다. 본 그래프에
+  // 섞으면 안 되지만 안 보이면 B2 와 미지의 차이를 눈으로 못 가린다.
+  // 그래서 따로 떼어 구석에 그린다.
+  if (t?.널순위?.length) {
+    const [이름, 값] = t.널순위[0];
+    const nx = 폭 - 132, ny = 높 - 30, 넘 = 값 >= A;
+    const 감 = S("g", {opacity: .95});
+    감.appendChild(S("line", {x1: nx - 22, y1: ny - 26, x2: 폭 - 16, y2: ny - 26,
+      stroke: "#273040", "stroke-width": 1, "stroke-dasharray": "3,3"}));
+    const 머 = S("text", {x: nx - 22, y: ny - 13, fill: "#57647a", "font-size": 10});
+    머.textContent = "널 클래스 (그래프 밖)"; 감.appendChild(머);
+    감.appendChild(S("circle", {cx: nx, cy: ny, r: 넘 ? 7 : 5.5,
+      fill: 넘 ? "#f85149" : "#8c4440"}));
+    const 글 = S("text", {x: nx + 11, y: ny + 3.5,
+      fill: 넘 ? "#e6edf3" : "#8b98a9", "font-size": 10.5,
+      "font-weight": 넘 ? 700 : 400});
+    글.textContent = 자르기(이름, 15) + "  " + 값.toFixed(2);
+    감.appendChild(글); svg.appendChild(감);
+  }
+
+  const 수 = $("#수치1");
+  if (!t) { 수.innerHTML = `임계값 A_MIN ${A} · OK_MIN ${OK}`; return; }
+  const 위 = t.주장순위.slice(0, 3).map(([n, v]) => n + " " + v.toFixed(3)).join("  ·  ");
+  수.innerHTML = `<b>${t.판정}</b> · 1·2등 마진 <b>${t.마진 ?? "-"}</b><br>${위}` +
+    `<br>임계값 A_MIN ${A} · OK_MIN ${OK}`;
+}
+
+/* ── 뷰 2: 대화그래프 ── */
+function 대화그래프그리기(상태) {
+  const svg = $("#svg2"), 뷰 = $("#뷰2");
+  const 폭 = 뷰.clientWidth, 높 = 뷰.clientHeight;
+  if (!폭 || !높) return;
+  svg.setAttribute("viewBox", `0 0 ${폭} ${높}`);
+  svg.innerHTML = "";
+  const 요건들 = 얼개.요건, 확보 = 상태.확보 || {}, 자책 = new Set(상태.자책 || []);
+  const 쓴증거 = [...new Set(Object.values(확보))];
+
+  const 자리 = (i, n, y0, y1) => n === 1 ? (y0+y1)/2 : y0 + i*(y1-y0)/(n-1);
+  const 증P = new Map(쓴증거.map((e, i) => [e, {x: 폭*.20, y: 자리(i, 쓴증거.length, 70, 높-44)}]));
+  const 요P = new Map(요건들.map((q, i) => [q, {x: 폭*.56, y: 자리(i, 요건들.length, 70, 높-44)}]));
+  const 목P = {x: 폭*.87, y: 높/2};
+
+  const 엣지층 = S("g"), 마디층 = S("g");
+  svg.appendChild(엣지층); svg.appendChild(마디층);
+  const 곡 = (a, b) => `M${a.x} ${a.y} C${(a.x+b.x)/2} ${a.y} ${(a.x+b.x)/2} ${b.y} ${b.x} ${b.y}`;
+
+  for (const [요건, 증거] of Object.entries(확보)) {
+    const a = 증P.get(증거), b = 요P.get(요건); if (!a || !b) continue;
+    엣지층.appendChild(S("path", {d: 곡(a, b), fill: "none",
+      stroke: "#3fb950", "stroke-width": 2, opacity: .8}));
+  }
+  for (const q of 요건들) {
+    const b = 요P.get(q), 됨 = q in 확보, 깨짐 = 자책.has(q);
+    엣지층.appendChild(S("path", {d: 곡(b, 목P), fill: "none",
+      stroke: 깨짐 ? "#f85149" : 됨 ? "#3fb950" : "#222c3a",
+      "stroke-width": 됨 ? 2 : 1, "stroke-dasharray": 깨짐 ? "4,3" : "",
+      opacity: (됨 || 깨짐) ? .8 : .45}));
+  }
+  const 찍기 = (p, 이름, 빛, r, 글빛, 오른쪽) => {
+    마디층.appendChild(S("circle", {cx: p.x, cy: p.y, r, fill: 빛}));
+    const 글 = S("text", {x: p.x + (오른쪽 ? r+5 : -(r+5)), y: p.y + 3.5,
+      fill: 글빛, "font-size": 10.5, "text-anchor": 오른쪽 ? "start" : "end"});
+    글.textContent = 자르기(이름, 16); 마디층.appendChild(글);
+  };
+  증P.forEach((p, e) => 찍기(p, e, "#bc8cff", 6, "#8b98a9", false));
+  요P.forEach((p, q) => {
+    const 됨 = q in 확보, 깨짐 = 자책.has(q);
+    찍기(p, q, 깨짐 ? "#f85149" : 됨 ? "#3fb950" : "#2b3542", 6.5,
+         (됨 || 깨짐) ? "#e6edf3" : "#57647a", true);
+  });
+  마디층.appendChild(S("circle", {cx: 목P.x, cy: 목P.y, r: 12,
+    fill: 상태.결과 === "승" ? "#3fb950" : "#2b3542",
+    stroke: "#3fb950", "stroke-width": 2}));
+  const g = S("text", {x: 목P.x, y: 목P.y + 28, fill: "#e6edf3",
+    "font-size": 11.5, "font-weight": 700, "text-anchor": "middle"});
+  g.textContent = 얼개.목표; 마디층.appendChild(g);
+
+  $("#수치2").innerHTML =
+    `요건 <b>${Object.keys(확보).length}/${요건들.length}</b> 확보 · 자책 <b>${자책.size}</b>` +
+    ` · 인내심 <b>${상태.인내심}</b> · ${상태.회차}턴` +
+    (상태.결과 ? ` · 결과 <b>${상태.결과}</b>` : "") +
+    (상태.배운것?.length ? `<br>배운 표현 ${상태.배운것.length}개` : "");
+}
+
+function 말붙이기(누구, 글, 꼬리) {
+  const m = 만들("div", "말 " + 누구, 글);
+  if (꼬리) m.appendChild(만들("span", "꼬리", 꼬리));
+  $("#말들").appendChild(m);
+  $("#말들").scrollTop = $("#말들").scrollHeight;
+}
+
+async function 묻기(질문) {
+  if (!질문.trim()) return;
+  $("#입력").value = ""; $("#보냄").disabled = true;
+  말붙이기("나", 질문);
+  try {
+    const r = await fetch("/ask", {method: "POST",
+      headers: {"Content-Type": "application/json"}, body: JSON.stringify({질문})});
+    const t = await r.json();
+    if (t.탈) 말붙이기("쟤", "탈: " + t.탈);
+    else {
+      마지막 = t;
+      말붙이기("쟤", t.답, t.판정 + (t.이긴것 ?
+        " · " + t.이긴것 + " " + t.주장순위[0][1].toFixed(3) : ""));
+      지식그래프그리기(t); 대화그래프그리기(t.상태);
+    }
+  } catch (e) { 말붙이기("쟤", "서버에 닿지 못했습니다: " + e.message); }
+  $("#보냄").disabled = false; $("#입력").focus();
+}
+
+$("#보냄").onclick = () => 묻기($("#입력").value);
+$("#입력").onkeydown = e => { if (e.key === "Enter") 묻기($("#입력").value); };
+addEventListener("resize", () => { 배치1 = null; 지식그래프그리기(마지막);
+  대화그래프그리기(마지막?.상태 || 얼개.상태); });
+
+fetch("/state").then(r => r.json()).then(t => {
+  얼개 = t;
+  $("#터정보").textContent = `${t.그래프} · 목표 ${t.목표} · 마디 ${t.마디.length}` +
+    ` · 엣지 ${t.엣지.length} · 요건 ${t.요건.length}`;
+  ["CCTV를 보면 흉기를 들고 달려들었습니다",
+   "목격자진술에 따르면 상대가 먼저 때렸습니다",
+   "진단서를 보면 제가 다쳤습니다",
+   "그냥 무서워서 그랬습니다",
+   "김치찌개에는 뭐가 들어가나요"].forEach(x => {
+    const b = 만들("button", null, 자르기(x, 20));
+    b.title = x; b.onclick = () => 묻기(x);
+    $("#보기말").appendChild(b);
+  });
+  말붙이기("쟤", `[${t.역할}] 상대입니다. 목표는 ${t.목표} 입증입니다.\n` +
+    `쓸 수 있는 증거: ${t.증거.join(", ")}`);
+  지식그래프그리기(null); 대화그래프그리기(t.상태);
+});
+</script>
+</body>
+</html>
