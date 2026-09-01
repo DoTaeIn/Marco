@@ -354,7 +354,11 @@ def 사건읽기(경로):
 def 사건컴파일(경로, 최소신뢰=0.55):
     """판례 md -> (kg 텍스트, 보고). 법리 이름은 매처로 붙인다."""
     머리, 증거, 사실 = 사건읽기(경로)
-    법리 = load(os.path.join(os.path.dirname(os.path.abspath(경로)), 머리["법리"]))
+    # 사건 md 옆에서 먼저 찾고, 없으면 저장소 기준으로 한 번 더 찾는다.
+    # 재구성(486f5ea)으로 legal/ 이 루트로 옮겨지면서 cases/사건_*.md 의
+    # "legal/법리_형법21조.kg" 가 cases/legal/... 로 이어붙어 전부 깨졌다.
+    법리경로 = os.path.join(os.path.dirname(os.path.abspath(경로)), 머리["법리"])
+    법리 = load(법리경로 if os.path.exists(법리경로) else _길(머리["법리"]))
     후보 = list(법리["공통층"])
     보고 = []
 
@@ -778,7 +782,11 @@ class 세션:
         self.회차 += 1
         p = 발화계획(self.g, tag, ev, claim, self)
         p["회차"] = self.회차
-        p["기준"] = _vec(text)
+        # 말투를 재는 기준에서도 증거 이름을 뺀다. 주장 매칭에서 빼는 이유와
+        # 같다(증거지우기) — 증거명이 남으면 그 이름을 여러 번 되풀이하는
+        # 예시가 말투와 상관없이 이긴다. 실제로 주제명을 9번 반복하는 발췌가
+        # 어떤 질문에도 똑같이 뽑혀서 말투 선택이 사실상 죽어 있었다.
+        p["기준"] = _vec(증거지우기(text, self.g, ev) if ev else text)
         p["기본문장"] = line
         self.이전확보 = set(p["채운요건"])
         p["해소"] = self.해소
