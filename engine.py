@@ -354,7 +354,11 @@ def 사건읽기(경로):
 def 사건컴파일(경로, 최소신뢰=0.55):
     """판례 md -> (kg 텍스트, 보고). 법리 이름은 매처로 붙인다."""
     머리, 증거, 사실 = 사건읽기(경로)
-    법리 = load(os.path.join(os.path.dirname(os.path.abspath(경로)), 머리["법리"]))
+    # 사건 md 옆에서 먼저 찾고, 없으면 저장소 기준으로 한 번 더 찾는다.
+    # 재구성(486f5ea)으로 legal/ 이 루트로 옮겨지면서 cases/사건_*.md 의
+    # "legal/법리_형법21조.kg" 가 cases/legal/... 로 이어붙어 전부 깨졌다.
+    법리경로 = os.path.join(os.path.dirname(os.path.abspath(경로)), 머리["법리"])
+    법리 = load(법리경로 if os.path.exists(법리경로) else _길(머리["법리"]))
     후보 = list(법리["공통층"])
     보고 = []
 
