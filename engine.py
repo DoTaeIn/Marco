@@ -2833,6 +2833,9 @@ if __name__ == "__main__":
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
         g = load(인자[0] if 인자 else "graphs/graph.kg")
         후보들, 흔한것 = 엣지제안(g, 인자[1] if len(인자) > 1 else "data")
+        
+        판별기 = 방향분류기(g, 최소=10)
+        
         가지 = len([1 for v in g["adj"].values()
                     for r, _ in v if r in POS]) / max(len(g["adj"]), 1)
         print("지금 가지치기 %.2f (노드당 전진 엣지). 1에 가까우면 사슬이라"
@@ -2847,23 +2850,44 @@ if __name__ == "__main__":
             print("  임계값을 낮춰 억지로 뽑지 않는다. 해설·판례를 넣을 것.")
             sys.exit(0)
         print("원문에서 같은 대목에 함께 나온, 아직 엣지가 없는 쌍 %d개" % len(후보들))
-        print("  관계가 있을지도 모른다는 것까지만 원문이 말한다.")
-        print("  방향(증명/충족/부정)은 사람이 정한다. 지어내지 않는다.")
+        print("  내장 로지스틱 회귀 모델(방향분류기)을 활용하여 방향을 기계가 자동으로 판단합니다.")
         for i, c in enumerate(후보들, 1):
             a, b = c["쌍"]
             print()
-            print("  [%d] %s  <-?->  %s   (세기 %.2f · %d개 대목에서 함께)"
-                  % (i, a, b, c["세기"], c["횟수"]))
+            
+            # 증거에서 나가는 엣지는 증명으로 고정
+            증거노드 = g.get("증거", [])
+            if a in 증거노드:
+                방향, 역방향 = "증명", None
+            elif b in 증거노드:
+                방향, 역방향 = None, "증명"
+            elif 판별기:
+                확률_정 = 판별기(a, b)
+                확률_역 = 판별기(b, a)
+                방향 = "부정" if 확률_정 >= 0.5 else "충족"
+                역방향 = "부정" if 확률_역 >= 0.5 else "충족"
+            else:
+                방향, 역방향 = "충족", "충족"
+            
+            출력방향 = 방향 if 방향 else ("<-" + 역방향 if 역방향 else "<-?->")
+            print("  [%d] %s  -%s->  %s   (세기 %.2f · %d개 대목에서 함께)"
+                  % (i, a, 출력방향, b, c["세기"], c["횟수"]))
             for 본문, 출처 in c["근거"]:
                 print("      %s" % 출처)
                 print("        \"%s...\"" % 본문)
             if c["순환주의"]:
                 print("      [주의] %s 를 앞에 두면 순환이 된다"
                       % ", ".join(c["순환주의"]))
-            print("      --- .kg 에 붙여넣을 초안 (관계를 골라 한 줄만 남길 것) ---")
-            print("      %s 충족 %s" % (a, b))
-            print("      %s 충족 %s" % (b, a))
-            print("      %s 부정 %s" % (a, b))
+            print("      --- .kg 에 붙여넣을 초안 ---")
+            if a in 증거노드:
+                print("      %s 증명 %s" % (a, b))
+            elif b in 증거노드:
+                print("      %s 증명 %s" % (b, a))
+            else:
+                if a not in c.get("순환주의", []):
+                    print("      %s %s %s" % (a, 방향, b))
+                if b not in c.get("순환주의", []):
+                    print("      %s %s %s" % (b, 역방향, a))
         sys.exit(0)
 
     elif "--label" in sys.argv:
