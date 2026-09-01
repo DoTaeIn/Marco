@@ -5,6 +5,8 @@
     python 그림.py --갈림              # 비트를 얼마로 잡아야 하나
     python 그림.py --관계              # 관계를 넣으면 분리도가 오르나 (RAG)
     python 그림.py --흔들기            # 구조만 무너뜨렸을 때 관계가 알아채나
+    python 그림.py --각도              # 같은 물건을 몇 도까지 알아보나 (COIL-100)
+    python 그림.py --맞히기            # 시점 일부로 익히고 나머지로 맞힌다
     python 그림.py --힙스 <폴더> --장 800
     python 그림.py --check             # 자체 검사
 
@@ -18,7 +20,7 @@ k-means 로 묶어 사전을 만드는 것이다. 그런데 그러면 사전 크
 비트를 늘리면 천장이 열리고, 자료가 포화하면 비트를 늘려도 안 는다.
 그 차이를 보는 것이 이 파일의 전부다.
 """
-import glob, json, os, sys, warnings
+import glob, json, os, re, sys, warnings
 import numpy as np
 
 # PIL 이 팔레트/투명도 조합마다 뿜는 경고는 이 측정과 무관하다. 1,000장을
@@ -393,8 +395,13 @@ def _번호(키):
     return v
 
 
-def 영역나누기(경로, 영역수=200, 최대변=320):
-    """사진 -> (RGB 배열, 영역 라벨 배열). SLIC 초픽셀."""
+def 영역나누기(경로, 영역수=None, 최대변=320):
+    """사진 -> (RGB 배열, 영역 라벨 배열). SLIC 초픽셀.
+
+    영역수를 고정하지 않고 넓이로 정한다. 사진마다 크기가 다른데 영역 수를
+    고정하면 영역 하나의 크기가 달라져서, 같은 무늬가 사진 크기에 따라 다른
+    라벨을 받는다. 넓이/384 로 두면 영역 크기가 자료가 바뀌어도 같다 —
+    위키 사진(320px)과 COIL(128px)을 같은 자로 재려면 이게 있어야 한다."""
     from PIL import Image
     from skimage.segmentation import slic
     im = Image.open(경로)
@@ -405,7 +412,8 @@ def 영역나누기(경로, 영역수=200, 최대변=320):
     a = np.asarray(im, dtype=np.uint8)
     if min(a.shape[:2]) < 24:
         return None
-    return a, slic(a, n_segments=영역수, compactness=10, start_label=0)
+    n = 영역수 or max(12, int(a.shape[0] * a.shape[1] / 384))
+    return a, slic(a, n_segments=n, compactness=10, start_label=0)
 
 
 def 영역자질(a, seg):
@@ -630,7 +638,8 @@ def 엣지되섞기(이웃, 씨=0):
 
 def _엔그램(a, 색칸, 되풀이=3):
     from skimage.segmentation import slic
-    seg = slic(a, n_segments=200, compactness=10, start_label=0)
+    n = max(12, int(a.shape[0] * a.shape[1] / 384))
+    seg = slic(a, n_segments=n, compactness=10, start_label=0)
     색, 결, _ = 영역자질(a, seg)
     return 그래프엔그램(첫라벨(색, 결, 색칸), 이웃표(seg), 되풀이)
 
@@ -719,6 +728,256 @@ def 흔들기(폴더="자료/그림", 색칸=3, 칸들=(2, 4, 8), 최대장=300,
     return 표
 
 
+# ───────────────────────── 물건 (COIL-100) ─────────────────────────
+# 지금까지의 자는 '같은 문서' 였는데 그것은 같은 주제이지 같은 물건이 아니다.
+# 관계가 구조를 나르는 것은 대조군으로 확인했지만(1.0 -> 0.37), 같은 문서
+# 사진끼리는 구조를 안 나누므로 그 자로는 관계의 값이 안 보인다.
+#
+# COIL-100 은 물건 100개를 5도씩 돌려가며 72장씩 찍은 것이다. 짝이 완벽하고,
+# 게다가 각도라는 눈금이 있다 — 같다/다르다가 아니라 "몇 도까지 버티나" 를
+# 잴 수 있다. 라벨은 사람이 붙인 것이 아니라 턴테이블이 준 것이다.
+
+
+def 어두운데빼기(색, 결, 이웃, 벽=0.12):
+    """검은 배경 영역을 그래프에서 뺀다. -> (남은 자리, 새 이웃)
+
+    COIL 은 배경이 검정이라 물건마다 똑같은 검은 영역이 잔뜩 생긴다.
+    그대로 두면 다른 물건끼리도 배경 조각을 공유해 바닥이 부풀고, 물건이
+    작을수록 배경이 신호를 덮는다. 뺀 자리의 이웃은 그냥 끊는다."""
+    남 = [i for i in range(len(결)) if 색[i].max() >= 벽]
+    새번호 = {i: k for k, i in enumerate(남)}
+    새이웃 = [[새번호[j] for j in 이웃[i] if j in 새번호] for i in 남]
+    return 남, 새이웃
+
+
+def 물건읽기(폴더="자료/물건"):
+    """-> {물건번호: {각도: 경로}}. 파일 이름이 obj12__85.png 꼴이다."""
+    폴더 = _길(폴더)
+    표 = {}
+    이름꼴 = re.compile(r"obj(\d+)__(\d+)\.png$", re.I)
+    for 뿌리, _, 파일들 in os.walk(폴더):
+        for f in 파일들:
+            m = 이름꼴.search(f)
+            if m:
+                표.setdefault(int(m.group(1)), {})[int(m.group(2))] = \
+                    os.path.join(뿌리, f)
+    return 표
+
+
+def 각도자(폴더="자료/물건", 물건수=40, 색칸=4, 영역수=200, 배경빼기=True,
+         각도들=(5, 15, 30, 45, 60, 90, 180)):
+    """같은 물건을 몇 도까지 알아보나. 다른 물건 바닥과 함께 본다.
+
+    이것이 임계값을 정해 준다. 지금까지 임계값은 손으로 맞췄는데, 여기서는
+    각도가 눈금이라 자료가 답한다."""
+    표 = 물건읽기(폴더)
+    if not 표:
+        print("%s 에 COIL 사진이 없다." % _길(폴더))
+        return None
+    번호들 = sorted(표)[:물건수]
+    print("물건 %d개, 시점 %d개씩. n-gram 을 뽑는 중..."
+          % (len(번호들), len(표[번호들[0]])))
+
+    주머니 = {}
+    for 번호 in 번호들:
+        for 각, 길 in sorted(표[번호].items()):
+            난것 = 영역나누기(길, 영역수=영역수)
+            if 난것 is None:
+                continue
+            a, seg = 난것
+            색, 결, _ = 영역자질(a, seg)
+            옆 = 이웃표(seg)
+            라벨 = 첫라벨(색, 결, 색칸)
+            if 배경빼기:
+                남, 옆 = 어두운데빼기(색, 결, 옆)
+                라벨 = [라벨[i] for i in 남]
+            if len(라벨) < 4:
+                continue
+            주머니[(번호, 각)] = 그래프엔그램(라벨, 옆)
+
+    def _겹(A, B):
+        ㅎ = len(A | B)
+        return len(A & B) / ㅎ if ㅎ else 0.0
+
+    rs = np.random.RandomState(1)
+    남남 = [(rs.choice(번호들), rs.randint(0, 72) * 5,
+             rs.choice(번호들), rs.randint(0, 72) * 5) for _ in range(4000)]
+    남남 = [x for x in 남남 if x[0] != x[2]][:2000]
+
+    print()
+    print("Δ각도    " + "   ".join("%d홉" % (t + 1) for t in range(3)))
+    print("------  " + "  ".join(["------"] * 3))
+    결과 = {}
+    for d in 각도들:
+        짝 = [(번호, 각, 번호, (각 + d) % 360)
+              for 번호 in 번호들 for 각 in range(0, 360, 5)]
+        줄 = []
+        for t in range(3):
+            값 = [_겹(주머니[(a, b)][t], 주머니[(c, e)][t])
+                  for a, b, c, e in 짝
+                  if (a, b) in 주머니 and (c, e) in 주머니]
+            줄.append(float(np.mean(값)))
+        결과[d] = 줄
+        print("%5d°  " % d + "  ".join("%6.4f" % x for x in 줄))
+    바닥 = []
+    for t in range(3):
+        값 = [_겹(주머니[(a, b)][t], 주머니[(c, e)][t])
+              for a, b, c, e in 남남
+              if (a, b) in 주머니 and (c, e) in 주머니]
+        바닥.append(float(np.mean(값)))
+    print("남남    " + "  ".join("%6.4f" % x for x in 바닥))
+    print()
+    print("분리도 (같은 물건 Δ각도 vs 다른 물건)")
+    print("Δ각도    " + "   ".join("%d홉" % (t + 1) for t in range(3)))
+    for d in 각도들:
+        print("%5d°  " % d
+              + "  ".join("%6.2f배" % (결과[d][t] / max(바닥[t], 1e-9))
+                          for t in range(3)))
+    print()
+    print("읽는 법: 각도가 벌어져도 바닥보다 확실히 높으면 그 각도까지는")
+    print("같은 물건으로 알아본다는 뜻이다. 홉이 늘수록 배수가 커지면")
+    print("관계가 시점 변화를 견디는 쪽으로 값을 하는 것이다.")
+    return 결과, 바닥
+
+
+def _성긴표(주머니, 열쇠들, 홉):
+    """n-gram 집합들 -> 희소 0/1 행렬. 집합 연산을 행렬 곱으로 바꾼다.
+
+    시험 6,000장 x 학습 1,200장을 파이썬 집합으로 돌리면 720만 번이라
+    안 끝난다. |A ∩ B| 는 0/1 행렬의 곱이고 합집합은 크기에서 빼면 된다."""
+    from scipy import sparse
+    칸 = {}
+    행, 열 = [], []
+    for i, k in enumerate(열쇠들):
+        for g in 주머니[k][홉]:
+            c = 칸.get(g)
+            if c is None:
+                c = len(칸)
+                칸[g] = c
+            행.append(i)
+            열.append(c)
+    X = sparse.csr_matrix((np.ones(len(행), dtype=np.float32), (행, 열)),
+                          shape=(len(열쇠들), len(칸)))
+    return X, 칸
+
+
+def _물건주머니(폴더, 번호들, 색칸, 영역수, 배경빼기):
+    """n-gram 을 뽑아 캐시한다. 사진 7,200장에 4분이라 채점 규칙을 바꿔
+    가며 재보려면 매번 다시 뽑을 수가 없다."""
+    import pickle
+    이름 = ".물건_%d_%d_%d_%d.pkl" % (len(번호들), 색칸, 영역수, int(배경빼기))
+    길 = os.path.join(_길(폴더), 이름)
+    if os.path.exists(길):
+        with open(길, "rb") as f:
+            return pickle.load(f)
+    표 = 물건읽기(폴더)
+    주머니 = {}
+    for 번호 in 번호들:
+        for 각, 파일 in sorted(표[번호].items()):
+            난것 = 영역나누기(파일, 영역수=영역수)
+            if 난것 is None:
+                continue
+            a, seg = 난것
+            색, 결, _ = 영역자질(a, seg)
+            옆 = 이웃표(seg)
+            라벨 = 첫라벨(색, 결, 색칸)
+            if 배경빼기:
+                남, 옆 = 어두운데빼기(색, 결, 옆)
+                라벨 = [라벨[i] for i in 남]
+            if len(라벨) < 4:
+                continue
+            주머니[(번호, 각)] = 그래프엔그램(라벨, 옆)
+    with open(길, "wb") as f:
+        pickle.dump(주머니, f)
+    return 주머니
+
+
+def 물건맞히기(폴더="자료/물건", 물건수=100, 배움간격=30, 색칸=4, 영역수=200,
+           배경빼기=True, 굳힘들=(0.25, 0.5, 0.75)):
+    """시점 일부로 물건을 익히고 나머지 시점으로 맞힌다. 진짜 정확도.
+
+    두 가지를 견준다.
+      1-NN   배운 시점을 통째로 외워 두고 가장 닮은 것을 찾는다 (기준선)
+      노드   물건마다 노드 하나. 정의는 배운 시점 여러 장에 살아남은 n-gram
+             의 교집합이다 — 한 시점에만 있는 조각은 우연이고, 여러 시점을
+             견딘 조각이 그 물건이다.
+
+    노드 쪽이 이 엔진이 하려는 것이다. 가중치를 고치는 것이 아니라 세고
+    걸러내는 것이라, '물건 37번이 무엇이냐' 에 조각 목록으로 답할 수 있다."""
+    표 = 물건읽기(폴더)
+    if not 표:
+        print("%s 에 COIL 사진이 없다." % _길(폴더))
+        return None
+    번호들 = sorted(표)[:물건수]
+    배움각 = list(range(0, 360, 배움간격))
+    주머니 = _물건주머니(폴더, 번호들, 색칸, 영역수, 배경빼기)
+
+    배움 = [k for k in 주머니 if k[1] in 배움각]
+    시험 = [k for k in 주머니 if k[1] not in 배움각]
+    print("물건 %d개. 배움 %d장(%d도마다), 시험 %d장. 찍기 정확도 %.1f%%"
+          % (len(번호들), len(배움), 배움간격, len(시험), 100.0 / len(번호들)))
+    print()
+    print("홉  굳힘   조각수    담김     자카드    코사인   |   1-NN")
+    print("--- ----  ------  --------  --------  --------  |  -------")
+    답 = {}
+    from scipy import sparse
+    for 홉 in range(3):
+        X배, 칸 = _성긴표(주머니, 배움, 홉)
+        행, 열 = [], []
+        for i, k in enumerate(시험):
+            for g in 주머니[k][홉]:
+                c = 칸.get(g)
+                if c is not None:
+                    행.append(i)
+                    열.append(c)
+        X시 = sparse.csr_matrix((np.ones(len(행), dtype=np.float32), (행, 열)),
+                               shape=(len(시험), len(칸)))
+        시크기 = np.array([len(주머니[k][홉]) for k in 시험], dtype=np.float32)
+        참 = np.array([k[0] for k in 시험])
+
+        겹 = np.asarray((X시 @ X배.T).todense())
+        배크기 = np.asarray(X배.sum(1)).ravel()
+        자 = 겹 / np.maximum(시크기[:, None] + 배크기[None, :] - 겹, 1e-9)
+        일NN = float(np.mean(np.array([배움[j][0] for j in 자.argmax(1)]) == 참))
+
+        for 굳힘 in 굳힘들:
+            노드행, 노드열 = [], []
+            for n, 번호 in enumerate(번호들):
+                자리 = [i for i, k in enumerate(배움) if k[0] == 번호]
+                if not 자리:
+                    continue
+                셈 = np.asarray(X배[자리].sum(0)).ravel()
+                산것 = np.where(셈 >= max(2, 굳힘 * len(자리)))[0]
+                노드행 += [n] * len(산것)
+                노드열 += list(산것)
+            N = sparse.csr_matrix((np.ones(len(노드행), dtype=np.float32),
+                                   (노드행, 노드열)), shape=(len(번호들), len(칸)))
+            ㅋ = np.asarray(N.sum(1)).ravel()
+            겹N = np.asarray((X시 @ N.T).todense())
+            점수 = {
+                # 담김: 노드 정의 중 몇 %가 이 사진에 들어 있나.
+                # 정의가 작은 노드가 유리해진다 — 물건이 늘수록 그런 노드가
+                # 우연히 이길 기회가 늘어난다.
+                "담김": 겹N / np.maximum(ㅋ[None, :], 1e-9),
+                "자카드": 겹N / np.maximum(시크기[:, None] + ㅋ[None, :] - 겹N, 1e-9),
+                "코사인": 겹N / np.maximum(
+                    np.sqrt(시크기[:, None] * ㅋ[None, :]), 1e-9),
+            }
+            줄 = {이름: float(np.mean(np.array([번호들[j] for j in v.argmax(1)]) == 참))
+                  for 이름, v in 점수.items()}
+            답[(홉, 굳힘)] = (줄, 일NN, float(ㅋ.mean()))
+            print("%2d  %.2f  %6.0f  %7.1f%%  %7.1f%%  %7.1f%%  | %7.1f%%"
+                  % (홉 + 1, 굳힘, ㅋ.mean(), 100 * 줄["담김"],
+                     100 * 줄["자카드"], 100 * 줄["코사인"], 100 * 일NN))
+        print()
+    print()
+    print("1-NN 은 배운 시점 %d장을 통째로 들고 있고, 노드는 물건마다 조각"
+          % len(배움))
+    print("목록 하나뿐이다. 노드가 1-NN 에 가까우면 교집합이 물건을 붙든")
+    print("것이고, 크게 지면 시점마다 따로 외워야 한다는 뜻이다.")
+    return 답
+
+
 # ───────────────────────── 자체검사 ─────────────────────────
 
 def _자체검사():
@@ -757,6 +1016,20 @@ if __name__ == "__main__":
     인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
     if "--check" in sys.argv:
         _자체검사()
+        sys.exit(0)
+    if "--맞히기" in sys.argv:
+        수 = 100
+        if "--물건" in sys.argv:
+            수 = int(sys.argv[sys.argv.index("--물건") + 1])
+            인자 = [a for a in 인자 if a != str(수)]
+        물건맞히기(인자[0] if 인자 else "자료/물건", 물건수=수)
+        sys.exit(0)
+    if "--각도" in sys.argv:
+        수 = 40
+        if "--물건" in sys.argv:
+            수 = int(sys.argv[sys.argv.index("--물건") + 1])
+            인자 = [a for a in 인자 if a != str(수)]
+        각도자(인자[0] if 인자 else "자료/물건", 물건수=수)
         sys.exit(0)
     if "--흔들기" in sys.argv:
         장 = 300
