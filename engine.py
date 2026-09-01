@@ -19,7 +19,7 @@ for _n in ("torch", "transformers", "huggingface_hub", "sentence_transformers"):
     logging.getLogger(_n).setLevel(logging.ERROR)
 
 # 신경망은 인코더.py 한 곳에만 있다. 두 벌 두면 캐시도 두 벌이 된다.
-from 인코더 import MODEL, DEVICE, _model, _vec, 숫자가리기, 조각내기
+from encoder import MODEL, DEVICE, _model, _vec, 숫자가리기, 조각내기
 
 _여기 = os.path.dirname(os.path.abspath(__file__))
 
@@ -308,7 +308,7 @@ def 대명사풀기(text, graph, 최근):
 
 
 def 사건읽기(경로):
-    """판례 마크다운 -> 에피소드 그래프. 형식은 사건_템플릿.md 참고.
+    """판례 마크다운 -> 에피소드 그래프. 형식은 cases/사건_템플릿.md 참고.
 
     법리층은 이미 있으므로 판례마다 쓸 것은 증거·사실과 그 연결뿐이다.
     작성자가 법리 노드 이름 28개를 외우지 않아도 되게, 자연어로 적으면
@@ -392,7 +392,7 @@ def 사건컴파일(경로, 최소신뢰=0.55):
     return "\n".join(L) + "\n", 보고
 
 
-def load(path="그래프/graph.kg"):
+def load(path="graphs/graph.kg"):
     path = _길(path)
     if str(path).endswith(".kg"):
         g = kg읽기(path)
@@ -1389,7 +1389,7 @@ def _대목(경로, 최소=40, 최대=400):
                 yield 본문[:최대], "%s:%d" % (이름, 시작)
 
 
-def 엣지제안(graph, 자료="자료", 최소=2, 임계=0.45, 흔함=0.25, 최대후보=25):
+def 엣지제안(graph, 자료="data", 최소=2, 임계=0.45, 흔함=0.25, 최대후보=25):
     """원문에서 두 노드가 같은 대목에 함께 나오면 관계 후보다.
 
     노드 제안기(제안/조문제안)와 규율이 같다. 지어내지 않는다 —
@@ -1487,11 +1487,11 @@ def 그래프색인(뿌리=None, 최대예시=90):
 
     색인은 kg읽기로만 만든다. 벡터도 학습 덧칠도 필요 없고, 무엇보다
     후보 전부를 load 하면 안 된다 — 고르기 전에 다 올리면 고르는 뜻이 없다.
-    방향.md 의 메모리 층 설계 그대로다: 색인은 작고 항상 쓰이고,
+    docs/ko/direction.md 의 메모리 층 설계 그대로다: 색인은 작고 항상 쓰이고,
     그래프 본체는 크고 한 번에 하나만 쓴다."""
     뿌리 = 뿌리 or _여기
-    파일 = sorted(glob.glob(os.path.join(뿌리, "그래프", "*.kg"))) + \
-           sorted(glob.glob(os.path.join(뿌리, "사건_*.kg")))
+    파일 = sorted(glob.glob(os.path.join(뿌리, "graphs", "*.kg"))) + \
+           sorted(glob.glob(os.path.join(뿌리, "cases/사건_*.kg")))
     색인 = {"역할": "안내", "목표": "그래프고르기",
             "임계값": {"A_MIN": 0.40, "OK_MIN": 0.50},
             "공통층": {}, "사례층": {}, "무관층": {}, "엣지": [],
@@ -1529,7 +1529,7 @@ def 그래프고르기(질문, 색인=None, 최소=0.55, 개수=3):
     문턱을 넘었다. 다시 재보니 답할 질문은 0.61 이상, 잡담은 0.49 이하로
     갈린다. 색인을 바꾸면 이 값도 다시 재야 한다.
 
-    동점이 흔하다. 'CCTV에 흉기' 는 사건_편의점강도 와 graph_인과 가 둘 다
+    동점이 흔하다. 'CCTV에 흉기' 는 cases/사건_편의점강도 와 graph_인과 가 둘 다
     0.661 인데 양쪽 다 CCTV·흉기소지를 갖고 있어서 진짜로 애매한 것이다.
     한쪽을 억지로 이기게 하는 규칙을 두는 대신 후보를 같이 돌려준다."""
     색인 = 색인 or _색인칸.setdefault("색인", 그래프색인())
@@ -2143,7 +2143,7 @@ def 자동논증(graph):
     return 발화
 
 
-def 회귀(경로="사건_회귀.json", 엣지=None):
+def 회귀(경로="cases/사건_회귀.json", 엣지=None):
     """사건 그래프들의 기대 승패와, 엣지 하나를 얹은 뒤의 승패를 비교한다.
 
     승패 기준은 세션과 같다. 모든 요건에 증거가 닿고, 증거를 하나씩 배정해도
@@ -2193,7 +2193,7 @@ def _selfcheck():
     g = load()
     assert lint(g) == [], lint(g)
 
-    # 실제 판례 회귀: 승 4 / 패 2. 사건 추가는 사건_회귀.json 한 줄이면 된다.
+    # 실제 판례 회귀: 승 4 / 패 2. 사건 추가는 cases/사건_회귀.json 한 줄이면 된다.
     _회귀 = 회귀()
     assert len(_회귀) == 6 and all(x["ok"] for x in _회귀), _회귀
     assert [x["actual"] for x in _회귀].count("win") == 4, _회귀
@@ -2201,12 +2201,12 @@ def _selfcheck():
     assert all(x["played"] for x in _회귀 if x["actual"] == "win"), _회귀
     # 가장 긴 증거 별칭이 이긴다. 짧은 이름이 긴 이름의 부분문자열일 때
     # 먼저 걸리는 쪽을 쓰면 그 증거가 증명하지 않는 주장이 되어 C 로 떨어진다.
-    _사건 = load("사건_대표이사어깨흔듦.kg")
+    _사건 = load("cases/사건_대표이사어깨흔듦.kg")
     assert match_evidence("피해 근로자 진술을 보면", _사건)[0] == "피해근로자진술"
     assert match_evidence("근로자 진술을 보면", _사건)[0] == "근로자진술"
 
     # 사건과 무관한 법리는 실리지 않는다
-    전체 = kg읽기("그래프/graph.kg")["공통층"]
+    전체 = kg읽기("graphs/graph.kg")["공통층"]
     assert "절도" in 전체 and "절도" not in g["공통층"], g["공통층"].keys()
     assert "회피가능성" in g["공통층"] and "과잉방위불벌" in g["공통층"]
     # 무관층(널 클래스)이 다른 죄명·잡담을 상대 비교로 걷어낸다
@@ -2223,7 +2223,7 @@ def _selfcheck():
     # 검증기가 망가진 그래프를 조용히 통과시키지 않는가
     import copy
     def _거부되나(변형):
-        b = kg읽기("그래프/graph.kg")
+        b = kg읽기("graphs/graph.kg")
         변형(b)
         try:
             검증(b); return False
@@ -2240,7 +2240,7 @@ def _selfcheck():
                                     b["엣지"].append(["새법리", "충족", "정당방위"])))
 
     # 교차 도메인: 다른 주제 그래프를 붙여 다리 엣지로 잇는다
-    x = load("그래프/graph_인과.kg")
+    x = load("graphs/graph_인과.kg")
     assert "인과관계입증" in x["공통층"] and "정당방위" in x["공통층"]
     경로 = reachable(x, "부검감정서")
     assert {"시간적선행", "인과관계입증", "방위행위의과잉"} <= 경로, 경로
@@ -2249,16 +2249,16 @@ def _selfcheck():
 
     # 비법률 도메인에서도 동일하게 작동하는가 (여러 홉 자책 논증 포함)
     for f, 발화, 기대 in [
-        ("그래프/graph_의료.kg", "심전도에서 ST 분절이 상승했습니다", "인정"),
-        ("그래프/graph_의료.kg", "환자분 어제 뭐 드셨대요?", "B2"),
-        ("그래프/graph_코드리뷰.kg", "슬로우 쿼리 로그에 풀 스캔이 찍혀 있어", "인정"),
-        ("그래프/graph_코드리뷰.kg", "점심 뭐 먹을까?", "B2"),
+        ("graphs/graph_의료.kg", "심전도에서 ST 분절이 상승했습니다", "인정"),
+        ("graphs/graph_의료.kg", "환자분 어제 뭐 드셨대요?", "B2"),
+        ("graphs/graph_코드리뷰.kg", "슬로우 쿼리 로그에 풀 스캔이 찍혀 있어", "인정"),
+        ("graphs/graph_코드리뷰.kg", "점심 뭐 먹을까?", "B2"),
     ]:
         d = load(f)
         assert lint(d) == [], (f, lint(d))
         got = judge(d, 발화)[0]
         assert got == 기대 or (기대 == "B2" and got == "미지"), (f, 발화, judge(d, 발화))
-    d = load("그래프/graph_코드리뷰.kg")
+    d = load("graphs/graph_코드리뷰.kg")
     assert "DB병목" in judge(d, "프로파일러에서 CPU 사용률이 높게 나와")[1]
 
     # 한 판이 실제로 끝나는가 — 승/자책패/인내심패 세 결말
@@ -2281,7 +2281,7 @@ def _selfcheck():
     assert len(짧게.확보()) == 1, 짧게.확보()
 
     # 논증 순서가 결과를 바꾸지 않는다 (최대 매칭이 재배정한다)
-    코드 = load("그래프/graph_코드리뷰.kg")
+    코드 = load("graphs/graph_코드리뷰.kg")
     for 순서 in (["슬로우 쿼리 로그에 풀 스캔이 찍혀 있어", "APM 트레이스에 커넥션 대기가 길어"],
                  ["APM 트레이스에 커넥션 대기가 길어", "슬로우 쿼리 로그에 풀 스캔이 찍혀 있어"]):
         c = 세션(코드)
@@ -2300,10 +2300,10 @@ def _selfcheck():
     assert r == "패" and 소진.인내심 <= 0
 
     # 개념망: 단어 관계 한 줄이 예시 문장을 자동으로 불린다
-    사건ㄱ = load("사건_편의점강도.kg")
+    사건ㄱ = load("cases/사건_편의점강도.kg")
     # load 는 학습로그를 덧칠하므로 개수를 못 박으면 안 된다 — 되묻기에 한 번만
     # 답해도 테스트가 깨진다. 확인할 것은 개념망이 원본 목록을 안 건드린다는 것뿐이다.
-    날것 = kg읽기(_길("사건_편의점강도.kg"))["사례층"]["흉기소지"]
+    날것 = kg읽기(_길("cases/사건_편의점강도.kg"))["사례층"]["흉기소지"]
     assert 사건ㄱ["사례층"]["흉기소지"][:len(날것)] == 날것   # 목록은 그대로
     assert 사건ㄱ["vec"]["흉기소지"].shape[0] > 10         # 벡터만 늘어난다
     풀ㄱ = [n for n in 사건ㄱ["사례층"] if n not in 사건ㄱ["증거"]] + list(사건ㄱ["공통층"])
@@ -2314,11 +2314,11 @@ def _selfcheck():
     assert c < 0.6, ("우산", n, c)
 
     # 출처: 노드가 어디서 왔는지 들고 있다
-    법 = load("법리/법리_형법21조.kg")
+    법 = load("legal/법리_형법21조.kg")
     assert 법["출처"]["정당방위"].startswith("형법 21조")
     assert "출처" in 진단(법) or True
     # 문서를 읽고 그래프에 없는 개념을 찾아낸다 (지어내지 않고 출처와 함께)
-    뽑음 = 조문제안(법, _길("자료/법지식/형법_위법성조각사유.txt"))
+    뽑음 = 조문제안(법, _길("data/법지식/형법_위법성조각사유.txt"))
     assert 뽑음, "조문에서 아무것도 못 뽑았다"
     assert all(d["출처"].startswith("형법") for d in 뽑음)
     구들 = {d["구"] for d in 뽑음}
@@ -2326,7 +2326,7 @@ def _selfcheck():
     assert not any(x.strip().endswith(("의", "를", "을")) for x in 구들), 구들
 
     # 지시대명사: 원문이 아니라 직전 (증거, 주장) 으로 푼다
-    지시 = 세션(load("사건_편의점강도.kg"))
+    지시 = 세션(load("cases/사건_편의점강도.kg"))
     지시.대답("CCTV 영상을 보면 강도가 흉기를 들고 있었습니다")
     답 = 지시.대답("아까 그 영상 보면 출입문도 막고 있었습니다")
     assert 지시.해소 == ["CCTV"], 지시.해소
@@ -2337,13 +2337,13 @@ def _selfcheck():
     지시.대답("진단서를 보면 피고인이 다쳤습니다")
     assert 지시.해소 is None, 지시.해소
     # 지시어가 없으면 아무것도 안 건드린다
-    깨끗 = 세션(load("사건_편의점강도.kg"))
+    깨끗 = 세션(load("cases/사건_편의점강도.kg"))
     깨끗.대답("CCTV 영상을 보면 강도가 흉기를 들고 있었습니다")
     깨끗.대답("목격자 진술대로 돈을 내놓으라고 했습니다")
     assert 깨끗.해소 is None
 
     # 자기가 한 말을 기억한다: 같은 주장+같은 증거는 재탕, 다른 증거면 보강
-    반복 = 세션(load("사건_편의점강도.kg"))
+    반복 = 세션(load("cases/사건_편의점강도.kg"))
     첫 = 반복.대답("압수된 흉기를 보십시오, 강도가 흉기를 들고 있었습니다")
     assert 반복.판정 == "인정"
     반복.대답("압수된 흉기를 보십시오, 강도가 흉기를 들고 있었습니다")
@@ -2351,7 +2351,7 @@ def _selfcheck():
     반복.대답("CCTV 영상을 보면 흉기를 들고 있었습니다")   # 다른 증거 = 보강
     assert 반복.판정 == "인정", 반복.판정
     # 같은 대사가 연달아 나오지 않는다
-    둘 = 세션(load("사건_편의점강도.kg"))
+    둘 = 세션(load("cases/사건_편의점강도.kg"))
     a = 둘.대답("압수된 흉기를 보십시오, 강도가 흉기를 들고 있었습니다")
     b = 둘.대답("현장 사진을 보면 출입문을 막고 있었습니다")
     assert a.split("「")[0] != b.split("「")[0], (a, b)
@@ -2361,7 +2361,7 @@ def _selfcheck():
     assert 조사고치기("흉기소지을", ["흉기소지"]) == "흉기소지를"
 
     # 실사용에서 나온 것들: 다문장 발화, 결론 주장, 목표 이름과 닮은 이웃
-    사건g = load("사건_편의점강도.kg")
+    사건g = load("cases/사건_편의점강도.kg")
     긴발화 = ("CCTV를 보면 강도는 집에 과도를 들고 들어왔습니다. "
               "이는 정당방위입니다.")
     assert judge(사건g, 긴발화)[0] == "목표주장", judge(사건g, 긴발화)
@@ -2378,7 +2378,7 @@ def _selfcheck():
     학습로그 = "_학습시험.학습.jsonl"
     if os.path.exists(학습로그):
         os.remove(학습로그)
-    시험 = load("그래프/graph.kg")
+    시험 = load("graphs/graph.kg")
     시험["_학습로그"] = 학습로그
     회 = 세션(시험)
     assert 회.말하기("우리 법에서는 도망갈 의무까지는 없습니다")[0] == "A"
@@ -2389,7 +2389,7 @@ def _selfcheck():
     assert 학습읽기(학습로그)[0].get(노드) == [말]
     # 아니라고 하면 그 노드로는 배우지 않고, 반례로 널 클래스에 들어간다
     os.remove(학습로그)              # 앞 학습이 남으면 이제 되묻지 않는다
-    시험2 = load("그래프/graph.kg")
+    시험2 = load("graphs/graph.kg")
     시험2["_학습로그"] = 학습로그
     회2 = 세션(시험2)
     assert 회2.말하기("우리 법에서는 도망갈 의무까지는 없습니다")[0] == "A"
@@ -2412,7 +2412,7 @@ def _selfcheck():
         with open(경로, "w", encoding="utf-8") as f:
             for t in 줄들:
                 f.write(json.dumps({"발화": t}, ensure_ascii=False) + chr(10))
-        g2 = load("그래프/graph.kg")
+        g2 = load("graphs/graph.kg")
         g2["_미지로그"] = 경로
         r = 제안(g2, 최소=3)
         os.remove(경로)
@@ -2526,7 +2526,7 @@ def _selfcheck():
         f.write("정당방위는 현재의 부당한 침해를 방위하기 위한 행위를 말한다."
                 + chr(10) + "방위행위에는 상당한 이유가 있어야 한다." + chr(10))
     assert 조문읽기(_산문) == [], "조문 표시가 없으면 조문읽기는 비어야 한다"
-    assert 조문제안(load("그래프/graph.kg"), _산문), "산문에서 아무것도 못 뽑는다"
+    assert 조문제안(load("graphs/graph.kg"), _산문), "산문에서 아무것도 못 뽑는다"
     os.remove(_산문)
 
     _법뽑 = {(c["쌍"][0], c["관계"], c["쌍"][1])
@@ -2551,12 +2551,12 @@ def _selfcheck():
     # 매니저는 최근 것만 들고 있는다. '한 번에 하나만' 이라고 해놓고 다 쥐고
     # 있으면 매니저를 만든 뜻이 없다 — 도메인이 수백 개면 그대로 수백 배다.
     _그래프칸.clear()
-    for _p2 in ("그래프/graph.kg", "그래프/graph_부당해고.kg",
-                "그래프/graph_저작권침해.kg", "그래프/graph_음주운전.kg"):
+    for _p2 in ("graphs/graph.kg", "graphs/graph_부당해고.kg",
+                "graphs/graph_저작권침해.kg", "graphs/graph_음주운전.kg"):
         그래프불러오기(_p2)
     assert len(_그래프칸) <= 2, list(_그래프칸)
-    assert "그래프/graph_음주운전.kg" in _그래프칸        # 가장 최근 것은 남는다
-    assert "그래프/graph.kg" not in _그래프칸            # 오래된 것은 버린다
+    assert "graphs/graph_음주운전.kg" in _그래프칸        # 가장 최근 것은 남는다
+    assert "graphs/graph.kg" not in _그래프칸            # 오래된 것은 버린다
 
     _뺀 = _엣지뺀그래프(g, ("흉기소지", "충족", "침해의부당성"))
     assert len(_뺀["엣지"]) == len(g["엣지"]) - 1
@@ -2573,10 +2573,10 @@ def _selfcheck():
     os.remove(시험자료)
 
     # 판례 md -> 에피소드 컴파일
-    kgtext, 보고 = 사건컴파일(_길("사건_편의점강도.md"))
+    kgtext, 보고 = 사건컴파일(_길("cases/사건_편의점강도.md"))
     assert 보고 and all(b[5] for b in 보고), [b for b in 보고 if not b[5]]
     assert min(b[0] for b in 보고) > 0.75, min(보고)
-    사건 = load("사건_편의점강도.kg")
+    사건 = load("cases/사건_편의점강도.kg")
     assert lint(사건) == [], lint(사건)
     assert not 진단(사건)["막힌요건"], 진단(사건)["막힌요건"]
     # 증거 하나는 요건 하나만 채운다. 닿기만 해서는 못 이긴다.
@@ -2594,7 +2594,7 @@ def _selfcheck():
     assert 회차.승패 == "승", (회차.승패, 회차.현황())
 
     # .kg 파서: 왕복해도 같은 그래프여야 한다
-    원본 = kg읽기("그래프/graph.kg")
+    원본 = kg읽기("graphs/graph.kg")
     assert 원본["목표"] == "정당방위" and len(원본["엣지"]) > 50
     for 나쁜, 왜 in [("[개념]\n결론 예시없음\n", "노드"),
                      ("역할: X\n[논증]\nA 충족 B\n", "논증"),
@@ -2619,7 +2619,7 @@ def _selfcheck():
     assert 회.판정 == "인정" and 회.승패 is None      # 판정은 따로 꺼낸다
 
     # 수치 조건: 노드는 '무엇에 대한 주장인가', 숫자는 '충족되는가'
-    대출 = load("그래프/graph_대출.kg")
+    대출 = load("graphs/graph_대출.kg")
     for 발화, 기대 in [
         ("소득 증빙상 연소득이 6천만원입니다", "인정"),
         ("소득 증빙상 연소득이 600만원입니다", "수치미달"),
@@ -2720,7 +2720,7 @@ if __name__ == "__main__":
 
     elif "--learn" in sys.argv:
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        경로 = 인자[0] if 인자 else "그래프/graph.kg"
+        경로 = 인자[0] if 인자 else "graphs/graph.kg"
         로그 = os.path.splitext(경로)[0] + ".학습.jsonl"
         배운것, 아닌것 = 학습읽기(로그)
         if not 배운것 and not 아닌것:
@@ -2754,7 +2754,7 @@ if __name__ == "__main__":
 
     elif "--draw" in sys.argv:
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        g = load(인자[0] if 인자 else "그래프/graph.kg")
+        g = load(인자[0] if 인자 else "graphs/graph.kg")
         층 = 인자[1] if len(인자) > 1 else None
         if 층 == "개념망":
             나감 = os.path.splitext(인자[0])[0] + ".개념망.mmd"
@@ -2762,7 +2762,7 @@ if __name__ == "__main__":
             open(나감, "w", encoding="utf-8").write(m + "\n")
             print("%s  (%d줄)" % (나감, len(m.splitlines())))
             sys.exit(0)
-        나감 = os.path.splitext(인자[0] if 인자 else "그래프/graph.kg")[0] + ".mmd"
+        나감 = os.path.splitext(인자[0] if 인자 else "graphs/graph.kg")[0] + ".mmd"
         m = 그림(g, 층)
         open(나감, "w", encoding="utf-8").write(m + "\n")
         print("%s  (%d줄)" % (나감, len(m.splitlines())))
@@ -2793,8 +2793,8 @@ if __name__ == "__main__":
 
     elif "--suggest" in sys.argv:
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        g = load(인자[0] if 인자 else "그래프/graph.kg")
-        후보들 = 제안(g, 자료=인자[1] if len(인자) > 1 else "자료")
+        g = load(인자[0] if 인자 else "graphs/graph.kg")
+        후보들 = 제안(g, 자료=인자[1] if len(인자) > 1 else "data")
         if not 후보들:
             print("제안할 것이 없다. 미지 로그가 비었거나 반복되는 뭉치가 없다.")
             sys.exit(0)
@@ -2823,8 +2823,8 @@ if __name__ == "__main__":
 
     elif "--edges" in sys.argv:
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        g = load(인자[0] if 인자 else "그래프/graph.kg")
-        후보들, 흔한것 = 엣지제안(g, 인자[1] if len(인자) > 1 else "자료")
+        g = load(인자[0] if 인자 else "graphs/graph.kg")
+        후보들, 흔한것 = 엣지제안(g, 인자[1] if len(인자) > 1 else "data")
         가지 = len([1 for v in g["adj"].values()
                     for r, _ in v if r in POS]) / max(len(g["adj"]), 1)
         print("지금 가지치기 %.2f (노드당 전진 엣지). 1에 가까우면 사슬이라"
@@ -2860,7 +2860,7 @@ if __name__ == "__main__":
 
     elif "--label" in sys.argv:
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        경로 = 인자[0] if 인자 else "그래프/graph.kg"
+        경로 = 인자[0] if 인자 else "graphs/graph.kg"
         g = load(경로)
         로그 = os.path.splitext(경로)[0] + ".엣지.jsonl"
         라벨 = 엣지라벨읽기(로그)
@@ -2878,13 +2878,13 @@ if __name__ == "__main__":
                       "가나." % "%")
             sys.exit(0)
 
-        후보들, 흔한것 = 엣지제안(g, 인자[1] if len(인자) > 1 else "자료")
+        후보들, 흔한것 = 엣지제안(g, 인자[1] if len(인자) > 1 else "data")
         남은 = [c for c in 후보들 if tuple(c["쌍"]) not in 라벨]
         if not 남은:
             print("라벨 안 붙은 후보가 없다. --edges 로 후보를 먼저 볼 것.")
             sys.exit(0)
         # 기계가 헷갈리는 것부터 묻는다. 무작위로 110개 달아야 나오는 정확도가
-        # 35개로 나온다 (방향.md 「일일이 다 안 해도 된다」). 라벨이 모자라면
+        # 35개로 나온다 (docs/ko/direction.md 「일일이 다 안 해도 된다」). 라벨이 모자라면
         # 그대로 세기 순으로 둔다 — 배울 것이 없을 때 순서를 흔들 이유가 없다.
         판단 = 방향분류기(g, 라벨)
         if 판단:
@@ -2966,10 +2966,10 @@ if __name__ == "__main__":
 
     elif "--regress" in sys.argv:
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        설정 = 인자[0] if 인자 and 인자[0].endswith(".json") else "사건_회귀.json"
+        설정 = 인자[0] if 인자 and 인자[0].endswith(".json") else "cases/사건_회귀.json"
         나머지 = 인자[1:] if 인자 and 인자[0].endswith(".json") else 인자
         if 나머지 and len(나머지) != 3:
-            print("사용법: python engine.py --regress [사건_회귀.json] [src relation dst]")
+            print("사용법: python engine.py --regress [cases/사건_회귀.json] [src relation dst]")
             sys.exit(1)
         엣지 = tuple(나머지) if 나머지 else None
         if 엣지 and 엣지[1] not in POS + NEG:
@@ -2996,8 +2996,8 @@ if __name__ == "__main__":
 
     elif "--relations" in sys.argv:
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        g = load(인자[0] if 인자 else "그래프/graph.kg")
-        후보들 = 의미관계제안(g, 인자[1] if len(인자) > 1 else "자료")
+        g = load(인자[0] if 인자 else "graphs/graph.kg")
+        후보들 = 의미관계제안(g, 인자[1] if len(인자) > 1 else "data")
         if not 후보들:
             print("의미 관계 후보가 없다.")
             print("  원문에 '넣고'·'~해야'·'마지막에'·'대신' 같은 표지가 있어야 뽑힌다.")
@@ -3049,7 +3049,7 @@ if __name__ == "__main__":
 
     elif "--tune" in sys.argv:
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        경로 = 인자[0] if 인자 else "그래프/graph.kg"
+        경로 = 인자[0] if 인자 else "graphs/graph.kg"
         발화 = json.load(open(인자[1], encoding="utf-8")) if len(인자) > 1 else None
         g = load(경로)
         r = 보정(g, 발화)
@@ -3124,7 +3124,7 @@ if __name__ == "__main__":
         sys.exit(1 if 문제 else 0)
     else:
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        g = load(인자[0] if 인자 else "그래프/graph.kg")
+        g = load(인자[0] if 인자 else "graphs/graph.kg")
         print("[" + g["역할"] + "] 목표:", g["목표"])
         print("  증거:", ", ".join(g["증거"]))
         print("  요건:", ", ".join(요건(g)), " (종료 입력시 끝)")
