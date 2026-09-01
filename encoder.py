@@ -4,7 +4,7 @@
 신경망은 이 파일 하나에만 있다. 인코더 한 벌, forward pass 한 번 —
 토큰을 하나씩 뽑는 자기회귀 루프가 없다. 나머지는 전부 그래프와 규칙이다.
 """
-import json, os, re, sys
+import json, os, re, sys, zlib
 from collections import deque
 from functools import lru_cache
 
@@ -28,7 +28,7 @@ _jamo_weight = float(os.environ.get("KG_JAMO", "0.5"))
 # 이름에 방식을 적어 둔다. 캐시 키가 MODEL 을 쓰므로, 구현을 바꾸고 이름을
 # 안 바꾸면 낡은 벡터를 그대로 읽는다 — 음절에서 자모로 바꿨을 때 실제로
 # 그래서 적중률이 100%에서 4%로 무너졌다.
-MODEL = ("문자ngram-%d-자모%.1f" % (_character_dimensions, _jamo_weight) if _mode == "문자"
+MODEL = ("문자ngram2-%d-자모%.1f" % (_character_dimensions, _jamo_weight) if _mode == "문자"
          else "jhgan/ko-sroberta-multitask")   # 768d
 # CPU 고정. sentence-transformers 는 CUDA 가 보이면 말없이 GPU 로 올린다 —
 # 그러면 "GPU 없이 돈다"는 이 프로젝트의 전제가 조용히 깨진 채로 측정된다.
@@ -106,6 +106,21 @@ def _decompose_jamo(text):
     return "".join(out)
 
 
+def _안정해시(글):
+    """프로세스가 바뀌어도 같은 값을 주는 해시.
+
+    파이썬 내장 hash() 는 문자열에 대해 실행마다 무작위 씨앗을 쓴다
+    (PYTHONHASHSEED). 그걸로 n-gram 을 칸에 떨어뜨리면 실행할 때마다 벡터
+    공간이 통째로 달라진다 — 한 프로세스 안에서는 일관되므로 자체검사는
+    통과하지만, .vec 캐시에 남은 지난 실행의 예시 벡터와 이번 실행의 질문
+    벡터는 서로 다른 공간에 있어 비교가 무의미해진다. 실제로 같은 질문의
+    매칭 점수가 실행마다 0.017 ~ 0.173 으로 튀었다.
+
+    crc32 는 씨앗이 없어 어느 프로세스에서든 같다. 암호학적 성질은 필요
+    없다 — 칸을 고르게 나누기만 하면 된다."""
+    return zlib.crc32(글.encode("utf-8"))
+
+
 def _character_vector(text, dimensions=None):
     """음절 n-gram 해시 벡터. 신경망도 토큰도 안 쓴다.
 
@@ -140,8 +155,8 @@ def _character_vector(text, dimensions=None):
         for n in (2, 3, 4):
             for k in range(len(t) - n + 1):
                 fragment = t[k:k + n]
-                h = hash(fragment) % dimensions
-                v[h] += w * (1.0 if hash(fragment + "\x00") % 2 else -1.0)
+                h = _안정해시(fragment) % dimensions
+                v[h] += w * (1.0 if _안정해시(fragment + "\x00") % 2 else -1.0)
     magnitude = float(np.linalg.norm(v))
     return v / magnitude if magnitude else v
 
