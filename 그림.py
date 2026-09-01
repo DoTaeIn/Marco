@@ -1039,6 +1039,16 @@ def 어수선하게(a, m, 배경길, 차지, rs):
     return 판
 
 
+def _노드무게(N):
+    """조각마다 무게. 여러 노드에 나오는 조각은 아무것도 안 가리킨다.
+
+    어수선한 판에서는 배경 조각이 흔하고 물건 조각이 드물다. 흔한 것의
+    무게를 낮추면 배경이 밀려난다. (위키 갈림에서 IDF 가 나빴던 것과
+    반대인데, 거기서는 흔한 것이 신호였고 여기서는 잡음이다.)"""
+    df = np.asarray(N.sum(0)).ravel()
+    return np.log(1.0 + N.shape[0] / np.maximum(df, 1.0)).astype(np.float32)
+
+
 def _노드틀(주머니, 배움, 번호들, 홉, 굳힘):
     """배운 시점에서 물건마다 노드 하나. -> (칸, 노드행렬, 노드크기)
 
@@ -1056,7 +1066,8 @@ def _노드틀(주머니, 배움, 번호들, 홉, 굳힘):
         열 += list(산것)
     N = sparse.csr_matrix((np.ones(len(행), dtype=np.float32), (행, 열)),
                           shape=(len(번호들), len(칸)))
-    return 칸, N, np.asarray(N.sum(1)).ravel()
+    무게 = _노드무게(N)
+    return 칸, N, np.asarray(N.sum(1)).ravel(), N.multiply(무게).tocsr(), 무게
 
 
 def 어수선시험(폴더="자료/물건", 배경폴더="자료/그림", 물건수=100, 배움간격=30,
@@ -1083,14 +1094,15 @@ def 어수선시험(폴더="자료/물건", 배경폴더="자료/그림", 물건
              len(번호들) * len(시험각)))
     print("배경 %d장. 물건은 원래 크기 그대로, 화폭만 키운다." % len(배경들))
     print()
-    print("차지    물건/화폭   " + "   ".join("%d홉" % h for h in 홉들)
-          + "      (찍기 %.1f%%)" % (100.0 / len(번호들)))
-    print("-----  ---------  " + "  ".join(["-------"] * len(홉들)))
+    규칙들 = ("자카드", "담김", "드문담김")
+    print("차지    물건/화폭  홉  " + "  ".join("%8s" % r for r in 규칙들)
+          + "     (찍기 %.1f%%)" % (100.0 / len(번호들)))
+    print("-----  ---------  --  " + "  ".join(["--------"] * len(규칙들)))
 
     답 = {}
     for 차지 in 차지들:
         rs = np.random.RandomState(씨)
-        맞음 = {h: 0 for h in 홉들}
+        맞음 = {(h, r): 0 for h in 홉들 for r in 규칙들}
         셈 = 0
         for 번호 in 번호들:
             for 각 in 시험각:
@@ -1124,18 +1136,30 @@ def 어수선시험(폴더="자료/물건", 배경폴더="자료/그림", 물건
                     continue
                 모두 = 그래프엔그램(라벨, 옆)
                 for 홉 in 홉들:
-                    칸, N, 노드크기 = 틀[홉]
+                    칸, N, 노드크기, N무게, 무게 = 틀[홉]
                     조각 = 모두[홉 - 1]
                     v = np.zeros(len(칸), dtype=np.float32)
                     v[[칸[g] for g in 조각 if g in 칸]] = 1.0
                     겹 = N @ v
-                    점수 = 겹 / np.maximum(len(조각) + 노드크기 - 겹, 1e-9)
-                    맞음[홉] += int(번호들[int(점수.argmax())] == 번호)
+                    무게겹 = N무게 @ v
+                    무게합 = np.asarray(N무게.sum(1)).ravel()
+                    점수 = {
+                        "자카드": 겹 / np.maximum(len(조각) + 노드크기 - 겹, 1e-9),
+                        "담김": 겹 / np.maximum(노드크기, 1e-9),
+                        "드문담김": 무게겹 / np.maximum(무게합, 1e-9),
+                    }
+                    for r in 규칙들:
+                        맞음[(홉, r)] += int(
+                            번호들[int(점수[r].argmax())] == 번호)
                 셈 += 1
-        답[차지] = {h: 맞음[h] / max(셈, 1) for h in 홉들}
-        print("%5.2f  %9s  " % (차지, "검은배경" if 차지 >= 1.0
-                                else "%.0f%%" % (100 * 차지))
-              + "  ".join("%6.1f%%" % (100 * 답[차지][h]) for h in 홉들))
+        답[차지] = {k: v / max(셈, 1) for k, v in 맞음.items()}
+        for i, 홉 in enumerate(홉들):
+            머리 = ("%5.2f  %9s  " % (차지, "검은배경" if 차지 >= 1.0
+                                     else "%.0f%%" % (100 * 차지))
+                   if i == 0 else " " * 18)
+            print(머리 + "%2d  " % 홉
+                  + "  ".join("%7.1f%%" % (100 * 답[차지][(홉, r)])
+                              for r in 규칙들))
     print()
     print("차지 1.00 은 원래 COIL(검은 배경)이라 기준선이다. 아래로 갈수록")
     print("물건이 작고 배경이 넓다. 어디서 무너지는지가 이 표의 전부다.")
