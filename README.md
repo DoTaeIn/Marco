@@ -6,8 +6,8 @@ Objection은 문서를 지식 그래프로 만들고, 사용자의 발화를 그
 `증명 → 충족 → 결론` 경로로 설명하거나 논증합니다. 답마다 근거 경로가 남고,
 그래프에 없는 내용은 생성하지 않고 모른다고 답합니다.
 
-[지식 그래프 열기](보기/지식그래프.html) · [개발자 문서](개발.md) ·
-[그래프 작성법](그래프_README.md) · [설계 기록](설계.md) · [프로젝트 방향](방향.md)
+[Knowledge graph](views/지식그래프.html) · [한국어 문서](docs/ko/README.md) ·
+[English documentation](docs/en/README.md)
 
 ## 어디까지 됐나
 
@@ -23,13 +23,13 @@ Objection은 문서를 지식 그래프로 만들고, 사용자의 발화를 그
 | 목표 없는 답 고르기 | **54%** | 판례 문장 기준. 발췌 직접 검색으로 42%에서 올림 |
 | 대화 맥락 | **대화 전체** | 창이 아니라 감쇠. 주어 없는 후속 질문도 받는다 |
 | 여러 그래프 중 고르기 | **자동** | 그래프들의 그래프. `--route` |
-| 말투·언어 | **데이터** | `말투/한국어.json` 을 바꾸면 언어가 바뀐다 |
+| 말투·언어 | **데이터** | `styles/한국어.json` 을 바꾸면 언어가 바뀐다 |
 | 자기 코드 이해 | **됨** | `graphify-out/`을 읽고 파일·줄 번호를 댑니다 |
 | 절차 답변 | **부분** | 문서의 순서를 그대로 냅니다. 어느 절인지 고르는 정확도가 약합니다 |
 | 잡담 거절 | **6/6** | 단어가 겹쳐도 딴 얘기면 모른다고 한다 |
 | 오타 | **되묻는다** | 자모 하나 차이면 교정안을 묻고, 확인되면 기억한다 |
 | 대화 맥락 저장 | **파일로** | 저장·재개·공유. 오타 기록도 함께 간다 |
-| 검색 | **자료로만** | 위키백과에서 받아 `자료/` 에. 답으로 직행하지 않는다 |
+| 검색 | **자료로만** | 위키백과에서 받아 `data/` 에. 답으로 직행하지 않는다 |
 | 램 | **평평하다** | 매니저가 최근 2개만. 설명 벡터 28.5MB 는 mmap |
 | **엣지 방향 정하기** | **사람** | 구조 자질 81.6%, 부정 16/33. 라벨 170개 더 필요 |
 | 판례 → 사건 md | **사람** | 판결문을 읽고 사실을 쪼개는 일 |
@@ -55,7 +55,7 @@ flowchart LR
     M -->|아무것도 충분히 안 걸림| X[모른다]
 ```
 
-- 신경망은 [인코더.py](인코더.py)에만 있습니다.
+- 신경망은 [encoder.py](encoder.py)에만 있습니다.
 - 추론은 CPU가 기본이며 자기회귀 생성 루프가 없습니다.
 - 도메인 지식은 코드가 아니라 `.kg` 파일에 있습니다.
 - 그래프가 바뀌어도 엔진 코드는 바뀌지 않습니다.
@@ -80,7 +80,7 @@ flowchart LR
     방위의사 -->|충족| 정당방위
 ```
 
-실제 그래프는 [인터랙티브 시각화](보기/지식그래프.html)에서 탐색할 수 있습니다.
+실제 그래프는 [인터랙티브 시각화](views/지식그래프.html)에서 탐색할 수 있습니다.
 그래프 선택, 관계 필터, 노드 검색, 휠 노드 간격 조절, 캔버스·노드 드래그,
 목표까지의 최단 근거 경로 강조를 지원합니다.
 
@@ -96,7 +96,7 @@ flowchart LR
 시각화를 다시 만들려면:
 
 ```bash
-python 보기/지식그래프_시각화.py
+python views/지식그래프_시각화.py
 ```
 
 ## 학습과 성장
@@ -132,7 +132,7 @@ flowchart LR
 
 사람이 확인하는 자리는 하나뿐입니다. 나머지는 기계가 후보를 내고 기계가 채점합니다.
 사람 판단이 필요한 이유는 **원문이 관계의 방향을 말해주지 않기 때문**입니다 —
-자세한 측정은 [방향.md](방향.md)에 있습니다.
+자세한 측정은 [프로젝트 방향](docs/ko/README.md)에 있습니다.
 
 모든 학습 파일은 원본 그래프에 덧칠하는 방식이므로 파일을 지우면 학습 전으로 돌아갑니다.
 
@@ -171,8 +171,8 @@ python engine.py --regress 상호투쟁 충족 방위의사  # 엣지를 임시�
 승패와 별개로, 판결요지 문장이 그래프 노드에 걸리는 비율도 잽니다.
 
 ```bash
-python 수집/법제처.py --판례 "형법 제21조" 정당방위 400   # LAW_OC 환경변수 필요
-python engine.py --score 그래프/graph.kg 수집/판례/판례_형법제21조.jsonl
+python collectors/법제처.py --판례 "형법 제21조" 정당방위 400   # LAW_OC 환경변수 필요
+python engine.py --score graphs/graph.kg collectors/판례/판례_형법제21조.jsonl
 ```
 
 ```text
@@ -229,45 +229,45 @@ python engine.py --check
 python engine.py --check
 
 # 정당방위 그래프 대화
-python engine.py 그래프/graph.kg --verdict
+python engine.py graphs/graph.kg --verdict
 
 # 다른 도메인으로 교체
-python engine.py 그래프/graph_의료.kg
+python engine.py graphs/graph_의료.kg
 
 # 사건 Markdown을 KG로 컴파일
-python engine.py --case 사건_대표이사어깨흔듦.md
+python engine.py --case cases/사건_대표이사어깨흔듦.md
 
 # 구조·증거 배정 진단
-python engine.py --diagnose 사건_대표이사어깨흔듦.kg
+python engine.py --diagnose cases/사건_대표이사어깨흔듦.kg
 ```
 
 ## 그래프 성장 도구
 
 ```bash
 python engine.py --route "가슴 통증에 ST분절이 상승했습니다"   # 어느 그래프인지 고른다
-python engine.py --learn 사건_편의점강도.kg              # 되묻기에서 배운 표현
-python 설명.py   --draw 자료/법지식/지식그래프.json        # 그래프를 mermaid 로
-python 설명.py   <그래프> --대화 대화.json                # 맥락을 저장하며 대화
-python 설명.py   --score 자료/법지식/지식그래프.json    # 목표 없는 모드 채점
-python 설명.py   --절차 개발.md README.md "PR 전에 뭘 해야 해"   # 순서 있는 답
-python 설명.py   --코딩 "매칭 방식을 바꾸려면 자세히"        # 절차 + 코드 위치
-python engine.py --suggest   그래프/graph.kg 자료/     # 반복되는 미지 발화 → 노드 후보
-python engine.py --relations 그래프/graph.kg 자료/     # 원문 표지 → 의미 관계 후보 (종류까지)
-python engine.py --edges     그래프/graph.kg 자료/     # 원문 공기 → 논증 엣지 후보
-python engine.py --label   그래프/graph.kg 자료/       # 엣지 방향 라벨 수집
-python engine.py --label --report 그래프/graph.kg      # 라벨 현황
-python engine.py --mine 그래프/graph.kg 자료/법지식/법령_형법.txt
-python engine.py --tune 그래프/graph.kg 발화_샘플.json
-python engine.py --score 그래프/graph.kg 수집/판례/판례_형법제21조.jsonl
+python engine.py --learn cases/사건_편의점강도.kg              # 되묻기에서 배운 표현
+python explain.py --draw data/법지식/지식그래프.json        # 그래프를 mermaid 로
+python explain.py <그래프> --대화 대화.json                # 맥락을 저장하며 대화
+python explain.py --score data/법지식/지식그래프.json    # 목표 없는 모드 채점
+python explain.py --절차 docs/ko/development.md README.md "PR 전에 뭘 해야 해"   # 순서 있는 답
+python explain.py --코딩 "매칭 방식을 바꾸려면 자세히"        # 절차 + 코드 위치
+python engine.py --suggest   graphs/graph.kg data/     # 반복되는 미지 발화 → 노드 후보
+python engine.py --relations graphs/graph.kg data/     # 원문 표지 → 의미 관계 후보 (종류까지)
+python engine.py --edges     graphs/graph.kg data/     # 원문 공기 → 논증 엣지 후보
+python engine.py --label   graphs/graph.kg data/       # 엣지 방향 라벨 수집
+python engine.py --label --report graphs/graph.kg      # 라벨 현황
+python engine.py --mine graphs/graph.kg data/법지식/법령_형법.txt
+python engine.py --tune graphs/graph.kg 발화_샘플.json
+python engine.py --score graphs/graph.kg collectors/판례/판례_형법제21조.jsonl
 ```
 
 판례·법령 수집은 법제처 공동활용 API를 씁니다. `open.law.go.kr`에서 발급받은
 OC 값을 `LAW_OC` 환경변수에 넣어야 합니다.
 
 ```bash
-python 수집/법제처.py 형법 민법                      # 법령 원문
-python 수집/법제처.py --판례 "형법 제21조" 정당방위 400  # 참조조문 기준 판례
-python 수집/위키.py 정당방위 명예훼손                     # 위키백과 (키 불필요)
+python collectors/법제처.py 형법 민법                      # 법령 원문
+python collectors/법제처.py --판례 "형법 제21조" 정당방위 400  # 참조조문 기준 판례
+python collectors/위키.py 정당방위 명예훼손                     # 위키백과 (키 불필요)
 ```
 
 본문 검색만으로는 그 조문과 무관한 판례가 딸려오므로, 받은 뒤 참조조문으로
@@ -277,15 +277,15 @@ python 수집/위키.py 정당방위 명예훼손                     # 위키�
 
 ```text
 engine.py              논증·판정·학습·진단·회귀 엔진
-인코더.py              문장 → 정규화 벡터
-설명.py                그래프 경로 기반 설명 엔진
-짓기.py                문서 → 지식 그래프 저작 도구
-그래프/*.kg            도메인 그래프
-법리/*.kg              공유 법리 계층
-사건_*.md / *.kg       판례 원문 모델과 컴파일 결과
-자료/                  저작 근거가 되는 원문
-수집/                  법령·판례 수집기
-보기/                  웹 UI와 지식 그래프 시각화
+encoder.py             문장 → 정규화 벡터
+explain.py             그래프 경로 기반 설명 엔진
+build.py               문서 → 지식 그래프 저작 도구
+graphs/*.kg            도메인 그래프
+legal/*.kg              공유 법리 계층
+cases/사건_*.md / *.kg       판례 원문 모델과 컴파일 결과
+data/                  저작 근거가 되는 원문
+collectors/                  법령·판례 수집기
+views/                  웹 UI와 지식 그래프 시각화
 graphify-out/           코드 구조 인덱스 (238 노드, 450 엣지)
 ```
 
@@ -314,7 +314,7 @@ Graphify가 찾은 코드의 중심 노드는 `_selfcheck()`, `judge()`, `load()
 - 회귀는 **판정이 뒤집힐 때만** 잡습니다. 막힌 요건을 2개에서 1개로 줄이는 엣지는
   여전히 지므로 통과합니다. 부분적 악영향까지 재려면 막힌 요건 수를 점수로 써야 합니다.
 - 판례를 사건 md로 옮기는 일은 아직 사람이 판결문을 읽고 사실을 쪼개야 합니다.
-- 검색은 답하지 않습니다. 받은 글은 `자료/`에 놓이고, 사람이 확인해 그래프가
+- 검색은 답하지 않습니다. 받은 글은 `data/`에 놓이고, 사람이 확인해 그래프가
   되어야 근거가 됩니다. 검색 결과를 곧바로 답으로 내보내면 영수증 보장이 깨집니다.
 - 창작과 목표 없는 잡담은 여전히 못 합니다. 무엇이 좋은 답인지 잴 자가 없습니다.
   다만 **대화에 대한 잡담**("아까 뭐 물어봤지")은 대화 기록이 근거라 답합니다.
