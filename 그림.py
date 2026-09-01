@@ -7,6 +7,7 @@
     python 그림.py --흔들기            # 구조만 무너뜨렸을 때 관계가 알아채나
     python 그림.py --각도              # 같은 물건을 몇 도까지 알아보나 (COIL-100)
     python 그림.py --맞히기            # 시점 일부로 익히고 나머지로 맞힌다
+    python 그림.py --어수선            # 실제 사진 배경 위에서도 찾아내나
     python 그림.py --힙스 <폴더> --장 800
     python 그림.py --check             # 자체 검사
 
@@ -382,17 +383,17 @@ def 갈림(폴더="자료/그림", 비트들=(8, 12, 16, 20, 24, 28, 32),
 # 접어 넣은 것이다. 같은 자료 같은 자로 0회와 n회를 견주면 관계의 몫만
 # 딱 떨어져 나온다. 학습은 여전히 없다.
 
-_사전 = {}
-
-
 def _번호(키):
-    """라벨을 정수로 접는다. 사전이 그림들 사이에 공유되므로 다른 사진의
-    같은 모양이 같은 번호를 받는다 — 그래야 견줄 수 있다."""
-    v = _사전.get(키)
-    if v is None:
-        v = len(_사전)
-        _사전[키] = v
-    return v
+    """라벨 튜플 -> 정수 하나. 실행이 달라도 같은 값이 나와야 한다.
+
+    처음엔 사전에 나온 순서대로 번호를 붙였다. 한 실행 안에서는 멀쩡한데
+    캐시에 넣어 둔 라벨과 나중에 새로 뽑은 라벨이 서로 다른 번호를 받는다 —
+    같은 사진을 다시 계산했더니 조각 수는 178개로 같은데 겹침이 0.082 였고,
+    어수선함 기준선이 100%에서 25%로 떨어졌다.
+
+    파이썬의 hash 는 정수 튜플에 대해 실행마다 같은 값을 준다(무작위화되는
+    것은 문자열이다). 그래서 키에 문자열을 넣지 않는다."""
+    return hash(키)
 
 
 def 영역나누기(경로, 영역수=None, 최대변=320):
@@ -456,7 +457,8 @@ def 첫라벨(색, 결, 색칸=4):
     """영역 하나를 이름 하나로. 평균 색과 결을 칸에 넣어 자른다."""
     c = np.clip((색 * 색칸).astype(np.int32), 0, 색칸 - 1)
     t = np.digitize(결, _결벽)
-    return [_번호(("영역", 색칸, int(c[i, 0]), int(c[i, 1]), int(c[i, 2]), int(t[i])))
+    # 키에 문자열을 넣지 않는다. 앞의 0 은 영역 라벨임을 나타내는 표다.
+    return [_번호((0, 색칸, int(c[i, 0]), int(c[i, 1]), int(c[i, 2]), int(t[i])))
             for i in range(len(결))]
 
 
@@ -978,6 +980,168 @@ def 물건맞히기(폴더="자료/물건", 물건수=100, 배움간격=30, 색�
     return 답
 
 
+# ───────────────────────── 어수선함 ─────────────────────────
+# COIL 은 검은 배경에 물건 하나다. 쉬운 판이라고 적었으니 얼마나 쉬운지
+# 재야 한다. INSTRE 는 토렌트로만 배포돼서 못 받았고, 대신 어수선함만
+# 떼어내 눈금으로 만든다 — COIL 물건은 배경이 검정이라 오려낼 수 있고
+# 위키에서 받은 사진 809장이 배경이 된다.
+#
+# 합성이라 경계가 부자연스러운 것은 안다. 그 대신 어수선함의 양을 조절할
+# 수 있다. 실제 자료는 어수선함·시점·크기·조명이 한꺼번에 바뀌어서
+# 무엇 때문에 졌는지 못 가린다.
+#
+# 익히기는 깨끗한 판에서 하고 시험만 어수선한 데서 한다. 물건을 따로
+# 배우고 장면 속에서 찾아내는 것이 실제로 쓰이는 모양이다.
+
+
+def 오려내기(경로, 벽=30):
+    """COIL 사진에서 물건만. -> (RGB, 마스크). 가장 큰 덩어리만 남긴다."""
+    from PIL import Image
+    from scipy import ndimage
+    a = np.asarray(Image.open(경로).convert("RGB"), dtype=np.uint8)
+    m = a.max(2) >= 벽
+    표, 수 = ndimage.label(m)
+    if 수 > 1:
+        크기 = ndimage.sum(m, 표, range(1, 수 + 1))
+        m = 표 == (int(np.argmax(크기)) + 1)
+    return a, m
+
+
+def 어수선하게(a, m, 배경길, 차지, rs):
+    """물건을 실제 사진 위에 붙인다. 차지 = 물건이 화폭에서 차지하는 넓이 비율.
+
+    물건은 원래 화소 크기 그대로 두고 화폭만 키운다. 물건을 줄이면 영역
+    크기가 달라져 익힐 때와 다른 라벨이 나온다 — 어수선함이 아니라 크기
+    때문에 진 것이 되어버린다."""
+    from PIL import Image
+    if not m.any():
+        return None
+    높, 넓 = a.shape[:2]
+    # 원래 틀(128x128)을 그대로 옮긴다. 상자만큼 잘라내면 화폭 크기가 달라져
+    # SLIC 격자가 익힐 때와 어긋나고, 물건 화소가 같은데도 영역 경계가
+    # 달라진다 — 실제로 차지 1.00 기준선이 100% 에서 44% 로 떨어졌다.
+    변 = max(높, 넓, int(np.sqrt(int(m.sum()) / max(차지, 1e-6))))
+    if 배경길 is None:
+        판 = np.zeros((변, 변, 3), dtype=np.uint8)
+    else:
+        b = Image.open(배경길).convert("RGB")
+        b.thumbnail((변 * 3, 변 * 3))
+        판 = np.asarray(b, dtype=np.uint8)
+        if 판.shape[0] < 변 or 판.shape[1] < 변:
+            판 = np.asarray(Image.fromarray(판).resize((변, 변)), dtype=np.uint8)
+        y0 = rs.randint(0, 판.shape[0] - 변 + 1)
+        x0 = rs.randint(0, 판.shape[1] - 변 + 1)
+        판 = 판[y0:y0 + 변, x0:x0 + 변].copy()
+    ty = rs.randint(0, 변 - 높 + 1)
+    tx = rs.randint(0, 변 - 넓 + 1)
+    조각 = 판[ty:ty + 높, tx:tx + 넓]
+    조각[m] = a[m]              # 검은 여백은 안 붙인다. 물건 화소만
+    return 판
+
+
+def _노드틀(주머니, 배움, 번호들, 홉, 굳힘):
+    """배운 시점에서 물건마다 노드 하나. -> (칸, 노드행렬, 노드크기)
+
+    홉은 사람이 부르는 이름(1·2·3홉)이고 그래프엔그램의 자리는 0부터다."""
+    from scipy import sparse
+    X배, 칸 = _성긴표(주머니, 배움, 홉 - 1)
+    행, 열 = [], []
+    for n, 번호 in enumerate(번호들):
+        자리 = [i for i, k in enumerate(배움) if k[0] == 번호]
+        if not 자리:
+            continue
+        셈 = np.asarray(X배[자리].sum(0)).ravel()
+        산것 = np.where(셈 >= max(2, 굳힘 * len(자리)))[0]
+        행 += [n] * len(산것)
+        열 += list(산것)
+    N = sparse.csr_matrix((np.ones(len(행), dtype=np.float32), (행, 열)),
+                          shape=(len(번호들), len(칸)))
+    return 칸, N, np.asarray(N.sum(1)).ravel()
+
+
+def 어수선시험(폴더="자료/물건", 배경폴더="자료/그림", 물건수=100, 배움간격=30,
+           시험간격=15, 색칸=4, 영역수=200, 굳힘=0.25, 홉들=(2, 3),
+           차지들=(1.0, 0.5, 0.25, 0.10, 0.05), 씨=1):
+    """깨끗한 판에서 익히고 어수선한 판에서 맞힌다. 차지가 작을수록 어수선하다."""
+    from skimage.segmentation import slic
+    표 = 물건읽기(폴더)
+    if not 표:
+        print("%s 에 COIL 사진이 없다." % _길(폴더))
+        return None
+    번호들 = sorted(표)[:물건수]
+    배움각 = list(range(0, 360, 배움간격))
+    시험각 = [x for x in range(0, 360, 시험간격) if x not in 배움각]
+    주머니 = _물건주머니(폴더, 번호들, 색칸, 영역수, True)
+    배움 = [k for k in 주머니 if k[1] in 배움각]
+    틀 = {h: _노드틀(주머니, 배움, 번호들, h, 굳힘) for h in 홉들}
+
+    배경들 = sorted(glob.glob(os.path.join(_길(배경폴더), "*.jpg")))
+    낱 = 128 * 128 / 영역수          # 익힐 때의 영역 크기. 여기에 맞춘다
+    print("물건 %d개. 노드 조각 평균 %s. 시험 %d장/차지."
+          % (len(번호들),
+             " / ".join("%d홉 %.0f개" % (h, 틀[h][2].mean()) for h in 홉들),
+             len(번호들) * len(시험각)))
+    print("배경 %d장. 물건은 원래 크기 그대로, 화폭만 키운다." % len(배경들))
+    print()
+    print("차지    물건/화폭   " + "   ".join("%d홉" % h for h in 홉들)
+          + "      (찍기 %.1f%%)" % (100.0 / len(번호들)))
+    print("-----  ---------  " + "  ".join(["-------"] * len(홉들)))
+
+    답 = {}
+    for 차지 in 차지들:
+        rs = np.random.RandomState(씨)
+        맞음 = {h: 0 for h in 홉들}
+        셈 = 0
+        for 번호 in 번호들:
+            for 각 in 시험각:
+                길 = 표[번호].get(각)
+                if 길 is None:
+                    continue
+                if 차지 >= 1.0:
+                    # 기준선은 원본을 그대로 쓴다. 오려서 다시 붙이면 COIL
+                    # 배경의 어두운 잡음이 순수 검정이 되어 화소의 68%가
+                    # 달라지고, SLIC 이 다르게 잘라 기준선이 100%에서
+                    # 22%로 떨어졌다. 견줄 자리는 익힐 때와 똑같아야 한다.
+                    난것 = 영역나누기(길, 영역수=영역수)
+                    if 난것 is None:
+                        continue
+                    판, seg = 난것
+                else:
+                    a, m = 오려내기(길)
+                    판 = 어수선하게(a, m, 배경들[rs.randint(0, len(배경들))],
+                                 차지, rs)
+                    if 판 is None:
+                        continue
+                    n = max(12, int(판.shape[0] * 판.shape[1] / 낱))
+                    seg = slic(판, n_segments=n, compactness=10, start_label=0)
+                색, 결, _ = 영역자질(판, seg)
+                옆 = 이웃표(seg)
+                라벨 = 첫라벨(색, 결, 색칸)
+                if 차지 >= 1.0:
+                    남, 옆 = 어두운데빼기(색, 결, 옆)
+                    라벨 = [라벨[i] for i in 남]
+                if len(라벨) < 4:
+                    continue
+                모두 = 그래프엔그램(라벨, 옆)
+                for 홉 in 홉들:
+                    칸, N, 노드크기 = 틀[홉]
+                    조각 = 모두[홉 - 1]
+                    v = np.zeros(len(칸), dtype=np.float32)
+                    v[[칸[g] for g in 조각 if g in 칸]] = 1.0
+                    겹 = N @ v
+                    점수 = 겹 / np.maximum(len(조각) + 노드크기 - 겹, 1e-9)
+                    맞음[홉] += int(번호들[int(점수.argmax())] == 번호)
+                셈 += 1
+        답[차지] = {h: 맞음[h] / max(셈, 1) for h in 홉들}
+        print("%5.2f  %9s  " % (차지, "검은배경" if 차지 >= 1.0
+                                else "%.0f%%" % (100 * 차지))
+              + "  ".join("%6.1f%%" % (100 * 답[차지][h]) for h in 홉들))
+    print()
+    print("차지 1.00 은 원래 COIL(검은 배경)이라 기준선이다. 아래로 갈수록")
+    print("물건이 작고 배경이 넓다. 어디서 무너지는지가 이 표의 전부다.")
+    return 답
+
+
 # ───────────────────────── 자체검사 ─────────────────────────
 
 def _자체검사():
@@ -1016,6 +1180,13 @@ if __name__ == "__main__":
     인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
     if "--check" in sys.argv:
         _자체검사()
+        sys.exit(0)
+    if "--어수선" in sys.argv:
+        수 = 100
+        if "--물건" in sys.argv:
+            수 = int(sys.argv[sys.argv.index("--물건") + 1])
+            인자 = [a for a in 인자 if a != str(수)]
+        어수선시험(인자[0] if 인자 else "자료/물건", 물건수=수)
         sys.exit(0)
     if "--맞히기" in sys.argv:
         수 = 100
