@@ -3,6 +3,7 @@
 
     python 그림.py --힙스              # 시각 어휘가 포화하나 (자료/그림)
     python 그림.py --갈림              # 비트를 얼마로 잡아야 하나
+    python 그림.py --관계              # 관계를 넣으면 분리도가 오르나 (RAG+WL)
     python 그림.py --힙스 <폴더> --장 800
     python 그림.py --check             # 자체 검사
 
@@ -368,6 +369,219 @@ def 갈림(폴더="자료/그림", 비트들=(8, 12, 16, 20, 24, 28, 32),
     return 결과
 
 
+# ───────────────────────── 관계 (RAG) ─────────────────────────
+# 봉지로는 분리도가 0.407 에서 안 올랐다. 무늬 하나가 개도 고양이도 나무도
+# 가리키기 때문이다. 관계가 본체라면 관계를 넣었을 때 그 숫자가 올라야 한다.
+#
+# 그래프 편집 거리(GED)가 이 자리의 고전인데 큰 그래프에서 계산이 터진다 —
+# 근사 알고리즘이 그 분야 연구 주제 전체다. 대신 WL(Weisfeiler-Lehman)
+# 라벨을 쓴다. 되풀이 0회는 관계를 안 보는 봉지고, n회는 n홉 이웃을 라벨에
+# 접어 넣은 것이다. 같은 자료 같은 자로 0회와 n회를 견주면 관계의 몫만
+# 딱 떨어져 나온다. 학습은 여전히 없다.
+
+_사전 = {}
+
+
+def _번호(키):
+    """라벨을 정수로 접는다. 사전이 그림들 사이에 공유되므로 다른 사진의
+    같은 모양이 같은 번호를 받는다 — 그래야 견줄 수 있다."""
+    v = _사전.get(키)
+    if v is None:
+        v = len(_사전)
+        _사전[키] = v
+    return v
+
+
+def 영역나누기(경로, 영역수=200, 최대변=320):
+    """사진 -> (RGB 배열, 영역 라벨 배열). SLIC 초픽셀."""
+    from PIL import Image
+    from skimage.segmentation import slic
+    im = Image.open(경로)
+    if getattr(im, "n_frames", 1) > 1:
+        im.seek(0)
+    im = im.convert("RGB")
+    im.thumbnail((최대변, 최대변))
+    a = np.asarray(im, dtype=np.uint8)
+    if min(a.shape[:2]) < 24:
+        return None
+    return a, slic(a, n_segments=영역수, compactness=10, start_label=0)
+
+
+def 영역자질(a, seg):
+    """영역마다 평균 색과 결(기울기 세기)과 크기. -> (색 n×3, 결 n, 크기 n)"""
+    n = int(seg.max()) + 1
+    납 = seg.ravel()
+    크기 = np.bincount(납, minlength=n).astype(np.float64)
+    크기 = np.maximum(크기, 1)
+    색 = np.stack([np.bincount(납, weights=a[:, :, c].ravel().astype(np.float64),
+                               minlength=n) / 크기 for c in range(3)], 1) / 255.0
+    회 = a.mean(2).astype(np.float32) / 255.0
+    gx = np.zeros_like(회)
+    gy = np.zeros_like(회)
+    gx[:, 1:-1] = 회[:, 2:] - 회[:, :-2]
+    gy[1:-1, :] = 회[2:, :] - 회[:-2, :]
+    결 = np.bincount(납, weights=np.hypot(gx, gy).ravel().astype(np.float64),
+                     minlength=n) / 크기
+    return 색, 결, 크기 / 크기.sum()
+
+
+def 이웃표(seg):
+    """맞닿은 영역끼리 잇는다. 이것이 RAG 의 엣지다 — 계산이지 학습이 아니다."""
+    n = int(seg.max()) + 1
+    쌍 = []
+    for A, B in ((seg[:-1, :], seg[1:, :]), (seg[:, :-1], seg[:, 1:])):
+        다름 = A != B
+        쌍.append(np.stack([A[다름], B[다름]], 1))
+    쌍 = np.unique(np.sort(np.concatenate(쌍), axis=1), axis=0)
+    이웃 = [[] for _ in range(n)]
+    for x, y in 쌍:
+        이웃[x].append(int(y))
+        이웃[y].append(int(x))
+    return 이웃
+
+
+_결벽 = (0.05, 0.12)
+
+
+def 첫라벨(색, 결, 색칸=4):
+    """영역 하나를 이름 하나로. 평균 색과 결을 칸에 넣어 자른다."""
+    c = np.clip((색 * 색칸).astype(np.int32), 0, 색칸 - 1)
+    t = np.digitize(결, _결벽)
+    return [_번호(("영역", 색칸, int(c[i, 0]), int(c[i, 1]), int(c[i, 2]), int(t[i])))
+            for i in range(len(결))]
+
+
+def 그래프엔그램(초기, 이웃, 최대=3):
+    """RAG 를 n-gram 으로 편다. -> [1홉 집합, 2홉 집합, 3홉 집합]
+
+      1-gram  영역 하나            (관계 없음. 봉지다)
+      2-gram  맞닿은 두 영역       (a-b)
+      3-gram  이어진 세 영역       (a-b-c)
+
+    인코더.py 가 글자에 하는 것과 같다. 낱자만 세면 뜻이 없고 2~4자를
+    함께 세면 뜻이 생긴다 — 그래프에서는 그 '이어짐' 이 곧 맞닿음이다.
+
+    처음엔 WL(이웃 라벨을 통째로 접기)을 썼는데 1회 만에 겹침이 0 이 됐다.
+    영역이 140개고 차수가 5라 이웃 다중집합이 죄다 유일해져서, 어떤 두
+    사진도 라벨을 하나도 공유하지 못한다. n-gram 은 조각이 작아서
+    촘촘함이 유지된다."""
+    묶음 = [set(초기)]
+    if 최대 >= 2:
+        둘 = set()
+        for i, 옆 in enumerate(이웃):
+            for j in 옆:
+                if i < j:
+                    a, b = 초기[i], 초기[j]
+                    둘.add((a, b) if a <= b else (b, a))
+        묶음.append(둘)
+    if 최대 >= 3:
+        셋 = set()
+        for i, 옆 in enumerate(이웃):
+            가 = [초기[j] for j in 옆]
+            for k in range(len(가)):
+                for l in range(k + 1, len(가)):
+                    a, c = 가[k], 가[l]
+                    셋.add((a, 초기[i], c) if a <= c else (c, 초기[i], a))
+        묶음.append(셋)
+    return 묶음
+
+
+def 관계(폴더="자료/그림", 색칸들=(2, 3, 4), 되풀이=3, 최대장=None,
+        짝수=4000, 씨=1):
+    """관계를 넣으면 분리도가 오르는가. 갈림과 같은 짝, 같은 자를 쓴다."""
+    폴더 = _길(폴더)
+    문서표 = _문서표(폴더)
+    파일들 = sorted(f for f in glob.glob(os.path.join(폴더, "*"))
+                    if os.path.splitext(f)[1].lower()
+                    in (".jpg", ".jpeg", ".png", ".gif", ".webp"))
+    rs = np.random.RandomState(씨)
+    rs.shuffle(파일들)
+    if 최대장:
+        파일들 = 파일들[:최대장]
+
+    쟁여둠, 문서 = [], []
+    노드수, 엣지수 = [], []
+    for f in 파일들:
+        try:
+            난것 = 영역나누기(f)
+            if 난것 is None:
+                continue
+            a, seg = 난것
+            색, 결, _ = 영역자질(a, seg)
+            이웃 = 이웃표(seg)
+        except Exception:
+            continue
+        쟁여둠.append((색, 결, 이웃))
+        문서.append(문서표.get(os.path.basename(f), ""))
+        노드수.append(len(결))
+        엣지수.append(sum(len(x) for x in 이웃) // 2)
+    if len(쟁여둠) < 4:
+        print("사진이 너무 적다 (%d장)" % len(쟁여둠))
+        return None
+
+    무리 = {}
+    for i, d in enumerate(문서):
+        if d:
+            무리.setdefault(d, []).append(i)
+    같은짝 = [(a, b) for v in 무리.values() if len(v) > 1
+              for k, a in enumerate(v) for b in v[k + 1:]]
+    if not 같은짝:
+        print("같은 문서에서 온 사진 짝이 없다.")
+        return None
+    rs.shuffle(같은짝)
+    같은짝 = 같은짝[:짝수]
+    남남짝 = []
+    while len(남남짝) < len(같은짝):
+        a, b = rs.randint(0, len(쟁여둠)), rs.randint(0, len(쟁여둠))
+        if a != b and (not 문서[a] or 문서[a] != 문서[b]):
+            남남짝.append((a, b))
+
+    print("사진 %d장  영역 중앙값 %d개  엣지 중앙값 %d개  같은문서 짝 %d"
+          % (len(쟁여둠), int(np.median(노드수)), int(np.median(엣지수)), len(같은짝)))
+    print()
+    print("색칸  n홉    같은문서     남남      분리도")
+    print("---- ------ --------- --------- ---------")
+    결과 = {}
+    for 색칸 in 색칸들:
+        묶음들 = [그래프엔그램(첫라벨(색, 결, 색칸), 이웃, 되풀이)
+                 for 색, 결, 이웃 in 쟁여둠]
+        for t in range(되풀이):
+            집합 = [x[t] for x in 묶음들]
+
+            def _잼(짝들):
+                점 = []
+                for a, b in 짝들:
+                    A, B = 집합[a], 집합[b]
+                    ㅎ = len(A | B)
+                    점.append(len(A & B) / ㅎ if ㅎ else 0.0)
+                return np.array(점)
+
+            ㄱ, ㄴ = _잼(같은짝), _잼(남남짝)
+            흩 = float(np.sqrt((np.var(ㄱ) + np.var(ㄴ)) / 2))
+            if 흩 < 1e-9:          # 짝이 너무 적으면 분산이 0 이 되어 터진다
+                분 = float("nan")
+            else:
+                분 = (ㄱ.mean() - ㄴ.mean()) / 흩
+            결과[(색칸, t + 1)] = float(분)
+            print("%4d %6d %9.4f %9.4f %9.3f%s"
+                  % (색칸, t + 1, ㄱ.mean(), ㄴ.mean(), 분,
+                     "   <- 봉지(관계 없음)" if t == 0 else ""))
+        print()
+    성한것 = {k: v for k, v in 결과.items() if v == v}
+    if not 성한것:
+        print("전부 분산 0 이다. 짝이 너무 적다.")
+        return 결과
+    최고 = max(성한것, key=성한것.get)
+    봉지최고 = max((k for k in 성한것 if k[1] == 1), key=성한것.get)
+    print("가장 높은 분리도: 색칸 %d, %d홉 -> %.3f"
+          % (최고[0], 최고[1], 성한것[최고]))
+    print("관계 없는 봉지 중 최고: 색칸 %d -> %.3f  (%+.0f%%)"
+          % (봉지최고[0], 성한것[봉지최고],
+             100 * (성한것[최고] / max(성한것[봉지최고], 1e-9) - 1)))
+    print("견줄 자리: 시각단어 봉지는 0.407 이었다(--갈림, 16비트).")
+    return 결과
+
+
 # ───────────────────────── 자체검사 ─────────────────────────
 
 def _자체검사():
@@ -406,6 +620,13 @@ if __name__ == "__main__":
     인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
     if "--check" in sys.argv:
         _자체검사()
+        sys.exit(0)
+    if "--관계" in sys.argv:
+        장 = None
+        if "--장" in sys.argv:
+            장 = int(sys.argv[sys.argv.index("--장") + 1])
+            인자 = [a for a in 인자 if a != str(장)]
+        관계(인자[0] if 인자 else "자료/그림", 최대장=장)
         sys.exit(0)
     if "--갈림" in sys.argv:
         장 = None
