@@ -3,7 +3,8 @@
 
     python 그림.py --힙스              # 시각 어휘가 포화하나 (자료/그림)
     python 그림.py --갈림              # 비트를 얼마로 잡아야 하나
-    python 그림.py --관계              # 관계를 넣으면 분리도가 오르나 (RAG+WL)
+    python 그림.py --관계              # 관계를 넣으면 분리도가 오르나 (RAG)
+    python 그림.py --흔들기            # 구조만 무너뜨렸을 때 관계가 알아채나
     python 그림.py --힙스 <폴더> --장 800
     python 그림.py --check             # 자체 검사
 
@@ -582,6 +583,142 @@ def 관계(폴더="자료/그림", 색칸들=(2, 3, 4), 되풀이=3, 최대장=N
     return 결과
 
 
+# ───────────────────────── 흔들기 ─────────────────────────
+# 관계가 값을 하는지를 '같은 문서' 라는 흐린 자 없이 재는 법.
+#
+# 타일을 잘라 섞으면 색 분포는 그대로인데 맞닿음만 무너진다. 글에서
+# 낱말 순서를 섞는 것과 같다 — 봉지는 못 알아채고 n-gram 은 알아챈다.
+# 관계가 정보를 나른다면 2·3홉의 겹침이 1홉보다 크게 떨어져야 한다.
+# 안 떨어지면 관계는 이 층에서 나를 것이 없다.
+
+
+def 뒤섞기(a, 칸=8, 씨=0):
+    """타일 칸x칸 으로 잘라 섞는다. 같은 화소가 그대로 다 남는다."""
+    H, W = a.shape[:2]
+    h, w = H // 칸, W // 칸
+    if h < 4 or w < 4:
+        return None
+    타일 = [a[y * h:(y + 1) * h, x * w:(x + 1) * w]
+            for y in range(칸) for x in range(칸)]
+    차례 = np.random.RandomState(씨).permutation(len(타일))
+    새 = np.zeros((h * 칸, w * 칸, a.shape[2]), dtype=a.dtype)
+    for k, i in enumerate(차례):
+        y, x = divmod(k, 칸)
+        새[y * h:(y + 1) * h, x * w:(x + 1) * w] = 타일[i]
+    return 새
+
+
+def 엣지되섞기(이웃, 씨=0):
+    """라벨은 그대로 두고 맞닿음만 아무렇게나 다시 잇는다.
+
+    대조군이다. 타일을 섞으면 이음매에서 분할이 달라져 1홉 라벨도 변하고,
+    그러면 2·3홉은 그 변화가 곱해져서 떨어진다 — 관계를 본 것이 아니다.
+    라벨을 한 글자도 안 바꾸고 구조만 무작위로 만든 이 대조군이 그 몫을
+    떼어낸다."""
+    쌍 = [(i, j) for i, 옆 in enumerate(이웃) for j in 옆 if i < j]
+    rs = np.random.RandomState(씨)
+    끝 = np.array([x for 짝 in 쌍 for x in 짝])
+    rs.shuffle(끝)
+    새 = [[] for _ in 이웃]
+    for k in range(0, len(끝) - 1, 2):
+        a, b = int(끝[k]), int(끝[k + 1])
+        if a != b:
+            새[a].append(b)
+            새[b].append(a)
+    return 새
+
+
+def _엔그램(a, 색칸, 되풀이=3):
+    from skimage.segmentation import slic
+    seg = slic(a, n_segments=200, compactness=10, start_label=0)
+    색, 결, _ = 영역자질(a, seg)
+    return 그래프엔그램(첫라벨(색, 결, 색칸), 이웃표(seg), 되풀이)
+
+
+def 흔들기(폴더="자료/그림", 색칸=3, 칸들=(2, 4, 8), 최대장=300, 씨=1):
+    """구조만 무너뜨리고 겉모습은 남긴다. 관계의 몫만 떨어져 나온다."""
+    폴더 = _길(폴더)
+    파일들 = sorted(f for f in glob.glob(os.path.join(폴더, "*"))
+                    if os.path.splitext(f)[1].lower()
+                    in (".jpg", ".jpeg", ".png", ".gif", ".webp"))
+    rs = np.random.RandomState(씨)
+    rs.shuffle(파일들)
+    파일들 = 파일들[:최대장]
+
+    원본, 되섞음, 섞음 = [], [], {g: [] for g in 칸들}
+    for f in 파일들:
+        try:
+            난것 = 영역나누기(f)
+            if 난것 is None:
+                continue
+            a, seg = 난것
+            색, 결, _ = 영역자질(a, seg)
+            라벨, 옆 = 첫라벨(색, 결, 색칸), 이웃표(seg)
+            ㄱ = 그래프엔그램(라벨, 옆)
+            되섞음.append(그래프엔그램(라벨, 엣지되섞기(옆)))
+            섞은것 = {}
+            for g in 칸들:
+                b = 뒤섞기(a, g)
+                if b is None:
+                    break
+                섞은것[g] = _엔그램(b, 색칸)
+            if len(섞은것) != len(칸들):
+                되섞음.pop()
+                continue
+        except Exception:
+            if len(되섞음) > len(원본):
+                되섞음.pop()
+            continue
+        원본.append(ㄱ)
+        for g in 칸들:
+            섞음[g].append(섞은것[g])
+
+    if len(원본) < 10:
+        print("사진이 너무 적다 (%d장)" % len(원본))
+        return None
+
+    def _겹(A, B):
+        ㅎ = len(A | B)
+        return len(A & B) / ㅎ if ㅎ else 0.0
+
+    # 남남 바닥: 아무 사진 둘. 이보다 안 떨어지면 아무 뜻도 없다
+    짝 = [(rs.randint(0, len(원본)), rs.randint(0, len(원본)))
+          for _ in range(2000)]
+    짝 = [(a, b) for a, b in 짝 if a != b]
+
+    print("사진 %d장, 색칸 %d. 타일을 섞어도 화소는 그대로다." % (len(원본), 색칸))
+    print()
+    print("n홉   원본↔남남  라벨같고구조무작위  "
+          + "  ".join("%d×%d칸" % (g, g) for g in 칸들))
+    print("---- ---------  ----------------  "
+          + "  ".join(["-------"] * len(칸들)))
+    표 = {}
+    for t in range(3):
+        바닥 = float(np.mean([_겹(원본[a][t], 원본[b][t]) for a, b in 짝]))
+        줄 = []
+        for g in 칸들:
+            줄.append(float(np.mean([_겹(원본[i][t], 섞음[g][i][t])
+                                     for i in range(len(원본))])))
+        되 = float(np.mean([_겹(원본[i][t], 되섞음[i][t])
+                            for i in range(len(원본))]))
+        표[t] = (바닥, 줄, 되)
+        print("%3d  %9.4f  %16.4f  " % (t + 1, 바닥, 되)
+              + "  ".join("%7.4f" % x for x in 줄))
+    print()
+    print("구조 민감도 = 1 - 겹침. 관계가 정보를 나르면 홉이 늘수록 커야 한다.")
+    print("n홉   " + "  ".join("%d×%d칸" % (g, g) for g in 칸들))
+    for t in range(3):
+        print("%3d   " % (t + 1)
+              + "  ".join("%6.1f%%" % (100 * (1 - x)) for x in 표[t][1]))
+    print()
+    print()
+    print("읽는 법. '라벨같고구조무작위' 가 대조군이다 — 라벨을 한 글자도 안")
+    print("바꾸고 맞닿음만 무작위로 만든 것이라, 1홉은 정확히 1.0 이어야 하고")
+    print("2·3홉이 떨어지는 만큼이 순수한 관계의 몫이다. 그 값이 1 에 가까우면")
+    print("관계는 아무것도 안 나른다. 타일 섞기는 거기에 분할 변화까지 얹힌다.")
+    return 표
+
+
 # ───────────────────────── 자체검사 ─────────────────────────
 
 def _자체검사():
@@ -620,6 +757,13 @@ if __name__ == "__main__":
     인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
     if "--check" in sys.argv:
         _자체검사()
+        sys.exit(0)
+    if "--흔들기" in sys.argv:
+        장 = 300
+        if "--장" in sys.argv:
+            장 = int(sys.argv[sys.argv.index("--장") + 1])
+            인자 = [a for a in 인자 if a != str(장)]
+        흔들기(인자[0] if 인자 else "자료/그림", 최대장=장)
         sys.exit(0)
     if "--관계" in sys.argv:
         장 = None
