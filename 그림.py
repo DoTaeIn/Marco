@@ -16,8 +16,12 @@ k-means 로 묶어 사전을 만드는 것이다. 그런데 그러면 사전 크
 비트를 늘리면 천장이 열리고, 자료가 포화하면 비트를 늘려도 안 는다.
 그 차이를 보는 것이 이 파일의 전부다.
 """
-import glob, json, os, sys
+import glob, json, os, sys, warnings
 import numpy as np
+
+# PIL 이 팔레트/투명도 조합마다 뿜는 경고는 이 측정과 무관하다. 1,000장을
+# 도는 동안 표를 밀어내서 정작 볼 숫자가 안 보인다.
+warnings.filterwarnings("ignore", category=UserWarning, module="PIL")
 
 _여기 = os.path.dirname(os.path.abspath(__file__))
 _최대비트 = 32          # 코드는 늘 32비트로 만들고, 앞자리만 잘라 쓴다
