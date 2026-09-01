@@ -542,7 +542,7 @@ def 증거지우기(text, graph, ev):
         else:                      # 공백을 지운 형태로도 한 번
             납작 = "".join(alias.split())
             if 납작 in "".join(text.split()):
-                text = re.sub("\s*".join(map(re.escape, 납작)), " ", text)
+                text = re.sub(r"\s*".join(map(re.escape, 납작)), " ", text)
     return text
 
 
