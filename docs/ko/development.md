@@ -215,14 +215,36 @@ flowchart TD
 ## 6. 개발 흐름
 
 ```bash
-python engine.py --check      # 엔진 자체 검사 (판례 회귀 6건 포함)
-python 짓기.py   --check
-python 설명.py   --check
-python engine.py --regress    # 판례 회귀만 따로
+python build.py   --check
+python explain.py --check
+python codegen.py --check     # 채점기가 옳고 그름을 구별하는지부터 본다
+python engine.py  --check     # 엔진 자체 검사 (판례 회귀 6건 포함)
+python engine.py  --regress   # 판례 회귀만 따로
 ```
 
-**PR 전에 위 넷이 전부 통과해야 합니다.** `--check`는 회귀 세트를 포함하므로
+`explain.py --check` 와 `engine.py --check` 는 생성물을 필요로 하는데
+`.gitignore` 에 있어 새로 받은 저장소에는 없습니다. 먼저 지으십시오.
+
+```bash
+python build.py data/법지식
+python build.py docs/ko --out 문서그래프.json
+```
+
+**PR 전에 위가 전부 통과해야 합니다.** `--check`는 회귀 세트를 포함하므로
 그래프를 고쳤다면 승패가 안 바뀌었는지 자동으로 확인됩니다.
+
+채점기 자체를 의심할 때는 `--묶임` 을 봅니다.
+
+```bash
+python codegen.py --묶임
+  원본이 제 시험에 성함     9/9
+  망가뜨렸는데 통과한 벌   15/91 (16%)  낮을수록 시험이 좁다
+```
+
+통과 개수만 세면 채점기가 전부 통과시켜도 전부 떨어뜨려도 모릅니다.
+실제로 선택정렬이 0/4 였는데 찍힌 코드는 완벽했습니다 — 기대값을 견주는
+모양이 어긋나 시험이 제 원본조차 못 알아본 것입니다. 위 첫 줄이 그것을
+잡습니다. 둘째 줄이 갑자기 치솟으면 시험이 헐거워졌다는 신호입니다.
 
 엣지를 하나 제안하고 싶다면, 원본에 쓰기 전에 회귀로 채점하세요.
 
