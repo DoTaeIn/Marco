@@ -111,9 +111,14 @@ addEventListener("keydown", e => {
 });
 
 function 셈쓰기(s) {
+  // 사람이 쓴 것을 따로 보인다. 기계가 쌓은 물음이 섞이면 합계만 봤을 때
+  // 이 판이 실제로 모은 것보다 커 보인다 — 이 화면의 값어치는 사람 칸에 있다.
+  const 몫 = (맞, 틀) => (맞 + 틀 ? ` · 적중 ${Math.round(100 * 맞 / (맞 + 틀))}%` : "");
   document.getElementById("셈").textContent =
     `물음 ${s.전체}개 · 맞음 ${s.맞음} · 틀림 ${s.틀림} · 안 본 것 ${s.안봄}` +
-    (s.맞음 + s.틀림 ? ` · 적중 ${Math.round(100 * s.맞음 / (s.맞음 + s.틀림))}%` : "");
+    몫(s.맞음, s.틀림) +
+    (s.사람 === undefined ? "" :
+      `    |    사람이 쓴 것 ${s.사람}개` + 몫(s.사람맞음, s.사람틀림));
 }
 
 fetch("/info").then(r => r.json()).then(d => {
