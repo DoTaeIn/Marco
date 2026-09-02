@@ -3,13 +3,13 @@
 엔진은 안 건드린다. `graph_*.json` 하나가 곧 역할 하나다.
 
 ```bash
-cp graph_템플릿.kg graph_내것.kg        # 1. 복사
+cp graphs/graph_템플릿.kg graphs/graph_내것.kg        # 1. 복사
 #                                       2. 채운다 (아래 참고)
-python engine.py --diagnose graph_내것.kg   # 3. 점검
-python engine.py --tune graph_내것.kg   # 4. 임계값 확인
-python engine.py --edges graph_내것.kg data/  # 5. 빠진 엣지 후보 (사슬이면 필수)
+python engine.py --diagnose graphs/graph_내것.kg   # 3. 점검
+python engine.py --tune graphs/graph_내것.kg   # 4. 임계값 확인
+python engine.py --edges graphs/graph_내것.kg data/  # 5. 빠진 엣지 후보 (사슬이면 필수)
 python engine.py --regress                    # 6. 실제 판례 기대 승패 회귀
-python engine.py graph_내것.kg          # 7. 굴려본다
+python engine.py graphs/graph_내것.kg          # 7. 굴려본다
 ```
 
 ## 판례를 md 로 쓰기 (에피소드 추가)
@@ -224,8 +224,8 @@ CCTV       -증명->  흉기소지, 선제공격, 출구차단
 
 ## 2. 노드 표현이 겹치면 절반은 엉뚱한 곳으로 간다 — `--tune` 으로 잰다
 ```bash
-python engine.py --tune graph.kg              # 외부 데이터 없이
-python engine.py --tune graph.kg 발화_샘플.json  # 남이 쓴 발화로 (권장)
+python engine.py --tune graphs/graph.kg              # 외부 데이터 없이
+python engine.py --tune graphs/graph.kg 발화_샘플.json  # 남이 쓴 발화로 (권장)
 ```
 
 외부 데이터가 없으면 **leave-one-out** 으로 잰다. 각 예시 문장을 자기 노드에서
