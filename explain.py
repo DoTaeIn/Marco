@@ -7,7 +7,7 @@
 
 논증 엔진(engine.py)과 나뉘어 있다. 이쪽은 판정하지 않는다. 설명한다.
 """
-import json, os, re, sys
+import io, json, os, re, sys
 from collections import deque
 
 from build import 개념뽑기
@@ -437,6 +437,24 @@ def 지식준비(g):
     g["_V"] = V
     g["_이름들"] = 이름들
     g["_시작"] = np.array([i for i, _j in 구간])
+    # 묶음(community)별 노드 자리. 아직 답을 고르는 데 쓰지 않는다.
+    #
+    # 노드 고르기에 층을 씌워 봤다 — 묶음마다 상위 셋의 평균으로 어느
+    # 문서 이야기인지 먼저 정하고 그 안에서만 겨루게. 법지식 982물음에서
+    # 가림 134/982, 대목 127/982 로 **한 자리도 안 바뀌었다**. 층은
+    # 실제로 골랐는데(60개 중 36개) 결과가 같았다.
+    #
+    # 이유는 _발췌찾기 의 주석에 이미 적혀 있었다. 노드 고르기는 병목이라
+    # 판정돼 이미 우회된 길이다(노드 경유 1~3% 대 직접 검색 17%). 안 쓰는
+    # 길을 좁혀 봐야 답이 안 변한다. 층을 쓰려면 _발췌찾기 쪽에 씌워야
+    # 하는데, 거기는 발췌 전부를 한 행렬로 들고 있어 층이 줄여 줄 것이
+    # 무엇인지부터 다시 재야 한다.
+    자리 = {}
+    for i, n in enumerate(이름들):
+        c = (g["메타"].get(n) or {}).get("community")
+        if c:
+            자리.setdefault(c, []).append(i)
+    g["_층"] = {c: np.array(v) for c, v in 자리.items() if len(v) >= 3}
     return g
 
 
@@ -447,6 +465,7 @@ def _모든점수(g, v):
     if V is None:                          # 옛 그래프(캐시를 안 거친 것)
         return None
     return np.maximum.reduceat(V @ v, g["_시작"])
+
 
 
 def _이름그대로(g, 질문, 제외=None):
@@ -1810,6 +1829,42 @@ if __name__ == "__main__":
         print()
         print("Q %s" % 질문)
         print(절차답(x, 배수, 질문) if x else "  맞는 절차를 찾지 못했다.")
+        sys.exit(0)
+
+    if "--모름" in sys.argv:
+        # 무엇을 더 받아와야 하는가. 엔진은 자기가 모르는 말을 이미 안다 —
+        # 그것을 꺼내주면 위키.py 가 그대로 받아온다. 검색 결과는 답이
+        # 아니라 자료다(collectors/위키.py 머리말). 이 명령은 '무엇을
+        # 찾을지' 까지만 하고, 받는 것도 그래프에 넣는 것도 사람이 한다.
+        #
+        #   python explain.py --모름 문서그래프.json "오타 교정은 어떻게 동작해"
+        #   python explain.py --모름 문서그래프.json --파일 물음.txt
+        if len(인자) < 1:
+            print('사용법: python explain.py --모름 <그래프.json> "질문" ...')
+            print('        python explain.py --모름 <그래프.json> --파일 <물음.txt>')
+            sys.exit(1)
+        g = 열기(_길(인자[0]))
+        질문들 = 인자[1:]
+        if "--파일" in sys.argv:
+            터 = sys.argv[sys.argv.index("--파일") + 1]
+            질문들 = [x.strip() for x in io.open(_길(터), encoding="utf-8")
+                      if x.strip()]
+        if not 질문들:
+            print("물을 것이 없습니다.")
+            sys.exit(1)
+        셈 = {}
+        for q in 질문들:
+            _뜻, _답, 주제 = 물어보기(g, q)
+            for w in _모르는말(g, q, 주제):
+                셈[w] = 셈.get(w, 0) + 1
+        if not 셈:
+            print("# 모르는 말이 없습니다. 받아올 것이 없습니다.")
+            sys.exit(0)
+        print("# 물음 %d개에서 모르는 말 %d개. 받으려면:" % (len(질문들), len(셈)))
+        print("#   python collectors/위키.py " + " ".join(sorted(셈)[:8]))
+        print("# 받은 뒤 data/웹 을 코퍼스에 넣고 build.py 로 다시 짓습니다.")
+        for w, c in sorted(셈.items(), key=lambda x: -x[1]):
+            print("%-16s %d번" % (w, c))
         sys.exit(0)
 
     if "--score" in sys.argv:

@@ -476,5 +476,5 @@ if __name__ == "__main__":
         time.sleep(0.4)
     print()
     print("자료로 들어갔을 뿐 그래프가 된 것은 아니다. 다음 중 하나를 한다:")
-    print("  python 짓기.py data/웹 --out 웹그래프.json")
+    print("  python build.py data/웹 --out 웹그래프.json")
     print("  python engine.py --mine <그래프.kg> data/웹/위키_....txt")
