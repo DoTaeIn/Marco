@@ -23,12 +23,38 @@ for _n in ("torch", "transformers", "huggingface_hub", "sentence_transformers"):
 # 벡터로 만든다 — 토큰도, 모델 내려받기도, GPU 도 없다. 무엇을 잃고 무엇을
 # 버는지는 채점기로 잰다(--score / --regress / --tune).
 _mode = os.environ.get("KG_ENCODER", "신경망")
-_character_dimensions = int(os.environ.get("KG_DIM", "2048"))
+# 4096 으로 올렸다. 포함도는 해시 충돌에 코사인보다 예민한데(분모가 문서
+# 쪽 조각 무게라 충돌 하나가 곧 오차다) 2048 에서 평균오차 0.004,
+# 4096 에서 0.000 이었다. 벡터가 싸므로 넉넉한 쪽을 기본으로 둔다.
+_character_dimensions = int(os.environ.get("KG_DIM", "4096"))
 _jamo_weight = float(os.environ.get("KG_JAMO", "0.5"))
+# 포함도의 분모에 더하는 상수. 짧은 이름이 거저 1.0 을 받는 것을 막는다 —
+# 두 글자 노드는 아무 문장에나 통째로 들어간다.
+#
+# 0 으로 둔다. 두 잣대가 정반대를 가리켰고, 갈라 보니 한쪽이 자를 잘못
+# 대고 있었다.
+#
+#   κ      --score 가림   사람이 쓴 물음 16개
+#   0          12%            15/16
+#   4          14%            15/16
+#   8          25%             8/16
+#   16         50%             5/16   (이름으로 물으면 도 84%로 깨진다)
+#   32         64%             0/16
+#
+# --score 의 물음은 발췌에서 이름만 지워 만든 것이라 나머지 글자가 그대로
+# 남는다. κ 를 키우면 노드 이름이 눌려 발췌 직접검색이 이기는데, 그 길이
+# 하는 일이 '받은 문장을 도로 알아보기' 다. 설명채점 docstring 이 경고한
+# 그 인코더 함정을 κ 로 되사는 셈이다. 사람이 쓴 물음에는 그 단서가 없고,
+# 거기서는 κ 가 커질수록 그냥 미지가 는다(1개 -> 11개).
+#
+# 그래서 0 이다. 문서그래프 기준 사람 물음 적중은 신경망 14/16, 고치기 전
+# 문자 코사인 0/16, 지금 15/16 이다.
+_smoothing = float(os.environ.get("KG_SMOOTH", "0"))
 # 이름에 방식을 적어 둔다. 캐시 키가 MODEL 을 쓰므로, 구현을 바꾸고 이름을
 # 안 바꾸면 낡은 벡터를 그대로 읽는다 — 음절에서 자모로 바꿨을 때 실제로
 # 그래서 적중률이 100%에서 4%로 무너졌다.
-MODEL = ("문자ngram-%d-자모%.1f" % (_character_dimensions, _jamo_weight) if _mode == "문자"
+MODEL = ("문자포함도2-%d-자모%.1f-매끔%.1f"
+         % (_character_dimensions, _jamo_weight, _smoothing) if _mode == "문자"
          else "jhgan/ko-sroberta-multitask")   # 768d
 # CPU 고정. sentence-transformers 는 CUDA 가 보이면 말없이 GPU 로 올린다 —
 # 그러면 "GPU 없이 돈다"는 이 프로젝트의 전제가 조용히 깨진 채로 측정된다.
@@ -106,19 +132,75 @@ def _decompose_jamo(text):
     return "".join(out)
 
 
-def _character_vector(text, dimensions=None):
-    """음절 n-gram 해시 벡터. 신경망도 토큰도 안 쓴다.
+# 낱말을 가르는 것은 공백만이 아니다. 코드 이름 'judge()' 의 괄호도,
+# '_vec' 의 밑줄도 사람이 물을 때는 안 치는 것들이다.
+_word_break = re.compile(r"[\W_]+", re.UNICODE)
+
+
+def _character_grams(text):
+    """음절 n-gram 과 자모 n-gram 을 무게와 함께. 조각당 한 번씩만 센다.
+
+    경계표(\x02 \x03)를 문자열 양 끝이 아니라 **낱말마다** 두른다. 포함도를
+    재려면 이래야 한다 — 문자열 끝에만 두르면 '도메인' 의 조각 중 절반이
+    경계표를 물고 있어서, 질문 한가운데의 '도메인을' 과는 영영 안 맞는다.
+    실제로 그 자리에서 포함도가 0.795 대신 0.538 로 깎였다. 낱말마다
+    두르면 '\x02도메' 가 양쪽에 다 생긴다. 재보니 문서그래프에서 양성과
+    음성의 중앙값 격차가 0.308 -> 0.588 로 벌어졌다."""
+    g = mask_numbers(text).strip()
+    out = {}
+    for base, w in ((g, 1.0), (_decompose_jamo(g), _jamo_weight)):
+        if w == 0.0:
+            continue
+        t = "\x02" + _word_break.sub("\x03\x02", base) + "\x03"
+        for n in (2, 3, 4):
+            for k in range(len(t) - n + 1):
+                fragment = t[k:k + n]
+                out[fragment] = out.get(fragment, 0.0) + w
+    return out
+
+
+def _character_vector(text, 쪽="담", dimensions=None):
+    """문자 n-gram 벡터. 신경망도 토큰도 안 쓴다.
 
     한국어는 형태가 붙어 변하므로(해고/해고가/해고를) 글자 n-gram 이 그
     변화를 흡수한다. 2~4 글자를 함께 보면 '부당해고' 와 '해고' 가 겹치는
     부분을 공유한다.
 
-    자모로 펴는 것도 재봤다. 쌍끼리는 더 잘 갈린다(분리도 0.355 -> 0.519,
-    오타 '침해/짐해' 0.17 -> 0.57). 그런데 후보가 7,195개인 실제 그래프에서
-    졌다 — 가림 84% -> 75%, 대목 99% -> 96%, 발화샘플 적중 7/7 -> 5/7.
-    자모로 펴면 짧은 말끼리 우연히 겹치는 양이 늘고, 후보가 많을수록 그
-    잡음이 쌓여 진짜 답을 밀어낸다. 오타는 오타고침(자모 편집거리)이 따로
-    맡으므로 인코더까지 자모로 갈 이유가 없다.
+    **코사인이 아니라 포함도(coverage)를 잰다.** 두 벡터를 다르게 만들어
+    내적이 곧 '문서 쪽 조각 중 몇 할이 질문 안에 들어 있나' 가 되게 한다.
+
+      속(담기는 쪽)   조각 무게를 제 총무게로 나눈다(L1). 분모가 자기 자신이다.
+      담(담는 쪽)     있는 조각을 1 로만 표시한다. 길이가 분모에 안 들어간다.
+
+    어느 쪽이 속인지는 **답이 될 쪽이 속** 으로 정한다. 노드 이름·발췌·
+    절 제목이 속이고 질문이 담이다. 짧은 쪽을 속에 두는 규칙이 더 자연스러워
+    보여서 뒤집어도 봤는데, 두 자리에서 다 깨졌다.
+
+      발췌   긴 발췌가 짧은 질문을 거저 담는다. '고양이 키우고 싶다' 에
+             도로교통법 제49조가 답으로 나왔다. 근거 없이 답하지 않는다는
+             것이 이 엔진의 전부라 그건 회귀다.
+      절     긴 절이 이긴다. '개발 흐름이 어떻게 되나' 가 '6. 개발 흐름'
+             대신 더 긴 'README > 그래프 성장 도구' 로 샜다.
+
+    담는 쪽에 길이 벌점이 없다는 것이 포함도의 값어치이자 위험이다.
+    답 후보를 속에 두면 그 위험이 '길어서 이기는' 쪽이 아니라 '짧아서
+    이기는' 쪽으로만 남고, 그건 _모르는말 문과 절차찾기 의 낱말 문이
+    이미 막고 있다.
+
+    코사인이었을 때 이것이 무너져 있었다. '도메인' 하나만 물으면 1.000
+    인데 '엔진은 도메인을 어떻게 다루나' 로 늘리면 0.211 로 떨어졌다 —
+    노드 이름이 질문 안에 통째로 들어 있는데도(포함도로는 0.795다). 코사인의 분모에 질문 길이가
+    들어가기 때문이고, 사람이 쓰는 질문은 노드 이름보다 늘 길다. 그래서
+    문서그래프에서 짧은 사람 질문의 양성 점수(중앙 0.214)가 코퍼스 밖
+    질문(중앙 0.175)과 겹쳐 가를 수가 없었다. 문턱을 낮춰도 소용없다 —
+    두 분포가 겹쳐 있으면 자르는 자리가 없다.
+
+    포함도로 바꾸니 양성 중앙 0.625, 음성 중앙 0.317 로 갈렸다. 덤으로
+    점수가 [0,1] 의 '몇 할' 이라 신경망 코사인과 눈금이 비슷해져,
+    그래프에 적힌 임계값(A_MIN 0.45 / OK_MIN 0.58)을 그대로 쓸 수 있다.
+
+    IDF 가중도 재봤지만 소용없었다(양성 0.203 / 음성 0.154). 문제가
+    조각의 흔함이 아니라 분모의 길이였기 때문이다.
 
     못 하는 것은 동의어다 — '해고' 와 '면직' 은 자모가 안 겹쳐 0 이다.
     그 자리는 그래프가 메운다: 노드마다 말 예시가 여럿 있고, 개념망이
@@ -136,72 +218,116 @@ def _character_vector(text, dimensions=None):
     import numpy as np
     dimensions = dimensions or _character_dimensions
     v = np.zeros(dimensions, dtype=np.float32)
-    g = mask_numbers(text).strip()
-    # 음절과 자모를 섞는다. 음절은 정밀하고(우연한 겹침이 적다) 자모는
-    # 강인하다(오타·형태 변화를 잡는다). 한쪽만 쓰면 한쪽을 잃는다.
-    for t, w in (("\x02" + g + "\x03", 1.0),
-                 ("\x02" + _decompose_jamo(g) + "\x03", _jamo_weight)):
-        if w == 0.0:
-            continue
-        for n in (2, 3, 4):
-            for k in range(len(t) - n + 1):
-                fragment = t[k:k + n]
-                조각 = fragment.encode("utf-8")
-                h = zlib.crc32(조각) % dimensions
-                v[h] += w * (1.0 if zlib.crc32(조각 + b"\x00") % 2 else -1.0)
-    magnitude = float(np.linalg.norm(v))
-    return v / magnitude if magnitude else v
+    grams = _character_grams(text)
+    for fragment, w in grams.items():
+        조각 = fragment.encode("utf-8")
+        h = zlib.crc32(조각) % dimensions
+        부호 = 1.0 if zlib.crc32(조각 + b"\x00") % 2 else -1.0
+        v[h] += (w if 쪽 == "속" else 1.0) * 부호
+    if 쪽 == "속":
+        총무게 = sum(grams.values())
+        return v / (총무게 + _smoothing) if 총무게 else v
+    # 담는 쪽은 '있다/없다' 다. 같은 칸에 여러 조각이 겹쳐 쌓여도 한 몫을
+    # 넘지 않게 자른다 — 안 자르면 긴 질문이 제 무게로 포함도를 부풀린다.
+    return np.clip(v, -1.0, 1.0)
 
 
 @lru_cache(maxsize=512)
-def _vec(text):
+def _담(text):
+    """**담는 쪽** 벡터. 무언가가 이 안에 들어 있는지 볼 대상이다.
+
+    보통은 사람이 방금 친 질문이 여기로 온다. 문서 한 절에서 질문을 찾을
+    때처럼 뒤집히는 자리도 있다 — 그때는 절이 담는 쪽이다."""
     if _mode == "문자":
-        return _character_vector(text)
+        return _character_vector(text, "담")
     return _model().encode([mask_numbers(text)], normalize_embeddings=True)[0]
 
 
-def _vecs(texts):
-    """여러 문장을 한 판에. 하나씩 부르면 모델 forward 가 그 수만큼 돈다 —
+# 옛 이름. 부르는 자리 대부분이 '질문' 을 담는 쪽으로 쓰고 있었다.
+_vec = _담
+
+
+@lru_cache(maxsize=512)
+def _속(text):
+    """**담기는 쪽** 벡터 하나. 짧은 쪽이다 — 노드 이름·말 예시, 또는 질문.
+
+    신경망 모드에서는 _담 과 같은 것을 돌려준다. 그쪽은 두 쪽이 대칭인
+    코사인이라 가를 이유가 없다."""
+    if _mode == "문자":
+        return _character_vector(text, "속")
+    return _담(text)
+
+
+def _속들(texts):
+    """담기는 쪽 여럿을 한 판에. 하나씩 부르면 모델 forward 가 그 수만큼 돈다 —
     숙고가 후보 다섯의 발췌 여섯을 각각 부르느라 질문 하나에 서른 번이었다."""
+    return _여럿(texts, "속")
+
+
+def _담들(texts):
+    """담는 쪽 여럿을 한 판에."""
+    return _여럿(texts, "담")
+
+
+def _여럿(texts, 쪽):
     texts = list(texts)
+    import numpy as np
     if not texts:
-        import numpy as np
         return np.zeros((0, 1), dtype="float32")
     if _mode == "문자":
-        import numpy as np
-        return np.array([_character_vector(t) for t in texts], dtype="float32")
+        return np.array([_character_vector(t, 쪽) for t in texts], dtype="float32")
     return _model().encode([mask_numbers(t) for t in texts],
                            normalize_embeddings=True)
 
 
+_vecs = _속들
+
+
 class _CharacterModel:
-    """sentence-transformers 와 같은 모양으로 감싼다. 부르는 쪽은 안 바뀐다."""
+    """sentence-transformers 와 같은 모양으로 감싼다. 부르는 쪽은 안 바뀐다.
+
+    .encode() 로 들어오는 것은 노드의 말 예시다(지식준비·벡터캐시). 그것이
+    질문 안에 들어 있는지 보는 것이므로 담기는 쪽이다."""
 
     def encode(self, sentences, normalize_embeddings=True, **_):
         import numpy as np
-        return np.array([_character_vector(sentence) for sentence in sentences], dtype=np.float32)
+        return np.array([_character_vector(sentence, "속") for sentence in sentences],
+                        dtype=np.float32)
 
 
 def _self_check():
-    """문자 인코더가 벡터로서 갖춰야 할 성질. 신경망 없이 돈다."""
+    """문자 인코더가 갖춰야 할 성질. 신경망 없이 돈다.
+
+    코사인이 아니라 포함도라, 재는 것은 '길이가 달라도 들어 있으면
+    잡히는가' 다. 대칭성은 이제 성질이 아니다 — 일부러 깼다."""
     import numpy as np
-    v = _character_vector("해고")
-    assert abs(float(np.linalg.norm(v)) - 1.0) < 1e-5      # 정규화돼 있다
-    assert float(_character_vector("해고") @ _character_vector("해고")) > 0.99
+    속 = lambda t: _character_vector(t, "속")
+    담 = lambda t: _character_vector(t, "담")
+    점 = lambda 작은, 큰: float(속(작은) @ 담(큰))
+
+    assert abs(점("해고", "해고") - 1.0) < 1e-5          # 제 자신은 온전히 들어 있다
+    assert float(담("해고").max()) <= 1.0 + 1e-6         # 담는 쪽은 있다/없다다
+
+    # 이 파일을 고친 이유. 노드 이름이 질문 안에 통째로 있으면, 질문이
+    # 아무리 길어도 점수가 살아 있어야 한다. 코사인일 때 여기가 0.368 로
+    # 주저앉았고 그래서 문서그래프의 모든 질문이 미지로 떨어졌다.
+    긴질문 = 점("도메인", "엔진은 도메인을 어떻게 다루나")
+    assert 긴질문 > 0.75, 긴질문
+    assert 점("도메인", "도메인") >= 긴질문              # 그래도 짧은 쪽이 더 높다
+
     # 형태 변화는 잡는다 — 한국어는 조사가 붙어 변한다
-    assert float(_character_vector("해고") @ _character_vector("해고가")) > 0.3
+    assert 점("해고", "해고가 부당하다") > 0.5
     # 동의어는 못 잡는다 — '해고' 와 '면직' 은 자모가 안 겹쳐 0 이다.
     # 그 자리는 그래프가 메운다(노드마다 말 예시가 여럿, 개념망이 상위어에
     # 하위어 표현을 붙임).
-    assert float(_character_vector("해고") @ _character_vector("면직")) < 0.05
-    # 자모를 섞으면 짧은 말끼리 우연히 겹치는 양이 조금 는다. 절대값이
-    # 아니라 격차로 본다 — 형태 변화가 남남보다 몇 배인지.
-    similar = float(_character_vector("해고") @ _character_vector("해고가"))
-    unrelated = float(_character_vector("해고") @ _character_vector("고양이"))
-    assert similar > 0.3, similar
-    assert similar > 4 * max(unrelated, 0.01), (similar, unrelated)
+    assert 점("해고", "면직") < 0.05
+    # 절대값이 아니라 격차로 본다 — 형태 변화가 남남보다 몇 배인지.
+    비슷, 남남 = 점("해고", "해고가"), 점("해고", "고양이")
+    assert 비슷 > 4 * max(남남, 0.01), (비슷, 남남)
     # 숫자는 가려서 본다. '820점' 과 '320점' 이 다른 노드가 되면 안 된다
-    assert float(_character_vector("820점입니다") @ _character_vector("320점입니다")) > 0.9
+    assert 점("820점입니다", "320점입니다") > 0.9
+    # 코퍼스 밖 질문은 낮아야 한다. 가르는 자리가 있어야 문턱이 뜻을 갖는다.
+    assert 점("그래프", "오늘 서울 날씨 어때") < 0.3
     print("인코더 selfcheck ok")
 
 

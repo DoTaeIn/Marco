@@ -19,7 +19,7 @@ for _n in ("torch", "transformers", "huggingface_hub", "sentence_transformers"):
     logging.getLogger(_n).setLevel(logging.ERROR)
 
 # 신경망은 인코더.py 한 곳에만 있다. 두 벌 두면 캐시도 두 벌이 된다.
-from encoder import MODEL, DEVICE, _model, _vec, 숫자가리기, 조각내기
+from encoder import MODEL, DEVICE, _담, _model, _속, 숫자가리기, 조각내기
 
 _여기 = os.path.dirname(os.path.abspath(__file__))
 
@@ -522,7 +522,7 @@ def match(text, candidates, graph):
     """가장 가까운 노드와 코사인 유사도. 긴 발화는 조각 중 최고를 취한다."""
     best, score = None, 0.0
     for 조각 in 조각내기(text):
-        v = _vec(조각)
+        v = _담(조각)
         for node in candidates:
             s = float((graph["vec"][node] @ v).max())
             if s > score:
@@ -732,8 +732,10 @@ class 세션:
                     if 노드 in self.g.get(층, {}) and 원말 not in self.g[층][노드]:
                         self.g[층][노드].append(원말)
                         import numpy as np
+                        # 노드 행렬에 붙는 것은 문서 쪽이다 — 이제 배운 말도
+                        # 그래프가 든 글이지 묻는 말이 아니다.
                         self.g["vec"][노드] = np.vstack(
-                            [self.g["vec"][노드], _vec(원말)])
+                            [self.g["vec"][노드], _속(원말)])
                         break
             self.직전A = None
             text = 원말                        # 확인된 발화로 다시 판정한다
@@ -746,8 +748,8 @@ class 세션:
                     칸.append(원말)
                     import numpy as np
                     self.g["vec"][키] = (
-                        np.vstack([self.g["vec"][키], _vec(원말)])
-                        if 키 in self.g["vec"] else np.array([_vec(원말)]))
+                        np.vstack([self.g["vec"][키], _속(원말)])
+                        if 키 in self.g["vec"] else np.array([_속(원말)]))
             self.직전A = None
             말 = self.g["대사"].get("되묻기취소") or "그렇습니까. 그럼 다시 말씀해 주십시오."
             return "A", 말, self.결과()
@@ -778,7 +780,7 @@ class 세션:
         self.회차 += 1
         p = 발화계획(self.g, tag, ev, claim, self)
         p["회차"] = self.회차
-        p["기준"] = _vec(text)
+        p["기준"] = _담(text)
         p["기본문장"] = line
         self.이전확보 = set(p["채운요건"])
         p["해소"] = self.해소
@@ -1115,10 +1117,10 @@ def 보정(graph, 발화=None):
     맞음, 틀림, 무관점수, 예시부족 = [], [], [], []
     if 발화:
         for t in 발화.get("있음", []):
-            c, n = 승자(_vec(t))
+            c, n = 승자(_담(t))
             (틀림 if n in 무관 else 맞음).append((c, n, t))
         for t in 발화.get("없음", []):
-            c, n = 승자(_vec(t))
+            c, n = 승자(_담(t))
             무관점수.append((c, n, t, n in 무관))
     else:
         for node in 실노드:
@@ -1127,11 +1129,11 @@ def 보정(graph, 발화=None):
                 예시부족.append(node)
                 continue
             for e in exs:
-                c, n = 승자(_vec(e), 제외=node)
+                c, n = 승자(_담(e), 제외=node)
                 (맞음 if n == node else 틀림).append((c, node, n, e))
         for node in 무관:
             for e in graph["무관층"][node]:
-                c, n = 승자(_vec(e), 제외=node)
+                c, n = 승자(_담(e), 제외=node)
                 무관점수.append((c, n, e, n in 무관))
 
     있음점수 = sorted(x[0] for x in 맞음)
@@ -1910,8 +1912,12 @@ def 제안(graph, 최소=3, 뭉침=0.62, 자료=None):
 
     # 씨앗 하나에서만 재면 A-B 0.76, B-C 0.65, A-C 0.54 인 한 뭉치가
     # 씨앗이 A 냐 B 냐에 따라 쪼개진다. 임계값 위의 연결 요소로 잡는다.
-    V = np.array([_vec(t) for t in 발화])
-    이웃 = (V @ V.T) >= 뭉침
+    # 발화끼리 재는 자리다. 문자 모드의 포함도는 대칭이 아니므로 한 쪽으로만
+    # 재면 'A 가 B 를 품는다' 와 'B 가 A 를 품는다' 가 갈린다. 뭉치는 데는
+    # 어느 쪽이든 품으면 이웃이라 보는 편이 맞다.
+    V = np.array([_담(t) for t in 발화])
+    품 = np.array([_속(t) for t in 발화]) @ V.T
+    이웃 = np.maximum(품, 품.T) >= 뭉침
     안봄, 무리 = set(range(len(발화))), []
     while 안봄:
         묶음, q = [], deque([안봄.pop()])
@@ -2676,10 +2682,10 @@ def _selfcheck():
 
     # 이름 붙이기: 뭉치 이름은 자료 원문에서만 나온다. 근거가 없으면 안 낸다.
     구절 = [("정당방위", "형법.txt:1"), ("계란 두 개", "요리.txt:3")]
-    중심 = _vec("정당방위가 성립한다")
+    중심 = _담("정당방위가 성립한다")
     assert 이름후보(구절, 중심)[0][0] == "정당방위"
-    assert 이름후보(구절, _vec("계란 두 개")) [0][0] == "계란 두 개"
-    assert 이름후보([("계란 두 개", "요리.txt:3")], _vec("정당방위가 성립한다")) == []
+    assert 이름후보(구절, _담("계란 두 개")) [0][0] == "계란 두 개"
+    assert 이름후보([("계란 두 개", "요리.txt:3")], _담("정당방위가 성립한다")) == []
     print("selfcheck ok")
 
 
@@ -2735,7 +2741,7 @@ if __name__ == "__main__":
             for m in 말들:
                 기존 = [x for x in (g["공통층"].get(노드) or g["사례층"].get(노드) or [])
                         if x not in 말들]
-                점수 = max((float(_vec(m) @ _vec(x)) for x in 기존), default=0.0)
+                점수 = max((float(_담(m) @ _담(x)) for x in 기존), default=0.0)
                 표 = "  " if 점수 >= 0.55 else "?!"
                 수상 += 표 == "?!"
                 print("    %s %.2f  \"%s\"" % (표, 점수, m))
