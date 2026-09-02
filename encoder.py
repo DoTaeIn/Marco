@@ -4,7 +4,7 @@
 신경망은 이 파일 하나에만 있다. 인코더 한 벌, forward pass 한 번 —
 토큰을 하나씩 뽑는 자기회귀 루프가 없다. 나머지는 전부 그래프와 규칙이다.
 """
-import json, os, re, sys
+import json, os, re, sys, zlib
 from collections import deque
 from functools import lru_cache
 
@@ -126,7 +126,13 @@ def _character_vector(text, dimensions=None):
     혼자 짊어질 짐이 적다.
 
     부호 해싱을 쓴다. 서로 다른 n-gram 이 같은 칸에 떨어져도 부호가 갈리면
-    서로를 지워 충돌이 점수를 부풀리지 않는다."""
+    서로를 지워 충돌이 점수를 부풀리지 않는다.
+
+    해시는 crc32 다. 파이썬 내장 hash() 는 문자열에 대해 프로세스마다
+    무작위로 달라진다(PYTHONHASHSEED). 벡터를 디스크에 캐시하는 순간
+    그것이 치명적이다 — 만든 프로세스와 읽는 프로세스의 벡터가 아예 다른
+    공간에 놓인다. 문서그래프에서 노드 이름을 그대로 물었는데 적중이
+    0/400 이었다. 한 프로세스 안에서만 맞으니 눈에 잘 안 띈다."""
     import numpy as np
     dimensions = dimensions or _character_dimensions
     v = np.zeros(dimensions, dtype=np.float32)
@@ -140,8 +146,9 @@ def _character_vector(text, dimensions=None):
         for n in (2, 3, 4):
             for k in range(len(t) - n + 1):
                 fragment = t[k:k + n]
-                h = hash(fragment) % dimensions
-                v[h] += w * (1.0 if hash(fragment + "\x00") % 2 else -1.0)
+                조각 = fragment.encode("utf-8")
+                h = zlib.crc32(조각) % dimensions
+                v[h] += w * (1.0 if zlib.crc32(조각 + b"\x00") % 2 else -1.0)
     magnitude = float(np.linalg.norm(v))
     return v / magnitude if magnitude else v
 
