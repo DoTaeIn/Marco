@@ -160,6 +160,20 @@ def _vec(text):
     return _model().encode([mask_numbers(text)], normalize_embeddings=True)[0]
 
 
+def _vecs(texts):
+    """여러 문장을 한 판에. 하나씩 부르면 모델 forward 가 그 수만큼 돈다 —
+    숙고가 후보 다섯의 발췌 여섯을 각각 부르느라 질문 하나에 서른 번이었다."""
+    texts = list(texts)
+    if not texts:
+        import numpy as np
+        return np.zeros((0, 1), dtype="float32")
+    if _mode == "문자":
+        import numpy as np
+        return np.array([_character_vector(t) for t in texts], dtype="float32")
+    return _model().encode([mask_numbers(t) for t in texts],
+                           normalize_embeddings=True)
+
+
 class _CharacterModel:
     """sentence-transformers 와 같은 모양으로 감싼다. 부르는 쪽은 안 바뀐다."""
 

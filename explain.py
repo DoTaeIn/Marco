@@ -11,7 +11,7 @@ import json, os, re, sys
 from collections import deque
 
 from build import 개념뽑기
-from encoder import DEVICE, MODEL, _길, _model, _vec, 숫자가리기, 조각내기
+from encoder import DEVICE, MODEL, _길, _model, _vec, _vecs, 숫자가리기, 조각내기
 
 def graphify읽기(경로, 최대=1200):
     """graphify graph.json -> 이 엔진이 쓸 수 있는 형태.
@@ -430,7 +430,23 @@ def 지식준비(g):
         except OSError:
             pass
     g["vec"] = {n: V[i:j] for n, (i, j) in zip(이름들, 구간)}
+    # 노드마다 따로 곱하면 7,195번 파이썬 루프다. 재보니 질문 하나에 284ms
+    # 이고 프로파일에 ndarray.max 가 질문 셋에 43,188번 찍혔다. V 는 이미
+    # 한 판의 행렬이므로 한 번에 곱하고 구간마다 최댓값만 집으면 된다.
+    # 답은 한 자리도 안 바뀐다 — 같은 곱셈을 순서만 바꿔 하는 것이다.
+    g["_V"] = V
+    g["_이름들"] = 이름들
+    g["_시작"] = np.array([i for i, _j in 구간])
     return g
+
+
+def _모든점수(g, v):
+    """노드 전부의 점수를 한 판에. 노드 순서는 g["_이름들"] 과 같다."""
+    import numpy as np
+    V = g.get("_V")
+    if V is None:                          # 옛 그래프(캐시를 안 거친 것)
+        return None
+    return np.maximum.reduceat(V @ v, g["_시작"])
 
 
 def _이름그대로(g, 질문, 제외=None):
@@ -597,13 +613,22 @@ def _숙고(g, 글, 후보, 기억=None):
     후보가 붙어 있을수록(어려운 질문일수록) 볼 것이 많아지므로, 난이도에
     따라 계산이 느는 성질이 공짜로 따라온다."""
     v = _vec(글)
-    최고, 점수 = None, -1.0
+    # 후보마다 발췌를 하나씩 인코딩하면 질문 하나에 모델을 서른 번 부른다.
+    # 프로파일에서 torch.linear 가 시간의 75% 였다. 전부 모아 한 번에 넣는다.
+    묶음, 자리 = [], {}
     for n in 후보:
         발췌 = [x.get("글", "") for x in g["메타"].get(n, {}).get("발췌", ())
-                if len(x.get("글", "")) > 10]
-        if not 발췌:
+                if len(x.get("글", "")) > 10][:6]
+        if 발췌:
+            자리[n] = (len(묶음), len(묶음) + len(발췌))
+            묶음 += 발췌
+    벡 = _vecs(묶음)
+    최고, 점수 = None, -1.0
+    for n in 후보:
+        if n not in 자리:
             continue
-        s2 = max(float(_vec(t) @ v) for t in 발췌[:6])
+        i, j = 자리[n]
+        s2 = float((벡[i:j] @ v).max())
         s2 += (기억.가산(n) if 기억 else 0.0)
         if s2 > 점수:
             최고, 점수 = n, s2
@@ -613,11 +638,12 @@ def _숙고(g, 글, 후보, 기억=None):
 def _후보들(g, 글, 개수=5, 제외=None):
     """이름이 가까운 노드 상위 몇 개."""
     v = _vec(글)
-    점 = []
-    for n in g["노드"]:
-        if n == 제외:
-            continue
-        점.append((float((g["vec"][n] @ v).max()), n))
+    모두 = _모든점수(g, v)
+    if 모두 is None:
+        점 = [(float((g["vec"][n] @ v).max()), n)
+              for n in g["노드"] if n != 제외]
+    else:
+        점 = [(float(c), n) for c, n in zip(모두, g["_이름들"]) if n != 제외]
     점.sort(reverse=True)
     return [n for _c, n in 점[:개수]], (점[0][0] if 점 else 0.0)
 
@@ -629,11 +655,26 @@ def _가까운노드(g, 글, 제외=None, 기억=None):
     판정은 활성값의 영향을 받지 않는다. 그래야 아까 무슨 이야기를 했다는
     이유로 근거 없는 답이 새어나오지 않는다."""
     v = _vec(글)
+    모두 = _모든점수(g, v)
+    if 모두 is None:
+        best, score, 순위 = None, 0.0, -1.0
+        for n in g["노드"]:
+            if n == 제외:
+                continue
+            c = float((g["vec"][n] @ v).max())
+            r = c + (기억.가산(n) if 기억 else 0.0)
+            if r > 순위:
+                best, score, 순위 = n, c, r
+        return best, score
+    이름들 = g["_이름들"]
+    if 기억 is None and 제외 is None:      # 흔한 길. 파이썬 루프가 아예 없다
+        i = int(모두.argmax())
+        return 이름들[i], float(모두[i])
     best, score, 순위 = None, 0.0, -1.0
-    for n in g["노드"]:
+    for c, n in zip(모두, 이름들):
         if n == 제외:
             continue
-        c = float((g["vec"][n] @ v).max())
+        c = float(c)
         r = c + (기억.가산(n) if 기억 else 0.0)
         if r > 순위:
             best, score, 순위 = n, c, r
