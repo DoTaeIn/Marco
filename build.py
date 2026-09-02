@@ -380,7 +380,51 @@ def _발췌모으기(말, 나온곳, 정의처, 본문모음, 최대대목=8):
     return 나옴 + _갈래문장(말, 차례, 본문모음, [x["글"] for x in 나옴])
 
 
-def 짓기(파일들, 최소=2, 엣지최소=2):
+def 동의어읽기(경로):
+    """노드마다 사람이 쓸 만한 표현을 적어 둔 파일. 없으면 빈 것.
+
+    인코더는 동의어를 못 한다 — '해고' 와 '면직' 은 자모가 안 겹쳐 0 이다.
+    그렇다고 이 코퍼스에서 분포로 배울 수도 없다. 문단 536개에서 '거짓말'
+    과 '환각' 이 같이 나온 문단은 1개, '자료' 와 '캐시' 는 0개다. 개념쌍의
+    15.8% 만 한 번이라도 같이 나오고 그 중앙값이 1회다 — 셀 것이 없으면
+    추정할 것도 없다. 큰 코퍼스에서 배운 모델을 오프라인 선생으로 써 보려
+    했지만 낱말 하나만 주면 벡터가 무너졌고('고갈' 과 '네임' 이 1.000)
+    문장을 줘도 구절↔개념은 대조군과 안 갈렸다.
+
+    그래서 이 자리는 사람이 채운다. 런타임은 이 파일을 안 읽는다 — 지은
+    그래프 안에 표현으로 들어가 있고, 대화는 계속 문자 인코더로 돈다."""
+    if not 경로 or not os.path.exists(경로):
+        return {}
+    with open(경로, encoding="utf-8") as f:
+        d = json.load(f)
+    return {k: list(v) for k, v in d.items()
+            if not k.startswith("_") and isinstance(v, list)}
+
+
+def 관계읽기(경로):
+    """사람이 판단해서 적은 관계. 없으면 빈 것.
+
+    원문에서 셀 수 있는 관계는 '같이 나왔다'(같은조문)와 '여기서 설명된다'
+    (설명함) 둘뿐이다. 둘 다 "관련 있다" 는 말의 다른 표현이지 무엇을
+    주장하지 않는다. 그래서 자동으로 뽑은 문서그래프는 엣지가 1만 개인데
+    답에 실린 것이 168물음 중 6번, 경로를 탄 것이 0번이었다.
+
+    정의문을 캐서 뜻을 실어 보려 했지만 이 코퍼스에 정의문이 없다 —
+    '라고 한다' 2건, '즉/다시 말해' 0건, 괄호 별칭은 전부 표와 코드
+    조각이었다. **관계는 세어서 나오는 것이 아니라 판단해서 나온다.**
+    그 판단을 사람이 적는 자리가 이 파일이다."""
+    if not 경로 or not os.path.exists(경로):
+        return []
+    with open(경로, encoding="utf-8") as f:
+        d = json.load(f)
+    나옴 = []
+    for 줄 in d.get("관계", []):
+        if isinstance(줄, list) and len(줄) == 3 and all(줄):
+            나옴.append([str(줄[0]), str(줄[1]), str(줄[2])])
+    return 나옴
+
+
+def 짓기(파일들, 최소=2, 엣지최소=2, 동의어=None, 관계=None):
     자리 = defaultdict(list)
     조문별 = []
     정의 = defaultdict(list)          # 개념 -> 그것을 제목으로 단 조문들
@@ -433,6 +477,8 @@ def 짓기(파일들, 최소=2, 엣지최소=2):
     제목전체 = {w for _, _, 제목 in 조문별 for w in 제목}
     고름 = {w for w, v in 자리.items() if len(v) >= 최소} | (제목전체 & set(자리))
     문서수 = {w: len({_문서(c) for c in 자리[w]}) for w in 고름}
+    # 개념을 고르는 문은 아래 `주제감` 에서 한 번 더 좁힌다. 무게를 재려면
+    # 문서수가 먼저 있어야 해서 여기서 못 한다.
 
     쌍 = Counter()
     설명쌍 = Counter()
@@ -472,9 +518,62 @@ def 짓기(파일들, 최소=2, 엣지최소=2):
                    "발췌": _발췌모으기(w, 자리[w], 정의.get(w), 본문모음),
                    "출처": [c for c, _ in Counter(자리[w]).most_common(6)],
                    "법별": 법별.most_common(4)}
+    # 가르친 표현을 붙인다. 두 군데에 같이 넣어야 한다 — 말 예시만 넣으면
+    # `_모르는말` 이 그 표현의 낱말을 모른다고 먼저 거절한다. 실제로 '임계값'
+    # 에 'threshold' 를 붙였는데도 어휘에 없어서 미지였다.
+    가르침 = 0
+    for 이름, 표현들 in (동의어 or {}).items():
+        if 이름 not in 노드:
+            continue
+        노드[이름] = list(dict.fromkeys(list(노드[이름]) + [t for t in 표현들 if t]))
+        for t in 표현들:
+            어휘.update(개념뽑기(t))
+            어휘.update(w for w in re.findall(r"[A-Za-z]{2,}", t))
+        가르침 += 1
+    if 가르침:
+        print("가르친 노드 %d개" % 가르침)
+
+    # 주제가 될 수 없는 말을 노드에서 뺀다. **어휘에서는 안 뺀다** —
+    # 노드와 어휘는 원래 따로다(노드 1,209 / 어휘 3,060). 그래서 빼도
+    # `_모르는말` 이 그 말을 모른다고 하지 않는다. 주인공이 못 될 뿐
+    # 조연으로는 남는다.
+    #
+    # 잣대는 무게이고 문턱은 10이다. 제목으로 쓰인 적이 있으면(정의처) 무게가
+    # 낮아도 남긴다 — 제목은 그 자체로 정의다.
+    #
+    # 재보니 정확도는 안 변하고(안 65/96 그대로) **코퍼스 밖 물음이 새는
+    # 것이 9/62 -> 5/62 로 준다.** '오늘 서울 날씨' 가 `오늘` 로, '저녁 뭐
+    # 먹지' 가 `저녁` 으로 답하던 것이 사라진다. 문턱을 12 위로 올리면
+    # 진짜 개념까지 잘려 정확도가 61/96 으로 떨어진다.
+    주제문턱 = float(os.environ.get("KG_TOPIC_MIN", "10"))
+    # 사람이 표현을 가르쳐 넣은 노드는 안 자른다. 가르쳤다는 것 자체가
+    # '이건 주제다' 라는 선언이다. 안 지키면 `캐시`·`개념망`·`오타` 처럼
+    # 방금 가르친 것이 다음 줄에서 잘려나간다 — 실제로 그랬다.
+    # 관계를 적어 준 노드도 지킨다. 관계의 한쪽 끝이 잘리면 그 관계가
+    # 통째로 없어진다 — 실제로 주제문턱이 정의엣지 17개를 5개로 깎았다.
+    지킬 = set(동의어 or {}) | {x for a, _r, b in (관계 or []) for x in (a, b)}
+    버릴 = {w for w in 고름
+            if w not in 지킬
+            and 점수(w) < 주제문턱 and not (정의.get(w) or w in 제목전체)}
+    if 버릴:
+        고름 = 고름 - 버릴
+        노드 = {w: v for w, v in 노드.items() if w in 고름}
+        메타 = {w: v for w, v in 메타.items() if w in 고름}
+        print("주제가 되기엔 가벼운 말 %d개를 노드에서 뺐다 (어휘에는 남는다)" % len(버릴))
+
     엣지 = [[a, "설명함", b] for (a, b), w in 설명쌍.most_common() if w >= 1]
     엣지 += [[a, "같은조문", b] for (a, b), w in 쌍.most_common() if w >= 엣지최소]
-    개념엣지 = 개념망뽑기(고름, 자리, 홀로) + 정의문뽑기(파일들, 고름)
+    # 쌍은 노드를 걸러내기 전에 세어 두었다. 없어진 노드를 가리키는 엣지가
+    # 남으면 이웃 지도와 잇는길 이 없는 곳을 가리킨다.
+    엣지 = [e for e in 엣지 if e[0] in 고름 and e[2] in 고름]
+    # 사람이 적은 관계는 **엣지에도** 넣는다. 개념망(개념엣지)은 상위-하위를
+    # 담는 곳이라 잇는길 이 안 본다. 경로를 타려면 엣지에 있어야 한다.
+    엣지 = [e for e in (관계 or []) if e[0] in 고름 and e[2] in 고름] + 엣지
+    사람관계 = [e for e in (관계 or []) if e[0] in 고름 and e[2] in 고름]
+    if 관계:
+        print("사람이 적은 관계 %d개 중 %d개를 얹었다" % (len(관계), len(사람관계)))
+    개념엣지 = [e for e in 개념망뽑기(고름, 자리, 홀로) + 정의문뽑기(파일들, 고름)
+                if e[0] in 고름 and e[2] in 고름] + 사람관계
     return {"역할": "안내", "목표": None, "설명그래프": True,
             "개념엣지": 개념엣지,
             "임계값": {"A_MIN": 0.45, "OK_MIN": 0.58},
@@ -504,20 +603,29 @@ if __name__ == "__main__":
         sys.exit(0)
     최소 = int(sys.argv[sys.argv.index("--min") + 1]) if "--min" in sys.argv else 2
     인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-    폴더 = 인자[0] if 인자 else os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "data/법지식")
+    # 폴더를 여럿 받는다. 스스로 배우는 회로가 원래 코퍼스에 받아온 글을
+    # 얹어서 다시 지어야 하기 때문이다 — 따로 지으면 두 그래프가 되고,
+    # 그러면 배운 것이 원래 알던 것과 한자리에서 겨루지 못한다.
+    폴더들 = 인자 or [os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "data/법지식")]
+    폴더 = 폴더들[0]
     나감 = (sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv
             else os.path.join(폴더, "지식그래프.json"))
-    파일 = sorted(glob.glob(os.path.join(폴더, "*.txt"))
-                  + glob.glob(os.path.join(폴더, "*.md")))
+    파일 = sorted(f for d in 폴더들
+                  for f in glob.glob(os.path.join(d, "*.txt"))
+                  + glob.glob(os.path.join(d, "*.md")))
     # 폴더 설명서는 지식이 아니다. README 가 코퍼스에 섞이면 그 안의 예시가
     # 개념의 정의처로 잡힌다 — 실제로 README 가 '정당방위' 를 가로챘다.
     파일 = [f for f in 파일
             if not os.path.basename(f).lower().startswith(("readme", "_", "."))]
     if not 파일:
-        print("%s 안에 .txt 나 .md 가 없습니다." % 폴더)
+        print("%s 안에 .txt 나 .md 가 없습니다." % ", ".join(폴더들))
         sys.exit(1)
-    g = 짓기(파일, 최소=최소)
+    동의어터 = (sys.argv[sys.argv.index("--동의어") + 1] if "--동의어" in sys.argv
+                else os.path.join(폴더, "_동의어.json"))
+    관계터 = (sys.argv[sys.argv.index("--관계") + 1] if "--관계" in sys.argv
+              else os.path.join(폴더, "_관계.json"))
+    g = 짓기(파일, 최소=최소, 동의어=동의어읽기(동의어터), 관계=관계읽기(관계터))
     json.dump(g, open(나감, "w", encoding="utf-8"), ensure_ascii=False)
     print("문서 %d개 · 대목 %d개" % (len(파일), g["조문수"]))
     상 = sum(1 for e in g["개념엣지"] if e[1] == "상위")
