@@ -124,3 +124,70 @@ class 겪음테스트(unittest.TestCase):
         이유 = [x[2] for x in g["_겪음버림"]]
         self.assertIn("모르는 노드", 이유)
         self.assertIn("이 그래프에 없는 관계", 이유)
+
+
+class 소문테스트(unittest.TestCase):
+    """들은 것은 근거가 되지 못한다. 신뢰가 있어야 근거가 된다."""
+
+    def setUp(self):
+        self.터 = tempfile.mkdtemp()
+        본 = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                          "graphs", "npc_대장장이.kg")
+        self.길 = {}
+        for 누구 in ("갑", "을", "병"):
+            self.길[누구] = os.path.join(self.터, 누구 + ".kg")
+            shutil.copy(본, self.길[누구])
+        self.w = World(겪음지도={"help": ("내놓음", "고칠물건있음")}, 소문신뢰=20)
+        for 누구 in ("갑", "을", "병"):
+            self.w.add(NPC(누구, 누구, graph_path=self.길[누구], location="광장"))
+        self.w.add(NPC("톰", "톰"))
+        self.w.add(NPC("제리", "제리"))
+        # 갑만 본다
+        self.w._record(Event(1, "톰", "help", "제리", None, None, {}),
+                       self.w.npcs["갑"])
+        self.마디 = "겪음_톰_help_제리"
+
+    def tearDown(self):
+        shutil.rmtree(self.터, ignore_errors=True)
+
+    def test_본것과_들은것이_출처로_갈린다(self):
+        self.w.전하다("갑", "을")
+        self.assertEqual(self.w.npcs["갑"].아는것()[self.마디]["출처"], "본 것")
+        self.assertEqual(self.w.npcs["을"].아는것()[self.마디]["출처"], "갑한테 들음")
+
+    def test_안믿으면_노드만_오고_엣지는_안온다(self):
+        import engine
+        self.w.전하다("갑", "을")                    # 신뢰 0
+        을 = engine.load(self.길["을"])
+        self.assertIn(self.마디, 을["사례층"])        # 그 일이 있었다는 것은 안다
+        self.assertNotIn(self.마디, 을["증거"])       # 근거로는 못 쓴다
+
+    def test_믿으면_근거까지_온다(self):
+        import engine
+        self.w.npcs["병"].relation_to("갑").change(trust=40)
+        사건 = self.w.전하다("갑", "병")
+        self.assertTrue(사건.effects["근거로받음"])
+        병 = engine.load(self.길["병"])
+        self.assertIn(self.마디, 병["증거"])
+
+    def test_거짓말은_막지_않고_출처에_적는다(self):
+        """세계는 거짓을 검열하지 않는다. 누구한테 들었는지만 남긴다."""
+        self.w.npcs["병"].relation_to("을").change(trust=50)
+        없는일 = "겪음_톰_threaten_제리"
+        사건 = self.w.전하다("을", "병", 없는일, 말=["톰이 제리를 위협했다"])
+        self.assertTrue(사건.effects["지어냄"])
+        self.assertEqual(self.w.npcs["병"].아는것()[없는일]["출처"], "을한테 들음")
+        # 믿는 사이여도 지어낸 것에는 근거가 안 붙는다
+        self.assertFalse(사건.effects["근거로받음"])
+
+    def test_이미_본_것은_들어도_출처가_안_바뀐다(self):
+        self.w.전하다("갑", "을")
+        self.w.npcs["을"].relation_to("갑").change(trust=50)
+        self.w.전하다("갑", "을")
+        self.assertEqual(self.w.npcs["을"].아는것()[self.마디]["출처"], "갑한테 들음")
+        # 갑 본인은 남이 말해줘도 여전히 '본 것'
+        self.w.전하다("을", "갑")
+        self.assertEqual(self.w.npcs["갑"].아는것()[self.마디]["출처"], "본 것")
+
+    def test_모르는_것은_전할_수_없다(self):
+        self.assertIsNone(self.w.전하다("을", "병"))

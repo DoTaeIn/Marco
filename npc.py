@@ -70,6 +70,35 @@ class NPC:
     memories: list[Event] = field(default_factory=list)
     _conversation: Any = field(default=None, init=False, repr=False, compare=False)
 
+    def 겪음길(self) -> Optional[str]:
+        if not self.graph_path:
+            return None
+        return os.path.splitext(self.graph_path)[0] + ".겪음.jsonl"
+
+    def 아는것(self) -> dict[str, dict[str, Any]]:
+        """겪음 파일에 쌓인 것. 노드이름 -> {말, 출처}.
+
+        본 것과 들은 것이 여기서 갈린다. 무엇을 아느냐만이 아니라 어떻게 알게
+        됐느냐가 남아야 거짓말도 오해도 성립한다."""
+        길 = self.겪음길()
+        if not 길 or not os.path.exists(길):
+            return {}
+        앎: dict[str, dict[str, Any]] = {}
+        for 줄 in open(길, encoding="utf-8"):
+            줄 = 줄.strip()
+            if not 줄:
+                continue
+            try:
+                d = json.loads(줄)
+            except ValueError:
+                continue
+            if d.get("노드") and d.get("말"):
+                칸 = 앎.setdefault(d["노드"], {"말": [], "출처": None})
+                칸["말"] += [m for m in d["말"] if m not in 칸["말"]]
+                if d.get("출처") and not 칸["출처"]:
+                    칸["출처"] = d["출처"]
+        return 앎
+
     def relation_to(self, other_id: str) -> Relationship:
         if other_id == self.id:
             raise ValueError("NPC는 자기 자신과 관계를 만들 수 없습니다")
@@ -142,7 +171,8 @@ class World:
                  conversation_factory: Optional[Callable[[str], Any]] = None,
                  행동말: Optional[dict[str, str]] = None,
                  겪음지도: Optional[dict[str, tuple[str, str]]] = None,
-                 겪음쓰기: bool = True):
+                 겪음쓰기: bool = True,
+                 소문신뢰: int = 20):
         """겪음지도: 사건 종류 -> (관계, 도착노드).
 
         사건 자체는 이미 (주어, 종류, 목적어) 삼중항이라 캐낼 것이 없다. 다만
@@ -158,6 +188,8 @@ class World:
         self.행동말 = dict(행동말 or 행동말_기본())
         self.겪음지도 = dict(겪음지도 or {})
         self.겪음쓰기 = 겪음쓰기
+        # 들은 얘기를 '근거'로까지 받아들이려면 이만큼은 믿어야 한다.
+        self.소문신뢰 = 소문신뢰
 
     def add(self, npc: NPC) -> NPC:
         if not npc.id:
@@ -209,17 +241,25 @@ class World:
         if not 말:
             return
         이름 = "겪음_%s_%s_%s" % (event.actor, event.kind, event.target or "혼자")
-        줄들: list[dict[str, Any]] = [{"노드": 이름, "층": "사례층", "말": [말]}]
+        줄들: list[dict[str, Any]] = [{"노드": 이름, "층": "사례층", "말": [말],
+                                       "출처": "본 것"}]
         지도 = self.겪음지도.get(event.kind)
         if 지도:
             줄들.append({"엣지": [이름, 지도[0], 지도[1]]})
-        경로 = os.path.splitext(목격자.graph_path)[0] + ".겪음.jsonl"
+        경로 = 목격자.겪음길()
+        self._겪음쓰기(경로, 줄들)
+
+    @staticmethod
+    def _겪음쓰기(경로: Optional[str], 줄들: list[dict[str, Any]]) -> bool:
+        if not 경로:
+            return False
         try:
             with open(경로, "a", encoding="utf-8") as f:
                 for 줄 in 줄들:
                     f.write(json.dumps(줄, ensure_ascii=False) + "\n")
+            return True
         except OSError:
-            pass                    # 겪음을 못 남겨도 세계는 굴러가야 한다
+            return False            # 겪음을 못 남겨도 세계는 굴러가야 한다
 
     def set_relationship(self, first_id: str, second_id: str, kind: str, *,
                          affinity: int = 0, trust: int = 0, fear: int = 0) -> None:
@@ -293,6 +333,67 @@ class World:
                        "path": getattr(reply, "path", [])})
         witnesses = [actor] + ([self._npc(target_id)] if target_id else [])
         return self._record(event, *witnesses)
+
+    def 전하다(self, 말한이_id: str, 들은이_id: str, 노드: Optional[str] = None,
+              *, 말: Optional[list[str]] = None) -> Optional[Event]:
+        """A 가 B 에게 제가 아는 것을 전한다. 소문은 여기서 시작된다.
+
+        말이 아니라 구조로 나른다. 재본 값이 있다 — 예시를 반씩 나눠 가진 두
+        사람 사이에서 한쪽 말을 다른 쪽이 제 노드로 되찾는 비율이 25.6% 였다.
+        말로 나르면 넷 중 셋이 깨지고, 그 깨짐은 '오해'가 아니라 잡음이다.
+        왜곡은 설계해야 이야기가 된다.
+
+        설계한 왜곡이 이것이다 — **들은 것은 근거가 되지 못한다.**
+        노드는 건너가지만 엣지는 신뢰가 있어야 건너간다. 그래서 B 는 그 일이
+        있었다는 것은 알아도, 그래서 무엇이 되는지는 모른다. 법정의 전문증거와
+        같은 자리다.
+
+        노드를 비우면 말한이가 가장 최근에 안 것을 전한다.
+        말한이가 모르는 것을 노드+말로 넘기면 그것이 거짓말이다 — 세계는
+        막지 않고 출처에 사실대로 적는다. 나중에 B 가 직접 보면 어긋난다.
+        """
+        말한이, 들은이 = self._npc(말한이_id), self._npc(들은이_id)
+        if 말한이 is 들은이:
+            raise ValueError("자기 자신에게는 전할 수 없습니다")
+        앎 = 말한이.아는것()
+        if 노드 is None:
+            if not 앎:
+                return None
+            노드 = list(앎)[-1]
+        칸 = 앎.get(노드)
+        말들 = list(말 or (칸 or {}).get("말") or [])
+        if not 말들:
+            return None
+        지어냄 = 칸 is None
+        이미 = 들은이.아는것().get(노드)
+        출처 = "%s한테 들음" % 말한이.name
+        줄들: list[dict[str, Any]] = []
+        if not 이미:
+            줄들.append({"노드": 노드, "층": "사례층", "말": 말들, "출처": 출처})
+        elif [m for m in 말들 if m not in 이미["말"]]:
+            # 이미 아는 일인데 표현이 다르다. 부르는 법만 는다 — 출처는 안 덮는다.
+            # 이렇게 노드마다 여러 말투가 쌓여야 인물마다 다른 말이 나온다.
+            줄들.append({"노드": 노드, "층": "사례층",
+                         "말": [m for m in 말들 if m not in 이미["말"]]})
+        믿음 = 들은이.relation_to(말한이.id).trust
+        엣지붙임 = 믿음 >= self.소문신뢰
+        if 엣지붙임 and not 지어냄:
+            지도 = self._노드의지도(노드)
+            if 지도:
+                줄들.append({"엣지": [노드, 지도[0], 지도[1]]})
+        if 줄들:
+            self._겪음쓰기(들은이.겪음길(), 줄들)
+        사건 = Event(self.tick_count, 말한이.id, "전함", 들은이.id, 노드, 말들[0],
+                     {"출처": 출처, "믿음": 믿음, "근거로받음": bool(엣지붙임 and not 지어냄),
+                      "지어냄": 지어냄})
+        return self._record(사건, 말한이, 들은이)
+
+    def _노드의지도(self, 노드: str) -> Optional[tuple[str, str]]:
+        """겪음 노드 이름에서 그 사건 종류를 되읽어 겪음지도를 찾는다."""
+        조각 = 노드.split("_")
+        if len(조각) >= 3 and 조각[0] == "겪음":
+            return self.겪음지도.get(조각[2])
+        return None
 
     def tick(self) -> list[Event]:
         """시간을 한 칸 진행해, 같은 장소의 NPC가 최소한의 자율 행동을 하게 한다.
