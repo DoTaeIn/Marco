@@ -59,6 +59,9 @@ class NPC:
     id: str
     name: str
     graph_path: Optional[str] = None
+    # 그래프는 무엇을 아는가, 목소리는 어떻게 말하는가. 같은 그래프에 목소리만
+    # 달리 붙이면 마을 사람 스무 명이 같은 지식을 공유하며 각자 다르게 말한다.
+    목소리: Optional[str] = None
     location: str = ""
     goals: list[str] = field(default_factory=list)
     energy: int = 100
@@ -276,7 +279,12 @@ class World:
                 if factory is None:
                     from nai import Conversation
                     factory = Conversation
-                actor._conversation = factory(actor.graph_path)
+                try:
+                    actor._conversation = factory(actor.graph_path,
+                                                  목소리=actor.목소리)
+                except TypeError:
+                    # 게임이 넣은 대화 공장이 목소리를 안 받을 수 있다.
+                    actor._conversation = factory(actor.graph_path)
             reply = actor._conversation.reply(text)
         answer = getattr(reply, "text", text)
         topic = getattr(reply, "topic", None)
@@ -311,6 +319,7 @@ class World:
         """JSON으로 바로 저장할 수 있는 월드 상태. 그래프 대화 캐시는 저장하지 않는다."""
         def npc_data(npc: NPC) -> dict[str, Any]:
             return {"id": npc.id, "name": npc.name, "graph_path": npc.graph_path,
+                    "목소리": npc.목소리,
                     "location": npc.location, "goals": npc.goals, "energy": npc.energy,
                     "facts": npc.facts,
                     "relationships": {key: asdict(value) for key, value in npc.relationships.items()},
@@ -325,6 +334,7 @@ class World:
         world.tick_count = int(data.get("tick", 0))
         for raw in data.get("npcs", []):
             npc = NPC(id=raw["id"], name=raw["name"], graph_path=raw.get("graph_path"),
+                      목소리=raw.get("목소리"),
                       location=raw.get("location", ""), goals=list(raw.get("goals", [])),
                       energy=int(raw.get("energy", 100)), facts=dict(raw.get("facts", {})))
             npc.relationships = {key: Relationship(**value)

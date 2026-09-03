@@ -60,7 +60,8 @@ def build_graph(source: str | os.PathLike[str], output: str | os.PathLike[str], 
 class Conversation:
     """그래프 하나를 자연스러운 여러 턴 대화로 여는 공통 세션."""
 
-    def __init__(self, graph_path: str | os.PathLike[str], mode: Optional[str] = None):
+    def __init__(self, graph_path: str | os.PathLike[str], mode: Optional[str] = None,
+                 목소리: Optional[str] = None):
         self.path = str(graph_path)
         suffix = Path(graph_path).suffix.lower()
         self.mode = mode or ("game" if suffix == ".kg" else "guide")
@@ -71,7 +72,11 @@ class Conversation:
             import engine
             self.graph = engine.load(self.path)
             self._engine = engine
-            self._session = engine.세션(self.graph)
+            # 목소리를 안 쓰면 인자를 아예 안 넘긴다. 게임이 갈아끼운 세션
+            # 구현이 이 인자를 모를 수 있다.
+            self._session = (engine.세션(self.graph,
+                                         목소리=engine.목소리읽기(목소리))
+                             if 목소리 else engine.세션(self.graph))
             self._memory = None
         else:
             import explain
