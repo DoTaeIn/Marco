@@ -12,6 +12,7 @@ world = World(state={"시장_개점": False})
 world.add(NPC("mina", "미나", graph_path="graphs/graph_의료.kg",
               location="광장", goals=["약초 구하기"]))
 world.add(NPC("jun", "준", location="광장"))
+world.set_relationship("mina", "jun", "lover", affinity=90, trust=85)
 
 # 행동은 양쪽 기억과 관계에 남고, 게임의 공유 상태도 바꾼다.
 event = world.interact("mina", "jun", "help", topic="약초 상자",

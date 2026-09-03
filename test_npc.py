@@ -19,6 +19,12 @@ class NPCRuntimeTest(unittest.TestCase):
         self.assertTrue(self.world.state["market_open"])
         self.assertEqual(len(self.jun.memories), 1)
 
+    def test_named_lovers_relationship_survives_save(self):
+        self.world.set_relationship("mina", "jun", "lover", affinity=90, trust=85)
+        restored = World.restore(self.world.snapshot())
+        relation = restored.npcs["mina"].relation_to("jun")
+        self.assertEqual((relation.kind, relation.affinity, relation.trust), ("lover", 90, 85))
+
     def test_tick_causes_colocated_npcs_to_act(self):
         events = self.world.tick()
         self.assertEqual([event.kind for event in events], ["talk", "talk"])

@@ -22,6 +22,7 @@ def _bounded(value: int, low: int = -100, high: int = 100) -> int:
 class Relationship:
     """한 NPC가 다른 NPC를 어떻게 보는지 나타내는 저장 가능한 상태."""
 
+    kind: str = "stranger"
     affinity: int = 0
     trust: int = 0
     fear: int = 0
@@ -116,6 +117,26 @@ class World:
         for npc in witnesses:
             npc.remember(event)
         return event
+
+    def set_relationship(self, first_id: str, second_id: str, kind: str, *,
+                         affinity: int = 0, trust: int = 0, fear: int = 0) -> None:
+        """두 NPC의 관계 이름과 초기 감정을 함께 정한다.
+
+        ``lover`` 같은 이름은 게임 규칙과 UI가 읽는 의미 있는 상태이고, 수치는
+        행동 선택에 쓰는 연속적인 감정이다. 한쪽만 연인인 관계도 가능해야 하므로
+        이후에는 각 방향의 ``relation_to(...).kind``를 따로 바꿀 수 있다.
+        """
+        if not kind.strip():
+            raise ValueError("관계 이름이 비어 있습니다")
+        first, second = self._npc(first_id), self._npc(second_id)
+        if first is second:
+            raise ValueError("NPC는 자기 자신과 관계를 만들 수 없습니다")
+        for source, target in ((first, second), (second, first)):
+            relation = source.relation_to(target.id)
+            relation.kind = kind
+            relation.affinity = _bounded(affinity)
+            relation.trust = _bounded(trust)
+            relation.fear = _bounded(fear)
 
     def interact(self, actor_id: str, target_id: str, kind: str, *,
                  topic: Optional[str] = None, text: Optional[str] = None,
