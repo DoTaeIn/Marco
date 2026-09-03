@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from dataclasses import asdict, dataclass, field
 from typing import Any, Callable, Optional
 
@@ -87,16 +88,73 @@ SOCIAL_EFFECTS: dict[str, dict[str, int]] = {
 }
 
 
+_조사쌍 = {"은": "는", "는": "은", "이": "가", "가": "이", "을": "를", "를": "을",
+           "과": "와", "와": "과"}
+
+
+def 조사맞추기(글: str, 이름들) -> str:
+    """이름 뒤 조사를 받침에 맞게 고친다. '톰가' -> '톰이'.
+
+    engine 의 조사고치기() 와 같은 일을 하지만 여기 따로 둔다. npc 런타임은
+    인코더 없는 서버에서도 돌아야 해서 engine 을 import 하지 않는다."""
+    for 이름 in sorted({x for x in 이름들 if x}, key=len, reverse=True):
+        끝 = ord(이름[-1])
+        if not (0xAC00 <= 끝 <= 0xD7A3):
+            continue
+        받침 = (끝 - 0xAC00) % 28 != 0
+        i = 0
+        while True:
+            i = 글.find(이름, i)
+            if i < 0:
+                break
+            뒤 = i + len(이름)
+            조 = 글[뒤:뒤 + 1]
+            if 조 in _조사쌍:
+                바름 = 조 if (받침 == (조 in ("은", "이", "을", "과"))) else _조사쌍[조]
+                글 = 글[:뒤] + 바름 + 글[뒤 + 1:]
+            i = 뒤
+    return 글
+
+
+# 사건을 한국어 한 줄로. SOCIAL_EFFECTS 와 같은 자리에 두어 게임이 함께 늘린다.
+# 이 문장이 곧 그 노드를 말로 불러내는 예시가 되므로, 사람이 실제로 할 법한
+# 말이어야 한다. 게임은 World(행동말=...) 로 자기 어투를 넣으면 된다.
+행동말: dict[str, str] = {
+    "talk": "%s가 %s에게 말을 걸었다",
+    "help": "%s가 %s를 도왔다",
+    "trade": "%s가 %s와 거래했다",
+    "share": "%s가 %s와 나눴다",
+    "threaten": "%s가 %s를 위협했다",
+}
+
+
+def 행동말_기본() -> dict[str, str]:
+    return dict(행동말)
+
+
 class World:
     """NPC 집단의 시간, 공유 상태, 사건 기록을 소유한다."""
 
     def __init__(self, *, state: Optional[dict[str, Any]] = None,
-                 conversation_factory: Optional[Callable[[str], Any]] = None):
+                 conversation_factory: Optional[Callable[[str], Any]] = None,
+                 행동말: Optional[dict[str, str]] = None,
+                 겪음지도: Optional[dict[str, tuple[str, str]]] = None,
+                 겪음쓰기: bool = True):
+        """겪음지도: 사건 종류 -> (관계, 도착노드).
+
+        사건 자체는 이미 (주어, 종류, 목적어) 삼중항이라 캐낼 것이 없다. 다만
+        그 사건이 그 NPC 의 그래프에서 '무엇을 뒷받침하는지'는 게임이 안다 —
+        도움을 받으면 믿음직함으로 가는지 빚으로 가는지는 세계관의 몫이다.
+        비워 두면 노드만 늘고 엣지는 안 는다.
+        """
         self.tick_count = 0
         self.npcs: dict[str, NPC] = {}
         self.state: dict[str, Any] = dict(state or {})
         self.events: list[Event] = []
         self._conversation_factory = conversation_factory
+        self.행동말 = dict(행동말 or 행동말_기본())
+        self.겪음지도 = dict(겪음지도 or {})
+        self.겪음쓰기 = 겪음쓰기
 
     def add(self, npc: NPC) -> NPC:
         if not npc.id:
@@ -116,7 +174,49 @@ class World:
         self.events.append(event)
         for npc in witnesses:
             npc.remember(event)
+            if self.겪음쓰기:
+                self._겪음남기기(event, npc)
         return event
+
+    def _사건말(self, event: Event) -> Optional[str]:
+        """사건 한 건을 사람이 할 법한 한 줄로. 못 만들면 None."""
+        if event.text and event.kind == "speak":
+            return event.text
+        틀 = self.행동말.get(event.kind)
+        if not 틀 or not event.target:
+            return None
+        보는이 = lambda i: self.npcs[i].name if i in self.npcs else i
+        가, 나 = 보는이(event.actor), 보는이(event.target)
+        try:
+            return 조사맞추기(틀 % (가, 나), (가, 나))
+        except TypeError:
+            return 틀
+
+    def _겪음남기기(self, event: Event, 목격자: NPC) -> None:
+        """목격자의 그래프 옆 덧칠 파일에 이 사건을 남긴다.
+
+        목격자에게만 쓴다. 그래서 NPC 마다 그래프가 갈라진다 — 같은 세계를
+        살아도 본 것이 다르면 아는 것이 다르다. 소문·비밀·오해가 여기서 나온다.
+        """
+        # 그래프 파일이 없는 NPC(순수 시뮬레이션용)에게는 남기지 않는다.
+        # 없는 .kg 옆에 겪음 파일만 쌓이면 아무도 읽지 않는 쓰레기가 된다.
+        if not 목격자.graph_path or not os.path.exists(목격자.graph_path):
+            return
+        말 = self._사건말(event)
+        if not 말:
+            return
+        이름 = "겪음_%s_%s_%s" % (event.actor, event.kind, event.target or "혼자")
+        줄들: list[dict[str, Any]] = [{"노드": 이름, "층": "사례층", "말": [말]}]
+        지도 = self.겪음지도.get(event.kind)
+        if 지도:
+            줄들.append({"엣지": [이름, 지도[0], 지도[1]]})
+        경로 = os.path.splitext(목격자.graph_path)[0] + ".겪음.jsonl"
+        try:
+            with open(경로, "a", encoding="utf-8") as f:
+                for 줄 in 줄들:
+                    f.write(json.dumps(줄, ensure_ascii=False) + "\n")
+        except OSError:
+            pass                    # 겪음을 못 남겨도 세계는 굴러가야 한다
 
     def set_relationship(self, first_id: str, second_id: str, kind: str, *,
                          affinity: int = 0, trust: int = 0, fear: int = 0) -> None:

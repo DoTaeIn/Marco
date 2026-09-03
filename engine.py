@@ -316,6 +316,87 @@ def 학습쓰기(graph, 노드, 말, 아님=False):
         return False
 
 
+def 겪음읽기(경로):
+    """NPC 가 겪어서 스스로 만든 노드와 엣지. 원본 .kg 를 안 건드리는 덧칠 파일.
+
+    학습로그(.학습.jsonl)와 자리도 방식도 같지만 넘는 선이 다르다. 학습로그는
+    "있는 노드를 부르는 법"만 늘렸고 노드·엣지는 절대 만들지 않았다. 이 파일은
+    만든다.
+
+    문서에서 관계를 캐내는 것이 어려웠던 이유는 산문이 관계를 숨기기 때문이다.
+    게임 사건은 숨기지 않는다 — interact(톰, '도움', 제리) 자체가 이미 삼중항이다.
+    캐낼 것이 없으므로 여기서는 자동으로 만들어도 지어낸 것이 아니다.
+
+    줄 두 가지:
+        {"노드": "제리를도움", "층": "사례", "말": ["제리를 도왔지"]}
+        {"엣지": ["제리를도움", "내놓음", "믿음직함"]}
+    """
+    노드, 엣지 = {}, []
+    if not (경로 and os.path.exists(경로)):
+        return 노드, 엣지
+    for 줄 in open(경로, encoding="utf-8"):
+        줄 = 줄.strip()
+        if not 줄:
+            continue
+        try:
+            d = json.loads(줄)
+        except ValueError:
+            continue
+        if "엣지" in d and len(d["엣지"]) == 3:
+            엣지.append(list(d["엣지"]))
+        elif d.get("노드") and d.get("말"):
+            칸 = 노드.setdefault(d["노드"], {"층": d.get("층") or "사례층", "말": []})
+            칸["말"] += [m for m in d["말"] if m and m not in 칸["말"]]
+    return 노드, 엣지
+
+
+def 겪음쓰기(graph, *, 노드=None, 층="사례층", 말=None, 엣지=None):
+    """겪은 것을 덧칠 파일에 한 줄 남긴다. 되돌리기는 파일을 지우면 된다."""
+    경로 = graph.get("_겪음로그")
+    if not 경로:
+        return False
+    if 엣지 is not None:
+        줄 = {"엣지": list(엣지)}
+    elif 노드 and 말:
+        줄 = {"노드": 노드, "층": 층, "말": list(말)}
+    else:
+        return False
+    try:
+        with open(경로, "a", encoding="utf-8") as f:
+            f.write(json.dumps(줄, ensure_ascii=False) + "\n")
+        return True
+    except OSError:
+        return False
+
+
+def _겪음덧칠(g):
+    """겪음 파일을 그래프에 얹는다. 얹을 수 없는 것은 조용히 버린다.
+
+    버리는 쪽이 옳다. 못 얹는 줄이 검증()을 깨뜨리면 NPC 하나가 이상한 것을
+    겪었다는 이유로 게임이 안 뜬다. 겪음은 언제나 신뢰할 수 없는 입력이다."""
+    노드, 엣지 = 겪음읽기(g.get("_겪음로그"))
+    g["_겪음버림"] = 버림 = []
+    for 이름, 칸 in 노드.items():
+        층 = 칸["층"] if 칸["층"] in ("공통층", "사례층") else "사례층"
+        이미 = next((L for L in ("공통층", "사례층", "무관층") if 이름 in g.get(L, {})), None)
+        if 이미 and 이미 != 층:
+            버림.append(("노드", 이름, "이미 %s 에 있다" % 이미))
+            continue
+        칸2 = g.setdefault(층, {}).setdefault(이름, [])
+        칸2 += [m for m in 칸["말"] if m not in 칸2]
+    노드전체 = set(g["공통층"]) | set(g["사례층"]) | set(g.get("무관층", {}))
+    쓸관계 = 전진들(g) + 부정들(g)
+    for a, r, b in 엣지:
+        if a not in 노드전체 or b not in 노드전체:
+            버림.append(("엣지", [a, r, b], "모르는 노드")); continue
+        if r not in 쓸관계:
+            버림.append(("엣지", [a, r, b], "이 그래프에 없는 관계")); continue
+        if a == b:
+            버림.append(("엣지", [a, r, b], "자기 참조")); continue
+        if [a, r, b] not in g["엣지"]:
+            g["엣지"].append([a, r, b])
+
+
 _지시 = re.compile(r"아까|방금|앞서|이전에|말씀하신|그것|그거|저것|저거|"
                    r"그\s*증거|그\s*자료|그\s*영상|그\s*부분|그\s*점|그때")
 
@@ -449,6 +530,7 @@ def load(path="graphs/graph.kg"):
     g.setdefault("부정관계", list(NEG))
     g.setdefault("_미지로그", os.path.splitext(path)[0] + ".미지.log")
     g.setdefault("_학습로그", os.path.splitext(path)[0] + ".학습.jsonl")
+    g.setdefault("_겪음로그", os.path.splitext(path)[0] + ".겪음.jsonl")
     # 되묻기에서 확인된 표현을 덧칠한다. 노드의 뜻은 그대로고 부르는 법만 는다 —
     # 새 지식이 아니므로 환각 위험이 없다. 새 노드나 엣지는 절대 만들지 않는다.
     # 이름을 _부정 으로 두면 모듈의 부정들() 을 이 함수 안에서 가린다.
@@ -464,6 +546,8 @@ def load(path="graphs/graph.kg"):
         칸 = g.setdefault("무관층", {}).setdefault(반례표 + 노드, [])
         칸 += [m for m in 말들 if m not in 칸]
     _포함(g, os.path.dirname(os.path.abspath(path)))
+    # 겪은 것은 포함까지 끝난 뒤에 얹는다 — 빌려온 개념에도 엣지를 걸 수 있어야 한다.
+    _겪음덧칠(g)
     검증(g)
     쓸것 = _관련개념(g)
     # 걸러낸 개념을 버리지 않고 널 클래스로 재활용한다.
