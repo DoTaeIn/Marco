@@ -13,6 +13,10 @@ Objection은 문서를 지식 그래프로 만들고, 사용자의 발화를 그
 [공통 대화 기반](docs/ko/common-base.md)에 있다. `python nai.py <그래프> --chat`으로
 그래프 종류를 구분하지 않고 대화할 수 있다.
 
+게임에서 여러 NPC가 서로 행동하고 세계를 바꾸려면 [NPC 런타임](docs/ko/npc-runtime.md)을
+쓴다. `npc.World`는 관계·기억·공유 상태·사건 로그를 저장하며, NPC별 `.kg` 대화도
+필요할 때만 연결한다.
+
 ## 어디까지 됐나
 
 | | 상태 | 근거 |
