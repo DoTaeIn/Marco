@@ -92,7 +92,7 @@ class Conversation:
             if node == goal:
                 return route
             for relation, nxt in self.graph["adj"].get(node, ()):
-                if relation in self._engine.POS and nxt not in seen:
+                if relation in self._engine.전진들(self.graph) and nxt not in seen:
                     seen.add(nxt)
                     queue.append((nxt, route + [nxt]))
         return []

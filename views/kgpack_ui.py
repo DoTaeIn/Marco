@@ -50,7 +50,7 @@ def 경로(graph, start, end):
     while queue:
         here = queue.popleft()
         for relation, nxt in graph["adj"].get(here, []):
-            if relation not in engine.POS or nxt in seen:
+            if relation not in engine.전진들(graph) or nxt in seen:
                 continue
             seen[nxt] = (here, relation)
             if nxt == end:
@@ -341,7 +341,7 @@ class 앱상태:
                         sources.append({"node": a, "source": self.graph.get("출처", {}).get(a, "")})
                     proof_edges.append([a, relation, b])
             for a, relation, b in self.graph.get("엣지", []):
-                if a == claim and relation in engine.POS:
+                if a == claim and relation in engine.전진들(self.graph):
                     proof_edges.append([a, relation, b])
         return {"mode": "self_learning", "question": question, "winner": claim,
                 "verdict": "채택" if claim else "지식부족", "evidence": None,

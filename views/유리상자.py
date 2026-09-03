@@ -50,7 +50,7 @@ def 길찾기(g, 시작, 끝):
     while 큐:
         여기 = 큐.popleft()
         for 관계, 다음 in g["adj"].get(여기, []):
-            if 관계 not in engine.POS or 다음 in 앞:
+            if 관계 not in engine.전진들(g) or 다음 in 앞:
                 continue
             앞[다음] = (여기, 관계)
             if 다음 == 끝:
