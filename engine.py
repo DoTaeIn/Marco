@@ -19,7 +19,7 @@ for _n in ("torch", "transformers", "huggingface_hub", "sentence_transformers"):
     logging.getLogger(_n).setLevel(logging.ERROR)
 
 # 신경망은 인코더.py 한 곳에만 있다. 두 벌 두면 캐시도 두 벌이 된다.
-from encoder import MODEL, DEVICE, _model, _vec, 숫자가리기, 조각내기
+from encoder import MODEL, DEVICE, _담, _model, _속, 숫자가리기, 조각내기
 
 _여기 = os.path.dirname(os.path.abspath(__file__))
 
@@ -354,7 +354,11 @@ def 사건읽기(경로):
 def 사건컴파일(경로, 최소신뢰=0.55):
     """판례 md -> (kg 텍스트, 보고). 법리 이름은 매처로 붙인다."""
     머리, 증거, 사실 = 사건읽기(경로)
-    법리 = load(os.path.join(os.path.dirname(os.path.abspath(경로)), 머리["법리"]))
+    # 사건 md 옆에서 먼저 찾고, 없으면 저장소 기준으로 한 번 더 찾는다.
+    # 재구성(486f5ea)으로 legal/ 이 루트로 옮겨지면서 cases/사건_*.md 의
+    # "legal/법리_형법21조.kg" 가 cases/legal/... 로 이어붙어 전부 깨졌다.
+    법리경로 = os.path.join(os.path.dirname(os.path.abspath(경로)), 머리["법리"])
+    법리 = load(법리경로 if os.path.exists(법리경로) else _길(머리["법리"]))
     후보 = list(법리["공통층"])
     보고 = []
 
@@ -522,7 +526,7 @@ def match(text, candidates, graph):
     """가장 가까운 노드와 코사인 유사도. 긴 발화는 조각 중 최고를 취한다."""
     best, score = None, 0.0
     for 조각 in 조각내기(text):
-        v = _vec(조각)
+        v = _담(조각)
         for node in candidates:
             s = float((graph["vec"][node] @ v).max())
             if s > score:
@@ -732,8 +736,10 @@ class 세션:
                     if 노드 in self.g.get(층, {}) and 원말 not in self.g[층][노드]:
                         self.g[층][노드].append(원말)
                         import numpy as np
+                        # 노드 행렬에 붙는 것은 문서 쪽이다 — 이제 배운 말도
+                        # 그래프가 든 글이지 묻는 말이 아니다.
                         self.g["vec"][노드] = np.vstack(
-                            [self.g["vec"][노드], _vec(원말)])
+                            [self.g["vec"][노드], _속(원말)])
                         break
             self.직전A = None
             text = 원말                        # 확인된 발화로 다시 판정한다
@@ -746,8 +752,8 @@ class 세션:
                     칸.append(원말)
                     import numpy as np
                     self.g["vec"][키] = (
-                        np.vstack([self.g["vec"][키], _vec(원말)])
-                        if 키 in self.g["vec"] else np.array([_vec(원말)]))
+                        np.vstack([self.g["vec"][키], _속(원말)])
+                        if 키 in self.g["vec"] else np.array([_속(원말)]))
             self.직전A = None
             말 = self.g["대사"].get("되묻기취소") or "그렇습니까. 그럼 다시 말씀해 주십시오."
             return "A", 말, self.결과()
@@ -778,7 +784,11 @@ class 세션:
         self.회차 += 1
         p = 발화계획(self.g, tag, ev, claim, self)
         p["회차"] = self.회차
-        p["기준"] = _vec(text)
+        # 말투를 재는 기준에서도 증거 이름을 뺀다. 주장 매칭에서 빼는 이유와
+        # 같다(증거지우기) — 증거명이 남으면 그 이름을 여러 번 되풀이하는
+        # 예시가 말투와 상관없이 이긴다. 실제로 주제명을 9번 반복하는 발췌가
+        # 어떤 질문에도 똑같이 뽑혀서 말투 선택이 사실상 죽어 있었다.
+        p["기준"] = _담(증거지우기(text, self.g, ev) if ev else text)
         p["기본문장"] = line
         self.이전확보 = set(p["채운요건"])
         p["해소"] = self.해소
@@ -1115,10 +1125,10 @@ def 보정(graph, 발화=None):
     맞음, 틀림, 무관점수, 예시부족 = [], [], [], []
     if 발화:
         for t in 발화.get("있음", []):
-            c, n = 승자(_vec(t))
+            c, n = 승자(_담(t))
             (틀림 if n in 무관 else 맞음).append((c, n, t))
         for t in 발화.get("없음", []):
-            c, n = 승자(_vec(t))
+            c, n = 승자(_담(t))
             무관점수.append((c, n, t, n in 무관))
     else:
         for node in 실노드:
@@ -1127,11 +1137,11 @@ def 보정(graph, 발화=None):
                 예시부족.append(node)
                 continue
             for e in exs:
-                c, n = 승자(_vec(e), 제외=node)
+                c, n = 승자(_담(e), 제외=node)
                 (맞음 if n == node else 틀림).append((c, node, n, e))
         for node in 무관:
             for e in graph["무관층"][node]:
-                c, n = 승자(_vec(e), 제외=node)
+                c, n = 승자(_담(e), 제외=node)
                 무관점수.append((c, n, e, n in 무관))
 
     있음점수 = sorted(x[0] for x in 맞음)
@@ -1712,6 +1722,24 @@ def 방향분류기(graph, 라벨=(), 최소=20):
     return 확신도
 
 
+def 관계추천(판별기, a, b, 문턱=0.75):
+    """`a -> b`를 사람이 가정했을 때 관계 종류만 보수적으로 참고한다.
+
+    분류기는 `a -> b`가 존재하는지나 어느 쪽이 출발인지 알지 못하고, 그 방향을
+    가정했을 때 충족/부정 중 무엇 같은지만 잰다. 따라서 문턱 아래는 보류하고,
+    문턱 위도 사람이 원문 근거를 읽기 위한 참고값으로만 돌려준다.
+    """
+    if not 판별기:
+        return None
+    p = 판별기(a, b)
+    관계 = "부정" if p >= 0.5 else "충족"
+    확신 = p if 관계 == "부정" else 1.0 - p
+    if 확신 < 문턱:
+        return None
+    return {"출발": a, "관계": 관계, "도착": b, "확신": 확신,
+            "부정확률": p}
+
+
 def _기본0(d):
     class _D(dict):
         def __missing__(self, k):
@@ -1910,8 +1938,12 @@ def 제안(graph, 최소=3, 뭉침=0.62, 자료=None):
 
     # 씨앗 하나에서만 재면 A-B 0.76, B-C 0.65, A-C 0.54 인 한 뭉치가
     # 씨앗이 A 냐 B 냐에 따라 쪼개진다. 임계값 위의 연결 요소로 잡는다.
-    V = np.array([_vec(t) for t in 발화])
-    이웃 = (V @ V.T) >= 뭉침
+    # 발화끼리 재는 자리다. 문자 모드의 포함도는 대칭이 아니므로 한 쪽으로만
+    # 재면 'A 가 B 를 품는다' 와 'B 가 A 를 품는다' 가 갈린다. 뭉치는 데는
+    # 어느 쪽이든 품으면 이웃이라 보는 편이 맞다.
+    V = np.array([_담(t) for t in 발화])
+    품 = np.array([_속(t) for t in 발화]) @ V.T
+    이웃 = np.maximum(품, 품.T) >= 뭉침
     안봄, 무리 = set(range(len(발화))), []
     while 안봄:
         묶음, q = [], deque([안봄.pop()])
@@ -2464,6 +2496,9 @@ def _selfcheck():
     assert 판단("흉기소지", "침해의부당성") < 0.5     # 실제 충족
     assert 판단("상호투쟁", "방위의사") >= 0.5       # 실제 부정
     assert 방향분류기(g, 최소=10 ** 6) is None       # 라벨이 모자라면 안 쓴다
+    assert 관계추천(lambda _a, _b: 0.51, "가", "나") is None  # 애매하면 보류
+    _추천 = 관계추천(lambda _a, _b: 0.91, "가", "나")
+    assert _추천["관계"] == "부정" and _추천["확신"] == 0.91
     # 자질은 맞히려는 엣지를 뺀 그래프에서 재야 한다. 안 빼면 충족일 때만
     # 도착 노드가 닿는수에 더해져 라벨이 자질로 새어든다 (92.9% -> 실제 81.6%).
     # 의미 관계: 표지가 있는 문장에서 관계 종류까지 뽑는다.
@@ -2676,10 +2711,10 @@ def _selfcheck():
 
     # 이름 붙이기: 뭉치 이름은 자료 원문에서만 나온다. 근거가 없으면 안 낸다.
     구절 = [("정당방위", "형법.txt:1"), ("계란 두 개", "요리.txt:3")]
-    중심 = _vec("정당방위가 성립한다")
+    중심 = _담("정당방위가 성립한다")
     assert 이름후보(구절, 중심)[0][0] == "정당방위"
-    assert 이름후보(구절, _vec("계란 두 개")) [0][0] == "계란 두 개"
-    assert 이름후보([("계란 두 개", "요리.txt:3")], _vec("정당방위가 성립한다")) == []
+    assert 이름후보(구절, _담("계란 두 개")) [0][0] == "계란 두 개"
+    assert 이름후보([("계란 두 개", "요리.txt:3")], _담("정당방위가 성립한다")) == []
     print("selfcheck ok")
 
 
@@ -2735,7 +2770,7 @@ if __name__ == "__main__":
             for m in 말들:
                 기존 = [x for x in (g["공통층"].get(노드) or g["사례층"].get(노드) or [])
                         if x not in 말들]
-                점수 = max((float(_vec(m) @ _vec(x)) for x in 기존), default=0.0)
+                점수 = max((float(_담(m) @ _담(x)) for x in 기존), default=0.0)
                 표 = "  " if 점수 >= 0.55 else "?!"
                 수상 += 표 == "?!"
                 print("    %s %.2f  \"%s\"" % (표, 점수, m))
@@ -2825,6 +2860,9 @@ if __name__ == "__main__":
         인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
         g = load(인자[0] if 인자 else "graphs/graph.kg")
         후보들, 흔한것 = 엣지제안(g, 인자[1] if len(인자) > 1 else "data")
+        
+        판별기 = 방향분류기(g, 최소=20)
+        
         가지 = len([1 for v in g["adj"].values()
                     for r, _ in v if r in POS]) / max(len(g["adj"]), 1)
         print("지금 가지치기 %.2f (노드당 전진 엣지). 1에 가까우면 사슬이라"
@@ -2839,11 +2877,21 @@ if __name__ == "__main__":
             print("  임계값을 낮춰 억지로 뽑지 않는다. 해설·판례를 넣을 것.")
             sys.exit(0)
         print("원문에서 같은 대목에 함께 나온, 아직 엣지가 없는 쌍 %d개" % len(후보들))
-        print("  관계가 있을지도 모른다는 것까지만 원문이 말한다.")
-        print("  방향(증명/충족/부정)은 사람이 정한다. 지어내지 않는다.")
+        print("  원문은 관계의 존재·방향을 확정하지 않는다. 분류기는 확신 0.75 이상일 때만")
+        print("  참고 추천을 보이며, .kg 반영은 사람이 근거를 읽고 승인한다.")
         for i, c in enumerate(후보들, 1):
             a, b = c["쌍"]
             print()
+
+            # 증거는 정의상 증명 엣지를 내보내므로 방향만 구조에서 확정할 수 있다.
+            증거노드 = g.get("증거", [])
+            if a in 증거노드:
+                구조추천 = (a, "증명", b)
+            elif b in 증거노드:
+                구조추천 = (b, "증명", a)
+            else:
+                구조추천 = None
+
             print("  [%d] %s  <-?->  %s   (세기 %.2f · %d개 대목에서 함께)"
                   % (i, a, b, c["세기"], c["횟수"]))
             for 본문, 출처 in c["근거"]:
@@ -2852,10 +2900,20 @@ if __name__ == "__main__":
             if c["순환주의"]:
                 print("      [주의] %s 를 앞에 두면 순환이 된다"
                       % ", ".join(c["순환주의"]))
-            print("      --- .kg 에 붙여넣을 초안 (관계를 골라 한 줄만 남길 것) ---")
-            print("      %s 충족 %s" % (a, b))
-            print("      %s 충족 %s" % (b, a))
-            print("      %s 부정 %s" % (a, b))
+            if 구조추천:
+                print("      [구조 추천] %s -%s-> %s (증거 정의에 따름)" % 구조추천)
+            else:
+                추천들 = [관계추천(판별기, a, b), 관계추천(판별기, b, a)]
+                추천들 = [x for x in 추천들 if x and x["출발"] not in c.get("순환주의", [])]
+                print("      [방향 보류] 어느 쪽이 출발인지는 원문 근거를 읽고 사람이 정한다")
+                if 추천들:
+                    for x in 추천들:
+                        print("      [가정별 관계 참고 · 방향 추천 아님] %s -%s-> %s (확신 %.2f)"
+                              % (x["출발"], x["관계"], x["도착"], x["확신"]))
+                else:
+                    print("      [관계 유형도 보류] 확신 0.75 미만이거나 순환 위험")
+                print("      선택지: %s 충족 %s / %s 부정 %s / 역방향 / 관계없음"
+                      % (a, b, a, b))
         sys.exit(0)
 
     elif "--label" in sys.argv:

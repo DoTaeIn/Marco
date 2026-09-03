@@ -2,13 +2,17 @@
 
 # --- 생성물 (다시 만들 수 있다) ---
 
+# 여러 지식 그래프를 업로드용 한 파일로 묶은 산출물과 런타임 overlay
+*.kgpack
+.kgpack_runtime/
+
 # 임베딩 캐시. 키가 모델+그래프 해시라 그래프를 고치면 자동 무효화된다
 .vec_*.npz
 
 # 엔진이 쌓는 미지 발화. 실행할 때마다 늘어난다
 *.미지.log
 
-# 짓기.py 출력. 31MB. `python 짓기.py data/법지식` 로 재생성
+# build.py 출력. 31MB. `python build.py data/법지식` 로 재생성
 data/법지식/지식그래프.json
 
 # graphify 중간 캐시
@@ -46,9 +50,15 @@ desktop.ini
 .env
 *.key
 
-# 문서를 그래프로 만든 것. `python 짓기.py data/문서 --out 문서그래프.json` 로 재생성
+# 문서를 그래프로 만든 것. `python build.py docs/ko --out 문서그래프.json` 로 재생성
 문서그래프.json
-data/문서/
+
+# 받아온 웹 글을 그래프로 만든 것. `python build.py data/웹 --out 웹그래프.json` 로 재생성
+웹그래프.json
+
+# 물음판이 쌓는 기록. 기계마다 다르고 계속 늘어난다. 자료로 쓸 만큼
+# 모이면 그때 따로 추려서 넣는다
+물음기록.jsonl
 
 # 위키에서 받은 그림과 캡션 목록. 수백 MB 라 담지 않는다.
 # `python collectors/위키.py --그림 --아무거나 1500` 로 재수집
@@ -58,3 +68,11 @@ data/그림/
 data/물건/
 
 data/물건/.물건_*.pkl
+
+# 열린 웹에서 주워온 지식. 실행할 때마다 늘어나는 런타임 산물이고
+# 내용이 남의 글 원문이다. `python web_learn.py --배우다 <주제>` 로 다시 만든다.
+*.수집.jsonl
+
+# AI 사이 인수인계 메모. 사람이 읽는 작업 상태이지 코드가 아니라서
+# 저장소에 올리지 않는다. 다음 세션이 이어 쓰도록 로컬에만 둔다.
+HANDOFF.md

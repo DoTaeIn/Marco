@@ -30,7 +30,13 @@ def _길(p):
 
 
 def 말투읽기(언어):
-    return json.load(io.open(_길("styles/코드/%s.json" % 언어), encoding="utf-8"))
+    """모르는 언어는 지어내지 않는다. 말투 파일이 곧 아는 언어의 목록이다."""
+    경로 = _길("styles/코드/%s.json" % 언어)
+    if not os.path.exists(경로):
+        raise ValueError("%s 는 모르는 언어입니다. 아는 언어: %s. "
+                         "styles/코드/%s.json 을 지으면 그날부터 압니다."
+                         % (언어, ", ".join(말투들()), 언어))
+    return json.load(io.open(경로, encoding="utf-8"))
 
 
 def 말투들():
@@ -247,6 +253,12 @@ def 회귀(폴더="algorithms", 언어들=None):
 
 def _자체검사():
     """찍기만 보는 검사. 실행기가 없는 데서도 돈다."""
+    # 채점기가 제 원본을 못 알아보면 그 아래 숫자가 전부 거짓이다.
+    # 선택정렬이 0/4 였을 때 코드는 완벽했다 — 통과율만 보고 있었으면
+    # '아직 안 되는구나' 로 지나갔을 것이다. 가장 먼저 본다.
+    _성함, _전체, _샌것, _벌수 = 묶는가()
+    assert _전체 and _성함 == _전체, (_성함, _전체)
+    assert _벌수, "망가뜨릴 자리가 없다 — 묶임을 못 잰다"
     알 = 알고읽기("algorithms/이진검색.json")
     파 = 짓기(알, 말투읽기("python"))
     assert "def binary_search(a, target):" in 파, 파
@@ -458,9 +470,14 @@ def 알고뜯기(말투, 글):
         if 줄.strip().startswith("시험:"):
             왼, _, 오 = 줄.split(":", 1)[1].partition("->")
             오 = 오.strip()
-            시험.append({"인자": json.loads(왼.strip()),
-                         "기대": json.loads(오)
-                         if 오[:1] in "-0123456789[" else 오})
+            기대 = json.loads(오) if 오[:1] in "-0123456789[" else 오
+            # 열을 내놓는 알고리즘의 기대값은 '찍힌 꼴' 이다. 채점이
+            # 표준출력을 문자열로 견주므로(재기·셈하기 둘 다), 산문의
+            # [1, 2, 3] 을 여기서 '1, 2, 3' 으로 맞춘다. 안 맞추면 코드가
+            # 옳아도 시험이 전부 떨어진다 — 선택정렬이 0/3 이었다.
+            if isinstance(기대, list):
+                기대 = ", ".join(str(x) for x in 기대)
+            시험.append({"인자": json.loads(왼.strip()), "기대": 기대})
         else:
             줄들.append(줄)
     while 줄들 and not 줄들[-1].strip():
@@ -767,6 +784,72 @@ def 부수기(알고, 몇, 난수):
     return 벌 if 머릿속점수(벌, True) < 만점 else None
 
 
+def 알고모으기(폴더="algorithms"):
+    """설계도(.json)와 산문(.txt) 을 한 목록으로. 채점기는 출처를 안 가린다."""
+    난 = []
+    터 = _길(폴더)
+    if os.path.isdir(터):
+        for f in sorted(os.listdir(터)):
+            if f.endswith(".json"):
+                난.append((f, 알고읽기(os.path.join(폴더, f))))
+    산문터 = os.path.join(터, "산문")
+    if os.path.isdir(산문터):
+        말투 = 말투읽기("한국어")
+        for f in sorted(os.listdir(산문터)):
+            if not f.endswith(".txt"):
+                continue
+            글 = io.open(os.path.join(산문터, f), encoding="utf-8").read()
+            try:
+                난.append((f, 알고뜯기(말투, 글)))
+            except Exception as e:
+                print("  X %-18s 못 읽음 — %s" % (f, e))
+    return 난
+
+
+def 묶는가(폴더="algorithms", 몇벌=12, 씨=11):
+    """시험이 프로그램을 묶는가 — 채점기가 옳고 그름을 **구별하는지** 잰다.
+
+    통과 개수만 세면 채점기가 전부 통과시켜도 전부 떨어뜨려도 모른다.
+    실제로 선택정렬이 0/4 였는데 찍힌 코드는 완벽했다 — 기대값을 견주는
+    모양이 어긋나 시험이 제 원본조차 못 알아본 것이다. 통과율만 보고
+    있었으면 '아직 안 되는구나' 로 지나갔다.
+
+    두 쪽을 다 본다. 한 쪽만 보면 못 잡는다.
+      성함  원본이 제 시험을 다 맞히는가. 아니면 채점기가 깨진 것이다.
+      묶임  한 군데 망가뜨린 것이 떨어지는가. 안 떨어지면 시험이 헐렁하다.
+
+    `부수기` 는 이미 이 판별을 하고 있었다 — 망가뜨렸는데 만점이 나오면
+    None 을 돌려 그 벌을 버린다. 버리지 않고 세면 그것이 곧 이 숫자다.
+
+    손질이 늘 뜻을 바꾸지는 않는다. 안 닿는 자리를 건드리면 답이 그대로인
+    것이 맞다. 그래서 이 값은 합격/불합격이 아니라 비율로 읽는다 — 갑자기
+    치솟으면 시험이 헐거워졌다는 신호다."""
+    난수 = random.Random(씨)
+    성함, 전체, 샌것, 벌수 = 0, 0, 0, 0
+    깨진채점 = []
+    for 이름, 알고 in 알고모으기(폴더):
+        전체 += 1
+        만점 = len(알고.get("시험", ()))
+        점 = 머릿속점수(알고)
+        if 점 == 만점 and 만점:
+            성함 += 1
+        else:
+            깨진채점.append((이름, 점, 만점))
+            continue                    # 원본도 못 맞히면 묶임을 잴 수 없다
+        후보 = [x for x, _ in 이웃(알고)]
+        난수.shuffle(후보)
+        for 벌 in 후보[:몇벌]:
+            벌수 += 1
+            샌것 += (머릿속점수(벌) == 만점)
+    print("  원본이 제 시험에 성함     %d/%d" % (성함, 전체))
+    for 이름, 점, 만점 in 깨진채점:
+        print("    X %-18s %d/%d — 채점기가 이 알고리즘을 못 알아본다"
+              % (이름, 점, 만점))
+    print("  망가뜨렸는데 통과한 벌   %d/%d (%.0f%%)  낮을수록 시험이 좁다"
+          % (샌것, 벌수, 100.0 * 샌것 / max(벌수, 1)))
+    return 성함, 전체, 샌것, 벌수
+
+
 def 고침회귀(폴더="algorithms", 몇벌=8, 씨=7, 스스로시험=12):
     """망가뜨린 설계도를 혼자 고쳐내는가. 그리고 고친 것이 진짜로 도는가.
 
@@ -862,6 +945,9 @@ if __name__ == "__main__":
     if "--산문" in sys.argv:
         산, 벌 = 산문회귀()
         sys.exit(0 if (벌 and 산 == 벌) else 1)
+    if "--묶임" in sys.argv:
+        성함, 전체, _샌것, 벌수 = 묶는가()
+        sys.exit(0 if (전체 and 성함 == 전체 and 벌수) else 1)
     if "--왕복" in sys.argv:
         같, 전, 산, 벌 = 왕복()
         sys.exit(0 if (같 == 전 and 산 == 벌) else 1)
@@ -874,6 +960,12 @@ if __name__ == "__main__":
         산, 전 = 회귀()
         sys.exit(0 if 산 == 전 else 1)
     언어들 = 인자[1:] or ["python", "javascript", "java"]
+    for 언 in 언어들:
+        try:
+            말투읽기(언)                  # 안내 문구는 말투읽기 한 곳에만 둔다
+        except ValueError as e:
+            print(e)
+            sys.exit(1)
     알고 = 알고읽기(인자[0] if 인자 else "algorithms/이진검색.json")
     if "--show" in sys.argv:
         for 언 in 언어들:
