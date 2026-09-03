@@ -11,6 +11,7 @@ class CommonConversationTest(unittest.TestCase):
         self.old_explain = sys.modules.get("explain")
         engine = types.ModuleType("engine")
         engine.POS = ("증명", "충족")
+        engine.전진들 = lambda g: tuple(g.get("전진관계") or engine.POS)
         engine.load = lambda _: {"목표": "끝", "adj": {"사실": [("증명", "근거")], "근거": [("충족", "끝")]}}
 
         class Session:
