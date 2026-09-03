@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NAI · 투명한 kgpack 대화</title>
+  <style>
+    :root { color-scheme:dark; --bg:#090e19; --panel:#121a2a; --panel2:#172136;
+      --line:#293651; --text:#edf2ff; --muted:#91a0bd; --dim:#53617b;
+      --blue:#76a4ff; --green:#6ed6a0; --yellow:#e7bd60; --red:#ff7777; --purple:#c79aff; }
+    * { box-sizing:border-box } html,body { min-height:100%; }
+    body { margin:0; color:var(--text); font:14px/1.5 system-ui,-apple-system,sans-serif;
+      background:radial-gradient(circle at 18% 0,#182646 0,var(--bg) 42%); }
+    main { width:min(1500px,calc(100% - 24px)); margin:18px auto; }
+    header { display:flex; justify-content:space-between; align-items:end; gap:18px; margin-bottom:12px; }
+    h1 { margin:0; font-size:22px; letter-spacing:-.02em } .sub,.meta { color:var(--muted); font-size:12px }
+    .workspace { display:grid; grid-template-columns:460px minmax(0,1fr); gap:12px; min-height:calc(100vh - 82px); }
+    .card,.view { background:rgba(18,26,42,.96); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+    .chat-card { display:grid; grid-template-rows:auto minmax(260px,1fr) auto auto; min-height:0; }
+    .toolbar { display:grid; grid-template-columns:1fr auto; gap:8px; padding:11px; border-bottom:1px solid var(--line); }
+    #pack-select { grid-column:1 / -1; border-color:#4a67a0; background:#14213b; font-weight:750; }
+    select,textarea,button { font:inherit; color:var(--text); border:1px solid var(--line); background:#0d1423; border-radius:9px; }
+    select,button { min-height:39px; padding:7px 10px } button { cursor:pointer; background:#1d3159; border-color:#38598f; font-weight:700 }
+    button:hover { background:#294477 } button:disabled { opacity:.5; cursor:wait }
+    #chat { overflow:auto; padding:14px; display:flex; flex-direction:column; gap:10px; }
+    .msg { max-width:94%; padding:9px 11px; border-radius:12px; white-space:pre-wrap; word-break:break-word }
+    .assistant { align-self:stretch; max-width:100%; background:var(--panel2); border:1px solid var(--line); white-space:normal }
+    .user { align-self:flex-end; background:#27487f } .tag { display:block; margin-top:5px; color:var(--green); font-size:11px }
+    .assistant h1,.assistant h2,.assistant h3 { margin:8px 0 5px; line-height:1.3 }
+    .assistant h2 { font-size:16px } .assistant h3 { font-size:13px; color:var(--muted) }
+    .assistant p { margin:6px 0 } .assistant blockquote { margin:7px 0; padding:7px 10px; border-left:3px solid var(--blue); background:#0f1728; white-space:pre-wrap }
+    .assistant ul { margin:5px 0; padding-left:20px } .assistant code { padding:1px 4px; border-radius:4px; background:#0a101c; color:#cddcff }
+    .composer { display:grid; grid-template-columns:1fr auto; gap:8px; padding:11px; border-top:1px solid var(--line) }
+    textarea { resize:vertical; min-height:76px; max-height:260px; padding:10px; outline:none } textarea:focus,select:focus,input:focus { border-color:var(--blue) }
+    #send { min-width:76px } #status { padding:0 12px 10px; color:var(--muted); font-size:11px } .dot { color:var(--green) }
+    .visuals { display:grid; grid-template-rows:minmax(250px,.58fr) minmax(430px,1.25fr) minmax(260px,.72fr); gap:12px; min-width:0; }
+    .view { position:relative; min-width:0; min-height:0; }
+    .view-head { position:absolute; z-index:2; left:13px; top:10px; pointer-events:none; max-width:70%; }
+    .view-title { font-weight:750; font-size:12px } .view-sub { color:var(--muted); font-size:10.5px; margin-top:1px }
+    .legend { position:absolute; z-index:2; right:13px; top:10px; display:flex; flex-wrap:wrap; justify-content:end; gap:9px;
+      max-width:48%; color:var(--muted); font-size:10px; pointer-events:none }
+    .legend i { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:3px }
+    .graph-svg { display:block; width:100%; height:100%; min-height:250px }
+    .knowledge-grid { display:grid; grid-template-columns:minmax(0,1fr) 280px; height:100%; min-height:0 }
+    .knowledge-canvas { position:relative; min-width:0; min-height:0 }
+    .node-inspector { border-left:1px solid var(--line); background:#0e1524; padding:10px; display:grid; grid-template-rows:auto auto minmax(90px,.7fr) minmax(120px,1fr); gap:8px; min-height:0 }
+    .node-inspector h2 { margin:0; font-size:13px } .node-inspector small { color:var(--muted) }
+    .node-controls { display:grid; grid-template-columns:1fr 92px; gap:6px }
+    .node-controls input,.node-controls select { width:100%; min-width:0; padding:7px 8px; color:var(--text); background:#0a101d; border:1px solid var(--line); border-radius:7px; font:inherit }
+    .node-list { overflow:auto; border:1px solid var(--line); border-radius:8px; padding:4px }
+    .node-list button { display:block; width:100%; min-height:0; padding:6px 7px; border:0; background:transparent; text-align:left; font-weight:500; color:var(--muted) }
+    .node-list button:hover,.node-list button.selected { color:var(--text); background:#1a2945 }
+    .node-detail { overflow:auto; border-top:1px solid var(--line); padding-top:7px; color:var(--muted); font-size:11px; white-space:pre-wrap; word-break:break-word }
+    .node-detail b { color:var(--text) }
+    .trace { position:absolute; left:13px; right:13px; bottom:9px; color:var(--muted); font-size:10.5px;
+      pointer-events:none; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+    .trace b { color:var(--text) } svg text { font-family:inherit; user-select:none }
+    @media(max-width:900px){main{width:min(100% - 14px,760px)}header{display:block}.workspace{grid-template-columns:1fr;min-height:auto}
+      .chat-card{height:680px}.visuals{grid-template-rows:360px 720px 330px}.legend{display:none}.knowledge-grid{grid-template-columns:1fr;grid-template-rows:470px 250px}.node-inspector{border-left:0;border-top:1px solid var(--line);grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr}.node-controls{grid-column:1}.node-list{grid-column:1}.node-detail{grid-column:2;grid-row:1 / span 2;border-top:0;border-left:1px solid var(--line);padding-left:10px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>NAI · 투명한 kgpack 대화</h1><div class="sub">노드 매니저의 KG 선택 · 선택된 KG의 근거 경로 · 누적 대화를 한 화면에서</div></div>
+    <div class="meta" id="pack">pack 읽는 중…</div>
+  </header>
+  <div class="workspace">
+    <section class="card chat-card">
+      <div class="toolbar">
+        <select id="pack-select" aria-label="kgpack 선택" title="현재 로드한 단일 지식 묶음"></select>
+        <select id="graph" aria-label="지식 그래프 선택"></select><button id="reset">초기화</button>
+      </div>
+      <div id="chat" aria-live="polite"></div>
+      <div class="composer"><textarea id="input" placeholder="여기에 입력하세요. Enter로 전송, Shift+Enter로 줄바꿈"></textarea><button id="send">보내기</button></div>
+      <div id="status"><span class="dot">●</span> 준비 중</div>
+    </section>
+    <section class="visuals">
+      <div class="view" id="manager-view">
+        <div class="view-head"><div class="view-title">노드 매니저 — 그래프들의 그래프</div><div class="view-sub">KG 하나가 노드 하나입니다. 질문과 가장 가까운 KG만 골라 본체를 올립니다.</div></div>
+        <svg class="graph-svg" id="manager" role="img" aria-label="노드 매니저 그래프"></svg><div class="trace" id="manager-trace">질문을 입력하면 선택 KG와 후보 점수가 표시됩니다.</div>
+      </div>
+      <div class="view" id="knowledge-view">
+        <div class="knowledge-grid">
+          <div class="knowledge-canvas" id="knowledge-canvas">
+            <div class="view-head"><div class="view-title" id="knowledge-title">선택된 지식 그래프 — 이번 입력이 지나간 곳</div><div class="view-sub" id="knowledge-sub">노드 매니저가 KG를 고르면 실제 근거 경로가 여기에 표시됩니다.</div></div>
+            <div class="legend"><span><i style="background:var(--purple)"></i>증거</span><span><i style="background:var(--yellow)"></i>주장</span><span><i style="background:var(--green)"></i>요건·목표</span><span><i style="background:var(--red)"></i>널</span></div>
+            <svg class="graph-svg" id="knowledge" role="img" aria-label="지식 그래프"></svg><div class="trace" id="trace">입력하면 판정 경로와 상위 매칭 점수가 표시됩니다.</div>
+          </div>
+          <aside class="node-inspector" aria-label="노드 상세">
+            <div><h2>노드 상세</h2><small>선택 KG 읽기 전용 · 예시/출처/관계 검사</small></div>
+            <div class="node-controls"><input id="node-search" placeholder="노드 검색" aria-label="노드 검색"><select id="node-kind" aria-label="노드 종류"><option value="">전체 종류</option><option value="evidence">증거</option><option value="case">사례</option><option value="concept">개념</option><option value="requirement">요건</option><option value="goal">목표</option><option value="irrelevant">널</option></select></div>
+            <div class="node-list" id="node-list"></div><div class="node-detail" id="node-detail">그래프의 노드를 선택하면 상세 내용이 표시됩니다.</div>
+          </aside>
+        </div>
+      </div>
+      <div class="view" id="dialogue-view">
+        <div class="view-head"><div class="view-title">대화 그래프 — 지금까지 쌓인 과정</div><div class="view-sub">질문·증거·주장·출처가 턴마다 누적됩니다.</div></div>
+        <svg class="graph-svg" id="dialogue" role="img" aria-label="대화 그래프"></svg><div class="trace" id="dialogue-trace">아직 대화가 없습니다.</div>
+      </div>
+    </section>
+  </div>
+</main>
+<script>
+const $=id=>document.getElementById(id), NS='http://www.w3.org/2000/svg';
+const S=(tag,attrs={})=>{const e=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);return e};
+const cut=(s,n=15)=>!s?'':(s.length>n?s.slice(0,n-1)+'…':s);
+const escapeHtml=s=>String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
+const inlineMarkdown=s=>escapeHtml(s).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/_([^_]+)_/g,'<em>$1</em>');
+function markdown(text){const lines=String(text??'').split(/\r?\n/),out=[];let list=false,quote=[];
+  const closeList=()=>{if(list){out.push('</ul>');list=false}},closeQuote=()=>{if(quote.length){out.push(`<blockquote>${quote.map(inlineMarkdown).join('<br>')}</blockquote>`);quote=[]}};
+  for(const line of lines){const h=line.match(/^(#{2,3})\s+(.+)$/),li=line.match(/^[-*]\s+(.+)$/),bq=line.match(/^>\s?(.*)$/);
+    if(bq){closeList();quote.push(bq[1]);continue}closeQuote();
+    if(h){closeList();out.push(`<h${h[1].length}>${inlineMarkdown(h[2])}</h${h[1].length}>`)}
+    else if(li){if(!list){out.push('<ul>');list=true}out.push(`<li>${inlineMarkdown(li[1])}</li>`)}
+    else if(!line.trim()){closeList()}
+    else{closeList();out.push(`<p>${inlineMarkdown(line)}</p>`)}}
+  closeQuote();closeList();return out.join('')}
+let info=null,lastTrace=null,busy=false,selectedNode=null;
+function message(role,text,tag='',asMarkdown=false){const box=document.createElement('div');box.className='msg '+role;if(asMarkdown)box.innerHTML=markdown(text);else box.textContent=text;
+  if(tag){const t=document.createElement('span');t.className='tag';t.textContent=tag;box.appendChild(t)}$('chat').appendChild(box);$('chat').scrollTop=$('chat').scrollHeight}
+async function api(path,body){const opt=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};
+  const r=await fetch(path,opt),data=await r.json();if(!r.ok)throw new Error(data.error||r.statusText);return data}
+function color(kind){return {evidence:'#c79aff',case:'#65748f',concept:'#e7bd60',requirement:'#6ed6a0',goal:'#6ed6a0',irrelevant:'#ff7777'}[kind]||'#65748f'}
+function layout(nodes,w,h){const lanes={evidence:.10,case:.25,concept:.48,requirement:.72,goal:.92,irrelevant:.12},groups={};
+  nodes.forEach(n=>(groups[n.kind]??=[]).push(n));const map=new Map();for(const [kind,list] of Object.entries(groups)){list.sort((a,b)=>a.name.localeCompare(b.name));
+    list.forEach((n,i)=>map.set(n.name,{x:w*(lanes[kind]??.5),y:list.length===1?h/2:62+i*(h-116)/(list.length-1),kind}))}return map}
+function managerView(){if(!info?.manager_graph)return;const svg=$('manager'),box=$('manager-view'),w=box.clientWidth,h=box.clientHeight;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
+  const route=lastTrace?.route||info.route||{},selectedAll=new Set(route.selected_all||(route.selected?[route.selected]:[])),candidates=new Map(route.candidates||[]),goalName=info.manager_graph.goal,nodes=info.manager_graph.nodes.filter(n=>n.name!==goalName),cols=Math.min(4,Math.max(1,Math.ceil(Math.sqrt(nodes.length)))),rows=Math.ceil(nodes.length/cols),p=new Map();
+  nodes.forEach((n,i)=>{const col=i%cols,row=Math.floor(i/cols);p.set(n.name,{x:54+col*Math.max(1,(w-190)/(cols-1||1)),y:48+row*Math.max(1,(h-92)/(rows-1||1))})});const goal={x:w-72,y:h/2};
+  for(const n of nodes){const a=p.get(n.name),hit=selectedAll.has(n.name);svg.appendChild(S('line',{x1:a.x,y1:a.y,x2:goal.x,y2:goal.y,stroke:hit?'#6ed6a0':'#26344d','stroke-width':hit?3:1,opacity:hit?.95:.28}))}
+  for(const n of nodes){const a=p.get(n.name),hit=selectedAll.has(n.name),score=candidates.get(n.name);if(hit)svg.appendChild(S('circle',{cx:a.x,cy:a.y,r:10,fill:'none',stroke:'#76a4ff','stroke-width':2}));svg.appendChild(S('circle',{cx:a.x,cy:a.y,r:hit?6:3.7,fill:hit?'#6ed6a0':'#65748f',opacity:hit?1:.65}));const t=S('text',{x:a.x+7,y:a.y+3,fill:hit?'#edf2ff':'#91a0bd','font-size':hit?10:8.5,'font-weight':hit?700:400});t.textContent=cut(n.name.replace('graphs/graph_','').replace('.kg',''),17)+(score!==undefined?` ${Number(score).toFixed(2)}`:'');svg.appendChild(t)}
+  svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#6ed6a0'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10,'text-anchor':'middle','font-weight':700});gt.textContent=goalName;svg.appendChild(gt);
+  if(selectedAll.size){const ranked=(route.candidates||[]).map(x=>`${x[0].replace('graphs/','')} ${Number(x[1]).toFixed(3)}`).join(' · '),score=route.fallback?`일부 대목은 최고 후보가 선택 문턱 미달`:`대목별 선택 완료`,selected=[...selectedAll].join(' + ');$('manager-trace').textContent=`선택 ${selected} · ${score}${route.fallback?' · 자가학습 KG 포함':''}${ranked?' · 후보 '+ranked:''}`}
+  else $('manager-trace').textContent=`KG 노드 ${nodes.length}개 · 질문을 입력하면 선택 경로가 강조됩니다.`}
+function knowledge(){if(!info?.graph)return;const svg=$('knowledge'),box=$('knowledge-canvas'),w=box.clientWidth,h=box.clientHeight;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
+  const defs=S('defs'),marker=S('marker',{id:'arrow',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'});marker.appendChild(S('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#53617b'}));defs.appendChild(marker);svg.appendChild(defs);
+  const p=layout(info.graph.nodes,w,h),active=new Set(lastTrace?.activated||[]),path=new Set((lastTrace?.path||[]).map(e=>e[0]+'→'+e[2]));const edges=S('g'),nodes=S('g');svg.append(edges,nodes);
+  for(const [a,r,b] of info.graph.edges){const x=p.get(a),y=p.get(b);if(!x||!y)continue;const hit=path.has(a+'→'+b);edges.appendChild(S('line',{x1:x.x,y1:x.y,x2:y.x,y2:y.y,
+    stroke:hit?'#6ed6a0':(r==='부정'?'#703a45':'#2b3852'),'stroke-width':hit?3:1,opacity:hit?.95:.43,'stroke-dasharray':r==='부정'?'4 3':'','marker-end':'url(#arrow)'}))}
+  for(const n of info.graph.nodes){const x=p.get(n.name);if(!x)continue;const on=active.has(n.name),goal=n.kind==='goal',chosen=n.name===selectedNode,r=goal?10:on?8:4.5;if(on)nodes.appendChild(S('circle',{cx:x.x,cy:x.y,r:r+6,fill:'none',stroke:color(n.kind),'stroke-width':1.5,opacity:.55}));
+    if(chosen)nodes.appendChild(S('circle',{cx:x.x,cy:x.y,r:r+9,fill:'none',stroke:'#76a4ff','stroke-width':2,opacity:.9}));
+    const c=S('circle',{cx:x.x,cy:x.y,r,fill:color(n.kind),opacity:(on||goal||n.kind==='requirement')?1:.48,tabindex:0,role:'button','aria-label':`${n.name} 노드 상세`});c.style.cursor='pointer';const title=S('title');title.textContent=`${n.name} · ${n.kind}`;c.appendChild(title);c.addEventListener('click',()=>selectNode(n.name));c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectNode(n.name)}});nodes.appendChild(c);
+    if(on||goal||n.kind==='requirement'){const t=S('text',{x:x.x+r+4,y:x.y+3.5,fill:on||goal?'#edf2ff':'#91a0bd','font-size':on?11:9.5,'font-weight':on||goal?700:400});t.textContent=cut(n.name,on?20:13);nodes.appendChild(t)}}
+  if(lastTrace){const rank=(lastTrace.rankings||[]).slice(0,3).map(x=>`${x[0]} ${x[1].toFixed(3)}`).join(' · '),src=lastTrace.sources?.length?` · 출처 ${lastTrace.sources.length}곳`:'';
+    $('trace').textContent=`${lastTrace.verdict||''} · 활성 주장 ${lastTrace.winner||'없음'}${src}${rank?' · 상위 매칭 '+rank:''}${lastTrace.margin!==null&&lastTrace.margin!==undefined?' · 마진 '+lastTrace.margin:''}`}
+  else $('trace').textContent=`노드 ${info.graph.nodes.length} · 엣지 ${info.graph.edges.length} · 목표 ${info.graph.goal}`}
+function nodeDetail(){const d=$('node-detail'),n=info?.graph?.nodes.find(x=>x.name===selectedNode);d.textContent='';if(!n){d.textContent='그래프의 노드를 선택하면 상세 내용이 표시됩니다.';return}
+  const title=document.createElement('b');title.textContent=n.name;d.append(title,document.createTextNode(`\n종류: ${n.kind}\n출처: ${n.source||'표시 없음'}\n`));
+  const examples=(n.examples||[]).filter(Boolean);d.append(document.createTextNode(`\n예시 (${examples.length})\n${examples.length?examples.map(x=>'• '+x).join('\n'):'• 없음'}\n`));
+  const outgoing=info.graph.edges.filter(e=>e[0]===n.name),incoming=info.graph.edges.filter(e=>e[2]===n.name);
+  d.append(document.createTextNode(`\n나가는 관계 (${outgoing.length})\n${outgoing.length?outgoing.map(e=>`→ [${e[1]}] ${e[2]}`).join('\n'):'• 없음'}\n\n들어오는 관계 (${incoming.length})\n${incoming.length?incoming.map(e=>`← [${e[1]}] ${e[0]}`).join('\n'):'• 없음'}`))}
+function nodeList(){const list=$('node-list'),query=$('node-search').value.trim().toLowerCase(),kind=$('node-kind').value;list.textContent='';const found=(info?.graph?.nodes||[]).filter(n=>(!query||n.name.toLowerCase().includes(query)||(n.examples||[]).some(x=>x.toLowerCase().includes(query)))&&(!kind||n.kind===kind));
+  if(!found.length){const empty=document.createElement('div');empty.style.padding='8px';empty.style.color='var(--dim)';empty.textContent='일치하는 노드가 없습니다.';list.appendChild(empty);return}
+  for(const n of found){const b=document.createElement('button');b.type='button';b.className=n.name===selectedNode?'selected':'';b.textContent=`${n.name} · ${n.kind}`;b.title=(n.examples||[]).join('\n');b.onclick=()=>selectNode(n.name);list.appendChild(b)}}
+function selectNode(name){selectedNode=name;nodeList();nodeDetail();knowledge()}
+function dialogue(){if(!info)return;const svg=$('dialogue'),box=$('dialogue-view'),w=box.clientWidth,h=box.clientHeight;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';const hist=info.dialogue||[];
+  if(info.multi_route){const segments=info.route?.segments||[],goal={x:w*.90,y:h/2};segments.forEach((item,i)=>{const y=segments.length===1?h/2:55+i*(h-100)/(segments.length-1),q={x:w*.12,y},kg={x:w*.56,y};svg.appendChild(S('line',{x1:q.x,y1:y,x2:kg.x,y2:y,stroke:'#76a4ff','stroke-width':2}),S('line',{x1:kg.x,y1:y,x2:goal.x,y2:goal.y,stroke:'#6ed6a0','stroke-width':2}),S('circle',{cx:q.x,cy:y,r:6,fill:'#76a4ff'}),S('circle',{cx:kg.x,cy:y,r:7,fill:'#e7bd60'}));const qt=S('text',{x:q.x+10,y:y+4,fill:'#edf2ff','font-size':10});qt.textContent=item.question;svg.appendChild(qt);const kt=S('text',{x:kg.x+11,y:y+4,fill:'#edf2ff','font-size':10,'font-weight':700});kt.textContent=cut(item.selected.replace('graphs/',''),22);svg.appendChild(kt)});svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#6ed6a0'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10,'text-anchor':'middle','font-weight':700});gt.textContent='다중KG응답완료';svg.appendChild(gt);$('dialogue-trace').textContent=`질문 대목 ${segments.length}개 · KG ${info.routed_graphs.length}개를 함께 사용`;return}
+  if(info.self_learning){const goal={x:w*.90,y:h/2};for(let i=0;i<hist.length;i++){const item=hist[i],y=hist.length===1?h/2:58+i*(h-100)/(hist.length-1),q={x:w*.12,y},c={x:w*.51,y};svg.appendChild(S('line',{x1:q.x,y1:y,x2:c.x,y2:y,stroke:'#4b6085','stroke-width':2}),S('line',{x1:c.x,y1:y,x2:goal.x,y2:goal.y,stroke:'#6ed6a0','stroke-width':2}));
+      [[q,item.question,'#76a4ff'],[c,item.claim||'지식부족',item.claim?'#e7bd60':'#ff7777']].forEach(([p,t,col])=>{svg.appendChild(S('circle',{cx:p.x,cy:p.y,r:6,fill:col}));const tx=S('text',{x:p.x+10,y:p.y+4,fill:'#edf2ff','font-size':10.5});tx.textContent=t;svg.appendChild(tx)});const sc=S('text',{x:(c.x+goal.x)/2,y:y-7,fill:'#91a0bd','font-size':9.5,'text-anchor':'middle'});sc.textContent=`출처 ${item.sources?.length||0}곳${item.learned?' · 새 학습':''}`;svg.appendChild(sc)}
+    svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#6ed6a0'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10.5,'text-anchor':'middle','font-weight':700});gt.textContent=info.graph.goal;svg.appendChild(gt);$('dialogue-trace').textContent=hist.length?`${hist.length}턴 · 마지막 ${hist.at(-1).verdict} · overlay 채택 ${info.learned_records}건`:'아직 대화가 없습니다.';return}
+  const state=info.session||{},req=info.graph.requirements||[],secured=state.secured||{},goal={x:w*.88,y:h/2};req.forEach((name,i)=>{const y=req.length===1?h/2:55+i*(h-100)/(req.length-1),done=name in secured,p={x:w*.57,y};svg.appendChild(S('line',{x1:p.x,y1:y,x2:goal.x,y2:goal.y,stroke:done?'#6ed6a0':'#2b3852','stroke-width':done?2:1}));
+    if(done){const e={x:w*.16,y};svg.appendChild(S('line',{x1:e.x,y1:y,x2:p.x,y2:y,stroke:'#c79aff','stroke-width':2}),S('circle',{cx:e.x,cy:y,r:6,fill:'#c79aff'}));const et=S('text',{x:e.x+10,y:y+4,fill:'#91a0bd','font-size':10});et.textContent=cut(secured[name],15);svg.appendChild(et)}svg.appendChild(S('circle',{cx:p.x,cy:y,r:6,fill:done?'#6ed6a0':'#53617b'}));const t=S('text',{x:p.x+10,y:y+4,fill:done?'#edf2ff':'#91a0bd','font-size':10});t.textContent=cut(name,18);svg.appendChild(t)});
+  svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:state.result==='승'?'#6ed6a0':'#53617b'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10.5,'text-anchor':'middle','font-weight':700});gt.textContent=info.graph.goal;svg.appendChild(gt);$('dialogue-trace').textContent=`${state.turn||0}턴 · 요건 ${Object.keys(secured).length}/${req.length} 확보 · 인내심 ${state.patience??'-'}${state.result?' · 결과 '+state.result:''}`}
+function render(){if(info?.graph&&!info.graph.nodes.some(n=>n.name===selectedNode))selectedNode=lastTrace?.winner||info.graph.goal||info.graph.nodes[0]?.name||null;managerView();knowledge();dialogue();nodeList();nodeDetail()}
+function applyInfo(data,announce=false,clearTrace=false){info=data;if(clearTrace){lastTrace=null;selectedNode=null}$('pack').textContent=`${data.pack} · 그래프 ${data.graphs.length}개`;
+  if(!$('pack-select').options.length){const p=document.createElement('option');p.value=data.pack;p.textContent=`📦 ${data.pack} · 전체 KG ${data.graphs.length}개`;$('pack-select').appendChild(p)}
+  if(!$('graph').options.length){const manager=document.createElement('option');manager.value=data.manager_selection;manager.textContent='🧭 노드 매니저 · 질문별 자동 KG 선택';$('graph').appendChild(manager);const group=document.createElement('optgroup');group.label=`${data.pack} 안의 지식 그래프 · 수동 고정`;for(const name of data.graphs){const o=document.createElement('option');o.value=name;o.textContent=`↳ ${name.replace('graphs/','')}`;group.appendChild(o)}$('graph').appendChild(group)}$('graph').value=data.selected;
+  const route=data.routed_graphs?.length?` · 선택 ${data.routed_graphs.map(x=>x.replace('graphs/','')).join(' + ')}`:'';$('status').innerHTML=`<span class="dot">●</span> ${data.role} · 목표 ${data.goal}${route} · 완결 지식 기록 ${data.learned_records}건`;
+  $('knowledge-title').textContent=data.multi_route?`통합 지식 그래프 — ${data.routed_graphs.length}개 KG`:(data.routed_graph?`선택된 지식 그래프 — ${data.routed_graph.replace('graphs/','')}`:(data.routing_mode?'선택된 지식 그래프 — 질문 대기':'지식 그래프 — '+data.selected.replace('graphs/','')));
+  $('knowledge-sub').textContent=data.multi_route?'각 KG의 노드는 이름공간으로 분리하고 각 목표를 다중 응답 목표에 연결했습니다.':(data.routed_graph?'노드 매니저가 고른 KG에서 이번 입력의 실제 근거 경로를 표시합니다.':'굵은 선은 실제 근거 경로, 밝은 노드는 이번 턴의 활성 노드입니다.');
+  if(announce)message('assistant',data.routing_mode?'노드 매니저가 활성화됐습니다. 질문을 입력하면 KGPack 안의 상위 그래프가 담당 KG를 고르고, 어느 KG도 맞지 않으면 자가학습 KG가 원문을 읽어 새 사실 그래프를 만듭니다.':(data.self_learning?'자가학습 그래프입니다. 검색 발췌가 아니라 원문에서 완결 문장을 가져와 사실 노드로 배웁니다.':`${data.role} 그래프입니다. 목표: ${data.goal}\n증거: ${(data.evidence||[]).join(', ')||'없음'}`));render()}
+function setBusy(v){busy=v;$('send').disabled=v;$('pack-select').disabled=v;$('graph').disabled=v;$('reset').disabled=v;$('status').style.opacity=v?.65:1}
+async function send(){const q=$('input').value.trim();if(!q||busy)return;message('user',q);$('input').value='';setBusy(true);try{const r=await api('/api/ask',{question:q});lastTrace=r.trace||null;selectedNode=lastTrace?.winner||selectedNode;message('assistant',r.answer_markdown||r.answer,r.learned?'새 지식을 overlay에 저장했습니다':'',true);applyInfo(r.info)}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false);$('input').focus()}}
+$('send').onclick=send;$('input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});$('node-search').oninput=nodeList;$('node-kind').onchange=nodeList;$('graph').onchange=async()=>{setBusy(true);try{$('chat').textContent='';$('node-search').value='';$('node-kind').value='';applyInfo(await api('/api/select',{graph:$('graph').value}),true,true)}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false)}};$('reset').onclick=async()=>{setBusy(true);try{$('chat').textContent='';applyInfo(await api('/api/reset'),true,true)}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false)}};addEventListener('resize',render);
+(async()=>{try{applyInfo(await api('/api/info'),true,true);$('input').focus()}catch(e){message('assistant','시작 실패: '+e.message)}})();
+</script>
+</body>
+</html>
