@@ -135,6 +135,7 @@ def kg읽기(경로):
     병목이므로 파일 형식이 곧 작업 도구다. 화살표가 눈에 보이게 한다."""
     경로 = _길(경로)
     g = {"역할": "", "목표": "", "임계값": {"A_MIN": 0.50, "OK_MIN": 0.60},
+         "이름말": "용어",
          "대사": {}, "공통층": {}, "사례층": {}, "무관층": {},
          "수치조건": {}, "엣지": [], "개념엣지": [], "포함": []}
     구역 = None
@@ -166,10 +167,14 @@ def kg읽기(경로):
                 g["임계값"] = {"A_MIN": a, "OK_MIN": b}
             elif 키 == "포함":
                 g["포함"] += [x.strip() for x in 값.split(",") if x.strip()]
+            elif 키 == "이름말":
+                if 값 not in ("용어", "문장"):
+                    오류(i, 머리, "이름말은 '용어' 또는 '문장'")
+                g["이름말"] = 값
             elif 키 in ("역할", "목표"):
                 g[키] = 값
             else:
-                오류(i, 머리, "모르는 머리말 (역할/목표/임계값/포함)")
+                오류(i, 머리, "모르는 머리말 (역할/목표/임계값/포함/이름말)")
 
         elif 구역 == "대사":
             if ":" not in 머리:
@@ -403,6 +408,7 @@ def load(path="graphs/graph.kg"):
     else:
         g = json.load(open(path, encoding="utf-8"))
     # 알아듣지 못한 발화를 그래프 옆에 쌓는다. 기획자가 읽고 그래프를 키운다.
+    g.setdefault("이름말", "용어")
     g.setdefault("_미지로그", os.path.splitext(path)[0] + ".미지.log")
     g.setdefault("_학습로그", os.path.splitext(path)[0] + ".학습.jsonl")
     # 되묻기에서 확인된 표현을 덧칠한다. 노드의 뜻은 그대로고 부르는 법만 는다 —
@@ -540,6 +546,7 @@ def 증거지우기(text, graph, ev):
     'APM2 로그' 같은 증거명에 숫자가 들어 있으면 그 숫자를 값으로 오독한다."""
     if not ev:
         return text
+    원문 = text
     for alias in sorted(graph["사례층"][ev], key=len, reverse=True):
         if alias in text:
             text = text.replace(alias, " ")
@@ -547,6 +554,14 @@ def 증거지우기(text, graph, ev):
             납작 = "".join(alias.split())
             if 납작 in "".join(text.split()):
                 text = re.sub(r"\s*".join(map(re.escape, 납작)), " ", text)
+    # 증거명이 발화 전체를 덮으면 지울 것이 아니라 남길 것이 없다.
+    # 법정에서는 증거가 'CCTV를 보면' 같은 표지라 앞머리만 사라진다. 그런데
+    # NPC 그래프에서는 발화 자체가 증거다 — "오늘도 보고 싶었어"가 곧 마음고백.
+    # 그대로 지우면 빈 문자열이 남아 주장 매칭이 0이 되고, 정확히 예시대로
+    # 말해도 '미지'가 나왔다. 지우는 목적은 증거명이 주장을 덮는 것을 막는
+    # 것이므로, 덮을 주장이 따로 없으면 지우지 않는 편이 옳다.
+    if not "".join(text.split()):
+        return 원문
     return text
 
 
@@ -582,8 +597,13 @@ def counters(graph, node):
 
     자책 논증은 여러 홉 뒤에 드러난다: CPU점유 --충족--> 앱병목 --부정--> DB병목.
     직접 엣지만 보면 이런 것을 통째로 놓친다."""
+    # reachable() 은 집합이라 순회 순서가 프로세스마다 다르다. 그대로 돌면
+    # out[0] 이 실행할 때마다 바뀌어, 같은 말에 다른 반격이 나간다. 그래프에
+    # 적힌 순서로 고정한다 — 기획자가 쓴 순서가 곧 우선순위다.
+    닿음 = reachable(graph, node)
+    차례 = [n for n in list(graph["공통층"]) + list(graph["사례층"]) if n in 닿음]
     out = []
-    for n in [node] + list(reachable(graph, node)):
+    for n in [node] + 차례:
         for r, d in graph["adj"].get(n, []):
             # 부정한다고 다 반격이 아니다. 플레이어에게 이로운 노드(목표로 전진하는
             # 노드)를 무너뜨릴 때만 자책이다. 방해 노드를 부정하는 것은 오히려 득이다.
@@ -656,34 +676,37 @@ def judge(graph, text, 연속A=0):
     if conf < OK_MIN:
         if 연속A >= 2:
             return "B2", 말["B2_강등"]
-        return "A", 말["A"].format(claim=claim)
+        return "A", 말["A"].format(claim=표현(graph, claim))
     if ev is None or ev_conf < A_MIN:
-        return "근거없음", 말["근거없음"].format(claim=claim)
+        return "근거없음", 말["근거없음"].format(claim=표현(graph, claim))
 
     수치, 값, 조건 = 수치판정(graph, claim, 본문)
     if 수치 in ("애매", "없음"):
         return "A", 말.get("A_말", 말["A"]).format(
-            claim=claim, ev=ev, bad="", 말=문장(graph, claim), 반격말="")
+            claim=표현(graph, claim), ev=표현(graph, ev), bad="",
+            말=문장(graph, claim), 반격말="")
     if 수치 is False:
         기준 = ("최소 %s" % _수치표기(조건["최소"], 조건.get("단위", ""))
                 if "최소" in 조건
                 else "최대 %s" % _수치표기(조건["최대"], 조건.get("단위", "")))
         return "수치미달", (말.get("수치미달") or 말["C"]).format(
-            ev=ev, claim=claim, 말=문장(graph, claim), 반격말="",
+            ev=표현(graph, ev), claim=표현(graph, claim),
+            말=문장(graph, claim), 반격말="",
             값=_수치표기(값, 조건.get("단위", "")), 기준=기준)
 
     if claim in reachable(graph, ev):
         bad = [c for c in counters(graph, claim) if c in reachable(graph, ev) or c in graph["공통층"]]
         if bad:
-            return "인정", 말["인정_반격"].format(ev=ev, claim=claim, bad=bad[0])
-        return "인정", 말["인정"].format(ev=ev, claim=claim)
+            return "인정", 말["인정_반격"].format(
+                ev=표현(graph, ev), claim=표현(graph, claim), bad=표현(graph, bad[0]))
+        return "인정", 말["인정"].format(ev=표현(graph, ev), claim=표현(graph, claim))
 
     if any(claim in reachable(graph, e) for e in graph["증거"]):
-        return "C", 말["C"].format(ev=ev, claim=claim)
+        return "C", 말["C"].format(ev=표현(graph, ev), claim=표현(graph, claim))
 
     if claim in graph["공통층"]:
-        return "B1", 말["B1"].format(claim=claim)
-    return "C", 말["C"].format(ev=ev, claim=claim)
+        return "B1", 말["B1"].format(claim=표현(graph, claim))
+    return "C", 말["C"].format(ev=표현(graph, ev), claim=표현(graph, claim))
 
 
 # 판정별 인내심 소모. 근거없음/A 는 무료 — 되묻기와 근거 요구는 절차이지 실책이 아니다.
@@ -820,8 +843,9 @@ class 세션:
         배정 = {}
 
         def 밀어넣기(ev, 본것):
-            for req in self.증거별요건.get(ev, ()):
-                if req not in need or req in 본것:
+            # 집합을 그냥 돌면 매칭 결과가 실행마다 달라진다. 요건 순서로 고정한다.
+            for req in [r for r in need if r in self.증거별요건.get(ev, ())]:
+                if req in 본것:
                     continue
                 본것.add(req)
                 if req not in 배정 or 밀어넣기(배정[req], 본것):
@@ -939,6 +963,24 @@ def 문장(graph, node, 기준=None):
     return node
 
 
+def 표현(graph, node, 기준=None):
+    """대사의 {claim}/{ev} 자리에 넣을 말. 노드 이름이냐 자연 문장이냐.
+
+    노드 이름이 그 인물이 실제로 입에 올릴 용어일 때가 있고('방위의사'),
+    기획자가 붙인 내부 딱지일 뿐일 때가 있다('마음고백'). 딱지를 그대로 읽으면
+    NPC 가 자기 내부 상태를 낭독하는 것처럼 들린다 — "혹시 [마음고백]을 말한
+    거야?"
+
+    이름이 제 예시 안에 나오는지로 자동 판별해 봤으나 못 쓴다. 법리 노드는
+    이름이 용어인데도 예시에는 안 나온다('침해의현재성' <- "지금 칼을 들고
+    있었다"). 30개 그래프에서 1063개 중 779개가 딱지로 잘못 걸렸다. 구조로
+    갈리는 구분이 아니라 저작 의도라서, 머리말 '이름말:' 로 선언받는다.
+    기본값은 '용어' 이므로 기존 그래프는 한 글자도 달라지지 않는다."""
+    if not node or graph.get("이름말") != "문장":
+        return node
+    return 문장(graph, node, 기준)
+
+
 def _미지기록(graph, text, conf, 가까운):
     """알아듣지 못한 발화를 남긴다.
 
@@ -973,7 +1015,8 @@ def 발화계획(graph, tag, ev, claim, 세션=None):
     if 세션 is not None:
         확 = 세션.확보()
         p["채운요건"] = 확
-        p["이번에채움"] = [n for n in 확 if n not in 세션.이전확보]
+        p["이번에채움"] = [n for n in 요건(graph)
+                          if n in 확 and n not in 세션.이전확보]
         p["남은요건"] = [n for n in 요건(graph) if n not in 확 and n not in 세션.자책]
         쓴것 = set(확.values())
         p["인내심"] = 세션.인내심
@@ -1061,8 +1104,8 @@ def 대사만들기(graph, p):
             return " ".join(줄)
         기본 = "C"
     기준 = p.get("기준")
-    칸 = {"ev": p["근거"], "claim": p["주장"],
-          "bad": p["반격"][0] if p["반격"] else "",
+    칸 = {"ev": 표현(graph, p["근거"], 기준), "claim": 표현(graph, p["주장"], 기준),
+          "bad": 표현(graph, p["반격"][0], 기준) if p["반격"] else "",
           # 거꾸로 돌린 매처: 노드명 대신 자연 문장
           "말": 문장(graph, p["주장"], 기준) if p["주장"] else "",
           "반격말": 문장(graph, p["반격"][0], 기준) if p["반격"] else ""}
@@ -1084,7 +1127,7 @@ def 대사만들기(graph, p):
     if p.get("해소"):
         앞 = 채움("해소알림", 가리킨것=", ".join(p["해소"])) or             ("%s 말씀이군요." % ", ".join(p["해소"]))
         줄.insert(0, 앞)
-    낱말 = [p.get("근거"), p.get("주장")] + list(p.get("이번에채움") or [])         + list(p.get("남은요건") or []) + (p.get("반격") or [])
+    낱말 = [칸["ev"], 칸["claim"], 칸["bad"]] + list(p.get("이번에채움") or [])         + list(p.get("남은요건") or []) + (p.get("반격") or [])
     return 조사고치기(" ".join(x for x in 줄 if x), 낱말)
 
 
@@ -2224,6 +2267,27 @@ def lint(graph):
 def _selfcheck():
     g = load()
     assert lint(g) == [], lint(g)
+
+    # 이름말 — 기본은 '용어'. 법리 노드는 이름 자체가 법정에서 쓰는 말이다.
+    assert g.get("이름말") == "용어"
+    assert 표현(g, "방위의사") == "방위의사"
+    # NPC 그래프는 노드 이름이 내부 딱지라 문장으로 바꿔 말한다.
+    # 딱지가 대사에 새면 인물이 자기 상태를 낭독하는 것처럼 들린다.
+    _연인 = load("graphs/npc_연인_대화.kg")
+    assert _연인["이름말"] == "문장"
+    assert 표현(_연인, "그리움") in _연인["공통층"]["그리움"]
+    _답 = 세션(_연인).대답("네 생각이 났어")
+    assert not any(딱지 in _답 for 딱지 in ("마음고백", "그리움", "함께하기")), _답
+
+    # 증거명이 발화 전체를 덮어도 지운 뒤 빈 문자열을 돌려주지 않는다.
+    # 비면 주장 매칭이 0이 되어, 예시 그대로 말해도 '미지'가 나갔다.
+    assert 증거지우기("네 생각이 났어", _연인, "마음고백").strip()
+
+    # 집합 순회 순서가 새면 같은 말에 실행마다 다른 반격이 나간다.
+    # counters() 는 그래프에 적힌 순서를 지켜야 한다.
+    _반격 = counters(g, "침해의현재성")
+    assert _반격 == [n for n in list(g["공통층"]) + list(g["사례층"])
+                    if n in _반격], _반격
 
     # 실제 판례 회귀: 승 4 / 패 2. 사건 추가는 cases/사건_회귀.json 한 줄이면 된다.
     _회귀 = 회귀()
