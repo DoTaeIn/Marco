@@ -165,7 +165,7 @@ def kg읽기(경로):
     병목이므로 파일 형식이 곧 작업 도구다. 화살표가 눈에 보이게 한다."""
     경로 = _길(경로)
     g = {"역할": "", "목표": "", "임계값": {"A_MIN": 0.50, "OK_MIN": 0.60},
-         "전진관계": list(POS), "부정관계": list(NEG),
+         "이름말": "용어", "전진관계": list(POS), "부정관계": list(NEG),
          "대사": {}, "공통층": {}, "사례층": {}, "무관층": {},
          "수치조건": {}, "엣지": [], "개념엣지": [], "포함": []}
     구역 = None
@@ -202,10 +202,14 @@ def kg읽기(경로):
                 if not 갈래:
                     오류(i, 머리, "%s 는 '증명, 충족' 형식" % 키)
                 g[키] = 갈래
+            elif 키 == "이름말":
+                if 값 not in ("용어", "문장"):
+                    오류(i, 머리, "이름말은 '용어' 또는 '문장'")
+                g["이름말"] = 값
             elif 키 in ("역할", "목표"):
                 g[키] = 값
             else:
-                오류(i, 머리, "모르는 머리말 (역할/목표/임계값/포함/"
+                오류(i, 머리, "모르는 머리말 (역할/목표/임계값/포함/이름말/"
                              "전진관계/부정관계/근거관계)")
 
         elif 구역 == "대사":
@@ -440,6 +444,7 @@ def load(path="graphs/graph.kg"):
     else:
         g = json.load(open(path, encoding="utf-8"))
     # 알아듣지 못한 발화를 그래프 옆에 쌓는다. 기획자가 읽고 그래프를 키운다.
+    g.setdefault("이름말", "용어")
     g.setdefault("전진관계", list(POS))
     g.setdefault("부정관계", list(NEG))
     g.setdefault("_미지로그", os.path.splitext(path)[0] + ".미지.log")
@@ -741,34 +746,34 @@ def judge(graph, text, 연속A=0, 몫=None):
     if conf < OK_MIN:
         if 연속A >= 2:
             return "B2", 말["B2_강등"]
-        return "A", 말["A"].format(claim=claim)
+        return "A", 말["A"].format(claim=표현(graph, claim))
     if ev is None or ev_conf < A_MIN:
-        return "근거없음", 말["근거없음"].format(claim=claim)
+        return "근거없음", 말["근거없음"].format(claim=표현(graph, claim))
 
     수치, 값, 조건 = 수치판정(graph, claim, 본문)
     if 수치 in ("애매", "없음"):
         return "A", 말.get("A_말", 말["A"]).format(
-            claim=claim, ev=ev, bad="", 말=문장(graph, claim), 반격말="")
+            claim=표현(graph, claim), ev=표현(graph, ev), bad="", 말=문장(graph, claim), 반격말="")
     if 수치 is False:
         기준 = ("최소 %s" % _수치표기(조건["최소"], 조건.get("단위", ""))
                 if "최소" in 조건
                 else "최대 %s" % _수치표기(조건["최대"], 조건.get("단위", "")))
         return "수치미달", (말.get("수치미달") or 말["C"]).format(
-            ev=ev, claim=claim, 말=문장(graph, claim), 반격말="",
+            ev=표현(graph, ev), claim=표현(graph, claim), 말=문장(graph, claim), 반격말="",
             값=_수치표기(값, 조건.get("단위", "")), 기준=기준)
 
     if claim in reachable(graph, ev):
         bad = [c for c in counters(graph, claim) if c in reachable(graph, ev) or c in graph["공통층"]]
         if bad:
-            return "인정", 말["인정_반격"].format(ev=ev, claim=claim, bad=bad[0])
-        return "인정", 말["인정"].format(ev=ev, claim=claim)
+            return "인정", 말["인정_반격"].format(ev=표현(graph, ev), claim=표현(graph, claim), bad=표현(graph, bad[0]))
+        return "인정", 말["인정"].format(ev=표현(graph, ev), claim=표현(graph, claim))
 
     if any(claim in reachable(graph, e) for e in graph["증거"]):
-        return "C", 말["C"].format(ev=ev, claim=claim)
+        return "C", 말["C"].format(ev=표현(graph, ev), claim=표현(graph, claim))
 
     if claim in graph["공통층"]:
-        return "B1", 말["B1"].format(claim=claim)
-    return "C", 말["C"].format(ev=ev, claim=claim)
+        return "B1", 말["B1"].format(claim=표현(graph, claim))
+    return "C", 말["C"].format(ev=표현(graph, ev), claim=표현(graph, claim))
 
 
 # 판정별 인내심 소모. 근거없음/A 는 무료 — 되묻기와 근거 요구는 절차이지 실책이 아니다.
@@ -1028,6 +1033,24 @@ def 문장(graph, node, 기준=None):
     return node
 
 
+def 표현(graph, node, 기준=None):
+    """대사의 {claim}/{ev} 자리에 넣을 말. 노드 이름이냐 자연 문장이냐.
+
+    노드 이름이 그 인물이 실제로 입에 올릴 용어일 때가 있고('방위의사'),
+    기획자가 붙인 내부 딱지일 뿐일 때가 있다('마음고백'). 딱지를 그대로 읽으면
+    NPC 가 자기 내부 상태를 낭독하는 것처럼 들린다 — "혹시 [마음고백]을 말한
+    거야?"
+
+    이름이 제 예시 안에 나오는지로 자동 판별해 봤으나 못 쓴다. 법리 노드는
+    이름이 용어인데도 예시에는 안 나온다('침해의현재성' <- "지금 칼을 들고
+    있었다"). 30개 그래프에서 1063개 중 779개가 딱지로 잘못 걸렸다. 구조로
+    갈리는 구분이 아니라 저작 의도라서, 머리말 '이름말:' 로 선언받는다.
+    기본값은 '용어' 이므로 기존 그래프는 한 글자도 달라지지 않는다."""
+    if not node or graph.get("이름말") != "문장":
+        return node
+    return 문장(graph, node, 기준)
+
+
 def _미지기록(graph, text, conf, 가까운):
     """알아듣지 못한 발화를 남긴다.
 
@@ -1152,7 +1175,8 @@ def 대사만들기(graph, p):
     기준 = p.get("기준")
     # 근거가 없을 수 있다. 그대로 넣으면 'None 니까 …' 가 사용자에게 나간다.
     # 실제로 [공리] 처럼 증거를 안 묻는 판정에서 그렇게 샜다.
-    칸 = {"ev": p["근거"] if p["근거"] is not None else p["주장"], "claim": p["주장"],
+    칸 = {"ev": 표현(graph, p["근거"] if p["근거"] is not None else p["주장"], 기준),
+          "claim": 표현(graph, p["주장"], 기준),
           "bad": p["반격"][0] if p["반격"] else "",
           # 거꾸로 돌린 매처: 노드명 대신 자연 문장
           "말": 문장(graph, p["주장"], 기준) if p["주장"] else "",
