@@ -9,6 +9,10 @@ Objection은 문서를 지식 그래프로 만들고, 사용자의 발화를 그
 [Knowledge graph](views/지식그래프.html) · [한국어 문서](docs/ko/README.md) ·
 [English documentation](docs/en/README.md)
 
+게임/NPC형 `.kg`와 문서형 `.json`을 같은 대화 API로 여는 공통 기반은
+[공통 대화 기반](docs/ko/common-base.md)에 있다. `python nai.py <그래프> --chat`으로
+그래프 종류를 구분하지 않고 대화할 수 있다.
+
 ## 어디까지 됐나
 
 | | 상태 | 근거 |

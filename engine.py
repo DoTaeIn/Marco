@@ -28,8 +28,32 @@ def _길(p):
     """상대 경로는 일단 지금 자리에서, 없으면 이 파일 옆에서 찾는다."""
     return p if os.path.isabs(p) or os.path.exists(p) else os.path.join(_여기, p)
 
-POS = ("증명", "충족")   # 논증을 전진시키는 관계
-NEG = ("부정",)
+POS = ("증명", "충족")   # 전진관계의 기본값. 그래프가 머리말로 갈아끼울 수 있다
+NEG = ("부정",)          # 부정관계의 기본값
+
+
+def 전진들(graph):
+    """이 그래프에서 목표 쪽으로 밀어주는 관계들.
+
+    법정 그래프는 증명/충족이지만 NPC 는 '좋아함'·'소유'·'목격' 을 쓴다.
+    모듈 상수로 박아두면 게임마다 엔진 소스를 고쳐야 해서 그래프가 선언한다."""
+    return tuple(graph.get("전진관계") or POS)
+
+
+def 부정들(graph):
+    """이 그래프에서 상대를 무너뜨리는 관계들."""
+    return tuple(graph.get("부정관계") or NEG)
+
+
+def 근거들(graph):
+    """사례층 노드를 '증거'로 만드는 관계들.
+
+    전진관계 아무거나로 두면 안 된다. 법정에서 증거는 '증명' 엣지를 가진
+    것뿐이고, '충족' 엣지를 가진 사실까지 증거로 세면 30개 중 25개 그래프의
+    증거 목록이 부풀어 버린다(실측). 그래서 전진관계 중에서도 앞의 것만 쓴다 —
+    전진관계: 증명, 충족 이면 근거는 증명이다. 필요하면 머리말로 덮어쓴다."""
+    적힘 = graph.get("근거관계")
+    return tuple(적힘) if 적힘 else 전진들(graph)[:1]
 반례표 = "_반례:"      # 널 클래스 중 "그 노드가 아니다"만 뜻하는 것들의 접두사
 
 # 임계값은 도메인 상수라 graph.kg 이 들고 있다. 공통층 크기에 따라 달라지기 때문:
@@ -94,8 +118,21 @@ def 검증(g):
         raise ValueError("그래프 오류\n  - " + "\n  - ".join(문제))
 
     노드 = set(g["공통층"]) | set(g["사례층"]) | set(g.get("무관층", {}))
+    쓸관계 = 전진들(g) + 부정들(g)
+    if len(set(쓸관계)) != len(쓸관계):
+        문제.append(f"전진관계와 부정관계에 같은 것이 있다: {쓸관계}")
+    밖 = [r for r in 근거들(g) if r not in 전진들(g)]
+    if 밖:
+        문제.append(f"근거관계가 전진관계에 없다: {밖} (전진: {전진들(g)})")
     if g["목표"] not in g["공통층"]:
         문제.append(f"목표 '{g['목표']}' 가 공통층에 없음")
+    for n in g.get("공리", ()):
+        if n not in g["공통층"]:
+            문제.append(f"공리 '{n}' 가 공통층에 없음")
+    # 목표가 공리면 그래프가 제 결론을 증거 없이 인정한다. 논증이 통째로
+    # 사라지므로 막는다 — 공리는 재료이지 결론이 아니다.
+    if g["목표"] in g.get("공리", ()):
+        문제.append(f"목표 '{g['목표']}' 를 공리로 둘 수 없다")
     for i, e in enumerate(g["엣지"]):
         if len(e) != 3:
             문제.append(f"엣지[{i}] 형식 오류: {e}"); continue
@@ -103,8 +140,8 @@ def 검증(g):
         for n in (a, b):
             if n not in 노드:
                 문제.append(f"엣지[{i}] 미정의 노드: '{n}'")
-        if r not in POS + NEG:
-            문제.append(f"엣지[{i}] 알 수 없는 관계: '{r}' (허용: {POS + NEG})")
+        if r not in 쓸관계:
+            문제.append(f"엣지[{i}] 알 수 없는 관계: '{r}' (허용: {쓸관계})")
         if a == b:
             문제.append(f"엣지[{i}] 자기 참조: '{a}'")
     for k in 필수대사:
@@ -135,10 +172,13 @@ def kg읽기(경로):
     병목이므로 파일 형식이 곧 작업 도구다. 화살표가 눈에 보이게 한다."""
     경로 = _길(경로)
     g = {"역할": "", "목표": "", "임계값": {"A_MIN": 0.50, "OK_MIN": 0.60},
+         "전진관계": list(POS), "부정관계": list(NEG),
          "대사": {}, "공통층": {}, "사례층": {}, "무관층": {},
-         "수치조건": {}, "엣지": [], "개념엣지": [], "포함": []}
+         "수치조건": {}, "엣지": [], "개념엣지": [], "포함": [], "공리": []}
     구역 = None
-    층이름 = {"개념": "공통층", "사례": "사례층", "무관": "무관층"}
+    # [공리] 도 공통층에 담는다. 매칭·경로 탐색은 개념과 똑같이 돌아야 하고,
+    # 다른 것은 '증거를 안 묻는다' 하나뿐이라 그 하나만 이름으로 따로 기억한다.
+    층이름 = {"개념": "공통층", "사례": "사례층", "무관": "무관층", "공리": "공통층"}
 
     def 오류(i, 줄, 왜):
         raise ValueError("%s:%d  %s\n    %s" % (경로, i, 왜, 줄))
@@ -150,8 +190,8 @@ def kg읽기(경로):
         머리 = 줄.strip()
         if 머리.startswith("[") and 머리.endswith("]"):
             구역 = 머리[1:-1].strip()
-            if 구역 not in ("개념", "사례", "무관", "논증", "대사", "개념망"):
-                오류(i, 머리, "모르는 구역 (개념/사례/무관/논증/대사/개념망)")
+            if 구역 not in ("개념", "사례", "무관", "논증", "대사", "개념망", "공리"):
+                오류(i, 머리, "모르는 구역 (개념/사례/무관/논증/대사/개념망/공리)")
             continue
 
         if 구역 is None:                                  # 머리말
@@ -166,10 +206,16 @@ def kg읽기(경로):
                 g["임계값"] = {"A_MIN": a, "OK_MIN": b}
             elif 키 == "포함":
                 g["포함"] += [x.strip() for x in 값.split(",") if x.strip()]
+            elif 키 in ("전진관계", "부정관계", "근거관계"):
+                갈래 = [x.strip() for x in 값.split(",") if x.strip()]
+                if not 갈래:
+                    오류(i, 머리, "%s 는 '증명, 충족' 형식" % 키)
+                g[키] = 갈래
             elif 키 in ("역할", "목표"):
                 g[키] = 값
             else:
-                오류(i, 머리, "모르는 머리말 (역할/목표/임계값/포함)")
+                오류(i, 머리, "모르는 머리말 (역할/목표/임계값/포함/"
+                             "전진관계/부정관계/근거관계)")
 
         elif 구역 == "대사":
             if ":" not in 머리:
@@ -219,6 +265,8 @@ def kg읽기(경로):
             if not 문장들:
                 오류(i, 머리, "예시 문장이 없다")
             g[층이름[구역]][이름] = 문장들
+            if 구역 == "공리":
+                g["공리"].append(이름)
             if 출처:
                 g.setdefault("출처", {})[이름] = 출처
             _ = 증거          # '*' 는 읽는 사람을 위한 표시. 실제 증거는 증명 엣지가 정한다
@@ -403,19 +451,23 @@ def load(path="graphs/graph.kg"):
     else:
         g = json.load(open(path, encoding="utf-8"))
     # 알아듣지 못한 발화를 그래프 옆에 쌓는다. 기획자가 읽고 그래프를 키운다.
+    g.setdefault("전진관계", list(POS))
+    g.setdefault("부정관계", list(NEG))
+    g.setdefault("공리", [])
     g.setdefault("_미지로그", os.path.splitext(path)[0] + ".미지.log")
     g.setdefault("_학습로그", os.path.splitext(path)[0] + ".학습.jsonl")
     # 되묻기에서 확인된 표현을 덧칠한다. 노드의 뜻은 그대로고 부르는 법만 는다 —
     # 새 지식이 아니므로 환각 위험이 없다. 새 노드나 엣지는 절대 만들지 않는다.
-    _긍정, _부정 = 학습읽기(g["_학습로그"])
-    for 노드, 말들 in _긍정.items():
+    # 이름을 _부정 으로 두면 모듈의 부정들() 을 이 함수 안에서 가린다.
+    배운긍정, 배운부정 = 학습읽기(g["_학습로그"])
+    for 노드, 말들 in 배운긍정.items():
         for 층 in ("공통층", "사례층"):
             if 노드 in g.get(층, {}):
                 g[층][노드] += [m for m in 말들 if m not in g[층][노드]]
                 break
     # "아니다"는 널 클래스로 간다. 이미 있는 무관층 기계를 그대로 쓴다 —
     # 매칭 점수 계산에 손대지 않고도 그 발화가 그 노드를 이기지 못하게 된다.
-    for 노드, 말들 in _부정.items():
+    for 노드, 말들 in 배운부정.items():
         칸 = g.setdefault("무관층", {}).setdefault(반례표 + 노드, [])
         칸 += [m for m in 말들 if m not in 칸]
     _포함(g, os.path.dirname(os.path.abspath(path)))
@@ -432,7 +484,8 @@ def load(path="graphs/graph.kg"):
     g["adj"] = adj = {}
     for src, rel, dst in g["엣지"]:
         adj.setdefault(src, []).append((rel, dst))
-    g["증거"] = [n for n in g["사례층"] if any(r == "증명" for r, _ in adj.get(n, []))]
+    g["증거"] = [n for n in g["사례층"]
+                 if any(r in 근거들(g) for r, _ in adj.get(n, []))]
     g["vec"] = _예시벡터(g)
     return g
 
@@ -540,13 +593,39 @@ def 증거지우기(text, graph, ev):
     'APM2 로그' 같은 증거명에 숫자가 들어 있으면 그 숫자를 값으로 오독한다."""
     if not ev:
         return text
+    return _증거지우기_뒷정리(_증거지운날것(text, graph, ev), text)
+
+
+def 증거가전부(text, graph, ev):
+    """발화가 통째로 증거인가.
+
+    법정에서 증거는 'CCTV를 보면' 같은 앞표지라 주장이 뒤에 남는다. NPC 는
+    다르다 — 손님이 "검이 부러졌어" 하면 그 한마디가 곧 증거이고, 주장은
+    글에 없다."""
+    return bool(ev) and not "".join(_증거지운날것(text, graph, ev).split())
+
+
+def _증거지운날것(text, graph, ev):
+    """증거를 지운 그대로. 다 지워져 빈 문자열이어도 그대로 돌려준다."""
     for alias in sorted(graph["사례층"][ev], key=len, reverse=True):
         if alias in text:
             text = text.replace(alias, " ")
-        else:                      # 공백을 지운 형태로도 한 번
+        else:
             납작 = "".join(alias.split())
             if 납작 in "".join(text.split()):
                 text = re.sub(r"\s*".join(map(re.escape, 납작)), " ", text)
+    return text
+
+
+def _증거지우기_뒷정리(text, 원문):
+    # 증거명이 발화 전체를 덮으면 지울 것이 아니라 남길 것이 없다.
+    # 법정에서는 증거가 'CCTV를 보면' 같은 표지라 앞머리만 사라진다. 그런데
+    # NPC 그래프에서는 발화 자체가 증거다 — "오늘도 보고 싶었어"가 곧 마음고백.
+    # 그대로 지우면 빈 문자열이 남아 주장 매칭이 0이 되고, 정확히 예시대로
+    # 말해도 '미지'가 나왔다. 지우는 목적은 증거명이 주장을 덮는 것을 막는
+    # 것이므로, 덮을 주장이 따로 없으면 지우지 않는 편이 옳다.
+    if not "".join(text.split()):
+        return 원문
     return text
 
 
@@ -566,8 +645,10 @@ def match_evidence(text, graph):
     return (최고, 1.0) if 최고 else (None, 0.0)
 
 
-def reachable(graph, start, rels=POS):
-    """start 에서 rels 관계만 타고 닿는 노드 집합."""
+def reachable(graph, start, rels=None):
+    """start 에서 rels 관계만 타고 닿는 노드 집합. 생략하면 그 그래프의 전진관계."""
+    if rels is None:
+        rels = 전진들(graph)
     seen, q = set(), deque([start])
     while q:
         for rel, dst in graph["adj"].get(q.popleft(), []):
@@ -587,13 +668,17 @@ def counters(graph, node):
         for r, d in graph["adj"].get(n, []):
             # 부정한다고 다 반격이 아니다. 플레이어에게 이로운 노드(목표로 전진하는
             # 노드)를 무너뜨릴 때만 자책이다. 방해 노드를 부정하는 것은 오히려 득이다.
-            if r in NEG and d not in out and graph["목표"] in reachable(graph, d) | {d}:
+            if r in 부정들(graph) and d not in out and graph["목표"] in reachable(graph, d) | {d}:
                 out.append(d)
     return out
 
 
-def judge(graph, text, 연속A=0):
+def judge(graph, text, 연속A=0, 몫=None):
     """→ (판정, 대사). 판정: 인정 / A / B1 / B2 / C / 근거없음
+
+    몫: 넘기면 judge 가 실제로 고른 {증거, 주장, 확신}을 여기 채운다.
+    judge 와 세션이 주장을 따로 구하면 서로 다른 답을 들고 갈라진다 —
+    judge 가 그래프를 보고 바로잡은 주장이 대사에는 반영되지 않았다.
 
     연속A: 직전까지 되묻기가 연속 몇 번 실패했는지. 2회부터는 B2로 강등한다.
     마진이 좁아 A 밴드로 새어든 무관 발화가 무한 되묻기에 갇히는 것을 막는다."""
@@ -629,6 +714,16 @@ def judge(graph, text, 연속A=0):
         남은 = [n for n in claim_pool if n not in 뺀것]
         claim, conf = match(본문, 남은, graph) if 남은 else (None, 0.0)
 
+    # 발화가 통째로 증거이면 주장을 글에서 찾을 수 없다. 남은 글이 없다.
+    # 그 증거가 무엇을 뒷받침하는지는 근거관계 엣지에 적혀 있으므로 거기서
+    # 가져온다 — 지어내는 것이 아니라 기획자가 그은 선을 읽는 것이다.
+    # 법정 그래프는 발화가 'CCTV를 보면 ~' 이라 증거가 앞표지에 그치므로
+    # 이 길로 오지 않는다. NPC 는 "검이 부러졌어" 한마디가 곧 증거다.
+    if 증거가전부(text, graph, ev) and conf < OK_MIN:
+        받치는것 = [d for r, d in graph["adj"].get(ev, []) if r in 근거들(graph)]
+        if 받치는것:
+            claim, conf = 받치는것[0], ev_conf
+
     # 유저가 증거를 가리켰으면 그 증거가 보여줄 수 있는 것부터 본다.
     # 긴 발화에서 결론 문장이 막연하게 다른 법리에 높게 붙는 일이 잦은데,
     # 논증 구조상 근거와 이어지는 주장이 우선이다. 확신이 없을 때만 쓴다.
@@ -644,6 +739,8 @@ def judge(graph, text, 연속A=0):
     #   미지 = 아무것도 충분히 걸리지 않았다 -> 증거의 부재. "모른다"이지 "무관하다"가 아니다
     # 둘을 뭉쳐 "관련 없습니다"라고 단언하면, 그래프에 없는 유효한 논증에 대해
     # 시스템이 거짓말을 하게 된다.
+    if 몫 is not None:
+        몫.update({"증거": ev, "주장": claim, "확신": conf})
     if conf < A_MIN:
         _미지기록(graph, text, conf, claim)
         return "미지", 말.get("미지") or 말["B2"]
@@ -657,6 +754,14 @@ def judge(graph, text, 연속A=0):
         if 연속A >= 2:
             return "B2", 말["B2_강등"]
         return "A", 말["A"].format(claim=claim)
+    # 공리는 증거를 안 묻는다. '대한민국의 수도는 서울' 에 사용자가 댈 증거가
+    # 없다 — 그건 결론이 아니라 주어진 것이다. 이 구역을 안 쓰는 그래프(법정 등)는
+    # 증거 강제가 그대로 살아 있다.
+    #
+    # 증거를 댔으면 그 길로 간다. 공리라고 증거를 무시하면 '유리잔을 떨어뜨렸다'
+    # 를 말한 사람에게도 그 사실을 안 본 것처럼 답하게 된다.
+    if claim in graph.get("공리", ()) and (ev is None or ev_conf < A_MIN):
+        return "인정", (말.get("공리") or 말["인정"]).format(ev=claim, claim=claim)
     if ev is None or ev_conf < A_MIN:
         return "근거없음", 말["근거없음"].format(claim=claim)
 
@@ -698,7 +803,7 @@ def _거리(graph, start):
     while q:
         n = q.popleft()
         for rel, dst in graph["adj"].get(n, []):
-            if rel in POS and dst not in d:
+            if rel in 전진들(graph) and dst not in d:
                 d[dst] = d[n] + 1
                 q.append(dst)
     return d
@@ -708,7 +813,8 @@ def 요건(graph):
     """목표로 '충족' 엣지를 직접 가진 노드 = 이겨야 채워지는 칸.
     별도 데이터가 필요 없다. 그래프 구조가 곧 승리 조건이다."""
     return [n for n in graph["공통층"]
-            if any(r == "충족" and d == graph["목표"] for r, d in graph["adj"].get(n, []))]
+            if any(r in 전진들(graph) and d == graph["목표"]
+                   for r, d in graph["adj"].get(n, []))]
 
 
 class 세션:
@@ -759,12 +865,15 @@ class 세션:
             return "A", 말, self.결과()
 
         text, self.해소 = 대명사풀기(text, self.g, self.최근)
-        tag, line = judge(self.g, text, self.연속A)
+        몫 = {}
+        tag, line = judge(self.g, text, self.연속A, 몫)
         self.연속A = self.연속A + 1 if tag == "A" else 0
-        ev = match_evidence(text, self.g)[0]
-        claim = match(증거지우기(text, self.g, ev),
-                      [n for n in self.g["사례층"] if n not in self.g["증거"]]
-                      + list(self.g["공통층"]) + list(self.g["무관층"]), self.g)[0]
+        ev = 몫.get("증거")
+        claim = 몫.get("주장")
+        if claim is None:          # A_MIN 밑이라 judge 가 못 고른 경우
+            claim = match(증거지우기(text, self.g, ev),
+                          [n for n in self.g["사례층"] if n not in self.g["증거"]]
+                          + list(self.g["공통층"]) + list(self.g["무관층"]), self.g)[0]
         if tag == "인정":
             self.자책 |= set(counters(self.g, claim))
             닿음 = reachable(self.g, claim) | {claim}
@@ -984,7 +1093,7 @@ def 발화계획(graph, tag, ev, claim, 세션=None):
     # 아직 증거로 닿지 않는 법리 = B1 후보 = 조사할 거리
     닿는곳 = set()
     for e in graph["증거"]:
-        닿는곳 |= reachable(graph, e, POS + NEG)
+        닿는곳 |= reachable(graph, e, 전진들(graph) + 부정들(graph))
     p["쟁점힌트"] = [n for n in graph["공통층"] if n not in 닿는곳]
     return p
 
@@ -2054,7 +2163,7 @@ def 그림(graph, 층=None):
     요건집 = set(요건(graph))
     닿음 = set()
     for e in 증거:
-        닿음 |= reachable(graph, e, POS + NEG)
+        닿음 |= reachable(graph, e, 전진들(graph) + 부정들(graph))
 
     묶음 = [("증거", sorted(증거)), ("사실", sorted(사실)),
             ("법리", sorted(graph["공통층"]))]
@@ -2158,7 +2267,7 @@ def 자동논증(graph):
     자기 요건을 부정하는 사실(자책)은 고르지 않는다 — 검사 측 논거다."""
     _, _, 배정 = 증거부족(graph)
     깨는것 = {n for n in graph["사례층"]
-              for r, _d in graph["adj"].get(n, []) if r in NEG}
+              for r, _d in graph["adj"].get(n, []) if r in 부정들(graph)}
     발화 = []
     for 요건이름, 증거 in 배정.items():
         for 사실 in graph["사례층"]:
@@ -2218,12 +2327,68 @@ def lint(graph):
 
     검증()은 형식 오류를, lint()는 의미 있는 누락을 잡는다."""
     return [n for n in graph["사례층"]
-            if not (reachable(graph, n, POS + NEG) & set(graph["공통층"]))]
+            if not (reachable(graph, n, 전진들(graph) + 부정들(graph)) & set(graph["공통층"]))]
 
 
 def _selfcheck():
     g = load()
     assert lint(g) == [], lint(g)
+
+    # 공리 — 증거를 안 묻는 노드. 상식·사실에는 사용자가 댈 증거가 없다.
+    # '대한민국의 수도는 서울' 은 결론이 아니라 주어진 것이라, 증거를 요구하면
+    # 그래프가 답을 들고도 근거없음만 낸다.
+    _공 = load("graphs/graph_상식_공리시험.kg")
+    assert _공["공리"] == ["대한민국수도서울", "불뜨거움"], _공["공리"]
+    assert judge(_공, "대한민국의 수도는 서울입니다")[0] == "인정"
+    # 증거를 댄 쪽은 원래 길로 간다. 공리라고 증거를 무시하면 사용자가 말한
+    # 사실을 안 본 것처럼 답하게 된다.
+    assert judge(_공, "유리잔을 떨어뜨렸습니다")[0] == "인정"
+    assert judge(_공, "점심 뭐 먹지")[0] in ("B2", "미지")
+    # 이 구역을 안 쓰는 그래프는 증거 강제가 그대로다
+    assert g["공리"] == [], g["공리"]
+    assert judge(g, "정당방위였습니다")[0] != "인정"
+    # 목표를 공리로 두면 논증이 통째로 사라진다. 막혀 있어야 한다.
+    try:
+        검증(dict(_공, 공리=_공["공리"] + [_공["목표"]]))
+        raise AssertionError("목표가 공리인데 통과했다")
+    except ValueError:
+        pass
+
+    # 관계 어휘는 그래프가 정한다. 법정 어휘를 한 개도 안 쓰는 그래프가 돈다.
+    # 게임마다 엔진 소스를 고쳐야 했다면 "어느 게임에서도" 가 성립하지 않는다.
+    _대장 = load("graphs/npc_대장장이.kg")
+    assert 전진들(_대장) == ("내놓음", "뜻함"), 전진들(_대장)
+    assert 부정들(_대장) == ("걸림돌",) and 근거들(_대장) == ("내놓음",)
+    assert _대장["증거"] == ["부러진검", "은화", "빈손"], _대장["증거"]
+    assert 요건(_대장) == ["고칠물건있음", "삯을치름"], 요건(_대장)
+    # 기본값은 그대로다 — 선언 없는 그래프는 법정 어휘를 쓴다
+    assert 전진들(g) == POS and 부정들(g) == NEG and 근거들(g) == ("증명",)
+
+    # 발화가 통째로 증거일 때 주장은 글이 아니라 근거관계 엣지에서 온다.
+    # 글에서 다시 찾으면 남은 글이 없어 전부 '미지' 로 떨어졌다.
+    assert 증거가전부("검이 부러졌어", _대장, "부러진검")
+    assert not 증거가전부("CCTV 보면 과도를 들고 들어왔습니다", g, "CCTV")
+    _판 = 세션(_대장)
+    assert _판.대답("검이 부러졌어") and _판.판정 == "인정", _판.판정
+    _판.대답("삯은 여기 있어")
+    assert _판.결과() == "승", _판.결과()
+    # 부정관계도 이 그래프 어휘로 돈다: 외상 -걸림돌-> 삯을치름
+    _판2 = 세션(_대장)
+    _판2.대답("칼날이 나갔어")
+    assert "걸리는군" in _판2.대답("나중에 갚을게"), _판2.계획
+
+    # 근거관계는 전진관계 안에 있어야 한다
+    _못된 = dict(_대장, 근거관계=["없는관계"])
+    try:
+        검증(_못된); raise AssertionError("근거관계가 전진관계 밖인데 통과했다")
+    except ValueError:
+        pass
+
+    # 집합 순회 순서가 새면 같은 말에 실행마다 다른 반격이 나간다.
+    # counters() 는 그래프에 적힌 순서를 지켜야 한다.
+    _반격 = counters(g, "침해의현재성")
+    assert _반격 == [n for n in list(g["공통층"]) + list(g["사례층"])
+                    if n in _반격], _반격
 
     # 실제 판례 회귀: 승 4 / 패 2. 사건 추가는 cases/사건_회귀.json 한 줄이면 된다.
     _회귀 = 회귀()
@@ -2864,7 +3029,7 @@ if __name__ == "__main__":
         판별기 = 방향분류기(g, 최소=20)
         
         가지 = len([1 for v in g["adj"].values()
-                    for r, _ in v if r in POS]) / max(len(g["adj"]), 1)
+                    for r, _ in v if r in 전진들(g)]) / max(len(g["adj"]), 1)
         print("지금 가지치기 %.2f (노드당 전진 엣지). 1에 가까우면 사슬이라"
               " 합성으로 나오는 명제가 없다." % 가지)
         if 흔한것:
@@ -3030,8 +3195,10 @@ if __name__ == "__main__":
             print("사용법: python engine.py --regress [cases/사건_회귀.json] [src relation dst]")
             sys.exit(1)
         엣지 = tuple(나머지) if 나머지 else None
+        # 여기는 사건 그래프 여러 개를 한꺼번에 도는 자리라 그래프 하나가 없다.
+        # 회귀는 법정 사건 전용이므로 기본 어휘로 검사한다.
         if 엣지 and 엣지[1] not in POS + NEG:
-            print("관계는 증명/충족/부정 중 하나여야 한다.")
+            print("관계는 %s 중 하나여야 한다." % "/".join(POS + NEG))
             sys.exit(1)
         결과 = 회귀(설정, 엣지)
         맞음 = sum(x["ok"] for x in 결과)

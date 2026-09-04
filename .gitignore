@@ -76,3 +76,8 @@ data/물건/.물건_*.pkl
 # AI 사이 인수인계 메모. 사람이 읽는 작업 상태이지 코드가 아니라서
 # 저장소에 올리지 않는다. 다음 세션이 이어 쓰도록 로컬에만 둔다.
 HANDOFF.md
+graphs/graph_목적_자가검사.kg
+
+# 국립국어원 사전 XML. CC BY-SA 2.0 KR 이지만 386MB 라 저장소에 안 넣는다.
+# spellcheck-ko/korean-dict-nikl 에서 받는다.
+data/사전/
