@@ -6,6 +6,7 @@
 import glob, hashlib, itertools, json, os, re, sys
 from collections import deque
 from functools import lru_cache
+from pathlib import Path
 
 os.environ.setdefault("TRANSFORMERS_VERBOSITY", "error")
 os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")
@@ -126,6 +127,13 @@ def 검증(g):
         문제.append(f"근거관계가 전진관계에 없다: {밖} (전진: {전진들(g)})")
     if g["목표"] not in g["공통층"]:
         문제.append(f"목표 '{g['목표']}' 가 공통층에 없음")
+    for n in g.get("공리", ()):
+        if n not in g["공통층"]:
+            문제.append(f"공리 '{n}' 가 공통층에 없음")
+    # 목표가 공리면 그래프가 제 결론을 증거 없이 인정한다. 그러면 논증이
+    # 통째로 사라지므로 막는다 — 공리는 재료이지 결론이 아니다.
+    if g["목표"] in g.get("공리", ()):
+        문제.append(f"목표 '{g['목표']}' 를 공리로 둘 수 없다")
     for i, e in enumerate(g["엣지"]):
         if len(e) != 3:
             문제.append(f"엣지[{i}] 형식 오류: {e}"); continue
@@ -167,22 +175,26 @@ def kg읽기(경로):
     g = {"역할": "", "목표": "", "임계값": {"A_MIN": 0.50, "OK_MIN": 0.60},
          "이름말": "용어", "전진관계": list(POS), "부정관계": list(NEG),
          "대사": {}, "공통층": {}, "사례층": {}, "무관층": {},
-         "수치조건": {}, "엣지": [], "개념엣지": [], "포함": []}
+         "수치조건": {}, "엣지": [], "개념엣지": [], "포함": [], "공리": []}
     구역 = None
-    층이름 = {"개념": "공통층", "사례": "사례층", "무관": "무관층"}
+    # [공리] 도 공통층에 담는다. 매칭·경로 탐색은 개념과 똑같이 돌아야 하고,
+    # 다른 것은 '증거를 안 묻는다' 하나뿐이다. 그 하나만 이름으로 따로 기억한다.
+    층이름 = {"개념": "공통층", "사례": "사례층", "무관": "무관층", "공리": "공통층"}
 
     def 오류(i, 줄, 왜):
         raise ValueError("%s:%d  %s\n    %s" % (경로, i, 왜, 줄))
 
-    for i, 원문 in enumerate(open(경로, encoding="utf-8"), 1):
+    # Path.read_text는 파일 핸들을 즉시 닫는다. 그래프를 여러 번 로드하는
+    # 벤치마크에서 열린 핸들 경고가 쌓이지 않게 한다.
+    for i, 원문 in enumerate(Path(경로).read_text(encoding="utf-8").splitlines(True), 1):
         줄 = 원문.split("#")[0].rstrip() if not 원문.lstrip().startswith("#") else ""
         if not 줄.strip():
             continue
         머리 = 줄.strip()
         if 머리.startswith("[") and 머리.endswith("]"):
             구역 = 머리[1:-1].strip()
-            if 구역 not in ("개념", "사례", "무관", "논증", "대사", "개념망"):
-                오류(i, 머리, "모르는 구역 (개념/사례/무관/논증/대사/개념망)")
+            if 구역 not in ("개념", "사례", "무관", "논증", "대사", "개념망", "공리"):
+                오류(i, 머리, "모르는 구역 (개념/사례/무관/논증/대사/개념망/공리)")
             continue
 
         if 구역 is None:                                  # 머리말
@@ -260,6 +272,8 @@ def kg읽기(경로):
             if not 문장들:
                 오류(i, 머리, "예시 문장이 없다")
             g[층이름[구역]][이름] = 문장들
+            if 구역 == "공리":
+                g["공리"].append(이름)
             if 출처:
                 g.setdefault("출처", {})[이름] = 출처
             _ = 증거          # '*' 는 읽는 사람을 위한 표시. 실제 증거는 증명 엣지가 정한다
@@ -534,11 +548,12 @@ def load(path="graphs/graph.kg"):
     if str(path).endswith(".kg"):
         g = kg읽기(path)
     else:
-        g = json.load(open(path, encoding="utf-8"))
+        g = json.loads(Path(path).read_text(encoding="utf-8"))
     # 알아듣지 못한 발화를 그래프 옆에 쌓는다. 기획자가 읽고 그래프를 키운다.
     g.setdefault("이름말", "용어")
     g.setdefault("전진관계", list(POS))
     g.setdefault("부정관계", list(NEG))
+    g.setdefault("공리", [])
     g.setdefault("_미지로그", os.path.splitext(path)[0] + ".미지.log")
     g.setdefault("_학습로그", os.path.splitext(path)[0] + ".학습.jsonl")
     g.setdefault("_겪음로그", os.path.splitext(path)[0] + ".겪음.jsonl")
@@ -690,7 +705,10 @@ def 증거가전부(text, graph, ev):
     법정에서 증거는 'CCTV를 보면' 같은 앞표지라 주장이 뒤에 남는다. NPC 는
     다르다 — 손님이 "검이 부러졌어" 하면 그 한마디가 곧 증거이고, 주장은
     글에 없다."""
-    return bool(ev) and not "".join(_증거지운날것(text, graph, ev).split())
+    if not ev:
+        return False
+    남음 = _증거지운날것(text, graph, ev)
+    return not re.sub(r"[\s.?!…]+", "", 남음)
 
 
 def _증거지운날것(text, graph, ev):
@@ -712,7 +730,10 @@ def _증거지우기_뒷정리(text, 원문):
     # 그대로 지우면 빈 문자열이 남아 주장 매칭이 0이 되고, 정확히 예시대로
     # 말해도 '미지'가 나왔다. 지우는 목적은 증거명이 주장을 덮는 것을 막는
     # 것이므로, 덮을 주장이 따로 없으면 지우지 않는 편이 옳다.
-    if not "".join(text.split()):
+    # 사례가 질문 전문이고 끝에 물음표만 남은 경우도 실질적으로는 빈 문장이다.
+    # 이를 내용으로 남기면 결론 매칭이 0점이 되어, 이미 맞춘 증거를 활용하지
+    # 못하고 미지로 떨어진다.
+    if not re.sub(r"[\s.?!…]+", "", text):
         return 원문
     return text
 
@@ -721,6 +742,10 @@ def match_evidence(text, graph):
     """증거는 고유명사(CCTV, 진단서)라 문장 임베딩으로 재면 유사도가 뭉개진다.
     문자열 포함으로 찾는 편이 정확하고 공짜다. 층마다 매칭 방식이 다르다."""
     t = "".join(text.split()).lower()
+    # 사례는 보통 서술문, 사용자의 입력은 의문문이라 끝의 ?/!/. 하나만으로
+    # 같은 사실이 갈라지면 안 된다. 경로나 식별자에 쓸 수 있는 기호는 건드리지
+    # 않고, 문장 종결부호만 한 번 더 느슨하게 비교한다.
+    t_종결무시 = re.sub(r"[.?!…]+", "", t)
     # 가장 긴 별칭이 이긴다. 먼저 걸리는 것을 쓰면 짧은 증거명이 긴 증거명의
     # 부분문자열일 때 엉뚱한 증거로 간다 — '피해근로자진술' 이라고 말했는데
     # '근로자진술' 이 먼저 걸려 그 증거가 증명하지 않는 주장이 되고 C 로 떨어졌다.
@@ -728,7 +753,8 @@ def match_evidence(text, graph):
     for node in graph["증거"]:
         for alias in graph["사례층"][node]:
             납작 = "".join(alias.split()).lower()
-            if len(납작) > 길이 and 납작 in t:
+            납작_종결무시 = re.sub(r"[.?!…]+", "", 납작)
+            if len(납작) > 길이 and (납작 in t or 납작_종결무시 in t_종결무시):
                 최고, 길이 = node, len(납작)
     return (최고, 1.0) if 최고 else (None, 0.0)
 
@@ -847,6 +873,15 @@ def judge(graph, text, 연속A=0, 몫=None):
         if 연속A >= 2:
             return "B2", 말["B2_강등"]
         return "A", 말["A"].format(claim=표현(graph, claim))
+    # 공리는 증거를 안 묻는다. '대한민국의 수도는 서울' 에 사용자가 댈 증거가
+    # 없다 — 그건 결론이 아니라 주어진 것이다. 법률 그래프는 [공리] 를 안 쓰므로
+    # 증거 강제가 그대로 살고, 상식 그래프만 제 성격을 선언한다.
+    #
+    # 증거를 댔으면 그 길로 간다. 공리라고 증거를 무시하면 '유리잔을 떨어뜨렸다'
+    # 를 말한 사람에게도 그 사실을 안 본 것처럼 답하게 된다.
+    if claim in graph.get("공리", ()) and (ev is None or ev_conf < A_MIN):
+        return "인정", (말.get("공리") or 말["인정"]).format(
+            ev=표현(graph, claim), claim=표현(graph, claim))
     if ev is None or ev_conf < A_MIN:
         return "근거없음", 말["근거없음"].format(claim=표현(graph, claim))
 
@@ -1335,6 +1370,11 @@ def 대사만들기(graph, p):
 
     tag = p["판정"]
     기본 = {"인정": ("인정_반격" if p["반격"] else "인정")}.get(tag, tag)
+    # 공리는 증거가 없다. '{ev} 니까 {claim} 다' 틀에 그대로 넣으면
+    # 'None 니까 ...' 가 나간다. 그래프가 [대사] 에 `공리:` 를 적어 뒀으면
+    # 그것을 쓰고, 없으면 아래 칸에서 {ev} 를 주장으로 메운다.
+    if tag == "인정" and p["근거"] is None and 말.get("공리"):
+        기본 = "공리"
     if 기본 not in 말 and 기본 + "_말" not in 말:
         # 이 판정용 대사가 그래프에 없으면 judge() 가 이미 만든 문장을 그대로 쓴다.
         # 예전에는 C 템플릿으로 떨어뜨려서 엉뚱한 말이 나갔다.
@@ -1346,7 +1386,10 @@ def 대사만들기(graph, p):
             return " ".join(줄)
         기본 = "C"
     기준 = p.get("기준")
-    칸 = {"ev": 표현(graph, p["근거"], 기준), "claim": 표현(graph, p["주장"], 기준),
+    # 근거가 없으면(공리) {ev} 자리를 주장으로 메운다. 없는 것을 지어내는 게
+    # 아니라, 그 문장이 곧 제 근거라는 뜻이다 — 'None' 을 내보내지 않는다.
+    칸 = {"ev": 표현(graph, p["근거"] or p["주장"], 기준),
+          "claim": 표현(graph, p["주장"], 기준),
           "bad": 표현(graph, p["반격"][0], 기준) if p["반격"] else "",
           # 거꾸로 돌린 매처: 노드명 대신 자연 문장
           "말": 문장(graph, p["주장"], 기준) if p["주장"] else "",
@@ -2956,8 +2999,39 @@ def _selfcheck():
                       ("신용점수가 낮아 상환능력이 의심됩니다", "대출")):
         _이름, _점, _후보 = 그래프고르기(_q, _색)
         assert _이름 and _조각 in _이름, (_q, _이름, _후보)
-    # 어느 그래프도 아닌 것은 고르지 않는다. 색인이 커져도 아무거나 집으면 안 된다.
-    assert 그래프고르기("오늘 점심 뭐 먹지", _색)[0] is None, 그래프고르기("오늘 점심 뭐 먹지", _색)
+    # 공리 — 증거를 안 묻는 노드. 상식에는 사용자가 댈 증거가 없다.
+    # '대한민국의 수도는 서울' 은 결론이 아니라 주어진 것이라, 증거를 요구하면
+    # 그래프가 답을 들고도 근거없음만 낸다(실제로 AGI 그래프가 그랬다).
+    _공 = load("graphs/graph_상식_공리시험.kg")
+    assert _공["공리"] == ["대한민국수도서울", "불뜨거움"], _공["공리"]
+    assert judge(_공, "대한민국의 수도는 서울입니다")[0] == "인정"
+    # 증거를 댄 쪽은 원래 길로 간다. 공리라고 증거를 무시하면 사용자가 말한
+    # 사실을 안 본 것처럼 답하게 된다.
+    assert judge(_공, "유리잔을 떨어뜨렸습니다")[0] == "인정"
+    assert judge(_공, "점심 뭐 먹지")[0] in ("B2", "미지"), judge(_공, "점심 뭐 먹지")
+    # 법정 그래프는 [공리] 를 안 쓴다. 증거 강제가 그대로 살아 있어야 한다.
+    assert g["공리"] == [], g["공리"]
+    assert judge(g, "정당방위였습니다")[0] != "인정"
+    # 목표를 공리로 두면 논증이 통째로 사라진다. 막혀 있어야 한다.
+    try:
+        검증(dict(_공, 공리=_공["공리"] + [_공["목표"]]))
+        raise AssertionError("목표가 공리인데 통과했다")
+    except ValueError:
+        pass
+
+    # 잡담이 **도메인** 그래프로 새면 안 된다. 이것이 지켜야 할 것이다.
+    #
+    # 예전에는 `[0] is None` 으로 잡았다. 저장소가 법률뿐일 때는 그 둘이 같은
+    # 말이었기 때문이다 — 잡담을 가져갈 자격이 있는 그래프가 없었다. 지금은
+    # 상식 그래프가 들어와서 갈라진다. 잡담이 상식 그래프로 가는 것은 옳고,
+    # 법률·의료로 가는 것은 여전히 거짓말이다. 그래서 조건을 그대로 적는다.
+    #
+    # (재본 것: 법률 3문·의료 2문은 전부 제 그래프로 갔고 상식 그래프가
+    #  가져간 것은 상식 3문뿐이다. 도메인 절도는 없다.)
+    _도메인 = ("정당방위", "부당해고", "저작권", "보험금", "의료", "대출", "코드리뷰")
+    for _잡담 in ("오늘 점심 뭐 먹지", "주말에 영화 볼까", "요즘 어떻게 지내"):
+        _이름 = 그래프고르기(_잡담, _색)[0] or ""
+        assert not any(d in _이름 for d in _도메인), (_잡담, _이름)
     # 고른 뒤에는 그 그래프로 판정까지 간다
     _이름, _tag, _말 = 안내("CCTV에 흉기를 들고 있는 게 찍혔습니다")
     assert _이름 and _tag == "인정", (_이름, _tag, _말)
