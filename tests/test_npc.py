@@ -67,7 +67,8 @@ class 겪음테스트(unittest.TestCase):
 
     def setUp(self):
         self.터 = tempfile.mkdtemp()
-        본 = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+        # 시험은 tests/ 에 있고 그래프는 저장소 뿌리에 있다
+        본 = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                           "graphs", "npc_대장장이.kg")
         self.갑길 = os.path.join(self.터, "갑.kg")
         self.을길 = os.path.join(self.터, "을.kg")
@@ -131,7 +132,8 @@ class 소문테스트(unittest.TestCase):
 
     def setUp(self):
         self.터 = tempfile.mkdtemp()
-        본 = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+        # 시험은 tests/ 에 있고 그래프는 저장소 뿌리에 있다
+        본 = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                           "graphs", "npc_대장장이.kg")
         self.길 = {}
         for 누구 in ("갑", "을", "병"):
