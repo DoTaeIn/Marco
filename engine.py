@@ -2369,17 +2369,32 @@ def 자동논증(graph):
               for r, _d in graph["adj"].get(n, []) if r in 부정들(graph)}
     발화 = []
     for 요건이름, 증거 in 배정.items():
+        별칭 = sorted(graph["사례층"][증거], key=len, reverse=True)[0]
+        # 증거 -> 사실 -> 요건. 사실을 짚어 주는 쪽이 사람이 하는 말에 가깝다.
         for 사실 in graph["사례층"]:
             if 사실 in 깨는것 or 사실 in graph["증거"]:
                 continue
-            if not any(r == "증명" and d == 사실
+            # 관계 이름은 그래프가 정한다. '증명' 을 박아두면 제 어휘를 쓴
+            # 그래프는 발화가 한 개도 안 나와, 회귀가 조용히 빈 채로 돈다.
+            if not any(r in 근거들(graph) and d == 사실
                        for r, d in graph["adj"].get(증거, [])):
                 continue
             if 요건이름 in reachable(graph, 사실):
-                별칭 = sorted(graph["사례층"][증거], key=len, reverse=True)[0]
                 발화.append("%s을(를) 보면 %s"
                             % (별칭, graph["사례층"][사실][0]))
                 break
+        else:
+            # 증거가 개념에 바로 붙는 그래프는 사이에 짚을 사실이 없다.
+            # 두 홉만 찾으면 그런 그래프는 발화가 통째로 비어, 회귀가
+            # 아무것도 안 돌린 채 통과한 것처럼 보인다(대장장이·취약점분석).
+            # 증거만 내놓으면 주장은 엔진이 고른다. 그 증거가 자책 사실도
+            # 짚고 있으면 제 요건을 무너뜨리는 쪽이 뽑혀 진다(연구 그래프).
+            # 짚을 안전한 사실이 없는 증거는 아예 내놓지 않는다.
+            if any(d in 깨는것 for _r, d in graph["adj"].get(증거, [])):
+                continue
+            if any(r in 근거들(graph) and (d == 요건이름 or 요건이름 in reachable(graph, d))
+                   for r, d in graph["adj"].get(증거, [])):
+                발화.append(별칭)
     return 발화
 
 
@@ -2484,6 +2499,22 @@ def _selfcheck():
     _판2 = 세션(_대장)
     _판2.대답("칼날이 나갔어")
     assert "걸리는군" in _판2.대답("나중에 갚을게"), _판2.계획
+
+    # 자동논증도 그래프 어휘로 돈다. '증명' 이 박혀 있어서 제 어휘를 쓰는
+    # 그래프는 발화가 0개였고, 회귀가 아무것도 안 돌린 채 통과처럼 보였다.
+    _발 = 자동논증(_대장)
+    assert len(_발) == 2, _발
+    _짜 = 세션(_대장)
+    for _t in _발:
+        _짜.대답(_t)
+    assert _짜.결과() == "승", (_짜.결과(), _짜.현황())
+    # 자책 증거는 내놓지 않는다. 증거만 던지면 주장은 엔진이 고르는데,
+    # 그 증거가 제 요건을 깨는 사실도 짚고 있으면 그쪽이 뽑혀 진다.
+    _연 = load("graphs/graph_연구.kg")
+    _짜2 = 세션(_연)
+    for _t in 자동논증(_연):
+        _짜2.대답(_t)
+    assert _짜2.결과() != "패", _짜2.현황()
 
     # 근거관계는 전진관계 안에 있어야 한다
     _못된 = dict(_대장, 근거관계=["없는관계"])
