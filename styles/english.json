@@ -58,6 +58,10 @@
       "is a method of %s",
       "has method %s"
     ],
+    "상위": [
+      "is a kind of %s",
+      "%s is a kind of this"
+    ],
     "설명함": [
       "covers %s",
       "is covered in the passage about %s"
