@@ -9,6 +9,7 @@ pack은 읽기 전용이다. 자가학습으로 생긴 새 지식은 /private/tm
 from __future__ import annotations
 
 import argparse
+import base64
 from collections import deque
 import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -25,7 +26,12 @@ os.environ.setdefault("KG_ENCODER", "문자")
 sys.path.insert(0, str(루트))
 
 import engine  # noqa: E402
+import document_kg  # noqa: E402
+import goal_runtime  # noqa: E402
+import input_understanding  # noqa: E402
 import kgpack  # noqa: E402
+import semantic_parser  # noqa: E402
+import state_engine  # noqa: E402
 import web_learn  # noqa: E402
 from encoder import _vec, 조각내기  # noqa: E402
 
@@ -119,6 +125,19 @@ def 마크다운답(answer, trace):
     return "## %s\n\n%s" % (topic, answer)
 
 
+def 웹근거답(research):
+    """생성 요약 대신 원문 완결 문장으로 답한다. 출처 없는 문장을 만들지 않는다."""
+    sources = research.get("sources") or []
+    if not sources:
+        return "## 웹 근거 답변\n\n검증 가능한 원문을 찾지 못했습니다."
+    parts = ["## 웹 근거 답변", "KG에는 충분한 근거가 없어 원문에서 확인한 문장을 제시합니다."]
+    for source in sources:
+        heading = source.get("title") or source.get("domain") or "원문"
+        parts.append("### %s\n출처: %s\n\n> %s" % (heading, source.get("url", ""),
+                     " ".join(source.get("sentences") or [])))
+    return "\n\n".join(parts)
+
+
 def 세션상태(session):
     secured = session.확보()
     return {"secured": secured, "self_counter": sorted(session.자책),
@@ -127,7 +146,11 @@ def 세션상태(session):
 
 
 def 질문대목(question):
-    """복합 질문을 KG를 따로 고를 수 있는 의미 대목으로 나눈다."""
+    """독립 질문만 KG별로 나눈다. 앞 문장은 흔히 뒤 질문의 상황 조건이다."""
+    # "배가 뜬다. 수면이 오른다. 몇 칸인가?"의 앞 두 문장을 별도 질의로
+    # 보내면 엉뚱한 KG 여러 개가 선택된다. 물음표가 하나면 한 상황 모델이다.
+    if len(re.findall(r"[?？]", question)) <= 1:
+        return [question.strip()]
     parts = []
     for raw in re.split(r"(?:\r?\n+|(?<=[.!?。！？])\s+|\s+(?:그리고|또한|동시에|한편)\s+)", question):
         part = re.sub(r"^(?:그리고|또한|동시에|한편)\s+", "", raw.strip(" ,;:\t"))
@@ -191,11 +214,21 @@ class 앱상태:
         self.overlay.mkdir(parents=True, exist_ok=True)
         self.lock = threading.RLock()
         self.auto_graph = next((x for x in self.graphs if x.endswith("graph_자가학습.kg")), None)
+        self.situation_graph = next((x for x in self.graphs if x.endswith("graph_일상추론.kg")), None)
         self.selected = 매니저선택
         self.active_name = self.route = None
         self.routed_graphs, self.combined_shape = [], None
         self.graph = self.session = self.graph_path = None
         self.history = []
+        # KG 대화 이력과 분리된다. key는 브라우저 탭이 만든 불투명 세션 식별자다.
+        self.understanding_history = {}
+        self.project_roots = {}
+        self.document_history = {}
+        self.goals = goal_runtime.GoalRuntime(루트)
+        # 모델은 답변기가 아니다. 이 객체는 모델 후보를 검증된 상태 JSON으로
+        # 축소하는 경계이며, 테스트는 CallableBackend를 주입해 모델 품질과
+        # 상태 계산을 독립적으로 검사한다.
+        self.semantic_parser = semantic_parser.SemanticParser()
 
     def _materialize(self, name):
         target = self.overlay / name
@@ -231,6 +264,12 @@ class 앱상태:
         self.graph = (web_learn.불러오기(str(self.graph_path))
                       if name.endswith("graph_자가학습.kg") else engine.load(str(self.graph_path)))
         self.session = None if name.endswith("graph_자가학습.kg") else engine.세션(self.graph)
+
+    def _clear_manager_route(self):
+        """매니저 모드의 이번 턴이 어떤 KG도 쓰지 않았음을 명시한다."""
+        if self.라우팅중:
+            self.active_name = self.graph = self.session = self.graph_path = None
+            self.routed_graphs, self.combined_shape = [], None
 
     def select(self, name):
         with self.lock:
@@ -295,6 +334,209 @@ class 앱상태:
             self.history = []
             return self.info()
 
+    def understand(self, text, session_id):
+        """입력 분석 전용 경로: KG·검색·overlay·답변 엔진을 전혀 호출하지 않는다."""
+        text = (text or "").strip()
+        if not text:
+            raise ValueError("입력이 비어 있습니다")
+        session_id = str(session_id or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
+            raise ValueError("유효하지 않은 브라우저 세션입니다")
+        with self.lock:
+            history = self.understanding_history.setdefault(session_id, [])
+            result = input_understanding.understand(text, history)
+            history.append(result)
+            # 문맥 후보만 필요하므로 탭별 최근 30턴으로 한정한다.
+            del history[:-30]
+            return {"understanding": result, "history_count": len(history),
+                    "session": session_id, "mode": "understanding_only"}
+
+    def reset_understanding(self, session_id):
+        session_id = str(session_id or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
+            raise ValueError("유효하지 않은 브라우저 세션입니다")
+        with self.lock:
+            self.understanding_history.pop(session_id, None)
+        return {"session": session_id, "history_count": 0, "mode": "understanding_only"}
+
+    def save_semantic_correction(self, session_id, raw, semantic_parse, verification):
+        """사용자가 명시적으로 승인한 구조화 해석만 학습 후보로 보관한다."""
+        session_id = str(session_id or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
+            raise ValueError("유효하지 않은 브라우저 세션입니다")
+        if not isinstance(semantic_parse, dict) or not semantic_parse.get("accepted"):
+            raise ValueError("검증된 의미 JSON만 학습 후보로 승인할 수 있습니다")
+        record = {"schema": semantic_parser.SCHEMA_VERSION, "raw": str(raw or ""),
+                  "semantic_parse": semantic_parse, "verification": verification or {},
+                  "model": semantic_parse.get("model"), "approved_at": __import__("time").time(),
+                  "session": session_id}
+        target = self.overlay / "semantic_corrections.jsonl"
+        with self.lock:
+            with target.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
+        return {"saved": True, "path": str(target), "model": record["model"]}
+
+    def project(self, session_id, path=None):
+        """사용자가 선언한 세션별 작업 루트. 계획 밖 경로 접근은 런타임이 거절한다."""
+        session_id = str(session_id or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
+            raise ValueError("유효하지 않은 브라우저 세션입니다")
+        with self.lock:
+            if path is not None:
+                candidate = Path(str(path)).expanduser().resolve()
+                if candidate == candidate.anchor or not candidate.is_dir():
+                    raise ValueError("존재하는 프로젝트 폴더를 지정해 주세요")
+                self.project_roots[session_id] = candidate
+            root = self.project_roots.get(session_id, 루트)
+            return {"session": session_id, "project_root": str(root), "declared": session_id in self.project_roots}
+
+    def document(self, session_id, filename, content_b64):
+        """사용자가 올린 PDF/PPTX를 세션 overlay에서만 분석·학습한다.
+
+        문서 안의 지시문은 데이터일 뿐 API 호출이나 명령 실행 권한이 아니다.
+        충분히 읽힌 주장만 JSON 그래프에 기록하고, 원본도 pack에는 절대 넣지 않는다.
+        """
+        session_id = str(session_id or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
+            raise ValueError("유효하지 않은 브라우저 세션입니다")
+        safe_name = Path(str(filename or "document")).name
+        if Path(safe_name).suffix.lower() not in (".pdf", ".pptx"):
+            raise ValueError("PDF 또는 PPTX 파일만 분석할 수 있습니다")
+        try:
+            raw = base64.b64decode(str(content_b64 or ""), validate=True)
+        except ValueError as exc:
+            raise ValueError("문서 데이터가 올바르지 않습니다") from exc
+        if not raw or len(raw) > 20 * 1024 * 1024:
+            raise ValueError("문서는 20MB 이하의 비어 있지 않은 파일이어야 합니다")
+        digest = hashlib.sha256(raw).hexdigest()[:16]
+        folder = self.overlay / "documents" / session_id / digest
+        folder.mkdir(parents=True, exist_ok=True)
+        source = folder / safe_name
+        temporary = source.with_name(source.name + ".tmp-%d" % os.getpid())
+        try:
+            temporary.write_bytes(raw)
+            os.replace(temporary, source)
+        finally:
+            try:
+                temporary.unlink()
+            except FileNotFoundError:
+                pass
+        result = document_kg.learn(source, folder / "knowledge.graph.json")
+        analysis = result["analysis"]
+        response = {"session": session_id, "filename": safe_name, "document_id": digest,
+                    "status": analysis["status"], "analysis": analysis,
+                    "graph_saved": result["saved"], "graph_shape": None}
+        if result["saved"]:
+            graph = engine.load(result["saved"])
+            response["graph_shape"] = 그래프얼개(graph)
+        with self.lock:
+            history = self.document_history.setdefault(session_id, [])
+            history.append({"document_id": digest, "filename": safe_name,
+                            "status": analysis["status"], "graph_saved": result["saved"]})
+            del history[:-12]
+        return response
+
+    def turn(self, text, session_id, approval_mode="risk"):
+        """목적 수행 턴. 승인 전에는 읽기 전용 KG·웹 조사만 한다."""
+        session_id = str(session_id or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
+            raise ValueError("유효하지 않은 브라우저 세션입니다")
+        if approval_mode not in ("risk", "all_steps"):
+            raise ValueError("알 수 없는 승인 모드입니다")
+        with self.lock:
+            history = self.understanding_history.setdefault(session_id, [])
+            understanding = input_understanding.understand(text, history)
+            history.append(understanding); del history[:-30]
+            is_work = any(x["goal"]["kind"] == "perform" for x in understanding["segments"])
+            if is_work:
+                root = self.project_roots.get(session_id, 루트)
+                plan = self.goals.plan_work(text, understanding, approval_mode, self.graph_path, root)
+                self.goals.remember(session_id, plan)
+                return {"phase": "plan", "understanding": understanding, "plan": plan}
+            if understanding.get("overall", {}).get("primary", {}).get("kind") == "dialogue":
+                self._clear_manager_route()
+                answer_text = input_understanding.dialogue_reply(text)
+                trace = {"mode": "dialogue", "question": text, "winner": "dialogue.reply",
+                         "verdict": "대화", "activated": [], "path": []}
+                answer = {"answer": answer_text, "answer_markdown": answer_text,
+                          "learned": False, "known": True, "trace": trace, "info": self.info()}
+                self.history.append({"question": text, "claim": "dialogue.reply", "evidence": None,
+                                     "verdict": "대화", "sources": [], "learned": False})
+                return {"phase": "answer", "understanding": understanding, "answer": answer}
+            # 문장 유사도나 문제별 정규식은 산술·시간·순위 같은 상황을 대신할 수
+            # 없다. 학습 모델의 후보도 원문 span·타입 검증을 통과한 JSON일 때만
+            # 순수 상태 엔진에 전달한다.
+            situation_path = self._materialize(self.situation_graph) if self.situation_graph else None
+            semantic = self.semantic_parser.parse(text)
+            situation = state_engine.evaluate(semantic, situation_path)
+            if situation["status"] != "unknown":
+                # 상황 규칙도 독립 KG의 선언을 근거로 삼는다. 매니저 화면에서
+                # 어떤 지식 묶음이 쓰였는지 보이도록 선택 상태를 함께 남긴다.
+                if self.라우팅중 and self.situation_graph:
+                    self._activate(self.situation_graph, force=True)
+                    self.routed_graphs = [self.situation_graph]
+                    self.route = {"selected": self.situation_graph,
+                                  "selected_all": [self.situation_graph],
+                                  "score": 1.0, "best_score": 1.0,
+                                  "candidates": [[self.situation_graph, 1.0]],
+                                  "fallback": False, "segments": [{"question": text,
+                                  "selected": self.situation_graph, "score": 1.0,
+                                  "best_score": 1.0, "fallback": False,
+                                  "candidates": [[self.situation_graph, 1.0]]}]}
+                trace = {"mode": "situation", "question": text,
+                         "winner": situation.get("operator"),
+                         "verdict": "전제불성립" if situation["status"] == "premise_invalid" else "계산완료",
+                         "activated": [], "path": [], "semantic_parse": semantic,
+                         "reasoning": {"operator": situation.get("operator"), "transitions": situation.get("transitions", [])},
+                         "verification": situation.get("verification", {})}
+                answer = {"answer": situation["answer"], "answer_markdown": situation["answer"],
+                          "learned": False, "known": True, "trace": trace, "semantic_parse": semantic,
+                          "reasoning": trace["reasoning"], "verification": trace["verification"], "info": self.info()}
+                self.history.append({"question": text, "claim": situation.get("operator"),
+                                     "evidence": None, "verdict": trace["verdict"],
+                                     "sources": [], "learned": False})
+                return {"phase": "answer", "understanding": understanding, "answer": answer}
+            # 해석이 불충분하면 KG 매니저가 비슷한 여러 그래프를 답처럼 나열하지
+            # 않는다. 상태 해석 실패 사실은 연구/근거 부족 결과에 그대로 남긴다.
+            semantic_failure = {"semantic_parse": semantic, "reasoning": {"operator": None, "transitions": []},
+                                "verification": situation.get("verification", {})}
+            # 자가학습 KG도 여기서는 학습을 막는다. 웹 저장은 승인 행동으로만 가능하다.
+            answer = self.ask(text, allow_learning=False)
+            answer.update(semantic_failure)
+            if not answer.get("known"):
+                answer.setdefault("trace", {}).update(semantic_failure)
+            verdict = (answer.get("trace") or {}).get("verdict")
+            known = answer.get("known", verdict not in (None, "미지", "지식부족", "B2"))
+            if known:
+                return {"phase": "answer", "understanding": understanding, "answer": answer}
+            try:
+                research = self.goals.research(text)
+            except Exception as e:
+                research = {"query": text, "sources": [], "verified": False, "error": "%s: %s" % (type(e).__name__, e)}
+            # 미지는 답변에 자동 학습 KG를 쓰지 않는다. 다만 승인된 웹 사실은
+            # 전용 overlay 대상에만 저장해 다음 독립 질의에서 검증 가능하게 한다.
+            learning_path = self.graph_path
+            if not learning_path and self.라우팅중 and self.auto_graph:
+                learning_path = self._materialize(self.auto_graph)
+            plan = self.goals.plan_learning(text, research, approval_mode, learning_path, self.project_roots.get(session_id, 루트))
+            self.goals.remember(session_id, plan)
+            return {"phase": "research", "understanding": understanding, "answer": answer,
+                    "research": research, "web_answer": 웹근거답(research), "plan": plan,
+                    **semantic_failure}
+
+    def approve_goal(self, session_id, plan_id, plan_hash, action_ids, direct=False):
+        session_id = str(session_id or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
+            raise ValueError("유효하지 않은 브라우저 세션입니다")
+        with self.lock:
+            return self.goals.approve(session_id, str(plan_id or ""), str(plan_hash or ""), action_ids, bool(direct))
+
+    def reject_goal(self, session_id, plan_id, reason=""):
+        session_id = str(session_id or "").strip()
+        with self.lock:
+            plan = self.goals.pending.pop((session_id, str(plan_id or "")), None)
+        return {"rejected": bool(plan), "plan_id": plan_id, "reason": str(reason or "")}
+
     def _일반질문(self, question):
         graph = self.graph
         evidence, evidence_score = engine.match_evidence(question, graph)
@@ -304,6 +546,21 @@ class 앱상태:
         ranks = 점수(body, pool, graph)
         nulls = 점수(body, list(graph.get("무관층", {})), graph)
         winner = ranks[0][0] if ranks else None
+        # 증거는 문자열으로만 매칭된다. 그래프의 사례·주장 벡터가 비슷하다는
+        # 이유로 사용자의 질문을 다른 사실로 바꿔 답하지 않는다.
+        if not evidence:
+            answer = "선택된 KG에서 질문과 정확히 일치하는 근거를 찾지 못했습니다. 유사도만으로 답하지 않습니다."
+            trace = {"mode": "argument", "question": question, "winner": winner,
+                     "verdict": "근거불충분", "evidence": {"name": None, "score": 0.0},
+                     "rankings": [[n, round(v, 3)] for n, v in ranks[:5]],
+                     "null_rankings": [[n, round(v, 3)] for n, v in nulls[:3]],
+                     "margin": round(ranks[0][1] - ranks[1][1], 3) if len(ranks) > 1 else None,
+                     "path": [], "activated": []}
+            self.history.append({"question": question, "claim": None, "evidence": None,
+                                 "verdict": "근거불충분", "sources": [], "learned": False})
+            return {"answer": answer, "answer_markdown": answer, "learned": False,
+                    "known": False, "verdict": "근거불충분", "result": self.session.결과(),
+                    "trace": trace, "info": self.info()}
         answer = self.session.대답(question)
         route = 경로(graph, evidence or winner, graph["목표"])
         trace = {"mode": "argument", "question": question, "winner": winner,
@@ -350,10 +607,10 @@ class 앱상태:
                 "activated": ([claim] if claim else []) + facts + [s["node"] for s in sources],
                 "sources": sources, "facts": facts, "learned": learned}
 
-    def _자가질문(self, question):
+    def _자가질문(self, question, allow_learning=True):
         known, answer = web_learn.묻다(self.graph, question)
         learned = False
-        if not known:
+        if not known and allow_learning:
             topic, _aliases = web_learn.주제추출(self.graph, question)
             if topic:
                 try:
@@ -378,7 +635,7 @@ class 앱상태:
         return {"answer": answer, "answer_markdown": 마크다운답(answer, trace),
                 "learned": learned, "known": known, "trace": trace, "info": self.info()}
 
-    def ask(self, question):
+    def ask(self, question, allow_learning=True):
         question = (question or "").strip()
         if not question:
             raise ValueError("질문이 비어 있습니다")
@@ -391,11 +648,13 @@ class 앱상태:
                                                                   최소=0.45, 개수=5)
                     for candidate, value in candidates:
                         candidate_scores[candidate] = max(candidate_scores.get(candidate, 0), value)
-                    selected = ([n for n, value in candidates
-                                if value >= 0.45 and value >= score - 0.05] if name else [])
+                    # 한 의미 대목에는 최고 후보 하나만 실행한다. 점수 근처 후보를
+                    # 전부 실행하면 '마라톤 순위' 같은 한 질문에 법·대출 KG가
+                    # 줄줄이 붙어, 근거 부족 메시지만 여러 번 보여 주게 된다.
+                    selected = [name] if name else []
+                    # 문턱 미달은 '모름'이다. 자동 학습 그래프를 억지로 골라
+                    # 가까운 문장을 답하는 것은 금지한다.
                     fallback = False
-                    if not selected and self.auto_graph:
-                        selected, fallback = [self.auto_graph], True
                     for selected_name in selected:
                         selected_score = next((c for n, c in candidates if n == selected_name), None)
                         segments.append({"question": part, "selected": selected_name,
@@ -403,6 +662,7 @@ class 앱상태:
                                          "best_score": score, "fallback": fallback,
                                          "candidates": [[n, c] for n, c in candidates]})
                 if not segments:
+                    self._clear_manager_route()
                     self.route = {"selected": None, "selected_all": [], "score": None,
                                   "best_score": max(candidate_scores.values(), default=0),
                                   "candidates": [[n, c] for n, c in sorted(
@@ -430,7 +690,7 @@ class 앱상태:
                     for name in names:
                         part_question = ". ".join(grouped[name])
                         self._activate(name, force=True)
-                        piece = self._자가질문(part_question) if self.자가학습 else self._일반질문(part_question)
+                        piece = self._자가질문(part_question, allow_learning) if self.자가학습 else self._일반질문(part_question)
                         label = name.removeprefix("graphs/").removesuffix(".kg")
                         items.append({"graph": name, "question": part_question,
                                       "answer": piece.get("answer", ""),
@@ -439,9 +699,12 @@ class 앱상태:
                         markdown_parts.append("## %s\n\n%s" % (label, piece.get("answer", "")))
                     self.combined_shape = 병합얼개(items)
                     trace = 병합추적(items, self.route)
+                    part_known = [piece.get("known", (piece.get("trace") or {}).get("verdict")
+                                  not in (None, "미지", "지식부족", "근거불충분", "B2")) for piece in items]
                     result = {"answer": "\n\n".join(plain_parts),
                               "answer_markdown": "\n\n".join(markdown_parts),
                               "learned": any((x.get("trace") or {}).get("learned") for x in items),
+                              "known": bool(part_known) and all(part_known),
                               "trace": trace, "parts": items, "info": self.info()}
                     return result
                 self._activate(names[0])
@@ -449,7 +712,7 @@ class 앱상태:
             else:
                 self.routed_graphs = []
                 self.combined_shape = None
-            result = self._자가질문(question) if self.자가학습 else self._일반질문(question)
+            result = self._자가질문(question, allow_learning) if self.자가학습 else self._일반질문(question)
             if self.라우팅중:
                 trace = result.get("trace") or {"mode": "manager", "question": question,
                                                 "winner": None, "verdict": "오류",
@@ -480,7 +743,7 @@ class 손(BaseHTTPRequestHandler):
 
     def _body(self):
         length = int(self.headers.get("Content-Length") or 0)
-        if length > 1024 * 1024:
+        if length > 28 * 1024 * 1024:
             raise ValueError("요청이 너무 큽니다")
         return json.loads(self.rfile.read(length) or b"{}")
 
@@ -503,8 +766,25 @@ class 손(BaseHTTPRequestHandler):
                 return self._json(self.app.reset())
             if path == "/api/ask":
                 return self._json(self.app.ask(body.get("question")))
+            if path == "/api/understand":
+                return self._json(self.app.understand(body.get("input"), body.get("session")))
+            if path == "/api/understanding/reset":
+                return self._json(self.app.reset_understanding(body.get("session")))
+            if path == "/api/semantic/correct":
+                return self._json(self.app.save_semantic_correction(body.get("session"), body.get("raw"),
+                                                                       body.get("semantic_parse"), body.get("verification")))
+            if path == "/api/project":
+                return self._json(self.app.project(body.get("session"), body.get("path")))
+            if path == "/api/document":
+                return self._json(self.app.document(body.get("session"), body.get("filename"), body.get("content_b64")))
+            if path == "/api/turn":
+                return self._json(self.app.turn(body.get("input"), body.get("session"), body.get("approval_mode", "risk")))
+            if path == "/api/approve":
+                return self._json(self.app.approve_goal(body.get("session"), body.get("plan_id"), body.get("plan_hash"), body.get("action_ids"), body.get("direct")))
+            if path == "/api/reject":
+                return self._json(self.app.reject_goal(body.get("session"), body.get("plan_id"), body.get("reason")))
             self.send_error(404)
-        except (ValueError, kgpack.KGPackError, json.JSONDecodeError) as e:
+        except (ValueError, document_kg.DocumentKGError, kgpack.KGPackError, json.JSONDecodeError) as e:
             self._json({"error": str(e)}, status=400)
         except Exception as e:
             import traceback
