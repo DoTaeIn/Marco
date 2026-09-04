@@ -16,8 +16,23 @@
 # 지우면 그 NPC 는 겪기 전으로 돌아간다 — 되돌리기가 곧 파일 삭제다.
 *.겪음.jsonl
 
+# HOI 분류기가 낸 엣지 후보. 사람이 읽고 .kg 에 옮겨 적기 전까지는
+# 지식이 아니라 제안이다. 돌릴 때마다 늘어난다.
+*.그림후보.jsonl
+
 # build.py 출력. 31MB. `python build.py data/법지식` 로 재생성
 data/법지식/지식그래프.json
+
+# 밖에서 받아온 재료. 저장소에 넣기엔 크고, 받는 법이 코드에 적혀 있다.
+#   사전  375MB  국립국어원 한국어기초사전. CC BY-SA 2.0 KR.
+#                spellcheck-ko/korean-dict-nikl 에서 받는다
+#   위키  105MB  한국어 위키백과 첫 문장 거둔 것
+#   hoi   206MB  HICO-DET manifest 와 ResNet 특징 캐시
+#   models 3.3GB 백본 가중치(ResNet·YOLO·VLM)
+data/사전/
+data/위키/
+data/hoi/
+data/models/
 
 # graphify 중간 캐시
 graphify-out/cache/
