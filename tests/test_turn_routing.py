@@ -26,13 +26,20 @@ def _semantic_candidate(text):
 class TurnRoutingTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        # NAI.kgpack 은 생성물이라 .gitignore 에 있다. 새로 클론한 곳에는 없다.
+        # 없다고 시험이 깨지면 안 된다 — 만드는 법을 알려주고 건너뛴다.
+        묶음 = Path(__file__).resolve().parent.parent / "NAI.kgpack"
+        if not 묶음.is_file():
+            raise unittest.SkipTest(
+                "NAI.kgpack 이 없다. `python kgpack.py --pack NAI.kgpack --root .` 로 만든다")
         cls.temp = tempfile.TemporaryDirectory()
-        cls.app = 앱상태(Path(__file__).resolve().parent.parent / "NAI.kgpack", overlay_root=cls.temp.name)
+        cls.app = 앱상태(묶음, overlay_root=cls.temp.name)
         cls.app.semantic_parser = SemanticParser(CallableBackend(_semantic_candidate))
 
     @classmethod
     def tearDownClass(cls):
-        cls.temp.cleanup()
+        if hasattr(cls, "temp"):
+            cls.temp.cleanup()
 
     def turn(self, text):
         return self.app.turn(text, "routing-test-session")
