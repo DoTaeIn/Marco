@@ -95,7 +95,7 @@ def _포함(g, base_dir):
             g.setdefault("출처", {}).setdefault(k, v)
         for k, v in (o.get("수치조건") or {}).items():
             g.setdefault("수치조건", {}).setdefault(k, v)
-        for 칸 in ("값받이", "값옮김"):
+        for 칸 in ("값받이", "값옮김", "값셈"):
             for k, v in (o.get(칸) or {}).items():
                 g.setdefault(칸, {}).setdefault(k, v)
         if not g.get("임계값") and o.get("임계값"):
@@ -176,6 +176,14 @@ _수치 = re.compile(r"^(.*?)\s*\{\s*(\S*?)\s*(>=|<=)\s*([\d.]+)\s*\}$")
 # 지어내는 것이 아니라 옮기는 것이라, 고르기만 한다는 전제가 깨지지 않는다.
 _값옮김 = re.compile(r"^(.*?)\s*\{\s*(\S+?)\s*<-\s*(\S+?)\s*\}$")
 _값받이 = re.compile(r"^(.*?)\s*\{\s*(\S+?)\s*\}$")
+# 셈. 식은 사람이 그래프에 적고 엔진은 계산만 한다 — 엔진이 식을 고르면
+# 지어내기지만, 적힌 식을 따라가는 것은 엣지를 따라가는 것과 같다.
+#
+#   총액 {원 = 단가 * 개수}
+#
+# 피연산자는 다른 노드가 발화에서 붙잡은 수이거나 그래프에 적힌 상수다.
+# '>=' 의 '=' 와 헷갈리지 않게 앞에 부등호가 없을 때만 본다.
+_값셈 = re.compile(r"^(.*?)\s*\{\s*(\S+?)\s*(?<![<>])=\s*(.+?)\s*\}$")
 
 
 def kg읽기(경로):
@@ -188,7 +196,7 @@ def kg읽기(경로):
          "이름말": "용어", "색인": "예",
          "전진관계": list(POS), "부정관계": list(NEG),
          "대사": {}, "공통층": {}, "사례층": {}, "무관층": {},
-         "수치조건": {}, "값받이": {}, "값옮김": {},
+         "수치조건": {}, "값받이": {}, "값옮김": {}, "값셈": {},
          "엣지": [], "개념엣지": [], "포함": [], "공리": []}
     구역 = None
     # [공리] 도 공통층에 담는다. 매칭·경로 탐색은 개념과 똑같이 돌아야 하고,
@@ -288,6 +296,10 @@ def kg읽기(경로):
                 m2 = _값옮김.match(이름)
                 이름 = m2.group(1).strip()
                 g["값옮김"][이름] = (m2.group(2), m2.group(3))
+            elif _값셈.match(이름):
+                m4 = _값셈.match(이름)
+                이름 = m4.group(1).strip()
+                g["값셈"][이름] = (m4.group(2), m4.group(3))
             elif _값받이.match(이름):
                 m3 = _값받이.match(이름)
                 이름 = m3.group(1).strip()
@@ -489,6 +501,7 @@ def load(path="graphs/graph.kg"):
     g.setdefault("색인", "예")
     g.setdefault("값받이", {})
     g.setdefault("값옮김", {})
+    g.setdefault("값셈", {})
     g.setdefault("전진관계", list(POS))
     g.setdefault("부정관계", list(NEG))
     g.setdefault("공리", [])
@@ -1042,6 +1055,10 @@ class 세션:
         # 결론의 값. 없으면 빈 칸이고, 대사가 {값} 을 안 쓰면 아무 일도 없다.
         _값 = self.값풀기(claim) if claim else None
         p["값"] = ("%g%s" % _값) if _값 else ""
+        # 목표의 값. 피연산자가 다 모여야 풀린다 — 그 순간이 새 사실이 선
+        # 자리다. 하나라도 없으면 None 이라 아무 말도 안 나간다.
+        _결 = self.값풀기(self.g["목표"])
+        p["결론값"] = ("%g%s" % _결) if _결 else ""
         # 되읽을 때 예시의 수를 사용자가 말한 수로 바꾼다. 안 바꾸면 '5등을
         # 추월했다' 고 했는데 '2등인 사람을 추월했습니다 니까' 로 되읽어,
         # 잘못 들은 것처럼 보인다. 바꿔 넣는 수는 발화에서 온 것이다.
@@ -1088,8 +1105,49 @@ class 세션:
             for 수, u, 확실 in 숫자뽑기(text):
                 if 확실 and (u.startswith(단위) if 단위 else True):
                     self.값[노드] = (수, 단위)
-                    self.이번수 = 수
+                    _표면 = re.search(r"\d[\d,.]*", text)
+                    self.이번수 = _표면.group(0) if _표면 else "%g" % 수
                     break
+
+    def 값셈하기(self, 식, 본것):
+        """그래프에 적힌 식을 계산한다. -> 수 또는 None
+
+        eval 을 쓰지 않는다. 더하기·빼기·곱하기·나누기와 괄호만 허용하고,
+        이름은 다른 노드의 값으로만 푼다. 그래프는 사람이 쓰는 파일이지만
+        믿고 실행할 코드는 아니다 — 문법이 좁아야 무엇이 일어날지 읽힌다.
+
+        피연산자가 하나라도 없으면 None 이다. 모르는 자리를 0 으로 두면
+        없는 답이 생긴다."""
+        import ast
+        try:
+            나무 = ast.parse(식, mode="eval").body
+        except SyntaxError:
+            return None
+
+        def 풀이(n):
+            if isinstance(n, ast.Constant) and isinstance(n.value, (int, float)):
+                return float(n.value)
+            if isinstance(n, ast.Name):
+                온것 = self.값풀기(n.id, 본것)
+                return 온것[0] if 온것 else None
+            if isinstance(n, ast.UnaryOp) and isinstance(n.op, (ast.UAdd, ast.USub)):
+                v = 풀이(n.operand)
+                return None if v is None else (-v if isinstance(n.op, ast.USub) else v)
+            if isinstance(n, ast.BinOp):
+                a, b = 풀이(n.left), 풀이(n.right)
+                if a is None or b is None:
+                    return None
+                if isinstance(n.op, ast.Add):
+                    return a + b
+                if isinstance(n.op, ast.Sub):
+                    return a - b
+                if isinstance(n.op, ast.Mult):
+                    return a * b
+                if isinstance(n.op, ast.Div):
+                    return None if b == 0 else a / b
+            return None
+
+        return 풀이(나무)
 
     def 값풀기(self, 노드, 본것=None):
         """노드의 값. 직접 붙잡았으면 그것, 아니면 옮김을 따라간다.
@@ -1103,11 +1161,16 @@ class 세션:
         if 노드 in self.값:
             return self.값[노드]
         옮 = self.g.get("값옮김", {}).get(노드)
-        if not 옮:
-            return None
-        단위, 출처 = 옮
-        온것 = self.값풀기(출처, 본것)
-        return (온것[0], 단위) if 온것 else None
+        if 옮:
+            단위, 출처 = 옮
+            온것 = self.값풀기(출처, 본것)
+            return (온것[0], 단위) if 온것 else None
+        셈 = self.g.get("값셈", {}).get(노드)
+        if 셈:
+            단위, 식 = 셈
+            수 = self.값셈하기(식, 본것)
+            return (수, 단위) if 수 is not None else None
+        return None
 
     def 확보(self):
         """요건 -> 그것을 채운 증거. 요건마다 서로 다른 증거가 필요하다.
@@ -1392,7 +1455,7 @@ def 대사만들기(graph, p):
     # 실제로 [공리] 처럼 증거를 안 묻는 판정에서 그렇게 샜다.
     def _수맞춤(글):
         수 = p.get("수바꿈")
-        return re.sub(r"\d[\d.]*", "%g" % 수, 글, count=1) if 수 is not None else 글
+        return re.sub(r"\d[\d.]*", str(수), 글, count=1) if 수 is not None else 글
 
     _근거노드 = p["근거"] if p["근거"] is not None else p["주장"]
     칸 = {"ev": _수맞춤(표현(graph, _근거노드, 기준)),
@@ -1414,6 +1477,8 @@ def 대사만들기(graph, p):
         줄.append(채움("힌트_증거", 증거=", ".join(p["미사용증거"][:3])))
     # 남은 요건은 판이 움직인 턴에만 알린다. 매 턴 같은 목록을 읊으면
     # 자기가 방금 한 말을 기억 못 하는 것처럼 들린다.
+    if p.get("결론값") and "결론값" in 말:
+        줄.append(말["결론값"].format(값=p["결론값"], claim=칸["claim"], ev=칸["ev"]))
     if p["이번에채움"] and p["남은요건"]:
         줄.append(채움("남은요건",
                        남은=", ".join(표현(graph, n, 기준)
@@ -2694,6 +2759,32 @@ def _selfcheck():
     # 증거는 수가 달라도 같은 증거다. 안 가리면 '2등...' 만 걸리고 '5등...' 은
     # 안 걸려, 같은 말인데 하나만 알아듣는다.
     assert match_evidence("5등인 사람을 추월했습니다", _순)[0] == "앞사람을제침"
+
+    # 셈. 식은 사람이 그래프에 적고 엔진은 계산만 한다. 피연산자가 다 모여야
+    # 풀리고, 하나라도 없으면 아무 말도 안 나간다 — 모르는 자리를 0 으로 두면
+    # 없는 답이 생긴다.
+    _정 = load("graphs/graph_정산_나눠내기.kg")
+    assert _정["값셈"]["몫을안다"] == ("원", "총액 / 인원"), _정["값셈"]
+    _짜 = 세션(_정)
+    _짜.대답("12만원 나왔어")
+    assert _짜.값풀기("몫을안다") is None, _짜.값      # 인원을 아직 모른다
+    _끝 = _짜.대답("3명이야")
+    assert _짜.값풀기("몫을안다") == (40000.0, "원"), _짜.값풀기("몫을안다")
+    assert "40000원" in _끝, _끝                     # 그래프에 없는 수다
+    # 0 으로 나누면 값이 없다. 무한대나 예외가 사용자에게 가면 안 된다.
+    _영 = 세션(_정); _영.대답("12만원 나왔어"); _영.대답("0명이야")
+    assert _영.값풀기("몫을안다") is None, _영.값풀기("몫을안다")
+    # 식은 좁은 문법만 받는다. 그래프는 사람이 쓰는 파일이지 실행할 코드가 아니다.
+    assert 세션(_정).값셈하기("__import__('os').system('true')", set()) is None
+    assert 세션(_정).값셈하기("1 + 2 * (3 - 1)", set()) == 5.0
+
+    # 연주 시간은 인원에 안 달렸다. 셈이 아니라 불변이라 값옮김으로 푼다.
+    _연 = load("graphs/graph_연주시간.kg")
+    _연판 = 세션(_연)
+    _연답 = _연판.대답("그 곡은 45분짜리다")
+    assert _연판.값풀기("연주시간을안다") == (45.0, "분"), _연판.값
+    assert "45분" in _연답, _연답                     # 그래프는 60 만 든다
+    assert 세션(_연).대답("120명이면 30분이다") and 세션(_연) is not None
 
     # 한 발화에 증거가 여럿이면 다 잡는다. 사람은 한 문장에 사실 여럿을
     # 이어 붙이는데, 하나만 잡으면 나머지가 남은 글에 섞여 주장을 흐리고
