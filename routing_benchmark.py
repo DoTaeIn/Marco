@@ -99,9 +99,23 @@ def 재기(읽음, ix, 답까지=False):
                         답 += engine.judge(engine.그래프불러오기(골), q)[0] != "미지"
                     except Exception:
                         pass
+    # 밖 질문은 '모른다' 로 끝나야 한다. 라우터가 거절하는지만 보면 잘못
+    # 잰다 — 어느 그래프로 갔더라도 그 그래프가 미지를 내면 사용자에게는
+    # 맞는 답이다. 실제로 '서버가 지금 살아 있어' 가 감정대화 그래프로
+    # 0.49 에 갔지만 판정은 미지였다. 그래프가 늘 때마다 라우터 거절만
+    # 세면 값이 흔들리는데, 답으로 세면 안 흔들린다.
     밖 = json.load(open(engine._길(밖경로), encoding="utf-8"))
-    거절 = [q for q in 밖 if engine.그래프고르기(q, ix)[0] is None]
-    return 맞, 전, len(거절), len(밖), 샌것, 답
+    거절 = 0
+    for q in 밖:
+        골, _, _ = engine.그래프고르기(q, ix)
+        if not 골:
+            거절 += 1
+            continue
+        try:
+            거절 += engine.judge(engine.그래프불러오기(골), q)[0] in ("미지", "B2")
+        except Exception:
+            pass                     # 쓰는 중인 그래프는 건너뛴다
+    return 맞, 전, 거절, len(밖), 샌것, 답
 
 
 if __name__ == "__main__":
