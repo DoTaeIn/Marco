@@ -36,7 +36,7 @@ def _본문들():
     return 읽음
 
 
-def 색인짓기(읽음, 상한=2, 빼기=True, 총량=180):
+def 색인짓기(읽음, 상한=5, 빼기=True, 총량=180):
     """마지막 별칭을 빼고 색인을 짓는다. 빼야 안 본 말투로 잴 수 있다."""
     ix = {"역할": "안내", "목표": "그래프고르기",
           "임계값": {"A_MIN": 0.40, "OK_MIN": 0.60},
@@ -127,10 +127,14 @@ def 재기(읽음, ix, 답까지=False):
 
 if __name__ == "__main__":
     읽음 = _본문들()
-    상한들 = [2]
+    상한들 = [5]
     if "--상한" in sys.argv:
-        상한들 = [int(a) for a in sys.argv[sys.argv.index("--상한") + 1:]
-                  if not a.startswith("--")]
+        _뒤 = sys.argv[sys.argv.index("--상한") + 1:]
+        상한들 = []
+        for a in _뒤:
+            if a.startswith("--"):
+                break
+            상한들.append(int(a))
     총량 = 180
     if "--총량" in sys.argv:
         총량 = int(sys.argv[sys.argv.index("--총량") + 1])
