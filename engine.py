@@ -3,7 +3,7 @@
 
 도메인 지식 0줄. 아는 것은 목표 노드와 증명/충족/부정 세 관계, 그리고 BFS 뿐이다.
 역할·목표·대사·임계값은 전부 .kg 파일이 들고 있다."""
-import glob, hashlib, itertools, json, os, re, sys
+import collections, glob, hashlib, itertools, json, os, re, sys
 from collections import deque
 from functools import lru_cache
 
@@ -2110,6 +2110,75 @@ def 그래프색인(뿌리=None, 최대예시=90):
     return 색인
 
 
+def 다리제안(뿌리=None, 최소=0.60, 최대=40):
+    """그래프끼리 이을 만한 자리를 찾는다. -> [(점수, A그래프, A노드, B그래프, B노드)]
+
+    포함: 이 이미 개념과 엣지를 합치므로 다리를 놓는 길 자체는 있다. 없던
+    것은 어디에 놓을지 찾는 일이다. 그래프 41개에서 이름이 겹치는 쌍은 820쌍
+    중 12쌍뿐이라, 이름으로는 서로 안 닿는다.
+
+    뜻으로 찾으면 274개가 나오는데 절반이 쓰레기였다. 원인은 자석 노드다 —
+    길고 흔한 노드 하나가 온갖 것을 빨아들인다. '상환능력충분' 하나가 274개
+    중 37개(13%)를 먹었고, 상위 8개가 38%를 먹었다.
+
+    그래서 상호 확인만 남긴다. A 가 B 를 제일 가깝다고 하면서 B 도 A 를
+    제일 가깝다고 할 때만 다리로 본다. 자석은 많은 것을 끌어당기지만
+    되받아 가리키지는 않는다. 274개가 37개로 줄고 상환능력충분 은 통째로
+    사라진다.
+
+    엣지제안·의미관계제안 과 규율이 같다 — 후보만 내고 사람이 확인한다.
+    확인한 것은 '포함:' 이나 개념엣지로 그래프에 적는다."""
+    뿌리 = 뿌리 or _여기
+    그래프 = {}
+    for f in sorted(glob.glob(os.path.join(뿌리, "graphs", "*.kg"))):
+        if "템플릿" in f:
+            continue
+        try:
+            g = load(f)
+        except Exception:
+            continue
+        if g.get("색인") == "아니오":
+            continue
+        그래프[os.path.basename(f)] = g
+
+    합 = {"역할": "다리", "목표": "x", "임계값": {"A_MIN": 0.4, "OK_MIN": 0.6},
+          "공통층": {}, "사례층": {}, "무관층": {}, "엣지": [],
+          "대사": {}, "수치조건": {}}
+    출신 = {}
+    for f, g in 그래프.items():
+        for n, xs in g["공통층"].items():
+            키 = "%s@%s" % (n, f)
+            합["공통층"][키] = list(xs)
+            출신[키] = (f, n)
+    if not 합["공통층"]:
+        return []
+    합["adj"], 합["증거"] = {}, []
+    합["vec"] = _예시벡터(합)
+
+    후보 = list(합["공통층"])
+    최고 = {}
+    for 키, xs in 합["공통층"].items():
+        f, n = 출신[키]
+        남 = [k for k in 후보 if 출신[k][0] != f and 출신[k][1] != n]
+        최고[키] = match(xs[0], 남, 합) if 남 else (None, 0.0)
+
+    다리 = []
+    본쌍 = set()
+    for 키, (짝, 점) in 최고.items():
+        if not 짝 or 점 < 최소:
+            continue
+        if 최고.get(짝, (None, 0))[0] != 키:      # 되받아 가리키지 않으면 자석이다
+            continue
+        쌍 = tuple(sorted((키, 짝)))
+        if 쌍 in 본쌍:
+            continue
+        본쌍.add(쌍)
+        다리.append((round(점, 3), 출신[키][0], 출신[키][1],
+                     출신[짝][0], 출신[짝][1]))
+    다리.sort(reverse=True)
+    return 다리[:최대]
+
+
 def 성긴벡터(vec):
     """색인 벡터를 성기게 담는다. {노드: (값, 열, 끊, 행수)}
 
@@ -2997,6 +3066,20 @@ def _selfcheck():
         if not _있 and os.path.exists(_배로그):
             os.remove(_배로그)
         _색인칸.clear()
+
+    # 다리 제안. 그래프끼리 이을 자리를 찾되, 자석 노드를 상호 확인으로 거른다.
+    _다리 = 다리제안()
+    assert _다리, "다리 후보가 하나도 안 나온다"
+    _짝 = {(a, b) for _p, _af, a, _bf, b in _다리}
+    assert ("소유자", "소유권") in _짝 or ("소유권", "소유자") in _짝, _다리[:5]
+    # 상호 확인이 자석을 걸러야 한다. 한쪽만 보면 '상환능력충분' 하나가
+    # 후보 274개 중 37개를 먹었다. 되받아 가리키지 않으면 다리가 아니다.
+    _받는쪽 = collections.Counter(b for _p, _af, _a, _bf, b in _다리)
+    assert _받는쪽.most_common(1)[0][1] <= max(2, len(_다리) // 8), _받는쪽.most_common(3)
+    # 같은 쌍이 양쪽에서 두 번 나오면 안 된다. 그래프까지 봐야 같은 쌍인지
+    # 가려진다 — graph.kg 정당방위 ~ 인과 오상방위 와 그 반대는 다른 쌍이다.
+    _완쌍 = [tuple(sorted(((af, a), (bf, b)))) for _p, af, a, bf, b in _다리]
+    assert len(set(_완쌍)) == len(_완쌍), _완쌍
 
     # 라우터 색인은 지식 그래프만 든다. 자가검사용으로 써낸 뼈대가 후보로
     # 서 있으면 갈 곳 없는 질문이 거기로 샌다.
@@ -3945,6 +4028,16 @@ if __name__ == "__main__":
             print("        \"%s\"" % c["문장"])
             print("      --- .kg 에 붙여넣을 초안 ---")
             print("      %s  -%s->  %s" % (a, c["관계"], b))
+        sys.exit(0)
+
+    elif "--bridges" in sys.argv:
+        인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
+        후보 = 다리제안(최소=float(인자[0]) if 인자 else 0.60)
+        print("그래프끼리 이을 만한 자리 %d개 (상호 확인만 남긴 것)" % len(후보))
+        print("확인한 것만 '포함:' 이나 개념엣지로 그래프에 적을 것.\n")
+        for 점, af, an, bf, bn in 후보:
+            print("  %.2f  %-24s %-18s ~ %-24s %s"
+                  % (점, af[:24], an[:18], bf[:24], bn))
         sys.exit(0)
 
     elif "--route" in sys.argv:
