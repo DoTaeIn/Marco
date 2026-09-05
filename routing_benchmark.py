@@ -36,7 +36,7 @@ def _본문들():
     return 읽음
 
 
-def 색인짓기(읽음, 상한=2, 빼기=True, 총량=90):
+def 색인짓기(읽음, 상한=2, 빼기=True, 총량=180):
     """마지막 별칭을 빼고 색인을 짓는다. 빼야 안 본 말투로 잴 수 있다."""
     ix = {"역할": "안내", "목표": "그래프고르기",
           "임계값": {"A_MIN": 0.40, "OK_MIN": 0.60},
@@ -44,13 +44,20 @@ def 색인짓기(읽음, 상한=2, 빼기=True, 총량=90):
           "엣지": [], "대사": {}, "수치조건": {}}
 
     def 담기(이름, g, 상한, 빼기):
+        증거 = engine.증거뽑기(g)     # 증거는 짧아도 남기고, 앞에 놓는다
         예 = [g.get("목표") or ""]
+        for n in 증거:
+            말 = list(g["사례층"][n])
+            말 = 말[:-1] if 빼기 else 말
+            예 += [n] + (말[:상한] if 상한 else 말)
         for 층 in ("공통층", "사례층"):
             for n, 말 in g.get(층, {}).items():
+                if n in 증거:
+                    continue
                 말 = list(말)[:-1] if 빼기 else list(말)
-                예.append(n)
-                예 += 말[:상한] if 상한 else 말
-        예 = [x for x in 예 if x and len("".join(x.split())) >= 5][:총량]
+                예 += [x for x in [n] + (말[:상한] if 상한 else 말)
+                       if len("".join(x.split())) >= 5]
+        예 = [x for x in 예 if x][:총량]
         if 예:
             ix["공통층"][이름] = 예
 
@@ -124,7 +131,7 @@ if __name__ == "__main__":
     if "--상한" in sys.argv:
         상한들 = [int(a) for a in sys.argv[sys.argv.index("--상한") + 1:]
                   if not a.startswith("--")]
-    총량 = 90
+    총량 = 180
     if "--총량" in sys.argv:
         총량 = int(sys.argv[sys.argv.index("--총량") + 1])
     for 상한 in 상한들:
