@@ -719,8 +719,21 @@ def _증거지운날것(text, graph, ev):
         납작 = "".join(alias.split())
         if 납작 in "".join(text.split()):
             text = re.sub(r"\s*".join(map(re.escape, 납작)), " ", text)
-        elif any(c.isdigit() for c in 납작):
-            text = re.sub(_숫자너그러운패턴(납작), " ", text)
+            continue
+        if any(c.isdigit() for c in 납작):
+            지운 = re.sub(_숫자너그러운패턴(납작), " ", text)
+            if 지운 != text:
+                text = 지운
+                continue
+        # 어미가 달라 걸린 경우는 줄기만 지운다. 찾기는 한 글자 깎아 찾는데
+        # 지우기가 글자 그대로면 짝이 안 맞아, 찾아 놓고도 원문이 그대로
+        # 남아 주장 매칭을 흐린다.
+        if len(납작) >= 5 and _한글.match(납작[-1]):
+            줄기 = 납작[:-1]
+            본 = r"\s*".join(map(re.escape, 줄기))
+            if any(c.isdigit() for c in 줄기):
+                본 = _숫자너그러운패턴(줄기)
+            text = re.sub(본, " ", text)
     return text
 
 
@@ -755,9 +768,37 @@ def match_evidence(text, graph):
     for node in graph["증거"]:
         for alias in graph["사례층"][node]:
             납작 = "".join(숫자가리기(alias).split()).lower()
-            if len(납작) > 길이 and 납작 in t:
-                최고, 길이 = node, len(납작)
+            걸린 = _별칭찾기(납작, t)
+            if 걸린 > 길이:
+                최고, 길이 = node, 걸린
     return (최고, 1.0) if 최고 else (None, 0.0)
+
+
+_한글 = re.compile(r"[가-힣]")
+
+
+def _별칭찾기(납작, t):
+    """별칭이 발화 안에 있나. 있으면 걸린 길이, 없으면 0.
+
+    끝 한 글자는 깎아 보고 다시 찾는다. 한국어는 어미가 붙어 변하는데
+    증거 찾기는 글자 그대로라, '12만원 나왔어' 는 걸리고 '12만원 나왔는데'
+    는 안 걸렸다 — 같은 말인데 어미만 다르다. 어미를 다 적으라고 하는 것은
+    그래프 짓는 사람에게 떠넘기는 것이다.
+
+    쓸어서 정했다. 한 글자만 깎아도 어미 바뀐 발화 214개 중 2.3%에서
+    98.6%로 오르고, 두 글자 이상 깎아도 더 안 오른다 — 어미가 붙는 자리가
+    거기이기 때문이다. 원본 별칭 적중은 그대로고(99.7%), 갈 그래프가 없는
+    질문 25개에서 오검출은 0 이다.
+
+    깎는 것은 한글일 때만이다. CCTV·숫자를 깎으면 고유명사가 뭉개진다.
+    줄기가 네 글자보다 짧아지면 안 깎는다 — 짧은 조각은 아무 데나 걸린다."""
+    if 납작 and 납작 in t:
+        return len(납작)
+    if len(납작) >= 5 and _한글.match(납작[-1]):
+        줄기 = 납작[:-1]
+        if 줄기 in t:
+            return len(줄기)
+    return 0
 
 
 def match_evidences(text, graph):
@@ -778,8 +819,9 @@ def match_evidences(text, graph):
                 continue
             for alias in graph["사례층"][node]:
                 납작 = "".join(숫자가리기(alias).split()).lower()
-                if len(납작) > 길이 and 납작 in 평:
-                    최고, 길이, 납작최고 = node, len(납작), 납작
+                걸린 = _별칭찾기(납작, 평)
+                if 걸린 > 길이:
+                    최고, 길이, 납작최고 = node, 걸린, 납작[:걸린]
         if not 최고:
             return 찾음
         찾음.append(최고)
@@ -3123,6 +3165,20 @@ def _selfcheck():
         if not _있 and os.path.exists(_배로그):
             os.remove(_배로그)
         _색인칸.clear()
+
+    # 증거 찾기가 어미를 견딘다. 글자 그대로였을 때는 '12만원 나왔어' 는
+    # 걸리고 '12만원 나왔는데' 는 안 걸렸다 — 같은 말인데 어미만 다르다.
+    # 어미를 다 적으라고 하는 것은 그래프 짓는 사람에게 떠넘기는 것이다.
+    _정 = load("graphs/graph_정산_나눠내기.kg")
+    for _말 in ("12만원 나왔어", "12만원 나왔는데", "12만원 나왔습니다", "12만원 나왔거든"):
+        assert match_evidence(_말, _정)[0] == "금액들음", (_말, match_evidence(_말, _정))
+    # 걸린 만큼은 지워져야 한다. 찾아 놓고 원문이 남으면 주장 매칭이 흐려진다.
+    assert "나왔" not in _증거지운날것("12만원 나왔거든", _정, "금액들음")
+    # 고유명사는 안 깎는다. 깎으면 CCTV 가 CCT 가 되어 아무 데나 걸린다.
+    assert match_evidence("CCTV 보면", load("graphs/graph.kg"))[0] == "CCTV"
+    assert _별칭찾기("cctv", "cct 를 봤다") == 0
+    # 짧은 별칭도 안 깎는다.
+    assert _별칭찾기("삼명이야", "삼명이거든") == 0
 
     # 다리 제안. 그래프끼리 이을 자리를 찾되, 자석 노드를 상호 확인으로 거른다.
     _다리 = 다리제안()
