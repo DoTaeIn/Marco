@@ -2234,29 +2234,47 @@ def 그래프색인(뿌리=None, 최대예시=180):
         표 = hashlib.sha1((MODEL + "\n".join(예시)).encode("utf-8")).hexdigest()[:16]
         try:
             if str(옛["h_" + 머리]) == 표:
+                뒤 = None
+                if ("rv_" + 머리) in 옛 and 옛["rv_" + 머리].size:
+                    뒤 = (옛["rv_" + 머리], 옛["rc_" + 머리], 옛["rp_" + 머리])
                 칸 = (옛["v_" + 머리], 옛["c_" + 머리], 옛["p_" + 머리],
-                      int(옛["n_" + 머리]), 옛["l_" + 머리])
+                      int(옛["n_" + 머리]), 옛["l_" + 머리], 뒤)
                 색인["성김"][이름] = 칸
                 새칸["h_" + 머리] = np.array(표)
                 새칸["v_" + 머리], 새칸["c_" + 머리] = 칸[0], 칸[1]
                 새칸["p_" + 머리], 새칸["n_" + 머리] = 칸[2], np.array(칸[3])
                 새칸["l_" + 머리] = 칸[4]
+                새칸["rv_" + 머리] = 뒤[0] if 뒤 else np.zeros(0, dtype=np.float32)
+                새칸["rc_" + 머리] = 뒤[1] if 뒤 else np.zeros(0, dtype=np.int16)
+                새칸["rp_" + 머리] = 뒤[2] if 뒤 else np.zeros(0, dtype=np.int64)
                 continue
         except (KeyError, IndexError, TypeError):
             pass
         M = np.array(_model().encode([숫자가리기(e) for e in 예시],
                                      normalize_embeddings=True))
         길이 = np.array([len("".join(x.split())) for x in 예시], dtype=np.float32)
-        한칸 = 성긴벡터({이름: M}, {이름: 길이})
+        # 뒤집어 재려면 색인 줄을 '담는 쪽' 으로도 만들어야 한다. 설명
+        # 그래프는 발췌가 길어 뒤집으면 밖 질문을 빨아들이므로 안 만든다.
+        #
+        # 성기지 않은 벡터(신경망)에서는 성김 자체가 없어 뒤집기를 쓸 수도
+        # 없다. 그런데도 만들면 그래프마다 모델 forward 가 예시 수만큼
+        # 돌아, 색인 짓기가 통째로 느려진다. 쓸 때만 만든다.
+        뒤 = (np.array([_담(x) for x in 예시], dtype=np.float32)
+              if (이름.endswith(".kg") and float((M != 0).mean()) <= 0.2)
+              else None)
+        한칸 = 성긴벡터({이름: M}, {이름: 길이}, {이름: 뒤})
         if 한칸 is None:                    # 신경망은 성기지 않다. 그대로 둔다.
             색인["vec"][이름] = M
             continue
-        v, c, pt, n, L = 한칸[이름]
-        색인["성김"][이름] = (v, c, pt, n, L)
+        v, c, pt, n, L, R = 한칸[이름]
+        색인["성김"][이름] = (v, c, pt, n, L, R)
         새칸["h_" + 머리] = np.array(표)
         새칸["v_" + 머리], 새칸["c_" + 머리] = v, c
         새칸["p_" + 머리], 새칸["n_" + 머리] = pt, np.array(n)
         새칸["l_" + 머리] = L
+        새칸["rv_" + 머리] = R[0] if R else np.zeros(0, dtype=np.float32)
+        새칸["rc_" + 머리] = R[1] if R else np.zeros(0, dtype=np.int16)
+        새칸["rp_" + 머리] = R[2] if R else np.zeros(0, dtype=np.int64)
         벡바뀜 = True
 
     if not 색인["성김"]:
@@ -2342,7 +2360,7 @@ def 다리제안(뿌리=None, 최소=0.60, 최대=40):
     return 다리[:최대]
 
 
-def 성긴벡터(vec, 길이표=None):
+def 성긴벡터(vec, 길이표=None, 뒤집기표=None):
     """색인 벡터를 성기게 담는다. {노드: (값, 열, 끊, 행수)}
 
     문자 인코더는 해시 n-gram 이라 한 행에서 0 이 아닌 칸이 3% 뿐이다
@@ -2362,9 +2380,18 @@ def 성긴벡터(vec, 길이표=None):
             return None
         행, 열 = np.nonzero(M)
         끊 = np.searchsorted(행, np.arange(M.shape[0] + 1))
+        # 뒤집은 쪽도 성기게 담는다. 빽빽하게 두면 그래프 51개에 50MB 라
+        # 라우팅이 1.6ms 에서 20ms 로 뛴다 — 가벼움이 깨진다.
+        뒤 = (뒤집기표 or {}).get(n)
+        뒤성김 = None
+        if 뒤 is not None:
+            r행, r열 = np.nonzero(뒤)
+            뒤성김 = (뒤[r행, r열].astype(np.float32),
+                      r열.astype(np.int16 if 뒤.shape[1] <= 32767 else np.int32),
+                      np.searchsorted(r행, np.arange(뒤.shape[0] + 1)))
         성김[n] = (M[행, 열].astype(np.float32),
                    열.astype(np.int16 if M.shape[1] <= 32767 else np.int32),
-                   끊, M.shape[0], 길이표.get(n))
+                   끊, M.shape[0], 길이표.get(n), 뒤성김)
     return 성김
 
 
@@ -2372,7 +2399,10 @@ _짧은줄 = 8          # 이보다 짧은 색인 줄은
 _긴질문배수 = 2.0     # 질문이 이 배수를 넘게 길면 못 이긴다
 
 
-def _성긴점수(칸, v, 질문길이=None):
+_짧은질문 = 8        # 이보다 짧은 질문은 포함도를 뒤집어서도 본다
+
+
+def _성긴점수(칸, v, 질문길이=None, 속벡=None):
     """색인 줄 하나하나와 견준 값 중 최고.
 
     짧은 줄은 질문이 길면 막는다. 포함도는 '줄의 조각 중 몇 할이 질문 안에
@@ -2384,13 +2414,27 @@ def _성긴점수(칸, v, 질문길이=None):
     그 인사에 대한 것일 리 없다. 쓸어서 8자·2배로 정했다(답함 58.1% ->
     68.9%). CCTV 같은 짧은 증거는 질문도 짧을 때 그대로 이긴다."""
     import numpy as np
-    값, 열, 끊, _행수, 길이 = 칸
+    값, 열, 끊, _행수, 길이, 뒤 = 칸
     if len(값) == 0:
         return 0.0
     합 = np.add.reduceat(값 * v[열], 끊[:-1])
     합[np.diff(끊) == 0] = 0.0
     if 질문길이 is not None and 길이 is not None:
         합 = np.where((길이 < _짧은줄) & (질문길이 > _긴질문배수 * 길이), 0.0, 합)
+    # 짧은 질문은 뒤집어서도 본다. 포함도는 '색인 줄의 조각 중 몇 할이 질문
+    # 안에 있나' 인데, 질문이 짧으면 조각이 적어 긴 줄을 덮는 몫이 애초에
+    # 작다. '가지고 간다' 가 제 그래프에서 0.44 를 받고 문턱에 걸렸다.
+    # 짧은 질문일 때만 '색인 줄이 질문을 담는가' 도 재서 큰 쪽을 쓴다.
+    #
+    # 설명 그래프는 발췌가 길어 이 규칙에서 뺀다 — 넣으면 '다음 주에 비 와'
+    # 같은 밖 질문이 거기로 샌다(밖 거절 25/25 -> 22/25).
+    if 속벡 is not None and 뒤 is not None and 질문길이 is not None \
+            and 질문길이 <= _짧은질문:
+        r값, r열, r끊 = 뒤
+        if len(r값):
+            뒤합 = np.add.reduceat(r값 * 속벡[r열], r끊[:-1])
+            뒤합[np.diff(r끊) == 0] = 0.0
+            합 = np.maximum(합, 뒤합)
     return float(합.max())
 
 
@@ -2418,15 +2462,17 @@ def 그래프고르기(질문, 색인=None, 최소=None, 개수=3):
     # 그래프마다 match 를 따로 부르면 질문을 그 수만큼 다시 인코딩한다.
     # 그래프 50개에서 라우팅 한 번이 241ms 였는데, 판정은 0.1ms 다 —
     # 무게가 전부 여기 있었다. 조각 벡터를 한 번만 만들고 돌려 쓴다.
-    조각들 = [(_담(조각), len("".join(조각.split()))) for 조각 in 조각내기(질문)]
+    조각들 = [(_담(조각), len("".join(조각.split())), _속(조각))
+              for 조각 in 조각내기(질문)]
     성김 = 색인.get("성김")
     점수 = []
     for n in 색인["공통층"]:
         if 성김 is not None:
-            점수.append((max(_성긴점수(성김[n], v, qL) for v, qL in 조각들), n))
+            점수.append((max(_성긴점수(성김[n], v, qL, sv)
+                             for v, qL, sv in 조각들), n))
         else:
             M = 색인["vec"][n]
-            점수.append((max(float((M @ v).max()) for v, _qL in 조각들), n))
+            점수.append((max(float((M @ v).max()) for v, _qL, _sv in 조각들), n))
     점수.sort(reverse=True)
     후보 = [(n, round(c, 3)) for c, n in 점수[:개수]]
     최고, 이름 = 점수[0]
@@ -3353,6 +3399,20 @@ def _selfcheck():
             assert _몫.get("주장") == _받, (_인사, _몫)
         # A 문턱과 OK 문턱이 같으면 A 밴드가 사라진다. 형식이 두 값인 이유다.
         assert _예["임계값"]["A_MIN"] < _예["임계값"]["OK_MIN"], _예["임계값"]
+
+    # 짧은 질문은 포함도를 뒤집어서도 본다. 포함도는 '색인 줄의 조각 중 몇
+    # 할이 질문 안에 있나' 라서, 질문이 짧으면 조각이 적어 긴 줄을 덮는 몫이
+    # 애초에 작다 — '가지고 간다' 가 제 그래프에서 0.44 로 문턱에 걸렸다.
+    # 못 고른 증거 76개 중 68개(89%)가 8자 이하였다.
+    _색3 = 그래프색인()
+    for _짧, _가야 in (("가지고 간다", "graphs/graph_세차.kg"),
+                       ("도보로 간다", "graphs/graph_세차_자동.kg")):
+        if _가야 in _색3["공통층"]:
+            assert 그래프고르기(_짧, _색3)[0], (_짧, 그래프고르기(_짧, _색3))
+    # 설명 그래프는 뒤집지 않는다. 발췌가 길어 밖 질문을 빨아들인다.
+    for _이름, _칸 in _색3.get("성김", {}).items():
+        if not _이름.endswith(".kg"):
+            assert _칸[5] is None, _이름
 
     # 짧은 색인 줄은 질문이 길면 못 이긴다. 포함도는 '줄의 조각 중 몇 할이
     # 질문 안에 있나' 라서, '맞습니다' 같은 짧은 존댓말이 '맞붙어 싸웠습니다'

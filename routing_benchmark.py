@@ -78,7 +78,10 @@ def 색인짓기(읽음, 상한=5, 빼기=True, 총량=180):
     import numpy as np
     길이표 = {n: np.array([len("".join(x.split())) for x in 예], dtype=np.float32)
               for n, 예 in ix["공통층"].items()}
-    성김 = engine.성긴벡터(ix["vec"], 길이표)
+    뒤집기표 = {n: (np.array([engine._담(x) for x in 예], dtype=np.float32)
+                    if n.endswith(".kg") else None)
+                for n, 예 in ix["공통층"].items()}
+    성김 = engine.성긴벡터(ix["vec"], 길이표, 뒤집기표)
     if 성김 is not None:
         ix["성김"], ix["vec"] = 성김, {}
     return ix
