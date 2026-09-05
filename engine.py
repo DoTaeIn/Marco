@@ -2242,9 +2242,13 @@ def 그래프색인(뿌리=None, 최대예시=180):
     옛 = {}
     if os.path.exists(벡길):
         try:
-            옛 = np.load(벡길, allow_pickle=False)
+            with np.load(벡길, allow_pickle=False) as z:
+                # np.load 는 게으르게 읽는다. 이 자리에서 다 꺼내지 않으면
+                # 나중에 키를 볼 때 터지는데 그때는 try 밖이다. 다른 프로세스가
+                # 같은 파일을 쓰는 중이면 BadZipFile 로 색인 짓기가 죽는다.
+                옛 = {k: z[k] for k in z.files}
         except Exception:
-            옛 = {}                     # 캐시가 깨졌으면 그냥 다시 만든다
+            옛 = {}                     # 깨졌으면 그냥 다시 만든다
 
     색인["vec"], 색인["성김"] = {}, {}
     새칸, 벡바뀜 = {}, False
