@@ -585,6 +585,16 @@ def load(path="graphs/graph.kg"):
         adj.setdefault(src, []).append((rel, dst))
     g["증거"] = [n for n in g["사례층"]
                  if any(r in 근거들(g) for r, _ in adj.get(n, []))]
+    # 증거 찾기가 쓸 별칭. 개념망으로 불린 것까지 든다.
+    #
+    # 개념확장은 벡터 만들 때만 쓰이고 증거 찾기는 원본 별칭만 봤다. 그런데
+    # 증거 찾기는 글자 그대로라 어휘 차이에 제일 약한 자리다 — '흰옷 따로
+    # 뺐어요' 가 '흰 셔츠를 따로 모았다' 에 안 걸렸다. 낱말 사이 관계를 한
+    # 번 적어두면 모든 그래프가 덕을 본다는 개념망의 뜻이 반만 살아 있었다.
+    #
+    # 사례층 자체는 안 건드린다. 표현() 이 그것을 읽어 화면에 내보내므로,
+    # 기계가 만든 문장이 사람이 적은 예시인 척 나가면 안 된다.
+    g["증거별칭"] = {n: 개념확장(g, g["사례층"][n]) for n in g["증거"]}
     g["vec"] = _예시벡터(g)
     return g
 
@@ -629,14 +639,28 @@ def 개념확장(graph, 문장들):
             하위.setdefault(b, []).append(a)
     if not 하위:
         return 문장들
+    # 한 번만 돌면 낱말 하나만 바뀐다. '흰옷 따로 뺐어요' 는 흰옷과 뺐다가
+    # 같이 바뀌어야 해서 안 걸렸다. 새로 만든 것에도 다시 돌린다.
+    #
+    # 두 바퀴까지다. 더 돌면 조합이 터지고, 세 낱말이 한꺼번에 다른 발화는
+    # 그 자리에서 별칭을 적는 편이 낫다. 늘어난 것도 상한을 둔다 —
+    # 개념망이 큰 그래프에서 별칭이 수백 개가 되면 증거 찾기가 느려진다.
     나온것 = list(문장들)
-    for 문장 in 문장들:
-        for 위, 아래들 in 하위.items():
-            if 위 in 문장:
+    이번 = list(문장들)
+    for _바퀴 in range(2):
+        다음 = []
+        for 문장 in 이번:
+            for 위, 아래들 in 하위.items():
+                if 위 not in 문장:
+                    continue
                 for 아래 in 아래들:
                     새 = 문장.replace(위, 아래)
                     if 새 not in 나온것:
                         나온것.append(새)
+                        다음.append(새)
+        if not 다음 or len(나온것) > 200:
+            break
+        이번 = 다음
     return 나온것
 
 
@@ -731,7 +755,8 @@ def _숫자너그러운패턴(납작):
 
 def _증거지운날것(text, graph, ev):
     """증거를 지운 그대로. 다 지워져 빈 문자열이어도 그대로 돌려준다."""
-    for alias in sorted(graph["사례층"][ev], key=len, reverse=True):
+    for alias in sorted((graph.get("증거별칭") or {}).get(ev, graph["사례층"][ev]),
+                        key=len, reverse=True):
         if alias in text:
             text = text.replace(alias, " ")
             continue
@@ -785,7 +810,7 @@ def match_evidence(text, graph):
     # '근로자진술' 이 먼저 걸려 그 증거가 증명하지 않는 주장이 되고 C 로 떨어졌다.
     최고, 길이 = None, 0
     for node in graph["증거"]:
-        for alias in graph["사례층"][node]:
+        for alias in (graph.get("증거별칭") or {}).get(node, graph["사례층"][node]):
             납작 = "".join(숫자가리기(alias).split()).lower()
             걸린 = _별칭찾기(납작, t)
             if 걸린 > 길이:
@@ -836,7 +861,7 @@ def match_evidences(text, graph):
         for node in graph["증거"]:
             if node in 찾음:
                 continue
-            for alias in graph["사례층"][node]:
+            for alias in (graph.get("증거별칭") or {}).get(node, graph["사례층"][node]):
                 납작 = "".join(숫자가리기(alias).split()).lower()
                 걸린 = _별칭찾기(납작, 평)
                 if 걸린 > 길이:
@@ -3476,6 +3501,27 @@ def _selfcheck():
             assert 그래프고르기(_긴말, _색2)[0] != "graphs/graph_대화예절.kg", _긴말
     # 짧은 증거는 질문도 짧을 때 그대로 이긴다. 막는 것은 길이 차이지 길이가 아니다.
     assert 그래프고르기("CCTV", _색2)[0], 그래프고르기("CCTV", _색2)
+
+    # 개념망이 증거 찾기까지 닿는다. 낱말 사이 관계를 한 번 적으면 모든
+    # 그래프가 덕을 본다는 것이 개념망의 뜻인데, 확장이 벡터 만들 때만
+    # 쓰이고 증거 찾기는 원본 별칭만 봐서 반만 살아 있었다. 증거 찾기는
+    # 글자 그대로라 어휘 차이에 제일 약한 자리다.
+    _망 = {"역할": "t", "목표": "g", "임계값": {"A_MIN": 0.5, "OK_MIN": 0.6},
+           "개념엣지": [["뺐어요", "상위", "모았어요"]],
+           "사례층": {"분리": ["흰옷 따로 모았어요"]}}
+    assert "흰옷 따로 뺐어요" in 개념확장(_망, _망["사례층"]["분리"])
+    # 두 낱말이 같이 바뀌는 것도 잡는다. 한 바퀴만 돌면 하나만 바뀐다.
+    _망2 = dict(_망, 개념엣지=[["뺐어요", "상위", "모았어요"],
+                              ["흰옷", "상위", "흰 셔츠"]],
+                사례층={"분리": ["흰 셔츠 따로 모았어요"]})
+    assert "흰옷 따로 뺐어요" in 개념확장(_망2, _망2["사례층"]["분리"])
+    # 사례층 자체는 안 건드린다. 표현() 이 그것을 화면에 내보내므로 기계가
+    # 만든 문장이 사람이 적은 예시인 척 나가면 안 된다.
+    _세2 = load("graphs/graph_세탁_기초.kg") if os.path.exists(
+        _길("graphs/graph_세탁_기초.kg")) else None
+    if _세2:
+        for n, 말들 in _세2["사례층"].items():
+            assert 말들 == kg읽기("graphs/graph_세탁_기초.kg")["사례층"][n], n
 
     # 조사 고치기는 화면에 나간 낱말을 봐야 한다. 노드 이름만 넘기면
     # 이름말이 '문장' 인 그래프에서 정작 나간 문장이 목록에 없어 아무것도
