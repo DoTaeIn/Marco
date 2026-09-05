@@ -95,6 +95,9 @@ def _포함(g, base_dir):
             g.setdefault("출처", {}).setdefault(k, v)
         for k, v in (o.get("수치조건") or {}).items():
             g.setdefault("수치조건", {}).setdefault(k, v)
+        for 칸 in ("값받이", "값옮김"):
+            for k, v in (o.get(칸) or {}).items():
+                g.setdefault(칸, {}).setdefault(k, v)
         if not g.get("임계값") and o.get("임계값"):
             g["임계값"] = o["임계값"]
         기존노드 = set(g["공통층"]) | set(g.get("무관층", {}))
@@ -164,6 +167,15 @@ def 검증(g):
 
 _화살 = re.compile(r"\s*(?:-+|→)\s*(\S+?)\s*(?:-+>|→)\s*")
 _수치 = re.compile(r"^(.*?)\s*\{\s*(\S*?)\s*(>=|<=)\s*([\d.]+)\s*\}$")
+# 값을 나르는 두 표시. 비교(>=)와 달리 참/거짓을 가르지 않고 수를 들고 간다.
+#
+#   이등을제침 {등}              발화에서 '등' 단위의 수를 붙잡는다
+#   지금순위 {등 <- 제친사람순위}   그 노드가 붙잡은 수를 가져온다
+#
+# 값은 언제나 사용자 발화에서 온다. 그래프가 정하는 것은 어디로 나르느냐다.
+# 지어내는 것이 아니라 옮기는 것이라, 고르기만 한다는 전제가 깨지지 않는다.
+_값옮김 = re.compile(r"^(.*?)\s*\{\s*(\S+?)\s*<-\s*(\S+?)\s*\}$")
+_값받이 = re.compile(r"^(.*?)\s*\{\s*(\S+?)\s*\}$")
 
 
 def kg읽기(경로):
@@ -176,7 +188,8 @@ def kg읽기(경로):
          "이름말": "용어", "색인": "예",
          "전진관계": list(POS), "부정관계": list(NEG),
          "대사": {}, "공통층": {}, "사례층": {}, "무관층": {},
-         "수치조건": {}, "엣지": [], "개념엣지": [], "포함": [], "공리": []}
+         "수치조건": {}, "값받이": {}, "값옮김": {},
+         "엣지": [], "개념엣지": [], "포함": [], "공리": []}
     구역 = None
     # [공리] 도 공통층에 담는다. 매칭·경로 탐색은 개념과 똑같이 돌아야 하고,
     # 다른 것은 '증거를 안 묻는다' 하나뿐이라 그 하나만 이름으로 따로 기억한다.
@@ -271,6 +284,14 @@ def kg읽기(경로):
                 이름, 단위, 부호, 값 = m.group(1).strip(), m.group(2), m.group(3), float(m.group(4))
                 g["수치조건"][이름] = {"단위": 단위,
                                        "최소" if 부호 == ">=" else "최대": 값}
+            elif _값옮김.match(이름):
+                m2 = _값옮김.match(이름)
+                이름 = m2.group(1).strip()
+                g["값옮김"][이름] = (m2.group(2), m2.group(3))
+            elif _값받이.match(이름):
+                m3 = _값받이.match(이름)
+                이름 = m3.group(1).strip()
+                g["값받이"][이름] = m3.group(2)
             출처 = None
             if "@" in 이름:
                 이름, 출처 = (x.strip() for x in 이름.split("@", 1))
@@ -466,6 +487,8 @@ def load(path="graphs/graph.kg"):
     # 알아듣지 못한 발화를 그래프 옆에 쌓는다. 기획자가 읽고 그래프를 키운다.
     g.setdefault("이름말", "용어")
     g.setdefault("색인", "예")
+    g.setdefault("값받이", {})
+    g.setdefault("값옮김", {})
     g.setdefault("전진관계", list(POS))
     g.setdefault("부정관계", list(NEG))
     g.setdefault("공리", [])
@@ -625,15 +648,37 @@ def 증거가전부(text, graph, ev):
     return not re.search(r"[0-9A-Za-z가-힣]", _증거지운날것(text, graph, ev))
 
 
+def _숫자너그러운패턴(납작):
+    """별칭의 숫자 자리를 아무 수나 받게 바꾼 정규식.
+
+    '2등인사람을추월했다' 를 '5등인...' 에서도 지우기 위한 것이다. 증거가
+    무엇인지는 숫자가 가르지 않으므로(match_evidence 도 가리고 찾는다),
+    지우는 쪽만 글자 그대로면 짝이 안 맞아 남은 글이 주장으로 잘못 잡힌다."""
+    조각, 버퍼 = [], ""
+    for ch in 납작:
+        if ch.isdigit() or (ch == "." and 버퍼):
+            버퍼 += ch
+        else:
+            if 버퍼:
+                조각.append(r"\d[\d.]*")
+                버퍼 = ""
+            조각.append(r"\s*" + re.escape(ch))
+    if 버퍼:
+        조각.append(r"\d[\d.]*")
+    return "".join(조각)
+
+
 def _증거지운날것(text, graph, ev):
     """증거를 지운 그대로. 다 지워져 빈 문자열이어도 그대로 돌려준다."""
     for alias in sorted(graph["사례층"][ev], key=len, reverse=True):
         if alias in text:
             text = text.replace(alias, " ")
-        else:
-            납작 = "".join(alias.split())
-            if 납작 in "".join(text.split()):
-                text = re.sub(r"\s*".join(map(re.escape, 납작)), " ", text)
+            continue
+        납작 = "".join(alias.split())
+        if 납작 in "".join(text.split()):
+            text = re.sub(r"\s*".join(map(re.escape, 납작)), " ", text)
+        elif any(c.isdigit() for c in 납작):
+            text = re.sub(_숫자너그러운패턴(납작), " ", text)
     return text
 
 
@@ -654,15 +699,20 @@ def _증거지우기_뒷정리(text, 원문):
 
 def match_evidence(text, graph):
     """증거는 고유명사(CCTV, 진단서)라 문장 임베딩으로 재면 유사도가 뭉개진다.
-    문자열 포함으로 찾는 편이 정확하고 공짜다. 층마다 매칭 방식이 다르다."""
-    t = "".join(text.split()).lower()
+    문자열 포함으로 찾는 편이 정확하고 공짜다. 층마다 매칭 방식이 다르다.
+
+    숫자는 그 증거가 무엇인지를 가르지 않으므로 양쪽에서 가린다. 안 가리면
+    '2등인 사람을 추월했다' 는 걸리고 '5등인 사람을 추월했다' 는 안 걸린다 —
+    같은 증거인데 수만 다르다. 크기 비교는 수치조건이, 값 꺼내기는 값받이가
+    따로 한다."""
+    t = "".join(숫자가리기(text).split()).lower()
     # 가장 긴 별칭이 이긴다. 먼저 걸리는 것을 쓰면 짧은 증거명이 긴 증거명의
     # 부분문자열일 때 엉뚱한 증거로 간다 — '피해근로자진술' 이라고 말했는데
     # '근로자진술' 이 먼저 걸려 그 증거가 증명하지 않는 주장이 되고 C 로 떨어졌다.
     최고, 길이 = None, 0
     for node in graph["증거"]:
         for alias in graph["사례층"][node]:
-            납작 = "".join(alias.split()).lower()
+            납작 = "".join(숫자가리기(alias).split()).lower()
             if len(납작) > 길이 and 납작 in t:
                 최고, 길이 = node, len(납작)
     return (최고, 1.0) if 최고 else (None, 0.0)
@@ -776,7 +826,7 @@ def judge(graph, text, 연속A=0, 몫=None):
     if conf < OK_MIN:
         if 연속A >= 2:
             return "B2", 말["B2_강등"]
-        return "A", 말["A"].format(claim=표현(graph, claim))
+        return "A", 말["A"].format(값="", claim=표현(graph, claim))
     # 공리는 증거를 안 묻는다. '대한민국의 수도는 서울' 에 사용자가 댈 증거가
     # 없다 — 그건 결론이 아니라 주어진 것이다. 이 구역을 안 쓰는 그래프(법정 등)는
     # 증거 강제가 그대로 살아 있다.
@@ -787,7 +837,7 @@ def judge(graph, text, 연속A=0, 몫=None):
         return "인정", (말.get("공리") or 말["인정"]).format(
             ev=표현(graph, claim), claim=표현(graph, claim))
     if ev is None or ev_conf < A_MIN:
-        return "근거없음", 말["근거없음"].format(claim=표현(graph, claim))
+        return "근거없음", 말["근거없음"].format(값="", claim=표현(graph, claim))
 
     수치, 값, 조건 = 수치판정(graph, claim, 본문)
     if 수치 in ("애매", "없음"):
@@ -804,15 +854,15 @@ def judge(graph, text, 연속A=0, 몫=None):
     if claim in reachable(graph, ev):
         bad = [c for c in counters(graph, claim) if c in reachable(graph, ev) or c in graph["공통층"]]
         if bad:
-            return "인정", 말["인정_반격"].format(ev=표현(graph, ev), claim=표현(graph, claim), bad=표현(graph, bad[0]))
-        return "인정", 말["인정"].format(ev=표현(graph, ev), claim=표현(graph, claim))
+            return "인정", 말["인정_반격"].format(값="", ev=표현(graph, ev), claim=표현(graph, claim), bad=표현(graph, bad[0]))
+        return "인정", 말["인정"].format(값="", ev=표현(graph, ev), claim=표현(graph, claim))
 
     if any(claim in reachable(graph, e) for e in graph["증거"]):
-        return "C", 말["C"].format(ev=표현(graph, ev), claim=표현(graph, claim))
+        return "C", 말["C"].format(값="", ev=표현(graph, ev), claim=표현(graph, claim))
 
     if claim in graph["공통층"]:
-        return "B1", 말["B1"].format(claim=표현(graph, claim))
-    return "C", 말["C"].format(ev=표현(graph, ev), claim=표현(graph, claim))
+        return "B1", 말["B1"].format(값="", claim=표현(graph, claim))
+    return "C", 말["C"].format(값="", ev=표현(graph, ev), claim=표현(graph, claim))
 
 
 # 판정별 인내심 소모. 근거없음/A 는 무료 — 되묻기와 근거 요구는 절차이지 실책이 아니다.
@@ -850,6 +900,8 @@ class 세션:
         # 공리 요건은 처음부터 서 있다. 빈 집합으로 두면 첫 턴에
         # 무슨 말을 하든 '방금 채웠다' 로 알린다.
         self.이전확보 = {n for n in (graph.get("공리") or ()) if n in 요건(graph)}
+        self.값 = {}               # 노드 -> (수, 단위). 발화에서 붙잡은 것만 든다
+        self.이번수 = None         # 이번 턴에 붙잡은 수. 되읽기를 맞추는 데 쓴다
         self.직전A = None          # (되물은 노드, 유저가 했던 말)
         self.회차 = 0
         self.인정한주장 = set()
@@ -901,6 +953,12 @@ class 세션:
             claim = match(증거지우기(text, self.g, ev),
                           [n for n in self.g["사례층"] if n not in self.g["증거"]]
                           + list(self.g["공통층"]) + list(self.g["무관층"]), self.g)[0]
+        # 값 읽기는 판정과 무관하다. 수는 이미 발화에 있고, 읽는 것은
+        # 판단이 아니다. 인정일 때만 읽으면 인코더가 B1 을 내는 순간
+        # 같은 말인데 값이 사라진다.
+        self.이번수 = None
+        if ev or tag == "인정":
+            self.값붙잡기(text, ev, claim)
         if tag == "인정":
             self.자책 |= set(counters(self.g, claim))
             닿음 = reachable(self.g, claim) | {claim}
@@ -920,6 +978,13 @@ class 세션:
         self.회차 += 1
         p = 발화계획(self.g, tag, ev, claim, self)
         p["회차"] = self.회차
+        # 결론의 값. 없으면 빈 칸이고, 대사가 {값} 을 안 쓰면 아무 일도 없다.
+        _값 = self.값풀기(claim) if claim else None
+        p["값"] = ("%g%s" % _값) if _값 else ""
+        # 되읽을 때 예시의 수를 사용자가 말한 수로 바꾼다. 안 바꾸면 '5등을
+        # 추월했다' 고 했는데 '2등인 사람을 추월했습니다 니까' 로 되읽어,
+        # 잘못 들은 것처럼 보인다. 바꿔 넣는 수는 발화에서 온 것이다.
+        p["수바꿈"] = self.이번수
         # 말투를 재는 기준에서도 증거 이름을 뺀다. 주장 매칭에서 빼는 이유와
         # 같다(증거지우기) — 증거명이 남으면 그 이름을 여러 번 되풀이하는
         # 예시가 말투와 상관없이 이긴다. 실제로 주제명을 9번 반복하는 발췌가
@@ -944,6 +1009,44 @@ class 세션:
         마지막 판정은 self.판정, 승패는 self.결과() 로 따로 꺼낸다."""
         self.판정, 답, self.승패 = self.말하기(text)
         return 답
+
+    def 값붙잡기(self, text, ev, claim):
+        """인정된 발화에서 값받이 노드가 원하는 단위의 수를 붙잡는다.
+
+        붙잡는 것은 발화에 실제로 있는 수뿐이다. 없으면 아무 일도 안 한다 —
+        값을 만들어 내면 이 엔진이 하는 일이 달라진다."""
+        # 주장이 어느 노드에 붙었는지에 매달면 인코더가 바뀔 때마다 값이
+        # 잡혔다 말았다 한다. 증거가 받치는 노드까지 같이 본다 — 그 선은
+        # 사람이 그은 근거관계지 매처가 고른 것이 아니다.
+        받치는것 = [d for r, d in self.g["adj"].get(ev, [])
+                    if r in 근거들(self.g)] if ev else []
+        for 노드 in [ev, claim] + 받치는것:
+            단위 = self.g.get("값받이", {}).get(노드)
+            if not 단위 or 노드 in self.값:
+                continue
+            for 수, u, 확실 in 숫자뽑기(text):
+                if 확실 and (u.startswith(단위) if 단위 else True):
+                    self.값[노드] = (수, 단위)
+                    self.이번수 = 수
+                    break
+
+    def 값풀기(self, 노드, 본것=None):
+        """노드의 값. 직접 붙잡았으면 그것, 아니면 옮김을 따라간다.
+
+        옮김은 그래프가 적은 규칙이다 — '제친 사람의 등수가 곧 내 등수' 는
+        추월이라는 말의 뜻이지 엔진이 아는 것이 아니다."""
+        본것 = 본것 or set()
+        if 노드 in 본것:
+            return None                     # 옮김이 돌면 멈춘다
+        본것.add(노드)
+        if 노드 in self.값:
+            return self.값[노드]
+        옮 = self.g.get("값옮김", {}).get(노드)
+        if not 옮:
+            return None
+        단위, 출처 = 옮
+        온것 = self.값풀기(출처, 본것)
+        return (온것[0], 단위) if 온것 else None
 
     def 확보(self):
         """요건 -> 그것을 채운 증거. 요건마다 서로 다른 증거가 필요하다.
@@ -1209,6 +1312,10 @@ def 대사만들기(graph, p):
 
     tag = p["판정"]
     기본 = {"인정": ("인정_반격" if p["반격"] else "인정")}.get(tag, tag)
+    # 값이 나온 턴에만 쓰는 대사. 없는데 {값} 을 쓰면 '지금  입니다' 처럼
+    # 빈 자리가 그대로 나간다. 인정_반격 과 같은 규율이다.
+    if 기본 == "인정" and p.get("값") and "인정_값" in 말:
+        기본 = "인정_값"
     if 기본 not in 말 and 기본 + "_말" not in 말:
         # 이 판정용 대사가 그래프에 없으면 judge() 가 이미 만든 문장을 그대로 쓴다.
         # 예전에는 C 템플릿으로 떨어뜨려서 엉뚱한 말이 나갔다.
@@ -1222,11 +1329,18 @@ def 대사만들기(graph, p):
     기준 = p.get("기준")
     # 근거가 없을 수 있다. 그대로 넣으면 'None 니까 …' 가 사용자에게 나간다.
     # 실제로 [공리] 처럼 증거를 안 묻는 판정에서 그렇게 샜다.
-    칸 = {"ev": 표현(graph, p["근거"] if p["근거"] is not None else p["주장"], 기준),
-          "claim": 표현(graph, p["주장"], 기준),
+    def _수맞춤(글):
+        수 = p.get("수바꿈")
+        return re.sub(r"\d[\d.]*", "%g" % 수, 글, count=1) if 수 is not None else 글
+
+    _근거노드 = p["근거"] if p["근거"] is not None else p["주장"]
+    칸 = {"ev": _수맞춤(표현(graph, _근거노드, 기준)),
+          "claim": _수맞춤(표현(graph, p["주장"], 기준)),
           # 반격도 이름말을 따라야 한다. ev·claim 은 문장으로 말하면서
           # bad 만 노드 이름을 읽으면 한 줄 안에서 말투가 갈린다.
           "bad": 표현(graph, p["반격"][0], 기준) if p["반격"] else "",
+          # 발화에서 붙잡아 그래프가 적은 길로 나른 수. 지어낸 값이 아니다.
+          "값": p.get("값", ""),
           # 거꾸로 돌린 매처: 노드명 대신 자연 문장
           "말": 문장(graph, p["주장"], 기준) if p["주장"] else "",
           "반격말": 문장(graph, p["반격"][0], 기준) if p["반격"] else ""}
@@ -2495,6 +2609,30 @@ def _selfcheck():
     assert judge(g, "안녕하세요")[0] == "미지"
     assert judge(g, "라면 끓이는 법 알려줘")[0] == "미지"
     assert 세션(g).대답("오늘 날씨 좋네요")
+
+    # 값 나르기. 이 엔진이 고르기만 한다는 것은 그대로다 — 값은 사용자가
+    # 말한 수이고, 그래프가 정하는 것은 그 수가 어디로 가느냐뿐이다.
+    # 그래서 그래프에 한 번도 안 적힌 답이 나온다.
+    _순 = load("graphs/graph_순위_추월.kg")
+    assert _순["값받이"] == {"제친사람순위를안다": "등"}, _순["값받이"]
+    assert _순["값옮김"]["지금순위를안다"] == ("등", "제친사람순위를안다")
+    for _n in ("2", "5", "17"):
+        _판 = 세션(_순)
+        _답 = _판.대답("%s등인 사람을 추월했습니다" % _n)
+        assert _판.값풀기("지금순위를안다") == (float(_n), "등"), (_n, _판.값)
+        # 되읽는 수도 사용자가 말한 것이어야 한다. 예시 첫 줄을 그대로 읽으면
+        # '5등' 이라 했는데 '2등' 으로 되읽어 잘못 들은 것처럼 보인다.
+        # 어느 노드가 주장으로 뽑히는지는 인코더마다 다르므로, 값 자체는
+        # 늘 재고 대사는 인정이 났을 때만 잰다.
+        if _판.판정 == "인정":
+            assert "지금 %s등" % _n in _답, _답
+    # 수가 없는 발화에서는 값을 만들지 않는다.
+    _판 = 세션(_순)
+    _판.대답("앞사람을 추월했다")
+    assert _판.값풀기("지금순위를안다") is None, _판.값
+    # 증거는 수가 달라도 같은 증거다. 안 가리면 '2등...' 만 걸리고 '5등...' 은
+    # 안 걸려, 같은 말인데 하나만 알아듣는다.
+    assert match_evidence("5등인 사람을 추월했습니다", _순)[0] == "앞사람을제침"
 
     # 라우터 색인은 지식 그래프만 든다. 자가검사용으로 써낸 뼈대가 후보로
     # 서 있으면 갈 곳 없는 질문이 거기로 샌다.
