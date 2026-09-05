@@ -1966,14 +1966,37 @@ def 그래프색인(뿌리=None, 최대예시=90):
             "임계값": {"A_MIN": 0.40, "OK_MIN": 0.60},
             "공통층": {}, "사례층": {}, "무관층": {}, "엣지": [],
             "대사": {}, "수치조건": {}}
+    # 색인 예시는 파일당 90줄이면 되는데, 설명 그래프는 통째로 파싱해야
+    # 그 90줄이 나온다. data/법지식/지식그래프.json 은 28MB 파일이 메모리에서
+    # 225MB 가 된다 — 색인만 상주시키자는 매니저 설계가 색인 짓는 값에
+    # 눌린다. 뽑아 둔 90줄을 파일 크기·시각으로 캐시해 두 번째부터는 안 연다.
+    캐시길 = os.path.join(_여기, ".색인예시.json")
+    try:
+        예시캐시 = json.load(open(캐시길, encoding="utf-8"))
+    except Exception:
+        예시캐시 = {}
+    바뀜 = False
+
     for p in 파일:
         if "템플릿" in p:
+            continue
+        키 = os.path.relpath(p, 뿌리).replace("\\", "/")
+        try:
+            표 = "%d-%d" % (os.path.getsize(p), int(os.path.getmtime(p)))
+        except OSError:
+            continue
+        든것 = 예시캐시.get(키)
+        if 든것 and 든것.get("표") == 표:
+            if 든것["예시"]:
+                색인["공통층"][키] = 든것["예시"]
             continue
         try:
             g = 색인용읽기(p)
         except Exception:
             continue
         if g.get("색인") == "아니오":
+            예시캐시[키] = {"표": 표, "예시": []}
+            바뀜 = True
             continue
         이름 = os.path.relpath(p, 뿌리).replace("\\", "/")
         # 노드 이름만 쓰면 안 된다. '전문게재' 라는 이름은 '통째로 베껴
@@ -1985,12 +2008,98 @@ def 그래프색인(뿌리=None, 최대예시=90):
                 예시.append(n)
                 예시 += list(말들)[:2]
         예시 = [x for x in 예시 if x][:최대예시]
+        예시캐시[키] = {"표": 표, "예시": 예시}
+        바뀜 = True
         if 예시:
             색인["공통층"][이름] = 예시
     색인["adj"] = {}
     색인["증거"] = []
-    색인["vec"] = _예시벡터(색인)
+    if 바뀜:
+        try:
+            json.dump(예시캐시, open(캐시길, "w", encoding="utf-8"),
+                      ensure_ascii=False)
+        except OSError:
+            pass                        # 못 써도 다음에 다시 뽑을 뿐이다
+
+    # 그래프 하나씩 인코딩하고 바로 성기게 담는다. 다 만든 뒤에 줄이면
+    # 짓는 동안 빽빽한 것을 통째로 들고 있어, 상주 메모리는 줄어도 봉우리가
+    # 그대로다. 색인만 메모리에 두고 본체는 저장장치에 둔다는 매니저 설계가
+    # 색인 자체의 무게에 눌리면 안 된다.
+    #
+    # 성긴 색인은 통째로 캐시한다. 내용이 그대로면 인코딩 결과도 같은데,
+    # 그 인코딩이 켤 때마다 드는 값의 대부분이다.
+    import numpy as np
+    벡키 = hashlib.sha1(
+        (MODEL + json.dumps(색인["공통층"], ensure_ascii=False, sort_keys=True))
+        .encode("utf-8")).hexdigest()[:16]
+    벡길 = os.path.join(_여기, ".색인벡터_%s.npz" % 벡키)
+    if os.path.exists(벡길):
+        try:
+            z = np.load(벡길, allow_pickle=False)
+            색인["vec"] = {}
+            색인["성김"] = {k: (z["v_" + k], z["c_" + k], z["p_" + k],
+                                int(z["n_" + k]))
+                            for k in 색인["공통층"]}
+            return 색인
+        except Exception:
+            pass                        # 캐시가 깨졌으면 그냥 다시 만든다
+
+    색인["vec"], 색인["성김"] = {}, {}
+    for 이름, 예시 in 색인["공통층"].items():
+        M = np.array(_model().encode([숫자가리기(e) for e in 예시],
+                                     normalize_embeddings=True))
+        한칸 = 성긴벡터({이름: M})
+        if 한칸 is None:                    # 신경망은 성기지 않다. 그대로 둔다.
+            색인["vec"][이름] = M
+        else:
+            색인["성김"][이름] = 한칸[이름]
+    if not 색인["성김"]:
+        색인.pop("성김")
+        return 색인
+    try:
+        칸 = {}
+        for k, (v, c, pt, n) in 색인["성김"].items():
+            칸["v_" + k], 칸["c_" + k] = v, c
+            칸["p_" + k], 칸["n_" + k] = pt, np.array(n)
+        np.savez_compressed(벡길, **칸)
+    except (OSError, ValueError):
+        pass                            # 못 써도 다음에 다시 만들 뿐이다
     return 색인
+
+
+def 성긴벡터(vec):
+    """색인 벡터를 성기게 담는다. {노드: (값, 열, 끊, 행수)}
+
+    문자 인코더는 해시 n-gram 이라 한 행에서 0 이 아닌 칸이 3% 뿐이다
+    (4096 중 103). 빽빽하게 들고 있으면 그래프 50개에 41MB, 500개면 400MB 라
+    가볍다고 할 수 없다. 성기게 담으면 21배 작고 오히려 조금 빠르다 —
+    곱할 칸이 그만큼 적기 때문이다. 점수는 부동소수 오차만 다르다.
+
+    신경망 인코더는 성기지 않으므로 그때는 그대로 둔다."""
+    import numpy as np
+    성김 = {}
+    for n, M in vec.items():
+        if M.ndim != 2:
+            M = M.reshape(1, -1)
+        비율 = float((M != 0).mean()) if M.size else 1.0
+        if 비율 > 0.2:                      # 빽빽하면 성기게 담을 이유가 없다
+            return None
+        행, 열 = np.nonzero(M)
+        끊 = np.searchsorted(행, np.arange(M.shape[0] + 1))
+        성김[n] = (M[행, 열].astype(np.float32),
+                   열.astype(np.int16 if M.shape[1] <= 32767 else np.int32),
+                   끊, M.shape[0])
+    return 성김
+
+
+def _성긴점수(칸, v):
+    import numpy as np
+    값, 열, 끊, _행수 = 칸
+    if len(값) == 0:
+        return 0.0
+    합 = np.add.reduceat(값 * v[열], 끊[:-1])
+    합[np.diff(끊) == 0] = 0.0
+    return float(합.max())
 
 
 def 그래프고르기(질문, 색인=None, 최소=None, 개수=3):
@@ -2018,10 +2127,14 @@ def 그래프고르기(질문, 색인=None, 최소=None, 개수=3):
     # 그래프 50개에서 라우팅 한 번이 241ms 였는데, 판정은 0.1ms 다 —
     # 무게가 전부 여기 있었다. 조각 벡터를 한 번만 만들고 돌려 쓴다.
     조각들 = [_담(조각) for 조각 in 조각내기(질문)]
+    성김 = 색인.get("성김")
     점수 = []
     for n in 색인["공통층"]:
-        M = 색인["vec"][n]
-        점수.append((max(float((M @ v).max()) for v in 조각들), n))
+        if 성김 is not None:
+            점수.append((max(_성긴점수(성김[n], v) for v in 조각들), n))
+        else:
+            M = 색인["vec"][n]
+            점수.append((max(float((M @ v).max()) for v in 조각들), n))
     점수.sort(reverse=True)
     후보 = [(n, round(c, 3)) for c, n in 점수[:개수]]
     최고, 이름 = 점수[0]

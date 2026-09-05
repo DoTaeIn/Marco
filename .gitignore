@@ -5,6 +5,7 @@
 # 여러 지식 그래프를 업로드용 한 파일로 묶은 산출물과 런타임 overlay
 *.kgpack
 .kgpack_runtime/
+.nai/
 
 # 임베딩 캐시. 키가 모델+그래프 해시라 그래프를 고치면 자동 무효화된다
 .vec_*.npz
@@ -81,3 +82,7 @@ graphs/graph_목적_자가검사.kg
 # 국립국어원 사전 XML. CC BY-SA 2.0 KR 이지만 386MB 라 저장소에 안 넣는다.
 # spellcheck-ko/korean-dict-nikl 에서 받는다.
 data/사전/
+
+# 라우터 색인 캐시. 내용이 바뀌면 키가 바뀌어 저절로 다시 만든다.
+.색인예시.json
+.색인벡터_*.npz
