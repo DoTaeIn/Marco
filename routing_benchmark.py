@@ -36,7 +36,7 @@ def _본문들():
     return 읽음
 
 
-def 색인짓기(읽음, 상한=2, 빼기=True):
+def 색인짓기(읽음, 상한=2, 빼기=True, 총량=90):
     """마지막 별칭을 빼고 색인을 짓는다. 빼야 안 본 말투로 잴 수 있다."""
     ix = {"역할": "안내", "목표": "그래프고르기",
           "임계값": {"A_MIN": 0.40, "OK_MIN": 0.60},
@@ -50,11 +50,13 @@ def 색인짓기(읽음, 상한=2, 빼기=True):
                 말 = list(말)[:-1] if 빼기 else list(말)
                 예.append(n)
                 예 += 말[:상한] if 상한 else 말
-        예 = [x for x in 예 if x][:90]
+        예 = [x for x in 예 if x][:총량]
         if 예:
             ix["공통층"][이름] = 예
 
     for 이름, g in 읽음.items():
+        if g.get("색인") == "아니오":     # 자가검사 뼈대는 라우터가 안 본다
+            continue
         담기(이름, g, 상한, 빼기)
     # 설명 그래프(.json)는 별칭이 발췌라 뺄 마지막이 없다. 그대로 넣는다.
     for p in engine.설명그래프찾기(engine._여기):
@@ -68,8 +70,15 @@ def 색인짓기(읽음, 상한=2, 빼기=True):
     return ix
 
 
-def 재기(읽음, ix):
-    맞 = 전 = 0
+def 재기(읽음, ix, 답까지=False):
+    """맞음 두 가지를 같이 센다.
+
+    제자리: 질문을 뽑아온 그 파일로 갔는가. 엄격하지만 겹치는 그래프에서는
+            정답표가 틀린다 — '여러 사람 앞에서 말했습니다' 는 graph.kg 에서
+            뽑았어도 graph_명예훼손 으로 가는 편이 옳다.
+    답함:   고른 그래프가 실제로 답을 했는가(미지가 아닌가). 사용자에게
+            중요한 것은 이쪽이다."""
+    맞 = 전 = 답 = 0
     샌것 = []
     for 이름, g in 읽음.items():
         if 이름.startswith("cases/"):      # 사건 파일은 같은 법리라 서로 겹친다
@@ -85,21 +94,32 @@ def 재기(읽음, ix):
                     맞 += 1
                 else:
                     샌것.append((q, 이름, 골, 점))
+                if 답까지 and 골:
+                    try:
+                        답 += engine.judge(engine.그래프불러오기(골), q)[0] != "미지"
+                    except Exception:
+                        pass
     밖 = json.load(open(engine._길(밖경로), encoding="utf-8"))
     거절 = [q for q in 밖 if engine.그래프고르기(q, ix)[0] is None]
-    return 맞, 전, len(거절), len(밖), 샌것
+    return 맞, 전, len(거절), len(밖), 샌것, 답
 
 
 if __name__ == "__main__":
     읽음 = _본문들()
     상한들 = [2]
     if "--상한" in sys.argv:
-        상한들 = [int(a) for a in sys.argv[sys.argv.index("--상한") + 1:]]
+        상한들 = [int(a) for a in sys.argv[sys.argv.index("--상한") + 1:]
+                  if not a.startswith("--")]
+    총량 = 90
+    if "--총량" in sys.argv:
+        총량 = int(sys.argv[sys.argv.index("--총량") + 1])
     for 상한 in 상한들:
-        ix = 색인짓기(읽음, 상한)
-        맞, 전, 거절, 밖수, 샌것 = 재기(읽음, ix)
-        print("상한 %-4s  안 본 말투 %4d/%4d (%.1f%%)   밖 거절 %2d/%d"
-              % (상한 or "없음", 맞, 전, 100 * 맞 / 전, 거절, 밖수))
+        ix = 색인짓기(읽음, 상한, 총량=총량)
+        맞, 전, 거절, 밖수, 샌것, 답 = 재기(읽음, ix, "--답" in sys.argv)
+        print("상한 %-4s 총량 %-4s  제자리 %4d/%4d (%.1f%%)%s  밖 거절 %2d/%d"
+              % (상한 or "없음", 총량, 맞, 전, 100 * 맞 / 전,
+                 ("  답함 %4d (%.1f%%)" % (답, 100 * 답 / 전)) if "--답" in sys.argv else "",
+                 거절, 밖수))
     if "--샌것" in sys.argv:
         for q, 참, 골, 점 in 샌것[:30]:
             print("  '%s'  %s -> %s (%.2f)"
