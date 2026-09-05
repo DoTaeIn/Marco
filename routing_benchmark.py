@@ -50,7 +50,7 @@ def 색인짓기(읽음, 상한=2, 빼기=True, 총량=90):
                 말 = list(말)[:-1] if 빼기 else list(말)
                 예.append(n)
                 예 += 말[:상한] if 상한 else 말
-        예 = [x for x in 예 if x][:총량]
+        예 = [x for x in 예 if x and len("".join(x.split())) >= 5][:총량]
         if 예:
             ix["공통층"][이름] = 예
 
