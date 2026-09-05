@@ -1925,7 +1925,21 @@ def 색인용읽기(경로):
     이름과 예시만 뽑고 나머지는 안 만진다 — '색인은 작고 항상 쓰이고,
     그래프 본체는 크고 한 번에 하나만 쓴다' 는 설계 그대로다."""
     if str(경로).endswith(".kg"):
-        return kg읽기(경로)
+        g = kg읽기(경로)
+        # 되묻기로 배운 말을 색인에도 얹는다. 안 얹으면 그래프는 그 말을
+        # 아는데 라우터가 몰라, 방금 배운 그래프로 못 간다 — 배움이 그 판
+        # 안에서만 살고 다음 대화에서 죽는다.
+        #
+        # 앞자리에 둔다. 색인은 노드마다 앞의 몇 줄만 가져가는데, 배운 말은
+        # 사람이 실제로 한 말이라 기획자가 지어낸 예시보다 라우팅에 값이 크다.
+        배운, _ = 학습읽기(os.path.splitext(str(경로))[0] + ".학습.jsonl")
+        for 노드, 말들 in 배운.items():
+            for 층 in ("공통층", "사례층"):
+                if 노드 in g.get(층, {}):
+                    있 = g[층][노드]
+                    g[층][노드] = [m for m in 말들 if m not in 있] + 있
+                    break
+        return g
     with open(경로, encoding="utf-8") as f:
         생 = json.load(f)
     노드 = 생.get("노드") or {}
@@ -1982,9 +1996,15 @@ def 그래프색인(뿌리=None, 최대예시=90):
             continue
         키 = os.path.relpath(p, 뿌리).replace("\\", "/")
         try:
-            표 = "%d-%d" % (os.path.getsize(p), int(os.path.getmtime(p)))
+            조각 = [os.path.getsize(p), int(os.path.getmtime(p))]
         except OSError:
             continue
+        # 배움은 원본이 아니라 옆의 .학습.jsonl 에 쌓인다. .kg 만 보면 배운
+        # 말이 색인에 영영 안 들어간다 — 캐시가 낡은 채로 남기 때문이다.
+        _학 = os.path.splitext(p)[0] + ".학습.jsonl"
+        if os.path.exists(_학):
+            조각 += [os.path.getsize(_학), int(os.path.getmtime(_학))]
+        표 = "-".join(str(x) for x in 조각)
         든것 = 예시캐시.get(키)
         if 든것 and 든것.get("표") == 표:
             if 든것["예시"]:
@@ -2028,42 +2048,60 @@ def 그래프색인(뿌리=None, 최대예시=90):
     #
     # 성긴 색인은 통째로 캐시한다. 내용이 그대로면 인코딩 결과도 같은데,
     # 그 인코딩이 켤 때마다 드는 값의 대부분이다.
+    #
+    # 캐시는 그래프마다 따로 건다. 색인 전체를 한 해시로 묶으면 그래프 하나가
+    # 바뀔 때 50개를 다 다시 인코딩한다 — 한 줄 고치는 데 292ms 였다. 그래프를
+    # 계속 늘리는 지금은 그것이 곧 늘 다시 짓는 것이다. 파일 이름도 하나로
+    # 고정한다. 해시를 이름에 넣으면 고칠 때마다 낡은 파일이 쌓인다.
     import numpy as np
-    벡키 = hashlib.sha1(
-        (MODEL + json.dumps(색인["공통층"], ensure_ascii=False, sort_keys=True))
-        .encode("utf-8")).hexdigest()[:16]
-    벡길 = os.path.join(_여기, ".색인벡터_%s.npz" % 벡키)
+    벡길 = os.path.join(_여기, ".색인벡터.npz")
+    옛 = {}
     if os.path.exists(벡길):
         try:
-            z = np.load(벡길, allow_pickle=False)
-            색인["vec"] = {}
-            색인["성김"] = {k: (z["v_" + k], z["c_" + k], z["p_" + k],
-                                int(z["n_" + k]))
-                            for k in 색인["공통층"]}
-            return 색인
+            옛 = np.load(벡길, allow_pickle=False)
         except Exception:
-            pass                        # 캐시가 깨졌으면 그냥 다시 만든다
+            옛 = {}                     # 캐시가 깨졌으면 그냥 다시 만든다
 
     색인["vec"], 색인["성김"] = {}, {}
+    새칸, 벡바뀜 = {}, False
     for 이름, 예시 in 색인["공통층"].items():
+        머리 = hashlib.sha1(이름.encode("utf-8")).hexdigest()[:12]
+        표 = hashlib.sha1((MODEL + "\n".join(예시)).encode("utf-8")).hexdigest()[:16]
+        try:
+            if str(옛["h_" + 머리]) == 표:
+                칸 = (옛["v_" + 머리], 옛["c_" + 머리], 옛["p_" + 머리],
+                      int(옛["n_" + 머리]))
+                색인["성김"][이름] = 칸
+                새칸["h_" + 머리] = np.array(표)
+                새칸["v_" + 머리], 새칸["c_" + 머리] = 칸[0], 칸[1]
+                새칸["p_" + 머리], 새칸["n_" + 머리] = 칸[2], np.array(칸[3])
+                continue
+        except (KeyError, IndexError, TypeError):
+            pass
         M = np.array(_model().encode([숫자가리기(e) for e in 예시],
                                      normalize_embeddings=True))
         한칸 = 성긴벡터({이름: M})
         if 한칸 is None:                    # 신경망은 성기지 않다. 그대로 둔다.
             색인["vec"][이름] = M
-        else:
-            색인["성김"][이름] = 한칸[이름]
+            continue
+        v, c, pt, n = 한칸[이름]
+        색인["성김"][이름] = (v, c, pt, n)
+        새칸["h_" + 머리] = np.array(표)
+        새칸["v_" + 머리], 새칸["c_" + 머리] = v, c
+        새칸["p_" + 머리], 새칸["n_" + 머리] = pt, np.array(n)
+        벡바뀜 = True
+
     if not 색인["성김"]:
         색인.pop("성김")
         return 색인
-    try:
-        칸 = {}
-        for k, (v, c, pt, n) in 색인["성김"].items():
-            칸["v_" + k], 칸["c_" + k] = v, c
-            칸["p_" + k], 칸["n_" + k] = pt, np.array(n)
-        np.savez_compressed(벡길, **칸)
-    except (OSError, ValueError):
-        pass                            # 못 써도 다음에 다시 만들 뿐이다
+    # 사라진 그래프의 칸은 새칸에 안 담기므로 저절로 빠진다.
+    if 벡바뀜 or len(새칸) != len(getattr(옛, "files", [])):
+        try:
+            # 압축하지 않는다. 1.9MB 라 아낄 것이 적은데, 그래프 하나가
+            # 바뀔 때마다 다시 쓰므로 쓰는 값이 그대로 켤 때 값이 된다.
+            np.savez(벡길, **새칸)
+        except (OSError, ValueError):
+            pass                        # 못 써도 다음에 다시 만들 뿐이다
     return 색인
 
 
@@ -2932,6 +2970,28 @@ def _selfcheck():
     # 미끼만 있는 발화는 그대로 거절한다 — 위 완화가 미끼를 죽이면 안 된다.
     _미 = 세션(_순); _미.대답("전력 질주했다")
     assert _미.판정 == "B2", _미.판정
+
+    # 되묻기로 배운 말은 색인에도 들어가야 한다. 안 들어가면 그래프는 그 말을
+    # 아는데 라우터가 몰라, 방금 배운 그 그래프로 못 간다 — 배움이 그 판
+    # 안에서만 살고 다음 대화에서 죽는다. 배움은 원본이 아니라 옆의
+    # .학습.jsonl 에 쌓이므로 캐시 키도 그 파일을 같이 봐야 한다.
+    _배로그 = _길("graphs/graph_순위_추월.학습.jsonl")
+    _있 = os.path.exists(_배로그)
+    try:
+        # 어느 말이 어느 그래프로 가는지는 인코더마다 다르다. 여기서 재는 것은
+        # 배운 말이 색인에 들어오느냐, 그리고 앞자리에 오느냐다 — 색인은 노드마다
+        # 앞의 몇 줄만 가져가고, 배운 말은 사람이 실제로 한 말이라 값이 크다.
+        _배운말 = "이 말은 배운 것이다"
+        assert _배운말 not in 색인용읽기("graphs/graph_순위_추월.kg")["사례층"]["앞사람을제침"]
+        with open(_배로그, "a", encoding="utf-8") as _f:
+            _f.write(json.dumps({"노드": "앞사람을제침", "말": _배운말},
+                                ensure_ascii=False) + "\n")
+        _다시 = 색인용읽기("graphs/graph_순위_추월.kg")["사례층"]["앞사람을제침"]
+        assert _다시[0] == _배운말, _다시
+    finally:
+        if not _있 and os.path.exists(_배로그):
+            os.remove(_배로그)
+        _색인칸.clear()
 
     # 라우터 색인은 지식 그래프만 든다. 자가검사용으로 써낸 뼈대가 후보로
     # 서 있으면 갈 곳 없는 질문이 거기로 샌다.
