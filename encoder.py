@@ -366,6 +366,38 @@ _sentence_splitter = re.compile(
     r"[.!?\n]+|(?<=니다)\s*[,;]\s*|(?<=습니다)\s+|(?<=%s)\s+" % _연결어미)
 
 
+_영단어 = re.compile(r"[A-Za-z][A-Za-z0-9_.\-]*")
+_한글낱말 = re.compile(r"[가-힣]+")
+# 영어 질문 껍데기. 이 낱말들은 무엇을 묻는지가 아니라 묻는다는 표시다.
+_영질문틀 = {"what", "when", "how", "where", "who", "why", "which", "whose",
+             "is", "are", "am", "was", "were", "be", "do", "does", "did",
+             "can", "could", "should", "would", "will", "the", "a", "an",
+             "i", "you", "me", "my", "your", "of", "to", "for", "in", "on",
+             "tell", "show", "give", "explain", "about", "please", "s",
+             "it", "this", "that", "there", "here", "and", "or", "not",
+             "with", "from", "at", "by", "as", "if", "so", "have", "has"}
+
+
+def 영어껍데기벗기기(text):
+    """영어 질문틀을 뺀 알맹이. 뺄 것이 없으면 원문 그대로.
+
+    포함도는 '색인 줄의 조각 중 몇 할이 질문 안에 있나' 라, 질문에 군더더기가
+    많으면 그만큼 묽어진다. 한국어 질문틀('~가 뭐야')은 그래프 예시에 그대로
+    들어 있어 문제가 안 되는데, 영어 질문틀은 어디에도 없다. 'DNS' 만 물으면
+    0.67 인데 'what is DNS' 는 0.35 로 떨어졌다.
+
+    영어 낱말이 실제로 든 질문에만 쓴다. 한국어 질문에 대고 벗기면 오히려
+    'DNS가 뭐야' 가 1.00 에서 0.78 로 내려간다 — 그쪽은 틀도 재료다."""
+    영 = _영단어.findall(text)
+    if not 영:
+        return text
+    알맹이 = [w for w in 영 if w.lower() not in _영질문틀]
+    if not 알맹이:
+        return text
+    한 = _한글낱말.findall(text)
+    return " ".join(알맹이 + 한)
+
+
 def split_fragments(text):
     """긴 발화를 문장 단위로 쪼갠다.
 
@@ -373,7 +405,14 @@ def split_fragments(text):
     한 번에 여러 주장을 한다. 문장 하나 = 주장 하나로 가정하면 전체 평균이
     흐려져 아무 노드에도 안 걸리고 미지로 떨어진다."""
     fragments = [x.strip() for x in _sentence_splitter.split(text) if x and len(x.strip()) > 3]
-    return ([text] + fragments) if len(fragments) > 1 else [text]
+    나온것 = ([text] + fragments) if len(fragments) > 1 else [text]
+    # 영어 껍데기를 벗긴 것도 조각으로 더한다. 통째 영어 질문이 그래프가
+    # 아는 낱말을 들고도 못 가는 자리를 메운다. 원문도 그대로 남으므로
+    # 후보가 늘 뿐이다.
+    벗김 = 영어껍데기벗기기(text)
+    if 벗김 != text and 벗김 not in 나온것:
+        나온것.append(벗김)
+    return 나온것
 
 
 조각내기 = split_fragments

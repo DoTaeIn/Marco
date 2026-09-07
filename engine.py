@@ -20,6 +20,7 @@ for _n in ("torch", "transformers", "huggingface_hub", "sentence_transformers"):
 
 # 신경망은 인코더.py 한 곳에만 있다. 두 벌 두면 캐시도 두 벌이 된다.
 from encoder import (MODEL, DEVICE, _담, _model, _속, 라우팅문턱, 목표닮음문턱,
+                     영어껍데기벗기기,
                      숫자가리기, 조각내기)
 
 _여기 = os.path.dirname(os.path.abspath(__file__))
@@ -3872,6 +3873,20 @@ def _selfcheck():
     _이름2, _, _ = _말.말하기("2등인 사람을 추월했습니다")
     assert _이름2 == "graphs/graph_순위_추월.kg", _이름2
     assert _말.판 is not None and _말.판.값, _말.판.값
+
+    # 영어 질문 껍데기를 벗긴 것도 조각으로 본다. 그래프에 영어 낱말이
+    # 이미 531종 들어 있는데(CCTV·DNS·HTTP·XSS), 통째 영어로 물으면 못
+    # 갔다 — 'DNS' 는 0.67 인데 'what is DNS' 는 0.35 다. 포함도는 질문에
+    # 군더더기가 많을수록 묽어지고, 영어 질문틀은 그래프 어디에도 없다.
+    assert "DNS" in 조각내기("what is DNS"), 조각내기("what is DNS")
+    assert 영어껍데기벗기기("what is DNS") == "DNS"
+    # 한국어 질문에는 안 쓴다. 그쪽은 틀도 재료라, 벗기면 오히려 내려간다.
+    assert 영어껍데기벗기기("밥값 나눠야 하는데") == "밥값 나눠야 하는데"
+    # 영어만 남는 질문틀이면 원문을 그대로 둔다.
+    assert 영어껍데기벗기기("what is it") == "what is it"
+    _색e = 그래프색인()
+    for _q in ("what is DNS", "what is HTTP", "tell me about XSS"):
+        assert 그래프고르기(_q, _색e)[0], (_q, 그래프고르기(_q, _색e))
 
     # 중복 제안. 여러 그래프가 같은 지식을 각자 적은 자리를 찾는다.
     _중 = 중복제안()
