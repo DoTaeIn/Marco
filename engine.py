@@ -2546,6 +2546,59 @@ def 다리제안(뿌리=None, 최소=0.60, 최대=40):
     return 다리[:최대]
 
 
+def 중복제안(뿌리=None, 최소겹침=3, 최대=20):
+    """여러 그래프가 같은 지식을 각자 적어 놓은 자리. -> [(겹친수, [그래프], [노드])]
+
+    겹친다고 다 문제가 아니다. 재보니 세 종류인데 하나만 손볼 자리다.
+
+      경계선   택배 그래프의 [무관] 에 '밥값 나눠야 하는데'. 이웃이 안
+               훔쳐가게 적어 둔 것이라, 없애면 서로 뺏는다.
+      인사말   각 그래프의 [무관] 에 '안녕하세요'. 예절 그래프가 1.00 으로
+               이기므로 해가 없다.
+      같은 지식 graph.kg 과 graph_명예훼손 이 공연성·사실적시를 각자 적었다.
+               한쪽을 고치면 다른 쪽이 낡는다. 이것만 찾는다.
+
+    그래서 실노드(공통층·사례층)에만 있는 겹침을 본다. 한 곳이라도 무관층에
+    있으면 경계선이므로 뺀다.
+
+    포함: 이 이미 그 일을 한다 — 사건 파일 일곱이 legal/법리_형법21조.kg 을
+    빌려 쓴다. 없는 것은 어디를 묶을지 찾는 일이라, 후보만 내고 사람이
+    확인한다. 다리제안·엣지제안 과 규율이 같다."""
+    뿌리 = 뿌리 or _여기
+    파일 = [p for p in sorted(glob.glob(os.path.join(뿌리, "graphs", "*.kg")))
+            + sorted(glob.glob(os.path.join(뿌리, "cases", "*.kg")))
+            if "템플릿" not in p]
+    실노드, 무관노드 = collections.defaultdict(set), set()
+    포함쓴것 = set()
+    for p in 파일:
+        try:
+            g = kg읽기(p)
+        except Exception:
+            continue
+        이름 = os.path.relpath(p, 뿌리).replace("\\", "/")
+        if g.get("포함"):
+            포함쓴것.add(이름)
+        for n in (g.get("공통층") or {}):
+            실노드[n].add(이름)
+        for n in (g.get("사례층") or {}):
+            실노드[n].add(이름)
+        for n in (g.get("무관층") or {}):
+            무관노드.add(n)
+
+    # 그래프 묶음별로 모은다. 같은 두 그래프가 여러 노드를 공유하면 그것이
+    # 한 덩어리다 — 노드 하나씩 내면 사람이 다시 묶어야 한다.
+    묶음 = collections.defaultdict(list)
+    for n, 곳 in 실노드.items():
+        if len(곳) < 2 or n in 무관노드:
+            continue
+        묶음[tuple(sorted(곳))].append(n)
+
+    나온것 = [(len(ns), list(그), sorted(ns)) for 그, ns in 묶음.items()
+              if len(ns) >= 최소겹침 and not set(그) <= 포함쓴것]
+    나온것.sort(reverse=True)
+    return 나온것[:최대]
+
+
 def 성긴벡터(vec, 길이표=None, 뒤집기표=None):
     """색인 벡터를 성기게 담는다. {노드: (값, 열, 끊, 행수)}
 
@@ -3820,6 +3873,21 @@ def _selfcheck():
     assert _이름2 == "graphs/graph_순위_추월.kg", _이름2
     assert _말.판 is not None and _말.판.값, _말.판.값
 
+    # 중복 제안. 여러 그래프가 같은 지식을 각자 적은 자리를 찾는다.
+    _중 = 중복제안()
+    assert _중, "중복 후보가 하나도 안 나온다"
+    # 경계선·인사말은 빼야 한다. 무관층에도 있는 이름은 이웃이 안 훔쳐가게
+    # 적어 둔 것이라 없애면 서로 뺏는다.
+    _무관이름 = set()
+    for _p in glob.glob(_길("graphs/*.kg")):
+        try:
+            _무관이름 |= set(kg읽기(_p).get("무관층") or {})
+        except Exception:
+            pass
+    for _수, _그, _노 in _중:
+        assert not (set(_노) & _무관이름), (_그, set(_노) & _무관이름)
+        assert len(_그) >= 2 and _수 >= 3, (_수, _그)
+
     # 다리 제안. 그래프끼리 이을 자리를 찾되, 자석 노드를 상호 확인으로 거른다.
     _다리 = 다리제안()
     assert _다리, "다리 후보가 하나도 안 나온다"
@@ -4806,6 +4874,17 @@ if __name__ == "__main__":
             print("        \"%s\"" % c["문장"])
             print("      --- .kg 에 붙여넣을 초안 ---")
             print("      %s  -%s->  %s" % (a, c["관계"], b))
+        sys.exit(0)
+
+    elif "--dups" in sys.argv:
+        인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
+        후보 = 중복제안(최소겹침=int(인자[0]) if 인자 else 3)
+        print("여러 그래프가 같은 지식을 각자 적어 놓은 자리 %d곳" % len(후보))
+        print("확인한 것만 legal/ 같은 곳으로 빼고 '포함:' 으로 묶을 것.\n")
+        for 수, 그래프들, 노드들 in 후보:
+            print("  노드 %d개를 공유 — %s" % (수, ", ".join(
+                x.split("/")[-1] for x in 그래프들)))
+            print("      %s" % ", ".join(노드들[:8]))
         sys.exit(0)
 
     elif "--bridges" in sys.argv:
