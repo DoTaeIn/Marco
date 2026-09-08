@@ -91,17 +91,24 @@
     @keyframes kgPop { 0%{transform:scale(0);opacity:0} 60%{transform:scale(1.5)} 100%{transform:scale(1);opacity:1} }
     @keyframes kgHalo { 0%{transform:scale(1);opacity:.85} 100%{transform:scale(3.4);opacity:0} }
     @keyframes kgDraw { to { stroke-dashoffset:0 } }
+    /* 테마 변수를 쓴다. 처음엔 어두운 값을 박아 넣었는데 밝은 테마에서
+       글자색만 어두운 채로 남아 숫자가 배경에 묻혔다. */
     .growth-bar { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:10px 0 4px }
-    .growth-bar label { display:inline-flex; align-items:center; gap:6px; color:#8fa3c4; font-size:12.5px }
-    .growth-bar input[type=number] { width:70px; background:#0d1421; color:#e7eefb; border:1px solid #31415f; border-radius:6px; padding:4px 6px; font:inherit }
-    .growth-note { color:#8fa3c4; font-size:12.5px }
-    .growth-note.run { color:#7aa2f7 } .growth-note.bad { color:#e0736d }
-    .growth-nums { display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:8px; margin:8px 0 }
-    .growth-nums div { background:#0d1421; border:1px solid #31415f; border-radius:8px; padding:8px 10px }
-    .growth-nums b { display:block; font-size:19px; line-height:1.25 }
-    .growth-nums span { color:#8fa3c4; font-size:11.5px }
-    .growth-nums b.add { color:#6ed6a0 } .growth-nums b.edge { color:#7aa2f7 } .growth-nums b.drop { color:#e0736d }
-    .growth-chip { display:inline-block; padding:1px 7px; border:1px solid #31415f; border-radius:99px; font-size:11.5px; color:#8fa3c4; margin:2px 4px 2px 0 }
+    .growth-bar label { display:inline-flex; align-items:center; gap:6px; color:var(--muted); font-size:12.5px }
+    .growth-bar input[type=number] { width:70px; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:6px; padding:4px 6px; font:inherit }
+    .growth-note { color:var(--muted); font-size:12.5px }
+    .growth-note.run { color:var(--blue) } .growth-note.bad { color:var(--red) }
+    .growth-nums { display:grid; grid-template-columns:repeat(auto-fit,minmax(104px,1fr)); gap:8px; margin:8px 0 }
+    .growth-nums div { background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; min-width:0 }
+    /* 긴 값(사전 진도 30227/30227)이 칸 밖으로 삐져나가던 것을 막는다. */
+    .growth-nums b { display:block; font-size:19px; line-height:1.25; color:var(--text);
+                     font-variant-numeric:tabular-nums; overflow-wrap:anywhere }
+    .growth-nums b.long { font-size:14px; line-height:1.7 }
+    .growth-nums span { color:var(--muted); font-size:11.5px }
+    .growth-nums b.add { color:var(--green) } .growth-nums b.edge { color:var(--blue) } .growth-nums b.drop { color:var(--red) }
+    .growth-chip { display:inline-block; padding:1px 7px; border:1px solid var(--line); border-radius:99px; font-size:11.5px; color:var(--muted); margin:2px 4px 2px 0 }
+    .growth-legend { display:flex; gap:14px; align-items:center; color:var(--muted); font-size:11.5px; padding:2px 0 }
+    .growth-legend i { display:inline-block; width:14px; height:2.5px; border-radius:2px; margin-right:5px; vertical-align:middle }
 </style>
 </head>
 <body>
@@ -168,7 +175,8 @@
           <span class="growth-note" id="growth-note"></span>
         </div>
         <div class="growth-nums" id="growth-nums"></div>
-        <svg class="graph-svg" id="growth-chart" role="img" aria-label="쌓인 노드와 엣지"></svg>
+        <div class="growth-legend"><span><i style="background:var(--green)"></i>쌓인 노드</span><span><i style="background:var(--blue)"></i>쌓인 엣지</span><span id="growth-x">바퀴</span></div>
+        <svg class="graph-svg" id="growth-chart" role="img" aria-label="바퀴가 돌수록 쌓인 노드와 엣지"></svg>
         <div class="trace" id="growth-trace">아직 돈 바퀴가 없습니다.</div>
       </div>
     </section>
@@ -424,14 +432,34 @@ function growthNote(text,kind){const n=$('growth-note');if(!n)return;n.className
 function growthChart(rows){
   const svg=$('growth-chart'),box=$('growth-view');if(!svg||!box)return;
   const w=box.clientWidth||600,h=170;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
-  if(!rows.length){const t=S('text',{x:w/2,y:h/2,fill:'#8fa3c4','font-size':12,'text-anchor':'middle'});t.textContent='아직 돈 바퀴가 없습니다';svg.appendChild(t);return}
-  const P=16,max=Math.max(1,...rows.map(r=>Math.max(r.노드누적,r.엣지누적)));
-  const X=i=>rows.length<2?w/2:P+i*(w-2*P)/(rows.length-1), Y=v=>h-P-(v/max)*(h-2*P);
-  const line=(key,color)=>{const d=rows.map((r,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(r[key]).toFixed(1)}`).join('');
-    svg.appendChild(S('path',{d,fill:'none',stroke:color,'stroke-width':2}))};
-  line('노드누적','#6ed6a0'); line('엣지누적','#7aa2f7');
-  const t=S('text',{x:w-8,y:16,fill:'#8fa3c4','font-size':11,'text-anchor':'end'});
-  t.textContent=`노드 ${rows.at(-1).노드누적} · 엣지 ${rows.at(-1).엣지누적}`;svg.appendChild(t);
+  const muted=getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()||'#6b7280';
+  const line2=getComputedStyle(document.documentElement).getPropertyValue('--line').trim()||'#e5e5e9';
+  if(!rows.length){const t=S('text',{x:w/2,y:h/2,fill:muted,'font-size':12,'text-anchor':'middle'});
+    t.textContent='아직 돈 바퀴가 없습니다';svg.appendChild(t);
+    $('growth-x').textContent='바퀴';return}
+  // 축이 없으면 선 두 개가 무엇인지 알 수 없다. 바닥선과 눈금, 끝값을 같이 그린다.
+  const L=34,P=14,max=Math.max(1,...rows.map(r=>Math.max(r.노드누적,r.엣지누적)));
+  const X=i=>rows.length<2?(L+w-P)/2:L+i*(w-L-P)/(rows.length-1), Y=v=>h-22-(v/max)*(h-40);
+  for(const v of [0,max/2,max]){const y=Y(v);
+    svg.appendChild(S('line',{x1:L,y1:y,x2:w-P,y2:y,stroke:line2,'stroke-width':1,
+      'stroke-dasharray':v?'3 4':''}));
+    const t=S('text',{x:L-6,y:y+3.5,fill:muted,'font-size':9.5,'text-anchor':'end'});
+    t.textContent=Math.round(v);svg.appendChild(t)}
+  const draw=(key,color)=>{const d=rows.map((r,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(r[key]).toFixed(1)}`).join('');
+    svg.appendChild(S('path',{d,fill:'none',stroke:color,'stroke-width':2,
+      'stroke-linejoin':'round','stroke-linecap':'round'}));
+    // 바퀴마다 점을 찍는다. 선만 있으면 몇 바퀴를 돈 것인지 안 보인다.
+    rows.forEach((r,i)=>svg.appendChild(S('circle',{cx:X(i),cy:Y(r[key]),r:rows.length>60?1.4:2.6,fill:color})))};
+  const 초록=getComputedStyle(document.documentElement).getPropertyValue('--green').trim()||'#16966d';
+  const 파랑=getComputedStyle(document.documentElement).getPropertyValue('--blue').trim()||'#536de6';
+  draw('노드누적',초록); draw('엣지누적',파랑);
+  const 끝=rows.at(-1);
+  const t=S('text',{x:w-P,y:14,fill:muted,'font-size':11,'text-anchor':'end'});
+  t.textContent=`노드 ${끝.노드누적} · 엣지 ${끝.엣지누적}`;svg.appendChild(t);
+  const x0=S('text',{x:L,y:h-6,fill:muted,'font-size':9.5});x0.textContent='1바퀴';svg.appendChild(x0);
+  const x1=S('text',{x:w-P,y:h-6,fill:muted,'font-size':9.5,'text-anchor':'end'});
+  x1.textContent=`${rows.length}바퀴`;svg.appendChild(x1);
+  $('growth-x').textContent=`가로축 = 바퀴 ${rows.length}번 · 세로축 = 그때까지 쌓인 수`;
 }
 async function growth(){
   let d;try{d=await api('/api/growth')}catch(e){return}
@@ -448,7 +476,7 @@ async function growth(){
       try{const fresh=await api('/api/info');info=fresh;managerView()}catch(e){}}
   }
   else growthNote('');
-  const num=(v,label,cls)=>`<div><b class="${cls||''}">${v}</b><span>${label}</span></div>`;
+  const num=(v,label,cls)=>`<div><b class="${[cls,String(v).length>7?'long':''].filter(Boolean).join(' ')}">${v}</b><span>${label}</span></div>`;
   $('growth-nums').innerHTML =
     num(d.그래프수,'지금 그래프')+num('+'+d.합.노드,'늘어난 노드','add')+
     num('+'+d.합.엣지,'늘어난 엣지','edge')+num(d.합.들임,'들인 그래프')+
