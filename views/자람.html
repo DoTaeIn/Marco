@@ -1,0 +1,103 @@
+<!doctype html><html lang="ko"><meta charset="utf-8">
+<title>자람 — 자가학습이 늘린 것</title>
+<style>
+:root{--바탕:#0f1218;--칸:#171c26;--줄:#242c3a;--글:#e6edf6;--흐림:#8b98ab;
+      --노드:#6ed6a0;--엣지:#7aa2f7;--버림:#e0736d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--바탕);color:var(--글);
+     font:14px/1.6 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif}
+header{padding:18px 22px;border-bottom:1px solid var(--줄);display:flex;
+       align-items:baseline;gap:14px;flex-wrap:wrap}
+h1{font-size:16px;margin:0;font-weight:700}
+.흐림{color:var(--흐림);font-size:12.5px}
+main{padding:18px 22px;display:grid;gap:16px;max-width:1100px}
+.칸{background:var(--칸);border:1px solid var(--줄);border-radius:10px;padding:14px 16px}
+.수판{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.수{background:var(--칸);border:1px solid var(--줄);border-radius:10px;padding:12px 14px}
+.수 b{display:block;font-size:24px;line-height:1.2;font-weight:700}
+.수 span{color:var(--흐림);font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--줄);text-align:left;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+th{color:var(--흐림);font-weight:600;font-size:12px}
+td.수치{text-align:right;font-variant-numeric:tabular-nums}
+.초록{color:var(--노드)} .파랑{color:var(--엣지)} .빨강{color:var(--버림)}
+.물림{opacity:.55}
+.막대{height:6px;background:var(--줄);border-radius:3px;overflow:hidden;margin-top:6px}
+.막대 i{display:block;height:100%;background:var(--엣지)}
+.알{display:inline-block;padding:1px 7px;border:1px solid var(--줄);
+    border-radius:99px;font-size:11.5px;color:var(--흐림);margin:2px 4px 2px 0}
+.빔{color:var(--흐림);padding:24px 0;text-align:center}
+svg{width:100%;height:170px;display:block}
+</style>
+<header>
+  <h1>자람</h1>
+  <span class="흐림">자가학습이 무엇을 늘렸나 · 2초마다 다시 읽는다</span>
+  <span class="흐림" id="때"></span>
+</header>
+<main>
+  <div class="수판" id="수판"></div>
+  <div class="칸"><div class="흐림">쌓인 노드 · 엣지</div><svg id="그림" viewBox="0 0 900 170" preserveAspectRatio="none"></svg></div>
+  <div class="칸"><div class="흐림" style="margin-bottom:8px">바퀴마다</div>
+    <table><thead><tr><th>때</th><th class="수치">캠</th><th class="수치">지음</th>
+    <th class="수치">버림</th><th class="수치">들임</th><th class="수치">노드</th>
+    <th class="수치">엣지</th><th>관문(제자리)</th></tr></thead>
+    <tbody id="바퀴"></tbody></table></div>
+  <div class="칸"><div class="흐림" style="margin-bottom:8px">가장 최근 바퀴에 들어온 그래프</div>
+    <div id="들인것"></div></div>
+  <div class="칸"><div class="흐림" style="margin-bottom:8px">관문에서 걸린 것 — 남의 답을 뺏어서 버렸다</div>
+    <div id="버린것"></div></div>
+</main>
+<script>
+const $=i=>document.getElementById(i);
+function 수칸(값,이름,색){return `<div class="수"><b class="${색||''}">${값}</b><span>${이름}</span></div>`}
+function 그리기(쌓임){
+  const s=$('그림'); s.innerHTML='';
+  if(!쌓임.length){s.innerHTML='<text x="450" y="90" fill="#8b98ab" font-size="13" text-anchor="middle">아직 돈 바퀴가 없다</text>';return}
+  const W=900,H=170,P=14;
+  const 최대=Math.max(1,...쌓임.map(x=>Math.max(x.노드누적,x.엣지누적)));
+  const X=i=>쌓임.length<2?W/2:P+i*(W-2*P)/(쌓임.length-1);
+  const Y=v=>H-P-(v/최대)*(H-2*P);
+  const 길=(키)=>쌓임.map((x,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(x[키]).toFixed(1)}`).join('');
+  const 선=(d,c)=>{const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',d);p.setAttribute('fill','none');p.setAttribute('stroke',c);
+    p.setAttribute('stroke-width','2');p.setAttribute('vector-effect','non-scaling-stroke');s.appendChild(p)};
+  선(길('노드누적'),'#6ed6a0'); 선(길('엣지누적'),'#7aa2f7');
+  const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x',W-8);t.setAttribute('y',18);t.setAttribute('text-anchor','end');
+  t.setAttribute('font-size','12');t.setAttribute('fill','#8b98ab');
+  t.textContent=`노드 ${쌓임.at(-1).노드누적} · 엣지 ${쌓임.at(-1).엣지누적}`;s.appendChild(t);
+}
+async function 다시(){
+  let d; try{ d=await (await fetch('/자람')).json() }catch(e){ return }
+  $('때').textContent = d.바퀴.length? '마지막 '+(d.바퀴.at(-1).때||'') : '';
+  $('수판').innerHTML =
+    수칸(d.그래프수,'지금 그래프')+
+    수칸('+'+d.합.노드,'늘어난 노드','초록')+
+    수칸('+'+d.합.엣지,'늘어난 엣지','파랑')+
+    수칸(d.합.들임,'들인 그래프')+
+    수칸(d.합.버림,'관문에서 버림','빨강')+
+    수칸(d.진도.표제수? (d.진도.본데까지+'/'+d.진도.표제수):'-','사전 진도');
+  그리기(d.쌓임);
+  $('바퀴').innerHTML = d.바퀴.slice().reverse().map(x=>{
+    const [전,후]=(x.제자리||[0,0]);
+    const 표시 = 전===후? `${전} → ${후} 그대로` : `${전} → ${후}`;
+    return `<tr class="${x.물림?'물림':''}"><td>${(x.때||'').replace('T',' ')}</td>
+      <td class="수치">${x.캠||0}</td><td class="수치">${x.지음||0}</td>
+      <td class="수치 빨강">${x.버림||0}</td><td class="수치">${x.들임||0}</td>
+      <td class="수치 초록">+${x.노드||0}</td><td class="수치 파랑">+${x.엣지||0}</td>
+      <td class="흐림">${표시}${x.물림?' · 물림':''}</td></tr>`}).join('')
+    || '<tr><td colspan="8" class="빔">아직 돈 바퀴가 없다. <code>python 자가저작.py --한바퀴</code></td></tr>';
+  const 끝 = d.바퀴.at(-1);
+  $('들인것').innerHTML = (끝&&끝.들인것&&끝.들인것.length)
+    ? 끝.들인것.map(g=>`<span class="알">${g.이름||''} · 목표 ${g.목표||'?'}
+        · <span class="초록">노드 ${g.노드||0}</span>
+        · <span class="파랑">엣지 ${g.엣지||0}</span>
+        · 증거 ${g.증거||0}</span>`).join('')
+    : '<div class="빔">없다</div>';
+  $('버린것').innerHTML = (끝&&끝.버린것&&끝.버린것.length)
+    ? 끝.버린것.map(n=>`<span class="알">${n}</span>`).join('')
+    : '<div class="빔">없다</div>';
+}
+다시(); setInterval(다시, 2000);
+</script></html>

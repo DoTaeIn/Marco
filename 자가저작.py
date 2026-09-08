@@ -4,6 +4,7 @@
     python 자가저작.py --캐다 --최대 200    # 후보만 짓는다 (graphs/후보/)
     python 자가저작.py --한바퀴 --최대 200   # 짓고 · 거르고 · 들인다
     python 자가저작.py --물리다             # 지난 바퀴에 들인 것을 되돌린다
+    python 자가저작.py --기록               # 지난 바퀴들이 무엇을 바꿨나
     python 자가저작.py --처음부터           # 진도를 버리고 사전 앞에서 다시
     python 자가저작.py --자가검사
 
@@ -91,6 +92,44 @@ from 진행 import 막대                             # noqa: E402
 들인기록 = os.path.join(후보터, ".들인것.json")
 버린기록 = os.path.join(후보터, ".버린것.json")
 진도기록 = os.path.join(후보터, ".진도.json")
+바퀴기록 = os.path.join(여기, "자가학습기록.jsonl")
+
+
+def _그래프속(경로):
+    """들인 그래프에서 무엇이 늘었는지 센다. -> {목표, 노드, 엣지, 증거, 출처}
+
+    `색인용읽기` 가 아니라 `load` 를 쓴다. 가벼운 쪽은 증거를 안 채워서
+    무엇을 세든 증거가 0으로 나갔다 — 기록에 남는 거짓말이 된다."""
+    try:
+        g = engine.load(경로)
+    except Exception:
+        return {}
+    노드 = len(g.get("공통층") or {}) + len(g.get("사례층") or {})
+    return {"목표": g.get("목표"), "노드": 노드,
+            "엣지": len(g.get("엣지") or ()),
+            "증거": len(g.get("증거") or ()),
+            "출처": next(iter((g.get("출처") or {}).values()), "")}
+
+
+def 바퀴적기(칸):
+    """한 바퀴가 무엇을 바꿨는지 한 줄로 남긴다. UI 가 이걸 읽는다."""
+    칸 = dict(칸, 때=__import__("datetime").datetime.now().isoformat(timespec="seconds"))
+    with io.open(바퀴기록, "a", encoding="utf-8") as f:
+        f.write(json.dumps(칸, ensure_ascii=False) + "\n")
+    return 칸
+
+
+def 바퀴읽기(최근=50):
+    """지난 바퀴들. 새것이 뒤."""
+    if not os.path.exists(바퀴기록):
+        return []
+    줄 = []
+    for 줄글 in io.open(바퀴기록, encoding="utf-8"):
+        try:
+            줄.append(json.loads(줄글))
+        except Exception:
+            pass
+    return 줄[-최근:]
 
 
 def 진도읽기():
@@ -324,13 +363,43 @@ def 한바퀴(최대=200, 물음수=600, 시늉=False):
         print("아직 손해다(제자리 %d < %d). 이번 바퀴는 통째로 물린다." % (후[0], 전[0]))
         for p in glob.glob(os.path.join(후보터, "*.kg")):
             os.remove(p)
+        바퀴적기({"캠": len(항목), "지음": len(쓴것), "버림": len(범인), "들임": 0,
+                "노드": 0, "엣지": 0, "제자리": [전[0], 후[0]],
+                "답함": [전[1], 후[1]], "물음수": len(물음),
+                "들인것": [], "버린것": sorted(os.path.basename(k) for k in 범인),
+                "물림": True})
         return {"캠": len(항목), "들임": 0, "버림": len(범인)}
     if 시늉:
         print("시늉이라 들이지 않는다. 후보는 %s 에 있다." % 후보터)
         return {"캠": len(항목), "들임": 0, "버림": len(범인)}
     옮김 = 들이다([os.path.join(여기, k) for k in 남은])
-    print("들인 것 %d개 (되돌리려면 --물리다)" % len(옮김))
-    return {"캠": len(항목), "들임": len(옮김), "버림": len(범인)}
+    들인속 = []
+    노드합 = 엣지합 = 0
+    for 이름 in 옮김:
+        속 = _그래프속(os.path.join("graphs", 이름))
+        속["이름"] = 이름
+        들인속.append(속)
+        노드합 += 속.get("노드", 0)
+        엣지합 += 속.get("엣지", 0)
+    칸 = 바퀴적기({"캠": len(항목), "지음": len(쓴것), "버림": len(범인),
+                 "들임": len(옮김), "노드": 노드합, "엣지": 엣지합,
+                 "제자리": [전[0], 후[0]], "답함": [전[1], 후[1]],
+                 "물음수": len(물음),
+                 "들인것": 들인속,
+                 "버린것": sorted(os.path.basename(k) for k in 범인)})
+    print("들인 것 %d개 · 노드 +%d · 엣지 +%d (되돌리려면 --물리다)"
+          % (len(옮김), 노드합, 엣지합))
+    if 들인속:
+        print("  새 그래프:")
+        for 속 in 들인속[:8]:
+            print("    %-28s 목표 %-14s 노드 %d · 엣지 %d"
+                  % (속["이름"][:28], str(속.get("목표"))[:14],
+                     속.get("노드", 0), 속.get("엣지", 0)))
+        if len(들인속) > 8:
+            print("    … 그 밖에 %d개" % (len(들인속) - 8))
+    print("  기록: %s" % os.path.basename(바퀴기록))
+    return {"캠": len(항목), "들임": len(옮김), "버림": len(범인),
+            "노드": 노드합, "엣지": 엣지합, "기록": 칸}
 
 
 def _자가검사():
@@ -369,6 +438,15 @@ if __name__ == "__main__":
         최대 = int(sys.argv[sys.argv.index("--최대") + 1])
     if "--자가검사" in sys.argv:
         _자가검사()
+    elif "--기록" in sys.argv:
+        줄 = 바퀴읽기()
+        if not 줄:
+            print("아직 돈 바퀴가 없다.")
+        for x in 줄:
+            print("%s  캠 %3d · 지음 %3d · 버림 %3d · 들임 %3d · 노드 +%-4d 엣지 +%-4d%s"
+                  % (x.get("때", "?"), x.get("캠", 0), x.get("지음", 0),
+                     x.get("버림", 0), x.get("들임", 0), x.get("노드", 0),
+                     x.get("엣지", 0), "  (물림)" if x.get("물림") else ""))
     elif "--처음부터" in sys.argv:
         if os.path.exists(진도기록):
             os.remove(진도기록)
