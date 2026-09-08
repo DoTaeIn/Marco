@@ -44,7 +44,10 @@
     .composer { display:grid; grid-template-columns:1fr auto; gap:8px; padding:11px; border-top:1px solid var(--line) }
     textarea { resize:vertical; min-height:76px; max-height:260px; padding:10px; outline:none } textarea:focus,select:focus,input:focus { border-color:var(--blue) }
     #send { min-width:76px } #status { padding:0 12px 10px; color:var(--muted); font-size:11px } .dot { color:var(--green) }
-    .visuals { display:grid; grid-template-rows:minmax(280px,1.05fr) minmax(250px,1.15fr) minmax(120px,.5fr) minmax(230px,.9fr); gap:12px; min-width:0; min-height:0; }
+    /* 네 판의 최소 높이 합(약 920px)이 화면 높이보다 크면, 넘친 만큼이
+       그대로 잘려 나갔다 — html,body 가 overflow:hidden 이라 굴릴 수도
+       없어서 자가학습 판이 통째로 안 보였다. 이 칸만 스스로 구른다. */
+    .visuals { display:grid; grid-template-rows:minmax(280px,1.05fr) minmax(250px,1.15fr) minmax(150px,.62fr) minmax(230px,.9fr); gap:12px; min-width:0; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
     .view { position:relative; min-width:0; min-height:0; }
     .view-head { position:absolute; z-index:2; left:13px; top:10px; pointer-events:none; max-width:70%; }
     .view-title { font-weight:750; font-size:12px } .view-sub { color:var(--muted); font-size:10.5px; margin-top:1px }
@@ -54,7 +57,9 @@
     .graph-svg { display:block; width:100%; height:100%; min-height:0 }
     .knowledge-grid { display:grid; grid-template-columns:minmax(0,1fr) 280px; height:100%; min-height:0 }
     .knowledge-canvas { position:relative; min-width:0; min-height:0 }
-    .node-inspector { border-left:1px solid var(--line); background:#0e1524; padding:10px; display:grid; grid-template-rows:auto auto minmax(90px,.7fr) minmax(120px,1fr); gap:8px; min-height:0 }
+    /* 두 목록 줄의 최소 높이(90+120)를 박아 두면 칸이 좁을 때 합이 넘쳐
+       .view 의 overflow:hidden 에 잘린다. 둘 다 스스로 구르므로 0 으로. */
+    .node-inspector { border-left:1px solid var(--line); background:#0e1524; padding:10px; display:grid; grid-template-rows:auto auto minmax(0,.7fr) minmax(0,1fr); gap:8px; min-height:0 }
     .node-inspector h2 { margin:0; font-size:13px } .node-inspector small { color:var(--muted) }
     .node-controls { display:grid; grid-template-columns:1fr 92px; gap:6px }
     .node-controls input,.node-controls select { width:100%; min-width:0; padding:7px 8px; color:var(--text); background:#0a101d; border:1px solid var(--line); border-radius:7px; font:inherit }
@@ -66,18 +71,36 @@
     .trace { position:absolute; left:13px; right:13px; bottom:9px; color:var(--muted); font-size:10.5px;
       pointer-events:none; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
     .trace b { color:var(--text) } svg text { font-family:inherit; user-select:none }
-    @media(max-width:900px){main{width:min(100% - 14px,760px);height:calc(100vh - 14px);margin:7px auto}header{display:block}.workspace{grid-template-columns:1fr;grid-template-rows:118px minmax(300px,.9fr) minmax(0,1.1fr);min-height:0}
-      .conversation-sidebar{min-height:0}.conversation-list{display:flex;gap:5px;overflow:auto}.conversation-group{min-width:145px}.conversation-group h3{margin:2px 0}.conversation-sidebar .conversation-create{display:none}
-      .chat-card{height:auto}.visuals{grid-template-rows:minmax(110px,.55fr) minmax(210px,1.2fr) minmax(100px,.55fr)}.legend{display:none}.knowledge-grid{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 145px}.node-inspector{border-left:0;border-top:1px solid var(--line);grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr}.node-controls{grid-column:1}.node-list{grid-column:1}.node-detail{grid-column:2;grid-row:1 / span 2;border-top:0;border-left:1px solid var(--line);padding-left:10px}}
     /* 밝은 작업 표면: 정보 밀도는 유지하되 밤색 패널을 없앤다. */
     :root{color-scheme:light;--bg:#f7f7f8;--panel:#fff;--panel2:#fbfbfc;--line:#e5e5e9;--text:#202124;--muted:#6b7280;--dim:#9ca3af;--blue:#536de6;--green:#16966d;--yellow:#bd7c14;--red:#d54b56;--purple:#8b62d9}
     body{background:linear-gradient(145deg,#fbfbfc,#f3f4f7);font-family:ui-sans-serif,system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif}
     main{width:min(1540px,calc(100% - 32px));height:calc(100vh - 28px);margin:14px auto}.workspace{grid-template-columns:210px 440px minmax(0,1fr);gap:14px}.card,.view,.conversation-sidebar{background:var(--panel);border-color:var(--line);border-radius:16px;box-shadow:0 1px 3px rgba(20,20,30,.035),0 10px 28px rgba(20,20,30,.035)}
-    .conversation-sidebar{border:1px solid var(--line);padding:10px;overflow:auto;min-height:0}.conversation-head{display:flex;justify-content:space-between;align-items:center;margin:2px 2px 10px}.conversation-head b{font-size:13px}.conversation-create{width:100%;margin-bottom:11px;min-height:34px;color:#3c55b8;background:#f2f4ff;border-color:#dbe1ff}.conversation-group{margin:0 0 12px}.conversation-group h3{font-size:11px;color:var(--muted);letter-spacing:.02em;text-transform:uppercase}.conversation-items{display:grid;gap:3px}.conversation-item{width:100%;text-align:left;border:0;background:transparent;padding:7px 8px;border-radius:8px;color:var(--text);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.conversation-item:hover{background:#f2f3f6}.conversation-item.active{background:#e9edff;color:#344ab4;font-weight:700}.project-title{font-weight:700;color:var(--text);font-size:12px;margin:4px 0}.new-chat{font-size:11px;color:var(--muted);padding:3px 5px;float:right}
+    .conversation-sidebar{border:1px solid var(--line);padding:10px;overflow:auto;min-height:0}.conversation-head{display:flex;justify-content:space-between;align-items:center;margin:2px 2px 10px}.conversation-head b{font-size:13px}.conversation-create{width:100%;margin-bottom:11px;min-height:34px;color:#3c55b8;background:#f2f4ff;border-color:#dbe1ff}.conversation-group{margin:0 0 12px}.conversation-group h3{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:11px;color:var(--muted);letter-spacing:.02em;text-transform:uppercase}.conversation-items{display:grid;gap:3px}.conversation-item{width:100%;text-align:left;border:0;background:transparent;padding:7px 8px;border-radius:8px;color:var(--text);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.conversation-item:hover{background:#f2f3f6}.conversation-item.active{background:#e9edff;color:#344ab4;font-weight:700}.project-title{font-weight:700;color:var(--text);font-size:12px;margin:4px 0}/* 전역 button 의 min-height:39px 을 그대로 물려받아, float 된 이 단추가
+       제목 줄(17px) 밖으로 22px 삐져나와 첫 대화 항목을 덮고 있었다. 눌러도
+       대화가 안 열리고 새 대화만 생기던 것이 이것이다. */
+    .new-chat{display:grid;place-items:center;width:20px;min-width:20px;height:20px;min-height:20px;padding:0;border:0;border-radius:50%;font-size:13px;line-height:1;color:var(--muted);background:transparent}.new-chat:hover{background:#eef1ff;color:#3c55b8}
     .toolbar{position:relative;display:block;padding:10px 12px;background:#fcfcfd}.toolbar-primary{display:flex;align-items:center;justify-content:space-between;gap:8px}.pack-chip{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:7px 9px;color:#5e6471;font-size:12px;font-weight:650}.toolbar-icon{display:grid;place-items:center;width:32px;min-width:32px;min-height:32px;padding:0;border-radius:50%;font-size:19px;line-height:1}.toolbar select,.toolbar input{background:#fff;border-color:#e1e2e7}#pack-select{background:#f4f6ff;border-color:#d9defa;width:100%}.toolbar button{background:#fff;border-color:#dddfe5;color:var(--text)}.toolbar button:hover{background:#f3f5fa}
     .chat-card{position:relative}.controls-popover{position:absolute;z-index:10;inset:auto 12px 140px 12px;padding:12px;border:1px solid #e1e3ea;border-radius:15px;background:#fff;box-shadow:0 -12px 42px rgba(25,31,50,.14)}.controls-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.setting-label{display:grid;gap:5px;margin:9px 0;color:var(--muted);font-size:11px;font-weight:650}.setting-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}.setting-row input{min-width:0;padding:7px 8px}.setting-row button{min-height:34px}.setting-dual{display:grid;grid-template-columns:1fr 92px;gap:8px}.setting-dual select{width:100%;min-width:0}.setting-foot{display:flex;justify-content:flex-end;margin-top:10px}.quiet-danger{color:#9e3d48!important;border-color:#f0d9dc!important;font-size:11px!important;min-height:31px!important}
     #chat{padding:16px;gap:11px;background:linear-gradient(180deg,#fff,#fcfcfd)}.msg{padding:11px 13px;border-radius:14px;box-shadow:0 1px 2px rgba(20,20,30,.025)}.assistant{background:#fff;border-color:#e7e7eb}.user{background:#536de6;color:#fff;border-bottom-right-radius:4px}.understanding{background:#f8f9ff;border-color:#dce3ff}.understanding h2{color:#445cbe}.tag{font-weight:650}.assistant blockquote{background:#f5f6fb}.assistant code{background:#f3f4f6;color:#45506c}.assistant pre{background:#f7f8fa;border-color:#e2e5ee}.assistant pre code{color:#374151}.assistant th,.assistant td{border-color:#e2e5ee}.assistant th{background:#f4f5f7;color:var(--text)}.assistant a{color:#445cbe}
     textarea,select,input,button{background:#fff;border-color:#dedfe4;color:var(--text)}textarea{background:#fafafa}textarea:focus,select:focus,input:focus{box-shadow:0 0 0 3px #536de620}.composer{display:block;padding:10px 12px 8px;background:#fff;border-top:1px solid var(--line)}.composer textarea{display:block;width:100%;min-height:68px;max-height:180px;border:0;padding:7px 3px;resize:vertical;box-shadow:none!important;background:transparent}.composer textarea:focus{outline:0}.composer-row{display:flex;align-items:center;gap:8px;padding-top:5px}.composer-icon{display:grid;place-items:center;width:30px;min-width:30px;min-height:30px;padding:0;border-radius:50%;font-size:20px;font-weight:400}.composer-hint{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--dim);font-size:11px}#send{display:grid;place-items:center;width:34px;min-width:34px;min-height:34px;padding:0;border-radius:50%;font-size:21px;line-height:1;background:#202124;color:#fff;border-color:#202124}#send:hover{background:#3d3e43}.knowledge-canvas{background:radial-gradient(circle at 46% 45%,#fbfcff 0,#fff 55%,#f7f8fb 100%)}.node-inspector{background:#fcfcfd;border-color:var(--line)}.node-controls input,.node-controls select{background:#fff}.node-list button:hover,.node-list button.selected{background:#eef1ff}
+/* .view-head 70% + .legend 48% 는 118% 다. 그래서 제목이 범례 밑으로
+       들어가 글자가 겹쳐 읽혔다. 범례 폭을 재고 제목은 그 나머지만 쓴다. */
+    #knowledge-canvas .legend{max-width:150px}#knowledge-canvas .view-head{max-width:calc(100% - 176px)}
+    /* 머리말은 그래프 위에 얹힌 딱지다. 줄바꿈을 허용하면 폭이 좁아진
+       만큼 아래로 자라 점과 이름을 덮는다. 한 줄로 두고 넘치면 자른다.
+       자가학습 판만은 글 흐름대로 쌓이므로 그대로 접히게 둔다. */
+    .view-title,.view-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #growth-view .view-title,#growth-view .view-sub{overflow:visible;white-space:normal}
+    /* 노트북 폭에서는 이 판의 그림칸이 300px 남짓이라, 범례 150px 을 빼면
+       제목에 '선택된 지식 그래…' 밖에 안 남는다. 그때는 범례를 접는다 —
+       색 뜻은 노드 상세에서 다시 읽을 수 있다. */
+    @media(max-width:1440px){#knowledge-canvas .legend{display:none}#knowledge-canvas .view-head{max-width:calc(100% - 26px)}}
+    /* 대화 칸 440px 이 고정이라, 1100px 짜리 노트북에서는 오른쪽 칸이
+       390px 로 줄고 그중 280px 을 노드 상세가 가져가 그림칸이 110px 만
+       남았다 — 그래프가 콩알만 해지고 단추가 서로 겹쳤다. 이 폭부터는
+       대화 칸도 같이 줄이고 상세 칸을 좁힌다. */
+    @media(max-width:1280px){.workspace{grid-template-columns:190px minmax(320px,1fr) minmax(340px,1.15fr)}
+      .knowledge-grid{grid-template-columns:minmax(0,1fr) 230px}.node-inspector{padding:9px 8px}}
     .graph-actions{position:absolute;right:12px;bottom:29px;z-index:3;display:flex;align-items:center;gap:5px;padding:4px;background:#ffffffdf;border:1px solid #e5e7ed;border-radius:9px;backdrop-filter:blur(8px)}.graph-actions button{min-height:28px;padding:3px 7px;font-size:11px}.graph-actions label{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--muted);white-space:nowrap}.graph-actions input{accent-color:var(--blue)}
       /* 이 패널만 글 흐름대로 쌓는다. 다른 뷰는 SVG 한 장 위에 머리말을
        절대배치로 얹는 꼴인데, 여기는 단추와 표가 같이 있어서 겹친다. */
@@ -85,8 +108,11 @@
        0px 로 접히는데 차트는 height:150px 라 밖으로 넘쳐서 아래 자취를
        덮어 버렸다 — 글이 잘려 보이던 것이 이것이다. 이 패널은 스스로
        스크롤하므로 1fr 로 늘릴 이유가 없다. */
+    /* 높이는 부모 격자 줄이 정한다. max-height 로 또 묶으면 vh 가 0 인
+       환경(숨은 창·인쇄)에서 0 으로 접혀 패널이 통째로 사라진다. */
     #growth-view { display:grid; grid-template-rows:repeat(6,auto);
-                   align-content:start; gap:6px; padding:11px 13px; overflow:auto }
+                   align-content:start; gap:6px; padding:11px 13px; overflow:auto;
+                   min-height:0 }
     #growth-view .view-head { position:static; max-width:none; pointer-events:auto }
     #growth-chart { height:150px; min-height:150px }
     /* 기본 .trace 는 한 줄짜리 꼬리말이라 nowrap + ellipsis + 절대배치다.
@@ -103,6 +129,18 @@
     @keyframes kgDraw { to { stroke-dashoffset:0 } }
     /* 테마 변수를 쓴다. 처음엔 어두운 값을 박아 넣었는데 밝은 테마에서
        글자색만 어두운 채로 남아 숫자가 배경에 묻혔다. */
+    /* 자가학습은 늘 보고 있을 것이 아니다. 접으면 머리말 한 줄만 남고
+       그만큼 위의 그래프 판들이 커진다. 접힌 상태는 브라우저가 기억한다. */
+    .panel-toggle { margin-left:8px; background:transparent; color:var(--muted);
+                    border:1px solid var(--line); border-radius:6px; padding:1px 7px;
+                    font-size:10.5px; font-weight:600; cursor:pointer; font-family:inherit }
+    .panel-toggle:hover { color:var(--text) }
+    /* 접으면 부모 격자에서 그 줄을 줄여야 한다. 자식만 숨기면 부모가
+       잡아 둔 자리는 그대로라 위 판들이 안 커진다. */
+    .visuals.자가학습접힘 { grid-template-rows:minmax(280px,1.2fr) minmax(250px,1.3fr) minmax(150px,.7fr) auto }
+    #growth-view.접힘 { grid-template-rows:auto; overflow:hidden; max-height:none }
+    #growth-view.접힘 > :not(.view-head) { display:none }
+    #growth-view.접힘 .view-sub { display:none }
     .growth-bar { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:10px 0 4px }
     .growth-bar label { display:inline-flex; align-items:center; gap:6px; color:var(--muted); font-size:12.5px }
     .growth-bar input[type=number] { width:70px; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:6px; padding:4px 6px; font:inherit }
@@ -119,6 +157,12 @@
     .growth-chip { display:inline-block; padding:1px 7px; border:1px solid var(--line); border-radius:99px; font-size:11.5px; color:var(--muted); margin:2px 4px 2px 0 }
     .growth-legend { display:flex; gap:14px; align-items:center; color:var(--muted); font-size:11.5px; padding:2px 0 }
     .growth-legend i { display:inline-block; width:14px; height:2.5px; border-radius:2px; margin-right:5px; vertical-align:middle }
+    /* 좁은 화면 규칙은 밝은 표면 규칙 뒤에 와야 한다. 앞에 두었더니
+       같은 특정도의 뒤 규칙(main·.workspace)이 이겨서, 900px 아래에서도
+       3열 격자가 그대로 남아 오른쪽 칸이 50px 로 찌그러졌다. */
+    @media(max-width:900px){main{width:min(100% - 14px,760px);height:calc(100vh - 14px);margin:7px auto}header{display:block}.workspace{grid-template-columns:1fr;grid-template-rows:118px minmax(300px,.9fr) minmax(0,1.1fr);min-height:0}
+      .conversation-sidebar{min-height:0}.conversation-list{display:flex;gap:5px;overflow:auto}.conversation-group{min-width:145px}.conversation-group h3{margin:2px 0}.conversation-sidebar .conversation-create{display:none}
+      .chat-card{height:auto}.visuals{grid-template-rows:220px 400px 150px 300px}.visuals.자가학습접힘{grid-template-rows:220px 400px 150px auto}.legend{display:none}.knowledge-grid{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 145px}.node-inspector{border-left:0;border-top:1px solid var(--line);grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr}.node-controls{grid-column:1}.node-list{grid-column:1}.node-detail{grid-column:2;grid-row:1 / span 2;border-top:0;border-left:1px solid var(--line);padding-left:10px}}
 </style>
 </head>
 <body>
@@ -170,11 +214,13 @@
       </div>
       <div class="view" id="dialogue-view">
         <div class="view-head"><div class="view-title">세션 문맥 — 입력 이해 이력</div><div class="view-sub">현재 브라우저 탭에서만 이전 주제를 참조합니다.</div></div>
-        <svg class="graph-svg" id="dialogue" role="img" aria-label="세션 입력 이력"></svg><div class="trace" id="dialogue-trace">아직 입력 이력이 없습니다.</div>
+        <svg class="graph-svg" id="dialogue" role="img" aria-label="세션 입력 이력"></svg><div class="graph-actions" aria-label="문맥 보기"><button type="button" id="dialogue-fit">맞춤</button><label><input type="checkbox" id="dialogue-3d" checked>3D</label><label><input type="checkbox" id="dialogue-spin">회전</label></div><div class="trace" id="dialogue-trace">아직 입력 이력이 없습니다.</div>
       </div>
       <div class="view" id="growth-view">
         <div class="view-head">
-          <div class="view-title">자가학습 — 스스로 늘린 지식</div>
+          <div class="view-title">자가학습 — 스스로 늘린 지식
+            <button type="button" id="growth-toggle" class="panel-toggle"
+                    aria-expanded="true" title="접었다 폈다">접기</button></div>
           <div class="view-sub">사전에서 캐고 짓고, 남의 답을 뺏는 것만 골라 버린 뒤 들인다. 버린 것도 같이 보여준다 — 이 고리가 하는 일의 절반은 버리는 것이다.</div>
         </div>
         <div class="growth-bar">
@@ -253,8 +299,8 @@ async function analyzeDocument(){const input=$('document-file'),file=input.files
 function showPlan(plan){const box=message('assistant',planMarkdown(plan),'승인 전에는 실행하지 않습니다.',true);if(!(plan.actions||[]).length)return;const controls=document.createElement('div');controls.style.cssText='display:flex;gap:7px;flex-wrap:wrap;margin-top:10px';
   const add=(label,ids,direct=false)=>{const b=document.createElement('button');b.textContent=label;b.onclick=()=>approvePlan(plan,ids,direct);controls.appendChild(b)};
   if(plan.mode==='all_steps'){for(const a of plan.actions)add(`${a.label} 승인`,[a.id],a.requires_direct_approval)}else{const safe=plan.actions.filter(a=>!a.requires_direct_approval);if(safe.length)add('계획 승인 후 실행',safe.map(a=>a.id));for(const a of plan.actions.filter(a=>a.requires_direct_approval))add(`${a.label} 직전 승인`,[a.id],true)}
-  const reject=document.createElement('button');reject.textContent='계획 거절';reject.onclick=async()=>{await api('/api/reject',{session:understandingSession,plan_id:plan.plan_id,reason:'user_rejected'});message('assistant','계획을 거절했습니다. 아무 행동도 실행하지 않았습니다.')};controls.appendChild(reject);box.appendChild(controls)}
-async function approvePlan(plan,ids,direct){setBusy(true);try{const r=await api('/api/approve',{session:understandingSession,plan_id:plan.plan_id,plan_hash:plan.plan_hash,action_ids:ids,direct});const lines=(r.executed||[]).map(x=>`### ${x.action}\n\n- **상태:** ${x.status}\n\n\`\`\`text\n${x.output||'출력 없음'}\n\`\`\``);message('assistant',`## 실행 기록\n\n${lines.join('\n\n')||'실행한 행동이 없습니다.'}`,'승인된 행동만 실행했습니다.',true);if((r.needs_direct_approval||[]).length)message('assistant','직전 승인이 필요한 행동: '+r.needs_direct_approval.map(x=>x.label).join(', '))}catch(e){message('assistant','실행 오류: '+e.message)}finally{setBusy(false)}}
+  const reject=document.createElement('button');reject.textContent='계획 거절';reject.onclick=async()=>{await api('/api/reject',{session:understandingSession,conversation_id:activeConversationId,plan_id:plan.plan_id,reason:'user_rejected'});message('assistant','계획을 거절했습니다. 아무 행동도 실행하지 않았습니다.')};controls.appendChild(reject);box.appendChild(controls)}
+async function approvePlan(plan,ids,direct){setBusy(true);try{const r=await api('/api/approve',{session:understandingSession,conversation_id:activeConversationId,plan_id:plan.plan_id,plan_hash:plan.plan_hash,action_ids:ids,direct});const lines=(r.executed||[]).map(x=>`### ${x.action}\n\n- **상태:** ${x.status}\n\n\`\`\`text\n${x.output||'출력 없음'}\n\`\`\``);message('assistant',`## 실행 기록\n\n${lines.join('\n\n')||'실행한 행동이 없습니다.'}`,'승인된 행동만 실행했습니다.',true);if((r.needs_direct_approval||[]).length)message('assistant','직전 승인이 필요한 행동: '+r.needs_direct_approval.map(x=>x.label).join(', '))}catch(e){message('assistant','실행 오류: '+e.message)}finally{setBusy(false)}}
 async function api(path,body){const opt=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};
   const r=await fetch(path,opt),data=await r.json();if(!r.ok)throw new Error(data.error||r.statusText);return data}
 function color(kind){return {evidence:'#c79aff',case:'#65748f',concept:'#e7bd60',requirement:'#6ed6a0',goal:'#6ed6a0',irrelevant:'#ff7777'}[kind]||'#65748f'}
@@ -375,14 +421,53 @@ function nodeList(){const list=$('node-list'),query=$('node-search').value.trim(
   if(!found.length){const empty=document.createElement('div');empty.style.padding='8px';empty.style.color='var(--dim)';empty.textContent='일치하는 노드가 없습니다.';list.appendChild(empty);return}
   for(const n of found){const b=document.createElement('button');b.type='button';b.className=n.name===selectedNode?'selected':'';b.textContent=`${n.name} · ${n.kind}`;b.title=(n.examples||[]).join('\n');b.onclick=()=>selectNode(n.name);list.appendChild(b)}}
 function selectNode(name){selectedNode=name;nodeList();nodeDetail();knowledge()}
-function dialogue(){if(!info)return;const svg=$('dialogue'),box=$('dialogue-view'),w=box.clientWidth,h=box.clientHeight;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';if(understandingTurns.length){const shown=understandingTurns.slice(-8);shown.forEach((item,i)=>{const y=shown.length===1?h/2:52+i*(h-100)/(shown.length-1),left={x:w*.13,y},right={x:w*.66,y};svg.appendChild(S('line',{x1:left.x,y1:y,x2:right.x,y2:y,stroke:'#4b6085','stroke-width':2}),S('circle',{cx:left.x,cy:y,r:6,fill:'#76a4ff'}),S('circle',{cx:right.x,cy:y,r:7,fill:'#e7bd60'}));const a=S('text',{x:left.x+10,y:y+4,fill:'#edf2ff','font-size':10});a.textContent=cut(item.raw,28);svg.appendChild(a);const b=S('text',{x:right.x+11,y:y+4,fill:'#edf2ff','font-size':10,'font-weight':700});b.textContent=item.primary;svg.appendChild(b)});$('dialogue-trace').textContent=`이 탭의 입력 ${understandingTurns.length}건 · 이전 주제는 이 이력에서만 참조`;return}$('dialogue-trace').textContent='아직 입력 이력이 없습니다. 이 탭의 이전 입력만 문맥 후보가 됩니다.';return;const hist=info.dialogue||[];
-  if(info.multi_route){const segments=info.route?.segments||[],goal={x:w*.90,y:h/2};segments.forEach((item,i)=>{const y=segments.length===1?h/2:55+i*(h-100)/(segments.length-1),q={x:w*.12,y},kg={x:w*.56,y};svg.appendChild(S('line',{x1:q.x,y1:y,x2:kg.x,y2:y,stroke:'#76a4ff','stroke-width':2}),S('line',{x1:kg.x,y1:y,x2:goal.x,y2:goal.y,stroke:'#6ed6a0','stroke-width':2}),S('circle',{cx:q.x,cy:y,r:6,fill:'#76a4ff'}),S('circle',{cx:kg.x,cy:y,r:7,fill:'#e7bd60'}));const qt=S('text',{x:q.x+10,y:y+4,fill:'#edf2ff','font-size':10});qt.textContent=item.question;svg.appendChild(qt);const kt=S('text',{x:kg.x+11,y:y+4,fill:'#edf2ff','font-size':10,'font-weight':700});kt.textContent=cut(item.selected.replace('graphs/',''),22);svg.appendChild(kt)});svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#6ed6a0'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10,'text-anchor':'middle','font-weight':700});gt.textContent='다중KG응답완료';svg.appendChild(gt);$('dialogue-trace').textContent=`질문 대목 ${segments.length}개 · KG ${info.routed_graphs.length}개를 함께 사용`;return}
-  if(info.self_learning){const goal={x:w*.90,y:h/2};for(let i=0;i<hist.length;i++){const item=hist[i],y=hist.length===1?h/2:58+i*(h-100)/(hist.length-1),q={x:w*.12,y},c={x:w*.51,y};svg.appendChild(S('line',{x1:q.x,y1:y,x2:c.x,y2:y,stroke:'#4b6085','stroke-width':2}),S('line',{x1:c.x,y1:y,x2:goal.x,y2:goal.y,stroke:'#6ed6a0','stroke-width':2}));
-      [[q,item.question,'#76a4ff'],[c,item.claim||'지식부족',item.claim?'#e7bd60':'#ff7777']].forEach(([p,t,col])=>{svg.appendChild(S('circle',{cx:p.x,cy:p.y,r:6,fill:col}));const tx=S('text',{x:p.x+10,y:p.y+4,fill:'#edf2ff','font-size':10.5});tx.textContent=t;svg.appendChild(tx)});const sc=S('text',{x:(c.x+goal.x)/2,y:y-7,fill:'#91a0bd','font-size':9.5,'text-anchor':'middle'});sc.textContent=`출처 ${item.sources?.length||0}곳${item.learned?' · 새 학습':''}`;svg.appendChild(sc)}
-    svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#6ed6a0'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10.5,'text-anchor':'middle','font-weight':700});gt.textContent=info.graph.goal;svg.appendChild(gt);$('dialogue-trace').textContent=hist.length?`${hist.length}턴 · 마지막 ${hist.at(-1).verdict} · overlay 채택 ${info.learned_records}건`:'아직 대화가 없습니다.';return}
-  const state=info.session||{},req=info.graph.requirements||[],secured=state.secured||{},goal={x:w*.88,y:h/2};req.forEach((name,i)=>{const y=req.length===1?h/2:55+i*(h-100)/(req.length-1),done=name in secured,p={x:w*.57,y};svg.appendChild(S('line',{x1:p.x,y1:y,x2:goal.x,y2:goal.y,stroke:done?'#6ed6a0':'#2b3852','stroke-width':done?2:1}));
-    if(done){const e={x:w*.16,y};svg.appendChild(S('line',{x1:e.x,y1:y,x2:p.x,y2:y,stroke:'#c79aff','stroke-width':2}),S('circle',{cx:e.x,cy:y,r:6,fill:'#c79aff'}));const et=S('text',{x:e.x+10,y:y+4,fill:'#91a0bd','font-size':10});et.textContent=cut(secured[name],15);svg.appendChild(et)}svg.appendChild(S('circle',{cx:p.x,cy:y,r:6,fill:done?'#6ed6a0':'#53617b'}));const t=S('text',{x:p.x+10,y:y+4,fill:done?'#edf2ff':'#91a0bd','font-size':10});t.textContent=cut(name,18);svg.appendChild(t)});
-  svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:state.result==='성립'?'#6ed6a0':'#53617b'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10.5,'text-anchor':'middle','font-weight':700});gt.textContent=info.graph.goal;svg.appendChild(gt);$('dialogue-trace').textContent=`${state.turn||0}턴 · 요건 ${Object.keys(secured).length}/${req.length} 확보${state.result?' · 결과 '+state.result:''}`}
+// 세션 문맥도 다른 판처럼 돌린다. 평평한 목록이면 순서만 보이는데, 이
+// 화면이 보여줘야 할 것은 '무엇이 아직 살아 있나' 다 — 맥락은 창이 아니라
+// 감쇠라서(docs/ko/direction.md), 오래된 것은 사라지지 않고 옅어진다.
+// 나선으로 세우면 최근이 앞에 크게, 오래된 것이 뒤로 작고 흐리게 놓인다.
+const DG3D={enabled:true,spin:false,yaw:.5,pitch:-.25,zoom:1,raf:0};
+function projectDialogue(pt,w,h){if(!DG3D.enabled)return {x:w/2+pt.x,y:h/2+pt.y,s:1,z:0};
+  const cy=Math.cos(DG3D.yaw),sy=Math.sin(DG3D.yaw),x1=pt.x*cy+pt.z*sy,z1=-pt.x*sy+pt.z*cy,
+    cp=Math.cos(DG3D.pitch),sp=Math.sin(DG3D.pitch),y1=pt.y*cp-z1*sp,z2=pt.y*sp+z1*cp,
+    d=Math.max(w,h)*1.6,s=d/Math.max(d+z2,d*.3);
+  return {x:w/2+x1*s*DG3D.zoom,y:h/2+y1*s*DG3D.zoom,s,z:z2}}
+function dialogue(){if(!info)return;const svg=$('dialogue'),box=$('dialogue-view'),
+  w=box.clientWidth,h=box.clientHeight;
+  if(w<20||h<20)return;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
+  const 색=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const 글색=색('--text')||'#202124',흐림=색('--muted')||'#6b7280',
+        줄색=색('--line')||'#e5e5e9',파랑=색('--blue')||'#536de6';
+  const 턴=understandingTurns.slice(-14);
+  if(!턴.length){
+    const t=S('text',{x:w/2,y:h/2,fill:흐림,'font-size':11,'text-anchor':'middle'});
+    t.textContent='아직 입력 이력이 없습니다';svg.appendChild(t);
+    $('dialogue-trace').textContent='이 탭의 이전 입력만 문맥 후보가 됩니다.';return}
+  // 나선. 최근 것이 z 앞쪽(=크게), 오래된 것이 뒤로 물러난다.
+  const R=Math.min(w,h)*.3, 깊이=Math.min(w,h)*.55;
+  const 점=턴.map((_x,i)=>{const u=턴.length<2?1:i/(턴.length-1), a=u*Math.PI*1.6;
+    return {x:Math.cos(a)*R, y:(u-.5)*R*1.1, z:-깊이/2+u*깊이}});
+  const 그림=턴.map((x,i)=>({x,q:projectDialogue(점[i],w,h),i,최근:i===턴.length-1}));
+  그림.sort((a,b)=>b.q.z-a.q.z);
+  for(let k=0;k<그림.length-1;k++){}                 // 선은 아래에서 순서대로
+  const 순서=턴.map((_x,i)=>projectDialogue(점[i],w,h));
+  for(let i=1;i<순서.length;i++)
+    svg.appendChild(S('line',{x1:순서[i-1].x,y1:순서[i-1].y,x2:순서[i].x,y2:순서[i].y,
+      stroke:줄색,'stroke-width':1.2,opacity:.55}));
+  for(const {x,q,i,최근} of 그림){
+    const r=(최근?6:3.6)*(DG3D.enabled?Math.max(.6,Math.min(1.5,q.s)):1);
+    // 옅어짐이 곧 이 화면의 요점이다. 오래될수록 흐리게.
+    const 진하기=Math.max(.22,Math.min(1,(i+1)/턴.length));
+    svg.appendChild(S('circle',{cx:q.x,cy:q.y,r,fill:최근?파랑:흐림,
+      opacity:최근?1:진하기*.85}));
+    if(최근||q.s>1.02||턴.length<=6){
+      const t=S('text',{x:q.x+r+5,y:q.y+3.5,fill:최근?글색:흐림,
+        'font-size':최근?10.5:9,'font-weight':최근?700:450,
+        opacity:최근?1:Math.max(.4,진하기)});
+      t.textContent=cut(x.raw,최근?26:18);svg.appendChild(t)}}
+  $('dialogue-trace').textContent=
+    `이 탭의 입력 ${understandingTurns.length}건 · 최근 ${턴.length}건 · 끌어서 돌릴 수 있습니다`
+    +` · 뒤로 갈수록 옅어지는 것이 맥락 감쇠입니다`;
+}
 function affectTag(affect){if(!affect?.enabled)return '';const labels={care:'돌봄',warmth:'따뜻함',boundary:'경계',focus:'집중',neutral:'중립'};return ` · 정서 표현: ${labels[affect.mode]||'중립'}`}
 function render(){if(info?.graph&&!info.graph.nodes.some(n=>n.name===selectedNode))selectedNode=lastTrace?.winner||info.graph.goal||info.graph.nodes[0]?.name||null;managerView();knowledge();dialogue();nodeList();nodeDetail()}
 function applyInfo(data,announce=false,clearTrace=false){info=data;if(clearTrace){lastTrace=null;selectedNode=null}$('pack').textContent=`${data.pack} · 그래프 ${data.graphs.length}개`;$('pack-mini').textContent=`📦 ${data.pack} · 전체 KG ${data.graphs.length}개`;
@@ -392,15 +477,47 @@ function applyInfo(data,announce=false,clearTrace=false){info=data;if(clearTrace
   const shape=data.graph||{nodes:[],edges:[]},size=`노드 ${shape.nodes.length} · 엣지 ${shape.edges.length}`;
   $('knowledge-title').textContent=data.multi_route?`통합 지식 그래프 — ${data.routed_graphs.length}개 KG · ${size}`:(data.routed_graph?`선택된 지식 그래프 — ${data.routed_graph.replace('graphs/','')} · ${size}`:(data.routing_mode?`선택된 지식 그래프 — 질문 대기 · ${size}`:'지식 그래프 — '+data.selected.replace('graphs/','')+' · '+size));
   $('knowledge-sub').textContent=data.multi_route?'각 KG의 노드는 이름공간으로 분리하고 각 목표를 다중 응답 목표에 연결했습니다.':(data.routed_graph?'노드 매니저가 고른 KG에서 이번 입력의 실제 근거 경로를 표시합니다.':'굵은 선은 실제 근거 경로, 밝은 노드는 이번 턴의 활성 노드입니다.');
+  $('knowledge-title').title=$('knowledge-title').textContent;$('knowledge-sub').title=$('knowledge-sub').textContent;
   if(announce)message('assistant','목표 수행 모드입니다. KG로 답하고, 부족하면 웹 원문을 조사합니다. 파일·명령·overlay 저장은 계획과 승인 뒤에만 실행합니다.');render()}
 function setBusy(v){busy=v;$('send').disabled=v;$('pack-select').disabled=v;$('project-root').disabled=v;$('project-apply').disabled=v;$('document-file').disabled=v;$('document-analyze').disabled=v;$('approval-mode').disabled=v;$('affect-mode').disabled=v;$('graph').disabled=v;$('reset').disabled=v;$('status').style.opacity=v?.65:1}
 async function send(){const q=$('input').value.trim();if(!q||busy)return;if(!activeConversationId){await createConversation();if(!activeConversationId)return}message('user',q);$('input').value='';setBusy(true);try{const r=await api('/api/turn',{input:q,session:understandingSession,conversation_id:activeConversationId,approval_mode:$('approval-mode').value}),result=r.understanding;understandingTurns.push({raw:result.raw,primary:result.overall.primary.kind});message('assistant',understandingMarkdown(result),'목적 분석 완료',true);if(r.phase==='answer'){const mode=r.answer?.trace?.mode,label=(mode==='situation'?'검증된 상태 추론 답변':mode==='dialogue'?'대화 응답':'KG 근거 답변')+affectTag(r.affect);showSemantic(q,r.answer?.semantic_parse,r.answer?.reasoning,r.answer?.verification);message('assistant',r.answer.answer_markdown||r.answer.answer,label,true);lastTrace=r.answer.trace||null;applyInfo(r.answer.info)}else if(r.phase==='research'){showSemantic(q,r.semantic_parse||r.answer?.semantic_parse,r.reasoning||r.answer?.reasoning,r.verification||r.answer?.verification);message('assistant',r.web_answer||'웹 원문에서 답을 만들지 못했습니다.','웹 원문 근거 답변'+affectTag(r.affect),true);lastTrace=r.answer?.trace||null;if(r.answer?.info)applyInfo(r.answer.info);showPlan(r.plan)}else showPlan(r.plan);if(r.conversation){activeConversationId=r.conversation.id;sessionStorage.setItem('nai-active-conversation',activeConversationId);renderConversations(await api('/api/conversations'))}$('status').innerHTML=`<span class="dot">●</span> ${r.phase==='answer'?'답변 완료':r.phase==='research'?'웹 근거 답변 · 저장 승인 대기':'승인 대기 계획'} · 실행 전 승인 필요`;render()}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false);$('input').focus()}}
 async function setAffect(){if(busy)return;const enabled=$('affect-mode').value==='on';setBusy(true);try{const r=await api('/api/affect',{session:understandingSession,enabled});message('assistant',r.affect.note,'이 탭에서만 유지 · KG 판단과 지식은 바뀌지 않음')}catch(e){message('assistant','정서 표현 설정 오류: '+e.message)}finally{setBusy(false)}}
 function setControls(open){$('controls-popover').hidden=!open;$('controls-toggle').setAttribute('aria-expanded',String(open))}$('controls-toggle').onclick=()=>setControls($('controls-popover').hidden);$('controls-close').onclick=()=>setControls(false);$('composer-tools').onclick=()=>setControls(true);
-$('send').onclick=send;$('input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});$('new-general-chat').onclick=()=>createConversation();$('new-project').onclick=createProject;$('document-analyze').onclick=analyzeDocument;$('node-search').oninput=nodeList;$('node-kind').onchange=nodeList;$('graph').onchange=()=>{};$('affect-mode').onchange=setAffect;$('project-apply').onclick=async()=>{const path=$('project-root').value.trim();if(!path)return;setBusy(true);try{const r=await api('/api/project',{session:understandingSession,path,conversation_id:activeConversationId});$('project-root').value=r.project_root;message('assistant',`프로젝트 폴더를 ${r.project_root}로 설정했습니다. 이후 파일 행동은 이 폴더 안에서만 계획됩니다.`)}catch(e){message('assistant','프로젝트 설정 오류: '+e.message)}finally{setBusy(false)}};$('reset').onclick=async()=>{setBusy(true);try{await api('/api/understanding/reset',{session:understandingSession});understandingTurns=[];$('chat').textContent='';message('assistant','이 대화의 입력·승인 문맥을 초기화했습니다. 저장된 대화와 KG·overlay는 변경하지 않습니다.');setControls(false);render()}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false)}};addEventListener('resize',render);
+$('send').onclick=send;$('input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});$('new-general-chat').onclick=()=>createConversation();$('new-project').onclick=createProject;$('document-analyze').onclick=analyzeDocument;$('node-search').oninput=nodeList;$('node-kind').onchange=nodeList;$('graph').onchange=()=>{};$('affect-mode').onchange=setAffect;$('project-apply').onclick=async()=>{const path=$('project-root').value.trim();if(!path)return;setBusy(true);try{const r=await api('/api/project',{session:understandingSession,path,conversation_id:activeConversationId});$('project-root').value=r.project_root;message('assistant',`프로젝트 폴더를 ${r.project_root}로 설정했습니다. 이후 파일 행동은 이 폴더 안에서만 계획됩니다.`)}catch(e){message('assistant','프로젝트 설정 오류: '+e.message)}finally{setBusy(false)}};$('reset').onclick=async()=>{setBusy(true);try{await api('/api/understanding/reset',{session:understandingSession});understandingTurns=[];$('chat').textContent='';message('assistant','이 대화의 입력·승인 문맥을 초기화했습니다. 저장된 대화와 KG·overlay는 변경하지 않습니다.');setControls(false);render()}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false)}};addEventListener('resize',()=>{render();growthChart()});
 // 3D 캔버스 조작: 빈 곳을 끌면 회전, 휠로 확대/축소한다. 노드 클릭은 기존 상세 선택을 보존한다.
 $('knowledge-fit').onclick=()=>{KG3D.yaw=.72;KG3D.pitch=-.30;KG3D.zoom=1;knowledge()};$('knowledge-3d').onchange=e=>{KG3D.enabled=e.target.checked;knowledge()};$('knowledge-spin').onchange=e=>{KG3D.spin=e.target.checked};
 let knowledgeDrag=null;const knowledgeSvg=$('knowledge');knowledgeSvg.addEventListener('pointerdown',e=>{if(e.target!==knowledgeSvg)return;knowledgeDrag={x:e.clientX,y:e.clientY};knowledgeSvg.setPointerCapture(e.pointerId)});knowledgeSvg.addEventListener('pointermove',e=>{if(!knowledgeDrag)return;KG3D.yaw+=(e.clientX-knowledgeDrag.x)*.009;KG3D.pitch=Math.max(-1.1,Math.min(1.1,KG3D.pitch+(e.clientY-knowledgeDrag.y)*.009));knowledgeDrag={x:e.clientX,y:e.clientY};knowledge()});knowledgeSvg.addEventListener('pointerup',e=>{knowledgeDrag=null;try{knowledgeSvg.releasePointerCapture(e.pointerId)}catch{}});knowledgeSvg.addEventListener('wheel',e=>{e.preventDefault();KG3D.zoom=Math.max(.45,Math.min(2.2,KG3D.zoom*(e.deltaY<0?1.12:.89)));knowledge()},{passive:false});
+// 세션 문맥 조작 — 매니저·지식그래프와 같은 자리, 같은 손놀림.
+$('dialogue-fit').onclick=()=>{DG3D.yaw=.5;DG3D.pitch=-.25;DG3D.zoom=1;dialogue()};
+$('dialogue-3d').onchange=e=>{DG3D.enabled=e.target.checked;dialogue()};
+$('dialogue-spin').onchange=e=>{DG3D.spin=e.target.checked};
+let dialogueDrag=null;const dialogueSvg=$('dialogue');
+dialogueSvg.addEventListener('pointerdown',e=>{dialogueDrag={x:e.clientX,y:e.clientY};dialogueSvg.setPointerCapture(e.pointerId)});
+dialogueSvg.addEventListener('pointermove',e=>{if(!dialogueDrag)return;
+  DG3D.yaw+=(e.clientX-dialogueDrag.x)*.009;
+  DG3D.pitch=Math.max(-1.1,Math.min(1.1,DG3D.pitch+(e.clientY-dialogueDrag.y)*.009));
+  dialogueDrag={x:e.clientX,y:e.clientY};dialogue()});
+dialogueSvg.addEventListener('pointerup',e=>{dialogueDrag=null;try{dialogueSvg.releasePointerCapture(e.pointerId)}catch{}});
+dialogueSvg.addEventListener('wheel',e=>{e.preventDefault();
+  DG3D.zoom=Math.max(.45,Math.min(2.4,DG3D.zoom*(e.deltaY<0?1.12:.89)));dialogue()},{passive:false});
+const animateDialogue=()=>{if(DG3D.spin&&DG3D.enabled&&!dialogueDrag){DG3D.yaw+=.004;dialogue()}DG3D.raf=requestAnimationFrame(animateDialogue)};DG3D.raf=requestAnimationFrame(animateDialogue);
+
+// 자가학습 접기. 접히면 위 판들이 그만큼 커진다.
+function 자가학습접기(접을까){
+  const v=$('growth-view'),b=$('growth-toggle');
+  v.classList.toggle('접힘',접을까);
+  if(v.parentElement)v.parentElement.classList.toggle('자가학습접힘',접을까);
+  b.textContent=접을까?'펴기':'접기';
+  b.setAttribute('aria-expanded',String(!접을까));
+  try{localStorage.setItem('nai-growth-collapsed',접을까?'1':'0')}catch{}
+  // 접거나 펴면 칸 크기가 달라진다. 다시 그려야 안 찌그러진다.
+  managerView();dialogue();if(typeof knowledge==='function')knowledge();
+  if(!접을까&&typeof growth==='function')growth();
+}
+$('growth-toggle').onclick=e=>{e.stopPropagation();
+  자가학습접기(!$('growth-view').classList.contains('접힘'))};
+try{if(localStorage.getItem('nai-growth-collapsed')==='1')자가학습접기(true)}catch{}
+
 $('manager-fit').onclick=()=>{MG3D.yaw=.6;MG3D.pitch=-.22;MG3D.zoom=1;managerPick=null;managerView()};
 $('manager-3d').onchange=e=>{MG3D.enabled=e.target.checked;managerView()};
 $('manager-spin').onchange=e=>{MG3D.spin=e.target.checked};
@@ -437,11 +554,15 @@ const animateKnowledge=()=>{if(KG3D.spin&&KG3D.enabled&&!knowledgeDrag){KG3D.yaw
 /* 자가학습 — 자가저작이 바퀴마다 남긴 기록을 읽어 보여준다. 3초마다 다시
    읽으므로 도는 동안 자라는 것이 보인다. 버린 것도 같이 보여준다 —
    늘어난 것만 세면 이 고리가 스스로를 속인다. */
-let growthTimer=null, growthLastDone=null;
+let growthTimer=null, growthLastDone=null, growthRows=[];
 function growthNote(text,kind){const n=$('growth-note');if(!n)return;n.className='growth-note'+(kind?' '+kind:'');n.textContent=text||''}
 function growthChart(rows){
-  const svg=$('growth-chart'),box=$('growth-view');if(!svg||!box)return;
-  const w=box.clientWidth||600,h=170;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
+  const svg=$('growth-chart'),box=$('growth-view');if(!svg||!box)return;growthRows=rows=rows||growthRows;
+  // viewBox 를 제 칸이 아닌 바깥 칸(패딩 포함 845)과 안 맞는 높이 170 으로
+  // 잡아서, 150px 짜리 칸에 맞추느라 통째로 88% 로 줄고 좌우에 빈 띠가
+  // 생겼다. 그리는 판의 실제 크기를 그대로 쓴다.
+  const r=svg.getBoundingClientRect(),w=Math.round(r.width)||box.clientWidth||600,h=Math.round(r.height)||150;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
   const muted=getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()||'#6b7280';
   const line2=getComputedStyle(document.documentElement).getPropertyValue('--line').trim()||'#e5e5e9';
   if(!rows.length){const t=S('text',{x:w/2,y:h/2,fill:muted,'font-size':12,'text-anchor':'middle'});
@@ -519,9 +640,11 @@ async function growth(){
     trace=`마지막 바퀴 ${(last.때||'').replace('T',' ')} — 캔 것 ${last.캠||0} · 지음 ${last.지음||0} · 버림 ${last.버림||0} · 들임 ${last.들임||0}`
       +` · 관문 제자리 ${a}→${b}${last.물림?' · 물림':''}${last.시늉?' · 시늉':''}`;
   }
-  const chips=(last&&last.들인것||[]).map(g=>`<span class="growth-chip">${g.이름||''} · ${g.목표||'?'} · 노드 ${g.노드||0} · 엣지 ${g.엣지||0} · 증거 ${g.증거||0}</span>`).join('');
-  const drops=(last&&last.버린것||[]).map(n=>`<span class="growth-chip">${n}</span>`).join('');
-  $('growth-trace').innerHTML = trace
+  // 그래프 이름은 사전에서 캐 온 남의 글자다. 꺾쇠가 하나 섞이면 이 줄
+  // 아래가 통째로 깨지므로 넣기 전에 막는다.
+  const chips=(last&&last.들인것||[]).map(g=>`<span class="growth-chip">${escapeHtml(g.이름||'')} · ${escapeHtml(g.목표||'?')} · 노드 ${g.노드||0} · 엣지 ${g.엣지||0} · 증거 ${g.증거||0}</span>`).join('');
+  const drops=(last&&last.버린것||[]).map(n=>`<span class="growth-chip">${escapeHtml(n)}</span>`).join('');
+  $('growth-trace').innerHTML = escapeHtml(trace)
     + (chips?`<div style="margin-top:8px"><b>들어온 것</b><br>${chips}</div>`:'')
     + (drops?`<div style="margin-top:8px"><b>관문에서 걸린 것</b><br>${drops}</div>`:'');
 }
