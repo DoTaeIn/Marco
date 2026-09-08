@@ -63,7 +63,8 @@ def _받침(글, 자리):
         return True
     c = 글[i]
     if "가" <= c <= "힣":
-        return (ord(c) - 0xAC00) % 28 != 0
+        import 한글
+        return bool(한글.받침(c))
     if c.isdigit():
         return c in "01367"          # 영 일 삼 육 칠 팔 에 받침이 있다
     return c.lower() not in "aeiouy"  # 로마자는 소리로 가른다

@@ -144,17 +144,8 @@ def _decompose_jamo(text):
     음절로 자르면 '해고' 와 '해구' 가 한 글자도 안 겹친다. 자모로 펴면
     ㅎㅐㄱㅗ / ㅎㅐㄱㅜ 라 대부분이 겹친다. 재보니 분리도가 0.355 -> 0.519
     로 올랐고 오타 '침해/짐해' 가 0.17 -> 0.57 이 됐다."""
-    out = []
-    for c in text:
-        k = ord(c) - 0xAC00
-        if 0 <= k < 11172:
-            out.append(chr(0x1100 + k // 588))
-            out.append(chr(0x1161 + (k % 588) // 28))
-            if k % 28:
-                out.append(chr(0x11A7 + k % 28))
-        else:
-            out.append(c)
-    return "".join(out)
+    import 한글
+    return 한글.자모펴기(text)
 
 
 # 낱말을 가르는 것은 공백만이 아니다. 코드 이름 'judge()' 의 괄호도,
@@ -376,6 +367,31 @@ _영질문틀 = {"what", "when", "how", "where", "who", "why", "which", "whose",
              "tell", "show", "give", "explain", "about", "please", "s",
              "it", "this", "that", "there", "here", "and", "or", "not",
              "with", "from", "at", "by", "as", "if", "so", "have", "has"}
+
+
+def 언어보기(text):
+    """글자만 보고 언어를 가른다. -> "한국어" / "영어" / "섞임"
+
+    토큰도 모델도 안 쓴다. 한글과 라틴 글자 수를 세면 갈린다. 'CCTV 확인하고
+    싶어' 처럼 용어만 영어인 것은 섞임이 아니라 한국어다 — 그 말을 하는
+    사람은 한국어로 답을 기대한다.
+
+    숫자와 기호는 안 센다. 어느 언어에도 속하지 않는다."""
+    한 = len(re.findall(r"[가-힣]", text))
+    영 = len(re.findall(r"[A-Za-z]", text))
+    if not 한 and not 영:
+        return "섞임"
+    if not 영:
+        return "한국어"
+    if not 한:
+        # 낱말 하나짜리 영문은 언어를 못 정한다. 'CCTV' 는 한국어 그래프의
+        # 증거 이름이기도 하고 영어 질문이기도 하다. 문장 꼴이 아니면
+        # 어느 쪽도 밀어내지 않는다.
+        if len(re.findall(r"[A-Za-z][A-Za-z0-9_.\-]*", text)) < 2:
+            return "섞임"
+        return "영어"
+    # 한글이 조금이라도 있으면 한국어로 본다. 용어만 영어인 문장이 대부분이다.
+    return "한국어" if 한 >= 2 else "영어"
 
 
 def 영어껍데기벗기기(text):

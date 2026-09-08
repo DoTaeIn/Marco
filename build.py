@@ -259,11 +259,10 @@ def _관형형벗기기(말):
     m = _관형형.match(말)
     if m:
         return m.group("줄기") or None
-    자리 = ord(말[-1]) - 0xAC00
-    종성 = 자리 % 28
-    if 종성 not in (4, 8):               # ㄴ, ㄹ
+    import 한글
+    if 한글.받침(말) not in ("ㄴ", "ㄹ"):
         return None
-    줄기 = 말[:-1] + chr(0xAC00 + 자리 - 종성)
+    줄기 = 한글.받침떼기(말)
     줄기 = re.sub(r"(?:하|되)$", "", 줄기) or 줄기
     return 줄기 or None
 # 목적어 바로 뒤 낱말이 용언이면 그것이 대상을 직접 부리는 동작이다.
