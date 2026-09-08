@@ -1,343 +1,417 @@
 # Marco
 
-**근거가 없으면 말하지 않는, 성장하는 지식 그래프 AI.**
+**A knowledge-graph engine that selects rather than generates, and says "I don't know"
+when the graph has no answer.**
 
-문장을 지어내지 않습니다. 그래프에 적힌 것을 **고르고**, 사람이 그은 길을 따라
-**나르고**, 없으면 **모른다고** 합니다. 그래서 답마다 근거 경로가 남습니다.
+There is no autoregressive loop. One encoder forward per utterance, then the answer is
+*chosen* from sentences a human wrote into the graph. Values are *carried* along edges a
+human drew. Nothing is invented — which is why every answer leaves an evidence path.
 
 ```
-> 밥값 나눠야 하는데
+> 밥값 나눠야 하는데                      (I need to split the bill)
   정산을 도와드리죠. 얼마 나왔고 몇 분이신지부터 알려 주세요.
-> 12만원 나왔어
+> 12만원 나왔어                          (it came to 120,000 won)
   12만원 니까 얼마 나왔는지 안다. 몇 분이서 나누세요?
-> 3명이야
+> 3명이야                                (three of us)
   3명이야 니까 몇 명인지 안다. 그러면 한 사람 40000원 입니다.
-> 오늘 서울 날씨 어때
-  그건 모르겠습니다.
+> 오늘 서울 날씨 어때                     (what's the weather in Seoul)
+  그건 모르겠습니다.                      (I don't know that)
 ```
 
-`40000` 은 그래프 어디에도 없습니다. 사용자가 말한 두 수를, 사람이 적어 둔
-식(`{원 = 총액 / 인원}`)을 따라 나른 것입니다.
+`40000` appears nowhere in the graph. Two numbers came from the user's utterances; the
+formula `{원 = 총액 / 인원}` was written by a human. The engine only evaluated it.
 
-[지식그래프 보기](views/지식그래프.html) · [그래프 저작 안내](docs/ko/그래프-저작-프롬프트.md) ·
-[한국어 문서](docs/ko/README.md) · [English](docs/en/README.md)
+[Korean README](docs/ko/README-full.md) · [Graph authoring guide](docs/ko/그래프-저작-프롬프트.md) ·
+[Knowledge graph viewer](views/지식그래프.html)
 
 ---
 
-## 지금 어디까지
+## Measured state
 
-그래프 **145개**, 노드 2,092 · 엣지 2,122 기준으로 잰 값입니다.
+145 graphs · 2,092 nodes · 2,122 edges. All numbers below are from the repository's own
+fixed benchmarks, not estimates.
 
-| | 값 | 뜻 |
+| | Value | Meaning |
 |---|---|---|
-| **갈 데 없는 질문 거절** | **27 / 27** | 모르는 것을 모른다고 한다 |
-| 고른 그래프가 답함 | 64.0% | 안 본 말투 2,018개 기준 |
-| 제 그래프로 감 | 37.0% | 같은 지식이 여러 그래프에 있어 낮게 잡힌다 |
-| 한 턴 | **7.4 ms** | 라우팅 + 판정 + 대사 |
-| 켤 때 | 204 ms | 그래프 145개 색인 |
-| 메모리 | **68 MB** | torch 를 안 올린다 |
-| 코드 | 8,692줄 | engine · encoder · explain · build |
+| **Out-of-domain rejection** | **27 / 27** | Questions no graph covers are refused |
+| Chosen graph answers | 64.0 % | Over 2,018 held-out phrasings |
+| Routes to source graph | 37.0 % | Low because overlapping graphs split the credit |
+| **Turn latency** | **7.4 ms** | Route + judge + render |
+| Cold start | 204 ms | Index 145 graphs from cache |
+| **Resident memory** | **68 MB** | `torch` is never imported |
+| Dependencies | `numpy` | Character encoder needs nothing else |
+| Code | 8,692 lines | `engine` · `encoder` · `explain` · `build` |
 
-같은 일을 하는 LLM은 최소 수 GB에 수백 ms입니다.
+Reproduce:
+
+```bash
+KG_ENCODER=문자 python routing_benchmark.py --답
+KG_ENCODER=문자 python engine.py --regress
+KG_ENCODER=문자 python engine.py --check
+```
 
 ---
 
-## 원리
+## Why it cannot hallucinate
 
-### 1. 생성이 아니라 선택
+Three structural properties, not guardrails.
 
-토큰을 하나씩 뽑는 자기회귀가 없습니다. 한 발화에 인코더 forward 가 한 번 돌고,
-그래프에 적힌 문장 중에서 고릅니다. **없는 말은 나올 수가 없습니다.**
+**1. The answer space is enumerable.** Responses are drawn from `[대사]` templates whose
+slots are filled with sentences already present in the graph. There is no decoder, so
+there is no sampling step at which an unseen string could appear.
 
-### 2. 판정은 다섯 갈래
+**2. "Irrelevant" and "unknown" are different verdicts.** Collapsing them is the classic
+failure mode — a system that says "not relevant" to everything it lacks will confidently
+dismiss valid arguments.
 
-| 판정 | 뜻 |
-|---|---|
-| **인정** | 증거가 주장을 받친다 |
-| **A** | 확신이 모자라 되묻는다 — "혹시 …말씀인가요?" |
-| **B1 · 근거없음** | 주장은 알겠는데 증거가 없다 |
-| **B2** | 딴 얘기다 (무관층이 이겼다 — *적극적* 증거) |
-| **미지** | 아무것도 안 걸렸다 (증거의 *부재*) |
-
-**B2 와 미지를 가르는 것이 이 엔진의 무환각을 지탱합니다.** 둘을 뭉쳐
-"관련 없습니다" 라고 하면, 그래프에 없는 유효한 논증에 대해 거짓말을 하게 됩니다.
-
-### 3. 값은 지어내지 않고 나른다
-
-```
-제친사람순위를안다 {등}                 발화에서 '등' 단위 수를 붙잡는다
-지금순위를안다 {등 <- 제친사람순위를안다}   그 수를 가져온다
-몫을안다 {원 = 총액 / 인원}             적힌 식으로 셈한다
-```
-
-값은 언제나 **사용자 발화**에서 오고, 식은 언제나 **사람이 그래프에** 적습니다.
-엔진이 식을 고르는 순간 지어내기가 되므로, 피연산자가 하나라도 없으면 아무 말도
-하지 않습니다.
-
-### 4. 모르는 말은 맥락으로 되묻고 배운다
-
-```
-> 녹화 화면
-  혹시 「나갈 길이 막혀 있었습니다」는 말씀입니까?
-> 네
-  → graphs/graph.학습.jsonl 에 {"노드": "현장사진", "말": "녹화 화면"}
-```
-
-아직 안 채운 요건에 닿는 증거만 후보로 두면 열 개가 여섯 개로 줍니다. 못 알아들은
-발화의 **91%가 그 후보 안에 있고, 그중 44%는 첫 물음에 맞습니다.** 후보는 그래프가
-그은 엣지가 정하고, 배우는 것은 사람이 "맞다"고 한 뒤입니다.
-
----
-
-## 한 턴이 도는 길
-
-```
-                     사용자 발화
-                          │
-              ┌───────────▼───────────┐
-              │  조각내기 · 언어 판별    │  문장·연결어미로 쪼갬
-              └───────────┬───────────┘  영어면 껍데기를 벗긴 조각도 더함
-                          │
-              ┌───────────▼───────────┐
-              │   라우터 (그래프색인)    │  145개 목차만 상주 (12.7 MB)
-              │   성긴 벡터 · 0.8~4 ms  │  본체는 안 연다
-              └───────────┬───────────┘
-                          │
-             문턱 미만 ────┴──── 문턱 이상
-                  │              │
-            ┌─────▼─────┐  ┌─────▼──────────┐
-            │   미지     │  │ 그래프불러오기   │  최근 2개만 메모리에
-            │ "모르겠다" │  │ (본체는 여기서)  │
-            └───────────┘  └─────┬──────────┘
-                                 │
-                    ┌────────────▼────────────┐
-                    │        judge()          │
-                    │  ① 증거 찾기 (글자 그대로 │  어미 한 글자는 견딤
-                    │     · 개념망으로 넓힘)    │
-                    │  ② 증거 지우고 주장 매칭  │
-                    │  ③ 무관층과 겨룸         │  → B2
-                    │  ④ 근거관계 엣지 읽기     │  발화가 통째로 증거일 때
-                    └────────────┬────────────┘
-                                 │
-                    ┌────────────▼────────────┐
-                    │   세션 (턴을 잇는다)      │
-                    │  · 증거→요건 이분 매칭    │  요건마다 다른 증거
-                    │  · 값 붙잡기 · 나르기·셈  │
-                    │  · 맥락으로 되묻기        │  → A → 배움
-                    └────────────┬────────────┘
-                                 │
-                    ┌────────────▼────────────┐
-                    │   대사만들기             │  [대사] · [물음] · [되물음]
-                    │   조사 고치기            │  받침 보고 은/는·이/가
-                    └────────────┬────────────┘
-                                 ▼
-                               답 + 근거 경로
-```
-
-### 세 층이 따로 논다
-
-이것이 이 엔진이 145개 그래프를 68MB로 도는 이유입니다.
-
-| 층 | 크기 | 언제 |
+| Verdict | Condition | Meaning |
 |---|---|---|
-| **색인** | 12.7 MB | 항상 메모리에. 포함을 안 편다 |
-| **본체** | 그래프당 ~0.5 MB | 고른 것만, 최근 2개 |
-| **파일** | 2~4 KB | 저장장치 |
+| `인정` accept | evidence supports claim | proven |
+| `A` ask-back | `A_MIN ≤ conf < OK_MIN` | "did you mean X?" |
+| `B1` / `근거없음` | claim matched, no evidence | "what are you basing that on?" |
+| `B2` reject | **null-class node scored highest** | *positive* evidence of irrelevance |
+| `미지` unknown | nothing scored above `A_MIN` | *absence* of evidence |
+
+The `[무관]` (null class) section is what makes `B2` possible. Without it a graph cannot
+distinguish "off topic" from "I have no idea", and the engine refuses to ask back at all
+in that case — a document graph with an empty null class will never guess.
+
+**3. Values are transported, never produced.** `{등}` captures a number from the user's
+utterance; `{등 <- other_node}` moves it; `{원 = total / people}` evaluates a formula the
+author wrote. If any operand is missing, nothing is emitted — filling a gap with zero
+would manufacture an answer. Division by zero yields no value rather than infinity. The
+expression grammar is a whitelisted AST walk (`+ - * /`, parentheses, node names,
+literals); `eval` is never called, because a `.kg` file is human-authored data, not
+trusted code.
 
 ---
 
-## 지식 그래프 (`.kg`)
+## Request lifecycle
 
 ```
-역할: 정산 도우미
-목표: 몫을안다
-임계값: 0.50 / 0.60
-이름말: 문장
-전진관계: 확인함, 이어짐        ← 관계 이름은 그래프가 정한다
+                        user utterance
+                              │
+                ┌─────────────▼─────────────┐
+                │  fragment split           │  sentence ends + Korean connective
+                │  language detection       │  endings (-하여, -는데, -면서 …)
+                └─────────────┬─────────────┘  English → also add a de-framed fragment
+                              │
+                ┌─────────────▼─────────────┐
+                │  ROUTER  (graph index)    │  145 tables of contents, always resident
+                │  sparse dot product       │  12.7 MB · 3.7 % non-zero
+                │  0.8 – 4 ms               │  graph bodies are NOT opened here
+                └─────────────┬─────────────┘
+                              │
+              below threshold │ above threshold
+                    ┌─────────┴─────────┐
+                    ▼                   ▼
+              ┌──────────┐   ┌──────────────────┐
+              │  미지     │   │  graph loader    │  LRU, 2 bodies max
+              │ "unknown"│   │  (expands 포함:)  │
+              └──────────┘   └────────┬─────────┘
+                                      │
+                     ┌────────────────▼────────────────┐
+                     │            judge()              │
+                     │  1. find ALL evidence           │  literal, digit- and
+                     │     (concept-network expanded)  │  ending-tolerant
+                     │  2. erase evidence, match claim │
+                     │  3. compete against null class  │  → B2
+                     │  4. read 근거관계 edge           │  when the utterance IS evidence
+                     └────────────────┬────────────────┘
+                                      │
+                     ┌────────────────▼────────────────┐
+                     │       session (multi-turn)      │
+                     │  · bipartite evidence→requirement
+                     │  · capture / carry / compute    │
+                     │  · context-narrowed ask-back    │  → A → learn
+                     └────────────────┬────────────────┘
+                                      │
+                     ┌────────────────▼────────────────┐
+                     │  render: 대사 · 물음 · 되물음     │
+                     │  Korean particle agreement       │  은/는 이/가 을/를 …
+                     └────────────────┬────────────────┘
+                                      ▼
+                            answer + evidence path
+```
+
+### The three-tier memory model
+
+This is why 145 graphs run in 68 MB.
+
+| Tier | Size | Residency |
+|---|---|---|
+| **Index** | 12.7 MB | Always. Does **not** expand `포함:` |
+| **Body** | ~0.5 MB each | Only the graph in use — LRU of 2 |
+| **File** | 2–4 KB | On disk |
+
+Adding one graph re-encodes that graph alone (+9 ms), because the vector cache is keyed
+per graph by a content hash. Deleting one drops it automatically.
+
+---
+
+## The encoder: coverage, not cosine
+
+The default encoder uses **no neural network and no tokenizer** — signed character
+n-gram hashing into 4,096 dimensions, with the two sides built asymmetrically so the dot
+product measures *containment*:
+
+- **contained side** (index lines, node names): weights L1-normalised by their own mass
+- **containing side** (the question): presence only, clipped to ±1 — length does not
+  enter the denominator
+
+So the score answers *"what fraction of this index line appears in the question?"* rather
+than *"how similar are these two strings?"*.
+
+Cosine was measured and rejected: asking `도메인` alone scored 1.000 but
+`엔진은 도메인을 어떻게 다루나` collapsed to 0.211, because the question's own length is
+in the denominator and real questions are always longer than node names. Under coverage
+the positive/negative medians separate to 0.625 / 0.317.
+
+Three guards keep coverage honest:
+
+- **Short index lines cannot win long questions** (< 8 chars, > 2× length ratio). Without
+  it `맞습니다` shares `-습니다` n-grams with `맞붙어 싸웠습니다` at 0.74, and one
+  etiquette graph hijacked 224 questions.
+- **Short questions are also scored in reverse** (≤ 8 chars). A short question has few
+  n-grams and cannot cover a long line; measuring the other direction lifted evidence
+  routing from 68.8 % to 87.9 % at zero cost to rejection.
+- **Digits are masked on both sides.** `2등을 제쳤다` and `5등을 제쳤다` are the same
+  evidence; magnitude is handled separately by numeric conditions.
+
+A neural encoder (`jhgan/ko-sroberta-multitask`) is available and handles unseen
+phrasings better, at 550 ms/turn and 860 MB.
+
+---
+
+## Graph format (`.kg`)
+
+```
+역할: 정산 도우미                      role
+목표: 몫을안다                         goal
+임계값: 0.50 / 0.60                    A_MIN / OK_MIN
+이름말: 문장                           render node names as sentences
+전진관계: 확인함, 이어짐                ← relation NAMES are per-graph
 부정관계: 어긋남
 근거관계: 확인함
 
-[개념]  상태
+[개념]   concepts — states
 몫을안다 {원 = 총액 / 인원}: "한 사람이 얼마 낼지 안다" | "밥값 나눠야 하는데"
 총액 {원}:  "전체 금액을 안다"
 인원 {명}:  "몇 명인지 안다"
 
-[공리]  증거를 안 묻는 사실
+[공리]   axioms — facts needing no evidence
 신고기간은5월@국세청: "종합소득세 신고 기간은 5월입니다"
 
-[사례]  행동·증거
+[사례]   instances — actions and evidence
 *금액들음: "12만원" | "12만원 나왔어" | "12만원인데"
 *인원들음: "3명이야" | "3명입니다" | "세 명이서 먹었어"
 
-[무관]  미끼와 잡담 — 거절의 근거
+[무관]   null class — decoys and small talk; the basis for refusal
 _잡담: "점심 뭐 먹지" | "날씨가 좋네요"
 
-[논증]  ← 여기가 전부다
+[논증]   argument edges ← this is the knowledge
 금액들음 -확인함-> 총액
 인원들음 -확인함-> 인원
 총액 -이어짐-> 몫을안다
 인원 -이어짐-> 몫을안다
 
-[물음]   남은 요건을 통보하지 말고 묻는다
+[개념망] concept network — lexical widening, hyponym -상위-> hypernym
+뺐어요 -상위-> 모았어요
+
+[물음]   ask for a missing requirement instead of announcing it
 인원: 몇 분이서 나누세요?
 
-[되물음] 확신이 모자랄 때
+[되물음] what to say when unsure
 총액: 금액 이야기인가요? 얼마 나왔는지 말씀해 주세요.
 
-[대사]   판정마다 무슨 말을 할지
+[대사]   per-verdict templates
 인정: {ev} 니까 {claim}.
 결론값: 그러면 한 사람 {값} 입니다.
 ```
 
-**엔진이 아는 것은 세 역할뿐이고 이름은 그래프가 정합니다.** `npc_대장장이.kg` 는
-법정 어휘(증명/충족/부정)를 한 글자도 쓰지 않습니다.
+### Relation names are data, not code
 
-| 역할 | 정하는 것 |
+The engine knows exactly **three roles**; every graph names them itself. `npc_대장장이.kg`
+uses no courtroom vocabulary at all.
+
+| Role | Determines |
 |---|---|
-| `근거관계` | 무엇이 **증거**인가 |
-| `전진관계` (목표로) | 무엇이 **요건**인가 — 채워야 이기는 칸 |
-| `전진관계` (개념끼리) | **경로** — 엣지 절반 이상이 여기다 |
-| `부정관계` | 반격과 자책 |
+| `근거관계` | which instance nodes are **evidence** |
+| `전진관계` into the goal | which concepts are **requirements** |
+| `전진관계` between concepts | **reachability** — over half of all edges |
+| `부정관계` | counters and self-defeat |
 
-엣지를 다 지우면 증거도 요건도 0이 되고, 아무것도 안 했는데 "승"이 나옵니다.
-**노드는 이름표이고 엣지가 지식입니다.**
+Delete every edge from a graph and evidence count drops to 0, requirement count drops to
+0, and the session reports a *win* without the user having said anything — there are no
+requirements left to fill. **Nodes are labels; edges are the knowledge.**
+
+Requirements are conjunctive, but multiple edges *into one concept* are disjunctive —
+each alone suffices. Two facts that must both hold have to be two requirements.
+
+### Sharing knowledge across graphs
+
+`포함:` merges another graph's concepts, argument edges and axioms — never its instances,
+which belong to their own case. Relation names are translated by role on import, so a
+graph using `충족` can be included by one using `이어짐`. Seven case files share
+`legal/법리_형법21조.kg` this way.
+
+`python engine.py --dups` finds knowledge duplicated across graphs, deliberately ignoring
+overlap that lives in a null class — that kind is a *boundary*, not redundancy, and
+removing it makes neighbouring graphs steal each other's questions.
 
 ---
 
-## 지능 수준
+## Learning
 
-실제로 돌려 본 값입니다.
+The engine learns exactly one thing, and only with human confirmation: **that a phrase
+denotes an existing node.**
 
-### 되는 것
+```
+> 녹화 화면                                    (recorded footage)
+  혹시 「나갈 길이 막혀 있었습니다」는 말씀입니까?
+> 네                                           (yes)
+  → graphs/graph.학습.jsonl  {"노드": "현장사진", "말": "녹화 화면"}
+```
 
-| 갈래 | 물음 | 답 |
+The interesting part is *when* it asks. Similarity alone never triggers this — an unknown
+phrase shares no characters with anything (`녹화 화면` scores 0.098). Instead the session
+narrows candidates to **evidence that still reaches an unfilled requirement**, turning ten
+candidates into six. Measured over 167 unrecognised utterances: **91 % fall inside that
+narrowed set, and 44 % are its top-ranked member.** Inside a small candidate set the
+question is no longer "what is this?" but "which of these six is it closest to?" — which
+is worth asking aloud.
+
+Learned aliases feed back into the router index (keyed on the learning log's mtime), so a
+phrase learned in one conversation routes correctly in the next.
+
+What it does **not** learn: new nodes, new edges, new graphs. Proposal tools
+(`--dups`, `--bridges`, `--edges`, `--suggest`) emit candidates only; a human decides.
+Choosing edge direction automatically is the point at which a graph would begin asserting
+without grounds.
+
+---
+
+## Capability
+
+Measured behaviour, run against the shipped graphs.
+
+| Class | Prompt | Result |
 |---|---|---|
-| 함정 추론 | 마라톤에서 2등을 추월하면? | **2등** |
-| 함정 추론 | 60명이 60분 걸리는 곡을 120명이 연주하면? | 곡 길이부터 대라 (인원 무관) |
-| 함정 추론 | 세차장이 걸어서 5분 차로 10분인데? | 시간 비교는 세차와 무관 |
-| 계산 | 12만원을 3명이서 나누면? | **40000원** |
-| 맥락 유지 | 여러 턴에 나눠 말해도 | 증거가 쌓여 답까지 간다 |
-| 배움 | 모르는 말 → 되묻기 → "네" | 별칭으로 남는다 |
-| 거절 | 통장 잔액 · 오늘 날씨 | **모르겠습니다** |
-| 영어 | split the bill / 120000 won / 3 people | **Then it is 40000won each.** |
+| Trap reasoning | Overtake 2nd place in a marathon — what place? | **2nd** |
+| Trap reasoning | 60 players take 60 min; how long for 120? | asks for the piece's length (headcount irrelevant) |
+| Trap reasoning | Carwash 5 min on foot, 10 by car — drive? | time comparison is irrelevant to washing a car |
+| Arithmetic | Split 120,000 among 3 | **40,000 each** |
+| Multi-turn | facts given across turns | accumulate to the same answer |
+| Learning | unknown phrase → ask-back → "yes" | stored as an alias |
+| Refusal | bank balance · today's weather | **"I don't know"** |
+| English | split the bill / 120000 won / 3 people | **"Then it is 40000won each."** |
 
-### 다른 계열과 견주면
+### Position relative to other systems
 
-| | 폭 | 추론 | 거절 |
+| | Breadth | Reasoning | Refusal |
 |---|---|---|---|
-| ELIZA · 규칙 챗봇 | 없음 | 없음 | 없음 |
-| 전문가 시스템 | 좁음 | 있음 | 부분 |
-| 검색형 챗봇 | 넓음 | 없음 | 약함 |
-| **Marco** | **좁음 (145개)** | **있음** | **강함 (27/27)** |
-| 현대 LLM | 매우 넓음 | 있음 | **약함** |
+| ELIZA / pattern chatbots | none | none | none |
+| Expert systems (MYCIN-era) | narrow | yes | partial |
+| Retrieval chatbots | broad | none | weak |
+| **Marco** | **narrow (145 domains)** | **yes** | **strong (27/27)** |
+| Modern LLMs | very broad | yes | **weak** |
 
-**"아주 좁은 분야의 정직한 전문가"** 입니다. 145개 분야 안에서는 계산하고 함정을
-거르고 모르면 모른다고 하지만, 그 밖은 통째로 모릅니다. 지식 폭이 근본 격차이고,
-좁혀지려면 사람이 그래프를 그려야 합니다.
+A precise specialist with a small world. Inside its 145 domains it computes, resists
+traps, and refuses cleanly; outside them it knows nothing. Breadth is the fundamental
+gap, and closing it requires humans to draw graphs.
 
-> 위 비교는 각 계열이 하는 일을 놓고 견준 것이지, 같은 문제를 여러 모델에 돌려
-> 잰 값이 아닙니다. 잰 값은 **밖 거절 27/27** 과 위 표의 함정 문제들입니다.
+> This table compares system *classes* by what they do; it is not a head-to-head
+> benchmark. The measured claims are the 27/27 rejection rate and the trap results above.
 
 ---
 
-## 빠르게 해보기
+## Quick start
 
-Python 3.10 이상.
+Python 3.10+.
 
 ```bash
-pip install numpy          # 문자 인코더는 이것만 있으면 된다
+pip install numpy                       # character encoder needs nothing else
 
-# 그래프 하나와 대화. KG_ENCODER=문자 가 기본 설정이다 — 모델을 안 받는다.
-KG_ENCODER=문자 python engine.py graphs/graph_정산_나눠내기.kg
-
-# 라우터를 거쳐 145개 중에서 고르게
-KG_ENCODER=문자 python engine.py --route "밥값 나눠야 하는데"
-
-# 그래프가 쓸 만한지 진단
+KG_ENCODER=문자 python engine.py graphs/graph_정산_나눠내기.kg      # chat with one graph
+KG_ENCODER=문자 python engine.py --route "밥값 나눠야 하는데"        # route across all 145
 KG_ENCODER=문자 python engine.py --diagnose graphs/graph_순위_추월.kg
 
-# 자체 검사 · 회귀 · 라우팅 벤치마크
-KG_ENCODER=문자 python engine.py --check
-KG_ENCODER=문자 python engine.py --regress
+KG_ENCODER=문자 python engine.py --check      # self-check
+KG_ENCODER=문자 python engine.py --regress    # case regression
 KG_ENCODER=문자 python routing_benchmark.py --답
 ```
 
-신경망 인코더(`jhgan/ko-sroberta-multitask`)를 쓰려면 `pip install
-sentence-transformers` 를 더하고 `KG_ENCODER` 를 비웁니다. 안 본 말투를 더 잘
-알아듣지만 한 턴이 7ms 에서 550ms 로, 메모리가 68MB 에서 860MB 로 늘어납니다.
-
-### 그래프를 늘리는 도구
-
-기계는 **후보만 내고 사람이 확인합니다.** 방향을 자동으로 고르는 순간 그래프가
-근거 없이 단언하기 시작합니다.
+Graph-growing tools — all propose, none decide:
 
 ```bash
-python engine.py --dups      # 여러 그래프가 같은 지식을 각자 적은 자리
-python engine.py --bridges   # 그래프끼리 이을 만한 자리 (자석은 상호 확인으로 거름)
-python engine.py --edges     # 원문에서 관계 후보
-python engine.py --suggest   # 원문에서 노드 후보
+python engine.py --dups      # same knowledge written into several graphs
+python engine.py --bridges   # graphs worth linking (magnets filtered by mutual rank)
+python engine.py --edges     # relation candidates from source text
+python engine.py --suggest   # node candidates from source text
 ```
+
+For the neural encoder: `pip install sentence-transformers` and leave `KG_ENCODER` unset.
 
 ---
 
-## 구조
+## Layout
 
 ```text
-바탕
-  encoder.py       문장 → 벡터. 문자 n-gram 포함도(기본)와 신경망 둘 다
-  engine.py        논증·판정·값 나르기·학습·라우터·진단·회귀
-  explain.py       그래프 경로 기반 설명 (문서형 .json 그래프)
-  build.py         문서 → 지식 그래프 저작
-  nai.py           .kg 와 .json 을 같은 API 로 여는 대화 계약
+core
+  encoder.py       text → vector. Character n-gram coverage (default) or neural
+  engine.py        judging · value transport · learning · router · diagnostics
+  explain.py       path-based explanation over document graphs (.json)
+  build.py         document → knowledge graph authoring
+  nai.py           one chat contract over both .kg and .json graphs
 
-자료
-  graphs/*.kg      도메인 그래프 145개
-  legal/*.kg       공유 법리 — 사건 파일 일곱이 포함: 으로 빌려 쓴다
-  cases/사건_*.md  판례 원문과 컴파일 결과
-  styles/          말투. 엔진이 아니라 데이터다
-  docs/ko/         저작 프롬프트와 설계 기록
+data
+  graphs/*.kg      145 domain graphs
+  legal/*.kg       shared legal doctrine, pulled in via 포함:
+  cases/사건_*.md  source judgments and their compiled graphs
+  styles/          phrasing tables — data, not engine
+  docs/ko/         authoring prompts and design records
 
-곁
-  routing_benchmark.py   안 본 말투로 라우팅을 잰다 (고정 시험)
+around
+  routing_benchmark.py   held-out routing benchmark (fixed, reproducible)
   tests/                 pytest
-  views/                 웹 UI · 그래프 시각화
+  views/                 web UI and graph visualisation
 ```
 
 ---
 
-## 설계 원칙
+## Design principles
 
-**지어내지 않는다.** 답은 그래프에 적힌 문장에서 고르고, 값은 발화에서 나르고,
-식과 관계와 되묻는 말은 사람이 적습니다.
+**Never invent.** Answers are selected from authored sentences; values are transported
+from the user's own utterance; formulas, relations and questions are written by humans.
 
-**모르는 것과 딴 얘기를 가른다.** 둘을 뭉치면 그래프에 없는 유효한 논증에 대해
-거짓말을 하게 됩니다.
+**Separate "unknown" from "irrelevant."** Merging them makes the system lie about valid
+arguments it simply does not cover.
 
-**기계는 후보만 낸다.** `--dups` · `--bridges` · `--edges` · `--suggest` 가 모두
-같은 규율입니다. 사람이 확인한 것만 그래프가 됩니다.
+**Machines propose, humans confirm.** Every growth tool emits candidates only.
 
-**엔진을 고치지 않고 분야를 바꾼다.** 관계 이름도, 말투도, 되묻는 말도 그래프와
-데이터에 있습니다.
+**Swap domains without touching the engine.** Relation vocabulary, phrasing, and
+follow-up questions all live in graphs and data files.
 
-**가볍다.** torch 없이 68MB에서 한 턴 7ms. 이것이 포기할 수 없는 값입니다.
+**Stay light.** 68 MB, 7 ms per turn, no `torch`. This constraint is not negotiable.
 
 ---
 
-## 한계
+## Limits
 
-- **지식 폭이 좁다.** 145개 그래프가 덮는 만큼만 압니다. 사람이 그려야 늘어납니다.
-- **안 본 말투를 못 알아듣는 일이 있다.** 제 그래프로 가는 비율이 37%입니다. 절반
-  이상은 "겹치는 그래프 중 다른 쪽이 이긴" 경우라 틀렸다고 보기 어렵지만, 순수하게
-  못 알아듣는 자리도 남아 있습니다.
-- **영어는 절반이다.** 영어 용어가 든 질문은 한국어 그래프로 가지만 답은 한국어로
-  나옵니다. 영어로 묻고 영어로 답하려면 그 분야의 영어 그래프가 있어야 합니다.
-- **새 개념·새 엣지를 스스로 못 만든다.** 배우는 것은 "이 말이 그 노드다" 까지입니다.
-- **한글 수를 못 읽는다.** `세 명` 은 값이 안 잡힙니다. 추측하지 않기 때문입니다.
+- **Narrow knowledge.** 145 graphs is the whole world. Growth is human-paced.
+- **Unseen phrasings.** 37 % route to their source graph; much of the remainder is
+  defensible overlap between related graphs, but genuine misses remain.
+- **English is half-supported.** Questions containing English terms reach Korean graphs,
+  but answers come back in Korean. Answering in English requires an English graph for
+  that domain.
+- **No structural learning.** It learns aliases, not nodes or edges.
+- **Korean numerals are not parsed.** `세 명` yields no value — it does not guess.
 
-### 접은 길 (재보고 기록한 것)
+### Paths measured and abandoned
 
-- **국어사전 유의어 12,206쌍** — 효과 0. 명사 위주이고 뜻이 안 갈립니다.
-- **IDF 가중** — 같은 거절률에서 +0.9%p. 문턱을 다시 맞추는 값을 못 냅니다.
-- **한자 공유로 유의어 찾기** — 정밀도 5~10%.
-- **낱말 치환만으로 언어 넘기** — `smoke 발견했어요` 는 잡지만 `I found smoke` 는
-  못 잡습니다. 틀이 한국어로 남습니다.
+- **Dictionary synonyms** (12,206 pairs extracted from the Korean standard dictionary) —
+  zero improvement. Mostly nouns, senses not disambiguated.
+- **IDF weighting** — +0.9 pp at matched rejection rate; not worth recalibrating for.
+- **Shared Hanja as a synonym signal** — 5–10 % precision.
+- **Word substitution as translation** — catches `smoke 발견했어요` but not
+  `I found smoke`. The syntactic frame stays Korean.
