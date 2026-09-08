@@ -13,12 +13,14 @@ import base64
 from collections import deque
 import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import io
 import json
 import os
 from pathlib import Path
 import re
 import sys
 import threading
+import time
 from urllib.parse import urlparse
 
 os.environ.setdefault("KG_ENCODER", "문자")
@@ -26,6 +28,7 @@ os.environ.setdefault("KG_ENCODER", "문자")
 sys.path.insert(0, str(루트))
 
 import engine  # noqa: E402
+import 자가저작  # noqa: E402
 import affect_state  # noqa: E402
 import conversation_store  # noqa: E402
 import document_kg  # noqa: E402
@@ -113,6 +116,8 @@ def 매니저얼개(manager):
     nodes = [{"name": goal, "kind": "goal", "examples": ["질문에 알맞은 KG 선택"],
               "source": "kgpack manifest"}]
     nodes += [{"name": n["path"], "kind": "concept",
+               # 자가학습이 방금 들인 것. 화면에서 뿅 튀어 붙게 표시만 한다.
+               "new": bool(n.get("new")),
                # 매니저 3D 화면은 그래프 이름과 선택 경로만 쓴다. 모든 별칭을
                # 매 턴 JSON에 싣는 것은 수십 개 KG에서 응답을 수 MB로 키워 UI를
                # 멈추게 한다. 실제 선택된 그래프의 예시는 아래 ``graph``에만 둔다.
@@ -864,6 +869,126 @@ class 앱상태:
             return result
 
 
+def 매니저에붙이기(app, 이름들):
+    """자가학습이 들인 그래프를 매니저 그래프에 노드로 붙인다. -> 붙은 수
+
+    매니저는 pack manifest 에서 오는데 pack 은 읽기 전용이라, 새로 지은
+    그래프는 그 목록에 없다. 붙이지 않으면 화면의 '전체 지식 그래프' 가
+    218개에서 멈춘 채 실제로는 244개인 상태가 된다 — 보여주는 것이 곧
+    거짓이 되는 자리다.
+
+    붙이면 라우터도 그 그래프를 후보로 본다. 매니저 색인을 같이 다시
+    짓는 이유다."""
+    붙임 = 0
+    with app.lock:
+        있는것 = {n["path"] for n in app.manager.get("nodes", [])}
+        for 이름 in 이름들:
+            길 = "graphs/" + 이름 if not 이름.startswith("graphs/") else 이름
+            if 길 in 있는것:
+                continue
+            try:
+                g = engine.색인용읽기(str(루트 / 길))
+            except Exception:
+                continue
+            app.manager.setdefault("nodes", []).append(
+                {"path": 길, "role": g.get("역할") or "", "goal": g.get("목표") or "",
+                 "examples": [], "new": True})
+            app.manager.setdefault("edges", []).append([길, "후보", "그래프고르기"])
+            붙임 += 1
+        if 붙임:
+            app.manager_index = 매니저색인(app.manager)
+    return 붙임
+
+
+def 매니저에서떼기(app, 이름들):
+    """물린 그래프를 매니저에서 뺀다. 안 빼면 없는 그래프를 후보로 든다."""
+    뺀것 = {("graphs/" + n if not n.startswith("graphs/") else n) for n in 이름들}
+    with app.lock:
+        앞 = len(app.manager.get("nodes", []))
+        app.manager["nodes"] = [n for n in app.manager.get("nodes", [])
+                                if n["path"] not in 뺀것]
+        app.manager["edges"] = [e for e in app.manager.get("edges", [])
+                                if e[0] not in 뺀것]
+        if len(app.manager["nodes"]) != 앞:
+            app.manager_index = 매니저색인(app.manager)
+        return 앞 - len(app.manager["nodes"])
+
+
+# ── 물음 기록 ──────────────────────────────────────────────────────────
+# 물음기록.jsonl 은 자가학습(자가학습.py)이 '무엇을 틀렸나' 를 재는 재료다.
+# 예전에는 views/물음판.py 만 이 파일을 썼는데, 화면을 이쪽으로 모으면서
+# 그 판을 지웠다. 수집기를 같이 지우면 자가학습이 새 물음을 못 받는다.
+물음기록터 = 루트 / "물음기록.jsonl"
+
+
+def 물음적기(질문, 답, 판정, 그래프, 밀리초, 쓴이="사람"):
+    """물어본 것을 한 줄씩 덧붙인다. 통째로 다시 쓰지 않으니 중간에 꺼도 남는다.
+
+    쓴이를 같이 적는다. 기계가 쓴 질문은 코퍼스를 이미 읽고 쓴 것이라 어휘가
+    새서, 사람 것과 같은 통에 넣되 섞이지는 않게 줄마다 남긴다."""
+    try:
+        줄 = {"질문": 질문, "판정": 판정, "답": 답 or "", "그래프": 그래프,
+             "밀리초": 밀리초, "인코더": engine.MODEL, "쓴이": 쓴이,
+             "때": time.strftime("%Y-%m-%d %H:%M:%S")}
+        with io.open(str(물음기록터), "a", encoding="utf-8") as f:
+            f.write(json.dumps(줄, ensure_ascii=False) + "\n")
+    except OSError:
+        pass                            # 못 적어도 대화는 되어야 한다
+
+
+# ── 자가학습 ───────────────────────────────────────────────────────────
+# 한 바퀴가 몇 분이라 요청 안에서 돌리면 브라우저가 먼저 끊는다. 딴 실에서
+# 돌리고 화면은 상태만 물어본다. 도는 바퀴는 하나뿐이다 — 둘이 겹치면
+# 후보터를 서로 밟는다.
+_자람 = {"도나": False, "말": "", "탈": None, "끝난것": None}
+_자람자물쇠 = threading.Lock()
+
+
+def 자람상태():
+    바퀴 = 자가저작.바퀴읽기(200)
+    쌓임, 노드, 엣지 = [], 0, 0
+    for x in 바퀴:
+        노드 += x.get("노드", 0)
+        엣지 += x.get("엣지", 0)
+        쌓임.append({"때": x.get("때"), "노드누적": 노드, "엣지누적": 엣지})
+    본데, 표제수, 버린말 = 자가저작.진도읽기()
+    import glob
+    return {"바퀴": 바퀴, "쌓임": 쌓임, "돎": dict(_자람),
+            "그래프수": len(glob.glob(str(루트 / "graphs" / "*.kg"))),
+            "진도": {"본데까지": 본데, "표제수": 표제수, "버린말": len(버린말)},
+            "합": {"노드": 노드, "엣지": 엣지,
+                   "들임": sum(x.get("들임", 0) for x in 바퀴),
+                   "버림": sum(x.get("버림", 0) for x in 바퀴)}}
+
+
+def 자람돌리기(최대=200, 시늉=False):
+    with _자람자물쇠:
+        if _자람["도나"]:
+            return {"ok": False, "why": "이미 도는 중이다"}
+        _자람.update({"도나": True, "말": "캐고 짓고 거르는 중 … (몇 분 걸린다)",
+                     "탈": None, "끝난것": None})
+
+    def 몸():
+        try:
+            칸 = 자가저작.한바퀴(최대, 시늉=시늉)
+            들인것 = [x.get("이름") for x in
+                    ((칸.get("기록") or {}).get("들인것") or []) if x.get("이름")]
+            붙임 = 매니저에붙이기(손.app, 들인것) if 들인것 and 손.app else 0
+            _자람["끝난것"] = dict({k: v for k, v in 칸.items() if k != "기록"},
+                                붙임=붙임)
+            _자람["말"] = "끝났다"
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            _자람["탈"] = "%s: %s" % (type(e).__name__, e)
+            _자람["말"] = "탈이 났다"
+        finally:
+            _자람["도나"] = False
+
+    threading.Thread(target=몸, daemon=True).start()
+    return {"ok": True}
+
+
 class 손(BaseHTTPRequestHandler):
     app = None
 
@@ -890,6 +1015,8 @@ class 손(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path).path
+        if path == "/api/growth":
+            return self._json(자람상태())
         if path in ("/", "/index.html"):
             html = (Path(__file__).with_name("kgpack_ui.html")).read_bytes()
             return self._send(html, "text/html")
@@ -903,12 +1030,29 @@ class 손(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         try:
             body = self._body()
+            if path == "/api/growth/run":
+                return self._json(자람돌리기(int(body.get("max") or 200),
+                                          bool(body.get("dry"))))
+            if path == "/api/growth/revert":
+                if _자람["도나"]:
+                    return self._json({"ok": False, "why": "도는 중이다"})
+                지움 = 자가저작.물리다()
+                매니저에서떼기(self.app, 지움)
+                return self._json({"ok": True, "removed": len(지움)})
             if path == "/api/select":
                 return self._json(self.app.select(body.get("graph")))
             if path == "/api/reset":
                 return self._json(self.app.reset())
             if path == "/api/ask":
-                return self._json(self.app.ask(body.get("question")))
+                _질문 = body.get("question")
+                _시작 = time.time()
+                답 = self.app.ask(_질문)
+                물음적기(_질문, 답.get("answer"),
+                       (답.get("trace") or {}).get("verdict"),
+                       (답.get("route") or {}).get("selected") or 답.get("graph"),
+                       round(1000 * (time.time() - _시작)),
+                       쓴이=body.get("writer") or "사람")
+                return self._json(답)
             if path == "/api/understand":
                 return self._json(self.app.understand(body.get("input"), body.get("session")))
             if path == "/api/understanding/reset":
