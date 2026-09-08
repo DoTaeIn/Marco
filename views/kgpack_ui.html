@@ -44,7 +44,7 @@
     .composer { display:grid; grid-template-columns:1fr auto; gap:8px; padding:11px; border-top:1px solid var(--line) }
     textarea { resize:vertical; min-height:76px; max-height:260px; padding:10px; outline:none } textarea:focus,select:focus,input:focus { border-color:var(--blue) }
     #send { min-width:76px } #status { padding:0 12px 10px; color:var(--muted); font-size:11px } .dot { color:var(--green) }
-    .visuals { display:grid; grid-template-rows:minmax(150px,.58fr) minmax(250px,1.25fr) minmax(140px,.72fr) minmax(230px,.95fr); gap:12px; min-width:0; min-height:0; }
+    .visuals { display:grid; grid-template-rows:minmax(280px,1.05fr) minmax(250px,1.15fr) minmax(120px,.5fr) minmax(230px,.9fr); gap:12px; min-width:0; min-height:0; }
     .view { position:relative; min-width:0; min-height:0; }
     .view-head { position:absolute; z-index:2; left:13px; top:10px; pointer-events:none; max-width:70%; }
     .view-title { font-weight:750; font-size:12px } .view-sub { color:var(--muted); font-size:10.5px; margin-top:1px }
@@ -135,7 +135,7 @@
     <section class="visuals">
       <div class="view" id="manager-view">
         <div class="view-head"><div class="view-title">노드 매니저 — 전체 지식 그래프</div><div class="view-sub">입력의 목적과 주제를 바탕으로 담당 KG를 고르고, 선택 결과를 강조합니다.</div></div>
-        <svg class="graph-svg" id="manager" role="img" aria-label="입력 이해 안내"></svg><div class="trace" id="manager-trace">입력의 의도·주제·제약·문맥만 분석합니다.</div>
+        <svg class="graph-svg" id="manager" role="img" aria-label="입력 이해 안내"></svg><div class="graph-actions" aria-label="매니저 보기"><button type="button" id="manager-fit">맞춤</button><label><input type="checkbox" id="manager-3d" checked>3D</label><label><input type="checkbox" id="manager-spin">회전</label></div><div class="trace" id="manager-trace">끌어서 돌리고 휠로 확대할 수 있습니다.</div>
       </div>
       <div class="view" id="knowledge-view">
         <div class="knowledge-grid">
@@ -247,24 +247,84 @@ function layout(nodes,w,h){const lanes={evidence:.10,case:.25,concept:.48,requir
 // z축만 더해 관계가 겹친 그래프도 돌려 볼 수 있게 한다.
 const KG3D={enabled:true,spin:false,yaw:.72,pitch:-.30,zoom:1,raf:0};
 function projectKnowledge(point,w,h){if(!KG3D.enabled)return {x:point.x,y:point.y,s:1,z:0};const dx=point.x-w/2,dy=point.y-h/2,dz=point.z||0,cy=Math.cos(KG3D.yaw),sy=Math.sin(KG3D.yaw),x1=dx*cy+dz*sy,z1=-dx*sy+dz*cy,cp=Math.cos(KG3D.pitch),sp=Math.sin(KG3D.pitch),y1=dy*cp-z1*sp,z2=dy*sp+z1*cp,d=Math.max(w,h)*1.45,s=d/Math.max(d+z2,d*.3);return {x:w/2+x1*s*KG3D.zoom,y:h/2+y1*s*KG3D.zoom,s,z:z2}}
-function managerView(){if(!info?.manager_graph)return;const svg=$('manager'),box=$('manager-view'),w=box.clientWidth,h=box.clientHeight;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
-  const route=lastTrace?.route||info.route||{},selectedAll=new Set(route.selected_all||(route.selected?[route.selected]:[])),candidates=new Map(route.candidates||[]),goalName=info.manager_graph.goal,nodes=info.manager_graph.nodes.filter(n=>n.name!==goalName),cols=Math.min(4,Math.max(1,Math.ceil(Math.sqrt(nodes.length)))),rows=Math.ceil(nodes.length/cols),p=new Map();
-  nodes.forEach((n,i)=>{const col=i%cols,row=Math.floor(i/cols);p.set(n.name,{x:54+col*Math.max(1,(w-190)/(cols-1||1)),y:48+row*Math.max(1,(h-92)/(rows-1||1))})});const goal={x:w-72,y:h/2};
-  for(const n of nodes){const a=p.get(n.name),hit=selectedAll.has(n.name);
-    const ln=S('line',{x1:a.x,y1:a.y,x2:goal.x,y2:goal.y,stroke:n.new?'#6ed6a0':(hit?'#16966d':'#d6d9e1'),'stroke-width':n.new?2.4:(hit?3:1),opacity:hit?.95:.55});
-    if(n.new){ // 뿅 — 목표 쪽에서 이 노드까지 선이 그어진다
-      const L=Math.hypot(a.x-goal.x,a.y-goal.y);
-      ln.setAttribute('stroke-dasharray',L); ln.setAttribute('stroke-dashoffset',L);
-      ln.style.animation='kgDraw .55s ease-out forwards';}
+// 매니저도 지식그래프처럼 돌린다. KG 가 218개인데 격자로 깔면 점이
+// 촘촘해서 하나도 안 보이고 집을 수도 없었다. 구(球) 위에 고르게 뿌리면
+// 같은 넓이에 훨씬 덜 겹치고, 돌리면 뒤에 가린 것이 앞으로 나온다.
+//
+// 피보나치 구를 쓰는 이유. 위도·경도로 깔면 극에서 뭉치는데, 황금각으로
+// 돌려 놓으면 개수와 상관없이 고르다. 218개든 2,000개든 같은 코드다.
+const MG3D={enabled:true,spin:false,yaw:.6,pitch:-.22,zoom:1,raf:0};
+let managerPick=null, managerHover=null;
+function projectManager(pt,w,h){if(!MG3D.enabled)return {x:w/2+pt.x,y:h/2+pt.y,s:1,z:0};
+  const cy=Math.cos(MG3D.yaw),sy=Math.sin(MG3D.yaw),x1=pt.x*cy+pt.z*sy,z1=-pt.x*sy+pt.z*cy,
+    cp=Math.cos(MG3D.pitch),sp=Math.sin(MG3D.pitch),y1=pt.y*cp-z1*sp,z2=pt.y*sp+z1*cp,
+    d=Math.max(w,h)*1.5,s=d/Math.max(d+z2,d*.3);
+  return {x:w/2+x1*s*MG3D.zoom,y:h/2+y1*s*MG3D.zoom,s,z:z2}}
+function managerSphere(n,R){const out=[],golden=Math.PI*(3-Math.sqrt(5));
+  for(let i=0;i<n;i++){const y=n===1?0:1-(i/(n-1))*2,r=Math.sqrt(Math.max(0,1-y*y)),t=golden*i;
+    out.push({x:Math.cos(t)*r*R,y:y*R,z:Math.sin(t)*r*R})}
+  return out}
+function managerView(){if(!info?.manager_graph)return;
+  const svg=$('manager'),box=$('manager-view'),w=box.clientWidth||600,h=box.clientHeight||220;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
+  const route=lastTrace?.route||info.route||{},
+    selectedAll=new Set(route.selected_all||(route.selected?[route.selected]:[])),
+    candidates=new Map(route.candidates||[]),goalName=info.manager_graph.goal,
+    nodes=info.manager_graph.nodes.filter(n=>n.name!==goalName);
+  const R=Math.min(w,h)*(MG3D.enabled?.42:.44),pts=managerSphere(nodes.length,R);
+  const goal=projectManager({x:0,y:0,z:0},w,h);
+  const 그림=nodes.map((n,i)=>{const q=projectManager(pts[i],w,h);
+    return {n,q,hit:selectedAll.has(n.name),pick:managerPick===n.name,fresh:!!n.new}});
+  // 뒤에 있는 것부터 그린다. 안 그러면 앞의 점이 뒤 점에 덮인다.
+  그림.sort((a,b)=>b.q.z-a.q.z);
+  for(const {n,q,hit,fresh,pick} of 그림){
+    const ln=S('line',{x1:q.x,y1:q.y,x2:goal.x,y2:goal.y,
+      stroke:fresh?'#6ed6a0':(hit?'#16966d':'#d6d9e1'),
+      'stroke-width':fresh?2:(hit?2.6:.8),
+      opacity:hit||pick?.9:Math.max(.06,Math.min(.42,q.s*.32))});
+    if(fresh){const L=Math.hypot(q.x-goal.x,q.y-goal.y);
+      ln.setAttribute('stroke-dasharray',L);ln.setAttribute('stroke-dashoffset',L);
+      ln.style.animation='kgDraw .55s ease-out forwards'}
     svg.appendChild(ln)}
-  for(const n of nodes){const a=p.get(n.name),hit=selectedAll.has(n.name),score=candidates.get(n.name);if(hit)svg.appendChild(S('circle',{cx:a.x,cy:a.y,r:10,fill:'none',stroke:'#536de6','stroke-width':2}));const dot=S('circle',{cx:a.x,cy:a.y,r:n.new?5.4:(hit?6:3.7),fill:n.new?'#6ed6a0':(hit?'#16966d':'#aab1c0'),opacity:hit||n.new?1:.72});
-    if(n.new){dot.style.transformOrigin=`${a.x}px ${a.y}px`;dot.style.animation='kgPop .6s cubic-bezier(.2,1.5,.4,1) both';
-      const halo=S('circle',{cx:a.x,cy:a.y,r:5.4,fill:'none',stroke:'#6ed6a0','stroke-width':2});
-      halo.style.transformOrigin=`${a.x}px ${a.y}px`;halo.style.animation='kgHalo 1.5s ease-out infinite';svg.appendChild(halo)}
-    svg.appendChild(dot);if(hit||n.new||nodes.length<20){const t=S('text',{x:a.x+7,y:a.y+3,fill:n.new?'#1c7a56':(hit?'#202124':'#737b8d'),'font-size':hit||n.new?10:8.5,'font-weight':hit||n.new?700:400});t.textContent=cut(n.name.replace('graphs/graph_','').replace('.kg',''),17)+(score!==undefined?` ${Number(score).toFixed(2)}`:'');svg.appendChild(t)}}
-  svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#16966d'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#202124','font-size':10,'text-anchor':'middle','font-weight':700});gt.textContent=goalName;svg.appendChild(gt);
-  if(selectedAll.size){const ranked=(route.candidates||[]).map(x=>`${x[0].replace('graphs/','')} ${Number(x[1]).toFixed(3)}`).join(' · '),score=route.fallback?`일부 대목은 최고 후보가 선택 문턱 미달`:`대목별 선택 완료`,selected=[...selectedAll].join(' + ');$('manager-trace').textContent=`선택 ${selected} · ${score}${route.fallback?' · 자가학습 KG 포함':''}${ranked?' · 후보 '+ranked:''}`}
-  else $('manager-trace').textContent=`KG 노드 ${nodes.length}개 · 질문을 입력하면 선택 경로가 강조됩니다.`}
+  for(const {n,q,hit,fresh,pick} of 그림){
+    const r=(pick?6.5:hit?6:fresh?5.2:3.2)*(MG3D.enabled?Math.max(.62,Math.min(1.5,q.s)):1);
+    if(pick)svg.appendChild(S('circle',{cx:q.x,cy:q.y,r:r+5,fill:'none',stroke:'#536de6','stroke-width':2}));
+    else if(hit)svg.appendChild(S('circle',{cx:q.x,cy:q.y,r:r+4,fill:'none',stroke:'#536de6','stroke-width':1.6}));
+    const dot=S('circle',{cx:q.x,cy:q.y,r,
+      fill:fresh?'#6ed6a0':(hit?'#16966d':'#aab1c0'),
+      opacity:hit||fresh||pick?1:Math.max(.28,Math.min(.85,q.s)),
+      'data-kg':n.name,style:'cursor:pointer'});
+    if(fresh){dot.style.transformOrigin=`${q.x}px ${q.y}px`;
+      dot.style.animation='kgPop .6s cubic-bezier(.2,1.5,.4,1) both';
+      const halo=S('circle',{cx:q.x,cy:q.y,r,fill:'none',stroke:'#6ed6a0','stroke-width':2});
+      halo.style.transformOrigin=`${q.x}px ${q.y}px`;
+      halo.style.animation='kgHalo 1.5s ease-out infinite';svg.appendChild(halo)}
+    svg.appendChild(dot);
+    // 이름은 다 띄우면 글자밭이 된다. 고른 것·선택된 것·새로 붙은 것과,
+    // 앞쪽으로 나온 것만 띄운다.
+    if(pick||hit||fresh||!MG3D.enabled&&nodes.length<40||q.s>1.16){
+      const t=S('text',{x:q.x+r+4,y:q.y+3.5,
+        fill:fresh?'#1c7a56':(pick||hit?'#202124':'#737b8d'),
+        'font-size':pick||hit||fresh?10:8.4,'font-weight':pick||hit||fresh?700:450,
+        opacity:pick||hit||fresh?1:Math.max(.45,Math.min(.9,q.s)),
+        style:'pointer-events:none'});
+      const sc=candidates.get(n.name);
+      t.textContent=cut(n.name.replace('graphs/graph_','').replace('.kg',''),17)
+        +(sc!==undefined?` ${Number(sc).toFixed(2)}`:'');
+      svg.appendChild(t)}}
+  svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#16966d'}));
+  const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#202124','font-size':10,'text-anchor':'middle','font-weight':700,style:'pointer-events:none'});
+  gt.textContent=goalName;svg.appendChild(gt);
+  const 고른=managerPick&&nodes.find(x=>x.name===managerPick);
+  if(고른)$('manager-trace').textContent=`${고른.name.replace('graphs/','')} · ${고른.source||''}`
+    +(고른.new?' · 자가학습이 방금 들임':'');
+  else if(selectedAll.size){const ranked=(route.candidates||[]).slice(0,3)
+      .map(x=>`${x[0].replace('graphs/','')} ${Number(x[1]).toFixed(3)}`).join(' · '),
+    score=route.fallback?`일부 대목은 최고 후보가 선택 문턱 미달`:`대목별 선택 완료`,
+    selected=[...selectedAll].join(' + ');
+    $('manager-trace').textContent=`선택 ${selected} · ${score}${route.fallback?' · 자가학습 KG 포함':''}${ranked?' · 후보 '+ranked:''}`}
+  else $('manager-trace').textContent=`KG ${nodes.length}개 · 끌어서 돌리고 휠로 확대 · 점을 누르면 어느 KG 인지 나옵니다.`}
+
 function knowledge(){if(!info?.graph)return;const svg=$('knowledge'),box=$('knowledge-canvas'),w=box.clientWidth,h=box.clientHeight;if(w<20||h<20)return;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
   const defs=S('defs'),marker=S('marker',{id:'arrow',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'});marker.appendChild(S('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#a7adbd'}));defs.appendChild(marker);svg.appendChild(defs);
   const flat=layout(info.graph.nodes,w,h),p=new Map(),depth=Math.min(w,h)*.28;info.graph.nodes.forEach((n,i)=>{const base=flat.get(n.name);if(base)p.set(n.name,projectKnowledge({...base,z:Math.sin((i+1)*2.399)*depth},w,h))});
@@ -310,6 +370,24 @@ $('send').onclick=send;$('input').addEventListener('keydown',e=>{if(e.key==='Ent
 // 3D 캔버스 조작: 빈 곳을 끌면 회전, 휠로 확대/축소한다. 노드 클릭은 기존 상세 선택을 보존한다.
 $('knowledge-fit').onclick=()=>{KG3D.yaw=.72;KG3D.pitch=-.30;KG3D.zoom=1;knowledge()};$('knowledge-3d').onchange=e=>{KG3D.enabled=e.target.checked;knowledge()};$('knowledge-spin').onchange=e=>{KG3D.spin=e.target.checked};
 let knowledgeDrag=null;const knowledgeSvg=$('knowledge');knowledgeSvg.addEventListener('pointerdown',e=>{if(e.target!==knowledgeSvg)return;knowledgeDrag={x:e.clientX,y:e.clientY};knowledgeSvg.setPointerCapture(e.pointerId)});knowledgeSvg.addEventListener('pointermove',e=>{if(!knowledgeDrag)return;KG3D.yaw+=(e.clientX-knowledgeDrag.x)*.009;KG3D.pitch=Math.max(-1.1,Math.min(1.1,KG3D.pitch+(e.clientY-knowledgeDrag.y)*.009));knowledgeDrag={x:e.clientX,y:e.clientY};knowledge()});knowledgeSvg.addEventListener('pointerup',e=>{knowledgeDrag=null;try{knowledgeSvg.releasePointerCapture(e.pointerId)}catch{}});knowledgeSvg.addEventListener('wheel',e=>{e.preventDefault();KG3D.zoom=Math.max(.45,Math.min(2.2,KG3D.zoom*(e.deltaY<0?1.12:.89)));knowledge()},{passive:false});
+$('manager-fit').onclick=()=>{MG3D.yaw=.6;MG3D.pitch=-.22;MG3D.zoom=1;managerPick=null;managerView()};
+$('manager-3d').onchange=e=>{MG3D.enabled=e.target.checked;managerView()};
+$('manager-spin').onchange=e=>{MG3D.spin=e.target.checked};
+let managerDrag=null,managerMoved=0;const managerSvg=$('manager');
+managerSvg.addEventListener('pointerdown',e=>{managerDrag={x:e.clientX,y:e.clientY};managerMoved=0;managerSvg.setPointerCapture(e.pointerId)});
+managerSvg.addEventListener('pointermove',e=>{if(!managerDrag)return;
+  managerMoved+=Math.abs(e.clientX-managerDrag.x)+Math.abs(e.clientY-managerDrag.y);
+  MG3D.yaw+=(e.clientX-managerDrag.x)*.009;
+  MG3D.pitch=Math.max(-1.1,Math.min(1.1,MG3D.pitch+(e.clientY-managerDrag.y)*.009));
+  managerDrag={x:e.clientX,y:e.clientY};managerView()});
+managerSvg.addEventListener('pointerup',e=>{
+  // 끌었으면 고른 것이 아니다. 조금이라도 움직였으면 클릭으로 안 친다.
+  if(managerDrag&&managerMoved<4){const kg=e.target&&e.target.getAttribute&&e.target.getAttribute('data-kg');
+    managerPick=kg&&kg!==managerPick?kg:null;managerView()}
+  managerDrag=null;try{managerSvg.releasePointerCapture(e.pointerId)}catch{}});
+managerSvg.addEventListener('wheel',e=>{e.preventDefault();
+  MG3D.zoom=Math.max(.45,Math.min(2.6,MG3D.zoom*(e.deltaY<0?1.12:.89)));managerView()},{passive:false});
+const animateManager=()=>{if(MG3D.spin&&MG3D.enabled&&!managerDrag){MG3D.yaw+=.003;managerView()}MG3D.raf=requestAnimationFrame(animateManager)};MG3D.raf=requestAnimationFrame(animateManager);
 const animateKnowledge=()=>{if(KG3D.spin&&KG3D.enabled&&!knowledgeDrag){KG3D.yaw+=.004;knowledge()}KG3D.raf=requestAnimationFrame(animateKnowledge)};KG3D.raf=requestAnimationFrame(animateKnowledge);
 (async()=>{try{applyInfo(await api('/api/info'),false,true);let conversations=await api('/api/conversations');renderConversations(conversations);const available=[...(conversations.general_chats||[]),...(conversations.projects||[]).flatMap(x=>x.chats||[])];if(!activeConversationId||!available.some(x=>x.id===activeConversationId)){if(!available.length){const created=await api('/api/conversations',{action:'create_chat'});activeConversationId=created.chat.id}else activeConversationId=available[0].id;sessionStorage.setItem('nai-active-conversation',activeConversationId)}await selectConversation(activeConversationId);const affect=await api('/api/affect',{session:understandingSession});$('affect-mode').value=affect.affect.enabled?'on':'off';$('input').focus()}catch(e){message('assistant','시작 실패: '+e.message)}})();
 
