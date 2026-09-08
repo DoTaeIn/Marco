@@ -226,8 +226,9 @@ _XML값 = {k: re.compile(r'%s"\s+val="([^"]+)"' % k)
 def 사전읽기(폴더="data/사전"):
     """국립국어원 XML -> 명사 항목 목록. [{말, 번, 뜻}, ...]"""
     import glob, os
+    from 진행 import 막대
     나옴 = []
-    for f in sorted(glob.glob(os.path.join(폴더, "krdict_*.xml"))):
+    for f in 막대(sorted(glob.glob(os.path.join(폴더, "krdict_*.xml"))), "사전 읽기"):
         with open(f, encoding="utf-8") as fh:
             글 = fh.read()
         for e in _XML항목.findall(글):

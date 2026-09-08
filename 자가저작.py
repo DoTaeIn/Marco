@@ -74,6 +74,7 @@ os.environ.setdefault("KG_ENCODER", "문자")
 import engine                                    # noqa: E402
 import 목적그래프                                  # noqa: E402
 import routing_benchmark as 재기틀                 # noqa: E402
+from 진행 import 막대                             # noqa: E402
 
 후보터 = os.path.join(여기, "graphs", "후보")
 들인기록 = os.path.join(후보터, ".들인것.json")
@@ -96,6 +97,7 @@ def 캐다(최대=200, 폴더="data/사전"):
     이미 = 아는낱말()
     유맵, _대상맵, _동작 = 사전뽑기.사슬짓기(항목)
     나옴 = []
+    _자 = 막대(총=최대, 이름="캐기")
     for it in 항목:
         말, 뜻 = it["말"], it["뜻"]
         if 말 in 이미 or "/" in 말 or " " in 말:
@@ -105,8 +107,10 @@ def 캐다(최대=200, 폴더="data/사전"):
         나옴.append({"말": 말, "뜻": 뜻,
                      "도식": 사전뽑기.도식찾기(말, 유맵) or "물건"})
         이미.add(말)
+        _자.밀기()
         if len(나옴) >= 최대:
             break
+    _자.닫기()
     return 나옴
 
 
@@ -115,7 +119,7 @@ def 짓다(항목들, 난=None):
     난 = 난 or 후보터
     os.makedirs(난, exist_ok=True)
     쓴것 = []
-    for it in 항목들:
+    for it in 막대(항목들, "짓기"):
         글 = 목적그래프.짓기(it["뜻"], 출처="표준국어대사전",
                           말=it["말"], 도식=it["도식"], 색인=True)
         if not 글:
@@ -151,7 +155,7 @@ def 풀기(ix, 물음):
     """-> (제자리, 답함, 물음마다 (간곳, 답했나, 점수))"""
     제자리 = 답함 = 0
     간곳 = []
-    for q, 참 in 물음:
+    for q, 참 in 막대(물음, "풀기"):
         골, 점, _ = engine.그래프고르기(q, ix)
         제자리 += (골 == 참)
         답 = False

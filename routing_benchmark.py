@@ -19,6 +19,7 @@ import os
 import sys
 
 import engine
+from 진행 import 막대
 
 밖경로 = "data/benchmarks/라우팅_밖.json"
 
@@ -97,11 +98,15 @@ def 재기(읽음, ix, 답까지=False):
             중요한 것은 이쪽이다."""
     맞 = 전 = 답 = 0
     샌것 = []
+    _총 = sum(len(g.get(층, {})) for 이름, g in 읽음.items()
+              if not 이름.startswith("cases/") for 층 in ("공통층", "사례층"))
+    _자 = 막대(총=_총, 이름="안 물음")
     for 이름, g in 읽음.items():
         if 이름.startswith("cases/"):      # 사건 파일은 같은 법리라 서로 겹친다
             continue
         for 층 in ("공통층", "사례층"):
             for _n, 말 in g.get(층, {}).items():
+                _자.밀기()
                 if len(말) < 2:
                     continue
                 전 += 1
@@ -121,9 +126,10 @@ def 재기(읽음, ix, 답까지=False):
     # 맞는 답이다. 실제로 '서버가 지금 살아 있어' 가 감정대화 그래프로
     # 0.49 에 갔지만 판정은 미지였다. 그래프가 늘 때마다 라우터 거절만
     # 세면 값이 흔들리는데, 답으로 세면 안 흔들린다.
+    _자.닫기()
     밖 = json.load(open(engine._길(밖경로), encoding="utf-8"))
     거절 = 0
-    for q in 밖:
+    for q in 막대(밖, "밖 물음"):
         골, _, _ = engine.그래프고르기(q, ix)
         if not 골:
             거절 += 1
