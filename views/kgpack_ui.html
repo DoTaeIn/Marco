@@ -290,6 +290,10 @@ function managerView(){if(!info?.manager_graph)return;
     const r=(pick?6.5:hit?6:fresh?5.2:3.2)*(MG3D.enabled?Math.max(.62,Math.min(1.5,q.s)):1);
     if(pick)svg.appendChild(S('circle',{cx:q.x,cy:q.y,r:r+5,fill:'none',stroke:'#536de6','stroke-width':2}));
     else if(hit)svg.appendChild(S('circle',{cx:q.x,cy:q.y,r:r+4,fill:'none',stroke:'#536de6','stroke-width':1.6}));
+    // 보이는 점은 3~6px 라 손으로 맞히기 어렵다. 안 보이는 넓은 과녁을
+    // 밑에 깔아 준다 — 눌리는 것은 이쪽이고 그려지는 것은 위의 점이다.
+    svg.appendChild(S('circle',{cx:q.x,cy:q.y,r:Math.max(r+6,9),fill:'transparent',
+      'data-kg':n.name,style:'cursor:pointer'}));
     const dot=S('circle',{cx:q.x,cy:q.y,r,
       fill:fresh?'#6ed6a0':(hit?'#16966d':'#aab1c0'),
       opacity:hit||fresh||pick?1:Math.max(.28,Math.min(.85,q.s)),
@@ -315,6 +319,15 @@ function managerView(){if(!info?.manager_graph)return;
   svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#16966d'}));
   const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#202124','font-size':10,'text-anchor':'middle','font-weight':700,style:'pointer-events:none'});
   gt.textContent=goalName;svg.appendChild(gt);
+  // 집은 것은 아래 줄에만 적으면 눈이 못 찾는다. 그 자리에 이름표를 단다.
+  const 집은칸=그림.find(x=>x.pick);
+  if(집은칸){const {q,n}=집은칸,이름=n.name.replace('graphs/graph_','').replace('.kg','');
+    const 글=cut(이름,22),폭=글.length*6.2+16;
+    const 왼=q.x+12+폭>w?q.x-12-폭:q.x+12;
+    svg.appendChild(S('rect',{x:왼,y:q.y-11,width:폭,height:20,rx:6,
+      fill:'#536de6',opacity:.95,style:'pointer-events:none'}));
+    const lt=S('text',{x:왼+8,y:q.y+3,fill:'#fff','font-size':10.5,'font-weight':700,
+      style:'pointer-events:none'});lt.textContent=글;svg.appendChild(lt)}
   const 고른=managerPick&&nodes.find(x=>x.name===managerPick);
   if(고른)$('manager-trace').textContent=`${고른.name.replace('graphs/','')} · ${고른.source||''}`
     +(고른.new?' · 자가학습이 방금 들임':'');
@@ -373,8 +386,14 @@ let knowledgeDrag=null;const knowledgeSvg=$('knowledge');knowledgeSvg.addEventLi
 $('manager-fit').onclick=()=>{MG3D.yaw=.6;MG3D.pitch=-.22;MG3D.zoom=1;managerPick=null;managerView()};
 $('manager-3d').onchange=e=>{MG3D.enabled=e.target.checked;managerView()};
 $('manager-spin').onchange=e=>{MG3D.spin=e.target.checked};
-let managerDrag=null,managerMoved=0;const managerSvg=$('manager');
-managerSvg.addEventListener('pointerdown',e=>{managerDrag={x:e.clientX,y:e.clientY};managerMoved=0;managerSvg.setPointerCapture(e.pointerId)});
+let managerDrag=null,managerMoved=0,managerHit=null;const managerSvg=$('manager');
+// 누른 대상은 여기서 잡아 둔다. setPointerCapture 를 걸면 그 뒤의
+// pointerup 은 target 이 캡처 대상(SVG)으로 바뀌어서, pointerup 에서
+// e.target 을 보면 점이 아니라 늘 SVG 다 — 그래서 클릭이 안 먹었다.
+managerSvg.addEventListener('pointerdown',e=>{
+  managerDrag={x:e.clientX,y:e.clientY};managerMoved=0;
+  managerHit=(e.target&&e.target.getAttribute&&e.target.getAttribute('data-kg'))||null;
+  managerSvg.setPointerCapture(e.pointerId)});
 managerSvg.addEventListener('pointermove',e=>{if(!managerDrag)return;
   managerMoved+=Math.abs(e.clientX-managerDrag.x)+Math.abs(e.clientY-managerDrag.y);
   MG3D.yaw+=(e.clientX-managerDrag.x)*.009;
@@ -382,8 +401,14 @@ managerSvg.addEventListener('pointermove',e=>{if(!managerDrag)return;
   managerDrag={x:e.clientX,y:e.clientY};managerView()});
 managerSvg.addEventListener('pointerup',e=>{
   // 끌었으면 고른 것이 아니다. 조금이라도 움직였으면 클릭으로 안 친다.
-  if(managerDrag&&managerMoved<4){const kg=e.target&&e.target.getAttribute&&e.target.getAttribute('data-kg');
+  if(managerDrag&&managerMoved<4){
+    // 캡처 때문에 e.target 은 못 쓴다. 누를 때 잡아 둔 것을 쓰되, 빈
+    // 자리를 눌렀으면 그 자리의 점을 다시 찾아본다(점이 작아 빗나가기 쉽다).
+    let kg=managerHit;
+    if(!kg){const el=document.elementFromPoint(e.clientX,e.clientY);
+      kg=el&&el.getAttribute&&el.getAttribute('data-kg')||null}
     managerPick=kg&&kg!==managerPick?kg:null;managerView()}
+  managerHit=null;
   managerDrag=null;try{managerSvg.releasePointerCapture(e.pointerId)}catch{}});
 managerSvg.addEventListener('wheel',e=>{e.preventDefault();
   MG3D.zoom=Math.max(.45,Math.min(2.6,MG3D.zoom*(e.deltaY<0?1.12:.89)));managerView()},{passive:false});
