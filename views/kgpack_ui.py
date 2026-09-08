@@ -26,10 +26,13 @@ os.environ.setdefault("KG_ENCODER", "문자")
 sys.path.insert(0, str(루트))
 
 import engine  # noqa: E402
+import affect_state  # noqa: E402
+import conversation_store  # noqa: E402
 import document_kg  # noqa: E402
 import goal_runtime  # noqa: E402
 import input_understanding  # noqa: E402
 import kgpack  # noqa: E402
+import local_definitions  # noqa: E402
 import semantic_parser  # noqa: E402
 import state_engine  # noqa: E402
 import web_learn  # noqa: E402
@@ -110,7 +113,10 @@ def 매니저얼개(manager):
     nodes = [{"name": goal, "kind": "goal", "examples": ["질문에 알맞은 KG 선택"],
               "source": "kgpack manifest"}]
     nodes += [{"name": n["path"], "kind": "concept",
-               "examples": list(n.get("examples") or []),
+               # 매니저 3D 화면은 그래프 이름과 선택 경로만 쓴다. 모든 별칭을
+               # 매 턴 JSON에 싣는 것은 수십 개 KG에서 응답을 수 MB로 키워 UI를
+               # 멈추게 한다. 실제 선택된 그래프의 예시는 아래 ``graph``에만 둔다.
+               "examples": [],
                "source": "%s · 목표 %s" % (n.get("role") or "역할 없음", n.get("goal") or "없음")}
               for n in manager.get("nodes", [])]
     return {"nodes": nodes, "edges": list(manager.get("edges") or []), "goal": goal,
@@ -141,7 +147,7 @@ def 웹근거답(research):
 def 세션상태(session):
     secured = session.확보()
     return {"secured": secured, "self_counter": sorted(session.자책),
-            "patience": session.인내심, "turn": session.회차,
+            "turn": session.회차,
             "result": session.결과(), "learned_phrases": [list(x) for x in session.배운것]}
 
 
@@ -222,8 +228,13 @@ class 앱상태:
         self.history = []
         # KG 대화 이력과 분리된다. key는 브라우저 탭이 만든 불투명 세션 식별자다.
         self.understanding_history = {}
+        # 정서 표현 상태는 브라우저 세션마다 분리하고 메모리에만 둔다.
+        # KG, overlay, 승인 기록의 내용·판정에는 절대 섞지 않는다.
+        self.affect_sessions = {}
         self.project_roots = {}
         self.document_history = {}
+        self.conversations = conversation_store.ConversationStore(루트 / ".nai" / "conversations.json")
+        self.definitions = local_definitions.DefinitionLookup(루트 / "data" / "위키" / "정의문.jsonl")
         self.goals = goal_runtime.GoalRuntime(루트)
         # 모델은 답변기가 아니다. 이 객체는 모델 후보를 검증된 상태 JSON으로
         # 축소하는 경계이며, 테스트는 CallableBackend를 주입해 모델 품질과
@@ -351,12 +362,12 @@ class 앱상태:
             return {"understanding": result, "history_count": len(history),
                     "session": session_id, "mode": "understanding_only"}
 
-    def reset_understanding(self, session_id):
+    def reset_understanding(self, session_id, conversation_id=None):
         session_id = str(session_id or "").strip()
         if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
             raise ValueError("유효하지 않은 브라우저 세션입니다")
         with self.lock:
-            self.understanding_history.pop(session_id, None)
+            self.understanding_history.pop("chat_" + str(conversation_id) if conversation_id else session_id, None)
         return {"session": session_id, "history_count": 0, "mode": "understanding_only"}
 
     def save_semantic_correction(self, session_id, raw, semantic_parse, verification):
@@ -376,7 +387,7 @@ class 앱상태:
                 handle.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
         return {"saved": True, "path": str(target), "model": record["model"]}
 
-    def project(self, session_id, path=None):
+    def project(self, session_id, path=None, conversation_id=None):
         """사용자가 선언한 세션별 작업 루트. 계획 밖 경로 접근은 런타임이 거절한다."""
         session_id = str(session_id or "").strip()
         if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
@@ -387,8 +398,27 @@ class 앱상태:
                 if candidate == candidate.anchor or not candidate.is_dir():
                     raise ValueError("존재하는 프로젝트 폴더를 지정해 주세요")
                 self.project_roots[session_id] = candidate
-            root = self.project_roots.get(session_id, 루트)
+                if conversation_id:
+                    self.conversations.set_project_root(str(conversation_id), candidate)
+            saved = self.conversations.project_root(str(conversation_id or ""))
+            root = Path(saved) if saved else self.project_roots.get(session_id, 루트)
             return {"session": session_id, "project_root": str(root), "declared": session_id in self.project_roots}
+
+    def conversations_api(self, action="list", project_id=None, chat_id=None, name=None):
+        """프로젝트별 대화와 일반 대화를 로컬 파일에서만 다룬다."""
+        with self.lock:
+            if action == "list":
+                return self.conversations.overview()
+            if action == "create_project":
+                project = self.conversations.create_project(name)
+                chat = self.conversations.create_chat(project["id"])
+                return {"project": project, "chat": chat, "overview": self.conversations.overview()}
+            if action == "create_chat":
+                chat = self.conversations.create_chat(project_id)
+                return {"chat": chat, "overview": self.conversations.overview()}
+            if action == "select":
+                return {"chat": self.conversations.get_chat(chat_id), "overview": self.conversations.overview()}
+            raise ValueError("알 수 없는 대화 작업입니다")
 
     def document(self, session_id, filename, content_b64):
         """사용자가 올린 PDF/PPTX를 세션 overlay에서만 분석·학습한다.
@@ -436,7 +466,38 @@ class 앱상태:
             del history[:-12]
         return response
 
-    def turn(self, text, session_id, approval_mode="risk"):
+    def affect(self, session_id, enabled=None, conversation_id=None):
+        """정서 표현 토글의 세션 상태만 읽거나 바꾼다."""
+        session_id = str(session_id or "").strip()
+        if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
+            raise ValueError("유효하지 않은 브라우저 세션입니다")
+        with self.lock:
+            context_id = "chat_" + str(conversation_id) if conversation_id else session_id
+            state = dict(self.affect_sessions.get(context_id) or affect_state.initial())
+            if enabled is not None:
+                state["enabled"] = bool(enabled)
+                state["mode"] = "neutral"
+                state["signals"] = []
+                state["note"] = ("정서 표현을 켰습니다. 사실 판단은 바뀌지 않습니다."
+                                 if state["enabled"] else "정서 표현은 꺼져 있습니다.")
+                self.affect_sessions[context_id] = state
+            return {"session": session_id, "affect": state}
+
+    @staticmethod
+    def _with_affect(payload, state):
+        """정서 표현은 답변의 접두 표현만 바꾸고 사실 내용을 보존한다."""
+        payload["affect"] = state
+        answer = payload.get("answer")
+        if isinstance(answer, dict) and isinstance(answer.get("answer"), str):
+            answer = dict(answer)
+            raw_answer = answer["answer"]
+            raw_markdown = answer.get("answer_markdown") or raw_answer
+            answer["answer"] = affect_state.decorate(raw_answer, state)
+            answer["answer_markdown"] = affect_state.decorate(raw_markdown, state)
+            payload["answer"] = answer
+        return payload
+
+    def turn(self, text, session_id, approval_mode="risk", conversation_id=None):
         """목적 수행 턴. 승인 전에는 읽기 전용 KG·웹 조사만 한다."""
         session_id = str(session_id or "").strip()
         if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
@@ -444,15 +505,27 @@ class 앱상태:
         if approval_mode not in ("risk", "all_steps"):
             raise ValueError("알 수 없는 승인 모드입니다")
         with self.lock:
-            history = self.understanding_history.setdefault(session_id, [])
+            if conversation_id:
+                self.conversations.get_chat(str(conversation_id))
+            context_id = "chat_" + str(conversation_id) if conversation_id else session_id
+            def finish(payload):
+                answer = payload.get("answer")
+                output = ((answer.get("answer_markdown") or answer.get("answer") or "") if isinstance(answer, dict)
+                          else (payload.get("web_answer") or "계획을 만들었습니다. 승인 전에는 실행하지 않습니다."))
+                if conversation_id:
+                    payload["conversation"] = self.conversations.append_turn(str(conversation_id), text, output, payload.get("phase"))
+                return payload
+            history = self.understanding_history.setdefault(context_id, [])
             understanding = input_understanding.understand(text, history)
             history.append(understanding); del history[:-30]
+            affect = affect_state.update(self.affect_sessions.get(context_id), text)
+            self.affect_sessions[context_id] = affect
             is_work = any(x["goal"]["kind"] == "perform" for x in understanding["segments"])
             if is_work:
-                root = self.project_roots.get(session_id, 루트)
+                root = Path(self.conversations.project_root(str(conversation_id)) or self.project_roots.get(session_id, 루트))
                 plan = self.goals.plan_work(text, understanding, approval_mode, self.graph_path, root)
-                self.goals.remember(session_id, plan)
-                return {"phase": "plan", "understanding": understanding, "plan": plan}
+                self.goals.remember(context_id, plan)
+                return finish(self._with_affect({"phase": "plan", "understanding": understanding, "plan": plan}, affect))
             if understanding.get("overall", {}).get("primary", {}).get("kind") == "dialogue":
                 self._clear_manager_route()
                 answer_text = input_understanding.dialogue_reply(text)
@@ -462,7 +535,47 @@ class 앱상태:
                           "learned": False, "known": True, "trace": trace, "info": self.info()}
                 self.history.append({"question": text, "claim": "dialogue.reply", "evidence": None,
                                      "verdict": "대화", "sources": [], "learned": False})
-                return {"phase": "answer", "understanding": understanding, "answer": answer}
+                return finish(self._with_affect({"phase": "answer", "understanding": understanding, "answer": answer}, affect))
+            # 정의형 질문은 모델이나 유사도보다 먼저 로컬 원문 표제어를 정확히 찾는다.
+            # 일치하지 않으면 아무것도 추정하지 않고 기존 KG/웹 흐름으로 넘긴다.
+            # 단일 표제어 정의는 기존처럼 KG보다 먼저 쓴다. 반면 A와 B의
+            # 비교는 세균·바이러스처럼 전문 KG가 관계 자체를 명시했을 수 있다.
+            # 이때는 라우터 점수가 아니라 실제 KG 판정이 '인정'인지로만
+            # 선점 여부를 정한다. 약하게 잘못 라우팅된 그래프가 비교를 막지
+            # 않도록 근거없음·미지는 정의 비교에 자리를 내준다.
+            definition = self.definitions.lookup(text)
+            if not definition:
+                comparison = self.definitions.compare(text)
+                if comparison:
+                    has_specific_kg = False
+                    try:
+                        route, _score, _candidates = engine.그래프고르기(text)
+                        if route:
+                            has_specific_kg = engine.judge(engine.그래프불러오기(route), text)[0] == "인정"
+                    except Exception:
+                        has_specific_kg = False
+                    if not has_specific_kg:
+                        definition = comparison
+            if definition:
+                self._clear_manager_route()
+                if definition.get("kind") == "comparison":
+                    entries = definition["definitions"]
+                    answer_text = "\n\n".join("**%s** — %s" % (entry["term"], entry["definition"])
+                                              for entry in entries)
+                    winner, activated = " · ".join(definition["terms"]), definition["terms"]
+                    sources = [{"node": entry["term"], "source": entry["source"]} for entry in entries]
+                    verdict = "원문정의비교"
+                else:
+                    answer_text = "**%s** — %s" % (definition["term"], definition["definition"])
+                    winner, activated = definition["term"], [definition["term"]]
+                    sources, verdict = [{"node": definition["term"], "source": definition["source"]}], "원문정의"
+                trace = {"mode": "local_definition", "question": text, "winner": winner,
+                         "verdict": verdict, "activated": activated, "path": [], "sources": sources}
+                answer = {"answer": answer_text, "answer_markdown": answer_text, "learned": False,
+                         "known": True, "trace": trace, "info": self.info(), "definition": definition}
+                self.history.append({"question": text, "claim": winner, "evidence": definition["source"],
+                                     "verdict": verdict, "sources": trace["sources"], "learned": False})
+                return finish(self._with_affect({"phase": "answer", "understanding": understanding, "answer": answer}, affect))
             # 문장 유사도나 문제별 정규식은 산술·시간·순위 같은 상황을 대신할 수
             # 없다. 학습 모델의 후보도 원문 span·타입 검증을 통과한 JSON일 때만
             # 순수 상태 엔진에 전달한다.
@@ -495,7 +608,7 @@ class 앱상태:
                 self.history.append({"question": text, "claim": situation.get("operator"),
                                      "evidence": None, "verdict": trace["verdict"],
                                      "sources": [], "learned": False})
-                return {"phase": "answer", "understanding": understanding, "answer": answer}
+                return finish(self._with_affect({"phase": "answer", "understanding": understanding, "answer": answer}, affect))
             # 해석이 불충분하면 KG 매니저가 비슷한 여러 그래프를 답처럼 나열하지
             # 않는다. 상태 해석 실패 사실은 연구/근거 부족 결과에 그대로 남긴다.
             semantic_failure = {"semantic_parse": semantic, "reasoning": {"operator": None, "transitions": []},
@@ -508,7 +621,7 @@ class 앱상태:
             verdict = (answer.get("trace") or {}).get("verdict")
             known = answer.get("known", verdict not in (None, "미지", "지식부족", "B2"))
             if known:
-                return {"phase": "answer", "understanding": understanding, "answer": answer}
+                return finish(self._with_affect({"phase": "answer", "understanding": understanding, "answer": answer}, affect))
             try:
                 research = self.goals.research(text)
             except Exception as e:
@@ -518,23 +631,26 @@ class 앱상태:
             learning_path = self.graph_path
             if not learning_path and self.라우팅중 and self.auto_graph:
                 learning_path = self._materialize(self.auto_graph)
-            plan = self.goals.plan_learning(text, research, approval_mode, learning_path, self.project_roots.get(session_id, 루트))
-            self.goals.remember(session_id, plan)
-            return {"phase": "research", "understanding": understanding, "answer": answer,
-                    "research": research, "web_answer": 웹근거답(research), "plan": plan,
-                    **semantic_failure}
+            root = Path(self.conversations.project_root(str(conversation_id)) or self.project_roots.get(session_id, 루트))
+            plan = self.goals.plan_learning(text, research, approval_mode, learning_path, root)
+            self.goals.remember(context_id, plan)
+            return finish(self._with_affect({"phase": "research", "understanding": understanding, "answer": answer,
+                                      "research": research, "web_answer": 웹근거답(research), "plan": plan,
+                                      **semantic_failure}, affect))
 
-    def approve_goal(self, session_id, plan_id, plan_hash, action_ids, direct=False):
+    def approve_goal(self, session_id, plan_id, plan_hash, action_ids, direct=False, conversation_id=None):
         session_id = str(session_id or "").strip()
         if not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", session_id):
             raise ValueError("유효하지 않은 브라우저 세션입니다")
         with self.lock:
-            return self.goals.approve(session_id, str(plan_id or ""), str(plan_hash or ""), action_ids, bool(direct))
+            context_id = "chat_" + str(conversation_id) if conversation_id else session_id
+            return self.goals.approve(context_id, str(plan_id or ""), str(plan_hash or ""), action_ids, bool(direct))
 
-    def reject_goal(self, session_id, plan_id, reason=""):
+    def reject_goal(self, session_id, plan_id, reason="", conversation_id=None):
         session_id = str(session_id or "").strip()
         with self.lock:
-            plan = self.goals.pending.pop((session_id, str(plan_id or "")), None)
+            context_id = "chat_" + str(conversation_id) if conversation_id else session_id
+            plan = self.goals.pending.pop((context_id, str(plan_id or "")), None)
         return {"rejected": bool(plan), "plan_id": plan_id, "reason": str(reason or "")}
 
     def _일반질문(self, question):
@@ -561,6 +677,31 @@ class 앱상태:
             return {"answer": answer, "answer_markdown": answer, "learned": False,
                     "known": False, "verdict": "근거불충분", "result": self.session.결과(),
                     "trace": trace, "info": self.info()}
+        # 한 문장짜리 정의 질문은 대화 상태의 모든 요건을 채울 때까지 기다릴
+        # 이유가 없다. 엔진의 순수 판정기로 같은 근거에서 바로 결론을 확인한다.
+        # 판정기가 미지이면 기존 다턴 상태 대화로 그대로 내려간다.
+        # 정의뿐 아니라 "왜 있어/왜 그래"처럼 한 번에 답해야 하는 짧은
+        # 관계 질문도 세션의 남은 요건을 억지로 나열하지 않는다. 판정기는
+        # 여전히 원문 증거가 있는 경우에만 답을 돌려준다.
+        direct_question = bool(re.search(r"(?:[?？]|뭐야|뭔데|무엇|뜻|정의|설명해|알려\s*줘|왜\s*(?:있어|그래|인가|야)?)\s*$", question))
+        if direct_question:
+            direct_verdict, direct_answer = engine.judge(graph, question)
+            if direct_verdict not in ("미지", "B2"):
+                route = 경로(graph, evidence or winner, graph["목표"])
+                trace = {"mode": "argument", "question": question, "winner": winner,
+                         "verdict": direct_verdict,
+                         "evidence": {"name": evidence, "score": round(evidence_score, 3)},
+                         "rankings": [[n, round(v, 3)] for n, v in ranks[:5]],
+                         "null_rankings": [[n, round(v, 3)] for n, v in nulls[:3]],
+                         "margin": round(ranks[0][1] - ranks[1][1], 3) if len(ranks) > 1 else None,
+                         "path": route,
+                         "activated": list(dict.fromkeys([x for x in [evidence, winner] if x]
+                                                          + [n for e in route for n in (e[0], e[2])]))}
+                self.history.append({"question": question, "claim": winner, "evidence": evidence,
+                                     "verdict": direct_verdict, "sources": [], "learned": False})
+                return {"answer": direct_answer, "answer_markdown": direct_answer, "learned": False,
+                        "known": True, "verdict": direct_verdict, "result": self.session.결과(),
+                        "trace": trace, "info": self.info()}
         answer = self.session.대답(question)
         route = 경로(graph, evidence or winner, graph["목표"])
         trace = {"mode": "argument", "question": question, "winner": winner,
@@ -754,6 +895,8 @@ class 손(BaseHTTPRequestHandler):
             return self._send(html, "text/html")
         if path == "/api/info":
             return self._json(self.app.info())
+        if path == "/api/conversations":
+            return self._json(self.app.conversations_api())
         self.send_error(404)
 
     def do_POST(self):
@@ -769,20 +912,24 @@ class 손(BaseHTTPRequestHandler):
             if path == "/api/understand":
                 return self._json(self.app.understand(body.get("input"), body.get("session")))
             if path == "/api/understanding/reset":
-                return self._json(self.app.reset_understanding(body.get("session")))
+                return self._json(self.app.reset_understanding(body.get("session"), body.get("conversation_id")))
             if path == "/api/semantic/correct":
                 return self._json(self.app.save_semantic_correction(body.get("session"), body.get("raw"),
                                                                        body.get("semantic_parse"), body.get("verification")))
             if path == "/api/project":
-                return self._json(self.app.project(body.get("session"), body.get("path")))
+                return self._json(self.app.project(body.get("session"), body.get("path"), body.get("conversation_id")))
+            if path == "/api/conversations":
+                return self._json(self.app.conversations_api(body.get("action"), body.get("project_id"), body.get("chat_id"), body.get("name")))
+            if path == "/api/affect":
+                return self._json(self.app.affect(body.get("session"), body.get("enabled"), body.get("conversation_id")))
             if path == "/api/document":
                 return self._json(self.app.document(body.get("session"), body.get("filename"), body.get("content_b64")))
             if path == "/api/turn":
-                return self._json(self.app.turn(body.get("input"), body.get("session"), body.get("approval_mode", "risk")))
+                return self._json(self.app.turn(body.get("input"), body.get("session"), body.get("approval_mode", "risk"), body.get("conversation_id")))
             if path == "/api/approve":
-                return self._json(self.app.approve_goal(body.get("session"), body.get("plan_id"), body.get("plan_hash"), body.get("action_ids"), body.get("direct")))
+                return self._json(self.app.approve_goal(body.get("session"), body.get("plan_id"), body.get("plan_hash"), body.get("action_ids"), body.get("direct"), body.get("conversation_id")))
             if path == "/api/reject":
-                return self._json(self.app.reject_goal(body.get("session"), body.get("plan_id"), body.get("reason")))
+                return self._json(self.app.reject_goal(body.get("session"), body.get("plan_id"), body.get("reason"), body.get("conversation_id")))
             self.send_error(404)
         except (ValueError, document_kg.DocumentKGError, kgpack.KGPackError, json.JSONDecodeError) as e:
             self._json({"error": str(e)}, status=400)

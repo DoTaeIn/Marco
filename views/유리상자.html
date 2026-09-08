@@ -296,7 +296,7 @@ function 대화그래프그리기(상태) {
          (됨 || 깨짐) ? "#e6edf3" : "#57647a", true);
   });
   마디층.appendChild(S("circle", {cx: 목P.x, cy: 목P.y, r: 12,
-    fill: 상태.결과 === "승" ? "#3fb950" : "#2b3542",
+    fill: 상태.결과 === "성립" ? "#3fb950" : "#2b3542",
     stroke: "#3fb950", "stroke-width": 2}));
   const g = S("text", {x: 목P.x, y: 목P.y + 28, fill: "#e6edf3",
     "font-size": 11.5, "font-weight": 700, "text-anchor": "middle"});
@@ -304,7 +304,7 @@ function 대화그래프그리기(상태) {
 
   $("#수치2").innerHTML =
     `요건 <b>${Object.keys(확보).length}/${요건들.length}</b> 확보 · 자책 <b>${자책.size}</b>` +
-    ` · 인내심 <b>${상태.인내심}</b> · ${상태.회차}턴` +
+    ` · ${상태.회차}턴` +
     (상태.결과 ? ` · 결과 <b>${상태.결과}</b>` : "") +
     (상태.배운것?.length ? `<br>배운 표현 ${상태.배운것.length}개` : "");
 }
