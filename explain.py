@@ -1996,17 +1996,45 @@ def _selfcheck():
             # 코드 그래프는 '그것이 어디 있고 무엇을 건드리는지' 를 안다.
             if os.path.exists(_길("graphify-out/graph.json")):
                 _cg2 = 열기("graphify-out/graph.json")
-                _엮 = 엮은답("매칭 방식을 바꾸려면", _묶, _cg2, 배수=3)
+                # 어느 절이 잡히느냐는 인코더마다 다르다. 예전엔 '매칭 방식을
+                # 바꾸려면' 으로 물었는데 문자 인코더에서는 아무것도 안 잡혀
+                # 이 시험이 통째로 죽어 있었다. 검색 품질이 아니라 **엮는
+                # 구조**를 재야 한다. 제목으로 물으면 두 인코더 다 27/27 로
+                # 제자리라, 코드가 실제로 붙는 절을 골라 그것으로 묻는다.
+                _골 = None
+                for _x2 in _묶:
+                    _이름 = [a or b for _t2 in _x2["단계"]
+                             for a, b in _코드이름.findall(_t2)]
+                    if any(_코드찾기(_cg2, n) for n in _이름):
+                        _골 = _x2
+                        break
+                assert _골, "코드 이름이 붙은 절이 하나도 없다"
+                _엮 = 엮은답(_골["제목"], _묶, _cg2, 배수=3)
                 assert _엮, "엮은 답이 없다"
-                # 문서 단계에 코드 위치가 붙는다 — 둘 다 원문/엣지 그대로다
-                assert "engine.py" in _엮, _엮[:200]
-                assert "부른다" in _엮 or "불린다" in _엮, _엮[:200]
+                # 단계는 문서 원문 그대로다. 지어낸 줄이 없다.
+                for _줄2 in _엮.split(chr(10)):
+                    _m2 = re.match(r"^\d+\. (.+)$", _줄2)
+                    if _m2:
+                        assert _m2.group(1) in _골["단계"], _m2.group(1)[:80]
+                # 코드 위치가 붙고, 붙은 이름은 코드 그래프에 실제로 있다.
+                _코드줄 = [y for y in _엮.split(chr(10)) if y.startswith("   · `")]
+                assert _코드줄, _엮[:200]
+                for _줄2 in _코드줄:
+                    _이름2 = _줄2.split("`")[1]
+                    assert _코드찾기(_cg2, _이름2), _이름2
+                assert any(("부른다" in y or "불린다" in y) for y in _코드줄), _코드줄[:3]
                 # 코드 그래프가 없어도 절차만으로 답한다
-                assert 엮은답("매칭 방식을 바꾸려면", _묶, None)
+                assert 엮은답(_골["제목"], _묶, None)
                 # 어느 절인지 고르는 정확도가 낮아(3/7) 다음 후보를 같이 낸다.
-                # 확신이 없으면 되묻는다는 태도 그대로다.
-                assert "이 절이 아니라면" in _엮, _엮[-200:]
-                _여럿 = 절차찾기(_묶, "판정 밴드를 추가하려면", 개수=3)
+                # 확신이 없으면 되묻는다는 태도 그대로다. 이건 **애매한**
+                # 물음에서 재야 한다 — 위처럼 제목을 그대로 물으면 한 절만
+                # 문턱을 넘어 곁 후보가 없는 것이 옳다.
+                # 물음은 두 인코더 다 여럿을 무는 것으로 쓴다. '판정 밴드를
+                # 추가하려면' 은 신경에서는 둘을 무는데 문자에서는 0개라,
+                # 이 두 줄이 문자에서 통째로 죽어 있었다.
+                _엮2 = 엮은답("확장 지점", _묶, _cg2)
+                assert _엮2 and "이 절이 아니라면" in _엮2, (_엮2 or "")[-200:]
+                _여럿 = 절차찾기(_묶, "확장 지점", 개수=3)
                 assert len(_여럿) >= 2, _여럿
                 assert any("확장 지점" in y["제목"] for y in _여럿),                     [y["제목"] for y in _여럿]
 
@@ -2095,7 +2123,11 @@ def _selfcheck():
 
     # GPU 를 쓰지 않는다 — 이 프로젝트의 전제다
     assert DEVICE == "cpu" or os.environ.get("KG_DEVICE")
-    assert str(next(_model()._first_module().auto_model.parameters()).device) == DEVICE
+    # 아래는 신경망일 때만 볼 수 있다. 문자 인코더에는 파라미터가 없어
+    # AttributeError 로 죽었다 — 기본 인코더에서 자가검사가 끝까지 못 갔다.
+    _속모델 = getattr(_model(), "_first_module", None)
+    if _속모델 is not None:
+        assert str(next(_속모델().auto_model.parameters()).device) == DEVICE
 
     # 질문 의도를 가른다 (같은 자리면 긴 표현이 이긴다)
     assert 의도("이거 어디 있어?") == "위치"
