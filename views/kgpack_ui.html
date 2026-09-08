@@ -81,11 +81,21 @@
     .graph-actions{position:absolute;right:12px;bottom:29px;z-index:3;display:flex;align-items:center;gap:5px;padding:4px;background:#ffffffdf;border:1px solid #e5e7ed;border-radius:9px;backdrop-filter:blur(8px)}.graph-actions button{min-height:28px;padding:3px 7px;font-size:11px}.graph-actions label{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--muted);white-space:nowrap}.graph-actions input{accent-color:var(--blue)}
       /* 이 패널만 글 흐름대로 쌓는다. 다른 뷰는 SVG 한 장 위에 머리말을
        절대배치로 얹는 꼴인데, 여기는 단추와 표가 같이 있어서 겹친다. */
-    #growth-view { display:grid; grid-template-rows:auto auto auto auto minmax(0,1fr);
-                   gap:6px; padding:11px 13px; overflow:auto }
+    /* 줄은 전부 auto 다. 마지막을 1fr 로 두었더니, 칸을 넘치는 순간 그 줄이
+       0px 로 접히는데 차트는 height:150px 라 밖으로 넘쳐서 아래 자취를
+       덮어 버렸다 — 글이 잘려 보이던 것이 이것이다. 이 패널은 스스로
+       스크롤하므로 1fr 로 늘릴 이유가 없다. */
+    #growth-view { display:grid; grid-template-rows:repeat(6,auto);
+                   align-content:start; gap:6px; padding:11px 13px; overflow:auto }
     #growth-view .view-head { position:static; max-width:none; pointer-events:auto }
     #growth-chart { height:150px; min-height:150px }
-    #growth-trace { position:static; overflow:auto }
+    /* 기본 .trace 는 한 줄짜리 꼬리말이라 nowrap + ellipsis + 절대배치다.
+       여기는 여러 줄에 이름표까지 들어가서, 그 규칙을 그대로 두면 높이가
+       0으로 접히고 글이 잘린다. 줄바꿈과 클릭을 되살린다. */
+    #growth-trace { position:static; overflow:auto; white-space:normal;
+                    text-overflow:clip; pointer-events:auto; line-height:1.55;
+                    padding:2px 0 4px; min-height:44px }
+    #growth-trace b { display:inline-block; margin-top:2px }
     /* 자가학습이 방금 붙인 노드는 뿅 튀어 들어오고, 그 엣지는 목표 쪽에서
        그어진다. 자란 자리가 어디인지 눈으로 바로 보이라고. */
     @keyframes kgPop { 0%{transform:scale(0);opacity:0} 60%{transform:scale(1.5)} 100%{transform:scale(1);opacity:1} }
