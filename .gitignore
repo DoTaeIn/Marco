@@ -105,3 +105,7 @@ result.json
 # autocoder / universal_agent 데모가 지은 그래프. 색인은 graphs/*.kg 만 훑으므로
 # 여기 있는 것은 라우팅에 안 낀다.
 graphs/데모/
+
+# 사전에서 굳힌 상위어 관계. tools/build_concept_net.py 로 다시 짓는다.
+# 켜도 눈금이 안 움직여서(그 파일 머리말) 저장소에는 안 둔다.
+data/개념망.json

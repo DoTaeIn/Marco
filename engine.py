@@ -434,7 +434,46 @@ def read_kg(path):
             if src:
                 g.setdefault("출처", {})[name] = src
             _ = evidence          # '*' 는 읽는 사람을 위한 표시. 실제 증거는 증명 엣지가 정한다
+    _merge_shared_net(g)
     return g
+
+
+_shared_net = None
+
+
+def concept_net():
+    """사전에서 굳힌 상위어 관계. 그래프마다 적지 않고 한 곳에서 읽는다.
+
+    별칭 하나는 노드 하나를 덮지만 상위어 관계 하나는 그 말이 나오는 모든
+    그래프의 모든 문장을 덮는다. tools/build_concept_net.py 로 다시 짓는다."""
+    global _shared_net
+    if _shared_net is None:
+        try:
+            _shared_net = json.load(open(_abs("data/개념망.json"), encoding="utf-8"))
+        except Exception:
+            _shared_net = {}          # 없으면 없는 대로 돈다
+    return _shared_net
+
+
+def _merge_shared_net(g):
+    """그래프의 별칭에 실제로 낱말로 나오는 상위어만 개념엣지로 붙인다.
+
+    전부 붙이면 그래프마다 4,870개가 달려 벡터 캐시 키가 쓸데없이 커진다.
+    쓰이지 않는 관계는 색인에 아무 일도 하지 않으므로 붙일 이유가 없다."""
+    net = concept_net()
+    if not net:
+        return
+    body = "\n".join(s for layer in ("공통층", "사례층", "무관층")
+                     for exs in g.get(layer, {}).values() for s in exs)
+    have = {tuple(e) for e in g.get("개념엣지", [])}
+    for upper, children in net.items():
+        if upper not in body or not _ko.word_spans(body, upper):
+            continue
+        for bottom in children:
+            edge = (bottom, "상위", upper)
+            if edge not in have:
+                g.setdefault("개념엣지", []).append(list(edge))
+                have.add(edge)
 
 
 # '맞아', '그래', '어' 가 빠져 있었다. '맞다/맞습니다/맞아요' 는 있는데
@@ -715,7 +754,7 @@ def _related_concepts(g):
 
 # 별칭 불리는 규칙의 판. 규칙을 고치면 이 수를 올린다 — 벡터 캐시가
 # 그래야 다시 계산된다.
-_EXPAND_VERSION = 2
+_EXPAND_VERSION = 3
 
 
 def expand_examples(graph, sentences):
@@ -745,7 +784,9 @@ def expand_examples(graph, sentences):
         nxt = []
         for sentence in this_round:
             for upper, children in sub.items():
-                if upper not in sentence:
+                # 낱말로 나올 때만 간다. 부분 문자열로 갈면 '가격표' 가
+                # '단가표' 가 되고 '살상흉기' 가 '살상식칼' 이 된다.
+                if not _ko.word_spans(sentence, upper):
                     continue
                 for bottom in children:
                     # 낱말만 갈고 조사를 그대로 두면 '식칼를' 이 된다.
@@ -1037,6 +1078,25 @@ def counters(graph, node):
 
 
 def judge(graph, text, streak_A=0, share=None):
+    """판정과 그래프가 적은 대사 한 줄. 채운 뒤 조사를 고쳐서 돌려준다.
+
+    대사 틀에는 조사가 박혀 있다 — `인정: {ev}이니까 {claim}네요`. 무엇이
+    그 자리에 올지 틀을 적을 때는 알 수 없으니, 채운 다음에 고쳐야 한다.
+    안 고치면 '옷 안쪽 라벨을 읽었다이니까' 가 그대로 나간다. 아래를 부르는
+    자리마다 따로 고치고 있었고, 그중 한 길이 빠져 있었다."""
+    slot = {} if share is None else share
+    tag, line = _judge_raw(graph, text, streak_A, slot)
+    if not line:
+        return tag, line
+    ev, claim, basis = slot.get("증거"), slot.get("주장"), slot.get("기준")
+    seen = [ev, claim,
+            render(graph, ev, basis) if ev else None,
+            render(graph, claim, basis) if claim else None,
+            sentence(graph, claim, basis) if claim else None]
+    return tag, fix_particles(line, [w for w in seen if w])
+
+
+def _judge_raw(graph, text, streak_A=0, share=None):
     """→ (판정, 대사). 판정: 인정 / A / B1 / B2 / C / 근거없음
 
     몫: 넘기면 judge 가 실제로 고른 {증거, 주장, 확신}을 여기 채운다.
@@ -1907,7 +1967,7 @@ def compose_line(graph, p):
         # 예전에는 C 템플릿으로 떨어뜨려서 엉뚱한 말이 나갔다.
         default_value = p.get("기본문장")
         if default_value:
-            return default_value
+            return default_value          # judge() 가 이미 조사를 고쳐 놨다
         default = "C"
     basis = p.get("기준")
     # 근거가 없을 수 있다. 그대로 넣으면 'None 니까 …' 가 사용자에게 나간다.

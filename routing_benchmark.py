@@ -58,7 +58,9 @@ def build_index(loaded, cap=5, strip=True, budget=180):
                 phrase = list(phrase)[:-1] if strip else list(phrase)
                 ex += [x for x in [n] + (phrase[:cap] if cap else phrase)
                        if len("".join(x.split())) >= 5]
-        ex = [x for x in ex if x][:budget]
+        # 개념망으로 별칭을 여기서 불린다. 벡터 만들 때 불리면 길이표는
+        # 원본 개수로 계산돼 모양이 어긋난다 — 실제로 (180,) 대 (239,) 로 터졌다.
+        ex = [x for x in engine.expand_examples(g, [x for x in ex if x])][:budget]
         if ex:
             ix["공통층"][name] = ex
 

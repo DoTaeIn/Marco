@@ -264,6 +264,30 @@ def swap_word(sentence, old, new):
     return fix_particles(sentence.replace(old, new), [new])
 
 
+def word_spans(sentence, word):
+    """문장에서 그 낱말이 '낱말로' 나오는 자리들. 부분 문자열은 빼고.
+
+        낱말자리('가격을 봤다', '가격')    -> [(0, 2)]
+        낱말자리('가격표를 봤다', '가격')  -> []        (가격표는 다른 말이다)
+
+    한국어는 조사를 붙여 쓰므로 뒤에 한글이 오는 것만으로는 못 가른다.
+    뒤에 오는 것이 조사이거나, 공백이거나, 문장 끝일 때만 낱말로 본다."""
+    out, i = [], 0
+    while True:
+        i = sentence.find(word, i)
+        if i < 0:
+            return out
+        rear = i + len(word)
+        before = sentence[i - 1:i]
+        rest = sentence[rear:]
+        if (not before or not is_hangul(before)) and (
+                not rest or not is_hangul(rest[0])
+                or any(rest.startswith(p) and not is_hangul(rest[len(p):len(p) + 1])
+                       for p in _longest_first)):
+            out.append((i, rear))
+        i = rear
+
+
 def _selfcheck():
     assert decompose("값") == ("ㄱ", "ㅏ", "ㅄ"), decompose("값")
     assert decompose("가") == ("ㄱ", "ㅏ", ""), decompose("가")
@@ -316,6 +340,12 @@ def _selfcheck():
     assert attach_particle("책", "랑") == "책이랑"          # 이건 돋는다
     assert attach_particle("서울", "로") == "서울로"        # ㄹ 예외
     assert attach_particle("책", "로") == "책으로"
+    # 낱말 자리. 부분 문자열은 낱말이 아니다.
+    assert word_spans("가격을 봤다", "가격") == [(0, 2)]
+    assert word_spans("가격표를 봤다", "가격") == []
+    assert word_spans("흉기를 들고 있었습니다", "흉기") == [(0, 2)]
+    assert word_spans("살상흉기를 들었다", "흉기") == []
+    assert word_spans("결과 가 좋다", "결과") == [(0, 2)]
     print("자가검사 ok")
 
 
