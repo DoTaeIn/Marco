@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """남의 말을 빨아들이는 노드를 찾는다. 바꿔 말하기가 왜 지는지의 자리.
 
-    python 별칭진단.py                    # 전체 그래프
-    python 별칭진단.py graphs/graph_의료.kg
-    python 별칭진단.py --개수 30
+    python alias_diag.py                    # 전체 그래프
+    python alias_diag.py graphs/graph_의료.kg
+    python alias_diag.py --개수 30
 
 지능 시험에서 바꿔 말하기가 42.9% 였다. 파 보니 고칠 데가 알고리즘이
 아니었다. 다섯 가지를 재보고 다 접었다.
@@ -61,128 +61,128 @@ import itertools
 import os
 import sys
 
-여기 = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, 여기)
+here = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, here)
 os.environ.setdefault("KG_ENCODER", "문자")
 
 import engine                                    # noqa: E402
-from 진행 import 막대                             # noqa: E402
+from progress import Bar                             # noqa: E402
 
-_표본 = 40                                       # 노드당 남의 말 몇 개까지 볼까
-
-
-def 그래프들(인자):
-    if 인자:
-        return [p for p in 인자 if p.endswith(".kg")]
-    return sorted(glob.glob(os.path.join(여기, "graphs", "*.kg")))
+_sample = 40                                       # 노드당 남의 말 몇 개까지 볼까
 
 
-def _글자수(s):
+def graphs(argv):
+    if argv:
+        return [p for p in argv if p.endswith(".kg")]
+    return sorted(glob.glob(os.path.join(here, "graphs", "*.kg")))
+
+
+def _char_count(s):
     return len("".join(s.split()))
 
 
-def 흡수력(경로):
+def absorption(path):
     """-> [(흡수력, 노드, 별칭최대길이, 별칭수)] 높은 순."""
-    이름 = os.path.relpath(경로, 여기).replace("\\", "/")
-    g = engine.그래프불러오기(이름)
-    층별 = {}
-    for 층 in ("공통층", "사례층"):
-        for n, 말들 in (g.get(층) or {}).items():
-            층별[n] = list(말들) or [n]
-    표 = []
-    for n, 내별칭 in 층별.items():
-        남 = [m for k, 말들 in 층별.items() if k != n for m in 말들][:_표본]
-        if not 남:
+    name = os.path.relpath(path, here).replace("\\", "/")
+    g = engine.load_graph(name)
+    by_layer = {}
+    for layer in ("공통층", "사례층"):
+        for n, phrases in (g.get(layer) or {}).items():
+            by_layer[n] = list(phrases) or [n]
+    table = []
+    for n, own_aliases in by_layer.items():
+        other = [m for k, phrases in by_layer.items() if k != n for m in phrases][:_sample]
+        if not other:
             continue
-        점 = [max(float(engine._속(q) @ engine._담(b)) for b in 내별칭) for q in 남]
-        표.append((sum(점) / len(점), n,
-                   max(_글자수(x) for x in 내별칭), len(내별칭)))
-    return sorted(표, reverse=True)
+        pt = [max(float(engine._embed_sub(q) @ engine._embed(b)) for b in own_aliases) for q in other]
+        table.append((sum(pt) / len(pt), n,
+                   max(_char_count(x) for x in own_aliases), len(own_aliases)))
+    return sorted(table, reverse=True)
 
 
-_문턱 = 3          # 별칭이 이만큼은 되어야 처음 보는 말투가 붙기 시작한다
+_THRESH = 3          # 별칭이 이만큼은 되어야 처음 보는 말투가 붙기 시작한다
 
 
-def 모자란별칭(경로, 내가지은것):
+def missing_aliases(path, self_authored):
     """별칭이 문턱 아래인 노드. -> [(별칭수, 노드)] 적은 순"""
-    이름 = os.path.relpath(경로, 여기).replace("\\", "/")
-    if 이름 in 내가지은것 or "템플릿" in 이름:
+    name = os.path.relpath(path, here).replace("\\", "/")
+    if name in self_authored or "템플릿" in name:
         return []                       # 틀에서 찍은 것은 사람이 쓸 자리가 아니다
-    g = engine.그래프불러오기(이름)
-    나옴 = []
-    for 층 in ("공통층", "사례층"):
-        for n, 말들 in (g.get(층) or {}).items():
-            수 = len(list(말들))
-            if 수 < _문턱:
-                나옴.append((수, n))
-    return sorted(나옴)
+    g = engine.load_graph(name)
+    emitted = []
+    for layer in ("공통층", "사례층"):
+        for n, phrases in (g.get(layer) or {}).items():
+            num = len(list(phrases))
+            if num < _THRESH:
+                emitted.append((num, n))
+    return sorted(emitted)
 
 
-def 보기(인자):
-    개수 = 20
-    if "--개수" in 인자:
-        개수 = int(인자[인자.index("--개수") + 1])
-    파일들 = 그래프들([a for a in 인자 if not a.startswith("--")])
-    모두 = []
-    for p in 막대(파일들, "흡수력"):
+def view(argv):
+    count = 20
+    if "--개수" in argv:
+        count = int(argv[argv.index("--개수") + 1])
+    files = graphs([a for a in argv if not a.startswith("--")])
+    every = []
+    for p in Bar(files, "흡수력"):
         try:
-            for 점, n, 길, 수 in 흡수력(p):
-                모두.append((점, os.path.basename(p), n, 길, 수))
+            for pt, n, loc, num in absorption(p):
+                every.append((pt, os.path.basename(p), n, loc, num))
         except Exception:
             continue
-    if not 모두:
+    if not every:
         print("잴 노드가 없다.")
         return
-    모두.sort(reverse=True)
-    중간 = 모두[len(모두) // 2][0]
-    print("\n노드 %d개 · 흡수력 중앙값 %.3f" % (len(모두), 중간))
+    every.sort(reverse=True)
+    mid = every[len(every) // 2][0]
+    print("\n노드 %d개 · 흡수력 중앙값 %.3f" % (len(every), mid))
     print("\n남의 말을 가장 많이 빨아들이는 노드:")
-    for 점, 파일, n, 길, 수 in 모두[:개수]:
+    for pt, file, n, loc, num in every[:count]:
         print("  %.3f  %-24s %-18s 별칭 %d개 · 최대 %d자"
-              % (점, 파일[:24], n[:18], 수, 길))
+              % (pt, file[:24], n[:18], num, loc))
     print("\n가장 안 빨아들이는 노드 (짧은 증거 이름이 여기 모인다):")
-    for 점, 파일, n, 길, 수 in 모두[-5:]:
+    for pt, file, n, loc, num in every[-5:]:
         print("  %.3f  %-24s %-18s 별칭 %d개 · 최대 %d자"
-              % (점, 파일[:24], n[:18], 수, 길))
+              % (pt, file[:24], n[:18], num, loc))
 
     # 별칭이 문턱 아래인 노드 — 한 개만 더 쓰면 넘는 자리다.
     try:
-        import 자가저작
-        내것 = 자가저작.내가지은것()
+        import self_authoring
+        mine = self_authoring.self_authored()
     except Exception:
-        내것 = set()
-    모자람 = []
-    for p in 파일들:
+        mine = set()
+    shortfall = []
+    for p in files:
         try:
-            for 수, n in 모자란별칭(p, 내것):
-                모자람.append((수, os.path.basename(p), n))
+            for num, n in missing_aliases(p, mine):
+                shortfall.append((num, os.path.basename(p), n))
         except Exception:
             continue
-    if 모자람:
-        하나 = sum(1 for 수, _f, _n in 모자람 if 수 <= 1)
+    if shortfall:
+        one = sum(1 for num, _f, _n in shortfall if num <= 1)
         print("\n별칭이 %d개 미만인 노드 %d개 (그중 하나뿐인 것 %d개)"
-              % (_문턱, len(모자람), 하나))
+              % (_THRESH, len(shortfall), one))
         print("  하나만 더 쓰면 문턱을 넘는다 — 그때부터 안 배운 말투도 붙는다.")
-        for 수, 파일, n in sorted(모자람)[:개수]:
-            print("  별칭 %d개  %-26s %s" % (수, 파일[:26], n[:30]))
+        for num, file, n in sorted(shortfall)[:count]:
+            print("  별칭 %d개  %-26s %s" % (num, file[:26], n[:30]))
 
 
-def _자가검사():
+def _selfcheck():
     # 긴 별칭이 짧은 별칭보다 남의 말을 더 덮는다 — 이 파일의 전제다.
-    긴 = "피고인이 그 자리에서 계속 때렸다고 보입니다"
-    짧 = "CCTV"
-    물음 = "병원에서 떼 온 상해 소견 서류가 있습니다"
-    v = engine._속(물음)
-    assert float(v @ engine._담(긴)) > float(v @ engine._담(짧)), "전제가 깨졌다"
-    assert _글자수("가 나 다") == 3
-    assert 그래프들(["graphs/graph.kg"]) == ["graphs/graph.kg"]
-    assert 그래프들([]), "그래프를 못 찾는다"
+    long = "피고인이 그 자리에서 계속 때렸다고 보입니다"
+    short = "CCTV"
+    prompt = "병원에서 떼 온 상해 소견 서류가 있습니다"
+    v = engine._embed_sub(prompt)
+    assert float(v @ engine._embed(long)) > float(v @ engine._embed(short)), "전제가 깨졌다"
+    assert _char_count("가 나 다") == 3
+    assert graphs(["graphs/graph.kg"]) == ["graphs/graph.kg"]
+    assert graphs([]), "그래프를 못 찾는다"
     print("자가검사 ok")
 
 
 if __name__ == "__main__":
-    인자 = sys.argv[1:]
-    if "--자가검사" in 인자:
-        _자가검사()
+    argv = sys.argv[1:]
+    if "--자가검사" in argv:
+        _selfcheck()
     else:
-        보기(인자)
+        view(argv)

@@ -41,55 +41,55 @@
 """
 import re
 
-_시작, _끝 = 0xAC00, 0xD7A3
-_초성표 = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
-_중성표 = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
-_종성표 = " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ"
+_start, _end = 0xAC00, 0xD7A3
+_ONSETS = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
+_NUCLEI = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
+_CODAS = " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ"
 
 
-def 한글인가(글자):
-    return bool(글자) and _시작 <= ord(글자[0]) <= _끝
+def is_hangul(char):
+    return bool(char) and _start <= ord(char[0]) <= _end
 
 
-def 분해(글자):
+def decompose(char):
     """음절 하나 -> (초성, 중성, 종성). 종성이 없으면 ''. 한글이 아니면 None."""
-    if not 한글인가(글자):
+    if not is_hangul(char):
         return None
-    k = ord(글자[0]) - _시작
-    return (_초성표[k // 588], _중성표[(k % 588) // 28], _종성표[k % 28].strip())
+    k = ord(char[0]) - _start
+    return (_ONSETS[k // 588], _NUCLEI[(k % 588) // 28], _CODAS[k % 28].strip())
 
 
-def 조합(초성, 중성, 종성=""):
+def compose(onset, nucleus, coda=""):
     """(초성, 중성, 종성) -> 음절 하나."""
-    return chr(_시작 + _초성표.index(초성) * 588
-               + _중성표.index(중성) * 28
-               + (_종성표.index(종성) if 종성 else 0))
+    return chr(_start + _ONSETS.index(onset) * 588
+               + _NUCLEI.index(nucleus) * 28
+               + (_CODAS.index(coda) if coda else 0))
 
 
-def 받침(말):
+def batchim(phrase):
     """낱말 끝 글자의 종성. 없으면 ''. 한글이 아니면 None.
 
     None 과 '' 는 다르다. None 은 '판단할 수 없다'(영문·숫자)이고 '' 는
     '받침이 없다'(사과)다. 이걸 섞으면 'CCTV을' 같은 것이 나간다."""
-    if not 말 or not 한글인가(말[-1]):
+    if not phrase or not is_hangul(phrase[-1]):
         return None
-    return _종성표[(ord(말[-1]) - _시작) % 28].strip()
+    return _CODAS[(ord(phrase[-1]) - _start) % 28].strip()
 
 
-def 받침떼기(말):
+def strip_batchim(phrase):
     """끝 글자의 받침을 뗀 말. 받침이 없으면 그대로.
 
     과거 관형형이 이 꼴이다 — '만든' 의 ㄴ 은 낱글자로 안 서고 받침으로
     붙어 있어서, 글자 단위로 자르면 안 보인다(만든 -> 만드, 나타낸 ->
     나타내). 사전 정의문이 '…만든 것.' 으로 끝나는 일이 흔하다."""
-    ㄴ = 받침(말)
+    ㄴ = batchim(phrase)
     if not ㄴ:
-        return 말
-    초, 중, _ = 분해(말[-1])
-    return 말[:-1] + 조합(초, 중)
+        return phrase
+    sec, mid, _ = decompose(phrase[-1])
+    return phrase[:-1] + compose(sec, mid)
 
 
-def 자모펴기(말):
+def flatten_jamo(phrase):
     """한글을 자모로 편다. '해고' -> ㅎㅐㄱㅗ. 한글이 아닌 글자는 그대로.
 
     음절로 자르면 '해고' 와 '해구' 가 한 글자도 안 겹친다. 자모로 펴면
@@ -99,8 +99,8 @@ def 자모펴기(말):
     고리라 글자마다 함수를 부르면 66% 느려진다(44ms -> 73ms / 2000회).
     고리째로 옮기면 부르는 쪽은 한 번만 부르니 값이 같다."""
     out = []
-    for c in 말:
-        k = ord(c) - _시작
+    for c in phrase:
+        k = ord(c) - _start
         if 0 <= k < 11172:
             out.append(chr(0x1100 + k // 588))
             out.append(chr(0x1161 + (k % 588) // 28))
@@ -111,11 +111,11 @@ def 자모펴기(말):
     return "".join(out)
 
 
-def 자모번호(말):
+def jamo_index(phrase):
     """자모를 번호로 편다. [초, 중, 종] 셋씩. 오타 거리를 잴 때 쓴다."""
     out = []
-    for c in 말:
-        k = ord(c) - _시작
+    for c in phrase:
+        k = ord(c) - _start
         if 0 <= k < 11172:
             out += [k // 588, (k % 588) // 28, k % 28]
         else:
@@ -123,42 +123,42 @@ def 자모번호(말):
     return out
 
 
-def 초성(말):
+def onset(phrase):
     """낱말 -> 초성만. 한글이 아닌 글자는 그대로 둔다.
 
     초성 검색('ㄱㅁㅇ' -> '고맙읍')에 쓸 자리다. 지금은 안 쓰지만 자모를
     한곳에 모은 김에 같이 둔다 — 밖에서 또 0xAC00 을 쓰지 않게."""
-    return "".join(분해(c)[0] if 한글인가(c) else c for c in 말)
+    return "".join(decompose(c)[0] if is_hangul(c) else c for c in phrase)
 
 
 # ── 낱말 꼬리 ─────────────────────────────────────────────────────────
 # 조사와 어미. engine.py 에 흩어져 있던 것을 여기로 모은다 — 이건 도메인
 # 지식이 아니라 한국어 규칙이라, 자모·조사와 한자리에 있어야 고칠 때 한
 # 군데만 보면 된다.
-조사들 = ("으로써", "으로서", "이라는", "에서는", "에서도", "라는", "에서", "에게", "한테",
+particles = ("으로써", "으로서", "이라는", "에서는", "에서도", "라는", "에서", "에게", "한테",
         "까지", "부터", "처럼", "보다", "이나", "거나", "이며", "으로", "로서", "로써",
         "와의", "과의", "이라", "의", "을", "를", "은", "는", "이", "가", "도", "만",
         "과", "와", "로", "에")
-어미들 = ("하지", "하는", "하여", "한", "된", "되는", "스러운", "스럽게", "있어", "없어")
+endings = ("하지", "하는", "하여", "한", "된", "되는", "스러운", "스럽게", "있어", "없어")
 # 용언이 끝나는 소리. 이걸로 끝나면 명사가 아니라 서술어로 본다.
-용언끝 = ("지", "기", "여", "며", "면", "고", "서", "게", "히", "이", "어", "아", "나")
+verb_ends = ("지", "기", "여", "며", "면", "고", "서", "게", "히", "이", "어", "아", "나")
 
 # ── 예/아니오 ─────────────────────────────────────────────────────────
 # 되묻기에 답하는 말. 사람이 실제로 쓰는 꼴을 다 적는다 — 'ㅇㅇ' 이 빠져
 # 있어서 되묻고도 '맞다' 를 못 알아들은 적이 있다.
-긍정말 = ("네", "예", "맞다", "맞습니다", "맞아요", "맞아", "그렇습니다", "그래요",
+yes_words = ("네", "예", "맞다", "맞습니다", "맞아요", "맞아", "그렇습니다", "그래요",
         "그래", "응", "어", "그렇죠", "바로 그겁니다", "그 말입니다", "ㅇㅇ",
         "맞음", "yes", "y")
-부정말 = ("아니", "아뇨", "아닙니다", "아니요", "틀렸", "아냐", "no", "n")
+no_words = ("아니", "아뇨", "아닙니다", "아니요", "틀렸", "아냐", "no", "n")
 
 
 # 소리가 아예 다른 짝. 이 넷만 적어 둔다. 앞이 받침 있는 쪽이다.
-_짝 = (("은", "는"), ("이", "가"), ("을", "를"), ("과", "와"))
+_mate = (("은", "는"), ("이", "가"), ("을", "를"), ("과", "와"))
 # 받침 뒤에서 앞에 돋는 소리. '으' 는 ㄹ 받침 뒤에서는 안 돋는다.
-_덧남 = ("이", "으")
+_surplus = ("이", "으")
 
 
-def 조사고르기(말, 짝):
+def pick_particle(phrase, mate):
     """받침을 보고 조사를 고른다. 짝은 '은/는' 처럼 '받침형/민형' 으로 준다.
 
         조사고르기('책', '은/는')   -> '은'
@@ -167,55 +167,55 @@ def 조사고르기(말, 짝):
         조사고르기('책', '으로/로')   -> '으로'
 
     한글이 아니면 민형을 준다 — 'CCTV은' 보다 'CCTV는' 이 덜 틀린다."""
-    받, 민 = 짝.split("/") if isinstance(짝, str) else 짝
-    ㄴ = 받침(말)
+    with_batchim, plain = mate.split("/") if isinstance(mate, str) else mate
+    ㄴ = batchim(phrase)
     if not ㄴ:
-        return 민
-    if 받[:1] == "으" and ㄴ == "ㄹ":
-        return 민
-    return 받
+        return plain
+    if with_batchim[:1] == "으" and ㄴ == "ㄹ":
+        return plain
+    return with_batchim
 
 
-def 조사붙이기(말, 조사):
+def attach_particle(phrase, particle):
     """낱말 + 조사 -> 맞는 꼴로 붙인 말. 조사는 어느 쪽 꼴로 줘도 된다.
 
         조사붙이기('철수', '이랑') -> '철수랑'
         조사붙이기('책', '랑')     -> '책이랑'
     """
-    return 말 + _맞춘조사(말, 조사)
+    return phrase + _fitted_particle(phrase, particle)
 
 
-def _맞춘조사(말, 조사):
+def _fitted_particle(phrase, particle):
     """조사 하나를 그 낱말에 맞는 꼴로 바꾼다. 조사가 아니면 그대로."""
-    for 받, 민 in _짝:
-        if 조사 == 받 or 조사 == 민:
-            return 조사고르기(말, (받, 민))
-    for 덧 in _덧남:
-        if 조사.startswith(덧) and len(조사) > 1:
-            return 조사고르기(말, (조사, 조사[1:]))
+    for with_batchim, plain in _mate:
+        if particle == with_batchim or particle == plain:
+            return pick_particle(phrase, (with_batchim, plain))
+    for add in _surplus:
+        if particle.startswith(add) and len(particle) > 1:
+            return pick_particle(phrase, (particle, particle[1:]))
         # 민형으로 적혀 있으면 받침 뒤에서 돋워 준다. '책' + '랑' -> '책이랑'
-    ㄴ = 받침(말)
+    ㄴ = batchim(phrase)
     if ㄴ is None:
-        return 조사
+        return particle
     if ㄴ:
-        덧 = "으" if 조사[:1] in "ㄹ로므며면" or 조사[:1] == "로" else "이"
-        if 덧 == "으" and ㄴ == "ㄹ":
-            return 조사
-        return 덧 + 조사
-    return 조사
+        add = "으" if particle[:1] in "ㄹ로므며면" or particle[:1] == "로" else "이"
+        if add == "으" and ㄴ == "ㄹ":
+            return particle
+        return add + particle
+    return particle
 
 
 # 조사로 볼 수 있는 것들. 낱말 뒤에 붙어 있을 때만 본다.
 # 이 목록은 '어떤 소리가 조사냐' 지 '어떤 낱말에 무엇이 붙냐' 가 아니다 —
 # 낱말마다 적는 표가 아니라서 늘어나지 않는다.
-_조사들 = ("이랑", "랑", "이라고", "라고", "이라는", "라는", "이라", "라",
+_particles = ("이랑", "랑", "이라고", "라고", "이라는", "라는", "이라", "라",
           "이니까", "니까", "이네요", "네요", "이야", "야", "이나", "나",
           "으로써", "로써", "으로서", "로서", "으로", "로",
           "은", "는", "이", "가", "을", "를", "과", "와")
-_긴것부터 = tuple(sorted(_조사들, key=len, reverse=True))
+_longest_first = tuple(sorted(_particles, key=len, reverse=True))
 
 
-def 조사고치기(문장, 낱말들):
+def fix_particles(sentence, words):
     """치환된 낱말 뒤의 조사를 받침에 맞게 고친다.
 
     템플릿에 조사를 박아두면 '방위의사은' 같은 것이 나온다. 노드 이름이
@@ -223,74 +223,74 @@ def 조사고치기(문장, 낱말들):
 
     긴 조사부터 본다. 짧은 것부터 보면 '철수이랑' 에서 '이' 를 잡아
     '철수가랑' 을 만든다 — 실제로 그렇게 깨져 있었다."""
-    for 값 in sorted({x for x in 낱말들 if x}, key=len, reverse=True):
-        if 받침(값) is None:
+    for value in sorted({x for x in words if x}, key=len, reverse=True):
+        if batchim(value) is None:
             continue
         i = 0
         while True:
-            i = 문장.find(값, i)
+            i = sentence.find(value, i)
             if i < 0:
                 break
-            뒤 = i + len(값)
-            for 조 in _긴것부터:
-                if not 문장.startswith(조, 뒤):
+            rear = i + len(value)
+            for art in _longest_first:
+                if not sentence.startswith(art, rear):
                     continue
                 # 조사 뒤가 또 한글이면 조사가 아니라 다음 낱말일 수 있다.
                 # '철수이것' 의 '이' 를 조사로 보면 안 된다.
-                남 = 문장[뒤 + len(조):뒤 + len(조) + 1]
-                if 남 and 한글인가(남) and len(조) == 1:
+                other = sentence[rear + len(art):rear + len(art) + 1]
+                if other and is_hangul(other) and len(art) == 1:
                     continue
-                바름 = _맞춘조사(값, 조)
-                문장 = 문장[:뒤] + 바름 + 문장[뒤 + len(조):]
+                correct = _fitted_particle(value, art)
+                sentence = sentence[:rear] + correct + sentence[rear + len(art):]
                 break
-            i = 뒤
-    return 문장
+            i = rear
+    return sentence
 
 
-def _자가검사():
-    assert 분해("값") == ("ㄱ", "ㅏ", "ㅄ"), 분해("값")
-    assert 분해("가") == ("ㄱ", "ㅏ", ""), 분해("가")
-    assert 분해("A") is None
-    assert 조합("ㄱ", "ㅏ", "ㅄ") == "값" and 조합("ㄱ", "ㅏ") == "가"
-    assert 받침("책") == "ㄱ" and 받침("사과") == "" and 받침("CCTV") is None
-    assert 받침떼기("만든") == "만드" and 받침떼기("나타낸") == "나타내"
-    assert 받침떼기("나타내") == "나타내"
-    assert 초성("고맙습니다") == "ㄱㅁㅅㄴㄷ"
-    assert 자모펴기("해고") != 자모펴기("해구") and len(자모펴기("해고")) == 4
-    assert 자모번호("가")[:3] == [0, 0, 0] and len(자모번호("값")) == 3
+def _selfcheck():
+    assert decompose("값") == ("ㄱ", "ㅏ", "ㅄ"), decompose("값")
+    assert decompose("가") == ("ㄱ", "ㅏ", ""), decompose("가")
+    assert decompose("A") is None
+    assert compose("ㄱ", "ㅏ", "ㅄ") == "값" and compose("ㄱ", "ㅏ") == "가"
+    assert batchim("책") == "ㄱ" and batchim("사과") == "" and batchim("CCTV") is None
+    assert strip_batchim("만든") == "만드" and strip_batchim("나타낸") == "나타내"
+    assert strip_batchim("나타내") == "나타내"
+    assert onset("고맙습니다") == "ㄱㅁㅅㄴㄷ"
+    assert flatten_jamo("해고") != flatten_jamo("해구") and len(flatten_jamo("해고")) == 4
+    assert jamo_index("가")[:3] == [0, 0, 0] and len(jamo_index("값")) == 3
     # 낱말 꼬리와 예/아니오도 여기 있어야 한다. engine 이 이걸 들고 있으면
     # 한국어 규칙이 두 군데로 갈린다.
-    assert "은" in 조사들 and "는" in 조사들 and "하는" in 어미들
-    assert "ㅇㅇ" in 긍정말 and "아니요" in 부정말
-    assert not (set(긍정말) & set(부정말)), "예와 아니오가 겹친다"
+    assert "은" in particles and "는" in particles and "하는" in endings
+    assert "ㅇㅇ" in yes_words and "아니요" in no_words
+    assert not (set(yes_words) & set(no_words)), "예와 아니오가 겹친다"
 
-    assert 조사고르기("책", "은/는") == "은" and 조사고르기("사과", "은/는") == "는"
+    assert pick_particle("책", "은/는") == "은" and pick_particle("사과", "은/는") == "는"
     # ㄹ 예외. 이게 없어서 '서울으로' 가 나갔다.
-    assert 조사고르기("서울", "으로/로") == "로", 조사고르기("서울", "으로/로")
-    assert 조사고르기("물", "으로/로") == "로"
-    assert 조사고르기("책", "으로/로") == "으로"
-    assert 조사고르기("부산", "으로/로") == "으로"   # ㄴ 받침은 돋는다
+    assert pick_particle("서울", "으로/로") == "로", pick_particle("서울", "으로/로")
+    assert pick_particle("물", "으로/로") == "로"
+    assert pick_particle("책", "으로/로") == "으로"
+    assert pick_particle("부산", "으로/로") == "으로"   # ㄴ 받침은 돋는다
     # 한글이 아니면 민형. 'CCTV을' 보다 'CCTV를' 이 덜 틀리다.
-    assert 조사고르기("CCTV", "을/를") == "를"
+    assert pick_particle("CCTV", "을/를") == "를"
 
-    assert 조사붙이기("철수", "이랑") == "철수랑", 조사붙이기("철수", "이랑")
-    assert 조사붙이기("책", "랑") == "책이랑", 조사붙이기("책", "랑")
+    assert attach_particle("철수", "이랑") == "철수랑", attach_particle("철수", "이랑")
+    assert attach_particle("책", "랑") == "책이랑", attach_particle("책", "랑")
 
     # 표에 없던 조사가 말을 망가뜨리던 자리
-    assert 조사고치기("철수이랑 간다", ["철수"]) == "철수랑 간다"
-    assert 조사고치기("서울으로 간다", ["서울"]) == "서울로 간다"
-    assert 조사고치기("물으로 씻는다", ["물"]) == "물로 씻는다"
-    assert 조사고치기("부산으로 간다", ["부산"]) == "부산으로 간다"
+    assert fix_particles("철수이랑 간다", ["철수"]) == "철수랑 간다"
+    assert fix_particles("서울으로 간다", ["서울"]) == "서울로 간다"
+    assert fix_particles("물으로 씻는다", ["물"]) == "물로 씻는다"
+    assert fix_particles("부산으로 간다", ["부산"]) == "부산으로 간다"
     # 예전 판이 하던 일은 그대로 해야 한다
-    assert 조사고치기("책를 읽는다", ["책"]) == "책을 읽는다"
-    assert 조사고치기("사과을 먹는다", ["사과"]) == "사과를 먹는다"
-    assert 조사고치기("연필가 있다", ["연필"]) == "연필이 있다"
-    assert 조사고치기("봤어요이니까 그렇다", ["봤어요"]) == "봤어요니까 그렇다"
+    assert fix_particles("책를 읽는다", ["책"]) == "책을 읽는다"
+    assert fix_particles("사과을 먹는다", ["사과"]) == "사과를 먹는다"
+    assert fix_particles("연필가 있다", ["연필"]) == "연필이 있다"
+    assert fix_particles("봤어요이니까 그렇다", ["봤어요"]) == "봤어요니까 그렇다"
     # 조사가 아닌 것은 안 건드린다
-    assert 조사고치기("철수 이것 봐", ["철수"]) == "철수 이것 봐"
-    assert 조사고치기("철수이것", ["철수"]) == "철수이것", 조사고치기("철수이것", ["철수"])
+    assert fix_particles("철수 이것 봐", ["철수"]) == "철수 이것 봐"
+    assert fix_particles("철수이것", ["철수"]) == "철수이것", fix_particles("철수이것", ["철수"])
     print("자가검사 ok")
 
 
 if __name__ == "__main__":
-    _자가검사()
+    _selfcheck()

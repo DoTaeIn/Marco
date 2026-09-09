@@ -1,10 +1,10 @@
 import re
 
-with open("그림.py", "r", encoding="utf-8") as f:
+with open("vision.py", "r", encoding="utf-8") as f:
     content = f.read()
 
 # 1. Modify _표적덩어리후보 signature and return logic
-def repl_후보(m):
+def repl_cand(m):
     # m.group(1) is the append line
     # m.group(2) is the rest of the function
     return m.group(0).replace(
@@ -21,16 +21,16 @@ def repl_후보(m):
         '답.append((s, 상자, 덩이))'
     )
 
-content = re.sub(r'(def _표적덩어리후보.*?(?=def _상자영수증))', repl_후보, content, flags=re.DOTALL)
+content = re.sub(r'(def _표적덩어리후보.*?(?=def _상자영수증))', repl_cand, content, flags=re.DOTALL)
 
 # 2. Modify _상자영수증
-def repl_영수증(m):
+def repl_receipt(m):
     return m.group(0).replace(
         'for _, (y0, y1, x0, x1) in 묶음:',
         'for 항목 in 묶음:\n            y0, y1, x0, x1 = 항목[1]'
     )
 
-content = re.sub(r'(def _상자영수증.*?(?=def _국소다시맞히기))', repl_영수증, content, flags=re.DOTALL)
+content = re.sub(r'(def _상자영수증.*?(?=def _국소다시맞히기))', repl_receipt, content, flags=re.DOTALL)
 
 # 3. Add _볼록껍질영역만 above _영역중심
 new_func = """
@@ -95,5 +95,5 @@ content = content.replace(
     '연결="--연결" in sys.argv, 볼록껍질="--볼록껍질" in sys.argv)'
 )
 
-with open("그림.py", "w", encoding="utf-8") as f:
+with open("vision.py", "w", encoding="utf-8") as f:
     f.write(content)

@@ -21,14 +21,14 @@
 관계 이름(`갖춤`·`함의함`·`걸림돌`)은 엔진에 안 박혀 있다. 이 그래프가
 머리말로 선언한다 — 법정 어휘(증명/충족/부정)를 한 개도 쓰지 않는다.
 
-    python 목적그래프.py "세차(洗車)는 자동차를 씻는 일이다" --out graphs/graph_세차.kg
+    python purpose_graph.py "세차(洗車)는 자동차를 씻는 일이다" --out graphs/graph_세차.kg
 """
 from __future__ import annotations
 
 import re
 import sys
 
-from build import 대상뽑기
+from build import extract_target
 
 # 도식마다 다른 것은 **말버릇뿐**이다. 논증 뼈대는 셋 다 같다 —
 # 대상이 그 자리에 있어야 목적이 서고, 없으면 무너진다. 구조가 다르다고
@@ -44,7 +44,7 @@ from build import 대상뽑기
 # 예시는 `걸어서 간다` 같은 짧은 말에 오히려 진다. 실제로 낱말만 붙였더니
 # `걸어서 간다` 가 인정에서 미지로 떨어졌다. 그래서 둘 다 둔다: 신원용
 # 긴 것을 앞에, 대화 중에 쓰일 짧은 것을 뒤에.
-말버릇 = {
+speech_habit = {
     "물건": {"함": "가져감", "안함": "두고감", "됨": "가져갔다", "안됨": "두고 갔다", "댐": "가져간다", "안댐": "두고 간다",
              "댐예": ["{말} 하러 {대} {조} 가져간다", "{대} {조} 챙겨서 {말} 하러 간다",
                      "{대} {조} 타고 간다", "가지고 간다"],
@@ -62,15 +62,15 @@ from build import 대상뽑기
                       "혼자 간다", "안 부른다"]},
 }
 
-_머리 = re.compile(r"^\s*([가-힣A-Za-z]{2,14})\s*(?:\([^)]*\))?\s*(?:은|는|이란|란)")
+_head = re.compile(r"^\s*([가-힣A-Za-z]{2,14})\s*(?:\([^)]*\))?\s*(?:은|는|이란|란)")
 # 목적이 될 수 없는 표제어. `이중적`·`위생적` 은 성질이지 하는 일이 아니라서
 # '이중적함' 이라는 목표 자체가 말이 안 된다. 그런데 이런 낱말의 정의문은
 # `…성질을 가지고 있는 것` 처럼 유가 '것' 이라 동작류를 그대로 통과한다.
 # 표준국어대사전 표본 30개에서 틀린 10개 중 6개가 이 한 갈래였다.
-_목적아님 = re.compile(r"(?:적|성|히|이|스레)$")
+_not_purpose = re.compile(r"(?:적|성|히|이|스레)$")
 
 
-def 짓기(정의문, 출처="", 말=None, 도식="물건", 색인=False):
+def build(definition, src="", phrase=None, schema="물건", index=False):
     """정의문 -> .kg 글자. 대상을 못 뽑으면 None (억지로 짓지 않는다).
 
     도식은 `사전뽑기.도식찾기` 가 낸 것을 넘긴다. 모르면 '물건' 으로 둔다 —
@@ -80,35 +80,35 @@ def 짓기(정의문, 출처="", 말=None, 도식="물건", 색인=False):
     지은 그래프가 조용히 색인에 끼면 남의 물음을 가져가서 거기서 미지가
     된다(742개를 그냥 넣으니 답함이 62.3% 에서 60.0% 로 떨어졌다).
     켜는 것은 `자가저작` 의 관문을 지난 뒤여야 한다."""
-    버릇 = 말버릇.get(도식) or 말버릇["물건"]
+    habit = speech_habit.get(schema) or speech_habit["물건"]
 
-    def 조사(말, 받침조사, 민조사):
+    def particle(phrase, batchim_particle, plain_particle):
         """'책 를' 이 아니라 '책 을'. 노드 이름은 알 수 없으니 여기서 고른다."""
-        import 한글
-        return 한글.조사고르기(말, (받침조사, 민조사))
-    뽑 = 대상뽑기(정의문)
-    if not 뽑:
+        import hangul
+        return hangul.pick_particle(phrase, (batchim_particle, plain_particle))
+    extract = extract_target(definition)
+    if not extract:
         return None
-    대상, 동작 = 뽑
-    if 말 is None:
-        m = _머리.match(정의문)
+    target, action = extract
+    if phrase is None:
+        m = _head.match(definition)
         if not m:
             return None
-        말 = m.group(1)
-    if 말 == 대상:                       # '차는 차를 …' 같은 것은 그래프가 안 된다
+        phrase = m.group(1)
+    if phrase == target:                       # '차는 차를 …' 같은 것은 그래프가 안 된다
         return None
-    if _목적아님.search(말):
+    if _not_purpose.search(phrase):
         return None
-    꼬리 = ("@" + 출처) if 출처 else ""
-    return f"""# {말} — 목적이 수단을 제약하는 그래프.
+    tail = ("@" + src) if src else ""
+    return f"""# {phrase} — 목적이 수단을 제약하는 그래프.
 # 사람이 적은 것이 아니라 아래 원문 한 줄에서 뽑았다.
 #
-#     {정의문}
+#     {definition}
 #
-# 여기서 나온 것은 '{말} 의 대상은 {대상}' 하나뿐이다. 나머지 뼈대는 그
+# 여기서 나온 것은 '{phrase} 의 대상은 {target}' 하나뿐이다. 나머지 뼈대는 그
 # 관계가 늘 같은 모양이라 이 파일이 채운다 — 대상이 있어야 목적이 선다.
-역할: {말} 상담
-목표: {말}함{"" if 색인 else chr(10) + "색인: 아니오"}
+역할: {phrase} 상담
+목표: {phrase}함{"" if index else chr(10) + "색인: 아니오"}
 임계값: 0.50 / 0.60
 전진관계: 갖춤, 함의함
 부정관계: 걸림돌
@@ -117,19 +117,19 @@ def 짓기(정의문, 출처="", 말=None, 도식="물건", 색인=False):
 [개념]
 # 개념은 **상태**를 말한다. 사례(행동)와 같은 문장을 쓰면 매처가 둘을 못 갈라
 # '자동차 를 타고 간다' 가 '자동차없음' 으로 붙는다 — 실제로 그렇게 깨졌다.
-{말}함:      "{말}를 할 수 있다" | "{말} 가 된다"
-{대상}있음:   "{대상} 가 그 자리에 있다" | "{대상} {조사(대상,"을","를")} {버릇["됨"]}"
-{대상}없음:   "{대상} 가 없다" | "{대상} {조사(대상,"을","를")} {버릇["안됨"]}"
+{phrase}함:      "{phrase}를 할 수 있다" | "{phrase} 가 된다"
+{target}있음:   "{target} 가 그 자리에 있다" | "{target} {particle(target,"을","를")} {habit["됨"]}"
+{target}없음:   "{target} 가 없다" | "{target} {particle(target,"을","를")} {habit["안됨"]}"
 
 [공리]
 # 둘째 별칭으로 `{{말}} 는 {{대상}} 을 {{동작}}는 일이라 …` 를 달았었다.
 # 낱말 둘만 다르고 나머지가 전부 같은 틀이라, 그래프를 여럿 찍으면 그
 # 별칭끼리 서로를 삼킨다. 원문 한 줄이면 신원이 선다.
-{말}에는{대상}가필요{꼬리}: "{정의문}" | "{말} 에는 {대상} 가 있어야 한다"
+{phrase}에는{target}가필요{tail}: "{definition}" | "{phrase} 에는 {target} 가 있어야 한다"
 
 [사례]
-*{대상}{버릇["함"]}: {" | ".join('"%s"' % x.format(대=대상, 조=조사(대상, "을", "를"), 말=말) for x in 버릇["댐예"])}
-*{대상}{버릇["안함"]}: {" | ".join('"%s"' % x.format(대=대상, 조=조사(대상, "을", "를"), 말=말) for x in 버릇["안댐예"])}
+*{target}{habit["함"]}: {" | ".join('"%s"' % x.format(**{"대": target, "조": particle(target, "을", "를"), "말": phrase}) for x in habit["댐예"])}
+*{target}{habit["안함"]}: {" | ".join('"%s"' % x.format(**{"대": target, "조": particle(target, "을", "를"), "말": phrase}) for x in habit["안댐예"])}
 
 [무관]
 # 걸리는 시간은 이 목표에 기여하지 않는다. 사례층에 두면 목표에 닿지 못해
@@ -137,44 +137,44 @@ def 짓기(정의문, 출처="", 말=None, 도식="물건", 색인=False):
 _시간비교: "걸어서 5분 차로 10분" | "걷는 게 더 빠르다" | "그게 더 오래 걸린다"
 
 [논증]
-{대상}{버릇["함"]} -갖춤-> {대상}있음
-{대상}{버릇["안함"]} -갖춤-> {대상}없음
-{대상}없음 -걸림돌-> {대상}있음
-{대상}있음 -함의함-> {말}함
-{말}에는{대상}가필요 -함의함-> {말}함
+{target}{habit["함"]} -갖춤-> {target}있음
+{target}{habit["안함"]} -갖춤-> {target}없음
+{target}없음 -걸림돌-> {target}있음
+{target}있음 -함의함-> {phrase}함
+{phrase}에는{target}가필요 -함의함-> {phrase}함
 
 [대사]
-B2: 그건 {말} 를 할 수 있느냐와 상관이 없다.
-B2_강등: {말} 를 할 수 있느냐만 다룬다.
+B2: 그건 {phrase} 를 할 수 있느냐와 상관이 없다.
+B2_강등: {phrase} 를 할 수 있느냐만 다룬다.
 A: 혹시 {{claim}} 말인가?
 근거없음: {{claim}} 는 무엇을 보고 하는 말인가?
 인정: {{ev}} 니까 {{claim}} 다.
 인정_반격: {{ev}} 는 그렇다. 그런데 {{bad}} 가 걸린다.
 C: {{ev}} 만으로는 {{claim}} 까지 못 간다.
-B1: {{claim}} 은 알겠다. {대상} {조사(대상,"을","를")} {버릇["댐"]} 건지를 말해야 한다.
+B1: {{claim}} 은 알겠다. {target} {particle(target,"을","를")} {habit["댐"]} 건지를 말해야 한다.
 미지: 그건 모르겠다.
 공리: {{claim}}
-목표주장: {말} 를 하려면 {대상} 를 어떻게 할 건지부터 정해야 한다.
+목표주장: {phrase} 를 하려면 {target} 를 어떻게 할 건지부터 정해야 한다.
 """
 
 
-def 동시짓기(말, 역할들, 단위, 출처=""):
+def build_concurrent(phrase, roles, unit, src=""):
     """사람이 확인한 동시 역할로만 별도 논증 뼈대를 만든다.
 
     역할·단위는 텍스트에서 추출하지 않는다. 빈 값/한 역할은 동시 구조가
     아니므로 거절한다. 이 함수는 시드 전파 뒤에도 같은 원본 시드를 받아야
     하며, 전파된 낱말이 역할을 덮어쓰지 못한다.
     """
-    역할들 = tuple(dict.fromkeys(str(x).strip() for x in 역할들 if str(x).strip()))
-    if len(역할들) < 2 or not str(단위).strip() or not str(말).strip():
+    roles = tuple(dict.fromkeys(str(x).strip() for x in roles if str(x).strip()))
+    if len(roles) < 2 or not str(unit).strip() or not str(phrase).strip():
         return None
-    꼬리 = ("@" + 출처) if 출처 else ""
-    사례 = "\n".join("*%s참여: \"%s 가 %s 에 참여한다\"" % (r, r, 단위) for r in 역할들)
-    논증 = "\n".join("%s참여 -동시참여-> %s동시" % (r, 말) for r in 역할들)
-    return f'''# {말} — 사람이 확인한 동시작업 도식.
+    tail = ("@" + src) if src else ""
+    case = "\n".join("*%s참여: \"%s 가 %s 에 참여한다\"" % (r, r, unit) for r in roles)
+    argument = "\n".join("%s참여 -동시참여-> %s동시" % (r, phrase) for r in roles)
+    return f'''# {phrase} — 사람이 확인한 동시작업 도식.
 # 역할과 단위는 원문 추출값이 아니다. 아래 출처의 사람이 확인한 시드다.
-역할: {말} 동시작업
-목표: {말}성립
+역할: {phrase} 동시작업
+목표: {phrase}성립
 색인: 아니오
 임계값: 0.50 / 0.60
 전진관계: 동시참여, 함의함
@@ -182,51 +182,51 @@ def 동시짓기(말, 역할들, 단위, 출처=""):
 근거관계: 동시참여
 
 [개념]
-{말}동시: "{단위} 에 모든 역할이 함께 참여한 상태"
-{말}성립: "{말} 가 성립한다"
+{phrase}동시: "{unit} 에 모든 역할이 함께 참여한 상태"
+{phrase}성립: "{phrase} 가 성립한다"
 
 [공리]
-{말}동시조건{꼬리}: "{말} 는 {', '.join(역할들)} 가 {단위} 에 함께 참여해야 한다"
+{phrase}동시조건{tail}: "{phrase} 는 {', '.join(roles)} 가 {unit} 에 함께 참여해야 한다"
 
 [사례]
-{사례}
+{case}
 
 [논증]
-{논증}
-{말}동시 -함의함-> {말}성립
-{말}동시조건 -함의함-> {말}성립
+{argument}
+{phrase}동시 -함의함-> {phrase}성립
+{phrase}동시조건 -함의함-> {phrase}성립
 
 [대사]
-B2: 그건 {말} 의 동시 참여와 상관이 없다.
-B2_강등: {말} 의 동시 참여만 다룬다.
+B2: 그건 {phrase} 의 동시 참여와 상관이 없다.
+B2_강등: {phrase} 의 동시 참여만 다룬다.
 A: 혹시 {{claim}} 말인가?
 근거없음: {{claim}} 는 어떤 역할의 참여를 보고 하는 말인가?
 인정: {{ev}} 니까 {{claim}} 다.
 인정_반격: {{ev}} 는 그렇다. 그런데 {{bad}} 가 걸린다.
 C: {{ev}} 만으로는 {{claim}} 까지 못 간다.
-B1: {{claim}} 을 위해 어떤 역할이 {단위} 에 참여하는지 말해야 한다.
+B1: {{claim}} 을 위해 어떤 역할이 {unit} 에 참여하는지 말해야 한다.
 미지: 그건 모르겠다.
 공리: {{claim}}
-목표주장: {말} 를 하려면 역할들이 {단위} 에 함께 참여해야 한다.
+목표주장: {phrase} 를 하려면 역할들이 {unit} 에 함께 참여해야 한다.
 '''
 
 
 def _selfcheck():
     import engine
-    글 = 짓기("세차는 자동차를 씻는 일이다", 출처="위키백과 세차")
-    assert 글 and "자동차" in 글, 글
+    txt = build("세차는 자동차를 씻는 일이다", src="위키백과 세차")
+    assert txt and "자동차" in txt, txt
     # 성질을 나타내는 말은 목적이 될 수 없다. `이중적함` 은 목표가 아니다.
     # 그런데 그 뜻풀이는 `…성질을 가지고 있는 것` 이라 유가 '것' 이어서
     # 대상뽑기를 그냥 통과한다. 표제어에서 막는 수밖에 없다.
-    assert 짓기("이중적은 서로 다른 두 가지의 성질을 가지고 있는 것.") is None
-    assert 짓기("위생적은 건강에 도움이 되도록 조건을 갖춘 것.") is None
-    경로 = "graphs/graph_목적_자가검사.kg"
-    open(engine._길(경로), "w", encoding="utf-8").write(글)
-    g = engine.load(경로)
+    assert build("이중적은 서로 다른 두 가지의 성질을 가지고 있는 것.") is None
+    assert build("위생적은 건강에 도움이 되도록 조건을 갖춘 것.") is None
+    path = "graphs/graph_목적_자가검사.kg"
+    open(engine._abs(path), "w", encoding="utf-8").write(txt)
+    g = engine.load(path)
 
     # 관계 어휘를 그래프가 정한다 — 법정 어휘가 한 개도 없다
-    assert engine.전진들(g) == ("갖춤", "함의함"), engine.전진들(g)
-    assert engine.부정들(g) == ("걸림돌",) and engine.근거들(g) == ("갖춤",)
+    assert engine.forward_rels(g) == ("갖춤", "함의함"), engine.forward_rels(g)
+    assert engine.negative_rels(g) == ("걸림돌",) and engine.grounds_rels(g) == ("갖춤",)
     assert engine.lint(g) == [], engine.lint(g)
     assert len(g["공리"]) == 1 and "자동차" in g["공리"][0], g["공리"]
     # 출처가 남는다. 지어낸 것이 아니라 옮긴 것이라는 표시다.
@@ -236,24 +236,24 @@ def _selfcheck():
     assert engine.judge(g, "걷는 게 더 빠르다")[0] in ("B2", "미지"), \
         engine.judge(g, "걷는 게 더 빠르다")
     # 두고 가면 목적이 무너진다 -> 반격이 뜬다
-    태그, _ = engine.judge(g, "걸어서 간다")
-    assert 태그 == "인정", 태그
-    assert "걸린다" in engine.세션(g).대답("걸어서 간다"), engine.세션(g).대답("걸어서 간다")
+    tag, _ = engine.judge(g, "걸어서 간다")
+    assert tag == "인정", tag
+    assert "걸린다" in engine.Session(g).reply("걸어서 간다"), engine.Session(g).reply("걸어서 간다")
     # 가져가면 요건이 선다
     assert engine.judge(g, "자동차 를 타고 간다")[0] == "인정"
-    assert "있음" in engine.세션(g).대답("자동차 를 타고 간다")
+    assert "있음" in engine.Session(g).reply("자동차 를 타고 간다")
 
     # 동작이 아닌 정의문에는 억지로 그래프를 만들지 않는다
-    assert 짓기("서울은 대한민국의 수도이다") is None
+    assert build("서울은 대한민국의 수도이다") is None
     # 동시작업은 수동 역할 시드 없이는 만들지 않는다. 기존 보유 뼈대와 달리
     # 모든 역할의 동시 참여가 하나의 상태를 세운다.
-    동시글 = 동시짓기("교향악단", ("지휘자", "현악연주자", "관악연주자"), "한 악장", "사람 확인")
-    assert 동시글 and "동시참여" in 동시글
-    open(engine._길("graphs/graph_동시_자가검사.kg"), "w", encoding="utf-8").write(동시글)
-    동시g = engine.load("graphs/graph_동시_자가검사.kg")
-    assert engine.lint(동시g) == [], engine.lint(동시g)
-    assert engine.judge(동시g, "지휘자 가 한 악장 에 참여한다")[0] == "인정"
-    assert 동시짓기("교향악단", ("지휘자",), "한 악장") is None
+    is_verb_hour_text = build_concurrent("교향악단", ("지휘자", "현악연주자", "관악연주자"), "한 악장", "사람 확인")
+    assert is_verb_hour_text and "동시참여" in is_verb_hour_text
+    open(engine._abs("graphs/graph_동시_자가검사.kg"), "w", encoding="utf-8").write(is_verb_hour_text)
+    is_verb_hour_g = engine.load("graphs/graph_동시_자가검사.kg")
+    assert engine.lint(is_verb_hour_g) == [], engine.lint(is_verb_hour_g)
+    assert engine.judge(is_verb_hour_g, "지휘자 가 한 악장 에 참여한다")[0] == "인정"
+    assert build_concurrent("교향악단", ("지휘자",), "한 악장") is None
     print("selfcheck ok")
 
 
@@ -261,17 +261,17 @@ if __name__ == "__main__":
     if "--check" in sys.argv:
         _selfcheck()
     elif len(sys.argv) > 1:
-        인자 = [a for a in sys.argv[1:] if not a.startswith("--")]
-        나감 = (sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else None)
-        출처 = (sys.argv[sys.argv.index("--출처") + 1] if "--출처" in sys.argv else "")
-        글 = 짓기(인자[0], 출처=출처)
-        if not 글:
+        argv = [a for a in sys.argv[1:] if not a.startswith("--")]
+        out_edges = (sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else None)
+        src = (sys.argv[sys.argv.index("--출처") + 1] if "--출처" in sys.argv else "")
+        txt = build(argv[0], src=src)
+        if not txt:
             print("대상을 못 뽑았다. '무엇을 …하는 일이다' 꼴이라야 한다.")
             sys.exit(1)
-        if 나감:
-            open(나감, "w", encoding="utf-8").write(글)
-            print("-> %s" % 나감)
+        if out_edges:
+            open(out_edges, "w", encoding="utf-8").write(txt)
+            print("-> %s" % out_edges)
         else:
-            print(글)
+            print(txt)
     else:
         print(__doc__)

@@ -17,6 +17,7 @@ import io
 import json
 import os
 from pathlib import Path
+import posixpath
 import re
 import sys
 import threading
@@ -24,11 +25,11 @@ import time
 from urllib.parse import urlparse
 
 os.environ.setdefault("KG_ENCODER", "문자")
-루트 = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(루트))
+repo_root = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(repo_root))
 
 import engine  # noqa: E402
-import 자가저작  # noqa: E402
+import self_authoring  # noqa: E402
 import affect_state  # noqa: E402
 import conversation_store  # noqa: E402
 import document_kg  # noqa: E402
@@ -39,30 +40,30 @@ import local_definitions  # noqa: E402
 import semantic_parser  # noqa: E402
 import state_engine  # noqa: E402
 import web_learn  # noqa: E402
-from encoder import _vec, 조각내기  # noqa: E402
+from encoder import _vec, split_fragments  # noqa: E402
 
 
-매니저선택 = "__kg_manager__"
+manager_select = "__kg_manager__"
 
 
-def 점수(본문, 후보, graph):
-    조각들 = list(조각내기(본문)) or [본문]
-    벡터들 = [_vec(x) for x in 조각들]
+def score(body, cand, graph):
+    chunks = list(split_fragments(body)) or [body]
+    vecs = [_vec(x) for x in chunks]
     out = []
-    for node in 후보:
+    for node in cand:
         if node in graph.get("vec", {}):
-            out.append((node, max(float((graph["vec"][node] @ v).max()) for v in 벡터들)))
+            out.append((node, max(float((graph["vec"][node] @ v).max()) for v in vecs)))
     return sorted(out, key=lambda x: -x[1])
 
 
-def 경로(graph, start, end):
+def path(graph, start, end):
     if not start or start == end:
         return []
     seen, queue = {start: None}, deque([start])
     while queue:
         here = queue.popleft()
         for relation, nxt in graph["adj"].get(here, []):
-            if relation not in engine.전진들(graph) or nxt in seen:
+            if relation not in engine.forward_rels(graph) or nxt in seen:
                 continue
             seen[nxt] = (here, relation)
             if nxt == end:
@@ -76,8 +77,8 @@ def 경로(graph, start, end):
     return []
 
 
-def 그래프얼개(graph):
-    requirements = set(engine.요건(graph))
+def graph_shape(graph):
+    requirements = set(engine.requirements(graph))
     evidence = set(graph.get("증거", []))
     nodes = {}
     for name in graph.get("공통층", {}):
@@ -99,7 +100,7 @@ def 그래프얼개(graph):
             "requirements": sorted(requirements), "thresholds": graph.get("임계값", {})}
 
 
-def 매니저색인(manager):
+def manager_index(manager):
     graph = {"역할": manager.get("role", "노드 매니저"),
              "목표": manager.get("goal", "그래프고르기"),
              "임계값": {"A_MIN": 0.40, "OK_MIN": 0.50},
@@ -107,11 +108,11 @@ def 매니저색인(manager):
                        for n in manager.get("nodes", [])},
              "사례층": {}, "무관층": {}, "엣지": [], "대사": {},
              "수치조건": {}, "adj": {}, "증거": []}
-    graph["vec"] = engine._예시벡터(graph)
+    graph["vec"] = engine._example_vecs(graph)
     return graph
 
 
-def 매니저얼개(manager):
+def manager_shape(manager):
     goal = manager.get("goal", "그래프고르기")
     nodes = [{"name": goal, "kind": "goal", "examples": ["질문에 알맞은 KG 선택"],
               "source": "kgpack manifest"}]
@@ -128,7 +129,7 @@ def 매니저얼개(manager):
             "requirements": [], "thresholds": {"route_min": 0.45}}
 
 
-def 마크다운답(answer, trace):
+def markdown_answer(answer, trace):
     """완결된 지식 문장을 읽기 좋은 문서로 보여준다."""
     if not trace or trace.get("mode") != "self_learning" or not trace.get("winner"):
         return answer
@@ -136,7 +137,7 @@ def 마크다운답(answer, trace):
     return "## %s\n\n%s" % (topic, answer)
 
 
-def 웹근거답(research):
+def web_grounds_answer(research):
     """생성 요약 대신 원문 완결 문장으로 답한다. 출처 없는 문장을 만들지 않는다."""
     sources = research.get("sources") or []
     if not sources:
@@ -149,14 +150,14 @@ def 웹근거답(research):
     return "\n\n".join(parts)
 
 
-def 세션상태(session):
-    secured = session.확보()
-    return {"secured": secured, "self_counter": sorted(session.자책),
-            "turn": session.회차,
-            "result": session.결과(), "learned_phrases": [list(x) for x in session.배운것]}
+def session_state(session):
+    secured = session.secured()
+    return {"secured": secured, "self_counter": sorted(session.self_blame),
+            "turn": session.turn_no,
+            "result": session.result(), "learned_phrases": [list(x) for x in session.learned]}
 
 
-def 질문대목(question):
+def question_passage(question):
     """독립 질문만 KG별로 나눈다. 앞 문장은 흔히 뒤 질문의 상황 조건이다."""
     # "배가 뜬다. 수면이 오른다. 몇 칸인가?"의 앞 두 문장을 별도 질의로
     # 보내면 엉뚱한 KG 여러 개가 선택된다. 물음표가 하나면 한 상황 모델이다.
@@ -170,7 +171,7 @@ def 질문대목(question):
     return parts or [question]
 
 
-def 병합얼개(items):
+def merge_shape(items):
     """여러 KG의 얼개를 이름공간으로 묶어 한 화면에서 충돌 없이 보여준다."""
     nodes, edges = [], []
     multi_goal = "다중KG응답완료"
@@ -189,7 +190,7 @@ def 병합얼개(items):
             "requirements": [], "thresholds": {}}
 
 
-def 병합추적(items, route):
+def merge_trace(items, route):
     activated, path, subtraces = [], [], []
     for item in items:
         prefix = item["graph"].removeprefix("graphs/").removesuffix(".kg")
@@ -210,12 +211,12 @@ def 병합추적(items, route):
             "subtraces": subtraces, "route": route}
 
 
-class 앱상태:
+class AppState:
     def __init__(self, pack_path, overlay_root=None):
         self.pack_path = Path(pack_path).resolve()
-        self.manifest, self.data = kgpack.읽기(self.pack_path)
+        self.manifest, self.data = kgpack.read(self.pack_path)
         self.manager = self.manifest["manager"]
-        self.manager_index = 매니저색인(self.manager)
+        self.manager_index = manager_index(self.manager)
         self.graphs = sorted(x["path"] for x in self.manifest["files"]
                            if x.get("kind") == "graph")
         if not self.graphs:
@@ -226,49 +227,78 @@ class 앱상태:
         self.lock = threading.RLock()
         self.auto_graph = next((x for x in self.graphs if x.endswith("graph_자가학습.kg")), None)
         self.situation_graph = next((x for x in self.graphs if x.endswith("graph_일상추론.kg")), None)
-        self.selected = 매니저선택
+        self.selected = manager_select
         self.active_name = self.route = None
         self.routed_graphs, self.combined_shape = [], None
         self.graph = self.session = self.graph_path = None
         self.history = []
         # KG 대화 이력과 분리된다. key는 브라우저 탭이 만든 불투명 세션 식별자다.
         self.understanding_history = {}
+        self.reasoning_contexts = {}
         # 정서 표현 상태는 브라우저 세션마다 분리하고 메모리에만 둔다.
         # KG, overlay, 승인 기록의 내용·판정에는 절대 섞지 않는다.
         self.affect_sessions = {}
         self.project_roots = {}
         self.document_history = {}
-        self.conversations = conversation_store.ConversationStore(루트 / ".nai" / "conversations.json")
-        self.definitions = local_definitions.DefinitionLookup(루트 / "data" / "위키" / "정의문.jsonl")
-        self.goals = goal_runtime.GoalRuntime(루트)
+        self.conversations = conversation_store.ConversationStore(repo_root / ".nai" / "conversations.json")
+        self.definitions = local_definitions.DefinitionLookup(repo_root / "data" / "위키" / "정의문.jsonl")
+        self.goals = goal_runtime.GoalRuntime(repo_root)
         # 모델은 답변기가 아니다. 이 객체는 모델 후보를 검증된 상태 JSON으로
         # 축소하는 경계이며, 테스트는 CallableBackend를 주입해 모델 품질과
         # 상태 계산을 독립적으로 검사한다.
         self.semantic_parser = semantic_parser.SemanticParser()
 
     def _materialize(self, name):
-        target = self.overlay / name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        body = self.data[name]
-        if not target.exists() or target.read_bytes() != body:
-            temp = target.with_name(target.name + ".tmp-%d" % os.getpid())
-            try:
-                temp.write_bytes(body)
-                os.replace(temp, target)
-            finally:
+        """pack의 그래프와 그 ``포함:`` 의존성을 overlay에 함께 펼친다.
+
+        엔진은 include를 현재 파일의 상대 경로로 직접 연다. 선택된 그래프만
+        풀면 pack 안에 있어도 포함 그래프가 없어서 ``FileNotFoundError``가
+        난다. 의존성도 같은 상대 경로에 써야 엔진의 경로 규칙과 일치한다.
+        """
+        if name not in self.data:
+            raise kgpack.KGPackError("pack에 없는 파일입니다: %s" % name)
+        pending, seen = [name], set()
+        while pending:
+            current = pending.pop()
+            if current in seen:
+                continue
+            seen.add(current)
+            target = self.overlay / current
+            target.parent.mkdir(parents=True, exist_ok=True)
+            body = self.data[current]
+            if not target.exists() or target.read_bytes() != body:
+                temp = target.with_name(target.name + ".tmp-%d" % os.getpid())
                 try:
-                    temp.unlink()
-                except FileNotFoundError:
-                    pass
-        return target
+                    temp.write_bytes(body)
+                    os.replace(temp, target)
+                finally:
+                    try:
+                        temp.unlink()
+                    except FileNotFoundError:
+                        pass
+            if not current.endswith(".kg"):
+                continue
+            for line in body.decode("utf-8").splitlines():
+                line = line.split("#", 1)[0].strip()
+                if not line.startswith("포함:"):
+                    continue
+                for raw in line.split(":", 1)[1].split(","):
+                    raw = raw.strip()
+                    if not raw or os.path.isabs(raw):
+                        raise kgpack.KGPackError("안전하지 않은 포함 경로: %s" % raw)
+                    child = posixpath.normpath(posixpath.join(posixpath.dirname(current), raw))
+                    if child not in self.data:
+                        raise kgpack.KGPackError("pack에 없는 포함 파일: %s (from %s)" % (raw, current))
+                    pending.append(child)
+        return self.overlay / name
 
     @property
-    def 자가학습(self):
+    def self_learning(self):
         return bool(self.active_name and self.active_name.endswith("graph_자가학습.kg"))
 
     @property
-    def 라우팅중(self):
-        return self.selected == 매니저선택
+    def routing(self):
+        return self.selected == manager_select
 
     def _activate(self, name, force=False):
         if name not in self.graphs:
@@ -277,13 +307,13 @@ class 앱상태:
             return
         self.active_name = name
         self.graph_path = self._materialize(name)
-        self.graph = (web_learn.불러오기(str(self.graph_path))
+        self.graph = (web_learn.load(str(self.graph_path))
                       if name.endswith("graph_자가학습.kg") else engine.load(str(self.graph_path)))
-        self.session = None if name.endswith("graph_자가학습.kg") else engine.세션(self.graph)
+        self.session = None if name.endswith("graph_자가학습.kg") else engine.Session(self.graph)
 
     def _clear_manager_route(self):
         """매니저 모드의 이번 턴이 어떤 KG도 쓰지 않았음을 명시한다."""
-        if self.라우팅중:
+        if self.routing:
             self.active_name = self.graph = self.session = self.graph_path = None
             self.routed_graphs, self.combined_shape = [], None
 
@@ -292,7 +322,7 @@ class 앱상태:
             self.selected = name
             self.route = None
             self.routed_graphs, self.combined_shape = [], None
-            if name == 매니저선택:
+            if name == manager_select:
                 self.active_name = None
                 self.graph = self.session = self.graph_path = None
             else:
@@ -301,26 +331,26 @@ class 앱상태:
             return self.info()
 
     def info(self):
-        records = (web_learn.수집읽기(web_learn.수집경로(str(self.graph_path)))
-                   if self.자가학습 else [])
+        records = (web_learn.read_collected(web_learn.collect_path(str(self.graph_path)))
+                   if self.self_learning else [])
         accepted = [r for r in records if r.get("수집형식") == 3 and r.get("문장들")
-                    and web_learn.주제관련(r.get("주제"), r.get("본문"))]
-        multi = self.라우팅중 and len(self.routed_graphs) > 1
+                    and web_learn.topic_related(r.get("주제"), r.get("본문"))]
+        multi = self.routing and len(self.routed_graphs) > 1
         role = (("노드 매니저 → %d개 KG" % len(self.routed_graphs)) if multi else
-                (("노드 매니저 → " + (self.graph.get("역할") or "역할 없음")) if self.라우팅중 and self.graph
-                else (self.manager.get("role") if self.라우팅중 else self.graph.get("역할")))
+                (("노드 매니저 → " + (self.graph.get("역할") or "역할 없음")) if self.routing and self.graph
+                else (self.manager.get("role") if self.routing else self.graph.get("역할")))
                 )
         goal = (self.combined_shape["goal"] if self.combined_shape else
                 (self.graph.get("목표") if self.graph else self.manager.get("goal")))
-        single_self = self.자가학습 and not multi
+        single_self = self.self_learning and not multi
         return {
             "pack": self.pack_path.name,
             "pack_path": str(self.pack_path),
             "graphs": self.graphs,
             "selected": self.selected,
-            "manager_selection": 매니저선택,
-            "routing_mode": self.라우팅중,
-            "routed_graph": self.routed_graphs[0] if self.라우팅중 and self.routed_graphs else None,
+            "manager_selection": manager_select,
+            "routing_mode": self.routing,
+            "routed_graph": self.routed_graphs[0] if self.routing and self.routed_graphs else None,
             "routed_graphs": list(self.routed_graphs),
             "multi_route": multi,
             "route": self.route,
@@ -331,22 +361,22 @@ class 앱상태:
             "overlay": str(self.overlay),
             "learned_records": len(accepted),
             "rejected_records": len(records) - len(accepted),
-            "manager_graph": 매니저얼개(self.manager),
-            "graph": (self.combined_shape or (그래프얼개(self.graph) if self.graph else
+            "manager_graph": manager_shape(self.manager),
+            "graph": (self.combined_shape or (graph_shape(self.graph) if self.graph else
                       {"nodes": [], "edges": [], "goal": "KG선택대기",
                        "requirements": [], "thresholds": {}})),
             "dialogue": list(self.history),
-            "session": None if single_self or multi or not self.session else 세션상태(self.session),
+            "session": None if single_self or multi or not self.session else session_state(self.session),
         }
 
     def reset(self):
         with self.lock:
-            if self.라우팅중:
+            if self.routing:
                 self.active_name = self.route = None
                 self.routed_graphs, self.combined_shape = [], None
                 self.graph = self.session = self.graph_path = None
-            elif not self.자가학습:
-                self.session = engine.세션(self.graph)
+            elif not self.self_learning:
+                self.session = engine.Session(self.graph)
             self.history = []
             return self.info()
 
@@ -406,7 +436,7 @@ class 앱상태:
                 if conversation_id:
                     self.conversations.set_project_root(str(conversation_id), candidate)
             saved = self.conversations.project_root(str(conversation_id or ""))
-            root = Path(saved) if saved else self.project_roots.get(session_id, 루트)
+            root = Path(saved) if saved else self.project_roots.get(session_id, repo_root)
             return {"session": session_id, "project_root": str(root), "declared": session_id in self.project_roots}
 
     def conversations_api(self, action="list", project_id=None, chat_id=None, name=None):
@@ -463,7 +493,7 @@ class 앱상태:
                     "graph_saved": result["saved"], "graph_shape": None}
         if result["saved"]:
             graph = engine.load(result["saved"])
-            response["graph_shape"] = 그래프얼개(graph)
+            response["graph_shape"] = graph_shape(graph)
         with self.lock:
             history = self.document_history.setdefault(session_id, [])
             history.append({"document_id": digest, "filename": safe_name,
@@ -513,12 +543,21 @@ class 앱상태:
             if conversation_id:
                 self.conversations.get_chat(str(conversation_id))
             context_id = "chat_" + str(conversation_id) if conversation_id else session_id
+            prior_context_snapshot = None
             def finish(payload):
                 answer = payload.get("answer")
                 output = ((answer.get("answer_markdown") or answer.get("answer") or "") if isinstance(answer, dict)
                           else (payload.get("web_answer") or "계획을 만들었습니다. 승인 전에는 실행하지 않습니다."))
                 if conversation_id:
-                    payload["conversation"] = self.conversations.append_turn(str(conversation_id), text, output, payload.get("phase"))
+                    context = self.reasoning_contexts.get(context_id)
+                    try:
+                        payload["conversation"] = self.conversations.append_turn(
+                            str(conversation_id), text, output, payload.get("phase"),
+                            reasoning_state=context.snapshot() if context else None)
+                    except OSError:
+                        if context is not None and prior_context_snapshot is not None:
+                            context.restore(prior_context_snapshot)
+                        raise
                 return payload
             history = self.understanding_history.setdefault(context_id, [])
             understanding = input_understanding.understand(text, history)
@@ -527,10 +566,41 @@ class 앱상태:
             self.affect_sessions[context_id] = affect
             is_work = any(x["goal"]["kind"] == "perform" for x in understanding["segments"])
             if is_work:
-                root = Path(self.conversations.project_root(str(conversation_id)) or self.project_roots.get(session_id, 루트))
+                root = Path(self.conversations.project_root(str(conversation_id)) or self.project_roots.get(session_id, repo_root))
                 plan = self.goals.plan_work(text, understanding, approval_mode, self.graph_path, root)
                 self.goals.remember(context_id, plan)
                 return finish(self._with_affect({"phase": "plan", "understanding": understanding, "plan": plan}, affect))
+            if self.situation_graph:
+                from reasoning_context import ReasoningContext
+                if context_id not in self.reasoning_contexts:
+                    context = ReasoningContext()
+                    saved = self.conversations.reasoning_state(str(conversation_id)) if conversation_id else None
+                    if saved is not None:
+                        context.restore(saved)
+                    self.reasoning_contexts[context_id] = context
+                context = self.reasoning_contexts[context_id]
+                prior_context_snapshot = context.snapshot()
+                outcome = context.turn(text, self._materialize(self.situation_graph))
+                if outcome is not None:
+                    if self.routing:
+                        self._activate(self.situation_graph, force=True)
+                        self.routed_graphs = [self.situation_graph]
+                        self.route = {"selected": self.situation_graph, "selected_all": [self.situation_graph],
+                                      "score": 1.0, "best_score": 1.0, "fallback": False,
+                                      "candidates": [[self.situation_graph, 1.0]], "segments": []}
+                    verdict = {"answered": "계산완료", "observed": "상태기억", "unresolved": "조건부족"}[outcome["status"]]
+                    reasoning = {"operator": outcome["operator"], "transitions": outcome["transitions"]}
+                    trace = {"mode": "situation", "question": text, "winner": outcome["operator"],
+                             "verdict": verdict, "reasoning": reasoning, "verification": outcome["verification"],
+                             "activated": [], "path": []}
+                    answer = {"answer": outcome["answer"], "answer_markdown": outcome["answer"],
+                              "known": outcome["status"] == "answered", "learned": False,
+                              "trace": trace, "reasoning": reasoning, "verification": outcome["verification"],
+                              "info": self.info()}
+                    self.history.append({"question": text, "claim": outcome["operator"],
+                                         "evidence": None, "verdict": verdict, "sources": [], "learned": False})
+                    return finish(self._with_affect({"phase": "answer", "understanding": understanding,
+                                                    "answer": answer}, affect))
             if understanding.get("overall", {}).get("primary", {}).get("kind") == "dialogue":
                 self._clear_manager_route()
                 answer_text = input_understanding.dialogue_reply(text)
@@ -554,9 +624,9 @@ class 앱상태:
                 if comparison:
                     has_specific_kg = False
                     try:
-                        route, _score, _candidates = engine.그래프고르기(text)
+                        route, _score, _candidates = engine.pick_graph(text)
                         if route:
-                            has_specific_kg = engine.judge(engine.그래프불러오기(route), text)[0] == "인정"
+                            has_specific_kg = engine.judge(engine.load_graph(route), text)[0] == "인정"
                     except Exception:
                         has_specific_kg = False
                     if not has_specific_kg:
@@ -590,7 +660,7 @@ class 앱상태:
             if situation["status"] != "unknown":
                 # 상황 규칙도 독립 KG의 선언을 근거로 삼는다. 매니저 화면에서
                 # 어떤 지식 묶음이 쓰였는지 보이도록 선택 상태를 함께 남긴다.
-                if self.라우팅중 and self.situation_graph:
+                if self.routing and self.situation_graph:
                     self._activate(self.situation_graph, force=True)
                     self.routed_graphs = [self.situation_graph]
                     self.route = {"selected": self.situation_graph,
@@ -633,14 +703,23 @@ class 앱상태:
                 research = {"query": text, "sources": [], "verified": False, "error": "%s: %s" % (type(e).__name__, e)}
             # 미지는 답변에 자동 학습 KG를 쓰지 않는다. 다만 승인된 웹 사실은
             # 전용 overlay 대상에만 저장해 다음 독립 질의에서 검증 가능하게 한다.
-            learning_path = self.graph_path
-            if not learning_path and self.라우팅중 and self.auto_graph:
-                learning_path = self._materialize(self.auto_graph)
-            root = Path(self.conversations.project_root(str(conversation_id)) or self.project_roots.get(session_id, 루트))
+            # 주워온 지식은 자가학습 그래프 옆에만 쌓는다. 라우터가 고른 KG
+            # 옆에 쌓으면 다시 읽을 길이 없다 — `수집`을 읽는 것은 `_자가질문`
+            # 뿐이고 그것은 자가학습 그래프가 활성일 때만 돈다. 실제로
+            # `graph_AGI_최소지식.kg` 옆에 저장하려다, 그 그래프에는 질문
+            # 껍데기를 벗길 `물음_` 표지가 없어 주제조차 못 뽑고 있었다.
+            #
+            # 계획은 만든 뒤 10분 동안 살아 있다가 승인된다. 그런데 계획이 들고
+            # 가는 것은 경로 문자열뿐이라, 그 사이에 overlay 파일이 없어지면
+            # 승인 순간 FileNotFoundError 가 화면에 그대로 튀어나왔다. 그래서
+            # 계획을 세울 때 대상을 다시 깔아 둔다 — 이미 같은 내용이 있으면
+            # `_materialize` 는 아무것도 안 쓴다.
+            learning_path = self._materialize(self.auto_graph) if self.auto_graph else self.graph_path
+            root = Path(self.conversations.project_root(str(conversation_id)) or self.project_roots.get(session_id, repo_root))
             plan = self.goals.plan_learning(text, research, approval_mode, learning_path, root)
             self.goals.remember(context_id, plan)
             return finish(self._with_affect({"phase": "research", "understanding": understanding, "answer": answer,
-                                      "research": research, "web_answer": 웹근거답(research), "plan": plan,
+                                      "research": research, "web_answer": web_grounds_answer(research), "plan": plan,
                                       **semantic_failure}, affect))
 
     def approve_goal(self, session_id, plan_id, plan_hash, action_ids, direct=False, conversation_id=None):
@@ -658,14 +737,14 @@ class 앱상태:
             plan = self.goals.pending.pop((context_id, str(plan_id or "")), None)
         return {"rejected": bool(plan), "plan_id": plan_id, "reason": str(reason or "")}
 
-    def _일반질문(self, question):
+    def _is_general_question(self, question):
         graph = self.graph
         evidence, evidence_score = engine.match_evidence(question, graph)
-        body = engine.증거지우기(question, graph, evidence)
+        body = engine.erase_evidence(question, graph, evidence)
         pool = ([n for n in graph["사례층"] if n not in graph["증거"]]
                 + list(graph["공통층"]))
-        ranks = 점수(body, pool, graph)
-        nulls = 점수(body, list(graph.get("무관층", {})), graph)
+        ranks = score(body, pool, graph)
+        nulls = score(body, list(graph.get("무관층", {})), graph)
         winner = ranks[0][0] if ranks else None
         # 증거는 문자열으로만 매칭된다. 그래프의 사례·주장 벡터가 비슷하다는
         # 이유로 사용자의 질문을 다른 사실로 바꿔 답하지 않는다.
@@ -680,7 +759,7 @@ class 앱상태:
             self.history.append({"question": question, "claim": None, "evidence": None,
                                  "verdict": "근거불충분", "sources": [], "learned": False})
             return {"answer": answer, "answer_markdown": answer, "learned": False,
-                    "known": False, "verdict": "근거불충분", "result": self.session.결과(),
+                    "known": False, "verdict": "근거불충분", "result": self.session.result(),
                     "trace": trace, "info": self.info()}
         # 한 문장짜리 정의 질문은 대화 상태의 모든 요건을 채울 때까지 기다릴
         # 이유가 없다. 엔진의 순수 판정기로 같은 근거에서 바로 결론을 확인한다.
@@ -692,7 +771,7 @@ class 앱상태:
         if direct_question:
             direct_verdict, direct_answer = engine.judge(graph, question)
             if direct_verdict not in ("미지", "B2"):
-                route = 경로(graph, evidence or winner, graph["목표"])
+                route = path(graph, evidence or winner, graph["목표"])
                 trace = {"mode": "argument", "question": question, "winner": winner,
                          "verdict": direct_verdict,
                          "evidence": {"name": evidence, "score": round(evidence_score, 3)},
@@ -705,12 +784,12 @@ class 앱상태:
                 self.history.append({"question": question, "claim": winner, "evidence": evidence,
                                      "verdict": direct_verdict, "sources": [], "learned": False})
                 return {"answer": direct_answer, "answer_markdown": direct_answer, "learned": False,
-                        "known": True, "verdict": direct_verdict, "result": self.session.결과(),
+                        "known": True, "verdict": direct_verdict, "result": self.session.result(),
                         "trace": trace, "info": self.info()}
-        answer = self.session.대답(question)
-        route = 경로(graph, evidence or winner, graph["목표"])
+        answer = self.session.reply(question)
+        route = path(graph, evidence or winner, graph["목표"])
         trace = {"mode": "argument", "question": question, "winner": winner,
-                 "verdict": self.session.판정,
+                 "verdict": self.session.verdict,
                  "evidence": {"name": evidence, "score": round(evidence_score, 3)},
                  "rankings": [[n, round(v, 3)] for n, v in ranks[:5]],
                  "null_rankings": [[n, round(v, 3)] for n, v in nulls[:3]],
@@ -719,19 +798,19 @@ class 앱상태:
                  "activated": list(dict.fromkeys([x for x in [evidence, winner] if x]
                                                   + [n for e in route for n in (e[0], e[2])]))}
         self.history.append({"question": question, "claim": winner,
-                             "evidence": evidence, "verdict": self.session.판정,
+                             "evidence": evidence, "verdict": self.session.verdict,
                              "sources": [], "learned": False})
-        return {"answer": answer, "answer_markdown": answer, "learned": False, "verdict": self.session.판정,
-                "result": self.session.결과(), "trace": trace, "info": self.info()}
+        return {"answer": answer, "answer_markdown": answer, "learned": False, "verdict": self.session.verdict,
+                "result": self.session.result(), "trace": trace, "info": self.info()}
 
-    def _자가주장(self, question):
+    def _self_claim(self, question):
         table = []
         for node, aliases in (self.graph.get("_주제별칭") or {}).items():
             table.extend((a, node) for a in aliases)
         return next((node for alias, node in sorted(table, key=lambda x: len(x[0]), reverse=True)
                     if alias and alias in question), None)
 
-    def _자가추적(self, question, claim, learned):
+    def _self_trace(self, question, claim, learned):
         sources, facts, proof_edges = [], [], []
         if claim:
             for a, relation, b in self.graph.get("엣지", []):
@@ -744,7 +823,7 @@ class 앱상태:
                         sources.append({"node": a, "source": self.graph.get("출처", {}).get(a, "")})
                     proof_edges.append([a, relation, b])
             for a, relation, b in self.graph.get("엣지", []):
-                if a == claim and relation in engine.전진들(self.graph):
+                if a == claim and relation in engine.forward_rels(self.graph):
                     proof_edges.append([a, relation, b])
         return {"mode": "self_learning", "question": question, "winner": claim,
                 "verdict": "채택" if claim else "지식부족", "evidence": None,
@@ -753,32 +832,32 @@ class 앱상태:
                 "activated": ([claim] if claim else []) + facts + [s["node"] for s in sources],
                 "sources": sources, "facts": facts, "learned": learned}
 
-    def _자가질문(self, question, allow_learning=True):
-        known, answer = web_learn.묻다(self.graph, question)
+    def _is_self_question(self, question, allow_learning=True):
+        known, answer = web_learn.ask(self.graph, question)
         learned = False
         if not known and allow_learning:
-            topic, _aliases = web_learn.주제추출(self.graph, question)
+            topic, _aliases = web_learn.extract_topic(self.graph, question)
             if topic:
                 try:
-                    fresh = web_learn.배우기(str(self.graph_path), topic, question,
-                                           개수=5, 최소출처=2)
-                except web_learn.학습실패 as e:
+                    fresh = web_learn.learn(str(self.graph_path), topic, question,
+                                           count=5, min_source=2)
+                except web_learn.LearnFailed as e:
                     return {"answer": "자동 학습을 완료하지 못했습니다: %s" % e,
                             "answer_markdown": "자동 학습을 완료하지 못했습니다: %s" % e,
                             "learned": False, "trace": None, "info": self.info()}
                 if fresh:
-                    self.graph = web_learn.불러오기(str(self.graph_path))
-                    known, answer = web_learn.묻다(self.graph, question)
+                    self.graph = web_learn.load(str(self.graph_path))
+                    known, answer = web_learn.ask(self.graph, question)
                     learned = known
                 elif not known:
                     answer = "서로 다른 원문 두 곳에서 완결된 지식을 만들지 못했습니다."
-        claim = self._자가주장(question) if known else None
-        trace = self._자가추적(question, claim, learned)
+        claim = self._self_claim(question) if known else None
+        trace = self._self_trace(question, claim, learned)
         self.history.append({"question": question, "claim": claim,
                              "evidence": None, "verdict": trace["verdict"],
                              "sources": [s["source"] for s in trace["sources"]],
                              "learned": learned})
-        return {"answer": answer, "answer_markdown": 마크다운답(answer, trace),
+        return {"answer": answer, "answer_markdown": markdown_answer(answer, trace),
                 "learned": learned, "known": known, "trace": trace, "info": self.info()}
 
     def ask(self, question, allow_learning=True):
@@ -786,12 +865,12 @@ class 앱상태:
         if not question:
             raise ValueError("질문이 비어 있습니다")
         with self.lock:
-            if self.라우팅중:
+            if self.routing:
                 self.combined_shape = None
                 segments, candidate_scores = [], {}
-                for part in 질문대목(question):
-                    name, score, candidates = engine.그래프고르기(part, self.manager_index,
-                                                                  최소=0.45, 개수=5)
+                for part in question_passage(question):
+                    name, score, candidates = engine.pick_graph(part, self.manager_index,
+                                                                  min_n=0.45, count=5)
                     for candidate, value in candidates:
                         candidate_scores[candidate] = max(candidate_scores.get(candidate, 0), value)
                     # 한 의미 대목에는 최고 후보 하나만 실행한다. 점수 근처 후보를
@@ -836,15 +915,15 @@ class 앱상태:
                     for name in names:
                         part_question = ". ".join(grouped[name])
                         self._activate(name, force=True)
-                        piece = self._자가질문(part_question, allow_learning) if self.자가학습 else self._일반질문(part_question)
+                        piece = self._is_self_question(part_question, allow_learning) if self.self_learning else self._is_general_question(part_question)
                         label = name.removeprefix("graphs/").removesuffix(".kg")
                         items.append({"graph": name, "question": part_question,
                                       "answer": piece.get("answer", ""),
-                                      "trace": piece.get("trace"), "shape": 그래프얼개(self.graph)})
+                                      "trace": piece.get("trace"), "shape": graph_shape(self.graph)})
                         plain_parts.append("[%s]\n%s" % (label, piece.get("answer", "")))
                         markdown_parts.append("## %s\n\n%s" % (label, piece.get("answer", "")))
-                    self.combined_shape = 병합얼개(items)
-                    trace = 병합추적(items, self.route)
+                    self.combined_shape = merge_shape(items)
+                    trace = merge_trace(items, self.route)
                     part_known = [piece.get("known", (piece.get("trace") or {}).get("verdict")
                                   not in (None, "미지", "지식부족", "근거불충분", "B2")) for piece in items]
                     result = {"answer": "\n\n".join(plain_parts),
@@ -858,8 +937,8 @@ class 앱상태:
             else:
                 self.routed_graphs = []
                 self.combined_shape = None
-            result = self._자가질문(question, allow_learning) if self.자가학습 else self._일반질문(question)
-            if self.라우팅중:
+            result = self._is_self_question(question, allow_learning) if self.self_learning else self._is_general_question(question)
+            if self.routing:
                 trace = result.get("trace") or {"mode": "manager", "question": question,
                                                 "winner": None, "verdict": "오류",
                                                 "activated": [], "path": []}
@@ -869,7 +948,7 @@ class 앱상태:
             return result
 
 
-def 매니저에붙이기(app, 이름들):
+def attach_to_manager(app, names):
     """자가학습이 들인 그래프를 매니저 그래프에 노드로 붙인다. -> 붙은 수
 
     매니저는 pack manifest 에서 오는데 pack 은 읽기 전용이라, 새로 지은
@@ -879,59 +958,59 @@ def 매니저에붙이기(app, 이름들):
 
     붙이면 라우터도 그 그래프를 후보로 본다. 매니저 색인을 같이 다시
     짓는 이유다."""
-    붙임 = 0
+    attached = 0
     with app.lock:
-        있는것 = {n["path"] for n in app.manager.get("nodes", [])}
-        for 이름 in 이름들:
-            길 = "graphs/" + 이름 if not 이름.startswith("graphs/") else 이름
-            if 길 in 있는것:
+        present_ones = {n["path"] for n in app.manager.get("nodes", [])}
+        for name in names:
+            loc = "graphs/" + name if not name.startswith("graphs/") else name
+            if loc in present_ones:
                 continue
             try:
-                g = engine.색인용읽기(str(루트 / 길))
+                g = engine.read_for_index(str(repo_root / loc))
             except Exception:
                 continue
             app.manager.setdefault("nodes", []).append(
-                {"path": 길, "role": g.get("역할") or "", "goal": g.get("목표") or "",
+                {"path": loc, "role": g.get("역할") or "", "goal": g.get("목표") or "",
                  "examples": [], "new": True})
-            app.manager.setdefault("edges", []).append([길, "후보", "그래프고르기"])
-            붙임 += 1
-        if 붙임:
-            app.manager_index = 매니저색인(app.manager)
-    return 붙임
+            app.manager.setdefault("edges", []).append([loc, "후보", "그래프고르기"])
+            attached += 1
+        if attached:
+            app.manager_index = manager_index(app.manager)
+    return attached
 
 
-def 매니저에서떼기(app, 이름들):
+def detach_from_manager(app, names):
     """물린 그래프를 매니저에서 뺀다. 안 빼면 없는 그래프를 후보로 든다."""
-    뺀것 = {("graphs/" + n if not n.startswith("graphs/") else n) for n in 이름들}
+    removed = {("graphs/" + n if not n.startswith("graphs/") else n) for n in names}
     with app.lock:
-        앞 = len(app.manager.get("nodes", []))
+        front = len(app.manager.get("nodes", []))
         app.manager["nodes"] = [n for n in app.manager.get("nodes", [])
-                                if n["path"] not in 뺀것]
+                                if n["path"] not in removed]
         app.manager["edges"] = [e for e in app.manager.get("edges", [])
-                                if e[0] not in 뺀것]
-        if len(app.manager["nodes"]) != 앞:
-            app.manager_index = 매니저색인(app.manager)
-        return 앞 - len(app.manager["nodes"])
+                                if e[0] not in removed]
+        if len(app.manager["nodes"]) != front:
+            app.manager_index = manager_index(app.manager)
+        return front - len(app.manager["nodes"])
 
 
 # ── 물음 기록 ──────────────────────────────────────────────────────────
-# 물음기록.jsonl 은 자가학습(자가학습.py)이 '무엇을 틀렸나' 를 재는 재료다.
+# 물음기록.jsonl 은 자가학습(self_learning.py)이 '무엇을 틀렸나' 를 재는 재료다.
 # 예전에는 views/물음판.py 만 이 파일을 썼는데, 화면을 이쪽으로 모으면서
 # 그 판을 지웠다. 수집기를 같이 지우면 자가학습이 새 물음을 못 받는다.
-물음기록터 = 루트 / "물음기록.jsonl"
+question_log_dir = repo_root / "물음기록.jsonl"
 
 
-def 물음적기(질문, 답, 판정, 그래프, 밀리초, 쓴이="사람"):
+def record_question(question, ans, verdict, graph, ms, author="사람"):
     """물어본 것을 한 줄씩 덧붙인다. 통째로 다시 쓰지 않으니 중간에 꺼도 남는다.
 
     쓴이를 같이 적는다. 기계가 쓴 질문은 코퍼스를 이미 읽고 쓴 것이라 어휘가
     새서, 사람 것과 같은 통에 넣되 섞이지는 않게 줄마다 남긴다."""
     try:
-        줄 = {"질문": 질문, "판정": 판정, "답": 답 or "", "그래프": 그래프,
-             "밀리초": 밀리초, "인코더": engine.MODEL, "쓴이": 쓴이,
+        line = {"질문": question, "판정": verdict, "답": ans or "", "그래프": graph,
+             "밀리초": ms, "인코더": engine.MODEL, "쓴이": author,
              "때": time.strftime("%Y-%m-%d %H:%M:%S")}
-        with io.open(str(물음기록터), "a", encoding="utf-8") as f:
-            f.write(json.dumps(줄, ensure_ascii=False) + "\n")
+        with io.open(str(question_log_dir), "a", encoding="utf-8") as f:
+            f.write(json.dumps(line, ensure_ascii=False) + "\n")
     except OSError:
         pass                            # 못 적어도 대화는 되어야 한다
 
@@ -940,57 +1019,56 @@ def 물음적기(질문, 답, 판정, 그래프, 밀리초, 쓴이="사람"):
 # 한 바퀴가 몇 분이라 요청 안에서 돌리면 브라우저가 먼저 끊는다. 딴 실에서
 # 돌리고 화면은 상태만 물어본다. 도는 바퀴는 하나뿐이다 — 둘이 겹치면
 # 후보터를 서로 밟는다.
-_자람 = {"도나": False, "말": "", "탈": None, "끝난것": None}
-_자람자물쇠 = threading.Lock()
+_growth = {"도나": False, "말": "", "탈": None, "끝난것": None}
+_growth_lock = threading.Lock()
 
 
-def 자람상태():
-    바퀴 = 자가저작.바퀴읽기(200)
-    쌓임, 노드, 엣지 = [], 0, 0
-    for x in 바퀴:
-        노드 += x.get("노드", 0)
-        엣지 += x.get("엣지", 0)
-        쌓임.append({"때": x.get("때"), "노드누적": 노드, "엣지누적": 엣지,
+def growth_state():
+    cycle = self_authoring.read_round(200)
+    stacked, node, edge = [], 0, 0
+    for x in cycle:
+        node += x.get("노드", 0)
+        edge += x.get("엣지", 0)
+        stacked.append({"때": x.get("때"), "노드누적": node, "엣지누적": edge,
                 "캠": x.get("캠", 0), "들임": x.get("들임", 0)})
-    본데, 표제수, 버린말 = 자가저작.진도읽기()
+    seen_at, headword_count, dropped_phrase = self_authoring.read_progress()
     import glob
-    return {"바퀴": 바퀴, "쌓임": 쌓임, "돎": dict(_자람),
-            "그래프수": len(glob.glob(str(루트 / "graphs" / "*.kg"))),
-            "진도": {"본데까지": 본데, "표제수": 표제수, "버린말": len(버린말)},
-            "합": {"노드": 노드, "엣지": 엣지,
-                   "들임": sum(x.get("들임", 0) for x in 바퀴),
-                   "버림": sum(x.get("버림", 0) for x in 바퀴)}}
+    return {"바퀴": cycle, "쌓임": stacked, "돎": dict(_growth),
+            "그래프수": len(glob.glob(str(repo_root / "graphs" / "*.kg"))),
+            "진도": {"본데까지": seen_at, "표제수": headword_count, "버린말": len(dropped_phrase)},
+            "합": {"노드": node, "엣지": edge,
+                   "들임": sum(x.get("들임", 0) for x in cycle),
+                   "버림": sum(x.get("버림", 0) for x in cycle)}}
 
 
-def 자람돌리기(최대=200, 시늉=False):
-    with _자람자물쇠:
-        if _자람["도나"]:
+def run_growth(max_n=200, dry_run=False):
+    with _growth_lock:
+        if _growth["도나"]:
             return {"ok": False, "why": "이미 도는 중이다"}
-        _자람.update({"도나": True, "말": "캐고 짓고 거르는 중 … (몇 분 걸린다)",
+        _growth.update({"도나": True, "말": "캐고 짓고 거르는 중 … (몇 분 걸린다)",
                      "탈": None, "끝난것": None})
 
-    def 몸():
+    def trunk():
         try:
-            칸 = 자가저작.한바퀴(최대, 시늉=시늉)
-            들인것 = [x.get("이름") for x in
-                    ((칸.get("기록") or {}).get("들인것") or []) if x.get("이름")]
-            붙임 = 매니저에붙이기(손.app, 들인것) if 들인것 and 손.app else 0
-            _자람["끝난것"] = dict({k: v for k, v in 칸.items() if k != "기록"},
-                                붙임=붙임)
-            _자람["말"] = "끝났다"
+            slot = self_authoring.one_round(max_n, dry_run=dry_run)
+            admitted = [x.get("이름") for x in
+                    ((slot.get("기록") or {}).get("들인것") or []) if x.get("이름")]
+            attached = attach_to_manager(Handler.app, admitted) if admitted and Handler.app else 0
+            _growth["끝난것"] = dict({k: v for k, v in slot.items() if k != "기록"}, **{"붙임": attached})
+            _growth["말"] = "끝났다"
         except Exception as e:
             import traceback
             traceback.print_exc()
-            _자람["탈"] = "%s: %s" % (type(e).__name__, e)
-            _자람["말"] = "탈이 났다"
+            _growth["탈"] = "%s: %s" % (type(e).__name__, e)
+            _growth["말"] = "탈이 났다"
         finally:
-            _자람["도나"] = False
+            _growth["도나"] = False
 
-    threading.Thread(target=몸, daemon=True).start()
+    threading.Thread(target=trunk, daemon=True).start()
     return {"ok": True}
 
 
-class 손(BaseHTTPRequestHandler):
+class Handler(BaseHTTPRequestHandler):
     app = None
 
     def log_message(self, *_args):
@@ -1017,7 +1095,7 @@ class 손(BaseHTTPRequestHandler):
     def do_GET(self):
         path = urlparse(self.path).path
         if path == "/api/growth":
-            return self._json(자람상태())
+            return self._json(growth_state())
         if path in ("/", "/index.html"):
             html = (Path(__file__).with_name("kgpack_ui.html")).read_bytes()
             return self._send(html, "text/html")
@@ -1032,28 +1110,28 @@ class 손(BaseHTTPRequestHandler):
         try:
             body = self._body()
             if path == "/api/growth/run":
-                return self._json(자람돌리기(int(body.get("max") or 200),
+                return self._json(run_growth(int(body.get("max") or 200),
                                           bool(body.get("dry"))))
             if path == "/api/growth/revert":
-                if _자람["도나"]:
+                if _growth["도나"]:
                     return self._json({"ok": False, "why": "도는 중이다"})
-                지움 = 자가저작.물리다()
-                매니저에서떼기(self.app, 지움)
-                return self._json({"ok": True, "removed": len(지움)})
+                erased = self_authoring.revert()
+                detach_from_manager(self.app, erased)
+                return self._json({"ok": True, "removed": len(erased)})
             if path == "/api/select":
                 return self._json(self.app.select(body.get("graph")))
             if path == "/api/reset":
                 return self._json(self.app.reset())
             if path == "/api/ask":
-                _질문 = body.get("question")
-                _시작 = time.time()
-                답 = self.app.ask(_질문)
-                물음적기(_질문, 답.get("answer"),
-                       (답.get("trace") or {}).get("verdict"),
-                       (답.get("route") or {}).get("selected") or 답.get("graph"),
-                       round(1000 * (time.time() - _시작)),
-                       쓴이=body.get("writer") or "사람")
-                return self._json(답)
+                _question = body.get("question")
+                _start = time.time()
+                ans = self.app.ask(_question)
+                record_question(_question, ans.get("answer"),
+                       (ans.get("trace") or {}).get("verdict"),
+                       (ans.get("route") or {}).get("selected") or ans.get("graph"),
+                       round(1000 * (time.time() - _start)),
+                       author=body.get("writer") or "사람")
+                return self._json(ans)
             if path == "/api/understand":
                 return self._json(self.app.understand(body.get("input"), body.get("session")))
             if path == "/api/understanding/reset":
@@ -1091,9 +1169,9 @@ def main(argv=None):
     p.add_argument("--port", type=int, default=8766)
     p.add_argument("--overlay")
     args = p.parse_args(argv)
-    app = 앱상태(args.pack, args.overlay)
-    손.app = app
-    server = ThreadingHTTPServer((args.host, args.port), 손)
+    app = AppState(args.pack, args.overlay)
+    Handler.app = app
+    server = ThreadingHTTPServer((args.host, args.port), Handler)
     print("kgpack: %s" % app.pack_path)
     print("그래프: %d개 · 기본 선택: %s" % (len(app.graphs), app.selected))
     print("overlay: %s" % app.overlay)

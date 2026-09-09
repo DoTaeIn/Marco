@@ -356,6 +356,10 @@ For the neural encoder: `pip install sentence-transformers` and leave `KG_ENCODE
 
 ## Layout
 
+Code identifiers — file, function and variable names — are English. The knowledge
+is Korean: `.kg` section headers, node names, verdicts and reply templates are the
+product, not the implementation, and they stay as authored.
+
 ```text
 core
   encoder.py       text → vector. Character n-gram coverage (default) or neural
@@ -363,18 +367,37 @@ core
   explain.py       path-based explanation over document graphs (.json)
   build.py         document → knowledge graph authoring
   nai.py           one chat contract over both .kg and .json graphs
+  hangul.py        Korean grammar derived from Unicode, not from tables
+  kgbin.py         flat mmap-able index for embedded targets
+  kgpack.py        many graphs → one uploadable pack
+
+growth
+  self_authoring.py   dictionary → candidate graphs, gated before admission
+  self_learning.py    what it got wrong → what to read → rebuild → re-measure
+  purpose_graph.py    one definition sentence → one purpose graph
+  dict_extract.py     national dictionary → genus/action tables
+  web_learn.py        web sources → verified overlay knowledge
+
+measure
+  routing_benchmark.py   held-out routing benchmark (fixed, reproducible)
+  yardstick.py           frozen benchmark — human-authored graphs only
+  intelligence_check.py  paraphrase and generalisation spot-check
+  alias_diag.py          which nodes are short of aliases
 
 data
   graphs/*.kg      145 domain graphs
   legal/*.kg       shared legal doctrine, pulled in via 포함:
   cases/사건_*.md  source judgments and their compiled graphs
   styles/          phrasing tables — data, not engine
+  data/표지/       domain markers — data, not engine
   docs/ko/         authoring prompts and design records
 
 around
-  routing_benchmark.py   held-out routing benchmark (fixed, reproducible)
-  tests/                 pytest
-  views/                 web UI and graph visualisation
+  progress.py      dependency-free progress bar (remaining time, not percent)
+  cache_tool.py    what caches exist, what is safe to drop
+  vision.py        image → visual words → graph experiments
+  tests/           pytest
+  views/           web UI and graph visualisation
 ```
 
 ---

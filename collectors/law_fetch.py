@@ -4,8 +4,8 @@
 법제처(law.go.kr)는 본문을 JS 로 그리므로 껍데기만 온다. 공개 API 는 키가 필요하다.
 위키문헌은 action=raw 로 원문이 그대로 오고 라이선스도 자유롭다.
 
-    python 법수집.py 대한민국헌법 형법 민법
-    python 법수집.py --목록          # 받을 수 있는 법령 찾기
+    python law_fetch.py 대한민국헌법 형법 민법
+    python law_fetch.py --목록          # 받을 수 있는 법령 찾기
 """
 import os
 import re

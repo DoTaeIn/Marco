@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import unittest
+import json
+import tempfile
+from pathlib import Path
 
 import input_understanding
 
@@ -28,6 +31,17 @@ class InputUnderstandingTest(unittest.TestCase):
         self.assertEqual(command["risk"], "destructive")
         self.assertFalse(command["execution_allowed"])
 
+    def test_shell_risk_is_declared_by_the_selected_language_pack(self):
+        pack = {"name": "test", "conversation": {"shell_risks": {"inspect": "read"}, "context_refs": [], "replies": {}, "templates": [], "phrases": []}}
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "test.json"
+            path.write_text(json.dumps(pack), encoding="utf-8")
+            result = input_understanding.understand("inspect artifacts", language=str(path))
+        command = result["segments"][0]["command"]
+        self.assertTrue(command["present"])
+        self.assertEqual(command["risk"], "read")
+        self.assertFalse(command["execution_allowed"])
+
     def test_noise_keeps_uncertainty(self):
         result = input_understanding.understand("@@@ ###")
         self.assertTrue(result["needs_clarification"])
@@ -39,13 +53,13 @@ class InputUnderstandingTest(unittest.TestCase):
         '저녁 메뉴 추천해줘' 가 UI 를 오류 한 줄로 만들었다. '추천' 은 규칙에
         없어 행동 후보가 0개인데, '저녁 메뉴' 가 주제로 잡혀 잡음 분기도
         안 걸렸다. 못 알아듣는 것과 죽는 것은 다르다 — 되묻어야 한다."""
-        for 말 in ("저녁 메뉴 추천해줘", "추천해줘"):
-            결과 = input_understanding.understand(말)
-            self.assertEqual(결과["overall"]["primary"]["kind"], "unknown.no_act", 말)
-            self.assertTrue(결과["needs_clarification"], 말)
+        for phrase in ("저녁 메뉴 추천해줘", "추천해줘"):
+            result = input_understanding.understand(phrase)
+            self.assertEqual(result["overall"]["primary"]["kind"], "unknown.no_act", phrase)
+            self.assertTrue(result["needs_clarification"], phrase)
             # 잡음으로 단정하지 않는다. 무엇에 대한 말인지는 알아들었다.
-            self.assertNotEqual(결과["overall"]["primary"]["kind"], "unknown.noise", 말)
-            self.assertEqual(결과["segments"][0]["goal"]["kind"], "clarify", 말)
+            self.assertNotEqual(result["overall"]["primary"]["kind"], "unknown.noise", phrase)
+            self.assertEqual(result["segments"][0]["goal"]["kind"], "clarify", phrase)
 
 
 if __name__ == "__main__":

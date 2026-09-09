@@ -19,76 +19,76 @@ import os
 import sys
 
 import engine
-from 진행 import 막대
+from progress import Bar
 
-밖경로 = "data/benchmarks/라우팅_밖.json"
+outside_path = "data/benchmarks/라우팅_밖.json"
 
 
-def _본문들():
-    파일 = [p for p in sorted(glob.glob(os.path.join(engine._여기, "graphs", "*.kg")))
-            + sorted(glob.glob(os.path.join(engine._여기, "cases", "사건_*.kg")))
+def _bodies():
+    file = [p for p in sorted(glob.glob(os.path.join(engine._here, "graphs", "*.kg")))
+            + sorted(glob.glob(os.path.join(engine._here, "cases", "사건_*.kg")))
             if "템플릿" not in p]
-    읽음 = {}
-    for p in 파일:
+    loaded = {}
+    for p in file:
         try:
-            읽음[os.path.relpath(p, engine._여기).replace("\\", "/")] = engine.색인용읽기(p)
+            loaded[os.path.relpath(p, engine._here).replace("\\", "/")] = engine.read_for_index(p)
         except Exception:
             pass
-    return 읽음
+    return loaded
 
 
-def 색인짓기(읽음, 상한=5, 빼기=True, 총량=180):
+def build_index(loaded, cap=5, strip=True, budget=180):
     """마지막 별칭을 빼고 색인을 짓는다. 빼야 안 본 말투로 잴 수 있다."""
     ix = {"역할": "안내", "목표": "그래프고르기",
           "임계값": {"A_MIN": 0.40, "OK_MIN": 0.60},
           "공통층": {}, "사례층": {}, "무관층": {},
           "엣지": [], "대사": {}, "수치조건": {}}
 
-    def 담기(이름, g, 상한, 빼기):
-        증거 = engine.증거뽑기(g)     # 증거는 짧아도 남기고, 앞에 놓는다
-        예 = [g.get("목표") or ""]
-        for n in 증거:
-            말 = list(g["사례층"][n])
-            말 = 말[:-1] if 빼기 else 말
-            예 += [n] + (말[:상한] if 상한 else 말)
-        for 층 in ("공통층", "사례층"):
-            for n, 말 in g.get(층, {}).items():
-                if n in 증거:
+    def pack_vals(name, g, cap, strip):
+        evidence = engine.extract_evidence(g)     # 증거는 짧아도 남기고, 앞에 놓는다
+        ex = [g.get("목표") or ""]
+        for n in evidence:
+            phrase = list(g["사례층"][n])
+            phrase = phrase[:-1] if strip else phrase
+            ex += [n] + (phrase[:cap] if cap else phrase)
+        for layer in ("공통층", "사례층"):
+            for n, phrase in g.get(layer, {}).items():
+                if n in evidence:
                     continue
-                말 = list(말)[:-1] if 빼기 else list(말)
-                예 += [x for x in [n] + (말[:상한] if 상한 else 말)
+                phrase = list(phrase)[:-1] if strip else list(phrase)
+                ex += [x for x in [n] + (phrase[:cap] if cap else phrase)
                        if len("".join(x.split())) >= 5]
-        예 = [x for x in 예 if x][:총량]
-        if 예:
-            ix["공통층"][이름] = 예
+        ex = [x for x in ex if x][:budget]
+        if ex:
+            ix["공통층"][name] = ex
 
-    for 이름, g in 읽음.items():
+    for name, g in loaded.items():
         if g.get("색인") == "아니오":     # 자가검사 뼈대는 라우터가 안 본다
             continue
-        담기(이름, g, 상한, 빼기)
+        pack_vals(name, g, cap, strip)
     # 설명 그래프(.json)는 별칭이 발췌라 뺄 마지막이 없다. 그대로 넣는다.
-    for p in engine.설명그래프찾기(engine._여기):
+    for p in engine.find_explain_graph(engine._here):
         try:
-            담기(os.path.relpath(p, engine._여기).replace("\\", "/"),
-                 engine.색인용읽기(p), 2, False)
+            pack_vals(os.path.relpath(p, engine._here).replace("\\", "/"),
+                 engine.read_for_index(p), 2, False)
         except Exception:
             pass
     ix["adj"], ix["증거"] = {}, []
-    ix["vec"] = engine._예시벡터(ix)
+    ix["vec"] = engine._example_vecs(ix)
     # 엔진과 같은 자리에서 재려면 성김·길이까지 같아야 한다.
     import numpy as np
-    길이표 = {n: np.array([len("".join(x.split())) for x in 예], dtype=np.float32)
-              for n, 예 in ix["공통층"].items()}
-    뒤집기표 = {n: (np.array([engine._담(x) for x in 예], dtype=np.float32)
+    length_table = {n: np.array([len("".join(x.split())) for x in ex], dtype=np.float32)
+              for n, ex in ix["공통층"].items()}
+    flip_table = {n: (np.array([engine._embed(x) for x in ex], dtype=np.float32)
                     if n.endswith(".kg") else None)
-                for n, 예 in ix["공통층"].items()}
-    성김 = engine.성긴벡터(ix["vec"], 길이표, 뒤집기표)
-    if 성김 is not None:
-        ix["성김"], ix["vec"] = 성김, {}
+                for n, ex in ix["공통층"].items()}
+    sparse = engine.sparse_vec(ix["vec"], length_table, flip_table)
+    if sparse is not None:
+        ix["성김"], ix["vec"] = sparse, {}
     return ix
 
 
-def 재기(읽음, ix, 답까지=False):
+def measure(loaded, ix, upto_answer=False):
     """맞음 두 가지를 같이 센다.
 
     제자리: 질문을 뽑아온 그 파일로 갔는가. 엄격하지만 겹치는 그래프에서는
@@ -96,29 +96,29 @@ def 재기(읽음, ix, 답까지=False):
             뽑았어도 graph_명예훼손 으로 가는 편이 옳다.
     답함:   고른 그래프가 실제로 답을 했는가(미지가 아닌가). 사용자에게
             중요한 것은 이쪽이다."""
-    맞 = 전 = 답 = 0
-    샌것 = []
-    _총 = sum(len(g.get(층, {})) for 이름, g in 읽음.items()
-              if not 이름.startswith("cases/") for 층 in ("공통층", "사례층"))
-    _자 = 막대(총=_총, 이름="안 물음")
-    for 이름, g in 읽음.items():
-        if 이름.startswith("cases/"):      # 사건 파일은 같은 법리라 서로 겹친다
+    hit = before = ans = 0
+    leaked = []
+    _total = sum(len(g.get(layer, {})) for name, g in loaded.items()
+              if not name.startswith("cases/") for layer in ("공통층", "사례층"))
+    _bar = Bar(total=_total, name="안 물음")
+    for name, g in loaded.items():
+        if name.startswith("cases/"):      # 사건 파일은 같은 법리라 서로 겹친다
             continue
-        for 층 in ("공통층", "사례층"):
-            for _n, 말 in g.get(층, {}).items():
-                _자.밀기()
-                if len(말) < 2:
+        for layer in ("공통층", "사례층"):
+            for _n, phrase in g.get(layer, {}).items():
+                _bar.push()
+                if len(phrase) < 2:
                     continue
-                전 += 1
-                q = list(말)[-1]
-                골, 점, _ = engine.그래프고르기(q, ix)
-                if 골 == 이름:
-                    맞 += 1
+                before += 1
+                q = list(phrase)[-1]
+                pick, pt, _ = engine.pick_graph(q, ix)
+                if pick == name:
+                    hit += 1
                 else:
-                    샌것.append((q, 이름, 골, 점))
-                if 답까지 and 골:
+                    leaked.append((q, name, pick, pt))
+                if upto_answer and pick:
                     try:
-                        답 += engine.judge(engine.그래프불러오기(골), q)[0] != "미지"
+                        ans += engine.judge(engine.load_graph(pick), q)[0] != "미지"
                     except Exception:
                         pass
     # 밖 질문은 '모른다' 로 끝나야 한다. 라우터가 거절하는지만 보면 잘못
@@ -126,42 +126,42 @@ def 재기(읽음, ix, 답까지=False):
     # 맞는 답이다. 실제로 '서버가 지금 살아 있어' 가 감정대화 그래프로
     # 0.49 에 갔지만 판정은 미지였다. 그래프가 늘 때마다 라우터 거절만
     # 세면 값이 흔들리는데, 답으로 세면 안 흔들린다.
-    _자.닫기()
-    밖 = json.load(open(engine._길(밖경로), encoding="utf-8"))
-    거절 = 0
-    for q in 막대(밖, "밖 물음"):
-        골, _, _ = engine.그래프고르기(q, ix)
-        if not 골:
-            거절 += 1
+    _bar.close()
+    outside = json.load(open(engine._abs(outside_path), encoding="utf-8"))
+    refused = 0
+    for q in Bar(outside, "밖 물음"):
+        pick, _, _ = engine.pick_graph(q, ix)
+        if not pick:
+            refused += 1
             continue
         try:
-            거절 += engine.judge(engine.그래프불러오기(골), q)[0] in ("미지", "B2")
+            refused += engine.judge(engine.load_graph(pick), q)[0] in ("미지", "B2")
         except Exception:
             pass                     # 쓰는 중인 그래프는 건너뛴다
-    return 맞, 전, 거절, len(밖), 샌것, 답
+    return hit, before, refused, len(outside), leaked, ans
 
 
 if __name__ == "__main__":
-    읽음 = _본문들()
-    상한들 = [5]
+    loaded = _bodies()
+    caps = [5]
     if "--상한" in sys.argv:
-        _뒤 = sys.argv[sys.argv.index("--상한") + 1:]
-        상한들 = []
-        for a in _뒤:
+        _tail = sys.argv[sys.argv.index("--상한") + 1:]
+        caps = []
+        for a in _tail:
             if a.startswith("--"):
                 break
-            상한들.append(int(a))
-    총량 = 180
+            caps.append(int(a))
+    budget = 180
     if "--총량" in sys.argv:
-        총량 = int(sys.argv[sys.argv.index("--총량") + 1])
-    for 상한 in 상한들:
-        ix = 색인짓기(읽음, 상한, 총량=총량)
-        맞, 전, 거절, 밖수, 샌것, 답 = 재기(읽음, ix, "--답" in sys.argv)
+        budget = int(sys.argv[sys.argv.index("--총량") + 1])
+    for cap in caps:
+        ix = build_index(loaded, cap, budget=budget)
+        hit, before, refused, outside_count, leaked, ans = measure(loaded, ix, "--답" in sys.argv)
         print("상한 %-4s 총량 %-4s  제자리 %4d/%4d (%.1f%%)%s  밖 거절 %2d/%d"
-              % (상한 or "없음", 총량, 맞, 전, 100 * 맞 / 전,
-                 ("  답함 %4d (%.1f%%)" % (답, 100 * 답 / 전)) if "--답" in sys.argv else "",
-                 거절, 밖수))
+              % (cap or "없음", budget, hit, before, 100 * hit / before,
+                 ("  답함 %4d (%.1f%%)" % (ans, 100 * ans / before)) if "--답" in sys.argv else "",
+                 refused, outside_count))
     if "--샌것" in sys.argv:
-        for q, 참, 골, 점 in 샌것[:30]:
+        for q, true, pick, pt in leaked[:30]:
             print("  '%s'  %s -> %s (%.2f)"
-                  % (q, 참.split("/")[-1], (골 or "모름").split("/")[-1], 점))
+                  % (q, true.split("/")[-1], (pick or "모름").split("/")[-1], pt))
