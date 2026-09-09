@@ -98,3 +98,10 @@ graphs/후보/
 그래프쓰임.json
 # 묶어 둔 색인. 원본이 아니라 캐시라 저장소에 안 올린다.
 .색인.kgbin
+
+# universal_agent.py 데모가 뱉는 것. `python universal_agent.py` 로 다시 난다.
+result.json
+
+# autocoder / universal_agent 데모가 지은 그래프. 색인은 graphs/*.kg 만 훑으므로
+# 여기 있는 것은 라우팅에 안 낀다.
+graphs/데모/
