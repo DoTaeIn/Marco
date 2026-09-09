@@ -31,6 +31,7 @@
 캐시가 아니라 잣대라서다 — 지우면 지난 값과 견줄 수 없게 된다.
 """
 import glob
+import copy
 import io
 import json
 import os
@@ -161,6 +162,60 @@ def measure(verbose=False):
     one_group("대조(별칭그대로)", slot["대조"])
     one_group("안 물음(뺀 별칭)", slot["안"])
 
+    def node_group(name, lines, strip):
+        """고른 그래프 **안에서** 그 개념을 짚나. 라우팅과 다른 층이다.
+
+        왜 따로 재나. 위의 두 줄은 '905개 중 어느 그래프냐' 만 본다. 그런데
+        바꿔 말하기가 막히는 자리는 그래프를 맞게 골라 준 다음이다.
+
+        왜 두 가지로 세나. 개념 하나가 그래프에 두 노드로 들어가 있다.
+
+            마일스톤은프로젝트진행에서...시점이다      <- 정의
+            *마일스톤질문                            <- 물음
+            마일스톤질문 -설명함-> 마일스톤은...시점이다  <- 같다고 적혀 있다
+
+        '중요 단계가 끝나는 시점' 을 물으면 매처는 정의 노드로 **정확히**
+        간다. 정답표는 질문 노드만 적어 두므로 0점이 된다. 그래서 사람이
+        `설명함` 이라 적어 이어 둔 것까지 세는 줄을 나란히 둔다. 문턱을
+        낮추는 것이 아니라 그래프에 적힌 지식을 읽는 것이다 —
+        `이어짐`·`충족`·`부정` 은 논증 관계라 접지 않는다."""
+        import collections
+        by_graph = collections.defaultdict(list)
+        for x in lines:
+            if x.get("그래프") and x.get("노드"):
+                by_graph[x["그래프"]].append(x)
+        exact = folded = seen = 0
+        for path, group in Bar(sorted(by_graph.items()), name):
+            try:
+                g = copy.deepcopy(engine.read_kg(path))
+            except Exception:
+                continue
+            if strip:
+                drop = {x["물음"] for x in group}
+                for layer in ("공통층", "사례층"):
+                    for n, phrases in list(g.get(layer, {}).items()):
+                        left = [p for p in phrases if p not in drop]
+                        if left:
+                            g[layer][n] = left
+            g["vec"] = engine._example_vecs(g)
+            cands = list(g["공통층"]) + list(g["사례층"])
+            same = {(x, y) for x, rel, y in g.get("엣지", []) if rel == "설명함"}
+            for x in group:
+                if x["노드"] not in cands:
+                    continue
+                seen += 1
+                got, _pt = engine.match(x["물음"], cands, g)
+                if got == x["노드"]:
+                    exact += 1
+                    folded += 1
+                elif (got, x["노드"]) in same or (x["노드"], got) in same:
+                    folded += 1
+        result[name] = (exact, seen)
+        result[name + " · 설명함까지"] = (folded, seen)
+
+    node_group("노드 대조(별칭그대로)", slot["대조"], False)
+    node_group("노드 안 물음(뺀 별칭)", slot["안"], True)
+
     outside = json.load(io.open(outside_dir, encoding="utf-8"))
     refused = 0
     for q in Bar(outside, "밖 물음"):
@@ -180,6 +235,14 @@ def measure(verbose=False):
     for name, (hit, total) in result.items():
         print("%-18s %4d/%-4d  %5.1f%%" % (name, hit, total, 100 * hit / max(total, 1)))
     print("=" * 52)
+    print("위 네 줄은 905개 중 어느 그래프냐(라우팅), 아래 네 줄은 그 그래프"
+          " 안에서 어느 개념이냐. 바꿔 말하기가 막히는 자리는 아래쪽이다.")
+    n_ctl, n_total = result.get("노드 대조(별칭그대로) · 설명함까지", (0, 0))
+    if n_total and n_ctl < n_total * 0.95:
+        print("\n[조심] 노드 대조군이 %.1f%% 다. 별칭을 그대로 물었으면 그"
+              " 노드로 가야 한다. 낮으면 매처가 아니라 그래프나 시험틀을"
+              " 봐야 한다 — 같은 별칭이 두 노드에 달린 것이 흔한 원인이다."
+              % (100 * n_ctl / n_total))
     ㄷ, ctl_total = result["대조(별칭그대로)"]
     ㄷ3, _ = result["대조(별칭그대로) · 셋 안"]
     if ㄷ3 < ctl_total * 0.95:
