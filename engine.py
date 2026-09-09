@@ -713,6 +713,11 @@ def _related_concepts(g):
     return {k: v for k, v in concept.items() if k in seen}
 
 
+# 별칭 불리는 규칙의 판. 규칙을 고치면 이 수를 올린다 — 벡터 캐시가
+# 그래야 다시 계산된다.
+_EXPAND_VERSION = 2
+
+
 def expand_examples(graph, sentences):
     """개념망을 타고 예시 문장을 불린다.
 
@@ -791,6 +796,10 @@ def _example_vecs(graph, cache_loc=None):
     graph.setdefault("무관층", {})
     material = {layer: graph.get(layer, {}) for layer in ("공통층", "사례층", "무관층")}
     material["개념엣지"] = graph.get("개념엣지", [])
+    # 별칭을 불리는 규칙(expand_examples)이 바뀌면 같은 그래프라도 결과가
+    # 달라진다. 내용만 키로 삼으면 낡은 캐시를 조용히 다시 쓴다 — 조사를
+    # 다시 계산하게 고쳤을 때 실제로 그럴 뻔했다.
+    material["_불리기판"] = _EXPAND_VERSION
     key = hashlib.sha1(
         (MODEL + json.dumps(material, ensure_ascii=False, sort_keys=True)).encode("utf-8")
     ).hexdigest()[:16]
