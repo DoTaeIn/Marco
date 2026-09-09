@@ -194,15 +194,15 @@ def _fitted_particle(phrase, particle):
         if particle.startswith(add) and len(particle) > 1:
             return pick_particle(phrase, (particle, particle[1:]))
         # 민형으로 적혀 있으면 받침 뒤에서 돋워 준다. '책' + '랑' -> '책이랑'
+    if particle not in _epenthetic:
+        return particle              # '에·에는·까지·도·만' 은 돋지 않는다
     ㄴ = batchim(phrase)
-    if ㄴ is None:
+    if not ㄴ:
         return particle
-    if ㄴ:
-        add = "으" if particle[:1] in "ㄹ로므며면" or particle[:1] == "로" else "이"
-        if add == "으" and ㄴ == "ㄹ":
-            return particle
-        return add + particle
-    return particle
+    add = "으" if particle[:1] == "로" else "이"
+    if add == "으" and ㄴ == "ㄹ":
+        return particle
+    return add + particle
 
 
 # 조사로 볼 수 있는 것들. 낱말 뒤에 붙어 있을 때만 본다.
@@ -213,6 +213,10 @@ _particles = ("이랑", "랑", "이라고", "라고", "이라는", "라는", "�
           "으로써", "로써", "으로서", "로서", "으로", "로",
           "은", "는", "이", "가", "을", "를", "과", "와")
 _longest_first = tuple(sorted(_particles, key=len, reverse=True))
+# 받침 뒤에서 앞에 '이/으' 가 돋는 조사. 여기 없는 조사('에·까지·도·만')는
+# 받침이 있어도 그대로 붙는다 — 그러지 않으면 '가래질이에는' 이 나온다.
+_epenthetic = frozenset(("랑", "라", "라고", "라는", "니까", "네요", "야", "나",
+                         "로", "로서", "로써"))
 
 
 def fix_particles(sentence, words):
@@ -245,6 +249,19 @@ def fix_particles(sentence, words):
                 break
             i = rear
     return sentence
+
+
+def swap_word(sentence, old, new):
+    """문장 속 낱말 하나를 갈아 끼우고, 뒤따르는 조사를 새 낱말에 맞춰 다시 고른다.
+
+        낱말갈기('흉기를 들고 있었습니다', '흉기', '식칼') -> '식칼을 들고 있었습니다'
+
+    낱말만 갈고 문법을 앞 낱말 것 그대로 들고 오면 '식칼를' 처럼 아무도
+    쓰지 않는 말이 된다. 개념망으로 별칭을 불릴 때 이 자리를 안 거쳐서
+    실제로 그런 별칭이 만들어지고 있었다."""
+    if not old or old not in sentence:
+        return sentence
+    return fix_particles(sentence.replace(old, new), [new])
 
 
 def _selfcheck():
@@ -289,6 +306,16 @@ def _selfcheck():
     # 조사가 아닌 것은 안 건드린다
     assert fix_particles("철수 이것 봐", ["철수"]) == "철수 이것 봐"
     assert fix_particles("철수이것", ["철수"]) == "철수이것", fix_particles("철수이것", ["철수"])
+    # 낱말을 갈면 조사도 같이 간다. 안 그러면 '식칼를' 이 별칭이 된다.
+    assert swap_word("흉기를 들고 있었습니다", "흉기", "식칼") == "식칼을 들고 있었습니다"
+    assert swap_word("흉기가 있었습니다", "흉기", "각목") == "각목이 있었습니다"
+    assert swap_word("흉기를 들었다", "없는말", "식칼") == "흉기를 들었다"
+    # 짝도 없고 돋지도 않는 조사는 그대로 붙는다
+    assert attach_particle("가래질", "에는") == "가래질에는"
+    assert attach_particle("흙", "까지") == "흙까지"
+    assert attach_particle("책", "랑") == "책이랑"          # 이건 돋는다
+    assert attach_particle("서울", "로") == "서울로"        # ㄹ 예외
+    assert attach_particle("책", "로") == "책으로"
     print("자가검사 ok")
 
 

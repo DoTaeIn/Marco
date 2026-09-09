@@ -46,19 +46,19 @@ from build import extract_target
 # 긴 것을 앞에, 대화 중에 쓰일 짧은 것을 뒤에.
 speech_habit = {
     "물건": {"함": "가져감", "안함": "두고감", "됨": "가져갔다", "안됨": "두고 갔다", "댐": "가져간다", "안댐": "두고 간다",
-             "댐예": ["{말} 하러 {대} {조} 가져간다", "{대} {조} 챙겨서 {말} 하러 간다",
-                     "{대} {조} 타고 간다", "가지고 간다"],
-             "안댐예": ["{대} {조} 두고 {말} 하러 간다", "{대} 없이 {말} 한다",
+             "댐예": ["{말} 하러 {대을} 가져간다", "{대을} 챙겨서 {말} 하러 간다",
+                     "{대을} 타고 간다", "가지고 간다"],
+             "안댐예": ["{대을} 두고 {말} 하러 간다", "{대} 없이 {말} 한다",
                       "걸어서 간다", "안 가져간다"]},
     "장소": {"함": "감", "안함": "안감", "됨": "갔다", "안됨": "가지 않았다", "댐": "간다", "안댐": "안 간다",
-             "댐예": ["{말} 하러 {대} 에 간다", "{대} 까지 올라가서 {말} 한다",
-                     "거기로 간다", "{대} 에 간다"],
-             "안댐예": ["{대} 에 안 가고 {말} 한다", "{말} 하러 안 가고 집에 있는다",
+             "댐예": ["{말} 하러 {대}에 간다", "{대}까지 올라가서 {말} 한다",
+                     "거기로 간다", "{대}에 간다"],
+             "안댐예": ["{대}에 안 가고 {말} 한다", "{말} 하러 안 가고 집에 있는다",
                       "집에 있는다", "가지 않는다"]},
     "사람": {"함": "부름", "안함": "안부름", "됨": "불렀다", "안됨": "안 불렀다", "댐": "부른다", "안댐": "안 부른다",
-             "댐예": ["{말} 하러 {대} {조} 부른다", "{대} 와 함께 {말} 한다",
-                     "같이 간다", "{대} {조} 부른다"],
-             "안댐예": ["{대} 없이 {말} 한다", "{말} 을 혼자 한다",
+             "댐예": ["{말} 하러 {대을} 부른다", "{대와} 함께 {말} 한다",
+                     "같이 간다", "{대을} 부른다"],
+             "안댐예": ["{대} 없이 {말} 한다", "{말을} 혼자 한다",
                       "혼자 간다", "안 부른다"]},
 }
 
@@ -80,12 +80,16 @@ def build(definition, src="", phrase=None, schema="물건", index=False):
     지은 그래프가 조용히 색인에 끼면 남의 물음을 가져가서 거기서 미지가
     된다(742개를 그냥 넣으니 답함이 62.3% 에서 60.0% 로 떨어졌다).
     켜는 것은 `자가저작` 의 관문을 지난 뒤여야 한다."""
+    import hangul
     habit = speech_habit.get(schema) or speech_habit["물건"]
 
-    def particle(phrase, batchim_particle, plain_particle):
-        """'책 를' 이 아니라 '책 을'. 노드 이름은 알 수 없으니 여기서 고른다."""
-        import hangul
-        return hangul.pick_particle(phrase, (batchim_particle, plain_particle))
+    def attach(word, particle):
+        """낱말 + 조사 -> 받침에 맞게 붙인 말.
+
+        틀에 '책 를' 처럼 조사를 박아 두면 어떤 낱말이 들어오든 그 조사가
+        나간다. 실제로 그래서 705개 그래프에 '흙 가 없다' 가 들어갔다.
+        문법은 적어 두는 것이 아니라 낱말에서 계산하는 것이다."""
+        return hangul.attach_particle(word, particle)
     extract = extract_target(definition)
     if not extract:
         return None
@@ -100,6 +104,9 @@ def build(definition, src="", phrase=None, schema="물건", index=False):
     if _not_purpose.search(phrase):
         return None
     tail = ("@" + src) if src else ""
+    # 틀이 쓰는 자리. 조사가 붙은 꼴을 미리 만들어 둔다 — 틀에는 문법이 없다.
+    슬롯 = {"대": target, "대을": attach(target, "를"), "대와": attach(target, "와"),
+            "말": phrase, "말을": attach(phrase, "를")}
     return f"""# {phrase} — 목적이 수단을 제약하는 그래프.
 # 사람이 적은 것이 아니라 아래 원문 한 줄에서 뽑았다.
 #
@@ -117,19 +124,19 @@ def build(definition, src="", phrase=None, schema="물건", index=False):
 [개념]
 # 개념은 **상태**를 말한다. 사례(행동)와 같은 문장을 쓰면 매처가 둘을 못 갈라
 # '자동차 를 타고 간다' 가 '자동차없음' 으로 붙는다 — 실제로 그렇게 깨졌다.
-{phrase}함:      "{phrase}를 할 수 있다" | "{phrase} 가 된다"
-{target}있음:   "{target} 가 그 자리에 있다" | "{target} {particle(target,"을","를")} {habit["됨"]}"
-{target}없음:   "{target} 가 없다" | "{target} {particle(target,"을","를")} {habit["안됨"]}"
+{phrase}함:      "{attach(phrase,"를")} 할 수 있다" | "{attach(phrase,"가")} 된다"
+{target}있음:   "{attach(target,"가")} 그 자리에 있다" | "{attach(target,"를")} {habit["됨"]}"
+{target}없음:   "{attach(target,"가")} 없다" | "{attach(target,"를")} {habit["안됨"]}"
 
 [공리]
 # 둘째 별칭으로 `{{말}} 는 {{대상}} 을 {{동작}}는 일이라 …` 를 달았었다.
 # 낱말 둘만 다르고 나머지가 전부 같은 틀이라, 그래프를 여럿 찍으면 그
 # 별칭끼리 서로를 삼킨다. 원문 한 줄이면 신원이 선다.
-{phrase}에는{target}가필요{tail}: "{definition}" | "{phrase} 에는 {target} 가 있어야 한다"
+{phrase}에는{target}가필요{tail}: "{definition}" | "{attach(phrase,"에는")} {attach(target,"가")} 있어야 한다"
 
 [사례]
-*{target}{habit["함"]}: {" | ".join('"%s"' % x.format(**{"대": target, "조": particle(target, "을", "를"), "말": phrase}) for x in habit["댐예"])}
-*{target}{habit["안함"]}: {" | ".join('"%s"' % x.format(**{"대": target, "조": particle(target, "을", "를"), "말": phrase}) for x in habit["안댐예"])}
+*{target}{habit["함"]}: {" | ".join('"%s"' % x.format(**슬롯) for x in habit["댐예"])}
+*{target}{habit["안함"]}: {" | ".join('"%s"' % x.format(**슬롯) for x in habit["안댐예"])}
 
 [무관]
 # 걸리는 시간은 이 목표에 기여하지 않는다. 사례층에 두면 목표에 닿지 못해
@@ -151,7 +158,7 @@ A: 혹시 {{claim}} 말인가?
 인정: {{ev}} 니까 {{claim}} 다.
 인정_반격: {{ev}} 는 그렇다. 그런데 {{bad}} 가 걸린다.
 C: {{ev}} 만으로는 {{claim}} 까지 못 간다.
-B1: {{claim}} 은 알겠다. {target} {particle(target,"을","를")} {habit["댐"]} 건지를 말해야 한다.
+B1: {{claim}} 은 알겠다. {attach(target,"를")} {habit["댐"]} 건지를 말해야 한다.
 미지: 그건 모르겠다.
 공리: {{claim}}
 목표주장: {phrase} 를 하려면 {target} 를 어떻게 할 건지부터 정해야 한다.
@@ -168,8 +175,10 @@ def build_concurrent(phrase, roles, unit, src=""):
     roles = tuple(dict.fromkeys(str(x).strip() for x in roles if str(x).strip()))
     if len(roles) < 2 or not str(unit).strip() or not str(phrase).strip():
         return None
+    import hangul
     tail = ("@" + src) if src else ""
-    case = "\n".join("*%s참여: \"%s 가 %s 에 참여한다\"" % (r, r, unit) for r in roles)
+    j = hangul.attach_particle
+    case = "\n".join('*%s참여: "%s %s에 참여한다"' % (r, j(r, "가"), unit) for r in roles)
     argument = "\n".join("%s참여 -동시참여-> %s동시" % (r, phrase) for r in roles)
     return f'''# {phrase} — 사람이 확인한 동시작업 도식.
 # 역할과 단위는 원문 추출값이 아니다. 아래 출처의 사람이 확인한 시드다.
@@ -182,11 +191,11 @@ def build_concurrent(phrase, roles, unit, src=""):
 근거관계: 동시참여
 
 [개념]
-{phrase}동시: "{unit} 에 모든 역할이 함께 참여한 상태"
-{phrase}성립: "{phrase} 가 성립한다"
+{phrase}동시: "{unit}에 모든 역할이 함께 참여한 상태"
+{phrase}성립: "{j(phrase, "가")} 성립한다"
 
 [공리]
-{phrase}동시조건{tail}: "{phrase} 는 {', '.join(roles)} 가 {unit} 에 함께 참여해야 한다"
+{phrase}동시조건{tail}: "{j(phrase, "는")} {j(", ".join(roles), "가")} {unit}에 함께 참여해야 한다"
 
 [사례]
 {case}
@@ -197,8 +206,8 @@ def build_concurrent(phrase, roles, unit, src=""):
 {phrase}동시조건 -함의함-> {phrase}성립
 
 [대사]
-B2: 그건 {phrase} 의 동시 참여와 상관이 없다.
-B2_강등: {phrase} 의 동시 참여만 다룬다.
+B2: 그건 {phrase}의 동시 참여와 상관이 없다.
+B2_강등: {phrase}의 동시 참여만 다룬다.
 A: 혹시 {{claim}} 말인가?
 근거없음: {{claim}} 는 어떤 역할의 참여를 보고 하는 말인가?
 인정: {{ev}} 니까 {{claim}} 다.
@@ -252,7 +261,9 @@ def _selfcheck():
     open(engine._abs("graphs/graph_동시_자가검사.kg"), "w", encoding="utf-8").write(is_verb_hour_text)
     is_verb_hour_g = engine.load("graphs/graph_동시_자가검사.kg")
     assert engine.lint(is_verb_hour_g) == [], engine.lint(is_verb_hour_g)
-    assert engine.judge(is_verb_hour_g, "지휘자 가 한 악장 에 참여한다")[0] == "인정"
+    # 사람이 치는 대로 묻는다. 조사를 띄워 물어야 걸리면 그건 그래프가
+    # 아무도 안 쓰는 한국어로 적혔다는 뜻이다.
+    assert engine.judge(is_verb_hour_g, "지휘자가 한 악장에 참여한다")[0] == "인정"
     assert build_concurrent("교향악단", ("지휘자",), "한 악장") is None
     print("selfcheck ok")
 

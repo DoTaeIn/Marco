@@ -743,7 +743,9 @@ def expand_examples(graph, sentences):
                 if upper not in sentence:
                     continue
                 for bottom in children:
-                    new = sentence.replace(upper, bottom)
+                    # 낱말만 갈고 조사를 그대로 두면 '식칼를' 이 된다.
+                    # 문법은 낱말에서 계산한다 — 적어 두는 것이 아니다.
+                    new = _ko.swap_word(sentence, upper, bottom)
                     if new not in yielded:
                         yielded.append(new)
                         nxt.append(new)
