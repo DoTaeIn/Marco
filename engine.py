@@ -866,8 +866,32 @@ def _example_vecs(graph, cache_loc=None):
     return out
 
 
+def _reverse_examples(graph, node):
+    """Cache character presence vectors as exact int8, keyed by forward matrix.
+
+    Presence vectors contain only -1, 0, 1. This avoids a second float32
+    matrix and refreshes after a dialogue replaces a node's example matrix.
+    """
+    import numpy as np
+    matrix = graph["vec"][node]
+    cache = graph.setdefault("_reverse_vec", {})
+    old = cache.get(node)
+    if old is not None and old[0] is matrix:
+        return old[1]
+    phrases = next((graph[layer][node] for layer in ("공통층", "사례층", "무관층")
+                    if node in graph.get(layer, {})), None)
+    if phrases is None:
+        return None
+    expanded = expand_examples(graph, phrases)
+    if len(expanded) != len(matrix):
+        return None
+    reverse = np.array([_embed(mask_numbers(p)) for p in expanded], dtype=np.int8)
+    cache[node] = (matrix, reverse)
+    return reverse
+
+
 def match(text, candidates, graph, bonus=None):
-    """가장 가까운 노드와 코사인 유사도. 긴 발화는 조각 중 최고를 취한다.
+    """가장 가까운 노드와 점수. 문자에서는 양방향 포함도의 기하평균이다.
 
     가산은 대화의 활성값(`세션.가산`)이다. 후보가 엇비슷할 때 아까 이야기하던
     쪽으로 기울인다 — 법 그래프에서 흔한 질문 일곱 개를 재보니 1등과 2등
@@ -876,11 +900,19 @@ def match(text, candidates, graph, bonus=None):
     **순위만 바꾸고 문턱은 못 낮춘다.** 돌려주는 점수는 가산을 뺀 순수
     유사도다. 아까 무슨 이야기를 했다는 이유로 근거 없는 답이 A_MIN 을
     넘으면 안 된다."""
+    import numpy as np
     best, score, measured = None, -1.0, 0.0
     for chunk in split_fragments(text):
         v = _embed(chunk)
+        inner = _embed_sub(chunk) if MODEL.startswith("문자") else None
+        inner_cols = np.flatnonzero(inner) if inner is not None else None
         for node in candidates:
-            s = float((graph["vec"][node] @ v).max())
+            forward = graph["vec"][node] @ v
+            reverse = _reverse_examples(graph, node) if inner is not None else None
+            if reverse is not None:
+                backward = reverse[:, inner_cols] @ inner[inner_cols]
+                forward = np.sqrt(np.maximum(forward, 0) * np.maximum(backward, 0))
+            s = float(forward.max())
             contest = s + (bonus(node) if bonus else 0.0)
             if contest > score:
                 best, score, measured = node, contest, s
@@ -1207,10 +1239,6 @@ def _judge_raw(graph, text, streak_A=0, share=None):
     # 재보니 갈리는 자리가 뚜렷하다. 진짜 시작 발화 163개는 하위 10%도 1.00
     # 인데(제 그래프의 목표 예시니 당연하다) 새는 것은 최고가 0.61 이다.
     # 0.62 로 자르면 넷을 다 막고 진짜는 하나도 안 잃는다.
-    if claim == graph["목표"] and conf < goal_sim_thresh:
-        _unknown_log(graph, text, conf, claim)
-        return "미지", phrase.get("미지") or phrase["B2"]
-
     if claim == graph["목표"]:
         # 결론만 말한 것이 아니라 증거도 같이 댔다면 빈손이 아니다. 그대로
         # 되돌려보내면 사람이 한 문장에 사실과 물음을 같이 말했다는 이유로
@@ -1224,6 +1252,16 @@ def _judge_raw(graph, text, streak_A=0, share=None):
             if share is not None:
                 share.update({"주장": claim, "확신": conf})
         else:
+            # The goal-similarity gate applies to an unsupported goal claim.
+            # Explicit evidence must reach the support branch above first.
+            # Retrieval symmetry is not evidence that the full goal was stated:
+            # a short generic question can overlap only its question ending.
+            # Preserve the original goal-coverage requirement without retuning.
+            coverage = max(float((graph["vec"][claim] @ _embed(chunk)).max())
+                           for chunk in split_fragments(body))
+            if min(conf, coverage) < goal_sim_thresh:
+                _unknown_log(graph, text, conf, claim)
+                return "미지", phrase.get("미지") or phrase["B2"]
             return "목표주장", (phrase.get("목표주장") or
                                 "그것이 이 재판의 결론입니다. 요건을 하나씩 입증하십시오.")
     if conf < OK_MIN:
@@ -2910,7 +2948,9 @@ def sparse_vec(vec, length_table=None, flip_table=None):
         tail_sparse = None
         if rear is not None:
             r_row, r_col = np.nonzero(rear)
-            tail_sparse = (rear[r_row, r_col].astype(np.float32),
+            rear_values = rear[r_row, r_col]
+            rear_dtype = np.int8 if np.all(np.isin(rear_values, [-1, 0, 1])) else np.float32
+            tail_sparse = (rear_values.astype(rear_dtype),
                       r_col.astype(np.int16 if rear.shape[1] <= 32767 else np.int32),
                       np.searchsorted(r_row, np.arange(rear.shape[0] + 1)))
         sparse[n] = (M[row, col].astype(np.float32),
@@ -2923,11 +2963,10 @@ _short_line = 8          # 이보다 짧은 색인 줄은
 _LONG_Q_SCALE = 2.0     # 질문이 이 배수를 넘게 길면 못 이긴다
 
 
-_short_question = 8        # 이보다 짧은 질문은 포함도를 뒤집어서도 본다
-
-
 def _sparse_score(slot, v, question_length=None, inner_vec=None):
-    """색인 줄 하나하나와 견준 값 중 최고.
+    """같은 색인 줄의 양방향 포함도를 기하평균한 뒤 최고를 고른다.
+
+    역방향 벡터가 없는 설명 색인 등은 기존 단방향 점수를 유지한다.
 
     짧은 줄은 질문이 길면 막는다. 포함도는 '줄의 조각 중 몇 할이 질문 안에
     있나' 라서, '맞습니다' 같은 짧은 존댓말은 '맞붙어 싸웠습니다' 와
@@ -2948,31 +2987,19 @@ def _sparse_score(slot, v, question_length=None, inner_vec=None):
             rear = (kgbin.expand(rear[0]),) + tuple(rear[1:])
     if len(value) == 0:
         return 0.0
-    sum_ = np.add.reduceat(value * v[col], bounds[:-1])
-    sum_[np.diff(bounds) == 0] = 0.0
+    nonempty = np.diff(bounds) > 0
+    sum_ = np.zeros(_row_count, dtype=np.float32)
+    sum_[nonempty] = np.add.reduceat(value * v[col], bounds[:-1][nonempty])
+    if inner_vec is not None and rear is not None:
+        r_value, r_col, r_bounds = rear
+        tail_total = np.zeros(_row_count, dtype=np.float32)
+        nonempty_rear = np.diff(r_bounds) > 0
+        if len(r_value):
+            tail_total[nonempty_rear] = np.add.reduceat(
+                r_value * inner_vec[r_col], r_bounds[:-1][nonempty_rear])
+        sum_ = np.sqrt(np.maximum(sum_, 0) * np.maximum(tail_total, 0))
     if question_length is not None and length is not None:
         sum_ = np.where((length < _short_line) & (question_length > _LONG_Q_SCALE * length), 0.0, sum_)
-    # 짧은 질문은 뒤집어서도 본다. 포함도는 '색인 줄의 조각 중 몇 할이 질문
-    # 안에 있나' 인데, 질문이 짧으면 조각이 적어 긴 줄을 덮는 몫이 애초에
-    # 작다. '가지고 간다' 가 제 그래프에서 0.44 를 받고 문턱에 걸렸다.
-    # 짧은 질문일 때만 '색인 줄이 질문을 담는가' 도 재서 큰 쪽을 쓴다.
-    #
-    # 설명 그래프는 발췌가 길어 이 규칙에서 뺀다 — 넣으면 '다음 주에 비 와'
-    # 같은 밖 질문이 거기로 샌다(밖 거절 25/25 -> 22/25).
-    if inner_vec is not None and rear is not None and question_length is not None \
-            and question_length <= _short_question:
-        r_value, r_col, r_bounds = rear
-        if len(r_value):
-            tail_total = np.add.reduceat(r_value * inner_vec[r_col], r_bounds[:-1])
-            tail_total[np.diff(r_bounds) == 0] = 0.0
-            # 뒤집으면 이번엔 긴 줄이 짧은 질문을 통째로 담아 이긴다.
-            # '주소 확인했어요' 가 '내부 루프백 주소(127.0.0.1)나 통제된
-            # 외부 도메인으로의 요청 성공을 확인했습니다' 에 0.73 으로 붙었다.
-            # 앞으로 잴 때와 같은 규율이다 — 길이 차이가 크면 그 줄이 그
-            # 질문에 대한 것일 리 없다.
-            if length is not None:
-                tail_total = np.where(length > _LONG_Q_SCALE * max(question_length, 1), 0.0, tail_total)
-            sum_ = np.maximum(sum_, tail_total)
     return float(sum_.max())
 
 
@@ -3017,6 +3044,14 @@ def pick_graph(question, index=None, min_n=None, count=3):
     _question_lang = view_lang(question)
     _lang_table = index.get("언어표") or {}
     _multi_lang = len(set(_lang_table.values())) > 1
+    # A named acronym already written in the index is a lexical lookup. Its
+    # identity should not vanish because its explanation is long or Korean.
+    term = strip_english_shell(question).strip().rstrip("?？!！.")
+    exact_terms = set()
+    if re.fullmatch(r"[A-Z][A-Z0-9]{1,}", term):
+        for name, phrases in index["공통층"].items():
+            if any(term in re.findall(r"[A-Za-z][A-Za-z0-9]*", p) for p in phrases):
+                exact_terms.add(name)
 
     chunks = [(_embed(chunk), len("".join(chunk.split())), _embed_sub(chunk))
               for chunk in split_fragments(question)]
@@ -3037,6 +3072,7 @@ def pick_graph(question, index=None, min_n=None, count=3):
     if _multi_lang and _question_lang != "섞임":
         score = [(p * (1.0 if _lang_table.get(n, "한국어") == _question_lang else 0.85), n)
                 for p, n in score]
+    score = [(1.0 if n in exact_terms else p, n) for p, n in score]
     # 쓰이는 그래프를 올린다(안 쓰이는 것을 누르지 않는다). 대화 안에서
     # 하던 것과 같은 규율이다 — 순위만 바꾸고 문턱은 못 낮춘다. 누르는
     # 꼴로 만들면 드물게 쓰이는 옳은 그래프가 문턱 아래로 떨어져, 답할 수
@@ -5318,15 +5354,15 @@ def _selfcheck():
 
     # 자책 논증은 반격 대사가 붙어야 한다.
     #
-    # 이 발화는 표에서 뺐다. 문자 인코더에서는 주장(선제공격)의 확신이
-    # A 밴드에 떨어져 되묻기가 되기 때문이다 — 찾은 것은 맞고 덜 확신할
-    # 뿐인데, 표에 '인정' 으로 못 박으면 시험이 죽는다. 자책 반격 자체는
-    # 밴드를 맞춰 주면 두 인코더 다 제대로 나온다.
+    # 반격 대사 검사는 점수 문턱을 임의로 바꾸지 않고 노드의 원문 별칭을
+    # 사용한다. 바꿔 말하기 정확도는 고정 잣대에서 별도로 측정한다.
     _self_blame_g = copy.deepcopy(g)
-    _self_blame_g["임계값"] = {"A_MIN": 0.40, "OK_MIN": 0.50}
-    _self_blame_tag, line = judge(_self_blame_g, "CCTV 영상을 보면 먼저 공격했다는 게 보입니다")
+    _self_blame_text = "CCTV 영상을 보면 " + next(
+        _self_blame_g[layer]["선제공격"][0] for layer in ("공통층", "사례층")
+        if "선제공격" in _self_blame_g[layer])
+    _self_blame_tag, line = judge(_self_blame_g, _self_blame_text)
     assert _self_blame_tag == "인정", (_self_blame_tag, line)
-    _, line = judge(_self_blame_g, "CCTV 영상을 보면 먼저 공격했다는 게 보입니다")
+    _, line = judge(_self_blame_g, _self_blame_text)
     assert "침해의현재성" in line, line
 
     # 이름 붙이기: 뭉치 이름은 자료 원문에서만 나온다. 근거가 없으면 안 낸다.
