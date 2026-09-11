@@ -109,3 +109,28 @@ graphs/데모/
 # 사전에서 굳힌 상위어 관계. tools/build_concept_net.py 로 다시 짓는다.
 # 켜도 눈금이 안 움직여서(그 파일 머리말) 저장소에는 안 둔다.
 data/개념망.json
+
+# --- 받아온 것 (저장소에 담지 않는다) ---
+
+# 시각 부품이 쓰는 모델 가중치. 1.4GB 라 담지 않는다.
+# Qwen2.5-VL, SmolVLM2, resnet50, YOLO 를 각 배포처에서 다시 받는다.
+data/models/
+
+# HICO-DET 사람-물체 상호작용 자료. 206MB.
+data/hoi/
+
+# ChartQA 평가 자료. 66MB. 원 배포처에서 다시 받는다.
+data/benchmarks/chartqa/
+
+# 평가에 쓰려고 받아둔 논문 PDF. 남의 저작물이라 담지 않는다.
+data/benchmarks/papers/
+
+# 위키에서 추린 정의문. 90MB 이고 내용이 남의 글이다.
+# collectors/위키.py 로 다시 모은다.
+data/위키/
+
+# 되돌림 시험에 쓰려고 받아둔 웹 원문.
+data/웹_되돌림/
+
+# 기계마다 따로 빌드하는 실행 파일.
+.nai-tools/
