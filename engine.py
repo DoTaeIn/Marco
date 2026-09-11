@@ -3213,9 +3213,14 @@ def _state_reasoning(question):
         # 정직한 미지 경계를 바꾸지 않는다.
         return None
     if result.get("status") == "answered" and result.get("answer"):
-        return _relpath(knowledge_path), "상태추론", result["answer"]
+        from output_contracts import apply as apply_output_contract
+        return _relpath(knowledge_path), "상태추론", apply_output_contract(question, result["answer"])
     if result.get("status") == "premise_invalid" and result.get("answer"):
         return _relpath(knowledge_path), "전제오류", result["answer"]
+    if state.get("accepted") and result.get("status") == "unknown":
+        # A recognized question with insufficient or contradictory premises is
+        # resolved as unknown. Lexical retrieval cannot repair that proof.
+        return None, "미지", _not_found_reply(question, [])
     return None
 
 

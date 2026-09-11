@@ -1,0 +1,22 @@
+{
+  "schema": "reasoning-transfer-v1",
+  "description": "구현 수정 전에 고정한 개발 진단 세트. 공개한 뒤에는 블라인드 평가로 주장하지 않는다. 정답은 런타임에 제공하지 않는다.",
+  "cases": [
+    {"id":"expression-precedence","family":"composition","input":"8 + 3 * 4는 얼마야?","answers":["20입니다."]},
+    {"id":"expression-parentheses","family":"composition","input":"(8 + 3) * 4는 얼마야?","answers":["44입니다."]},
+    {"id":"equation-other-variable","family":"equation","input":"5y - 4 = 21이야. y는 얼마야?","answers":["5입니다."]},
+    {"id":"equation-both-sides","family":"equation","input":"5x + 2 = 2x + 17이면 x는 얼마야?","answers":["5입니다."]},
+    {"id":"equation-verbal","family":"paraphrase","input":"어떤 수의 세 배에 4를 더하면 25가 돼. 그 수는 얼마야?","answers":["7입니다."]},
+    {"id":"equation-incomplete","family":"abstention","input":"5x + 4만 알아. x는 얼마야?","unknown":true},
+    {"id":"quantity-multistep","family":"state_change","input":"상자에 공이 14개 있다. 5개를 꺼내고 3개를 넣었다. 지금 공은 몇 개야?","answers":["12개입니다.","12입니다."]},
+    {"id":"quantity-paraphrase","family":"paraphrase","input":"공 14개 중 다섯 개를 덜어낸 뒤 세 개를 보탰어. 남은 공은 몇 개야?","answers":["12개입니다.","12입니다."]},
+    {"id":"quantity-distractor","family":"relevance","input":"빨간 공은 14개, 파란 공은 8개다. 빨간 공 5개를 꺼냈다. 빨간 공은 몇 개 남았어?","answers":["9개입니다.","9입니다."]},
+    {"id":"relation-transitive","family":"graph_chain","input":"민수는 지수보다 키가 크고 지수는 영희보다 키가 크다. 민수와 영희 중 누가 더 커?","answers":["민수입니다.","민수"]},
+    {"id":"relation-underconstrained","family":"abstention","input":"민수는 지수보다 크다. 영희도 지수보다 크다. 민수와 영희 중 누가 더 커?","unknown":true},
+    {"id":"deduction-chain","family":"graph_chain","input":"모든 라핀은 도멜이다. 모든 도멜은 수영한다. 나루는 라핀이다. 나루는 수영하는가?","answers":["네, 나루는 수영합니다.","수영합니다."]},
+    {"id":"deduction-converse","family":"abstention","input":"모든 라핀은 수영한다. 나루는 수영한다. 이것만으로 나루가 라핀이라고 할 수 있는가?","answers":["아니요.","알 수 없습니다."]},
+    {"id":"reference-update","family":"context","input":"열쇠는 서랍에 있었다. 민수가 열쇠를 가방으로 옮겼다. 지금 열쇠는 어디에 있어?","answers":["가방입니다.","가방에 있습니다."]},
+    {"id":"instruction-format","family":"instruction","input":"8 + 3을 계산하고 설명 없이 숫자만 답해.","answers":["11"]},
+    {"id":"reading-cause","family":"reading","input":"준호는 우산이 없어서 비가 그칠 때까지 도서관에서 기다렸다. 준호가 바로 나가지 않은 이유는?","answers":["우산이 없어서입니다.","우산이 없었기 때문입니다."]}
+  ]
+}

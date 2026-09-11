@@ -369,11 +369,6 @@ def _self_check():
 # 마침표가 하나인데 사실이 셋이다. 통째로 재면 미끼(전력 질주)가 이겨서
 # 정작 증거가 안 걸렸다. 자른 조각은 통째 문장에 더해지는 것이라, 후보가
 # 늘 뿐 줄지는 않는다.
-_conj_ending = "하여|해서|하고|지만|는데|면서|어서|아서|니까|므로|려고|두고"
-_sentence_splitter = re.compile(
-    r"[.!?\n]+|(?<=니다)\s*[,;]\s*|(?<=습니다)\s+|(?<=%s)\s+" % _conj_ending)
-
-
 _english_word = re.compile(r"[A-Za-z][A-Za-z0-9_.\-]*")
 _hangul_words = re.compile(r"[가-힣]+")
 # 영어 질문 껍데기. 이 낱말들은 무엇을 묻는지가 아니라 묻는다는 표시다.
@@ -431,13 +426,17 @@ def strip_english_shell(text):
     return " ".join(core + one_)
 
 
-def split_fragments(text):
+def split_fragments(text, *, language_pack=None):
     """긴 발화를 문장 단위로 쪼갠다.
 
     실제 사용자는 '증거를 보면 A입니다. 따라서 B이고, 그러므로 C입니다' 처럼
     한 번에 여러 주장을 한다. 문장 하나 = 주장 하나로 가정하면 전체 평균이
     흐려져 아무 노드에도 안 걸리고 미지로 떨어진다."""
-    fragments = [x.strip() for x in _sentence_splitter.split(text) if x and len(x.strip()) > 3]
+    from hangul import clause_spans
+    from language_components import load_clause_grammar
+    grammar = load_clause_grammar() if language_pack is None else language_pack.get("clauses", {})
+    fragments = [part["text"] for part in clause_spans(text, grammar)
+                 if len(part["text"]) > 3]
     yielded = ([text] + fragments) if len(fragments) > 1 else [text]
     # 영어 껍데기를 벗긴 것도 조각으로 더한다. 통째 영어 질문이 그래프가
     # 아는 낱말을 들고도 못 가는 자리를 메운다. 원문도 그대로 남으므로

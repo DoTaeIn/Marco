@@ -215,6 +215,9 @@ class AppState:
     def __init__(self, pack_path, overlay_root=None):
         self.pack_path = Path(pack_path).resolve()
         self.manifest, self.data = kgpack.read(self.pack_path)
+        from pack_model import PackModel
+        self.model = PackModel(self.manifest, self.data)
+        self.language_pack = self.model.language
         self.manager = self.manifest["manager"]
         self.manager_index = manager_index(self.manager)
         self.graphs = sorted(x["path"] for x in self.manifest["files"]
@@ -246,7 +249,7 @@ class AppState:
         # 모델은 답변기가 아니다. 이 객체는 모델 후보를 검증된 상태 JSON으로
         # 축소하는 경계이며, 테스트는 CallableBackend를 주입해 모델 품질과
         # 상태 계산을 독립적으로 검사한다.
-        self.semantic_parser = semantic_parser.SemanticParser()
+        self.semantic_parser = semantic_parser.SemanticParser(model=self.model)
 
     def _materialize(self, name):
         """pack의 그래프와 그 ``포함:`` 의존성을 overlay에 함께 펼친다.
@@ -266,7 +269,7 @@ class AppState:
             target = self.overlay / current
             target.parent.mkdir(parents=True, exist_ok=True)
             body = self.data[current]
-            if not target.exists() or target.read_bytes() != body:
+            if not target.exists() or (not current.endswith(".학습.jsonl") and target.read_bytes() != body):
                 temp = target.with_name(target.name + ".tmp-%d" % os.getpid())
                 try:
                     temp.write_bytes(body)
@@ -278,6 +281,9 @@ class AppState:
                         pass
             if not current.endswith(".kg"):
                 continue
+            learned = current[:-3] + ".학습.jsonl"
+            if learned in self.data:
+                pending.append(learned)
             for line in body.decode("utf-8").splitlines():
                 line = line.split("#", 1)[0].strip()
                 if not line.startswith("포함:"):
@@ -390,7 +396,7 @@ class AppState:
             raise ValueError("유효하지 않은 브라우저 세션입니다")
         with self.lock:
             history = self.understanding_history.setdefault(session_id, [])
-            result = input_understanding.understand(text, history)
+            result = input_understanding.understand(text, history, language_pack=self.language_pack)
             history.append(result)
             # 문맥 후보만 필요하므로 탭별 최근 30턴으로 한정한다.
             del history[:-30]
@@ -518,8 +524,7 @@ class AppState:
                 self.affect_sessions[context_id] = state
             return {"session": session_id, "affect": state}
 
-    @staticmethod
-    def _with_affect(payload, state):
+    def _with_affect(self, payload, state):
         """정서 표현은 답변의 접두 표현만 바꾸고 사실 내용을 보존한다."""
         payload["affect"] = state
         answer = payload.get("answer")
@@ -527,8 +532,15 @@ class AppState:
             answer = dict(answer)
             raw_answer = answer["answer"]
             raw_markdown = answer.get("answer_markdown") or raw_answer
-            answer["answer"] = affect_state.decorate(raw_answer, state)
-            answer["answer_markdown"] = affect_state.decorate(raw_markdown, state)
+            if answer.get("known"):
+                formatted = self.model.format_output((answer.get("trace") or {}).get("question", ""), raw_answer)
+                if formatted != raw_answer:
+                    answer["answer"] = answer["answer_markdown"] = formatted
+                    answer["output_contract"] = "number_only"
+                    payload["answer"] = answer
+                    return payload
+            answer["answer"] = affect_state.decorate(raw_answer, state, language_pack=self.language_pack)
+            answer["answer_markdown"] = affect_state.decorate(raw_markdown, state, language_pack=self.language_pack)
             payload["answer"] = answer
         return payload
 
@@ -560,9 +572,9 @@ class AppState:
                         raise
                 return payload
             history = self.understanding_history.setdefault(context_id, [])
-            understanding = input_understanding.understand(text, history)
+            understanding = input_understanding.understand(text, history, language_pack=self.language_pack)
             history.append(understanding); del history[:-30]
-            affect = affect_state.update(self.affect_sessions.get(context_id), text)
+            affect = affect_state.update(self.affect_sessions.get(context_id), text, language_pack=self.language_pack)
             self.affect_sessions[context_id] = affect
             is_work = any(x["goal"]["kind"] == "perform" for x in understanding["segments"])
             if is_work:
@@ -570,24 +582,19 @@ class AppState:
                 plan = self.goals.plan_work(text, understanding, approval_mode, self.graph_path, root)
                 self.goals.remember(context_id, plan)
                 return finish(self._with_affect({"phase": "plan", "understanding": understanding, "plan": plan}, affect))
-            if self.situation_graph:
+            if self.model.permits("relational_graph"):
                 from reasoning_context import ReasoningContext
                 if context_id not in self.reasoning_contexts:
-                    context = ReasoningContext()
+                    context = ReasoningContext(model=self.model)
                     saved = self.conversations.reasoning_state(str(conversation_id)) if conversation_id else None
                     if saved is not None:
                         context.restore(saved)
                     self.reasoning_contexts[context_id] = context
                 context = self.reasoning_contexts[context_id]
                 prior_context_snapshot = context.snapshot()
-                outcome = context.turn(text, self._materialize(self.situation_graph))
+                outcome = context.turn(text)
                 if outcome is not None:
-                    if self.routing:
-                        self._activate(self.situation_graph, force=True)
-                        self.routed_graphs = [self.situation_graph]
-                        self.route = {"selected": self.situation_graph, "selected_all": [self.situation_graph],
-                                      "score": 1.0, "best_score": 1.0, "fallback": False,
-                                      "candidates": [[self.situation_graph, 1.0]], "segments": []}
+                    self._clear_manager_route()
                     verdict = {"answered": "계산완료", "observed": "상태기억", "unresolved": "조건부족"}[outcome["status"]]
                     reasoning = {"operator": outcome["operator"], "transitions": outcome["transitions"]}
                     trace = {"mode": "situation", "question": text, "winner": outcome["operator"],
@@ -603,7 +610,7 @@ class AppState:
                                                     "answer": answer}, affect))
             if understanding.get("overall", {}).get("primary", {}).get("kind") == "dialogue":
                 self._clear_manager_route()
-                answer_text = input_understanding.dialogue_reply(text)
+                answer_text = input_understanding.dialogue_reply(text, language_pack=self.language_pack)
                 trace = {"mode": "dialogue", "question": text, "winner": "dialogue.reply",
                          "verdict": "대화", "activated": [], "path": []}
                 answer = {"answer": answer_text, "answer_markdown": answer_text,
@@ -656,7 +663,25 @@ class AppState:
             # 순수 상태 엔진에 전달한다.
             situation_path = self._materialize(self.situation_graph) if self.situation_graph else None
             semantic = self.semantic_parser.parse(text)
-            situation = state_engine.evaluate(semantic, situation_path)
+            situation = state_engine.evaluate(semantic, situation_path, model=self.model)
+            if semantic.get("accepted") and situation["status"] == "unknown":
+                # The question was interpreted, but its premises/operation did
+                # not establish an answer. Retrieval cannot supply that proof.
+                self._clear_manager_route()
+                answer_text = engine._not_found_reply(text, [])
+                reasoning = {"operator": situation.get("operator"), "transitions": situation.get("transitions", [])}
+                trace = {"mode": "situation", "question": text, "winner": None,
+                         "verdict": "조건부족", "activated": [], "path": [],
+                         "semantic_parse": semantic, "reasoning": reasoning,
+                         "verification": situation.get("verification", {})}
+                answer = {"answer": answer_text, "answer_markdown": answer_text,
+                          "known": False, "learned": False, "trace": trace,
+                          "semantic_parse": semantic, "reasoning": reasoning,
+                          "verification": trace["verification"], "info": self.info()}
+                self.history.append({"question": text, "claim": None, "evidence": None,
+                                     "verdict": "조건부족", "sources": [], "learned": False})
+                return finish(self._with_affect({"phase": "answer", "understanding": understanding,
+                                                "answer": answer}, affect))
             if situation["status"] != "unknown":
                 # 상황 규칙도 독립 KG의 선언을 근거로 삼는다. 매니저 화면에서
                 # 어떤 지식 묶음이 쓰였는지 보이도록 선택 상태를 함께 남긴다.

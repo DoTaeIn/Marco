@@ -1,0 +1,90 @@
+{
+  "schema": "nai-axioms-v1",
+  "operators": [
+    "relational_graph",
+    "arithmetic",
+    "linear_equation",
+    "parallel_completion",
+    "age_difference",
+    "rank_overtake",
+    "co_moving_reference",
+    "indivisible_process",
+    "unitary_concept"
+  ],
+  "rules": [
+    {
+      "id": "strict-height-transitivity",
+      "body": [
+        [
+          "?a",
+          "taller",
+          "?b"
+        ],
+        [
+          "?b",
+          "taller",
+          "?c"
+        ]
+      ],
+      "head": [
+        "?a",
+        "taller",
+        "?c"
+      ]
+    },
+    {
+      "id": "class-inheritance",
+      "body": [
+        [
+          "?a",
+          "isa",
+          "?b"
+        ],
+        [
+          "?b",
+          "subclass",
+          "?c"
+        ]
+      ],
+      "head": [
+        "?a",
+        "isa",
+        "?c"
+      ]
+    },
+    {
+      "id": "universal-action",
+      "body": [
+        [
+          "?a",
+          "isa",
+          "?b"
+        ],
+        [
+          "?b",
+          "all_action",
+          "?v"
+        ]
+      ],
+      "head": [
+        "?a",
+        "action",
+        "?v"
+      ]
+    }
+  ],
+  "mutable_predicates": [
+    "location",
+    "count"
+  ],
+  "numeric_updates": {
+    "count_add": {
+      "target": "count",
+      "factor": 1
+    },
+    "count_remove": {
+      "target": "count",
+      "factor": -1
+    }
+  }
+}

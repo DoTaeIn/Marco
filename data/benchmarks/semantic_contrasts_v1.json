@@ -1,0 +1,16 @@
+{
+  "schema":"reasoning-transfer-v1",
+  "description":"Fixed before signed/modal fact support. Development contrasts, not a blind or GPT-3 evaluation. Unknown cases must also be parsed to count as semantic coverage.",
+  "cases":[
+    {"id":"roles-forward","family":"roles","input":"소라는 다미보다 키가 크다. 소라와 다미 중 누가 더 커?","answers":["소라입니다."]},
+    {"id":"roles-reversed","family":"roles","input":"다미는 소라보다 키가 크다. 소라와 다미 중 누가 더 커?","answers":["다미입니다."]},
+    {"id":"negative-not-converse","family":"negation","input":"소라는 다미보다 키가 크지 않다. 소라와 다미 중 누가 더 커?","unknown":true},
+    {"id":"negative-conflict","family":"negation","input":"소라는 다미보다 키가 크다. 소라는 다미보다 키가 크지 않다. 소라와 다미 중 누가 더 커?","unknown":true},
+    {"id":"negative-proof-parent","family":"negation","input":"소라는 다미보다 키가 크다. 다미는 유리보다 키가 크다. 소라는 다미보다 키가 크지 않다. 소라와 유리 중 누가 더 커?","unknown":true},
+    {"id":"negative-unrelated","family":"negation","input":"소라는 다미보다 키가 크다. 다미는 유리보다 키가 크지 않다. 소라와 다미 중 누가 더 커?","answers":["소라입니다."]},
+    {"id":"completed-move","family":"modality","input":"우표는 봉투에 있었다. 소라가 우표를 서랍으로 옮겼다. 지금 우표는 어디에 있어?","answers":["서랍에 있습니다."]},
+    {"id":"planned-move","family":"modality","input":"우표는 봉투에 있었다. 소라가 우표를 서랍으로 옮길 예정이다. 지금 우표는 어디에 있어?","answers":["봉투에 있습니다."]},
+    {"id":"negated-move","family":"modality","input":"우표는 봉투에 있었다. 소라가 우표를 서랍으로 옮기지 않았다. 지금 우표는 어디에 있어?","answers":["봉투에 있습니다."]},
+    {"id":"unseen-paraphrase","family":"paraphrase","input":"소라의 키는 다미의 키를 웃돈다. 소라와 다미 중 누가 더 커?","answers":["소라입니다."]}
+  ]
+}

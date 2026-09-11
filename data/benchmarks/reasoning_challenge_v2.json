@@ -1,0 +1,20 @@
+{
+  "schema":"reasoning-transfer-v1",
+  "description":"Separate challenge created after v1-driven implementation. No runtime changes made for this first measurement. Same author, not independently blinded; preserve questions after baseline.",
+  "cases":[
+    {"id":"fraction-combination","family":"symbolic","input":"(17 - 5) / 8은 얼마야?","answers":["3/2입니다."]},
+    {"id":"equation-fractional-root","family":"symbolic","input":"6z + 4 = 3z + 9이면 z는 얼마야?","answers":["5/3입니다."]},
+    {"id":"spoken-unseen-order","family":"verbal_math","input":"어떤 수에 8을 더한 값의 두 배가 30이야. 원래 수를 구해줘.","answers":["7입니다.","7"]},
+    {"id":"signed-units","family":"quantity","input":"노란 구슬은 마흔 개 있다. 노란 구슬 열둘 개를 꺼냈다. 지금 노란 구슬은 몇 개야?","answers":["28개입니다."]},
+    {"id":"two-places-same-item","family":"scope","input":"상자에 공이 10개 있다. 가방에 공이 4개 있다. 가방의 공을 모두 상자로 옮겼다. 상자에는 공이 몇 개야?","answers":["14개입니다.","14입니다."]},
+    {"id":"comparative-inverse","family":"relation","input":"해나는 세림보다 키가 작다. 세림은 보라보다 키가 작다. 해나와 보라 중 누가 더 커?","answers":["보라입니다."]},
+    {"id":"classification-deep","family":"relation","input":"모든 라젠은 티몬이다. 모든 티몬은 베라이다. 모든 베라는 춤춘다. 도미는 라젠이다. 도미는 춤추는가?","answers":["네, 도미는 춤춥니다.","춤춥니다."]},
+    {"id":"location-other-actor","family":"state","input":"수첩은 가방에 있었다. 리아가 수첩을 서랍으로 옮겼다. 리아는 학교에 있었다. 지금 수첩은 어디에 있어?","answers":["서랍에 있습니다."]},
+    {"id":"planning-keeps-location","family":"state","input":"지도는 책상에 있었다. 리아가 지도를 창고로 옮길 예정이다. 지금 지도는 어디에 있어?","answers":["책상에 있습니다."]},
+    {"id":"unsupported-comparison","family":"abstention","input":"해나는 세림보다 키가 크다. 보라는 세림보다 키가 크다. 해나와 보라 중 누가 더 커?","unknown":true},
+    {"id":"reading-explicit-cause","family":"reading","input":"유진은 버스가 고장 나서 회의에 늦었다. 유진이 늦은 이유는?","answers":["버스가 고장 나서입니다.","버스가 고장 났기 때문입니다."]},
+    {"id":"reading-counterfactual","family":"reading","input":"창문이 열려 있으면 경보가 울린다. 지금 경보는 울리지 않는다. 창문이 열려 있는가?","answers":["아니요.","열려 있지 않습니다."]},
+    {"id":"format-new-number","family":"instruction","input":"27 / 3을 계산하고 숫자만 답해주세요.","answers":["9"]},
+    {"id":"followup-reference","family":"reference","input":"다은은 책을 민지에게 줬다. 민지는 그것을 상자에 넣었다. 책은 어디에 있나?","answers":["상자에 있습니다.","상자입니다."]}
+  ]
+}

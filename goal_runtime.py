@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import subprocess
 import time
+import threading
 
 import web_learn
 
@@ -33,6 +34,8 @@ class GoalRuntime:
     def __init__(self, workspace):
         self.workspace = Path(workspace).resolve()
         self.pending = {}
+        self.executions = {}
+        self._execution_lock = threading.RLock()
 
     def _action(self, kind, label, *, target=None, risk="write", expected="", reversible=True, payload=None):
         return {"id": kind + "-" + _hash([kind, target, payload])[:8], "kind": kind, "label": label,
@@ -115,6 +118,10 @@ class GoalRuntime:
         self.pending[(session, plan["plan_id"])] = plan
 
     def approve(self, session, plan_id, plan_hash, action_ids, direct=False):
+        with self._execution_lock:
+            return self._approve_once(session, plan_id, plan_hash, action_ids, direct)
+
+    def _approve_once(self, session, plan_id, plan_hash, action_ids, direct=False):
         plan = self.pending.get((session, plan_id))
         if not plan or plan["plan_hash"] != plan_hash or plan["expires_at"] < time.time():
             raise ValueError("승인할 계획이 없거나 만료되었습니다")
@@ -122,10 +129,21 @@ class GoalRuntime:
         if plan["mode"] == "all_steps" and len(allowed) != 1:
             raise ValueError("모든 단계 승인 모드에서는 한 행동만 승인할 수 있습니다")
         blocked = [a for a in allowed if a["requires_direct_approval"] and not direct]
-        run = [a for a in allowed if a not in blocked]
-        results = [self._run(action, plan) for action in run]
+        completed = self.executions.setdefault((session, plan_id), {})
+        run = [a for a in allowed if a not in blocked and a["id"] not in completed]
+        results = []
+        for action in run:
+            try:
+                result = self._run(action, plan)
+            except Exception as exc:
+                result = {"action": action["id"], "status": "failed",
+                          "output": "%s: %s" % (type(exc).__name__, exc)}
+            completed[action["id"]] = result
+            results.append(result)
         return {"plan_id": plan_id, "executed": results, "needs_direct_approval": blocked,
-                "remaining": [a for a in plan["actions"] if a not in run]}
+                "already_executed": [completed[a["id"]] for a in allowed
+                                     if a not in run and a["id"] in completed],
+                "remaining": [a for a in plan["actions"] if a["id"] not in completed]}
 
     def _run(self, action, plan):
         kind = action["kind"]

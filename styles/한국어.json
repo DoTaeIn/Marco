@@ -1,5 +1,1002 @@
 {
+  "default_model_language": true,
+  "관계해석": {
+    "schema": "annotated-relations-v1",
+    "answer_suffix": "입니다.",
+    "numerals": {
+      "atoms": {
+        "한": 1,
+        "하나": 1,
+        "두": 2,
+        "둘": 2,
+        "세": 3,
+        "셋": 3,
+        "네": 4,
+        "넷": 4,
+        "다섯": 5,
+        "여섯": 6,
+        "일곱": 7,
+        "여덟": 8,
+        "아홉": 9,
+        "열": 10,
+        "스물": 20,
+        "스무": 20,
+        "서른": 30,
+        "마흔": 40,
+        "쉰": 50,
+        "예순": 60,
+        "일흔": 70,
+        "여든": 80,
+        "아흔": 90
+      },
+      "tens": {
+        "열": 10,
+        "스물": 20,
+        "서른": 30,
+        "마흔": 40,
+        "쉰": 50,
+        "예순": 60,
+        "일흔": 70,
+        "여든": 80,
+        "아흔": 90
+      },
+      "digits": {
+        "영": 0,
+        "공": 0,
+        "일": 1,
+        "이": 2,
+        "삼": 3,
+        "사": 4,
+        "오": 5,
+        "육": 6,
+        "칠": 7,
+        "팔": 8,
+        "구": 9
+      },
+      "powers": {
+        "십": 10,
+        "백": 100,
+        "천": 1000
+      }
+    },
+    "context_correction": {
+      "prefixes": [
+        "정정:"
+      ],
+      "separator": "=>"
+    },
+    "context_replies": {
+      "corrected": "지정한 이전 관찰을 정정하고 이후 상태를 다시 계산했습니다.",
+      "correction_invalid": "정정할 이전 문장과 새 사실을 확인해 주세요. 형식: 정정: 이전 문장 => 새 문장",
+      "observed": "알려주신 상태를 이 대화에 반영했습니다.",
+      "unresolved": "이 대화에서 확인한 조건만으로는 답을 결정할 수 없습니다.",
+      "invalid": "이전 상태와 새 조건을 함께 적용할 수 없습니다. 조건을 확인해 주세요.",
+      "capacity": "이 대화의 상태 기록 한도에 도달했습니다. 새 대화에서 조건을 다시 알려 주세요."
+    },
+    "examples": [
+      {
+        "text": "구슬은 18개",
+        "slots": {
+          "item": "구슬",
+          "n": "18"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "count",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "구슬은 18개다",
+        "slots": {
+          "item": "구슬",
+          "n": "18"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "count",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "단추는 18개",
+        "slots": {
+          "item": "단추",
+          "n": "18"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "count",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "단추는 18개다",
+        "slots": {
+          "item": "단추",
+          "n": "18"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "count",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "구슬은 몇 개 남았어",
+        "slots": {
+          "item": "구슬"
+        },
+        "meaning": {
+          "query": [
+            {
+              "triple": [
+                "$item",
+                "count",
+                "?n"
+              ],
+              "render": [
+                "$n",
+                "개입니다."
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "text": "단추는 몇 개 남았어",
+        "slots": {
+          "item": "단추"
+        },
+        "meaning": {
+          "query": [
+            {
+              "triple": [
+                "$item",
+                "count",
+                "?n"
+              ],
+              "render": [
+                "$n",
+                "개입니다."
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "text": "하루는 모래보다 키가 크지 않다",
+        "inflection": {
+          "stem": "않",
+          "kind": "descriptive",
+          "tense": "present",
+          "ending": "plain"
+        },
+        "slots": {
+          "a": "하루",
+          "b": "모래"
+        },
+        "meaning": {
+          "triple": [
+            "$a",
+            "taller",
+            "$b"
+          ],
+          "polarity": false
+        }
+      },
+      {
+        "text": "가람은 모래보다 키가 크지 않다",
+        "inflection": {
+          "stem": "않",
+          "kind": "descriptive",
+          "tense": "present",
+          "ending": "plain"
+        },
+        "slots": {
+          "a": "가람",
+          "b": "모래"
+        },
+        "meaning": {
+          "triple": [
+            "$a",
+            "taller",
+            "$b"
+          ],
+          "polarity": false
+        }
+      },
+      {
+        "text": "하루가 지우개를 책상으로 옮길 예정이다",
+        "slots": {
+          "actor": "하루",
+          "item": "지우개",
+          "place": "책상"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "location",
+            "$place"
+          ],
+          "modality": "planned"
+        }
+      },
+      {
+        "text": "하루가 지우개를 학교로 옮길 예정이다",
+        "slots": {
+          "actor": "하루",
+          "item": "지우개",
+          "place": "학교"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "location",
+            "$place"
+          ],
+          "modality": "planned"
+        }
+      },
+      {
+        "text": "하루가 지우개를 책상으로 옮기지 않았다",
+        "inflection": {
+          "stem": "않",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "actor": "하루",
+          "item": "지우개",
+          "place": "책상"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "unperformed_location_change",
+            "$place"
+          ]
+        }
+      },
+      {
+        "text": "하루가 지우개를 학교로 옮기지 않았다",
+        "inflection": {
+          "stem": "않",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "actor": "하루",
+          "item": "지우개",
+          "place": "학교"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "unperformed_location_change",
+            "$place"
+          ]
+        }
+      },
+      {
+        "text": "상자에 구슬이 18개 있다",
+        "inflection": {
+          "stem": "있",
+          "kind": "existential",
+          "tense": "present",
+          "ending": "plain",
+          "tenses": [
+            "present",
+            "past"
+          ]
+        },
+        "slots": {
+          "place": "상자",
+          "item": "구슬",
+          "n": "18"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "count",
+            "$n"
+          ],
+          "scope": "$place"
+        }
+      },
+      {
+        "text": "구슬은 18개 있다",
+        "inflection": {
+          "stem": "있",
+          "kind": "existential",
+          "tense": "present",
+          "ending": "plain",
+          "tenses": [
+            "present",
+            "past"
+          ]
+        },
+        "slots": {
+          "item": "구슬",
+          "n": "18"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "count",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "단추는 18개 있다",
+        "inflection": {
+          "stem": "있",
+          "kind": "existential",
+          "tense": "present",
+          "ending": "plain",
+          "tenses": [
+            "present",
+            "past"
+          ]
+        },
+        "slots": {
+          "item": "단추",
+          "n": "18"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "count",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "4개를 꺼내",
+        "connective_stem": true,
+        "slots": {
+          "n": "4"
+        },
+        "meaning": {
+          "triple": [
+            null,
+            "count_remove",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "4개를 꺼냈다",
+        "inflection": {
+          "stem": "꺼내",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "n": "4"
+        },
+        "meaning": {
+          "triple": [
+            null,
+            "count_remove",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "6개를 넣었다",
+        "inflection": {
+          "stem": "넣",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "n": "6"
+        },
+        "meaning": {
+          "triple": [
+            null,
+            "count_add",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "구슬 4개를 꺼냈다",
+        "inflection": {
+          "stem": "꺼내",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "item": "구슬",
+          "n": "4"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "count_remove",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "구슬 6개를 넣었다",
+        "inflection": {
+          "stem": "넣",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "item": "구슬",
+          "n": "6"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "count_add",
+            "$n"
+          ]
+        }
+      },
+      {
+        "text": "지금 구슬은 몇 개야",
+        "slots": {
+          "item": "구슬"
+        },
+        "meaning": {
+          "query": [
+            {
+              "triple": [
+                "$item",
+                "count",
+                "?n"
+              ],
+              "render": [
+                "$n",
+                "개입니다."
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "text": "지금 단추는 몇 개야",
+        "slots": {
+          "item": "단추"
+        },
+        "meaning": {
+          "query": [
+            {
+              "triple": [
+                "$item",
+                "count",
+                "?n"
+              ],
+              "render": [
+                "$n",
+                "개입니다."
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "text": "연필은 상자에 있었다",
+        "inflection": {
+          "stem": "있",
+          "kind": "existential",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "item": "연필",
+          "place": "상자"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "location",
+            "$place"
+          ]
+        }
+      },
+      {
+        "text": "지우개는 상자에 있었다",
+        "inflection": {
+          "stem": "있",
+          "kind": "existential",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "item": "지우개",
+          "place": "상자"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "location",
+            "$place"
+          ]
+        }
+      },
+      {
+        "text": "하루가 연필을 책상으로 옮겼다",
+        "inflection": {
+          "stem": "옮기",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "actor": "하루",
+          "item": "연필",
+          "place": "책상"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "location",
+            "$place"
+          ]
+        }
+      },
+      {
+        "text": "하루가 연필을 학교로 옮겼다",
+        "inflection": {
+          "stem": "옮기",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "actor": "하루",
+          "item": "연필",
+          "place": "학교"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "location",
+            "$place"
+          ]
+        }
+      },
+      {
+        "text": "하루가 지우개를 책상으로 옮겼다",
+        "inflection": {
+          "stem": "옮기",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "actor": "하루",
+          "item": "지우개",
+          "place": "책상"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "location",
+            "$place"
+          ]
+        }
+      },
+      {
+        "text": "하루가 지우개를 학교로 옮겼다",
+        "inflection": {
+          "stem": "옮기",
+          "kind": "regular",
+          "tense": "past",
+          "ending": "plain"
+        },
+        "slots": {
+          "actor": "하루",
+          "item": "지우개",
+          "place": "학교"
+        },
+        "meaning": {
+          "triple": [
+            "$item",
+            "location",
+            "$place"
+          ]
+        }
+      },
+      {
+        "text": "지금 연필은 어디에 있어",
+        "slots": {
+          "item": "연필"
+        },
+        "meaning": {
+          "query": [
+            {
+              "triple": [
+                "$item",
+                "location",
+                "?place"
+              ],
+              "render": [
+                "$place",
+                "에 있습니다."
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "text": "지금 지우개는 어디에 있어",
+        "slots": {
+          "item": "지우개"
+        },
+        "meaning": {
+          "query": [
+            {
+              "triple": [
+                "$item",
+                "location",
+                "?place"
+              ],
+              "render": [
+                "$place",
+                "에 있습니다."
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "text": "모든 도린은 네모이다",
+        "slots": {
+          "c": "도린",
+          "d": "네모"
+        },
+        "meaning": {
+          "triple": [
+            "$c",
+            "subclass",
+            "$d"
+          ]
+        }
+      },
+      {
+        "text": "모든 네모는 도린이다",
+        "slots": {
+          "c": "네모",
+          "d": "도린"
+        },
+        "meaning": {
+          "triple": [
+            "$c",
+            "subclass",
+            "$d"
+          ]
+        }
+      },
+      {
+        "text": "모든 도린은 청소한다",
+        "inflection": {
+          "stem": "하",
+          "kind": "regular",
+          "tense": "present",
+          "ending": "indicative"
+        },
+        "slots": {
+          "c": "도린",
+          "v": "청소"
+        },
+        "meaning": {
+          "triple": [
+            "$c",
+            "all_action",
+            "$v"
+          ]
+        }
+      },
+      {
+        "text": "모든 네모는 청소한다",
+        "inflection": {
+          "stem": "하",
+          "kind": "regular",
+          "tense": "present",
+          "ending": "indicative"
+        },
+        "slots": {
+          "c": "네모",
+          "v": "청소"
+        },
+        "meaning": {
+          "triple": [
+            "$c",
+            "all_action",
+            "$v"
+          ]
+        }
+      },
+      {
+        "text": "하루는 도린이다",
+        "slots": {
+          "a": "하루",
+          "c": "도린"
+        },
+        "meaning": {
+          "triple": [
+            "$a",
+            "isa",
+            "$c"
+          ]
+        }
+      },
+      {
+        "text": "가람은 도린이다",
+        "slots": {
+          "a": "가람",
+          "c": "도린"
+        },
+        "meaning": {
+          "triple": [
+            "$a",
+            "isa",
+            "$c"
+          ]
+        }
+      },
+      {
+        "text": "하루는 청소하는가",
+        "slots": {
+          "a": "하루",
+          "v": "청소"
+        },
+        "meaning": {
+          "query": [
+            {
+              "triple": [
+                "$a",
+                "action",
+                "$v"
+              ],
+              "render": [
+                "네, ",
+                "$a",
+                "는 ",
+                "$v",
+                "합니다."
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "text": "하루는 모래보다 키가 크다",
+        "inflection": {
+          "stem": "크",
+          "kind": "descriptive",
+          "tense": "present",
+          "ending": "plain"
+        },
+        "slots": {
+          "a": "하루",
+          "b": "모래"
+        },
+        "meaning": {
+          "triple": [
+            "$a",
+            "taller",
+            "$b"
+          ]
+        }
+      },
+      {
+        "text": "하루는 모래보다 크다",
+        "inflection": {
+          "stem": "크",
+          "kind": "descriptive",
+          "tense": "present",
+          "ending": "plain"
+        },
+        "slots": {
+          "a": "하루",
+          "b": "모래"
+        },
+        "meaning": {
+          "triple": [
+            "$a",
+            "taller",
+            "$b"
+          ]
+        }
+      },
+      {
+        "text": "가람은 모래보다 키가 크다",
+        "inflection": {
+          "stem": "크",
+          "kind": "descriptive",
+          "tense": "present",
+          "ending": "plain"
+        },
+        "slots": {
+          "a": "가람",
+          "b": "모래"
+        },
+        "meaning": {
+          "triple": [
+            "$a",
+            "taller",
+            "$b"
+          ]
+        }
+      },
+      {
+        "text": "하루와 모래 중 누가 더 커",
+        "slots": {
+          "a": "하루",
+          "b": "모래"
+        },
+        "meaning": {
+          "query": [
+            {
+              "triple": [
+                "$a",
+                "taller",
+                "$b"
+              ],
+              "answer": "$a"
+            },
+            {
+              "triple": [
+                "$b",
+                "taller",
+                "$a"
+              ],
+              "answer": "$b"
+            }
+          ]
+        }
+      },
+      {
+        "text": "가람과 모래 중 누가 더 커",
+        "slots": {
+          "a": "가람",
+          "b": "모래"
+        },
+        "meaning": {
+          "query": [
+            {
+              "triple": [
+                "$a",
+                "taller",
+                "$b"
+              ],
+              "answer": "$a"
+            },
+            {
+              "triple": [
+                "$b",
+                "taller",
+                "$a"
+              ],
+              "answer": "$b"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "말수식": {
+    "equation": "(?P<left>.+?)\\s+(?P<right>[^\\s.]+?)(?:이|가)\\s*(?:돼|된다|됩니다)[.]\\s*(?:그 수|어떤 수)는\\s*얼마(?:야|인가요)[?]?",
+    "variables": [
+      "어떤 수",
+      "그 수"
+    ],
+    "rules": [
+      {
+        "pattern": "(?P<left>.+)에\\s*(?P<right>.+?)(?:을|를)\\s*더하(?:면|고)",
+        "op": "+"
+      },
+      {
+        "pattern": "(?P<left>.+)에서\\s*(?P<right>.+?)(?:을|를)\\s*빼(?:면|고)",
+        "op": "-"
+      },
+      {
+        "pattern": "(?P<left>.+)의\\s*(?P<right>.+?)\\s*배",
+        "op": "*"
+      },
+      {
+        "pattern": "(?P<left>.+)(?:을|를)\\s*(?P<right>.+?)(?:으로|로)\\s*나누면",
+        "op": "/"
+      }
+    ]
+  },
+  "출력계약": {
+    "number_only": {
+      "requests": [
+        "(?:설명\\s*없이\\s*)?숫자만\\s*답(?:해|해줘|해주세요|하세요)[.!?。！？]*\\s*$"
+      ],
+      "numeric_answer": "^(?P<value>[+-]?\\d+(?:\\.\\d+|/\\d+)?)(?:개|등|살|시간|분|초|일|개월)?입니다[.]?$"
+    }
+  },
+  "상태표현": {
+    "value": "{value}{unit}입니다.",
+    "premise_invalid": "그 전제는 성립하지 않습니다.",
+    "units": {
+      "age_difference": "살",
+      "rank_overtake": "등",
+      "co_moving_reference": "칸"
+    }
+  },
   "이름": "한국어",
+  "문장분리": {
+    "_설명": "접미사는 경계 후보일 뿐이다. 관계 파서는 앞 절의 완전한 해석을 확인한다. 원문 어미는 자르거나 버리지 않는다.",
+    "candidate_suffixes": ["고", "하여", "해서", "지만", "는데", "면서", "어서", "아서", "니까", "므로", "려고", "습니다"],
+    "comma_after_suffixes": ["니다"],
+    "continuation_prefixes": ["있", "계시", "싶"],
+    "question_marks": ["?", "？"],
+    "canonical_endings": [
+      {"id": "connective-go", "suffix": "고", "replacements": ["다"]},
+      {"id": "bare-stem-go", "suffix": "고", "replacements": [""], "example_features": {"connective_stem": true}},
+      {"id": "connective-jiman", "suffix": "지만", "replacements": ["다"]}
+    ]
+  },
+  "활용": {
+    "id": "hangul-inflection-v1",
+    "_설명": "알려진 어간에서만 활용을 만든다. 모음조화·축약·받침 접합은 계산하며, 불규칙 동사를 임의로 규칙 활용이라고 추정하지 않는다.",
+    "kinds": ["regular", "descriptive", "existential"],
+    "max_forms": 16,
+    "vowel_join": {
+      "onset": "ㅇ", "bright_vowels": ["ㅏ", "ㅗ"], "bright": "ㅏ", "dark": "ㅓ",
+      "after_tense": {"past": "ㅓ"},
+      "elide": ["ㅡ"],
+      "overrides": {"하": ["해", "하여"]},
+      "contractions": {
+        "ㅏㅏ": {"vowel": "ㅏ"}, "ㅓㅓ": {"vowel": "ㅓ"},
+        "ㅐㅓ": {"vowel": "ㅐ", "optional": true}, "ㅔㅓ": {"vowel": "ㅔ", "optional": true},
+        "ㅗㅏ": {"vowel": "ㅘ", "optional": true}, "ㅜㅓ": {"vowel": "ㅝ", "optional": true},
+        "ㅣㅓ": {"vowel": "ㅕ", "optional": true}, "ㅚㅓ": {"vowel": "ㅙ", "optional": true}
+      }
+    },
+    "tenses": {
+      "present": [],
+      "past": [{"op": "vowel"}, {"op": "coda", "value": "ㅆ"}]
+    },
+    "parsing_endings": ["plain", "go", "contrast", "background", "informal", "polite", "indicative"],
+    "boundary_endings": ["go", "contrast", "background"],
+    "endings": {
+      "plain": [{"steps": [{"op": "append", "text": "다"}]}],
+      "go": [{"steps": [{"op": "append", "text": "고"}]}],
+      "contrast": [{"steps": [{"op": "append", "text": "지만"}]}],
+      "background": [
+        {"when": {"tense": "past"}, "steps": [{"op": "append", "text": "는데"}]},
+        {"when": {"kind": "descriptive"}, "steps": [{"op": "coda_suffix", "coda": "ㄴ", "open": "데", "closed": "은데", "drop_codas": ["ㄹ"]}]},
+        {"steps": [{"op": "coda_suffix", "open": "는데", "closed": "는데", "drop_codas": ["ㄹ"]}]}
+      ],
+      "informal": [{"steps": [{"op": "vowel"}]}],
+      "polite": [{"steps": [{"op": "vowel"}, {"op": "append", "text": "요"}]}],
+      "indicative": [
+        {"when": {"tense": "past"}, "steps": [{"op": "append", "text": "다"}]},
+        {"when": {"kind": "regular"}, "steps": [{"op": "coda_suffix", "coda": "ㄴ", "open": "다", "closed": "는다", "drop_codas": ["ㄹ"]}]},
+        {"steps": [{"op": "append", "text": "다"}]}
+      ],
+      "cause": [{"steps": [{"op": "vowel"}, {"op": "append", "text": "서"}]}],
+      "reason": [{"steps": [{"op": "epenthetic", "closed": "으니까", "open": "니까", "drop_codas": ["ㄹ"]}]}]
+    }
+  },
   "_설명": "말투는 엔진이 아니라 데이터다. 다른 언어를 쓰려면 이 파일을 하나 더 만든다. 엔진 코드는 안 고친다.",
   "이음규칙": "한국어",
   "_이음규칙": "종결형->연결형 변환. 언어마다 형태가 달라 이름으로 고른다. 한국어는 '-는다/-ㄴ다/-다'를 떼고 '고'를 붙인다.",
@@ -215,31 +1212,52 @@
     "언어",
     "코드"
   ],
-  "입력이해": {
-    "_설명": "입력 이해 전용 로컬 규칙. 답변·검색·명령 실행에는 사용하지 않는다.",
-    "intent": {
-      "summary": ["요약", "정리해줘", "summarize"],
-      "explain": ["설명해줘", "알려줘", "explain"],
-      "compare": ["비교해줘", "차이점", "compare"],
-      "extract": ["추출해줘", "뽑아줘", "extract"],
-      "rewrite": ["다듬어줘", "재작성", "rewrite"],
-      "plan": ["계획 세워", "플랜", "plan"],
-      "create": ["만들어줘", "생성해줘", "create"]
-    },
-    "context_refs": ["그거", "그것", "이거", "이것", "저거", "아까", "위에", "앞의", "방금", "거기"],
-    "command": {
-      "read": ["보여줘", "읽어줘", "열어줘", "확인해줘"],
-      "write": ["저장해", "수정해", "바꿔줘"],
-      "destructive": ["지워줘", "삭제해", "제거해"],
-      "external": ["보내줘", "업로드해", "배포해", "메일 보내"],
-      "credential_or_unknown": ["비밀번호", "토큰", "API 키"]
-    },
-    "dialogue_reply": {
-      "greeting": "안녕하세요. 궁금한 점이나 하려는 작업을 말씀해 주세요.",
-      "thanks": "천만에요. 이어서 필요한 것을 말씀해 주세요.",
-      "fallback": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
-    }
-  },
+  "학습질문종결": [
+    "뭐야",
+    "뭐지",
+    "어때",
+    "어떻게",
+    "며칠",
+    "얼마",
+    "언제",
+    "어디",
+    "누가",
+    "왜",
+    "볼까",
+    "할까",
+    "을까",
+    "먹지",
+    "인가요",
+    "입니까",
+    "알려줘",
+    "궁금해",
+    "건가요",
+    "되나요",
+    "인가",
+    "일까",
+    "인지",
+    "이야",
+    "이지",
+    "해줘",
+    "주세요",
+    "가요",
+    "나요",
+    "까"
+  ],
+  "_학습질문종결": "자가학습의 주제를 뽑아도 되는 질문 종결형. 언어별 추가·수정은 이 목록에서 한다.",
+  "학습주제제외": [
+    "것",
+    "거",
+    "수",
+    "방법",
+    "이유",
+    "약",
+    "정보",
+    "설명",
+    "추천",
+    "도움"
+  ],
+  "_학습주제제외": "질문에서 주제를 뽑을 때 대상 자체가 될 수 없어 건너뛰는 일반 낱말.",
   "_질문틀": "질문을 이루는 껍데기. 걸린 노드를 빼고 이것들도 빼면, 남는 말이 곧 '그래프가 모르는 내용' 이다. 남으면 이 그래프 이야기가 아니다. 의문사는 그 자체로 껍데기다 — '며칠'·'얼마' 는 형태소로 뜯으면 명사로 남는데('며칠이야' -> '며칠'), 법령 원문에는 '일' 이라 적혀 있어 모르는 말로 걸린다.",
   "내용어": "[가-힣]{2,}",
   "어미": [
@@ -303,5 +1321,42 @@
     "과",
     "도",
     "만"
-  ]
+  ],
+  "대화이해": {
+    "_설명": "대화 의미를 위한 교체형 언어 부품. 정규식이나 코드 변경 없이 templates/phrases만 바꾼다.",
+    "_backend": "backend에 module:Class 또는 module:factory를 넣으면 기본 템플릿 부품 대신 그 부품을 쓴다.",
+    "shell_risks": {"rm": "destructive", "rmdir": "destructive", "git": "read", "ls": "read", "cat": "read", "sed": "read", "grep": "read", "find": "read", "cp": "write", "mv": "write", "mkdir": "write", "touch": "write", "curl": "external", "wget": "external", "ssh": "credential_or_unknown", "sudo": "credential_or_unknown"},
+    "_shell_risks": "shell-like 입력의 위험 등급. 선언 밖 명령은 보수적으로 credential_or_unknown으로 처리하며 실행하지 않는다.",
+    "context_refs": ["그거", "그것", "이거", "이것", "저거", "아까", "위에", "앞의", "방금", "거기"],
+    "replies": {
+      "greeting": "안녕하세요. 궁금한 점이나 하려는 작업을 말씀해 주세요.",
+      "thanks": "천만에요. 이어서 필요한 것을 말씀해 주세요.",
+      "fallback": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+    },
+    "affect": {
+      "focus_note": "요청을 차분하고 집중된 말투로 다룹니다.",
+      "prefixes": {"care": "말해 줘서 고마워요. 그 마음을 가볍게 넘기지 않을게요. ", "warmth": "함께 해볼게요. ", "boundary": "서로 해치지 않는 방식으로 이야기할게요. ", "focus": "차분히 살펴볼게요. "},
+      "signals": [
+        {"phrases": ["꺼져", "닥쳐", "죽어", "병신", "멍청한 놈"], "mode": "boundary", "signal": "공격적 표현", "note": "공격적 표현을 감지해 차분한 경계 말투를 사용합니다."},
+        {"phrases": ["힘들", "괴롭", "슬프", "속상", "불안", "무섭", "외롭", "울고", "지쳤", "화가 나", "화났", "짜증 나", "분하", "열받"], "mode": "care", "signal": "직접 표현한 정서", "note": "사용자가 직접 표현한 힘듦·불안·분노를 존중하는 말투를 사용합니다."},
+        {"phrases": ["고마워", "감사", "도움됐", "덕분"], "mode": "warmth", "signal": "감사 표현", "note": "감사 표현에 맞춰 따뜻한 말투를 사용합니다."}
+      ]
+    },
+    "phrases": [
+      {"text": "안녕하세요", "result": {"intent": "dialogue", "reply": "greeting"}},
+      {"text": "고마워", "result": {"intent": "dialogue", "reply": "thanks"}},
+      {"text": "감사합니다", "result": {"intent": "dialogue", "reply": "thanks"}},
+      {"text": "그거 세 줄로 요약해줘", "result": {"intent": "request.summary", "modifiers": {"summary_target": "summary", "constraints": ["세 줄"]}}}
+    ],
+    "templates": [
+      {"template": "{target} {count}줄 불릿으로 요약해줘", "slot_types": {"count": "integer"}, "result": {"intent": "request.summary", "modifiers": {"summary_target": "summary", "format": ["bullets"], "count_unit": "줄"}}},
+      {"template": "{target} 요약해줘", "result": {"intent": "request.summary", "modifiers": {"summary_target": "summary"}}},
+      {"template": "{target} 설명해줘", "result": {"intent": "request.explain"}},
+      {"template": "{target} 비교해줘", "result": {"intent": "request.compare"}},
+      {"template": "{target} 추출해줘", "result": {"intent": "request.extract"}},
+      {"template": "{target} 저장해줘", "result": {"intent": "request.create", "command": {"risk": "write"}}}
+    ]
+  },
+  "의도표": [["언제", "시간"], ["몇 시", "시간"], ["며칠", "시간"], ["어떻게 해", "방법"], ["방법", "방법"], ["절차", "방법"], ["처벌", "처벌"], ["형량", "처벌"], ["벌금", "처벌"], ["징역", "처벌"], ["얼마", "금액"], ["금액", "금액"], ["비용", "금액"], ["누가", "주체"], ["누구", "주체"], ["어떤 경우", "조건"], ["요건", "조건"], ["어디", "위치"], ["왜", "이유"], ["이유", "이유"], ["무슨 관계", "경로"], ["관련", "이웃"], ["뭐야", "정의"], ["무엇", "정의"], ["설명", "정의"]],
+  "뜻표지": {"시간": ["때에", "이후", "이전", "기간", "마지막", "먼저", "기한"], "방법": ["하여야", "해야", "방법", "절차", "신청", "제출"], "조건": ["경우", "하려면", "요건", "인정", "성립", "충족"], "이유": ["때문", "이유", "위하여", "목적"], "처벌": ["처한다", "처벌", "벌금", "징역", "금고"], "금액": ["금액", "만원", "비용", "수수료"], "주체": ["자는", "사람은", "사용자는", "법원은", "누구든지"]}
 }

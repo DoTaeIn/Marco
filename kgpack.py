@@ -21,7 +21,7 @@ import tempfile
 import zipfile
 
 
-fmt_version = 2
+fmt_version = 3
 frozen_hour_each = (1980, 1, 1, 0, 0, 0)
 
 
@@ -49,7 +49,14 @@ def _write(zf: zipfile.ZipFile, name: str, data: bytes) -> None:
 
 def default_file(root: str | os.PathLike = ".") -> list[Path]:
     root = Path(root).resolve()
-    return sorted(root.glob("graphs/*.kg")) + sorted(root.glob("styles/*.json"))
+    return (sorted(root.glob("graphs/*.kg")) + sorted(root.glob("graphs/*.학습.jsonl"))
+            + model_files(root))
+
+
+def model_files(root: str | os.PathLike = ".") -> list[Path]:
+    """Explicit authoring inputs for a model, including its language and axioms."""
+    root = Path(root).resolve()
+    return sorted(root.glob("styles/*.json")) + sorted(root.glob("axioms/*.json"))
 
 
 _quote = re.compile(r'"((?:\\.|[^"\\])*)"')
@@ -102,7 +109,7 @@ def _manager_graph(entry, body) -> dict:
             "edges": [[n["path"], "후보", "그래프고르기"] for n in nodes]}
 
 
-def write_pack(output: str | os.PathLike, files, root: str | os.PathLike = ".") -> dict:
+def write_pack(output: str | os.PathLike, files, root: str | os.PathLike = ".", *, language=None) -> dict:
     root, output = Path(root).resolve(), Path(output).resolve()
     entry, body = [], {}
     for raw in files:
@@ -125,6 +132,12 @@ def write_pack(output: str | os.PathLike, files, root: str | os.PathLike = ".") 
     manifest = {"format": "nai-kgpack", "version": fmt_version,
                 "files": sorted(entry, key=lambda x: x["path"]),
                 "manager": _manager_graph(entry, body)}
+    from pack_model import PackModel, descriptor
+    try:
+        manifest["model"] = descriptor(body, language)
+        PackModel(manifest, body)
+    except (ValueError, TypeError) as exc:
+        raise KGPackError("잘못된 모델 선언: %s" % exc) from exc
     output.parent.mkdir(parents=True, exist_ok=True)
     tmp = output.with_name(output.name + ".tmp-%d" % os.getpid())
     try:
@@ -153,7 +166,7 @@ def read(pack: str | os.PathLike, verify=True) -> tuple[dict, dict[str, bytes]]:
             if len(names) != len(set(names)):
                 raise KGPackError("pack 안에 중복 경로가 있습니다")
             manifest = json.loads(zf.read("manifest.json"))
-            if manifest.get("format") != "nai-kgpack" or manifest.get("version") != fmt_version:
+            if manifest.get("format") != "nai-kgpack" or manifest.get("version") not in (2, fmt_version):
                 raise KGPackError("지원하지 않는 kgpack 형식입니다")
             entries = manifest.get("files")
             if not isinstance(entries, list):
@@ -162,7 +175,7 @@ def read(pack: str | os.PathLike, verify=True) -> tuple[dict, dict[str, bytes]]:
             for item in entries:
                 name = str(item.get("path", ""))
                 _safe_path(name)
-                if name == "manifest.json" or name not in names:
+                if name == "manifest.json" or name not in names or name in data:
                     raise KGPackError("manifest와 archive가 다릅니다: %s" % name)
                 body = zf.read(name)
                 if verify and (len(body) != item.get("bytes") or _hash(body) != item.get("sha256")):
@@ -180,6 +193,11 @@ def read(pack: str | os.PathLike, verify=True) -> tuple[dict, dict[str, bytes]]:
             if (len(manager_paths) != len(set(manager_paths))
                     or any(x not in graph_paths for x in manager_paths)):
                 raise KGPackError("노드 매니저와 pack 그래프 목록이 다릅니다")
+            from pack_model import PackModel
+            try:
+                PackModel(manifest, data)
+            except (ValueError, TypeError) as exc:
+                raise KGPackError("잘못된 모델 선언: %s" % exc) from exc
             return manifest, data
     except (OSError, zipfile.BadZipFile, json.JSONDecodeError) as e:
         raise KGPackError("kgpack을 읽지 못했습니다: %s" % e) from e
@@ -236,6 +254,7 @@ def main(argv=None) -> int:
     p.add_argument("files", nargs="*")
     p.add_argument("--root", default=".")
     p.add_argument("--out")
+    p.add_argument("--language", help="팩 안에서 사용할 언어 파일 경로")
     args = p.parse_args(argv)
     try:
         if args.check:
@@ -243,7 +262,7 @@ def main(argv=None) -> int:
             print("kgpack 자체검사: 통과")
         elif args.pack:
             files = [Path(x) for x in args.files] or default_file(args.root)
-            m = write_pack(args.pack, files, args.root)
+            m = write_pack(args.pack, files, args.root, language=args.language)
             print("%s: 그래프 %d개 · 자산 %d개"
                   % (Path(args.pack).resolve(),
                      sum(x["kind"] == "graph" for x in m["files"]),

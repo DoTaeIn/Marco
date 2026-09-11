@@ -131,6 +131,179 @@ def onset(phrase):
     return "".join(decompose(c)[0] if is_hangul(c) else c for c in phrase)
 
 
+def _vowel_join(stem, grammar, tense=None):
+    """Apply the pack's harmony/contraction rules to a known stem, not a guess."""
+    rule = grammar["vowel_join"]
+    for suffix, replacements in rule.get("overrides", {}).items():
+        if stem.endswith(suffix):
+            return [(stem[:-len(suffix)] + replacement, ["vowel-override"])
+                    for replacement in replacements]
+    onset_, vowel, coda = decompose(stem[-1])
+    harmony_vowel = vowel
+    if not coda and vowel in rule.get("elide", []):
+        previous = decompose(stem[-2]) if len(stem) > 1 else None
+        harmony_vowel = previous[1] if previous else None
+    ending_vowel = rule.get("after_tense", {}).get(tense)
+    if ending_vowel is None:
+        ending_vowel = rule["bright"] if harmony_vowel in rule["bright_vowels"] else rule["dark"]
+    if coda:
+        return [(stem + compose(rule["onset"], ending_vowel), ["vowel-harmony"])]
+    if vowel in rule.get("elide", []):
+        return [(stem[:-1] + compose(onset_, ending_vowel), ["vowel-elision"])]
+    contraction = rule.get("contractions", {}).get(vowel + ending_vowel)
+    expanded = stem + compose(rule["onset"], ending_vowel)
+    if contraction:
+        joined = stem[:-1] + compose(onset_, contraction["vowel"])
+        forms = [(joined, ["vowel-contraction"])]
+        if contraction.get("optional"):
+            forms.append((expanded, ["vowel-harmony"]))
+        return forms
+    return [(expanded, ["vowel-harmony"])]
+
+
+def inflect(stem, tense, ending, grammar, *, kind):
+    """Realize pack-declared morphemes using Hangul arithmetic.
+
+    The model supplies a known stem, class, tense and ending; this function
+    never strips an arbitrary input word to invent a lemma. Rules, allomorphs,
+    vowel classes and lexical exceptions are supplied by the language pack.
+    Return alternative spellings with their operation paths. No neural model
+    or expanded sentence-template collection is created.
+    """
+    if not stem or not all(is_hangul(char) for char in stem):
+        raise ValueError("inflection_requires_hangul_stem")
+    if kind not in grammar.get("kinds", []):
+        raise ValueError("unsupported_inflection_kind")
+    features = {"kind": kind, "tense": tense}
+    try:
+        suffix_rule = next(rule for rule in grammar["endings"][ending]
+                           if all(features.get(key) == value for key, value in rule.get("when", {}).items()))
+        steps = [(step, None) for step in grammar["tenses"][tense]]
+        steps += [(step, tense) for step in suffix_rule["steps"]]
+    except (KeyError, StopIteration) as exc:
+        raise ValueError("unsupported_inflection_features") from exc
+    forms = [(stem, [])]
+    for step, after_tense in steps:
+        following = []
+        for word, trace in forms:
+            op = step["op"]
+            if op == "vowel":
+                following.extend((new, trace + path) for new, path in _vowel_join(word, grammar, after_tense))
+                continue
+            if op == "append":
+                new = word + step["text"]
+            elif op == "coda":
+                a, b, c = decompose(word[-1])
+                if c:
+                    raise ValueError("inflection_coda_already_occupied")
+                new = word[:-1] + compose(a, b, step["value"])
+            elif op == "coda_suffix":
+                a, b, c = decompose(word[-1])
+                if c in step.get("drop_codas", []):
+                    word, c = word[:-1] + compose(a, b), ""
+                new = (word + step["closed"] if c else
+                       word[:-1] + compose(a, b, step.get("coda", "")) + step["open"])
+            elif op == "epenthetic":
+                c = batchim(word)
+                if c in step.get("drop_codas", []):
+                    word, c = strip_batchim(word), ""
+                new = word + (step["closed"] if c and c not in step.get("exceptions", []) else step["open"])
+            else:
+                raise ValueError("unsupported_inflection_operation")
+            following.append((new, trace + [op]))
+        forms = list({word: (word, trace) for word, trace in following}.values())
+        if len(forms) > grammar["max_forms"]:
+            raise ValueError("inflection_form_limit")
+    return [{"text": word, "operations": trace} for word, trace in forms]
+
+
+# ── 원문을 보존하는 절 경계 ───────────────────────────────────────────
+_protected_clause_text = re.compile(
+    r'```[\s\S]*?(?:```|$)|`[^`\n]*(?:`|$)|"(?:\\.|[^"\\])*(?:"|$)'
+    r"|(?<!\w)'(?:\\.|[^'\\])*'(?!\w)"
+    r'|“[^”]*(?:”|$)|‘[^’]*(?:’|$)|https?://[^\s<>]+')
+_clause_break = re.compile(r"[.!?,;\n。？！]|[^\S\n]+")
+
+
+def canonical_clauses(literal, grammar):
+    """팩이 선언한 연결형을 해석용 후보로만 되돌린다. 원문은 바꾸지 않는다.
+
+    '고'가 있다고 사실이 되지는 않는다. 되돌린 **전체 절**이 언어 모델의
+    슬롯·서술어와 맞을 때만 호출자가 채택한다. 조건·인용·추측 어미를
+    평서문으로 바꾸는 기본값은 없으며, 빈 팩이면 원문만 반환한다.
+    """
+    yield literal, None
+    for rule in grammar.get("canonical_endings", []):
+        suffix = rule["suffix"]
+        if not suffix or not literal.endswith(suffix):
+            continue
+        stem = literal[:-len(suffix)]
+        if not stem or stem[-1].isspace():
+            continue
+        for ending in rule["replacements"]:
+            yield stem + ending, rule
+
+
+def clause_spans(text, grammar=None, *, commas=False, accept_prefix=None, inflected_boundary=None):
+    """절의 {start, end, text}. end는 제외, 위치는 원문 Unicode 문자 기준.
+
+    문장부호와 연결어미의 경계 탐색을 공유한다. 검색은 전체 문장에 더할
+    후보로 쓰고, 추론은 accept_prefix로 완전한 절인지 검사한다. '창고'의
+    '고' 같은 명사 꼬리는 접미사만으로 절이라고 확정할 수 없기 때문이다.
+    소수점·인용문·코드·URL 내부는 쪼개지 않는다. grammar가 없으면 한국어
+    어미 지식을 코드 옆에서 몰래 읽지 않고 문장부호만 처리한다.
+    """
+    grammar = grammar or {}
+    suffixes = tuple(grammar.get("candidate_suffixes", []))
+    continuations = tuple(grammar.get("continuation_prefixes", []))
+    protected = iter(_protected_clause_text.finditer(text))
+    protected_range = next(protected, None)
+    spans, start = [], 0
+
+    def emit(end):
+        nonlocal start
+        left, right = start, end
+        while left < right and text[left].isspace():
+            left += 1
+        while right > left and text[right - 1].isspace():
+            right -= 1
+        if left < right:
+            spans.append({"start": left, "end": right, "text": text[left:right]})
+
+    for boundary in _clause_break.finditer(text):
+        pos = boundary.start()
+        while protected_range is not None and protected_range.end() <= pos:
+            protected_range = next(protected, None)
+        if protected_range is not None and protected_range.start() <= pos < protected_range.end():
+            continue
+        char = boundary.group()
+        if char.isspace() and char != "\n":
+            if not suffixes and inflected_boundary is None:
+                continue
+            word_start = pos
+            while word_start > start and not text[word_start - 1].isspace():
+                word_start -= 1
+            word = text[word_start:pos]
+            if not (any(word.endswith(s) and len(word) > len(s) for s in suffixes)
+                    or (inflected_boundary is not None and inflected_boundary(word))):
+                continue
+            if any(text.startswith(tail, boundary.end()) for tail in continuations):
+                continue
+            if accept_prefix is not None and not accept_prefix(text[start:pos].strip()):
+                continue
+        else:
+            if char in ".," and pos > 0 and pos + 1 < len(text):
+                if text[pos - 1].isdigit() and text[pos + 1].isdigit():
+                    continue
+            if char == "," and not commas:
+                if not any(text[start:pos].endswith(s) for s in grammar.get("comma_after_suffixes", [])):
+                    continue
+        emit(pos)
+        start = boundary.end()
+    emit(len(text))
+    return spans
+
+
 # ── 낱말 꼬리 ─────────────────────────────────────────────────────────
 # 조사와 어미. engine.py 에 흩어져 있던 것을 여기로 모은다 — 이건 도메인
 # 지식이 아니라 한국어 규칙이라, 자모·조사와 한자리에 있어야 고칠 때 한
