@@ -116,8 +116,10 @@ data/개념망.json
 # Qwen2.5-VL, SmolVLM2, resnet50, YOLO 를 각 배포처에서 다시 받는다.
 data/models/
 
-# HICO-DET 사람-물체 상호작용 자료. 206MB.
+# HICO-DET 사람-물체 상호작용 자료. 추려 쓰는 쪽과 받아온 원본 쪽 둘 다 담지 않는다.
+# 원본 parquet 은 한 파일이 400MB 를 넘어 GitHub 이 받지 않는다.
 data/hoi/
+data/benchmarks/hico_det/
 
 # ChartQA 평가 자료. 66MB. 원 배포처에서 다시 받는다.
 data/benchmarks/chartqa/
