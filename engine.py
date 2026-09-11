@@ -2591,11 +2591,13 @@ def graph_index(root=None, max_example=180):
         # 판을 올리면 옛 캐시가 통째로 무효가 된다. 예시를 **만드는 방식**을
         # 바꿀 때마다 올려야 한다 — v3 로 두고 배운 말을 앞으로 옮겼더니,
         # 서명이 그대로라 옛 목록이 그대로 나와서 배운 말이 영영 안 들어갔다.
-        table = "v6-" + "-".join(str(x) for x in chunk)
+        # v7: 줄마다의 소속 노드를 함께 담는다. 없는 옛 캐시는 무효다.
+        table = "v7-" + "-".join(str(x) for x in chunk)
         held = example_cache.get(key)
-        if held and held.get("표") == table:
+        if held and held.get("표") == table and held.get("소속") is not None:
             if held["예시"]:
                 index["공통층"][key] = held["예시"]
+                index.setdefault("소속", {})[key] = held["소속"]
             if held.get("무관"):
                 index["전역무관"][key] = held["무관"]
             index.setdefault("언어표", {})[key] = held.get("언어") or "한국어"
@@ -2633,6 +2635,9 @@ def graph_index(root=None, max_example=180):
         except Exception:
             pass
         example = [g.get("목표") or ""] + _learned_words
+        # 목표와 배운 말은 어느 노드 것이라 할 수 없다. 빈 소속으로 둔다 —
+        # 점수는 그대로 내지만 남을 받치지는 않는다.
+        owner = [""] * len(example)
         # 노드당 별칭을 다섯 개까지 든다. 사람은 같은 것을 다르게 말한다 —
         # '우리나라 수도' 와 '대한민국 수도가 어디야' 는 '수도' 만 겹치고,
         # '지구 공전' 과 '지구는 무엇 주위를 돌아' 는 아예 안 겹친다. 인코더가
@@ -2644,8 +2649,14 @@ def graph_index(root=None, max_example=180):
         # '별칭이 다섯을 넘는 노드가 드물다' 였는데, 대화 그래프가 들어오면서
         # 그것이 깨졌다 — 맞장구말에 별칭이 열넷이라 'ㅇㅇ' 이 열두 번째라
         # 잘렸고, 그래프 안에서는 1.00 으로 붙는데 라우터는 못 봤다.
+        # 줄마다 어느 노드에서 왔는지 같이 적는다. 같은 노드의 두 줄은
+        # 같은 개념의 다른 말이라 서로를 뒷받침하지 못한다 — 다른 노드가
+        # 맞아야 그 그래프가 그 주제라는 증거가 된다.
+        def take(node, lines):
+            example.extend(lines)
+            owner.extend([node] * len(lines))
         for n in _evidence:
-            example += [n] + list(g["사례층"][n])[:12]
+            take(n, [n] + list(g["사례층"][n])[:12])
         for layer in ("공통층", "사례층"):
             for n, phrases in g.get(layer, {}).items():
                 if n in _evidence:
@@ -2659,14 +2670,16 @@ def graph_index(root=None, max_example=180):
                 #
                 # 한 글자는 뺀다. '네' 하나가 그 글자를 품은 모든 질문을
                 # 덮는다.
-                example += [x for x in [n] if len("".join(x.split())) >= 5]
-                example += [x for x in list(phrases)[:12]
-                         if len("".join(x.split())) >= 2]
+                take(n, [x for x in [n] if len("".join(x.split())) >= 5])
+                take(n, [x for x in list(phrases)[:12]
+                         if len("".join(x.split())) >= 2])
         # 너무 짧은 줄은 뺀다(증거는 위에서 이미 걸렀다). 포함도는 색인 줄이
         # 질문 안에 통째로 들어 있으면 1.00 을 준다 — '프로세스' 같은 네 글자
         # 노드 이름이 그 낱말이 든 모든 질문에서 만점을 받아, 아무 상관 없는
         # 그래프가 이긴다. data/_알고리즘.json 이 그렇게 59회를 가로챘다.
-        example = [x for x in example if x][:max_example]
+        kept = [i for i, x in enumerate(example) if x][:max_example]
+        example = [example[i] for i in kept]
+        owner = [owner[i] for i in kept]
         # 전역 거절은 그래프 작성자가 `_전역_`으로 명시한 경계만 쓴다.
         # 일반 [무관]은 해당 그래프의 B2 경계일 뿐 다른 전문 그래프에는
         # 정상 질문일 수 있다(예: 컴퓨터의 '기계학습용 학습 데이터').
@@ -2675,10 +2688,11 @@ def graph_index(root=None, max_example=180):
                 if n.startswith("_전역_") for x in phrases
                 if len("".join(x.split())) >= 7]
         example_cache[key] = {"표": table, "예시": example, "무관": irrelevant,
-                       "언어": g.get("언어") or "한국어"}
+                       "소속": owner, "언어": g.get("언어") or "한국어"}
         changed = True
         if example:
             index["공통층"][name] = example
+            index.setdefault("소속", {})[name] = owner
             index.setdefault("언어표", {})[name] = g.get("언어") or "한국어"
         if irrelevant:
             index["전역무관"][name] = irrelevant
@@ -2959,6 +2973,9 @@ def sparse_vec(vec, length_table=None, flip_table=None):
     return sparse
 
 
+# 다른 노드의 받침을 겨룰 때 얼마나 세게 보는가. 순위에만 들어가고 돌려주는
+# 점수에는 안 들어간다. 언어 벌점(0.85 곱)보다 약하게 두어 엇비슷할 때만 갈린다.
+_AGREE_WEIGHT = 0.12
 _short_line = 8          # 이보다 짧은 색인 줄은
 _LONG_Q_SCALE = 2.0     # 질문이 이 배수를 넘게 길면 못 이긴다
 # 원문은 사람이 실제로 한 말이고, 조각은 우리가 쪼개서 만든 가설이다. 둘을
@@ -2971,8 +2988,10 @@ _LONG_Q_SCALE = 2.0     # 질문이 이 배수를 넘게 길면 못 이긴다
 _FRAGMENT_WEIGHT = 0.90
 
 
-def _sparse_score(slot, v, question_length=None, inner_vec=None):
-    """같은 색인 줄의 양방향 포함도를 기하평균한 뒤 최고를 고른다.
+def _sparse_score(slot, v, question_length=None, inner_vec=None, owners=None):
+    """(그 그래프의 점수, 다른 노드의 받침). 받침은 순위에만 쓴다.
+
+    같은 색인 줄의 양방향 포함도를 기하평균한 뒤 최고를 고른다.
 
     역방향 벡터가 없는 설명 색인 등은 기존 단방향 점수를 유지한다.
 
@@ -3008,7 +3027,38 @@ def _sparse_score(slot, v, question_length=None, inner_vec=None):
         sum_ = np.sqrt(np.maximum(sum_, 0) * np.maximum(tail_total, 0))
     if question_length is not None and length is not None:
         sum_ = np.where((length < _short_line) & (question_length > _LONG_Q_SCALE * length), 0.0, sum_)
-    return float(sum_.max())
+    return _agree(sum_, owners)
+
+
+def _agree(scores, owners=None):
+    """(그 그래프의 최고점, 다른 노드가 받쳐 주는 점수).
+
+    최고점 한 줄만 보면 우연히 맞은 한 줄이 그래프를 대표한다. '장기 기후가
+    바뀌는 것' 이 정보보안으로 갔다 — 거기 '데이터가 몰래 바뀌지 않는 것'
+    한 줄이 문법 껍데기를 공유했기 때문이다. 기후학은 '기후가 뭐야' 로
+    주제를 맞히고도 그 한 줄 승부에서 0.012 차이로 졌다.
+
+    받침은 **다른 노드**에서만 온다. 같은 노드의 두 줄은 한 개념을 달리
+    부르는 말이라 서로를 못 받친다 — 그것까지 세면 별칭이 많은 노드가
+    거저 이긴다. 쓸어서 확인했다: 같은 노드를 세면 제자리가 124 에서 112 로
+    떨어지고, 다른 노드만 세면 129 로 오르면서 대조군도 안 내려간다.
+
+    받침은 **순위에만** 들어간다. 돌려주는 점수는 최고점 그대로다. 받침을
+    점수에 섞으면 그래프마다 점수가 통째로 내려가 문턱의 뜻이 달라진다.
+    쓰임 가산(_USAGE_WEIGHT)과 같은 규율이다."""
+    import numpy as np
+    top = int(np.argmax(scores))
+    best = float(scores[top])
+    if _AGREE_WEIGHT <= 0 or owners is None or len(owners) != scores.size:
+        return best, 0.0
+    mine = owners[top]
+    # 빈 소속은 어느 노드 것인지 모르는 줄이다(개념망으로 불린 것). 점수는
+    # 그대로 내지만 남을 받치지는 않는다 — 모르는 것을 증거로 세지 않는다.
+    others = np.fromiter((bool(x) and x != mine for x in owners),
+                         dtype=bool, count=len(owners))
+    if not others.any():
+        return best, 0.0
+    return best, float(np.max(scores[others]))
 
 
 def pick_graph(question, index=None, min_n=None, count=3):
@@ -3067,32 +3117,34 @@ def pick_graph(question, index=None, min_n=None, count=3):
               for position, chunk in enumerate(split_fragments(question))]
     sparse = index.get("성김")
     score = []
+    belongs = index.get("소속", {})
     for n in index["공통층"]:
+        own = belongs.get(n)
         if sparse is not None:
-            score.append((max(weight * _sparse_score(sparse[n], v, qL, sv)
-                             for v, qL, sv, weight in chunks), n))
+            pairs = [tuple(weight * x for x in _sparse_score(sparse[n], v, qL, sv, own))
+                     for v, qL, sv, weight in chunks]
         else:
             M = index["vec"][n]
-            score.append((max(weight * float((M @ v).max())
-                             for v, _qL, _sv, weight in chunks), n))
+            pairs = [tuple(weight * x for x in _agree(M @ v, own))
+                     for v, _qL, _sv, weight in chunks]
+        score.append((*max(pairs), n))
     # 벌점은 같은 지식이 두 언어로 있을 때 제 언어를 고르라는 것이지,
     # 다른 언어 그래프를 지우라는 것이 아니다. 0.5 로 깎았더니 'what is DNS'
     # 가 문턱 아래로 떨어졌다 — 네트워크 지식은 한국어 그래프에만 있다.
     # 0.85 면 같은 점수일 때 제 언어가 이기고, 한쪽에만 있는 지식은 그대로
     # 찾아간다.
     if _multi_lang and _question_lang != "섞임":
-        score = [(p * (1.0 if _lang_table.get(n, "한국어") == _question_lang else 0.85), n)
-                for p, n in score]
-    score = [(1.0 if n in exact_terms else p, n) for p, n in score]
+        score = [(p * (1.0 if _lang_table.get(n, "한국어") == _question_lang else 0.85), s, n)
+                for p, s, n in score]
+    score = [((1.0, 0.0, n) if n in exact_terms else (p, s, n)) for p, s, n in score]
     # 쓰이는 그래프를 올린다(안 쓰이는 것을 누르지 않는다). 대화 안에서
     # 하던 것과 같은 규율이다 — 순위만 바꾸고 문턱은 못 낮춘다. 누르는
     # 꼴로 만들면 드물게 쓰이는 옳은 그래프가 문턱 아래로 떨어져, 답할 수
     # 있던 것이 미지가 된다. 올리는 꼴이면 그런 일이 없다.
+    # 겨루는 값에만 받침과 쓰임을 얹는다. 돌려주는 것은 순수 유사도다.
     usage = graph_usage()
-    if usage:
-        sort_key = [(p + _USAGE_WEIGHT * usage.get(n, 0.0), p, n) for p, n in score]
-    else:
-        sort_key = [(p, p, n) for p, n in score]
+    sort_key = [(p + _AGREE_WEIGHT * s + _USAGE_WEIGHT * usage.get(n, 0.0), p, n)
+                for p, s, n in score]
     sort_key.sort(reverse=True)
     # 돌려주는 점수는 가산을 뺀 순수 유사도다. 자주 쓴다는 이유로 근거 없는
     # 답이 문턱을 넘으면 안 된다.

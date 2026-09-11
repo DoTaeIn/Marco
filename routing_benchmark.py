@@ -46,23 +46,34 @@ def build_index(loaded, cap=5, strip=True, budget=180):
 
     def pack_vals(name, g, cap, strip):
         evidence = engine.extract_evidence(g)     # 증거는 짧아도 남기고, 앞에 놓는다
-        ex = [g.get("목표") or ""]
+        # 줄마다 어느 노드에서 왔는지 같이 모은다. 라우터의 색인과 같은
+        # 것을 재려면 여기서도 소속을 적어야 한다.
+        ex, owner = [], []
+        def take(node, lines):
+            ex.extend(lines)
+            owner.extend([node] * len(lines))
+        take("", [g.get("목표") or ""])
         for n in evidence:
             phrase = list(g["사례층"][n])
             phrase = phrase[:-1] if strip else phrase
-            ex += [n] + (phrase[:cap] if cap else phrase)
+            take(n, [n] + (phrase[:cap] if cap else phrase))
         for layer in ("공통층", "사례층"):
             for n, phrase in g.get(layer, {}).items():
                 if n in evidence:
                     continue
                 phrase = list(phrase)[:-1] if strip else list(phrase)
-                ex += [x for x in [n] + (phrase[:cap] if cap else phrase)
-                       if len("".join(x.split())) >= 5]
+                take(n, [x for x in [n] + (phrase[:cap] if cap else phrase)
+                         if len("".join(x.split())) >= 5])
+        owner = [o for o, x in zip(owner, ex) if x]
         # 개념망으로 별칭을 여기서 불린다. 벡터 만들 때 불리면 길이표는
         # 원본 개수로 계산돼 모양이 어긋난다 — 실제로 (180,) 대 (239,) 로 터졌다.
         ex = [x for x in engine.expand_examples(g, [x for x in ex if x])][:budget]
+        # 불려서 새로 생긴 줄은 어느 노드 것인지 모른다. 빈 소속으로 두면
+        # 받침에 안 끼고 점수는 그대로 낸다 — 모르는 것을 짐작하지 않는다.
+        owner = (owner + [""] * len(ex))[:len(ex)]
         if ex:
             ix["공통층"][name] = ex
+            ix.setdefault("소속", {})[name] = owner
 
     for name, g in loaded.items():
         if g.get("색인") == "아니오":     # 자가검사 뼈대는 라우터가 안 본다
