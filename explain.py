@@ -7,6 +7,7 @@
 
 논증 엔진(engine.py)과 나뉘어 있다. 이쪽은 판정하지 않는다. 설명한다.
 """
+from functools import lru_cache
 import io, json, os, re, sys
 from collections import deque
 
@@ -93,12 +94,39 @@ intent_table = dialect.get("의도표", [])
 meaning_marker = dialect.get("뜻표지", {})
 
 
+@lru_cache(maxsize=1)
+def _intent_keys():
+    """표의 열쇠를 활용꼴까지 펼친다.
+
+    표에는 '어디서 쓰' 라고 적히는데 사람은 '어디서 써' 라고 친다. 겉꼴만
+    대조하면 같은 말을 놓친다 — 말끝은 적어 두는 것이 아니라 문법에서
+    만든다. 열쇠가 '<앞말> <한 글자>' 꼴일 때 그 한 글자를 어간으로 보고
+    선언된 어미로 활용한다. 어간이 아니면 만들어진 꼴이 아무것도 안 맞아
+    표가 그대로 동작한다.
+    """
+    import hangul
+    grammar = dialect.get("활용", {})
+    expanded = []
+    for k, v in intent_table:
+        forms = {"".join(k.split())}
+        head, _, last = k.rpartition(" ")
+        if head and len(last) == 1 and grammar:
+            head = "".join(head.split())
+            for ending in grammar.get("parsing_endings", []):
+                try:
+                    made = hangul.inflect(last, "present", ending, grammar, kind="regular")
+                except Exception:
+                    continue
+                forms.update(head + form["text"] for form in made)
+        expanded.extend((form, v) for form in forms)
+    return tuple(expanded)
+
+
 def intent(question):
     """질문이 무엇을 묻는지 고른다. 앞에 오는 것이 이긴다."""
     t = "".join(question.split())
     correct_ones = []
-    for k, v in intent_table:
-        key = "".join(k.split())
+    for key, v in _intent_keys():
         i = t.find(key)
         if i >= 0:
             # 같은 자리에서 겹치면 긴 쪽이 이긴다. '어디' 가 '어디서 쓰' 를

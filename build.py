@@ -907,9 +907,18 @@ def _selfcheck():
     # 표제어 없이 뜻풀이만 줘도 뽑힌다. 일괄 처리는 이 꼴로 넣는다.
     assert extract_target("강이나 호수에서 물고기를 잡는 일.") == ("물고기", "잡")
     # 지시어는 동작이 아니다. `또는 그런 일.` 꼬리에서 '그러' 가 샜다.
-    assert extract_target("퇴고는 글을 고치고 다듬음. 또는 그런 일.") is None
+    # 막으려는 것은 '그러' 가 동작 자리에 서는 것이지, 이 꼬리가 달린 문장을
+    # 통째로 버리는 것이 아니다. 앞 절에 진짜 동작이 있으면 그것을 쓴다.
+    assert extract_target("퇴고는 다듬음. 또는 그런 일.") is None
+    assert extract_target("무엇은 그런 일.") is None
+    assert extract_target("정리는 그런 일이다.") is None
+    assert extract_target("퇴고는 글을 고치고 다듬음. 또는 그런 일.") == ("글", "고치")
     # 한글이 아닌 글자가 섞인 자리는 관형형이 아니다. '10월' -> '10워'.
-    assert extract_target("개천절은 고조선을 건국한 날을 기념하는 국경일. 10월 3일이다.") is None
+    # 막으려는 것은 숫자 꼬리에서 동작을 지어내는 것이지, 그런 꼬리가 달린
+    # 문장을 버리는 것이 아니다.
+    assert extract_target("무엇은 10월 3일이다.") is None
+    assert extract_target("버전은 3.0 이다.") is None
+    assert extract_target("개천절은 고조선을 건국한 날을 기념하는 국경일. 10월 3일이다.") == ("날", "기념")
     # 그림씨는 동작이 아니다. `-은/-ㄴ/-인` 자리를 곁에서 안 받는 이유다.
     assert extract_target("건강관리는 몸을 건강한 상태로 유지하는 일.")[1] != "건강한"
     print("selfcheck ok")
