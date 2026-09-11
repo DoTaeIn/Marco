@@ -2961,6 +2961,14 @@ def sparse_vec(vec, length_table=None, flip_table=None):
 
 _short_line = 8          # 이보다 짧은 색인 줄은
 _LONG_Q_SCALE = 2.0     # 질문이 이 배수를 넘게 길면 못 이긴다
+# 원문은 사람이 실제로 한 말이고, 조각은 우리가 쪼개서 만든 가설이다. 둘을
+# 같은 자격으로 겨루게 하면 조각 하나가 엉뚱한 그래프에 높게 붙어 원문의
+# 점수를 덮는다 — max 로 고르기 때문이다. 확정을 가설보다 위에 둔다.
+#
+# 이 값은 눈금을 보고 고른 것이 아니라 그 차례를 세운 것이다. 1.0 은
+# 차례가 없다는 뜻이고, 너무 낮으면 조각이 아무 일도 못 한다. 부작용이
+# 없는지만 확인했다 — 고정 물음 여덟 줄 중 어느 것도 나빠지지 않는다.
+_FRAGMENT_WEIGHT = 0.90
 
 
 def _sparse_score(slot, v, question_length=None, inner_vec=None):
@@ -3053,17 +3061,20 @@ def pick_graph(question, index=None, min_n=None, count=3):
             if any(term in re.findall(r"[A-Za-z][A-Za-z0-9]*", p) for p in phrases):
                 exact_terms.add(name)
 
-    chunks = [(_embed(chunk), len("".join(chunk.split())), _embed_sub(chunk))
-              for chunk in split_fragments(question)]
+    # split_fragments 는 원문을 맨 앞에 둔다. 뒤에 오는 것이 조각이다.
+    chunks = [(_embed(chunk), len("".join(chunk.split())), _embed_sub(chunk),
+               1.0 if position == 0 else _FRAGMENT_WEIGHT)
+              for position, chunk in enumerate(split_fragments(question))]
     sparse = index.get("성김")
     score = []
     for n in index["공통층"]:
         if sparse is not None:
-            score.append((max(_sparse_score(sparse[n], v, qL, sv)
-                             for v, qL, sv in chunks), n))
+            score.append((max(weight * _sparse_score(sparse[n], v, qL, sv)
+                             for v, qL, sv, weight in chunks), n))
         else:
             M = index["vec"][n]
-            score.append((max(float((M @ v).max()) for v, _qL, _sv in chunks), n))
+            score.append((max(weight * float((M @ v).max())
+                             for v, _qL, _sv, weight in chunks), n))
     # 벌점은 같은 지식이 두 언어로 있을 때 제 언어를 고르라는 것이지,
     # 다른 언어 그래프를 지우라는 것이 아니다. 0.5 로 깎았더니 'what is DNS'
     # 가 문턱 아래로 떨어졌다 — 네트워크 지식은 한국어 그래프에만 있다.
