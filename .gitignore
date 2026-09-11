@@ -95,3 +95,23 @@ data/물건/.물건_*.pkl
 # AI 사이 인수인계 메모. 사람이 읽는 작업 상태이지 코드가 아니라서
 # 저장소에 올리지 않는다. 다음 세션이 이어 쓰도록 로컬에만 둔다.
 HANDOFF.md
+
+# --- 받아온 것 (저장소에 담지 않는다) ---
+# main 갈래의 규칙을 이 갈래에도 둔다. 없으면 `git add data` 한 번에
+# 수백 MB 가 딸려 들어간다 — 실제로 그래서 push 가 거절됐다.
+
+# 시각 부품이 쓰는 모델 가중치. 1.4GB.
+data/models/
+# HICO-DET. 원본 parquet 은 한 파일이 400MB 를 넘어 GitHub 이 받지 않는다.
+data/hoi/
+data/benchmarks/hico_det/
+# ChartQA 평가 자료. 66MB.
+data/benchmarks/chartqa/
+# 평가에 쓰려고 받아둔 논문 PDF. 남의 저작물이라 담지 않는다.
+data/benchmarks/papers/
+# 위키에서 추린 정의문. 내용이 남의 글이다.
+data/위키/
+# 되돌림 시험에 쓰려고 받아둔 웹 원문.
+data/웹_되돌림/
+# 기계마다 따로 빌드하는 실행 파일.
+.nai-tools/
