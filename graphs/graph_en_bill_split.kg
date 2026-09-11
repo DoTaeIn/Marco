@@ -1,0 +1,46 @@
+# Splitting a bill. English counterpart of graph_정산_나눠내기.kg.
+# 같은 지식을 언어만 바꿔 적는다. 라우터가 질문 언어를 보고 고른다.
+역할: bill splitter
+목표: know_the_share
+임계값: 0.50 / 0.60
+이름말: 문장
+언어: 영어
+전진관계: confirms, leads_to
+부정관계: blocks
+근거관계: confirms
+
+[개념]
+know_the_share {won = total / people}: "split the bill" | "how much each" | "divide the bill" | "who pays what"
+total {won}: "know the total amount" | "the bill amount"
+people {peop}: "know how many people" | "the number of people"
+
+[사례]
+*heard_amount: "120000 won" | "the bill was 120000 won" | "it came to 120000 won"
+*heard_people: "3 people" | "three of us" | "we are 3"
+
+[무관]
+_smalltalk: "nice weather" | "what is for lunch"
+_other: "what is DNS" | "tell me about XSS"
+
+[논증]
+heard_amount -confirms-> total
+heard_people -confirms-> people
+total -leads_to-> know_the_share
+people -leads_to-> know_the_share
+
+[물음]
+total: How much was the bill?
+people: How many people are splitting it?
+
+[대사]
+B2: That is not about splitting a bill.
+B2_강등: I only handle the bill and the headcount.
+A: Did you mean {claim}?
+근거없음: I see {claim}, but what are you basing that on?
+인정: {ev}, so {claim}.
+인정_반격: {ev} is fine, but {bad} gets in the way.
+C: {ev} alone does not get to {claim}.
+B1: I understand {claim}. Tell me the amount and the headcount.
+미지: I am not sure about that.
+목표주장: Happy to split it. Tell me the total and how many people.
+결론값: Then it is {값} each.

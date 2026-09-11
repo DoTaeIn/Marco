@@ -1,0 +1,24 @@
+{
+  "scope": "synthetic positive Horn closure, not whole-app memory or intelligence",
+  "python": "3.13.9 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 19:11:29) [Clang 20.1.8 ]",
+  "rows": [
+    {
+      "chain_edges": 12,
+      "distractors": 256,
+      "derived_and_input_facts": 334,
+      "median_ms": 1.505,
+      "python_peak_bytes": 211544,
+      "proof_sha256": "12276b9fa528aaed787145fa3d4f903f8557609a0d8e0fa0d7beb753518039b3",
+      "correct": true
+    },
+    {
+      "chain_edges": 24,
+      "distractors": 256,
+      "derived_and_input_facts": 556,
+      "median_ms": 8.184,
+      "python_peak_bytes": 347824,
+      "proof_sha256": "5a7951e9c88a3d09c1d1c3c243dcbd171551acf330c532b522b2f62ebeec0eda",
+      "correct": true
+    }
+  ]
+}

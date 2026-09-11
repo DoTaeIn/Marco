@@ -1,0 +1,369 @@
+{
+  "scope": "offline local reasoning via AppState; reasoning KG only; no browser rendering",
+  "dataset_sha256": "61c6c9d5f25846e3dd14b419791cf03f50b044223767a73e028cd6d76d9b94e5",
+  "passed": 7,
+  "total": 14,
+  "rows": [
+    {
+      "answer": "3/2입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "fraction-combination",
+      "family": "symbolic",
+      "elapsed_ms": 27.237
+    },
+    {
+      "answer": "5/3입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "equation-fractional-root",
+      "family": "symbolic",
+      "elapsed_ms": 14.402
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "relation_diagnostic": {
+        "stage": "semantic_parse",
+        "reason": "unrecognized_or_ambiguous_clauses",
+        "input": "어떤 수에 8을 더한 값의 두 배가 30이야. 원래 수를 구해줘.",
+        "answer": null,
+        "diagnostics": [
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 0,
+              "end": 24,
+              "text": "어떤 수에 8을 더한 값의 두 배가 30이야"
+            },
+            "candidates": []
+          },
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 26,
+              "end": 35,
+              "text": "원래 수를 구해줘"
+            },
+            "candidates": []
+          }
+        ]
+      },
+      "id": "spoken-unseen-order",
+      "family": "verbal_math",
+      "elapsed_ms": 3.61
+    },
+    {
+      "answer": "28개입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "signed-units",
+      "family": "quantity",
+      "elapsed_ms": 6.555
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "relation_diagnostic": {
+        "stage": "semantic_parse",
+        "reason": "unrecognized_or_ambiguous_clauses",
+        "input": "상자에 공이 10개 있다. 가방에 공이 4개 있다. 가방의 공을 모두 상자로 옮겼다. 상자에는 공이 몇 개야?",
+        "answer": null,
+        "diagnostics": [
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 29,
+              "end": 46,
+              "text": "가방의 공을 모두 상자로 옮겼다"
+            },
+            "candidates": []
+          },
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 48,
+              "end": 60,
+              "text": "상자에는 공이 몇 개야"
+            },
+            "candidates": []
+          }
+        ]
+      },
+      "id": "two-places-same-item",
+      "family": "scope",
+      "elapsed_ms": 7.299
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "relation_diagnostic": {
+        "stage": "semantic_parse",
+        "reason": "unrecognized_or_ambiguous_clauses",
+        "input": "해나는 세림보다 키가 작다. 세림은 보라보다 키가 작다. 해나와 보라 중 누가 더 커?",
+        "answer": null,
+        "diagnostics": [
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 0,
+              "end": 14,
+              "text": "해나는 세림보다 키가 작다"
+            },
+            "candidates": []
+          },
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 16,
+              "end": 30,
+              "text": "세림은 보라보다 키가 작다"
+            },
+            "candidates": []
+          }
+        ]
+      },
+      "id": "comparative-inverse",
+      "family": "relation",
+      "elapsed_ms": 5.151
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "relation_diagnostic": {
+        "stage": "semantic_parse",
+        "reason": "unrecognized_or_ambiguous_clauses",
+        "input": "모든 라젠은 티몬이다. 모든 티몬은 베라이다. 모든 베라는 춤춘다. 도미는 라젠이다. 도미는 춤추는가?",
+        "answer": null,
+        "diagnostics": [
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 26,
+              "end": 36,
+              "text": "모든 베라는 춤춘다"
+            },
+            "candidates": []
+          },
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 48,
+              "end": 56,
+              "text": "도미는 춤추는가"
+            },
+            "candidates": []
+          }
+        ]
+      },
+      "id": "classification-deep",
+      "family": "relation",
+      "elapsed_ms": 5.537
+    },
+    {
+      "answer": "서랍에 있습니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "location-other-actor",
+      "family": "state",
+      "elapsed_ms": 6.588
+    },
+    {
+      "answer": "책상에 있습니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "planning-keeps-location",
+      "family": "state",
+      "elapsed_ms": 10.137
+    },
+    {
+      "answer": "이 대화에서 확인한 조건만으로는 답을 결정할 수 없습니다.",
+      "verdict": "조건부족",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "unsupported-comparison",
+      "family": "abstention",
+      "elapsed_ms": 13.613
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "relation_diagnostic": {
+        "stage": "semantic_parse",
+        "reason": "unrecognized_or_ambiguous_clauses",
+        "input": "유진은 버스가 고장 나서 회의에 늦었다. 유진이 늦은 이유는?",
+        "answer": null,
+        "diagnostics": [
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 0,
+              "end": 21,
+              "text": "유진은 버스가 고장 나서 회의에 늦었다"
+            },
+            "candidates": []
+          },
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 23,
+              "end": 33,
+              "text": "유진이 늦은 이유는"
+            },
+            "candidates": []
+          }
+        ]
+      },
+      "id": "reading-explicit-cause",
+      "family": "reading",
+      "elapsed_ms": 7.588
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "relation_diagnostic": {
+        "stage": "semantic_parse",
+        "reason": "unrecognized_or_ambiguous_clauses",
+        "input": "창문이 열려 있으면 경보가 울린다. 지금 경보는 울리지 않는다. 창문이 열려 있는가?",
+        "answer": null,
+        "diagnostics": [
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 0,
+              "end": 18,
+              "text": "창문이 열려 있으면 경보가 울린다"
+            },
+            "candidates": []
+          },
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 20,
+              "end": 34,
+              "text": "지금 경보는 울리지 않는다"
+            },
+            "candidates": []
+          },
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 36,
+              "end": 46,
+              "text": "창문이 열려 있는가"
+            },
+            "candidates": []
+          }
+        ]
+      },
+      "id": "reading-counterfactual",
+      "family": "reading",
+      "elapsed_ms": 7.144
+    },
+    {
+      "answer": "9",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "format-new-number",
+      "family": "instruction",
+      "elapsed_ms": 7.865
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "relation_diagnostic": {
+        "stage": "semantic_parse",
+        "reason": "unrecognized_or_ambiguous_clauses",
+        "input": "다은은 책을 민지에게 줬다. 민지는 그것을 상자에 넣었다. 책은 어디에 있나?",
+        "answer": null,
+        "diagnostics": [
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 0,
+              "end": 14,
+              "text": "다은은 책을 민지에게 줬다"
+            },
+            "candidates": []
+          },
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 16,
+              "end": 31,
+              "text": "민지는 그것을 상자에 넣었다"
+            },
+            "candidates": []
+          },
+          {
+            "reason": "unrecognized_clause",
+            "evidence": {
+              "start": 33,
+              "end": 42,
+              "text": "책은 어디에 있나"
+            },
+            "candidates": []
+          }
+        ]
+      },
+      "id": "followup-reference",
+      "family": "reference",
+      "elapsed_ms": 3.361
+    }
+  ],
+  "resources": {
+    "startup_with_tracemalloc_ms": 17.001,
+    "startup_python_peak_bytes_excluding_imports": 1547283,
+    "three_turn_python_peak_bytes": 2578466,
+    "median_case_ms": 7.221500000000001,
+    "persistence_bytes_all_chats": 12066
+  }
+}

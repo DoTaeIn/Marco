@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KG 뷰어</title>
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#f8fafc,#111827);--fg:light-dark(#172033,#edf2f7);--muted:light-dark(#64748b,#9ca3af);--line:light-dark(#94a3b8,#64748b);--panel:light-dark(#ffffff,#1f2937);--border:light-dark(#dbe3ed,#374151);--blue:light-dark(#2563eb,#60a5fa);--green:light-dark(#059669,#34d399);--orange:light-dark(#d97706,#fbbf24);--red:light-dark(#dc2626,#f87171);--purple:light-dark(#7c3aed,#a78bfa)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif}
+header{padding:18px 24px 10px}h1{font-size:20px;font-weight:500;margin:0 0 4px}header p{margin:0;color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:end;padding:10px 24px}
+.bar label{display:grid;gap:4px;color:var(--muted)}
+select,input,button{font:inherit;color:var(--fg);background:var(--panel);border:1px solid var(--border);padding:7px 9px;border-radius:6px}
+button{cursor:pointer}button:hover{border-color:var(--fg)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+select{max-width:340px}
+.checks{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:7px}
+.checks label{display:flex;align-items:center;gap:4px;color:var(--fg)}
+.zoom{display:flex;gap:4px}.zoom button{min-width:34px;text-align:center}
+.notice{margin:0 24px 10px;padding:9px 12px;border-radius:6px;border:1px solid var(--border);background:var(--panel);color:var(--muted)}
+.notice.bad{border-color:var(--red);color:var(--red)}
+.notice b{color:var(--fg)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;padding:0 24px 10px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:5px}
+main{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:16px;padding:0 24px 24px}
+.graph{height:680px;border:1px solid var(--border);background:var(--panel);border-radius:8px;overflow:hidden;position:relative;cursor:grab;touch-action:none}
+.graph svg{display:block;width:100%;height:100%}
+.graph.dragging{cursor:grabbing}
+.graph.over{border-color:var(--blue);border-style:dashed}
+.stats{position:absolute;left:12px;top:10px;color:var(--muted);pointer-events:none;z-index:1;font-variant-numeric:tabular-nums}
+.drop[hidden]{display:none}
+.drop{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;text-align:center;color:var(--muted);padding:24px}
+.drop b{color:var(--fg);font-weight:500;font-size:16px}
+.detail{border-left:1px solid var(--border);padding-left:16px;min-width:0}
+.detail h2{font-size:15px;font-weight:500;margin:0 0 8px}
+.detail h2+h2,.detail *+h2{margin-top:16px}
+.detail dl{margin:0;display:grid;grid-template-columns:54px 1fr;gap:7px}
+.detail dt{color:var(--muted)}.detail dd{margin:0;overflow-wrap:anywhere}
+.detail ul{padding-left:18px;margin:0}.detail li{overflow-wrap:anywhere}
+.detail p{margin:0 0 8px}
+.empty{color:var(--muted)}
+.node text{font-size:11px;fill:var(--fg);pointer-events:none;paint-order:stroke;stroke:var(--panel);stroke-width:3px;stroke-linejoin:round}
+.node circle{stroke:var(--panel);stroke-width:2;cursor:grab}
+.node:active circle{cursor:grabbing}
+.node.dim,.edge.dim{opacity:.1}
+.node.selected circle{stroke:var(--fg);stroke-width:3}
+svg.lod .node text{display:none}
+.edge{stroke:var(--line);stroke-width:1.2;opacity:.62;marker-end:url(#arrow)}
+.edge[data-r="부정"]{stroke:var(--red);stroke-dasharray:5 4}
+.edge[data-r="증명"]{stroke:var(--blue)}
+.edge.path{stroke-width:3;opacity:1}
+svg.lod .edge{marker-end:none}
+.hash{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+@media(max-width:760px){main{grid-template-columns:1fr}.graph{height:560px}.detail{border-left:0;border-top:1px solid var(--border);padding:14px 0 0}.bar,header,main,.legend,.notice{padding-left:14px;padding-right:14px}.notice{margin-left:0;margin-right:0}}
+</style></head><body>
+<header><h1>KG 뷰어</h1><p>.kg 와 .kgpack 을 그대로 엽니다 — 서버도, 빌드도, 외부 라이브러리도 없습니다.</p></header>
+<div class="bar">
+  <button id="open" type="button">파일 열기</button>
+  <input id="file" type="file" multiple accept=".kg,.kgpack,.json" hidden>
+  <label>그래프<select id="dataset"></select></label>
+  <label>노드 찾기<input id="search" type="search" placeholder="예: 상당성"></label>
+  <label>노드 간격<input id="spacing" type="range" min="60" max="250" value="100"></label>
+  <div class="checks" id="rels" aria-label="관계 필터"></div>
+  <span class="zoom" aria-label="확대 축소"><button type="button" data-z="out" title="축소">&minus;</button><button type="button" data-z="fit" title="화면에 맞춤">맞춤</button><button type="button" data-z="in" title="확대">+</button></span>
+  <div class="checks" aria-label="보기"><label><input type="checkbox" id="three" checked>3D</label><label><input type="checkbox" id="spin">자동 회전</label></div>
+  <button id="reset" type="button">다시 배치</button>
+</div>
+<div class="notice" id="notice" hidden></div>
+<div class="legend"><span style="--c:var(--purple)">목표</span><span style="--c:var(--green)">공통 개념</span><span style="--c:var(--orange)">사례 사실</span><span style="--c:var(--blue)">증거</span></div>
+<main>
+  <div class="graph" id="graph">
+    <div class="stats" id="stats"></div>
+    <svg width="100%" height="100%" role="img" aria-label="지식 그래프"></svg>
+    <div class="drop" id="drop"><b>.kg 나 .kgpack 을 여기에 끌어다 놓으세요</b>
+      <div>pack 을 열면 안에 든 그래프가 전부 목록에 뜨고, manifest 의 SHA-256 을 그 자리에서 검증합니다.<br>
+      낱개 .kg 는 여러 개를 한 번에 놓으면 <code>포함:</code> 이 서로 풀립니다.</div></div>
+  </div>
+  <aside class="detail" id="detail"><h2>파일을 여세요</h2><p class="empty">아직 아무것도 안 열려 있습니다.</p></aside>
+</main>
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const svg = $('svg'), box = $('#graph'), sel = $('#dataset'), detail = $('#detail'),
+      search = $('#search'), notice = $('#notice'), drop = $('#drop'), stats = $('#stats');
+const ns = 'http://www.w3.org/2000/svg';
+const esc = s => { const x = document.createElement('span'); x.textContent = s ?? ''; return x.innerHTML };
+
+/* ───────────────────────── .kg 파서 — engine.py 의 kg읽기 를 그대로 옮긴다 ─────────────────────────
+   화살표·구역·머리말 문법이 바뀌면 여기도 같이 고쳐야 한다. 어긋나면 화면과 엔진이 다른 것을 본다. */
+const 화살 = /\s*(?:-+|→)\s*(\S+?)\s*(?:-+>|→)\s*/;
+const 수치 = /^(.*?)\s*\{\s*(\S*?)\s*(>=|<=)\s*([\d.]+)\s*\}$/;
+const 층이름 = {개념:'공통층', 사례:'사례층', 무관:'무관층', 공리:'공통층'};
+const 구역들 = ['개념','사례','무관','논증','대사','개념망','공리'];
+const 머리말들 = ['역할','목표','임계값','포함','이름말','전진관계','부정관계','근거관계'];
+
+function 새그래프(경로){
+  return {경로, 역할:'', 목표:'', 임계값:{A_MIN:.5, OK_MIN:.6}, 이름말:'용어',
+          전진관계:['증명','충족'], 부정관계:['부정'], 근거관계:null,
+          대사:{}, 공통층:{}, 사례층:{}, 무관층:{}, 수치조건:{}, 출처:{},
+          엣지:[], 개념엣지:[], 포함:[], 공리:[], 경고:[]};
+}
+
+function kg읽기(text, 경로){
+  const g = 새그래프(경로);
+  let 구역 = null, i = 0;
+  const 오류 = (줄, 왜) => { throw new Error(`${경로}:${i}  ${왜}\n    ${줄}`) };
+  for (const 원문 of text.split(/\r?\n/)){
+    i++;
+    // 파이썬과 같다: 따옴표 안이든 아니든 첫 '#' 뒤는 주석이다.
+    const 줄 = 원문.trimStart().startsWith('#') ? '' : 원문.split('#')[0].replace(/\s+$/, '');
+    if (!줄.trim()) continue;
+    const 머리 = 줄.trim();
+    if (머리.startsWith('[') && 머리.endsWith(']')){
+      구역 = 머리.slice(1, -1).trim();
+      if (!구역들.includes(구역)) 오류(머리, '모르는 구역 (' + 구역들.join('/') + ')');
+      continue;
+    }
+    if (구역 === null){                                   // 머리말
+      const c = 머리.indexOf(':');
+      if (c < 0) 오류(머리, "머리말은 '이름: 값' 형식");
+      const 키 = 머리.slice(0, c).trim(), 값 = 머리.slice(c + 1).trim();
+      if (키 === '임계값'){
+        const 숫자 = 값.replace(/\//g, ' ').split(/\s+/).filter(Boolean).map(Number);
+        if (숫자.length !== 2 || 숫자.some(Number.isNaN)) 오류(머리, "임계값은 '0.50 / 0.60' 형식");
+        g.임계값 = {A_MIN: 숫자[0], OK_MIN: 숫자[1]};
+      } else if (키 === '포함'){
+        g.포함.push(...값.split(',').map(x => x.trim()).filter(Boolean));
+      } else if (키 === '전진관계' || 키 === '부정관계' || 키 === '근거관계'){
+        const 갈래 = 값.split(',').map(x => x.trim()).filter(Boolean);
+        if (!갈래.length) 오류(머리, `${키} 는 '증명, 충족' 형식`);
+        g[키] = 갈래;
+      } else if (키 === '이름말'){
+        if (값 !== '용어' && 값 !== '문장') 오류(머리, "이름말은 '용어' 또는 '문장'");
+        g.이름말 = 값;
+      } else if (키 === '역할' || 키 === '목표'){
+        g[키] = 값;
+      } else 오류(머리, '모르는 머리말 (' + 머리말들.join('/') + ')');
+    }
+    else if (구역 === '대사'){
+      const c = 머리.indexOf(':');
+      if (c < 0) 오류(머리, "대사는 '키: 문장' 형식");
+      g.대사[머리.slice(0, c).trim()] = 머리.slice(c + 1).trim();
+    }
+    else if (구역 === '개념망' || 구역 === '논증'){
+      const m = 화살.exec(머리);
+      if (!m) 오류(머리, 구역 === '개념망' ? "개념망은 '과도 -상위-> 흉기' 형식"
+                                          : "논증은 'A -증명-> B' 또는 'A →증명→ B' 형식");
+      const 출발 = 머리.slice(0, m.index).trim(), 관계 = m[1];
+      if (구역 === '개념망' && 관계 !== '상위') 오류(머리, "지금 쓰는 개념망 관계는 '상위' 뿐이다");
+      for (const 도착 of 머리.slice(m.index + m[0].length).split(',').map(x => x.trim()))
+        if (출발 && 도착) (구역 === '개념망' ? g.개념엣지 : g.엣지).push([출발, 관계, 도착]);
+    }
+    else {                                                // 개념 / 사례 / 무관 / 공리
+      const c = 머리.indexOf(':');
+      if (c < 0) 오류(머리, '노드는 \'이름: "예시" | "예시"\' 형식');
+      let 이름 = 머리.slice(0, c).trim();
+      const 예시 = 머리.slice(c + 1);
+      이름 = 이름.replace(/^\*+/, '').trim();             // '*' 는 사람이 읽으라는 표시일 뿐이다
+      const m = 수치.exec(이름);
+      if (m){
+        이름 = m[1].trim();
+        g.수치조건[이름] = m[3] === '>=' ? {단위: m[2], 최소: +m[4]} : {단위: m[2], 최대: +m[4]};
+      }
+      let 출처 = null;
+      if (이름.includes('@')){
+        const a = 이름.indexOf('@');
+        출처 = 이름.slice(a + 1).trim(); 이름 = 이름.slice(0, a).trim();
+      }
+      const 문장들 = 예시.split('|').filter(x => x.trim()).map(x => x.trim().replace(/^"+|"+$/g, ''));
+      if (!문장들.length) 오류(머리, '예시 문장이 없다');
+      g[층이름[구역]][이름] = 문장들;
+      if (구역 === '공리') g.공리.push(이름);
+      if (출처) g.출처[이름] = 출처;
+    }
+  }
+  return g;
+}
+
+/* 포함: 다른 주제 그래프의 공통층을 빌려온다 (engine.py:_포함).
+   이게 빠지면 사건 .kg 가 노드 16/엣지 26 처럼 보인다 — 실제는 44/53 이다. */
+function 경로합치기(base, sub){
+  if (sub.startsWith('/')) return sub.replace(/^\/+/, '');
+  const 조각 = (base ? base + '/' : '') + sub;
+  const out = [];
+  for (const p of 조각.split('/')){
+    if (!p || p === '.') continue;
+    if (p === '..') out.pop(); else out.push(p);
+  }
+  return out.join('/');
+}
+
+function 포함풀기(g, 원문들, 진행){
+  진행 = 진행 || new Set();
+  const base = g.경로.includes('/') ? g.경로.slice(0, g.경로.lastIndexOf('/')) : '';
+  const 목록 = g.포함; g.포함 = [];
+  for (const sub of 목록){
+    const 후보 = 경로합치기(base, sub);
+    let 키 = 원문들.has(후보) ? 후보 : null;
+    if (!키){                                             // 낱개로 놓았을 때는 파일 이름으로 찾아 준다
+      const 이름 = 후보.split('/').pop();
+      const 맞음 = [...원문들.keys()].filter(k => k.split('/').pop() === 이름);
+      if (맞음.length === 1) 키 = 맞음[0];
+    }
+    if (!키 || 진행.has(키)){
+      g.경고.push(`포함 '${sub}' 을 못 찾았습니다 — 그 파일도 같이 열어야 이 그래프가 온전합니다.`);
+      continue;
+    }
+    let o;
+    try {
+      o = 키.endsWith('.kg') ? kg읽기(원문들.get(키), 키) : Object.assign(새그래프(키), JSON.parse(원문들.get(키)));
+    } catch (e){ g.경고.push(`포함 '${sub}' 을 읽지 못했습니다: ${e.message}`); continue }
+    포함풀기(o, 원문들, new Set([...진행, 키]));
+    g.경고.push(...o.경고);
+    for (const [k, v] of Object.entries(o.공통층 || {})){
+      const 기존 = g.공통층[k];
+      if (기존 && JSON.stringify(기존) !== JSON.stringify(v))
+        g.경고.push(`포함 충돌: '${sub}' 의 공통층.${k} 가 이미 다르게 정의됐습니다 — 여는 쪽 정의를 씁니다.`);
+      else g.공통층[k] = v;
+    }
+    for (const [k, v] of Object.entries(o.무관층 || {})){
+      const 있던 = g.무관층[k] || (g.무관층[k] = []);
+      for (const x of v) if (!있던.includes(x)) 있던.push(x);
+    }
+    for (const [k, v] of Object.entries(o.대사 || {})) if (!(k in g.대사)) g.대사[k] = v;
+    for (const e of o.개념엣지 || []) if (!g.개념엣지.some(x => String(x) === String(e))) g.개념엣지.push(e);
+    for (const [k, v] of Object.entries(o.출처 || {})) if (!(k in g.출처)) g.출처[k] = v;
+    for (const [k, v] of Object.entries(o.수치조건 || {})) if (!(k in g.수치조건)) g.수치조건[k] = v;
+    const 기존노드 = new Set([...Object.keys(g.공통층), ...Object.keys(g.무관층)]);
+    for (const e of o.엣지 || []) if (e.length === 3 && 기존노드.has(e[0]) && 기존노드.has(e[2])) g.엣지.push(e);
+  }
+  return g;
+}
+
+/* 목표와 무향으로 이어진 개념만 남긴다 (engine.py:_관련개념).
+   안 거르면 graph.kg 의 절도·사기 같은 다른 죄명이 목표와 안 이어진 조각으로 흩뿌려진다. */
+function 관련개념(g){
+  const 개념 = g.공통층, nb = new Map();
+  for (const [src, , dst] of g.엣지){
+    if (개념[src] && 개념[dst]){
+      (nb.get(src) || nb.set(src, new Set()).get(src)).add(dst);
+      (nb.get(dst) || nb.set(dst, new Set()).get(dst)).add(src);
+    }
+  }
+  const seen = new Set([g.목표]), q = [g.목표];
+  while (q.length) for (const n of nb.get(q.shift()) || []) if (!seen.has(n)){ seen.add(n); q.push(n) }
+  return Object.fromEntries(Object.entries(개념).filter(([k]) => seen.has(k)));
+}
+
+/* 파싱된 그래프를 화면이 쓰는 모양으로. views/지식그래프_시각화.py 의 load_graph 와 같은 규칙이다. */
+function 화면모양(g){
+  const 관련 = 관련개념(g);
+  for (const [k, v] of Object.entries(g.공통층)) if (!(k in 관련)) g.무관층['_타죄명:' + k] = v;
+  g.공통층 = 관련;
+  const 든것 = new Set([...Object.keys(g.공통층), ...Object.keys(g.사례층)]);
+  const 엣지 = g.엣지.filter(e => 든것.has(e[0]) && 든것.has(e[2]));
+  const 증거 = new Set(엣지.filter(e => e[1] === '증명').map(e => e[0]));
+  const nodes = [];
+  for (const 층 of ['공통층', '사례층', '무관층'])
+    for (const [node, 예시] of Object.entries(g[층]))
+      nodes.push({id: node, type: node === g.목표 ? '목표' : (증거.has(node) ? '증거' : 층),
+                  examples: (예시 || []).slice(0, 3), 출처: g.출처[node] || null});
+  return {role: g.역할, target: g.목표, 전진: g.전진관계, 부정: g.부정관계, 경고: g.경고,
+          nodes, edges: 엣지.map(([source, relation, target]) => ({source, relation, target}))};
+}
+
+/* ───────────────────────── .kgpack — ZIP 을 브라우저가 직접 푼다 ─────────────────────────
+   kgpack 은 표준 ZIP + manifest.json 이라 라이브러리가 필요 없다. DecompressionStream 이
+   deflate 를, crypto.subtle 이 SHA-256 을 해 준다. */
+async function 펴기(raw){
+  const ds = new DecompressionStream('deflate-raw');
+  const stream = new Blob([raw]).stream().pipeThrough(ds);
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+async function zip읽기(buf){
+  const dv = new DataView(buf), 끝 = buf.byteLength;
+  let eocd = -1;
+  for (let i = 끝 - 22; i >= Math.max(0, 끝 - 22 - 65535); i--)
+    if (dv.getUint32(i, true) === 0x06054b50){ eocd = i; break }
+  if (eocd < 0) throw new Error('ZIP 끝 레코드(EOCD)를 못 찾았습니다 — kgpack 이 아닌 것 같습니다.');
+  const 개수 = dv.getUint16(eocd + 10, true);
+  let off = dv.getUint32(eocd + 16, true);
+  if (off === 0xffffffff) throw new Error('ZIP64 pack 은 아직 못 읽습니다.');
+  const 파일 = [];
+  for (let i = 0; i < 개수; i++){
+    if (dv.getUint32(off, true) !== 0x02014b50) throw new Error('ZIP 중앙 디렉터리가 깨졌습니다.');
+    const method = dv.getUint16(off + 10, true), csize = dv.getUint32(off + 20, true),
+          nlen = dv.getUint16(off + 28, true), elen = dv.getUint16(off + 30, true),
+          clen = dv.getUint16(off + 32, true), lho = dv.getUint32(off + 42, true);
+    const name = new TextDecoder().decode(new Uint8Array(buf, off + 46, nlen));
+    파일.push({name, method, csize, lho});
+    off += 46 + nlen + elen + clen;
+  }
+  const out = new Map();
+  for (const f of 파일){
+    if (f.name.endsWith('/')) continue;
+    const lnlen = dv.getUint16(f.lho + 26, true), lelen = dv.getUint16(f.lho + 28, true);
+    const start = f.lho + 30 + lnlen + lelen;
+    const raw = new Uint8Array(buf, start, f.csize);
+    if (f.method === 0) out.set(f.name, new Uint8Array(raw));
+    else if (f.method === 8) out.set(f.name, await 펴기(raw));
+    else throw new Error(`모르는 압축 방식 ${f.method}: ${f.name}`);
+  }
+  return out;
+}
+
+async function sha256(bytes){
+  if (!globalThis.crypto?.subtle) return null;
+  const d = await crypto.subtle.digest('SHA-256', bytes);
+  return [...new Uint8Array(d)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/* ───────────────────────── 불러오기 ───────────────────────── */
+const DATA = {};            // 화면에 뜨는 이름 -> 화면모양(그래프)
+let 팩정보 = null;
+
+async function 파일읽기(files){
+  const 문제 = [], 낱개 = new Map();
+  for (const file of files){
+    try {
+      const buf = await file.arrayBuffer();
+      const head = new Uint8Array(buf, 0, Math.min(4, buf.byteLength));
+      const zip인가 = head[0] === 0x50 && head[1] === 0x4b;
+      if (file.name.endsWith('.kgpack') || zip인가) await 팩열기(file.name, buf);
+      else 낱개.set(file.name, new TextDecoder().decode(buf));
+    } catch (e){ 문제.push(`${file.name}: ${e.message}`) }
+  }
+  // 한 번에 놓은 파일들은 한 묶음으로 읽어야 서로의 '포함:' 이 풀린다. 파일마다
+  // 따로 읽으면 사건 .kg 가 법리를 못 찾아 12노드짜리 껍데기로 열린다(온전하면 74다).
+  문제.push(...낱개열기(낱개));
+  if (문제.length) 알림(문제.map(esc).join('<br>'), true);
+  갱신();
+}
+
+function 낱개열기(원문들){
+  const 문제 = [];
+  for (const [path, text] of 원문들){
+    if (!path.endsWith('.kg')) continue;
+    try { DATA[path] = 화면모양(포함풀기(kg읽기(text, path), 원문들)) }
+    catch (e){ 문제.push(`${path}: ${e.message.split('\n')[0]}`) }
+  }
+  return 문제;
+}
+
+async function 팩열기(이름, buf){
+  const 알맹이 = await zip읽기(buf);
+  const mf = 알맹이.get('manifest.json');
+  if (!mf) throw new Error('manifest.json 이 없습니다 — kgpack 이 아닙니다.');
+  const manifest = JSON.parse(new TextDecoder().decode(mf));
+  if (manifest.format !== 'nai-kgpack') throw new Error(`모르는 형식입니다: ${manifest.format}`);
+  const entries = Array.isArray(manifest.files) ? manifest.files : [];
+
+  // 무결성: manifest 의 바이트 수와 SHA-256 을 그 자리에서 다시 잰다.
+  const 결과 = [];
+  for (const item of entries){
+    const body = 알맹이.get(item.path);
+    if (!body){ 결과.push({path: item.path, ok: false, why: 'archive 에 없음'}); continue }
+    const 잰것 = await sha256(body);
+    if (잰것 === null) 결과.push({path: item.path, ok: null, why: 'crypto.subtle 없음'});
+    else if (body.length !== item.bytes) 결과.push({path: item.path, ok: false, why: `바이트 ${body.length} ≠ ${item.bytes}`});
+    else if (잰것 !== item.sha256) 결과.push({path: item.path, ok: false, why: '해시 불일치'});
+    else 결과.push({path: item.path, ok: true});
+  }
+  const 남는것 = [...알맹이.keys()].filter(k => k !== 'manifest.json' && !entries.some(e => e.path === k));
+
+  const 원문들 = new Map();
+  for (const item of entries){
+    const body = 알맹이.get(item.path);
+    if (body) 원문들.set(item.path, new TextDecoder().decode(body));
+  }
+  for (const [path] of 원문들) if (path.endsWith('.kg')){
+    const g = 포함풀기(kg읽기(원문들.get(path), path), 원문들);
+    DATA[path] = 화면모양(g);
+  }
+  // pack 자신의 라우팅 그래프. 어느 .kg 로 갈지 고르는 상위 그래프라 같이 보여 준다.
+  const mgr = manifest.manager;
+  if (mgr && Array.isArray(mgr.nodes)){
+    DATA['⟨매니저⟩ ' + (mgr.goal || '그래프고르기')] = {
+      role: mgr.role || '노드 매니저', target: mgr.goal || '그래프고르기',
+      전진: ['후보'], 부정: [], 경고: [],
+      nodes: [{id: mgr.goal || '그래프고르기', type: '목표', examples: [], 출처: null},
+              ...mgr.nodes.map(n => ({id: n.path, type: '공통층',
+                                      examples: (n.examples || []).slice(0, 3),
+                                      출처: n.role || null}))],
+      edges: (mgr.edges || []).map(([source, relation, target]) => ({source, relation, target}))
+    };
+  }
+  팩정보 = {이름, version: manifest.version, 결과, 남는것,
+            그래프수: entries.filter(e => e.kind === 'graph').length};
+}
+
+function 알림(html, 나쁨){
+  notice.hidden = !html;
+  notice.classList.toggle('bad', !!나쁨);
+  notice.innerHTML = html || '';
+}
+
+function 팩알림(){
+  if (!팩정보) return;
+  const {이름, version, 결과, 남는것, 그래프수} = 팩정보;
+  const 실패 = 결과.filter(r => r.ok === false), 못잼 = 결과.filter(r => r.ok === null);
+  let msg = `<b>${esc(이름)}</b> · 형식 v${version} · 파일 ${결과.length} · 그래프 ${그래프수}`;
+  if (실패.length) msg += ` · <b>무결성 실패 ${실패.length}</b>: ` + 실패.map(r => `${esc(r.path)}(${esc(r.why)})`).join(', ');
+  else if (못잼.length) msg += ' · 무결성 검증 불가 (crypto.subtle 을 못 씁니다)';
+  else msg += ` · 무결성 ${결과.length}/${결과.length} 확인`;
+  if (남는것.length) msg += ` · manifest 에 없는 파일: ${남는것.map(esc).join(', ')}`;
+  알림(msg, 실패.length > 0 || 남는것.length > 0);
+}
+
+function 갱신(){
+  const 이름들 = Object.keys(DATA);
+  if (!이름들.length) return;
+  const 고른것 = sel.value;
+  sel.innerHTML = '';
+  이름들.sort().forEach(k => sel.add(new Option(k, k)));
+  sel.value = 이름들.includes(고른것) ? 고른것
+            : (이름들.find(k => k.endsWith('graph.kg')) || 이름들[0]);
+  drop.hidden = true;
+  팩알림();
+  관계칸();
+  render();
+}
+
+/* ───────────────────────── 그리기 ───────────────────────── */
+let state = {nodes: [], E: [], groups: [], lines: [], w: 0, h: 0, g: null},
+    view = {x: 0, y: 0, k: 1}, spread = 1, raf, gesture = null;
+// 카메라. yaw/pitch 로 돌리고 d 는 초점 거리 — d 가 작을수록 원근이 세진다.
+let cam = {yaw: .7, pitch: -.34, d: 1400}, 삼차원 = true, 회전raf = null;
+// 회전·원근의 중심. 처음엔 목표(메인) 노드, 그 뒤로는 누른 노드가 중심이 된다.
+// 늘 화면 한가운데를 축으로 돌면 보고 있는 노드가 밖으로 휩쓸려 나가 어색하다.
+let 초점 = null, 초점애니 = null;
+const 기본시점 = () => ({yaw: .7, pitch: -.34, d: 1400});
+
+const color = t => ({목표:'var(--purple)', 증거:'var(--blue)', 공통층:'var(--green)',
+                     사례층:'var(--orange)', 무관층:'var(--muted)'})[t] || 'var(--muted)';
+
+function 관계칸(){
+  const g = DATA[sel.value]; if (!g) return;
+  const 있는것 = [...new Set(g.edges.map(e => e.relation))];
+  const 켠것 = new Set([...document.querySelectorAll('#rels input:checked')].map(x => x.value));
+  const 처음 = !document.querySelector('#rels input');
+  $('#rels').innerHTML = 있는것.map(r =>
+    `<label><input type="checkbox" value="${esc(r)}"${처음 || 켠것.has(r) ? ' checked' : ''}>${esc(r)}</label>`).join('');
+  document.querySelectorAll('#rels input').forEach(x => x.addEventListener('change', render));
+}
+
+let 그릴것대기 = false;
+function render(){
+  cancelAnimationFrame(raf);
+  const g = DATA[sel.value]; if (!g) return;
+  // 레이아웃 전에는 clientWidth 가 0~14 로 나온다. 그 폭으로 배치하면 힘 계산의
+  // 분모(k)가 0 이 되어 좌표가 통째로 NaN 이 되고 화면이 빈 채로 남는다.
+  // 크기가 잡힌 뒤에 그린다 — 아래 ResizeObserver 가 이어받는다.
+  if (box.clientWidth < 80 || box.clientHeight < 80){ 그릴것대기 = true; return }
+  그릴것대기 = false;
+  const 켠것 = new Set([...document.querySelectorAll('#rels input:checked')].map(x => x.value));
+  const edges = g.edges.filter(e => 켠것.has(e.relation));
+  const ids = new Set(edges.flatMap(e => [e.source, e.target]));
+  const nodes = g.nodes.filter(n => ids.has(n.id) || n.id === g.target)
+                       .map(n => ({...n, x: 0, y: 0, fixed: false}));
+  const map = new Map(nodes.map(n => [n.id, n]));
+  const E = edges.filter(e => map.has(e.source) && map.has(e.target))
+                 .map(e => ({...e, a: map.get(e.source), b: map.get(e.target)}));
+  svg.innerHTML = '<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="context-stroke"/></marker></defs>';
+  const scene = document.createElementNS(ns, 'g'); svg.append(scene);
+  const w = box.clientWidth, h = box.clientHeight;
+  const R = Math.min(w, h) * .34;
+  if (삼차원){
+    // 피보나치 구. 3D 에서 원으로 깔면 z 방향 힘이 완전히 대칭이라 영원히 납작한 채로 남는다.
+    const 황금 = Math.PI * (3 - Math.sqrt(5));
+    nodes.forEach((n, i) => {
+      const t = nodes.length > 1 ? 1 - 2 * i / (nodes.length - 1) : 0,
+            r = Math.sqrt(Math.max(0, 1 - t * t)), a = 황금 * i;
+      n.x = w / 2 + Math.cos(a) * r * R; n.y = h / 2 + t * R; n.z = Math.sin(a) * r * R;
+    });
+  } else nodes.forEach((n, i) => {
+    const a = 2 * Math.PI * i / nodes.length;
+    n.x = w / 2 + Math.cos(a) * R; n.y = h / 2 + Math.sin(a) * R; n.z = 0;
+  });
+  cam = Object.assign(기본시점(), {d: Math.max(w, h) * 1.6});
+  const lines = E.map(e => { const x = document.createElementNS(ns, 'line');
+    x.classList.add('edge'); x.dataset.r = e.relation; scene.append(x); return x });
+  const groups = nodes.map(n => {
+    const x = document.createElementNS(ns, 'g'); x.classList.add('node'); x.dataset.id = n.id;
+    const c = document.createElementNS(ns, 'circle');
+    c.setAttribute('r', n.type === '목표' ? 10 : 7); c.setAttribute('fill', color(n.type));
+    const t = document.createElementNS(ns, 'text'); t.setAttribute('x', 12); t.setAttribute('y', 4);
+    t.textContent = n.id; x.append(c, t);
+    x.addEventListener('pointerdown', e => 노드끌기(e, n, x));
+    scene.append(x); return x;
+  });
+  view = {x: 0, y: 0, k: 1}; spread = 1; $('#spacing').value = 100;
+  state = {nodes, E, groups, lines, w, h, g, scene}; 그린순서 = '';
+  초점애니 = null;
+  초점 = nodes.find(n => n.id === g.target) || nodes[0] || null;
+  const 경고 = (g.경고 || []);
+  if (경고.length && !팩정보) 알림(경고.map(esc).join('<br>'), true);
+  요약(); tick(260); 걸러내기();
+}
+
+/* Fruchterman-Reingold. 한 스텝 이동량을 온도로 자르기 때문에 발산하지 않는다.
+   중력은 목표와 안 이어진 조각들이 무한히 멀어지는 것을 막는다. */
+function tick(left, total){
+  const {nodes, E, w, h} = state; if (!nodes.length) return;
+  total = total || left;
+  const k = Math.max(1, Math.sqrt(w * h / nodes.length) * spread * (삼차원 ? .62 : 1)),
+        // k=0 이면 인력이 발산한다. 3D 는 면이 아니라 부피로 퍼지므로 상수를 줄여야 화면에 담긴다.
+        t = Math.max(w, h) / 10 * Math.max(left / total, .01);
+  nodes.forEach(n => { n.dx = 0; n.dy = 0; n.dz = 0 });
+  for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++){
+    const a = nodes[i], b = nodes[j];
+    let dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z, d = Math.hypot(dx, dy, dz);
+    if (d < .01){ dx = Math.random() - .5; dy = Math.random() - .5; dz = Math.random() - .5; d = .01 }
+    const f = k * k / (d * d);
+    a.dx += dx * f; a.dy += dy * f; a.dz += dz * f;
+    b.dx -= dx * f; b.dy -= dy * f; b.dz -= dz * f;
+  }
+  E.forEach(e => { let dx = e.b.x - e.a.x, dy = e.b.y - e.a.y, dz = e.b.z - e.a.z,
+    d = Math.hypot(dx, dy, dz) || .01, f = d / k;
+    e.a.dx += dx * f; e.a.dy += dy * f; e.a.dz += dz * f;
+    e.b.dx -= dx * f; e.b.dy -= dy * f; e.b.dz -= dz * f });
+  const 중력 = 삼차원 ? .055 : .03;   // 3D 는 도망갈 방향이 하나 더 있어 같은 힘이면 훨씬 넓게 퍼진다
+  nodes.forEach(n => { n.dx += (w / 2 - n.x) * 중력; n.dy += (h / 2 - n.y) * 중력; n.dz += -n.z * 중력 });
+  nodes.forEach(n => { if (n.fixed) return;
+    const d = Math.hypot(n.dx, n.dy, n.dz) || 1, m = Math.min(d, t);
+    n.x += n.dx / d * m; n.y += n.dy / d * m; n.z += 삼차원 ? n.dz / d * m : 0;
+    if (!삼차원) n.z = 0; });
+  draw();
+  if (left > 1) raf = requestAnimationFrame(() => tick(left - 1, total)); else 맞춤();
+}
+
+/* 노드는 3D 모델 좌표에 있다. 카메라로 돌려 원근 나눗셈을 한 뒤 배율·이동을 얹는다.
+   깊이 s 는 1 보다 크면 가깝고 작으면 멀다 — 점 크기와 흐릿함이 여기서 나온다.
+   노드와 글자 크기는 배율과 무관하게 일정하다: 축소해도 점이 안 사라지고 확대해도 안 뭉개진다. */
+function 초점점(){
+  if (초점애니) return 초점애니.현재;
+  if (초점 && state.nodes.includes(초점)) return [초점.x, 초점.y, 초점.z || 0];
+  return [state.w / 2, state.h / 2, 0];
+}
+function 투영(n){
+  const cx = state.w / 2, cy = state.h / 2, [fx, fy, fz] = 초점점();
+  const x = n.x - fx, y = n.y - fy, z = (n.z || 0) - fz;
+  const cy1 = Math.cos(cam.yaw), sy1 = Math.sin(cam.yaw);
+  const x1 = x * cy1 + z * sy1, z1 = -x * sy1 + z * cy1;
+  const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
+  const y1 = y * cp - z1 * sp, z2 = y * sp + z1 * cp;
+  const s = 삼차원 ? cam.d / Math.max(cam.d + z2, cam.d * .25) : 1;
+  return [cx + x1 * s, cy + y1 * s, s, z2];
+}
+const 화면 = n => { const [px, py, s, z2] = 투영(n);
+                   return [px * view.k + view.x, py * view.k + view.y, s, z2] };
+/* 화면 위 이동량을 모델 좌표 이동량으로. 카메라 평면의 오른쪽·위 방향 벡터를 쓴다. */
+function 화면축(){
+  const cy1 = Math.cos(cam.yaw), sy1 = Math.sin(cam.yaw),
+        cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
+  return [[cy1, 0, sy1], [sy1 * sp, cp, -cy1 * sp]];
+}
+
+let 그린순서 = '';
+function draw(){
+  const {E, groups, lines, nodes, scene} = state;
+  const 화면점 = nodes.map(화면);
+  const 위치 = new Map(nodes.map((n, i) => [n, 화면점[i]]));
+  lines.forEach((l, i) => {
+    const e = E[i], [ax, ay, sa] = 위치.get(e.a), [bx, by, sb] = 위치.get(e.b);
+    const dx = bx - ax, dy = by - ay, d = Math.hypot(dx, dy) || 1;
+    l.setAttribute('x1', ax); l.setAttribute('y1', ay);
+    l.setAttribute('x2', bx - dx * 10 / d); l.setAttribute('y2', by - dy * 10 / d);
+    l.style.opacity = 삼차원 ? (.62 * 안개((sa + sb) / 2)).toFixed(2) : '';
+  });
+  groups.forEach((x, i) => {
+    const [sx, sy, s] = 화면점[i], n = nodes[i];
+    x.setAttribute('transform', `translate(${sx} ${sy})`);
+    if (삼차원){
+      const 밑 = n.type === '목표' ? 10 : 7;
+      x.firstChild.setAttribute('r', (밑 * Math.max(.35, Math.min(1.9, s))).toFixed(2));
+      x.style.opacity = x.classList.contains('dim') ? '' : 안개(s).toFixed(2);
+      x.lastChild.style.display = s < .82 ? 'none' : '';   // 뒤쪽 라벨은 접는다
+    } else {
+      x.firstChild.setAttribute('r', n.type === '목표' ? 10 : 7);
+      x.style.opacity = ''; x.lastChild.style.display = '';
+    }
+  });
+  // 깊이 순으로 다시 쌓는다. 먼 것부터 그려야 가까운 노드가 위에 온다.
+  if (삼차원 && scene && nodes.length <= 500){
+    const 차례 = 화면점.map((p, i) => i).sort((a, b) => 화면점[b][3] - 화면점[a][3]);
+    const 열쇠 = 차례.join(',');
+    if (열쇠 !== 그린순서){ 그린순서 = 열쇠; for (const i of 차례) scene.append(groups[i]) }
+  }
+  // 축소하면 라벨을 접는다. 안 접으면 노드가 많을 때 글자끼리 겹쳐 그래프 모양이 안 보인다.
+  // 라벨은 배율과 무관하게 11px 이라, 접는 기준은 글자 크기가 아니라 화면 위 노드 밀도다.
+  // 배율만 보면 성긴 그래프에서도 쓸데없이 접히고 빽빽한 그래프에서는 안 접힌다.
+  const xs = 화면점.map(p => p[0]), ys = 화면점.map(p => p[1]);
+  const 면적 = Math.max(1, (Math.max(...xs) - Math.min(...xs)) * (Math.max(...ys) - Math.min(...ys)));
+  svg.classList.toggle('lod', Math.sqrt(면적 / nodes.length) < 45);
+  형편();
+}
+// 멀수록 옅게. 깊이 하나만으로도 눈이 앞뒤를 읽는다.
+const 안개 = s => Math.max(.18, Math.min(1, (s - .45) / .7 + .35));
+
+function 형편(){
+  const g = state.g; if (!g) return;
+  stats.textContent = `${g.role} · 목표 ${g.target} · 노드 ${state.nodes.length} · 엣지 ${state.E.length}`
+                    + ` · 배율 ${Math.round(view.k * 100)}% · 간격 ${Math.round(spread * 100)}%`
+                    + (삼차원 ? ` · 시점 ${Math.round(cam.yaw * 180 / Math.PI)}°/${Math.round(cam.pitch * 180 / Math.PI)}°` : '');
+}
+
+function 맞춤(){
+  const {nodes, w, h} = state; if (!nodes.length) return;
+  // 초점 거리를 배치의 실제 z 폭에 맞춘다. 고정값이면 얇은 그래프는 밋밋하고
+  // 두꺼운 그래프는 원근이 폭주해 투영 bbox 가 부푼다 — 맞춤이 33% 까지 내려갔었다.
+  if (삼차원){
+    const zs = nodes.map(n => n.z || 0);
+    cam.d = Math.max(200, (Math.max(...zs) - Math.min(...zs)) * 1.6);
+  }
+  const 점 = nodes.map(투영), xs = 점.map(p => p[0]), ys = 점.map(p => p[1]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  // 라벨은 노드 중심에서 오른쪽으로 뻗는다. bbox 는 중심만 재므로 여백을 넉넉히 둔다.
+  const k = Math.max(.08, Math.min(2, Math.min((w - 140) / Math.max(x1 - x0, 1),
+                                               (h - 70) / Math.max(y1 - y0, 1))));
+  view = {k, x: w / 2 - (x0 + x1) / 2 * k, y: h / 2 - (y0 + y1) / 2 * k};
+  draw();
+}
+
+function 배율(next, cx, cy){
+  next = Math.max(.05, Math.min(8, next));
+  if (next === view.k) return;
+  if (cx === undefined){ cx = state.w / 2; cy = state.h / 2 }
+  view.x = cx - (cx - view.x) * next / view.k;
+  view.y = cy - (cy - view.y) * next / view.k;
+  view.k = next; draw();
+}
+
+/* 간격은 배율과 다른 것이다. 배율은 보는 거리를, 간격은 배치 자체를 바꾼다 —
+   화면을 확대해도 엉킨 덩어리는 그대로 엉켜 있고, 간격을 벌려야 풀린다. */
+function 간격다시(){
+  if (!state.nodes.length) return;
+  cancelAnimationFrame(raf); state.nodes.forEach(n => n.fixed = false); tick(140);
+}
+
+/* ───────────────────────── 고르기 ───────────────────────── */
+function 최단(start, target, edges, 전진){
+  const q = [start], prev = new Map([[start, null]]), pe = new Map();
+  while (q.length){
+    const n = q.shift(); if (n === target) break;
+    for (const [i, e] of edges.entries())
+      if (전진.has(e.relation) && e.source === n && !prev.has(e.target)){
+        prev.set(e.target, n); pe.set(e.target, i); q.push(e.target);
+      }
+  }
+  if (!prev.has(target)) return [];
+  const out = []; for (let n = target; prev.get(n) !== null; n = prev.get(n)) out.push(pe.get(n));
+  return out;
+}
+
+/* 목표로 가는 전진 경로가 없다면, 목표에 닿는 무언가를 부정하는 노드인지 본다.
+   부정까지 타서 경로를 만들면 '침해의종료 -부정-> 침해의현재성 -충족-> 정당방위' 가
+   정당방위의 근거처럼 보인다 — 뜻이 정반대다. */
+function 깨는것(id, target, edges, 전진, 부정){
+  const 닿음 = new Set([target]);
+  for (let 늘었나 = true; 늘었나;){
+    늘었나 = false;
+    for (const e of edges) if (전진.has(e.relation) && 닿음.has(e.target) && !닿음.has(e.source)){
+      닿음.add(e.source); 늘었나 = true;
+    }
+  }
+  return edges.filter(e => 부정.has(e.relation) && e.source === id && 닿음.has(e.target)).map(e => e.target);
+}
+
+function 고름(n){
+  const {E, groups, lines, g} = state;
+  초점옮기기(n);
+  const 전진 = new Set(g.전진 || ['증명', '충족']), 부정 = new Set(g.부정 || ['부정']);
+  groups.forEach(x => x.classList.toggle('selected', x.dataset.id === n.id));
+  lines.forEach(x => x.classList.remove('path'));
+  const idx = 최단(n.id, g.target, E, 전진);
+  idx.forEach(i => lines[i]?.classList.add('path'));
+  let 역할;
+  if (n.id === g.target) 역할 = '<p>이 그래프의 결론입니다.</p>';
+  else if (idx.length) 역할 = `<p><b>${idx.length}홉</b>으로 ${esc(g.target)} 에 닿습니다.</p><ul>`
+    + idx.slice().reverse().map(i => `<li>${esc(E[i].source)} <b>${esc(E[i].relation)}</b> ${esc(E[i].target)}</li>`).join('') + '</ul>';
+  else {
+    const 깸 = 깨는것(n.id, g.target, E, 전진, 부정);
+    역할 = 깸.length
+      ? `<p>목표로 가는 근거 경로가 없습니다. 이 노드는 <b>${깸.map(esc).join(', ')}</b> 을(를) <b>부정</b>합니다 — 결론을 무너뜨리는 쪽입니다.</p>`
+      : '<p class="empty">목표로 가는 근거 경로가 없습니다.</p>';
+  }
+  const 들어옴 = E.filter(e => e.target === n.id), 나감 = E.filter(e => e.source === n.id);
+  const 줄 = e => `<li>${esc(e.source)} <b>${esc(e.relation)}</b> ${esc(e.target)}</li>`;
+  detail.innerHTML = `<h2>${esc(n.id)}</h2>
+    <dl><dt>종류</dt><dd>${esc(n.type)}</dd><dt>목표</dt><dd>${esc(g.target)}</dd>`
+    + (n.출처 ? `<dt>출처</dt><dd>${esc(n.출처)}</dd>` : '') + `</dl>
+    <h2>근거 경로</h2>${역할}
+    <h2>엣지 ${들어옴.length + 나감.length}</h2>`
+    + (들어옴.length + 나감.length ? '<ul>' + [...들어옴, ...나감].map(줄).join('') + '</ul>'
+                                   : '<p class="empty">이 노드에 붙은 엣지가 없습니다.</p>')
+    + `<h2>말 예시</h2>`
+    + (n.examples.length ? '<ul>' + n.examples.map(x => `<li>${esc(x)}</li>`).join('') + '</ul>'
+                         : '<p class="empty">예시 없음</p>');
+}
+
+/* 누른 노드를 회전 중심으로 데려온다. 축만 바꾸면 그림이 순간이동하므로
+   축과 화면 이동을 같은 곡선으로 함께 민다 — 중간 프레임도 전부 성립하는 장면이다. */
+function 초점옮기기(n){
+  // 2D 에는 회전축이 없다. 초점만 기억하고 화면은 안 건드린다 —
+  // 누를 때마다 화면이 가운데로 튀면 훑어보기가 성가시다.
+  if (!삼차원){ 초점 = n; return }
+  const from = 초점점(), to = [n.x, n.y, n.z || 0];
+  if (Math.hypot(to[0] - from[0], to[1] - from[1], to[2] - from[2]) < .5){ 초점 = n; return }
+  const view0 = {x: view.x, y: view.y};
+  const view1 = {x: state.w / 2 * (1 - view.k), y: state.h / 2 * (1 - view.k)};
+  const 시작 = performance.now(), 기간 = 320;
+  초점 = n;
+  const 한걸음 = 이제 => {
+    const t = Math.min(1, (이제 - 시작) / 기간), e = 1 - Math.pow(1 - t, 3);
+    초점애니 = {현재: from.map((v, i) => v + (to[i] - v) * e)};
+    view.x = view0.x + (view1.x - view0.x) * e;
+    view.y = view0.y + (view1.y - view0.y) * e;
+    draw();
+    if (t < 1) requestAnimationFrame(한걸음); else 초점애니 = null;
+  };
+  requestAnimationFrame(한걸음);
+}
+
+/* 노드를 아직 안 골랐을 때 오른쪽에 그래프 자체를 요약해 둔다. */
+function 요약(){
+  const {g, nodes, E} = state;
+  const 관계 = {};
+  for (const e of E) 관계[e.relation] = (관계[e.relation] || 0) + 1;
+  const 층 = {};
+  for (const n of nodes) 층[n.type] = (층[n.type] || 0) + 1;
+  const 뜯긴것 = nodes.filter(n => n.id !== g.target && !최단(n.id, g.target, E, new Set(g.전진 || [])).length).length;
+  detail.innerHTML = `<h2>${esc(sel.value)}</h2>
+    <dl><dt>역할</dt><dd>${esc(g.role)}</dd><dt>목표</dt><dd>${esc(g.target)}</dd>
+        <dt>노드</dt><dd>${nodes.length}</dd><dt>엣지</dt><dd>${E.length}</dd></dl>
+    <h2>층</h2><ul>${Object.entries(층).map(([k, v]) => `<li>${esc(k)} ${v}</li>`).join('')}</ul>
+    <h2>관계</h2><ul>${Object.entries(관계).map(([k, v]) => `<li>${esc(k)} ${v}</li>`).join('')}</ul>
+    <h2>목표에 못 닿는 노드</h2><p>${뜯긴것}개</p>
+    <p class="empty">노드를 누르면 목표까지의 최단 근거 경로를 표시합니다. 휠로 확대·축소하고,
+    빈 곳을 끌면 ${삼차원 ? '시점이 돌아갑니다(이동은 shift+끌기, <b>R</b> 로 시점 초기화)' : '화면이 움직입니다'}.</p>`;
+}
+
+function 노드끌기(e, n, el){
+  e.stopPropagation(); el.setPointerCapture(e.pointerId);
+  const start = {x: e.clientX, y: e.clientY};
+  gesture = {kind: 'node', moved: false};
+  n.fixed = true;
+  const 처음 = {x: n.x, y: n.y, z: n.z || 0};
+  const move = ev => {
+    const [, , s] = 화면(n), 나눔 = view.k * (삼차원 ? s : 1);
+    const dx = (ev.clientX - start.x) / 나눔, dy = (ev.clientY - start.y) / 나눔;
+    // 화면에서 민 만큼을 카메라 평면의 오른쪽·위 벡터로 되돌린다. 깊이는 유지된다.
+    const [오른쪽, 위] = 화면축();
+    n.x = 처음.x + 오른쪽[0] * dx + 위[0] * dy;
+    n.y = 처음.y + 오른쪽[1] * dx + 위[1] * dy;
+    n.z = 처음.z + 오른쪽[2] * dx + 위[2] * dy;
+    gesture.moved ||= Math.hypot(ev.clientX - start.x, ev.clientY - start.y) > 3;
+    draw();
+  };
+  const up = ev => {
+    el.releasePointerCapture(ev.pointerId);
+    el.removeEventListener('pointermove', move); el.removeEventListener('pointerup', up);
+    if (!gesture.moved) 고름(n);
+    gesture = null;
+  };
+  el.addEventListener('pointermove', move); el.addEventListener('pointerup', up);
+}
+
+function 걸러내기(){
+  const q = search.value.trim().toLowerCase();
+  state.groups?.forEach(x => x.classList.toggle('dim', q && !x.dataset.id.toLowerCase().includes(q)));
+  if (state.nodes?.length) draw();          // 안개로 넣은 인라인 opacity 를 다시 계산한다
+}
+
+/* ───────────────────────── 입력 ───────────────────────── */
+svg.addEventListener('wheel', e => {
+  e.preventDefault();
+  const r = svg.getBoundingClientRect();
+  배율(view.k * Math.exp(-e.deltaY * (e.ctrlKey ? .01 : .0015)), e.clientX - r.left, e.clientY - r.top);
+}, {passive: false});
+svg.addEventListener('pointerdown', e => {
+  if (e.target.closest?.('.node')) return;
+  svg.setPointerCapture(e.pointerId);
+  // 3D 에서는 빈 곳을 끌면 돈다. 이동은 shift 를 누르고 끈다.
+  const 돌리기 = 삼차원 && !e.shiftKey;
+  gesture = {kind: 돌리기 ? 'orbit' : 'pan', x: e.clientX, y: e.clientY,
+             vx: view.x, vy: view.y, yaw: cam.yaw, pitch: cam.pitch};
+  box.classList.add('dragging');
+});
+svg.addEventListener('pointermove', e => {
+  if (!gesture || (gesture.kind !== 'pan' && gesture.kind !== 'orbit')) return;
+  if (gesture.kind === 'pan'){
+    view.x = gesture.vx + e.clientX - gesture.x; view.y = gesture.vy + e.clientY - gesture.y;
+  } else {
+    cam.yaw = gesture.yaw + (e.clientX - gesture.x) * .008;
+    cam.pitch = Math.max(-1.45, Math.min(1.45, gesture.pitch + (e.clientY - gesture.y) * .008));
+  }
+  draw();
+});
+svg.addEventListener('pointerup', e => {
+  if (!gesture || (gesture.kind !== 'pan' && gesture.kind !== 'orbit')) return;
+  svg.releasePointerCapture(e.pointerId); gesture = null; box.classList.remove('dragging');
+});
+$('.zoom').addEventListener('click', e => {
+  const z = e.target.dataset.z; if (!z) return;
+  if (z === 'fit') 맞춤(); else 배율(view.k * (z === 'in' ? 1.4 : 1 / 1.4));
+});
+addEventListener('keydown', e => {
+  if (e.target.matches('input,select')) return;
+  if (e.key === '+' || e.key === '=') 배율(view.k * 1.4);
+  else if (e.key === '-') 배율(view.k / 1.4);
+  else if (e.key === '0') 맞춤();
+  else if (e.key === 'r' || e.key === 'R'){ cam = Object.assign(기본시점(), {d: Math.max(state.w, state.h) * 1.6}); 맞춤() }
+});
+$('#three').addEventListener('change', e => {
+  삼차원 = e.target.checked;
+  if (!삼차원){ $('#spin').checked = false; 자동회전(false) }
+  render();                                   // 3D 와 2D 는 배치 자체가 다르다. 다시 깐다.
+});
+$('#spin').addEventListener('change', e => {
+  if (e.target.checked && !$('#three').checked){ $('#three').checked = true; 삼차원 = true; render() }
+  자동회전(e.target.checked);
+});
+function 자동회전(켤까){
+  cancelAnimationFrame(회전raf); 회전raf = null;
+  if (!켤까) return;
+  const 한걸음 = () => {
+    if (!gesture) { cam.yaw += .004; draw() }
+    회전raf = requestAnimationFrame(한걸음);
+  };
+  회전raf = requestAnimationFrame(한걸음);
+}
+$('#reset').addEventListener('click', render);
+let 간격타이머;
+$('#spacing').addEventListener('input', e => {
+  spread = Math.max(.6, Math.min(2.5, Number(e.target.value) / 100)); 형편();
+  clearTimeout(간격타이머); 간격타이머 = setTimeout(간격다시, 160);   // 슬라이더를 끄는 동안 배치를 매번 다시 돌리지 않는다
+});
+sel.addEventListener('change', () => { 관계칸(); render() });
+search.addEventListener('input', 걸러내기);
+$('#open').addEventListener('click', () => $('#file').click());
+$('#file').addEventListener('change', e => { 파일읽기([...e.target.files]); e.target.value = '' });
+for (const t of ['dragenter', 'dragover']) box.addEventListener(t, e => { e.preventDefault(); box.classList.add('over') });
+for (const t of ['dragleave', 'drop']) box.addEventListener(t, e => { e.preventDefault(); box.classList.remove('over') });
+box.addEventListener('drop', e => 파일읽기([...e.dataTransfer.files]));
+addEventListener('dragover', e => e.preventDefault());
+addEventListener('drop', e => e.preventDefault());
+
+// 레이아웃 전에는 box.clientWidth 가 14 로 나온다. 그 폭으로 배치하면 노드가 한 점에
+// 뭉쳐 힘이 폭발한다. 크기가 잡힌 뒤에 그리고, 창이 바뀌면 다시 맞춘다.
+new ResizeObserver(() => {
+  const w = box.clientWidth, h = box.clientHeight;
+  if (w < 80 || h < 80) return;
+  if (그릴것대기) render();
+  else if (state.nodes.length){ state.w = w; state.h = h; draw() }
+}).observe(box);
+
+if (!globalThis.DecompressionStream)
+  알림('이 브라우저는 DecompressionStream 이 없어 .kgpack 을 못 엽니다. 낱개 .kg 는 열립니다.', true);
+</script></body></html>

@@ -19,10 +19,11 @@ warnings.filterwarnings("ignore")
 for _n in ("torch", "transformers", "huggingface_hub", "sentence_transformers"):
     logging.getLogger(_n).setLevel(logging.ERROR)
 
-# KG_ENCODER=문자 로 바꾸면 신경망이 아예 사라진다. 문자 n-gram 을 해시해
-# 벡터로 만든다 — 토큰도, 모델 내려받기도, GPU 도 없다. 무엇을 잃고 무엇을
-# 버는지는 채점기로 잰다(--score / --regress / --tune).
-_mode = os.environ.get("KG_ENCODER", "신경망")
+# 기본 경로는 문자 n-gram 이다. 토큰·모델 내려받기·GPU 없이 곧바로 실행돼야
+# 그래프 지식팩 자체가 휴대 가능하다. 신경 인코더는 품질을 비교할 때만
+# ``KG_ENCODER=신경망``으로 명시해 선택한다. 기본값이 원격 모델을 받으려다
+# 실패하면 첫 질문조차 못 받는 것은 경량 런타임의 올바른 폴백이 아니다.
+_mode = os.environ.get("KG_ENCODER", "문자")
 # 4096 으로 올렸다. 포함도는 해시 충돌에 코사인보다 예민한데(분모가 문서
 # 쪽 조각 무게라 충돌 하나가 곧 오차다) 2048 에서 평균오차 0.004,
 # 4096 에서 0.000 이었다. 벡터가 싸므로 넉넉한 쪽을 기본으로 둔다.
@@ -56,6 +57,47 @@ _smoothing = float(os.environ.get("KG_SMOOTH", "0"))
 MODEL = ("문자포함도2-%d-자모%.1f-매끔%.1f"
          % (_character_dimensions, _jamo_weight, _smoothing) if _mode == "문자"
          else "jhgan/ko-sroberta-multitask")   # 768d
+# 라우터가 "이 질문은 어느 그래프냐" 를 자를 문턱. 인코더마다 재는 것이
+# 달라 한 값으로 둘 수 없다 — 포함도는 음성이 0.3 대에 몰리는데 코사인은
+# 무엇에나 높게 붙는다. 실제로 하나로 두었더니 0.55 가 문자에서는 너무
+# 높고(답함 48%) 신경에서는 너무 낮았다(밖 질문 11/25 가 샜다).
+#
+# routing_benchmark.py 로 쓸어 정했다. 그래프 47개 · 안 본 말투 891개 ·
+# 갈 그래프가 없는 질문 25개:
+#
+#   문자    0.40 답함 66.6% 거절 17/25 | 0.45 64.0% 24/25 | 0.55 48.0% 24/25
+#   신경    0.55 답함 87.3% 거절 14/25 | 0.60 77.8% 19/25 | 0.70 46.1% 22/25
+#
+# 문자는 0.45 에 무릎이 있었다 — 거절이 17에서 24로 뛰고 그 위로는 평평했다.
+#
+# 짧은 색인 줄 가드가 들어온 뒤 다시 쟀다. 가드가 밖 질문을 따로 막아 주므로
+# 문턱이 그 일을 겸할 필요가 줄었다. 0.43 은 0.45 와 밖 거절이 같은데
+# (답으로 세면 25/25, 라우터만 보면 19/25) 증거 발화 라우팅이 61.8%에서
+# 68.8%로 오른다. 그 아래로는 거절이 무너진다(0.40 에서 17/25). 신경은 무릎이 없어 고르는 문제다. 0.60 에서
+# 0.65 로 한 칸 올리면 거절은 하나 늘고 답함은 16.7%p 가 깎여 남는 장사가
+# 아니다. 그래프가 늘면 다시 재야 한다.
+route_thresh = 0.43 if _mode == "문자" else 0.60
+# 미지 로그에서 개념 후보를 뭉칠 때의 문턱. 0.62 하나로 두었더니 문자
+# 인코더에서는 아무것도 안 뭉쳤다 — 뜻이 같은 세 문장이 0.23~0.32 라
+# 문턱 근처에도 못 갔다. 글자만 보는 인코더에는 바꿔 말한 문장이 남남이다.
+#
+# 쓸어서 잰 것 (같은 뜻 묶음 2개 · 딴 얘기 묶음 3개):
+#
+#     문턱    같은뜻 잡음   딴얘기 헛뭉침
+#     0.35      0/2          0/3
+#     0.32      2/2          0/3     <- 여기서 열린다
+#     0.30      2/2          0/3
+#     0.22      2/2          0/3
+#     0.20      2/2          1/3     <- 여기서 샌다
+#
+# 창이 0.22~0.32 라 위쪽에 붙여 0.30 으로 둔다. 표본이 다섯 묶음뿐이니
+# 미지 로그가 쌓이면 다시 재야 한다.
+cluster_thresh = 0.30 if _mode == "문자" else 0.62
+# 목표를 닮았다고 볼 최소 확신. 이보다 낮으면 목표주장이 아니라 미지다.
+# 목표주장은 '결론만 말했다' 는 판정이지 거절이 아니라, 낮은 점수에서
+# 그대로 두면 밖 질문에 일을 시작한다. 문턱과 마찬가지로 인코더마다
+# 눈금이 달라 값을 가른다.
+goal_sim_thresh = 0.62 if _mode == "문자" else 0.75
 # CPU 고정. sentence-transformers 는 CUDA 가 보이면 말없이 GPU 로 올린다 —
 # 그러면 "GPU 없이 돈다"는 이 프로젝트의 전제가 조용히 깨진 채로 측정된다.
 # 환경변수 KG_DEVICE 로만 바꿀 수 있게 둔다.
@@ -70,7 +112,7 @@ def _path(p):
     return p if os.path.isabs(p) or os.path.exists(p) else os.path.join(_here, p)
 
 
-_길 = _path
+_abs = _path
 
 
 _M = None
@@ -110,7 +152,7 @@ def mask_numbers(text):
     return _number_pattern.sub("§", text)
 
 
-숫자가리기 = mask_numbers
+mask_numbers = mask_numbers
 
 
 def _decompose_jamo(text):
@@ -119,17 +161,8 @@ def _decompose_jamo(text):
     음절로 자르면 '해고' 와 '해구' 가 한 글자도 안 겹친다. 자모로 펴면
     ㅎㅐㄱㅗ / ㅎㅐㄱㅜ 라 대부분이 겹친다. 재보니 분리도가 0.355 -> 0.519
     로 올랐고 오타 '침해/짐해' 가 0.17 -> 0.57 이 됐다."""
-    out = []
-    for c in text:
-        k = ord(c) - 0xAC00
-        if 0 <= k < 11172:
-            out.append(chr(0x1100 + k // 588))
-            out.append(chr(0x1161 + (k % 588) // 28))
-            if k % 28:
-                out.append(chr(0x11A7 + k % 28))
-        else:
-            out.append(c)
-    return "".join(out)
+    import hangul
+    return hangul.flatten_jamo(text)
 
 
 # 낱말을 가르는 것은 공백만이 아니다. 코드 이름 'judge()' 의 괄호도,
@@ -159,7 +192,7 @@ def _character_grams(text):
     return out
 
 
-def _character_vector(text, 쪽="담", dimensions=None):
+def _character_vector(text, page="담", dimensions=None):
     """문자 n-gram 벡터. 신경망도 토큰도 안 쓴다.
 
     한국어는 형태가 붙어 변하므로(해고/해고가/해고를) 글자 n-gram 이 그
@@ -220,20 +253,20 @@ def _character_vector(text, 쪽="담", dimensions=None):
     v = np.zeros(dimensions, dtype=np.float32)
     grams = _character_grams(text)
     for fragment, w in grams.items():
-        조각 = fragment.encode("utf-8")
-        h = zlib.crc32(조각) % dimensions
-        부호 = 1.0 if zlib.crc32(조각 + b"\x00") % 2 else -1.0
-        v[h] += (w if 쪽 == "속" else 1.0) * 부호
-    if 쪽 == "속":
-        총무게 = sum(grams.values())
-        return v / (총무게 + _smoothing) if 총무게 else v
+        chunk = fragment.encode("utf-8")
+        h = zlib.crc32(chunk) % dimensions
+        sign = 1.0 if zlib.crc32(chunk + b"\x00") % 2 else -1.0
+        v[h] += (w if page == "속" else 1.0) * sign
+    if page == "속":
+        total_weight = sum(grams.values())
+        return v / (total_weight + _smoothing) if total_weight else v
     # 담는 쪽은 '있다/없다' 다. 같은 칸에 여러 조각이 겹쳐 쌓여도 한 몫을
     # 넘지 않게 자른다 — 안 자르면 긴 질문이 제 무게로 포함도를 부풀린다.
     return np.clip(v, -1.0, 1.0)
 
 
 @lru_cache(maxsize=512)
-def _담(text):
+def _embed(text):
     """**담는 쪽** 벡터. 무언가가 이 안에 들어 있는지 볼 대상이다.
 
     보통은 사람이 방금 친 질문이 여기로 온다. 문서 한 절에서 질문을 찾을
@@ -244,43 +277,43 @@ def _담(text):
 
 
 # 옛 이름. 부르는 자리 대부분이 '질문' 을 담는 쪽으로 쓰고 있었다.
-_vec = _담
+_vec = _embed
 
 
 @lru_cache(maxsize=512)
-def _속(text):
+def _embed_sub(text):
     """**담기는 쪽** 벡터 하나. 짧은 쪽이다 — 노드 이름·말 예시, 또는 질문.
 
     신경망 모드에서는 _담 과 같은 것을 돌려준다. 그쪽은 두 쪽이 대칭인
     코사인이라 가를 이유가 없다."""
     if _mode == "문자":
         return _character_vector(text, "속")
-    return _담(text)
+    return _embed(text)
 
 
-def _속들(texts):
+def _embed_sub_all(texts):
     """담기는 쪽 여럿을 한 판에. 하나씩 부르면 모델 forward 가 그 수만큼 돈다 —
     숙고가 후보 다섯의 발췌 여섯을 각각 부르느라 질문 하나에 서른 번이었다."""
-    return _여럿(texts, "속")
+    return _embed_batch(texts, "속")
 
 
-def _담들(texts):
+def _embed_all(texts):
     """담는 쪽 여럿을 한 판에."""
-    return _여럿(texts, "담")
+    return _embed_batch(texts, "담")
 
 
-def _여럿(texts, 쪽):
+def _embed_batch(texts, page):
     texts = list(texts)
     import numpy as np
     if not texts:
         return np.zeros((0, 1), dtype="float32")
     if _mode == "문자":
-        return np.array([_character_vector(t, 쪽) for t in texts], dtype="float32")
+        return np.array([_character_vector(t, page) for t in texts], dtype="float32")
     return _model().encode([mask_numbers(t) for t in texts],
                            normalize_embeddings=True)
 
 
-_vecs = _속들
+_vecs = _embed_sub_all
 
 
 class _CharacterModel:
@@ -301,50 +334,120 @@ def _self_check():
     코사인이 아니라 포함도라, 재는 것은 '길이가 달라도 들어 있으면
     잡히는가' 다. 대칭성은 이제 성질이 아니다 — 일부러 깼다."""
     import numpy as np
-    속 = lambda t: _character_vector(t, "속")
-    담 = lambda t: _character_vector(t, "담")
-    점 = lambda 작은, 큰: float(속(작은) @ 담(큰))
+    inner = lambda t: _character_vector(t, "속")
+    held = lambda t: _character_vector(t, "담")
+    pt = lambda small, big: float(inner(small) @ held(big))
 
-    assert abs(점("해고", "해고") - 1.0) < 1e-5          # 제 자신은 온전히 들어 있다
-    assert float(담("해고").max()) <= 1.0 + 1e-6         # 담는 쪽은 있다/없다다
+    assert abs(pt("해고", "해고") - 1.0) < 1e-5          # 제 자신은 온전히 들어 있다
+    assert float(held("해고").max()) <= 1.0 + 1e-6         # 담는 쪽은 있다/없다다
 
     # 이 파일을 고친 이유. 노드 이름이 질문 안에 통째로 있으면, 질문이
     # 아무리 길어도 점수가 살아 있어야 한다. 코사인일 때 여기가 0.368 로
     # 주저앉았고 그래서 문서그래프의 모든 질문이 미지로 떨어졌다.
-    긴질문 = 점("도메인", "엔진은 도메인을 어떻게 다루나")
-    assert 긴질문 > 0.75, 긴질문
-    assert 점("도메인", "도메인") >= 긴질문              # 그래도 짧은 쪽이 더 높다
+    long_question = pt("도메인", "엔진은 도메인을 어떻게 다루나")
+    assert long_question > 0.75, long_question
+    assert pt("도메인", "도메인") >= long_question              # 그래도 짧은 쪽이 더 높다
 
     # 형태 변화는 잡는다 — 한국어는 조사가 붙어 변한다
-    assert 점("해고", "해고가 부당하다") > 0.5
+    assert pt("해고", "해고가 부당하다") > 0.5
     # 동의어는 못 잡는다 — '해고' 와 '면직' 은 자모가 안 겹쳐 0 이다.
     # 그 자리는 그래프가 메운다(노드마다 말 예시가 여럿, 개념망이 상위어에
     # 하위어 표현을 붙임).
-    assert 점("해고", "면직") < 0.05
+    assert pt("해고", "면직") < 0.05
     # 절대값이 아니라 격차로 본다 — 형태 변화가 남남보다 몇 배인지.
-    비슷, 남남 = 점("해고", "해고가"), 점("해고", "고양이")
-    assert 비슷 > 4 * max(남남, 0.01), (비슷, 남남)
+    similar, stranger = pt("해고", "해고가"), pt("해고", "고양이")
+    assert similar > 4 * max(stranger, 0.01), (similar, stranger)
     # 숫자는 가려서 본다. '820점' 과 '320점' 이 다른 노드가 되면 안 된다
-    assert 점("820점입니다", "320점입니다") > 0.9
+    assert pt("820점입니다", "320점입니다") > 0.9
     # 코퍼스 밖 질문은 낮아야 한다. 가르는 자리가 있어야 문턱이 뜻을 갖는다.
-    assert 점("그래프", "오늘 서울 날씨 어때") < 0.3
+    assert pt("그래프", "오늘 서울 날씨 어때") < 0.3
     print("인코더 selfcheck ok")
 
 
-_sentence_splitter = re.compile(r"[.!?\n]+|(?<=니다)\s*[,;]\s*|(?<=습니다)\s+")
+# 문장 끝뿐 아니라 연결어미에서도 자른다. 한국어는 한 문장에 사실 여럿을
+# 이어 붙인다 — '결승점을 코앞에 두고 전력 질주하여 2등을 추월했습니다' 는
+# 마침표가 하나인데 사실이 셋이다. 통째로 재면 미끼(전력 질주)가 이겨서
+# 정작 증거가 안 걸렸다. 자른 조각은 통째 문장에 더해지는 것이라, 후보가
+# 늘 뿐 줄지는 않는다.
+_english_word = re.compile(r"[A-Za-z][A-Za-z0-9_.\-]*")
+_hangul_words = re.compile(r"[가-힣]+")
+# 영어 질문 껍데기. 이 낱말들은 무엇을 묻는지가 아니라 묻는다는 표시다.
+_EN_QUESTION_FRAMES = {"what", "when", "how", "where", "who", "why", "which", "whose",
+             "is", "are", "am", "was", "were", "be", "do", "does", "did",
+             "can", "could", "should", "would", "will", "the", "a", "an",
+             "i", "you", "me", "my", "your", "of", "to", "for", "in", "on",
+             "tell", "show", "give", "explain", "about", "please", "s",
+             "it", "this", "that", "there", "here", "and", "or", "not",
+             "with", "from", "at", "by", "as", "if", "so", "have", "has"}
 
 
-def split_fragments(text):
+def view_lang(text):
+    """글자만 보고 언어를 가른다. -> "한국어" / "영어" / "섞임"
+
+    토큰도 모델도 안 쓴다. 한글과 라틴 글자 수를 세면 갈린다. 'CCTV 확인하고
+    싶어' 처럼 용어만 영어인 것은 섞임이 아니라 한국어다 — 그 말을 하는
+    사람은 한국어로 답을 기대한다.
+
+    숫자와 기호는 안 센다. 어느 언어에도 속하지 않는다."""
+    one_ = len(re.findall(r"[가-힣]", text))
+    en = len(re.findall(r"[A-Za-z]", text))
+    if not one_ and not en:
+        return "섞임"
+    if not en:
+        return "한국어"
+    if not one_:
+        # 낱말 하나짜리 영문은 언어를 못 정한다. 'CCTV' 는 한국어 그래프의
+        # 증거 이름이기도 하고 영어 질문이기도 하다. 문장 꼴이 아니면
+        # 어느 쪽도 밀어내지 않는다.
+        if len(re.findall(r"[A-Za-z][A-Za-z0-9_.\-]*", text)) < 2:
+            return "섞임"
+        return "영어"
+    # 한글이 조금이라도 있으면 한국어로 본다. 용어만 영어인 문장이 대부분이다.
+    return "한국어" if one_ >= 2 else "영어"
+
+
+def strip_english_shell(text):
+    """영어 질문틀을 뺀 알맹이. 뺄 것이 없으면 원문 그대로.
+
+    포함도는 '색인 줄의 조각 중 몇 할이 질문 안에 있나' 라, 질문에 군더더기가
+    많으면 그만큼 묽어진다. 한국어 질문틀('~가 뭐야')은 그래프 예시에 그대로
+    들어 있어 문제가 안 되는데, 영어 질문틀은 어디에도 없다. 'DNS' 만 물으면
+    0.67 인데 'what is DNS' 는 0.35 로 떨어졌다.
+
+    영어 낱말이 실제로 든 질문에만 쓴다. 한국어 질문에 대고 벗기면 오히려
+    'DNS가 뭐야' 가 1.00 에서 0.78 로 내려간다 — 그쪽은 틀도 재료다."""
+    en = _english_word.findall(text)
+    if not en:
+        return text
+    core = [w for w in en if w.lower() not in _EN_QUESTION_FRAMES]
+    if not core:
+        return text
+    one_ = _hangul_words.findall(text)
+    return " ".join(core + one_)
+
+
+def split_fragments(text, *, language_pack=None):
     """긴 발화를 문장 단위로 쪼갠다.
 
     실제 사용자는 '증거를 보면 A입니다. 따라서 B이고, 그러므로 C입니다' 처럼
     한 번에 여러 주장을 한다. 문장 하나 = 주장 하나로 가정하면 전체 평균이
     흐려져 아무 노드에도 안 걸리고 미지로 떨어진다."""
-    fragments = [x.strip() for x in _sentence_splitter.split(text) if x and len(x.strip()) > 3]
-    return ([text] + fragments) if len(fragments) > 1 else [text]
+    from hangul import clause_spans
+    from language_components import load_clause_grammar
+    grammar = load_clause_grammar() if language_pack is None else language_pack.get("clauses", {})
+    fragments = [part["text"] for part in clause_spans(text, grammar)
+                 if len(part["text"]) > 3]
+    yielded = ([text] + fragments) if len(fragments) > 1 else [text]
+    # 영어 껍데기를 벗긴 것도 조각으로 더한다. 통째 영어 질문이 그래프가
+    # 아는 낱말을 들고도 못 가는 자리를 메운다. 원문도 그대로 남으므로
+    # 후보가 늘 뿐이다.
+    stripped = strip_english_shell(text)
+    if stripped != text and stripped not in yielded:
+        yielded.append(stripped)
+    return yielded
 
 
-조각내기 = split_fragments
+split_fragments = split_fragments
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@
 # 여러 지식 그래프를 업로드용 한 파일로 묶은 산출물과 런타임 overlay
 *.kgpack
 .kgpack_runtime/
+.nai/
 
 # 임베딩 캐시. 키가 모델+그래프 해시라 그래프를 고치면 자동 무효화된다
 .vec_*.npz
@@ -76,3 +77,62 @@ data/물건/.물건_*.pkl
 # AI 사이 인수인계 메모. 사람이 읽는 작업 상태이지 코드가 아니라서
 # 저장소에 올리지 않는다. 다음 세션이 이어 쓰도록 로컬에만 둔다.
 HANDOFF.md
+graphs/graph_목적_자가검사.kg
+
+# 국립국어원 사전 XML. CC BY-SA 2.0 KR 이지만 386MB 라 저장소에 안 넣는다.
+# spellcheck-ko/korean-dict-nikl 에서 받는다.
+data/사전/
+
+# 라우터 색인 캐시. 내용이 바뀌면 키가 바뀌어 저절로 다시 만든다.
+.색인예시.json
+.색인벡터.npz
+
+# 그래프를 돌린 기록. 생성물이라 저장소에 안 둔다.
+graphs/*.실행.jsonl
+graphs/*.그림후보.jsonl
+# 자가저작이 후보를 짓고 거르는 작업터. 통과한 것만 graphs/ 로 옮긴다.
+graphs/후보/
+# 자가학습이 바퀴마다 남기는 기록. 화면(views/자람.py)이 읽는다.
+자가학습기록.jsonl
+# 그래프마다의 쓰임 활성값. 돌면서 쌓이는 상태라 저장소에 안 올린다.
+그래프쓰임.json
+# 묶어 둔 색인. 원본이 아니라 캐시라 저장소에 안 올린다.
+.색인.kgbin
+
+# universal_agent.py 데모가 뱉는 것. `python universal_agent.py` 로 다시 난다.
+result.json
+
+# autocoder / universal_agent 데모가 지은 그래프. 색인은 graphs/*.kg 만 훑으므로
+# 여기 있는 것은 라우팅에 안 낀다.
+graphs/데모/
+
+# 사전에서 굳힌 상위어 관계. tools/build_concept_net.py 로 다시 짓는다.
+# 켜도 눈금이 안 움직여서(그 파일 머리말) 저장소에는 안 둔다.
+data/개념망.json
+
+# --- 받아온 것 (저장소에 담지 않는다) ---
+
+# 시각 부품이 쓰는 모델 가중치. 1.4GB 라 담지 않는다.
+# Qwen2.5-VL, SmolVLM2, resnet50, YOLO 를 각 배포처에서 다시 받는다.
+data/models/
+
+# HICO-DET 사람-물체 상호작용 자료. 추려 쓰는 쪽과 받아온 원본 쪽 둘 다 담지 않는다.
+# 원본 parquet 은 한 파일이 400MB 를 넘어 GitHub 이 받지 않는다.
+data/hoi/
+data/benchmarks/hico_det/
+
+# ChartQA 평가 자료. 66MB. 원 배포처에서 다시 받는다.
+data/benchmarks/chartqa/
+
+# 평가에 쓰려고 받아둔 논문 PDF. 남의 저작물이라 담지 않는다.
+data/benchmarks/papers/
+
+# 위키에서 추린 정의문. 90MB 이고 내용이 남의 글이다.
+# collectors/위키.py 로 다시 모은다.
+data/위키/
+
+# 되돌림 시험에 쓰려고 받아둔 웹 원문.
+data/웹_되돌림/
+
+# 기계마다 따로 빌드하는 실행 파일.
+.nai-tools/

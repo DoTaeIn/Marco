@@ -1,6 +1,6 @@
 import codecs
 
-with codecs.open("그림.py", "r", "utf-8") as f:
+with codecs.open("vision.py", "r", "utf-8") as f:
     content = f.read()
 
 commented_code = '''
@@ -42,6 +42,6 @@ def _상자영역만(seg, 라벨, 이웃, 상자):'''
 
 content = content.replace("def _상자영역만(seg, 라벨, 이웃, 상자):", commented_code.strip())
 
-with codecs.open("그림.py", "w", "utf-8") as f:
+with codecs.open("vision.py", "w", "utf-8") as f:
     f.write(content)
 

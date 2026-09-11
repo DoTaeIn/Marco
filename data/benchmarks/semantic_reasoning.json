@@ -1,0 +1,24 @@
+{
+  "schema": "semantic-state-benchmark-v1",
+  "description": "학습용 예시와 보류 평가를 분리한 상태 추론 벤치마크. 정답 문자열만이 아니라 상태 관계와 연산을 평가한다.",
+  "train": [
+    {"id": "arith-add", "input": "1 더하기 1은 얼마야?", "relation": "arithmetic", "operator": "+", "answer": "2입니다."},
+    {"id": "rank-overtake", "input": "경기에서 2등 선수를 추월했다면 내 등수는?", "relation": "rank_overtake", "answer": "2등입니다."},
+    {"id": "parallel", "input": "독립 작업 열 개를 동시에 끝내면 한 작업의 1시간과 같은 시간이 걸린다.", "relation": "parallel_completion", "answer": "1시간입니다."}
+  ],
+  "held_out": [
+    {"id": "arith-paraphrase", "input": "7과 5를 더한 값은?", "relation": "arithmetic", "operator": "+", "answer": "12입니다."},
+    {"id": "arith-multiply", "input": "3 곱하기 4는 얼마야?", "relation": "arithmetic", "operator": "*", "answer": "12입니다."},
+    {"id": "arith-divide", "input": "12 나누기 3은 얼마야?", "relation": "arithmetic", "operator": "/", "answer": "4입니다."},
+    {"id": "linear-equation", "input": "3x + 1 = 7이래. x는 얼마야?", "relation": "linear_equation", "answer": "2입니다."},
+    {"id": "division-by-zero", "input": "12 나누기 0은 얼마야?", "relation": "arithmetic", "operator": "/", "status": "unknown"},
+    {"id": "rank-paraphrase", "input": "달리던 중 3위 주자를 앞질렀다. 나는 몇 위인가?", "relation": "rank_overtake", "answer": "3등입니다."},
+    {"id": "co-moving", "input": "물에 뜬 배에 달린 사다리에서 수면 위로 보이는 5칸은 물이 오르면 몇 칸인가?", "relation": "co_moving_reference", "answer": "5칸입니다."},
+    {"id": "parallel-completion", "input": "독립 작업 열 개를 동시에 끝내면 한 작업의 1시간과 같은 시간이 걸린다.", "relation": "parallel_completion", "answer": "1시간입니다."},
+    {"id": "age-difference", "input": "내가 10살일 때 동생은 내 나이의 절반이었어. 내가 30살이면 동생은 몇 살이야?", "relation": "age_difference", "answer": "25살입니다."},
+    {"id": "indivisible-process", "input": "임신과 출산에 9개월 걸리는데 아이 1명을 낳으려면 몇 개월이 걸려?", "relation": "indivisible_process", "answer": "9개월입니다."},
+    {"id": "indivisible-process-ambiguous", "input": "임신과 출산에 9개월 걸리는데 아이 2명을 낳으려면 몇 개월이 걸려?", "relation": "indivisible_process", "status": "unknown"},
+    {"id": "invalid-premise", "input": "반쪽짜리 구멍을 파려면 얼마나 걸릴까?", "relation": "unitary_concept", "status": "premise_invalid"},
+    {"id": "unknown", "input": "바람의 기분은 몇 점일까?", "status": "unknown"}
+  ]
+}

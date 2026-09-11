@@ -58,6 +58,10 @@
       "is a method of %s",
       "has method %s"
     ],
+    "상위": [
+      "is a kind of %s",
+      "%s is a kind of this"
+    ],
     "설명함": [
       "covers %s",
       "is covered in the passage about %s"
@@ -140,5 +144,37 @@
   "대화질문": "earlier|before|what did i|so far|first question|typo",
   "_대화질문": "대화 자체에 대한 물음. 지식 그래프가 아니라 대화 기억에서 답한다.",
   "자세히": "in detail|detailed|everything|tell me more|elaborate",
-  "_자세히": "이 말이 걸리면 답을 길게 낸다. 자를 자리를 몇 배로 늘릴 뿐이라 지어내는 것은 없다."
+  "_자세히": "이 말이 걸리면 답을 길게 낸다. 자를 자리를 몇 배로 늘릴 뿐이라 지어내는 것은 없다.",
+  "conversation": {
+    "_backend": "Set backend to module:Class or module:factory to replace the default template component.",
+    "shell_risks": {"rm": "destructive", "rmdir": "destructive", "git": "read", "ls": "read", "cat": "read", "sed": "read", "grep": "read", "find": "read", "cp": "write", "mv": "write", "mkdir": "write", "touch": "write", "curl": "external", "wget": "external", "ssh": "credential_or_unknown", "sudo": "credential_or_unknown"},
+    "context_refs": ["it", "that", "this", "above", "earlier", "previous"],
+    "replies": {
+      "greeting": "Hello. Tell me what you would like to know or do.",
+      "thanks": "You’re welcome. What would you like to do next?",
+      "fallback": "I understand. Please make your question or goal a little more specific."
+    },
+    "affect": {
+      "focus_note": "The request is handled calmly and with focus.",
+      "prefixes": {"care": "Thank you for saying that. ", "warmth": "Glad to help. ", "boundary": "Let's keep this respectful. ", "focus": "I'll look at this carefully. "},
+      "signals": [
+        {"phrases": ["shut up", "kill yourself"], "mode": "boundary", "signal": "hostile expression", "note": "A calm boundary tone is in use."},
+        {"phrases": ["sad", "anxious", "scared", "exhausted", "angry"], "mode": "care", "signal": "direct emotion", "note": "A caring tone is in use."},
+        {"phrases": ["thank", "appreciate"], "mode": "warmth", "signal": "appreciation", "note": "A warm tone is in use."}
+      ]
+    },
+    "phrases": [
+      {"text": "hello", "result": {"intent": "dialogue", "reply": "greeting"}},
+      {"text": "thanks", "result": {"intent": "dialogue", "reply": "thanks"}}
+    ],
+    "templates": [
+      {"template": "summarize {target}", "result": {"intent": "request.summary", "modifiers": {"summary_target": "summary"}}},
+      {"template": "explain {target}", "result": {"intent": "request.explain"}},
+      {"template": "compare {target}", "result": {"intent": "request.compare"}},
+      {"template": "extract {target}", "result": {"intent": "request.extract"}},
+      {"template": "save {target}", "result": {"intent": "request.create", "command": {"risk": "write"}}}
+    ]
+  },
+  "의도표": [["when", "시간"], ["how", "방법"], ["method", "방법"], ["penalty", "처벌"], ["fine", "금액"], ["who", "주체"], ["where", "위치"], ["why", "이유"], ["relationship", "경로"], ["related", "이웃"], ["what is", "정의"]],
+  "뜻표지": {"시간": ["when", "before", "after", "period"], "방법": ["method", "must", "procedure"], "조건": ["if", "condition", "requirement"], "이유": ["because", "reason", "purpose"], "처벌": ["penalty", "punished", "imprisonment"], "금액": ["amount", "cost", "fee"], "주체": ["person", "court", "user"]}
 }

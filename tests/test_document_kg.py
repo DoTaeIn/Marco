@@ -71,11 +71,11 @@ class DocumentKnowledgeGraphTest(unittest.TestCase):
             path = Path(directory) / "document.graph.json"
             path.write_text(json.dumps(graph, ensure_ascii=False), encoding="utf-8")
             loaded = engine.load(str(path))
-            session = engine.세션(loaded)
-            answer = session.대답("그래프는 노드와 엣지로 구성된 지식 표현이다.")
-            self.assertEqual(session.판정, "인정", answer)
+            session = engine.Session(loaded)
+            answer = session.reply("그래프는 노드와 엣지로 구성된 지식 표현이다.")
+            self.assertEqual(session.verdict, "인정", answer)
             self.assertIn("그래프는 노드와 엣지", answer)
-            unknown = engine.세션(loaded).대답("문서에 없는 양자 암호의 안전성을 확정해줘")
+            unknown = engine.Session(loaded).reply("문서에 없는 양자 암호의 안전성을 확정해줘")
             self.assertIn("근거", unknown)
 
 

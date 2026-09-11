@@ -1,0 +1,227 @@
+{
+  "schema": "reasoning-transfer-result-v1",
+  "dataset_sha256": "aa97be2a07797792706c15872d8621a808e6f567493f2bcaa6e49dab78267c20",
+  "scope": "development diagnostic, not blind or GPT-3 equivalence",
+  "passed": 8,
+  "total": 16,
+  "families": {
+    "composition": {
+      "passed": 2,
+      "total": 2
+    },
+    "equation": {
+      "passed": 2,
+      "total": 2
+    },
+    "paraphrase": {
+      "passed": 0,
+      "total": 2
+    },
+    "abstention": {
+      "passed": 2,
+      "total": 3
+    },
+    "state_change": {
+      "passed": 0,
+      "total": 1
+    },
+    "relevance": {
+      "passed": 0,
+      "total": 1
+    },
+    "graph_chain": {
+      "passed": 2,
+      "total": 2
+    },
+    "context": {
+      "passed": 0,
+      "total": 1
+    },
+    "instruction": {
+      "passed": 0,
+      "total": 1
+    },
+    "reading": {
+      "passed": 0,
+      "total": 1
+    }
+  },
+  "rows": [
+    {
+      "source": "graphs/graph_일상추론.kg",
+      "verdict": "상태추론",
+      "answer": "20입니다.",
+      "failure": null,
+      "id": "expression-precedence",
+      "family": "composition",
+      "input": "8 + 3 * 4는 얼마야?",
+      "ok": true,
+      "elapsed_ms": 11.94
+    },
+    {
+      "source": "graphs/graph_일상추론.kg",
+      "verdict": "상태추론",
+      "answer": "44입니다.",
+      "failure": null,
+      "id": "expression-parentheses",
+      "family": "composition",
+      "input": "(8 + 3) * 4는 얼마야?",
+      "ok": true,
+      "elapsed_ms": 0.24
+    },
+    {
+      "source": "graphs/graph_일상추론.kg",
+      "verdict": "상태추론",
+      "answer": "5입니다.",
+      "failure": null,
+      "id": "equation-other-variable",
+      "family": "equation",
+      "input": "5y - 4 = 21이야. y는 얼마야?",
+      "ok": true,
+      "elapsed_ms": 0.23
+    },
+    {
+      "source": "graphs/graph_일상추론.kg",
+      "verdict": "상태추론",
+      "answer": "5입니다.",
+      "failure": null,
+      "id": "equation-both-sides",
+      "family": "equation",
+      "input": "5x + 2 = 2x + 17이면 x는 얼마야?",
+      "ok": true,
+      "elapsed_ms": 0.19
+    },
+    {
+      "source": null,
+      "verdict": "미지",
+      "answer": "이 지식팩에서 확인할 수 있는 근거를 찾지 못했습니다.",
+      "failure": "unexpected_abstention",
+      "id": "equation-verbal",
+      "family": "paraphrase",
+      "input": "어떤 수의 세 배에 4를 더하면 25가 돼. 그 수는 얼마야?",
+      "ok": false,
+      "elapsed_ms": 1030.31
+    },
+    {
+      "source": null,
+      "verdict": "미지",
+      "answer": "이 지식팩에서 확인할 수 있는 근거를 찾지 못했습니다.",
+      "failure": null,
+      "id": "equation-incomplete",
+      "family": "abstention",
+      "input": "5x + 4만 알아. x는 얼마야?",
+      "ok": true,
+      "elapsed_ms": 73.14
+    },
+    {
+      "source": null,
+      "verdict": "미지",
+      "answer": "이 지식팩에서 확인할 수 있는 근거를 찾지 못했습니다.",
+      "failure": "unexpected_abstention",
+      "id": "quantity-multistep",
+      "family": "state_change",
+      "input": "상자에 공이 14개 있다. 5개를 꺼내고 3개를 넣었다. 지금 공은 몇 개야?",
+      "ok": false,
+      "elapsed_ms": 68.5
+    },
+    {
+      "source": null,
+      "verdict": "미지",
+      "answer": "이 지식팩에서 확인할 수 있는 근거를 찾지 못했습니다.",
+      "failure": "unexpected_abstention",
+      "id": "quantity-paraphrase",
+      "family": "paraphrase",
+      "input": "공 14개 중 다섯 개를 덜어낸 뒤 세 개를 보탰어. 남은 공은 몇 개야?",
+      "ok": false,
+      "elapsed_ms": 57.17
+    },
+    {
+      "source": null,
+      "verdict": "미지",
+      "answer": "이 지식팩에서 확인할 수 있는 근거를 찾지 못했습니다.",
+      "failure": "unexpected_abstention",
+      "id": "quantity-distractor",
+      "family": "relevance",
+      "input": "빨간 공은 14개, 파란 공은 8개다. 빨간 공 5개를 꺼냈다. 빨간 공은 몇 개 남았어?",
+      "ok": false,
+      "elapsed_ms": 55.28
+    },
+    {
+      "source": "graphs/graph_일상추론.kg",
+      "verdict": "상태추론",
+      "answer": "민수입니다.",
+      "failure": null,
+      "id": "relation-transitive",
+      "family": "graph_chain",
+      "input": "민수는 지수보다 키가 크고 지수는 영희보다 키가 크다. 민수와 영희 중 누가 더 커?",
+      "ok": true,
+      "elapsed_ms": 0.66
+    },
+    {
+      "source": null,
+      "verdict": "미지",
+      "answer": "이 지식팩에서 확인할 수 있는 근거를 찾지 못했습니다.",
+      "failure": null,
+      "id": "relation-underconstrained",
+      "family": "abstention",
+      "input": "민수는 지수보다 크다. 영희도 지수보다 크다. 민수와 영희 중 누가 더 커?",
+      "ok": true,
+      "elapsed_ms": 41.04
+    },
+    {
+      "source": "graphs/graph_일상추론.kg",
+      "verdict": "상태추론",
+      "answer": "네, 나루는 수영합니다.",
+      "failure": null,
+      "id": "deduction-chain",
+      "family": "graph_chain",
+      "input": "모든 라핀은 도멜이다. 모든 도멜은 수영한다. 나루는 라핀이다. 나루는 수영하는가?",
+      "ok": true,
+      "elapsed_ms": 0.82
+    },
+    {
+      "source": null,
+      "verdict": "미지",
+      "answer": "이 지식팩에서 확인할 수 있는 근거를 찾지 못했습니다.",
+      "failure": "unexpected_abstention",
+      "id": "deduction-converse",
+      "family": "abstention",
+      "input": "모든 라핀은 수영한다. 나루는 수영한다. 이것만으로 나루가 라핀이라고 할 수 있는가?",
+      "ok": false,
+      "elapsed_ms": 62.63
+    },
+    {
+      "source": null,
+      "verdict": "미지",
+      "answer": "이 지식팩에서 확인할 수 있는 근거를 찾지 못했습니다.",
+      "failure": "unexpected_abstention",
+      "id": "reference-update",
+      "family": "context",
+      "input": "열쇠는 서랍에 있었다. 민수가 열쇠를 가방으로 옮겼다. 지금 열쇠는 어디에 있어?",
+      "ok": false,
+      "elapsed_ms": 56.88
+    },
+    {
+      "source": "graphs/graph_일상추론.kg",
+      "verdict": "상태추론",
+      "answer": "11입니다.",
+      "failure": "incorrect_answer",
+      "id": "instruction-format",
+      "family": "instruction",
+      "input": "8 + 3을 계산하고 설명 없이 숫자만 답해.",
+      "ok": false,
+      "elapsed_ms": 0.37
+    },
+    {
+      "source": null,
+      "verdict": "미지",
+      "answer": "이 지식팩에서 확인할 수 있는 근거를 찾지 못했습니다.",
+      "failure": "unexpected_abstention",
+      "id": "reading-cause",
+      "family": "reading",
+      "input": "준호는 우산이 없어서 비가 그칠 때까지 도서관에서 기다렸다. 준호가 바로 나가지 않은 이유는?",
+      "ok": false,
+      "elapsed_ms": 60.63
+    }
+  ]
+}

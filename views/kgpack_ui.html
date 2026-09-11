@@ -14,7 +14,7 @@
     main { width:min(1500px,calc(100% - 24px)); height:calc(100vh - 20px); margin:10px auto; display:flex; flex-direction:column; }
     header { flex:0 0 auto; display:flex; justify-content:space-between; align-items:end; gap:18px; margin-bottom:8px; }
     h1 { margin:0; font-size:22px; letter-spacing:-.02em } .sub,.meta { color:var(--muted); font-size:12px }
-    .workspace { flex:1 1 auto; display:grid; grid-template-columns:460px minmax(0,1fr); gap:12px; min-height:0; }
+    .workspace { flex:1 1 auto; display:grid; grid-template-columns:210px 460px minmax(0,1fr); gap:12px; min-height:0; }
     .card,.view { background:rgba(18,26,42,.96); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
     .chat-card { display:grid; grid-template-rows:auto minmax(0,1fr) auto auto; min-height:0; }
     .toolbar { display:grid; grid-template-columns:1fr auto; gap:8px; padding:11px; border-bottom:1px solid var(--line); }
@@ -44,7 +44,10 @@
     .composer { display:grid; grid-template-columns:1fr auto; gap:8px; padding:11px; border-top:1px solid var(--line) }
     textarea { resize:vertical; min-height:76px; max-height:260px; padding:10px; outline:none } textarea:focus,select:focus,input:focus { border-color:var(--blue) }
     #send { min-width:76px } #status { padding:0 12px 10px; color:var(--muted); font-size:11px } .dot { color:var(--green) }
-    .visuals { display:grid; grid-template-rows:minmax(150px,.58fr) minmax(250px,1.25fr) minmax(140px,.72fr); gap:12px; min-width:0; min-height:0; }
+    /* 네 판의 최소 높이 합(약 920px)이 화면 높이보다 크면, 넘친 만큼이
+       그대로 잘려 나갔다 — html,body 가 overflow:hidden 이라 굴릴 수도
+       없어서 자가학습 판이 통째로 안 보였다. 이 칸만 스스로 구른다. */
+    .visuals { display:grid; grid-template-rows:minmax(280px,1.05fr) minmax(250px,1.15fr) minmax(150px,.62fr) minmax(230px,.9fr); gap:12px; min-width:0; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
     .view { position:relative; min-width:0; min-height:0; }
     .view-head { position:absolute; z-index:2; left:13px; top:10px; pointer-events:none; max-width:70%; }
     .view-title { font-weight:750; font-size:12px } .view-sub { color:var(--muted); font-size:10.5px; margin-top:1px }
@@ -54,7 +57,9 @@
     .graph-svg { display:block; width:100%; height:100%; min-height:0 }
     .knowledge-grid { display:grid; grid-template-columns:minmax(0,1fr) 280px; height:100%; min-height:0 }
     .knowledge-canvas { position:relative; min-width:0; min-height:0 }
-    .node-inspector { border-left:1px solid var(--line); background:#0e1524; padding:10px; display:grid; grid-template-rows:auto auto minmax(90px,.7fr) minmax(120px,1fr); gap:8px; min-height:0 }
+    /* 두 목록 줄의 최소 높이(90+120)를 박아 두면 칸이 좁을 때 합이 넘쳐
+       .view 의 overflow:hidden 에 잘린다. 둘 다 스스로 구르므로 0 으로. */
+    .node-inspector { border-left:1px solid var(--line); background:#0e1524; padding:10px; display:grid; grid-template-rows:auto auto minmax(0,.7fr) minmax(0,1fr); gap:8px; min-height:0 }
     .node-inspector h2 { margin:0; font-size:13px } .node-inspector small { color:var(--muted) }
     .node-controls { display:grid; grid-template-columns:1fr 92px; gap:6px }
     .node-controls input,.node-controls select { width:100%; min-width:0; padding:7px 8px; color:var(--text); background:#0a101d; border:1px solid var(--line); border-radius:7px; font:inherit }
@@ -66,9 +71,99 @@
     .trace { position:absolute; left:13px; right:13px; bottom:9px; color:var(--muted); font-size:10.5px;
       pointer-events:none; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
     .trace b { color:var(--text) } svg text { font-family:inherit; user-select:none }
-    @media(max-width:900px){main{width:min(100% - 14px,760px);height:calc(100vh - 14px);margin:7px auto}header{display:block}.workspace{grid-template-columns:1fr;grid-template-rows:minmax(300px,.9fr) minmax(0,1.1fr);min-height:0}
-      .chat-card{height:auto}.visuals{grid-template-rows:minmax(110px,.55fr) minmax(210px,1.2fr) minmax(100px,.55fr)}.legend{display:none}.knowledge-grid{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 145px}.node-inspector{border-left:0;border-top:1px solid var(--line);grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr}.node-controls{grid-column:1}.node-list{grid-column:1}.node-detail{grid-column:2;grid-row:1 / span 2;border-top:0;border-left:1px solid var(--line);padding-left:10px}}
-  </style>
+    /* 밝은 작업 표면: 정보 밀도는 유지하되 밤색 패널을 없앤다. */
+    :root{color-scheme:light;--bg:#f7f7f8;--panel:#fff;--panel2:#fbfbfc;--line:#e5e5e9;--text:#202124;--muted:#6b7280;--dim:#9ca3af;--blue:#536de6;--green:#16966d;--yellow:#bd7c14;--red:#d54b56;--purple:#8b62d9}
+    body{background:linear-gradient(145deg,#fbfbfc,#f3f4f7);font-family:ui-sans-serif,system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif}
+    main{width:min(1540px,calc(100% - 32px));height:calc(100vh - 28px);margin:14px auto}.workspace{grid-template-columns:210px 440px minmax(0,1fr);gap:14px}.card,.view,.conversation-sidebar{background:var(--panel);border-color:var(--line);border-radius:16px;box-shadow:0 1px 3px rgba(20,20,30,.035),0 10px 28px rgba(20,20,30,.035)}
+    .conversation-sidebar{border:1px solid var(--line);padding:10px;overflow:auto;min-height:0}.conversation-head{display:flex;justify-content:space-between;align-items:center;margin:2px 2px 10px}.conversation-head b{font-size:13px}.conversation-create{width:100%;margin-bottom:11px;min-height:34px;color:#3c55b8;background:#f2f4ff;border-color:#dbe1ff}.conversation-group{margin:0 0 12px}.conversation-group h3{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:11px;color:var(--muted);letter-spacing:.02em;text-transform:uppercase}.conversation-items{display:grid;gap:3px}.conversation-item{width:100%;text-align:left;border:0;background:transparent;padding:7px 8px;border-radius:8px;color:var(--text);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.conversation-item:hover{background:#f2f3f6}.conversation-item.active{background:#e9edff;color:#344ab4;font-weight:700}.project-title{font-weight:700;color:var(--text);font-size:12px;margin:4px 0}/* 전역 button 의 min-height:39px 을 그대로 물려받아, float 된 이 단추가
+       제목 줄(17px) 밖으로 22px 삐져나와 첫 대화 항목을 덮고 있었다. 눌러도
+       대화가 안 열리고 새 대화만 생기던 것이 이것이다. */
+    .new-chat{display:grid;place-items:center;width:20px;min-width:20px;height:20px;min-height:20px;padding:0;border:0;border-radius:50%;font-size:13px;line-height:1;color:var(--muted);background:transparent}.new-chat:hover{background:#eef1ff;color:#3c55b8}
+    .toolbar{position:relative;display:block;padding:10px 12px;background:#fcfcfd}.toolbar-primary{display:flex;align-items:center;justify-content:space-between;gap:8px}.pack-chip{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:7px 9px;color:#5e6471;font-size:12px;font-weight:650}.toolbar-icon{display:grid;place-items:center;width:32px;min-width:32px;min-height:32px;padding:0;border-radius:50%;font-size:19px;line-height:1}.toolbar select,.toolbar input{background:#fff;border-color:#e1e2e7}#pack-select{background:#f4f6ff;border-color:#d9defa;width:100%}.toolbar button{background:#fff;border-color:#dddfe5;color:var(--text)}.toolbar button:hover{background:#f3f5fa}
+    .chat-card{position:relative}.controls-popover{position:absolute;z-index:10;inset:auto 12px 140px 12px;padding:12px;border:1px solid #e1e3ea;border-radius:15px;background:#fff;box-shadow:0 -12px 42px rgba(25,31,50,.14)}.controls-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.setting-label{display:grid;gap:5px;margin:9px 0;color:var(--muted);font-size:11px;font-weight:650}.setting-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}.setting-row input{min-width:0;padding:7px 8px}.setting-row button{min-height:34px}.setting-dual{display:grid;grid-template-columns:1fr 92px;gap:8px}.setting-dual select{width:100%;min-width:0}.setting-foot{display:flex;justify-content:flex-end;margin-top:10px}.quiet-danger{color:#9e3d48!important;border-color:#f0d9dc!important;font-size:11px!important;min-height:31px!important}
+    #chat{padding:16px;gap:11px;background:linear-gradient(180deg,#fff,#fcfcfd)}.msg{padding:11px 13px;border-radius:14px;box-shadow:0 1px 2px rgba(20,20,30,.025)}.assistant{background:#fff;border-color:#e7e7eb}.user{background:#536de6;color:#fff;border-bottom-right-radius:4px}.understanding{background:#f8f9ff;border-color:#dce3ff}.understanding h2{color:#445cbe}.tag{font-weight:650}.assistant blockquote{background:#f5f6fb}.assistant code{background:#f3f4f6;color:#45506c}.assistant pre{background:#f7f8fa;border-color:#e2e5ee}.assistant pre code{color:#374151}.assistant th,.assistant td{border-color:#e2e5ee}.assistant th{background:#f4f5f7;color:var(--text)}.assistant a{color:#445cbe}
+    textarea,select,input,button{background:#fff;border-color:#dedfe4;color:var(--text)}textarea{background:#fafafa}textarea:focus,select:focus,input:focus{box-shadow:0 0 0 3px #536de620}.composer{display:block;padding:10px 12px 8px;background:#fff;border-top:1px solid var(--line)}.composer textarea{display:block;width:100%;min-height:68px;max-height:180px;border:0;padding:7px 3px;resize:vertical;box-shadow:none!important;background:transparent}.composer textarea:focus{outline:0}.composer-row{display:flex;align-items:center;gap:8px;padding-top:5px}.composer-icon{display:grid;place-items:center;width:30px;min-width:30px;min-height:30px;padding:0;border-radius:50%;font-size:20px;font-weight:400}.composer-hint{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--dim);font-size:11px}#send{display:grid;place-items:center;width:34px;min-width:34px;min-height:34px;padding:0;border-radius:50%;font-size:21px;line-height:1;background:#202124;color:#fff;border-color:#202124}#send:hover{background:#3d3e43}.knowledge-canvas{background:radial-gradient(circle at 46% 45%,#fbfcff 0,#fff 55%,#f7f8fb 100%)}.node-inspector{background:#fcfcfd;border-color:var(--line)}.node-controls input,.node-controls select{background:#fff}.node-list button:hover,.node-list button.selected{background:#eef1ff}
+/* .view-head 70% + .legend 48% 는 118% 다. 그래서 제목이 범례 밑으로
+       들어가 글자가 겹쳐 읽혔다. 범례 폭을 재고 제목은 그 나머지만 쓴다. */
+    #knowledge-canvas .legend{max-width:150px}#knowledge-canvas .view-head{max-width:calc(100% - 176px)}
+    /* 머리말은 그래프 위에 얹힌 딱지다. 줄바꿈을 허용하면 폭이 좁아진
+       만큼 아래로 자라 점과 이름을 덮는다. 한 줄로 두고 넘치면 자른다.
+       자가학습 판만은 글 흐름대로 쌓이므로 그대로 접히게 둔다. */
+    .view-title,.view-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #growth-view .view-title,#growth-view .view-sub{overflow:visible;white-space:normal}
+    /* 노트북 폭에서는 이 판의 그림칸이 300px 남짓이라, 범례 150px 을 빼면
+       제목에 '선택된 지식 그래…' 밖에 안 남는다. 그때는 범례를 접는다 —
+       색 뜻은 노드 상세에서 다시 읽을 수 있다. */
+    @media(max-width:1440px){#knowledge-canvas .legend{display:none}#knowledge-canvas .view-head{max-width:calc(100% - 26px)}}
+    /* 대화 칸 440px 이 고정이라, 1100px 짜리 노트북에서는 오른쪽 칸이
+       390px 로 줄고 그중 280px 을 노드 상세가 가져가 그림칸이 110px 만
+       남았다 — 그래프가 콩알만 해지고 단추가 서로 겹쳤다. 이 폭부터는
+       대화 칸도 같이 줄이고 상세 칸을 좁힌다. */
+    @media(max-width:1280px){.workspace{grid-template-columns:190px minmax(320px,1fr) minmax(340px,1.15fr)}
+      .knowledge-grid{grid-template-columns:minmax(0,1fr) 230px}.node-inspector{padding:9px 8px}}
+    .graph-actions{position:absolute;right:12px;bottom:29px;z-index:3;display:flex;align-items:center;gap:5px;padding:4px;background:#ffffffdf;border:1px solid #e5e7ed;border-radius:9px;backdrop-filter:blur(8px)}.graph-actions button{min-height:28px;padding:3px 7px;font-size:11px}.graph-actions label{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--muted);white-space:nowrap}.graph-actions input{accent-color:var(--blue)}
+      /* 이 패널만 글 흐름대로 쌓는다. 다른 뷰는 SVG 한 장 위에 머리말을
+       절대배치로 얹는 꼴인데, 여기는 단추와 표가 같이 있어서 겹친다. */
+    /* 줄은 전부 auto 다. 마지막을 1fr 로 두었더니, 칸을 넘치는 순간 그 줄이
+       0px 로 접히는데 차트는 height:150px 라 밖으로 넘쳐서 아래 자취를
+       덮어 버렸다 — 글이 잘려 보이던 것이 이것이다. 이 패널은 스스로
+       스크롤하므로 1fr 로 늘릴 이유가 없다. */
+    /* 높이는 부모 격자 줄이 정한다. max-height 로 또 묶으면 vh 가 0 인
+       환경(숨은 창·인쇄)에서 0 으로 접혀 패널이 통째로 사라진다. */
+    #growth-view { display:grid; grid-template-rows:repeat(6,auto);
+                   align-content:start; gap:6px; padding:11px 13px; overflow:auto;
+                   min-height:0 }
+    #growth-view .view-head { position:static; max-width:none; pointer-events:auto }
+    #growth-chart { height:150px; min-height:150px }
+    /* 기본 .trace 는 한 줄짜리 꼬리말이라 nowrap + ellipsis + 절대배치다.
+       여기는 여러 줄에 이름표까지 들어가서, 그 규칙을 그대로 두면 높이가
+       0으로 접히고 글이 잘린다. 줄바꿈과 클릭을 되살린다. */
+    #growth-trace { position:static; overflow:auto; white-space:normal;
+                    text-overflow:clip; pointer-events:auto; line-height:1.55;
+                    padding:2px 0 4px; min-height:44px }
+    #growth-trace b { display:inline-block; margin-top:2px }
+    /* 자가학습이 방금 붙인 노드는 뿅 튀어 들어오고, 그 엣지는 목표 쪽에서
+       그어진다. 자란 자리가 어디인지 눈으로 바로 보이라고. */
+    @keyframes kgPop { 0%{transform:scale(0);opacity:0} 60%{transform:scale(1.5)} 100%{transform:scale(1);opacity:1} }
+    @keyframes kgHalo { 0%{transform:scale(1);opacity:.85} 100%{transform:scale(3.4);opacity:0} }
+    @keyframes kgDraw { to { stroke-dashoffset:0 } }
+    /* 테마 변수를 쓴다. 처음엔 어두운 값을 박아 넣었는데 밝은 테마에서
+       글자색만 어두운 채로 남아 숫자가 배경에 묻혔다. */
+    /* 자가학습은 늘 보고 있을 것이 아니다. 접으면 머리말 한 줄만 남고
+       그만큼 위의 그래프 판들이 커진다. 접힌 상태는 브라우저가 기억한다. */
+    .panel-toggle { margin-left:8px; background:transparent; color:var(--muted);
+                    border:1px solid var(--line); border-radius:6px; padding:1px 7px;
+                    font-size:10.5px; font-weight:600; cursor:pointer; font-family:inherit }
+    .panel-toggle:hover { color:var(--text) }
+    /* 접으면 부모 격자에서 그 줄을 줄여야 한다. 자식만 숨기면 부모가
+       잡아 둔 자리는 그대로라 위 판들이 안 커진다. */
+    .visuals.자가학습접힘 { grid-template-rows:minmax(280px,1.2fr) minmax(250px,1.3fr) minmax(150px,.7fr) auto }
+    #growth-view.접힘 { grid-template-rows:auto; overflow:hidden; max-height:none }
+    #growth-view.접힘 > :not(.view-head) { display:none }
+    #growth-view.접힘 .view-sub { display:none }
+    .growth-bar { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:10px 0 4px }
+    .growth-bar label { display:inline-flex; align-items:center; gap:6px; color:var(--muted); font-size:12.5px }
+    .growth-bar input[type=number] { width:70px; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:6px; padding:4px 6px; font:inherit }
+    .growth-note { color:var(--muted); font-size:12.5px }
+    .growth-note.run { color:var(--blue) } .growth-note.bad { color:var(--red) }
+    .growth-nums { display:grid; grid-template-columns:repeat(auto-fit,minmax(104px,1fr)); gap:8px; margin:8px 0 }
+    .growth-nums div { background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; min-width:0 }
+    /* 긴 값(사전 진도 30227/30227)이 칸 밖으로 삐져나가던 것을 막는다. */
+    .growth-nums b { display:block; font-size:19px; line-height:1.25; color:var(--text);
+                     font-variant-numeric:tabular-nums; overflow-wrap:anywhere }
+    .growth-nums b.long { font-size:14px; line-height:1.7 }
+    .growth-nums span { color:var(--muted); font-size:11.5px }
+    .growth-nums b.add { color:var(--green) } .growth-nums b.edge { color:var(--blue) } .growth-nums b.drop { color:var(--red) }
+    .growth-chip { display:inline-block; padding:1px 7px; border:1px solid var(--line); border-radius:99px; font-size:11.5px; color:var(--muted); margin:2px 4px 2px 0 }
+    .growth-legend { display:flex; gap:14px; align-items:center; color:var(--muted); font-size:11.5px; padding:2px 0 }
+    .growth-legend i { display:inline-block; width:14px; height:2.5px; border-radius:2px; margin-right:5px; vertical-align:middle }
+    /* 좁은 화면 규칙은 밝은 표면 규칙 뒤에 와야 한다. 앞에 두었더니
+       같은 특정도의 뒤 규칙(main·.workspace)이 이겨서, 900px 아래에서도
+       3열 격자가 그대로 남아 오른쪽 칸이 50px 로 찌그러졌다. */
+    @media(max-width:900px){main{width:min(100% - 14px,760px);height:calc(100vh - 14px);margin:7px auto}header{display:block}.workspace{grid-template-columns:1fr;grid-template-rows:118px minmax(300px,.9fr) minmax(0,1.1fr);min-height:0}
+      .conversation-sidebar{min-height:0}.conversation-list{display:flex;gap:5px;overflow:auto}.conversation-group{min-width:145px}.conversation-group h3{margin:2px 0}.conversation-sidebar .conversation-create{display:none}
+      .chat-card{height:auto}.visuals{grid-template-rows:220px 400px 150px 300px}.visuals.자가학습접힘{grid-template-rows:220px 400px 150px auto}.legend{display:none}.knowledge-grid{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 145px}.node-inspector{border-left:0;border-top:1px solid var(--line);grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr}.node-controls{grid-column:1}.node-list{grid-column:1}.node-detail{grid-column:2;grid-row:1 / span 2;border-top:0;border-left:1px solid var(--line);padding-left:10px}}
+</style>
 </head>
 <body>
 <main>
@@ -77,28 +172,38 @@
     <div class="meta" id="pack">pack 읽는 중…</div>
   </header>
   <div class="workspace">
+    <aside class="conversation-sidebar" aria-label="프로젝트와 대화">
+      <div class="conversation-head"><b>대화</b><button id="new-general-chat" class="toolbar-icon" type="button" title="새 일반 대화">＋</button></div>
+      <button id="new-project" class="conversation-create" type="button">＋ 프로젝트 만들기</button>
+      <div id="conversation-list" class="conversation-list"></div>
+    </aside>
     <section class="card chat-card">
       <div class="toolbar">
-        <select id="pack-select" aria-label="kgpack 정보" title="현재 로드한 단일 지식 묶음" disabled></select>
-        <input id="project-root" aria-label="프로젝트 폴더" placeholder="작업할 프로젝트 폴더의 절대 경로"><button id="project-apply">프로젝트 설정</button>
-        <input id="document-file" type="file" accept="application/pdf,.pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx" aria-label="PDF 또는 PPTX 문서 선택"><button id="document-analyze">문서 이해</button>
-        <select id="approval-mode" aria-label="승인 모드"><option value="risk">위험도별 일괄 승인</option><option value="all_steps">모든 단계 승인</option></select><button id="reset">이력 초기화</button><select id="graph" aria-label="지식 그래프 선택" hidden></select>
+        <div class="toolbar-primary"><div class="pack-chip" id="pack-mini">지식팩 준비 중…</div><button type="button" id="controls-toggle" class="toolbar-icon" aria-expanded="false" aria-controls="controls-popover" title="작업 설정">⋯</button></div>
       </div>
       <div id="chat" aria-live="polite"></div>
-      <div class="composer"><textarea id="input" placeholder="여기에 입력하세요. Enter로 전송, Shift+Enter로 줄바꿈"></textarea><button id="send">보내기</button></div>
+      <div class="composer"><textarea id="input" placeholder="무엇을 도와드릴까요?"></textarea><div class="composer-row"><button type="button" id="composer-tools" class="composer-icon" aria-label="작업 설정" title="프로젝트·문서·승인 설정">＋</button><span class="composer-hint">Enter 전송 · Shift+Enter 줄바꿈</span><button id="send" aria-label="보내기" title="보내기">↑</button></div></div>
       <div id="status"><span class="dot">●</span> 준비 중</div>
+      <div class="controls-popover" id="controls-popover" hidden>
+        <div class="controls-head"><b>작업 설정</b><button type="button" id="controls-close" class="toolbar-icon" aria-label="설정 닫기">×</button></div>
+        <label class="setting-label">지식팩<select id="pack-select" aria-label="kgpack 정보" title="현재 로드한 단일 지식 묶음" disabled></select></label>
+        <label class="setting-label">프로젝트 폴더<div class="setting-row"><input id="project-root" aria-label="프로젝트 폴더" placeholder="작업할 프로젝트 폴더의 절대 경로"><button id="project-apply">적용</button></div></label>
+        <label class="setting-label">문서 지식화<div class="setting-row"><input id="document-file" type="file" accept="application/pdf,.pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx" aria-label="PDF 또는 PPTX 문서 선택"><button id="document-analyze">분석</button></div></label>
+        <div class="setting-dual"><label class="setting-label">승인 방식<select id="approval-mode" aria-label="승인 모드"><option value="risk">위험도별 일괄 승인</option><option value="all_steps">모든 단계 승인</option></select></label><label class="setting-label">정서 표현<select id="affect-mode" aria-label="정서 표현"><option value="off">끔</option><option value="on">켬</option></select></label></div>
+        <div class="setting-foot"><button id="reset" class="quiet-danger">이 탭 이력 초기화</button></div><select id="graph" aria-label="지식 그래프 선택" hidden></select>
+      </div>
     </section>
     <section class="visuals">
       <div class="view" id="manager-view">
         <div class="view-head"><div class="view-title">노드 매니저 — 전체 지식 그래프</div><div class="view-sub">입력의 목적과 주제를 바탕으로 담당 KG를 고르고, 선택 결과를 강조합니다.</div></div>
-        <svg class="graph-svg" id="manager" role="img" aria-label="입력 이해 안내"></svg><div class="trace" id="manager-trace">입력의 의도·주제·제약·문맥만 분석합니다.</div>
+        <svg class="graph-svg" id="manager" role="img" aria-label="입력 이해 안내"></svg><div class="graph-actions" aria-label="매니저 보기"><button type="button" id="manager-fit">맞춤</button><label><input type="checkbox" id="manager-3d" checked>3D</label><label><input type="checkbox" id="manager-spin">회전</label></div><div class="trace" id="manager-trace">끌어서 돌리고 휠로 확대할 수 있습니다.</div>
       </div>
       <div class="view" id="knowledge-view">
         <div class="knowledge-grid">
           <div class="knowledge-canvas" id="knowledge-canvas">
             <div class="view-head"><div class="view-title" id="knowledge-title">이해 결과는 왼쪽 대화 카드에 표시됩니다</div><div class="view-sub" id="knowledge-sub">답변·검색·자가학습·명령 실행은 비활성화되어 있습니다.</div></div>
             <div class="legend"><span><i style="background:var(--purple)"></i>증거</span><span><i style="background:var(--yellow)"></i>주장</span><span><i style="background:var(--green)"></i>요건·목표</span><span><i style="background:var(--red)"></i>널</span></div>
-            <svg class="graph-svg" id="knowledge" role="img" aria-label="지식 그래프"></svg><div class="trace" id="trace">입력하면 판정 경로와 상위 매칭 점수가 표시됩니다.</div>
+            <svg class="graph-svg" id="knowledge" role="img" aria-label="지식 그래프"></svg><div class="graph-actions" aria-label="그래프 보기"><button type="button" id="knowledge-fit">맞춤</button><label><input type="checkbox" id="knowledge-3d" checked>3D</label><label><input type="checkbox" id="knowledge-spin">회전</label></div><div class="trace" id="trace">입력하면 판정 경로와 상위 매칭 점수가 표시됩니다.</div>
           </div>
           <aside class="node-inspector" aria-label="노드 상세">
             <div><h2>노드 상세</h2><small>선택 KG 읽기 전용 · 예시/출처/관계 검사</small></div>
@@ -109,7 +214,26 @@
       </div>
       <div class="view" id="dialogue-view">
         <div class="view-head"><div class="view-title">세션 문맥 — 입력 이해 이력</div><div class="view-sub">현재 브라우저 탭에서만 이전 주제를 참조합니다.</div></div>
-        <svg class="graph-svg" id="dialogue" role="img" aria-label="세션 입력 이력"></svg><div class="trace" id="dialogue-trace">아직 입력 이력이 없습니다.</div>
+        <svg class="graph-svg" id="dialogue" role="img" aria-label="세션 입력 이력"></svg><div class="graph-actions" aria-label="문맥 보기"><button type="button" id="dialogue-fit">맞춤</button><label><input type="checkbox" id="dialogue-3d" checked>3D</label><label><input type="checkbox" id="dialogue-spin">회전</label></div><div class="trace" id="dialogue-trace">아직 입력 이력이 없습니다.</div>
+      </div>
+      <div class="view" id="growth-view">
+        <div class="view-head">
+          <div class="view-title">자가학습 — 스스로 늘린 지식
+            <button type="button" id="growth-toggle" class="panel-toggle"
+                    aria-expanded="true" title="접었다 폈다">접기</button></div>
+          <div class="view-sub">사전에서 캐고 짓고, 남의 답을 뺏는 것만 골라 버린 뒤 들인다. 버린 것도 같이 보여준다 — 이 고리가 하는 일의 절반은 버리는 것이다.</div>
+        </div>
+        <div class="growth-bar">
+          <label>한 바퀴에 <input id="growth-max" type="number" value="200" min="10" max="2000" step="10"></label>
+          <label><input id="growth-dry" type="checkbox"> 시늉 (안 들임)</label>
+          <button type="button" id="growth-run">한 바퀴 돌리기</button>
+          <button type="button" id="growth-revert" class="quiet-danger">지난 바퀴 물리기</button>
+          <span class="growth-note" id="growth-note"></span>
+        </div>
+        <div class="growth-nums" id="growth-nums"></div>
+        <div class="growth-legend"><span><i style="background:var(--green)"></i>쌓인 노드</span><span><i style="background:var(--blue)"></i>쌓인 엣지</span><span><i style="background:var(--muted)"></i>바퀴마다 캔 것</span><span><i style="background:var(--yellow)"></i>바퀴마다 들인 것</span><span id="growth-x">바퀴</span></div>
+        <svg class="graph-svg" id="growth-chart" role="img" aria-label="바퀴가 돌수록 쌓인 노드와 엣지"></svg>
+        <div class="trace" id="growth-trace">아직 돈 바퀴가 없습니다.</div>
       </div>
     </section>
   </div>
@@ -142,6 +266,14 @@ function markdown(text){const lines=String(text??'').replace(/\r/g,'').split('\n
   if(code)out.push(`<pre>${code.language?`<span class="code-language">${escapeHtml(code.language)}</span>`:''}<code>${escapeHtml(code.lines.join('\n'))}</code></pre>`);closeBlocks();return out.join('')}
 let info=null,lastTrace=null,busy=false,selectedNode=null,understandingTurns=[];
 const understandingSession=(()=>{const key='nai-input-understanding-session';let id=sessionStorage.getItem(key);if(!id){id=(crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random()}`).replace(/[^A-Za-z0-9_-]/g,'');sessionStorage.setItem(key,id)}return id})();
+let activeConversationId=sessionStorage.getItem('nai-active-conversation')||null;
+function conversationButton(chat){const b=document.createElement('button');b.type='button';b.className='conversation-item'+(chat.id===activeConversationId?' active':'');b.textContent=chat.title||'새 대화';b.title=chat.title||'새 대화';b.onclick=()=>selectConversation(chat.id);return b}
+function renderConversations(data){const list=$('conversation-list');list.textContent='';const group=(title,chats,projectId=null)=>{const box=document.createElement('section');box.className='conversation-group';const h=document.createElement('h3');h.textContent=title;if(projectId){const plus=document.createElement('button');plus.className='new-chat';plus.type='button';plus.textContent='＋';plus.title='이 프로젝트에 새 대화';plus.onclick=()=>createConversation(projectId);h.appendChild(plus)}box.appendChild(h);const items=document.createElement('div');items.className='conversation-items';for(const chat of chats)items.appendChild(conversationButton(chat));box.appendChild(items);list.appendChild(box)};
+  for(const project of data.projects||[]){const label=document.createElement('div');label.className='project-title';label.textContent='▱ '+project.name;list.appendChild(label);group('프로젝트 대화',project.chats||[],project.id)}group('일반 대화',data.general_chats||[])}
+function restoreConversation(chat){$('chat').textContent='';understandingTurns=[];lastTrace=null;selectedNode=null;for(const turn of chat.turns||[]){message('user',turn.user);message('assistant',turn.assistant,turn.phase==='plan'?'저장된 실행 계획':'저장된 답변',true);understandingTurns.push({raw:turn.user,primary:turn.phase||'answer'})}render()}
+async function selectConversation(id){if(busy)return;const data=await api('/api/conversations',{action:'select',chat_id:id});activeConversationId=data.chat.id;sessionStorage.setItem('nai-active-conversation',activeConversationId);renderConversations(data.overview);restoreConversation(data.chat);const project=await api('/api/project',{session:understandingSession,conversation_id:activeConversationId});$('project-root').value=project.project_root;$('status').innerHTML='<span class="dot">●</span> '+(data.chat.project_id?'프로젝트 대화 문맥 사용':'일반 대화 문맥 사용')}
+async function createConversation(projectId=null){const data=await api('/api/conversations',{action:'create_chat',project_id:projectId});await selectConversation(data.chat.id)}
+async function createProject(){const name=prompt('새 프로젝트 이름');if(!name?.trim())return;const data=await api('/api/conversations',{action:'create_project',name:name.trim()});await selectConversation(data.chat.id)}
 function message(role,text,tag='',asMarkdown=false){const box=document.createElement('div');box.className='msg '+role;if(asMarkdown)box.innerHTML=markdown(text);else box.textContent=text;
   if(tag){const t=document.createElement('span');t.className='tag';t.textContent=tag;box.appendChild(t)}$('chat').appendChild(box);$('chat').scrollTop=$('chat').scrollHeight;return box}
 function understandingMarkdown(result){const overall=result.overall||{},primary=overall.primary||{},segments=result.segments||[],first=segments.find(s=>(s.goal||{}).kind==='answer')||segments.at(-1)||{},subject=(first.subject_candidates||[]).at(-1)?.text||'상황 질문',mod=first.modifiers||{},conditions=[...(mod.constraints||[]),...(mod.format||[])];
@@ -167,34 +299,119 @@ async function analyzeDocument(){const input=$('document-file'),file=input.files
 function showPlan(plan){const box=message('assistant',planMarkdown(plan),'승인 전에는 실행하지 않습니다.',true);if(!(plan.actions||[]).length)return;const controls=document.createElement('div');controls.style.cssText='display:flex;gap:7px;flex-wrap:wrap;margin-top:10px';
   const add=(label,ids,direct=false)=>{const b=document.createElement('button');b.textContent=label;b.onclick=()=>approvePlan(plan,ids,direct);controls.appendChild(b)};
   if(plan.mode==='all_steps'){for(const a of plan.actions)add(`${a.label} 승인`,[a.id],a.requires_direct_approval)}else{const safe=plan.actions.filter(a=>!a.requires_direct_approval);if(safe.length)add('계획 승인 후 실행',safe.map(a=>a.id));for(const a of plan.actions.filter(a=>a.requires_direct_approval))add(`${a.label} 직전 승인`,[a.id],true)}
-  const reject=document.createElement('button');reject.textContent='계획 거절';reject.onclick=async()=>{await api('/api/reject',{session:understandingSession,plan_id:plan.plan_id,reason:'user_rejected'});message('assistant','계획을 거절했습니다. 아무 행동도 실행하지 않았습니다.')};controls.appendChild(reject);box.appendChild(controls)}
-async function approvePlan(plan,ids,direct){setBusy(true);try{const r=await api('/api/approve',{session:understandingSession,plan_id:plan.plan_id,plan_hash:plan.plan_hash,action_ids:ids,direct});const lines=(r.executed||[]).map(x=>`### ${x.action}\n\n- **상태:** ${x.status}\n\n\`\`\`text\n${x.output||'출력 없음'}\n\`\`\``);message('assistant',`## 실행 기록\n\n${lines.join('\n\n')||'실행한 행동이 없습니다.'}`,'승인된 행동만 실행했습니다.',true);if((r.needs_direct_approval||[]).length)message('assistant','직전 승인이 필요한 행동: '+r.needs_direct_approval.map(x=>x.label).join(', '))}catch(e){message('assistant','실행 오류: '+e.message)}finally{setBusy(false)}}
+  const reject=document.createElement('button');reject.textContent='계획 거절';reject.onclick=async()=>{await api('/api/reject',{session:understandingSession,conversation_id:activeConversationId,plan_id:plan.plan_id,reason:'user_rejected'});message('assistant','계획을 거절했습니다. 아무 행동도 실행하지 않았습니다.')};controls.appendChild(reject);box.appendChild(controls)}
+async function approvePlan(plan,ids,direct){setBusy(true);try{const r=await api('/api/approve',{session:understandingSession,conversation_id:activeConversationId,plan_id:plan.plan_id,plan_hash:plan.plan_hash,action_ids:ids,direct});const lines=(r.executed||[]).map(x=>`### ${x.action}\n\n- **상태:** ${x.status}\n\n\`\`\`text\n${x.output||'출력 없음'}\n\`\`\``);message('assistant',`## 실행 기록\n\n${lines.join('\n\n')||'실행한 행동이 없습니다.'}`,'승인된 행동만 실행했습니다.',true);if((r.needs_direct_approval||[]).length)message('assistant','직전 승인이 필요한 행동: '+r.needs_direct_approval.map(x=>x.label).join(', '))}catch(e){message('assistant','실행 오류: '+e.message)}finally{setBusy(false)}}
 async function api(path,body){const opt=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)};
   const r=await fetch(path,opt),data=await r.json();if(!r.ok)throw new Error(data.error||r.statusText);return data}
 function color(kind){return {evidence:'#c79aff',case:'#65748f',concept:'#e7bd60',requirement:'#6ed6a0',goal:'#6ed6a0',irrelevant:'#ff7777'}[kind]||'#65748f'}
 function layout(nodes,w,h){const lanes={evidence:.10,case:.25,concept:.48,requirement:.72,goal:.92,irrelevant:.12},groups={};
   nodes.forEach(n=>(groups[n.kind]??=[]).push(n));const map=new Map();for(const [kind,list] of Object.entries(groups)){list.sort((a,b)=>a.name.localeCompare(b.name));
     list.forEach((n,i)=>map.set(n.name,{x:w*(lanes[kind]??.5),y:list.length===1?h/2:62+i*(h-116)/(list.length-1),kind}))}return map}
-function managerView(){if(!info?.manager_graph)return;const svg=$('manager'),box=$('manager-view'),w=box.clientWidth,h=box.clientHeight;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
-  const route=lastTrace?.route||info.route||{},selectedAll=new Set(route.selected_all||(route.selected?[route.selected]:[])),candidates=new Map(route.candidates||[]),goalName=info.manager_graph.goal,nodes=info.manager_graph.nodes.filter(n=>n.name!==goalName),cols=Math.min(4,Math.max(1,Math.ceil(Math.sqrt(nodes.length)))),rows=Math.ceil(nodes.length/cols),p=new Map();
-  nodes.forEach((n,i)=>{const col=i%cols,row=Math.floor(i/cols);p.set(n.name,{x:54+col*Math.max(1,(w-190)/(cols-1||1)),y:48+row*Math.max(1,(h-92)/(rows-1||1))})});const goal={x:w-72,y:h/2};
-  for(const n of nodes){const a=p.get(n.name),hit=selectedAll.has(n.name);svg.appendChild(S('line',{x1:a.x,y1:a.y,x2:goal.x,y2:goal.y,stroke:hit?'#6ed6a0':'#26344d','stroke-width':hit?3:1,opacity:hit?.95:.28}))}
-  for(const n of nodes){const a=p.get(n.name),hit=selectedAll.has(n.name),score=candidates.get(n.name);if(hit)svg.appendChild(S('circle',{cx:a.x,cy:a.y,r:10,fill:'none',stroke:'#76a4ff','stroke-width':2}));svg.appendChild(S('circle',{cx:a.x,cy:a.y,r:hit?6:3.7,fill:hit?'#6ed6a0':'#65748f',opacity:hit?1:.65}));const t=S('text',{x:a.x+7,y:a.y+3,fill:hit?'#edf2ff':'#91a0bd','font-size':hit?10:8.5,'font-weight':hit?700:400});t.textContent=cut(n.name.replace('graphs/graph_','').replace('.kg',''),17)+(score!==undefined?` ${Number(score).toFixed(2)}`:'');svg.appendChild(t)}
-  svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#6ed6a0'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10,'text-anchor':'middle','font-weight':700});gt.textContent=goalName;svg.appendChild(gt);
-  if(selectedAll.size){const ranked=(route.candidates||[]).map(x=>`${x[0].replace('graphs/','')} ${Number(x[1]).toFixed(3)}`).join(' · '),score=route.fallback?`일부 대목은 최고 후보가 선택 문턱 미달`:`대목별 선택 완료`,selected=[...selectedAll].join(' + ');$('manager-trace').textContent=`선택 ${selected} · ${score}${route.fallback?' · 자가학습 KG 포함':''}${ranked?' · 후보 '+ranked:''}`}
-  else $('manager-trace').textContent=`KG 노드 ${nodes.length}개 · 질문을 입력하면 선택 경로가 강조됩니다.`}
-function knowledge(){if(!info?.graph)return;const svg=$('knowledge'),box=$('knowledge-canvas'),w=box.clientWidth,h=box.clientHeight;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
-  const defs=S('defs'),marker=S('marker',{id:'arrow',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'});marker.appendChild(S('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#53617b'}));defs.appendChild(marker);svg.appendChild(defs);
-  const p=layout(info.graph.nodes,w,h),active=new Set(lastTrace?.activated||[]),path=new Set((lastTrace?.path||[]).map(e=>e[0]+'→'+e[2]));const edges=S('g'),nodes=S('g');svg.append(edges,nodes);
-  for(const [a,r,b] of info.graph.edges){const x=p.get(a),y=p.get(b);if(!x||!y)continue;const hit=path.has(a+'→'+b);edges.appendChild(S('line',{x1:x.x,y1:x.y,x2:y.x,y2:y.y,
-    stroke:hit?'#6ed6a0':(r==='부정'?'#703a45':'#2b3852'),'stroke-width':hit?3:1,opacity:hit?.95:.43,'stroke-dasharray':r==='부정'?'4 3':'','marker-end':'url(#arrow)'}))}
-  for(const n of info.graph.nodes){const x=p.get(n.name);if(!x)continue;const on=active.has(n.name),goal=n.kind==='goal',chosen=n.name===selectedNode,r=goal?10:on?8:4.5;if(on)nodes.appendChild(S('circle',{cx:x.x,cy:x.y,r:r+6,fill:'none',stroke:color(n.kind),'stroke-width':1.5,opacity:.55}));
-    if(chosen)nodes.appendChild(S('circle',{cx:x.x,cy:x.y,r:r+9,fill:'none',stroke:'#76a4ff','stroke-width':2,opacity:.9}));
-    const c=S('circle',{cx:x.x,cy:x.y,r,fill:color(n.kind),opacity:(on||goal||n.kind==='requirement')?1:.48,tabindex:0,role:'button','aria-label':`${n.name} 노드 상세`});c.style.cursor='pointer';const title=S('title');title.textContent=`${n.name} · ${n.kind}`;c.appendChild(title);c.addEventListener('click',()=>selectNode(n.name));c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectNode(n.name)}});nodes.appendChild(c);
-    if(on||goal||n.kind==='requirement'){const t=S('text',{x:x.x+r+4,y:x.y+3.5,fill:on||goal?'#edf2ff':'#91a0bd','font-size':on?11:9.5,'font-weight':on||goal?700:400});t.textContent=cut(n.name,on?20:13);nodes.appendChild(t)}}
-  if(lastTrace){const rank=(lastTrace.rankings||[]).slice(0,3).map(x=>`${x[0]} ${x[1].toFixed(3)}`).join(' · '),src=lastTrace.sources?.length?` · 출처 ${lastTrace.sources.length}곳`:'';
-    $('trace').textContent=`${lastTrace.verdict||''} · 활성 주장 ${lastTrace.winner||'없음'}${src}${rank?' · 상위 매칭 '+rank:''}${lastTrace.margin!==null&&lastTrace.margin!==undefined?' · 마진 '+lastTrace.margin:''}`}
-  else $('trace').textContent=`노드 ${info.graph.nodes.length} · 엣지 ${info.graph.edges.length} · 목표 ${info.graph.goal}`}
+// 외부 라이브러리 없이 3D 좌표를 SVG로 원근 투영한다. 층의 좌우 구조는 유지하고,
+// z축만 더해 관계가 겹친 그래프도 돌려 볼 수 있게 한다.
+const KG3D={enabled:true,spin:false,yaw:.72,pitch:-.30,zoom:1,raf:0};
+function projectKnowledge(point,w,h){if(!KG3D.enabled)return {x:point.x,y:point.y,s:1,z:0};const dx=point.x-w/2,dy=point.y-h/2,dz=point.z||0,cy=Math.cos(KG3D.yaw),sy=Math.sin(KG3D.yaw),x1=dx*cy+dz*sy,z1=-dx*sy+dz*cy,cp=Math.cos(KG3D.pitch),sp=Math.sin(KG3D.pitch),y1=dy*cp-z1*sp,z2=dy*sp+z1*cp,d=Math.max(w,h)*1.45,s=d/Math.max(d+z2,d*.3);return {x:w/2+x1*s*KG3D.zoom,y:h/2+y1*s*KG3D.zoom,s,z:z2}}
+// 매니저도 지식그래프처럼 돌린다. KG 가 218개인데 격자로 깔면 점이
+// 촘촘해서 하나도 안 보이고 집을 수도 없었다. 구(球) 위에 고르게 뿌리면
+// 같은 넓이에 훨씬 덜 겹치고, 돌리면 뒤에 가린 것이 앞으로 나온다.
+//
+// 피보나치 구를 쓰는 이유. 위도·경도로 깔면 극에서 뭉치는데, 황금각으로
+// 돌려 놓으면 개수와 상관없이 고르다. 218개든 2,000개든 같은 코드다.
+const MG3D={enabled:true,spin:false,yaw:.6,pitch:-.22,zoom:1,raf:0};
+let managerPick=null, managerHover=null;
+function projectManager(pt,w,h){if(!MG3D.enabled)return {x:w/2+pt.x,y:h/2+pt.y,s:1,z:0};
+  const cy=Math.cos(MG3D.yaw),sy=Math.sin(MG3D.yaw),x1=pt.x*cy+pt.z*sy,z1=-pt.x*sy+pt.z*cy,
+    cp=Math.cos(MG3D.pitch),sp=Math.sin(MG3D.pitch),y1=pt.y*cp-z1*sp,z2=pt.y*sp+z1*cp,
+    d=Math.max(w,h)*1.5,s=d/Math.max(d+z2,d*.3);
+  return {x:w/2+x1*s*MG3D.zoom,y:h/2+y1*s*MG3D.zoom,s,z:z2}}
+function managerSphere(n,R){const out=[],golden=Math.PI*(3-Math.sqrt(5));
+  for(let i=0;i<n;i++){const y=n===1?0:1-(i/(n-1))*2,r=Math.sqrt(Math.max(0,1-y*y)),t=golden*i;
+    out.push({x:Math.cos(t)*r*R,y:y*R,z:Math.sin(t)*r*R})}
+  return out}
+function managerView(){if(!info?.manager_graph)return;
+  const svg=$('manager'),box=$('manager-view'),w=box.clientWidth||600,h=box.clientHeight||220;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
+  const route=lastTrace?.route||info.route||{},
+    selectedAll=new Set(route.selected_all||(route.selected?[route.selected]:[])),
+    candidates=new Map(route.candidates||[]),goalName=info.manager_graph.goal,
+    nodes=info.manager_graph.nodes.filter(n=>n.name!==goalName);
+  const R=Math.min(w,h)*(MG3D.enabled?.42:.44),pts=managerSphere(nodes.length,R);
+  const goal=projectManager({x:0,y:0,z:0},w,h);
+  const 그림=nodes.map((n,i)=>{const q=projectManager(pts[i],w,h);
+    return {n,q,hit:selectedAll.has(n.name),pick:managerPick===n.name,fresh:!!n.new}});
+  // 뒤에 있는 것부터 그린다. 안 그러면 앞의 점이 뒤 점에 덮인다.
+  그림.sort((a,b)=>b.q.z-a.q.z);
+  for(const {n,q,hit,fresh,pick} of 그림){
+    const ln=S('line',{x1:q.x,y1:q.y,x2:goal.x,y2:goal.y,
+      stroke:fresh?'#6ed6a0':(hit?'#16966d':'#d6d9e1'),
+      'stroke-width':fresh?2:(hit?2.6:.8),
+      opacity:hit||pick?.9:Math.max(.06,Math.min(.42,q.s*.32))});
+    if(fresh){const L=Math.hypot(q.x-goal.x,q.y-goal.y);
+      ln.setAttribute('stroke-dasharray',L);ln.setAttribute('stroke-dashoffset',L);
+      ln.style.animation='kgDraw .55s ease-out forwards'}
+    svg.appendChild(ln)}
+  for(const {n,q,hit,fresh,pick} of 그림){
+    const r=(pick?6.5:hit?6:fresh?5.2:3.2)*(MG3D.enabled?Math.max(.62,Math.min(1.5,q.s)):1);
+    if(pick)svg.appendChild(S('circle',{cx:q.x,cy:q.y,r:r+5,fill:'none',stroke:'#536de6','stroke-width':2}));
+    else if(hit)svg.appendChild(S('circle',{cx:q.x,cy:q.y,r:r+4,fill:'none',stroke:'#536de6','stroke-width':1.6}));
+    // 보이는 점은 3~6px 라 손으로 맞히기 어렵다. 안 보이는 넓은 과녁을
+    // 밑에 깔아 준다 — 눌리는 것은 이쪽이고 그려지는 것은 위의 점이다.
+    svg.appendChild(S('circle',{cx:q.x,cy:q.y,r:Math.max(r+6,9),fill:'transparent',
+      'data-kg':n.name,style:'cursor:pointer'}));
+    const dot=S('circle',{cx:q.x,cy:q.y,r,
+      fill:fresh?'#6ed6a0':(hit?'#16966d':'#aab1c0'),
+      opacity:hit||fresh||pick?1:Math.max(.28,Math.min(.85,q.s)),
+      'data-kg':n.name,style:'cursor:pointer'});
+    if(fresh){dot.style.transformOrigin=`${q.x}px ${q.y}px`;
+      dot.style.animation='kgPop .6s cubic-bezier(.2,1.5,.4,1) both';
+      const halo=S('circle',{cx:q.x,cy:q.y,r,fill:'none',stroke:'#6ed6a0','stroke-width':2});
+      halo.style.transformOrigin=`${q.x}px ${q.y}px`;
+      halo.style.animation='kgHalo 1.5s ease-out infinite';svg.appendChild(halo)}
+    svg.appendChild(dot);
+    // 이름은 다 띄우면 글자밭이 된다. 고른 것·선택된 것·새로 붙은 것과,
+    // 앞쪽으로 나온 것만 띄운다.
+    if(pick||hit||fresh||!MG3D.enabled&&nodes.length<40||q.s>1.16){
+      const t=S('text',{x:q.x+r+4,y:q.y+3.5,
+        fill:fresh?'#1c7a56':(pick||hit?'#202124':'#737b8d'),
+        'font-size':pick||hit||fresh?10:8.4,'font-weight':pick||hit||fresh?700:450,
+        opacity:pick||hit||fresh?1:Math.max(.45,Math.min(.9,q.s)),
+        style:'pointer-events:none'});
+      const sc=candidates.get(n.name);
+      t.textContent=cut(n.name.replace('graphs/graph_','').replace('.kg',''),17)
+        +(sc!==undefined?` ${Number(sc).toFixed(2)}`:'');
+      svg.appendChild(t)}}
+  svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#16966d'}));
+  const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#202124','font-size':10,'text-anchor':'middle','font-weight':700,style:'pointer-events:none'});
+  gt.textContent=goalName;svg.appendChild(gt);
+  // 집은 것은 아래 줄에만 적으면 눈이 못 찾는다. 그 자리에 이름표를 단다.
+  const 집은칸=그림.find(x=>x.pick);
+  if(집은칸){const {q,n}=집은칸,이름=n.name.replace('graphs/graph_','').replace('.kg','');
+    const 글=cut(이름,22),폭=글.length*6.2+16;
+    const 왼=q.x+12+폭>w?q.x-12-폭:q.x+12;
+    svg.appendChild(S('rect',{x:왼,y:q.y-11,width:폭,height:20,rx:6,
+      fill:'#536de6',opacity:.95,style:'pointer-events:none'}));
+    const lt=S('text',{x:왼+8,y:q.y+3,fill:'#fff','font-size':10.5,'font-weight':700,
+      style:'pointer-events:none'});lt.textContent=글;svg.appendChild(lt)}
+  const 고른=managerPick&&nodes.find(x=>x.name===managerPick);
+  if(고른)$('manager-trace').textContent=`${고른.name.replace('graphs/','')} · ${고른.source||''}`
+    +(고른.new?' · 자가학습이 방금 들임':'');
+  else if(selectedAll.size){const ranked=(route.candidates||[]).slice(0,3)
+      .map(x=>`${x[0].replace('graphs/','')} ${Number(x[1]).toFixed(3)}`).join(' · '),
+    score=route.fallback?`일부 대목은 최고 후보가 선택 문턱 미달`:`대목별 선택 완료`,
+    selected=[...selectedAll].join(' + ');
+    $('manager-trace').textContent=`선택 ${selected} · ${score}${route.fallback?' · 자가학습 KG 포함':''}${ranked?' · 후보 '+ranked:''}`}
+  else $('manager-trace').textContent=`KG ${nodes.length}개 · 끌어서 돌리고 휠로 확대 · 점을 누르면 어느 KG 인지 나옵니다.`}
+
+function knowledge(){if(!info?.graph)return;const svg=$('knowledge'),box=$('knowledge-canvas'),w=box.clientWidth,h=box.clientHeight;if(w<20||h<20)return;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
+  const defs=S('defs'),marker=S('marker',{id:'arrow',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'});marker.appendChild(S('path',{d:'M 0 0 L 10 5 L 0 10 z',fill:'#a7adbd'}));defs.appendChild(marker);svg.appendChild(defs);
+  const flat=layout(info.graph.nodes,w,h),p=new Map(),depth=Math.min(w,h)*.28;info.graph.nodes.forEach((n,i)=>{const base=flat.get(n.name);if(base)p.set(n.name,projectKnowledge({...base,z:Math.sin((i+1)*2.399)*depth},w,h))});
+  const active=new Set(lastTrace?.activated||[]),path=new Set((lastTrace?.path||[]).map(e=>e[0]+'→'+e[2])),edges=S('g'),nodes=S('g');svg.append(edges,nodes);
+  for(const [a,r,b] of info.graph.edges){const x=p.get(a),y=p.get(b);if(!x||!y)continue;const hit=path.has(a+'→'+b);edges.appendChild(S('line',{x1:x.x,y1:x.y,x2:y.x,y2:y.y,stroke:hit?'#16966d':(r==='부정'?'#d54b56':'#c8ccd6'),'stroke-width':hit?3:1.15,opacity:KG3D.enabled?Math.max(.18,Math.min(.82,(x.s+y.s)/2)):.75,'stroke-dasharray':r==='부정'?'4 3':'','marker-end':'url(#arrow)'}))}
+  const ordered=[...info.graph.nodes].sort((a,b)=>(p.get(a.name)?.z||0)-(p.get(b.name)?.z||0));for(const n of ordered){const x=p.get(n.name);if(!x)continue;const on=active.has(n.name),goal=n.kind==='goal',chosen=n.name===selectedNode,base=goal?10:on?8:5,r=base*Math.max(.58,Math.min(1.55,x.s));if(on)nodes.appendChild(S('circle',{cx:x.x,cy:x.y,r:r+6,fill:'none',stroke:color(n.kind),'stroke-width':1.5,opacity:.48}));if(chosen)nodes.appendChild(S('circle',{cx:x.x,cy:x.y,r:r+9,fill:'none',stroke:'#536de6','stroke-width':2,opacity:.85}));
+    const c=S('circle',{cx:x.x,cy:x.y,r,fill:color(n.kind),opacity:on||goal||n.kind==='requirement'?1:Math.max(.38,Math.min(.82,x.s)),tabindex:0,role:'button','aria-label':`${n.name} 노드 상세`});c.style.cursor='pointer';const title=S('title');title.textContent=`${n.name} · ${n.kind}`;c.appendChild(title);c.addEventListener('click',()=>selectNode(n.name));c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectNode(n.name)}});nodes.appendChild(c);
+    const showLabel=!KG3D.enabled||on||goal||info.graph.nodes.length<=12||x.s>1.05;if(showLabel){const t=S('text',{x:x.x+r+4,y:x.y+3.5,fill:'var(--text)','font-size':on?11:8.4,'font-weight':on||goal?700:450,opacity:on||goal?1:Math.max(.5,Math.min(.92,x.s))});t.textContent=cut(n.name,on?20:12);nodes.appendChild(t)}}
+  if(lastTrace){const rank=(lastTrace.rankings||[]).slice(0,3).map(x=>`${x[0]} ${x[1].toFixed(3)}`).join(' · '),src=lastTrace.sources?.length?` · 출처 ${lastTrace.sources.length}곳`:'';$('trace').textContent=`${lastTrace.verdict||''} · 활성 주장 ${lastTrace.winner||'없음'}${src}${rank?' · 상위 매칭 '+rank:''}${KG3D.enabled?' · 3D':''}`}
+  else $('trace').textContent=`노드 ${info.graph.nodes.length} · 엣지 ${info.graph.edges.length} · 목표 ${info.graph.goal}${KG3D.enabled?' · 3D':''}`}
 function nodeDetail(){const d=$('node-detail'),n=info?.graph?.nodes.find(x=>x.name===selectedNode);d.textContent='';if(!n){d.textContent='그래프의 노드를 선택하면 상세 내용이 표시됩니다.';return}
   const src=typeof n.source==='object'&&n.source?`${n.source.document||'문서'} · ${n.source.location||'위치 미상'}${n.source.kind?` · ${n.source.kind}`:''}`:(n.source||'표시 없음');const title=document.createElement('b');title.textContent=n.name;d.append(title,document.createTextNode(`\n종류: ${n.kind}\n출처: ${src}\n`));
   const examples=(n.examples||[]).filter(Boolean);d.append(document.createTextNode(`\n예시 (${examples.length})\n${examples.length?examples.map(x=>'• '+x).join('\n'):'• 없음'}\n`));
@@ -204,26 +421,249 @@ function nodeList(){const list=$('node-list'),query=$('node-search').value.trim(
   if(!found.length){const empty=document.createElement('div');empty.style.padding='8px';empty.style.color='var(--dim)';empty.textContent='일치하는 노드가 없습니다.';list.appendChild(empty);return}
   for(const n of found){const b=document.createElement('button');b.type='button';b.className=n.name===selectedNode?'selected':'';b.textContent=`${n.name} · ${n.kind}`;b.title=(n.examples||[]).join('\n');b.onclick=()=>selectNode(n.name);list.appendChild(b)}}
 function selectNode(name){selectedNode=name;nodeList();nodeDetail();knowledge()}
-function dialogue(){if(!info)return;const svg=$('dialogue'),box=$('dialogue-view'),w=box.clientWidth,h=box.clientHeight;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';if(understandingTurns.length){const shown=understandingTurns.slice(-8);shown.forEach((item,i)=>{const y=shown.length===1?h/2:52+i*(h-100)/(shown.length-1),left={x:w*.13,y},right={x:w*.66,y};svg.appendChild(S('line',{x1:left.x,y1:y,x2:right.x,y2:y,stroke:'#4b6085','stroke-width':2}),S('circle',{cx:left.x,cy:y,r:6,fill:'#76a4ff'}),S('circle',{cx:right.x,cy:y,r:7,fill:'#e7bd60'}));const a=S('text',{x:left.x+10,y:y+4,fill:'#edf2ff','font-size':10});a.textContent=cut(item.raw,28);svg.appendChild(a);const b=S('text',{x:right.x+11,y:y+4,fill:'#edf2ff','font-size':10,'font-weight':700});b.textContent=item.primary;svg.appendChild(b)});$('dialogue-trace').textContent=`이 탭의 입력 ${understandingTurns.length}건 · 이전 주제는 이 이력에서만 참조`;return}$('dialogue-trace').textContent='아직 입력 이력이 없습니다. 이 탭의 이전 입력만 문맥 후보가 됩니다.';return;const hist=info.dialogue||[];
-  if(info.multi_route){const segments=info.route?.segments||[],goal={x:w*.90,y:h/2};segments.forEach((item,i)=>{const y=segments.length===1?h/2:55+i*(h-100)/(segments.length-1),q={x:w*.12,y},kg={x:w*.56,y};svg.appendChild(S('line',{x1:q.x,y1:y,x2:kg.x,y2:y,stroke:'#76a4ff','stroke-width':2}),S('line',{x1:kg.x,y1:y,x2:goal.x,y2:goal.y,stroke:'#6ed6a0','stroke-width':2}),S('circle',{cx:q.x,cy:y,r:6,fill:'#76a4ff'}),S('circle',{cx:kg.x,cy:y,r:7,fill:'#e7bd60'}));const qt=S('text',{x:q.x+10,y:y+4,fill:'#edf2ff','font-size':10});qt.textContent=item.question;svg.appendChild(qt);const kt=S('text',{x:kg.x+11,y:y+4,fill:'#edf2ff','font-size':10,'font-weight':700});kt.textContent=cut(item.selected.replace('graphs/',''),22);svg.appendChild(kt)});svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#6ed6a0'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10,'text-anchor':'middle','font-weight':700});gt.textContent='다중KG응답완료';svg.appendChild(gt);$('dialogue-trace').textContent=`질문 대목 ${segments.length}개 · KG ${info.routed_graphs.length}개를 함께 사용`;return}
-  if(info.self_learning){const goal={x:w*.90,y:h/2};for(let i=0;i<hist.length;i++){const item=hist[i],y=hist.length===1?h/2:58+i*(h-100)/(hist.length-1),q={x:w*.12,y},c={x:w*.51,y};svg.appendChild(S('line',{x1:q.x,y1:y,x2:c.x,y2:y,stroke:'#4b6085','stroke-width':2}),S('line',{x1:c.x,y1:y,x2:goal.x,y2:goal.y,stroke:'#6ed6a0','stroke-width':2}));
-      [[q,item.question,'#76a4ff'],[c,item.claim||'지식부족',item.claim?'#e7bd60':'#ff7777']].forEach(([p,t,col])=>{svg.appendChild(S('circle',{cx:p.x,cy:p.y,r:6,fill:col}));const tx=S('text',{x:p.x+10,y:p.y+4,fill:'#edf2ff','font-size':10.5});tx.textContent=t;svg.appendChild(tx)});const sc=S('text',{x:(c.x+goal.x)/2,y:y-7,fill:'#91a0bd','font-size':9.5,'text-anchor':'middle'});sc.textContent=`출처 ${item.sources?.length||0}곳${item.learned?' · 새 학습':''}`;svg.appendChild(sc)}
-    svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:'#6ed6a0'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10.5,'text-anchor':'middle','font-weight':700});gt.textContent=info.graph.goal;svg.appendChild(gt);$('dialogue-trace').textContent=hist.length?`${hist.length}턴 · 마지막 ${hist.at(-1).verdict} · overlay 채택 ${info.learned_records}건`:'아직 대화가 없습니다.';return}
-  const state=info.session||{},req=info.graph.requirements||[],secured=state.secured||{},goal={x:w*.88,y:h/2};req.forEach((name,i)=>{const y=req.length===1?h/2:55+i*(h-100)/(req.length-1),done=name in secured,p={x:w*.57,y};svg.appendChild(S('line',{x1:p.x,y1:y,x2:goal.x,y2:goal.y,stroke:done?'#6ed6a0':'#2b3852','stroke-width':done?2:1}));
-    if(done){const e={x:w*.16,y};svg.appendChild(S('line',{x1:e.x,y1:y,x2:p.x,y2:y,stroke:'#c79aff','stroke-width':2}),S('circle',{cx:e.x,cy:y,r:6,fill:'#c79aff'}));const et=S('text',{x:e.x+10,y:y+4,fill:'#91a0bd','font-size':10});et.textContent=cut(secured[name],15);svg.appendChild(et)}svg.appendChild(S('circle',{cx:p.x,cy:y,r:6,fill:done?'#6ed6a0':'#53617b'}));const t=S('text',{x:p.x+10,y:y+4,fill:done?'#edf2ff':'#91a0bd','font-size':10});t.textContent=cut(name,18);svg.appendChild(t)});
-  svg.appendChild(S('circle',{cx:goal.x,cy:goal.y,r:11,fill:state.result==='승'?'#6ed6a0':'#53617b'}));const gt=S('text',{x:goal.x,y:goal.y+27,fill:'#edf2ff','font-size':10.5,'text-anchor':'middle','font-weight':700});gt.textContent=info.graph.goal;svg.appendChild(gt);$('dialogue-trace').textContent=`${state.turn||0}턴 · 요건 ${Object.keys(secured).length}/${req.length} 확보 · 인내심 ${state.patience??'-'}${state.result?' · 결과 '+state.result:''}`}
+// 세션 문맥도 다른 판처럼 돌린다. 평평한 목록이면 순서만 보이는데, 이
+// 화면이 보여줘야 할 것은 '무엇이 아직 살아 있나' 다 — 맥락은 창이 아니라
+// 감쇠라서(docs/ko/direction.md), 오래된 것은 사라지지 않고 옅어진다.
+// 나선으로 세우면 최근이 앞에 크게, 오래된 것이 뒤로 작고 흐리게 놓인다.
+const DG3D={enabled:true,spin:false,yaw:.5,pitch:-.25,zoom:1,raf:0};
+function projectDialogue(pt,w,h){if(!DG3D.enabled)return {x:w/2+pt.x,y:h/2+pt.y,s:1,z:0};
+  const cy=Math.cos(DG3D.yaw),sy=Math.sin(DG3D.yaw),x1=pt.x*cy+pt.z*sy,z1=-pt.x*sy+pt.z*cy,
+    cp=Math.cos(DG3D.pitch),sp=Math.sin(DG3D.pitch),y1=pt.y*cp-z1*sp,z2=pt.y*sp+z1*cp,
+    d=Math.max(w,h)*1.6,s=d/Math.max(d+z2,d*.3);
+  return {x:w/2+x1*s*DG3D.zoom,y:h/2+y1*s*DG3D.zoom,s,z:z2}}
+function dialogue(){if(!info)return;const svg=$('dialogue'),box=$('dialogue-view'),
+  w=box.clientWidth,h=box.clientHeight;
+  if(w<20||h<20)return;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
+  const 색=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const 글색=색('--text')||'#202124',흐림=색('--muted')||'#6b7280',
+        줄색=색('--line')||'#e5e5e9',파랑=색('--blue')||'#536de6';
+  const 턴=understandingTurns.slice(-14);
+  if(!턴.length){
+    const t=S('text',{x:w/2,y:h/2,fill:흐림,'font-size':11,'text-anchor':'middle'});
+    t.textContent='아직 입력 이력이 없습니다';svg.appendChild(t);
+    $('dialogue-trace').textContent='이 탭의 이전 입력만 문맥 후보가 됩니다.';return}
+  // 나선. 최근 것이 z 앞쪽(=크게), 오래된 것이 뒤로 물러난다.
+  const R=Math.min(w,h)*.3, 깊이=Math.min(w,h)*.55;
+  const 점=턴.map((_x,i)=>{const u=턴.length<2?1:i/(턴.length-1), a=u*Math.PI*1.6;
+    return {x:Math.cos(a)*R, y:(u-.5)*R*1.1, z:-깊이/2+u*깊이}});
+  const 그림=턴.map((x,i)=>({x,q:projectDialogue(점[i],w,h),i,최근:i===턴.length-1}));
+  그림.sort((a,b)=>b.q.z-a.q.z);
+  for(let k=0;k<그림.length-1;k++){}                 // 선은 아래에서 순서대로
+  const 순서=턴.map((_x,i)=>projectDialogue(점[i],w,h));
+  for(let i=1;i<순서.length;i++)
+    svg.appendChild(S('line',{x1:순서[i-1].x,y1:순서[i-1].y,x2:순서[i].x,y2:순서[i].y,
+      stroke:줄색,'stroke-width':1.2,opacity:.55}));
+  for(const {x,q,i,최근} of 그림){
+    const r=(최근?6:3.6)*(DG3D.enabled?Math.max(.6,Math.min(1.5,q.s)):1);
+    // 옅어짐이 곧 이 화면의 요점이다. 오래될수록 흐리게.
+    const 진하기=Math.max(.22,Math.min(1,(i+1)/턴.length));
+    svg.appendChild(S('circle',{cx:q.x,cy:q.y,r,fill:최근?파랑:흐림,
+      opacity:최근?1:진하기*.85}));
+    if(최근||q.s>1.02||턴.length<=6){
+      const t=S('text',{x:q.x+r+5,y:q.y+3.5,fill:최근?글색:흐림,
+        'font-size':최근?10.5:9,'font-weight':최근?700:450,
+        opacity:최근?1:Math.max(.4,진하기)});
+      t.textContent=cut(x.raw,최근?26:18);svg.appendChild(t)}}
+  $('dialogue-trace').textContent=
+    `이 탭의 입력 ${understandingTurns.length}건 · 최근 ${턴.length}건 · 끌어서 돌릴 수 있습니다`
+    +` · 뒤로 갈수록 옅어지는 것이 맥락 감쇠입니다`;
+}
+function affectTag(affect){if(!affect?.enabled)return '';const labels={care:'돌봄',warmth:'따뜻함',boundary:'경계',focus:'집중',neutral:'중립'};return ` · 정서 표현: ${labels[affect.mode]||'중립'}`}
 function render(){if(info?.graph&&!info.graph.nodes.some(n=>n.name===selectedNode))selectedNode=lastTrace?.winner||info.graph.goal||info.graph.nodes[0]?.name||null;managerView();knowledge();dialogue();nodeList();nodeDetail()}
-function applyInfo(data,announce=false,clearTrace=false){info=data;if(clearTrace){lastTrace=null;selectedNode=null}$('pack').textContent=`${data.pack} · 그래프 ${data.graphs.length}개`;
+function applyInfo(data,announce=false,clearTrace=false){info=data;if(clearTrace){lastTrace=null;selectedNode=null}$('pack').textContent=`${data.pack} · 그래프 ${data.graphs.length}개`;$('pack-mini').textContent=`📦 ${data.pack} · 전체 KG ${data.graphs.length}개`;
   if(!$('pack-select').options.length){const p=document.createElement('option');p.value=data.pack;p.textContent=`📦 ${data.pack} · 전체 KG ${data.graphs.length}개`;$('pack-select').appendChild(p)}
   if(!$('graph').options.length){const manager=document.createElement('option');manager.value=data.manager_selection;manager.textContent='🧭 노드 매니저 · 질문별 자동 KG 선택';$('graph').appendChild(manager);const group=document.createElement('optgroup');group.label=`${data.pack} 안의 지식 그래프 · 수동 고정`;for(const name of data.graphs){const o=document.createElement('option');o.value=name;o.textContent=`↳ ${name.replace('graphs/','')}`;group.appendChild(o)}$('graph').appendChild(group)}$('graph').value=data.selected;
   const route=data.routed_graphs?.length?` · 선택 ${data.routed_graphs.map(x=>x.replace('graphs/','')).join(' + ')}`:'';$('status').innerHTML=`<span class="dot">●</span> 목표 수행 준비 · 이 탭의 문맥과 승인만 사용`;
-  $('knowledge-title').textContent=data.multi_route?`통합 지식 그래프 — ${data.routed_graphs.length}개 KG`:(data.routed_graph?`선택된 지식 그래프 — ${data.routed_graph.replace('graphs/','')}`:(data.routing_mode?'선택된 지식 그래프 — 질문 대기':'지식 그래프 — '+data.selected.replace('graphs/','')));
+  const shape=data.graph||{nodes:[],edges:[]},size=`노드 ${shape.nodes.length} · 엣지 ${shape.edges.length}`;
+  $('knowledge-title').textContent=data.multi_route?`통합 지식 그래프 — ${data.routed_graphs.length}개 KG · ${size}`:(data.routed_graph?`선택된 지식 그래프 — ${data.routed_graph.replace('graphs/','')} · ${size}`:(data.routing_mode?`선택된 지식 그래프 — 질문 대기 · ${size}`:'지식 그래프 — '+data.selected.replace('graphs/','')+' · '+size));
   $('knowledge-sub').textContent=data.multi_route?'각 KG의 노드는 이름공간으로 분리하고 각 목표를 다중 응답 목표에 연결했습니다.':(data.routed_graph?'노드 매니저가 고른 KG에서 이번 입력의 실제 근거 경로를 표시합니다.':'굵은 선은 실제 근거 경로, 밝은 노드는 이번 턴의 활성 노드입니다.');
+  $('knowledge-title').title=$('knowledge-title').textContent;$('knowledge-sub').title=$('knowledge-sub').textContent;
   if(announce)message('assistant','목표 수행 모드입니다. KG로 답하고, 부족하면 웹 원문을 조사합니다. 파일·명령·overlay 저장은 계획과 승인 뒤에만 실행합니다.');render()}
-function setBusy(v){busy=v;$('send').disabled=v;$('pack-select').disabled=v;$('project-root').disabled=v;$('project-apply').disabled=v;$('document-file').disabled=v;$('document-analyze').disabled=v;$('approval-mode').disabled=v;$('graph').disabled=v;$('reset').disabled=v;$('status').style.opacity=v?.65:1}
-async function send(){const q=$('input').value.trim();if(!q||busy)return;message('user',q);$('input').value='';setBusy(true);try{const r=await api('/api/turn',{input:q,session:understandingSession,approval_mode:$('approval-mode').value}),result=r.understanding;understandingTurns.push({raw:result.raw,primary:result.overall.primary.kind});message('assistant',understandingMarkdown(result),'목적 분석 완료',true);if(r.phase==='answer'){const mode=r.answer?.trace?.mode,label=mode==='situation'?'검증된 상태 추론 답변':mode==='dialogue'?'대화 응답':'KG 근거 답변';showSemantic(q,r.answer?.semantic_parse,r.answer?.reasoning,r.answer?.verification);message('assistant',r.answer.answer_markdown||r.answer.answer,label,true);lastTrace=r.answer.trace||null;applyInfo(r.answer.info)}else if(r.phase==='research'){showSemantic(q,r.semantic_parse||r.answer?.semantic_parse,r.reasoning||r.answer?.reasoning,r.verification||r.answer?.verification);message('assistant',r.web_answer||'웹 원문에서 답을 만들지 못했습니다.','웹 원문 근거 답변',true);lastTrace=r.answer?.trace||null;if(r.answer?.info)applyInfo(r.answer.info);showPlan(r.plan)}else showPlan(r.plan);$('status').innerHTML=`<span class="dot">●</span> ${r.phase==='answer'?'답변 완료':r.phase==='research'?'웹 근거 답변 · 저장 승인 대기':'승인 대기 계획'} · 실행 전 승인 필요`;render()}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false);$('input').focus()}}
-$('send').onclick=send;$('input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});$('document-analyze').onclick=analyzeDocument;$('node-search').oninput=nodeList;$('node-kind').onchange=nodeList;$('graph').onchange=()=>{};$('project-apply').onclick=async()=>{const path=$('project-root').value.trim();if(!path)return;setBusy(true);try{const r=await api('/api/project',{session:understandingSession,path});$('project-root').value=r.project_root;message('assistant',`프로젝트 폴더를 ${r.project_root}로 설정했습니다. 이후 파일 행동은 이 폴더 안에서만 계획됩니다.`)}catch(e){message('assistant','프로젝트 설정 오류: '+e.message)}finally{setBusy(false)}};$('reset').onclick=async()=>{setBusy(true);try{await api('/api/understanding/reset',{session:understandingSession});understandingTurns=[];$('chat').textContent='';message('assistant','이 탭의 입력·승인 문맥을 초기화했습니다. KG·overlay에는 변경이 없습니다.');render()}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false)}};addEventListener('resize',render);
-(async()=>{try{applyInfo(await api('/api/info'),true,true);const project=await api('/api/project',{session:understandingSession});$('project-root').value=project.project_root;$('input').focus()}catch(e){message('assistant','시작 실패: '+e.message)}})();
+function setBusy(v){busy=v;$('send').disabled=v;$('pack-select').disabled=v;$('project-root').disabled=v;$('project-apply').disabled=v;$('document-file').disabled=v;$('document-analyze').disabled=v;$('approval-mode').disabled=v;$('affect-mode').disabled=v;$('graph').disabled=v;$('reset').disabled=v;$('status').style.opacity=v?.65:1}
+async function send(){const q=$('input').value.trim();if(!q||busy)return;if(!activeConversationId){await createConversation();if(!activeConversationId)return}message('user',q);$('input').value='';setBusy(true);try{const r=await api('/api/turn',{input:q,session:understandingSession,conversation_id:activeConversationId,approval_mode:$('approval-mode').value}),result=r.understanding;understandingTurns.push({raw:result.raw,primary:result.overall.primary.kind});message('assistant',understandingMarkdown(result),'목적 분석 완료',true);if(r.phase==='answer'){const mode=r.answer?.trace?.mode,label=(mode==='situation'?'검증된 상태 추론 답변':mode==='dialogue'?'대화 응답':'KG 근거 답변')+affectTag(r.affect);showSemantic(q,r.answer?.semantic_parse,r.answer?.reasoning,r.answer?.verification);message('assistant',r.answer.answer_markdown||r.answer.answer,label,true);lastTrace=r.answer.trace||null;applyInfo(r.answer.info)}else if(r.phase==='research'){showSemantic(q,r.semantic_parse||r.answer?.semantic_parse,r.reasoning||r.answer?.reasoning,r.verification||r.answer?.verification);message('assistant',r.web_answer||'웹 원문에서 답을 만들지 못했습니다.','웹 원문 근거 답변'+affectTag(r.affect),true);lastTrace=r.answer?.trace||null;if(r.answer?.info)applyInfo(r.answer.info);showPlan(r.plan)}else showPlan(r.plan);if(r.conversation){activeConversationId=r.conversation.id;sessionStorage.setItem('nai-active-conversation',activeConversationId);renderConversations(await api('/api/conversations'))}$('status').innerHTML=`<span class="dot">●</span> ${r.phase==='answer'?'답변 완료':r.phase==='research'?'웹 근거 답변 · 저장 승인 대기':'승인 대기 계획'} · 실행 전 승인 필요`;render()}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false);$('input').focus()}}
+async function setAffect(){if(busy)return;const enabled=$('affect-mode').value==='on';setBusy(true);try{const r=await api('/api/affect',{session:understandingSession,enabled});message('assistant',r.affect.note,'이 탭에서만 유지 · KG 판단과 지식은 바뀌지 않음')}catch(e){message('assistant','정서 표현 설정 오류: '+e.message)}finally{setBusy(false)}}
+function setControls(open){$('controls-popover').hidden=!open;$('controls-toggle').setAttribute('aria-expanded',String(open))}$('controls-toggle').onclick=()=>setControls($('controls-popover').hidden);$('controls-close').onclick=()=>setControls(false);$('composer-tools').onclick=()=>setControls(true);
+$('send').onclick=send;$('input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});$('new-general-chat').onclick=()=>createConversation();$('new-project').onclick=createProject;$('document-analyze').onclick=analyzeDocument;$('node-search').oninput=nodeList;$('node-kind').onchange=nodeList;$('graph').onchange=()=>{};$('affect-mode').onchange=setAffect;$('project-apply').onclick=async()=>{const path=$('project-root').value.trim();if(!path)return;setBusy(true);try{const r=await api('/api/project',{session:understandingSession,path,conversation_id:activeConversationId});$('project-root').value=r.project_root;message('assistant',`프로젝트 폴더를 ${r.project_root}로 설정했습니다. 이후 파일 행동은 이 폴더 안에서만 계획됩니다.`)}catch(e){message('assistant','프로젝트 설정 오류: '+e.message)}finally{setBusy(false)}};$('reset').onclick=async()=>{setBusy(true);try{await api('/api/understanding/reset',{session:understandingSession});understandingTurns=[];$('chat').textContent='';message('assistant','이 대화의 입력·승인 문맥을 초기화했습니다. 저장된 대화와 KG·overlay는 변경하지 않습니다.');setControls(false);render()}catch(e){message('assistant','오류: '+e.message)}finally{setBusy(false)}};addEventListener('resize',()=>{render();growthChart()});
+// 3D 캔버스 조작: 빈 곳을 끌면 회전, 휠로 확대/축소한다. 노드 클릭은 기존 상세 선택을 보존한다.
+$('knowledge-fit').onclick=()=>{KG3D.yaw=.72;KG3D.pitch=-.30;KG3D.zoom=1;knowledge()};$('knowledge-3d').onchange=e=>{KG3D.enabled=e.target.checked;knowledge()};$('knowledge-spin').onchange=e=>{KG3D.spin=e.target.checked};
+let knowledgeDrag=null;const knowledgeSvg=$('knowledge');knowledgeSvg.addEventListener('pointerdown',e=>{if(e.target!==knowledgeSvg)return;knowledgeDrag={x:e.clientX,y:e.clientY};knowledgeSvg.setPointerCapture(e.pointerId)});knowledgeSvg.addEventListener('pointermove',e=>{if(!knowledgeDrag)return;KG3D.yaw+=(e.clientX-knowledgeDrag.x)*.009;KG3D.pitch=Math.max(-1.1,Math.min(1.1,KG3D.pitch+(e.clientY-knowledgeDrag.y)*.009));knowledgeDrag={x:e.clientX,y:e.clientY};knowledge()});knowledgeSvg.addEventListener('pointerup',e=>{knowledgeDrag=null;try{knowledgeSvg.releasePointerCapture(e.pointerId)}catch{}});knowledgeSvg.addEventListener('wheel',e=>{e.preventDefault();KG3D.zoom=Math.max(.45,Math.min(2.2,KG3D.zoom*(e.deltaY<0?1.12:.89)));knowledge()},{passive:false});
+// 세션 문맥 조작 — 매니저·지식그래프와 같은 자리, 같은 손놀림.
+$('dialogue-fit').onclick=()=>{DG3D.yaw=.5;DG3D.pitch=-.25;DG3D.zoom=1;dialogue()};
+$('dialogue-3d').onchange=e=>{DG3D.enabled=e.target.checked;dialogue()};
+$('dialogue-spin').onchange=e=>{DG3D.spin=e.target.checked};
+let dialogueDrag=null;const dialogueSvg=$('dialogue');
+dialogueSvg.addEventListener('pointerdown',e=>{dialogueDrag={x:e.clientX,y:e.clientY};dialogueSvg.setPointerCapture(e.pointerId)});
+dialogueSvg.addEventListener('pointermove',e=>{if(!dialogueDrag)return;
+  DG3D.yaw+=(e.clientX-dialogueDrag.x)*.009;
+  DG3D.pitch=Math.max(-1.1,Math.min(1.1,DG3D.pitch+(e.clientY-dialogueDrag.y)*.009));
+  dialogueDrag={x:e.clientX,y:e.clientY};dialogue()});
+dialogueSvg.addEventListener('pointerup',e=>{dialogueDrag=null;try{dialogueSvg.releasePointerCapture(e.pointerId)}catch{}});
+dialogueSvg.addEventListener('wheel',e=>{e.preventDefault();
+  DG3D.zoom=Math.max(.45,Math.min(2.4,DG3D.zoom*(e.deltaY<0?1.12:.89)));dialogue()},{passive:false});
+const animateDialogue=()=>{if(DG3D.spin&&DG3D.enabled&&!dialogueDrag){DG3D.yaw+=.004;dialogue()}DG3D.raf=requestAnimationFrame(animateDialogue)};DG3D.raf=requestAnimationFrame(animateDialogue);
+
+// 자가학습 접기. 접히면 위 판들이 그만큼 커진다.
+function 자가학습접기(접을까){
+  const v=$('growth-view'),b=$('growth-toggle');
+  v.classList.toggle('접힘',접을까);
+  if(v.parentElement)v.parentElement.classList.toggle('자가학습접힘',접을까);
+  b.textContent=접을까?'펴기':'접기';
+  b.setAttribute('aria-expanded',String(!접을까));
+  try{localStorage.setItem('nai-growth-collapsed',접을까?'1':'0')}catch{}
+  // 접거나 펴면 칸 크기가 달라진다. 다시 그려야 안 찌그러진다.
+  managerView();dialogue();if(typeof knowledge==='function')knowledge();
+  if(!접을까&&typeof growth==='function')growth();
+}
+$('growth-toggle').onclick=e=>{e.stopPropagation();
+  자가학습접기(!$('growth-view').classList.contains('접힘'))};
+try{if(localStorage.getItem('nai-growth-collapsed')==='1')자가학습접기(true)}catch{}
+
+$('manager-fit').onclick=()=>{MG3D.yaw=.6;MG3D.pitch=-.22;MG3D.zoom=1;managerPick=null;managerView()};
+$('manager-3d').onchange=e=>{MG3D.enabled=e.target.checked;managerView()};
+$('manager-spin').onchange=e=>{MG3D.spin=e.target.checked};
+let managerDrag=null,managerMoved=0,managerHit=null;const managerSvg=$('manager');
+// 누른 대상은 여기서 잡아 둔다. setPointerCapture 를 걸면 그 뒤의
+// pointerup 은 target 이 캡처 대상(SVG)으로 바뀌어서, pointerup 에서
+// e.target 을 보면 점이 아니라 늘 SVG 다 — 그래서 클릭이 안 먹었다.
+managerSvg.addEventListener('pointerdown',e=>{
+  managerDrag={x:e.clientX,y:e.clientY};managerMoved=0;
+  managerHit=(e.target&&e.target.getAttribute&&e.target.getAttribute('data-kg'))||null;
+  managerSvg.setPointerCapture(e.pointerId)});
+managerSvg.addEventListener('pointermove',e=>{if(!managerDrag)return;
+  managerMoved+=Math.abs(e.clientX-managerDrag.x)+Math.abs(e.clientY-managerDrag.y);
+  MG3D.yaw+=(e.clientX-managerDrag.x)*.009;
+  MG3D.pitch=Math.max(-1.1,Math.min(1.1,MG3D.pitch+(e.clientY-managerDrag.y)*.009));
+  managerDrag={x:e.clientX,y:e.clientY};managerView()});
+managerSvg.addEventListener('pointerup',e=>{
+  // 끌었으면 고른 것이 아니다. 조금이라도 움직였으면 클릭으로 안 친다.
+  if(managerDrag&&managerMoved<4){
+    // 캡처 때문에 e.target 은 못 쓴다. 누를 때 잡아 둔 것을 쓰되, 빈
+    // 자리를 눌렀으면 그 자리의 점을 다시 찾아본다(점이 작아 빗나가기 쉽다).
+    let kg=managerHit;
+    if(!kg){const el=document.elementFromPoint(e.clientX,e.clientY);
+      kg=el&&el.getAttribute&&el.getAttribute('data-kg')||null}
+    managerPick=kg&&kg!==managerPick?kg:null;managerView()}
+  managerHit=null;
+  managerDrag=null;try{managerSvg.releasePointerCapture(e.pointerId)}catch{}});
+managerSvg.addEventListener('wheel',e=>{e.preventDefault();
+  MG3D.zoom=Math.max(.45,Math.min(2.6,MG3D.zoom*(e.deltaY<0?1.12:.89)));managerView()},{passive:false});
+const animateManager=()=>{if(MG3D.spin&&MG3D.enabled&&!managerDrag){MG3D.yaw+=.003;managerView()}MG3D.raf=requestAnimationFrame(animateManager)};MG3D.raf=requestAnimationFrame(animateManager);
+const animateKnowledge=()=>{if(KG3D.spin&&KG3D.enabled&&!knowledgeDrag){KG3D.yaw+=.004;knowledge()}KG3D.raf=requestAnimationFrame(animateKnowledge)};KG3D.raf=requestAnimationFrame(animateKnowledge);
+(async()=>{try{applyInfo(await api('/api/info'),false,true);let conversations=await api('/api/conversations');renderConversations(conversations);const available=[...(conversations.general_chats||[]),...(conversations.projects||[]).flatMap(x=>x.chats||[])];if(!activeConversationId||!available.some(x=>x.id===activeConversationId)){if(!available.length){const created=await api('/api/conversations',{action:'create_chat'});activeConversationId=created.chat.id}else activeConversationId=available[0].id;sessionStorage.setItem('nai-active-conversation',activeConversationId)}await selectConversation(activeConversationId);const affect=await api('/api/affect',{session:understandingSession});$('affect-mode').value=affect.affect.enabled?'on':'off';$('input').focus()}catch(e){message('assistant','시작 실패: '+e.message)}})();
+
+/* 자가학습 — 자가저작이 바퀴마다 남긴 기록을 읽어 보여준다. 3초마다 다시
+   읽으므로 도는 동안 자라는 것이 보인다. 버린 것도 같이 보여준다 —
+   늘어난 것만 세면 이 고리가 스스로를 속인다. */
+let growthTimer=null, growthLastDone=null, growthRows=[];
+function growthNote(text,kind){const n=$('growth-note');if(!n)return;n.className='growth-note'+(kind?' '+kind:'');n.textContent=text||''}
+function growthChart(rows){
+  const svg=$('growth-chart'),box=$('growth-view');if(!svg||!box)return;growthRows=rows=rows||growthRows;
+  // viewBox 를 제 칸이 아닌 바깥 칸(패딩 포함 845)과 안 맞는 높이 170 으로
+  // 잡아서, 150px 짜리 칸에 맞추느라 통째로 88% 로 줄고 좌우에 빈 띠가
+  // 생겼다. 그리는 판의 실제 크기를 그대로 쓴다.
+  const r=svg.getBoundingClientRect(),w=Math.round(r.width)||box.clientWidth||600,h=Math.round(r.height)||150;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.textContent='';
+  const muted=getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()||'#6b7280';
+  const line2=getComputedStyle(document.documentElement).getPropertyValue('--line').trim()||'#e5e5e9';
+  if(!rows.length){const t=S('text',{x:w/2,y:h/2,fill:muted,'font-size':12,'text-anchor':'middle'});
+    t.textContent='아직 돈 바퀴가 없습니다';svg.appendChild(t);
+    $('growth-x').textContent='바퀴';return}
+  // 축이 없으면 선 두 개가 무엇인지 알 수 없다. 바닥선과 눈금, 끝값을 같이 그린다.
+  const L=34,P=34,max=Math.max(1,...rows.map(r=>Math.max(r.노드누적,r.엣지누적)));
+  const X=i=>rows.length<2?(L+w-P)/2:L+i*(w-L-P)/(rows.length-1), Y=v=>h-22-(v/max)*(h-40);
+  for(const v of [0,max/2,max]){const y=Y(v);
+    svg.appendChild(S('line',{x1:L,y1:y,x2:w-P,y2:y,stroke:line2,'stroke-width':1,
+      'stroke-dasharray':v?'3 4':''}));
+    const t=S('text',{x:L-6,y:y+3.5,fill:muted,'font-size':9.5,'text-anchor':'end'});
+    t.textContent=Math.round(v);svg.appendChild(t)}
+  const draw=(key,color)=>{const d=rows.map((r,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(r[key]).toFixed(1)}`).join('');
+    svg.appendChild(S('path',{d,fill:'none',stroke:color,'stroke-width':2,
+      'stroke-linejoin':'round','stroke-linecap':'round'}));
+    // 바퀴마다 점을 찍는다. 선만 있으면 몇 바퀴를 돈 것인지 안 보인다.
+    rows.forEach((r,i)=>svg.appendChild(S('circle',{cx:X(i),cy:Y(r[key]),r:rows.length>60?1.4:2.6,fill:color})))};
+  const 초록=getComputedStyle(document.documentElement).getPropertyValue('--green').trim()||'#16966d';
+  const 파랑=getComputedStyle(document.documentElement).getPropertyValue('--blue').trim()||'#536de6';
+  draw('노드누적',초록); draw('엣지누적',파랑);
+  // 누적만 그리면 늘 오른쪽 위로 가는 선이라, 줄어드는지가 안 보인다.
+  // 바퀴마다의 값을 제 눈금으로 같이 그린다 — 캐는 쪽이 마르면 여기서
+  // 먼저 꺾인다(사전이 바닥나면 캔 것부터 준다).
+  // 점선은 눈금이 다르다. 왼쪽 축(누적)에 대고 읽으면 '캔 것 4134' 로
+  // 잘못 읽힌다 — 실제로는 200이다. 오른쪽에 제 눈금을 적어 준다.
+  const 회최대=Math.max(1,...rows.map(r=>Math.max(r.캠||0,r.들임||0)));
+  const Y2=v=>h-22-((v/회최대)*(h-40));
+  for(const v of [0,회최대]){const y=Y2(v);
+    const t=S('text',{x:w-P+4,y:y+3.5,fill:muted,'font-size':9.5});
+    t.textContent=Math.round(v);svg.appendChild(t)}
+  const 회선=(key,color)=>{const pts=rows.map((r,i)=>[X(i),Y2(r[key]||0)]);
+    svg.appendChild(S('path',{d:pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(''),
+      fill:'none',stroke:color,'stroke-width':1.4,'stroke-dasharray':'4 3',opacity:.85}));
+    pts.forEach(p=>svg.appendChild(S('circle',{cx:p[0],cy:p[1],r:rows.length>60?1.2:2,fill:color,opacity:.85})))};
+  const 흐림=getComputedStyle(document.documentElement).getPropertyValue('--muted').trim()||'#6b7280';
+  const 노랑=getComputedStyle(document.documentElement).getPropertyValue('--yellow').trim()||'#bd7c14';
+  회선('캠',흐림); 회선('들임',노랑);
+  const 끝=rows.at(-1);
+  const t=S('text',{x:w-P,y:14,fill:muted,'font-size':11,'text-anchor':'end'});
+  t.textContent=`노드 ${끝.노드누적} · 엣지 ${끝.엣지누적}`;svg.appendChild(t);
+  const x0=S('text',{x:L,y:h-6,fill:muted,'font-size':9.5});x0.textContent='1바퀴';svg.appendChild(x0);
+  const x1=S('text',{x:w-P,y:h-6,fill:muted,'font-size':9.5,'text-anchor':'end'});
+  x1.textContent=`${rows.length}바퀴`;svg.appendChild(x1);
+  const 끝캠=끝.캠||0,끝들=끝.들임||0;
+  $('growth-x').textContent=`바퀴 ${rows.length}번 · 왼쪽축=쌓인 수(실선) · 오른쪽축=바퀴마다(점선) · 마지막 바퀴 캔 ${끝캠} → 들인 ${끝들}`;
+}
+async function growth(){
+  let d;try{d=await api('/api/growth')}catch(e){return}
+  const run=d.돎||{};
+  const btn=$('growth-run');if(btn){btn.disabled=!!run.도나;btn.textContent=run.도나?'도는 중 …':'한 바퀴 돌리기'}
+  const rev=$('growth-revert');if(rev)rev.disabled=!!run.도나;
+  if(run.도나)growthNote(run.말||'돌고 있다','run');
+  else if(run.탈)growthNote('탈이 났다 — '+run.탈,'bad');
+  else if(run.끝난것){
+    growthNote(`끝났다 — 캔 것 ${run.끝난것.캠||0} · 버림 ${run.끝난것.버림||0} · 들임 ${run.끝난것.들임||0} · 노드 +${run.끝난것.노드||0} · 엣지 +${run.끝난것.엣지||0}`);
+    // 바퀴가 막 끝났으면 매니저 그래프를 다시 받아 그린다. 새 노드가
+    // 거기서 뿅 튀어 붙는 것이 이 화면의 요점이다.
+    if(growthLastDone!==run.끝난것){growthLastDone=run.끝난것;
+      try{const fresh=await api('/api/info');info=fresh;managerView()}catch(e){}}
+  }
+  else growthNote('');
+  const num=(v,label,cls)=>`<div><b class="${[cls,String(v).length>7?'long':''].filter(Boolean).join(' ')}">${v}</b><span>${label}</span></div>`;
+  $('growth-nums').innerHTML =
+    num(d.그래프수,'지금 그래프')+num('+'+d.합.노드,'늘어난 노드','add')+
+    num('+'+d.합.엣지,'늘어난 엣지','edge')+num(d.합.들임,'들인 그래프')+
+    num(d.합.버림,'관문에서 버림','drop')+
+    num(d.진도.표제수?`${d.진도.본데까지}/${d.진도.표제수}`:'-','사전 진도');
+  growthChart(d.쌓임||[]);
+  const last=(d.바퀴||[]).at(-1);
+  let trace;
+  if(!last)trace='아직 돈 바퀴가 없습니다. 위 버튼으로 한 바퀴 돌려 보십시오.';
+  else{
+    const [a,b]=last.제자리||[0,0];
+    trace=`마지막 바퀴 ${(last.때||'').replace('T',' ')} — 캔 것 ${last.캠||0} · 지음 ${last.지음||0} · 버림 ${last.버림||0} · 들임 ${last.들임||0}`
+      +` · 관문 제자리 ${a}→${b}${last.물림?' · 물림':''}${last.시늉?' · 시늉':''}`;
+  }
+  // 그래프 이름은 사전에서 캐 온 남의 글자다. 꺾쇠가 하나 섞이면 이 줄
+  // 아래가 통째로 깨지므로 넣기 전에 막는다.
+  const chips=(last&&last.들인것||[]).map(g=>`<span class="growth-chip">${escapeHtml(g.이름||'')} · ${escapeHtml(g.목표||'?')} · 노드 ${g.노드||0} · 엣지 ${g.엣지||0} · 증거 ${g.증거||0}</span>`).join('');
+  const drops=(last&&last.버린것||[]).map(n=>`<span class="growth-chip">${escapeHtml(n)}</span>`).join('');
+  $('growth-trace').innerHTML = escapeHtml(trace)
+    + (chips?`<div style="margin-top:8px"><b>들어온 것</b><br>${chips}</div>`:'')
+    + (drops?`<div style="margin-top:8px"><b>관문에서 걸린 것</b><br>${drops}</div>`:'');
+}
+if($('growth-run')){
+  $('growth-run').onclick=async()=>{
+    $('growth-run').disabled=true;
+    try{const r=await api('/api/growth/run',{max:+$('growth-max').value,dry:$('growth-dry').checked});
+      if(!r.ok)growthNote('못 돌린다 — '+(r.why||''),'bad')}catch(e){growthNote('못 돌린다 — '+e.message,'bad')}
+    growth();
+  };
+  $('growth-revert').onclick=async()=>{
+    if(!confirm('지난 바퀴에 들인 그래프를 지웁니다. 사람이 적은 것은 안 건드립니다.'))return;
+    try{const r=await api('/api/growth/revert');
+      growthNote(r.ok?`되돌렸다 — 그래프 ${r.removed}개 지움`:'못 물린다 — '+(r.why||''),r.ok?'':'bad')}
+    catch(e){growthNote('못 물린다 — '+e.message,'bad')}
+    growth();
+  };
+  growth(); growthTimer=setInterval(growth,3000);
+}
 </script>
 </body>
 </html>

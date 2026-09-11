@@ -1,0 +1,401 @@
+{
+  "schema": "semantic-contrasts-result-v1",
+  "dataset_sha256": "fdc065061e29f05ebadae494e5028a480afaac707a2947055a17eaf045aa607e",
+  "scope": "development semantic/state path, not end-to-end UI or blind evaluation",
+  "passed": 9,
+  "total": 10,
+  "rows": [
+    {
+      "id": "roles-forward",
+      "family": "roles",
+      "parsed": true,
+      "answer_ok": true,
+      "ok": true,
+      "result": {
+        "status": "answered",
+        "operator": "relational_graph",
+        "verification": {
+          "accepted": true,
+          "checks": [
+            {
+              "operator": "relational_graph",
+              "ok": true
+            }
+          ],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ]
+        },
+        "answer": "소라입니다.",
+        "transitions": [
+          {
+            "fact": [
+              "소라",
+              "taller",
+              "다미"
+            ],
+            "evidence": {
+              "start": 0,
+              "end": 14,
+              "text": "소라는 다미보다 키가 크다"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "roles-reversed",
+      "family": "roles",
+      "parsed": true,
+      "answer_ok": true,
+      "ok": true,
+      "result": {
+        "status": "answered",
+        "operator": "relational_graph",
+        "verification": {
+          "accepted": true,
+          "checks": [
+            {
+              "operator": "relational_graph",
+              "ok": true
+            }
+          ],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ]
+        },
+        "answer": "다미입니다.",
+        "transitions": [
+          {
+            "fact": [
+              "다미",
+              "taller",
+              "소라"
+            ],
+            "evidence": {
+              "start": 0,
+              "end": 14,
+              "text": "다미는 소라보다 키가 크다"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "negative-not-converse",
+      "family": "negation",
+      "parsed": true,
+      "answer_ok": true,
+      "ok": true,
+      "result": {
+        "status": "unknown",
+        "answer": null,
+        "operator": null,
+        "transitions": [],
+        "verification": {
+          "accepted": true,
+          "checks": [
+            {
+              "operator": "relational_graph",
+              "ok": false,
+              "reason": "no_unique_graph_answer"
+            }
+          ],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ],
+          "reason": "no_verified_generic_operator"
+        }
+      }
+    },
+    {
+      "id": "negative-conflict",
+      "family": "negation",
+      "parsed": true,
+      "answer_ok": true,
+      "ok": true,
+      "result": {
+        "status": "unknown",
+        "answer": null,
+        "operator": null,
+        "transitions": [],
+        "verification": {
+          "accepted": true,
+          "checks": [
+            {
+              "operator": "relational_graph",
+              "ok": false,
+              "reason": "no_unique_graph_answer"
+            }
+          ],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ],
+          "reason": "no_verified_generic_operator"
+        }
+      }
+    },
+    {
+      "id": "negative-proof-parent",
+      "family": "negation",
+      "parsed": true,
+      "answer_ok": true,
+      "ok": true,
+      "result": {
+        "status": "unknown",
+        "answer": null,
+        "operator": null,
+        "transitions": [],
+        "verification": {
+          "accepted": true,
+          "checks": [
+            {
+              "operator": "relational_graph",
+              "ok": false,
+              "reason": "no_unique_graph_answer"
+            }
+          ],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ],
+          "reason": "no_verified_generic_operator"
+        }
+      }
+    },
+    {
+      "id": "negative-unrelated",
+      "family": "negation",
+      "parsed": true,
+      "answer_ok": true,
+      "ok": true,
+      "result": {
+        "status": "answered",
+        "operator": "relational_graph",
+        "verification": {
+          "accepted": true,
+          "checks": [
+            {
+              "operator": "relational_graph",
+              "ok": true
+            }
+          ],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ]
+        },
+        "answer": "소라입니다.",
+        "transitions": [
+          {
+            "fact": [
+              "소라",
+              "taller",
+              "다미"
+            ],
+            "evidence": {
+              "start": 0,
+              "end": 14,
+              "text": "소라는 다미보다 키가 크다"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "completed-move",
+      "family": "modality",
+      "parsed": true,
+      "answer_ok": true,
+      "ok": true,
+      "result": {
+        "status": "answered",
+        "operator": "relational_graph",
+        "verification": {
+          "accepted": true,
+          "checks": [
+            {
+              "operator": "relational_graph",
+              "ok": true
+            }
+          ],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ]
+        },
+        "answer": "서랍에 있습니다.",
+        "transitions": [
+          {
+            "operation": "state_update",
+            "subject": "우표",
+            "predicate": "location",
+            "before": null,
+            "after": "봉투",
+            "evidence": {
+              "start": 0,
+              "end": 11,
+              "text": "우표는 봉투에 있었다"
+            }
+          },
+          {
+            "operation": "state_update",
+            "subject": "우표",
+            "predicate": "location",
+            "before": "봉투",
+            "after": "서랍",
+            "evidence": {
+              "start": 13,
+              "end": 29,
+              "text": "소라가 우표를 서랍으로 옮겼다"
+            }
+          },
+          {
+            "fact": [
+              "우표",
+              "location",
+              "서랍"
+            ],
+            "evidence": {
+              "start": 13,
+              "end": 29,
+              "text": "소라가 우표를 서랍으로 옮겼다"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "planned-move",
+      "family": "modality",
+      "parsed": true,
+      "answer_ok": true,
+      "ok": true,
+      "result": {
+        "status": "answered",
+        "operator": "relational_graph",
+        "verification": {
+          "accepted": true,
+          "checks": [
+            {
+              "operator": "relational_graph",
+              "ok": true
+            }
+          ],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ]
+        },
+        "answer": "봉투에 있습니다.",
+        "transitions": [
+          {
+            "operation": "state_update",
+            "subject": "우표",
+            "predicate": "location",
+            "before": null,
+            "after": "봉투",
+            "evidence": {
+              "start": 0,
+              "end": 11,
+              "text": "우표는 봉투에 있었다"
+            }
+          },
+          {
+            "operation": "nonactual_observation",
+            "modality": "planned",
+            "fact": [
+              "우표",
+              "location",
+              "서랍"
+            ],
+            "evidence": {
+              "start": 13,
+              "end": 33,
+              "text": "소라가 우표를 서랍으로 옮길 예정이다"
+            }
+          },
+          {
+            "fact": [
+              "우표",
+              "location",
+              "봉투"
+            ],
+            "evidence": {
+              "start": 0,
+              "end": 11,
+              "text": "우표는 봉투에 있었다"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "negated-move",
+      "family": "modality",
+      "parsed": true,
+      "answer_ok": true,
+      "ok": true,
+      "result": {
+        "status": "answered",
+        "operator": "relational_graph",
+        "verification": {
+          "accepted": true,
+          "checks": [
+            {
+              "operator": "relational_graph",
+              "ok": true
+            }
+          ],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ]
+        },
+        "answer": "봉투에 있습니다.",
+        "transitions": [
+          {
+            "operation": "state_update",
+            "subject": "우표",
+            "predicate": "location",
+            "before": null,
+            "after": "봉투",
+            "evidence": {
+              "start": 0,
+              "end": 11,
+              "text": "우표는 봉투에 있었다"
+            }
+          },
+          {
+            "fact": [
+              "우표",
+              "location",
+              "봉투"
+            ],
+            "evidence": {
+              "start": 0,
+              "end": 11,
+              "text": "우표는 봉투에 있었다"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "unseen-paraphrase",
+      "family": "paraphrase",
+      "parsed": false,
+      "answer_ok": false,
+      "ok": false,
+      "result": {
+        "status": "unknown",
+        "answer": null,
+        "operator": null,
+        "transitions": [],
+        "verification": {
+          "accepted": false,
+          "checks": [],
+          "sources": [
+            "graphs/graph_일상추론.kg"
+          ],
+          "reason": "semantic_parse_not_certified"
+        }
+      }
+    }
+  ]
+}

@@ -11,28 +11,28 @@ class CommonConversationTest(unittest.TestCase):
         self.old_explain = sys.modules.get("explain")
         engine = types.ModuleType("engine")
         engine.POS = ("증명", "충족")
-        engine.전진들 = lambda g: tuple(g.get("전진관계") or engine.POS)
+        engine.forward_rels = lambda g: tuple(g.get("전진관계") or engine.POS)
         engine.load = lambda _: {"목표": "끝", "adj": {"사실": [("증명", "근거")], "근거": [("충족", "끝")]}}
 
         class Session:
-            회차 = 0
-            계획 = {}
+            turn_no = 0
+            plan = {}
             def __init__(self, graph): self.graph = graph
-            def 말하기(self, text):
-                self.회차 += 1; self.계획 = {"주장": "사실"}
+            def say(self, text):
+                self.turn_no += 1; self.plan = {"주장": "사실"}
                 return "인정", "그래프 근거로 답합니다.", None
-            def 결과(self): return None
-            def 현황(self): return ".끝"
-        engine.세션 = Session
+            def result(self): return None
+            def status(self): return ".끝"
+        engine.Session = Session
 
         explain = types.ModuleType("explain")
-        explain.열기 = lambda _: {"노드": {"정의": ["정의"]}}
+        explain.open_ = lambda _: {"노드": {"정의": ["정의"]}}
         class Memory:
             def __init__(self): self.turn = 0; self.items = []
-            def 한턴(self, topics, question, topic): self.turn += 1; self.items.append((topics, question, topic))
-            def 뜨거운(self): return [x[2] for x in self.items if x[2]][-5:]
-        explain.대화기억 = Memory
-        explain.물어보기 = lambda _g, text, memory: ("이유", "그래프의 근거입니다.", "정의")
+            def record_turn(self, topics, question, topic): self.turn += 1; self.items.append((topics, question, topic))
+            def hottest(self): return [x[2] for x in self.items if x[2]][-5:]
+        explain.DialogueMemory = Memory
+        explain.ask = lambda _g, text, memory: ("이유", "그래프의 근거입니다.", "정의")
         sys.modules["engine"] = engine
         sys.modules["explain"] = explain
         import nai
@@ -51,8 +51,8 @@ class CommonConversationTest(unittest.TestCase):
 
     def test_game_hides_untrusted_topic(self):
         conversation = self.nai.Conversation("example.kg")
-        conversation._session.말하기 = lambda _text: ("미지", "모르겠습니다.", None)
-        conversation._session.계획 = {"주장": "사실"}
+        conversation._session.say = lambda _text: ("미지", "모르겠습니다.", None)
+        conversation._session.plan = {"주장": "사실"}
         answer = conversation.reply("알 수 없는 말")
         self.assertIsNone(answer.topic)
         self.assertEqual(answer.path, [])

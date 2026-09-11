@@ -40,7 +40,7 @@ def build_graph(source: str | os.PathLike[str], output: str | os.PathLike[str], 
     생성은 기존 ``build.py`` 한 곳에 맡긴다. 이 함수는 입력을 모으고 결과를
     저장할 뿐이므로, 게임용 KG 저작 형식과 문서형 자동 생성 형식이 섞이지 않는다.
     """
-    from build import 짓기
+    from build import build
 
     root = Path(source)
     if not root.is_dir():
@@ -50,7 +50,7 @@ def build_graph(source: str | os.PathLike[str], output: str | os.PathLike[str], 
                    and not p.name.lower().startswith(("readme", "_", ".")))
     if not files:
         raise ValueError("%s 안에 지식으로 쓸 .txt 또는 .md 파일이 없습니다" % root)
-    graph = 짓기([str(p) for p in files], 최소=minimum)
+    graph = build([str(p) for p in files], min_n=minimum)
     destination = Path(output)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(graph, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -71,13 +71,13 @@ class Conversation:
             import engine
             self.graph = engine.load(self.path)
             self._engine = engine
-            self._session = engine.세션(self.graph)
+            self._session = engine.Session(self.graph)
             self._memory = None
         else:
             import explain
-            self.graph = explain.열기(self.path)
+            self.graph = explain.open_(self.path)
             self._engine = explain
-            self._memory = explain.대화기억()
+            self._memory = explain.DialogueMemory()
             self._session = None
 
     def _game_path(self, topic: Optional[str]) -> list[str]:
@@ -92,7 +92,7 @@ class Conversation:
             if node == goal:
                 return route
             for relation, nxt in self.graph["adj"].get(node, ()):
-                if relation in self._engine.전진들(self.graph) and nxt not in seen:
+                if relation in self._engine.forward_rels(self.graph) and nxt not in seen:
                     seen.add(nxt)
                     queue.append((nxt, route + [nxt]))
         return []
@@ -104,27 +104,27 @@ class Conversation:
             return Reply("말씀을 한 문장으로 남겨 주십시오.", "empty", None, [])
 
         if self.mode == "game":
-            tag, answer, outcome = self._session.말하기(text)
-            plan = self._session.계획
+            tag, answer, outcome = self._session.say(text)
+            plan = self._session.plan
             # 미지/B2에서 engine은 다음 판단을 위해 가장 가까운 후보를 계산할 수
             # 있다. 그 후보는 답의 근거가 아니므로 공통 API 밖으로 새면 안 된다.
             topic = (plan.get("주장") or plan.get("근거")) if tag not in ("미지", "B2") else None
             return Reply(answer, tag, topic, self._game_path(topic), outcome)
 
-        intent, answer, topic = self._engine.물어보기(self.graph, text, self._memory)
+        intent, answer, topic = self._engine.ask(self.graph, text, self._memory)
         # 설명 엔진은 기억을 외부에서 한 턴씩 갱신하게 설계되어 있다. 공통 API가
         # 그 책임을 가져야 후속 질문("그건 왜?")도 모든 사용자에게 작동한다.
         topics = [topic] if topic else []
-        self._memory.한턴(topics, text, topic)
+        self._memory.record_turn(topics, text, topic)
         return Reply(answer or "그래프에서 근거를 찾지 못했습니다.", intent, topic, [topic] if topic else [])
 
     def state(self) -> dict[str, Any]:
         """UI/게임이 다음 선택지를 표시할 때 쓰는, 생성하지 않은 대화 상태."""
         if self.mode == "game":
-            return {"mode": "game", "turn": self._session.회차,
-                    "outcome": self._session.결과(), "requirements": self._session.현황()}
+            return {"mode": "game", "turn": self._session.turn_no,
+                    "outcome": self._session.result(), "requirements": self._session.status()}
         return {"mode": "guide", "turn": self._memory.turn,
-                "active_topics": self._memory.뜨거운()}
+                "active_topics": self._memory.hottest()}
 
 
 def _main() -> int:

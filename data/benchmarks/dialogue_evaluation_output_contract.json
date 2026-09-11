@@ -1,0 +1,191 @@
+{
+  "scope": "offline local reasoning via AppState; reasoning KG only; no browser rendering",
+  "dataset_sha256": "aa97be2a07797792706c15872d8621a808e6f567493f2bcaa6e49dab78267c20",
+  "passed": 10,
+  "total": 16,
+  "rows": [
+    {
+      "answer": "20입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "expression-precedence",
+      "family": "composition",
+      "elapsed_ms": 11.092
+    },
+    {
+      "answer": "44입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "expression-parentheses",
+      "family": "composition",
+      "elapsed_ms": 5.133
+    },
+    {
+      "answer": "5입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "equation-other-variable",
+      "family": "equation",
+      "elapsed_ms": 6.992
+    },
+    {
+      "answer": "5입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "equation-both-sides",
+      "family": "equation",
+      "elapsed_ms": 4.196
+    },
+    {
+      "answer": "선택된 KG에서 질문과 정확히 일치하는 근거를 찾지 못했습니다. 유사도만으로 답하지 않습니다.",
+      "verdict": "근거불충분",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "id": "equation-verbal",
+      "family": "paraphrase",
+      "elapsed_ms": 4.356
+    },
+    {
+      "answer": "선택된 KG에서 질문과 정확히 일치하는 근거를 찾지 못했습니다. 유사도만으로 답하지 않습니다.",
+      "verdict": "근거불충분",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "id": "equation-incomplete",
+      "family": "abstention",
+      "elapsed_ms": 2.404
+    },
+    {
+      "answer": "12개입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "quantity-multistep",
+      "family": "state_change",
+      "elapsed_ms": 4.944
+    },
+    {
+      "answer": "선택된 KG에서 질문과 정확히 일치하는 근거를 찾지 못했습니다. 유사도만으로 답하지 않습니다.",
+      "verdict": "근거불충분",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "id": "quantity-paraphrase",
+      "family": "paraphrase",
+      "elapsed_ms": 2.782
+    },
+    {
+      "answer": "9개입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "quantity-distractor",
+      "family": "relevance",
+      "elapsed_ms": 3.661
+    },
+    {
+      "answer": "민수입니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "relation-transitive",
+      "family": "graph_chain",
+      "elapsed_ms": 3.901
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "id": "relation-underconstrained",
+      "family": "abstention",
+      "elapsed_ms": 2.543
+    },
+    {
+      "answer": "네, 나루는 수영합니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "deduction-chain",
+      "family": "graph_chain",
+      "elapsed_ms": 3.926
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "id": "deduction-converse",
+      "family": "abstention",
+      "elapsed_ms": 3.223
+    },
+    {
+      "answer": "가방에 있습니다.",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "reference-update",
+      "family": "context",
+      "elapsed_ms": 3.622
+    },
+    {
+      "answer": "11",
+      "verdict": "계산완료",
+      "phase": "answer",
+      "research_calls": 0,
+      "ok": true,
+      "failure": null,
+      "id": "instruction-format",
+      "family": "instruction",
+      "elapsed_ms": 4.067
+    },
+    {
+      "answer": "이 질문을 맡을 KG를 고르지 못했습니다.",
+      "verdict": "미지",
+      "phase": "research",
+      "research_calls": 1,
+      "ok": false,
+      "failure": "web_fallback",
+      "id": "reading-cause",
+      "family": "reading",
+      "elapsed_ms": 5.676
+    }
+  ],
+  "resources": {
+    "startup_with_tracemalloc_ms": 11.367,
+    "startup_python_peak_bytes_excluding_imports": 1547366,
+    "three_turn_python_peak_bytes": 1757818,
+    "median_case_ms": 3.9965,
+    "persistence_bytes_all_chats": 13228
+  }
+}

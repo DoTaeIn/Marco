@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import subprocess
 import time
+import threading
 
 import web_learn
 
@@ -33,6 +34,8 @@ class GoalRuntime:
     def __init__(self, workspace):
         self.workspace = Path(workspace).resolve()
         self.pending = {}
+        self.executions = {}
+        self._execution_lock = threading.RLock()
 
     def _action(self, kind, label, *, target=None, risk="write", expected="", reversible=True, payload=None):
         return {"id": kind + "-" + _hash([kind, target, payload])[:8], "kind": kind, "label": label,
@@ -69,11 +72,16 @@ class GoalRuntime:
         return plan
 
     def research(self, question, limit=5):
-        """읽기 전용 조사. 저장은 절대 하지 않는다."""
-        items, sources = web_learn.검색(question, 개수=limit), []
+        """읽기 전용 조사. 저장은 절대 하지 않는다.
+
+        원문을 고르는 잣대는 물음 전체가 아니라 물음의 내용 낱말이다. 물음을
+        통째로 넘기면 페이지 문장 안에 그 물음이 그대로 들어 있어야 관련으로
+        쳐져서, 사람이 말로 쓴 물음은 어느 것도 출처를 못 얻었다."""
+        terms = web_learn.question_word(question) or question
+        items, sources = web_learn.search(question, count=limit), []
         for item in items:
             try:
-                title, sentences = web_learn.원문읽기(item["url"], question, 최대문장=3)
+                title, sentences = web_learn.read_source(item["url"], terms, max_sentence=3)
             except Exception:
                 continue
             if sentences:
@@ -84,8 +92,19 @@ class GoalRuntime:
 
     def plan_learning(self, question, research, mode, graph_path, workspace=None):
         actions, unsupported = [], []
+        topic = None
         if research["verified"] and graph_path:
-            actions.append(self._action("knowledge.learn", "검증된 웹 지식을 overlay에 저장", target=str(graph_path), risk="write", expected="출처 연결 사실 노드 추가", payload={"question": question}))
+            try:
+                topic, _aliases = web_learn.extract_topic(web_learn.load(graph_path), question)
+            except (OSError, ValueError, UnicodeError) as e:
+                unsupported.append("학습 대상 그래프를 읽을 수 없습니다: %s" % e)
+            if topic:
+                # 승인할 때 다시 그래프 상태를 보고 주제를 바꾸지 않는다. 사람이
+                # 검토한 계획의 주제와 실제 저장 행동이 같아야 승인 기록도
+                # 재현 가능하다.
+                actions.append(self._action("knowledge.learn", "검증된 웹 지식을 overlay에 저장", target=str(graph_path), risk="write", expected="출처 연결 사실 노드 추가", payload={"question": question, "topic": topic}))
+            elif not unsupported:
+                unsupported.append("질문에서 학습할 주제를 추출하지 못해 지식을 저장하지 않습니다")
         else:
             unsupported.append("서로 다른 두 원문 출처가 없어 지식을 저장하지 않습니다")
         plan = {"type": "learning", "input": question, "mode": mode, "actions": actions, "unsupported": unsupported,
@@ -99,6 +118,10 @@ class GoalRuntime:
         self.pending[(session, plan["plan_id"])] = plan
 
     def approve(self, session, plan_id, plan_hash, action_ids, direct=False):
+        with self._execution_lock:
+            return self._approve_once(session, plan_id, plan_hash, action_ids, direct)
+
+    def _approve_once(self, session, plan_id, plan_hash, action_ids, direct=False):
         plan = self.pending.get((session, plan_id))
         if not plan or plan["plan_hash"] != plan_hash or plan["expires_at"] < time.time():
             raise ValueError("승인할 계획이 없거나 만료되었습니다")
@@ -106,16 +129,30 @@ class GoalRuntime:
         if plan["mode"] == "all_steps" and len(allowed) != 1:
             raise ValueError("모든 단계 승인 모드에서는 한 행동만 승인할 수 있습니다")
         blocked = [a for a in allowed if a["requires_direct_approval"] and not direct]
-        run = [a for a in allowed if a not in blocked]
-        results = [self._run(action, plan) for action in run]
+        completed = self.executions.setdefault((session, plan_id), {})
+        run = [a for a in allowed if a not in blocked and a["id"] not in completed]
+        results = []
+        for action in run:
+            try:
+                result = self._run(action, plan)
+            except Exception as exc:
+                result = {"action": action["id"], "status": "failed",
+                          "output": "%s: %s" % (type(exc).__name__, exc)}
+            completed[action["id"]] = result
+            results.append(result)
         return {"plan_id": plan_id, "executed": results, "needs_direct_approval": blocked,
-                "remaining": [a for a in plan["actions"] if a not in run]}
+                "already_executed": [completed[a["id"]] for a in allowed
+                                     if a not in run and a["id"] in completed],
+                "remaining": [a for a in plan["actions"] if a["id"] not in completed]}
 
     def _run(self, action, plan):
         kind = action["kind"]
         workspace = Path(plan.get("workspace") or self.workspace)
         if kind == "workspace.read":
             path = _inside(workspace, action["target"])
+            if not path.is_file():        # 여기도 경로만 들고 온다. 같은 이유로 같이 막는다.
+                return {"action": action["id"], "status": "failed",
+                        "output": "읽을 파일이 없습니다: %s" % path}
             return {"action": action["id"], "status": "done", "output": path.read_text(encoding="utf-8")[:12000]}
         if kind == "workspace.write_text":
             path = _inside(workspace, action["target"]); path.parent.mkdir(parents=True, exist_ok=True)
@@ -128,7 +165,22 @@ class GoalRuntime:
             graph_path = plan.get("graph_path")
             if not graph_path:
                 raise ValueError("overlay 대상 그래프가 없습니다")
-            topic, _ = web_learn.주제추출(web_learn.불러오기(graph_path), action["payload"]["question"])
-            learned = bool(topic and web_learn.배우기(graph_path, topic, action["payload"]["question"], 개수=5, 최소출처=2))
+            # 계획은 경로 문자열만 들고 있다. 승인까지 사이에 그 파일이 없어질
+            # 수 있고, 그때 파이썬 예외를 그대로 올리면 화면에 트레이스백이
+            # 나온다. 무엇이 없어졌고 무엇을 하면 되는지 말해주는 실패로 돌린다.
+            if not Path(graph_path).exists():
+                return {"action": action["id"], "status": "failed",
+                        "output": "저장 대상 그래프가 사라졌습니다: %s\n"
+                                  "질문을 다시 물어 계획을 새로 만들어 주세요." % graph_path}
+            topic = str(action["payload"].get("topic") or "").strip()
+            if not topic:
+                return {"action": action["id"], "status": "failed",
+                        "output": "승인된 계획에 학습 주제가 없습니다. 질문을 다시 물어 계획을 새로 만들어 주세요."}
+            try:
+                learned = bool(web_learn.save_verified_knowledge(
+                    graph_path, topic, action["payload"]["question"],
+                    (plan.get("research") or {}).get("sources") or [], min_source=2))
+            except web_learn.LearnFailed as e:
+                return {"action": action["id"], "status": "failed", "output": "저장할 수 없습니다: %s" % e}
             return {"action": action["id"], "status": "done" if learned else "failed", "output": "overlay 저장" if learned else "저장할 검증 지식을 만들지 못함"}
         raise ValueError("등록되지 않은 행동입니다: " + kind)

@@ -42,58 +42,58 @@ from encoder import _vec
 # ── 운영 경계 ────────────────────────────────────────────────────────────
 # 배포마다 다를 수 있는 값은 환경변수로 조절한다. 코드의 기본값은 무한 성장을
 # 막는 안전망이고, 지식의 의미나 방향을 정하는 도메인 규칙이 아니다.
-def _환경정수(이름, 기본, 최소=1):
+def _env_int(name, default, min_n=1):
     try:
-        return max(int(os.environ.get(이름, 기본)), 최소)
+        return max(int(os.environ.get(name, default)), min_n)
     except (TypeError, ValueError):
-        return 기본
+        return default
 
 
-최대주제 = lambda: _환경정수("KG_LEARN_MAX_TOPICS", 200)
-주제당최대 = lambda: _환경정수("KG_LEARN_MAX_RECORDS", 20)
-수집최대바이트 = lambda: _환경정수("KG_LEARN_MAX_BYTES", 5 * 1024 * 1024)
-재수집대기초 = lambda: _환경정수("KG_LEARN_COOLDOWN", 300)
+max_topic = lambda: _env_int("KG_LEARN_MAX_TOPICS", 200)
+max_per_topic = lambda: _env_int("KG_LEARN_MAX_RECORDS", 20)
+collect_max_byte = lambda: _env_int("KG_LEARN_MAX_BYTES", 5 * 1024 * 1024)
+recollect_wait_sec = lambda: _env_int("KG_LEARN_COOLDOWN", 300)
 
 
-class 학습실패(RuntimeError):
+class LearnFailed(RuntimeError):
     pass
 
 
-class 수집잠금:
+class CollectLock:
     """동시에 같은 JSONL을 쓰지 못하게 하는 작은 파일 잠금."""
-    def __init__(self, 경로):
-        self.경로 = 경로 + ".lock"
+    def __init__(self, path):
+        self.path = path + ".lock"
         self.fd = None
 
     def __enter__(self):
-        for 회 in range(2):
+        for rnd in range(2):
             try:
-                self.fd = os.open(self.경로, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+                self.fd = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
                 os.write(self.fd, ("%d %d\n" % (os.getpid(), int(time.time()))).encode("ascii"))
                 return self
             except FileExistsError as e:
                 try:
-                    오래됨 = time.time() - os.path.getmtime(self.경로) > 120
+                    stale = time.time() - os.path.getmtime(self.path) > 120
                 except FileNotFoundError:
                     continue
-                if 오래됨 and 회 == 0:
+                if stale and rnd == 0:
                     try:
-                        os.unlink(self.경로)
+                        os.unlink(self.path)
                     except FileNotFoundError:
                         pass
                     continue
-                raise 학습실패("같은 지식 파일을 다른 학습 작업이 갱신 중입니다") from e
+                raise LearnFailed("같은 지식 파일을 다른 학습 작업이 갱신 중입니다") from e
             except OSError as e:
                 if self.fd is not None:
                     os.close(self.fd)
                     self.fd = None
-                raise 학습실패("수집 잠금 파일을 만들 수 없습니다: %s" % e) from e
+                raise LearnFailed("수집 잠금 파일을 만들 수 없습니다: %s" % e) from e
 
     def __exit__(self, *_):
         if self.fd is not None:
             os.close(self.fd)
         try:
-            os.unlink(self.경로)
+            os.unlink(self.path)
         except FileNotFoundError:
             pass
 
@@ -106,35 +106,35 @@ class 수집잠금:
 # 문장을 조용히 쪼개고 잘랐다. 여기서는 텍스트를 JSON 에 담으므로 그 위험이
 # 구조적으로 사라진다 — 문자를 바꿔서 막는 것보다 이게 낫다. 원문을 훼손하지
 # 않기 때문이다. .kg 로 내보낼 때만 kg안전=True 로 막는다.
-_제어 = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
-_태그 = re.compile(r"<[^>]+>")
+_control = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
+_tg = re.compile(r"<[^>]+>")
 
 
-def 살균(글, 최대=700, kg안전=False):
+def sanitize(txt, max_n=700, kg_safe=False):
     """주워온 문자열을 노드 예시로 쓸 수 있는 한 줄로 만든다."""
     # 태그는 공백이 아니라 빈 문자열로 지운다. 검색 스니펫은 질의어를 굵게
     # 표시하는데, <b>가</b>격은 처럼 낱말 중간에 걸리면 공백 치환이 낱말을 쪼갠다.
-    글 = html.unescape(_태그.sub("", 글 or ""))
-    글 = _제어.sub(" ", 글)
-    글 = re.sub(r"\s+", " ", 글).strip().strip('"').strip()
-    if kg안전:
+    txt = html.unescape(_tg.sub("", txt or ""))
+    txt = _control.sub(" ", txt)
+    txt = re.sub(r"\s+", " ", txt).strip().strip('"').strip()
+    if kg_safe:
         # .kg 한 줄로 나갈 때만. 뜻을 해치지 않는 최소 치환.
-        글 = 글.replace("|", "／").replace("#", "＃")
-    return 글[:최대].strip()
+        txt = txt.replace("|", "／").replace("#", "＃")
+    return txt[:max_n].strip()
 
 
-def kg줄(이름, 문장들, 출처=None):
+def kg_line(name, sentences, src=None):
     """노드 하나를 .kg 한 줄로. 내보내기용이며 평소 경로에는 쓰이지 않는다."""
-    머리 = 이름 + ("@" + 출처 if 출처 else "")
-    return '%s: %s' % (머리, " | ".join('"%s"' % 살균(s, kg안전=True) for s in 문장들))
+    head = name + ("@" + src if src else "")
+    return '%s: %s' % (head, " | ".join('"%s"' % sanitize(s, kg_safe=True) for s in sentences))
 
 
 # ── 검색 ────────────────────────────────────────────────────────────────
-_링크 = re.compile(r"href=\"(https?://[^\"]+)\"[^>]*class='result-link'", re.I)
-_스니펫 = re.compile(r"class='result-snippet'[^>]*>(.*?)</td>", re.DOTALL | re.I)
+_link = re.compile(r"href=\"(https?://[^\"]+)\"[^>]*class='result-link'", re.I)
+_snippet = re.compile(r"class='result-snippet'[^>]*>(.*?)</td>", re.DOTALL | re.I)
 
 
-def _실제주소(url):
+def _real_url(url):
     """DuckDuckGo 우회 링크면 원문 주소를 꺼낸다."""
     p = urllib.parse.urlparse(html.unescape(url))
     if "duckduckgo.com" in p.netloc:
@@ -144,392 +144,567 @@ def _실제주소(url):
     return urllib.parse.urlunparse(p)
 
 
-def 검색(질의, 개수=10, 최소길이=40):
+def search(query, count=10, min_length=40):
     """열린 웹 검색. 원문 URL과 검색 발췌를 돌려준다.
 
     발췌는 관련 결과를 거르는 힌트일 뿐 지식으로 저장하지 않는다. 여러 URL을
     받아야 원문 교차검증이 가능해지므로 기본값을 10 으로 둔다."""
     req = urllib.request.Request(
         "https://lite.duckduckgo.com/lite/",
-        data=urllib.parse.urlencode({"q": 질의}).encode("utf-8"),
+        data=urllib.parse.urlencode({"q": query}).encode("utf-8"),
         headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=20) as r:
-        본문 = r.read().decode("utf-8", "replace")
+        body = r.read().decode("utf-8", "replace")
 
-    링크 = [_실제주소(u) for u in _링크.findall(본문)]
-    조각 = [살균(s) for s in _스니펫.findall(본문)]
-    out, 본것 = [], set()
-    for i, 글 in enumerate(조각):
-        if len(글) < 최소길이 or 글 in 본것:
+    link = [_real_url(u) for u in _link.findall(body)]
+    chunk = [sanitize(s) for s in _snippet.findall(body)]
+    out, seen = [], set()
+    for i, txt in enumerate(chunk):
+        if len(txt) < min_length or txt in seen:
             continue                       # 너무 짧은 것은 근거가 못 된다
-        본것.add(글)
-        url = 링크[i] if i < len(링크) else ""
+        seen.add(txt)
+        url = link[i] if i < len(link) else ""
         if not url:
             continue
         out.append({"url": url, "도메인": urllib.parse.urlparse(url).netloc,
-                    "발췌": 글})
-        if len(out) >= 개수:
+                    "발췌": txt})
+        if len(out) >= count:
             break
     return out
 
 
-class _본문추출기(HTMLParser):
+class _BodyExtractor(HTMLParser):
     """광고·메뉴·스크립트를 빼고 문서 본문 블록만 모은다."""
-    블록태그 = {"p", "article", "section", "main", "h1", "h2", "h3", "li", "blockquote"}
-    버릴태그 = {"script", "style", "noscript", "svg", "canvas", "nav", "footer", "header", "form"}
+    block_tag = {"p", "article", "section", "main", "h1", "h2", "h3", "li", "blockquote"}
+    drop_tag = {"script", "style", "noscript", "svg", "canvas", "nav", "footer", "header", "form"}
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.버림 = 0
-        self.블록 = []
-        self.현재 = []
+        self.dropped = 0
+        self.block = []
+        self.cur = []
 
     def handle_starttag(self, tag, _attrs):
         tag = tag.lower()
-        if tag in self.버릴태그:
-            self.버림 += 1
-        elif not self.버림 and tag in self.블록태그 and self.현재:
-            self._닫기()
+        if tag in self.drop_tag:
+            self.dropped += 1
+        elif not self.dropped and tag in self.block_tag and self.cur:
+            self._close()
 
     def handle_endtag(self, tag):
         tag = tag.lower()
-        if tag in self.버릴태그:
-            self.버림 = max(0, self.버림 - 1)
-        elif not self.버림 and tag in self.블록태그:
-            self._닫기()
+        if tag in self.drop_tag:
+            self.dropped = max(0, self.dropped - 1)
+        elif not self.dropped and tag in self.block_tag:
+            self._close()
 
     def handle_data(self, data):
-        if not self.버림:
-            self.현재.append(data)
+        if not self.dropped:
+            self.cur.append(data)
 
-    def _닫기(self):
-        글 = 살균(" ".join(self.현재), 최대=12000)
-        if len(글) >= 30:
-            self.블록.append(글)
-        self.현재 = []
+    def _close(self):
+        txt = sanitize(" ".join(self.cur), max_n=12000)
+        if len(txt) >= 30:
+            self.block.append(txt)
+        self.cur = []
 
-    def 끝내기(self):
-        self._닫기()
-        return list(dict.fromkeys(self.블록))
-
-
-_문장 = re.compile(r"[^.!?。！？\n]{12,}[.!?。！？](?=\s|$)")
+    def emit_end(self):
+        self._close()
+        return list(dict.fromkeys(self.block))
 
 
-def 완결문장들(글, 주제=None, 최대문장=None):
+_sentence = re.compile(r"[^.!?。！？\n]{12,}[.!?。！？](?=\s|$)")
+
+
+def complete_sentences(txt, topic=None, max_sentence=None):
     """원문 블록의 완결 문장을 순서대로 고른다. 주제가 있으면 관련 문장만 고른다."""
     out = []
-    for m in _문장.finditer(글 or ""):
-        문장 = 살균(m.group(0), 최대=1500)
-        if (문장.endswith("...") or 문장.endswith("…")
-                or (주제 and not 주제관련(주제, 문장))
-                or 문장 in out):
+    for m in _sentence.finditer(txt or ""):
+        sentence = sanitize(m.group(0), max_n=1500)
+        if (sentence.endswith("...") or sentence.endswith("…")
+                or (topic and not topic_related(topic, sentence))
+                or sentence in out):
             continue
-        out.append(문장)
-        if 최대문장 and len(out) >= 최대문장:
+        out.append(sentence)
+        if max_sentence and len(out) >= max_sentence:
             break
     return out
 
 
-def 원문읽기(url, 주제, 최대바이트=2 * 1024 * 1024, 최대문장=None, 대목포함=False):
-    """웹 페이지 원문을 읽어 (제목, 완결 지식 문장들)을 돌려준다."""
+def read_source(url, topic, max_byte=2 * 1024 * 1024, max_sentence=None, passage_include=False):
+    """웹 페이지 원문을 읽어 (제목, 완결 지식 문장들)을 돌려준다.
+
+    `주제`는 표제어 하나(문자열)이거나 `물음낱말`이 뽑은 내용 낱말 묶음이다.
+    묶음일 때는 낱말 겹침으로 대목을 고른다."""
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=20) as r:
-        raw = r.read(최대바이트 + 1)
-        if len(raw) > 최대바이트:
-            raw = raw[:최대바이트]
+        raw = r.read(max_byte + 1)
+        if len(raw) > max_byte:
+            raw = raw[:max_byte]
         charset = r.headers.get_content_charset() or "utf-8"
     text = raw.decode(charset, "replace")
     title_match = re.search(r"<title[^>]*>(.*?)</title>", text, re.I | re.S)
-    title = 살균(title_match.group(1), 최대=300) if title_match else ""
-    parser = _본문추출기()
+    title = sanitize(title_match.group(1), max_n=300) if title_match else ""
+    parser = _BodyExtractor()
     parser.feed(text)
+    is_related = _related_verdict(topic)
     sentences, passages = [], []
-    for block in parser.끝내기():
-        block_sentences = 완결문장들(block)
+    for block in parser.emit_end():
+        block_sentences = complete_sentences(block)
         # 주제를 말하는 문장이 하나라도 있는 문단은 대명사·후속 설명까지 모두
         # 같은 지식 대목이다. 문장마다 주제 낱말을 반복하도록 요구하면 맥락이 잘린다.
-        if not block_sentences or not any(주제관련(주제, s) for s in block_sentences):
+        if not block_sentences or not is_related(block_sentences):
             continue
         passages.append(block_sentences)
         for sentence in block_sentences:
             if sentence not in sentences:
                 sentences.append(sentence)
-                if 최대문장 and len(sentences) >= 최대문장:
-                    return (title, sentences, passages) if 대목포함 else (title, sentences)
-    return (title, sentences, passages) if 대목포함 else (title, sentences)
+                if max_sentence and len(sentences) >= max_sentence:
+                    return (title, sentences, passages) if passage_include else (title, sentences)
+    return (title, sentences, passages) if passage_include else (title, sentences)
 
 
-_끝문장부호 = " \\t\\r\\n.,!?？！，。·:;()[]{}<>\"'“”‘’"
+_sentence_punct = " \\t\\r\\n.,!?？！，。·:;()[]{}<>\"'“”‘’"
 
 
-def _말투읽기():
-    이름 = os.environ.get("KG_LANG", "한국어")
-    경로 = os.path.join(os.path.dirname(__file__), "styles", 이름 + ".json")
+def _read_dialect():
+    name = os.environ.get("KG_LANG", "한국어")
+    path = os.path.join(os.path.dirname(__file__), "styles", name + ".json")
     try:
-        with open(경로, encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             return json.load(f)
     except (OSError, ValueError):
         return {}
 
 
-def 주제별칭(주제):
+def topic_aliases(topic):
     """원문 주제와 조사 하나를 뗀 검색·매칭 별칭을 함께 돌려준다.
 
     원문을 버리지 않는 이유는 `호랑이`처럼 끝 글자가 조사와 같은 명사가 있기
     때문이다. `양자역학이`와 `양자역학`은 같은 묶음으로 찾되 저장 원문은 남긴다.
     """
-    주제 = re.sub(r"\s+", " ", (주제 or "")).strip(_끝문장부호)
-    if not 주제:
+    topic = re.sub(r"\s+", " ", (topic or "")).strip(_sentence_punct)
+    if not topic:
         return []
-    out = [주제]
-    조사들 = sorted((_말투읽기().get("떼는조사") or []), key=len, reverse=True)
-    for 조사 in 조사들:
-        if 주제.endswith(조사) and len(주제) - len(조사) >= 2:
-            out.append(주제[:-len(조사)].rstrip())
+    out = [topic]
+    particles = sorted((_read_dialect().get("떼는조사") or []), key=len, reverse=True)
+    for particle in particles:
+        if topic.endswith(particle) and len(topic) - len(particle) >= 2:
+            out.append(topic[:-len(particle)].rstrip())
             break
     return list(dict.fromkeys(x for x in out if x))
 
 
-def 주제추출(g, 말):
-    """그래프의 `물음_` 사례만 이용해 질문 껍데기를 벗긴다.
+def extract_topic(g, phrase):
+    """질문에서 학습·검색에 쓸 가장 작은 주제를 돌려준다.
 
-    → (원문주제, 별칭들) 또는 (None, []). 표지가 없는 평서문을 지식 요청으로
-    오인하지 않는다. 새 질문형은 파이썬이 아니라 graph_자가학습.kg에 더한다.
+    우선 그래프의 ``물음_`` 사례로 정형 질문의 껍데기를 벗긴다. 실제 사용자는
+    ``멀미가 심한데 어떤 약을 먹으면 좋을까?``처럼 표지에 없는 자연어 질문도
+    하므로, 끝에 의문 표현이 명시된 경우에만 첫 내용 낱말을 보수적인 대안으로
+    쓴다. 평서문을 지식 요청으로 오인하지 않는 경계는 유지한다.
     """
-    표지들 = []
-    for n, 예시들 in g.get("사례층", {}).items():
+    markers = []
+    for n, examples in g.get("사례층", {}).items():
         if n.startswith("물음_"):
-            표지들.extend(예시들)
-    남음, 걸림 = (말 or "").strip(_끝문장부호), False
-    for 표지 in sorted(set(표지들), key=len, reverse=True):
-        if not 표지:
+            markers.extend(examples)
+    remaining, blocker = (phrase or "").strip(_sentence_punct), False
+    for marker in sorted(set(markers), key=len, reverse=True):
+        if not marker:
             continue
-        앞뒤뺌 = 남음.strip(_끝문장부호)
-        if 앞뒤뺌.startswith(표지):
-            남음 = 앞뒤뺌[len(표지):]
-            걸림 = True
-        elif 앞뒤뺌.endswith(표지):
-            남음 = 앞뒤뺌[:-len(표지)]
-            걸림 = True
-    남음 = re.sub(r"\s+", " ", 남음).strip(_끝문장부호)
-    별칭 = 주제별칭(남음)
-    return (남음, 별칭) if 걸림 and 별칭 else (None, [])
+        trim_ends = remaining.strip(_sentence_punct)
+        if trim_ends.startswith(marker):
+            remaining = trim_ends[len(marker):]
+            blocker = True
+        elif trim_ends.endswith(marker):
+            remaining = trim_ends[:-len(marker)]
+            blocker = True
+    remaining = re.sub(r"\s+", " ", remaining).strip(_sentence_punct)
+    alias = topic_aliases(remaining)
+    if blocker and alias:
+        return remaining, alias
+
+    # 사례층은 의도적으로 작다. 여기에 없는 말투 때문에 유효한 질문 전체가
+    # 학습 불능이 되지 않도록, 언어 스타일이 선언한 질문 종결형일 때만 내용
+    # 낱말을 주제로 삼는다. 언어별 종결형은 styles/*.json의 데이터이며 이
+    # 함수에 한국어 표현을 추가하지 않는다.
+    source_text = (phrase or "").strip()
+    surface = re.sub(r"\s+", "", source_text).strip(_sentence_punct)
+    species_mag_type = [re.sub(r"\s+", "", x) for x in (_read_dialect().get("학습질문종결") or []) if x]
+    if not surface or not any(surface.endswith(x) for x in species_mag_type):
+        return None, []
+    content_words = question_word(source_text)
+    if not content_words:
+        return None, []
+    # 물음말 자체와 지나치게 일반적인 요청 대상은 주제가 아니다. 예컨대
+    # '멀미가 심한데 어떤 약…'에서는 약이 아니라 멀미를 학습·검색해야 한다.
+    generic_words = set(_read_dialect().get("학습주제제외") or [])
+    topic = next((word for word in content_words if word not in generic_words), None)
+    alias = topic_aliases(topic)
+    return (topic, alias) if alias else (None, [])
 
 
-def _붙인글(글):
-    return re.sub(r"[^0-9A-Za-z가-힣]", "", (글 or "")).lower()
+def _joined(txt):
+    return re.sub(r"[^0-9A-Za-z가-힣]", "", (txt or "")).lower()
 
 
-def _별칭등장(주제, 별칭, 글):
+def _alias_hits(topic, alias, txt):
     """조사를 뗀 후보가 실제 어간으로 쓰였는지 보수적으로 확인한다.
 
     `호랑이`에서 만든 후보 `호랑`은 본문의 `호랑이` 안에 들어 있다는 이유만으로
     별칭이 되면 안 된다. 반면 `양자역학이`의 `양자역학은`은 조사 밖에서도 실제로
     나타난 것이므로 후속 질문용 별칭으로 쓸 수 있다.
     """
-    원주제, 후보, 본문 = _붙인글(주제), _붙인글(별칭), _붙인글(글)
-    if not 후보 or 후보 not in 본문:
+    orig_topic, cand, body = _joined(topic), _joined(alias), _joined(txt)
+    if not cand or cand not in body:
         return False
-    if 후보 == 원주제 or not 원주제.startswith(후보):
+    if cand == orig_topic or not orig_topic.startswith(cand):
         return True
-    뗀부분 = 원주제[len(후보):]
-    시작 = 0
+    detached = orig_topic[len(cand):]
+    start = 0
     while True:
-        자리 = 본문.find(후보, 시작)
-        if 자리 < 0:
+        pos = body.find(cand, start)
+        if pos < 0:
             return False
-        다음자리 = 자리 + len(후보)
-        if 다음자리 == len(본문) or not 뗀부분 or 본문[다음자리] != 뗀부분[0]:
+        next_pos = pos + len(cand)
+        if next_pos == len(body) or not detached or body[next_pos] != detached[0]:
             return True
-        시작 = 자리 + 1
+        start = pos + 1
 
 
-def _유효별칭(주제, 글들):
-    후보들 = 주제별칭(주제)
-    if not 후보들:
+def _valid_aliases(topic, texts):
+    cands = topic_aliases(topic)
+    if not cands:
         return []
-    return [a for i, a in enumerate(후보들)
-            if i == 0 or any(_별칭등장(주제, a, 글) for 글 in 글들)]
+    return [a for i, a in enumerate(cands)
+            if i == 0 or any(_alias_hits(topic, a, txt) for txt in texts)]
 
 
-def 주제관련(주제, 글):
+def topic_related(topic, txt):
     """검색 스니펫이 실제로 주제를 호명하는지 확인한다."""
-    return any(len(_붙인글(a)) >= 2 and _별칭등장(주제, a, 글)
-               for a in 주제별칭(주제))
+    return any(len(_joined(a)) >= 2 and _alias_hits(topic, a, txt)
+               for a in topic_aliases(topic))
+
+
+def _morph():
+    """`개념뽑기`가 쓰는 형태소기를 그대로 함께 쓴다. 두 벌 띄우지 않는다."""
+    import build
+    if build._kiwi is None:
+        from kiwipiepy import Kiwi
+        build._kiwi = Kiwi()
+    return build._kiwi
+
+
+def question_word(phrase):
+    """물음에서 원문과 맞대볼 내용 낱말만 뽑는다. 없는 말은 만들지 않는다.
+
+    `주제별칭`은 표제어 하나를 다루는 자리다. 사람이 실제로 쓰는 물음은
+    표제어가 아니라 증상·상황을 늘어놓는다. 물음을 통째로 주제로 넘기면
+    원문 문장 안에 그 물음이 그대로 들어 있어야 관련으로 쳐져서, 어떤
+    쪽도 못 고른다 — '배가 아프고 숨이 잘 안쉬어져. 무슨 병이지' 가
+    출처 0개로 떨어지던 것이 그 때문이다.
+
+    한 글자 명사도 남긴다. `개념뽑기`가 두 글자에서 자르는 것은 코퍼스에
+    노드를 세울 때 이야기이고, 여기서는 배·숨·병이 물음의 알맹이 전부일
+    수 있다. 복합명사는 `개념뽑기` 가 붙여둔 것을 그대로 함께 쓴다.
+    """
+    phrase = str(phrase or "").strip()
+    if not phrase:
+        return []
+    try:
+        import build
+        stopwords = build.stopwords
+        word = [t.form for t in _morph().tokenize(phrase)
+                if t.tag in ("NNG", "NNP", "SL") and t.form not in stopwords]
+        word += [w for w in build.extract_concepts(phrase) if w not in word]
+    except Exception:
+        # 형태소기가 없는 환경에서도 조사만 뗀 낱말로 견준다.
+        stopwords = set()
+        word = []
+        for chunk in re.findall(r"[가-힣A-Za-z]{2,}", phrase):
+            word.append(chunk)
+            for particle in sorted((_read_dialect().get("떼는조사") or []), key=len, reverse=True):
+                if chunk.endswith(particle) and len(chunk) - len(particle) >= 1:
+                    word.append(chunk[:-len(particle)])
+                    break
+    template = _read_dialect().get("질문틀") or []
+    return [w for w in dict.fromkeys(word)
+            if w and w not in stopwords and w not in template]
+
+
+def word_related(words, txt, aligned_min=1):
+    """물음의 내용 낱말이 이 대목에 실제로 몇 개나 나오는지로 고른다."""
+    attach = _joined(txt)
+    matched = sum(1 for w in dict.fromkeys(words) if _joined(w) and _joined(w) in attach)
+    return matched >= max(1, int(aligned_min))
+
+
+def _related_verdict(topic):
+    """주제가 표제어 하나면 예전 그대로, 물음 낱말 묶음이면 겹침으로 본다.
+
+    낱말이 여럿일 때 하나만 걸려도 통과시키면 '법'·'배' 같은 흔한 말로 딴
+    문서가 딸려온다. 절반을 요구하면 한 낱말짜리 표제어 물음은 그대로
+    통과하면서, 증상을 늘어놓은 물음은 그중 반은 말하는 대목만 남는다.
+    """
+    if isinstance(topic, (list, tuple, set, frozenset)):
+        word = [w for w in dict.fromkeys(topic) if w]
+        min_n = max(1, (len(word) + 1) // 2)
+        return lambda sentences: bool(word) and word_related(word, " ".join(sentences), min_n)
+    return lambda sentences: any(topic_related(topic, s) for s in sentences)
 
 
 # ── 옆파일 ──────────────────────────────────────────────────────────────
-def 수집경로(kg경로):
-    return os.path.splitext(kg경로)[0] + ".수집.jsonl"
+def collect_path(kg_path):
+    return os.path.splitext(kg_path)[0] + ".수집.jsonl"
 
 
-_질문틀 = ("{주제} 알려줘", "{주제} 설명해줘", "{주제} 만드는 법",
+_QUESTION_FRAMES = ("{주제} 알려줘", "{주제} 설명해줘", "{주제} 만드는 법",
            "{주제} 순서대로 알려줘", "{주제}가 뭐야")
 # 사람이 쓴 틀이다. 주제 낱말만 갈아 끼우며, 문장을 지어내지 않는다.
 
 
-def _주제묶음(기록들):
+def _topic_groups(records):
     """별칭이 하나라도 겹치는 기록들을 같은 주제로 묶는다."""
-    묶음 = []
-    for r in 기록들:
-        후보 = r.get("주제별칭") or 주제별칭(r.get("주제"))
-        별칭 = {a for a in 후보
-              if a == r.get("주제") or _별칭등장(r.get("주제"), a, r.get("본문"))}
-        닿은 = [m for m in 묶음 if m["별칭"] & 별칭]
-        if not 닿은:
-            묶음.append({"이름": r["주제"], "별칭": 별칭, "기록": [r]})
+    group = []
+    for r in records:
+        cand = r.get("주제별칭") or topic_aliases(r.get("주제"))
+        alias = {a for a in cand
+              if a == r.get("주제") or _alias_hits(r.get("주제"), a, r.get("본문"))}
+        reached = [m for m in group if m["별칭"] & alias]
+        if not reached:
+            group.append({"이름": r["주제"], "별칭": alias, "기록": [r]})
             continue
-        바탕 = 닿은[0]
-        바탕["별칭"].update(별칭)
-        바탕["기록"].append(r)
-        for 다른 in 닿은[1:]:
-            바탕["별칭"].update(다른["별칭"])
-            바탕["기록"].extend(다른["기록"])
-            묶음.remove(다른)
-    return 묶음
+        base = reached[0]
+        base["별칭"].update(alias)
+        base["기록"].append(r)
+        for other in reached[1:]:
+            base["별칭"].update(other["별칭"])
+            base["기록"].extend(other["기록"])
+            group.remove(other)
+    return group
 
 
-def _최근인가(기록들, 초):
-    if not 기록들:
+def _is_recent(records, sec):
+    if not records:
         return False
     try:
-        최근 = max(time.mktime(time.strptime(r["수집시각"], "%Y-%m-%dT%H:%M:%S"))
-                  for r in 기록들 if r.get("수집시각"))
+        recent = max(time.mktime(time.strptime(r["수집시각"], "%Y-%m-%dT%H:%M:%S"))
+                  for r in records if r.get("수집시각"))
     except (ValueError, KeyError):
         return False
-    return time.time() - 최근 < 초
+    return time.time() - recent < sec
 
 
-def 배우기(kg경로, 주제, 질의=None, 개수=10, 최소출처=1, 강제=False):
+def learn(kg_path, topic, query=None, count=10, min_source=1, force=False):
     """웹에서 주워 옆파일에 쌓는다. 원본 .kg 는 건드리지 않는다."""
-    별칭 = 주제별칭(주제)
-    if not 별칭:
-        raise 학습실패("학습할 주제가 비어 있습니다")
-    if 주제당최대() < 최소출처:
-        raise 학습실패("주제당 기록 상한(%d개)이 필수 출처 수(%d곳)보다 작습니다"
-                   % (주제당최대(), 최소출처))
-    질의 = 질의 or 주제
-    경로 = 수집경로(kg경로)
-    기존 = 수집읽기(경로)
-    기존묶음 = _주제묶음(기존)
-    같은묶음 = next((m for m in 기존묶음 if set(별칭) & m["별칭"]), None)
+    alias = topic_aliases(topic)
+    if not alias:
+        raise LearnFailed("학습할 주제가 비어 있습니다")
+    if max_per_topic() < min_source:
+        raise LearnFailed("주제당 기록 상한(%d개)이 필수 출처 수(%d곳)보다 작습니다"
+                   % (max_per_topic(), min_source))
+    query = query or topic
+    path = collect_path(kg_path)
+    existing = read_collected(path)
+    existing_group = _topic_groups(existing)
+    same_group = next((m for m in existing_group if set(alias) & m["별칭"]), None)
     # 검색 발췌만 저장하던 구버전 기록은 최근이어도 완성 지식으로 보지 않는다.
     # 다음 질문에서 원문을 다시 받아 `문장들`이 있는 새 기록으로 승격한다.
-    완성기록 = 같은묶음 and [r for r in 같은묶음["기록"]
+    done_log = same_group and [r for r in same_group["기록"]
                            if r.get("수집형식") == 3 and r.get("문장들") and r.get("대목들")]
-    if 완성기록 and not 강제 and _최근인가(완성기록, 재수집대기초()):
+    if done_log and not force and _is_recent(done_log, recollect_wait_sec()):
         return []
-    if not 같은묶음 and len(기존묶음) >= 최대주제():
-        raise 학습실패("자동 학습 주제 상한(%d개)에 도달했습니다" % 최대주제())
-    if os.path.exists(경로) and os.path.getsize(경로) >= 수집최대바이트():
-        raise 학습실패("수집 파일 크기 상한(%d바이트)에 도달했습니다" % 수집최대바이트())
+    if not same_group and len(existing_group) >= max_topic():
+        raise LearnFailed("자동 학습 주제 상한(%d개)에 도달했습니다" % max_topic())
+    if os.path.exists(path) and os.path.getsize(path) >= collect_max_byte():
+        raise LearnFailed("수집 파일 크기 상한(%d바이트)에 도달했습니다" % collect_max_byte())
 
     try:
-        찾은 = 검색(질의, 개수=max(개수 * 2, 개수))
+        hits = search(query, count=max(count * 2, count))
     except (urllib.error.URLError, TimeoutError, OSError) as e:
-        raise 학습실패("웹 검색에 연결하지 못했습니다: %s" % getattr(e, "reason", e)) from e
+        raise LearnFailed("웹 검색에 연결하지 못했습니다: %s" % getattr(e, "reason", e)) from e
 
     # 검색 발췌는 주소 후보일 뿐이다. 원문 페이지에서 완결 문장을 읽은 뒤에만
     # 지식으로 채택한다. 테스트/과거 호출의 (출처, 본문) 튜플도 완결문장 검사 후
     # 받아 하위 호환을 유지한다.
-    고른것, 도메인 = [], set()
-    for item in 찾은:
+    chosen, domain = [], set()
+    for item in hits:
         if isinstance(item, dict):
             url = item.get("url") or ""
-            출처 = item.get("도메인") or urllib.parse.urlparse(url).netloc
-            발췌 = item.get("발췌") or ""
-            if not url or not 출처 or 출처 in 도메인 or not 주제관련(주제, 발췌):
+            src = item.get("도메인") or urllib.parse.urlparse(url).netloc
+            excerpt = item.get("발췌") or ""
+            if not url or not src or src in domain or not topic_related(topic, excerpt):
                 continue
             try:
-                제목, 문장들, 대목들 = 원문읽기(url, 주제, 대목포함=True)
+                title, sentences, passages = read_source(url, topic, passage_include=True)
             except (urllib.error.URLError, TimeoutError, OSError, UnicodeError, ValueError):
                 continue
         else:
-            출처, 글 = item
-            url, 제목, 발췌 = "", "", 글
-            문장들 = 완결문장들(글, 주제)
-            대목들 = [문장들] if 문장들 else []
-        본문 = " ".join(문장들)
-        if (not 출처 or 출처 == "출처미상" or 출처 in 도메인 or not 문장들
-                or not 주제관련(주제, 본문)):
+            src, txt = item
+            url, title, excerpt = "", "", txt
+            sentences = complete_sentences(txt, topic)
+            passages = [sentences] if sentences else []
+        body = " ".join(sentences)
+        if (not src or src == "출처미상" or src in domain or not sentences
+                or not topic_related(topic, body)):
             continue
-        도메인.add(출처)
-        고른것.append({"출처": 출처, "URL": url, "제목": 제목,
-                       "검색발췌": 발췌, "문장들": 문장들,
-                       "대목들": 대목들, "본문": 본문})
-        if len(고른것) >= 개수:
+        domain.add(src)
+        chosen.append({"출처": src, "URL": url, "제목": title,
+                       "검색발췌": excerpt, "문장들": sentences,
+                       "대목들": passages, "본문": body})
+        if len(chosen) >= count:
             break
-    찾은 = 고른것
-    if len({x["출처"] for x in 찾은}) < 최소출처:
+    hits = chosen
+    if len({x["출처"] for x in hits}) < min_source:
         return []
-    if not 찾은:
+    if not hits:
         return []
-    저장별칭 = _유효별칭(주제, [x["본문"] for x in 찾은])
-    저장주제 = min(저장별칭, key=lambda x: (len(_붙인글(x)), len(x))) if 저장별칭 else 주제
-    with 수집잠금(경로):
+    saved_aliases = _valid_aliases(topic, [x["본문"] for x in hits])
+    save_topic = min(saved_aliases, key=lambda x: (len(_joined(x)), len(x))) if saved_aliases else topic
+    with CollectLock(path):
         # 검색하는 동안 다른 프로세스가 썼을 수 있으므로 잠근 뒤 다시 읽는다.
-        if os.path.exists(경로) and os.path.getsize(경로) >= 수집최대바이트():
-            raise 학습실패("수집 파일 크기 상한(%d바이트)에 도달했습니다" % 수집최대바이트())
-        현재 = 수집읽기(경로)
-        현재묶음들 = _주제묶음(현재)
-        if not any(set(별칭) & m["별칭"] for m in 현재묶음들) and len(현재묶음들) >= 최대주제():
-            raise 학습실패("자동 학습 주제 상한(%d개)에 도달했습니다" % 최대주제())
-        이미 = {r["본문"] for r in 현재}
-        현재묶음 = next((m for m in 현재묶음들 if set(별칭) & m["별칭"]), None)
-        남은칸 = 주제당최대() - len(현재묶음["기록"] if 현재묶음 else [])
-        if 남은칸 <= 0:
+        if os.path.exists(path) and os.path.getsize(path) >= collect_max_byte():
+            raise LearnFailed("수집 파일 크기 상한(%d바이트)에 도달했습니다" % collect_max_byte())
+        cur = read_collected(path)
+        cur_groups = _topic_groups(cur)
+        if not any(set(alias) & m["별칭"] for m in cur_groups) and len(cur_groups) >= max_topic():
+            raise LearnFailed("자동 학습 주제 상한(%d개)에 도달했습니다" % max_topic())
+        already = {r["본문"] for r in cur}
+        cur_group = next((m for m in cur_groups if set(alias) & m["별칭"]), None)
+        remaining_slot = max_per_topic() - len(cur_group["기록"] if cur_group else [])
+        if remaining_slot <= 0:
             return []
         when = time.strftime("%Y-%m-%dT%H:%M:%S")
-        후보 = []
-        for 찾음 in 찾은:
-            출처, 글 = 찾음["출처"], 찾음["본문"]
-            if 글 in 이미 or len(후보) >= 남은칸:
+        cand = []
+        for found in hits:
+            src, txt = found["출처"], found["본문"]
+            if txt in already or len(cand) >= remaining_slot:
                 continue
-            기록 = {"주제": 저장주제, "주제별칭": 저장별칭, "질의": 질의,
+            record = {"주제": save_topic, "주제별칭": saved_aliases, "질의": query,
                     "수집형식": 3,
-                    "출처": 출처, "URL": 찾음.get("URL", ""),
-                    "제목": 찾음.get("제목", ""), "본문": 글,
-                    "문장들": 찾음["문장들"], "대목들": 찾음["대목들"],
-                    "질문표현": [t.format(주제=저장주제) for t in _질문틀] + [질의],
+                    "출처": src, "URL": found.get("URL", ""),
+                    "제목": found.get("제목", ""), "본문": txt,
+                    "문장들": found["문장들"], "대목들": found["대목들"],
+                    "질문표현": [t.format(**{"주제": save_topic}) for t in _QUESTION_FRAMES] + [query],
                     "수집시각": when}
-            줄 = json.dumps(기록, ensure_ascii=False) + "\n"
-            후보.append((기록, 줄))
+            line = json.dumps(record, ensure_ascii=False) + "\n"
+            cand.append((record, line))
 
         # 검사 시점에는 상한 아래여도 이번 배치 전체를 붙이면 넘을 수 있다.
         # UTF-8 실제 바이트로 재고, 새 주제는 최소 출처 수가 다 들어갈 때만 쓴다.
-        현재크기 = os.path.getsize(경로) if os.path.exists(경로) else 0
-        새것, 줄들, 더할크기 = [], [], 0
-        for 기록, 줄 in 후보:
-            바이트 = len(줄.encode("utf-8"))
-            if 현재크기 + 더할크기 + 바이트 > 수집최대바이트():
+        cur_size = os.path.getsize(path) if os.path.exists(path) else 0
+        fresh, lines, add_size = [], [], 0
+        for record, line in cand:
+            byte = len(line.encode("utf-8"))
+            if cur_size + add_size + byte > collect_max_byte():
                 break
-            새것.append(기록)
-            줄들.append(줄)
-            더할크기 += 바이트
-        if not 현재묶음 and len({r["출처"] for r in 새것}) < 최소출처:
-            if 후보 and not 새것:
-                raise 학습실패("수집 파일 크기 상한 안에 새 기록을 넣을 공간이 없습니다")
+            fresh.append(record)
+            lines.append(line)
+            add_size += byte
+        if not cur_group and len({r["출처"] for r in fresh}) < min_source:
+            if cand and not fresh:
+                raise LearnFailed("수집 파일 크기 상한 안에 새 기록을 넣을 공간이 없습니다")
             return []
-        if 줄들:
+        if lines:
             try:
-                with open(경로, "a", encoding="utf-8") as f:
-                    f.writelines(줄들)
+                with open(path, "a", encoding="utf-8") as f:
+                    f.writelines(lines)
             except OSError as e:
-                raise 학습실패("수집 파일을 기록할 수 없습니다: %s" % e) from e
-    return 새것
+                raise LearnFailed("수집 파일을 기록할 수 없습니다: %s" % e) from e
+    return fresh
 
 
-def 수집읽기(경로):
+def save_verified_knowledge(kg_path, topic, query, sources, min_source=2):
+    """승인 전에 읽고 화면에 제시한 원문 대목만 수집 파일에 저장한다.
+
+    ``배우기``는 탐색부터 수행하는 대화형 도구다. 승인 계획에서는 이미
+    검증된 대목을 다시 검색하면 계획과 다른 웹 결과를 저장할 수 있으므로,
+    이 함수는 네트워크를 전혀 사용하지 않는다.
+    """
+    alias = topic_aliases(topic)
+    if not alias:
+        raise LearnFailed("학습할 주제가 비어 있습니다")
+    if max_per_topic() < min_source:
+        raise LearnFailed("주제당 기록 상한(%d개)이 필수 출처 수(%d곳)보다 작습니다"
+                   % (max_per_topic(), min_source))
+    chosen, domain = [], set()
+    for source in sources or []:
+        if not isinstance(source, dict):
+            continue
+        url = str(source.get("url") or source.get("URL") or "").strip()
+        src = str(source.get("domain") or source.get("출처") or urllib.parse.urlparse(url).netloc).strip()
+        # 승인 화면에서 본 문장이라고 해도, 그 값이 잘린 발췌가 아닌지는
+        # 저장 직전에 다시 확인한다. 이 경로는 네트워크를 다시 읽지 않지만,
+        # `배우기()`와 같은 완결 문장 규율을 지켜야 사실 노드가 반쪽 인용으로
+        # 남지 않는다. 한 입력 항목은 정확히 한 완결 문장이어야 한다.
+        sentences = []
+        for value in (source.get("sentences") or source.get("문장들") or []):
+            if not isinstance(value, str):
+                continue
+            sentence = str(value).strip()
+            completed = complete_sentences(sentence, topic)
+            if len(completed) == 1 and completed[0] == sanitize(sentence, max_n=1500):
+                sentences.append(completed[0])
+        body = " ".join(sentences)
+        if not url or not src or src in domain or not sentences or not topic_related(topic, body):
+            continue
+        domain.add(src)
+        chosen.append({"출처": src, "URL": url, "제목": str(source.get("title") or source.get("제목") or ""),
+                       "문장들": sentences, "대목들": [sentences], "본문": body})
+    if len(domain) < min_source:
+        return []
+    saved_aliases = _valid_aliases(topic, [x["본문"] for x in chosen])
+    save_topic = min(saved_aliases, key=lambda x: (len(_joined(x)), len(x))) if saved_aliases else topic
+    path = collect_path(kg_path)
+    with CollectLock(path):
+        if os.path.exists(path) and os.path.getsize(path) >= collect_max_byte():
+            raise LearnFailed("수집 파일 크기 상한(%d바이트)에 도달했습니다" % collect_max_byte())
+        cur = read_collected(path)
+        cur_groups = _topic_groups(cur)
+        cur_group = next((m for m in cur_groups if set(alias) & m["별칭"]), None)
+        if not cur_group and len(cur_groups) >= max_topic():
+            raise LearnFailed("자동 학습 주제 상한(%d개)에 도달했습니다" % max_topic())
+        already = {r["본문"] for r in cur}
+        remaining_slot = max_per_topic() - len(cur_group["기록"] if cur_group else [])
+        if remaining_slot <= 0:
+            return []
+        when = time.strftime("%Y-%m-%dT%H:%M:%S")
+        cand = []
+        for found in chosen:
+            if found["본문"] in already or len(cand) >= remaining_slot:
+                continue
+            record = {"주제": save_topic, "주제별칭": saved_aliases, "질의": query, "수집형식": 3,
+                    "출처": found["출처"], "URL": found["URL"], "제목": found["제목"],
+                    "본문": found["본문"], "문장들": found["문장들"], "대목들": found["대목들"],
+                    "질문표현": [t.format(**{"주제": save_topic}) for t in _QUESTION_FRAMES] + [query], "수집시각": when}
+            cand.append((record, json.dumps(record, ensure_ascii=False) + "\n"))
+        cur_size = os.path.getsize(path) if os.path.exists(path) else 0
+        fresh, lines, add_size = [], [], 0
+        for record, line in cand:
+            byte = len(line.encode("utf-8"))
+            if cur_size + add_size + byte > collect_max_byte():
+                break
+            fresh.append(record); lines.append(line); add_size += byte
+        if not cur_group and len({r["출처"] for r in fresh}) < min_source:
+            return []
+        if lines:
+            try:
+                with open(path, "a", encoding="utf-8") as f:
+                    f.writelines(lines)
+            except OSError as e:
+                raise LearnFailed("수집 파일을 기록할 수 없습니다: %s" % e) from e
+    return fresh
+
+
+def read_collected(path):
     out = []
-    if 경로 and os.path.exists(경로):
-        with open(경로, encoding="utf-8") as f:
-            for 줄 in f:
-                줄 = 줄.strip()
-                if not 줄:
+    if path and os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
                     continue
                 try:
-                    d = json.loads(줄)
+                    d = json.loads(line)
                     if d.get("주제") and d.get("본문"):
                         out.append(d)
                 except ValueError:
@@ -537,7 +712,7 @@ def 수집읽기(경로):
     return out
 
 
-def 얹기(g, 기록들):
+def stack_on(g, records):
     """수집 기록을 그래프에 붙인다. 노드 이름은 전부 접두사로 표시해 둔다 —
     어느 것이 기계가 주워온 것인지 그래프만 보고도 알 수 있어야 한다."""
     g["_주제별칭"] = {}
@@ -545,75 +720,75 @@ def 얹기(g, 기록들):
     g["_주제대목"] = {}
     # 발췌만 있던 구버전 기록은 감사 로그로 남기되 지식 그래프에는 얹지 않는다.
     # 원문에서 가져온 완결 문장 목록이 있는 기록만 사실 노드가 된다.
-    채택 = [r for r in 기록들 if r.get("수집형식") == 3 and r.get("문장들") and r.get("대목들")
-          and any(주제관련(r.get("주제"), s) for s in r["문장들"])]
-    for 묶음 in _주제묶음(채택):
-        주제, rs = 묶음["이름"], 묶음["기록"]
-        주장 = "지식_" + 주제
-        문장전부 = [s for r in rs for s in r.get("문장들", [])]
-        문장전부 = list(dict.fromkeys(문장전부))
-        g["_주제별칭"][주장] = sorted(_유효별칭(주제, 문장전부), key=len, reverse=True)
+    adopted = [r for r in records if r.get("수집형식") == 3 and r.get("문장들") and r.get("대목들")
+          and any(topic_related(r.get("주제"), s) for s in r["문장들"])]
+    for group in _topic_groups(adopted):
+        topic, rs = group["이름"], group["기록"]
+        claim = "지식_" + topic
+        sentence_before_sub = [s for r in rs for s in r.get("문장들", [])]
+        sentence_before_sub = list(dict.fromkeys(sentence_before_sub))
+        g["_주제별칭"][claim] = sorted(_valid_aliases(topic, sentence_before_sub), key=len, reverse=True)
         # 주제 루트와 각 사실을 나눠야 그래프가 실제로 무엇을 배웠는지 보인다.
-        g["공통층"][주장] = list(dict.fromkeys([주제] + [q for r in rs for q in r.get("질문표현", [])]))
-        g["_주제사실"][주장] = []
-        g["_주제대목"][주장] = []
+        g["공통층"][claim] = list(dict.fromkeys([topic] + [q for r in rs for q in r.get("질문표현", [])]))
+        g["_주제사실"][claim] = []
+        g["_주제대목"][claim] = []
 
-        도메인 = sorted({r["출처"] for r in rs})
-        g.setdefault("출처", {})[주장] = "웹 %d곳 · %s%s" % (
-            len(도메인), ", ".join(도메인[:2]), " 외" if len(도메인) > 2 else "")
+        domain = sorted({r["출처"] for r in rs})
+        g.setdefault("출처", {})[claim] = "웹 %d곳 · %s%s" % (
+            len(domain), ", ".join(domain[:2]), " 외" if len(domain) > 2 else "")
 
-        사실번호, 출처묶음 = {}, {}
+        fact_num, source_group = {}, {}
         for r in rs:
-            출처묶음.setdefault(r["출처"], []).append(r)
-        for i, (출처, 출처기록들) in enumerate(sorted(출처묶음.items()), 1):
-            대표 = 출처기록들[-1]
-            출처노드 = "출처_%s_%d" % (주제, i)
-            g["사례층"][출처노드] = [대표.get("제목") or 출처]
-            g["출처"][출처노드] = 대표.get("URL") or 출처
-            if 출처노드 not in g.setdefault("증거", []):
-                g["증거"].append(출처노드)
-            for r in 출처기록들:
-                for 대목 in r.get("대목들", []):
-                    if 대목:
-                        g["_주제대목"][주장].append({"출처": 출처,
-                                                    "문장들": list(대목)})
-                for 문장 in r.get("문장들", []):
-                    if 문장 not in 사실번호:
-                        사실번호[문장] = len(사실번호) + 1
-                        사실 = "지식_%s_사실_%d" % (주제, 사실번호[문장])
-                        g["공통층"][사실] = [문장]
-                        g["출처"][사실] = r.get("URL") or r["출처"]
-                        g["_주제사실"][주장].append(사실)
-                        g["엣지"].append([사실, "충족", 주장])
+            source_group.setdefault(r["출처"], []).append(r)
+        for i, (src, logs_source) in enumerate(sorted(source_group.items()), 1):
+            rep = logs_source[-1]
+            source_node = "출처_%s_%d" % (topic, i)
+            g["사례층"][source_node] = [rep.get("제목") or src]
+            g["출처"][source_node] = rep.get("URL") or src
+            if source_node not in g.setdefault("증거", []):
+                g["증거"].append(source_node)
+            for r in logs_source:
+                for passage in r.get("대목들", []):
+                    if passage:
+                        g["_주제대목"][claim].append({"출처": src,
+                                                    "문장들": list(passage)})
+                for sentence in r.get("문장들", []):
+                    if sentence not in fact_num:
+                        fact_num[sentence] = len(fact_num) + 1
+                        fact = "지식_%s_사실_%d" % (topic, fact_num[sentence])
+                        g["공통층"][fact] = [sentence]
+                        g["출처"][fact] = r.get("URL") or r["출처"]
+                        g["_주제사실"][claim].append(fact)
+                        g["엣지"].append([fact, "충족", claim])
                     else:
-                        사실 = "지식_%s_사실_%d" % (주제, 사실번호[문장])
-                    edge = [출처노드, "증명", 사실]
+                        fact = "지식_%s_사실_%d" % (topic, fact_num[sentence])
+                    edge = [source_node, "증명", fact]
                     if edge not in g["엣지"]:
                         g["엣지"].append(edge)
 
-        g["엣지"].append([주장, "충족", g["목표"]])
+        g["엣지"].append([claim, "충족", g["목표"]])
     return g
 
 
-def 불러오기(kg경로):
+def load(kg_path):
     """engine.load() 를 그대로 쓰되 파싱 직후에 수집분을 얹는다.
 
     load() 뒤쪽(학습 덧칠·검증·관련개념·벡터)을 여기로 복사하면 engine 이
     바뀔 때 조용히 어긋난다. 파싱 함수만 잠깐 감싸서 나머지를 전부 물려받는다."""
-    원래 = eng.kg읽기
-    기록 = 수집읽기(수집경로(kg경로))
+    orig = eng.read_kg
+    record = read_collected(collect_path(kg_path))
 
-    def 덧칠(경로):
-        return 얹기(원래(경로), 기록)
+    def overlay(path):
+        return stack_on(orig(path), record)
 
-    eng.kg읽기 = 덧칠
+    eng.read_kg = overlay
     try:
-        return eng.load(kg경로)
+        return eng.load(kg_path)
     finally:
-        eng.kg읽기 = 원래
+        eng.read_kg = orig
 
 
-def 묻다(g, 말):
+def ask(g, phrase):
     """→ (아는 주제인가, 답).
 
     주제는 원문에서 확인된 별칭으로 정확히 고르고, 답은 그 주제 아래의 완결
@@ -622,62 +797,62 @@ def 묻다(g, 말):
 
     모르는 주제에 대고 억지로 대답하지 않는다. '무관하다'가 아니라
     '아직 모른다'로 답한다."""
-    주제표 = []
-    for n, 별칭 in (g.get("_주제별칭") or {}).items():
-        주제표.extend((a, n) for a in 별칭)
-    걸림 = next(((a, n) for a, n in sorted(주제표, key=lambda x: len(x[0]), reverse=True)
-                if a and a in 말), None)
-    if not 걸림:
-        모름 = ((g.get("공통층") or {}).get("상태_지식부족")
+    topic_table = []
+    for n, alias in (g.get("_주제별칭") or {}).items():
+        topic_table.extend((a, n) for a in alias)
+    blocker = next(((a, n) for a, n in sorted(topic_table, key=lambda x: len(x[0]), reverse=True)
+                if a and a in phrase), None)
+    if not blocker:
+        unknown = ((g.get("공통층") or {}).get("상태_지식부족")
                 or (g.get("무관층") or {}).get("_타죄명:상태_지식부족")
                 or ["아직 그 내용을 모릅니다"])
-        return False, 모름[0]
+        return False, unknown[0]
 
-    걸린주제, 주장 = 걸림
-    사실들 = (g.get("_주제사실") or {}).get(주장, [])
-    if not 사실들:
+    caught_topic, claim = blocker
+    facts = (g.get("_주제사실") or {}).get(claim, [])
+    if not facts:
         return False, "아직 원문에서 완결된 지식을 만들지 못했습니다."
-    대목들 = (g.get("_주제대목") or {}).get(주장, [])
-    기준 = _vec(말)
-    후보 = []
-    for order, item in enumerate(대목들):
+    passages = (g.get("_주제대목") or {}).get(claim, [])
+    basis = _vec(phrase)
+    cand = []
+    for order, item in enumerate(passages):
         text = " ".join(item.get("문장들") or [])
         if not text or "..." in text or "…" in text:
             continue
-        score = float((_vec(text) @ 기준).max())
-        후보.append((score, order, item.get("출처"), text))
-    if 후보:
-        후보.sort(reverse=True)
-        최고 = 후보[0][0]
-        열거요청 = any(x in 말 for x in ("목록", "장점", "단점", "단계", "순서", "종류", "이유"))
-        열거시작 = re.compile(r"^(첫째|둘째|셋째|넷째|다섯째|먼저|다음으로|마지막으로|\d+[.)])")
-        답, 본문, 출처별 = [], set(), {}
+        score = float((_vec(text) @ basis).max())
+        cand.append((score, order, item.get("출처"), text))
+    if cand:
+        cand.sort(reverse=True)
+        best = cand[0][0]
+        request_enumerate = any(x in phrase for x in ("목록", "장점", "단점", "단계", "순서", "종류", "이유"))
+        enumerate_start = re.compile(r"^(첫째|둘째|셋째|넷째|다섯째|먼저|다음으로|마지막으로|\d+[.)])")
+        ans, body, by_source = [], set(), {}
         # 고정 '6문장'이 아니라 최고 대목과 의미상 가까운 완결 문단을 고른다.
         # 12k 안전망에서도 문단 중간은 자르지 않는다.
-        for score, order, source, text in 후보:
-            if score < max(0.18, 최고 - 0.10) or text in 본문:
+        for score, order, source, text in cand:
+            if score < max(0.18, best - 0.10) or text in body:
                 continue
-            if not 열거요청 and 열거시작.match(text):
+            if not request_enumerate and enumerate_start.match(text):
                 continue
-            if sum(len(x) for x in 답) + len(text) > 12000:
+            if sum(len(x) for x in ans) + len(text) > 12000:
                 continue
             # 한 출처의 반복 서술이 답을 독점하지 않게 하되 원문 다양성은 유지한다.
-            if 출처별.get(source, 0) >= 3:
+            if by_source.get(source, 0) >= 3:
                 continue
-            본문.add(text)
-            출처별[source] = 출처별.get(source, 0) + 1
-            답.append((order, text))
-        if 답:
+            body.add(text)
+            by_source[source] = by_source.get(source, 0) + 1
+            ans.append((order, text))
+        if ans:
             # 같은 점수권 안에서는 원문 순서가 담화 연결을 보존한다.
-            return True, "\n\n".join(text for _order, text in sorted(답))
+            return True, "\n\n".join(text for _order, text in sorted(ans))
 
     # 구버전/예외 그래프의 대목 정보가 없을 때도 완결 사실만 반환한다.
-    행 = [g["공통층"][n][0] for n in 사실들 if g["공통층"].get(n)]
-    return True, "\n\n".join(x for x in 행 if "..." not in x and "…" not in x)
+    row = [g["공통층"][n][0] for n in facts if g["공통층"].get(n)]
+    return True, "\n\n".join(x for x in row if "..." not in x and "…" not in x)
 
 
 # ── CLI ─────────────────────────────────────────────────────────────────
-def _쓰임():
+def _usage():
     print(__doc__.strip())
     print("""
 사용법
@@ -689,124 +864,124 @@ def _쓰임():
   --그래프 <경로>   기본 graphs/graph_자가학습.kg""")
 
 
-def _주():
+def _main():
     argv = sys.argv[1:]
     if not argv or argv[0] in ("-h", "--help"):
-        return _쓰임()
+        return _usage()
 
-    def 값(이름, 기본=None):
-        return argv[argv.index(이름) + 1] if 이름 in argv and argv.index(이름) + 1 < len(argv) else 기본
+    def value(name, default=None):
+        return argv[argv.index(name) + 1] if name in argv and argv.index(name) + 1 < len(argv) else default
 
-    kg = 값("--그래프", "graphs/graph_자가학습.kg")
+    kg = value("--그래프", "graphs/graph_자가학습.kg")
 
     if "--check" in argv:
-        return _자체검사(kg)
+        return _selfcheck(kg)
 
     if "--보기" in argv:
-        기록 = 수집읽기(수집경로(kg))
-        채택 = [r for r in 기록 if 주제관련(r.get("주제"), r.get("본문"))]
-        제외 = [r for r in 기록 if r not in 채택]
-        묶음들 = _주제묶음(채택)
+        record = read_collected(collect_path(kg))
+        adopted = [r for r in record if topic_related(r.get("주제"), r.get("본문"))]
+        exclude = [r for r in record if r not in adopted]
+        groups = _topic_groups(adopted)
         print("수집 파일: %s  (기록 %d개, 채택 %d개, 제외 %d개, 주제 %d개)"
-              % (수집경로(kg), len(기록), len(채택), len(제외), len(묶음들)))
-        for 묶음 in 묶음들:
-            주제, rs = 묶음["이름"], 묶음["기록"]
-            print("\n[%s] 출처 %d곳" % (주제, len({r["출처"] for r in rs})))
+              % (collect_path(kg), len(record), len(adopted), len(exclude), len(groups)))
+        for group in groups:
+            topic, rs = group["이름"], group["기록"]
+            print("\n[%s] 출처 %d곳" % (topic, len({r["출처"] for r in rs})))
             for r in rs:
                 print("   · %-24s %s" % (r["출처"][:24], r["본문"][:56]))
-        if 제외:
+        if exclude:
             print("\n[품질 필터로 제외 — 원본 감사 로그에는 보존]")
-            for r in 제외:
+            for r in exclude:
                 print("   · %-12s %-24s %s"
                       % (r["주제"][:12], r.get("출처", "")[:24], r["본문"][:56]))
         return
 
     if "--배우다" in argv:
-        주제 = 값("--배우다")
-        질의 = 값("--질의", 주제)
+        topic = value("--배우다")
+        query = value("--질의", topic)
         try:
-            새것 = 배우기(kg, 주제, 질의, int(값("--개수", "10")),
-                         강제="--새로고침" in argv)
-        except 학습실패 as e:
+            fresh = learn(kg, topic, query, int(value("--개수", "10")),
+                         force="--새로고침" in argv)
+        except LearnFailed as e:
             print("[학습 실패] %s" % e)
             return 1
-        print("'%s' 검색 → 새로 %d건 수집 (옆파일: %s)" % (질의, len(새것), 수집경로(kg)))
-        for r in 새것:
+        print("'%s' 검색 → 새로 %d건 수집 (옆파일: %s)" % (query, len(fresh), collect_path(kg)))
+        for r in fresh:
             print("   · %-24s %s" % (r["출처"][:24], r["본문"][:56]))
-        if not 새것:
+        if not fresh:
             print("   (이미 갖고 있는 내용이거나 검색 결과가 없다)")
         return
 
     if "--묻다" in argv:
-        g = 불러오기(kg)
-        말 = 값("--묻다")
-        아는가, 답 = 묻다(g, 말)
-        학습시도 = False
-        if not 아는가:
-            추출주제, _별칭 = 주제추출(g, 말)
-            if 추출주제:
-                학습시도 = True
-                실패문구 = None
+        g = load(kg)
+        phrase = value("--묻다")
+        knows, ans = ask(g, phrase)
+        learn_tries = False
+        if not knows:
+            extracted_topic, _alias = extract_topic(g, phrase)
+            if extracted_topic:
+                learn_tries = True
+                failure_stmt_phrase = None
                 print("[자동학습] 그래프 표지를 이용해 '%s' 주제를 추출했습니다. 스스로 배웁니다..."
-                      % 추출주제)
+                      % extracted_topic)
                 try:
-                    새것 = 배우기(kg, 추출주제, 말, int(값("--개수", "10")), 최소출처=2)
-                except 학습실패 as e:
-                    실패문구 = str(e)
-                    새것 = []
-                if 새것:
-                    g = 불러오기(kg)
-                    아는가, 답 = 묻다(g, 말)
-                elif not 아는가:
-                    답 = (("자동 학습을 완료하지 못했습니다: " + 실패문구) if 실패문구 else
+                    fresh = learn(kg, extracted_topic, phrase, int(value("--개수", "10")), min_source=2)
+                except LearnFailed as e:
+                    failure_stmt_phrase = str(e)
+                    fresh = []
+                if fresh:
+                    g = load(kg)
+                    knows, ans = ask(g, phrase)
+                elif not knows:
+                    ans = (("자동 학습을 완료하지 못했습니다: " + failure_stmt_phrase) if failure_stmt_phrase else
                            "서로 다른 출처 두 곳에서 주제를 확인하지 못해 지식으로 채택하지 않았습니다.")
 
-        print(답)
-        if not 아는가:
+        print(ans)
+        if not knows:
             print("   (배우려면: python web_learn.py --배우다 <주제>)")
-        return 1 if 학습시도 and not 아는가 else 0
+        return 1 if learn_tries and not knows else 0
 
-    _쓰임()
+    _usage()
 
 
-def _자체검사(kg):
-    문제 = []
+def _selfcheck(kg):
+    problem = []
     t = "재료 준비 | 조리 # 완성\n두 번째 줄"
-    s = 살균(t, kg안전=True)
+    s = sanitize(t, kg_safe=True)
     if "\n" in s or "|" in s or "#" in s:
-        문제.append("살균이 개행/구분자를 남긴다: %r" % s)
-    if 살균("<b>가</b>격은 3000원 # 별도")[:2] != "가격":
-        문제.append("태그 제거 실패")
-    문장시험 = 완결문장들("양자역학은 설명 도중 잘린 내용입니다... "
+        problem.append("살균이 개행/구분자를 남긴다: %r" % s)
+    if sanitize("<b>가</b>격은 3000원 # 별도")[:2] != "가격":
+        problem.append("태그 제거 실패")
+    test_sentence = complete_sentences("양자역학은 설명 도중 잘린 내용입니다... "
                          "양자역학은 미시 세계를 설명하는 물리 이론입니다.", "양자역학")
-    if 문장시험 != ["양자역학은 미시 세계를 설명하는 물리 이론입니다."]:
-        문제.append("잘린 발췌를 버리고 완결 문장만 고르지 못한다: %r" % 문장시험)
-    g = 불러오기(kg)
+    if test_sentence != ["양자역학은 미시 세계를 설명하는 물리 이론입니다."]:
+        problem.append("잘린 발췌를 버리고 완결 문장만 고르지 못한다: %r" % test_sentence)
+    g = load(kg)
     if not g.get("공통층"):
-        문제.append("그래프가 비었다")
+        problem.append("그래프가 비었다")
     for n in (g.get("출처") or {}):
         if n not in g["공통층"] and n not in g["사례층"] and n not in g.get("무관층", {}):
-            문제.append("출처가 붙은 '%s' 이 어느 층에도 없다" % n)
-    주제, 별칭 = 주제추출(g, "양자역학이 뭐야")
-    if 주제 != "양자역학이" or "양자역학" not in 별칭:
-        문제.append("조사 별칭 추출 실패: %r %r" % (주제, 별칭))
-    if 주제추출(g, "초전도체란")[0] != "초전도체":
-        문제.append("'~란' 질문에서 주제를 못 뽑는다")
-    if 주제추출(g, "폴란드가 뭐야")[0] != "폴란드가":
-        문제.append("주제 내부의 질문 표지 글자를 지운다")
-    if 주제추출(g, "뭐야")[0] is not None:
-        문제.append("표지만 있는 질문에서 빈 주제를 학습한다")
-    if not 주제관련("양자역학이", "양자역학은 물리학의 이론 체계다"):
-        문제.append("조사 변형이 있는 관련 스니펫을 버린다")
-    if 주제관련("양자역학이", "양자컴퓨터는 0과 1을 동시에 사용한다"):
-        문제.append("주제를 직접 말하지 않은 스니펫을 채택한다")
-    if "호랑" in _유효별칭("호랑이", ["호랑이는 고양잇과 동물이다"]):
-        문제.append("명사 끝 글자를 조사로 오인해 거짓 별칭을 만든다")
-    if "양자역학" not in _유효별칭("양자역학이", ["양자역학은 물리 이론이다"]):
-        문제.append("본문으로 확인된 조사 제거 별칭을 버린다")
+            problem.append("출처가 붙은 '%s' 이 어느 층에도 없다" % n)
+    topic, alias = extract_topic(g, "양자역학이 뭐야")
+    if topic != "양자역학이" or "양자역학" not in alias:
+        problem.append("조사 별칭 추출 실패: %r %r" % (topic, alias))
+    if extract_topic(g, "초전도체란")[0] != "초전도체":
+        problem.append("'~란' 질문에서 주제를 못 뽑는다")
+    if extract_topic(g, "폴란드가 뭐야")[0] != "폴란드가":
+        problem.append("주제 내부의 질문 표지 글자를 지운다")
+    if extract_topic(g, "뭐야")[0] is not None:
+        problem.append("표지만 있는 질문에서 빈 주제를 학습한다")
+    if not topic_related("양자역학이", "양자역학은 물리학의 이론 체계다"):
+        problem.append("조사 변형이 있는 관련 스니펫을 버린다")
+    if topic_related("양자역학이", "양자컴퓨터는 0과 1을 동시에 사용한다"):
+        problem.append("주제를 직접 말하지 않은 스니펫을 채택한다")
+    if "호랑" in _valid_aliases("호랑이", ["호랑이는 고양잇과 동물이다"]):
+        problem.append("명사 끝 글자를 조사로 오인해 거짓 별칭을 만든다")
+    if "양자역학" not in _valid_aliases("양자역학이", ["양자역학은 물리 이론이다"]):
+        problem.append("본문으로 확인된 조사 제거 별칭을 버린다")
 
     # 서로 다른 표면형도 별칭이 겹치면 한 주제다.
-    시험기록 = [
+    log_test = [
         {"주제": "양자역학이", "본문": "양자역학은 미시 세계의 이론이다.",
          "수집형식": 3, "문장들": ["양자역학은 미시 세계의 이론이다."],
          "대목들": [["양자역학은 미시 세계의 이론이다."]], "출처": "a",
@@ -816,11 +991,11 @@ def _자체검사(kg):
          "대목들": [["양자역학의 측정에는 고유한 규칙이 있다."]], "출처": "b",
          "주제별칭": ["양자역학"]},
     ]
-    if len(_주제묶음(시험기록)) != 1:
-        문제.append("조사만 다른 주제가 중복 묶음으로 남는다")
-    시험그래프 = {"공통층": {}, "사례층": {}, "무관층": {}, "엣지": [],
+    if len(_topic_groups(log_test)) != 1:
+        problem.append("조사만 다른 주제가 중복 묶음으로 남는다")
+    test_graph = {"공통층": {}, "사례층": {}, "무관층": {}, "엣지": [],
                   "출처": {}, "목표": "목표"}
-    같은출처기록 = 시험기록 + [
+    log_same_source = log_test + [
         {"주제": "양자역학", "본문": "양자역학은 파동 함수를 사용한다.",
          "수집형식": 3, "문장들": ["양자역학은 파동 함수를 사용한다."],
          "대목들": [["양자역학은 파동 함수를 사용한다."]], "출처": "a",
@@ -830,111 +1005,111 @@ def _자체검사(kg):
          "대목들": [["양자컴퓨터는 중첩을 계산에 쓴다."]], "출처": "c",
          "주제별칭": ["양자역학"]},
     ]
-    얹기(시험그래프, 같은출처기록)
-    증명수 = len([e for e in 시험그래프["엣지"] if e[1] == "증명"])
-    출처노드수 = len([n for n in 시험그래프["사례층"] if n.startswith("출처_")])
-    if 출처노드수 != 2 or 증명수 != 3:
-        문제.append("출처와 완결 사실 노드 구성이 틀렸다: 출처 %d, 증명 %d"
-                   % (출처노드수, 증명수))
-    if any("양자컴퓨터" in s for v in 시험그래프["사례층"].values() for s in v):
-        문제.append("과거 로그의 무관 스니펫을 런타임 지식으로 얹는다")
+    stack_on(test_graph, log_same_source)
+    proof_count = len([e for e in test_graph["엣지"] if e[1] == "증명"])
+    source_node_count = len([n for n in test_graph["사례층"] if n.startswith("출처_")])
+    if source_node_count != 2 or proof_count != 3:
+        problem.append("출처와 완결 사실 노드 구성이 틀렸다: 출처 %d, 증명 %d"
+                   % (source_node_count, proof_count))
+    if any("양자컴퓨터" in s for v in test_graph["사례층"].values() for s in v):
+        problem.append("과거 로그의 무관 스니펫을 런타임 지식으로 얹는다")
 
     # 네트워크 대신 고정 검색 결과를 넣어 저장·품질 필터·재수집 방지를 함께 잰다.
     import tempfile
-    원검색 = globals()["검색"]
+    orig_search = globals()["search"]
     try:
         with tempfile.TemporaryDirectory(prefix="web-learn-check-") as td:
-            시험kg = os.path.join(td, "시험.kg")
-            globals()["검색"] = lambda _q, 개수=10: [
+            test_kg = os.path.join(td, "시험.kg")
+            globals()["search"] = lambda _q, count=10: [
                 ("a.example", "양자역학은 미시 세계를 설명하는 물리학의 이론 체계입니다."),
                 ("b.example", "양자역학의 상태와 측정은 고전 역학과 다른 규칙을 따릅니다."),
                 ("c.example", "양자컴퓨터는 0과 1을 동시에 사용해 계산할 수 있습니다."),
             ]
-            새것 = 배우기(시험kg, "양자역학이", "양자역학이 뭐야", 3, 최소출처=2)
-            if len(새것) != 2 or any(r["출처"] == "c.example" for r in 새것):
-                문제.append("검색 품질 필터가 무관 스니펫을 거르지 못한다: %r" % 새것)
-            if any(r["주제"] != "양자역학" or r.get("수집형식") != 3 for r in 새것):
-                문제.append("검증된 조사 제거형을 대표 주제로 저장하지 못한다: %r" % 새것)
-            if 배우기(시험kg, "양자역학", "양자역학 설명해줘", 3, 최소출처=2):
-                문제.append("같은 주제를 조사만 바꿔 즉시 중복 수집한다")
+            fresh = learn(test_kg, "양자역학이", "양자역학이 뭐야", 3, min_source=2)
+            if len(fresh) != 2 or any(r["출처"] == "c.example" for r in fresh):
+                problem.append("검색 품질 필터가 무관 스니펫을 거르지 못한다: %r" % fresh)
+            if any(r["주제"] != "양자역학" or r.get("수집형식") != 3 for r in fresh):
+                problem.append("검증된 조사 제거형을 대표 주제로 저장하지 못한다: %r" % fresh)
+            if learn(test_kg, "양자역학", "양자역학 설명해줘", 3, min_source=2):
+                problem.append("같은 주제를 조사만 바꿔 즉시 중복 수집한다")
 
             # 운영 상한과 잠금도 실제 파일 경계에서 잰다.
-            환경이름 = ("KG_LEARN_MAX_TOPICS", "KG_LEARN_MAX_RECORDS",
+            env_name = ("KG_LEARN_MAX_TOPICS", "KG_LEARN_MAX_RECORDS",
                     "KG_LEARN_MAX_BYTES", "KG_LEARN_COOLDOWN")
-            원환경 = {k: os.environ.get(k) for k in 환경이름}
+            orig_env = {k: os.environ.get(k) for k in env_name}
             try:
-                globals()["검색"] = lambda q, 개수=10: [
+                globals()["search"] = lambda q, count=10: [
                     ("a.example", "%s에 관한 첫 번째 독립 출처의 충분히 긴 설명입니다." % q),
                     ("b.example", "%s에 관한 두 번째 독립 출처의 충분히 긴 설명입니다." % q),
                     ("c.example", "%s에 관한 세 번째 독립 출처의 충분히 긴 설명입니다." % q),
                 ]
                 os.environ["KG_LEARN_MAX_RECORDS"] = "2"
-                제한kg = os.path.join(td, "제한.kg")
-                제한기록 = 배우기(제한kg, "별하나", "별하나", 3, 최소출처=2)
-                if len(제한기록) != 2 or len(수집읽기(수집경로(제한kg))) != 2:
-                    문제.append("주제당 기록 상한을 넘거나 덜 기록한다")
+                limit_kg = os.path.join(td, "제한.kg")
+                log_limit = learn(limit_kg, "별하나", "별하나", 3, min_source=2)
+                if len(log_limit) != 2 or len(read_collected(collect_path(limit_kg))) != 2:
+                    problem.append("주제당 기록 상한을 넘거나 덜 기록한다")
 
                 os.environ["KG_LEARN_MAX_TOPICS"] = "1"
                 try:
-                    배우기(제한kg, "별둘", "별둘", 2, 최소출처=2)
-                    문제.append("전체 주제 상한을 넘겨 새 주제를 기록한다")
-                except 학습실패:
+                    learn(limit_kg, "별둘", "별둘", 2, min_source=2)
+                    problem.append("전체 주제 상한을 넘겨 새 주제를 기록한다")
+                except LearnFailed:
                     pass
 
-                잠금kg = os.path.join(td, "잠금.kg")
-                잠금파일 = 수집경로(잠금kg) + ".lock"
-                with open(잠금파일, "w", encoding="ascii") as f:
+                lock_kg = os.path.join(td, "잠금.kg")
+                lock_file = collect_path(lock_kg) + ".lock"
+                with open(lock_file, "w", encoding="ascii") as f:
                     f.write("testing\n")
                 try:
-                    배우기(잠금kg, "잠금시험", "잠금시험", 2, 최소출처=2)
-                    문제.append("동시 수집 잠금을 무시하고 기록한다")
-                except 학습실패:
+                    learn(lock_kg, "잠금시험", "잠금시험", 2, min_source=2)
+                    problem.append("동시 수집 잠금을 무시하고 기록한다")
+                except LearnFailed:
                     pass
                 finally:
                     try:
-                        os.unlink(잠금파일)
+                        os.unlink(lock_file)
                     except FileNotFoundError:
                         pass
 
                 os.environ["KG_LEARN_MAX_BYTES"] = "100"
-                작은kg = os.path.join(td, "작은.kg")
+                small_kg = os.path.join(td, "작은.kg")
                 try:
-                    배우기(작은kg, "크기시험", "크기시험", 2, 최소출처=2)
-                    문제.append("배치 쓰기로 파일 크기 상한을 넘긴다")
-                except 학습실패:
+                    learn(small_kg, "크기시험", "크기시험", 2, min_source=2)
+                    problem.append("배치 쓰기로 파일 크기 상한을 넘긴다")
+                except LearnFailed:
                     pass
-                if os.path.exists(수집경로(작은kg)):
-                    문제.append("크기 상한에 걸린 불완전 배치를 일부 기록한다")
+                if os.path.exists(collect_path(small_kg)):
+                    problem.append("크기 상한에 걸린 불완전 배치를 일부 기록한다")
 
                 os.environ["KG_LEARN_MAX_RECORDS"] = "1"
                 try:
-                    배우기(os.path.join(td, "설정오류.kg"), "설정오류", "설정오류",
-                         2, 최소출처=2)
-                    문제.append("필수 출처보다 작은 기록 상한을 허용한다")
-                except 학습실패:
+                    learn(os.path.join(td, "설정오류.kg"), "설정오류", "설정오류",
+                         2, min_source=2)
+                    problem.append("필수 출처보다 작은 기록 상한을 허용한다")
+                except LearnFailed:
                     pass
             finally:
-                for k, v in 원환경.items():
+                for k, v in orig_env.items():
                     if v is None:
                         os.environ.pop(k, None)
                     else:
                         os.environ[k] = v
 
-            def 끊김(_q, 개수=10):
+            def cutoff(_q, count=10):
                 raise urllib.error.URLError("offline")
-            globals()["검색"] = 끊김
+            globals()["search"] = cutoff
             try:
-                배우기(os.path.join(td, "오프라인.kg"), "초전도체", "초전도체란", 3)
-                문제.append("네트워크 실패를 성공으로 처리한다")
-            except 학습실패:
+                learn(os.path.join(td, "오프라인.kg"), "초전도체", "초전도체란", 3)
+                problem.append("네트워크 실패를 성공으로 처리한다")
+            except LearnFailed:
                 pass
     finally:
-        globals()["검색"] = 원검색
-    print("자체검사: %s" % ("통과" if not 문제 else "%d건 실패" % len(문제)))
-    for x in 문제:
+        globals()["search"] = orig_search
+    print("자체검사: %s" % ("통과" if not problem else "%d건 실패" % len(problem)))
+    for x in problem:
         print("   - " + x)
-    return 1 if 문제 else 0
+    return 1 if problem else 0
 
 
 if __name__ == "__main__":
-    sys.exit(_주() or 0)
+    sys.exit(_main() or 0)

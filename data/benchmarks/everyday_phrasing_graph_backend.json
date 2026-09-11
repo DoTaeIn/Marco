@@ -1,0 +1,599 @@
+{
+ "dataset_sha256": "6315be354c780de99ec3af54c6062ef744737eee66aff555b7a05f216744ccdb",
+ "passed": 74,
+ "total": 74,
+ "rows": [
+  {
+   "text": "안녕하세요",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "안녕",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "안녕하십니까",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "반가워요",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "반갑습니다",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "좋은 아침이에요",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "하이",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "헬로",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "안녕하세요!",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "ㅎㅇ",
+   "family": "greeting",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "안녕하세요, 반가워요"
+  },
+  {
+   "text": "고마워",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "고맙습니다",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "감사합니다",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "감사해요",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "땡큐",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "덕분이야",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "도움 고마워",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "고마워요",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "감사감사",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "ㄱㅅ",
+   "family": "thanks",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "별말씀을요"
+  },
+  {
+   "text": "ㅇㅇ",
+   "family": "ack",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "응, 알겠어"
+  },
+  {
+   "text": "응",
+   "family": "ack",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "응, 알겠어"
+  },
+  {
+   "text": "네",
+   "family": "ack",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "응, 알겠어"
+  },
+  {
+   "text": "넵",
+   "family": "ack",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "응, 알겠어"
+  },
+  {
+   "text": "ㅇㅋ",
+   "family": "ack",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "응, 알겠어"
+  },
+  {
+   "text": "알겠어",
+   "family": "ack",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "응, 알겠어"
+  },
+  {
+   "text": "오케이",
+   "family": "ack",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "응, 알겠어"
+  },
+  {
+   "text": "그렇구나",
+   "family": "ack",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "응, 알겠어"
+  },
+  {
+   "text": "맞아",
+   "family": "ack",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "응, 알겠어"
+  },
+  {
+   "text": "미안",
+   "family": "apology",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "괜찮아요, 다시 말해 주셔도 돼요"
+  },
+  {
+   "text": "미안해요",
+   "family": "apology",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "괜찮아요, 다시 말해 주셔도 돼요"
+  },
+  {
+   "text": "죄송합니다",
+   "family": "apology",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "괜찮아요, 다시 말해 주셔도 돼요"
+  },
+  {
+   "text": "내가 틀렸어",
+   "family": "apology",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "괜찮아요, 다시 말해 주셔도 돼요"
+  },
+  {
+   "text": "아 잘못 말했다",
+   "family": "apology",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "괜찮아요, 다시 말해 주셔도 돼요"
+  },
+  {
+   "text": "ㅋㅋ",
+   "family": "laugh",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "그러게요"
+  },
+  {
+   "text": "ㅎㅎ",
+   "family": "laugh",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "그러게요"
+  },
+  {
+   "text": "ㅋㅋㅋ",
+   "family": "laugh",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "그러게요"
+  },
+  {
+   "text": "재밌네",
+   "family": "laugh",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "그러게요"
+  },
+  {
+   "text": "무슨 말이야",
+   "family": "reask",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "어느 부분을 말씀하시는 걸까요"
+  },
+  {
+   "text": "다시 말해줘",
+   "family": "reask",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "알겠어요, 더 쉽게 다시 말할게요"
+  },
+  {
+   "text": "쉽게 말해줘",
+   "family": "reask",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "알겠어요, 더 쉽게 다시 말할게요"
+  },
+  {
+   "text": "이해가 안 돼",
+   "family": "reask",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "알겠어요, 더 쉽게 다시 말할게요"
+  },
+  {
+   "text": "그게 뭐야",
+   "family": "reask",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "알겠어요, 더 쉽게 다시 말할게요"
+  },
+  {
+   "text": "잠깐만",
+   "family": "hesitate",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "천천히 말씀하셔도 돼요"
+  },
+  {
+   "text": "글쎄요",
+   "family": "hesitate",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "천천히 말씀하셔도 돼요"
+  },
+  {
+   "text": "그러니까",
+   "family": "hesitate",
+   "want": "dialogue",
+   "got": "dialogue",
+   "ok": true,
+   "reply": "천천히 말씀하셔도 돼요"
+  },
+  {
+   "text": "그거 요약해줘",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "그거 요약해 주세요",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "그거 요약해 줄래?",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "그거 요약 좀",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "그거 세 줄로 요약해줘",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "그거 3줄로 요약해 주세요",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "그거 짧게 요약해줄래",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "회의록 요약해줘",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "회의록 요약해 주실래요",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "이 문서 요약 부탁해",
+   "family": "summary",
+   "want": "request.summary",
+   "got": "request.summary",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "이거 설명해줘",
+   "family": "explain",
+   "want": "request.explain",
+   "got": "request.explain",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "이거 설명해 주세요",
+   "family": "explain",
+   "want": "request.explain",
+   "got": "request.explain",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "이거 설명해 줄래?",
+   "family": "explain",
+   "want": "request.explain",
+   "got": "request.explain",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "이거 설명 좀",
+   "family": "explain",
+   "want": "request.explain",
+   "got": "request.explain",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "그 개념 설명해줘",
+   "family": "explain",
+   "want": "request.explain",
+   "got": "request.explain",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "그 개념 설명 부탁해",
+   "family": "explain",
+   "want": "request.explain",
+   "got": "request.explain",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "이거 설명해주실래요",
+   "family": "explain",
+   "want": "request.explain",
+   "got": "request.explain",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "둘 비교해줘",
+   "family": "compare",
+   "want": "request.compare",
+   "got": "request.compare",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "둘 비교해 주세요",
+   "family": "compare",
+   "want": "request.compare",
+   "got": "request.compare",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "둘 비교해 줄래?",
+   "family": "compare",
+   "want": "request.compare",
+   "got": "request.compare",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "이 둘 비교 좀",
+   "family": "compare",
+   "want": "request.compare",
+   "got": "request.compare",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "A랑 B 비교해줘",
+   "family": "compare",
+   "want": "request.compare",
+   "got": "request.compare",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "표만 추출해줘",
+   "family": "extract",
+   "want": "request.extract",
+   "got": "request.extract",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "표만 추출해 주세요",
+   "family": "extract",
+   "want": "request.extract",
+   "got": "request.extract",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "핵심만 추출해줄래",
+   "family": "extract",
+   "want": "request.extract",
+   "got": "request.extract",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "이거 저장해줘",
+   "family": "create",
+   "want": "request.create",
+   "got": "request.create",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "이거 저장해 주세요",
+   "family": "create",
+   "want": "request.create",
+   "got": "request.create",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  },
+  {
+   "text": "결과 저장해줄래",
+   "family": "create",
+   "want": "request.create",
+   "got": "request.create",
+   "ok": true,
+   "reply": "말씀을 이해했습니다. 질문이나 목표를 조금 더 구체적으로 알려 주세요."
+  }
+ ]
+}
