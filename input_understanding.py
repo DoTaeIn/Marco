@@ -131,5 +131,10 @@ def understand(raw: str, history: list[dict] | None = None, *, language: str | N
 def dialogue_reply(text: str, *, language: str | None = None, backend: DialogueBackend | None = None, language_pack: dict | None = None) -> str:
     pack = load_language_pack(language) if language_pack is None else language_pack
     candidate = resolve_backend(backend, pack).parse(normalize(text), pack) or {}
+    # 부품이 지식에서 문장을 골라 왔으면 그것이 답이다. 언어팩의 굳은
+    # 답은 고를 지식이 없을 때만 쓴다.
+    spoken = candidate.get("reply_text")
+    if isinstance(spoken, str) and spoken:
+        return spoken
     replies = pack["conversation"].get("replies") or {}
     return replies.get(candidate.get("reply") or "fallback") or replies.get("fallback") or ""

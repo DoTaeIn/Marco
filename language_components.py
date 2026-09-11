@@ -110,6 +110,7 @@ def decode_language_pack(pack: dict, source: str = "") -> dict[str, Any]:
             "path": str(path), "conversation": conversation,
             "clauses": _validate_clauses(pack.get("문장분리", {})),
             "inflection": pack.get("활용", {}),
+            "particles": pack.get("붙일조사", []),
             "relations": pack.get("관계해석", {}),
             "verbal_expressions": pack.get("말수식", {}),
             "output_contracts": pack.get("출력계약", {}),

@@ -384,12 +384,31 @@ def _fitted_particle(phrase, particle):
 _particles = ("이랑", "랑", "이라고", "라고", "이라는", "라는", "이라", "라",
           "이니까", "니까", "이네요", "네요", "이야", "야", "이나", "나",
           "으로써", "로써", "으로서", "로서", "으로", "로",
-          "은", "는", "이", "가", "을", "를", "과", "와")
+          "은", "는", "이", "가", "을", "를", "과", "와",
+          # 아래는 꼴이 안 바뀌는 조사다. _epenthetic 에 없으므로 받침이
+          # 있어도 그대로 붙는다. 낱말 자리를 가리는 데 꼭 필요하다 —
+          # 없으면 '다섯 개만' 의 '개' 가 낱말로 안 보인다.
+          "에서", "에게", "한테", "부터", "까지", "마다", "보다", "처럼",
+          "에", "의", "도", "만")
 _longest_first = tuple(sorted(_particles, key=len, reverse=True))
 # 받침 뒤에서 앞에 '이/으' 가 돋는 조사. 여기 없는 조사('에·까지·도·만')는
 # 받침이 있어도 그대로 붙는다 — 그러지 않으면 '가래질이에는' 이 나온다.
 _epenthetic = frozenset(("랑", "라", "라고", "라는", "니까", "네요", "야", "나",
                          "로", "로서", "로써"))
+
+
+def strip_particle(tail):
+    """낱말 뒤에 남은 조사 하나를 뗀다. 조사가 아니면 그대로.
+
+        조사떼기('로 요약해줘')  -> ' 요약해줘'
+        조사떼기('만 추출해줘')  -> ' 추출해줘'
+        조사떼기('로봇을 봤다')  -> '로봇을 봤다'   (로봇은 낱말이다)
+
+    낱말의 일부를 조사로 오해하지 않도록, 조사 뒤가 한글이면 떼지 않는다."""
+    for particle in _longest_first:
+        if tail.startswith(particle) and not is_hangul(tail[len(particle):len(particle) + 1]):
+            return tail[len(particle):]
+    return tail
 
 
 def fix_particles(sentence, words):

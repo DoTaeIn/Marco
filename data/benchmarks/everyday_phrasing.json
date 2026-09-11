@@ -1,0 +1,450 @@
+{
+ "schema": "everyday-phrasing-v1",
+ "_설명": "사람이 실제로 치는 말투를 모았다. 같은 뜻을 여러 말끝으로 적어, 굳은 대응표가 아니라 활용을 계산해야 풀리도록 만들었다. 전부 graphs/graph_대화예절.kg 또는 언어팩의 요청 틀 안에 있는 뜻이다.",
+ "cases": [
+  {
+   "text": "안녕하세요",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "안녕",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "안녕하십니까",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "반가워요",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "반갑습니다",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "좋은 아침이에요",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "하이",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "헬로",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "안녕하세요!",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "ㅎㅇ",
+   "intent": "dialogue",
+   "reply": "greeting",
+   "family": "greeting"
+  },
+  {
+   "text": "고마워",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "고맙습니다",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "감사합니다",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "감사해요",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "땡큐",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "덕분이야",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "도움 고마워",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "고마워요",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "감사감사",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "ㄱㅅ",
+   "intent": "dialogue",
+   "reply": "thanks",
+   "family": "thanks"
+  },
+  {
+   "text": "ㅇㅇ",
+   "intent": "dialogue",
+   "reply": "ack",
+   "family": "ack"
+  },
+  {
+   "text": "응",
+   "intent": "dialogue",
+   "reply": "ack",
+   "family": "ack"
+  },
+  {
+   "text": "네",
+   "intent": "dialogue",
+   "reply": "ack",
+   "family": "ack"
+  },
+  {
+   "text": "넵",
+   "intent": "dialogue",
+   "reply": "ack",
+   "family": "ack"
+  },
+  {
+   "text": "ㅇㅋ",
+   "intent": "dialogue",
+   "reply": "ack",
+   "family": "ack"
+  },
+  {
+   "text": "알겠어",
+   "intent": "dialogue",
+   "reply": "ack",
+   "family": "ack"
+  },
+  {
+   "text": "오케이",
+   "intent": "dialogue",
+   "reply": "ack",
+   "family": "ack"
+  },
+  {
+   "text": "그렇구나",
+   "intent": "dialogue",
+   "reply": "ack",
+   "family": "ack"
+  },
+  {
+   "text": "맞아",
+   "intent": "dialogue",
+   "reply": "ack",
+   "family": "ack"
+  },
+  {
+   "text": "미안",
+   "intent": "dialogue",
+   "reply": "apology",
+   "family": "apology"
+  },
+  {
+   "text": "미안해요",
+   "intent": "dialogue",
+   "reply": "apology",
+   "family": "apology"
+  },
+  {
+   "text": "죄송합니다",
+   "intent": "dialogue",
+   "reply": "apology",
+   "family": "apology"
+  },
+  {
+   "text": "내가 틀렸어",
+   "intent": "dialogue",
+   "reply": "apology",
+   "family": "apology"
+  },
+  {
+   "text": "아 잘못 말했다",
+   "intent": "dialogue",
+   "reply": "apology",
+   "family": "apology"
+  },
+  {
+   "text": "ㅋㅋ",
+   "intent": "dialogue",
+   "reply": "laugh",
+   "family": "laugh"
+  },
+  {
+   "text": "ㅎㅎ",
+   "intent": "dialogue",
+   "reply": "laugh",
+   "family": "laugh"
+  },
+  {
+   "text": "ㅋㅋㅋ",
+   "intent": "dialogue",
+   "reply": "laugh",
+   "family": "laugh"
+  },
+  {
+   "text": "재밌네",
+   "intent": "dialogue",
+   "reply": "laugh",
+   "family": "laugh"
+  },
+  {
+   "text": "무슨 말이야",
+   "intent": "dialogue",
+   "reply": "reask",
+   "family": "reask"
+  },
+  {
+   "text": "다시 말해줘",
+   "intent": "dialogue",
+   "reply": "reask",
+   "family": "reask"
+  },
+  {
+   "text": "쉽게 말해줘",
+   "intent": "dialogue",
+   "reply": "reask",
+   "family": "reask"
+  },
+  {
+   "text": "이해가 안 돼",
+   "intent": "dialogue",
+   "reply": "reask",
+   "family": "reask"
+  },
+  {
+   "text": "그게 뭐야",
+   "intent": "dialogue",
+   "reply": "reask",
+   "family": "reask"
+  },
+  {
+   "text": "잠깐만",
+   "intent": "dialogue",
+   "reply": "hesitate",
+   "family": "hesitate"
+  },
+  {
+   "text": "글쎄요",
+   "intent": "dialogue",
+   "reply": "hesitate",
+   "family": "hesitate"
+  },
+  {
+   "text": "그러니까",
+   "intent": "dialogue",
+   "reply": "hesitate",
+   "family": "hesitate"
+  },
+  {
+   "text": "그거 요약해줘",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "그거 요약해 주세요",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "그거 요약해 줄래?",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "그거 요약 좀",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "그거 세 줄로 요약해줘",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "그거 3줄로 요약해 주세요",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "그거 짧게 요약해줄래",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "회의록 요약해줘",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "회의록 요약해 주실래요",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "이 문서 요약 부탁해",
+   "intent": "request.summary",
+   "reply": null,
+   "family": "summary"
+  },
+  {
+   "text": "이거 설명해줘",
+   "intent": "request.explain",
+   "reply": null,
+   "family": "explain"
+  },
+  {
+   "text": "이거 설명해 주세요",
+   "intent": "request.explain",
+   "reply": null,
+   "family": "explain"
+  },
+  {
+   "text": "이거 설명해 줄래?",
+   "intent": "request.explain",
+   "reply": null,
+   "family": "explain"
+  },
+  {
+   "text": "이거 설명 좀",
+   "intent": "request.explain",
+   "reply": null,
+   "family": "explain"
+  },
+  {
+   "text": "그 개념 설명해줘",
+   "intent": "request.explain",
+   "reply": null,
+   "family": "explain"
+  },
+  {
+   "text": "그 개념 설명 부탁해",
+   "intent": "request.explain",
+   "reply": null,
+   "family": "explain"
+  },
+  {
+   "text": "이거 설명해주실래요",
+   "intent": "request.explain",
+   "reply": null,
+   "family": "explain"
+  },
+  {
+   "text": "둘 비교해줘",
+   "intent": "request.compare",
+   "reply": null,
+   "family": "compare"
+  },
+  {
+   "text": "둘 비교해 주세요",
+   "intent": "request.compare",
+   "reply": null,
+   "family": "compare"
+  },
+  {
+   "text": "둘 비교해 줄래?",
+   "intent": "request.compare",
+   "reply": null,
+   "family": "compare"
+  },
+  {
+   "text": "이 둘 비교 좀",
+   "intent": "request.compare",
+   "reply": null,
+   "family": "compare"
+  },
+  {
+   "text": "A랑 B 비교해줘",
+   "intent": "request.compare",
+   "reply": null,
+   "family": "compare"
+  },
+  {
+   "text": "표만 추출해줘",
+   "intent": "request.extract",
+   "reply": null,
+   "family": "extract"
+  },
+  {
+   "text": "표만 추출해 주세요",
+   "intent": "request.extract",
+   "reply": null,
+   "family": "extract"
+  },
+  {
+   "text": "핵심만 추출해줄래",
+   "intent": "request.extract",
+   "reply": null,
+   "family": "extract"
+  },
+  {
+   "text": "이거 저장해줘",
+   "intent": "request.create",
+   "reply": null,
+   "family": "create"
+  },
+  {
+   "text": "이거 저장해 주세요",
+   "intent": "request.create",
+   "reply": null,
+   "family": "create"
+  },
+  {
+   "text": "결과 저장해줄래",
+   "intent": "request.create",
+   "reply": null,
+   "family": "create"
+  }
+ ]
+}
