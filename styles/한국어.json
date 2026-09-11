@@ -149,6 +149,12 @@
        ]
       }
      ]
+    },
+    "inflection": {
+     "stem": "남",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "informal"
     }
    },
    {
@@ -170,6 +176,12 @@
        ]
       }
      ]
+    },
+    "inflection": {
+     "stem": "남",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "informal"
     }
    },
    {
@@ -639,6 +651,12 @@
        ]
       }
      ]
+    },
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "informal"
     }
    },
    {
@@ -660,6 +678,12 @@
        ]
       }
      ]
+    },
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "informal"
     }
    },
    {
@@ -781,6 +805,12 @@
        ]
       }
      ]
+    },
+    "inflection": {
+     "stem": "하",
+     "kind": "regular",
+     "tense": "present",
+     "ending": "question_ga"
     }
    },
    {
@@ -868,6 +898,12 @@
        "answer": "$b"
       }
      ]
+    },
+    "inflection": {
+     "stem": "크",
+     "kind": "descriptive",
+     "tense": "present",
+     "ending": "informal"
     }
    },
    {
@@ -895,6 +931,12 @@
        "answer": "$b"
       }
      ]
+    },
+    "inflection": {
+     "stem": "크",
+     "kind": "descriptive",
+     "tense": "present",
+     "ending": "informal"
     }
    }
   ]
@@ -1005,7 +1047,7 @@
    "descriptive",
    "existential"
   ],
-  "max_forms": 24,
+  "max_forms": 32,
   "vowel_join": {
    "onset": "ㅇ",
    "bright_vowels": [
@@ -1304,8 +1346,150 @@
       }
      ]
     }
+   ],
+   "question_ni": [
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "니"
+      }
+     ]
+    }
+   ],
+   "question_jyo": [
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "죠"
+      }
+     ]
+    }
+   ],
+   "question_ga": [
+    {
+     "when": {
+      "tense": "past"
+     },
+     "steps": [
+      {
+       "op": "append",
+       "text": "는가"
+      }
+     ]
+    },
+    {
+     "when": {
+      "kind": "descriptive"
+     },
+     "steps": [
+      {
+       "op": "coda_suffix",
+       "coda": "ㄴ",
+       "open": "가",
+       "closed": "은가",
+       "drop_codas": [
+        "ㄹ"
+       ]
+      }
+     ]
+    },
+    {
+     "steps": [
+      {
+       "op": "coda_suffix",
+       "open": "는가",
+       "closed": "는가",
+       "drop_codas": [
+        "ㄹ"
+       ]
+      }
+     ]
+    }
+   ],
+   "question_ga_polite": [
+    {
+     "when": {
+      "tense": "past"
+     },
+     "steps": [
+      {
+       "op": "append",
+       "text": "는가요"
+      }
+     ]
+    },
+    {
+     "when": {
+      "kind": "descriptive"
+     },
+     "steps": [
+      {
+       "op": "coda_suffix",
+       "coda": "ㄴ",
+       "open": "가요",
+       "closed": "은가요",
+       "drop_codas": [
+        "ㄹ"
+       ]
+      }
+     ]
+    },
+    {
+     "steps": [
+      {
+       "op": "coda_suffix",
+       "open": "는가요",
+       "closed": "는가요",
+       "drop_codas": [
+        "ㄹ"
+       ]
+      }
+     ]
+    }
+   ],
+   "question_formal": [
+    {
+     "steps": [
+      {
+       "op": "coda_suffix",
+       "coda": "ㅂ",
+       "open": "니까",
+       "closed": "습니까",
+       "drop_codas": [
+        "ㄹ"
+       ]
+      }
+     ]
+    }
+   ],
+   "question_kka": [
+    {
+     "steps": [
+      {
+       "op": "coda_suffix",
+       "coda": "ㄹ",
+       "open": "까",
+       "closed": "을까",
+       "drop_codas": [
+        "ㄹ"
+       ]
+      }
+     ]
+    }
    ]
-  }
+  },
+  "question_endings": [
+   "informal",
+   "polite",
+   "question_ni",
+   "question_jyo",
+   "question_ga",
+   "question_ga_polite",
+   "question_formal",
+   "question_kka"
+  ]
  },
  "_설명": "말투는 엔진이 아니라 데이터다. 다른 언어를 쓰려면 이 파일을 하나 더 만든다. 엔진 코드는 안 고친다.",
  "이음규칙": "한국어",

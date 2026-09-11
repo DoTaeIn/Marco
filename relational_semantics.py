@@ -50,8 +50,15 @@ class RelationalParser:
         annotation = example.get("inflection")
         if not annotation or not self.inflection_grammar:
             return []
-        if "query" in example["meaning"]:
-            raise ValueError("question_inflection_requires_speech_act_model")
+        # A question keeps its speech act. Swapping in a declarative ending
+        # would turn asking into asserting, so questions are realized only
+        # through the endings the grammar declares as questions.
+        asking = "query" in example["meaning"]
+        endings = (self.inflection_grammar.get("question_endings") if asking
+                   else self.inflection_grammar.get("parsing_endings"))
+        if not endings:
+            raise ValueError("question_inflection_requires_declared_question_endings"
+                             if asking else "inflection_requires_declared_parsing_endings")
         args = {key: annotation[key] for key in ("stem", "tense", "ending", "kind")}
         canonical_forms = inflect(**args, grammar=self.inflection_grammar)
         slot_end = max((example["text"].index(value) + len(value) for value in example["slots"].values()), default=0)
@@ -63,7 +70,7 @@ class RelationalParser:
         canonical = canonicals[0]
         result = []
         for tense in annotation.get("tenses", [annotation["tense"]]):
-            for ending in self.inflection_grammar["parsing_endings"]:
+            for ending in endings:
                 for form in inflect(annotation["stem"], tense, ending, self.inflection_grammar,
                                     kind=annotation["kind"]):
                     if form["text"] != canonical:
@@ -243,8 +250,18 @@ class RelationalParser:
                 if normalization and any(example.get(k) != v for k, v in
                                          normalization.get("example_features", {}).items()):
                     continue
-                if normalization and ("query" in meaning or any(
-                        example["text"].endswith(value) for value in example["slots"].values())):
+                # A normalization made by this example's own declared paradigm
+                # keeps the speech act — a question is realized only through
+                # endings the grammar declares as questions. The legacy suffix
+                # shortcut carries no such guarantee, so it still may not
+                # rewrite the ending of a question.
+                declared = normalization and "example_index" in normalization
+                if normalization and not declared and "query" in meaning:
+                    continue
+                # Rewriting a tail that is itself a slot would edit the entity,
+                # whatever produced the normalization.
+                if normalization and any(example["text"].endswith(value)
+                                         for value in example["slots"].values()):
                     continue
                 match = pattern.fullmatch(candidate)
                 if not match:
