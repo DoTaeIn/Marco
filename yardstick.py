@@ -159,8 +159,37 @@ def measure(verbose=False):
         result[name + " · 셋 안"] = (three_inside, len(lines))
         wrong_ones[name] = template
 
+    def evidence_group(name, lines):
+        """라우터 셋을 판정까지 열어 보고 고르면 몇이나 맞나.
+
+        위의 줄들은 라우터만 잰다. 그런데 실제로 답할 때는 후보를 세션으로
+        열어 근거가 서는지 본다(engine.answer). 라우터는 표면을 보고 판정은
+        근거를 보는데 근거 쪽이 더 센 신호라, 재는 자리가 다르면 시스템이
+        하는 일을 못 본다.
+
+        새 답을 만들지 않는다 — 이미 각 그래프가 가진 증거로 묻는 것뿐이다.
+        """
+        hit = 0
+        for x in Bar(lines, name):
+            _pick, _pt, cand = engine.pick_graph(x["물음"], ix, count=3)
+            best = ((-1, -1.0), None)
+            for graph_name, score in cand:
+                if not graph_name.endswith(".kg"):
+                    continue
+                try:
+                    verdict, _answer = engine.judge(engine.load(graph_name), x["물음"])
+                except Exception:
+                    continue
+                key = (engine._verdict_rank(verdict), score)
+                if key > best[0]:
+                    best = (key, graph_name)
+            hit += best[1] == x["그래프"]
+        result[name] = (hit, len(lines))
+        wrong_ones[name] = []
+
     one_group("대조(별칭그대로)", slot["대조"])
     one_group("안 물음(뺀 별칭)", slot["안"])
+    evidence_group("안 물음 · 근거까지 봄", slot["안"])
 
     def node_group(name, lines, strip):
         """고른 그래프 **안에서** 그 개념을 짚나. 라우팅과 다른 층이다.

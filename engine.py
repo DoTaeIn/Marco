@@ -3287,6 +3287,44 @@ def _state_reasoning(question):
     return None
 
 
+# 그래프가 그 물음에 얼마나 확정적으로 답했는가의 차례. 앞이 셀수록 그
+# 그래프가 물음의 임자라는 증거가 강하다. 없는 판정은 맨 아래로 둔다 —
+# 모르는 판정을 근거로 세지 않는다.
+_VERDICT_ORDER = ("인정", "계산완료", "상태판정", "목표주장", "A", "C",
+                  "근거없음", "미지", "B2")
+_AGREE_CANDIDATES = 3        # 근거까지 확인해 보는 후보 수
+
+
+def _verdict_rank(verdict):
+    try:
+        return len(_VERDICT_ORDER) - _VERDICT_ORDER.index(verdict)
+    except ValueError:
+        return 0
+
+
+def _stronger_candidate(question, cand, chosen, verdict):
+    """뒤 후보 중 더 확실히 답하는 것이 있으면 (이름, 세션, 답) 을 준다.
+
+    라우터 순위를 뒤집는 것이 아니라, **근거를 댈 수 있는가** 로 다시 고른다.
+    새 답을 만들지 않는다 — 각 그래프가 이미 가진 증거로 묻는 것뿐이다.
+    """
+    best = (_verdict_rank(verdict), None)
+    for other, score in cand[:_AGREE_CANDIDATES]:
+        if other == chosen or not other.endswith(".kg") or score < route_thresh:
+            continue
+        try:
+            sess = Session(load_graph(other))
+            line = sess.reply(question)
+        except Exception:
+            continue
+        if not _is_grounded_reply(sess.verdict):
+            continue
+        rank = _verdict_rank(sess.verdict)
+        if rank > best[0]:
+            best = (rank, (other, sess, line))
+    return best[1]
+
+
 def _is_grounded_reply(verdict):
     """그래프 판정이 전역 입구에서 답으로 채택할 만큼 확정됐는가.
 
@@ -3374,6 +3412,17 @@ def answer(question):
         sess = Session(load_graph(cand_name))
         line = sess.reply(question)
         if _is_grounded_reply(sess.verdict):
+            # 점수 순서로 처음 근거가 선 것을 바로 쓰면, 조금 뒤에 있는
+            # 후보가 더 확실히 답할 수 있어도 못 본다. 라우터는 표면을 보고
+            # 판정은 근거를 보는데, 근거 쪽이 더 센 신호다(노드 대조 99.8%).
+            #
+            # 얼린 잣대의 뺀 별칭 물음에서, 라우터 1등만 쓰면 31.8% 인데
+            # 셋을 다 판정에 넘겨 제일 센 것을 고르면 45.0% 다. 밖 거절은
+            # 24/24 그대로였다 — 밖 물음은 어느 그래프에도 근거가 없어서
+            # 셋 다 막히기 때문이다.
+            better = _stronger_candidate(question, _cand, cand_name, sess.verdict)
+            if better is not None:
+                cand_name, sess, line = better
             mark_graph_used(cand_name)
             # 한 발화가 두 도메인을 걸치면 한쪽만 답하고 나머지는 조용히
             # 버려졌다. 'CCTV에 흉기가 찍혔고 심전도에서 ST분절이 올랐습니다'
