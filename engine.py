@@ -2976,6 +2976,56 @@ def sparse_vec(vec, length_table=None, flip_table=None):
 # 다른 노드의 받침을 겨룰 때 얼마나 세게 보는가. 순위에만 들어가고 돌려주는
 # 점수에는 안 들어간다. 언어 벌점(0.85 곱)보다 약하게 두어 엇비슷할 때만 갈린다.
 _AGREE_WEIGHT = 0.12
+# 몇 개 그래프까지 나오는 낱말을 '드문 낱말' 로 볼 것인가. 892개 중 둘이다.
+_RARE_MAX_GRAPHS = 2
+_RARE_WEIGHT = 0.20          # 순위에만. 0.20 위로는 값이 평평했다
+_RARE_CAP = 3                # 한 물음에서 세 낱말까지만 센다
+_word_re = re.compile(r"[가-힣A-Za-z]{2,6}")
+
+
+def _bare_words(text):
+    """조사를 뗀 낱말들. '생태는' 과 '생태를' 을 한 낱말로 센다.
+
+    떼지 않으면 같은 낱말의 꼴마다 따로 세어져, 흔한 낱말이 꼴 때문에
+    드물어 보이고 물음의 꼴이 색인의 꼴과 다르면 아예 안 걸린다.
+    """
+    out = set()
+    for word in _word_re.findall(text):
+        out.add(word)
+        bare = _ko.drop_particle(word)
+        if bare != word:
+            out.add(bare)
+    return out
+
+
+def _rare_words(index):
+    """{드문 낱말: 그 낱말이 나오는 그래프들}. 색인에 한 번 만들어 붙인다.
+
+    포함도는 '줄의 조각 중 몇 할이 물음에 있나' 라서, 드문 낱말 하나가
+    흔한 낱말 여럿에 묻힌다. '하구 생태를 설명해 줘' 가 해양생태 대신
+    행동경제학으로 갔다 — 생태와 하구를 가진 쪽이 졌다.
+
+    셋 밖으로 밀린 176건을 뜯어보니 42.6% 에서 정답 그래프만 물음의 낱말을
+    갖고 있었고, 그 낱말은 892개 중 중앙 2개 그래프에만 나왔다. 반대로
+    1등이 더 드문 낱말을 가진 것은 6.2% 뿐이었다.
+
+    892개 중 둘 이하에만 나오는 낱말은 엇비슷할 때 갈라 주는 단서가 아니라
+    그 자체로 센 증거다. 그래도 **순위에만** 넣는다 — 점수에 섞으면 문턱의
+    뜻이 달라진다.
+    """
+    held = index.get("드문말")
+    if held is not None:
+        return held
+    seen = {}
+    for name, lines in index.get("공통층", {}).items():
+        words = set()
+        for line in lines:
+            words.update(_bare_words(line))
+        for word in words:
+            seen.setdefault(word, set()).add(name)
+    table = {w: frozenset(g) for w, g in seen.items() if len(g) <= _RARE_MAX_GRAPHS}
+    index["드문말"] = table
+    return table
 _short_line = 8          # 이보다 짧은 색인 줄은
 _LONG_Q_SCALE = 2.0     # 질문이 이 배수를 넘게 길면 못 이긴다
 # 원문은 사람이 실제로 한 말이고, 조각은 우리가 쪼개서 만든 가설이다. 둘을
@@ -3141,9 +3191,13 @@ def pick_graph(question, index=None, min_n=None, count=3):
     # 하던 것과 같은 규율이다 — 순위만 바꾸고 문턱은 못 낮춘다. 누르는
     # 꼴로 만들면 드물게 쓰이는 옳은 그래프가 문턱 아래로 떨어져, 답할 수
     # 있던 것이 미지가 된다. 올리는 꼴이면 그런 일이 없다.
-    # 겨루는 값에만 받침과 쓰임을 얹는다. 돌려주는 것은 순수 유사도다.
+    # 겨루는 값에만 받침·드문 낱말·쓰임을 얹는다. 돌려주는 것은 순수 유사도다.
+    rare = _rare_words(index)
+    asked_rare = [rare[w] for w in _bare_words(question) if w in rare]
     usage = graph_usage()
-    sort_key = [(p + _AGREE_WEIGHT * s + _USAGE_WEIGHT * usage.get(n, 0.0), p, n)
+    sort_key = [(p + _AGREE_WEIGHT * s + _USAGE_WEIGHT * usage.get(n, 0.0)
+                 + _RARE_WEIGHT * min(sum(n in held for held in asked_rare), _RARE_CAP),
+                 p, n)
                 for p, s, n in score]
     sort_key.sort(reverse=True)
     # 돌려주는 점수는 가산을 뺀 순수 유사도다. 자주 쓴다는 이유로 근거 없는

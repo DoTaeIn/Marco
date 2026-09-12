@@ -411,6 +411,24 @@ def strip_particle(tail):
     return tail
 
 
+def drop_particle(word):
+    """낱말 끝에 붙은 조사를 뗀다. 조사가 아니면 그대로.
+
+        조사뗀말('생태는')  -> '생태'
+        조사뗀말('사과')    -> '사과'     (과를 떼면 '사' 가 된다)
+        조사뗀말('강과')    -> '강과'     (마찬가지)
+
+    뗀 나머지가 두 글자 아래면 안 뗀다. 한 글자 낱말은 조사와 구별할 길이
+    없어서, 떼는 쪽이 틀릴 때가 더 많다."""
+    for particle in _longest_first:
+        if not word.endswith(particle):
+            continue
+        rest = word[:-len(particle)]
+        if len(rest) >= 2:
+            return rest
+    return word
+
+
 def fix_particles(sentence, words):
     """치환된 낱말 뒤의 조사를 받침에 맞게 고친다.
 
