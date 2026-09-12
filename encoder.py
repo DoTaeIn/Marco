@@ -426,6 +426,47 @@ def strip_english_shell(text):
     return " ".join(core + one_)
 
 
+def strip_fillers(text, language_pack=None):
+    """말머리 군말을 떼어 낸 말. 뗄 것이 없으면 빈 글자.
+
+    '저기요 손해배상 얼마나 나와요' 는 '손해배상 얼마나 나와요' 와 같은 물음인데
+    라우팅 점수가 0.590 에서 0.357 로 떨어진다. 포함도의 뒤쪽이 '물음 중 몇 할이
+    이 줄 안에 있나' 라서, 뜻을 안 나르는 말이 붙으면 분모만 커지기 때문이다.
+
+    **떼어낸 것을 원문 대신 쓰지 않는다.** 조각으로 더할 뿐이라 원문이 그대로
+    겨룬다 — 군말처럼 보이는 말이 실은 내용일 때 잃지 않는다.
+
+    군말만으로 된 발화는 안 뗀다. 'ㅋㅋ' 하나는 군말이 아니라 그 자체가
+    발화이고, 그것을 받는 것은 대화 그래프의 몫이다.
+    """
+    from language_components import load_reasoning_language
+    pack = language_pack if language_pack is not None else load_reasoning_language()
+    declared = pack.get("fillers") or pack.get("군말") or {}
+    heads = [h for h in declared.get("말머리", declared.get("heads", [])) if h]
+    if not heads:
+        return ""
+    heads = sorted(heads, key=len, reverse=True)
+    rest = text.strip()
+    stripped = False
+    while True:
+        for head in heads:
+            if not rest.startswith(head):
+                continue
+            after = rest[len(head):]
+            # 한 글자짜리는 뒤에 문장부호가 와야 군말이다. '그' 는 대개
+            # 지시어이고 '그 방법 말고는' 의 '그' 를 떼면 뜻이 바뀐다.
+            if len(head) == 1 and after[:1] not in ("", ",", ".", "…", "~", "·"):
+                continue
+            tail = after.lstrip(" ,.…·~!?")
+            if not tail:                      # 군말만 남으면 그것이 발화다
+                return ""
+            rest, stripped = tail, True
+            break
+        else:
+            break
+    return rest if stripped and rest != text.strip() else ""
+
+
 def split_fragments(text, *, language_pack=None):
     """긴 발화를 문장 단위로 쪼갠다.
 
@@ -444,6 +485,12 @@ def split_fragments(text, *, language_pack=None):
     stripped = strip_english_shell(text)
     if stripped != text and stripped not in yielded:
         yielded.append(stripped)
+    # 선언된 군말을 떼는 것은 추측이 아니라 고르기다 — 언어팩이 '이 말은 뜻을
+    # 안 나른다' 고 미리 적어 둔 것만 뗀다. 그래서 뗀 쪽을 앞에 놓아 제 무게로
+    # 겨루게 하고, 원문은 조각으로 내려 뒤에 남긴다. 잘못 뗐으면 원문이 받는다.
+    bare = strip_fillers(text, language_pack)
+    if bare and bare not in yielded:
+        yielded = [bare] + [x for x in yielded if x != bare]
     return yielded
 
 
