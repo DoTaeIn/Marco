@@ -25,8 +25,12 @@ from numeral_semantics import parse_numeral
 _DIGITS = re.compile(r"\d+")
 
 
+def meaning_declarations():
+    from marco.language.realizer.packs import meaning_declarations as declared
+    return declared()
+
+
 def _quoted_fields():
-    from marco.language.realizer.packs import meaning_declarations
     return set(meaning_declarations()["quoted_fields"]["fields"])
 
 
@@ -95,8 +99,30 @@ class Checker:
         return any((marker is not None and marker.match(word)) or word in forms for word in words)
 
     # the check ------------------------------------------------------------
+    def answer_polarity(self, words):
+        """The polarity of a yes or no word, read from the pack alone: False for the pack's
+        negation, or for the first word of the pack's own answer that two counts differ
+        (``comparison_answers.different``); True for the first word of its answer that they are
+        the same; None for anything else."""
+        marks = "".join(self._marks())
+        said = self.g.ortho["word_separator"].join(str(word).strip().strip(marks).lower() for word in words).strip()
+        answers = (getattr(self.lang.parser, "data", None) or {}).get("comparison_answers") or {}
+
+        def first(render):
+            if not isinstance(render, list) or not render or not isinstance(render[0], str) \
+                    or render[0].startswith(tuple(meaning_declarations().get("variable_marks", ()))):
+                return None
+            return render[0].strip().strip(marks).lower() or None
+        if said and said == first(answers.get("different")):
+            return False
+        if said and said == first(answers.get("same")):
+            return True
+        if self.negated(list(words)):
+            return False
+        return None
+
     def check(self, prop, candidate, clause, *, elided, sentence, register, allow_repair=False,
-              frame_decl=None):
+              frame_decl=None, tense=None):
         failures = []
         self._prop = prop
         separator = self.g.ortho["word_separator"]
@@ -144,7 +170,7 @@ class Checker:
                 for inner in re.findall(re.escape(opening) + "(.*?)" + re.escape(closing), text):
                     if inner not in allowed:
                         failures.append({"reader": "quotes", "said": inner})
-        full = self.make().realize(prop, candidate, elided=(), sentence=sentence, register=register)
+        full = self.make().realize(prop, candidate, elided=(), sentence=sentence, register=register, tense=tense)
         canon = self.g.canonical_piece
         if not _subsequence(clause.pieces(canon), full.pieces(canon)):
             failures.append({"reader": "ellipsis", "said": clause.pieces(), "full": full.pieces()})
@@ -180,6 +206,31 @@ class Checker:
             words.extend(self.g.entity_words(value))
         return words
 
+    def _keyed_subjects(self, prop, spec):
+        """The subject words the pack's reading may give back for this fact.
+
+        The recorded words; and, when the fact counts one, the same words with the
+        counted thing's head in the plural the pack declares — the pack keys "one X"
+        on X's plural (``명사수``), so a word it can only inflect by rule (a name of
+        a thing in another script) comes back in that plural. Nothing else is
+        accepted."""
+        words = self._expected_words(prop, spec["subject"])
+        keyed = [words]
+        value = prop["roles"].get(spec.get("object")) or {}
+        declared = self.g.declared_number()
+        if not declared or "number" not in value or not self.g.is_one(value["number"]):
+            return keyed
+        item = self._expected_words(prop, spec["subject"][-1:])
+        if not item or len(item) > len(words):
+            return keyed
+        head = next((item.index(marker) - 1 for marker in declared.get("partitive", [])
+                     if marker in item[1:]), len(item) - 1)
+        many = self.g.plural_of(item[head])
+        if many and many != item[head]:
+            start = len(words) - len(item)
+            keyed.append(words[:start + head] + [many] + words[start + head + 1:])
+        return keyed
+
     def same_words(self, said, meant):
         said, meant = str(said).split(), list(meant)
         if len(said) != len(meant):
@@ -212,8 +263,8 @@ class Checker:
             if not facts:
                 problems.append("no_fact:%s" % spec["predicate"])
                 continue
-            subject_words = self._expected_words(prop, spec["subject"])
-            match = [f for f in facts if self.same_words(f["triple"][0], subject_words)
+            keyed = self._keyed_subjects(prop, spec)
+            match = [f for f in facts if any(self.same_words(f["triple"][0], words) for words in keyed)
                      and self._object_matches(prop["roles"].get(spec["object"]), f["triple"][2])
                      and f.get("polarity", True) == polarity]
             if not match:

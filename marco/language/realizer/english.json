@@ -182,6 +182,19 @@
   "last": {"word": "last"},
   "together": {"word": "together"},
   "more": {"word": "more"},
+  "fewer": {"word": "fewer"},
+  "both": {"word": "both"},
+  "number_n": {"word": "number"},
+  "before_conj": {"word": "before"},
+  "after_conj": {"word": "after"},
+  "answer_yes": {
+   "_about": "The pack's own yes: the word its answer that two counts are the same begins with.",
+   "from_pack": {"answer": "same"}
+  },
+  "answer_no": {
+   "_about": "The pack's own no: the word its answer that two counts differ begins with.",
+   "from_pack": {"answer": "different"}
+  },
   "conditions": {"word": "conditions"},
   "a": {"word": "a"},
   "its": {"word": "its"},
@@ -593,6 +606,44 @@
     ]
    }
   ],
+  "fewer": [
+   {
+    "id": "fewer_have",
+    "parts": [
+     {"np": ["winner"], "case": "subject"},
+     {"verb": "have", "predicate": true, "agree": "winner"},
+     {"lex": "fewer"},
+     {"np": ["item"]}
+    ]
+   }
+  ],
+  "same_count": [
+   {
+    "id": "same_count_both",
+    "when": {"polarity": true},
+    "requires": ["value"],
+    "parts": [
+     {"list": "members", "each": {"np": ["$item"]}},
+     {"lex": "both"},
+     {"verb": "have", "predicate": true, "plural": true},
+     {"num": "value"},
+     {"np": ["item"], "number": "value"}
+    ]
+   },
+   {
+    "id": "same_count_not",
+    "when": {"polarity": false},
+    "parts": [
+     {"list": "members", "each": {"np": ["$item"]}},
+     {"verb": "have", "predicate": true, "plural": true, "negation": "not"},
+     {"lex": "the"},
+     {"lex": "same"},
+     {"lex": "number_n"},
+     {"np": ["item"], "case": "of"}
+    ]
+   }
+  ],
+  "event_said": [{"id": "event_quoted", "parts": [{"quote": "said", "marks": "double"}]}],
   "heard": [
    {
     "id": "heard_never",
@@ -1570,10 +1621,20 @@
   ]
  },
  "coordination": {"count": {"gap_predicate": false, "separator": "list"}},
- "leads": {"now": [{"lex": "now"}]},
+ "leads": {
+  "now": [{"lex": "now"}],
+  "answer_yes": {"parts": [{"lex": "answer_yes"}], "polarity": true, "join": "comma"},
+  "answer_no": {"parts": [{"lex": "answer_no"}], "polarity": false, "join": "comma"}
+ },
+ "subordinate": {
+  "_about": "An event an answer is relative to in time: a clause of its own, in the past, after the conjunction, joined to the answer by a comma.",
+  "before": {"sentence": "declarative", "tense": "past", "open": [{"lex": "before_conj"}], "close": [], "join": "comma"},
+  "after": {"sentence": "declarative", "tense": "past", "open": [{"lex": "after_conj"}], "close": [], "join": "comma"}
+ },
  "ellipsis": {
-  "_about": "A given subject is not said; the answer is the fragment that carries the focus, with its counted noun.",
-  "strategy": "fragment"
+  "_about": "A given subject is not said; the answer is the fragment that carries the focus, with its counted noun. An answer with a time clause is not a fragment: it is said in full.",
+  "strategy": "fragment",
+  "subordinate": "full"
  },
  "readings": {
   "_about": "How the pack parser's reading of a clause maps back onto frame roles. Used only by the semantic check.",

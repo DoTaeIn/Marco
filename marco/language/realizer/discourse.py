@@ -83,5 +83,8 @@ def plan(graph):
         for index, group in enumerate(groups):
             sentences.append({"clauses": group, "act": act["intent"],
                               "sentence": group[0]["prop"].get("sentence", "declarative"),
-                              "lead": lead if index == 0 else None})
+                              "lead": lead if index == 0 else None,
+                              "lead_optional": bool(act.get("lead_optional")),
+                              # A lead that answers yes or no must agree with what its sentence says.
+                              "polarity": group[0]["prop"].get("polarity", True)})
     return sentences, counts

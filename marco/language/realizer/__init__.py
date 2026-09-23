@@ -134,6 +134,10 @@ class Realizer:
             prefer = None
             for index, planned in enumerate(sentence["clauses"]):
                 last = index == len(sentence["clauses"]) - 1
+                subordinate = planned["prop"].get("subordinate")
+                if subordinate and (lang.decl.get("ellipsis") or {}).get("subordinate") == "full":
+                    # A language whose answers are fragments says a clause with a time clause in full.
+                    planned = dict(planned, elided=set())
                 chosen = self._clause(lang, grammar, checker, planned, sentence["sentence"], register,
                                       gap=bool(coordination.get("gap_predicate")) and not last,
                                       frames=frames, prefer=prefer)
@@ -145,7 +149,13 @@ class Realizer:
                         chosen["report"]["omitted"] = True
                         continue
                     return self._hold(lang, grammar, checker, register, counts, clauses_report)
-                parts.append(chosen["clause"].text(separator))
+                said = chosen["clause"].text(separator)
+                if subordinate:
+                    said = self._with_subordinate(lang, grammar, checker, subordinate, said, register, frames,
+                                                  planned["act"], clauses_report)
+                    if said is None:
+                        return self._hold(lang, grammar, checker, register, counts, clauses_report)
+                parts.append(said)
             if not parts:
                 continue
             if len(parts) > 1:
@@ -157,10 +167,12 @@ class Realizer:
             else:
                 body = parts[0]
             if sentence.get("lead"):
-                lead = self._lead(lang, grammar, checker, sentence["lead"], register)
-                if lead is None:
+                lead = self._lead(lang, grammar, checker, sentence["lead"], register,
+                                  polarity=sentence.get("polarity", True))
+                if lead is None and not sentence.get("lead_optional"):
                     return self._hold(lang, grammar, checker, register, counts, clauses_report)
-                body = lead + separator + body
+                if lead is not None:
+                    body = lead + separator + body
             texts.append(finish_sentence(grammar, body, sentence["sentence"]))
         text = grammar.ortho["sentence_separator"].join(texts)
         trace = {"meaning": [{"id": p["id"], "frame": p["frame"], "polarity": p.get("polarity", True)}
@@ -181,7 +193,8 @@ class Realizer:
         return text, {"held": False, "clauses": clauses_report, "discourse": counts,
                       "acts": [act["intent"] for act in graph["acts"]], "text": text, "trace": trace}
 
-    def _clause(self, lang, grammar, checker, planned, sentence, register, *, gap, frames, prefer=None):
+    def _clause(self, lang, grammar, checker, planned, sentence, register, *, gap, frames, prefer=None,
+                tense=None):
         prop = planned["prop"]
         elided_answer = {r for r in planned["elided"] if prop.get("answer")}
         attempts = []
@@ -192,10 +205,10 @@ class Realizer:
             elided = {r for r in planned["elided"] if not (r in keep and r in elided_answer)}
             try:
                 clause = ClauseRealizer(grammar).realize(prop, candidate, elided=elided, sentence=sentence,
-                                                         register=register, gap=gap)
+                                                         register=register, gap=gap, tense=tense)
                 verdict = checker.check(prop, candidate, clause, elided=elided, sentence=sentence,
                                         register=register, frame_decl=frames.get(prop["frame"]),
-                                        allow_repair=bool(candidate.get("learned")))
+                                        allow_repair=bool(candidate.get("learned")), tense=tense)
             except RealizationError as exc:
                 attempts.append({"candidate": candidate.get("id"), "error": str(exc)})
                 continue
@@ -211,21 +224,75 @@ class Realizer:
         return {"clause": None, "report": {"frame": prop["frame"], "prop": prop.get("id"), "candidate": None,
                                            "attempts": attempts, "blocked": True}}
 
-    def _lead(self, lang, grammar, checker, lead, register):
-        parts = lang.decl.get("leads", {}).get(lead)
+    def _lead(self, lang, grammar, checker, lead, register, polarity=True):
+        """A word before the sentence (``now``; a yes or no). A lead declared with a polarity
+        answers yes or no: it is said only before a sentence of that polarity, and the check reads
+        its polarity back (the pack's negation, or the pack's own answer words). Any other lead
+        carries no number and no negation."""
+        spec = lang.decl.get("leads", {}).get(lead)
+        parts = spec.get("parts") if isinstance(spec, dict) else spec
         if not parts:
+            return None
+        answers = spec.get("polarity") if isinstance(spec, dict) else None
+        if answers is not None and answers != polarity:
             return None
         clause = ClauseRealizer(grammar).realize({"roles": {}, "polarity": True}, {"parts": parts}, register=register)
         words = ["".join(w["pieces"]) for w in clause.words]
-        if checker.numbers(grammar.ortho["word_separator"].join(words)) or checker.negated(words):
+        if checker.numbers(grammar.ortho["word_separator"].join(words)):
             return None
-        return clause.text(grammar.ortho["word_separator"])
+        if answers is None:
+            if checker.negated(words):
+                return None
+        elif checker.answer_polarity(words) != answers:
+            return None
+        text = clause.text(grammar.ortho["word_separator"])
+        if isinstance(spec, dict) and spec.get("join"):
+            text += grammar.symbol(spec["join"])
+        return text
+
+    def _with_subordinate(self, lang, grammar, checker, subordinate, main, register, frames, act, clauses_report):
+        """``main`` with the clause of the event it is relative to (before or after it), as the
+        language declares that order: the event clause's sentence form and tense, the words
+        before and after it, and the joint to the main clause. Each event clause passes the
+        semantic check like any other; a language that does not declare the order says nothing."""
+        spec = (lang.decl.get("subordinate") or {}).get(subordinate.get("order"))
+        if not spec:
+            return None
+        separator = grammar.ortho["word_separator"]
+        elide = set(mg.meaning_declarations()["time_event"].get("elide", []))
+        texts = []
+        for prop in subordinate.get("props") or []:
+            planned = {"prop": prop, "elided": {role for role in elide if role in prop.get("roles", {})}, "act": act}
+            chosen = self._clause(lang, grammar, checker, planned, spec.get("sentence", "declarative"), register,
+                                  gap=False, frames=frames, tense=spec.get("tense"),
+                                  prefer=(spec.get("prefer") or {}).get(prop["frame"]))
+            chosen["report"]["subordinate"] = subordinate.get("order")
+            clauses_report.append(chosen["report"])
+            if chosen["clause"] is None:
+                return None
+            texts.append(chosen["clause"].text(separator))
+        if not texts:
+            return None
+        words = []
+        for key in ("open", "close"):
+            clause = ClauseRealizer(grammar).realize({"roles": {}, "polarity": True}, {"parts": spec.get(key) or []},
+                                                     register=register)
+            said = [("".join(w["pieces"])) for w in clause.words]
+            if checker.numbers(separator.join(said)) or checker.negated(said):
+                return None
+            words.append(clause.text(separator))
+        opening, closing = words
+        event = separator.join(part for part in (opening, separator.join(texts), closing) if part)
+        joint = grammar.symbol(spec["join"]) if spec.get("join") else ""
+        return event + joint + separator + main
 
     def _hold(self, lang, grammar, checker, register, counts, clauses_report):
-        """No declared expression kept the meaning: say that the answer is held, nothing else."""
-        prop = {"frame": "not_phrased", "roles": {}, "polarity": True}
+        """No declared expression kept the meaning: say that the answer is held, nothing else.
+        The report names the declared hold frame as its reason; the seam makes the turn a hold."""
+        frame = mg.meaning_declarations()["hold"]["frames"][0]
+        prop = {"frame": frame, "roles": {}, "polarity": True}
         text = None
-        for candidate in lang.decl.get("expressions", {}).get("not_phrased", []):
+        for candidate in lang.decl.get("expressions", {}).get(frame, []):
             try:
                 clause = ClauseRealizer(grammar).realize(prop, candidate, register=register)
             except RealizationError:
@@ -235,7 +302,8 @@ class Realizer:
             text = finish_sentence(grammar, clause.text(grammar.ortho["word_separator"]), "declarative")
             if verdict["ok"]:
                 break
-        return text or "", {"held": True, "clauses": clauses_report, "discourse": counts, "text": text}
+        return text or "", {"held": True, "reason": frame, "clauses": clauses_report, "discourse": counts,
+                            "text": text}
 
 
 _default = Realizer()

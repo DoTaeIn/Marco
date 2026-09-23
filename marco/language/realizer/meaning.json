@@ -72,6 +72,13 @@
   "changed": {"roles": {}},
   "total": {"roles": {"members": "names", "item": "thing", "value": "numeral"}, "numbers": ["value"]},
   "more": {"roles": {"winner": "agent", "item": "thing"}},
+  "fewer": {"_about": "Of two holders, the one that holds fewer of a thing.", "roles": {"winner": "agent", "item": "thing"}},
+  "same_count": {
+   "_about": "Two or more holders hold the same number of a thing; the number is said when it is the same. Negative: they do not hold the same number.",
+   "roles": {"members": "names", "item": "thing", "value": "numeral"},
+   "numbers": ["value"]
+  },
+  "event_said": {"_about": "An earlier event named by the user's own statement of it, quoted.", "roles": {"said": "quote"}},
   "heard": {"roles": {"subject": "compound"}},
   "decided": {"roles": {}},
   "word_known": {"roles": {"word": "quote"}},
@@ -141,7 +148,24 @@
   "amount": "amount",
   "item": "item"
  },
+ "time_orders": ["before", "after"],
+ "time_event": {
+  "_about": "The event an answer about an earlier time is relative to: the one transfer its recorded changes make, composed; any other event (one side only, a move, several transfers) is the user's own statement of it, quoted in this frame. The event's amount is not said: it names which event, and the reply states one quantity, the answer's.",
+  "quoted_frame": "event_said",
+  "elide": ["amount"]
+ },
  "turn_plans": [
+  {
+   "_about": "An answered question about the state just before or just after one earlier event (request G3-4): the answer said in the past, with the event it is relative to as a time clause.",
+   "match": {
+    "status": "answered",
+    "source": "fact",
+    "act": [null, "inform"],
+    "fields_has": "time",
+    "checks_exclude": ["explained_recorded_transitions"]
+   },
+   "acts": [{"intent": "INFORM", "props": [{"from": "fact", "focus": "object", "time": "$time"}]}]
+  },
   {
    "_about": "An answered question: the answer fact, its asked value as focus. A result the engine marks as an explanation carries facts too; it is not an answer.",
    "match": {
@@ -315,6 +339,36 @@
    "_about": "Which of two holders has more: the one that has more is named; the other is not.",
    "match": {"act": "inform", "kind": "more"},
    "acts": [{"intent": "INFORM", "props": [{"from": "compared", "frame": "more"}]}]
+  },
+  {
+   "_about": "Which of two holders has fewer (request G3-4): the one that has fewer is named; the other is not.",
+   "match": {"act": "inform", "kind": "fewer"},
+   "acts": [{"intent": "INFORM", "props": [{"from": "compared", "frame": "fewer"}]}]
+  },
+  {
+   "_about": "Asked which of two holders has more or fewer when both hold the same number: neither is chosen; both are said with the number.",
+   "match": {"act": "inform", "kind": "tie"},
+   "acts": [{"intent": "INFORM", "props": [{"from": "compared", "frame": "same_count"}]}]
+  },
+  {
+   "_about": "Asked whether two holders hold the same number, and they do: yes, with the number.",
+   "match": {"act": "inform", "kind": "same"},
+   "acts": [
+    {"intent": "INFORM", "lead": "answer_yes", "lead_optional": true, "props": [{"from": "compared", "frame": "same_count"}]}
+   ]
+  },
+  {
+   "_about": "Asked whether two holders hold the same number, and they do not: no, then each holder's own count.",
+   "match": {"act": "inform", "kind": "different"},
+   "acts": [
+    {
+     "intent": "INFORM",
+     "lead": "answer_no",
+     "lead_optional": true,
+     "props": [{"from": "compared", "frame": "same_count", "polarity": false}]
+    },
+    {"intent": "INFORM", "props": [{"from": "compared", "frame": "count"}]}
+   ]
   },
   {
    "_about": "Asked what was changed: every repair note of the last reply in full (rule, operations, cost).",

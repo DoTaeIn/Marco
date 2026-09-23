@@ -92,10 +92,24 @@ class Language:
         a pack that renames it renames it here too. A reply without the marks
         leaves the lexeme without a word, and a clause that needs it is not said.
         """
-        replies = (getattr(self.parser, "data", None) or {}).get("context_replies") or {}
+        data = getattr(self.parser, "data", None) or {}
+        replies = data.get("context_replies") or {}
+        answers = data.get("comparison_answers") or {}
+        ortho = self.decl.get("orthography") or {}
+        marks = "".join(list(ortho.get("punctuation", {}).values()) + list(ortho.get("symbols", {}).values()))
+        variables = tuple(meaning_declarations().get("variable_marks", ()))
         for entry in self.decl.get("lexicon", {}).values():
             spec = entry.get("from_pack") if isinstance(entry, dict) else None
             if not spec:
+                continue
+            if spec.get("answer"):
+                # ``{"answer": key}``: the word the pack's comparison answer ``key`` begins with
+                # (its yes or its no). A render that begins with a value has no such word.
+                render = answers.get(spec["answer"])
+                first = render[0] if isinstance(render, list) and render and isinstance(render[0], str) else ""
+                word = first.strip().strip(marks).strip()
+                if word and not first.startswith(variables) and len(word.split()) == 1:
+                    entry["word"] = word
                 continue
             template = replies.get(spec.get("reply"))
             opening, closing = spec.get("enclosed") or (None, None)

@@ -59,6 +59,22 @@
    "casual": "informal",
    "plain": "request_polite",
    "reading": "request_polite"
+  },
+  "before": {
+   "_about": "A clause said before 전: its predicate in the nominal form (-기), whatever the register.",
+   "formal": "nominal",
+   "polite": "nominal",
+   "casual": "nominal",
+   "plain": "nominal",
+   "reading": "nominal"
+  },
+  "after": {
+   "_about": "A clause said before 뒤: its predicate in the past adnominal form (-(으)ㄴ), whatever the register.",
+   "formal": "past_adnominal",
+   "polite": "past_adnominal",
+   "casual": "past_adnominal",
+   "plain": "past_adnominal",
+   "reading": "past_adnominal"
   }
  },
  "grammar": {
@@ -199,6 +215,20 @@
   "together": {"word": "합쳐서"},
   "more_adv": {"word": "더"},
   "many": {"verb": "많", "kind": "descriptive"},
+  "few": {"verb": "적", "kind": "descriptive"},
+  "count_n": {"word": "수"},
+  "before_n": {"word": "전"},
+  "after_n": {"word": "뒤"},
+  "quote_adn": {"word": "라는"},
+  "happening_n": {"word": "일"},
+  "answer_yes": {
+   "_about": "The pack's own yes: the word its answer that two counts are the same begins with.",
+   "from_pack": {"answer": "same"}
+  },
+  "answer_no": {
+   "_about": "The pack's own no: the word its answer that two counts differ begins with.",
+   "from_pack": {"answer": "different"}
+  },
   "about_adn": {"word": "대한"},
   "condition": {"word": "조건"},
   "meaning_n": {"word": "뜻"},
@@ -294,7 +324,7 @@
      {"np": ["giver"], "case": "subject"},
      {"np": ["receiver"], "case": "recipient"},
      {"np": ["item"]},
-     {"num": "amount", "counter": "count", "case": "object"},
+     {"num": "amount", "counter": "count", "case": "object", "elided_case": "previous"},
      {"verb": "give", "predicate": true, "negation": "not"}
     ]
    }
@@ -505,6 +535,51 @@
      {"np": ["winner"], "case": "subject"},
      {"lex": "more_adv"},
      {"verb": "many", "predicate": true}
+    ]
+   }
+  ],
+  "fewer": [
+   {
+    "id": "fewer_few",
+    "parts": [
+     {"np": ["item"], "case": "topic"},
+     {"np": ["winner"], "case": "subject"},
+     {"lex": "more_adv"},
+     {"verb": "few", "predicate": true}
+    ]
+   }
+  ],
+  "same_count": [
+   {
+    "id": "same_count_alike",
+    "when": {"polarity": true},
+    "requires": ["value"],
+    "parts": [
+     {"list": "members", "each": {"np": ["$item"]}, "join_case": "with", "case": "topic"},
+     {"np": ["item"], "case": "subject"},
+     {"num": "value", "counter": "count", "case": "goal"},
+     {"verb": "alike", "predicate": true}
+    ]
+   },
+   {
+    "id": "same_count_not_alike",
+    "when": {"polarity": false},
+    "parts": [
+     {"list": "members", "each": {"np": ["$item"]}, "join_case": "with", "case": "topic"},
+     {"np": ["item"]},
+     {"lex": "count_n", "case": "subject"},
+     {"verb": "alike", "predicate": true, "negation": "not"}
+    ]
+   }
+  ],
+  "event_said": [
+   {
+    "id": "event_quoted",
+    "parts": [
+     {"quote": "said", "marks": "double"},
+     {"lex": "quote_adn", "bind": true},
+     {"lex": "happening_n", "case": "subject"},
+     {"verb": "exist", "predicate": true}
     ]
    }
   ],
@@ -1332,7 +1407,16 @@
   "token_skip": [{"quote": "word", "marks": "single"}, {"verb": "skip", "ending": "nominal"}]
  },
  "coordination": {"count": {"gap_predicate": true, "separator": "comma"}},
- "leads": {"now": [{"lex": "now"}]},
+ "leads": {
+  "now": [{"lex": "now"}],
+  "answer_yes": {"parts": [{"lex": "answer_yes"}], "polarity": true, "join": "comma"},
+  "answer_no": {"parts": [{"lex": "answer_no"}], "polarity": false, "join": "comma"}
+ },
+ "subordinate": {
+  "_about": "An event an answer is relative to in time: its clause first, its predicate in the form the following noun governs (전 takes -기, 뒤 takes -(으)ㄴ), then the noun with 에 and the topic 는.",
+  "before": {"sentence": "before", "tense": "present", "open": [], "close": [{"lex": "before_n", "case": "locative_topic"}]},
+  "after": {"sentence": "after", "tense": "present", "open": [], "close": [{"lex": "after_n", "case": "locative_topic"}]}
+ },
  "ellipsis": {
   "_about": "A given role is not said at all (zero anaphora). An answer keeps only its focus.",
   "strategy": "zero",

@@ -7,6 +7,7 @@ propositions it says; the plan builds them from the Meaning Graph's fields.
 A turn no plan matches is not realized.
 """
 import copy
+import unicodedata
 
 from marco.language.realizer import meaning as mg
 from marco.language.realizer.packs import meaning_declarations
@@ -61,6 +62,10 @@ def _matches(plan, graph):
             if graph["fields"].get("kind") != wanted:
                 return False
             continue
+        if key == "fields_has":
+            if graph["fields"].get(wanted) in (None, {}, [], ""):
+                return False
+            continue
         if isinstance(wanted, list):
             if graph.get(key) not in wanted:
                 return False
@@ -98,11 +103,39 @@ def _split_subject(subject, source):
     return parts.get(holder_role), parts.get(item_role)
 
 
+def _members(subjects, source):
+    """Holders and the one thing they all hold, from compound subjects; (None, None) otherwise."""
+    split = [_split_subject(subject, source) for subject in subjects or []]
+    if len(split) < 2 or any(holder is None for holder, _item in split):
+        return None, None
+    items = {item for _holder, item in split}
+    return [holder for holder, _item in split], (items.pop() if len(items) == 1 and None not in items else None)
+
+
 def _compared(template, fields, source):
-    """A total over several holders, or which of two holders has more: from the subjects the
-    engine's proof read, split into holders and the thing they hold."""
+    """A total over several holders, which of two holders has more or fewer, or whether they
+    hold the same number: from the subjects the engine's proof read, split into holders and the
+    thing they hold. ``same_count`` says the number when it is the same; ``count`` says each
+    holder's own count (the values the proof read, in the question's order)."""
     frame = template["frame"]
     kinds = meaning_declarations()["frames"][frame]["roles"]
+    if frame == "same_count":
+        members, item = _members(fields.get("subjects"), source)
+        polarity = template.get("polarity", True)
+        if members is None or (polarity and fields.get("value") is None):
+            return []
+        roles = {"members": _typed(kinds["members"], members, source)}
+        if item:
+            roles["item"] = mg.entity(item, source, kinds["item"])
+        if polarity:
+            roles["value"] = mg.number(fields["value"])
+        return [{"frame": frame, "roles": roles, "polarity": polarity}]
+    if frame == "count":
+        subjects, values = fields.get("subjects") or [], fields.get("values") or []
+        if len(subjects) < 2 or len(values) != len(subjects):
+            return []
+        props = [mg.fact_prop([subject, "count", value], source) for subject, value in zip(subjects, values)]
+        return props if all(prop is not None for prop in props) else []
     if frame == "total":
         split = [_split_subject(subject, source) for subject in fields.get("subjects") or []]
         if len(split) < 2 or any(holder is None for holder, _item in split) or fields.get("value") is None:
@@ -126,6 +159,28 @@ def _compared(template, fields, source):
     return [{"frame": frame, "roles": roles, "polarity": True}]
 
 
+def _event_props(time, source):
+    """The earlier event an answer is relative to (``meaning.time``): the one transfer its
+    recorded changes make, composed; otherwise the user's own statement of it, quoted without
+    its closing marks. No order, or nothing to say it with: none."""
+    decl = meaning_declarations()
+    order = time.get("order")
+    if order not in (decl.get("time_orders") or ()):
+        return []
+    transfers = mg.transfer_props(time.get("changes") or [], source)
+    if len(transfers) == 1:
+        prop = transfers[0]
+        prop.pop("stated", None)
+        return [prop]
+    said = str(time.get("event") or "").strip()
+    while said and unicodedata.category(said[-1]).startswith("P"):
+        said = said[:-1].rstrip()
+    if not said:
+        return []
+    frame = decl["time_event"]["quoted_frame"]
+    return [{"frame": frame, "tense": "past", "polarity": True, "roles": {"said": mg.quote(said)}}]
+
+
 def _props(template, graph):
     decl = meaning_declarations()
     fields, source = graph["fields"], graph["source"]
@@ -142,6 +197,14 @@ def _props(template, graph):
                 # The question declared how its answer is shaped (its counter, for a
                 # counting language). Kept as the pack's own data; the grammar reads it.
                 prop["question_render"] = {"render": list(fields["render"]), "slot": query[2]}
+            if template.get("time"):
+                time = _field(fields, template["time"][1:])
+                events = _event_props(time, source) if isinstance(time, dict) else []
+                if not events:
+                    return []
+                # The state at an earlier time is said in the past, after the event it is relative to.
+                prop["tense"] = "past"
+                prop["subordinate"] = {"order": time.get("order"), "props": events}
         return [prop] if prop else []
     if template.get("from") == "compared":
         return _compared(template, fields, source)
@@ -153,7 +216,11 @@ def _props(template, graph):
                            if report.get(role) is not None}}
                 for report in fields.get("repairs_full") or []]
     if template.get("from") == "changes":
-        props = mg.change_props(fields.get("changes") or [], source, state=template["state"])
+        rows = [row for row in fields.get("changes") or [] if isinstance(row, dict)]
+        # The state a turn leaves: one value per subject and relation, the last one its changes set.
+        last = {(str(row.get("subject")), row.get("predicate")): index for index, row in enumerate(rows)}
+        rows = [row for index, row in enumerate(rows) if last[(str(row.get("subject")), row.get("predicate"))] == index]
+        props = mg.change_props(rows, source, state=template["state"])
         for prop in props:
             prop["new_only"] = bool(template.get("new_only"))
         return props
@@ -226,7 +293,7 @@ def plan(graph):
         if not props:
             continue
         acts.append({"intent": act["intent"], "props": props, "conclusion": bool(act.get("conclusion")),
-                     "lead": act.get("lead")})
+                     "lead": act.get("lead"), "lead_optional": bool(act.get("lead_optional"))})
     notes = repair_props(graph)
     if notes:
         spec = decl["repair_notes"]
