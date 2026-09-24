@@ -1138,46 +1138,8 @@
     },
     "place": [
      "giver"
-    ]
-   },
-   {
-    "text": "하루가 상자에서 구슬 2개를 가져왔다",
-    "inflection": {
-     "stem": "가져오",
-     "kind": "regular",
-     "tense": "past",
-     "ending": "plain"
-    },
-    "slots": {
-     "taker": "하루",
-     "giver": "상자",
-     "item": "구슬",
-     "n": "2"
-    },
-    "meaning": {
-     "triples": [
-      [
-       [
-        "$giver",
-        "$item"
-       ],
-       "count_remove",
-       "$n"
-      ],
-      [
-       [
-        "$taker",
-        "$item"
-       ],
-       "count_add",
-       "$n"
-      ]
-     ]
-    },
-    "place": [
-     "giver"
     ],
-    "_about": "G5 batch 6: the verbs of taking from a place said with 에서 (가져가다, 가져오다): the place loses, the taker gains. 꺼내다 with a place was declared and taken out: 꺼내 is the pack's canonical verb of using up (같은틀), and a taking frame on it joined the two in a time question."
+    "_about": "G5 batch 6: taking from a place said with 에서: the place loses, the taker gains. 가져오다 and 꺼내다 from a place were declared and taken out: 꺼내 is the pack's verb of using up, and a 가져오다 frame let a definition's body (상대에게서 ... 가져오는) induce a frame that swallowed the source into the thing."
    },
    {
     "text": "하루가 상자에 구슬 2개를 두고 왔다",

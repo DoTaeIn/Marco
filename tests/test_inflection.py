@@ -205,9 +205,9 @@ def test_template_count_stays_constant_and_empty_component_lacks_new_forms():
     # 있다) and the holder in a relative clause of holding (하루가 가지고 있는 구슬이 18개 있다).
     # 101 -> 106 (round 5, batch 3): only-counts (가진 것은/건 ... 뿐이다, 한테는 ... 뿐이다), a move said
     # places first, leaving things said count first.
-    # 106 -> 110 (round 5, batch 6): a place count said thing and amount first (구슬이 18개가 상자에), a count
-    # not known of a place with 에, the thing as topic without its amount, taking from a place with 가져오다.
-    assert len(parser.templates) == len(parser.data["examples"]) == 110
+    # 106 -> 109 (round 5, batch 6): a place count said thing and amount first (구슬이 18개가 상자에), a count
+    # not known of a place with 에, the thing as topic without its amount.
+    assert len(parser.templates) == len(parser.data["examples"]) == 109
     pack = copy.deepcopy(load_reasoning_language())
     pack["inflection"] = {}
     old = RelationalParser(language_pack=pack)

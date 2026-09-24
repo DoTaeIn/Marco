@@ -561,8 +561,6 @@ def test_a_count_question_with_an_aspect_adverb_or_a_relative_clause_of_holding(
 def test_places_said_in_other_orders_and_taking_from_a_place():
     assert facts_of("한국어", "국자가 여섯 개가 다락방에 있어요.") == [("다락방 국자", "count", "6")]
     assert facts_of("한국어", "다락방에 국자가 좀 있어요.") == [("다락방 국자", "count_unknown", "some")]
-    assert facts_of("한국어", "미소가 다락방에서 국자 두 개를 가져왔어요.") == [("다락방 국자", "count_remove", "2"),
-                                                                ("미소 국자", "count_add", "2")]
     assert facts_of("한국어", "미소가 뒷마당 창고에서 국자 두 개를 가져갔습니다.") == [
         ("뒷마당 창고 국자", "count_remove", "2"), ("미소 국자", "count_add", "2")]
 
