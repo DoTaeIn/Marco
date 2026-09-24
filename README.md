@@ -174,7 +174,20 @@ ran without it.
 
 **Tests** — `KG_ENCODER=문자 python -m pytest -q` (parallel by default, `pytest.ini`)
 
-(the counts of the run at the end of goal D2 follow in the next commit)
+Run at `6938364`, which is `5f321a3` plus documentation and `tools/doc_facts.py`
+with its test, in the checkout described above.
+
+| passed | failed | skipped | time |
+| --- | --- | --- | --- |
+| 1,510 | 1 | 8 | 421.46 s |
+
+| Failing test | Cause |
+| --- | --- |
+| `tests/test_alma_integrated_reproduction.py::test_fixed_alma_life_reproduction_has_no_wrong_checks` | asserts that process RSS is unsupported; macOS reports it. Machine-dependent, known on `main` |
+
+A run on the same checkout with a `그래프쓰임.json` left behind by earlier engine
+commands also failed `tests/test_general_knowledge_coverage.py::test_recent_domain_questions_route_to_their_graphs`:
+the log's usage bonus broke a routing tie the other way.
 
 **Self-checks** — each passes at this commit
 
