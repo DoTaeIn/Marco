@@ -4,9 +4,10 @@
          play a dialogue (gate-schema JSON, a directory of them, or a text file with one
          turn per line) through the UI turn handler and record every turn; prints the
          ledger path, and for labelled dialogues the dialogue gate's score of the same run
-  why <ledger> <event_id> [--chain] [--refs]
+  why <ledger> <event_id> [--chain] [--refs] [--say ko|en]
          the input_received events an output rests on (with --chain: every event of the chain;
-         with --refs: also along input_refs, what operators read)
+         with --refs: also along input_refs, what operators read; with --say: the chain composed
+         as an explanation by the realizer, in that language, marco/trace/explain.py)
   pretty <ledger> [--trace <trace_id>]
          one line per event (design note §32)
   stats <ledger> [--json]
@@ -35,6 +36,7 @@ def main(argv=None):
     p.add_argument("event_id")
     p.add_argument("--chain", action="store_true")
     p.add_argument("--refs", action="store_true", help="also follow input_refs (what operators read)")
+    p.add_argument("--say", choices=("ko", "en"), help="say the why chain in words, composed by the realizer")
     p = sub.add_parser("pretty")
     p.add_argument("ledger")
     p.add_argument("--trace")
@@ -68,6 +70,11 @@ def main(argv=None):
             from bench import dialogue_gate
             print(dialogue_gate.format_report(dialogue_gate.score(dialogues, answers)))
         return 0
+    if args.command == "why" and args.say:
+        from marco.trace.explain import explain
+        text, report = explain(args.ledger, args.event_id, args.say)
+        print(text or "")
+        return 0 if report.get("realized") and not report.get("held") else 1
     if args.command == "why":
         from marco.trace.pretty import line
         from marco.trace.why import Graph
