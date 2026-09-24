@@ -1017,6 +1017,30 @@
     ]
    },
    {
+    "text": "Haru used 2 marbles for the party",
+    "slots": {
+     "owner": "Haru",
+     "n": "2",
+     "item": "marbles",
+     "purpose": "party"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count_remove",
+      "$n"
+     ]
+    },
+    "event_verb": "use",
+    "word_slots": [
+     "owner"
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
     "text": "Haru got 2 marbles",
     "slots": {
      "owner": "Haru",
@@ -2452,7 +2476,8 @@
   "_where_owned": "Where-questions about a thing someone has: where does X keep the Y, where are X's Y, where is X's Y. The thing is keyed by its owner, as a stated count is.",
   "_places": "A place holds a count like a person: said with its article (the oak cupboard has 18; there are 18 in the oak cupboard; 18 are in the oak cupboard), it receives what is left at, left in or put in it, gives what is taken from it, and both sides of a move (moved, were moved from ... to ...) change. Its name is every word after the article, so a place of several words (the north warehouse) is one holder. Asked: how many are in it, are there in it, does it have.",
   "_zero_and_only": "A zero count is said with the negative determiner no (Haru has no marbles; there are no marbles in the oak cupboard) and is the count 0. 'only has X, N of them' and 'all Haru has is X, N of them' state the count of X after the thing. 'not a single' says the thing in the singular and is the count 0 of its plural (Haru doesn't have a single marble; the oak cupboard doesn't have a single marble). The partitive 'of them' after the count may be left out (Haru only has marbles, 18).",
-  "_vague": "A count not given yet: 'some' before the thing (Haru has some marbles; the oak cupboard has some marbles; there are some marbles in it; Haru has 18 marbles and some pears) is recorded as a count not known (count_unknown), and a question about it is held. The number said later without its holder (18 of them; there are 18 of them; it's 18 marbles; Haru has 18 of them) is the count of the one count not known yet that it fits: the last one said, the one of that thing, or the one of that holder."
+  "_vague": "A count not given yet: 'some' before the thing (Haru has some marbles; the oak cupboard has some marbles; there are some marbles in it; Haru has 18 marbles and some pears) is recorded as a count not known (count_unknown), and a question about it is held. The number said later without its holder (18 of them; there are 18 of them; it's 18 marbles; Haru has 18 of them) is the count of the one count not known yet that it fits: the last one said, the one of that thing, or the one of that holder.",
+  "_use_for": "Things used for a purpose leave the holder; the purpose after 'for the' fills no holder (Haru used 2 marbles for the party)."
  },
  "문장분리": {
   "_설명": "Clause boundaries are punctuation and declared connectives. A comma splits only when the part before it is a complete clause.",

@@ -603,6 +603,14 @@ class RelationalParser:
                     self._ends_in_particle(w) for w in (m.group(1) + m.group(2)).split()):
                 text, applied = m.group(3), applied + ["fronted_purpose"]
                 break
+        completive = spec.get("completive") or {}
+        if completive:
+            # 다 썼어요 (used up): the completive adverb before a verb of using up fills no role
+            new = re.sub(r"(?<!\S)(?:%s) (?=(?:%s))" % ("|".join(re.escape(w) for w in completive.get("words", [])),
+                                                        "|".join(re.escape(v) for v in completive.get("before", []))),
+                         "", text)
+            if new != text:
+                text, applied = new, applied + ["completive"]
         adverbs = spec.get("dropped_adverbs") or []
         if adverbs:
             # time adverbs that fill no role are left out in every reading, not only with the phrase variants
