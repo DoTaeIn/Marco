@@ -201,7 +201,9 @@ def test_template_count_stays_constant_and_empty_component_lacks_new_forms():
     # amount said later without its holder (18개이다), 만 (구슬만 18개 있다/를 가지고 있다, 구슬 18개만
     # 있다/가지고 있다, 구슬 18개를 가지고 있다), and a thing used for a purpose (잔치에 썼다). 21 shapes,
     # each a class of the round's cause table; no word of a development set.
-    assert len(parser.templates) == len(parser.data["examples"]) == 99
+    # 99 -> 101 (round 5, batch 1): the thing as topic with the holder after it (구슬 18개는 하루가 가지고
+    # 있다) and the holder in a relative clause of holding (하루가 가지고 있는 구슬이 18개 있다).
+    assert len(parser.templates) == len(parser.data["examples"]) == 101
     pack = copy.deepcopy(load_reasoning_language())
     pack["inflection"] = {}
     old = RelationalParser(language_pack=pack)

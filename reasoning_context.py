@@ -267,10 +267,17 @@ class ReasoningContext:
         """
         marks = parser.clause_grammar.get("question_marks", [])
         stops = "".join(marks) + ".!…"
+        # a declared abbreviation's full stop (Mr., Dr.) ends no sentence
+        abbreviations = tuple(parser.clause_grammar.get("abbreviations", []))
+
+        def abbreviated(buffer):
+            tail = buffer.rstrip()
+            return any(tail.endswith(a) and (len(tail) == len(a) or not tail[-len(a) - 1].isalpha())
+                       for a in abbreviations)
         out, buffer = [], ""
         for char in text:
             buffer += char
-            if char in stops and buffer.strip():
+            if char in stops and buffer.strip() and not (char == "." and abbreviated(buffer)):
                 out.append(buffer); buffer = ""
         if buffer.strip():
             out.append(buffer)

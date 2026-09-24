@@ -309,6 +309,67 @@ def test_two_questions_in_one_turn_are_answered_in_order_each_with_its_evidence(
         assert any(c.get("part") == index and c.get("ok") for c in result["verification"]["checks"])
 
 
+def facts_of(language, text):
+    parsed = model(language).parser().parse(text, partial=True, events=True, repair=True) or {}
+    return sorted(tuple(map(str, row["triple"])) for row in parsed.get("facts", []))
+
+
+# G5.3 batch 1: forms request W5-3 found misread (declared, both halves of every rule a closed class) --------
+def test_the_thing_as_topic_and_the_holder_after_it_is_the_holders_count():
+    assert facts_of("한국어", "귤 일곱 개는 제가 맡고 있어요.") == [("나 귤", "count", "7")]
+    assert facts_of("한국어", "도마 네 개는 창민이 보관하고 있습니다.") == [("창민 도마", "count", "4")]
+
+
+def test_a_relative_clause_of_holding_names_the_holder():
+    assert facts_of("한국어", "약사 은비 씨가 보관하고 있는 쟁반이 세 개 있어요.") == [("은비 쟁반", "count", "3")]
+    assert facts_of("한국어", "형준이 가지고 있는 거울이 두 개 있어.") == [("형준 거울", "count", "2")]
+
+
+def test_a_verb_of_holding_is_never_part_of_a_name():
+    for text in ("현재 컵 다섯 개는 제가 들고 있어요.", "상우가 갖고 있는 퍼즐이 여덟 개 있어요."):
+        assert not any(word in holder for holder, _p, _n in facts_of("한국어", text)
+                       for word in ("가지고", "갖고", "들고", "보관", "맡고", "있는"))
+
+
+def test_two_holders_joined_by_a_conjunction_are_asked_about_together():
+    _ctx, rows = play("한국어", ["효진은 액자가 다섯 개 있어요.", "승민은 액자가 세 개 있어요.",
+                                "효진과 승민은 액자가 몇 개 있어요?", "효진이랑 승민이랑 지금 액자가 몇 개예요?"])
+    assert [asserted_numbers(r["answer"]) for r in rows[2:]] == [{8}, {8}]
+    _ctx, rows = play("한국어", ["저는 액자가 두 개 있어요.", "승민은 액자가 세 개 있어요.", "저와 승민이는 액자가 몇 개 있습니까?"])
+    assert rows[2]["status"] == "answered" and asserted_numbers(rows[2]["answer"]) == {5}
+
+
+def test_a_name_that_begins_like_the_first_person_is_a_name():
+    _ctx, rows = play("한국어", ["나은 지갑은 4개다.", "나은이 지갑 지금 몇 개야?"])
+    assert rows[0]["meaning"]["changes"][0]["subject"] == "나은 지갑"
+    assert rows[1]["status"] == "answered" and asserted_numbers(rows[1]["answer"]) == {4}
+
+
+def test_a_title_abbreviation_ends_no_sentence_so_a_hold_names_the_whole_statement():
+    _ctx, rows = play("english", ["Nell has 6 stools.", "I have 4 stools.", "I zorped Mr. Quill one stool.",
+                                  "How many stools does Nell have?", "How many stools do I have?"])
+    assert rows[4]["meaning"]["reason"] == "unread_event"
+    assert rows[4]["meaning"]["said"] == "I zorped Mr. Quill one stool."
+
+
+DETERMINISM = {
+    "a": ["Rhea has 8 clocks.", "I have 2 clocks.", "I sent Mr. Vole one clock and also blurped two.",
+          "How many clocks do I have?", "How many clocks does Rhea have?"],
+    "b": ["Ossi has 5 clocks.", "Pim has 3 clocks.", "Ossi gave Pim 2 clocks.", "How many clocks does Pim have?",
+          "Why?"],
+}
+
+
+def test_a_conversations_replies_do_not_depend_on_another_played_before_it():
+    def replies(order):
+        out = {}
+        for key in order:
+            _ctx, rows = play("english", DETERMINISM[key])
+            out[key] = [(r.get("status"), r.get("answer"), json.dumps((r.get("meaning") or {}).get("said"))) for r in rows]
+        return out
+    assert replies(["a", "b"]) == replies(["b", "a"])
+
+
 def test_a_statement_before_a_question_is_still_one_turn():
     _ctx, rows = play("english", ["Mira has 9 lanyards.", "Teo has 4 lanyards. How many lanyards does Teo have?"])
     assert (rows[-1].get("meaning") or {}).get("kind") != "queries"

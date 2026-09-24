@@ -2485,7 +2485,9 @@ class RelationalParser:
         def split(name):
             words = name.split()
             for index, word in enumerate(words[:-1]):
-                particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)), None)
+                # (a particle the owner's last sound does not take is no particle: 나은 is a name, not 나 + 은)
+                particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)
+                                 and self._particle_form(word[:-len(p)], p) == p), None)
                 owner = words[:index] + [word[:-len(particle)]] if particle is not None else []
                 # The speaker's key (나) is an owner however short it is.
                 if particle is not None and (len("".join(owner)) >= shortest
@@ -2626,9 +2628,11 @@ class RelationalParser:
                 # a group word that names two (두 사람, 둘이) sums exactly two holders
                 pair = phrase in spec.get("pair_words", [])
                 break
-        if total and not group:
+        if not group:
             # ``A와 B는 구슬이 모두 몇 개야``: two holders joined by a declared
-            # conjunctive particle (비교물음.between.joiners) are the members.
+            # conjunctive particle (비교물음.between.joiners) are the members. The count of two
+            # holders joined so is their total with or without a total word (``A와 B는 구슬이
+            # 몇 개 있어``, G5): one holder's count is never asked with two names.
             joiners = sorted((self.comparison or {}).get("between", {}).get("joiners", []), key=len, reverse=True)
             first = next((w for i, w in enumerate(words[:at]) if w not in drop and not (i == 0 and w in heads)), "")
             joiner = next((j for j in joiners if first.endswith(j) and len(first) > len(j)), None)
