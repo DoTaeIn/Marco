@@ -64,7 +64,7 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 
 | Document | What |
 | --- | --- |
-| [2026-09-24-root-cleanup.zip](archive/2026-09-24-root-cleanup.zip) | Retired root files, archived when the root was tidied on 2026-09-24: the old handoff document and the self-learning and graph-usage logs |
+| [2026-09-24-root-cleanup.zip](archive/2026-09-24-root-cleanup.zip) | Retired root files, archived when the root was tidied on 2026-09-24: the old handoff document and the self-learning logs (`python -m zipfile -l` lists them) |
 
 ## Requests between goals (`docs/requests/`)
 
