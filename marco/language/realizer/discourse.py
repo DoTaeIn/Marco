@@ -60,8 +60,10 @@ def plan(graph):
                         counts["eligible_referents"] += 1
                         elided.add(role)
                         counts["elided_referents"] += 1
+            holder_kinds = {((prop["roles"].get(role) or {}).get("holder") or {}).get("kind")
+                            for role in answer_rule.get("holder_roles", [])}
             if previous is not None and previous["frame"] == prop["frame"] and prop["frame"] in repeat_rule.get(
-                    "frames", []):
+                    "frames", []) and not holder_kinds & set(repeat_rule.get("not_for_holders", [])):
                 for role in repeat_rule.get("roles", []):
                     if _same(prop["roles"].get(role), previous["roles"].get(role)):
                         counts["repeated_roles"] += 1
@@ -83,5 +85,8 @@ def plan(graph):
         for index, group in enumerate(groups):
             sentences.append({"clauses": group, "act": act["intent"],
                               "sentence": group[0]["prop"].get("sentence", "declarative"),
-                              "lead": lead if index == 0 else None})
+                              "lead": lead if index == 0 else None,
+                              "lead_optional": bool(act.get("lead_optional")),
+                              # A lead that answers yes or no must agree with what its sentence says.
+                              "polarity": group[0]["prop"].get("polarity", True)})
     return sentences, counts

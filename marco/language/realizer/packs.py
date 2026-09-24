@@ -92,10 +92,24 @@ class Language:
         a pack that renames it renames it here too. A reply without the marks
         leaves the lexeme without a word, and a clause that needs it is not said.
         """
-        replies = (getattr(self.parser, "data", None) or {}).get("context_replies") or {}
+        data = getattr(self.parser, "data", None) or {}
+        replies = data.get("context_replies") or {}
+        answers = data.get("comparison_answers") or {}
+        ortho = self.decl.get("orthography") or {}
+        marks = "".join(list(ortho.get("punctuation", {}).values()) + list(ortho.get("symbols", {}).values()))
+        variables = tuple(meaning_declarations().get("variable_marks", ()))
         for entry in self.decl.get("lexicon", {}).values():
             spec = entry.get("from_pack") if isinstance(entry, dict) else None
             if not spec:
+                continue
+            if spec.get("answer"):
+                # ``{"answer": key}``: the word the pack's comparison answer ``key`` begins with
+                # (its yes or its no). A render that begins with a value has no such word.
+                render = answers.get(spec["answer"])
+                first = render[0] if isinstance(render, list) and render and isinstance(render[0], str) else ""
+                word = first.strip().strip(marks).strip()
+                if word and not first.startswith(variables) and len(word.split()) == 1:
+                    entry["word"] = word
                 continue
             template = replies.get(spec.get("reply"))
             opening, closing = spec.get("enclosed") or (None, None)
@@ -117,6 +131,32 @@ class Language:
             grammar["lexicon"] = lexicon
         grammar.setdefault("max_forms", 32)
         return grammar
+
+    def person(self):
+        """The persons of a conversation, from two declarations.
+
+        ``first``: the pack's own first person — the word its definitions use for the one who
+        acts (``임자자리말``, the holder key of the user) and every form the pack groups with it
+        (``자리말``: I, me, myself; 나, 내). ``user``: the forms the user says of themself, by the
+        case the reply's part gives the holder, and ``addressee``: the words a reply names the
+        user with, by the same cases (an empty word: the user is not said), both from this
+        language's realizer file; ``honorific``: the stem ending a predicate takes when it
+        agrees with the user, or None. A user form the pack does not group with its first
+        person is not read as the user (``forms``)."""
+        if getattr(self, "_person", None) is not None:
+            return self._person
+        holder = str(getattr(self.parser, "speaker_placeholder", "") or "")
+        groups = getattr(self.parser, "placeholders", None) or {}
+        forms = sorted({word for word, target in groups.items() if holder and target == holder} | (
+            {holder} if holder else set()))
+        declared = self.decl.get("person") or {}
+        self._person = {"first": {"holder": holder, "forms": forms},
+                        "user": {key: word for key, word in (declared.get("user") or {}).items()
+                                 if not key.startswith("_")},
+                        "addressee": {key: word for key, word in (declared.get("addressee") or {}).items()
+                                      if not key.startswith("_")},
+                        "honorific": declared.get("honorific")}
+        return self._person
 
     def concept(self, word):
         return self.senses.get(word) or self.senses.get(str(word).lower())
