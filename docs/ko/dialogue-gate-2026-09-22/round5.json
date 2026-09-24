@@ -1,0 +1,8709 @@
+{
+ "schema": "marco1-dialogue-gate-v1-report",
+ "meta": {
+  "dataset_sha256": "a2294c68f6a5f7967025bffacbd957ff9ffb33df66a3aa7c187fe410d1753e6d",
+  "frozen_sha256": "a2294c68f6a5f7967025bffacbd957ff9ffb33df66a3aa7c187fe410d1753e6d",
+  "encoder": "문자",
+  "entry": "views.kgpack_ui.AppState.turn",
+  "research": "stubbed; calls counted",
+  "python": "3.13.9",
+  "code_commit": "ca647701ade73456e0fb044d9c542f3f5918bedf",
+  "seconds": 232.1
+ },
+ "dataset": {
+  "dialogues": 52,
+  "turns": 340,
+  "by_language": {
+   "ko": 26,
+   "en": 26
+  },
+  "labels": {
+   "answerable": 108,
+   "hold": 170,
+   "unsupported": 6,
+   "ambiguous": 12,
+   "correction": 18,
+   "why": 26
+  }
+ },
+ "gate": {
+  "correct": 45,
+  "hold": 63,
+  "wrong": 0,
+  "execution_error": 0,
+  "unverifiable": 0,
+  "n": 108,
+  "accuracy": 0.4167,
+  "threshold": 0.9,
+  "needed": 98,
+  "passed": false,
+  "denominator": "every turn labelled answerable across 52 dialogues (108 turns); hold, wrong, execution_error and unverifiable all count against"
+ },
+ "by_language": {
+  "ko": {
+   "correct": 22,
+   "hold": 32,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 54,
+   "accuracy": 0.4074
+  },
+  "en": {
+   "correct": 23,
+   "hold": 31,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 54,
+   "accuracy": 0.4259
+  }
+ },
+ "by_category": {
+  "ownership": {
+   "correct": 2,
+   "hold": 4,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 6,
+   "accuracy": 0.3333
+  },
+  "transfer": {
+   "correct": 43,
+   "hold": 59,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 102,
+   "accuracy": 0.4216
+  },
+  "follow_up": {
+   "correct": 11,
+   "hold": 27,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 38,
+   "accuracy": 0.2895
+  },
+  "missing_premise": {
+   "correct": 0,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 0,
+   "accuracy": null
+  },
+  "correction": {
+   "correct": 15,
+   "hold": 17,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 32,
+   "accuracy": 0.4688
+  },
+  "why": {
+   "correct": 0,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 0,
+   "accuracy": null
+  },
+  "ambiguous_referent": {
+   "correct": 1,
+   "hold": 9,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 10,
+   "accuracy": 0.1
+  },
+  "restart": {
+   "correct": 9,
+   "hold": 3,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 12,
+   "accuracy": 0.75
+  },
+  "cross_language": {
+   "correct": 0,
+   "hold": 4,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 4,
+   "accuracy": 0.0
+  }
+ },
+ "other_labels": {
+  "record": {
+   "correct": 120,
+   "hold": 29,
+   "wrong": 1,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 150,
+   "accuracy": 0.8
+  },
+  "hold": {
+   "correct": 4,
+   "hold": 16,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 20,
+   "accuracy": 0.2
+  },
+  "ambiguous": {
+   "correct": 7,
+   "hold": 5,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 12,
+   "accuracy": 0.5833
+  },
+  "unsupported": {
+   "correct": 6,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 6,
+   "accuracy": 1.0
+  },
+  "correction": {
+   "correct": 9,
+   "hold": 8,
+   "wrong": 1,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 18,
+   "accuracy": 0.5
+  },
+  "why": {
+   "correct": 0,
+   "hold": 26,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 26,
+   "accuracy": 0.0
+  }
+ },
+ "violations": {
+  "confident_without_evidence": {
+   "count": 0,
+   "turns": []
+  },
+  "retracted_evidence_used": {
+   "count": 0,
+   "turns": []
+  }
+ },
+ "dialogues_fully_passed": 2,
+ "failures": [
+  {
+   "dialogue": "en-01",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "How many do the two of them have in total?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-02",
+   "language": "en",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "What color are Kofi's notebooks?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-02",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does Kofi have three?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-03",
+   "language": "en",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Wait, not three, it was two.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-03",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many cookies has Dev got?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Wait, not three, it was two.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-03",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "What about Marta?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-04",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Leila transferred four reams to Oskar.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-04",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "I mean Oskar. How many does Oskar hold?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-04",
+   "language": "en",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "On which floor does Oskar work?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-05",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "say": "미나는 스티커가 몇 장 남았어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "'스티커'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-06",
+   "language": "en",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Anika end up with seven?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-07",
+   "language": "en",
+   "n": 3,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "How many does that kid have now?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I read \"How many does that kid have now\" as \"How many that does kid have now\". This conversation never mentioned kid's that. So I did not answer.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-07",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "Bram, I mean.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-07",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "How many markers does Sunita have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Write a short song about the markers.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-08",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And in the north warehouse?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-08",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does the south warehouse have twenty-two crates?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-09",
+   "language": "en",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Mateo only have one?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Jonah used three of them for an omelette.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "[held] I did not read \"Jonah used three of them for an omelette\" (rule \"Haru lost 2 marbles\"; skip 'for'; cost 3; bound 2).",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Then Jonah gave two eggs to Farah.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many eggs does Jonah have left?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Jonah used three of them for an omelette.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "What is the reason Jonah has seven eggs?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-11",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many pens are left with Imani?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Sora gave Dami four bottles.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Not four, three.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "How many bottles does Dami have at the moment?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Sora gave Dami four bottles.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "cross_language",
+    "transfer"
+   ],
+   "say": "소라는 주스가 몇 병 있어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "'주스'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why did it turn out that way?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-13",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "Where does Rosa keep them?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "For the event, Anders is responsible for twenty-four chairs.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Anders handed eight chairs over to Mei.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "I read \"Anders handed eight chairs over to Mei\" as \"Anders handed eight over chairs to Mei\". The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mei then returned two chairs to Anders.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many chairs is Mei responsible for?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why is that number twelve?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "What about Anders?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-15",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Omar gave Beatriz one tangerine.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-15",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many tangerines does Omar have left?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Omar gave Beatriz one tangerine.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-15",
+   "language": "en",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "follow_up",
+    "missing_premise"
+   ],
+   "say": "Where did that friend buy them?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-16",
+   "language": "en",
+   "n": 4,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does Ines have twelve?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-17",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "say": "And peaches?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-17",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many plums are left for Pavel?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mr. Osei sent one cartridge to Ms. Lindqvist.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "How many cartridges does that person have now?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I do not know who 'that person' refers to. Which of 'Osei toner cartridges' do you mean?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 5,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Let me correct that: three cartridges were sent, not one.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find an earlier event that \"Let me correct that: three cartridges were sent, not one.\" refers to. So I did not correct anything.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many cartridges does Ms. Lindqvist have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Let me correct that: three cartridges were sent, not one.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And how many does Mr. Osei have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Let me correct that: three cartridges were sent, not one.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Ben has some balls. Six, to be exact.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Ben gave Zara two balls.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Zara then passed one of them to Kai.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The numbers do not add up: \"Zara then passed one of them to Kai.\". Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many balls does Zara have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Ben gave Zara two balls.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "How many balls does Kai have in total?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many are left with Ben?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-20",
+   "language": "en",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "cross_language",
+    "why"
+   ],
+   "say": "준이는 왜 사탕이 일곱 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-20",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "restart",
+    "transfer"
+   ],
+   "say": "What about Yuna?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "No, it was the other way around: Ava gave Leo two.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many chocolates does Leo have now?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"No, it was the other way around: Ava gave Leo two.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Leo have seven?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And Ava?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"No, it was the other way around: Ava gave Leo two.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Ms. Tanaka passed five books to Mr. Adeyemi.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "Mr. Adeyemi is the one I mean.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many books remain with Ms. Tanaka?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And my roommate?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "What flavor does my roommate like?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why do I only have six?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 9,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Sami have six?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 10,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many cards do they have combined?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Malik gave Iris two loaves.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "It's Iris. How many does Iris have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And Malik?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 7,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "What kind of bread does Malik have?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mr. Novak left six parcels at the corner shop.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "No interpretation of \"Mr. Novak left six parcels at the corner shop.\" fits this conversation. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Correction: seven parcels were left, not six.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find an earlier event that \"Correction: seven parcels were left, not six.\" refers to. So I did not correct anything.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many parcels does Mr. Novak have left?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Mr. Novak left six parcels at the corner shop.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "How many parcels did the corner shop have before?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Mr. Novak have thirteen parcels?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-02",
+   "language": "ko",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "도윤이 연필은 무슨 색이에요?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-02",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "왜 도윤이가 세 자루를 갖게 됐어요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-04",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "예린 씨 말입니다. 몇 묶음입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-04",
+   "language": "ko",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "예린 씨 자리는 몇 층입니까?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-05",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "say": "How many stickers does Jaemin have now?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what 'stickers' refers to in this conversation.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-05",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "둘 중에 누가 더 많아?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "다온이가 현서한테 쿠키를 네 개 나눠 줬어요.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "현서는 쿠키가 몇 개예요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"다온이가 현서한테 쿠키를 네 개 나눠 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 5,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "잠깐, 다온이가 처음에 가진 건 아홉 개가 아니라 열한 개였어요.",
+   "bucket": "wrong",
+   "reason": "state:다온=11",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"다온이한테 쿠키가 아홉 개 있어요.\"의 수량을 9개에서 11개로 고쳤습니다. 새 사건은 더하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "그럼 다온이는 지금 몇 개예요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"다온이가 현서한테 쿠키를 네 개 나눠 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 일곱 개예요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-07",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "주안이 말한 거야.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-08",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "별관 창고의 상자는 모두 몇 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"별관 창고의 상자는 모두 몇 개입니까?\"는 반영하지 않았습니다. 가장 가까운 읽기가 \"모두\"를 바꿉니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-08",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "본관 창고는 어떻습니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-08",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "별관 창고 상자가 왜 스물두 개가 되었습니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-09",
+   "language": "ko",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 유나는 한 개밖에 없어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "윤재는 그중 세 개로 달걀말이를 만들었다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"만들었다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그리고 보람에게 두 개를 주었다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"주었다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "윤재에게 남은 달걀은 몇 개인가?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"윤재는 그중 세 개로 달걀말이를 만들었다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "보람은 원래 달걀을 몇 개 가지고 있었나?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "\"윤재는 그중 세 개로 달걀말이를 만들었다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "윤재의 달걀이 일곱 개가 된 까닭은 무엇인가?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-11",
+   "language": "ko",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그 친구는 이제 몇 자루예요?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "'그'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-11",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "세아요.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-12",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "cross_language",
+    "transfer"
+   ],
+   "say": "And how many bottles of milk does Gaon have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what 'bottles' refers to in this conversation.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-12",
+   "language": "ko",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 그렇게 된 거야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "이안이는 몇 권이 있지?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 4,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "로하는 그 책들을 어디에 뒀어?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 5,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "로하가 이안이한테 두 권을 빌려줬어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "이제 이안이는 몇 권?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"로하가 이안이한테 두 권을 빌려줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "태린 님은 의자를 몇 개 맡고 있습니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 물음의 근거를 그래프에서 찾지 못했습니다.",
+   "research_calls": 1
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "왜 열두 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "수빈 님은요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "도하 친구 시온이도 귤을 가지고 있어요.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "도하가 시온이에게 귤 한 개를 줬어요.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "도하는 귤이 몇 개 남았어요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"도하가 시온이에게 귤 한 개를 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "follow_up",
+    "missing_premise"
+   ],
+   "say": "그 아이 귤은 어디서 샀어요?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-16",
+   "language": "ko",
+   "n": 4,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "왜 아름이가 열두 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "예준이는 자두 세 개랑 복숭아 두 개를 갖고 있어.",
+   "bucket": "wrong",
+   "reason": "misrecorded:예준=2",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "하율이가 예준이한테 자두 세 개를 줬어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "예준이 자두는 몇 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"하율이가 예준이한테 자두 세 개를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "say": "복숭아는?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "하율이는 자두 몇 개 남았어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"하율이가 예준이한테 자두 세 개를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "경민 과장에게는 두 개가 있습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"있습니다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지훈 과장이 경민 과장에게 카트리지 한 개를 보냈습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그분은 지금 몇 개를 가지고 있습니까?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 5,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "정정하겠습니다. 보낸 것은 한 개가 아니라 세 개입니다.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"정정하겠습니다. 보낸 것은 한 개가 아니라 세 개입니다.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "경민 과장의 카트리지는 몇 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그럼 지훈 과장은 몇 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "준서한테 공이 있어. 여섯 개야.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "준서가 다은이한테 공을 줬어. 두 개.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "다은이가 그중 하나를 채아한테 줬어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"줬어\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "다은이는 공 몇 개 있어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"두 개.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "준서는 몇 개 남았어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"준서한테 공이 있어. 여섯 개야.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-20",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "cross_language",
+    "why"
+   ],
+   "say": "Why does Ijun have seven candies?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-20",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "restart",
+    "transfer"
+   ],
+   "say": "서하는요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아니, 준 사람은 우진이가 아니라 수아였어. 수아가 우진이한테 줬어.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "우진이는 이제 몇 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"아니, 준 사람은 우진이가 아니라 수아였어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 일곱 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "수아는?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"아니, 준 사람은 우진이가 아니라 수아였어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그분이 가진 책은 몇 권입니까?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "'그분'이 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "해솔 님입니다.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "윤하 님께 남은 책은 몇 권입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "나는 이제 몇 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 나는에 대한 말은 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "동생은?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "동생이 좋아하는 맛은 뭐야?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "왜 나는 여섯 개밖에 없어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 9,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 지율이는 여섯 장이야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-25",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "소이요. 소이는 몇 개예요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-25",
+   "language": "ko",
+   "n": 7,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "도율이 빵은 무슨 맛이에요?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "강민 씨가 편의점에 소포 여섯 개를 맡겼습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아닙니다, 여섯 개가 아니라 일곱 개를 맡겼습니다.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"아닙니다, 여섯 개가 아니라 일곱 개를 맡겼습니다.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "강민 씨에게 남은 소포는 몇 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "편의점에는 원래 소포가 몇 개 있었습니까?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "\"택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "강민 씨 소포가 왜 열세 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  }
+ ],
+ "rows": [
+  {
+   "dialogue": "en-01",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Priya's got eight oranges and Tomas has three.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Tomas has 3 oranges.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-01",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Priya handed Tomas two of them.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Priya gave Tomas 2 oranges. Now Priya has 6 oranges and Tomas has 5.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-01",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many oranges does Tomas have at this point?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5 oranges.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-01",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And Priya?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6 oranges.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-01",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "How many do the two of them have in total?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-02",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Ingrid has four notebooks.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-02",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Kofi has no notebooks at all.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-02",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Ingrid lent Kofi three notebooks.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Ingrid has 1 notebook and Kofi has 3.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-02",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many notebooks does Kofi have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "3 notebooks.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-02",
+   "language": "en",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "What color are Kofi's notebooks?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-02",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does Kofi have three?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-03",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Eight cookies belong to Marta, and Dev has five.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Dev has 5 cookies.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-03",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "To Dev, Marta passed three cookies.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Marta has 5 cookies and Dev has 8.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-03",
+   "language": "en",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Wait, not three, it was two.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-03",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many cookies has Dev got?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Wait, not three, it was two.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-03",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "What about Marta?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-04",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Leila holds twelve reams of printer paper.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-04",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Oskar holds seven reams of the same paper.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-04",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Leila transferred four reams to Oskar.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-04",
+   "language": "en",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "How many reams does that colleague hold now?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "I read \"How many reams does that colleague hold now\" as \"How many reams that does colleague hold now\". I could not read \"Leila transferred four reams to Oskar.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-04",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "I mean Oskar. How many does Oskar hold?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-04",
+   "language": "en",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "On which floor does Oskar work?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-05",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Mina has twenty stickers.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-05",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Juno owns fifteen stickers.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-05",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mina gave six stickers to Juno.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Mina has 14 stickers and Juno has 21.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-05",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "restart",
+    "transfer"
+   ],
+   "say": "How many stickers does Juno have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "21 stickers.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-05",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "say": "미나는 스티커가 몇 장 남았어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "'스티커'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-05",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Who has more stickers now, Mina or Juno?",
+   "bucket": "correct",
+   "reason": "entity",
+   "violation": null,
+   "status": "answered",
+   "answer": "Juno has more stickers.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-06",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Anika has nine bagels.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-06",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Rafael has two bagels.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-06",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Anika gave Rafael four bagels.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Anika has 5 bagels and Rafael has 6.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-06",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many bagels does Rafael have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6 bagels.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-06",
+   "language": "en",
+   "n": 5,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Sorry, Anika started with eleven, not nine.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "I changed the amount in the same event \"Anika has nine bagels.\" from 9 to 11. No new event was added.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-06",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "So how many does Anika have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7 bagels.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-06",
+   "language": "en",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Anika end up with seven?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-07",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Sunita has five markers, Bram has two, and Yusuf has eight.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Bram has 2 markers and Yusuf has 8.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-07",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Yusuf gave Bram four markers.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Yusuf has 4 markers and Bram has 6.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-07",
+   "language": "en",
+   "n": 3,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "How many does that kid have now?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I read \"How many does that kid have now\" as \"How many that does kid have now\". This conversation never mentioned kid's that. So I did not answer.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-07",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "Bram, I mean.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-07",
+   "language": "en",
+   "n": 5,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "Write a short song about the markers.",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-07",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "How many markers does Sunita have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Write a short song about the markers.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-08",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "The north warehouse holds thirty crates.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-08",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "The south warehouse holds ten crates.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-08",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Twelve crates were moved from the north warehouse to the south warehouse.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now the north warehouse has 18 crates and the south warehouse has 22.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-08",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many crates are in the south warehouse now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "22 crates.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-08",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And in the north warehouse?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-08",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does the south warehouse have twenty-two crates?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-09",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Clara has ten strawberries, Mateo has one, and Elif has two.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Mateo has 1 strawberries and Elif has 2.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-09",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Clara gave Mateo three strawberries.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Clara has 7 strawberries and Mateo has 4.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-09",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many strawberries does Mateo have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "4 strawberries.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-09",
+   "language": "en",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "No wait, Clara gave them to Elif, not Mateo.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "I changed the receiver in the same event \"Clara gave Mateo three strawberries.\" from Mateo to Elif. No new event was added. Now Mateo has 1 strawberries and Elif has 5.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-09",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "How many does Mateo have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "1 strawberries.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-09",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And Clara?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7 strawberries.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-09",
+   "language": "en",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Mateo only have one?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Jonah had twelve eggs.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Jonah used three of them for an omelette.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "[held] I did not read \"Jonah used three of them for an omelette\" (rule \"Haru lost 2 marbles\"; skip 'for'; cost 3; bound 2).",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Then Jonah gave two eggs to Farah.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many eggs does Jonah have left?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Jonah used three of them for an omelette.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "How many eggs did Farah have before that?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find an earlier event that \"How many eggs did Farah have before that?\" refers to. So I did not correct anything.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-10",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "What is the reason Jonah has seven eggs?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-11",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Lukas has one pen.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-11",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Imani has seven pens.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-11",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Imani gave Lukas two pens, apparently.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Imani has 5 pens and Lukas has 3.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-11",
+   "language": "en",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "So how many pens does that one have?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "I do not know who 'that one' refers to. Which of 'Lukas pens' and 'Imani pens' do you mean?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-11",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "Lukas is who I meant.",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "3 pens.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-11",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many pens are left with Imani?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Sora has six bottles of juice.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Dami has two bottles of juice.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Sora gave Dami four bottles.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Not four, three.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "How many bottles does Dami have at the moment?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Sora gave Dami four bottles.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "cross_language",
+    "transfer"
+   ],
+   "say": "소라는 주스가 몇 병 있어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "'주스'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-12",
+   "language": "en",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why did it turn out that way?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-13",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Theo has ten comic books.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-13",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Theo's cousin Rosa has three comic books.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-13",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "How many comic books does Theo have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "10 comic books.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-13",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "Where does Rosa keep them?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-13",
+   "language": "en",
+   "n": 5,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Rosa lent Theo two of hers.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Rosa gave Theo 2 comic books. Now Rosa has 1 comic book and Theo has 12.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-13",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "How many does Theo have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12 comic books.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-13",
+   "language": "en",
+   "n": 7,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "What's the weather going to be like next week?",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "For the event, Anders is responsible for twenty-four chairs.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Mei is responsible for six chairs.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Anders handed eight chairs over to Mei.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "I read \"Anders handed eight chairs over to Mei\" as \"Anders handed eight over chairs to Mei\". The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mei then returned two chairs to Anders.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many chairs is Mei responsible for?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why is that number twelve?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-14",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "What about Anders?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-15",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Omar has five tangerines.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-15",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Omar's friend Beatriz also has some tangerines.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Omar's friend Beatriz also has some tangerines, but I do not know how many.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-15",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Omar gave Beatriz one tangerine.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-15",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many tangerines does Omar have left?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Omar gave Beatriz one tangerine.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-15",
+   "language": "en",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "How many does Beatriz have?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Omar gave Beatriz one tangerine.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-15",
+   "language": "en",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "follow_up",
+    "missing_premise"
+   ],
+   "say": "Where did that friend buy them?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-16",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Hugo has eighteen coins.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-16",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Ines has seven coins.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-16",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Hugo gave Ines five coins.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Hugo has 13 coins and Ines has 12.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-16",
+   "language": "en",
+   "n": 4,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does Ines have twelve?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-16",
+   "language": "en",
+   "n": 5,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Oh, it was six coins, not five.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "I changed the amount in the same event \"Hugo gave Ines five coins.\" from 5 to 6. No new event was added. Now Hugo has 12 coins and Ines has 13.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-16",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "How many coins does Ines have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "13 coins.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-16",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And Hugo?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12 coins.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-17",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Nadia has three plums and two peaches.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-17",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Pavel only has plums, six of them.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-17",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Pavel gave Nadia three plums.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Pavel has 3 plums and Nadia has 6.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-17",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many plums does Nadia have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6 plums.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-17",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "say": "And peaches?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-17",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many plums are left for Pavel?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Mr. Osei has five toner cartridges.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Ms. Lindqvist has two.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mr. Osei sent one cartridge to Ms. Lindqvist.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "How many cartridges does that person have now?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I do not know who 'that person' refers to. Which of 'Osei toner cartridges' do you mean?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 5,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Let me correct that: three cartridges were sent, not one.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find an earlier event that \"Let me correct that: three cartridges were sent, not one.\" refers to. So I did not correct anything.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many cartridges does Ms. Lindqvist have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Let me correct that: three cartridges were sent, not one.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-18",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And how many does Mr. Osei have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Let me correct that: three cartridges were sent, not one.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Ben has some balls. Six, to be exact.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Zara has zero balls.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Ben gave Zara two balls.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Zara then passed one of them to Kai.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The numbers do not add up: \"Zara then passed one of them to Kai.\". Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many balls does Zara have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Ben gave Zara two balls.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "How many balls does Kai have in total?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-19",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many are left with Ben?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-20",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Yuna has eleven candies.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-20",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Jun has four candies.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-20",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Yuna gave Jun three candies.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Yuna has 8 candies and Jun has 7.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-20",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "restart",
+    "transfer"
+   ],
+   "say": "How many candies does Jun have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7 candies.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-20",
+   "language": "en",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "cross_language",
+    "why"
+   ],
+   "say": "준이는 왜 사탕이 일곱 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-20",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "restart",
+    "transfer"
+   ],
+   "say": "What about Yuna?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Leo has five chocolates and Ava has ten.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Ava has 10 chocolates.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Leo gave Ava two chocolates.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Leo has 3 chocolates and Ava has 12.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many does Ava have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12 chocolates.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "No, it was the other way around: Ava gave Leo two.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many chocolates does Leo have now?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"No, it was the other way around: Ava gave Leo two.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Leo have seven?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-21",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And Ava?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"No, it was the other way around: Ava gave Leo two.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Ms. Tanaka keeps fourteen library books.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Mr. Adeyemi keeps six library books.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Ms. Tanaka passed five books to Mr. Adeyemi.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "How many books does that librarian keep now?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "I read \"How many books does that librarian keep now\" as \"How many books that does librarian keep now\". I could not read \"Ms. Tanaka passed five books to Mr. Adeyemi.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "Mr. Adeyemi is the one I mean.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 6,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "Please summarize the plot of these books.",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-22",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many books remain with Ms. Tanaka?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "I have eight gummies.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "My roommate has three gummies.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "I gave my roommate two gummies.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now you have 6 gummies and your roommate has 5.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many gummies do I have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6 gummies.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And my roommate?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "What flavor does my roommate like?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-23",
+   "language": "en",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why do I only have six?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Ella has ten cards.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Sami has five cards.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Ella gave Sami three cards.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Ella has 7 cards and Sami has 8.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Sami gave one card back to Ella.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "I read \"Sami gave one card back to Ella\" as \"Sami gave one back card to Ella\". Recorded. Now Sami has 7 cards and Ella has 8.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many cards does Ella have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "8 cards.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 6,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Hold on, Sami started with four cards, not five.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "I changed the amount in the same event \"Sami has five cards.\" from 5 to 4. No new event was added.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many cards does Sami have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6 cards.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 8,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many does Ella have at this point?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "8 cards.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 9,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Sami have six?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-24",
+   "language": "en",
+   "n": 10,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many cards do they have combined?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Iris has three loaves of bread.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Malik has eight loaves of bread.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Malik gave Iris two loaves.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "The new statement does not fit what was already recorded. Please check it.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent",
+    "restart"
+   ],
+   "say": "How many loaves does that person have?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Malik gave Iris two loaves.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "It's Iris. How many does Iris have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And Malik?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-25",
+   "language": "en",
+   "n": 7,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "What kind of bread does Malik have?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "The courier, Mr. Novak, is carrying twenty parcels.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mr. Novak left six parcels at the corner shop.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "No interpretation of \"Mr. Novak left six parcels at the corner shop.\" fits this conversation. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Correction: seven parcels were left, not six.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find an earlier event that \"Correction: seven parcels were left, not six.\" refers to. So I did not correct anything.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many parcels does Mr. Novak have left?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Mr. Novak left six parcels at the corner shop.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "How many parcels did the corner shop have before?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "en-26",
+   "language": "en",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "Why does Mr. Novak have thirteen parcels?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-01",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "태오는 귤을 여섯 개, 은채는 세 개 가지고 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 태오 귤은 6개, 은채는 3개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-01",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "태오가 은채한테 귤 두 개를 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 태오 귤은 4개, 은채는 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-01",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "은채는 이제 귤이 몇 개야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-01",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "태오는?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-01",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "둘이 합치면 몇 개야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "은채와 태오는 합쳐서 귤 9개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-02",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "하린이는 연필을 네 자루 갖고 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-02",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "도윤이는 연필이 한 자루도 없어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-02",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "하린이가 도윤이에게 연필 세 자루를 빌려줬어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 하린 연필은 1개, 도윤은 3개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-02",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "도윤이는 지금 연필이 몇 자루예요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "3개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-02",
+   "language": "ko",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "도윤이 연필은 무슨 색이에요?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-02",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "왜 도윤이가 세 자루를 갖게 됐어요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-03",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "사탕 여덟 개를 시우가 가지고 있고, 나은이는 사탕이 다섯 개 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 시우 사탕은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-03",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "나은이한테 시우가 사탕 세 개를 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 시우 사탕은 5개, 나은은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-03",
+   "language": "ko",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아, 세 개가 아니라 두 개였어.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"나은이한테 시우가 사탕 세 개를 줬어.\"의 수량을 3개에서 2개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 시우 사탕은 6개, 나은은 7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-03",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "나은이 사탕은 몇 개야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-03",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그럼 시우는?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-04",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "건우 씨에게 복사 용지 열두 묶음이 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 건우 복사 용지는 12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-04",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "예린 씨에게는 같은 용지가 일곱 묶음 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-04",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "건우 씨가 예린 씨에게 네 묶음을 넘겼습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 건우 복사 용지는 8개, 예린 용지는 11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-04",
+   "language": "ko",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그분한테는 이제 몇 묶음이 있습니까?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "'그분'이 누구를 가리키는지 알지 못합니다. '예린', '건우', '예린 용지', '건우 복사 용지' 가운데 누구인가요?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-04",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "예린 씨 말입니다. 몇 묶음입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-04",
+   "language": "ko",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "예린 씨 자리는 몇 층입니까?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-05",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "재민이는 스티커가 스무 장 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-05",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "소율이는 스티커 열다섯 장을 갖고 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-05",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "재민이가 소율이한테 여섯 장 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 재민이 소율에게 스티커 6개를 줬습니다. 이제 재민 스티커는 14개, 소율은 21개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-05",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "restart",
+    "transfer"
+   ],
+   "say": "소율이 스티커 지금 몇 장이야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "21개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-05",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "say": "How many stickers does Jaemin have now?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what 'stickers' refers to in this conversation.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-05",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "둘 중에 누가 더 많아?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "다온이한테 쿠키가 아홉 개 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "현서한테는 쿠키가 두 개 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "다온이가 현서한테 쿠키를 네 개 나눠 줬어요.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "현서는 쿠키가 몇 개예요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"다온이가 현서한테 쿠키를 네 개 나눠 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 5,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "잠깐, 다온이가 처음에 가진 건 아홉 개가 아니라 열한 개였어요.",
+   "bucket": "wrong",
+   "reason": "state:다온=11",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"다온이한테 쿠키가 아홉 개 있어요.\"의 수량을 9개에서 11개로 고쳤습니다. 새 사건은 더하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "그럼 다온이는 지금 몇 개예요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"다온이가 현서한테 쿠키를 네 개 나눠 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-06",
+   "language": "ko",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 일곱 개예요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-07",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "채원이는 공책 다섯 권, 주안이는 두 권, 서진이는 여덟 권이 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 채원 공책은 5개, 주안은 2개, 서진은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-07",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "서진이가 주안이한테 공책 네 권을 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 서진 공책은 4개, 주안은 6개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-07",
+   "language": "ko",
+   "n": 3,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "걔는 지금 몇 권 있어?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "'걔'가 누구를 가리키는지 알지 못합니다. '주안 공책', '주안', '서진 공책', '서진', '채원 공책', '채원' 가운데 누구인가요?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-07",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "주안이 말한 거야.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-07",
+   "language": "ko",
+   "n": 5,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "이 공책들로 시 한 편 써 줘.",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-07",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "채원이는 몇 권이야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-08",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "본관 창고에 상자가 서른 개 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-08",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "별관 창고에는 상자가 열 개 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-08",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "본관 창고에서 별관 창고로 상자 열두 개를 옮겼습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 본관 창고에는 상자가 18개 있고, 별관 창고에는 22개 있습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-08",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "별관 창고의 상자는 모두 몇 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"별관 창고의 상자는 모두 몇 개입니까?\"는 반영하지 않았습니다. 가장 가까운 읽기가 \"모두\"를 바꿉니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-08",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "본관 창고는 어떻습니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-08",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "별관 창고 상자가 왜 스물두 개가 되었습니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-09",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "라온이는 딸기가 열 개, 유나는 한 개, 한결이는 두 개 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 유나 딸기는 1개, 한결은 2개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-09",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "라온이가 유나한테 딸기 세 개 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 라온 딸기는 7개, 유나는 4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-09",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "유나는 딸기 몇 개야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-09",
+   "language": "ko",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아니다, 유나가 아니라 한결이한테 준 거였어.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"라온이가 유나한테 딸기 세 개 줬어.\"에서 유나가 받은 것을 한결이 받은 것으로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 유나 딸기는 1개, 한결은 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-09",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "유나는 지금 몇 개야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "1개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-09",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "라온이는?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-09",
+   "language": "ko",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 유나는 한 개밖에 없어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "윤재에게 달걀이 열두 개 있다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "윤재는 그중 세 개로 달걀말이를 만들었다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"만들었다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그리고 보람에게 두 개를 주었다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"주었다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "윤재에게 남은 달걀은 몇 개인가?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"윤재는 그중 세 개로 달걀말이를 만들었다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "보람은 원래 달걀을 몇 개 가지고 있었나?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "\"윤재는 그중 세 개로 달걀말이를 만들었다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-10",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "윤재의 달걀이 일곱 개가 된 까닭은 무엇인가?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-11",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "세아는 볼펜이 한 자루 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-11",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "로운이는 볼펜을 일곱 자루 가지고 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-11",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "로운이가 세아한테 볼펜 두 자루를 줬대요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 로운 볼펜은 5개, 세아는 3개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-11",
+   "language": "ko",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그 친구는 이제 몇 자루예요?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "'그'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-11",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "세아요.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-11",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "로운이는 몇 자루 남았어요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-12",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "가온이는 우유 여섯 병을 가지고 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-12",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "누리는 우유가 두 병 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-12",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "가온이가 누리한테 우유 네 병을 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 가온 우유는 2개, 누리는 6개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-12",
+   "language": "ko",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "네 병 말고 세 병이야.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"가온이가 누리한테 우유 네 병을 줬어.\"의 수량을 4개에서 3개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 가온 우유는 3개, 누리는 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-12",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "누리한테 지금 우유 몇 병 있어?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-12",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "cross_language",
+    "transfer"
+   ],
+   "say": "And how many bottles of milk does Gaon have?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what 'bottles' refers to in this conversation.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-12",
+   "language": "ko",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 그렇게 된 거야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "이안이는 만화책을 열 권 갖고 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "이안이 동생 로하는 만화책이 세 권 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "이안이는 몇 권이 있지?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 4,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "로하는 그 책들을 어디에 뒀어?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 5,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "로하가 이안이한테 두 권을 빌려줬어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "이제 이안이는 몇 권?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"로하가 이안이한테 두 권을 빌려줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-13",
+   "language": "ko",
+   "n": 7,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "다음 주 날씨 알려 줘.",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "행사 준비로 수빈 님이 의자 스물네 개를 맡고 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "태린 님은 의자 여섯 개를 맡고 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "수빈 님이 태린 님에게 의자 여덟 개를 넘겼습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 수빈 의자는 16개, 태린은 14개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "태린 님이 다시 수빈 님에게 두 개를 돌려주었습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 태린이 수빈에게 의자 2개를 줬습니다. 이제 태린 의자는 12개, 수빈은 18개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "태린 님은 의자를 몇 개 맡고 있습니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 물음의 근거를 그래프에서 찾지 못했습니다.",
+   "research_calls": 1
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "왜 열두 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-14",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "수빈 님은요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "도하는 귤이 다섯 개 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "도하 친구 시온이도 귤을 가지고 있어요.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "도하가 시온이에게 귤 한 개를 줬어요.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "도하는 귤이 몇 개 남았어요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"도하가 시온이에게 귤 한 개를 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "시온이는 귤이 몇 개예요?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "\"도하가 시온이에게 귤 한 개를 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-15",
+   "language": "ko",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "follow_up",
+    "missing_premise"
+   ],
+   "say": "그 아이 귤은 어디서 샀어요?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-16",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "건희는 동전 열여덟 개가 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 건희 동전은 18개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-16",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "아름이는 동전 일곱 개가 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 아름 동전은 7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-16",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "건희가 아름이한테 동전 다섯 개를 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 건희 동전은 13개, 아름은 12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-16",
+   "language": "ko",
+   "n": 4,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "왜 아름이가 열두 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-16",
+   "language": "ko",
+   "n": 5,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아, 다섯 개가 아니라 여섯 개 줬어.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"건희가 아름이한테 동전 다섯 개를 줬어.\"의 수량을 5개에서 6개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 건희 동전은 12개, 아름은 13개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-16",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "아름이 동전은 이제 몇 개야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "13개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-16",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "건희는?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "예준이는 자두 세 개랑 복숭아 두 개를 갖고 있어.",
+   "bucket": "wrong",
+   "reason": "misrecorded:예준=2",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "하율이는 자두만 여섯 개 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "하율이가 예준이한테 자두 세 개를 줬어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "예준이 자두는 몇 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"하율이가 예준이한테 자두 세 개를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "say": "복숭아는?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-17",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "하율이는 자두 몇 개 남았어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"하율이가 예준이한테 자두 세 개를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "지훈 과장에게 토너 카트리지가 다섯 개 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "경민 과장에게는 두 개가 있습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"있습니다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지훈 과장이 경민 과장에게 카트리지 한 개를 보냈습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그분은 지금 몇 개를 가지고 있습니까?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 5,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "정정하겠습니다. 보낸 것은 한 개가 아니라 세 개입니다.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"정정하겠습니다. 보낸 것은 한 개가 아니라 세 개입니다.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "경민 과장의 카트리지는 몇 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-18",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그럼 지훈 과장은 몇 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "준서한테 공이 있어. 여섯 개야.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "다은이는 공이 하나도 없어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "준서가 다은이한테 공을 줬어. 두 개.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "다은이가 그중 하나를 채아한테 줬어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"줬어\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "다은이는 공 몇 개 있어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"두 개.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "채아는 공이 전부 몇 개야?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "\"채아는 공이 전부 몇 개야?\"는 반영하지 않았습니다. 가장 가까운 읽기가 \"전부\"를 바꿉니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-19",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "준서는 몇 개 남았어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"준서한테 공이 있어. 여섯 개야.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-20",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "서하는 사탕을 열한 개 가지고 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-20",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "이준이는 사탕이 네 개 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-20",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "서하가 이준이한테 사탕 세 개를 줬어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 서하 사탕은 8개, 이준은 7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-20",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "restart",
+    "transfer"
+   ],
+   "say": "이준이는 사탕이 몇 개 있어요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-20",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "cross_language",
+    "why"
+   ],
+   "say": "Why does Ijun have seven candies?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-20",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "restart",
+    "transfer"
+   ],
+   "say": "서하는요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "우진이는 초콜릿 다섯 개, 수아는 열 개가 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 우진 초콜릿은 5개, 수아는 10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "우진이가 수아한테 초콜릿 두 개를 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 우진 초콜릿은 3개, 수아는 12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "수아는 몇 개야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아니, 준 사람은 우진이가 아니라 수아였어. 수아가 우진이한테 줬어.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "우진이는 이제 몇 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"아니, 준 사람은 우진이가 아니라 수아였어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 일곱 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-21",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "수아는?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"아니, 준 사람은 우진이가 아니라 수아였어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "윤하 님은 도서 열네 권을 보관하고 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "해솔 님은 도서 여섯 권을 보관하고 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "윤하 님이 해솔 님께 도서 다섯 권을 넘겼습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 윤하 도서는 9개, 해솔은 11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그분이 가진 책은 몇 권입니까?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "'그분'이 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "해솔 님입니다.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 6,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "이 책들의 줄거리를 요약해 주십시오.",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-22",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "윤하 님께 남은 책은 몇 권입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "나 젤리 여덟 개 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 젤리는 8개 있으십니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "동생은 젤리 세 개 있고.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 동생 젤리는 3개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "내가 동생한테 젤리 두 개 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 젤리는 6개 있으시고, 동생은 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "나는 이제 몇 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 나는에 대한 말은 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "동생은?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 6,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "동생이 좋아하는 맛은 뭐야?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-23",
+   "language": "ko",
+   "n": 7,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "왜 나는 여섯 개밖에 없어?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "하온이는 카드 열 장이 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 하온 카드는 10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "지율이는 카드 다섯 장이 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 지율 카드는 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "하온이가 지율이한테 카드 세 장 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 하온 카드는 7개, 지율은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지율이가 하온이한테 한 장 돌려줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 지율이 하온에게 카드 1개를 줬습니다. 이제 지율 카드는 7개, 하온은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "하온이는 카드 몇 장이야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 6,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "잠깐만, 지율이는 처음에 다섯 장이 아니라 네 장이었어.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"지율이는 카드 다섯 장이 있어.\"의 수량을 5개에서 4개로 고쳤습니다. 새 사건은 더하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 7,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "지율이는 지금 몇 장이야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 8,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "하온이 카드는 몇 장이야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 9,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "왜 지율이는 여섯 장이야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-24",
+   "language": "ko",
+   "n": 10,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "둘 합치면 몇 장이야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "지율과 하온은 합쳐서 카드 14개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-25",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "소이한테 빵이 세 개 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-25",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "도율이한테는 빵이 여덟 개 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-25",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "도율이가 소이한테 빵 두 개를 줬어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 도율 빵은 6개, 소이는 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-25",
+   "language": "ko",
+   "n": 4,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent",
+    "restart"
+   ],
+   "say": "그 사람은 빵이 몇 개예요?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "'그 사람'이 누구를 가리키는지 알지 못합니다. '소이 빵', '도율 빵' 가운데 누구인가요?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-25",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "소이요. 소이는 몇 개예요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-25",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "도율이는요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-25",
+   "language": "ko",
+   "n": 7,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "도율이 빵은 무슨 맛이에요?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "강민 씨가 편의점에 소포 여섯 개를 맡겼습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아닙니다, 여섯 개가 아니라 일곱 개를 맡겼습니다.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"아닙니다, 여섯 개가 아니라 일곱 개를 맡겼습니다.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "강민 씨에게 남은 소포는 몇 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 5,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "편의점에는 원래 소포가 몇 개 있었습니까?",
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "violation": null,
+   "status": "held",
+   "answer": "\"택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "ko-26",
+   "language": "ko",
+   "n": 6,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "correction",
+    "why"
+   ],
+   "say": "강민 씨 소포가 왜 열세 개입니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  }
+ ]
+}

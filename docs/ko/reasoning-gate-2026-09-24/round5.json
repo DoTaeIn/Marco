@@ -1,0 +1,4852 @@
+{
+ "schema": "marco1-reasoning-gate-v1-report",
+ "meta": {
+  "dataset": "data/benchmarks/reasoning_v1",
+  "dataset_sha256": "e0f3458cc75ec9ea8279c644e6964df67550a129f08e29b5f49905791b6fcf5a",
+  "frozen_sha256": "e0f3458cc75ec9ea8279c644e6964df67550a129f08e29b5f49905791b6fcf5a",
+  "encoder": "문자",
+  "entry": "views.kgpack_ui.AppState.turn",
+  "runner": "bench/dialogue_gate.py run()",
+  "research": "stubbed; calls counted",
+  "python": "3.13.9",
+  "code_commit": "ca647701ade73456e0fb044d9c542f3f5918bedf",
+  "seconds": 38.1
+ },
+ "dataset": {
+  "problems": 114,
+  "questions": 156,
+  "setup_statements": 349,
+  "by_language": {
+   "ko": 63,
+   "en": 51
+  }
+ },
+ "questions": {
+  "correct": 148,
+  "wrong": 0,
+  "hold": 3,
+  "execution_error": 0,
+  "unparsed": 5,
+  "n": 156,
+  "parsed": 151,
+  "accuracy": 0.9801,
+  "denominator": "parsed questions: every question whose setup statements were all recorded (unparsed reported apart)"
+ },
+ "by_language": {
+  "ko": {
+   "correct": 77,
+   "wrong": 0,
+   "hold": 2,
+   "execution_error": 0,
+   "unparsed": 3,
+   "n": 82,
+   "parsed": 79,
+   "accuracy": 0.9747
+  },
+  "en": {
+   "correct": 71,
+   "wrong": 0,
+   "hold": 1,
+   "execution_error": 0,
+   "unparsed": 2,
+   "n": 74,
+   "parsed": 72,
+   "accuracy": 0.9861
+  }
+ },
+ "by_kind": {
+  "count_arithmetic": {
+   "ko": {
+    "correct": 8,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 8,
+    "parsed": 8,
+    "accuracy": 1.0
+   },
+   "en": {
+    "correct": 9,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 9,
+    "parsed": 9,
+    "accuracy": 1.0
+   },
+   "all": {
+    "correct": 17,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 17,
+    "parsed": 17,
+    "accuracy": 1.0
+   }
+  },
+  "transfer_chain": {
+   "ko": {
+    "correct": 13,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 13,
+    "parsed": 13,
+    "accuracy": 1.0
+   },
+   "en": {
+    "correct": 13,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 13,
+    "parsed": 13,
+    "accuracy": 1.0
+   },
+   "all": {
+    "correct": 26,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 26,
+    "parsed": 26,
+    "accuracy": 1.0
+   }
+  },
+  "comparison": {
+   "ko": {
+    "correct": 7,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 7,
+    "parsed": 7,
+    "accuracy": 1.0
+   },
+   "en": {
+    "correct": 7,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 7,
+    "parsed": 7,
+    "accuracy": 1.0
+   },
+   "all": {
+    "correct": 14,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 14,
+    "parsed": 14,
+    "accuracy": 1.0
+   }
+  },
+  "total": {
+   "ko": {
+    "correct": 7,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 7,
+    "parsed": 7,
+    "accuracy": 1.0
+   },
+   "en": {
+    "correct": 7,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 7,
+    "parsed": 7,
+    "accuracy": 1.0
+   },
+   "all": {
+    "correct": 14,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 14,
+    "parsed": 14,
+    "accuracy": 1.0
+   }
+  },
+  "negation": {
+   "ko": {
+    "correct": 10,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 10,
+    "parsed": 10,
+    "accuracy": 1.0
+   },
+   "en": {
+    "correct": 0,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 0,
+    "parsed": 0,
+    "accuracy": null
+   },
+   "all": {
+    "correct": 10,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 10,
+    "parsed": 10,
+    "accuracy": 1.0
+   }
+  },
+  "temporal_order": {
+   "ko": {
+    "correct": 7,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 1,
+    "n": 8,
+    "parsed": 7,
+    "accuracy": 1.0
+   },
+   "en": {
+    "correct": 8,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 8,
+    "parsed": 8,
+    "accuracy": 1.0
+   },
+   "all": {
+    "correct": 15,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 1,
+    "n": 16,
+    "parsed": 15,
+    "accuracy": 1.0
+   }
+  },
+  "missing_premise": {
+   "ko": {
+    "correct": 4,
+    "wrong": 0,
+    "hold": 1,
+    "execution_error": 0,
+    "unparsed": 2,
+    "n": 7,
+    "parsed": 5,
+    "accuracy": 0.8
+   },
+   "en": {
+    "correct": 4,
+    "wrong": 0,
+    "hold": 1,
+    "execution_error": 0,
+    "unparsed": 2,
+    "n": 7,
+    "parsed": 5,
+    "accuracy": 0.8
+   },
+   "all": {
+    "correct": 8,
+    "wrong": 0,
+    "hold": 2,
+    "execution_error": 0,
+    "unparsed": 4,
+    "n": 14,
+    "parsed": 10,
+    "accuracy": 0.8
+   }
+  },
+  "correction": {
+   "ko": {
+    "correct": 9,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 9,
+    "parsed": 9,
+    "accuracy": 1.0
+   },
+   "en": {
+    "correct": 9,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 9,
+    "parsed": 9,
+    "accuracy": 1.0
+   },
+   "all": {
+    "correct": 18,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 18,
+    "parsed": 18,
+    "accuracy": 1.0
+   }
+  },
+  "restart": {
+   "ko": {
+    "correct": 6,
+    "wrong": 0,
+    "hold": 1,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 7,
+    "parsed": 7,
+    "accuracy": 0.8571
+   },
+   "en": {
+    "correct": 6,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 6,
+    "parsed": 6,
+    "accuracy": 1.0
+   },
+   "all": {
+    "correct": 12,
+    "wrong": 0,
+    "hold": 1,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 13,
+    "parsed": 13,
+    "accuracy": 0.9231
+   }
+  },
+  "class_inference": {
+   "ko": {
+    "correct": 6,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 6,
+    "parsed": 6,
+    "accuracy": 1.0
+   },
+   "en": {
+    "correct": 8,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 8,
+    "parsed": 8,
+    "accuracy": 1.0
+   },
+   "all": {
+    "correct": 14,
+    "wrong": 0,
+    "hold": 0,
+    "execution_error": 0,
+    "unparsed": 0,
+    "n": 14,
+    "parsed": 14,
+    "accuracy": 1.0
+   }
+  }
+ },
+ "gate": {
+  "problems": 114,
+  "parsed": 111,
+  "correct": 108,
+  "wrong_questions": 0,
+  "unparsed": 3,
+  "accuracy": 0.973,
+  "unparsed_share": 0.0263,
+  "needed": 106,
+  "threshold": {
+   "correct": 0.95,
+   "wrong": 0,
+   "unparsed": 0.1
+  },
+  "denominator": "problems whose every setup statement was recorded (111 of 114); a problem is correct when every question is correct; wrong counts questions",
+  "passed": true
+ },
+ "problems": {
+  "correct": 108,
+  "wrong": 0,
+  "hold": 3,
+  "execution_error": 0,
+  "unparsed": 3
+ },
+ "setup": {
+  "statements": 349,
+  "recorded": 346,
+  "recorded_with_another_value": []
+ },
+ "unparsed": [
+  {
+   "problem": "en-missing-05",
+   "language": "en",
+   "kind": "missing_premise",
+   "n": 2,
+   "say": "Uma gave Vito 4 badges.",
+   "status": "held",
+   "verdict": "조건부족",
+   "reply": "The new statement does not fit what was already recorded. Please check it.",
+   "questions_unparsed": 2
+  },
+  {
+   "problem": "ko-missing-05",
+   "language": "ko",
+   "kind": "missing_premise",
+   "n": 2,
+   "say": "새봄이 은결에게 딸기 4개를 줬다.",
+   "status": "held",
+   "verdict": "조건부족",
+   "reply": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "questions_unparsed": 2
+  },
+  {
+   "problem": "ko-order-05",
+   "language": "ko",
+   "kind": "temporal_order",
+   "n": 2,
+   "say": "하랑이 있는 곳으로 목도리를 옮긴다.",
+   "status": "held",
+   "verdict": "입력이해실패",
+   "reply": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "questions_unparsed": 1
+  }
+ ],
+ "failures": [
+  {
+   "problem": "en-missing-03",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "How many cards does Otto have?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "cards"
+    ],
+    "missing": {
+     "entity": "Otto",
+     "relation": "count",
+     "item": "cards"
+    }
+   },
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "The conditions in this conversation do not decide the answer.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-missing-05",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "How many badges does Uma have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Uma",
+    "item": "badges",
+    "value": 6
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "I could not read \"Uma gave Vito 4 badges.\" yet. So I did not fix the current value. Please say it another way.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "Uma gave Vito 4 badges.",
+     "reply": "The new statement does not fit what was already recorded. Please check it."
+    }
+   ]
+  },
+  {
+   "problem": "en-missing-05",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 2,
+   "say": "How many badges does Vito have?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "Vito"
+    ],
+    "missing": {
+     "entity": "Vito",
+     "relation": "count",
+     "item": "badges"
+    }
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "I could not read \"Uma gave Vito 4 badges.\" yet. So I did not fix the current value. Please say it another way.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "Uma gave Vito 4 badges.",
+     "reply": "The new statement does not fit what was already recorded. Please check it."
+    }
+   ]
+  },
+  {
+   "problem": "ko-missing-03",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "보미는 지금 카드가 몇 장이야?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "카드"
+    ],
+    "missing": {
+     "entity": "보미",
+     "relation": "count",
+     "item": "카드"
+    }
+   },
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-missing-05",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "새봄은 지금 딸기가 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "새봄",
+    "item": "딸기",
+    "value": 6
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "\"새봄이 은결에게 딸기 4개를 줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "새봄이 은결에게 딸기 4개를 줬다.",
+     "reply": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요."
+    }
+   ]
+  },
+  {
+   "problem": "ko-missing-05",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 2,
+   "say": "은결은 지금 딸기가 몇 개야?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "은결"
+    ],
+    "missing": {
+     "entity": "은결",
+     "relation": "count",
+     "item": "딸기"
+    }
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "\"새봄이 은결에게 딸기 4개를 줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "새봄이 은결에게 딸기 4개를 줬다.",
+     "reply": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요."
+    }
+   ]
+  },
+  {
+   "problem": "ko-order-05",
+   "language": "ko",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "지금 목도리는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "목도리",
+    "place": "부엌",
+    "other_places": []
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "\"하랑이 있는 곳으로 목도리를 옮긴다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "하랑이 있는 곳으로 목도리를 옮긴다.",
+     "reply": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요."
+    }
+   ]
+  },
+  {
+   "problem": "ko-restart-06",
+   "language": "ko",
+   "kind": "restart",
+   "q": 1,
+   "say": "이것만으로 태린이 텔루라고 할 수 있는가?",
+   "expect": {
+    "type": "yes",
+    "subject": "태린",
+    "relation": "isa",
+    "object": "텔루"
+   },
+   "bucket": "hold",
+   "reason": "question_not_understood",
+   "status": "held",
+   "verdict": "입력이해실패",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "evidence": false,
+   "research_calls": 0
+  }
+ ],
+ "rows": [
+  {
+   "problem": "en-class-01",
+   "language": "en",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "Is Anouk a pelvo?",
+   "expect": {
+    "type": "yes",
+    "subject": "Anouk",
+    "relation": "isa",
+    "object": "pelvo"
+   },
+   "bucket": "correct",
+   "reason": "proven",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Yes, Anouk is a pelvo.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-class-02",
+   "language": "en",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "Is Bram a lorbin?",
+   "expect": {
+    "type": "yes",
+    "subject": "Bram",
+    "relation": "isa",
+    "object": "lorbin"
+   },
+   "bucket": "correct",
+   "reason": "proven",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Yes, Bram is a lorbin.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-class-02",
+   "language": "en",
+   "kind": "class_inference",
+   "q": 2,
+   "say": "Is Bram a brano?",
+   "expect": {
+    "type": "yes",
+    "subject": "Bram",
+    "relation": "isa",
+    "object": "brano"
+   },
+   "bucket": "correct",
+   "reason": "proven",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Yes, Bram is a brano.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-class-03",
+   "language": "en",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "Is Cleo a veskar?",
+   "expect": {
+    "type": "unknown",
+    "subject": "Cleo",
+    "relation": "isa",
+    "object": "veskar"
+   },
+   "bucket": "correct",
+   "reason": "held",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "The conditions in this conversation do not decide the answer.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-class-04",
+   "language": "en",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "Is Dario a hollin?",
+   "expect": {
+    "type": "yes",
+    "subject": "Dario",
+    "relation": "isa",
+    "object": "hollin"
+   },
+   "bucket": "correct",
+   "reason": "proven",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Yes, Dario is a hollin.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-class-04",
+   "language": "en",
+   "kind": "class_inference",
+   "q": 2,
+   "say": "Is Elif a gammet?",
+   "expect": {
+    "type": "unknown",
+    "subject": "Elif",
+    "relation": "isa",
+    "object": "gammet"
+   },
+   "bucket": "correct",
+   "reason": "held",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "The conditions in this conversation do not decide the answer.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-class-05",
+   "language": "en",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "Is Ines a rulbet?",
+   "expect": {
+    "type": "unknown",
+    "subject": "Ines",
+    "relation": "isa",
+    "object": "rulbet"
+   },
+   "bucket": "correct",
+   "reason": "held",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "The conditions in this conversation do not decide the answer.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-class-05",
+   "language": "en",
+   "kind": "class_inference",
+   "q": 2,
+   "say": "Is Ines a lusker?",
+   "expect": {
+    "type": "yes",
+    "subject": "Ines",
+    "relation": "isa",
+    "object": "lusker"
+   },
+   "bucket": "correct",
+   "reason": "proven",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Yes, Ines is a lusker.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-compare-01",
+   "language": "en",
+   "kind": "comparison",
+   "q": 1,
+   "say": "Who has more shells now, Anouk or Bram?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "Anouk",
+     "Bram"
+    ],
+    "item": "shells",
+    "entity": "Anouk"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Anouk has more shells.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-compare-02",
+   "language": "en",
+   "kind": "comparison",
+   "q": 1,
+   "say": "Who has more coins, Cleo or Dario?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "Cleo",
+     "Dario"
+    ],
+    "item": "coins",
+    "entity": "Cleo"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Cleo has more coins.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-compare-02",
+   "language": "en",
+   "kind": "comparison",
+   "q": 2,
+   "say": "Who has more coins now, Cleo or Dario?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "Cleo",
+     "Dario"
+    ],
+    "item": "coins",
+    "entity": "Dario"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Dario has more coins.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-compare-03",
+   "language": "en",
+   "kind": "comparison",
+   "q": 1,
+   "say": "Who is taller, Elif or Quinn?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "Elif",
+     "Quinn"
+    ],
+    "entity": "Elif"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Elif.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-compare-03",
+   "language": "en",
+   "kind": "comparison",
+   "q": 2,
+   "say": "Who is taller, Quinn or Ines?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "Quinn",
+     "Ines"
+    ],
+    "entity": "Ines"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Ines.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-compare-04",
+   "language": "en",
+   "kind": "comparison",
+   "q": 1,
+   "say": "Who has more, Rosa or Sami?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "Rosa",
+     "Sami"
+    ],
+    "item": "beads",
+    "entity": "Rosa"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Rosa has more beads.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-compare-05",
+   "language": "en",
+   "kind": "comparison",
+   "q": 1,
+   "say": "Who is taller, Ximena or Teo?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "Ximena",
+     "Teo"
+    ],
+    "entity": "Teo"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Teo.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-correct-01",
+   "language": "en",
+   "kind": "correction",
+   "q": 1,
+   "say": "How many cookies does Yara have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Yara",
+    "item": "cookies",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7 cookies.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-correct-01",
+   "language": "en",
+   "kind": "correction",
+   "q": 2,
+   "say": "How many cookies does Yara have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Yara",
+    "item": "cookies",
+    "value": 6,
+    "retracted_value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6 cookies.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-correct-01",
+   "language": "en",
+   "kind": "correction",
+   "q": 3,
+   "say": "How many cookies does Xan have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Xan",
+    "item": "cookies",
+    "value": 7,
+    "retracted_value": 6
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7 cookies.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-correct-02",
+   "language": "en",
+   "kind": "correction",
+   "q": 1,
+   "say": "How many beads does Zeno have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Zeno",
+    "item": "beads",
+    "value": 8,
+    "retracted_value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "8 beads.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-correct-03",
+   "language": "en",
+   "kind": "correction",
+   "q": 1,
+   "say": "How many tokens does Bram have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Bram",
+    "item": "tokens",
+    "value": 8,
+    "retracted_value": 5
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "8 tokens.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-correct-04",
+   "language": "en",
+   "kind": "correction",
+   "q": 1,
+   "say": "How many tickets does Dario have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Dario",
+    "item": "tickets",
+    "value": 5,
+    "retracted_value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "5 tickets.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-correct-04",
+   "language": "en",
+   "kind": "correction",
+   "q": 2,
+   "say": "How many tickets does Cleo have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Cleo",
+    "item": "tickets",
+    "value": 13,
+    "retracted_value": 11
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "13 tickets.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-correct-05",
+   "language": "en",
+   "kind": "correction",
+   "q": 1,
+   "say": "Who has more cards now, Elif or Ines?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "Elif",
+     "Ines"
+    ],
+    "item": "cards",
+    "entity": "Ines"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Ines has more cards.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-correct-05",
+   "language": "en",
+   "kind": "correction",
+   "q": 2,
+   "say": "Who has more cards now, Elif or Ines?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "Elif",
+     "Ines"
+    ],
+    "item": "cards",
+    "entity": "Elif",
+    "retracted_entity": "Ines"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Elif has more cards.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-count-01",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "How many shells does Nadia have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Nadia",
+    "item": "shells",
+    "value": 14
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "14 shells.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-count-02",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "How many coins does Arlo have?",
+   "expect": {
+    "type": "count",
+    "entity": "Arlo",
+    "item": "coins",
+    "value": 18
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "18 coins.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-count-03",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "How many beads has Bea got?",
+   "expect": {
+    "type": "count",
+    "entity": "Bea",
+    "item": "beads",
+    "value": 10
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "10 beads.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-count-04",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "How many tokens does Cyrus have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Cyrus",
+    "item": "tokens",
+    "value": 17
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "17 tokens.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-count-04",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "q": 2,
+   "say": "How many tokens does Dina have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Dina",
+    "item": "tokens",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7 tokens.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-count-05",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "How many tickets does Ezra have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Ezra",
+    "item": "tickets",
+    "value": 23
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "23 tickets.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-count-06",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "How many badges does Fenna have?",
+   "expect": {
+    "type": "count",
+    "entity": "Fenna",
+    "item": "badges",
+    "value": 6
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6 badges.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-count-06",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "q": 2,
+   "say": "How many does Fenna have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Fenna",
+    "item": "badges",
+    "value": 10
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "10 badges.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-count-07",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "How many cards does Gil have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Gil",
+    "item": "cards",
+    "value": 19
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "19 cards.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-missing-01",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "Where is Lior?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "Lior"
+    ],
+    "missing": {
+     "entity": "Lior",
+     "relation": "location"
+    }
+   },
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "This conversation never stated the location of Lior. So I did not answer.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-missing-02",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "How many shells does Nico have?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "Nico"
+    ],
+    "missing": {
+     "entity": "Nico",
+     "relation": "count",
+     "item": "shells"
+    }
+   },
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "This conversation never mentioned Nico's shells. So I did not answer.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-missing-03",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "How many cards does Otto have?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "cards"
+    ],
+    "missing": {
+     "entity": "Otto",
+     "relation": "count",
+     "item": "cards"
+    }
+   },
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "The conditions in this conversation do not decide the answer.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-missing-04",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "Who is taller, Remy or Tova?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "Tova"
+    ],
+    "missing": {
+     "entity": "Tova",
+     "relation": "taller"
+    }
+   },
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "This conversation never mentioned Tova. So I did not answer.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-missing-05",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "How many badges does Uma have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Uma",
+    "item": "badges",
+    "value": 6
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "I could not read \"Uma gave Vito 4 badges.\" yet. So I did not fix the current value. Please say it another way.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "Uma gave Vito 4 badges.",
+     "reply": "The new statement does not fit what was already recorded. Please check it."
+    }
+   ]
+  },
+  {
+   "problem": "en-missing-05",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 2,
+   "say": "How many badges does Vito have?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "Vito"
+    ],
+    "missing": {
+     "entity": "Vito",
+     "relation": "count",
+     "item": "badges"
+    }
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "I could not read \"Uma gave Vito 4 badges.\" yet. So I did not fix the current value. Please say it another way.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "Uma gave Vito 4 badges.",
+     "reply": "The new statement does not fit what was already recorded. Please check it."
+    }
+   ]
+  },
+  {
+   "problem": "en-missing-06",
+   "language": "en",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "Is Wren a dask?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "Wren"
+    ],
+    "missing": {
+     "entity": "Wren",
+     "relation": "isa"
+    }
+   },
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "This conversation never mentioned Wren. So I did not answer.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-order-01",
+   "language": "en",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "Where is the compass now?",
+   "expect": {
+    "type": "location",
+    "item": "compass",
+    "place": "shelf",
+    "other_places": [
+     "desk",
+     "drawer"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the shelf.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-order-02",
+   "language": "en",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "Where is the lamp now?",
+   "expect": {
+    "type": "location",
+    "item": "lamp",
+    "place": "hall",
+    "other_places": [
+     "attic",
+     "porch"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the hall.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-order-02",
+   "language": "en",
+   "kind": "temporal_order",
+   "q": 2,
+   "say": "Where is the lamp now?",
+   "expect": {
+    "type": "location",
+    "item": "lamp",
+    "place": "porch",
+    "other_places": [
+     "attic",
+     "hall"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the porch.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-order-03",
+   "language": "en",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "Where is the kettle now?",
+   "expect": {
+    "type": "location",
+    "item": "kettle",
+    "place": "garden",
+    "other_places": [
+     "closet",
+     "kitchen"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the garden.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-order-03",
+   "language": "en",
+   "kind": "temporal_order",
+   "q": 2,
+   "say": "Where is the scarf now?",
+   "expect": {
+    "type": "location",
+    "item": "scarf",
+    "place": "kitchen",
+    "other_places": [
+     "closet",
+     "garden"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the kitchen.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-order-04",
+   "language": "en",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "Where is the ladder now?",
+   "expect": {
+    "type": "location",
+    "item": "ladder",
+    "place": "garage",
+    "other_places": [
+     "balcony",
+     "cellar"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the garage.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-order-05",
+   "language": "en",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "Where is Juno?",
+   "expect": {
+    "type": "location",
+    "item": "Juno",
+    "place": "studio",
+    "other_places": [
+     "garden"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the studio.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-order-05",
+   "language": "en",
+   "kind": "temporal_order",
+   "q": 2,
+   "say": "Where is Juno?",
+   "expect": {
+    "type": "location",
+    "item": "Juno",
+    "place": "garden",
+    "other_places": [
+     "studio"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the garden.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-restart-01",
+   "language": "en",
+   "kind": "restart",
+   "q": 1,
+   "say": "How many shells does Quinn have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Quinn",
+    "item": "shells",
+    "value": 6
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6 shells.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-restart-02",
+   "language": "en",
+   "kind": "restart",
+   "q": 1,
+   "say": "How many coins does Rosa have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Rosa",
+    "item": "coins",
+    "value": 8
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "8 coins.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-restart-03",
+   "language": "en",
+   "kind": "restart",
+   "q": 1,
+   "say": "How many pebbles does Teo have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Teo",
+    "item": "pebbles",
+    "value": 6,
+    "retracted_value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6 pebbles.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-restart-04",
+   "language": "en",
+   "kind": "restart",
+   "q": 1,
+   "say": "Who is taller, Vera or Xan?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "Vera",
+     "Xan"
+    ],
+    "entity": "Vera"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Vera.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-restart-05",
+   "language": "en",
+   "kind": "restart",
+   "q": 1,
+   "say": "Where is the umbrella now?",
+   "expect": {
+    "type": "location",
+    "item": "umbrella",
+    "place": "porch",
+    "other_places": [
+     "attic",
+     "hall"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the porch.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-restart-05",
+   "language": "en",
+   "kind": "restart",
+   "q": 2,
+   "say": "Where is the umbrella now?",
+   "expect": {
+    "type": "location",
+    "item": "umbrella",
+    "place": "attic",
+    "other_places": [
+     "hall",
+     "porch"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "In the attic.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-total-01",
+   "language": "en",
+   "kind": "total",
+   "q": 1,
+   "say": "How many plums do Arlo and Bea have together?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "Arlo",
+     "Bea"
+    ],
+    "item": "plums",
+    "value": 12
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Arlo and Bea have 12 plums together.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-total-02",
+   "language": "en",
+   "kind": "total",
+   "q": 1,
+   "say": "How many cards do Cyrus and Dina have together?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "Cyrus",
+     "Dina"
+    ],
+    "item": "cards",
+    "value": 12
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Cyrus and Dina have 12 cards together.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-total-02",
+   "language": "en",
+   "kind": "total",
+   "q": 2,
+   "say": "How many cards does Dina have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Dina",
+    "item": "cards",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7 cards.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-total-03",
+   "language": "en",
+   "kind": "total",
+   "q": 1,
+   "say": "How many acorns do they have together?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "Ezra",
+     "Fenna",
+     "Gil"
+    ],
+    "item": "acorns",
+    "value": 20
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Ezra, Fenna and Gil have 20 acorns together.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-total-04",
+   "language": "en",
+   "kind": "total",
+   "q": 1,
+   "say": "How many lemons do Hana and Ivo have together?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "Hana",
+     "Ivo"
+    ],
+    "item": "lemons",
+    "value": 16
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Hana and Ivo have 16 lemons together.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-total-05",
+   "language": "en",
+   "kind": "total",
+   "q": 1,
+   "say": "How many do Juno and Kai have together?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "Juno",
+     "Kai"
+    ],
+    "item": "pebbles",
+    "value": 21
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Juno and Kai have 21 pebbles together.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-total-06",
+   "language": "en",
+   "kind": "total",
+   "q": 1,
+   "say": "How many stickers do they have together?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "Lior",
+     "Mira",
+     "Nico"
+    ],
+    "item": "stickers",
+    "value": 16
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "Lior, Mira and Nico have 16 stickers together.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-01",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "How many pebbles does Ivo have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Ivo",
+    "item": "pebbles",
+    "value": 10
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "10 pebbles.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-01",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "How many pebbles does Hana have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Hana",
+    "item": "pebbles",
+    "value": 5
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "5 pebbles.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-02",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "How many acorns does Juno have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Juno",
+    "item": "acorns",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7 acorns.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-02",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "How many acorns does Kai have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Kai",
+    "item": "acorns",
+    "value": 11
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "11 acorns.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-03",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "How many ribbons does Mira have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Mira",
+    "item": "ribbons",
+    "value": 5
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "5 ribbons.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-03",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "How many ribbons does Lior have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Lior",
+    "item": "ribbons",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7 ribbons.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-04",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "How many crayons does Otto have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Otto",
+    "item": "crayons",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7 crayons.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-04",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "How many crayons does Remy have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Remy",
+    "item": "crayons",
+    "value": 10
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "10 crayons.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-05",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "How many plums does Tova have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Tova",
+    "item": "plums",
+    "value": 14
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "14 plums.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-06",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "How many lemons does Uma have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Uma",
+    "item": "lemons",
+    "value": 12
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "12 lemons.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-06",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "How many does Vito have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Vito",
+    "item": "lemons",
+    "value": 8
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "8 lemons.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-07",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "How many tickets does Yara have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Yara",
+    "item": "tickets",
+    "value": 9
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "9 tickets.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "en-transfer-07",
+   "language": "en",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "How many tickets does Zeno have now?",
+   "expect": {
+    "type": "count",
+    "entity": "Zeno",
+    "item": "tickets",
+    "value": 10
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "10 tickets.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-class-01",
+   "language": "ko",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "이것만으로 누리가 키넨이라고 할 수 있는가?",
+   "expect": {
+    "type": "yes",
+    "subject": "누리",
+    "relation": "isa",
+    "object": "키넨"
+   },
+   "bucket": "correct",
+   "reason": "proven",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "네, 누리는 키넨입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-class-02",
+   "language": "ko",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "이것만으로 가온이 시벨이라고 할 수 있는가?",
+   "expect": {
+    "type": "yes",
+    "subject": "가온",
+    "relation": "isa",
+    "object": "시벨"
+   },
+   "bucket": "correct",
+   "reason": "proven",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "네, 가온는 시벨입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-class-03",
+   "language": "ko",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "다솜은 요리하는가?",
+   "expect": {
+    "type": "yes",
+    "subject": "다솜",
+    "relation": "action",
+    "object": "요리"
+   },
+   "bucket": "correct",
+   "reason": "proven",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "네, 다솜는 요리합니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-class-04",
+   "language": "ko",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "하랑은 산책하는가?",
+   "expect": {
+    "type": "yes",
+    "subject": "하랑",
+    "relation": "action",
+    "object": "산책"
+   },
+   "bucket": "correct",
+   "reason": "proven",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "네, 하랑는 산책합니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-class-05",
+   "language": "ko",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "이것만으로 로아가 베른이라고 할 수 있는가?",
+   "expect": {
+    "type": "unknown",
+    "subject": "로아",
+    "relation": "isa",
+    "object": "베른"
+   },
+   "bucket": "correct",
+   "reason": "no_conclusion",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "알 수 없습니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-class-06",
+   "language": "ko",
+   "kind": "class_inference",
+   "q": 1,
+   "say": "이것만으로 이안이 카솔이라고 할 수 있는가?",
+   "expect": {
+    "type": "unknown",
+    "subject": "이안",
+    "relation": "isa",
+    "object": "카솔"
+   },
+   "bucket": "correct",
+   "reason": "no_conclusion",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "알 수 없습니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-compare-01",
+   "language": "ko",
+   "kind": "comparison",
+   "q": 1,
+   "say": "아란과 무진 중 누가 귤이 더 많아?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "아란",
+     "무진"
+    ],
+    "item": "귤",
+    "entity": "아란"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "귤은 아란이 더 많습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-compare-02",
+   "language": "ko",
+   "kind": "comparison",
+   "q": 1,
+   "say": "소담과 예솔 중 누가 더 많아?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "소담",
+     "예솔"
+    ],
+    "item": "딸기",
+    "entity": "소담"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "딸기는 소담이 더 많습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-compare-02",
+   "language": "ko",
+   "kind": "comparison",
+   "q": 2,
+   "say": "누가 더 많아, 소담이야 예솔이야?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "소담",
+     "예솔"
+    ],
+    "item": "딸기",
+    "entity": "예솔"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "딸기는 예솔이 더 많습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-compare-03",
+   "language": "ko",
+   "kind": "comparison",
+   "q": 1,
+   "say": "다온과 지안 중 누가 더 커?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "다온",
+     "지안"
+    ],
+    "entity": "다온"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "다온입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-compare-03",
+   "language": "ko",
+   "kind": "comparison",
+   "q": 2,
+   "say": "미르와 슬기 중 누가 더 커?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "미르",
+     "슬기"
+    ],
+    "entity": "슬기"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "슬기입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-compare-04",
+   "language": "ko",
+   "kind": "comparison",
+   "q": 1,
+   "say": "규리와 하진 중 누가 호두가 더 많아?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "규리",
+     "하진"
+    ],
+    "item": "호두",
+    "entity": "규리"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "호두는 규리가 더 많습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-compare-05",
+   "language": "ko",
+   "kind": "comparison",
+   "q": 1,
+   "say": "주원과 수아 중 누가 더 커?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "주원",
+     "수아"
+    ],
+    "entity": "수아"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "수아입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-correct-01",
+   "language": "ko",
+   "kind": "correction",
+   "q": 1,
+   "say": "무진은 지금 사탕이 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "무진",
+    "item": "사탕",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-correct-01",
+   "language": "ko",
+   "kind": "correction",
+   "q": 2,
+   "say": "무진은 지금 사탕이 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "무진",
+    "item": "사탕",
+    "value": 6,
+    "retracted_value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-correct-01",
+   "language": "ko",
+   "kind": "correction",
+   "q": 3,
+   "say": "아란은 지금 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "아란",
+    "item": "사탕",
+    "value": 7,
+    "retracted_value": 6
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-correct-02",
+   "language": "ko",
+   "kind": "correction",
+   "q": 1,
+   "say": "소담은 지금 공책이 몇 권이야?",
+   "expect": {
+    "type": "count",
+    "entity": "소담",
+    "item": "공책",
+    "value": 8,
+    "retracted_value": 5
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "8개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-correct-03",
+   "language": "ko",
+   "kind": "correction",
+   "q": 1,
+   "say": "다온은 지금 카드가 몇 장이야?",
+   "expect": {
+    "type": "count",
+    "entity": "다온",
+    "item": "카드",
+    "value": 5,
+    "retracted_value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "5개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-correct-03",
+   "language": "ko",
+   "kind": "correction",
+   "q": 2,
+   "say": "예솔은 지금 몇 장이야?",
+   "expect": {
+    "type": "count",
+    "entity": "예솔",
+    "item": "카드",
+    "value": 13,
+    "retracted_value": 11
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "13개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-correct-04",
+   "language": "ko",
+   "kind": "correction",
+   "q": 1,
+   "say": "슬기와 미르 중 누가 쿠키가 더 많아?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "슬기",
+     "미르"
+    ],
+    "item": "쿠키",
+    "entity": "미르"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "쿠키는 미르가 더 많습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-correct-04",
+   "language": "ko",
+   "kind": "correction",
+   "q": 2,
+   "say": "슬기와 미르 중 누가 쿠키가 더 많아?",
+   "expect": {
+    "type": "more",
+    "candidates": [
+     "슬기",
+     "미르"
+    ],
+    "item": "쿠키",
+    "entity": "슬기",
+    "retracted_entity": "미르"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "쿠키는 슬기가 더 많습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-correct-05",
+   "language": "ko",
+   "kind": "correction",
+   "q": 1,
+   "say": "지금 컵은 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "컵",
+    "place": "다락",
+    "other_places": [
+     "부엌",
+     "창고"
+    ],
+    "retracted_place": "창고"
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "다락에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-count-01",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "보람은 지금 단추가 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "보람",
+    "item": "단추",
+    "value": 14
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "14개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-count-02",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "남은 사탕은 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": null,
+    "item": "사탕",
+    "value": 18
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "18개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-count-03",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "남은 도토리는 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": null,
+    "item": "도토리",
+    "value": 14
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "14개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-count-04",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "태린은 지금 호두가 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "태린",
+    "item": "호두",
+    "value": 11
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "11개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-count-05",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "가온은 지금 쿠키가 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "가온",
+    "item": "쿠키",
+    "value": 17
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "17개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-count-05",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "q": 2,
+   "say": "다솜은 지금 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "다솜",
+    "item": "쿠키",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-count-06",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "남은 귤은 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": null,
+    "item": "귤",
+    "value": 18
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "18개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-count-07",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "q": 1,
+   "say": "지금 밤은 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": null,
+    "item": "밤",
+    "value": 23
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "바구니는 23개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-missing-01",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "채온은 어디에 있어?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "채온"
+    ],
+    "missing": {
+     "entity": "채온",
+     "relation": "location"
+    }
+   },
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 채온의 위치는 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-missing-02",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "윤슬은 지금 팽이가 몇 개야?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "윤슬"
+    ],
+    "missing": {
+     "entity": "윤슬",
+     "relation": "count",
+     "item": "팽이"
+    }
+   },
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 윤슬 팽이에 대한 말은 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-missing-03",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "보미는 지금 카드가 몇 장이야?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "카드"
+    ],
+    "missing": {
+     "entity": "보미",
+     "relation": "count",
+     "item": "카드"
+    }
+   },
+   "bucket": "hold",
+   "reason": "vague_hold",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-missing-04",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "서란과 온유 중 누가 더 커?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "온유"
+    ],
+    "missing": {
+     "entity": "온유",
+     "relation": "taller"
+    }
+   },
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 온유에 대한 말은 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-missing-05",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "새봄은 지금 딸기가 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "새봄",
+    "item": "딸기",
+    "value": 6
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "\"새봄이 은결에게 딸기 4개를 줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "새봄이 은결에게 딸기 4개를 줬다.",
+     "reply": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요."
+    }
+   ]
+  },
+  {
+   "problem": "ko-missing-05",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 2,
+   "say": "은결은 지금 딸기가 몇 개야?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "은결"
+    ],
+    "missing": {
+     "entity": "은결",
+     "relation": "count",
+     "item": "딸기"
+    }
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "\"새봄이 은결에게 딸기 4개를 줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "새봄이 은결에게 딸기 4개를 줬다.",
+     "reply": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요."
+    }
+   ]
+  },
+  {
+   "problem": "ko-missing-06",
+   "language": "ko",
+   "kind": "missing_premise",
+   "q": 1,
+   "say": "지금 컵은 어디에 있어?",
+   "expect": {
+    "type": "hold",
+    "names": [
+     "컵"
+    ],
+    "missing": {
+     "entity": "컵",
+     "relation": "location"
+    }
+   },
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 컵에 대한 말은 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-01",
+   "language": "ko",
+   "kind": "negation",
+   "q": 1,
+   "say": "윤슬과 보미 중 누가 더 커?",
+   "expect": {
+    "type": "unknown",
+    "candidates": [
+     "윤슬",
+     "보미"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "held",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-02",
+   "language": "ko",
+   "kind": "negation",
+   "q": 1,
+   "say": "서란과 단비 중 누가 더 커?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "서란",
+     "단비"
+    ],
+    "entity": "단비"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "단비입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-03",
+   "language": "ko",
+   "kind": "negation",
+   "q": 1,
+   "say": "온유와 새봄 중 누가 더 커?",
+   "expect": {
+    "type": "unknown",
+    "candidates": [
+     "온유",
+     "새봄"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "held",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-04",
+   "language": "ko",
+   "kind": "negation",
+   "q": 1,
+   "say": "은결과 아란 중 누가 더 커?",
+   "expect": {
+    "type": "unknown",
+    "candidates": [
+     "은결",
+     "아란"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "held",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-05",
+   "language": "ko",
+   "kind": "negation",
+   "q": 1,
+   "say": "무진과 예솔 중 누가 더 커?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "무진",
+     "예솔"
+    ],
+    "entity": "무진"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "무진입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-05",
+   "language": "ko",
+   "kind": "negation",
+   "q": 2,
+   "say": "소담과 다온 중 누가 더 커?",
+   "expect": {
+    "type": "unknown",
+    "candidates": [
+     "소담",
+     "다온"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "held",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-06",
+   "language": "ko",
+   "kind": "negation",
+   "q": 1,
+   "say": "지금 나침반은 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "나침반",
+    "place": "서랍",
+    "other_places": [
+     "책상"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "서랍에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-07",
+   "language": "ko",
+   "kind": "negation",
+   "q": 1,
+   "say": "지금 우산은 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "우산",
+    "place": "거실",
+    "other_places": [
+     "베란다",
+     "현관"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "거실에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-08",
+   "language": "ko",
+   "kind": "negation",
+   "q": 1,
+   "say": "규리와 수아 중 누가 더 커?",
+   "expect": {
+    "type": "unknown",
+    "candidates": [
+     "규리",
+     "수아"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "held",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-negation-09",
+   "language": "ko",
+   "kind": "negation",
+   "q": 1,
+   "say": "주원과 연우 중 누가 더 커?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "주원",
+     "연우"
+    ],
+    "entity": "주원"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "주원입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-order-01",
+   "language": "ko",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "지금 주전자는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "주전자",
+    "place": "창고",
+    "other_places": [
+     "거실",
+     "부엌"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "창고에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-order-02",
+   "language": "ko",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "지금 액자는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "액자",
+    "place": "복도",
+    "other_places": [
+     "다락",
+     "현관"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "복도에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-order-02",
+   "language": "ko",
+   "kind": "temporal_order",
+   "q": 2,
+   "say": "지금 액자는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "액자",
+    "place": "현관",
+    "other_places": [
+     "다락",
+     "복도"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "현관에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-order-03",
+   "language": "ko",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "지금 사다리는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "사다리",
+    "place": "창고",
+    "other_places": [
+     "마당"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "창고에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-order-04",
+   "language": "ko",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "지금 양동이는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "양동이",
+    "place": "마당",
+    "other_places": [
+     "부엌",
+     "창고"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "마당에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-order-05",
+   "language": "ko",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "지금 목도리는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "목도리",
+    "place": "부엌",
+    "other_places": []
+   },
+   "bucket": "unparsed",
+   "reason": "setup 2 not recorded",
+   "status": "held",
+   "verdict": "조건부족",
+   "answer": "\"하랑이 있는 곳으로 목도리를 옮긴다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "evidence": false,
+   "research_calls": 0,
+   "failed_statements": [
+    {
+     "n": 2,
+     "say": "하랑이 있는 곳으로 목도리를 옮긴다.",
+     "reply": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요."
+    }
+   ]
+  },
+  {
+   "problem": "ko-order-06",
+   "language": "ko",
+   "kind": "temporal_order",
+   "q": 1,
+   "say": "지금 지구본은 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "지구본",
+    "place": "현관",
+    "other_places": [
+     "거실",
+     "다락"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "현관에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-order-06",
+   "language": "ko",
+   "kind": "temporal_order",
+   "q": 2,
+   "say": "지금 빗자루는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "빗자루",
+    "place": "다락",
+    "other_places": [
+     "거실",
+     "현관"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "다락에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-restart-01",
+   "language": "ko",
+   "kind": "restart",
+   "q": 1,
+   "say": "하진은 지금 호두가 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "하진",
+    "item": "호두",
+    "value": 6
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-restart-02",
+   "language": "ko",
+   "kind": "restart",
+   "q": 1,
+   "say": "수아는 지금 우표가 몇 장이야?",
+   "expect": {
+    "type": "count",
+    "entity": "수아",
+    "item": "우표",
+    "value": 8
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "8개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-restart-03",
+   "language": "ko",
+   "kind": "restart",
+   "q": 1,
+   "say": "주원은 지금 조약돌이 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "주원",
+    "item": "조약돌",
+    "value": 6,
+    "retracted_value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-restart-04",
+   "language": "ko",
+   "kind": "restart",
+   "q": 1,
+   "say": "민결과 푸름 중 누가 더 커?",
+   "expect": {
+    "type": "taller",
+    "candidates": [
+     "민결",
+     "푸름"
+    ],
+    "entity": "민결"
+   },
+   "bucket": "correct",
+   "reason": "entity",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "민결입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-restart-05",
+   "language": "ko",
+   "kind": "restart",
+   "q": 1,
+   "say": "지금 램프는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "램프",
+    "place": "거실",
+    "other_places": [
+     "다락",
+     "현관"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "거실에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-restart-05",
+   "language": "ko",
+   "kind": "restart",
+   "q": 2,
+   "say": "지금 램프는 어디에 있어?",
+   "expect": {
+    "type": "location",
+    "item": "램프",
+    "place": "현관",
+    "other_places": [
+     "거실",
+     "다락"
+    ]
+   },
+   "bucket": "correct",
+   "reason": "place",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "현관에 있습니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-restart-06",
+   "language": "ko",
+   "kind": "restart",
+   "q": 1,
+   "say": "이것만으로 태린이 텔루라고 할 수 있는가?",
+   "expect": {
+    "type": "yes",
+    "subject": "태린",
+    "relation": "isa",
+    "object": "텔루"
+   },
+   "bucket": "hold",
+   "reason": "question_not_understood",
+   "status": "held",
+   "verdict": "입력이해실패",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "evidence": false,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-total-01",
+   "language": "ko",
+   "kind": "total",
+   "q": 1,
+   "say": "두 사람 조약돌을 합치면 몇 개야?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "민결",
+     "나래"
+    ],
+    "item": "조약돌",
+    "value": 12
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "나래와 민결은 합쳐서 조약돌 12개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-total-02",
+   "language": "ko",
+   "kind": "total",
+   "q": 1,
+   "say": "두 사람 배지를 합치면 몇 개야?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "푸름",
+     "별하"
+    ],
+    "item": "배지",
+    "value": 12
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "별하와 푸름은 합쳐서 배지 12개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-total-02",
+   "language": "ko",
+   "kind": "total",
+   "q": 2,
+   "say": "별하는 지금 배지가 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "별하",
+    "item": "배지",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-total-03",
+   "language": "ko",
+   "kind": "total",
+   "q": 1,
+   "say": "다들 리본을 합치면 몇 개야?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "보람",
+     "태린",
+     "누리"
+    ],
+    "item": "리본",
+    "value": 20
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "누리와 보람과 태린은 합쳐서 리본 20개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-total-04",
+   "language": "ko",
+   "kind": "total",
+   "q": 1,
+   "say": "두 사람 밤을 합치면 몇 개야?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "하랑",
+     "로아"
+    ],
+    "item": "밤",
+    "value": 16
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "로아와 하랑은 합쳐서 밤 16개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-total-05",
+   "language": "ko",
+   "kind": "total",
+   "q": 1,
+   "say": "둘 다 카드를 합하면 몇 장이야?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "이안",
+     "도해"
+    ],
+    "item": "카드",
+    "value": 21
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "도해와 이안은 합쳐서 카드 21개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-total-06",
+   "language": "ko",
+   "kind": "total",
+   "q": 1,
+   "say": "다들 우표를 합쳐서 몇 장이야?",
+   "expect": {
+    "type": "total",
+    "members": [
+     "라희",
+     "채온",
+     "시아"
+    ],
+    "item": "우표",
+    "value": 16
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "라희와 시아와 채온은 합쳐서 우표 16개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-01",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "로아는 지금 스티커가 몇 장이야?",
+   "expect": {
+    "type": "count",
+    "entity": "로아",
+    "item": "스티커",
+    "value": 10
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "10개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-01",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "하랑은 지금 몇 장이야?",
+   "expect": {
+    "type": "count",
+    "entity": "하랑",
+    "item": "스티커",
+    "value": 5
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "5개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-02",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "이안은 지금 조개가 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "이안",
+    "item": "조개",
+    "value": 6
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-02",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "도해는 지금 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "도해",
+    "item": "조개",
+    "value": 12
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "12개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-03",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "채온은 지금 카드가 몇 장이야?",
+   "expect": {
+    "type": "count",
+    "entity": "채온",
+    "item": "카드",
+    "value": 5
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "5개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-03",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "시아는 지금 몇 장이야?",
+   "expect": {
+    "type": "count",
+    "entity": "시아",
+    "item": "카드",
+    "value": 4
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "4개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-04",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "윤슬은 지금 사탕이 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "윤슬",
+    "item": "사탕",
+    "value": 7
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "7개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-04",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "보미는 지금 몇 개야?",
+   "expect": {
+    "type": "count",
+    "entity": "보미",
+    "item": "사탕",
+    "value": 10
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "10개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-05",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "서란은 지금 우표가 몇 장이야?",
+   "expect": {
+    "type": "count",
+    "entity": "서란",
+    "item": "우표",
+    "value": 10
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "10개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-05",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "단비는 지금 몇 장이야?",
+   "expect": {
+    "type": "count",
+    "entity": "단비",
+    "item": "우표",
+    "value": 6
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-06",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "새봄은 지금 공책이 몇 권이야?",
+   "expect": {
+    "type": "count",
+    "entity": "새봄",
+    "item": "공책",
+    "value": 6
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "6개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-06",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 2,
+   "say": "온유는 지금 몇 권이야?",
+   "expect": {
+    "type": "count",
+    "entity": "온유",
+    "item": "공책",
+    "value": 3
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "3개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  },
+  {
+   "problem": "ko-transfer-07",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "q": 1,
+   "say": "초롱은 지금 연필이 몇 자루야?",
+   "expect": {
+    "type": "count",
+    "entity": "초롱",
+    "item": "연필",
+    "value": 10
+   },
+   "bucket": "correct",
+   "reason": "value",
+   "status": "answered",
+   "verdict": "계산완료",
+   "answer": "10개입니다.",
+   "evidence": true,
+   "research_calls": 0
+  }
+ ],
+ "problem_rows": [
+  {
+   "problem": "en-class-01",
+   "language": "en",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-class-02",
+   "language": "en",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-class-03",
+   "language": "en",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-class-04",
+   "language": "en",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-class-05",
+   "language": "en",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-compare-01",
+   "language": "en",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-compare-02",
+   "language": "en",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-compare-03",
+   "language": "en",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-compare-04",
+   "language": "en",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-compare-05",
+   "language": "en",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-correct-01",
+   "language": "en",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 3
+  },
+  {
+   "problem": "en-correct-02",
+   "language": "en",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-correct-03",
+   "language": "en",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-correct-04",
+   "language": "en",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-correct-05",
+   "language": "en",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-count-01",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-count-02",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-count-03",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-count-04",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-count-05",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-count-06",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-count-07",
+   "language": "en",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-missing-01",
+   "language": "en",
+   "kind": "missing_premise",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-missing-02",
+   "language": "en",
+   "kind": "missing_premise",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-missing-03",
+   "language": "en",
+   "kind": "missing_premise",
+   "bucket": "hold",
+   "questions": 1
+  },
+  {
+   "problem": "en-missing-04",
+   "language": "en",
+   "kind": "missing_premise",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-missing-05",
+   "language": "en",
+   "kind": "missing_premise",
+   "bucket": "unparsed",
+   "questions": 2
+  },
+  {
+   "problem": "en-missing-06",
+   "language": "en",
+   "kind": "missing_premise",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-order-01",
+   "language": "en",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-order-02",
+   "language": "en",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-order-03",
+   "language": "en",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-order-04",
+   "language": "en",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-order-05",
+   "language": "en",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-restart-01",
+   "language": "en",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-restart-02",
+   "language": "en",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-restart-03",
+   "language": "en",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-restart-04",
+   "language": "en",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-restart-05",
+   "language": "en",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-total-01",
+   "language": "en",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-total-02",
+   "language": "en",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-total-03",
+   "language": "en",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-total-04",
+   "language": "en",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-total-05",
+   "language": "en",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-total-06",
+   "language": "en",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-transfer-01",
+   "language": "en",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-transfer-02",
+   "language": "en",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-transfer-03",
+   "language": "en",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-transfer-04",
+   "language": "en",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-transfer-05",
+   "language": "en",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "en-transfer-06",
+   "language": "en",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "en-transfer-07",
+   "language": "en",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-class-01",
+   "language": "ko",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-class-02",
+   "language": "ko",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-class-03",
+   "language": "ko",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-class-04",
+   "language": "ko",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-class-05",
+   "language": "ko",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-class-06",
+   "language": "ko",
+   "kind": "class_inference",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-compare-01",
+   "language": "ko",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-compare-02",
+   "language": "ko",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-compare-03",
+   "language": "ko",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-compare-04",
+   "language": "ko",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-compare-05",
+   "language": "ko",
+   "kind": "comparison",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-correct-01",
+   "language": "ko",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 3
+  },
+  {
+   "problem": "ko-correct-02",
+   "language": "ko",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-correct-03",
+   "language": "ko",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-correct-04",
+   "language": "ko",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-correct-05",
+   "language": "ko",
+   "kind": "correction",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-count-01",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-count-02",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-count-03",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-count-04",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-count-05",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-count-06",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-count-07",
+   "language": "ko",
+   "kind": "count_arithmetic",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-missing-01",
+   "language": "ko",
+   "kind": "missing_premise",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-missing-02",
+   "language": "ko",
+   "kind": "missing_premise",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-missing-03",
+   "language": "ko",
+   "kind": "missing_premise",
+   "bucket": "hold",
+   "questions": 1
+  },
+  {
+   "problem": "ko-missing-04",
+   "language": "ko",
+   "kind": "missing_premise",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-missing-05",
+   "language": "ko",
+   "kind": "missing_premise",
+   "bucket": "unparsed",
+   "questions": 2
+  },
+  {
+   "problem": "ko-missing-06",
+   "language": "ko",
+   "kind": "missing_premise",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-negation-01",
+   "language": "ko",
+   "kind": "negation",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-negation-02",
+   "language": "ko",
+   "kind": "negation",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-negation-03",
+   "language": "ko",
+   "kind": "negation",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-negation-04",
+   "language": "ko",
+   "kind": "negation",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-negation-05",
+   "language": "ko",
+   "kind": "negation",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-negation-06",
+   "language": "ko",
+   "kind": "negation",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-negation-07",
+   "language": "ko",
+   "kind": "negation",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-negation-08",
+   "language": "ko",
+   "kind": "negation",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-negation-09",
+   "language": "ko",
+   "kind": "negation",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-order-01",
+   "language": "ko",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-order-02",
+   "language": "ko",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-order-03",
+   "language": "ko",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-order-04",
+   "language": "ko",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-order-05",
+   "language": "ko",
+   "kind": "temporal_order",
+   "bucket": "unparsed",
+   "questions": 1
+  },
+  {
+   "problem": "ko-order-06",
+   "language": "ko",
+   "kind": "temporal_order",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-restart-01",
+   "language": "ko",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-restart-02",
+   "language": "ko",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-restart-03",
+   "language": "ko",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-restart-04",
+   "language": "ko",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-restart-05",
+   "language": "ko",
+   "kind": "restart",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-restart-06",
+   "language": "ko",
+   "kind": "restart",
+   "bucket": "hold",
+   "questions": 1
+  },
+  {
+   "problem": "ko-total-01",
+   "language": "ko",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-total-02",
+   "language": "ko",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-total-03",
+   "language": "ko",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-total-04",
+   "language": "ko",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-total-05",
+   "language": "ko",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-total-06",
+   "language": "ko",
+   "kind": "total",
+   "bucket": "correct",
+   "questions": 1
+  },
+  {
+   "problem": "ko-transfer-01",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-transfer-02",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-transfer-03",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-transfer-04",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-transfer-05",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-transfer-06",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 2
+  },
+  {
+   "problem": "ko-transfer-07",
+   "language": "ko",
+   "kind": "transfer_chain",
+   "bucket": "correct",
+   "questions": 1
+  }
+ ]
+}

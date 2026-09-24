@@ -97,6 +97,8 @@ that code closes it.
 | [W5-2.md](requests/W5-2.md) | The fields for "did you mean A or B?" and "no reading fits", to G5 |
 | [W5-3.md](requests/W5-3.md) | A relative clause misread as holder words; the engine names a different unread statement from run to run, to G5 |
 | [W5-4.md](requests/W5-4.md) | The runtime release stamp in the trace ledger has no owner yet |
+| [G5-1.md](requests/G5-1.md) | The recorder wiring into the engine's turn and the gap class in the ledger; done inside G5 |
+| [G5-2.md](requests/G5-2.md) | What round 5 left: two realizer items and nine reading items for round 6 |
 
 ## Korean design records (`docs/ko/`)
 
@@ -265,6 +267,8 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [composition-round4.json](ko/dialogue-gate-2026-09-22/composition-round4.json) | Composition at round 4: 340 of 340 |
 | [after-w5.json](ko/dialogue-gate-2026-09-22/after-w5.json) | After realizer round 5, `c6bf448`: 40 of 108, no turn changed |
 | [composition-after-w5.json](ko/dialogue-gate-2026-09-22/composition-after-w5.json) | Composition after realizer round 5: 340 of 340 |
+| [round5.json](ko/dialogue-gate-2026-09-22/round5.json) | Round 5, `ca64770`: 45 of 108, 0 wrong, 0 violations, records 120 of 150 |
+| [composition-round5.json](ko/dialogue-gate-2026-09-22/composition-round5.json) | Composition at round 5: 340 of 340 |
 
 ### Frozen reasoning gate (`ko/reasoning-gate-2026-09-24/`)
 
@@ -279,6 +283,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [after-w4.json](ko/reasoning-gate-2026-09-24/after-w4.json) | After realizer round 4, `d082278`: 108 of 111 problems, 148 of 151 questions, 0 wrong |
 | [round4.json](ko/reasoning-gate-2026-09-24/round4.json) | Round 4: 108 of 111 problems, 148 of 151 questions, 0 wrong |
 | [after-w5.json](ko/reasoning-gate-2026-09-24/after-w5.json) | After realizer round 5: unchanged, 0 wrong |
+| [round5.json](ko/reasoning-gate-2026-09-24/round5.json) | Round 5: 108 of 111 problems, 148 of 151 questions, 0 wrong |
 
 ### Model comparison (`ko/model-comparison-2026-09-24/`)
 
