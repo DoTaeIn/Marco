@@ -533,9 +533,12 @@ class RelationalParser:
                     notes.append(note)
             folded = current.lower() if self.data.get("ignore_case") else current
             kept = []
+            defining = self._is_definition(literal_in)
             for source, target, note, pattern in patterns:
                 if source not in folded or (kinds is not None and note["id"] not in kinds):
                     continue
+                if defining and note.get("final"):
+                    continue    # a verb of holding read as 가지고 reads a statement, not a definition's body
                 # A variant the pack marks final is not read again by a later variant (보관하고 ->
                 # 가지고 stays 가지고): its words wait behind a token until every variant is applied.
                 written = target
@@ -569,6 +572,11 @@ class RelationalParser:
                 out.append((current, notes))
         return out
 
+    def _is_definition(self, literal):
+        """A clause that teaches a word (베풀다는 ... 것이다): its body is kept as said -- the holder and
+        word-order forms read statements and questions, not a definition's placeholders."""
+        return any(delimiter in literal for delimiter in getattr(self, "definition_body_delimiters", ()))
+
     def _word_order_forms(self, literal):
         """Phrases said away from where the examples have them (말자리), put back.
 
@@ -583,7 +591,7 @@ class RelationalParser:
         The prepositions and particles are the pack's closed lists.
         """
         spec = getattr(self, "word_order_forms", None) or {}
-        if not spec:
+        if not spec or self._is_definition(literal):
             return literal, None
         text, applied = literal, []
         for preposition in spec.get("fronted_recipient", []):
@@ -723,7 +731,7 @@ class RelationalParser:
         matches (a capitalised word in English). Nothing else is rewritten.
         """
         spec = self.holder_forms or {}
-        if not spec:
+        if not spec or self._is_definition(literal):
             return literal, None
         text, applied = literal, []
         name = spec.get("name") or r"\S+"
@@ -2255,6 +2263,10 @@ class RelationalParser:
                     marked = self._particle_marked_slots(index, example)
                     if objects and any(isinstance(slots.get(name), str) and name not in marked
                                        and not str(example["slots"].get(name, "")).isdecimal()
+                                       # (a name slot: one word in the example, not a slot for clauses)
+                                       and len(str(example["slots"].get(name, "")).split()) == 1
+                                       and name not in example.get("wide_slots", [])
+                                       and name not in (example.get("slot_forms") or {})
                                        and slots[name].split()
                                        and any(slots[name].split()[-1].endswith(o)
                                                and len(slots[name].split()[-1]) - len(o) >= shortest
