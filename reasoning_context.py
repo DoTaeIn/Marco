@@ -87,6 +87,10 @@ class ReasoningContext:
         self.last_referents = {}
         # 마지막 답이나 교정을 어떻게 얻었는지. `왜 그렇게 됐어?` 가 이것을 설명한다.
         self.last_explanation = None
+        # (observation index, subject): an amount said without its holder right after a question held
+        # for that count not known yet is that count (the question fixed what the amount is about)
+        self.bind_hints = []
+        self._vague_asked = None
         # 마지막 답·교정에 걸린 사람들. 여럿이면 지시어를 고르지 않는다.
         self.last_mentioned = []
         # The people a pointer may mean: whom the last question named, and
@@ -1033,7 +1037,7 @@ class ReasoningContext:
             reusable = {"append": True, "direct": direct}
         # Every replay path binds a count said without its holder the same way (a pass over the
         # facts in order; one already bound is not bound again).
-        result = (self._bind_unnamed_counts(parser, [], result[0]),) + tuple(result[1:])
+        result = (self._bind_unnamed_counts(parser, [], result[0], getattr(self, "bind_hints", [])),) + tuple(result[1:])
         self._replay_cache = (key, deepcopy(result), reusable)
         if self._last_replay_scope in {"semantic_append", "semantic_resume", "semantic_correction",
                                        "semantic_definition"}:
@@ -3405,7 +3409,7 @@ class ReasoningContext:
         return facts, DefinitionTable(latest, versions), pending, 읽힌몸통
 
     @staticmethod
-    def _bind_unnamed_counts(parser, facts, rows):
+    def _bind_unnamed_counts(parser, facts, rows, hints=()):
         """A count said without its holder is the count of the one count not known yet it fits.
 
         ``Haru has some marbles`` records a count not known (count_unknown). A later count with no
@@ -3429,6 +3433,10 @@ class ReasoningContext:
                         if name not in open_ and name not in known:
                             open_.append(name)
                 subject = triple[0]
+                hinted = [name for at, name in hints if at == (row.get("evidence") or {}).get("turn") and name in open_]
+                if hinted and (subject is None or (isinstance(subject, str) and subject not in known
+                                                   and any(w in hinted[0].split() for w in subject.split()))):
+                    open_ = hinted[:1]
                 if subject is None and not open_:
                     # No count is open: an amount said again without its holder in the same statement
                     # (정확히는 아홉 자루라고 다시 말할 때) is the count stated just before it in that statement.
@@ -3841,6 +3849,9 @@ class ReasoningContext:
                             "answer": parser.data["context_replies"]["correction_invalid"], "transitions": [],
                             "meaning": {"act": "hold", "reason": "correction_invalid"},
                             "verification": self._verification(knowledge_path, [{"ok": False, "reason": str(exc)}])}
+        asked, self._vague_asked = getattr(self, "_vague_asked", None), None
+        if asked is not None and asked[1] == len(self.observations):
+            self.bind_hints = [hint for hint in getattr(self, "bind_hints", []) if hint[0] != asked[1]] + [asked[::-1]]
         verbs = self._verbs_for(parser, self.observations + [text])
         current = self._read_source(parser, text, events=True, verbs=verbs)
         self._turn_repairs = list((current or {}).get("수선", []))
@@ -4554,6 +4565,7 @@ class ReasoningContext:
             asked = [str((q.get("triple") or [None])[0]) for q in (풀린물음 or []) if isinstance(q, dict)]
             vague = next((str(f["triple"][0]) for f in (답사실 or [])
                           if f["triple"][1] == "count_unknown" and str(f["triple"][0]) in asked), None)
+            self._vague_asked = (vague, len(self.observations)) if vague else None
             meaning = ({"act": "hold", "reason": "vague_count", "subject": vague} if vague
                        else {"act": "refuse", "reason": "premise_missing", **premise} if premise
                        else {"act": "hold", "reason": "not_stated", "subject": unknown} if unknown and 빠진전제

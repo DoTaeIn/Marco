@@ -1409,7 +1409,13 @@ class RelationalParser:
             for value in (row[0], row[2]):
                 if not isinstance(value, str) or len(value.split()) < 2:
                     continue
-                for word in value.split():
+                words = value.split()
+                titles = set((self.holder_forms or {}).get("job_titles") or [])
+                for index, word in enumerate(words):
+                    # a surname before a job title (안 기사, 안 팀장) is a name, however it reads alone
+                    if index + 1 < len(words) and titles and any(
+                            words[index + 1].startswith(t) for t in titles) and index == 0:
+                        continue
                     kind = self._protected_kind(word)
                     # A numeral word can also be a noun (공 is a ball and zero, 사
                     # a word and four); inside a name only written digits count.
@@ -1613,7 +1619,9 @@ class RelationalParser:
                 rewritten.append(row)
                 continue
             words, before = subject.split(), match[0].split()
-            if len(words) >= len(before) or words == before[:len(words)]:
+            # (a subject that already ends with the thing the clause before counted says it: 세영 메달
+            # after 안 기사 메달 inherits nothing)
+            if len(words) >= len(before) or words == before[:len(words)] or (len(words) > 1 and words[-1] == before[-1]):
                 rewritten.append(row)
                 continue
             if subject in leading:
