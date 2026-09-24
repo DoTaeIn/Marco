@@ -20,6 +20,8 @@ Plans that existed only in conversation are recorded here in full.
 | Perception / reasoning / emotion philosophy (owner's design note, verbatim) | `docs/ko/2026-09-24-perception-reasoning-emotion-philosophy.md` | Idea. Principles adopted; nothing scheduled before MARCO 1 |
 | Adaptive intelligence architecture (owner's design note, verbatim, 59 sections: foreground self-repair, external acquisition, capability graph, MCP and skill compilers, prompt and persona compilers, development-aware emotion) | `docs/ko/2026-09-24-adaptive-intelligence-design.md` | Idea. Scheduled after the gate as R-A, R-B, C-core, C-mcp, P-T, P-G, E-dev in the roadmap; only the gap classes reach round 5 through L2 |
 | NERO compute and acceleration layer (owner's design note, verbatim, 34 sections: backend contract, CPU/GPU hybrid, same-semantics rule, V1–V5) | `docs/ko/2026-09-24-nero-compute-design.md` | Idea. N1 with the engine splits after the gate; N2–N4 through T1+28 wk; N5 unscheduled |
+| G5 understanding round 5 (hybrid: classes + readings as candidates) | `docs/ko/2026-09-25-understanding-r5-goal.md` | Written 2026-09-25, after round 4's 40/108; starts on the owner's go |
+| W5 realizer round 5 | `docs/ko/2026-09-25-realizer-r5-goal.md` | Written 2026-09-25, alongside G5 |
 | G5 plan B: compositional input understanding (owner's design note, 31 sections, verbatim) | `docs/ko/2026-09-25-g5-compositional-understanding-design.md` | Contingency; scope chosen by round 4's number |
 | W4 realizer round 4: why from the trace graph | `docs/ko/2026-09-24-realizer-r4-goal.md` | Running 2026-09-24 evening alongside G4 |
 | D2 docs round 2: README truth, names, numbers, package | `docs/ko/2026-09-24-docs-r2-goal.md` | Running 2026-09-24 evening, docs only |
