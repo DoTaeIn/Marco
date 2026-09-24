@@ -54,6 +54,8 @@ SCENARIO_SEEDS = {"build": 5507, "check": 9907}
 SAMPLING = {"build": 2273, "check": 4441}
 PER_HALF = 40               # regular dialogues per language per half: 160 in all
 VARIED_PER_HALF = 10        # triples per language per half: 40 scenarios phrased three ways
+# phrased beyond those, because assembly leaves out a dialogue that shares a sentence with an earlier set
+MARGIN = {"regular": 12, "triples": 5}
 SCENARIOS = HERE / "scenarios.jsonl"
 LANGS = ("ko", "en")
 
@@ -856,7 +858,7 @@ def phrase(lang, halves_=("build", "check")):
     regular = [s for s in scenarios if "variant" not in s]
     for half in halves_:
         ids = [s["id"] for s in regular if s["half"] == half]
-        v4.phrase(PER_HALF, set(ids))
+        v4.phrase(PER_HALF + MARGIN["regular"], set(ids))
         _rows, status = _load_rows(lang)
         usable = [sid for sid in ids if (status.get(sid) or {}).get("dialogue")]
         # a base whose second variant leaves out or pronominalises a subject first (they are rare), then the rest
@@ -864,7 +866,7 @@ def phrase(lang, halves_=("build", "check")):
         usable.sort(key=lambda sid: not any("omit_" in c for c in by_id[sid + "_v2"]["variant"]["changes"]))
         triples = 0
         for sid in usable:
-            if triples >= VARIED_PER_HALF:
+            if triples >= VARIED_PER_HALF + MARGIN["triples"]:
                 break
             wanted = {sid + "_v1", sid + "_v2"}
             v4.phrase(10 ** 6, wanted)
