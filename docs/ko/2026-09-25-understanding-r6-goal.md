@@ -96,6 +96,17 @@ G6.0 **Generator and checker.** `data/benchmarks/dialogues_dev6/build.py`: promp
      10% of dialogues; the checker accepts number words and native numerals and
      refuses a holder the scenario does not name. Class tags per dialogue.
 
+G6.0b **Withdrawn evidence: the ledger says 5, the gate says 0.** `python -m
+     marco.trace stats` on dev set v4's check half reports 3 Korean and 2 English
+     answered turns whose why chain uses withdrawn evidence, while the gate's
+     retracted-evidence check reports 0 on the same turns. Find which is right:
+     either the ledger's check counts a superseded event that the answer did not
+     rest on (then fix `marco/trace/stats.py`, yours for this item, and add the
+     case to its tests), or the answer really rests on a withdrawn value and the
+     gate's check is too narrow (then fix the reader and write the gate's gap as
+     `docs/requests/G6-1.md` for the owner). Report which, with the five turn
+     ids of dev4.
+
 G6.1 **Dev set v6.** 100 or more dialogues per language, every class 1 to 13 in
      at least 12 dialogues per language, build and check halves disjoint in
      names, items and places, **both check halves phrased and scored before the
