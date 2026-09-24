@@ -1115,11 +1115,19 @@ class RelationalParser:
             from numeral_semantics import parse_numeral
             if len(middle) < 3 or parse_numeral(middle[1], self.data.get("numerals", {})) is not None:
                 return literal, None
+            # the owner shape is owner, thing, amount (모루의 구슬 두 개를): the amount comes right after the thing
+            if parse_numeral(middle[2], self.data.get("numerals", {})) is None and not middle[2][:1].isdigit():
+                return literal, None
             giver = middle[0]
             for particle in row.get("owner_particles", []):
                 if giver.endswith(particle) and len(giver) > len(particle):
                     giver = giver[:-len(particle)]
                     break
+            else:
+                # an owner is bare or takes the declared owner particle; a word with another case (상자에서:
+                # the place taken from) is no owner (G5 batch 6)
+                if self._ends_in_particle(giver):
+                    return literal, None
             rest = middle[1:]
         swapped = [giver + self._particle_form(giver, "이"), taker + "에게"] + rest + [verb]
         return " ".join(swapped), {"id": "declared-role-swap-v1", "verb": words[-1], "as": verb}
@@ -2548,9 +2556,12 @@ class RelationalParser:
                 particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)
                                  and self._particle_form(word[:-len(p)], p) == p), None)
                 owner = words[:index] + [word[:-len(particle)]] if particle is not None else []
-                # The speaker's key (나) is an owner however short it is.
+                # The speaker's key (나) is an owner however short it is; so is a declared relation noun
+                # (형은: 형 + 은, G5 batch 6).
                 if particle is not None and (len("".join(owner)) >= shortest
-                                             or owner == [self.speaker_placeholder]):
+                                             or owner == [self.speaker_placeholder]
+                                             or owner[-1:] and owner[-1] in (
+                                                 (self.holder_forms or {}).get("relation_nouns") or [])):
                     return " ".join(owner + words[index + 1:])
             return name
 

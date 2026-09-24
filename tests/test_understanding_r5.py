@@ -191,8 +191,8 @@ def asserted_numbers(text):
 
 
 def test_the_readers_readings_come_the_readers_own_first_in_tier_order():
-    parser = model("한국어").parser()
-    text = "제 삼촌이 거실에서 부채 두 개를 가져갔어요."
+    parser = model("english").parser()
+    text = "Oona's got seven ladles and three kettles."
     first = parser.parse(text, partial=True, events=True, repair=True)
     readings = parser.readings(text, partial=True, events=True, repair=True)
     assert len(readings) >= 2 and readings[0]["parsed"]["facts"] == first["facts"]
@@ -201,15 +201,18 @@ def test_the_readers_readings_come_the_readers_own_first_in_tier_order():
 
 
 def test_a_reading_whose_holder_has_no_count_gives_way_to_the_one_whose_holder_has():
-    current, rows = play("한국어", ["제 삼촌은 부채가 여섯 개 있어요.", "거실은 부채가 아홉 개 있어요.",
-                                   "제 삼촌이 거실에서 부채 두 개를 가져갔어요.", "거실은 부채가 몇 개 있어요?"])
-    taken = rows[2]
+    # (round 5's batch 6 took the natural case away at its root: 가져가다 with a place said with 에서 is no longer
+    # read as the place giving; the two readings are given here as the reader would give them)
+    lines = ["제 삼촌은 부채가 여섯 개 있어요.", "거실은 부채가 아홉 개 있어요."]
+    current, taken = _checked("한국어", lines, "제 삼촌이 거실에서 부채 두 개를 가져갔어요.", lambda parser, said: [
+        _reading(parser, "모루가 삼촌한테 부채 두 개를 줬어요.", 0), _reading(parser, "거실이 삼촌한테 부채 두 개를 줬어요.", 1)])
     assert taken["status"] == "observed"
     checked = [c for c in taken["verification"]["checks"] if c.get("reason") == "reading_checked"]
     assert checked and checked[0]["dropped"][0]["constraint"] == "holder_exists"
-    assert rows[3]["status"] == "answered" and asserted_numbers(rows[3]["answer"]) == {7}
+    del current._parser().readings
+    assert current.turn("거실은 부채가 몇 개 있어요?")["status"] == "answered"
     # the choice is replayed: a later turn reads the conversation the same way
-    assert current.turn("제 삼촌은 부채가 몇 개 있어요?")["status"] == "answered"
+    assert asserted_numbers(current.turn("제 삼촌은 부채가 몇 개 있어요?")["answer"]) == {8}
 
 
 def _checked(language, lines, text, readings):
@@ -541,3 +544,24 @@ def test_a_total_of_a_name_and_a_titled_holder_keeps_both_words_of_the_title():
                                 "해솔 씨와 문 차장님이 합쳐서 컵이 몇 개 있어요?"])
     assert rows[2]["meaning"]["subjects"] == ["해솔 컵", "문 차장 컵"] and rows[2]["meaning"]["value"] == 13
     assert rows[2]["meaning"]["holders"]["문 차장"] == {"kind": "named", "said": "문 차장님"}
+
+
+# G5.3 batch 6 (Korean, from the v5 build half): a relation noun with its topic particle, the aspect adverbs, the
+# words of holding in a count question, places said in other orders, taking from a place ---------------------------
+def test_a_one_syllable_relation_noun_with_its_topic_particle_is_the_relation():
+    assert facts_of("한국어", "제 형은 국자만 아홉 개 있어요.") == [("형 국자", "count", "9")]
+
+
+def test_a_count_question_with_an_aspect_adverb_or_a_relative_clause_of_holding():
+    _ctx, rows = play("한국어", ["미소는 국자가 아홉 개 있어요.", "미소는 아직 국자가 몇 개 있어요?",
+                                "미소가 가지고 있는 국자는 지금 몇 개예요?"])
+    assert [asserted_numbers(r["answer"]) for r in rows[1:]] == [{9}, {9}]
+
+
+def test_places_said_in_other_orders_and_taking_from_a_place():
+    assert facts_of("한국어", "국자가 여섯 개가 다락방에 있어요.") == [("다락방 국자", "count", "6")]
+    assert facts_of("한국어", "다락방에 국자가 좀 있어요.") == [("다락방 국자", "count_unknown", "some")]
+    assert facts_of("한국어", "미소가 다락방에서 국자 두 개를 가져왔어요.") == [("다락방 국자", "count_remove", "2"),
+                                                                ("미소 국자", "count_add", "2")]
+    assert facts_of("한국어", "미소가 뒷마당 창고에서 국자 두 개를 가져갔습니다.") == [
+        ("뒷마당 창고 국자", "count_remove", "2"), ("미소 국자", "count_add", "2")]
