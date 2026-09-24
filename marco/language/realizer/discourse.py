@@ -8,7 +8,9 @@ Rules come from ``meaning.json: discourse``:
 * repeated-role ellipsis — inside one utterance a role equal to the one in the
   previous clause of the same frame is not said again;
 * conclusion first — an act marked as the conclusion comes before the reasons;
-* coordination — consecutive clauses of one frame in one act share a sentence.
+* coordination — consecutive clauses of one frame in one act share a sentence;
+* options — the clauses of an act that offers a choice are one question, each
+  said in full.
 
 The planner decides content and ellipsis; how an elided role disappears is
 the language's business (zero anaphora, fragment answer).
@@ -63,7 +65,8 @@ def plan(graph):
             holder_kinds = {((prop["roles"].get(role) or {}).get("holder") or {}).get("kind")
                             for role in answer_rule.get("holder_roles", [])}
             if previous is not None and previous["frame"] == prop["frame"] and prop["frame"] in repeat_rule.get(
-                    "frames", []) and not holder_kinds & set(repeat_rule.get("not_for_holders", [])):
+                    "frames", []) and not holder_kinds & set(repeat_rule.get("not_for_holders", [])) \
+                    and not act.get("options"):
                 for role in repeat_rule.get("roles", []):
                     if _same(prop["roles"].get(role), previous["roles"].get(role)):
                         counts["repeated_roles"] += 1
@@ -71,6 +74,11 @@ def plan(graph):
                         elided.add(role)
             clauses.append({"prop": prop, "elided": elided, "act": act["intent"]})
             previous = prop
+        if act.get("options"):
+            # A choice between readings: one question, every option said in full.
+            sentences.append({"clauses": clauses, "act": act["intent"], "sentence": "question", "lead": None,
+                              "lead_optional": False, "polarity": True, "options": True})
+            continue
         groups = []
         for clause in clauses:
             frame = clause["prop"]["frame"]

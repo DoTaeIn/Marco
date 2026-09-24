@@ -4,7 +4,7 @@ Candidates come from the language file (``expressions``, and ``rules`` for a
 rule id) and from learned candidates. A candidate is usable when the roles it
 requires are present and its conditions hold: polarity, register, the act it
 serves, the kind of holder a role is (``when.holder``: the user, a place, a named holder or
-a bare ``name``). Learned candidates are tried first in the register they were observed
+a bare ``name``), the kind of holder one member of a list role is (``when.includes``). Learned candidates are tried first in the register they were observed
 in; declared candidates follow in declared order, so the last declared one is
 the plainest fallback. The semantic check decides; selection only orders.
 """
@@ -26,7 +26,17 @@ def _usable(candidate, prop, *, register, intent):
             kinds if isinstance(kinds, list) else [kinds]) for role, kinds in when["holder"].items()):
         # A role the candidate names must be a holder of one of those kinds, when it is there.
         return False
+    if "includes" in when and not all(_includes(roles.get(role), kinds if isinstance(kinds, list) else [kinds])
+                                      for role, kinds in when["includes"].items()):
+        # A list role the candidate names must have a member that is a holder of one of those kinds.
+        return False
     return True
+
+
+def _includes(value, kinds):
+    """Whether a role value, or one member of a list role value, is a holder of one of ``kinds``."""
+    members = value.get("list", []) if isinstance(value, dict) and "list" in value else [value]
+    return any(isinstance(member, dict) and _holder_kind(member) in kinds for member in members)
 
 
 def _holder_kind(value):

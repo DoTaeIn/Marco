@@ -91,6 +91,12 @@ that code closes it.
 | [W3-1.md](requests/W3-1.md) | The meaning fields and pack readings the round-4 reply plans read |
 | [W4-1.md](requests/W4-1.md) | Answer a live "why" from the trace graph at the engine's explain site; round 5 |
 | [W4-2.md](requests/W4-2.md) | The trace side of the realizer report's act, reason and plan fields |
+| [G4-1.md](requests/G4-1.md) | Round 4 made the packs read the user, titles, places and zero: seven realizer tests re-pinned; a recipient-correction plan asked |
+| [G4-2.md](requests/G4-2.md) | The Korean realizer held any total that includes the user |
+| [W5-1.md](requests/W5-1.md) | The meaning fields for two answers in one turn, to G5 |
+| [W5-2.md](requests/W5-2.md) | The fields for "did you mean A or B?" and "no reading fits", to G5 |
+| [W5-3.md](requests/W5-3.md) | A relative clause misread as holder words; the engine names a different unread statement from run to run, to G5 |
+| [W5-4.md](requests/W5-4.md) | The runtime release stamp in the trace ledger has no owner yet |
 
 ## Korean design records (`docs/ko/`)
 
@@ -130,6 +136,9 @@ queue.
 | --- | --- |
 | [2026-09-24-docs-r2-goal.md](ko/2026-09-24-docs-r2-goal.md) | D2: docs round 2, names, numbers, the package |
 | [2026-09-24-realizer-r4-goal.md](ko/2026-09-24-realizer-r4-goal.md) | W4: realizer round 4, "why" said from the trace graph |
+| [2026-09-25-g5-compositional-understanding-design.md](ko/2026-09-25-g5-compositional-understanding-design.md) | Owner's design for compositional input understanding: readings as candidates validated by state and reasoning; the round-5 contingency and its decision rule |
+| [2026-09-25-understanding-r5-goal.md](ko/2026-09-25-understanding-r5-goal.md) | G5: understanding round 5, the blocking classes plus readings as candidates |
+| [2026-09-25-realizer-r5-goal.md](ko/2026-09-25-realizer-r5-goal.md) | W5: realizer round 5, the round-4 requests, trace fields, fluency sample 5 |
 | [2026-09-24-understanding-r4-goal.md](ko/2026-09-24-understanding-r4-goal.md) | G4: understanding round 4, natural language instead of templates |
 | [2026-09-24-file-moves-goal.md](ko/2026-09-24-file-moves-goal.md) | S4: file moves, the root becomes packages, references rewritten, no shims |
 | [2026-09-24-trace-ledger-goal.md](ko/2026-09-24-trace-ledger-goal.md) | L1: the trace ledger, MARCO records why, not only what it said |
@@ -252,6 +261,10 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [composition-after-w3.json](ko/dialogue-gate-2026-09-22/composition-after-w3.json) | Composition after realizer round 3: 340 of 340, 0 passed through |
 | [after-w4.json](ko/dialogue-gate-2026-09-22/after-w4.json) | After realizer round 4, `d082278`: 21 of 108, 0 wrong, 0 violations, no turn changed |
 | [composition-after-w4.json](ko/dialogue-gate-2026-09-22/composition-after-w4.json) | Composition after realizer round 4: 340 of 340, 0 passed through |
+| [round4.json](ko/dialogue-gate-2026-09-22/round4.json) | Round 4, `e16b3fb`: 40 of 108, 0 wrong, 0 violations, records 115 of 150 |
+| [composition-round4.json](ko/dialogue-gate-2026-09-22/composition-round4.json) | Composition at round 4: 340 of 340 |
+| [after-w5.json](ko/dialogue-gate-2026-09-22/after-w5.json) | After realizer round 5, `c6bf448`: 40 of 108, no turn changed |
+| [composition-after-w5.json](ko/dialogue-gate-2026-09-22/composition-after-w5.json) | Composition after realizer round 5: 340 of 340 |
 
 ### Frozen reasoning gate (`ko/reasoning-gate-2026-09-24/`)
 
@@ -264,6 +277,8 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [round3.json](ko/reasoning-gate-2026-09-24/round3.json) | After understanding round 3, `60d796b`: 108 of 111, 0 wrong |
 | [after-w3.json](ko/reasoning-gate-2026-09-24/after-w3.json) | After realizer round 3, `ead6302`: 108 of 111 problems, 148 of 151 questions, 0 wrong |
 | [after-w4.json](ko/reasoning-gate-2026-09-24/after-w4.json) | After realizer round 4, `d082278`: 108 of 111 problems, 148 of 151 questions, 0 wrong |
+| [round4.json](ko/reasoning-gate-2026-09-24/round4.json) | Round 4: 108 of 111 problems, 148 of 151 questions, 0 wrong |
+| [after-w5.json](ko/reasoning-gate-2026-09-24/after-w5.json) | After realizer round 5: unchanged, 0 wrong |
 
 ### Model comparison (`ko/model-comparison-2026-09-24/`)
 
