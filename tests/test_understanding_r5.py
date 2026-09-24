@@ -252,7 +252,7 @@ def test_when_no_reading_fits_the_turn_holds_with_each_readings_failure_in_the_d
     assert result["meaning"]["failed"] == [{"reading": 0, "constraint": "count_can_move"},
                                            {"reading": 1, "constraint": "holder_exists"}]
     order = [name for name, _doc, _failures in rc.READING_CONSTRAINTS]
-    assert order == ["statement", "frame", "readable", "one_subject", "holder_exists", "count_can_move",
+    assert order == ["statement", "frame", "kinds", "readable", "one_subject", "holder_exists", "count_can_move",
                      "within_limits"]
     assert set(ReasoningContext.UNPLACED) | set(ReasoningContext.CONTRADICTION) <= set(rc.CONSTRAINT_OF)
     assert current.observations == lines
@@ -616,3 +616,12 @@ def test_no_development_sentence_is_in_a_file_this_round_changed():
         text = gate._normalize_corpus((ROOT / name).read_text(encoding="utf-8"))
         found += sum(1 for _d, _n, _raw, norm in sentences if norm in text and gate._full_sentence_at(text, norm))
     assert found == 0
+
+
+def test_a_reading_that_makes_a_counted_thing_a_holder_gives_way():
+    # G5.4 B, the constraint kinds: 국자 is the conversation's thing, never a holder
+    current, rows = play("한국어", ["다락방에 국자 일곱 개가 있어요.", "국자는 제 동생 미소가 열한 개 가지고 있어요.",
+                                   "미소가 다락방에 국자 한 개를 두고 왔어요.", "미소는 아직 국자가 몇 개 있어요?"])
+    assert [r["status"] for r in rows[1:3]] == ["observed", "observed"]
+    assert asserted_numbers(rows[3]["answer"]) == {10}
+    assert "kinds" in [name for name, _doc, _failures in rc.READING_CONSTRAINTS]

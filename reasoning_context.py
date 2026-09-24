@@ -67,6 +67,8 @@ READING_CONSTRAINTS = (
     ("statement", "the reading states something (a fact or an event), not a question or a request",
      ("not_a_statement",)),
     ("frame", "a transfer moves the thing from one holder to another, not to the same one", ("same_holder",)),
+    ("kinds", "a thing the conversation counts is not a holder: its word never stands where a holder does",
+     ("thing_as_holder",)),
     ("readable", "the conversation, replayed with the reading, reads every statement", ("unrecognized_observation",)),
     ("one_subject", "each change names one holder", ("ambiguous_quantity_subject", "ambiguous_state_subject",
                                                     "ambiguous_property_scope")),
@@ -3858,6 +3860,22 @@ class ReasoningContext:
         return bool(parsed) and bool(parsed.get("facts")) and not any(
             parsed.get(key) for key in ("query", "사건", "사건정정", "정의", "원인", "이유물음", "조건", "가정사건"))
 
+    def _thing_as_holder(self, parser, rows):
+        """G5.4 B, the constraint ``kinds``: a row of a reading whose holder begins with a word the conversation
+        already counts as a thing (the last word of a counted state key)."""
+        if not self.observations:
+            return False
+        try:
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        except ValueError:
+            return False
+        numeric = self._numeric_targets(parser)
+        things = {str(f["triple"][0]).split()[-1] for f in facts
+                  if isinstance(f["triple"][0], str) and len(str(f["triple"][0]).split()) >= 2
+                  and f["triple"][1] in numeric}
+        return any(isinstance(row[0], str) and len(row[0].split()) >= 2
+                   and row[0].split()[0] in things for row in rows)
+
     def _reading_failure(self, parser, text, parsed):
         """``(failure, changes)``: the first constraint (``READING_CONSTRAINTS``) the conversation breaks with
         ``parsed`` as the reading of ``text``, as ``(constraint, reason)``, or None when every one holds with
@@ -3872,6 +3890,8 @@ class ReasoningContext:
                  and float((updates[t[1]] or {}).get("factor", 1) or 1) > 0}
         if removed and removed == added:
             return ("frame", "same_holder"), []
+        if self._thing_as_holder(parser, rows):
+            return ("kinds", "thing_as_holder"), []
         key = str(text).strip()
         table = parser.__dict__.setdefault("chosen_readings", {})
         before = table.get(key)
@@ -4742,6 +4762,14 @@ class ReasoningContext:
             ask, fill = 관계보완
             새채움.append({"사건": ask["사건"], **fill, "근거": text.strip()})
         새채움 += 문맥채움 + 새덮기
+        if (keeps and self._is_statement(current) and not current.get("query") and not getattr(self, "_rereading", False)
+                and completion is None and self._thing_as_holder(
+                    parser, [f["triple"] for f in current.get("facts", []) if isinstance(f.get("triple"), list)])):
+            # G5.4 B: the first reading puts a thing the conversation counts where a holder stands (청소기는 창민이
+            # N대 가지고 있어요 read as the 청소기's 창민): the reader's other readings are checked
+            checked = self._check_readings(parser, text, verbs, knowledge_path, first_failure="thing_as_holder")
+            if checked is not None:
+                return checked
         try:
             facts, defined, unsettled, 읽힘 = self._cached_replay(
                 parser, pending, self.fills + 새채움)

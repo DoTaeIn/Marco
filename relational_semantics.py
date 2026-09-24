@@ -705,6 +705,35 @@ class RelationalParser:
         shortest = int((self.possessor or {}).get("min_length", 1))
         return any(word.endswith(p) and len(word) - len(p) >= shortest for p in particles if p)
 
+    def _holder_slot_forms(self, slots, meaning):
+        """A holder slot's value said with a declared possessive and a declared relation noun (가진쪽꼴, where
+        the pack declares its relation nouns): with a name after them, the name (제 형 창민 -> 창민, as the holder
+        form relation_name reads a sentence); alone, the relation noun (제 형 -> 형, own_relation). Only the slots
+        that stand first in a holder-thing pair of the meaning (G5 batch 6)."""
+        spec = self.holder_forms or {}
+        relations, owners = spec.get("relation_nouns"), spec.get("possessives")
+        if not relations or not owners:
+            return slots
+        holders = set()
+
+        def walk(node):
+            if isinstance(node, list):
+                if (len(node) == 3 and isinstance(node[0], list) and len(node[0]) == 2
+                        and isinstance(node[0][0], str) and node[0][0].startswith("$")):
+                    holders.add(node[0][0][1:])
+                for child in node:
+                    walk(child)
+            elif isinstance(node, dict):
+                for child in node.values():
+                    walk(child)
+        walk(meaning)
+        out = dict(slots)
+        for name in holders:
+            words = str(out.get(name) or "").split()
+            if len(words) >= 2 and words[0] in owners and words[1] in relations:
+                out[name] = " ".join(words[2:]) if len(words) >= 3 else words[1]
+        return out
+
     def _slotless_words(self):
         """The single words the pack's phrase variants read as nothing (말바꿈 with an empty ``to``), letters
         only (a title with its period is the holder forms' to read)."""
@@ -2326,7 +2355,7 @@ class RelationalParser:
                     match = pattern.fullmatch(candidate)
                     if not match:
                         continue
-                    slots = match.groupdict()
+                    slots = self._holder_slot_forms(match.groupdict(), meaning)
                     # (A number slot may hold a numeral a variant wrote: an onion = 1 onion.)
                     if written and any(word in written for name, value in slots.items()
                                        if isinstance(value, str) and not str(example["slots"].get(name, "")).isdecimal()
