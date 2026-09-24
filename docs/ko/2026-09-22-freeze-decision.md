@@ -108,6 +108,14 @@ graph, compilers, persona, development-aware emotion) and the NERO compute layer
 the roadmap. Self-repair and capability work fall under the frozen autonomous-planning
 and POLO areas until then; NERO is a new family member with no code yet.
 
+**Standing decision (owner, 2026-09-25):** no token-based model in MARCO's runtime,
+not as a decider and not as a sensor for language. This is permanent, not a MARCO 1
+rule. If the understanding rounds stall, the only allowed fallback is to scale the
+build-time data tool (a local model phrasing scenarios, declarations induced from
+them by script) while the runtime stays model-free. The roadmap's post-gate
+"neural sensors behind the boundary" row is for perception only and each sensor is
+the owner's decision.
+
 ## Unfreezing
 
 Only the owner unfreezes, by editing this file and the plan file. A session

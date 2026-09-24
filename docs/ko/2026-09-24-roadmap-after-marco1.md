@@ -18,9 +18,10 @@ ledger core, which is a new package with no engine edits).
   verified fact is kept apart, and no generative model decides a reasoning
   result. Learned components are allowed as **sensors** whose output is an
   observation with source, model id, confidence, and `verified = false`.
-- MARCO 1 keeps its stricter rule, no language model in the runtime, because
-  the dialogue gate measures reasoning over text and a language model there
-  would be a decider, not a sensor.
+- MARCO keeps its stricter rule, no token-based model in the runtime, and the
+  owner made it permanent on 2026-09-25: not as a decider, not as a sensor for
+  language. Learned sensors, where allowed at all, are for perception, one by
+  one, by the owner's decision.
 - The internal common language is the graph, not text. Text is one adapter.
 
 ## Timeline, weeks counted from the day MARCO 1 passes its gate (T1)
