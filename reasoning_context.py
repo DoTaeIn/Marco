@@ -3533,6 +3533,7 @@ class ReasoningContext:
         if result is not None and "answer" in result:
             if isinstance(result.get("meaning"), dict):
                 result["meaning"] = {**result["meaning"], "conversation": self.conversation_id}
+            self._declare_holders(result)
             from marco.language.realizer import default_realizer
             reports = default_realizer().reports
             before = reports[-1] if reports else None
@@ -3554,6 +3555,22 @@ class ReasoningContext:
                                    "blocked": [clause.get("frame") for clause in report.get("clauses") or []
                                                if clause.get("blocked")]})
         return result
+
+    def _declare_holders(self, result):
+        """The meaning block's holders (request W3-1): each place this conversation's statements read
+        as a holder, when the meaning names it, as ``{key: {"kind": "place"}}``."""
+        meaning = result.get("meaning") if isinstance(result.get("meaning"), dict) else None
+        if meaning is None or not self._permitted(None) or not self.observations:
+            return
+        try:
+            facts, _d, _p, _r = self._cached_replay(self._parser(), self.observations, self.fills)
+        except ValueError:
+            return
+        places = {place for fact in facts for place in fact.get("places") or [] if isinstance(place, str)}
+        said = json.dumps(meaning, ensure_ascii=False)
+        holders = {place: {"kind": "place"} for place in sorted(places) if place and place in said}
+        if holders:
+            result["meaning"] = {**meaning, "holders": {**(meaning.get("holders") or {}), **holders}}
 
     def _follow_up(self, text, knowledge_path, language):
         """A question about this conversation's own last reply, as the language declares them

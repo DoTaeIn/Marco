@@ -297,7 +297,9 @@
       "0"
      ]
     },
-    "place": true
+    "place": [
+     "owner"
+    ]
    },
    {
     "text": "there are no marbles in the oak cupboard",
@@ -315,7 +317,9 @@
       "0"
      ]
     },
-    "place": true
+    "place": [
+     "owner"
+    ]
    },
    {
     "text": "Haru doesn't have a single marble",
@@ -354,7 +358,9 @@
       "0"
      ]
     },
-    "place": true,
+    "place": [
+     "owner"
+    ],
     "item_counted_as_one": true
    },
    {
@@ -373,7 +379,9 @@
       "0"
      ]
     },
-    "place": true,
+    "place": [
+     "owner"
+    ],
     "item_counted_as_one": true
    },
    {
@@ -496,7 +504,9 @@
       "some"
      ]
     },
-    "place": true
+    "place": [
+     "owner"
+    ]
    },
    {
     "text": "there are some marbles in the oak cupboard",
@@ -514,7 +524,9 @@
       "some"
      ]
     },
-    "place": true
+    "place": [
+     "owner"
+    ]
    },
    {
     "text": "Haru has 18 marbles and some pears",
@@ -644,7 +656,9 @@
       "$n"
      ]
     },
-    "place": true,
+    "place": [
+     "owner"
+    ],
     "counted_noun": "may_elide"
    },
    {
@@ -664,7 +678,9 @@
       "$n"
      ]
     },
-    "place": true,
+    "place": [
+     "owner"
+    ],
     "counted_noun": "may_elide"
    },
    {
@@ -684,7 +700,9 @@
       "$n"
      ]
     },
-    "place": true,
+    "place": [
+     "owner"
+    ],
     "counted_noun": "may_elide"
    },
    {
@@ -1088,7 +1106,9 @@
     "word_slots": [
      "giver"
     ],
-    "place": true,
+    "place": [
+     "taker"
+    ],
     "counted_noun": "may_elide"
    },
    {
@@ -1123,7 +1143,9 @@
     "word_slots": [
      "giver"
     ],
-    "place": true,
+    "place": [
+     "taker"
+    ],
     "counted_noun": "may_elide"
    },
    {
@@ -1158,7 +1180,9 @@
     "word_slots": [
      "giver"
     ],
-    "place": true,
+    "place": [
+     "taker"
+    ],
     "counted_noun": "may_elide"
    },
    {
@@ -1193,7 +1217,9 @@
     "word_slots": [
      "taker"
     ],
-    "place": true,
+    "place": [
+     "giver"
+    ],
     "counted_noun": "may_elide"
    },
    {
@@ -1229,7 +1255,10 @@
     "word_slots": [
      "actor"
     ],
-    "place": true,
+    "place": [
+     "giver",
+     "taker"
+    ],
     "counted_noun": "may_elide"
    },
    {
@@ -1261,7 +1290,10 @@
      ]
     },
     "event_verb": "move",
-    "place": true,
+    "place": [
+     "giver",
+     "taker"
+    ],
     "counted_noun": "may_elide"
    },
    {
@@ -1504,7 +1536,9 @@
       }
      ]
     },
-    "place": true
+    "place": [
+     "owner"
+    ]
    },
    {
     "text": "how many marbles are there in the oak cupboard",
@@ -1532,7 +1566,9 @@
       }
      ]
     },
-    "place": true
+    "place": [
+     "owner"
+    ]
    },
    {
     "text": "how many marbles does the oak cupboard have",
@@ -1560,7 +1596,9 @@
       }
      ]
     },
-    "place": true
+    "place": [
+     "owner"
+    ]
    },
    {
     "text": "how many does Haru have",

@@ -2321,6 +2321,10 @@ class RelationalParser:
                         grounded = self._join_actor_target(substitute(meaning, slots))
                         if normalization and normalization.get("polarity") is False:
                             grounded = {**grounded, "polarity": False}
+                        if isinstance(example.get("place"), list):
+                            # the slots the example declares places (a holder that is a place: W3-1)
+                            grounded = {**grounded, "places": [self.canonical_name(str(slots[name]).strip())
+                                                               for name in example["place"] if slots.get(name)]}
                         key = json.dumps(grounded, sort_keys=True, ensure_ascii=False)
                         # Exact evidence is tried first; do not replace its proof
                         # with a later equivalent normalization.
@@ -3103,6 +3107,8 @@ class RelationalParser:
                         fact["roles"] = role_bindings[position]
                     if "scope" in meaning:
                         fact["scope"] = meaning["scope"]
+                    if meaning.get("places"):
+                        fact["places"] = list(meaning["places"])
                     for field in ("polarity", "modality"):
                         if field in meaning:
                             fact[field] = meaning[field]

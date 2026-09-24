@@ -1212,7 +1212,7 @@ def scenario_json(p, sid):
             "classes": sorted(p.classes | {c for t in p.turns for c in t["classes"]}), "turns": p.turns}
 
 
-def generate_scenarios(count=PER_HALF, extra=100):
+def generate_scenarios(count=PER_HALF, extra=200):
     """For each half and language, ``count + extra`` scenarios by index (a draw that breaks a constraint is
     redrawn at the next index); the phrasing step takes them in order until ``count`` are phrased."""
     vocab = halves()
