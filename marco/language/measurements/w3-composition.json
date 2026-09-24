@@ -179,7 +179,7 @@
  },
  "suite": {
   "command": "python -m pytest -q",
-  "passed": 1406,
+  "passed": 1407,
   "failed": 1,
   "skipped": 8,
   "failed_tests": [
@@ -193,7 +193,7 @@
   },
   "added": {
    "tests/language/test_w3_realizer_r3.py": 36,
-   "tests/language/test_w3_round4_meanings.py": 58,
+   "tests/language/test_w3_round4_meanings.py": 59,
    "tests/language/test_w2_realizer_r2.py (two new hold plans x two languages)": 4
   }
  }
