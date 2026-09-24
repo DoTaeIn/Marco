@@ -637,7 +637,10 @@
     "word_slots": [
      "owner"
     ],
-    "counted_noun": "may_elide"
+    "counted_noun": "may_elide",
+    "place": [
+     "owner"
+    ]
    },
    {
     "text": "the oak cupboard has 18 marbles",

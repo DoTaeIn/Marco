@@ -1680,7 +1680,10 @@ STORY_VERBS = {
           r"(?:어|습|다|대|고|는|던|지)",
 }
 EN_META = r"\bask(?:ing|ed)?\b|\bquestion\b|\bwonder|\bcurious\b"
-KO_META = r"물어|질문|궁금|여쭤|여쭙"
+KO_META = r"물어|질문|궁금|여쭤|여쭙|들어보|알고 계|아세요|아십니까"
+# a question asks with a question word
+QUESTION_WORDS = {"en": r"\bhow many\b|\bwho\b|\bhow much\b|\bwhy\b|\bhow come\b",
+                  "ko": r"몇|누가|누구|얼마|왜"}
 KO_PARTICLES = (("으로", "으로"), ("이랑", "이랑"), ("은", "은"), ("는", "는"), ("이", "이"), ("가", "가"),
                 ("을", "을"), ("를", "를"), ("과", "과"), ("와", "와"), ("로", "로"), ("랑", "랑"), ("예요", "예요"),
                 ("이에요", "이에요"))
@@ -1779,6 +1782,13 @@ class Checker:
             return False, "too_many_sentences"
         if question and re.search(EN_META if lang == "en" else KO_META, text, re.I):
             return False, "meta_question"
+        if question and not re.search(QUESTION_WORDS[lang], text, re.I):
+            return False, "no_question_word"
+        if question and turn["say"].get("what") == "more" and not re.search(
+                r"\bwho\b" if lang == "en" else r"누가|누구", text, re.I):
+            return False, "comparison_not_who"
+        if not question and turn["say"].get("what") in ("transfer", "use") and len(sentences) > 1:
+            return False, "event_in_two_sentences"
         if spec["question"] != question:
             return False, "question_mark" if spec["question"] else "statement_is_question"
         if "?" in text[:-1]:
@@ -1945,6 +1955,15 @@ class Checker:
                 return "contrast"
             return None
         new, old = c["new"], c["old"]
+        if lang == "ko":
+            if new == "나":
+                if not re.search(r"(?:저한테|저에게|제게|나한테|나에게|내게)(?!서)", text):
+                    return "contrast"
+            elif not re.search(re.escape(new) + r"(?:\s?(?:씨|님))?(?:이)?\s?(?:한테|에게|께)(?!서)", text):
+                return "contrast"
+        if lang == "en" and not re.search(r"\bto\s+(?:the\s+|my\s+|mr\.\s+|ms\.\s+|mrs\.\s+|dr\.\s+)?%s\b" % (
+                "me" if new == "I" else re.escape(new)), text, re.I):
+            return "contrast"
         if lang == "en":
             def at(token):
                 if token == "I":
@@ -1989,6 +2008,12 @@ class Checker:
                     return "person_as_place"
         if re.search(r"(?:자루|장|켤레|묶음)\s?(?:\d+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열)\s?개", text):
             return "counter_as_noun"
+        if re.search(r"니다니까|습니다니까|어요니까", text):
+            return "ending_stack"
+        if re.search(r"하나도\s?(?:가지고|갖고|들고|보관하고|맡고)\s?있", text):
+            return "zero_with_having"
+        if re.search(r"(?:저는|제가|나는|내가)\b.*(?:셨|시었|시어|하셔|주셔|주시)", text):
+            return "honorific_on_self"
         nouns = {t for h in scn["holders"] for t in h["tokens"]} | {i["noun"] for i in scn["items"]} | {"씨", "님"}
         nouns |= {i["counter"] for i in scn["items"] if i.get("counter")}
         for noun in sorted(nouns - {"씨"}, key=len, reverse=True):
@@ -2001,9 +2026,13 @@ class Checker:
                     if re.search(re.escape(token) + r"(?:한테|에게|께)", text):
                         return "place_as_person"
         for item in scn["items"]:
-            # 리본이 일곱 개를: the thing marked as subject and its amount as object at once
+            # 리본이 일곱 개를: the thing marked as subject and its amount as object at once; 복숭아가 네 개
+            # 보관하고: a subject before a verb of holding
             if re.search(r"%s(?:이|가) (?:\d+|[가-힣]+) ?(?:%s)(?:을|를)" % (re.escape(item["noun"]), "|".join(KO_COUNTERS)),
                          text):
+                return "case_clash"
+            if re.search(r"%s(?:이|가) (?:\d+|[가-힣]+) ?(?:%s)\s?(?:가지고|갖고|들고|보관하고|맡고)" % (
+                    re.escape(item["noun"]), "|".join(KO_COUNTERS)), text):
                 return "case_clash"
         for m in re.finditer(r"([가-힣])다고\s?(?:해요|합니다|해|하더라|했어요)", text):
             if _jong(m.group(1)) == 0 and m.group(1) not in "이":
@@ -2373,9 +2402,9 @@ def _overlapping(dialogues):
 
 
 def assemble(write=True):
-    """The dialogues from the phrasing cache: per half and language the first ``PER_HALF`` usable scenarios in
-    scenario order that share no full sentence with another dialogue file or with a dialogue already taken,
-    each with the turns its phrasing kept, every kept text checked again."""
+    """The dialogues from the phrasing cache: every usable scenario, in scenario order, that shares no full
+    sentence with a file outside this folder, each with the turns its phrasing kept, every kept text checked
+    again."""
     sys.path.insert(0, str(ROOT / "bench"))
     import dialogue_gate as gate
     scenarios = load_scenarios()
@@ -2419,20 +2448,15 @@ def assemble(write=True):
                           "classes": sorted({c for t in turns for c in t["classes"]})},
             "turns": turns})
     shared = _overlapping(candidates)
-    dialogues, split, counts, taken, left_out = [], {"build": [], "check": []}, {}, set(), {"other_file": 0,
-                                                                                         "same_set": 0}
+    dialogues, split, counts, left_out = [], {"build": [], "check": []}, {}, {"other_file": 0}
     for d in candidates:
         key = (d["variation"]["half"], d["language"])
-        if counts.get(key, 0) >= PER_HALF:
-            continue
-        sentences = {norm for _d, _n, _raw, norm in gate.dialogue_sentences([d])}
+        # Every usable scenario is taken; a dialogue that shares a full sentence with a file outside this
+        # folder (another dialogue set, a test, the frozen set) is left out. Within the set a generic sentence
+        # ("Actually, it was 3, not 1.") may repeat, as it may in dev3; the halves share no name, item or place.
         if d["id"] in shared:
             left_out["other_file"] += 1
             continue
-        if sentences & taken:
-            left_out["same_set"] += 1
-            continue
-        taken |= sentences
         counts[key] = counts.get(key, 0) + 1
         d = dict(d, id="dev4_%s_%s_%02d" % (d["language"], d["variation"]["half"][0], counts[key]))
         dialogues.append(d)
