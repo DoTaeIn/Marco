@@ -2972,6 +2972,16 @@ class RelationalParser:
                     수선.append(report)
             asking = any(text[evidence["end"]:].lstrip().startswith(mark)
                          for mark in self.clause_grammar.get("question_marks", []))
+            if (not asking and (self.count_question or {}).get("declarative_vague")
+                    and text[evidence["end"]:].lstrip().startswith(".") and len(unique) == 1):
+                # 연서도 레몬이 몇 개 있어요. -- the question word of amount in a sentence closed by a full
+                # stop says "a few": a count not known, not a question (수량물음.declarative_vague)
+                only = next(iter(unique.values()))
+                rows = only.get("query") or []
+                if (len(rows) == 1 and isinstance(rows[0].get("triple"), list)
+                        and rows[0]["triple"][1] == "count" and str(rows[0]["triple"][2]).startswith("?")):
+                    stated = {"triple": [rows[0]["triple"][0], "count_unknown", "some"]}
+                    unique = {json.dumps(stated, sort_keys=True, ensure_ascii=False): stated}
             if asking and any(asserted(meaning) or "invoke" in meaning
                               for meaning in unique.values()):
                 diagnostics.append({"reason": "question_is_not_an_observation", "evidence": evidence})
