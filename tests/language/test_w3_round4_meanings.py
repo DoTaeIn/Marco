@@ -174,13 +174,10 @@ def test_english_says_the_user_as_you(result, said):
     assert composed(result, "english", EN_USER) == said
 
 
-def test_english_holds_the_user_until_the_pack_reads_the_first_person():
-    # The present pack does not read "I have 3 apricots.": the reply is held, not said unchecked.
-    report = held(answered(["I apricots", "count", "3"], asked=["she", "count", "?n"], said="I have 3 apricots"),
-                  "english")
-    texts = [failure.get("text") for clause in report["clauses"] for attempt in clause["attempts"]
-             for failure in (attempt.get("check") or {}).get("failures", [])]
-    assert "I have 3 apricots." in texts
+def test_english_says_the_user_as_you_once_the_pack_reads_the_first_person():
+    # Since understanding round 4 the pack reads "I have 3 apricots." (request W3-1): the reply is said.
+    assert composed(answered(["I apricots", "count", "3"], asked=["she", "count", "?n"], said="I have 3 apricots"),
+                    "english") == "You have 3 apricots."
 
 
 @pytest.mark.parametrize("result,said", [
@@ -243,10 +240,11 @@ def test_a_named_holder_is_said_as_the_user_named_them(language, model, result, 
     assert composed(result, language, model) == said
 
 
-def test_a_named_holder_the_pack_reads_back_otherwise_is_held():
-    # The present Korean pack reads "린드 씨 펜" as the holder "린드 씨", not the key "린드".
-    held(answered(["린드 펜", "count", "4"], asked=["그", "count", "?n"],
-                  holders={"린드": {"kind": "named", "said": "린드 씨"}}, said="린드 씨는 펜이 4개 있어"), "한국어")
+def test_a_named_holder_with_a_title_is_said_as_the_user_named_them():
+    # Since understanding round 4 the Korean pack reads "린드 씨" as the key "린드" (request W3-1): said, not held.
+    assert composed(answered(["린드 펜", "count", "4"], asked=["그", "count", "?n"],
+                             holders={"린드": {"kind": "named", "said": "린드 씨"}}, said="린드 씨는 펜이 4개 있어"),
+                    "한국어") == "린드 씨는 4개입니다."
 
 
 def test_a_named_holder_in_another_language_is_said_by_its_key():
@@ -269,13 +267,13 @@ def test_a_named_holder_in_another_language_is_said_by_its_key():
                                                   holders={"북쪽 창고": {"kind": "place"}},
                                                   said="북쪽 창고에는 상자가 5개 있어"),
      "북쪽 창고에는 5개 있습니다."),
-    # The present Korean pack reads "북쪽 창고에는" with its particle: the place is said juxtaposed.
+    # Since understanding round 4 the Korean pack reads "북쪽 창고에는" as the place (request W3-1).
     ("한국어", None, answered(["북쪽 창고 상자", "count", "5"], asked=["거기", "count", "?n"],
                             holders={"북쪽 창고": {"kind": "place"}}, said="북쪽 창고에는 상자가 5개 있어"),
-     "북쪽 창고는 5개입니다."),
+     "북쪽 창고에는 5개 있습니다."),
     ("한국어", None, answered(["북쪽 창고 상자", "count", "5"], holders={"북쪽 창고": {"kind": "place"}},
                             said="북쪽 창고에는 상자가 5개 있어"),
-     "5개입니다."),
+     "5개 있습니다."),
 ])
 def test_a_place_holds_things(language, model, result, said):
     assert composed(result, language, model) == said
@@ -342,16 +340,18 @@ def test_a_count_of_zero_is_said_as_none(language, model, result, said):
 
 
 @pytest.mark.parametrize("language,result,said", [
-    ("english", answered(["Tove quinces", "count", "0"], said="Tove has 0 quinces"), "0 quinces."),
+    ("english", answered(["Tove quinces", "count", "0"], said="Tove has 0 quinces"), "No quinces."),
     ("english", answered(["Tove quinces", "count", "0"], asked=["she", "count", "?n"], said="Tove has 0 quinces"),
-     "Tove has 0 quinces."),
-    ("한국어", answered(["토베 모과", "count", "0"], said="토베는 모과가 0개 있어"), "0개입니다."),
+     "Tove has no quinces."),
+    ("한국어", answered(["토베 모과", "count", "0"], said="토베는 모과가 0개 있어"), "하나도 없습니다."),
 ])
-def test_a_zero_the_pack_does_not_read_as_none_is_said_in_digits(language, result, said):
+def test_a_zero_the_pack_reads_as_none_is_said_as_none(language, result, said):
+    # Since understanding round 4 both packs read "has no" / "하나도 없다" as the count 0 (request W3-1),
+    # so none is said and nothing is replaced. The digits fallback is proven by the stand-in below.
     text, report = say(result, language)
     assert text == said and not report["held"]
-    tried = [clause for clause in report["clauses"] if clause.get("replaced")]
-    assert tried and tried[0]["frame"] == "count_none"
+    assert [clause["frame"] for clause in report["clauses"]] == ["count_none"]
+    assert not [clause for clause in report["clauses"] if clause.get("replaced")]
 
 
 WRONG_ZERO = ReadsAs("english", [("has no", "has 5")])
