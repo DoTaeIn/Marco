@@ -40,6 +40,7 @@
   }
  },
  "sentence_endings": {
+  "option": {"_about": "A reading offered as a choice (options): the quotative form, before 는 (줬다는, 있다는, 3개라는).", "formal": "quotative", "polite": "quotative", "casual": "quotative", "plain": "quotative", "reading": "quotative"},
   "declarative": {
    "formal": "formal_declarative",
    "polite": "polite",
@@ -89,7 +90,12 @@
    "nominal": [{"steps": [{"op": "append", "text": "기"}]}],
    "future_whether": [{"steps": [{"op": "coda_suffix", "coda": "ㄹ", "open": "지", "closed": "을지"}]}],
    "question_kka_polite": [{"steps": [{"op": "coda_suffix", "coda": "ㄹ", "open": "까요", "closed": "을까요"}]}],
-   "presumptive_formal": [{"steps": [{"op": "append", "text": "겠습니다"}]}]
+   "presumptive_formal": [{"steps": [{"op": "append", "text": "겠습니다"}]}],
+   "quotative": [
+    {"_about": "A clause quoted before 는 (options): a verb in its plain form (줬다, 준다, 있다); the copula is 라 / 이라 (grammar.copula).", "when": {"tense": "past"}, "steps": [{"op": "append", "text": "다"}]},
+    {"when": {"kind": "regular"}, "steps": [{"op": "coda_suffix", "coda": "ㄴ", "open": "다", "closed": "는다", "drop_codas": ["ㄹ"]}]},
+    {"steps": [{"op": "append", "text": "다"}]}
+   ]
   },
   "negation": {"not": {"from_pack": true}, "cannot": {"connective": "지", "aux": "못하", "kind": "regular"}},
   "copula": {
@@ -97,8 +103,8 @@
    "kind": "copula",
    "question_kind": "descriptive",
    "bind": true,
-   "after_open": {"informal": "야", "plain": "다", "whether": "인지"},
-   "after_closed": {"informal": "이야", "whether": "인지"}
+   "after_open": {"informal": "야", "plain": "다", "whether": "인지", "quotative": "라"},
+   "after_closed": {"informal": "이야", "whether": "인지", "quotative": "이라"}
   },
   "noun_number": null,
   "strategies": {"verbs": "endings", "case_marking": "particles"}
@@ -177,6 +183,10 @@
   "just_as_adv": {"word": "똑같이"},
   "receiving_adn": {"word": "받는"},
   "have_v": {"verb": "가지", "kind": "regular"},
+  "quote_neun": {"_about": "After a plain-form clause offered as a reading: 다는.", "word": "는"},
+  "remark_n": {"word": "말씀"},
+  "way_kind_n": {"word": "가지"},
+  "be_read": {"verb": "읽히", "kind": "regular"},
   "ending_form": {"word": "맺음꼴"},
   "order": {"word": "순서"},
   "cost": {"word": "비용"},
@@ -351,6 +361,13 @@
     "id": "count_topic_copula",
     "when": {"holder": {"owner": ["name", "place", "named"]}},
     "parts": [{"np": ["owner", "item"], "case": "topic"}, {"num": "value", "counter": "count", "cop": "predicate"}]
+   },
+   {
+    "id": "count_topic_exist",
+    "_about": "A holder's count said with the holder as topic and the thing as subject (나은은 사탕이 7개 있습니다), for a name whose juxtaposed saying the pack reads otherwise (나은 사탕은 → 나 + 은).",
+    "when": {"holder": {"owner": ["name", "named"]}},
+    "requires": ["owner"],
+    "parts": [{"np": ["owner"], "case": "topic"}, {"np": ["item"], "case": "subject"}, {"num": "value", "counter": "count"}, {"verb": "exist", "predicate": true, "negation": "not"}]
    }
   ],
   "count_none": [
@@ -1027,6 +1044,12 @@
      {"lex": "action", "case": "object"},
      {"verb": "execute", "predicate": true, "negation": "not"}
     ]
+   }
+  ],
+  "several_readings": [
+   {
+    "id": "several_readings",
+    "parts": [{"quote": "said", "marks": "double", "case": "topic"}, {"lex": "several_adn"}, {"lex": "way_kind_n", "case": "goal"}, {"verb": "be_read", "predicate": true}]
    }
   ],
   "many_readings": [
@@ -1788,6 +1811,14 @@
   "so": [{"lex": "so"}],
   "answer_yes": {"parts": [{"lex": "answer_yes"}], "polarity": true, "join": "comma"},
   "answer_no": {"parts": [{"lex": "answer_no"}], "polarity": false, "join": "comma"}
+ },
+ "options": {
+  "_about": "A choice between readings, asked (goal G5 B, request W5-2): each reading in its plain form with 는 말씀인가요 after it, a comma between two (민수가 영희에게 사과 3개를 줬다는 말씀인가요, 민수가 사과 3개를 영희에게서 받았다는 말씀인가요?). A count is said with the existence verb, not the copula (다는, never 이다는).",
+  "sentence": "option",
+  "prefer": {"count": "count_topic_exist"},
+  "first": [],
+  "after_each": [{"lex": "quote_neun", "bind": true}, {"lex": "remark_n", "cop": "predicate"}],
+  "between": [{"sym": "comma", "bind": true}]
  },
  "subordinate": {
   "_about": "An event an answer is relative to in time: its clause first, its predicate in the form the following noun governs (전 takes -기, 뒤 takes -(으)ㄴ), then the noun with 에 and the topic 는.",

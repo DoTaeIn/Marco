@@ -263,12 +263,43 @@ def _hold_reason(template, graph):
     return []
 
 
+def _reading_props(template, graph):
+    """The readings of one ambiguous sentence (the list field ``readings`` names; each reading the
+    state changes it would record), each as the one proposition it would add: its one transfer, or
+    its one stated count or place. Fewer than two readings, a reading that is not one proposition,
+    or two readings that say the same: none, so no choice is offered in part."""
+    fields, source = graph["fields"], graph["source"]
+    holders = mg.holder_keys(fields)
+    readings = _field(fields, template["readings"][1:])
+    if not isinstance(readings, list) or len(readings) < 2:
+        return []
+    props, seen = [], set()
+    for reading in readings:
+        rows = [row for row in (reading.get("changes") or []) if isinstance(row, dict)] \
+            if isinstance(reading, dict) else []
+        said = mg.transfer_props(rows, source, holders) or mg.change_props(rows, source, state=template["state"],
+                                                                           holders=holders)
+        if len(said) != 1:
+            return []
+        prop = said[0]
+        prop.pop("stated", None)
+        prop.pop("provenance", None)
+        key = repr(sorted((role, sorted(value.items())) for role, value in prop["roles"].items()))
+        if (prop["frame"], key) in seen:
+            return []
+        seen.add((prop["frame"], key))
+        props.append(prop)
+    return props
+
+
 def _props(template, graph):
     decl = meaning_declarations()
     fields, source = graph["fields"], graph["source"]
     holders = mg.holder_keys(fields)
     if template.get("rows"):
         return _rows(template, graph)
+    if template.get("readings"):
+        return _reading_props(template, graph)
     if template.get("from") == "hold_reason":
         return _hold_reason(template, graph)
     if template.get("from") == "fact":
@@ -441,19 +472,76 @@ def repair_props(graph):
     return props
 
 
+def _plan_acts(chosen, graph):
+    """The acts one plan says of one graph, each with the propositions its templates build. An act
+    declared ``fallback`` is said only when no act before it said anything; an act declared
+    ``options`` offers its propositions as the choices of one question."""
+    acts = []
+    for act in chosen["acts"]:
+        if act.get("fallback") and acts:
+            continue
+        props = [prop for template in act["props"] for prop in _props(template, graph)]
+        if not props:
+            continue
+        acts.append({"intent": act["intent"], "props": props, "conclusion": bool(act.get("conclusion")),
+                     "lead": act.get("lead"), "lead_optional": bool(act.get("lead_optional")),
+                     "options": bool(act.get("options"))})
+    return acts
+
+
+def _answers_acts(chosen, graph):
+    """Several questions asked in one turn (Diairesis), from the list field the plan names
+    (``each``): each answer is a meaning of its own, said in the order asked by the plan it would
+    have alone, and each names whose it is; consecutive answers are one act, so the discourse
+    planner joins them. None when any one of them has no plan: a turn is not said in part."""
+    decl = meaning_declarations()
+    fields = graph["fields"]
+    items = _field(fields, chosen["each"][1:])
+    if not isinstance(items, list) or not items:
+        return None
+    # The fields every answer shares with the turn (``shared``), and the fields of an answer that
+    # are its answered fact's row (``answer_row``: the triple, then what it rests on).
+    shared = {key: fields[key] for key in chosen.get("shared", []) if key in fields}
+    acts = []
+    for item in items:
+        if not isinstance(item, dict):
+            return None
+        row = {key: copy.deepcopy(item[key]) for key in chosen.get("answer_row", []) if key in item}
+        meaning = dict(shared, **{key: value for key, value in item.items() if key not in row and key != "status"})
+        triple = row.get(chosen["answer_row"][0]) if chosen.get("answer_row") else None
+        rows = [row] if isinstance(triple, list) and len(triple) == 3 else []
+        sub = mg.build({"status": item.get("status"), "meaning": meaning, "transitions": rows}, graph["source"])
+        own = next((p for p in decl["turn_plans"] if not p.get("each") and _matches(p, sub)), None)
+        said = _plan_acts(own, sub) if own is not None else []
+        if not said:
+            return None
+        for act in said:
+            for prop in act["props"]:
+                if prop.get("answer"):
+                    # Two answers in one turn: each says whose it is.
+                    prop["holder_named"] = False
+        acts.extend(said)
+    joined = []
+    for act in acts:
+        answers = all(prop.get("answer") for prop in act["props"])
+        if joined and answers and not act.get("lead") and joined[-1]["intent"] == act["intent"] \
+                and joined[-1].get("answers"):
+            joined[-1]["props"].extend(act["props"])
+            continue
+        joined.append(dict(act, answers=answers))
+    return joined
+
+
 def plan(graph):
     """Fill ``graph["acts"]`` and ``graph["props"]``; return True when a plan matched."""
     decl = meaning_declarations()
     chosen = next((p for p in decl["turn_plans"] if _matches(p, graph)), None)
     if chosen is None:
         return False
-    acts = []
-    for act in chosen["acts"]:
-        props = [prop for template in act["props"] for prop in _props(template, graph)]
-        if not props:
-            continue
-        acts.append({"intent": act["intent"], "props": props, "conclusion": bool(act.get("conclusion")),
-                     "lead": act.get("lead"), "lead_optional": bool(act.get("lead_optional"))})
+    # A plan over several answers says each by its own plan; when one has none, the plan's own acts
+    # (its declared fallback) are said instead: a turn is never said in part.
+    acts = (_answers_acts(chosen, graph) or _plan_acts(chosen, graph)) if chosen.get("each") \
+        else _plan_acts(chosen, graph)
     notes = repair_props(graph)
     if notes:
         spec = decl["repair_notes"]

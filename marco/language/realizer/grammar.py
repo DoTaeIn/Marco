@@ -440,8 +440,9 @@ class Grammar:
     def verb_words(self, part, *, ending, tense, polarity, person, plural, honour=False):
         """Finite or non-finite verb words for one part. ``honour``: the predicate agrees with the
         one addressed and takes the declared honorific stem (``person.honorific``), inflected as a
-        regular stem; on a negated predicate, on the stem the language declares for it
-        (``person.honorific.negation``: the negation's auxiliary, else the verb's own stem)."""
+        stem of the same kind (있 -> 있으시, still existential: 있으시다); on a negated predicate, on
+        the stem the language declares for it (``person.honorific.negation``: the negation's
+        auxiliary, else the verb's own stem)."""
         entry = self.lexeme(part["verb"])
         stem, kind = entry["verb"], entry.get("kind", "regular")
         negate = polarity is False and part.get("negation") and part.get("polarity") != "positive"
@@ -451,7 +452,7 @@ class Grammar:
         on_auxiliary = bool(honour and negate and (self.lang.person().get("honorific") or {}).get(
             "negation") == "auxiliary")
         if honour and not on_auxiliary:
-            stem, kind = self._honorific_of(stem, part), "regular"
+            stem = self._honorific_of(stem, part)
         if not negate:
             return [self.inflect(stem, tense, ending, kind)]
         spec = self.decl["grammar"]["negation"].get(part["negation"])

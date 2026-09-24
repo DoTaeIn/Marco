@@ -111,6 +111,7 @@
   "condition_holds": {"roles": {"said": "quote"}},
   "carried_out": {"roles": {}},
   "many_readings": {"roles": {"said": "quote"}},
+  "several_readings": {"_about": "A sentence that reads more than one way (goal G5 B): the user's words, quoted.", "roles": {"said": "quote"}},
   "shorter_request": {"roles": {}},
   "role_covered": {"roles": {"said": "quote", "rest": "quote"}},
   "definition_conflict": {"roles": {"said": "quote", "declared": "quote", "given": "quote"}},
@@ -192,6 +193,14 @@
   "elide": ["amount"]
  },
  "turn_plans": [
+  {
+   "_about": "Several questions in one turn (Diairesis; goal G5.6, request W5-1; assumed meaning: act inform, kind queries, answers = one meaning block per question in the order asked, each with its own status and, for an answered triple, fact and evidence): each answer said by the plan it would have alone, in order, each naming whose it is; consecutive answers in one sentence. A turn with an answer no plan says is not said in part: the declared hold is said instead. shared: the turn's fields every answer keeps; answer_row: an answer's fields that make its answered fact's row, the triple first.",
+   "match": {"act": "inform", "kind": "queries"},
+   "each": "$answers",
+   "shared": ["holders", "conversation", "conversation_language"],
+   "answer_row": ["fact", "evidence"],
+   "acts": [{"intent": "REFUSE", "fallback": true, "props": [{"frame": "not_phrased"}]}]
+  },
   {
    "_about": "An answered question about the state just before or just after one earlier event (request G3-4): the answer said in the past, with the event it is relative to as a time clause.",
    "match": {
@@ -598,6 +607,14 @@
       {"frame": "carried_out", "polarity": false, "tense": "past"}
      ]
     }
+   ]
+  },
+  {
+   "_about": "A sentence the conversation's state leaves with more than one reading (goal G5 B, request W5-2; assumed meaning: act ask, reason ambiguous_reading, said, readings = what each reading would record, as changes): ask which was meant, each reading said as a choice and checked like any clause, none chosen. Readings that are not one proposition each: say that the sentence reads more than one way and ask which.",
+   "match": {"act": "ask", "reason": "ambiguous_reading"},
+   "acts": [
+    {"intent": "ASK", "options": true, "props": [{"readings": "$readings", "state": "after"}]},
+    {"intent": "ASK", "fallback": true, "props": [{"frame": "several_readings", "roles": {"said": "$said"}}, {"frame": "which_request", "sentence": "request"}]}
    ]
   },
   {

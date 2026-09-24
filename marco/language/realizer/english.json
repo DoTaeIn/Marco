@@ -24,6 +24,7 @@
  },
  "register": {"default": "formal", "from_endings": {"plain": "formal", "third_person": "formal"}},
  "sentence_endings": {
+  "option": {"formal": "plain", "polite": "plain", "casual": "plain", "plain": "plain", "reading": "plain"},
   "declarative": {"formal": "plain", "polite": "plain", "casual": "plain", "plain": "plain", "reading": "plain"},
   "question": {"formal": "plain", "polite": "plain", "casual": "plain", "plain": "plain", "reading": "plain"},
   "request": {"formal": "plain", "polite": "plain", "casual": "plain", "plain": "plain", "reading": "plain"}
@@ -1048,6 +1049,12 @@
     ]
    }
   ],
+  "several_readings": [
+   {
+    "id": "several_readings",
+    "parts": [{"quote": "said", "marks": "double"}, {"verb": "can", "tense": "present", "person": "third"}, {"verb": "be", "ending": "base"}, {"verb": "read", "predicate": true, "ending": "participle"}, {"lex": "in"}, {"lex": "several"}, {"lex": "ways"}]
+   }
+  ],
   "many_readings": [
    {
     "id": "many_readings",
@@ -1919,6 +1926,13 @@
   "so": [{"lex": "so"}],
   "answer_yes": {"parts": [{"lex": "answer_yes"}], "polarity": true, "join": "comma"},
   "answer_no": {"parts": [{"lex": "answer_no"}], "polarity": false, "join": "comma"}
+ },
+ "options": {
+  "_about": "A choice between readings, asked (goal G5 B, request W5-2): did you mean that A, or that B?",
+  "sentence": "option",
+  "first": [{"verb": "do", "tense": "past", "person": "second"}, {"lex": "you"}, {"verb": "mean", "ending": "base"}, {"lex": "that"}],
+  "after_each": [],
+  "between": [{"sym": "comma", "bind": true}, {"lex": "or"}, {"lex": "that"}]
  },
  "subordinate": {
   "_about": "An event an answer is relative to in time: a clause of its own, in the past, after the conjunction, joined to the answer by a comma.",
