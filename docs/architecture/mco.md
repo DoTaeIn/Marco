@@ -4,10 +4,12 @@ The public Python API and CLI over MARCO models. Written 2026-09-23 against
 commit `78bd062`. The user guide is [docs/mco/README.md](../mco/README.md) and
 the stability contract is [docs/mco/api.md](../mco/api.md).
 
-**Release state.** The [freeze decision](../ko/2026-09-22-freeze-decision.md)
-parks this package: it stays as it is and is not extended until MARCO 1 ships.
-The native `.mco` binary format is frozen and does not exist; `.mco` files
-written today are a compatibility container.
+**Release state.** Version 0.1.0 is on PyPI since 2026-09-24
+([release notes](../releases/2026-09-24-mco-0.1.0.md)): `pip install mco`. The
+[freeze decision](../ko/2026-09-22-freeze-decision.md) still parks the API: it
+is packaged as it is and not extended until MARCO 1 ships. The native `.mco`
+binary format is frozen and does not exist; `.mco` files written today are a
+compatibility container.
 
 ## Purpose
 
