@@ -1,0 +1,180 @@
+{
+ "_about": "Goal W4.6: bench/composition_gate.py on the fixed sets (the 7-step dialogue and the 20 phrasings, played together) and the three development sets on branch realizer-r4, KG_ENCODER=문자, recording off. Unchanged from W3 (269/269, 415/415, 468/468, 71/71). The frozen sets are run by the owner only.",
+ "command": "KG_ENCODER=문자 python bench/composition_gate.py (--seven-step --phrasings | --dataset DIR)",
+ "fixed": {
+  "composed": 71,
+  "spoken": 71,
+  "passed_through": 0,
+  "held": 0,
+  "execution_errors": 0,
+  "by_act": {
+   "answer": [
+    20,
+    20
+   ],
+   "hold": [
+    20,
+    20
+   ],
+   "record": [
+    25,
+    25
+   ],
+   "explain": [
+    2,
+    2
+   ],
+   "ask": [
+    2,
+    2
+   ],
+   "correct": [
+    2,
+    2
+   ]
+  },
+  "by_language": {
+   "ko": [
+    35,
+    35
+   ],
+   "en": [
+    36,
+    36
+   ]
+  },
+  "reasons": {}
+ },
+ "dialogues_dev": {
+  "composed": 269,
+  "spoken": 269,
+  "passed_through": 0,
+  "held": 0,
+  "execution_errors": 0,
+  "by_act": {
+   "answer": [
+    66,
+    66
+   ],
+   "hold": [
+    68,
+    68
+   ],
+   "record": [
+    115,
+    115
+   ],
+   "explain": [
+    2,
+    2
+   ],
+   "ask": [
+    10,
+    10
+   ],
+   "correct": [
+    8,
+    8
+   ]
+  },
+  "by_language": {
+   "ko": [
+    133,
+    133
+   ],
+   "en": [
+    136,
+    136
+   ]
+  },
+  "reasons": {}
+ },
+ "dialogues_dev2": {
+  "composed": 415,
+  "spoken": 415,
+  "passed_through": 0,
+  "held": 0,
+  "execution_errors": 0,
+  "by_act": {
+   "answer": [
+    151,
+    151
+   ],
+   "hold": [
+    26,
+    26
+   ],
+   "record": [
+    197,
+    197
+   ],
+   "explain": [
+    18,
+    18
+   ],
+   "ask": [
+    11,
+    11
+   ],
+   "correct": [
+    12,
+    12
+   ]
+  },
+  "by_language": {
+   "ko": [
+    208,
+    208
+   ],
+   "en": [
+    207,
+    207
+   ]
+  },
+  "reasons": {}
+ },
+ "dialogues_dev3": {
+  "composed": 468,
+  "spoken": 468,
+  "passed_through": 0,
+  "held": 0,
+  "execution_errors": 0,
+  "by_act": {
+   "answer": [
+    198,
+    198
+   ],
+   "hold": [
+    42,
+    42
+   ],
+   "record": [
+    179,
+    179
+   ],
+   "explain": [
+    18,
+    18
+   ],
+   "ask": [
+    12,
+    12
+   ],
+   "correct": [
+    19,
+    19
+   ]
+  },
+  "by_language": {
+   "ko": [
+    234,
+    234
+   ],
+   "en": [
+    234,
+    234
+   ]
+  },
+  "reasons": {}
+ }
+}

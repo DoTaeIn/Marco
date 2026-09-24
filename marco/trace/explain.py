@@ -12,6 +12,7 @@ for, and checks every clause as it checks any reply.
     chain_meaning(graph, output_id) -> dict      the meaning, no language in it
     explain(source, event_id, language) -> (text, report)
     say_why(ledger_path, event_id, language) -> text
+    last_explainable(source, conversation)       the output a bare "why" asks about (request W4-1)
 
 ``chain_meaning`` uses the standard library only; ``explain`` and ``say_why``
 import the realizer when called.
