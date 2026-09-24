@@ -3,7 +3,9 @@
 The trace ledger: why MARCO said what it said, as an append-only event graph.
 Written 2026-09-24 by goal L1 (`docs/ko/2026-09-24-trace-ledger-goal.md`),
 implementing the first part of the owner's design note
-`docs/ko/2026-09-24-trace-logging-design.md`.
+`docs/ko/2026-09-24-trace-logging-design.md`. The package contract in the five
+template headings is [marco.trace.md](marco.trace.md); this page keeps the
+event table, the ledger rules and the measurements.
 
 ## Purpose
 
