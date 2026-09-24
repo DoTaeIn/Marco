@@ -1,6 +1,6 @@
 """``python -m marco.trace <command>``
 
-  record <dialogue-file> [--language ko|en] [--out <dir>] [--name <file>] [--split <name>]
+  record <dialogue-file> [--language ko|en] [--out <dir>] [--name <file>] [--split <name>] [--engine-sites]
          play a dialogue (gate-schema JSON, a directory of them, or a text file with one
          turn per line) through the UI turn handler and record every turn; prints the
          ledger path, and for labelled dialogues the dialogue gate's score of the same run
@@ -31,6 +31,8 @@ def main(argv=None):
     p.add_argument("--out", help="ledger directory (default MARCO_TRACE_DIR, else logs/)")
     p.add_argument("--name", help="ledger file name (default <date>.jsonl)")
     p.add_argument("--split", help="only the dialogues a dataset's split.txt lists under this name")
+    p.add_argument("--engine-sites", action="store_true",
+                   help="the engine sites write their own events too (request G5-1): routing, rules, holds")
     p = sub.add_parser("why")
     p.add_argument("ledger")
     p.add_argument("event_id")
@@ -61,7 +63,7 @@ def main(argv=None):
             return 1
         ledger = Ledger(args.out, args.name)
         timing = {}
-        answers = drive.record(dialogues, ledger, timing=timing)
+        answers = drive.record(dialogues, ledger, timing=timing, engine_sites=args.engine_sites)
         turns = sum(len(d["turns"]) for d in dialogues)
         print("ledger %s  dialogues %d  turns %d  events %d  bytes %d  recording %.1f ms/turn" % (
             ledger.path, len(dialogues), turns, len(ledger.events), ledger.bytes_written,
