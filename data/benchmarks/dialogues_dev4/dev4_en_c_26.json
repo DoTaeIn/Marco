@@ -1,0 +1,273 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_26",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_086",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:adv_moment",
+   "holders:first_person",
+   "holders:title",
+   "partitives:partitive",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "transfer_verbs:keeps",
+   "transfer_verbs:receive"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Dr. Cooper keeps 3 scooters at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:title",
+    "transfer_verbs:keeps"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Cooper",
+      "item": "scooters",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Cooper",
+      "item": "scooters",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "I've got 5 scooters.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "scooters",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "scooters",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "I got 2 of them from Dr. Cooper.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "partitives:partitive",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Cooper",
+      "to": "I",
+      "item": "scooters",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Cooper",
+      "item": "scooters",
+      "quantity": 1
+     },
+     {
+      "entity": "I",
+      "item": "scooters",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many scooters does Dr. Cooper have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Cooper",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "scooters"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Sorry, it was 1, not 2.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Cooper",
+      "to": "I",
+      "item": "scooters",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Cooper",
+      "to": "I",
+      "item": "scooters",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Cooper",
+      "item": "scooters",
+      "quantity": 2
+     },
+     {
+      "entity": "I",
+      "item": "scooters",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many scooters does I hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "scooters",
+    "retracted_quantity": 7,
+    "reexecuted_quantity": 8
+   }
+  }
+ ]
+}

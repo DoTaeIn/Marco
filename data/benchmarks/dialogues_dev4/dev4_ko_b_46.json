@@ -1,0 +1,290 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_46",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_232",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "korean_register",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:apposition",
+   "holders:title",
+   "question_forms:q_two_total",
+   "transfer_verbs:send"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "임 부장님은 달걀 열두 개를 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "임 부장",
+      "item": "달걀",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "임 부장",
+      "item": "달걀",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "계산원 서준 씨가 보관하고 있는 달걀이 네 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서준",
+      "item": "달걀",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "서준",
+      "item": "달걀",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "서준 씨가 임 부장님한테 달걀 한 개를 보냈어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "서준",
+      "to": "임 부장",
+      "item": "달걀",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "서준",
+      "item": "달걀",
+      "quantity": 3
+     },
+     {
+      "entity": "임 부장",
+      "item": "달걀",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "서준 씨는 지금 달걀이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "서준",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "달걀"
+   }
+  },
+  {
+   "n": 5,
+   "say": "아, 한 개가 아니라 세 개였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "서준",
+      "to": "임 부장",
+      "item": "달걀",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "서준",
+      "to": "임 부장",
+      "item": "달걀",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "서준",
+      "item": "달걀",
+      "quantity": 1
+     },
+     {
+      "entity": "임 부장",
+      "item": "달걀",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "서준 씨는 지금 달걀이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "서준",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "달걀",
+    "retracted_quantity": 3,
+    "reexecuted_quantity": 0
+   }
+  },
+  {
+   "n": 7,
+   "say": "두 사람은 합쳐서 달걀이 모두 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "임 부장",
+     "서준"
+    ],
+    "quantity": 16,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "달걀"
+   }
+  }
+ ]
+}

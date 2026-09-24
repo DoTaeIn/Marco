@@ -4,45 +4,45 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
+  "ambiguous_referent",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "haeyo",
+  "register": "banmal",
   "split": "one_fact_per_turn",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_129",
+  "scenario": "s4_ko_b_140",
   "half": "build",
   "focus": [
-   "korean_register",
-   "transfer_verbs",
-   "zero_vague"
+   "fronting",
+   "referent_repairs",
+   "transfer_verbs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:relation",
+   "fronting:front_then",
+   "holders:title",
    "question_forms:q_hold",
-   "question_forms:q_left",
-   "transfer_verbs:hand_over",
-   "transfer_verbs:pass",
-   "transfer_verbs:use_for",
-   "zero_vague:only",
-   "zero_vague:vague_then_exact"
+   "referent_repairs:i_mean",
+   "transfer_verbs:hold",
+   "transfer_verbs:keep",
+   "transfer_verbs:pass"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "가은도 숟가락이 좀 있어요. 세어 보니 네 개네요.",
+   "say": "심 과장님이 장갑이 아홉 켤레 있어.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "zero_vague:vague_then_exact"
+    "holders:title"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -58,30 +58,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "가은",
-      "item": "숟가락",
-      "quantity": 4
+      "holder": "심 과장",
+      "item": "장갑",
+      "quantity": 9
      }
     ],
     "state": [
      {
-      "entity": "가은",
-      "item": "숟가락",
-      "quantity": 4
+      "entity": "심 과장",
+      "item": "장갑",
+      "quantity": 9
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "가은 동기 윤우는 숟가락 아홉 개만 있어요.",
+   "say": "서아는 장갑 열여섯 켤레를 보관하고 있어.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation",
-    "zero_vague:only"
+    "transfer_verbs:keep"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -97,29 +96,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "윤우",
-      "item": "숟가락",
-      "quantity": 9
+      "holder": "서아",
+      "item": "장갑",
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "윤우",
-      "item": "숟가락",
-      "quantity": 9
+      "entity": "서아",
+      "item": "장갑",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "윤우가 가은한테 숟가락 두 개를 넘겼어요.",
+   "say": "동훈 씨는 장갑 네 켤레 가지고 있어.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "transfer_verbs:pass"
+    "holders:title",
+    "transfer_verbs:hold"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -134,63 +134,33 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "윤우",
-      "to": "가은",
-      "item": "숟가락",
-      "quantity": 2
+      "type": "has",
+      "holder": "동훈",
+      "item": "장갑",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "윤우",
-      "item": "숟가락",
-      "quantity": 7
-     },
-     {
-      "entity": "가은",
-      "item": "숟가락",
-      "quantity": 6
+      "entity": "동훈",
+      "item": "장갑",
+      "quantity": 4
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "가은은 숟가락을 몇 개 가지고 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
-   "scenario_turn": 4,
-   "expect": {
-    "act": "answer",
-    "entity": "가은",
-    "quantity": 6,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3
-     ]
-    },
-    "item": "숟가락"
-   }
-  },
-  {
-   "n": 5,
-   "say": "윤우가 가은한테 숟가락 두 개를 건넸어요.",
+   "say": "그러고 나서 동훈 씨가 심 과장한테 장갑 두 켤레를 넘겼어.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:hand_over"
+    "fronting:front_then",
+    "transfer_verbs:pass"
    ],
-   "scenario_turn": 5,
+   "scenario_turn": 4,
    "expect": {
     "act": "record",
     "entity": null,
@@ -198,38 +168,63 @@
     "relation": null,
     "evidence": {
      "turns": [
-      5
+      4
      ]
     },
     "events": [
      {
       "type": "transfer",
-      "from": "윤우",
-      "to": "가은",
-      "item": "숟가락",
+      "from": "동훈",
+      "to": "심 과장",
+      "item": "장갑",
       "quantity": 2
      }
     ],
     "state": [
      {
-      "entity": "윤우",
-      "item": "숟가락",
-      "quantity": 5
+      "entity": "동훈",
+      "item": "장갑",
+      "quantity": 2
      },
      {
-      "entity": "가은",
-      "item": "숟가락",
-      "quantity": 8
+      "entity": "심 과장",
+      "item": "장갑",
+      "quantity": 11
      }
     ]
    }
   },
   {
-   "n": 6,
-   "say": "가은은 숟가락을 몇 개 가지고 있어요?",
+   "n": 5,
+   "say": "동훈이는 지금 장갑을 몇 켤레 가지고 있어?",
    "label": "answerable",
    "tags": [
     "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "동훈",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "장갑"
+   }
+  },
+  {
+   "n": 6,
+   "say": "서아는 장갑을 몇 개 가지고 있어?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
    ],
    "classes": [
     "question_forms:q_hold"
@@ -237,108 +232,41 @@
    "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "가은",
-    "quantity": 8,
+    "entity": "서아",
+    "quantity": 16,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
-      3,
-      5
+      2
      ]
     },
-    "item": "숟가락"
+    "item": "장갑"
    }
   },
   {
    "n": 7,
-   "say": "윤우는 숟가락을 몇 개 가지고 있어요?",
+   "say": "제 말은 동훈 씨야.",
    "label": "answerable",
    "tags": [
+    "ambiguous_referent",
     "transfer"
    ],
    "classes": [
-    "question_forms:q_hold"
+    "referent_repairs:i_mean"
    ],
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "윤우",
-    "quantity": 5,
+    "entity": "동훈",
+    "quantity": 2,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
       3,
-      5
+      4
      ]
     },
-    "item": "숟가락"
-   }
-  },
-  {
-   "n": 8,
-   "say": "윤우가 행사에 숟가락 한 개를 썼어요.",
-   "label": "hold",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "transfer_verbs:use_for"
-   ],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      8
-     ]
-    },
-    "events": [
-     {
-      "type": "use",
-      "holder": "윤우",
-      "item": "숟가락",
-      "quantity": 1
-     }
-    ],
-    "state": [
-     {
-      "entity": "윤우",
-      "item": "숟가락",
-      "quantity": 4
-     }
-    ]
-   }
-  },
-  {
-   "n": 9,
-   "say": "윤우는 숟가락이 몇 개 남았어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_left"
-   ],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "answer",
-    "entity": "윤우",
-    "quantity": 4,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      3,
-      5,
-      8
-     ]
-    },
-    "item": "숟가락"
+    "item": "장갑"
    }
   }
  ]

@@ -4,7 +4,6 @@
  "language": "en",
  "domain": "everyday",
  "categories": [
-  "correction",
   "ownership",
   "transfer"
  ],
@@ -12,10 +11,10 @@
   "word_order": "free",
   "register": "casual",
   "split": "one_fact_per_turn",
-  "correction_position": "late",
+  "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_en_b_054",
+  "scenario": "s4_en_b_055",
   "half": "build",
   "focus": [
    "partitives",
@@ -24,30 +23,26 @@
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "corrections:amount",
-   "holders:apposition",
-   "holders:first_person",
    "partitives:partitive",
+   "partitives:same",
    "question_forms:q_got",
    "question_forms:q_hold",
    "question_forms:q_two_total",
-   "transfer_verbs:receive",
-   "transfer_verbs:send",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:pass",
+   "transfer_verbs:use_up",
    "zero_vague:only"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "The cashier, Mr. Rodriguez, only has magazines, 11 of them.",
+   "say": "Priya is carrying 6 novels.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "holders:apposition",
-    "zero_vague:only"
-   ],
+   "classes": [],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -62,29 +57,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "Rodriguez",
-      "item": "magazines",
-      "quantity": 11
+      "holder": "Priya",
+      "item": "novels",
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "Rodriguez",
-      "item": "magazines",
-      "quantity": 11
+      "entity": "Priya",
+      "item": "novels",
+      "quantity": 6
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "All I have is magazines, 13 of them.",
+   "say": "All Laura has is novels, 10 of them.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:first_person",
     "zero_vague:only"
    ],
    "scenario_turn": 2,
@@ -101,31 +95,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "I",
-      "item": "magazines",
-      "quantity": 13
+      "holder": "Laura",
+      "item": "novels",
+      "quantity": 10
      }
     ],
     "state": [
      {
-      "entity": "I",
-      "item": "magazines",
-      "quantity": 13
+      "entity": "Laura",
+      "item": "novels",
+      "quantity": 10
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "Mr. Rodriguez sent me 4 of them.",
+   "say": "Laura handed over 4 of the same novels to Priya.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "holders:first_person",
-    "partitives:partitive",
-    "transfer_verbs:send"
+    "partitives:same",
+    "transfer_verbs:hand_over"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -141,42 +134,41 @@
     "events": [
      {
       "type": "transfer",
-      "from": "Rodriguez",
-      "to": "I",
-      "item": "magazines",
+      "from": "Laura",
+      "to": "Priya",
+      "item": "novels",
       "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "Rodriguez",
-      "item": "magazines",
-      "quantity": 7
+      "entity": "Laura",
+      "item": "novels",
+      "quantity": 6
      },
      {
-      "entity": "I",
-      "item": "magazines",
-      "quantity": 17
+      "entity": "Priya",
+      "item": "novels",
+      "quantity": 10
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "How many magazines do I hold now?",
+   "say": "How many novels does Laura hold?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "holders:first_person",
     "question_forms:q_hold"
    ],
    "scenario_turn": 4,
    "expect": {
     "act": "answer",
-    "entity": "I",
-    "quantity": 17,
+    "entity": "Laura",
+    "quantity": 6,
     "relation": "count",
     "evidence": {
      "turns": [
@@ -184,46 +176,20 @@
       3
      ]
     },
-    "item": "magazines"
+    "item": "novels"
    }
   },
   {
    "n": 5,
-   "say": "How many magazines has Mr. Rodriguez got now?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_got"
-   ],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "answer",
-    "entity": "Rodriguez",
-    "quantity": 7,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3
-     ]
-    },
-    "item": "magazines"
-   }
-  },
-  {
-   "n": 6,
-   "say": "I got 1 magazine from Mr. Rodriguez.",
+   "say": "Laura passed 5 novels to Priya.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "holders:first_person",
-    "transfer_verbs:receive"
+    "transfer_verbs:pass"
    ],
-   "scenario_turn": 6,
+   "scenario_turn": 5,
    "expect": {
     "act": "record",
     "entity": null,
@@ -231,35 +197,61 @@
     "relation": null,
     "evidence": {
      "turns": [
-      6
+      5
      ]
     },
     "events": [
      {
       "type": "transfer",
-      "from": "Rodriguez",
-      "to": "I",
-      "item": "magazines",
-      "quantity": 1
+      "from": "Laura",
+      "to": "Priya",
+      "item": "novels",
+      "quantity": 5
      }
     ],
     "state": [
      {
-      "entity": "Rodriguez",
-      "item": "magazines",
-      "quantity": 6
+      "entity": "Laura",
+      "item": "novels",
+      "quantity": 1
      },
      {
-      "entity": "I",
-      "item": "magazines",
-      "quantity": 18
+      "entity": "Priya",
+      "item": "novels",
+      "quantity": 15
      }
     ]
    }
   },
   {
+   "n": 6,
+   "say": "How many novels has Priya got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Priya",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "novels"
+   }
+  },
+  {
    "n": 7,
-   "say": "How many magazines does Mr. Rodriguez hold?",
+   "say": "How many novels does Laura hold?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -270,106 +262,86 @@
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "Rodriguez",
-    "quantity": 6,
+    "entity": "Laura",
+    "quantity": 1,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
+      2,
       3,
-      6
+      5
      ]
     },
-    "item": "magazines"
+    "item": "novels"
    }
   },
   {
    "n": 8,
-   "say": "Actually, it was 4, not 1.",
-   "label": "correction",
+   "say": "Priya used up 1 of them.",
+   "label": "hold",
    "tags": [
-    "correction"
+    "transfer"
    ],
    "classes": [
-    "corrections:amount"
+    "partitives:partitive",
+    "transfer_verbs:use_up"
    ],
    "scenario_turn": 8,
    "expect": {
-    "act": "revise",
+    "act": "record",
     "entity": null,
     "quantity": null,
     "relation": null,
     "evidence": {
      "turns": [
-      6,
       8
      ]
     },
-    "target_turn": 6,
-    "replaces": [
+    "events": [
      {
-      "type": "transfer",
-      "from": "Rodriguez",
-      "to": "I",
-      "item": "magazines",
+      "type": "use",
+      "holder": "Priya",
+      "item": "novels",
       "quantity": 1
-     }
-    ],
-    "with": [
-     {
-      "type": "transfer",
-      "from": "Rodriguez",
-      "to": "I",
-      "item": "magazines",
-      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "Rodriguez",
-      "item": "magazines",
-      "quantity": 3
-     },
-     {
-      "entity": "I",
-      "item": "magazines",
-      "quantity": 21
+      "entity": "Priya",
+      "item": "novels",
+      "quantity": 14
      }
     ]
    }
   },
   {
    "n": 9,
-   "say": "How many magazines do I have now?",
+   "say": "How many novels does Priya have now?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "holders:first_person"
-   ],
+   "classes": [],
    "scenario_turn": 9,
    "expect": {
     "act": "answer",
-    "entity": "I",
-    "quantity": 21,
+    "entity": "Priya",
+    "quantity": 14,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
+      1,
       3,
-      6,
+      5,
       8
      ]
     },
-    "item": "magazines",
-    "retracted_quantity": 18,
-    "reexecuted_quantity": 22
+    "item": "novels"
    }
   },
   {
    "n": 10,
-   "say": "How many magazines do the two of them have in total?",
+   "say": "How many novels do the two of them have in total?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -381,21 +353,21 @@
    "expect": {
     "act": "answer",
     "entity": [
-     "Rodriguez",
-     "I"
+     "Priya",
+     "Laura"
     ],
-    "quantity": 24,
+    "quantity": 15,
     "relation": "total",
     "evidence": {
      "turns": [
       1,
       2,
       3,
-      6,
+      5,
       8
      ]
     },
-    "item": "magazines"
+    "item": "novels"
    }
   }
  ]

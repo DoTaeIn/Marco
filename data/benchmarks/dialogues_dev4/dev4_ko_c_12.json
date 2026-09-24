@@ -1,0 +1,334 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_12",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_027",
+  "half": "check",
+  "focus": [
+   "holders",
+   "referent_repairs",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:first_person",
+   "holders:place",
+   "question_forms:q_hold",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:carry",
+   "transfer_verbs:responsible",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "동전 여섯 개가 북쪽 창고에 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "북쪽 창고",
+      "item": "동전",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "북쪽 창고",
+      "item": "동전",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "동전 여덟 개는 제가 맡고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "동전",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "동전",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "서연은 동전 열여섯 개를 들고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:carry"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서연",
+      "item": "동전",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "서연",
+      "item": "동전",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "시현은 동전 열세 개가 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "시현",
+      "item": "동전",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "시현",
+      "item": "동전",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "서연이 북쪽 창고에서 동전 한 개를 가져갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "북쪽 창고",
+      "to": "서연",
+      "item": "동전",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "북쪽 창고",
+      "item": "동전",
+      "quantity": 5
+     },
+     {
+      "entity": "서연",
+      "item": "동전",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "서연이 지금 동전이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "서연",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "item": "동전"
+   }
+  },
+  {
+   "n": 7,
+   "say": "시현은 동전을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "시현",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "item": "동전"
+   }
+  },
+  {
+   "n": 8,
+   "say": "그분은 지금 동전이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "시현",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "item": "동전"
+   }
+  },
+  {
+   "n": 9,
+   "say": "아, 서연요.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "서연",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "item": "동전"
+   }
+  }
+ ]
+}

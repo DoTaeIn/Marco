@@ -1,0 +1,271 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_36",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_178",
+  "half": "build",
+  "focus": [
+   "holders",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:relation",
+   "holders:relation_unnamed",
+   "partitives:same",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "transfer_verbs:carry",
+   "transfer_verbs:lend",
+   "transfer_verbs:responsible"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 동생은 색연필 여섯 자루를 들고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:carry"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "동생",
+      "item": "색연필",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "동생",
+      "item": "색연필",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 동료 세영은 색연필 열 자루를 맡고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "세영",
+      "item": "색연필",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "세영",
+      "item": "색연필",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 동생이 세영에게 같은 색연필 다섯 자루를 빌려주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:same",
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "동생",
+      "to": "세영",
+      "item": "색연필",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "동생",
+      "item": "색연필",
+      "quantity": 1
+     },
+     {
+      "entity": "세영",
+      "item": "색연필",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 동생은 색연필을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "동생",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "색연필"
+   }
+  },
+  {
+   "n": 5,
+   "say": "잘못 말했어요, 다섯 자루 말고 두 자루입니다.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "동생",
+      "to": "세영",
+      "item": "색연필",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "동생",
+      "to": "세영",
+      "item": "색연필",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "동생",
+      "item": "색연필",
+      "quantity": 4
+     },
+     {
+      "entity": "세영",
+      "item": "색연필",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "세영은 색연필이 몇 개 남았습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "세영",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "색연필",
+    "retracted_quantity": 15,
+    "reexecuted_quantity": 17
+   }
+  }
+ ]
+}

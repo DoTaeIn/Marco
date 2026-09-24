@@ -4,6 +4,7 @@
  "language": "en",
  "domain": "everyday",
  "categories": [
+  "correction",
   "ownership",
   "transfer"
  ],
@@ -11,40 +12,40 @@
   "word_order": "free",
   "register": "casual",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_en_b_044",
+  "scenario": "s4_en_b_053",
   "half": "build",
   "focus": [
    "fronting",
-   "question_forms",
-   "transfer_verbs"
+   "holders",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:adv_moment",
-   "fronting:front_then",
-   "holders:apposition",
+   "corrections:amount",
    "holders:place",
-   "holders:relation",
+   "holders:relation_unnamed",
+   "holders:title",
    "question_forms:q_hold",
-   "question_forms:q_place_now",
-   "transfer_verbs:leave_at",
-   "transfer_verbs:owns",
-   "transfer_verbs:take_from"
+   "transfer_verbs:receive",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "my nephew Jack has 16 candles.",
+   "say": "my roommate hasn't got any trophies.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "holders:relation_unnamed",
+    "zero_vague:zero"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -60,30 +61,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "Jack",
-      "item": "candles",
-      "quantity": 16
+      "holder": "roommate",
+      "item": "trophies",
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "Jack",
-      "item": "candles",
-      "quantity": 16
+      "entity": "roommate",
+      "item": "trophies",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "the attic holds 5 candles at the moment.",
+   "say": "Dr. Evans only has trophies, 5 of them.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "fronting:adv_moment",
-    "holders:place"
+    "holders:title",
+    "zero_vague:only"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -99,15 +100,15 @@
     "events": [
      {
       "type": "has",
-      "holder": "attic",
-      "item": "candles",
+      "holder": "Evans",
+      "item": "trophies",
       "quantity": 5
      }
     ],
     "state": [
      {
-      "entity": "attic",
-      "item": "candles",
+      "entity": "Evans",
+      "item": "trophies",
       "quantity": 5
      }
     ]
@@ -115,14 +116,14 @@
   },
   {
    "n": 3,
-   "say": "The janitor, Ms. Sanchez, owns 7 candles.",
+   "say": "The attic is in there with some 15 trophies. The attic has 15 of them, actually.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:apposition",
-    "transfer_verbs:owns"
+    "holders:place",
+    "zero_vague:vague_then_exact"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -138,31 +139,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "Sanchez",
-      "item": "candles",
-      "quantity": 7
+      "holder": "attic",
+      "item": "trophies",
+      "quantity": 15
      }
     ],
     "state": [
      {
-      "entity": "Sanchez",
-      "item": "candles",
-      "quantity": 7
+      "entity": "attic",
+      "item": "trophies",
+      "quantity": 15
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "After that, Ms. Sanchez took four candles from the attic.",
+   "say": "my roommate got two trophies from Dr. Evans.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:front_then",
-    "holders:place",
-    "transfer_verbs:take_from"
+    "transfer_verbs:receive"
    ],
    "scenario_turn": 4,
    "expect": {
@@ -178,29 +177,29 @@
     "events": [
      {
       "type": "transfer",
-      "from": "attic",
-      "to": "Sanchez",
-      "item": "candles",
-      "quantity": 4
+      "from": "Evans",
+      "to": "roommate",
+      "item": "trophies",
+      "quantity": 2
      }
     ],
     "state": [
      {
-      "entity": "attic",
-      "item": "candles",
-      "quantity": 1
+      "entity": "Evans",
+      "item": "trophies",
+      "quantity": 3
      },
      {
-      "entity": "Sanchez",
-      "item": "candles",
-      "quantity": 11
+      "entity": "roommate",
+      "item": "trophies",
+      "quantity": 2
      }
     ]
    }
   },
   {
    "n": 5,
-   "say": "How many candles does Ms. Sanchez have now?",
+   "say": "How many trophies does my roommate have now?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -209,66 +208,76 @@
    "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "Sanchez",
-    "quantity": 11,
+    "entity": "roommate",
+    "quantity": 2,
     "relation": "count",
     "evidence": {
      "turns": [
-      3,
+      1,
       4
      ]
     },
-    "item": "candles"
+    "item": "trophies"
    }
   },
   {
    "n": 6,
-   "say": "Ms. Sanchez left them at the attic three candles.",
-   "label": "hold",
+   "say": "Actually it was 1, not 2.",
+   "label": "correction",
    "tags": [
-    "transfer"
+    "correction"
    ],
    "classes": [
-    "holders:place",
-    "transfer_verbs:leave_at"
+    "corrections:amount"
    ],
    "scenario_turn": 6,
    "expect": {
-    "act": "record",
+    "act": "revise",
     "entity": null,
     "quantity": null,
     "relation": null,
     "evidence": {
      "turns": [
+      4,
       6
      ]
     },
-    "events": [
+    "target_turn": 4,
+    "replaces": [
      {
       "type": "transfer",
-      "from": "Sanchez",
-      "to": "attic",
-      "item": "candles",
-      "quantity": 3
+      "from": "Evans",
+      "to": "roommate",
+      "item": "trophies",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Evans",
+      "to": "roommate",
+      "item": "trophies",
+      "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "Sanchez",
-      "item": "candles",
-      "quantity": 8
+      "entity": "Evans",
+      "item": "trophies",
+      "quantity": 4
      },
      {
-      "entity": "attic",
-      "item": "candles",
-      "quantity": 4
+      "entity": "roommate",
+      "item": "trophies",
+      "quantity": 1
      }
     ]
    }
   },
   {
    "n": 7,
-   "say": "How many candles does Ms. Sanchez hold?",
+   "say": "How many trophies does my roommate hold?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -279,72 +288,19 @@
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "Sanchez",
-    "quantity": 8,
+    "entity": "roommate",
+    "quantity": 1,
     "relation": "count",
-    "evidence": {
-     "turns": [
-      3,
-      4,
-      6
-     ]
-    },
-    "item": "candles"
-   }
-  },
-  {
-   "n": 8,
-   "say": "How many candles are in the attic now?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "holders:place",
-    "question_forms:q_place_now"
-   ],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "answer",
-    "entity": "attic",
-    "quantity": 4,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      4,
-      6
-     ]
-    },
-    "item": "candles"
-   }
-  },
-  {
-   "n": 9,
-   "say": "How many candles do Jack and Ms. Sanchez have in total?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "answer",
-    "entity": [
-     "Jack",
-     "Sanchez"
-    ],
-    "quantity": 24,
-    "relation": "total",
     "evidence": {
      "turns": [
       1,
-      3,
       4,
       6
      ]
     },
-    "item": "candles"
+    "item": "trophies",
+    "retracted_quantity": 2,
+    "reexecuted_quantity": 3
    }
   }
  ]

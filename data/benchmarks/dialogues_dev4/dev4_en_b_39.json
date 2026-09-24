@@ -1,0 +1,325 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_39",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_109",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "holders",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "holders:first_person",
+   "question_forms:q_got",
+   "question_forms:q_hold",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:holding",
+   "transfer_verbs:keeps",
+   "transfer_verbs:receive",
+   "transfer_verbs:use_for"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "I'm holding 7 eggs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:holding"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "eggs",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "eggs",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Chloe keeps 9 eggs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:keeps"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Chloe",
+      "item": "eggs",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Chloe",
+      "item": "eggs",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "I got 5 eggs from Chloe.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Chloe",
+      "to": "I",
+      "item": "eggs",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Chloe",
+      "item": "eggs",
+      "quantity": 4
+     },
+     {
+      "entity": "I",
+      "item": "eggs",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many eggs has Chloe got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Chloe",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "eggs"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Chloe handed over two eggs to me, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:first_person",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Chloe",
+      "to": "I",
+      "item": "eggs",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Chloe",
+      "item": "eggs",
+      "quantity": 2
+     },
+     {
+      "entity": "I",
+      "item": "eggs",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many eggs do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "eggs"
+   }
+  },
+  {
+   "n": 7,
+   "say": "I used 3 eggs for the party.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:use_for"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "I",
+      "item": "eggs",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "eggs",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many eggs does I hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "eggs"
+   }
+  }
+ ]
+}

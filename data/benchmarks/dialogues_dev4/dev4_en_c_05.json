@@ -1,0 +1,361 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_05",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_018",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "holders",
+   "partitives"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:place",
+   "holders:relation_unnamed",
+   "partitives:partitive",
+   "question_forms:q_place_now",
+   "transfer_verbs:move"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "There are 11 wrenches in the reception desk.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "reception desk",
+      "item": "wrenches",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "reception desk",
+      "item": "wrenches",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "There are 15 wrenches in the storage room.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "storage room",
+      "item": "wrenches",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "storage room",
+      "item": "wrenches",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my brother is holding 4 wrenches.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "brother",
+      "item": "wrenches",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "brother",
+      "item": "wrenches",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "We moved 4 of them from the storage room to the reception desk.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "partitives:partitive",
+    "transfer_verbs:move"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "storage room",
+      "to": "reception desk",
+      "item": "wrenches",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "storage room",
+      "item": "wrenches",
+      "quantity": 11
+     },
+     {
+      "entity": "reception desk",
+      "item": "wrenches",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many wrenches are in the storage room now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "storage room",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "wrenches"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many wrenches are in the reception desk now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "reception desk",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "wrenches"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Actually, it was 13, not 4.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      7
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "storage room",
+      "to": "reception desk",
+      "item": "wrenches",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "storage room",
+      "to": "reception desk",
+      "item": "wrenches",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "storage room",
+      "item": "wrenches",
+      "quantity": 2
+     },
+     {
+      "entity": "reception desk",
+      "item": "wrenches",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many wrenches are in the storage room now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "storage room",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "wrenches",
+    "retracted_quantity": 11,
+    "reexecuted_quantity": -2
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many wrenches do the reception desk and the storage room have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "reception desk",
+     "storage room"
+    ],
+    "quantity": 26,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "wrenches"
+   }
+  }
+ ]
+}

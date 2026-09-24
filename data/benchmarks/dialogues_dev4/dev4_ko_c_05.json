@@ -1,0 +1,257 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_05",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_014",
+  "half": "check",
+  "focus": [
+   "holders",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation",
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:borrow"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "미경은 명찰이 열세 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "미경",
+      "item": "명찰",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "미경",
+      "item": "명찰",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "미경 후배 지영은 명찰 열다섯 개가 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지영",
+      "item": "명찰",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "지영",
+      "item": "명찰",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "지영이 미경한테 명찰 네 개를 빌렸습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "미경",
+      "to": "지영",
+      "item": "명찰",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "미경",
+      "item": "명찰",
+      "quantity": 9
+     },
+     {
+      "entity": "지영",
+      "item": "명찰",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "미경은 지금 명찰이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "미경",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "명찰"
+   }
+  },
+  {
+   "n": 5,
+   "say": "지영은 명찰을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "지영",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "명찰"
+   }
+  },
+  {
+   "n": 6,
+   "say": "미경과 지영 중 누가 지금 명찰을 더 많이 가지고 있는지 났습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "지영",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "미경",
+     "지영"
+    ],
+    "item": "명찰",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 7,
+   "say": "두 사람이 합쳐서 명찰이 모두 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "미경",
+     "지영"
+    ],
+    "quantity": 28,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "명찰"
+   }
+  }
+ ]
+}

@@ -1,0 +1,399 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_11",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_036",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:adv_apparently",
+   "fronting:front_then",
+   "holders:first_person",
+   "question_forms:q_left",
+   "question_forms:q_two_total",
+   "transfer_verbs:lend",
+   "transfer_verbs:pass",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Rosa hasn't got any chargers.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Rosa",
+      "item": "chargers",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rosa",
+      "item": "chargers",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "I have some chargers, actually. 11 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "chargers",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "chargers",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Then I passed 4 chargers to Rosa.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:first_person",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "I",
+      "to": "Rosa",
+      "item": "chargers",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "chargers",
+      "quantity": 7
+     },
+     {
+      "entity": "Rosa",
+      "item": "chargers",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many chargers do I have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "chargers"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Rosa lent me three chargers, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:first_person",
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Rosa",
+      "to": "I",
+      "item": "chargers",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rosa",
+      "item": "chargers",
+      "quantity": 1
+     },
+     {
+      "entity": "I",
+      "item": "chargers",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many chargers does Rosa have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Rosa",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "chargers"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Actually, it was 1, not 3.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5,
+      7
+     ]
+    },
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Rosa",
+      "to": "I",
+      "item": "chargers",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Rosa",
+      "to": "I",
+      "item": "chargers",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rosa",
+      "item": "chargers",
+      "quantity": 3
+     },
+     {
+      "entity": "I",
+      "item": "chargers",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many chargers does Rosa have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Rosa",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "chargers",
+    "retracted_quantity": 1,
+    "reexecuted_quantity": 0
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many chargers do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Rosa",
+     "I"
+    ],
+    "quantity": 11,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "chargers"
+   }
+  },
+  {
+   "n": 10,
+   "say": "Why does Rosa have that many chargers now?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "explain",
+    "entity": "Rosa",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "chargers"
+   }
+  }
+ ]
+}

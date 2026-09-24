@@ -1,0 +1,216 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_17",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_043",
+  "half": "check",
+  "focus": [
+   "holders",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation_unnamed",
+   "transfer_verbs:give_back",
+   "zero_vague:also_some",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "유준은 건전지만 열한 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "유준",
+      "item": "건전지",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "유준",
+      "item": "건전지",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 조카는 건전지가 여덟 개 있고 망치도 좀 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "조카",
+      "item": "건전지",
+      "quantity": 8
+     },
+     {
+      "type": "has",
+      "holder": "조카",
+      "item": "망치",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "조카",
+      "item": "건전지",
+      "quantity": 8
+     },
+     {
+      "entity": "조카",
+      "item": "망치",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "유준이 제 조카한테 건전지 한 개를 돌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "유준",
+      "to": "조카",
+      "item": "건전지",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "유준",
+      "item": "건전지",
+      "quantity": 10
+     },
+     {
+      "entity": "조카",
+      "item": "건전지",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 조카는 지금 건전지가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "조카",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "건전지"
+   }
+  },
+  {
+   "n": 5,
+   "say": "유준과 제 조카는 합쳐서 건전지가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "유준",
+     "조카"
+    ],
+    "quantity": 19,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "건전지"
+   }
+  }
+ ]
+}

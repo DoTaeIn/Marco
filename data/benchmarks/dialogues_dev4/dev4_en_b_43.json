@@ -1,0 +1,282 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_43",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "multi_fact",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_120",
+  "half": "build",
+  "focus": [
+   "question_forms",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation",
+   "question_forms:q_got",
+   "question_forms:q_two_total",
+   "transfer_verbs:transfer",
+   "zero_vague:also_some",
+   "zero_vague:vague_asked"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My aunt Nina has 3 envelopes and also some muffins.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Nina",
+      "item": "envelopes",
+      "quantity": 3
+     },
+     {
+      "type": "has",
+      "holder": "Nina",
+      "item": "muffins",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Nina",
+      "item": "envelopes",
+      "quantity": 3
+     },
+     {
+      "entity": "Nina",
+      "item": "muffins",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My classmate Molly has 15 envelopes and also some muffins.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Molly",
+      "item": "envelopes",
+      "quantity": 15
+     },
+     {
+      "type": "has",
+      "holder": "Molly",
+      "item": "muffins",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Molly",
+      "item": "envelopes",
+      "quantity": 15
+     },
+     {
+      "entity": "Molly",
+      "item": "muffins",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "How many muffins does Nina have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "hold",
+    "entity": "Nina",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "muffins"
+   }
+  },
+  {
+   "n": 4,
+   "say": "Molly transferred two envelopes to Nina.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:transfer"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Molly",
+      "to": "Nina",
+      "item": "envelopes",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Molly",
+      "item": "envelopes",
+      "quantity": 13
+     },
+     {
+      "entity": "Nina",
+      "item": "envelopes",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many envelopes has Molly got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Molly",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "envelopes"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many envelopes does Nina have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Nina",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "envelopes"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many envelopes do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Nina",
+     "Molly"
+    ],
+    "quantity": 18,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "envelopes"
+   }
+  }
+ ]
+}

@@ -5,39 +5,47 @@
  "domain": "everyday",
  "categories": [
   "ownership",
-  "transfer",
-  "why"
+  "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "formal",
+  "register": "casual",
   "split": "one_fact_per_turn",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_en_b_073",
+  "scenario": "s4_en_b_074",
   "half": "build",
   "focus": [
    "fronting",
-   "holders",
-   "question_forms"
+   "question_forms",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
+   "fronting:front_purpose",
+   "fronting:front_then",
    "holders:first_person",
-   "holders:relation_unnamed",
-   "transfer_verbs:receive"
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:borrow",
+   "transfer_verbs:lend",
+   "zero_vague:only",
+   "zero_vague:zero"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "Paul is responsible for 14 eggs.",
+   "say": "I haven't got any eggs.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:zero"
+   ],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -52,29 +60,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "Paul",
+      "holder": "I",
       "item": "eggs",
-      "quantity": 14
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "Paul",
+      "entity": "I",
       "item": "eggs",
-      "quantity": 14
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "I have 16 eggs.",
+   "say": "Yusuf only has eggs, 6 of them.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:first_person"
+    "zero_vague:only"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -90,29 +98,31 @@
     "events": [
      {
       "type": "has",
-      "holder": "I",
+      "holder": "Yusuf",
       "item": "eggs",
-      "quantity": 16
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "I",
+      "entity": "Yusuf",
       "item": "eggs",
-      "quantity": 16
+      "quantity": 6
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "my teammate has got 3 eggs.",
+   "say": "After that, I borrowed 4 eggs from Yusuf.",
    "label": "hold",
    "tags": [
-    "ownership"
+    "transfer"
    ],
    "classes": [
-    "holders:relation_unnamed"
+    "fronting:front_then",
+    "holders:first_person",
+    "transfer_verbs:borrow"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -127,60 +137,21 @@
     },
     "events": [
      {
-      "type": "has",
-      "holder": "teammate",
-      "item": "eggs",
-      "quantity": 3
-     }
-    ],
-    "state": [
-     {
-      "entity": "teammate",
-      "item": "eggs",
-      "quantity": 3
-     }
-    ]
-   }
-  },
-  {
-   "n": 4,
-   "say": "My teammate got one egg from me.",
-   "label": "hold",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "holders:first_person",
-    "transfer_verbs:receive"
-   ],
-   "scenario_turn": 4,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      4
-     ]
-    },
-    "events": [
-     {
       "type": "transfer",
-      "from": "I",
-      "to": "teammate",
+      "from": "Yusuf",
+      "to": "I",
       "item": "eggs",
-      "quantity": 1
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "I",
+      "entity": "Yusuf",
       "item": "eggs",
-      "quantity": 15
+      "quantity": 2
      },
      {
-      "entity": "teammate",
+      "entity": "I",
       "item": "eggs",
       "quantity": 4
      }
@@ -188,23 +159,50 @@
    }
   },
   {
-   "n": 5,
-   "say": "How many eggs does my teammate have now?",
+   "n": 4,
+   "say": "How many eggs does Yusuf hold?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Yusuf",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "eggs"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many eggs do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
    "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "teammate",
+    "entity": "I",
     "quantity": 4,
     "relation": "count",
     "evidence": {
      "turns": [
-      3,
-      4
+      1,
+      3
      ]
     },
     "item": "eggs"
@@ -212,48 +210,102 @@
   },
   {
    "n": 6,
-   "say": "How many eggs do Paul and I have in total?",
+   "say": "For the trip, I lent Yusuf three eggs.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "holders:first_person",
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "I",
+      "to": "Yusuf",
+      "item": "eggs",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "eggs",
+      "quantity": 1
+     },
+     {
+      "entity": "Yusuf",
+      "item": "eggs",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many eggs do I hold now?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [],
-   "scenario_turn": 6,
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": [
-     "Paul",
-     "I"
-    ],
-    "quantity": 29,
-    "relation": "total",
+    "entity": "I",
+    "quantity": 1,
+    "relation": "count",
     "evidence": {
      "turns": [
       1,
-      2,
-      4
+      3,
+      6
      ]
     },
     "item": "eggs"
    }
   },
   {
-   "n": 7,
-   "say": "Why does Paul have that many eggs now?",
-   "label": "why",
+   "n": 8,
+   "say": "How many eggs do the two of them have in total?",
+   "label": "answerable",
    "tags": [
-    "why"
+    "transfer"
    ],
-   "classes": [],
-   "scenario_turn": 7,
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 8,
    "expect": {
-    "act": "explain",
-    "entity": "Paul",
-    "quantity": 14,
-    "relation": "count",
+    "act": "answer",
+    "entity": [
+     "I",
+     "Yusuf"
+    ],
+    "quantity": 6,
+    "relation": "total",
     "evidence": {
      "turns": [
-      1
+      1,
+      2,
+      3,
+      6
      ]
     },
     "item": "eggs"

@@ -1,0 +1,334 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_29",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_115",
+  "half": "check",
+  "focus": [
+   "holders",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:relation_unnamed",
+   "holders:title",
+   "question_forms:q_hold",
+   "transfer_verbs:give_back",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:keep"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 친구는 소설 책 여덟 권을 보관하고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:keep"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "친구",
+      "item": "소설책",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "친구",
+      "item": "소설책",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "시우 씨는 소설책 열여섯 권이 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "시우",
+      "item": "소설책",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "시우",
+      "item": "소설책",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 친구가 시우 씨한테 소설책 세 권을 돌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "친구",
+      "to": "시우",
+      "item": "소설책",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "친구",
+      "item": "소설책",
+      "quantity": 5
+     },
+     {
+      "entity": "시우",
+      "item": "소설책",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "시우 씨는 소설책을 몇 권 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "시우",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "소설책"
+   }
+  },
+  {
+   "n": 5,
+   "say": "시우 씨가 제 친구한테 소설책 두 권을 건네줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "시우",
+      "to": "친구",
+      "item": "소설책",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "시우",
+      "item": "소설책",
+      "quantity": 17
+     },
+     {
+      "entity": "친구",
+      "item": "소설책",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "시우 씨한테 소설책이 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "시우",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "소설책"
+   }
+  },
+  {
+   "n": 7,
+   "say": "아, 두 권이 아니라 여섯 권였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5,
+      7
+     ]
+    },
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "시우",
+      "to": "친구",
+      "item": "소설책",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "시우",
+      "to": "친구",
+      "item": "소설책",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "시우",
+      "item": "소설책",
+      "quantity": 13
+     },
+     {
+      "entity": "친구",
+      "item": "소설책",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "시우 씨는 지금 소설책이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "시우",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "소설책",
+    "retracted_quantity": 17,
+    "reexecuted_quantity": 11
+   }
+  }
+ ]
+}

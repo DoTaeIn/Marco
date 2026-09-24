@@ -1,0 +1,295 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_10",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_033",
+  "half": "check",
+  "focus": [
+   "holders",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:apposition",
+   "holders:relation_unnamed",
+   "partitives:partitive",
+   "question_forms:q_left",
+   "question_forms:q_two_total",
+   "transfer_verbs:give_back"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my partner has 10 towels",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "partner",
+      "item": "towels",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "partner",
+      "item": "towels",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Our coach, Mr. Nelson, has got 9 towels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Nelson",
+      "item": "towels",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Nelson",
+      "item": "towels",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my partner gave back 2 of his towels to Mr. Nelson.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "partner",
+      "to": "Nelson",
+      "item": "towels",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "partner",
+      "item": "towels",
+      "quantity": 8
+     },
+     {
+      "entity": "Nelson",
+      "item": "towels",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many towels does Mr. Nelson have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Nelson",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "towels"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Actually, it was 4, not 2.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "partner",
+      "to": "Nelson",
+      "item": "towels",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "partner",
+      "to": "Nelson",
+      "item": "towels",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "partner",
+      "item": "towels",
+      "quantity": 6
+     },
+     {
+      "entity": "Nelson",
+      "item": "towels",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many towels does Mr. Nelson have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Nelson",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "towels",
+    "retracted_quantity": 11,
+    "reexecuted_quantity": 15
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many towels do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "partner",
+     "Nelson"
+    ],
+    "quantity": 19,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "towels"
+   }
+  }
+ ]
+}

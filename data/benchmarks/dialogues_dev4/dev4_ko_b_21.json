@@ -4,46 +4,51 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
+  "ambiguous_referent",
+  "follow_up",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
   "register": "haeyo",
-  "split": "one_fact_per_turn",
+  "split": "multi_fact",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_076",
+  "scenario": "s4_ko_b_122",
   "half": "build",
   "focus": [
-   "fronting",
-   "holders",
+   "referent_repairs",
+   "transfer_verbs",
    "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:count_first",
+   "holders:apposition",
    "holders:first_person",
-   "holders:relation",
+   "holders:title",
+   "question_forms:q_hold",
    "question_forms:q_left",
-   "question_forms:q_two_total",
-   "transfer_verbs:give_back",
-   "zero_vague:only",
-   "zero_vague:vague_then_exact"
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:lend",
+   "zero_vague:also_some",
+   "zero_vague:only"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 동생 유찬은 음료수만 아홉 병 있어요.",
+   "say": "사서 채원 씨가 쿠키가 열 개 있고 레몬도 좀 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation",
-    "zero_vague:only"
+    "holders:apposition",
+    "zero_vague:also_some"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -59,30 +64,41 @@
     "events": [
      {
       "type": "has",
-      "holder": "유찬",
-      "item": "음료수",
-      "quantity": 9
+      "holder": "채원",
+      "item": "쿠키",
+      "quantity": 10
+     },
+     {
+      "type": "has",
+      "holder": "채원",
+      "item": "레몬",
+      "quantity": null
      }
     ],
     "state": [
      {
-      "entity": "유찬",
-      "item": "음료수",
-      "quantity": 9
+      "entity": "채원",
+      "item": "쿠키",
+      "quantity": 10
+     },
+     {
+      "entity": "채원",
+      "item": "레몬",
+      "quantity": null
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "저도 음료수가 좀 있어요. 세어 보니 여덟 병네요.",
+   "say": "황 팀장님은 쿠키만 여섯 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:first_person",
-    "zero_vague:vague_then_exact"
+    "holders:title",
+    "zero_vague:only"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -98,31 +114,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "나",
-      "item": "음료수",
-      "quantity": 8
+      "holder": "황 팀장",
+      "item": "쿠키",
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "나",
-      "item": "음료수",
-      "quantity": 8
+      "entity": "황 팀장",
+      "item": "쿠키",
+      "quantity": 6
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "음료수 다섯 병를 유찬이 저한테 돌려줬어요.",
+   "say": "저는 쿠키 아홉 개만 있어요.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "fronting:count_first",
     "holders:first_person",
-    "transfer_verbs:give_back"
+    "zero_vague:only"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -137,85 +152,101 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "유찬",
-      "to": "나",
-      "item": "음료수",
-      "quantity": 5
+      "type": "has",
+      "holder": "나",
+      "item": "쿠키",
+      "quantity": 9
      }
     ],
     "state": [
      {
-      "entity": "유찬",
-      "item": "음료수",
-      "quantity": 4
-     },
-     {
       "entity": "나",
-      "item": "음료수",
-      "quantity": 13
+      "item": "쿠키",
+      "quantity": 9
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "저는 지금 음료수가 몇 병 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "holders:first_person"
-   ],
-   "scenario_turn": 4,
-   "expect": {
-    "act": "answer",
-    "entity": "나",
-    "quantity": 13,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      3
-     ]
-    },
-    "item": "음료수"
-   }
-  },
-  {
-   "n": 5,
-   "say": "유찬이 지금 음료수가 몇 병 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "answer",
-    "entity": "유찬",
-    "quantity": 4,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3
-     ]
-    },
-    "item": "음료수"
-   }
-  },
-  {
-   "n": 6,
-   "say": "음료수 네 병를 제가 유찬한테 주었어요.",
+   "say": "황 팀장님은 저한테 쿠키 다섯 개를 건네주었어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:count_first",
-    "holders:first_person"
+    "holders:first_person",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "황 팀장",
+      "to": "나",
+      "item": "쿠키",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "황 팀장",
+      "item": "쿠키",
+      "quantity": 1
+     },
+     {
+      "entity": "나",
+      "item": "쿠키",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "황 팀장님은 쿠키를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "황 팀장",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "쿠키"
+   }
+  },
+  {
+   "n": 6,
+   "say": "채원 씨가 저한테 쿠키 한 개를 빌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:lend"
    ],
    "scenario_turn": 6,
    "expect": {
@@ -231,81 +262,129 @@
     "events": [
      {
       "type": "transfer",
-      "from": "나",
-      "to": "유찬",
-      "item": "음료수",
-      "quantity": 4
+      "from": "채원",
+      "to": "나",
+      "item": "쿠키",
+      "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "나",
-      "item": "음료수",
+      "entity": "채원",
+      "item": "쿠키",
       "quantity": 9
      },
      {
-      "entity": "유찬",
-      "item": "음료수",
-      "quantity": 8
+      "entity": "나",
+      "item": "쿠키",
+      "quantity": 15
      }
     ]
    }
   },
   {
    "n": 7,
-   "say": "저는 음료수가 몇 개 남아 있어요?",
+   "say": "채원 씨는 쿠키가 몇 개 남았어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "holders:first_person",
     "question_forms:q_left"
    ],
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "나",
+    "entity": "채원",
     "quantity": 9,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
-      3,
+      1,
       6
      ]
     },
-    "item": "음료수"
+    "item": "쿠키"
    }
   },
   {
    "n": 8,
-   "say": "둘이 합쳐서 음료수가 모두 몇 개예요?",
+   "say": "그분은 지금 쿠키가 몇 개 있어요?",
    "label": "answerable",
    "tags": [
-    "transfer"
+    "ambiguous_referent",
+    "follow_up"
    ],
    "classes": [
-    "question_forms:q_two_total"
+    "referent_repairs:pronoun_fixed"
    ],
    "scenario_turn": 8,
    "expect": {
     "act": "answer",
+    "entity": "채원",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      6
+     ]
+    },
+    "item": "쿠키"
+   }
+  },
+  {
+   "n": 9,
+   "say": "아, 황 팀장요.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "황 팀장",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "쿠키"
+   }
+  },
+  {
+   "n": 10,
+   "say": "채원 씨와 황 팀장님이 합쳐서 쿠키가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
     "entity": [
-     "유찬",
-     "나"
+     "채원",
+     "황 팀장"
     ],
-    "quantity": 17,
+    "quantity": 10,
     "relation": "total",
     "evidence": {
      "turns": [
       1,
       2,
-      3,
+      4,
       6
      ]
     },
-    "item": "음료수"
+    "item": "쿠키"
    }
   }
  ]

@@ -1,0 +1,402 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_31",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "correction",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_098",
+  "half": "check",
+  "focus": [
+   "partitives",
+   "referent_repairs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:recipient",
+   "holders:apposition",
+   "holders:relation",
+   "partitives:gave_them_not",
+   "question_forms:q_got",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "transfer_verbs:transfer",
+   "zero_vague:also_some",
+   "zero_vague:only",
+   "zero_vague:vague_asked"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My friend Noah only has rulers, 7 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Noah",
+      "item": "rulers",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Noah",
+      "item": "rulers",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The courier, Ms. Davis, has 11 rulers.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Davis",
+      "item": "rulers",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Davis",
+      "item": "rulers",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Omar has 16 rulers and also some sandwiches.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Omar",
+      "item": "rulers",
+      "quantity": 16
+     },
+     {
+      "type": "has",
+      "holder": "Omar",
+      "item": "sandwiches",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Omar",
+      "item": "rulers",
+      "quantity": 16
+     },
+     {
+      "entity": "Omar",
+      "item": "sandwiches",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many sandwiches does Omar have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "hold",
+    "entity": "Omar",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "item": "sandwiches"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Noah transferred three rulers to Ms. Davis.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:transfer"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Noah",
+      "to": "Davis",
+      "item": "rulers",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Noah",
+      "item": "rulers",
+      "quantity": 4
+     },
+     {
+      "entity": "Davis",
+      "item": "rulers",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many rulers does Ms. Davis have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Davis",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      5
+     ]
+    },
+    "item": "rulers"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Wait, Noah gave them to Omar, not Ms. Davis.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:recipient",
+    "partitives:gave_them_not"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5,
+      7
+     ]
+    },
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Noah",
+      "to": "Davis",
+      "item": "rulers",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Noah",
+      "to": "Omar",
+      "item": "rulers",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Noah",
+      "item": "rulers",
+      "quantity": 4
+     },
+     {
+      "entity": "Davis",
+      "item": "rulers",
+      "quantity": 11
+     },
+     {
+      "entity": "Omar",
+      "item": "rulers",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many rulers has Omar got now?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Omar",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      7
+     ]
+    },
+    "item": "rulers"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many rulers does Noah have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Noah",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5,
+      7
+     ]
+    },
+    "item": "rulers",
+    "reexecuted_quantity": 1
+   }
+  },
+  {
+   "n": 10,
+   "say": "Ms. Davis, I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "Davis",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      5,
+      7
+     ]
+    },
+    "item": "rulers",
+    "retracted_quantity": 14
+   }
+  }
+ ]
+}

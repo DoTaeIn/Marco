@@ -152,7 +152,7 @@
   },
   {
    "n": 4,
-   "say": "I gave back four eggs to Jasmine, who had them before.",
+   "say": "I gave back four eggs to Jasmine.",
    "label": "hold",
    "tags": [
     "transfer"

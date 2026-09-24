@@ -14,31 +14,34 @@
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_028",
+  "scenario": "s4_ko_b_036",
   "half": "build",
   "focus": [
    "fronting",
-   "holders",
-   "question_forms"
+   "partitives",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:count_first",
-   "holders:relation",
+   "fronting:front_purpose",
    "question_forms:q_hold",
-   "transfer_verbs:give_back"
+   "question_forms:q_left",
+   "transfer_verbs:use_for",
+   "zero_vague:exact_later",
+   "zero_vague:vague",
+   "zero_vague:zero"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 동기 서준은 레몬 열여섯 개가 있어요.",
+   "say": "연서는 볼펜이 좀 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "zero_vague:vague"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -54,28 +57,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "서준",
-      "item": "레몬",
-      "quantity": 16
+      "holder": "연서",
+      "item": "볼펜",
+      "quantity": null
      }
     ],
     "state": [
      {
-      "entity": "서준",
-      "item": "레몬",
-      "quantity": 16
+      "entity": "연서",
+      "item": "볼펜",
+      "quantity": null
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "유나는 레몬이 여덟 개 있어요.",
+   "say": "소율한테는 볼펜이 하나도 없어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [],
+   "classes": [
+    "zero_vague:zero"
+   ],
    "scenario_turn": 2,
    "expect": {
     "act": "record",
@@ -90,30 +95,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "유나",
-      "item": "레몬",
-      "quantity": 8
+      "holder": "소율",
+      "item": "볼펜",
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "유나",
-      "item": "레몬",
-      "quantity": 8
+      "entity": "소율",
+      "item": "볼펜",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "레몬 세 개를 유나가 서준한테 돌려줬어요.",
+   "say": "연서는 볼펜이 여덟 자루예요.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "fronting:count_first",
-    "transfer_verbs:give_back"
+    "zero_vague:exact_later"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -128,75 +132,222 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "유나",
-      "to": "서준",
-      "item": "레몬",
-      "quantity": 3
+      "type": "has",
+      "holder": "연서",
+      "item": "볼펜",
+      "quantity": 8
      }
     ],
     "state": [
      {
-      "entity": "유나",
-      "item": "레몬",
-      "quantity": 5
-     },
-     {
-      "entity": "서준",
-      "item": "레몬",
-      "quantity": 19
+      "entity": "연서",
+      "item": "볼펜",
+      "quantity": 8
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "서준이 지금 레몬을 몇 개 가지고 있어요?",
-   "label": "answerable",
+   "say": "연서가 소율한테 볼펜 다섯 자루를 줬어요.",
+   "label": "hold",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
+   "classes": [],
    "scenario_turn": 4,
    "expect": {
-    "act": "answer",
-    "entity": "서준",
-    "quantity": 19,
-    "relation": "count",
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
     "evidence": {
      "turns": [
-      1,
-      3
+      4
      ]
     },
-    "item": "레몬"
+    "events": [
+     {
+      "type": "transfer",
+      "from": "연서",
+      "to": "소율",
+      "item": "볼펜",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "연서",
+      "item": "볼펜",
+      "quantity": 3
+     },
+     {
+      "entity": "소율",
+      "item": "볼펜",
+      "quantity": 5
+     }
+    ]
    }
   },
   {
    "n": 5,
-   "say": "유나는 레몬을 몇 개 가지고 있어요?",
+   "say": "소율은 볼펜이 몇 개 남았어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "question_forms:q_hold"
+    "question_forms:q_left"
    ],
    "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "유나",
+    "entity": "소율",
     "quantity": 5,
     "relation": "count",
     "evidence": {
      "turns": [
       2,
-      3
+      4
      ]
     },
-    "item": "레몬"
+    "item": "볼펜"
+   }
+  },
+  {
+   "n": 6,
+   "say": "이사 준비로, 연서가 소율한테 볼펜 한 자루를 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "연서",
+      "to": "소율",
+      "item": "볼펜",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "연서",
+      "item": "볼펜",
+      "quantity": 2
+     },
+     {
+      "entity": "소율",
+      "item": "볼펜",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "소율은 볼펜을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "소율",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "볼펜"
+   }
+  },
+  {
+   "n": 8,
+   "say": "연서가 행사에 볼펜 한 자루를 썼어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:use_for"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "연서",
+      "item": "볼펜",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "연서",
+      "item": "볼펜",
+      "quantity": 1
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "연서는 볼펜이 몇 개 남았어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "연서",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4,
+      6,
+      8
+     ]
+    },
+    "item": "볼펜"
    }
   }
  ]

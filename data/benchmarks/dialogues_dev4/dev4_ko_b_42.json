@@ -1,0 +1,284 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_42",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_208",
+  "half": "build",
+  "focus": [
+   "korean_register",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "transfer_verbs:hand_over",
+   "zero_vague:also_some",
+   "zero_vague:vague",
+   "zero_vague:vague_asked",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 선배 연우는 국자를 좀 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "연우",
+      "item": "국자",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "연우",
+      "item": "국자",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 동생은 국자가 열세 개 있습니다. 그리고 휴지도 좀 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "동생",
+      "item": "국자",
+      "quantity": 13
+     },
+     {
+      "type": "has",
+      "holder": "동생",
+      "item": "휴지",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "동생",
+      "item": "국자",
+      "quantity": 13
+     },
+     {
+      "entity": "동생",
+      "item": "휴지",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "민서는 국자가 하나도 없습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "민서",
+      "item": "국자",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "민서",
+      "item": "국자",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 동생한테 휴지가 지금 몇 묶음 있습니까?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "hold",
+    "entity": "동생",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "item": "휴지"
+   }
+  },
+  {
+   "n": 5,
+   "say": "제 동생이 민서한테 국자 세 개를 건네주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "동생",
+      "to": "민서",
+      "item": "국자",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "동생",
+      "item": "국자",
+      "quantity": 10
+     },
+     {
+      "entity": "민서",
+      "item": "국자",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 동생은 국자를 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "동생",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      5
+     ]
+    },
+    "item": "국자"
+   }
+  },
+  {
+   "n": 7,
+   "say": "민서는 국자를 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "민서",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "item": "국자"
+   }
+  }
+ ]
+}

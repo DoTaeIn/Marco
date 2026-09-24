@@ -1,0 +1,359 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_41",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "missing_premise",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_172",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "partitives",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:count_first",
+   "question_forms:q_hold",
+   "transfer_verbs:hand_over",
+   "zero_vague:exact_later",
+   "zero_vague:only",
+   "zero_vague:vague",
+   "zero_vague:vague_asked"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "서연은 망치가 좀 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서연",
+      "item": "망치",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "서연",
+      "item": "망치",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "하은은 망치만 열네 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "하은",
+      "item": "망치",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "하은",
+      "item": "망치",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "서연은 지금 망치가 몇 개 있어요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "hold",
+    "entity": "서연",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "망치"
+   }
+  },
+  {
+   "n": 4,
+   "say": "서연은 망치가 열한 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:exact_later"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서연",
+      "item": "망치",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "서연",
+      "item": "망치",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "망치 다섯 개를 서연이 하은에게 건네주었어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "서연",
+      "to": "하은",
+      "item": "망치",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "서연",
+      "item": "망치",
+      "quantity": 6
+     },
+     {
+      "entity": "하은",
+      "item": "망치",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "서연은 망치를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "서연",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "망치"
+   }
+  },
+  {
+   "n": 7,
+   "say": "아, 다섯 개가 아니라 여섯 개였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5,
+      7
+     ]
+    },
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "서연",
+      "to": "하은",
+      "item": "망치",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "서연",
+      "to": "하은",
+      "item": "망치",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "서연",
+      "item": "망치",
+      "quantity": 5
+     },
+     {
+      "entity": "하은",
+      "item": "망치",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "서연은 망치를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "서연",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5,
+      7
+     ]
+    },
+    "item": "망치",
+    "retracted_quantity": 6,
+    "reexecuted_quantity": 0
+   }
+  },
+  {
+   "n": 9,
+   "say": "서연이 지금 망치가 왜 그만큼 가지고 있는지요?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "explain",
+    "entity": "서연",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5,
+      7
+     ]
+    },
+    "item": "망치"
+   }
+  }
+ ]
+}

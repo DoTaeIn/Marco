@@ -1,0 +1,304 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_31",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_119",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "referent_repairs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:first_person",
+   "holders:relation",
+   "holders:relation_unnamed",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "transfer_verbs:hand_over"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "나는 여행가방 열여섯 개를 맡고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "여행가방",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "여행가방",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "내 조카는 여행가방 일곱 개 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "조카",
+      "item": "여행가방",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "조카",
+      "item": "여행가방",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "준서는 여행가방 열 개를 맡고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "준서",
+      "item": "여행가방",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "준서",
+      "item": "여행가방",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "준서 이웃 수빈은 여행가방 열세 개를 보관하고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "수빈",
+      "item": "여행가방",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "수빈",
+      "item": "여행가방",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "수빈이가 내 조카한테 여행가방 한 개를 건넸어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "수빈",
+      "to": "조카",
+      "item": "여행가방",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "수빈",
+      "item": "여행가방",
+      "quantity": 12
+     },
+     {
+      "entity": "조카",
+      "item": "여행가방",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "내 조카는 여행가방이 몇 개 남았어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "조카",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      5
+     ]
+    },
+    "item": "여행가방"
+   }
+  },
+  {
+   "n": 7,
+   "say": "수빈은 지금 여행가방이 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "수빈",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4,
+      5
+     ]
+    },
+    "item": "여행가방"
+   }
+  },
+  {
+   "n": 8,
+   "say": "준서를 말한 거야.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "ownership"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "준서",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "여행가방"
+   }
+  }
+ ]
+}

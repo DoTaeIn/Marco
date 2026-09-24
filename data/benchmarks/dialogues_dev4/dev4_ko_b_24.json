@@ -4,45 +4,46 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
+  "correction",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "haeyo",
+  "register": "hapsyo",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_104",
+  "scenario": "s4_ko_b_130",
   "half": "build",
   "focus": [
-   "fronting",
-   "holders",
-   "korean_register"
+   "korean_register",
+   "question_forms",
+   "transfer_verbs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:adv_moment",
-   "fronting:count_first",
-   "holders:relation_unnamed",
-   "holders:title",
+   "corrections:amount",
+   "holders:apposition",
+   "holders:relation",
    "question_forms:q_hold",
-   "transfer_verbs:give_back",
-   "transfer_verbs:pass",
+   "transfer_verbs:hold",
+   "transfer_verbs:keep",
    "transfer_verbs:send"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 팀원은 볼펜 여덟 자루를 보관하고 있어요.",
+   "say": "제 동료 시은은 도넛 열네 개를 가지고 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation_unnamed"
+    "holders:relation",
+    "transfer_verbs:hold"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -58,30 +59,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "팀원",
-      "item": "볼펜",
-      "quantity": 8
+      "holder": "시은",
+      "item": "도넛",
+      "quantity": 14
      }
     ],
     "state": [
      {
-      "entity": "팀원",
-      "item": "볼펜",
-      "quantity": 8
+      "entity": "시은",
+      "item": "도넛",
+      "quantity": 14
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "서준 씨는 현재 볼펜이 네 자루 있어요.",
+   "say": "사서 도윤 씨가 도넛 일곱 개를 보관하고 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "fronting:adv_moment",
-    "holders:title"
+    "holders:apposition",
+    "transfer_verbs:keep"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -97,29 +98,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "서준",
-      "item": "볼펜",
-      "quantity": 4
+      "holder": "도윤",
+      "item": "도넛",
+      "quantity": 7
      }
     ],
     "state": [
      {
-      "entity": "서준",
-      "item": "볼펜",
-      "quantity": 4
+      "entity": "도윤",
+      "item": "도넛",
+      "quantity": 7
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "서준 씨가 제 팀원한테 볼펜 두 자루를 넘겼어요.",
+   "say": "도윤씨가 시은한테 도넛 두 개를 보냈습니다.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:pass"
+    "transfer_verbs:send"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -135,29 +136,29 @@
     "events": [
      {
       "type": "transfer",
-      "from": "서준",
-      "to": "팀원",
-      "item": "볼펜",
+      "from": "도윤",
+      "to": "시은",
+      "item": "도넛",
       "quantity": 2
      }
     ],
     "state": [
      {
-      "entity": "서준",
-      "item": "볼펜",
-      "quantity": 2
+      "entity": "도윤",
+      "item": "도넛",
+      "quantity": 5
      },
      {
-      "entity": "팀원",
-      "item": "볼펜",
-      "quantity": 10
+      "entity": "시은",
+      "item": "도넛",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "서준씨한테 볼펜이 지금 몇 개 있어요?",
+   "say": "도윤 씨한테 도넛이 지금 몇 개 있습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -166,8 +167,8 @@
    "scenario_turn": 4,
    "expect": {
     "act": "answer",
-    "entity": "서준",
-    "quantity": 2,
+    "entity": "도윤",
+    "quantity": 5,
     "relation": "count",
     "evidence": {
      "turns": [
@@ -175,57 +176,90 @@
       3
      ]
     },
-    "item": "볼펜"
+    "item": "도넛"
    }
   },
   {
    "n": 5,
-   "say": "볼펜 다섯 자루를 제 팀원이 서준 씨한테 돌려줬어요.",
-   "label": "hold",
+   "say": "시은이 지금 도넛이 몇 개 있습니까?",
+   "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "fronting:count_first",
-    "transfer_verbs:give_back"
-   ],
+   "classes": [],
    "scenario_turn": 5,
    "expect": {
-    "act": "record",
+    "act": "answer",
+    "entity": "시은",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "도넛"
+   }
+  },
+  {
+   "n": 6,
+   "say": "잘못 말했어요, 두 개 말고 여섯 개입니다.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
     "entity": null,
     "quantity": null,
     "relation": null,
     "evidence": {
      "turns": [
-      5
+      3,
+      6
      ]
     },
-    "events": [
+    "target_turn": 3,
+    "replaces": [
      {
       "type": "transfer",
-      "from": "팀원",
-      "to": "서준",
-      "item": "볼펜",
-      "quantity": 5
+      "from": "도윤",
+      "to": "시은",
+      "item": "도넛",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "도윤",
+      "to": "시은",
+      "item": "도넛",
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "팀원",
-      "item": "볼펜",
-      "quantity": 5
+      "entity": "도윤",
+      "item": "도넛",
+      "quantity": 1
      },
      {
-      "entity": "서준",
-      "item": "볼펜",
-      "quantity": 7
+      "entity": "시은",
+      "item": "도넛",
+      "quantity": 20
      }
     ]
    }
   },
   {
-   "n": 6,
-   "say": "제 팀원은 볼펜을 몇 자루 가지고 있어요?",
+   "n": 7,
+   "say": "시은이 지금 도넛을 몇 개 가지고 있습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -233,89 +267,22 @@
    "classes": [
     "question_forms:q_hold"
    ],
-   "scenario_turn": 6,
+   "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "팀원",
-    "quantity": 5,
+    "entity": "시은",
+    "quantity": 20,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
       3,
-      5
+      6
      ]
     },
-    "item": "볼펜"
-   }
-  },
-  {
-   "n": 7,
-   "say": "서준 씨한테 볼펜이 지금 몇 개 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 7,
-   "expect": {
-    "act": "answer",
-    "entity": "서준",
-    "quantity": 7,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      3,
-      5
-     ]
-    },
-    "item": "볼펜"
-   }
-  },
-  {
-   "n": 8,
-   "say": "볼펜 세 자루를 제 팀원이 서준 씨한테 보냈어요.",
-   "label": "hold",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "fronting:count_first",
-    "transfer_verbs:send"
-   ],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      8
-     ]
-    },
-    "events": [
-     {
-      "type": "transfer",
-      "from": "팀원",
-      "to": "서준",
-      "item": "볼펜",
-      "quantity": 3
-     }
-    ],
-    "state": [
-     {
-      "entity": "팀원",
-      "item": "볼펜",
-      "quantity": 2
-     },
-     {
-      "entity": "서준",
-      "item": "볼펜",
-      "quantity": 10
-     }
-    ]
+    "item": "도넛",
+    "retracted_quantity": 16,
+    "reexecuted_quantity": 22
    }
   }
  ]

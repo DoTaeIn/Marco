@@ -4,45 +4,51 @@
  "language": "en",
  "domain": "everyday",
  "categories": [
-  "correction",
+  "ambiguous_referent",
+  "missing_premise",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "casual",
+  "register": "formal",
   "split": "one_fact_per_turn",
-  "correction_position": "late",
+  "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_en_b_079",
+  "scenario": "s4_en_b_081",
   "half": "build",
   "focus": [
    "fronting",
-   "partitives",
-   "transfer_verbs"
+   "referent_repairs",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "corrections:amount",
-   "fronting:front_then",
+   "fronting:front_recipient",
+   "holders:relation_unnamed",
    "holders:title",
-   "partitives:partitive",
    "question_forms:q_left",
-   "transfer_verbs:owns",
-   "transfer_verbs:pass"
+   "referent_repairs:i_mean",
+   "transfer_verbs:send",
+   "zero_vague:exact_later",
+   "zero_vague:only",
+   "zero_vague:vague",
+   "zero_vague:vague_asked",
+   "zero_vague:vague_then_exact"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "Dr. Gutierrez has 7 tablets.",
+   "say": "My teammate has some hammers. Actually, 16 of them, actually.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:title"
+    "holders:relation_unnamed",
+    "zero_vague:vague_then_exact"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -58,30 +64,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "Gutierrez",
-      "item": "tablets",
-      "quantity": 7
+      "holder": "teammate",
+      "item": "hammers",
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "Gutierrez",
-      "item": "tablets",
-      "quantity": 7
+      "entity": "teammate",
+      "item": "hammers",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "Ms. Taylor owns 14 tablets.",
+   "say": "Dr. Edwards only has hammers, 9 of them.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
     "holders:title",
-    "transfer_verbs:owns"
+    "zero_vague:only"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -97,31 +103,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "Taylor",
-      "item": "tablets",
-      "quantity": 14
+      "holder": "Edwards",
+      "item": "hammers",
+      "quantity": 9
      }
     ],
     "state": [
      {
-      "entity": "Taylor",
-      "item": "tablets",
-      "quantity": 14
+      "entity": "Edwards",
+      "item": "hammers",
+      "quantity": 9
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "After that, Dr. Gutierrez passed 2 of his tablets to Ms. Taylor.",
+   "say": "Irene also has some hammers, not sure how many.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "fronting:front_then",
-    "partitives:partitive",
-    "transfer_verbs:pass"
+    "zero_vague:vague"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -136,133 +140,131 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "Gutierrez",
-      "to": "Taylor",
-      "item": "tablets",
-      "quantity": 2
+      "type": "has",
+      "holder": "Irene",
+      "item": "hammers",
+      "quantity": null
      }
     ],
     "state": [
      {
-      "entity": "Gutierrez",
-      "item": "tablets",
-      "quantity": 5
-     },
-     {
-      "entity": "Taylor",
-      "item": "tablets",
-      "quantity": 16
+      "entity": "Irene",
+      "item": "hammers",
+      "quantity": null
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "How many tablets does Ms. Taylor have left?",
-   "label": "answerable",
+   "say": "How many hammers does Irene have?",
+   "label": "hold",
    "tags": [
-    "transfer"
+    "missing_premise"
    ],
    "classes": [
-    "question_forms:q_left"
+    "zero_vague:vague_asked"
    ],
    "scenario_turn": 4,
    "expect": {
-    "act": "answer",
-    "entity": "Taylor",
-    "quantity": 16,
+    "act": "hold",
+    "entity": "Irene",
+    "quantity": null,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
-      3
+      4
      ]
     },
-    "item": "tablets"
+    "item": "hammers"
    }
   },
   {
    "n": 5,
-   "say": "How many tablets does Dr. Gutierrez have now?",
-   "label": "answerable",
+   "say": "Irene has 7 of them, to be exact.",
+   "label": "hold",
    "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "answer",
-    "entity": "Gutierrez",
-    "quantity": 5,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3
-     ]
-    },
-    "item": "tablets"
-   }
-  },
-  {
-   "n": 6,
-   "say": "Actually, it was 4, not 2.",
-   "label": "correction",
-   "tags": [
-    "correction"
+    "ownership"
    ],
    "classes": [
-    "corrections:amount"
+    "zero_vague:exact_later"
    ],
-   "scenario_turn": 6,
+   "scenario_turn": 5,
    "expect": {
-    "act": "revise",
+    "act": "record",
     "entity": null,
     "quantity": null,
     "relation": null,
     "evidence": {
      "turns": [
-      3,
-      6
+      5
      ]
     },
-    "target_turn": 3,
-    "replaces": [
+    "events": [
      {
-      "type": "transfer",
-      "from": "Gutierrez",
-      "to": "Taylor",
-      "item": "tablets",
-      "quantity": 2
-     }
-    ],
-    "with": [
-     {
-      "type": "transfer",
-      "from": "Gutierrez",
-      "to": "Taylor",
-      "item": "tablets",
-      "quantity": 4
+      "type": "has",
+      "holder": "Irene",
+      "item": "hammers",
+      "quantity": 7
      }
     ],
     "state": [
      {
-      "entity": "Gutierrez",
-      "item": "tablets",
-      "quantity": 3
+      "entity": "Irene",
+      "item": "hammers",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "To Irene, Dr. Edwards sent five hammers.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Edwards",
+      "to": "Irene",
+      "item": "hammers",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Edwards",
+      "item": "hammers",
+      "quantity": 4
      },
      {
-      "entity": "Taylor",
-      "item": "tablets",
-      "quantity": 18
+      "entity": "Irene",
+      "item": "hammers",
+      "quantity": 12
      }
     ]
    }
   },
   {
    "n": 7,
-   "say": "How many tablets does Dr. Gutierrez have now?",
+   "say": "How many hammers does Irene have now?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -271,19 +273,69 @@
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "Gutierrez",
-    "quantity": 3,
+    "entity": "Irene",
+    "quantity": 12,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
       3,
+      5,
       6
      ]
     },
-    "item": "tablets",
-    "retracted_quantity": 5,
-    "reexecuted_quantity": 1
+    "item": "hammers"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many hammers does Irene have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Irene",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5,
+      6
+     ]
+    },
+    "item": "hammers"
+   }
+  },
+  {
+   "n": 9,
+   "say": "I mean Dr. Edwards.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Edwards",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      6
+     ]
+    },
+    "item": "hammers"
    }
   }
  ]

@@ -1,0 +1,289 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_26",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_097",
+  "half": "check",
+  "focus": [
+   "holders",
+   "korean_register",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_place_now",
+   "transfer_verbs:take_from",
+   "zero_vague:exact_later",
+   "zero_vague:vague"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "본관에도 감자가 좀 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "본관",
+      "item": "감자",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "본관",
+      "item": "감자",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "빵집에는 감자가 아홉 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "빵집",
+      "item": "감자",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "빵집",
+      "item": "감자",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 짝꿍 하린은 감자가 열세 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "하린",
+      "item": "감자",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "하린",
+      "item": "감자",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "세어 보니 열한 개예요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:exact_later"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "본관",
+      "item": "감자",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "본관",
+      "item": "감자",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "하린이 본관에서 감자 세 개를 가져갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "본관",
+      "to": "하린",
+      "item": "감자",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "본관",
+      "item": "감자",
+      "quantity": 8
+     },
+     {
+      "entity": "하린",
+      "item": "감자",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "지금 본관에 감자가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "본관",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "감자"
+   }
+  },
+  {
+   "n": 7,
+   "say": "본관이랑 빵집이 합쳐서 감자가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "본관",
+     "빵집"
+    ],
+    "quantity": 17,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "감자"
+   }
+  }
+ ]
+}

@@ -9,41 +9,40 @@
  ],
  "variation": {
   "word_order": "free",
-  "register": "hapsyo",
+  "register": "haeyo",
   "split": "one_fact_per_turn",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_108",
+  "scenario": "s4_ko_b_131",
   "half": "build",
   "focus": [
-   "fronting",
-   "partitives",
-   "question_forms"
+   "holders",
+   "transfer_verbs",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:adv_moment",
-   "fronting:front_purpose",
-   "fronting:front_recipient",
-   "holders:first_person",
-   "holders:relation",
+   "holders:apposition",
+   "holders:relation_unnamed",
    "question_forms:q_hold",
    "question_forms:q_left",
-   "transfer_verbs:give_back",
-   "transfer_verbs:lend"
+   "transfer_verbs:lend",
+   "zero_vague:only",
+   "zero_vague:zero"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 선배 영호는 휴지 열 묶음을 가지고 있습니다.",
+   "say": "제 팀원한테는 수건이 하나도 없어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "holders:relation_unnamed",
+    "zero_vague:zero"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -59,28 +58,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "영호",
-      "item": "휴지",
-      "quantity": 10
+      "holder": "팀원",
+      "item": "수건",
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "영호",
-      "item": "휴지",
-      "quantity": 10
+      "entity": "팀원",
+      "item": "수건",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "윤서는 휴지가 열한 묶음이 있습니다.",
+   "say": "소율은 수건만 열 장 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [],
+   "classes": [
+    "zero_vague:only"
+   ],
    "scenario_turn": 2,
    "expect": {
     "act": "record",
@@ -95,30 +96,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "윤서",
-      "item": "휴지",
-      "quantity": 11
+      "holder": "소율",
+      "item": "수건",
+      "quantity": 10
      }
     ],
     "state": [
      {
-      "entity": "윤서",
-      "item": "휴지",
-      "quantity": 11
+      "entity": "소율",
+      "item": "수건",
+      "quantity": 10
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "저는 지금 휴지 열네 묶음을 가지고 있습니다.",
+   "say": "인턴 도윤 씨는 수건이 한 개도 없어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "fronting:adv_moment",
-    "holders:first_person"
+    "holders:apposition",
+    "zero_vague:zero"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -134,29 +135,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "나",
-      "item": "휴지",
-      "quantity": 14
+      "holder": "도윤",
+      "item": "수건",
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "나",
-      "item": "휴지",
-      "quantity": 14
+      "entity": "도윤",
+      "item": "수건",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "행사 때문에 영호가 윤서한테 휴지 다섯 묶음을 빌려주었습니다.",
+   "say": "소율이 제 팀원한테 수건 세 장을 빌려줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:front_purpose",
     "transfer_verbs:lend"
    ],
    "scenario_turn": 4,
@@ -173,99 +173,29 @@
     "events": [
      {
       "type": "transfer",
-      "from": "영호",
-      "to": "윤서",
-      "item": "휴지",
-      "quantity": 5
+      "from": "소율",
+      "to": "팀원",
+      "item": "수건",
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "영호",
-      "item": "휴지",
-      "quantity": 5
+      "entity": "소율",
+      "item": "수건",
+      "quantity": 7
      },
      {
-      "entity": "윤서",
-      "item": "휴지",
-      "quantity": 16
+      "entity": "팀원",
+      "item": "수건",
+      "quantity": 3
      }
     ]
    }
   },
   {
    "n": 5,
-   "say": "윤서는 휴지를 몇 개 가지고 있습니까?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "answer",
-    "entity": "윤서",
-    "quantity": 16,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      4
-     ]
-    },
-    "item": "휴지"
-   }
-  },
-  {
-   "n": 6,
-   "say": "영호한테는 윤서가 휴지 네 묶음을 돌려주었습니다.",
-   "label": "hold",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "fronting:front_recipient",
-    "transfer_verbs:give_back"
-   ],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      6
-     ]
-    },
-    "events": [
-     {
-      "type": "transfer",
-      "from": "윤서",
-      "to": "영호",
-      "item": "휴지",
-      "quantity": 4
-     }
-    ],
-    "state": [
-     {
-      "entity": "윤서",
-      "item": "휴지",
-      "quantity": 12
-     },
-     {
-      "entity": "영호",
-      "item": "휴지",
-      "quantity": 9
-     }
-    ]
-   }
-  },
-  {
-   "n": 7,
-   "say": "영호는 휴지가 몇 개 남았습니까?",
+   "say": "소율은 수건이 몇 개 남았어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -273,20 +203,44 @@
    "classes": [
     "question_forms:q_left"
    ],
-   "scenario_turn": 7,
+   "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "영호",
-    "quantity": 9,
+    "entity": "소율",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "수건"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 팀원은 수건을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "팀원",
+    "quantity": 3,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
-      4,
-      6
+      4
      ]
     },
-    "item": "휴지"
+    "item": "수건"
    }
   }
  ]

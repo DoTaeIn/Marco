@@ -4,6 +4,7 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
+  "correction",
   "ownership",
   "transfer"
  ],
@@ -11,36 +12,35 @@
   "word_order": "free",
   "register": "haeyo",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_084",
+  "scenario": "s4_ko_b_128",
   "half": "build",
   "focus": [
-   "fronting",
    "holders",
-   "question_forms"
+   "korean_register",
+   "partitives"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:adv_moment",
-   "fronting:front_then",
-   "holders:relation",
+   "corrections:amount",
    "holders:relation_unnamed",
-   "question_forms:q_hold",
-   "transfer_verbs:send"
+   "partitives:same",
+   "question_forms:q_left",
+   "question_forms:q_two_total"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 동료 태윤은 국자가 아홉 개 가지고 있어요.",
+   "say": "제 선배는 접시가 여덟 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "holders:relation_unnamed"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -56,31 +56,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "태윤",
-      "item": "국자",
-      "quantity": 9
+      "holder": "선배",
+      "item": "접시",
+      "quantity": 8
      }
     ],
     "state": [
      {
-      "entity": "태윤",
-      "item": "국자",
-      "quantity": 9
+      "entity": "선배",
+      "item": "접시",
+      "quantity": 8
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "제 팀원은 지금 국자가 일곱 개 가지고 있어요.",
+   "say": "지원은 접시가 열 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "fronting:adv_moment",
-    "holders:relation_unnamed"
-   ],
+   "classes": [],
    "scenario_turn": 2,
    "expect": {
     "act": "record",
@@ -95,30 +92,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "팀원",
-      "item": "국자",
-      "quantity": 7
+      "holder": "지원",
+      "item": "접시",
+      "quantity": 10
      }
     ],
     "state": [
      {
-      "entity": "팀원",
-      "item": "국자",
-      "quantity": 7
+      "entity": "지원",
+      "item": "접시",
+      "quantity": 10
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "그다음에 제 팀원이 태윤한테 국자를 다섯 개 보냈어요.",
+   "say": "지원이가 제 선배한테 같은 접시 네 개를 줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:front_then",
-    "transfer_verbs:send"
+    "partitives:same"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -134,123 +130,160 @@
     "events": [
      {
       "type": "transfer",
-      "from": "팀원",
-      "to": "태윤",
-      "item": "국자",
-      "quantity": 5
+      "from": "지원",
+      "to": "선배",
+      "item": "접시",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "팀원",
-      "item": "국자",
-      "quantity": 2
+      "entity": "지원",
+      "item": "접시",
+      "quantity": 6
      },
      {
-      "entity": "태윤",
-      "item": "국자",
-      "quantity": 14
+      "entity": "선배",
+      "item": "접시",
+      "quantity": 12
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "그다음에 태윤이 제 팀원한테 국자를 네 개 보내줬어요.",
-   "label": "hold",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "fronting:front_then",
-    "transfer_verbs:send"
-   ],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      4
-     ]
-    },
-    "events": [
-     {
-      "type": "transfer",
-      "from": "태윤",
-      "to": "팀원",
-      "item": "국자",
-      "quantity": 4
-     }
-    ],
-    "state": [
-     {
-      "entity": "태윤",
-      "item": "국자",
-      "quantity": 10
-     },
-     {
-      "entity": "팀원",
-      "item": "국자",
-      "quantity": 6
-     }
-    ]
-   }
-  },
-  {
-   "n": 5,
-   "say": "제 팀원은 국자를 몇 개 가지고 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "answer",
-    "entity": "팀원",
-    "quantity": 6,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      3,
-      4
-     ]
-    },
-    "item": "국자"
-   }
-  },
-  {
-   "n": 6,
-   "say": "태윤과 제 팀원이 합쳐서 국자를 몇 개 가지고 있는지요?",
+   "say": "지원이 지금 접시가 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "지원",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "접시"
+   }
+  },
+  {
+   "n": 5,
+   "say": "아, 네 개가 아니라 다섯 개였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "지원",
+      "to": "선배",
+      "item": "접시",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "지원",
+      "to": "선배",
+      "item": "접시",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "지원",
+      "item": "접시",
+      "quantity": 5
+     },
+     {
+      "entity": "선배",
+      "item": "접시",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "지원은 접시가 몇 개 남았어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "지원",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "접시",
+    "retracted_quantity": 6,
+    "reexecuted_quantity": 1
+   }
+  },
+  {
+   "n": 7,
+   "say": "두 사람 합쳐서 접시가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
     "entity": [
-     "태윤",
-     "팀원"
+     "선배",
+     "지원"
     ],
-    "quantity": 16,
+    "quantity": 18,
     "relation": "total",
     "evidence": {
      "turns": [
       1,
       2,
       3,
-      4
+      5
      ]
     },
-    "item": "국자"
+    "item": "접시"
    }
   }
  ]

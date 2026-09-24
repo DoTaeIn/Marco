@@ -1,0 +1,402 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_52",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_453",
+  "half": "build",
+  "focus": [
+   "korean_register",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:recipient",
+   "holders:relation",
+   "partitives:gave_them_not",
+   "question_forms:q_hold",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:keep",
+   "transfer_verbs:responsible"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 동생 도현은 우산 다섯 개를 보관하고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "transfer_verbs:keep"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "도현",
+      "item": "우산",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "도현",
+      "item": "우산",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "준호는 우산 네 개를 맡고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "준호",
+      "item": "우산",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "준호",
+      "item": "우산",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "세영은 우산 열한 개를 보관하고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:keep"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "세영",
+      "item": "우산",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "세영",
+      "item": "우산",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "도현이 세영한테 우산 두 개를 건네주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "도현",
+      "to": "세영",
+      "item": "우산",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "도현",
+      "item": "우산",
+      "quantity": 3
+     },
+     {
+      "entity": "세영",
+      "item": "우산",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "세영이 지금 우산을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "세영",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "우산"
+   }
+  },
+  {
+   "n": 6,
+   "say": "세영이 준호한테 우산 네 개를 건넸습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세영",
+      "to": "준호",
+      "item": "우산",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "세영",
+      "item": "우산",
+      "quantity": 9
+     },
+     {
+      "entity": "준호",
+      "item": "우산",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "준호가 지금 우산을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "준호",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      6
+     ]
+    },
+    "item": "우산"
+   }
+  },
+  {
+   "n": 8,
+   "say": "세영이 지금 우산이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "세영",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "우산"
+   }
+  },
+  {
+   "n": 9,
+   "say": "아, 세영이가 준호가 아니라 도현한테 간 것이었습니다.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:recipient",
+    "partitives:gave_them_not"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      9
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "세영",
+      "to": "준호",
+      "item": "우산",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "세영",
+      "to": "도현",
+      "item": "우산",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "세영",
+      "item": "우산",
+      "quantity": 9
+     },
+     {
+      "entity": "준호",
+      "item": "우산",
+      "quantity": 4
+     },
+     {
+      "entity": "도현",
+      "item": "우산",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 10,
+   "say": "세영이 지금 우산이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "세영",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6,
+      9
+     ]
+    },
+    "item": "우산",
+    "reexecuted_quantity": 5
+   }
+  }
+ ]
+}

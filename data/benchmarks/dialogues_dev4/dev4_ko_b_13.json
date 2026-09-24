@@ -14,32 +14,31 @@
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_027",
+  "scenario": "s4_ko_b_028",
   "half": "build",
   "focus": [
    "fronting",
    "holders",
-   "transfer_verbs"
+   "question_forms"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:relation_unnamed",
+   "fronting:count_first",
+   "holders:relation",
    "question_forms:q_hold",
-   "transfer_verbs:carry",
-   "transfer_verbs:keep",
-   "transfer_verbs:pass"
+   "transfer_verbs:give_back"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "채원은 리본 열세 개를 들고 있어요.",
+   "say": "제 동기 서준은 레몬 열여섯 개가 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "transfer_verbs:carry"
+    "holders:relation"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -55,31 +54,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "채원",
-      "item": "리본",
-      "quantity": 13
+      "holder": "서준",
+      "item": "레몬",
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "채원",
-      "item": "리본",
-      "quantity": 13
+      "entity": "서준",
+      "item": "레몬",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "제 룸메이트는 리본 세 개를 보관하고 있어요.",
+   "say": "유나는 레몬이 여덟 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "holders:relation_unnamed",
-    "transfer_verbs:keep"
-   ],
+   "classes": [],
    "scenario_turn": 2,
    "expect": {
     "act": "record",
@@ -94,29 +90,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "룸메이트",
-      "item": "리본",
-      "quantity": 3
+      "holder": "유나",
+      "item": "레몬",
+      "quantity": 8
      }
     ],
     "state": [
      {
-      "entity": "룸메이트",
-      "item": "리본",
-      "quantity": 3
+      "entity": "유나",
+      "item": "레몬",
+      "quantity": 8
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "채원이 제 룸메이트한테 리본 두 개를 넘겼어요.",
+   "say": "레몬 세 개를 유나가 서준한테 돌려줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:pass"
+    "fronting:count_first",
+    "transfer_verbs:give_back"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -132,29 +129,29 @@
     "events": [
      {
       "type": "transfer",
-      "from": "채원",
-      "to": "룸메이트",
-      "item": "리본",
-      "quantity": 2
+      "from": "유나",
+      "to": "서준",
+      "item": "레몬",
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "채원",
-      "item": "리본",
-      "quantity": 11
+      "entity": "유나",
+      "item": "레몬",
+      "quantity": 5
      },
      {
-      "entity": "룸메이트",
-      "item": "리본",
-      "quantity": 5
+      "entity": "서준",
+      "item": "레몬",
+      "quantity": 19
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "채원은 리본을 몇 개 가지고 있어요?",
+   "say": "서준이 지금 레몬을 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -165,8 +162,8 @@
    "scenario_turn": 4,
    "expect": {
     "act": "answer",
-    "entity": "채원",
-    "quantity": 11,
+    "entity": "서준",
+    "quantity": 19,
     "relation": "count",
     "evidence": {
      "turns": [
@@ -174,12 +171,12 @@
       3
      ]
     },
-    "item": "리본"
+    "item": "레몬"
    }
   },
   {
    "n": 5,
-   "say": "제 룸메이트는 리본을 몇 개 가지고 있어요?",
+   "say": "유나는 레몬을 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -190,7 +187,7 @@
    "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "룸메이트",
+    "entity": "유나",
     "quantity": 5,
     "relation": "count",
     "evidence": {
@@ -199,7 +196,7 @@
       3
      ]
     },
-    "item": "리본"
+    "item": "레몬"
    }
   }
  ]

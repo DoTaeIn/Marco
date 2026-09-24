@@ -4,6 +4,7 @@
  "language": "en",
  "domain": "everyday",
  "categories": [
+  "correction",
   "ownership",
   "transfer"
  ],
@@ -11,41 +12,37 @@
   "word_order": "free",
   "register": "casual",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_en_b_074",
+  "scenario": "s4_en_b_075",
   "half": "build",
   "focus": [
-   "fronting",
-   "question_forms",
-   "zero_vague"
+   "holders",
+   "partitives",
+   "question_forms"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:front_purpose",
-   "fronting:front_then",
-   "holders:first_person",
-   "question_forms:q_hold",
+   "corrections:amount",
+   "holders:relation",
+   "partitives:partitive",
+   "question_forms:q_got",
+   "question_forms:q_left",
    "question_forms:q_two_total",
-   "transfer_verbs:borrow",
    "transfer_verbs:lend",
-   "zero_vague:only",
-   "zero_vague:zero"
+   "transfer_verbs:send"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "I haven't got any eggs.",
+   "say": "Victor's got 10 knives.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "holders:first_person",
-    "zero_vague:zero"
-   ],
+   "classes": [],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -60,29 +57,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "I",
-      "item": "eggs",
-      "quantity": 0
+      "holder": "Victor",
+      "item": "knives",
+      "quantity": 10
      }
     ],
     "state": [
      {
-      "entity": "I",
-      "item": "eggs",
-      "quantity": 0
+      "entity": "Victor",
+      "item": "knives",
+      "quantity": 10
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "Yusuf only has eggs, 6 of them.",
+   "say": "my roommate Diego is carrying 14 knives.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "zero_vague:only"
+    "holders:relation"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -98,31 +95,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "Yusuf",
-      "item": "eggs",
-      "quantity": 6
+      "holder": "Diego",
+      "item": "knives",
+      "quantity": 14
      }
     ],
     "state": [
      {
-      "entity": "Yusuf",
-      "item": "eggs",
-      "quantity": 6
+      "entity": "Diego",
+      "item": "knives",
+      "quantity": 14
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "After that, I borrowed 4 eggs from Yusuf.",
+   "say": "Diego lent Victor 1 of his knives.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:front_then",
-    "holders:first_person",
-    "transfer_verbs:borrow"
+    "partitives:partitive",
+    "transfer_verbs:lend"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -138,41 +134,39 @@
     "events": [
      {
       "type": "transfer",
-      "from": "Yusuf",
-      "to": "I",
-      "item": "eggs",
-      "quantity": 4
+      "from": "Diego",
+      "to": "Victor",
+      "item": "knives",
+      "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "Yusuf",
-      "item": "eggs",
-      "quantity": 2
+      "entity": "Diego",
+      "item": "knives",
+      "quantity": 13
      },
      {
-      "entity": "I",
-      "item": "eggs",
-      "quantity": 4
+      "entity": "Victor",
+      "item": "knives",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "How many eggs does Yusuf hold?",
+   "say": "How many knives does Diego have now?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
+   "classes": [],
    "scenario_turn": 4,
    "expect": {
     "act": "answer",
-    "entity": "Yusuf",
-    "quantity": 2,
+    "entity": "Diego",
+    "quantity": 13,
     "relation": "count",
     "evidence": {
      "turns": [
@@ -180,47 +174,21 @@
       3
      ]
     },
-    "item": "eggs"
+    "item": "knives"
    }
   },
   {
    "n": 5,
-   "say": "How many eggs do I have now?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "holders:first_person"
-   ],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "answer",
-    "entity": "I",
-    "quantity": 4,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3
-     ]
-    },
-    "item": "eggs"
-   }
-  },
-  {
-   "n": 6,
-   "say": "For the trip, I lent Yusuf three eggs.",
+   "say": "Diego sent 5 of his to Victor.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:front_purpose",
-    "holders:first_person",
-    "transfer_verbs:lend"
+    "partitives:partitive",
+    "transfer_verbs:send"
    ],
-   "scenario_turn": 6,
+   "scenario_turn": 5,
    "expect": {
     "act": "record",
     "entity": null,
@@ -228,62 +196,169 @@
     "relation": null,
     "evidence": {
      "turns": [
-      6
+      5
      ]
     },
     "events": [
      {
       "type": "transfer",
-      "from": "I",
-      "to": "Yusuf",
-      "item": "eggs",
-      "quantity": 3
+      "from": "Diego",
+      "to": "Victor",
+      "item": "knives",
+      "quantity": 5
      }
     ],
     "state": [
      {
-      "entity": "I",
-      "item": "eggs",
-      "quantity": 1
+      "entity": "Diego",
+      "item": "knives",
+      "quantity": 8
      },
      {
-      "entity": "Yusuf",
-      "item": "eggs",
-      "quantity": 5
+      "entity": "Victor",
+      "item": "knives",
+      "quantity": 16
      }
     ]
    }
   },
   {
-   "n": 7,
-   "say": "How many eggs do I hold now?",
+   "n": 6,
+   "say": "How many knives has Diego got now?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "holders:first_person",
-    "question_forms:q_hold"
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Diego",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "knives"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many knives does Victor have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
    ],
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "I",
-    "quantity": 1,
+    "entity": "Victor",
+    "quantity": 16,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
       3,
-      6
+      5
      ]
     },
-    "item": "eggs"
+    "item": "knives"
    }
   },
   {
    "n": 8,
-   "say": "How many eggs do the two of them have in total?",
+   "say": "Actually, it was 8, not 5.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5,
+      8
+     ]
+    },
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Diego",
+      "to": "Victor",
+      "item": "knives",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Diego",
+      "to": "Victor",
+      "item": "knives",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Diego",
+      "item": "knives",
+      "quantity": 5
+     },
+     {
+      "entity": "Victor",
+      "item": "knives",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many knives does Victor have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Victor",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      8
+     ]
+    },
+    "item": "knives",
+    "retracted_quantity": 16,
+    "reexecuted_quantity": 24
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many knives do the two of them have in total?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -291,24 +366,25 @@
    "classes": [
     "question_forms:q_two_total"
    ],
-   "scenario_turn": 8,
+   "scenario_turn": 10,
    "expect": {
     "act": "answer",
     "entity": [
-     "I",
-     "Yusuf"
+     "Victor",
+     "Diego"
     ],
-    "quantity": 6,
+    "quantity": 24,
     "relation": "total",
     "evidence": {
      "turns": [
       1,
       2,
       3,
-      6
+      5,
+      8
      ]
     },
-    "item": "eggs"
+    "item": "knives"
    }
   }
  ]

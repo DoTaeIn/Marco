@@ -1,0 +1,293 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_32",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_120",
+  "half": "check",
+  "focus": [
+   "holders",
+   "korean_register",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:relation_unnamed",
+   "holders:title",
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:receive"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "하은 님이 젓가락 다섯 벌을 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "하은",
+      "item": "젓가락",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "하은",
+      "item": "젓가락",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 조카는 젓가락 열두 벌을 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "조카",
+      "item": "젓가락",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "조카",
+      "item": "젓가락",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 조카가 하은 씨한테서 젓가락 네 벌을 받았어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "하은",
+      "to": "조카",
+      "item": "젓가락",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "하은",
+      "item": "젓가락",
+      "quantity": 1
+     },
+     {
+      "entity": "조카",
+      "item": "젓가락",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 조카는 젓가락을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "조카",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "젓가락"
+   }
+  },
+  {
+   "n": 5,
+   "say": "아, 네 개가 아니라 세 개였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "하은",
+      "to": "조카",
+      "item": "젓가락",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "하은",
+      "to": "조카",
+      "item": "젓가락",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "하은",
+      "item": "젓가락",
+      "quantity": 2
+     },
+     {
+      "entity": "조카",
+      "item": "젓가락",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 조카한테 젓가락이 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "조카",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "젓가락",
+    "retracted_quantity": 16,
+    "reexecuted_quantity": 19
+   }
+  },
+  {
+   "n": 7,
+   "say": "두 사람 합쳐서 젓가락이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "하은",
+     "조카"
+    ],
+    "quantity": 17,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "젓가락"
+   }
+  }
+ ]
+}

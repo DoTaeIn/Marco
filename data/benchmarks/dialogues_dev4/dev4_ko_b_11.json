@@ -4,50 +4,46 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "correction",
-  "missing_premise",
+  "ambiguous_referent",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "haeyo",
+  "register": "hapsyo",
   "split": "one_fact_per_turn",
-  "correction_position": "late",
+  "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_020",
+  "scenario": "s4_ko_b_023",
   "half": "build",
   "focus": [
    "fronting",
-   "transfer_verbs",
+   "referent_repairs",
    "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "corrections:amount",
    "fronting:count_first",
-   "holders:title",
+   "holders:place",
    "question_forms:q_hold",
-   "transfer_verbs:send",
-   "zero_vague:exact_later",
+   "referent_repairs:i_mean",
+   "transfer_verbs:leave_at",
    "zero_vague:only",
-   "zero_vague:vague",
-   "zero_vague:vague_asked",
    "zero_vague:zero"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "태윤 씨도 태블릿이 좀 있어요.",
+   "say": "진료실은 손전등이 하나도 없습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:title",
-    "zero_vague:vague"
+    "holders:place",
+    "zero_vague:zero"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -63,29 +59,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "태윤",
-      "item": "태블릿",
-      "quantity": null
+      "holder": "진료실",
+      "item": "손전등",
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "태윤",
-      "item": "태블릿",
-      "quantity": null
+      "entity": "진료실",
+      "item": "손전등",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "정호는 태블릿이 하나도 없어요.",
+   "say": "도윤은 손전등만 열세 개 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "zero_vague:zero"
+    "zero_vague:only"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -101,23 +97,23 @@
     "events": [
      {
       "type": "has",
-      "holder": "정호",
-      "item": "태블릿",
-      "quantity": 0
+      "holder": "도윤",
+      "item": "손전등",
+      "quantity": 13
      }
     ],
     "state": [
      {
-      "entity": "정호",
-      "item": "태블릿",
-      "quantity": 0
+      "entity": "도윤",
+      "item": "손전등",
+      "quantity": 13
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "유찬은 태블릿 여덟 대만 있어요.",
+   "say": "세영은 손전등만 여덟 개 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
@@ -139,15 +135,15 @@
     "events": [
      {
       "type": "has",
-      "holder": "유찬",
-      "item": "태블릿",
+      "holder": "세영",
+      "item": "손전등",
       "quantity": 8
      }
     ],
     "state": [
      {
-      "entity": "유찬",
-      "item": "태블릿",
+      "entity": "세영",
+      "item": "손전등",
       "quantity": 8
      }
     ]
@@ -155,78 +151,17 @@
   },
   {
    "n": 4,
-   "say": "태윤씨는 지금 태블릿이 몇 대 있어요?",
-   "label": "hold",
-   "tags": [
-    "missing_premise"
-   ],
-   "classes": [
-    "zero_vague:vague_asked"
-   ],
-   "scenario_turn": 4,
-   "expect": {
-    "act": "hold",
-    "entity": "태윤",
-    "quantity": null,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      4
-     ]
-    },
-    "item": "태블릿"
-   }
-  },
-  {
-   "n": 5,
-   "say": "태윤씨는 지금 태블릿 열한 대가 있어요.",
-   "label": "hold",
-   "tags": [
-    "ownership"
-   ],
-   "classes": [
-    "zero_vague:exact_later"
-   ],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      5
-     ]
-    },
-    "events": [
-     {
-      "type": "has",
-      "holder": "태윤",
-      "item": "태블릿",
-      "quantity": 11
-     }
-    ],
-    "state": [
-     {
-      "entity": "태윤",
-      "item": "태블릿",
-      "quantity": 11
-     }
-    ]
-   }
-  },
-  {
-   "n": 6,
-   "say": "태블릿 다섯 대를 태윤 씨가 정호한테 보냈어요.",
+   "say": "손전등 두 개를 세영이 진료실에 두고 왔습니다.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
     "fronting:count_first",
-    "transfer_verbs:send"
+    "holders:place",
+    "transfer_verbs:leave_at"
    ],
-   "scenario_turn": 6,
+   "scenario_turn": 4,
    "expect": {
     "act": "record",
     "entity": null,
@@ -234,165 +169,80 @@
     "relation": null,
     "evidence": {
      "turns": [
-      6
+      4
      ]
     },
     "events": [
      {
       "type": "transfer",
-      "from": "태윤",
-      "to": "정호",
-      "item": "태블릿",
-      "quantity": 5
+      "from": "세영",
+      "to": "진료실",
+      "item": "손전등",
+      "quantity": 2
      }
     ],
     "state": [
      {
-      "entity": "태윤",
-      "item": "태블릿",
+      "entity": "세영",
+      "item": "손전등",
       "quantity": 6
      },
      {
-      "entity": "정호",
-      "item": "태블릿",
-      "quantity": 5
+      "entity": "진료실",
+      "item": "손전등",
+      "quantity": 2
      }
     ]
    }
   },
   {
-   "n": 7,
-   "say": "정호는 지금 태블릿을 몇 대 가지고 있는지요?",
+   "n": 5,
+   "say": "도윤은 손전등을 몇 개 가지고 있습니까?",
    "label": "answerable",
    "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 7,
-   "expect": {
-    "act": "answer",
-    "entity": "정호",
-    "quantity": 5,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      6
-     ]
-    },
-    "item": "태블릿"
-   }
-  },
-  {
-   "n": 8,
-   "say": "아, 다섯 대가 아니라 네 대였어요.",
-   "label": "correction",
-   "tags": [
-    "correction"
-   ],
-   "classes": [
-    "corrections:amount"
-   ],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "revise",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      6,
-      8
-     ]
-    },
-    "target_turn": 6,
-    "replaces": [
-     {
-      "type": "transfer",
-      "from": "태윤",
-      "to": "정호",
-      "item": "태블릿",
-      "quantity": 5
-     }
-    ],
-    "with": [
-     {
-      "type": "transfer",
-      "from": "태윤",
-      "to": "정호",
-      "item": "태블릿",
-      "quantity": 4
-     }
-    ],
-    "state": [
-     {
-      "entity": "태윤",
-      "item": "태블릿",
-      "quantity": 7
-     },
-     {
-      "entity": "정호",
-      "item": "태블릿",
-      "quantity": 4
-     }
-    ]
-   }
-  },
-  {
-   "n": 9,
-   "say": "정호는 태블릿을 몇 개 가지고 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
     "question_forms:q_hold"
    ],
-   "scenario_turn": 9,
+   "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "정호",
-    "quantity": 4,
+    "entity": "도윤",
+    "quantity": 13,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
-      6,
-      8
+      2
      ]
     },
-    "item": "태블릿",
-    "retracted_quantity": 5,
-    "reexecuted_quantity": 9
+    "item": "손전등"
    }
   },
   {
-   "n": 10,
-   "say": "태윤 씨와 유찬이는 합쳐서 태블릿이 몇 대 가지고 있는지 있어요?",
+   "n": 6,
+   "say": "제 말은 세영 씨입니다.",
    "label": "answerable",
    "tags": [
+    "ambiguous_referent",
     "transfer"
    ],
-   "classes": [],
-   "scenario_turn": 10,
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": [
-     "태윤",
-     "유찬"
-    ],
-    "quantity": 15,
-    "relation": "total",
+    "entity": "세영",
+    "quantity": 6,
+    "relation": "count",
     "evidence": {
      "turns": [
-      1,
       3,
-      5,
-      6,
-      8
+      4
      ]
     },
-    "item": "태블릿"
+    "item": "손전등"
    }
   }
  ]

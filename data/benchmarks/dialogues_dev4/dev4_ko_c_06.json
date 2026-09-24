@@ -1,0 +1,305 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_06",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_017",
+  "half": "check",
+  "focus": [
+   "referent_repairs",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:first_person",
+   "holders:relation",
+   "holders:title",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:hand_over",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "예준씨는 스티커가 다섯 장 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "예준",
+      "item": "스티커",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "예준",
+      "item": "스티커",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "저도 스티커가 좀 있습니다. 세어 보니 여덟 장입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "스티커",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "스티커",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 이웃 하은은 스티커가 좀 있습니다. 세어 보니 열여섯 장입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "하은",
+      "item": "스티커",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "하은",
+      "item": "스티커",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "저는 예준씨한테 스티커 세 장을 건넸습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "예준",
+      "item": "스티커",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "스티커",
+      "quantity": 5
+     },
+     {
+      "entity": "예준",
+      "item": "스티커",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "예준씨는 스티커가 몇 개 남았습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "예준",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "스티커"
+   }
+  },
+  {
+   "n": 6,
+   "say": "그분은 지금 스티커가 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "예준",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "스티커"
+   }
+  },
+  {
+   "n": 7,
+   "say": "아, 예준씨입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "예준",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "스티커"
+   }
+  },
+  {
+   "n": 8,
+   "say": "저와 하은이는 지금 스티커가 몇 장 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "나",
+     "하은"
+    ],
+    "quantity": 21,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "스티커"
+   }
+  }
+ ]
+}

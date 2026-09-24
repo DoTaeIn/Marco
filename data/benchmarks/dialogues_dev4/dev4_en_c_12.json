@@ -1,0 +1,319 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_12",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_038",
+  "half": "check",
+  "focus": [
+   "holders",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:first_person",
+   "holders:relation_unnamed",
+   "holders:title",
+   "question_forms:q_got",
+   "question_forms:q_left",
+   "transfer_verbs:send",
+   "zero_vague:only",
+   "zero_vague:vague"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my niece only has sandwiches, 13 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "niece",
+      "item": "sandwiches",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "niece",
+      "item": "sandwiches",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "I also have some sandwiches, not sure how many.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "sandwiches",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "sandwiches",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Mr. Fischer only has sandwiches, 6 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Fischer",
+      "item": "sandwiches",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fischer",
+      "item": "sandwiches",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "my niece sent Mr. Fischer one sandwich.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "niece",
+      "to": "Fischer",
+      "item": "sandwiches",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "niece",
+      "item": "sandwiches",
+      "quantity": 12
+     },
+     {
+      "entity": "Fischer",
+      "item": "sandwiches",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many sandwiches has Mr. Fischer got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Fischer",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "sandwiches"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Mr. Fischer sent my niece one sandwich.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Fischer",
+      "to": "niece",
+      "item": "sandwiches",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fischer",
+      "item": "sandwiches",
+      "quantity": 6
+     },
+     {
+      "entity": "niece",
+      "item": "sandwiches",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many sandwiches does Mr. Fischer have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Fischer",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "sandwiches"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Why does my niece have that many sandwiches now?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "explain",
+    "entity": "niece",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6
+     ]
+    },
+    "item": "sandwiches"
+   }
+  }
+ ]
+}

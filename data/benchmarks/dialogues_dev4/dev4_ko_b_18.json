@@ -4,8 +4,6 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "ambiguous_referent",
-  "follow_up",
   "ownership",
   "transfer"
  ],
@@ -16,38 +14,28 @@
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_050",
+  "scenario": "s4_ko_b_099",
   "half": "build",
   "focus": [
-   "referent_repairs",
-   "transfer_verbs",
-   "zero_vague"
+   "fronting",
+   "holders",
+   "question_forms"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:apposition",
    "holders:relation_unnamed",
-   "question_forms:q_hold",
-   "referent_repairs:i_mean",
-   "referent_repairs:pronoun_fixed",
-   "transfer_verbs:hand_over",
-   "transfer_verbs:lend",
-   "zero_vague:also_some",
-   "zero_vague:only",
-   "zero_vague:zero"
+   "transfer_verbs:hand_over"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "연서는 장갑만 다섯 켤레 있습니다.",
+   "say": "현우는 리본 일곱 개를 들고 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "zero_vague:only"
-   ],
+   "classes": [],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -62,30 +50,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "연서",
-      "item": "장갑",
-      "quantity": 5
+      "holder": "현우",
+      "item": "리본",
+      "quantity": 7
      }
     ],
     "state": [
      {
-      "entity": "연서",
-      "item": "장갑",
-      "quantity": 5
+      "entity": "현우",
+      "item": "리본",
+      "quantity": 7
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "인턴 동훈 씨가 장갑이 하나도 가지고 있는지 확인했습니다. 인턴 동훈 씨는 장갑이 하나도 없습니다.",
+   "say": "제 팀원은 리본이 열여섯 개 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:apposition",
-    "zero_vague:zero"
+    "holders:relation_unnamed"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -101,30 +88,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "동훈",
-      "item": "장갑",
-      "quantity": 0
+      "holder": "팀원",
+      "item": "리본",
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "동훈",
-      "item": "장갑",
-      "quantity": 0
+      "entity": "팀원",
+      "item": "리본",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "제 동료는 장갑이 여덟 켤레 있고, 머그컵도 좀 있습니다.",
+   "say": "제 팀원이 현우한테 리본 두 개를 건넸습니다.",
    "label": "hold",
    "tags": [
-    "ownership"
+    "transfer"
    ],
    "classes": [
-    "holders:relation_unnamed",
-    "zero_vague:also_some"
+    "transfer_verbs:hand_over"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -139,79 +125,53 @@
     },
     "events": [
      {
-      "type": "has",
-      "holder": "동료",
-      "item": "장갑",
-      "quantity": 8
-     },
-     {
-      "type": "has",
-      "holder": "동료",
-      "item": "머그컵",
-      "quantity": null
+      "type": "transfer",
+      "from": "팀원",
+      "to": "현우",
+      "item": "리본",
+      "quantity": 2
      }
     ],
     "state": [
      {
-      "entity": "동료",
-      "item": "장갑",
-      "quantity": 8
+      "entity": "팀원",
+      "item": "리본",
+      "quantity": 14
      },
      {
-      "entity": "동료",
-      "item": "머그컵",
-      "quantity": null
+      "entity": "현우",
+      "item": "리본",
+      "quantity": 9
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "연서가 동훈씨에게 장갑 세 켤레를 빌려줬습니다.",
-   "label": "hold",
+   "say": "제 팀원한테 리본이 지금 몇 개 있습니까?",
+   "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "transfer_verbs:lend"
-   ],
+   "classes": [],
    "scenario_turn": 4,
    "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
+    "act": "answer",
+    "entity": "팀원",
+    "quantity": 14,
+    "relation": "count",
     "evidence": {
      "turns": [
-      4
+      2,
+      3
      ]
     },
-    "events": [
-     {
-      "type": "transfer",
-      "from": "연서",
-      "to": "동훈",
-      "item": "장갑",
-      "quantity": 3
-     }
-    ],
-    "state": [
-     {
-      "entity": "연서",
-      "item": "장갑",
-      "quantity": 2
-     },
-     {
-      "entity": "동훈",
-      "item": "장갑",
-      "quantity": 3
-     }
-    ]
+    "item": "리본"
    }
   },
   {
    "n": 5,
-   "say": "연서는 지금 장갑이 몇 개 있습니까?",
+   "say": "현우는 지금 리본이 몇 개 있습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -220,163 +180,16 @@
    "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "연서",
-    "quantity": 2,
+    "entity": "현우",
+    "quantity": 9,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
-      4
+      3
      ]
     },
-    "item": "장갑"
-   }
-  },
-  {
-   "n": 6,
-   "say": "동훈씨는 장갑을 몇 개 가지고 있습니까?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "answer",
-    "entity": "동훈",
-    "quantity": 3,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      4
-     ]
-    },
-    "item": "장갑"
-   }
-  },
-  {
-   "n": 7,
-   "say": "연서가 동훈씨한테 장갑 한 켤레를 건넸습니다.",
-   "label": "hold",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "transfer_verbs:hand_over"
-   ],
-   "scenario_turn": 7,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      7
-     ]
-    },
-    "events": [
-     {
-      "type": "transfer",
-      "from": "연서",
-      "to": "동훈",
-      "item": "장갑",
-      "quantity": 1
-     }
-    ],
-    "state": [
-     {
-      "entity": "연서",
-      "item": "장갑",
-      "quantity": 1
-     },
-     {
-      "entity": "동훈",
-      "item": "장갑",
-      "quantity": 4
-     }
-    ]
-   }
-  },
-  {
-   "n": 8,
-   "say": "연서는 지금 장갑이 몇 켤레 있습니까?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "answer",
-    "entity": "연서",
-    "quantity": 1,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4,
-      7
-     ]
-    },
-    "item": "장갑"
-   }
-  },
-  {
-   "n": 9,
-   "say": "그분은 지금 장갑이 몇 개 있습니까?",
-   "label": "answerable",
-   "tags": [
-    "ambiguous_referent",
-    "follow_up"
-   ],
-   "classes": [
-    "referent_repairs:pronoun_fixed"
-   ],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "answer",
-    "entity": "연서",
-    "quantity": 1,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4,
-      7
-     ]
-    },
-    "item": "장갑"
-   }
-  },
-  {
-   "n": 10,
-   "say": "동훈씨 말입니다.",
-   "label": "answerable",
-   "tags": [
-    "ambiguous_referent",
-    "transfer"
-   ],
-   "classes": [
-    "referent_repairs:i_mean"
-   ],
-   "scenario_turn": 10,
-   "expect": {
-    "act": "answer",
-    "entity": "동훈",
-    "quantity": 4,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      4,
-      7
-     ]
-    },
-    "item": "장갑"
+    "item": "리본"
    }
   }
  ]

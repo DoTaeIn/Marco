@@ -4,8 +4,7 @@
  "language": "en",
  "domain": "everyday",
  "categories": [
-  "ambiguous_referent",
-  "missing_premise",
+  "correction",
   "ownership",
   "transfer"
  ],
@@ -13,42 +12,39 @@
   "word_order": "free",
   "register": "formal",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_en_b_081",
+  "scenario": "s4_en_b_082",
   "half": "build",
   "focus": [
-   "fronting",
-   "referent_repairs",
-   "zero_vague"
+   "holders",
+   "partitives",
+   "question_forms"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:front_recipient",
-   "holders:relation_unnamed",
-   "holders:title",
-   "question_forms:q_left",
-   "referent_repairs:i_mean",
-   "transfer_verbs:send",
-   "zero_vague:exact_later",
-   "zero_vague:only",
-   "zero_vague:vague",
-   "zero_vague:vague_asked",
-   "zero_vague:vague_then_exact"
+   "corrections:recipient",
+   "holders:place",
+   "partitives:gave_them_not",
+   "partitives:partitive",
+   "question_forms:q_got",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:take_from"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "My teammate has some hammers. Actually, 16 of them, actually.",
+   "say": "There are 10 hammers in the front porch.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation_unnamed",
-    "zero_vague:vague_then_exact"
+    "holders:place"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -64,31 +60,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "teammate",
+      "holder": "front porch",
       "item": "hammers",
-      "quantity": 16
+      "quantity": 10
      }
     ],
     "state": [
      {
-      "entity": "teammate",
+      "entity": "front porch",
       "item": "hammers",
-      "quantity": 16
+      "quantity": 10
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "Dr. Edwards only has hammers, 9 of them.",
+   "say": "Walter keeps 6 hammers.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "holders:title",
-    "zero_vague:only"
-   ],
+   "classes": [],
    "scenario_turn": 2,
    "expect": {
     "act": "record",
@@ -103,30 +96,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "Edwards",
+      "holder": "Walter",
       "item": "hammers",
-      "quantity": 9
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "Edwards",
+      "entity": "Walter",
       "item": "hammers",
-      "quantity": 9
+      "quantity": 6
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "Irene also has some hammers, not sure how many.",
+   "say": "Gemma has got 16 hammers.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "zero_vague:vague"
-   ],
+   "classes": [],
    "scenario_turn": 3,
    "expect": {
     "act": "record",
@@ -141,55 +132,32 @@
     "events": [
      {
       "type": "has",
-      "holder": "Irene",
+      "holder": "Gemma",
       "item": "hammers",
-      "quantity": null
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "Irene",
+      "entity": "Gemma",
       "item": "hammers",
-      "quantity": null
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "How many hammers does Irene have?",
+   "say": "Gemma left three hammers at the front porch.",
    "label": "hold",
    "tags": [
-    "missing_premise"
+    "transfer"
    ],
    "classes": [
-    "zero_vague:vague_asked"
+    "holders:place",
+    "transfer_verbs:leave_at"
    ],
    "scenario_turn": 4,
-   "expect": {
-    "act": "hold",
-    "entity": "Irene",
-    "quantity": null,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      4
-     ]
-    },
-    "item": "hammers"
-   }
-  },
-  {
-   "n": 5,
-   "say": "Irene has 7 of them, to be exact.",
-   "label": "hold",
-   "tags": [
-    "ownership"
-   ],
-   "classes": [
-    "zero_vague:exact_later"
-   ],
-   "scenario_turn": 5,
    "expect": {
     "act": "record",
     "entity": null,
@@ -197,36 +165,67 @@
     "relation": null,
     "evidence": {
      "turns": [
-      5
+      4
      ]
     },
     "events": [
      {
-      "type": "has",
-      "holder": "Irene",
+      "type": "transfer",
+      "from": "Gemma",
+      "to": "front porch",
       "item": "hammers",
-      "quantity": 7
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "Irene",
+      "entity": "Gemma",
       "item": "hammers",
-      "quantity": 7
+      "quantity": 13
+     },
+     {
+      "entity": "front porch",
+      "item": "hammers",
+      "quantity": 13
      }
     ]
    }
   },
   {
+   "n": 5,
+   "say": "How many hammers has Walter got now?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Walter",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "hammers"
+   }
+  },
+  {
    "n": 6,
-   "say": "To Irene, Dr. Edwards sent five hammers.",
+   "say": "Walter took one of them from the front porch.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:front_recipient",
-    "transfer_verbs:send"
+    "holders:place",
+    "partitives:partitive",
+    "transfer_verbs:take_from"
    ],
    "scenario_turn": 6,
    "expect": {
@@ -242,44 +241,47 @@
     "events": [
      {
       "type": "transfer",
-      "from": "Edwards",
-      "to": "Irene",
+      "from": "front porch",
+      "to": "Walter",
       "item": "hammers",
-      "quantity": 5
+      "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "Edwards",
-      "item": "hammers",
-      "quantity": 4
-     },
-     {
-      "entity": "Irene",
+      "entity": "front porch",
       "item": "hammers",
       "quantity": 12
+     },
+     {
+      "entity": "Walter",
+      "item": "hammers",
+      "quantity": 7
      }
     ]
    }
   },
   {
    "n": 7,
-   "say": "How many hammers does Irene have now?",
+   "say": "How many hammers are in the front porch now?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "Irene",
+    "entity": "front porch",
     "quantity": 12,
     "relation": "count",
     "evidence": {
      "turns": [
-      3,
-      5,
+      1,
+      4,
       6
      ]
     },
@@ -288,51 +290,115 @@
   },
   {
    "n": 8,
-   "say": "How many hammers does Irene have left?",
+   "say": "Wait, the front porch gave them to Gemma, not Walter.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:recipient",
+    "partitives:gave_them_not"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      8
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "front porch",
+      "to": "Walter",
+      "item": "hammers",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "front porch",
+      "to": "Gemma",
+      "item": "hammers",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "front porch",
+      "item": "hammers",
+      "quantity": 12
+     },
+     {
+      "entity": "Walter",
+      "item": "hammers",
+      "quantity": 6
+     },
+     {
+      "entity": "Gemma",
+      "item": "hammers",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many hammers does Gemma hold?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "question_forms:q_left"
+    "question_forms:q_hold"
    ],
-   "scenario_turn": 8,
+   "scenario_turn": 9,
    "expect": {
     "act": "answer",
-    "entity": "Irene",
-    "quantity": 12,
+    "entity": "Gemma",
+    "quantity": 14,
     "relation": "count",
     "evidence": {
      "turns": [
       3,
-      5,
-      6
+      4,
+      8
      ]
     },
     "item": "hammers"
    }
   },
   {
-   "n": 9,
-   "say": "I mean Dr. Edwards.",
+   "n": 10,
+   "say": "How many hammers do Walter and Gemma have in total?",
    "label": "answerable",
    "tags": [
-    "ambiguous_referent",
     "transfer"
    ],
-   "classes": [
-    "referent_repairs:i_mean"
-   ],
-   "scenario_turn": 9,
+   "classes": [],
+   "scenario_turn": 10,
    "expect": {
     "act": "answer",
-    "entity": "Edwards",
-    "quantity": 4,
-    "relation": "count",
+    "entity": [
+     "Walter",
+     "Gemma"
+    ],
+    "quantity": 20,
+    "relation": "total",
     "evidence": {
      "turns": [
       2,
-      6
+      3,
+      4,
+      6,
+      8
      ]
     },
     "item": "hammers"

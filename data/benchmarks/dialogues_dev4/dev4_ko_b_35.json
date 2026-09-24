@@ -1,0 +1,316 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_35",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_175",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "holders",
+   "referent_repairs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:adv_moment",
+   "holders:place",
+   "holders:relation_unnamed",
+   "multi_fact",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:leave_at"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "현재 손전등 열한 개가 편의점에 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "편의점",
+      "item": "손전등",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "편의점",
+      "item": "손전등",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "민지는 손전등 여덟 개가 있어요. 지후는 손전등 열 개가 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "multi_fact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "민지",
+      "item": "손전등",
+      "quantity": 8
+     },
+     {
+      "type": "has",
+      "holder": "지후",
+      "item": "손전등",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "민지",
+      "item": "손전등",
+      "quantity": 8
+     },
+     {
+      "entity": "지후",
+      "item": "손전등",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 동료는 손전등 열세 개를 맡고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "동료",
+      "item": "손전등",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "동료",
+      "item": "손전등",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "지후가 편의점에 손전등 한 개를 두고 왔대요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지후",
+      "to": "편의점",
+      "item": "손전등",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "지후",
+      "item": "손전등",
+      "quantity": 9
+     },
+     {
+      "entity": "편의점",
+      "item": "손전등",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 편의점에 손전등이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "편의점",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "손전등"
+   }
+  },
+  {
+   "n": 6,
+   "say": "지후는 손전등을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "지후",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "손전등"
+   }
+  },
+  {
+   "n": 7,
+   "say": "그분은 지금 손전등이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "지후",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "손전등"
+   }
+  },
+  {
+   "n": 8,
+   "say": "아, 민지요.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "ownership"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "민지",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "손전등"
+   }
+  }
+ ]
+}

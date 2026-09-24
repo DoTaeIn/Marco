@@ -1,0 +1,354 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_41",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_207",
+  "half": "build",
+  "focus": [
+   "referent_repairs",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:relation_unnamed",
+   "question_forms:q_left",
+   "transfer_verbs:carry",
+   "transfer_verbs:receive",
+   "zero_vague:only",
+   "zero_vague:vague"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "도윤은 레몬 다섯 개만 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "도윤",
+      "item": "레몬",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "도윤",
+      "item": "레몬",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 동료는 레몬 열네 개를 들고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:carry"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "동료",
+      "item": "레몬",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "동료",
+      "item": "레몬",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "영호는 레몬이 좀 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "영호",
+      "item": "레몬",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "영호",
+      "item": "레몬",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "도윤이 제 동료한테서 레몬 두 개를 받았어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "동료",
+      "to": "도윤",
+      "item": "레몬",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "동료",
+      "item": "레몬",
+      "quantity": 12
+     },
+     {
+      "entity": "도윤",
+      "item": "레몬",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "도윤은 지금 레몬이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "도윤",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "레몬"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 동료는 레몬이 몇 개 남았어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "동료",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "레몬"
+   }
+  },
+  {
+   "n": 7,
+   "say": "아, 두 개가 아니라 열 개였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      7
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "동료",
+      "to": "도윤",
+      "item": "레몬",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "동료",
+      "to": "도윤",
+      "item": "레몬",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "동료",
+      "item": "레몬",
+      "quantity": 4
+     },
+     {
+      "entity": "도윤",
+      "item": "레몬",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "도윤이 지금 레몬이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "도윤",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      7
+     ]
+    },
+    "item": "레몬",
+    "retracted_quantity": 7,
+    "reexecuted_quantity": 17
+   }
+  },
+  {
+   "n": 9,
+   "say": "도윤과 제 동료가 합쳐서 레몬이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "도윤",
+     "동료"
+    ],
+    "quantity": 19,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "레몬"
+   }
+  }
+ ]
+}

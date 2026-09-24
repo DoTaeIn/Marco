@@ -4,52 +4,45 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "ambiguous_referent",
-  "follow_up",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "haeyo",
-  "split": "multi_fact",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_122",
+  "scenario": "s4_ko_b_133",
   "half": "build",
   "focus": [
+   "partitives",
    "referent_repairs",
-   "transfer_verbs",
    "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:apposition",
    "holders:first_person",
-   "holders:title",
+   "holders:relation_unnamed",
+   "partitives:partitive",
    "question_forms:q_hold",
    "question_forms:q_left",
-   "referent_repairs:i_mean",
-   "referent_repairs:pronoun_fixed",
-   "transfer_verbs:hand_over",
-   "transfer_verbs:lend",
-   "zero_vague:also_some",
-   "zero_vague:only"
+   "transfer_verbs:receive",
+   "transfer_verbs:use_up",
+   "zero_vague:vague",
+   "zero_vague:zero"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "사서 채원 씨가 쿠키가 열 개 있고 레몬도 좀 있어요.",
+   "say": "가은은 양초가 여섯 개 있어.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "holders:apposition",
-    "zero_vague:also_some"
-   ],
+   "classes": [],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -64,41 +57,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "채원",
-      "item": "쿠키",
-      "quantity": 10
-     },
-     {
-      "type": "has",
-      "holder": "채원",
-      "item": "레몬",
-      "quantity": null
+      "holder": "가은",
+      "item": "양초",
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "채원",
-      "item": "쿠키",
-      "quantity": 10
-     },
-     {
-      "entity": "채원",
-      "item": "레몬",
-      "quantity": null
+      "entity": "가은",
+      "item": "양초",
+      "quantity": 6
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "황 팀장님은 쿠키만 여섯 개 있어요.",
+   "say": "서준은 양초가 좀 있어.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:title",
-    "zero_vague:only"
+    "zero_vague:vague"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -114,30 +95,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "황 팀장",
-      "item": "쿠키",
-      "quantity": 6
+      "holder": "서준",
+      "item": "양초",
+      "quantity": null
      }
     ],
     "state": [
      {
-      "entity": "황 팀장",
-      "item": "쿠키",
-      "quantity": 6
+      "entity": "서준",
+      "item": "양초",
+      "quantity": null
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "저는 쿠키 아홉 개만 있어요.",
+   "say": "나는 양초가 하나도 없어.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
     "holders:first_person",
-    "zero_vague:only"
+    "zero_vague:zero"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -154,29 +135,29 @@
      {
       "type": "has",
       "holder": "나",
-      "item": "쿠키",
-      "quantity": 9
+      "item": "양초",
+      "quantity": 0
      }
     ],
     "state": [
      {
       "entity": "나",
-      "item": "쿠키",
-      "quantity": 9
+      "item": "양초",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "황 팀장님은 저한테 쿠키 다섯 개를 건네주었어요.",
+   "say": "내 팀원은 양초가 하나도 없어.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "holders:first_person",
-    "transfer_verbs:hand_over"
+    "holders:relation_unnamed",
+    "zero_vague:zero"
    ],
    "scenario_turn": 4,
    "expect": {
@@ -191,64 +172,33 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "황 팀장",
-      "to": "나",
-      "item": "쿠키",
-      "quantity": 5
+      "type": "has",
+      "holder": "팀원",
+      "item": "양초",
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "황 팀장",
-      "item": "쿠키",
-      "quantity": 1
-     },
-     {
-      "entity": "나",
-      "item": "쿠키",
-      "quantity": 14
+      "entity": "팀원",
+      "item": "양초",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 5,
-   "say": "황 팀장님은 쿠키를 몇 개 가지고 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "answer",
-    "entity": "황 팀장",
-    "quantity": 1,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      4
-     ]
-    },
-    "item": "쿠키"
-   }
-  },
-  {
-   "n": 6,
-   "say": "채원 씨가 저한테 쿠키 한 개를 빌려줬어요.",
+   "say": "나는 가은이한테서 양초 네 개를 받았어.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
     "holders:first_person",
-    "transfer_verbs:lend"
+    "transfer_verbs:receive"
    ],
-   "scenario_turn": 6,
+   "scenario_turn": 5,
    "expect": {
     "act": "record",
     "entity": null,
@@ -256,35 +206,97 @@
     "relation": null,
     "evidence": {
      "turns": [
-      6
+      5
      ]
     },
     "events": [
      {
       "type": "transfer",
-      "from": "채원",
+      "from": "가은",
       "to": "나",
-      "item": "쿠키",
-      "quantity": 1
+      "item": "양초",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "채원",
-      "item": "쿠키",
-      "quantity": 9
+      "entity": "가은",
+      "item": "양초",
+      "quantity": 2
      },
      {
       "entity": "나",
-      "item": "쿠키",
-      "quantity": 15
+      "item": "양초",
+      "quantity": 4
      }
     ]
    }
   },
   {
+   "n": 6,
+   "say": "가은은 지금 양초가 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "가은",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "양초"
+   }
+  },
+  {
    "n": 7,
-   "say": "채원 씨는 쿠키가 몇 개 남았어요?",
+   "say": "가은은 양초 그거 한 개를 다 썼어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:use_up"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "가은",
+      "item": "양초",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "가은",
+      "item": "양초",
+      "quantity": 1
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "가은은 양초가 몇 개 남았어?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -292,99 +304,46 @@
    "classes": [
     "question_forms:q_left"
    ],
-   "scenario_turn": 7,
-   "expect": {
-    "act": "answer",
-    "entity": "채원",
-    "quantity": 9,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      6
-     ]
-    },
-    "item": "쿠키"
-   }
-  },
-  {
-   "n": 8,
-   "say": "그분은 지금 쿠키가 몇 개 있어요?",
-   "label": "answerable",
-   "tags": [
-    "ambiguous_referent",
-    "follow_up"
-   ],
-   "classes": [
-    "referent_repairs:pronoun_fixed"
-   ],
    "scenario_turn": 8,
    "expect": {
     "act": "answer",
-    "entity": "채원",
-    "quantity": 9,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      6
-     ]
-    },
-    "item": "쿠키"
-   }
-  },
-  {
-   "n": 9,
-   "say": "아, 황 팀장요.",
-   "label": "answerable",
-   "tags": [
-    "ambiguous_referent",
-    "transfer"
-   ],
-   "classes": [
-    "referent_repairs:i_mean"
-   ],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "answer",
-    "entity": "황 팀장",
+    "entity": "가은",
     "quantity": 1,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
-      4
+      1,
+      5,
+      7
      ]
     },
-    "item": "쿠키"
+    "item": "양초"
    }
   },
   {
-   "n": 10,
-   "say": "채원 씨와 황 팀장님이 합쳐서 쿠키가 몇 개 있어요?",
+   "n": 9,
+   "say": "나는 양초를 몇 개 가지고 있어?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [],
-   "scenario_turn": 10,
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 9,
    "expect": {
     "act": "answer",
-    "entity": [
-     "채원",
-     "황 팀장"
-    ],
-    "quantity": 10,
-    "relation": "total",
+    "entity": "나",
+    "quantity": 4,
+    "relation": "count",
     "evidence": {
      "turns": [
-      1,
-      2,
-      4,
-      6
+      3,
+      5
      ]
     },
-    "item": "쿠키"
+    "item": "양초"
    }
   }
  ]

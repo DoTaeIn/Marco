@@ -1,0 +1,283 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_44",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_130",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "holders:place",
+   "question_forms:q_place_now",
+   "transfer_verbs:take_from",
+   "zero_vague:also_some",
+   "zero_vague:vague",
+   "zero_vague:vague_asked"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The lobby has some cookies too.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "lobby",
+      "item": "cookies",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "lobby",
+      "item": "cookies",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Ines has 15 cookies and also some helmets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Ines",
+      "item": "cookies",
+      "quantity": 15
+     },
+     {
+      "type": "has",
+      "holder": "Ines",
+      "item": "helmets",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ines",
+      "item": "cookies",
+      "quantity": 15
+     },
+     {
+      "entity": "Ines",
+      "item": "helmets",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "the loading dock holds 13 cookies.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "loading dock",
+      "item": "cookies",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "loading dock",
+      "item": "cookies",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many helmets does Ines have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "hold",
+    "entity": "Ines",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "item": "helmets"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Ines took 5 cookies from the loading dock, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "loading dock",
+      "to": "Ines",
+      "item": "cookies",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "loading dock",
+      "item": "cookies",
+      "quantity": 8
+     },
+     {
+      "entity": "Ines",
+      "item": "cookies",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many cookies are in the loading dock now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "loading dock",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "item": "cookies"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many cookies does Ines have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Ines",
+    "quantity": 20,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      5
+     ]
+    },
+    "item": "cookies"
+   }
+  }
+ ]
+}

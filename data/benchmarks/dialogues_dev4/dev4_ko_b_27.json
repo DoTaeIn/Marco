@@ -15,32 +15,35 @@
   "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_b_128",
+  "scenario": "s4_ko_b_134",
   "half": "build",
   "focus": [
-   "holders",
    "korean_register",
-   "partitives"
+   "question_forms",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
    "corrections:amount",
-   "holders:relation_unnamed",
-   "partitives:same",
-   "question_forms:q_left",
-   "question_forms:q_two_total"
+   "holders:title",
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:give_back",
+   "zero_vague:only",
+   "zero_vague:zero"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 선배는 접시가 여덟 개 있어요.",
+   "say": "임 실장님은 잡지만 열한 권 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation_unnamed"
+    "holders:title",
+    "zero_vague:only"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -56,28 +59,31 @@
     "events": [
      {
       "type": "has",
-      "holder": "선배",
-      "item": "접시",
-      "quantity": 8
+      "holder": "임 실장",
+      "item": "잡지",
+      "quantity": 11
      }
     ],
     "state": [
      {
-      "entity": "선배",
-      "item": "접시",
-      "quantity": 8
+      "entity": "임 실장",
+      "item": "잡지",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "지원은 접시가 열 개 있어요.",
+   "say": "다인 씨한테는 잡지가 하나도 없어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [],
+   "classes": [
+    "holders:title",
+    "zero_vague:zero"
+   ],
    "scenario_turn": 2,
    "expect": {
     "act": "record",
@@ -92,30 +98,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "지원",
-      "item": "접시",
-      "quantity": 10
+      "holder": "다인",
+      "item": "잡지",
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "지원",
-      "item": "접시",
-      "quantity": 10
+      "entity": "다인",
+      "item": "잡지",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "지원이가 제 선배한테 같은 접시 네 개를 줬어요.",
+   "say": "임 실장님이 다인씨한테 잡지 한 권을 줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "partitives:same"
-   ],
+   "classes": [],
    "scenario_turn": 3,
    "expect": {
     "act": "record",
@@ -130,118 +134,109 @@
     "events": [
      {
       "type": "transfer",
-      "from": "지원",
-      "to": "선배",
-      "item": "접시",
-      "quantity": 4
+      "from": "임 실장",
+      "to": "다인",
+      "item": "잡지",
+      "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "지원",
-      "item": "접시",
-      "quantity": 6
+      "entity": "임 실장",
+      "item": "잡지",
+      "quantity": 10
      },
      {
-      "entity": "선배",
-      "item": "접시",
-      "quantity": 12
+      "entity": "다인",
+      "item": "잡지",
+      "quantity": 1
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "지원이 지금 접시가 몇 개 있어요?",
+   "say": "임 실장님은 잡지를 몇 권 가지고 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [],
+   "classes": [
+    "question_forms:q_hold"
+   ],
    "scenario_turn": 4,
    "expect": {
     "act": "answer",
-    "entity": "지원",
-    "quantity": 6,
+    "entity": "임 실장",
+    "quantity": 10,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
+      1,
       3
      ]
     },
-    "item": "접시"
+    "item": "잡지"
    }
   },
   {
    "n": 5,
-   "say": "아, 네 개가 아니라 다섯 개였어요.",
-   "label": "correction",
+   "say": "임 실장님은 다인 씨한테 잡지 네 권을 돌려줬어요.",
+   "label": "hold",
    "tags": [
-    "correction"
+    "transfer"
    ],
    "classes": [
-    "corrections:amount"
+    "transfer_verbs:give_back"
    ],
    "scenario_turn": 5,
    "expect": {
-    "act": "revise",
+    "act": "record",
     "entity": null,
     "quantity": null,
     "relation": null,
     "evidence": {
      "turns": [
-      3,
       5
      ]
     },
-    "target_turn": 3,
-    "replaces": [
+    "events": [
      {
       "type": "transfer",
-      "from": "지원",
-      "to": "선배",
-      "item": "접시",
+      "from": "임 실장",
+      "to": "다인",
+      "item": "잡지",
       "quantity": 4
-     }
-    ],
-    "with": [
-     {
-      "type": "transfer",
-      "from": "지원",
-      "to": "선배",
-      "item": "접시",
-      "quantity": 5
      }
     ],
     "state": [
      {
-      "entity": "지원",
-      "item": "접시",
-      "quantity": 5
+      "entity": "임 실장",
+      "item": "잡지",
+      "quantity": 6
      },
      {
-      "entity": "선배",
-      "item": "접시",
-      "quantity": 13
+      "entity": "다인",
+      "item": "잡지",
+      "quantity": 5
      }
     ]
    }
   },
   {
    "n": 6,
-   "say": "지원은 접시가 몇 개 남았어요?",
+   "say": "다인 씨는 잡지를 몇 권 가지고 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "question_forms:q_left"
+    "question_forms:q_hold"
    ],
    "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "지원",
+    "entity": "다인",
     "quantity": 5,
     "relation": "count",
     "evidence": {
@@ -251,14 +246,96 @@
       5
      ]
     },
-    "item": "접시",
+    "item": "잡지"
+   }
+  },
+  {
+   "n": 7,
+   "say": "아, 네 권이 아니라 다섯 권였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5,
+      7
+     ]
+    },
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "임 실장",
+      "to": "다인",
+      "item": "잡지",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "임 실장",
+      "to": "다인",
+      "item": "잡지",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "임 실장",
+      "item": "잡지",
+      "quantity": 5
+     },
+     {
+      "entity": "다인",
+      "item": "잡지",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "임 실장님은 잡지를 몇 권 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "임 실장",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "잡지",
     "retracted_quantity": 6,
     "reexecuted_quantity": 1
    }
   },
   {
-   "n": 7,
-   "say": "두 사람 합쳐서 접시가 몇 개 있어요?",
+   "n": 9,
+   "say": "두 사람 합쳐서 잡지가 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -266,24 +343,25 @@
    "classes": [
     "question_forms:q_two_total"
    ],
-   "scenario_turn": 7,
+   "scenario_turn": 9,
    "expect": {
     "act": "answer",
     "entity": [
-     "선배",
-     "지원"
+     "임 실장",
+     "다인"
     ],
-    "quantity": 18,
+    "quantity": 11,
     "relation": "total",
     "evidence": {
      "turns": [
       1,
       2,
       3,
-      5
+      5,
+      7
      ]
     },
-    "item": "접시"
+    "item": "잡지"
    }
   }
  ]

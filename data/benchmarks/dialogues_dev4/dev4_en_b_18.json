@@ -15,37 +15,38 @@
   "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_en_b_053",
+  "scenario": "s4_en_b_054",
   "half": "build",
   "focus": [
-   "fronting",
-   "holders",
+   "partitives",
+   "question_forms",
    "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
    "corrections:amount",
-   "holders:place",
-   "holders:relation_unnamed",
-   "holders:title",
+   "holders:apposition",
+   "holders:first_person",
+   "partitives:partitive",
+   "question_forms:q_got",
    "question_forms:q_hold",
+   "question_forms:q_two_total",
    "transfer_verbs:receive",
-   "zero_vague:only",
-   "zero_vague:vague_then_exact",
-   "zero_vague:zero"
+   "transfer_verbs:send",
+   "zero_vague:only"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "my roommate hasn't got any trophies.",
+   "say": "The cashier, Mr. Rodriguez, only has magazines, 11 of them.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation_unnamed",
-    "zero_vague:zero"
+    "holders:apposition",
+    "zero_vague:only"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -61,29 +62,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "roommate",
-      "item": "trophies",
-      "quantity": 0
+      "holder": "Rodriguez",
+      "item": "magazines",
+      "quantity": 11
      }
     ],
     "state": [
      {
-      "entity": "roommate",
-      "item": "trophies",
-      "quantity": 0
+      "entity": "Rodriguez",
+      "item": "magazines",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "Dr. Evans only has trophies, 5 of them.",
+   "say": "All I have is magazines, 13 of them.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:title",
+    "holders:first_person",
     "zero_vague:only"
    ],
    "scenario_turn": 2,
@@ -100,30 +101,31 @@
     "events": [
      {
       "type": "has",
-      "holder": "Evans",
-      "item": "trophies",
-      "quantity": 5
+      "holder": "I",
+      "item": "magazines",
+      "quantity": 13
      }
     ],
     "state": [
      {
-      "entity": "Evans",
-      "item": "trophies",
-      "quantity": 5
+      "entity": "I",
+      "item": "magazines",
+      "quantity": 13
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "The attic is in there with some 15 trophies. The attic has 15 of them, actually.",
+   "say": "Mr. Rodriguez sent me 4 of them.",
    "label": "hold",
    "tags": [
-    "ownership"
+    "transfer"
    ],
    "classes": [
-    "holders:place",
-    "zero_vague:vague_then_exact"
+    "holders:first_person",
+    "partitives:partitive",
+    "transfer_verbs:send"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -138,32 +140,90 @@
     },
     "events": [
      {
-      "type": "has",
-      "holder": "attic",
-      "item": "trophies",
-      "quantity": 15
+      "type": "transfer",
+      "from": "Rodriguez",
+      "to": "I",
+      "item": "magazines",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "attic",
-      "item": "trophies",
-      "quantity": 15
+      "entity": "Rodriguez",
+      "item": "magazines",
+      "quantity": 7
+     },
+     {
+      "entity": "I",
+      "item": "magazines",
+      "quantity": 17
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "my roommate got two trophies from Dr. Evans.",
+   "say": "How many magazines do I hold now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "magazines"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many magazines has Mr. Rodriguez got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Rodriguez",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "magazines"
+   }
+  },
+  {
+   "n": 6,
+   "say": "I got 1 magazine from Mr. Rodriguez.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
+    "holders:first_person",
     "transfer_verbs:receive"
    ],
-   "scenario_turn": 4,
+   "scenario_turn": 6,
    "expect": {
     "act": "record",
     "entity": null,
@@ -171,113 +231,35 @@
     "relation": null,
     "evidence": {
      "turns": [
-      4
+      6
      ]
     },
     "events": [
      {
       "type": "transfer",
-      "from": "Evans",
-      "to": "roommate",
-      "item": "trophies",
-      "quantity": 2
-     }
-    ],
-    "state": [
-     {
-      "entity": "Evans",
-      "item": "trophies",
-      "quantity": 3
-     },
-     {
-      "entity": "roommate",
-      "item": "trophies",
-      "quantity": 2
-     }
-    ]
-   }
-  },
-  {
-   "n": 5,
-   "say": "How many trophies does my roommate have now?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "answer",
-    "entity": "roommate",
-    "quantity": 2,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4
-     ]
-    },
-    "item": "trophies"
-   }
-  },
-  {
-   "n": 6,
-   "say": "Actually it was 1, not 2.",
-   "label": "correction",
-   "tags": [
-    "correction"
-   ],
-   "classes": [
-    "corrections:amount"
-   ],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "revise",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      4,
-      6
-     ]
-    },
-    "target_turn": 4,
-    "replaces": [
-     {
-      "type": "transfer",
-      "from": "Evans",
-      "to": "roommate",
-      "item": "trophies",
-      "quantity": 2
-     }
-    ],
-    "with": [
-     {
-      "type": "transfer",
-      "from": "Evans",
-      "to": "roommate",
-      "item": "trophies",
+      "from": "Rodriguez",
+      "to": "I",
+      "item": "magazines",
       "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "Evans",
-      "item": "trophies",
-      "quantity": 4
+      "entity": "Rodriguez",
+      "item": "magazines",
+      "quantity": 6
      },
      {
-      "entity": "roommate",
-      "item": "trophies",
-      "quantity": 1
+      "entity": "I",
+      "item": "magazines",
+      "quantity": 18
      }
     ]
    }
   },
   {
    "n": 7,
-   "say": "How many trophies does my roommate hold?",
+   "say": "How many magazines does Mr. Rodriguez hold?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -288,19 +270,132 @@
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "roommate",
-    "quantity": 1,
+    "entity": "Rodriguez",
+    "quantity": 6,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
-      4,
+      3,
       6
      ]
     },
-    "item": "trophies",
-    "retracted_quantity": 2,
-    "reexecuted_quantity": 3
+    "item": "magazines"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Actually, it was 4, not 1.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      8
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Rodriguez",
+      "to": "I",
+      "item": "magazines",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Rodriguez",
+      "to": "I",
+      "item": "magazines",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rodriguez",
+      "item": "magazines",
+      "quantity": 3
+     },
+     {
+      "entity": "I",
+      "item": "magazines",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many magazines do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6,
+      8
+     ]
+    },
+    "item": "magazines",
+    "retracted_quantity": 18,
+    "reexecuted_quantity": 22
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many magazines do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Rodriguez",
+     "I"
+    ],
+    "quantity": 24,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6,
+      8
+     ]
+    },
+    "item": "magazines"
    }
   }
  ]

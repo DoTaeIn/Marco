@@ -4,43 +4,46 @@
  "language": "en",
  "domain": "everyday",
  "categories": [
+  "correction",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "neutral",
+  "register": "formal",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_en_b_066",
+  "scenario": "s4_en_b_068",
   "half": "build",
   "focus": [
-   "fronting",
    "holders",
+   "partitives",
    "question_forms"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:adv_moment",
+   "corrections:amount",
+   "holders:first_person",
    "holders:relation",
-   "holders:title",
+   "partitives:same",
+   "question_forms:q_got",
+   "question_forms:q_left",
    "question_forms:q_two_total",
-   "transfer_verbs:lend"
+   "transfer_verbs:receive"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "Dr. Moore has 11 bulbs at the moment.",
+   "say": "my classmate Zoe keeps 12 pillows.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "fronting:adv_moment",
-    "holders:title"
+    "holders:relation"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -56,29 +59,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "Moore",
-      "item": "bulbs",
-      "quantity": 11
+      "holder": "Zoe",
+      "item": "pillows",
+      "quantity": 12
      }
     ],
     "state": [
      {
-      "entity": "Moore",
-      "item": "bulbs",
-      "quantity": 11
+      "entity": "Zoe",
+      "item": "pillows",
+      "quantity": 12
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "Dr. Moore's teammate Fiona is responsible for nine bulbs.",
+   "say": "I am responsible for 8 pillows.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "holders:first_person"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -94,29 +97,31 @@
     "events": [
      {
       "type": "has",
-      "holder": "Fiona",
-      "item": "bulbs",
-      "quantity": 9
+      "holder": "I",
+      "item": "pillows",
+      "quantity": 8
      }
     ],
     "state": [
      {
-      "entity": "Fiona",
-      "item": "bulbs",
-      "quantity": 9
+      "entity": "I",
+      "item": "pillows",
+      "quantity": 8
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "Fiona lent Dr. Moore five bulbs.",
+   "say": "I got the same 4 pillows from Zoe.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:lend"
+    "holders:first_person",
+    "partitives:same",
+    "transfer_verbs:receive"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -132,52 +137,209 @@
     "events": [
      {
       "type": "transfer",
-      "from": "Fiona",
-      "to": "Moore",
-      "item": "bulbs",
-      "quantity": 5
+      "from": "Zoe",
+      "to": "I",
+      "item": "pillows",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "Fiona",
-      "item": "bulbs",
-      "quantity": 4
+      "entity": "Zoe",
+      "item": "pillows",
+      "quantity": 8
      },
      {
-      "entity": "Moore",
-      "item": "bulbs",
-      "quantity": 16
+      "entity": "I",
+      "item": "pillows",
+      "quantity": 12
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "How many bulbs does Fiona have now?",
+   "say": "How many pillows does Zoe have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Zoe",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "pillows"
+   }
+  },
+  {
+   "n": 5,
+   "say": "I got the same 2 pillows from Zoe.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "partitives:same",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Zoe",
+      "to": "I",
+      "item": "pillows",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Zoe",
+      "item": "pillows",
+      "quantity": 6
+     },
+     {
+      "entity": "I",
+      "item": "pillows",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many pillows has I got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "pillows"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Sorry, it was 7, not 2.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5,
+      7
+     ]
+    },
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Zoe",
+      "to": "I",
+      "item": "pillows",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Zoe",
+      "to": "I",
+      "item": "pillows",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Zoe",
+      "item": "pillows",
+      "quantity": 1
+     },
+     {
+      "entity": "I",
+      "item": "pillows",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many pillows does Zoe have now?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 4,
+   "scenario_turn": 8,
    "expect": {
     "act": "answer",
-    "entity": "Fiona",
-    "quantity": 4,
+    "entity": "Zoe",
+    "quantity": 1,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
-      3
+      1,
+      3,
+      5,
+      7
      ]
     },
-    "item": "bulbs"
+    "item": "pillows",
+    "retracted_quantity": 6,
+    "reexecuted_quantity": -1
    }
   },
   {
-   "n": 5,
-   "say": "How many bulbs do the two of them have in total?",
+   "n": 9,
+   "say": "How many pillows do the two of them have in total?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -185,12 +347,12 @@
    "classes": [
     "question_forms:q_two_total"
    ],
-   "scenario_turn": 5,
+   "scenario_turn": 9,
    "expect": {
     "act": "answer",
     "entity": [
-     "Moore",
-     "Fiona"
+     "Zoe",
+     "I"
     ],
     "quantity": 20,
     "relation": "total",
@@ -198,10 +360,12 @@
      "turns": [
       1,
       2,
-      3
+      3,
+      5,
+      7
      ]
     },
-    "item": "bulbs"
+    "item": "pillows"
    }
   }
  ]

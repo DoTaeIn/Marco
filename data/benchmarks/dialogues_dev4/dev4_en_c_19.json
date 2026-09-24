@@ -1,0 +1,407 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_19",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_058",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:adv_apparently",
+   "fronting:adv_moment",
+   "fronting:front_recipient",
+   "holders:place",
+   "partitives:partitive",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "transfer_verbs:give_back",
+   "transfer_verbs:holding",
+   "transfer_verbs:pass",
+   "transfer_verbs:responsible"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Olivia is holding 9 backpacks at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "transfer_verbs:holding"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Olivia",
+      "item": "backpacks",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Olivia",
+      "item": "backpacks",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "There are 16 backpacks in the supply closet.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "supply closet",
+      "item": "backpacks",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "supply closet",
+      "item": "backpacks",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Delia is responsible for 4 backpacks right now.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Delia",
+      "item": "backpacks",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Delia",
+      "item": "backpacks",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "To Olivia, Delia gave back two of hers.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "partitives:partitive",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Delia",
+      "to": "Olivia",
+      "item": "backpacks",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Delia",
+      "item": "backpacks",
+      "quantity": 2
+     },
+     {
+      "entity": "Olivia",
+      "item": "backpacks",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many backpacks does Delia hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Delia",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "backpacks"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Olivia passed three backpacks to Delia, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Olivia",
+      "to": "Delia",
+      "item": "backpacks",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Olivia",
+      "item": "backpacks",
+      "quantity": 8
+     },
+     {
+      "entity": "Delia",
+      "item": "backpacks",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many backpacks does Olivia have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Olivia",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6
+     ]
+    },
+    "item": "backpacks"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many backpacks does Delia have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Delia",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "backpacks"
+   }
+  },
+  {
+   "n": 9,
+   "say": "Wait, make that 10, not 3.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      9
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Olivia",
+      "to": "Delia",
+      "item": "backpacks",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Olivia",
+      "to": "Delia",
+      "item": "backpacks",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Olivia",
+      "item": "backpacks",
+      "quantity": 1
+     },
+     {
+      "entity": "Delia",
+      "item": "backpacks",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many backpacks does Delia have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "Delia",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6,
+      9
+     ]
+    },
+    "item": "backpacks",
+    "retracted_quantity": 5,
+    "reexecuted_quantity": 15
+   }
+  }
+ ]
+}
