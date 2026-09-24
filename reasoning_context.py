@@ -2783,6 +2783,23 @@ class ReasoningContext:
                         "ok": False, "reason": "event_reference_" + key}])}
         if not candidates:
             return reply("reference_no_event", 말=said)
+
+        def carries_old(sentence):
+            for word in sentence.split():
+                core = word.strip(".,!?")
+                digits = re.match(r"\d+", core)
+                if parse_numeral(core, numerals) == request["old"] or (digits and str(int(digits.group())) == request["old"]):
+                    return True
+            return False
+        # A statement said after every candidate that carried the old amount but was left unread may be the
+        # one the user means: asked back with it, never an older statement corrected in its place (G5 safety).
+        later = [entry["text"] for entry in self.unread_guard + self.unread
+                 if entry.get("대상") is None and not entry.get("범용") and entry["at"] > candidates[-1]
+                 and entry["text"] != said and carries_old(entry["text"])]
+        if later:
+            items = [self.observations[i].strip() for i in candidates] + [text.strip() for text in later]
+            return reply("reference_which_event", {"items": items}, 말=said,
+                         목록=", ".join('"%s"' % item for item in items))
         if len(candidates) > 1 and request["verb"] is None and candidates[-1] == len(self.observations) - 1:
             # A contrast right after an event that carried the old amount, where every statement that
             # carried it was an event, corrects the latest one: the narrative's latest change is what "it"
@@ -4127,14 +4144,43 @@ class ReasoningContext:
                 continue
             before, after = canonical[:at], canonical[at + len(key):]
             if not (typed.startswith(before) and typed.endswith(after)) or len(typed) < len(before) + len(after):
-                continue
-            # a phrase variant dropped before the holder ("After that, my aunt") leaves its words in the
-            # difference; the holder's own words are those after the last comma
-            words = typed[len(before):len(typed) - len(after)].split(",")[-1].strip()
+                # another variant rewrote a word around the holder (keeps -> has, me -> I): the words the
+                # pack declares before a holder, as typed before the key (G5 batch 4)
+                words = self._said_before_key(typed, key)
+            else:
+                # a phrase variant dropped before the holder ("After that, my aunt") leaves its words in the
+                # difference; the holder's own words are those after the last comma
+                words = typed[len(before):len(typed) - len(after)].split(",")[-1].strip()
             if words and words != key and key in words and key in said and key not in places:
                 holders[key] = {"kind": "named", "said": words}
         if holders:
             result["meaning"] = {**meaning, "holders": {**(meaning.get("holders") or {}), **holders}}
+
+    def _said_before_key(self, typed, key):
+        """The holder as typed: ``key`` with the declared words before it (가진쪽꼴): a title before a name
+        (Mr. Fischer), a possessive (my wife), a possessive and one relation word before a name (my tenant
+        Eliana); None when the words before the key are none of these."""
+        parser = self._parser()
+        spec = getattr(parser, "holder_forms", None) or {}
+        lead = {w.lower() for w in list(spec.get("possessives") or []) + list(spec.get("self_possessives") or [])}
+        titles = set(spec.get("prefix_titles") or [])
+        found = re.search(r"(?<![\w'])%s(?![\w'])" % re.escape(key), typed)
+        if found is None:
+            return None
+        ahead = typed[:found.start()].split()
+        taken = []
+        if ahead and ahead[-1] in titles:
+            taken = ahead[-1:]
+        elif ahead and ahead[-1].lower() in lead:
+            taken = ahead[-1:]
+        elif (len(ahead) >= 2 and ahead[-2].lower() in lead and ahead[-1].isalpha()
+              and ahead[-1].lower() not in parser._frame_words()):
+            taken = ahead[-2:]
+        if not taken:
+            return None
+        if taken[0].lower() in lead:
+            taken[0] = taken[0].lower()
+        return " ".join(taken + [key])
 
     def _follow_up(self, text, knowledge_path, language):
         """A question about this conversation's own last reply, as the language declares them

@@ -504,3 +504,26 @@ def test_a_total_is_asked_with_either_present_auxiliary():
         _ctx, rows = play("english", ["The boathouse has 7 goblets.", "The pantry has 2 goblets.",
                                       "How many goblets %s the boathouse and the pantry have in total?" % aux])
         assert asserted_numbers(rows[2]["answer"]) == {9}
+
+
+# G5.3 batch 5: a relation or titled holder named as the user said it, a word that fills no slot, and a
+# correction whose amount a later unread statement also carried --------------------------------------------------
+def test_a_relation_or_titled_holder_is_named_as_the_user_said_it_whatever_the_verb():
+    _ctx, rows = play("english", ["I own 9 kettles.", "my uncle keeps 12 kettles.", "my uncle gave me 2 kettles."])
+    assert rows[2]["meaning"]["holders"]["uncle"] == {"kind": "named", "said": "my uncle"}
+    _ctx, rows = play("english", ["Ulla has 5 kettles.", "Mr. Brand keeps 3 kettles.", "Ulla gave Mr. Brand 2 kettles."])
+    assert rows[2]["meaning"]["holders"]["Brand"] == {"kind": "named", "said": "Mr. Brand"}
+
+
+def test_a_word_that_fills_no_slot_is_never_part_of_a_holder_or_a_thing():
+    assert facts_of("한국어", "지금은 미소가 컵 세 개를 가지고 있어요.") == [("미소 컵", "count", "3")]
+    assert facts_of("한국어", "오늘은 미소가 컵을 세 개 가지고 있어요.") == [("미소 컵", "count", "3")]
+    assert facts_of("한국어", "사서 해솔 씨가 지금은 컵 아홉 개를 보관하고 있어요.") == [("해솔 컵", "count", "9")]
+
+
+def test_a_correction_whose_amount_a_later_unread_statement_carried_is_asked_back():
+    _ctx, rows = play("한국어", ["미소는 컵이 다섯 개 있어요.", "해솔은 컵이 아홉 개 있어요.", "미소가 해솔한테 컵 다섯 개를 쭈굴했어요.",
+                                "아, 다섯 개가 아니라 세 개였어요."])
+    assert rows[3]["status"] == "unresolved"
+    assert rows[3]["meaning"]["reason"] == "reference_which_event"
+    assert rows[3]["meaning"]["items"] == ["미소는 컵이 다섯 개 있어요.", "미소가 해솔한테 컵 다섯 개를 쭈굴했어요."]

@@ -705,6 +705,16 @@ class RelationalParser:
         shortest = int((self.possessor or {}).get("min_length", 1))
         return any(word.endswith(p) and len(word) - len(p) >= shortest for p in particles if p)
 
+    def _slotless_words(self):
+        """The single words the pack's phrase variants read as nothing (말바꿈 with an empty ``to``), letters
+        only (a title with its period is the holder forms' to read)."""
+        if getattr(self, "_slotless_word_set", None) is None:
+            fold = (lambda w: w.lower()) if self.data.get("ignore_case") else (lambda w: w)
+            self._slotless_word_set = {fold(row["from"].strip()) for row in self.phrase_variants
+                                       if isinstance(row.get("from"), str) and row.get("to", "") == ""
+                                       and row["from"].strip().isalpha()}
+        return self._slotless_word_set
+
     def _frame_words(self):
         """The words the pack's frames are made of: every word of its examples outside their slots, and every
         single word a declared variant reads as another (sent, lent, passed). A verb or a function word;
@@ -2363,6 +2373,13 @@ class RelationalParser:
                     # into the thing's name, so the reading is not taken (G5).
                     if isinstance(slots.get("item"), str) and re.search(r"(?<![\w])\d+(?![\w])", slots["item"]) \
                             and not str(example["slots"].get("item", "")).isdecimal():
+                        continue
+                    # A word the pack declares as filling no slot (a phrase variant read as nothing: 지금은,
+                    # 오늘은, now, still) is never part of a holder or a thing: the reading without it is taken
+                    # (G5 batch 5)
+                    if any(word in self._slotless_words() for name, value in slots.items()
+                           if isinstance(value, str) and not str(example["slots"].get(name, "")).isdecimal()
+                           for word in (value.lower() if self.data.get("ignore_case") else value).split()):
                         continue
                     for name, annotated in example["slots"].items():
                         if annotated.isdecimal():
