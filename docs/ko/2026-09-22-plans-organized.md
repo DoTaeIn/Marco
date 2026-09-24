@@ -22,6 +22,8 @@ Plans that existed only in conversation are recorded here in full.
 | NERO compute and acceleration layer (owner's design note, verbatim, 34 sections: backend contract, CPU/GPU hybrid, same-semantics rule, V1–V5) | `docs/ko/2026-09-24-nero-compute-design.md` | Idea. N1 with the engine splits after the gate; N2–N4 through T1+28 wk; N5 unscheduled |
 | G5 understanding round 5 (hybrid: classes + readings as candidates) | `docs/ko/2026-09-25-understanding-r5-goal.md` | Done 2026-09-25, merged; frozen 45/108 |
 | W5 realizer round 5 | `docs/ko/2026-09-25-realizer-r5-goal.md` | Done 2026-09-25, merged; frozen numbers unchanged |
+| G6 understanding round 6 (the exam's own classes, from the owner's ledger read) | `docs/ko/2026-09-25-understanding-r6-goal.md` | Written 2026-09-25; starts after S4 or now, owner's call |
+| W6 realizer round 6 | `docs/ko/2026-09-25-realizer-r6-goal.md` | Written 2026-09-25, alongside G6 |
 | G5 plan B: compositional input understanding (owner's design note, 31 sections, verbatim) | `docs/ko/2026-09-25-g5-compositional-understanding-design.md` | Contingency; scope chosen by round 4's number |
 | W4 realizer round 4: why from the trace graph | `docs/ko/2026-09-24-realizer-r4-goal.md` | Running 2026-09-24 evening alongside G4 |
 | D2 docs round 2: README truth, names, numbers, package | `docs/ko/2026-09-24-docs-r2-goal.md` | Running 2026-09-24 evening, docs only |

@@ -141,6 +141,8 @@ queue.
 | [2026-09-25-g5-compositional-understanding-design.md](ko/2026-09-25-g5-compositional-understanding-design.md) | Owner's design for compositional input understanding: readings as candidates validated by state and reasoning; the round-5 contingency and its decision rule |
 | [2026-09-25-understanding-r5-goal.md](ko/2026-09-25-understanding-r5-goal.md) | G5: understanding round 5, the blocking classes plus readings as candidates |
 | [2026-09-25-realizer-r5-goal.md](ko/2026-09-25-realizer-r5-goal.md) | W5: realizer round 5, the round-4 requests, trace fields, fluency sample 5 |
+| [2026-09-25-understanding-r6-goal.md](ko/2026-09-25-understanding-r6-goal.md) | G6: understanding round 6, the exam's own classes read from the ledger, why with a restated fact |
+| [2026-09-25-realizer-r6-goal.md](ko/2026-09-25-realizer-r6-goal.md) | W6: realizer round 6, the round-5 requests, why with a named holder, the release stamp |
 | [2026-09-24-understanding-r4-goal.md](ko/2026-09-24-understanding-r4-goal.md) | G4: understanding round 4, natural language instead of templates |
 | [2026-09-24-file-moves-goal.md](ko/2026-09-24-file-moves-goal.md) | S4: file moves, the root becomes packages, references rewritten, no shims |
 | [2026-09-24-trace-ledger-goal.md](ko/2026-09-24-trace-ledger-goal.md) | L1: the trace ledger, MARCO records why, not only what it said |
