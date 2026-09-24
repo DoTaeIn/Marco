@@ -2018,8 +2018,13 @@ class ReasoningContext:
         if not 말들 or not query:
             return query, None
         차례표 = {}
+        # A pointer (he, she, 그 사람) names someone other than the speaker: the speaker's
+        # own key (the pack's 임자자리말, I / 나) is never what it points back to.
+        speaker = parser.speaker_placeholder
         for item in facts:
             이름 = str(item["triple"][0])
+            if speaker and 이름.split()[:1] == [speaker]:
+                continue
             차례표[이름] = max(차례표.get(이름, -1), item["evidence"].get("turn", -1))
             if parser.ellipsis.get("part_reference") == "leading_words" and len(이름.split()) > 1:
                 # 앞말만으로 대상을 가리키는 언어라면 그 앞말도 가리킬 수 있는 것이다.
@@ -2058,8 +2063,9 @@ class ReasoningContext:
         that set is exactly one person; with two or more it is asked back.
         """
         people = []
+        speaker = self._parser().speaker_placeholder if self._permitted(None) else ""
         for name in self.salient:
-            if name not in people:
+            if name not in people and name != speaker:
                 people.append(name)
         return people[0] if len(people) == 1 else None
 
@@ -2859,12 +2865,13 @@ class ReasoningContext:
             stripped = False
             for head in sorted(spec.get("heads", []), key=len, reverse=True):
                 folded = said.lower()
-                if folded == head.lower() or folded.startswith(head.lower() + " "):
+                # a head stands before the name as a word of its own, after a space or a comma
+                if folded == head.lower() or folded.startswith((head.lower() + " ", head.lower() + ",")):
                     said = said[len(head):].strip(" ,")
                     stripped = True
                     break
         for tail in sorted(spec.get("tails", []), key=len, reverse=True):
-            if said.endswith(tail) and len(said) > len(tail):
+            if said.lower().endswith(tail.lower()) and len(said) > len(tail):
                 said = said[:-len(tail)]
                 break
         name = parser.canonical_name(said.strip(" ,"))
@@ -2878,6 +2885,13 @@ class ReasoningContext:
                 words = subject.split()
                 people.update(" ".join(words[:k]) for k in range(1, len(words) + 1))
         match = [person for person in people if person.lower() == name.lower()]
+        if not match:
+            # The name as the pack reads a holder said with a title or a relation (Dr. Morales,
+            # 예린 씨): the forms its phrase variants and holder forms read it as.
+            for variant, _notes in parser._variant_literals(name):
+                match = [person for person in people if person.lower() == variant.strip(" ,").lower()]
+                if match:
+                    break
         if len(match) != 1:
             return None
         name = match[0]
@@ -2894,7 +2908,15 @@ class ReasoningContext:
         pattern = re.compile(r"(?<!\w)" + re.escape(old) + r"(?![A-Za-z])",
                              re.IGNORECASE if parser.data.get("ignore_case") else 0)
         if not pattern.search(question):
-            return None
+            # The last question named its person by a pointer (he, 그분): the name takes the
+            # pointer's place, when the question holds exactly one.
+            found = [w for w in sorted(parser.pointers or [], key=len, reverse=True)
+                     if re.search(r"(?<![\w])%s(?![\w])" % re.escape(w), question,
+                                  re.IGNORECASE if parser.data.get("ignore_case") else 0)]
+            if len(found) != 1:
+                return None
+            pattern = re.compile(r"(?<![\w])" + re.escape(found[0]) + r"(?![\w])",
+                                 re.IGNORECASE if parser.data.get("ignore_case") else 0)
         rewritten = pattern.sub(lambda _m: name, question, count=1)
         self._in_name_reply = True
         try:
