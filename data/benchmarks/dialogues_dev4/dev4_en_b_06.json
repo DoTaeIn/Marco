@@ -1,0 +1,246 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_06",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_012",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "partitives:partitive",
+   "transfer_verbs:pass",
+   "transfer_verbs:responsible",
+   "transfer_verbs:transfer"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Jasmine has 13 ribbons.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Jasmine",
+      "item": "ribbons",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jasmine",
+      "item": "ribbons",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Gavin is responsible for 10 ribbons at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Gavin",
+      "item": "ribbons",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gavin",
+      "item": "ribbons",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Gavin transferred two ribbons to Jasmine.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:transfer"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Gavin",
+      "to": "Jasmine",
+      "item": "ribbons",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gavin",
+      "item": "ribbons",
+      "quantity": 8
+     },
+     {
+      "entity": "Jasmine",
+      "item": "ribbons",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many ribbons does Gavin have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Gavin",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "ribbons"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Jasmine passed 2 of them to Gavin.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Jasmine",
+      "to": "Gavin",
+      "item": "ribbons",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jasmine",
+      "item": "ribbons",
+      "quantity": 13
+     },
+     {
+      "entity": "Gavin",
+      "item": "ribbons",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many ribbons does Gavin have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Gavin",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "ribbons"
+   }
+  }
+ ]
+}

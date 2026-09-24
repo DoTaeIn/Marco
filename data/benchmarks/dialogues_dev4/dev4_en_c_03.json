@@ -1,0 +1,393 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_03",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_010",
+  "half": "check",
+  "focus": [
+   "holders",
+   "partitives",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:relation",
+   "partitives:partitive",
+   "question_forms:q_got",
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:give_back",
+   "transfer_verbs:pass"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my niece Megan is carrying 5 buckets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Megan",
+      "item": "buckets",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Megan",
+      "item": "buckets",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my neighbor Ryan has got 14 buckets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Ryan",
+      "item": "buckets",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ryan",
+      "item": "buckets",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Ryan passed 3 of them to Megan.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Ryan",
+      "to": "Megan",
+      "item": "buckets",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ryan",
+      "item": "buckets",
+      "quantity": 11
+     },
+     {
+      "entity": "Megan",
+      "item": "buckets",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many buckets has Ryan got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Ryan",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "buckets"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Ryan gave back one of his buckets to Megan.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Ryan",
+      "to": "Megan",
+      "item": "buckets",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ryan",
+      "item": "buckets",
+      "quantity": 10
+     },
+     {
+      "entity": "Megan",
+      "item": "buckets",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many buckets does Megan have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Megan",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "buckets"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many buckets does Ryan hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Ryan",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "buckets"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Wait, make that 9, not 1.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5,
+      8
+     ]
+    },
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Ryan",
+      "to": "Megan",
+      "item": "buckets",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Ryan",
+      "to": "Megan",
+      "item": "buckets",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ryan",
+      "item": "buckets",
+      "quantity": 2
+     },
+     {
+      "entity": "Megan",
+      "item": "buckets",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many buckets does Megan have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Megan",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      8
+     ]
+    },
+    "item": "buckets",
+    "retracted_quantity": 9,
+    "reexecuted_quantity": 18
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many buckets do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Megan",
+     "Ryan"
+    ],
+    "quantity": 19,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5,
+      8
+     ]
+    },
+    "item": "buckets"
+   }
+  }
+ ]
+}

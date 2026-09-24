@@ -1,0 +1,263 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_40",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "multi_fact",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_110",
+  "half": "build",
+  "focus": [
+   "partitives",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "multi_fact",
+   "partitives:partitive",
+   "question_forms:q_hold",
+   "transfer_verbs:receive"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Rachel has 10 hammers and Laura has 9 hammers.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "multi_fact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Rachel",
+      "item": "hammers",
+      "quantity": 10
+     },
+     {
+      "type": "has",
+      "holder": "Laura",
+      "item": "hammers",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rachel",
+      "item": "hammers",
+      "quantity": 10
+     },
+     {
+      "entity": "Laura",
+      "item": "hammers",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Rachel got 3 of them from Laura.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Laura",
+      "to": "Rachel",
+      "item": "hammers",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Laura",
+      "item": "hammers",
+      "quantity": 6
+     },
+     {
+      "entity": "Rachel",
+      "item": "hammers",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "How many hammers does Laura have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "answer",
+    "entity": "Laura",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    },
+    "item": "hammers"
+   }
+  },
+  {
+   "n": 4,
+   "say": "Actually, it was 5, not 3.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "target_turn": 2,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Laura",
+      "to": "Rachel",
+      "item": "hammers",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Laura",
+      "to": "Rachel",
+      "item": "hammers",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Laura",
+      "item": "hammers",
+      "quantity": 4
+     },
+     {
+      "entity": "Rachel",
+      "item": "hammers",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many hammers does Rachel hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Rachel",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "hammers",
+    "retracted_quantity": 13,
+    "reexecuted_quantity": 18
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many hammers do Rachel and Laura have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Rachel",
+     "Laura"
+    ],
+    "quantity": 19,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "hammers"
+   }
+  }
+ ]
+}

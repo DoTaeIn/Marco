@@ -1,0 +1,408 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_38",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_110",
+  "half": "check",
+  "focus": [
+   "holders",
+   "partitives",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:place",
+   "holders:relation_unnamed",
+   "partitives:partitive",
+   "question_forms:q_place_now",
+   "transfer_verbs:move",
+   "transfer_verbs:take_from",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "There are 3 tents in the back office.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "back office",
+      "item": "tents",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "back office",
+      "item": "tents",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My partner has no tents at all.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "partner",
+      "item": "tents",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "partner",
+      "item": "tents",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "I have some tents in the workshop. 11 of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "workshop",
+      "item": "tents",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "workshop",
+      "item": "tents",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "My partner took one of them from the back office.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "partitives:partitive",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "back office",
+      "to": "partner",
+      "item": "tents",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "back office",
+      "item": "tents",
+      "quantity": 2
+     },
+     {
+      "entity": "partner",
+      "item": "tents",
+      "quantity": 1
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many tents are in the back office now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "back office",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "tents"
+   }
+  },
+  {
+   "n": 6,
+   "say": "We moved 5 of them from the workshop to the back office.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "partitives:partitive",
+    "transfer_verbs:move"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "workshop",
+      "to": "back office",
+      "item": "tents",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "workshop",
+      "item": "tents",
+      "quantity": 6
+     },
+     {
+      "entity": "back office",
+      "item": "tents",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many tents does my partner have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "partner",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "tents"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many tents are in the workshop now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "workshop",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "item": "tents"
+   }
+  },
+  {
+   "n": 9,
+   "say": "Actually, it was 7, not 5.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      9
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "workshop",
+      "to": "back office",
+      "item": "tents",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "workshop",
+      "to": "back office",
+      "item": "tents",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "workshop",
+      "item": "tents",
+      "quantity": 4
+     },
+     {
+      "entity": "back office",
+      "item": "tents",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many tents are in the back office now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "back office",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6,
+      9
+     ]
+    },
+    "item": "tents",
+    "retracted_quantity": 7,
+    "reexecuted_quantity": 14
+   }
+  }
+ ]
+}

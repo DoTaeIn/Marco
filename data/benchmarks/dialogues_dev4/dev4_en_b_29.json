@@ -1,0 +1,342 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_29",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_081",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "referent_repairs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_recipient",
+   "holders:relation_unnamed",
+   "holders:title",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "transfer_verbs:send",
+   "zero_vague:exact_later",
+   "zero_vague:only",
+   "zero_vague:vague",
+   "zero_vague:vague_asked",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My teammate has some hammers. Actually, 16 of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "teammate",
+      "item": "hammers",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "teammate",
+      "item": "hammers",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Dr. Edwards only has hammers, 9 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Edwards",
+      "item": "hammers",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Edwards",
+      "item": "hammers",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Irene also has some hammers, not sure how many.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Irene",
+      "item": "hammers",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Irene",
+      "item": "hammers",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many hammers does Irene have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "hold",
+    "entity": "Irene",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "item": "hammers"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Irene has 7 of them, to be exact.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:exact_later"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Irene",
+      "item": "hammers",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Irene",
+      "item": "hammers",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "To Irene, Dr. Edwards sent five hammers.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Edwards",
+      "to": "Irene",
+      "item": "hammers",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Edwards",
+      "item": "hammers",
+      "quantity": 4
+     },
+     {
+      "entity": "Irene",
+      "item": "hammers",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many hammers does Irene have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Irene",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5,
+      6
+     ]
+    },
+    "item": "hammers"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many hammers does Irene have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Irene",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5,
+      6
+     ]
+    },
+    "item": "hammers"
+   }
+  },
+  {
+   "n": 9,
+   "say": "I mean Dr. Edwards.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Edwards",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      6
+     ]
+    },
+    "item": "hammers"
+   }
+  }
+ ]
+}

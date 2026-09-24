@@ -1,0 +1,360 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_09",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_021",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "partitives",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:first_person",
+   "holders:relation",
+   "question_forms:q_hold",
+   "transfer_verbs:send",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 이웃 서진은 베개 다섯 개를 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서진",
+      "item": "베개",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "서진",
+      "item": "베개",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "저는 베개만 아홉 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "베개",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "베개",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "지유도 베개가 좀 있습니다. 세어 보니 여덟 개입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지유",
+      "item": "베개",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "지유",
+      "item": "베개",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "서진이 저한테 베개 두 개를 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "서진",
+      "to": "나",
+      "item": "베개",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "서진",
+      "item": "베개",
+      "quantity": 3
+     },
+     {
+      "entity": "나",
+      "item": "베개",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "저한테 베개가 지금 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "나",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "베개"
+   }
+  },
+  {
+   "n": 6,
+   "say": "서진이 지금 베개를 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "서진",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "베개"
+   }
+  },
+  {
+   "n": 7,
+   "say": "잘못 말했어요, 두 개 말고 세 개입니다.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      7
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "서진",
+      "to": "나",
+      "item": "베개",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "서진",
+      "to": "나",
+      "item": "베개",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "서진",
+      "item": "베개",
+      "quantity": 2
+     },
+     {
+      "entity": "나",
+      "item": "베개",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "서진은 베개를 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "서진",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      7
+     ]
+    },
+    "item": "베개",
+    "retracted_quantity": 3,
+    "reexecuted_quantity": 0
+   }
+  },
+  {
+   "n": 9,
+   "say": "지유와 서진 중 누가 지금 베개가 더 많이 가지고 있는지 아닙니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "지유",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "지유",
+     "서진"
+    ],
+    "item": "베개",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4,
+      7
+     ]
+    }
+   }
+  }
+ ]
+}

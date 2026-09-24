@@ -1,0 +1,247 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_24",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_076",
+  "half": "check",
+  "focus": [
+   "holders",
+   "question_forms",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:apposition",
+   "holders:place",
+   "question_forms:q_place_now",
+   "transfer_verbs:take_from",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The courier, Ms. Collins, has 11 stickers.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Collins",
+      "item": "stickers",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Collins",
+      "item": "stickers",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Daniel has some stickers. Six of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Daniel",
+      "item": "stickers",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "Daniel",
+      "item": "stickers",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "There are 8 stickers in the back office.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "back office",
+      "item": "stickers",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "back office",
+      "item": "stickers",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Daniel took 3 stickers from the back office.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "back office",
+      "to": "Daniel",
+      "item": "stickers",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "back office",
+      "item": "stickers",
+      "quantity": 5
+     },
+     {
+      "entity": "Daniel",
+      "item": "stickers",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many stickers are in the back office now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "back office",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "stickers"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many stickers do Ms. Collins and Daniel have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Collins",
+     "Daniel"
+    ],
+    "quantity": 20,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "stickers"
+   }
+  }
+ ]
+}

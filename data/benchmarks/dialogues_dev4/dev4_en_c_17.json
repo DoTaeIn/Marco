@@ -1,0 +1,382 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_17",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_052",
+  "half": "check",
+  "focus": [
+   "holders",
+   "referent_repairs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:apposition",
+   "holders:relation",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "question_forms:q_two_total",
+   "referent_repairs:i_mean",
+   "transfer_verbs:pass",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My niece Abigail only has 9 sandwiches, 9 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Abigail",
+      "item": "sandwiches",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Abigail",
+      "item": "sandwiches",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Our driver, Ms. Morgan, has no sandwiches at all.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Morgan",
+      "item": "sandwiches",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Morgan",
+      "item": "sandwiches",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Abigail passed two sandwiches to Ms. Morgan.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Abigail",
+      "to": "Morgan",
+      "item": "sandwiches",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Abigail",
+      "item": "sandwiches",
+      "quantity": 7
+     },
+     {
+      "entity": "Morgan",
+      "item": "sandwiches",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many sandwiches does Abigail have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Abigail",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "sandwiches"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many sandwiches does Ms. Morgan hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Morgan",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "sandwiches"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Actually, it was 5, not 2.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Abigail",
+      "to": "Morgan",
+      "item": "sandwiches",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Abigail",
+      "to": "Morgan",
+      "item": "sandwiches",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Abigail",
+      "item": "sandwiches",
+      "quantity": 4
+     },
+     {
+      "entity": "Morgan",
+      "item": "sandwiches",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many sandwiches does Ms. Morgan have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Morgan",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "sandwiches",
+    "retracted_quantity": 2,
+    "reexecuted_quantity": 7
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many sandwiches does Abigail have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Abigail",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "sandwiches",
+    "retracted_quantity": 7,
+    "reexecuted_quantity": 2
+   }
+  },
+  {
+   "n": 9,
+   "say": "Ms. Morgan is who I meant.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Morgan",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "sandwiches",
+    "retracted_quantity": 2,
+    "reexecuted_quantity": 7
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many sandwiches do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Abigail",
+     "Morgan"
+    ],
+    "quantity": 9,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "sandwiches"
+   }
+  }
+ ]
+}

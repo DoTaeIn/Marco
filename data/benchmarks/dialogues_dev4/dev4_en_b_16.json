@@ -1,0 +1,328 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_16",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "multi_fact",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_043",
+  "half": "build",
+  "focus": [
+   "partitives",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:apposition",
+   "holders:relation_unnamed",
+   "partitives:partitive",
+   "question_forms:q_left",
+   "transfer_verbs:keeps",
+   "transfer_verbs:pass",
+   "zero_vague:also_some",
+   "zero_vague:vague_asked"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The new intern, Mr. Walker, has 6 markers and also some ladders.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Walker",
+      "item": "markers",
+      "quantity": 6
+     },
+     {
+      "type": "has",
+      "holder": "Walker",
+      "item": "ladders",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Walker",
+      "item": "markers",
+      "quantity": 6
+     },
+     {
+      "entity": "Walker",
+      "item": "ladders",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my sister keeps 15 markers",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:keeps"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "sister",
+      "item": "markers",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "sister",
+      "item": "markers",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "How many ladders does Mr. Walker have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "hold",
+    "entity": "Walker",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "ladders"
+   }
+  },
+  {
+   "n": 4,
+   "say": "Mr. Walker passed 3 of his markers to my sister.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Walker",
+      "to": "sister",
+      "item": "markers",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Walker",
+      "item": "markers",
+      "quantity": 3
+     },
+     {
+      "entity": "sister",
+      "item": "markers",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many markers does my sister have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "sister",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "markers"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many markers does Mr. Walker have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Walker",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "markers"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Wait, make that 5, not 3.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      7
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Walker",
+      "to": "sister",
+      "item": "markers",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Walker",
+      "to": "sister",
+      "item": "markers",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Walker",
+      "item": "markers",
+      "quantity": 1
+     },
+     {
+      "entity": "sister",
+      "item": "markers",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many markers does my sister have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "sister",
+    "quantity": 20,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "markers",
+    "retracted_quantity": 18,
+    "reexecuted_quantity": 23
+   }
+  }
+ ]
+}

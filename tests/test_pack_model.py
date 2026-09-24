@@ -56,7 +56,7 @@ def test_creation_includes_sources_not_runtime_indexes_and_preserves_content():
     # the elided-location event shape, and state-lookup action syntax are pack
     # data, not runtime indexes.
     # Promise creation/cancellation/status are pack-declared state examples.
-    assert len(candidate.relational_data["examples"]) == 78
+    assert len(candidate.relational_data["examples"]) == 99   # round 4: see tests/test_inflection.py
     assert len(candidate.relational_data["rules"]) == 6
     assert "rules" not in candidate.language["relations"]
 

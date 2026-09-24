@@ -1,0 +1,389 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_03",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_006",
+  "half": "check",
+  "focus": [
+   "korean_register",
+   "question_forms",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:title",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "transfer_verbs:give_back",
+   "transfer_verbs:send",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "최 기사님도 자두가 좀 있어요. 세어 보니 다섯 개네요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "최 기사",
+      "item": "자두",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "최 기사",
+      "item": "자두",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "서연은 자두가 하나도 없어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서연",
+      "item": "자두",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "서연",
+      "item": "자두",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "최 기사님이 서연한테 자두 한 개를 보냈어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "최 기사",
+      "to": "서연",
+      "item": "자두",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "최 기사",
+      "item": "자두",
+      "quantity": 4
+     },
+     {
+      "entity": "서연",
+      "item": "자두",
+      "quantity": 1
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "최 기사님은 자두가 몇 개 남았어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "최 기사",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "자두"
+   }
+  },
+  {
+   "n": 5,
+   "say": "서연이 지금 자두를 몇 개 가지고 있는지요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "서연",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "자두"
+   }
+  },
+  {
+   "n": 6,
+   "say": "최 기사님은 서연이한테 자두 두 개를 돌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "최 기사",
+      "to": "서연",
+      "item": "자두",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "최 기사",
+      "item": "자두",
+      "quantity": 2
+     },
+     {
+      "entity": "서연",
+      "item": "자두",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "최 기사님한테 자두가 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "최 기사",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "자두"
+   }
+  },
+  {
+   "n": 8,
+   "say": "아, 두 개가 아니라 하나였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      8
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "최 기사",
+      "to": "서연",
+      "item": "자두",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "최 기사",
+      "to": "서연",
+      "item": "자두",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "최 기사",
+      "item": "자두",
+      "quantity": 3
+     },
+     {
+      "entity": "서연",
+      "item": "자두",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "최 기사님은 자두를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "최 기사",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6,
+      8
+     ]
+    },
+    "item": "자두",
+    "retracted_quantity": 2,
+    "reexecuted_quantity": 1
+   }
+  },
+  {
+   "n": 10,
+   "say": "최 기사님과 서연이는 지금 자두가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "최 기사",
+     "서연"
+    ],
+    "quantity": 5,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6,
+      8
+     ]
+    },
+    "item": "자두"
+   }
+  }
+ ]
+}

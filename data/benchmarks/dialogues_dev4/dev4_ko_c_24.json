@@ -1,0 +1,281 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_24",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_086",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "korean_register",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "holders:first_person",
+   "holders:relation",
+   "question_forms:q_left",
+   "transfer_verbs:give_back",
+   "transfer_verbs:use_up"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 후배 준서는 티켓이 여덟 장 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "준서",
+      "item": "티켓",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "준서",
+      "item": "티켓",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "소연은 지금 티켓 아홉 장을 들고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "소연",
+      "item": "티켓",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "소연",
+      "item": "티켓",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "저는 열두 장의 티켓을 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "티켓",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "티켓",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "소연이 저한테 티켓 두 장을 돌려줬습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "소연",
+      "to": "나",
+      "item": "티켓",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "소연",
+      "item": "티켓",
+      "quantity": 7
+     },
+     {
+      "entity": "나",
+      "item": "티켓",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "소연은 지금 티켓이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "소연",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "티켓"
+   }
+  },
+  {
+   "n": 6,
+   "say": "준서가 다 쓴 티켓 세 장을 다 썼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:use_up"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "준서",
+      "item": "티켓",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "준서",
+      "item": "티켓",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "준서는 티켓이 몇 개 남았습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "준서",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      6
+     ]
+    },
+    "item": "티켓"
+   }
+  }
+ ]
+}

@@ -1,0 +1,403 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_08",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_023",
+  "half": "build",
+  "focus": [
+   "partitives",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:first_person",
+   "holders:place",
+   "partitives:partitive",
+   "question_forms:q_got",
+   "question_forms:q_place_now",
+   "transfer_verbs:keeps",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:take_from",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "I keep 11 chairs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:keeps"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "chairs",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "chairs",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "There are no chairs in the classroom.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "classroom",
+      "item": "chairs",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "classroom",
+      "item": "chairs",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "I left 3 of them at the classroom.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "holders:place",
+    "partitives:partitive",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "I",
+      "to": "classroom",
+      "item": "chairs",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "chairs",
+      "quantity": 8
+     },
+     {
+      "entity": "classroom",
+      "item": "chairs",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many chairs do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "chairs"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many chairs are in the classroom now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "classroom",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "chairs"
+   }
+  },
+  {
+   "n": 6,
+   "say": "I took 2 of them from the classroom.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "holders:place",
+    "partitives:partitive",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "classroom",
+      "to": "I",
+      "item": "chairs",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "classroom",
+      "item": "chairs",
+      "quantity": 1
+     },
+     {
+      "entity": "I",
+      "item": "chairs",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many chairs has I got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "chairs"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many chairs are in the classroom now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "classroom",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "chairs"
+   }
+  },
+  {
+   "n": 9,
+   "say": "Wait, make that 1, not 2.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      9
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "classroom",
+      "to": "I",
+      "item": "chairs",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "classroom",
+      "to": "I",
+      "item": "chairs",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "classroom",
+      "item": "chairs",
+      "quantity": 2
+     },
+     {
+      "entity": "I",
+      "item": "chairs",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many chairs are in the classroom now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "classroom",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6,
+      9
+     ]
+    },
+    "item": "chairs",
+    "retracted_quantity": 1,
+    "reexecuted_quantity": 0
+   }
+  }
+ ]
+}

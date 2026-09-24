@@ -1,0 +1,347 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_45",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_222",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "holders",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:count_first",
+   "holders:first_person",
+   "holders:relation",
+   "question_forms:q_hold",
+   "transfer_verbs:borrow",
+   "transfer_verbs:send"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 선배 보람은 달걀 열세 개를 보관하고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "보람",
+      "item": "달걀",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "보람",
+      "item": "달걀",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "다인은 달걀이 열 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "다인",
+      "item": "달걀",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "다인",
+      "item": "달걀",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제가 달걀 열네 개를 맡고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "달걀",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "달걀",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "달걀 한 개를 다인이 저한테 보냈어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "holders:first_person",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "다인",
+      "to": "나",
+      "item": "달걀",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "다인",
+      "item": "달걀",
+      "quantity": 9
+     },
+     {
+      "entity": "나",
+      "item": "달걀",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "다인은 달걀을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "다인",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "달걀"
+   }
+  },
+  {
+   "n": 6,
+   "say": "보람이 저한테 달걀 다섯 개를 빌렸어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "보람",
+      "item": "달걀",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "달걀",
+      "quantity": 10
+     },
+     {
+      "entity": "보람",
+      "item": "달걀",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "저는 지금 달걀이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "나",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "달걀"
+   }
+  },
+  {
+   "n": 8,
+   "say": "보람이랑 다인 중 누가 지금 달걀을 더 많이 가지고 있는지요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "보람",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "보람",
+     "다인"
+    ],
+    "item": "달걀",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    }
+   }
+  },
+  {
+   "n": 9,
+   "say": "보람과 다인이 합쳐서 달걀이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "보람",
+     "다인"
+    ],
+    "quantity": 27,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "달걀"
+   }
+  }
+ ]
+}

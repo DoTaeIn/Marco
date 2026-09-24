@@ -1,0 +1,384 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_33",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_095",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "partitives",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:recipient",
+   "fronting:adv_apparently",
+   "fronting:front_purpose",
+   "holders:relation",
+   "partitives:gave_them_not",
+   "partitives:partitive",
+   "question_forms:q_hold",
+   "transfer_verbs:give_back",
+   "transfer_verbs:hand_over",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my teammate Theo owns 12 plates.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Theo",
+      "item": "plates",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Theo",
+      "item": "plates",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Joanna has some plates. Actually, 3 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Joanna",
+      "item": "plates",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Joanna",
+      "item": "plates",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "My roommate Laura has no plates at all.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Laura",
+      "item": "plates",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Laura",
+      "item": "plates",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "For the fundraiser, Joanna returned 2 of them to Laura.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "partitives:partitive",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Joanna",
+      "to": "Laura",
+      "item": "plates",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Joanna",
+      "item": "plates",
+      "quantity": 1
+     },
+     {
+      "entity": "Laura",
+      "item": "plates",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many plates does Laura have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Laura",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "plates"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Laura handed over one plate to Theo, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Laura",
+      "to": "Theo",
+      "item": "plates",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Laura",
+      "item": "plates",
+      "quantity": 1
+     },
+     {
+      "entity": "Theo",
+      "item": "plates",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many plates does Theo hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Theo",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      6
+     ]
+    },
+    "item": "plates"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Actually they went to Joanna, not to Theo.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:recipient",
+    "partitives:gave_them_not"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      8
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Laura",
+      "to": "Theo",
+      "item": "plates",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Laura",
+      "to": "Joanna",
+      "item": "plates",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Laura",
+      "item": "plates",
+      "quantity": 1
+     },
+     {
+      "entity": "Theo",
+      "item": "plates",
+      "quantity": 12
+     },
+     {
+      "entity": "Joanna",
+      "item": "plates",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many plates does Theo hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Theo",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      6,
+      8
+     ]
+    },
+    "item": "plates",
+    "retracted_quantity": 13
+   }
+  }
+ ]
+}

@@ -1,0 +1,290 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_28",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_079",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:front_then",
+   "holders:title",
+   "partitives:partitive",
+   "question_forms:q_left",
+   "transfer_verbs:owns",
+   "transfer_verbs:pass"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Dr. Gutierrez has 7 tablets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Gutierrez",
+      "item": "tablets",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gutierrez",
+      "item": "tablets",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Ms. Taylor owns 14 tablets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "transfer_verbs:owns"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Taylor",
+      "item": "tablets",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Taylor",
+      "item": "tablets",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "After that, Dr. Gutierrez passed 2 of his tablets to Ms. Taylor.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "partitives:partitive",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Gutierrez",
+      "to": "Taylor",
+      "item": "tablets",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gutierrez",
+      "item": "tablets",
+      "quantity": 5
+     },
+     {
+      "entity": "Taylor",
+      "item": "tablets",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many tablets does Ms. Taylor have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Taylor",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "tablets"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many tablets does Dr. Gutierrez have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Gutierrez",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "tablets"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Actually, it was 4, not 2.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Gutierrez",
+      "to": "Taylor",
+      "item": "tablets",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Gutierrez",
+      "to": "Taylor",
+      "item": "tablets",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gutierrez",
+      "item": "tablets",
+      "quantity": 3
+     },
+     {
+      "entity": "Taylor",
+      "item": "tablets",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many tablets does Dr. Gutierrez have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Gutierrez",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "tablets",
+    "retracted_quantity": 5,
+    "reexecuted_quantity": 1
+   }
+  }
+ ]
+}

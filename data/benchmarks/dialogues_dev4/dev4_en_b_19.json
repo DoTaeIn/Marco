@@ -1,0 +1,374 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_19",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_055",
+  "half": "build",
+  "focus": [
+   "partitives",
+   "question_forms",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "partitives:partitive",
+   "partitives:same",
+   "question_forms:q_got",
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:pass",
+   "transfer_verbs:use_up",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Priya is carrying 6 novels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Priya",
+      "item": "novels",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "Priya",
+      "item": "novels",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "All Laura has is novels, 10 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Laura",
+      "item": "novels",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Laura",
+      "item": "novels",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Laura handed over 4 of the same novels to Priya.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:same",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Laura",
+      "to": "Priya",
+      "item": "novels",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Laura",
+      "item": "novels",
+      "quantity": 6
+     },
+     {
+      "entity": "Priya",
+      "item": "novels",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many novels does Laura hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Laura",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "novels"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Laura passed 5 novels to Priya.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Laura",
+      "to": "Priya",
+      "item": "novels",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Laura",
+      "item": "novels",
+      "quantity": 1
+     },
+     {
+      "entity": "Priya",
+      "item": "novels",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many novels has Priya got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Priya",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "novels"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many novels does Laura hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Laura",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "novels"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Priya used up 1 of them.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:use_up"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Priya",
+      "item": "novels",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Priya",
+      "item": "novels",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many novels does Priya have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Priya",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      8
+     ]
+    },
+    "item": "novels"
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many novels do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Priya",
+     "Laura"
+    ],
+    "quantity": 15,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5,
+      8
+     ]
+    },
+    "item": "novels"
+   }
+  }
+ ]
+}

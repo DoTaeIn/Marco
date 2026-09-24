@@ -70,14 +70,39 @@
   },
   "change_render": {
    "quantity_update": "{대상} {전}개 → {후}개",
-   "state_update": {"count": "{대상} {후}개", "location": "{대상} → {후}"}
+   "state_update": {
+    "count": "{대상} {후}개",
+    "location": "{대상} → {후}"
+   }
   },
   "change_join": ", ",
-  "concept_answer_render": ["$concept", "입니다."],
-  "ledger_labels": {"action_rule": "%s 동작을 적용한다: %s", "required_roles": " (필요 역할: %s)", "definition_source": "대화 정의 %s@%s", "event_source": "대화 사건 %s", "overflow": "앞서 한도를 넘어 읽지 못한 사건"},
-  "relation_names": {"location": "위치", "count": "수량"},
-  "rule_names": {"count_remove": "주는 쪽 수량에서 그만큼 뺌 (count_remove)", "count_add": "받는 쪽 수량에 그만큼 더함 (count_add)"},
-  "event_reference": {"tenses": ["present"], "endings": ["past_adnominal"]},
+  "concept_answer_render": [
+   "$concept",
+   "입니다."
+  ],
+  "ledger_labels": {
+   "action_rule": "%s 동작을 적용한다: %s",
+   "required_roles": " (필요 역할: %s)",
+   "definition_source": "대화 정의 %s@%s",
+   "event_source": "대화 사건 %s",
+   "overflow": "앞서 한도를 넘어 읽지 못한 사건"
+  },
+  "relation_names": {
+   "location": "위치",
+   "count": "수량"
+  },
+  "rule_names": {
+   "count_remove": "주는 쪽 수량에서 그만큼 뺌 (count_remove)",
+   "count_add": "받는 쪽 수량에 그만큼 더함 (count_add)"
+  },
+  "event_reference": {
+   "tenses": [
+    "present"
+   ],
+   "endings": [
+    "past_adnominal"
+   ]
+  },
   "_event_reference": "앞서 말한 사건을 동사의 매김꼴로 가리키는 법. `준 건` 의 `준` 은 `주` 의 과거 매김꼴이다. 꼴은 활용이 계산하므로 낱말을 적지 않는다. 과거 매김꼴은 어간에 바로 ㄴ/은 을 붙이므로 과거 시제의 ㅆ 을 거치지 않는다 (present 는 시제 연산이 없다는 뜻이다).",
   "context_correction": {
    "prefixes": [
@@ -527,7 +552,7 @@
     }
    },
    {
-   "text": "단추는 18개 있다",
+    "text": "단추는 18개 있다",
     "inflection": {
      "stem": "있",
      "kind": "existential",
@@ -546,6 +571,630 @@
      "triple": [
       "$item",
       "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "구슬만 18개 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "구슬만 18개를 가지고 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "구슬 18개만 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "구슬 18개만 가지고 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "구슬 18개를 가지고 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "구슬이 좀 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count_unknown",
+      "some"
+     ]
+    }
+   },
+   {
+    "text": "구슬을 좀 가지고 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count_unknown",
+      "some"
+     ]
+    }
+   },
+   {
+    "text": "구슬이 18개 있고 단추도 좀 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18",
+     "other": "단추"
+    },
+    "meaning": {
+     "triples": [
+      [
+       "$item",
+       "count",
+       "$n"
+      ],
+      [
+       "$other",
+       "count_unknown",
+       "some"
+      ]
+     ]
+    }
+   },
+   {
+    "text": "구슬이 18개 있고, 단추도 좀 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18",
+     "other": "단추"
+    },
+    "meaning": {
+     "triples": [
+      [
+       "$item",
+       "count",
+       "$n"
+      ],
+      [
+       "$other",
+       "count_unknown",
+       "some"
+      ]
+     ]
+    }
+   },
+   {
+    "text": "구슬도 좀 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count_unknown",
+      "some"
+     ]
+    }
+   },
+   {
+    "text": "18개이다",
+    "inflection": {
+     "stem": "이",
+     "kind": "copula",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      null,
+      "count",
+      "$n"
+     ],
+     "unnamed": true
+    }
+   },
+   {
+    "text": "상자에는 구슬이 18개 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "owner": "상자",
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "구슬 18개가 상자에 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18",
+     "owner": "상자"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "상자에는 구슬이 좀 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "owner": "상자",
+     "item": "구슬"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count_unknown",
+      "some"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "하루가 상자에서 구슬 2개를 가져갔다",
+    "inflection": {
+     "stem": "가져가",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "plain"
+    },
+    "slots": {
+     "taker": "하루",
+     "giver": "상자",
+     "item": "구슬",
+     "n": "2"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "place": [
+     "giver"
+    ]
+   },
+   {
+    "text": "하루가 상자에 구슬 2개를 두고 왔다",
+    "inflection": {
+     "stem": "오",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "plain"
+    },
+    "slots": {
+     "giver": "하루",
+     "taker": "상자",
+     "item": "구슬",
+     "n": "2"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "place": [
+     "taker"
+    ]
+   },
+   {
+    "text": "하루가 상자에 구슬 2개를 뒀다",
+    "inflection": {
+     "stem": "두",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "plain"
+    },
+    "slots": {
+     "giver": "하루",
+     "taker": "상자",
+     "item": "구슬",
+     "n": "2"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "place": [
+     "taker"
+    ]
+   },
+   {
+    "text": "하루가 상자에 구슬 2개를 맡겼다",
+    "inflection": {
+     "stem": "맡기",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "plain"
+    },
+    "slots": {
+     "giver": "하루",
+     "taker": "상자",
+     "item": "구슬",
+     "n": "2"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "place": [
+     "taker"
+    ]
+   },
+   {
+    "text": "구슬 2개를 상자에서 가방으로 옮겼다",
+    "inflection": {
+     "stem": "옮기",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "plain"
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "2",
+     "giver": "상자",
+     "taker": "가방"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "place": [
+     "giver",
+     "taker"
+    ]
+   },
+   {
+    "text": "구슬 2개가 상자에서 가방으로 옮겨졌다",
+    "inflection": {
+     "stem": "옮겨지",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "plain"
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "2",
+     "giver": "상자",
+     "taker": "가방"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "place": [
+     "giver",
+     "taker"
+    ]
+   },
+   {
+    "text": "하루가 잔치에 구슬 2개를 썼다",
+    "inflection": {
+     "stem": "쓰",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "plain"
+    },
+    "slots": {
+     "owner": "하루",
+     "purpose": "잔치",
+     "item": "구슬",
+     "n": "2"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count_remove",
       "$n"
      ]
     }
@@ -608,7 +1257,7 @@
     }
    },
    {
-   "text": "6개를 넣었다",
+    "text": "6개를 넣었다",
     "inflection": {
      "stem": "넣",
      "kind": "regular",
@@ -733,8 +1382,15 @@
     "meaning": {
      "query": [
       {
-       "triple": ["$item", "count", "?n"],
-       "render": ["$n", "개입니다."]
+       "triple": [
+        "$item",
+        "count",
+        "?n"
+       ],
+       "render": [
+        "$n",
+        "개입니다."
+       ]
       }
      ]
     }
@@ -805,7 +1461,7 @@
     }
    },
    {
-   "text": "하루가 연필을 책상으로 옮겼다",
+    "text": "하루가 연필을 책상으로 옮겼다",
     "inflection": {
      "stem": "옮기",
      "kind": "regular",
@@ -817,115 +1473,115 @@
      "item": "연필",
      "place": "책상"
     },
-   "meaning": {
-    "triple": [
-     "$item",
-     "location",
-     "$place"
-    ]
-   }
-  },
-  {
-   "text": "하루가 있는 곳으로 상자를 옮긴다",
-   "inflection": {
-    "stem": "옮기",
-    "kind": "regular",
-    "tense": "present",
-    "ending": "indicative"
+    "meaning": {
+     "triple": [
+      "$item",
+      "location",
+      "$place"
+     ]
+    }
    },
-   "slots": {
-    "actor": "하루",
-    "item": "상자"
-   },
-   "meaning": {
-    "program": [
-     {
-      "op": "lookup",
-      "into": "place",
-      "subject": "$actor",
-      "predicate": "location"
-     },
-     {
-      "op": "emit",
-      "triples": [
-       [
-        "$item",
-        "location",
-        "$place"
+   {
+    "text": "하루가 있는 곳으로 상자를 옮긴다",
+    "inflection": {
+     "stem": "옮기",
+     "kind": "regular",
+     "tense": "present",
+     "ending": "indicative"
+    },
+    "slots": {
+     "actor": "하루",
+     "item": "상자"
+    },
+    "meaning": {
+     "program": [
+      {
+       "op": "lookup",
+       "into": "place",
+       "subject": "$actor",
+       "predicate": "location"
+      },
+      {
+       "op": "emit",
+       "triples": [
+        [
+         "$item",
+         "location",
+         "$place"
+        ]
        ]
-      ]
-     }
-    ]
-   }
-  },
-  {
-   "text": "서랍에 있는 상자를 창고로 옮긴다",
-   "inflection": {
-    "stem": "옮기",
-    "kind": "regular",
-    "tense": "present",
-    "ending": "indicative"
+      }
+     ]
+    }
    },
-   "slots": {
-    "item": "상자"
-   },
-   "meaning": {
-    "program": [
-     {
-      "op": "select",
-      "into": "item",
-      "predicate": "location",
-      "value": "서랍"
-     },
-     {
-      "op": "emit",
-      "triples": [
-       [
-        "$item",
-        "location",
-        "창고"
+   {
+    "text": "서랍에 있는 상자를 창고로 옮긴다",
+    "inflection": {
+     "stem": "옮기",
+     "kind": "regular",
+     "tense": "present",
+     "ending": "indicative"
+    },
+    "slots": {
+     "item": "상자"
+    },
+    "meaning": {
+     "program": [
+      {
+       "op": "select",
+       "into": "item",
+       "predicate": "location",
+       "value": "서랍"
+      },
+      {
+       "op": "emit",
+       "triples": [
+        [
+         "$item",
+         "location",
+         "창고"
+        ]
        ]
-      ]
-     }
-    ]
-   }
-  },
-  {
-   "text": "하루가 서랍에 있으면 상자를 창고로 옮긴다",
-   "inflection": {
-    "stem": "옮기",
-    "kind": "regular",
-    "tense": "present",
-    "ending": "indicative"
+      }
+     ]
+    }
    },
-   "slots": {
-    "actor": "하루",
-    "item": "상자"
-   },
-   "meaning": {
-    "program": [
-     {
-      "op": "when",
-      "fact": [
-       "$actor",
-       "location",
-       "서랍"
-      ]
-     },
-     {
-      "op": "emit",
-      "triples": [
-       [
-        "$item",
+   {
+    "text": "하루가 서랍에 있으면 상자를 창고로 옮긴다",
+    "inflection": {
+     "stem": "옮기",
+     "kind": "regular",
+     "tense": "present",
+     "ending": "indicative"
+    },
+    "slots": {
+     "actor": "하루",
+     "item": "상자"
+    },
+    "meaning": {
+     "program": [
+      {
+       "op": "when",
+       "fact": [
+        "$actor",
         "location",
-        "창고"
+        "서랍"
        ]
-      ]
-     }
-    ]
-   }
-  },
-  {
+      },
+      {
+       "op": "emit",
+       "triples": [
+        [
+         "$item",
+         "location",
+         "창고"
+        ]
+       ]
+      }
+     ]
+    }
+   },
+   {
     "text": "책상으로 옮겼다",
     "inflection": {
      "stem": "옮기",
@@ -1039,15 +1695,31 @@
    },
    {
     "text": "연필은 어디에 있어",
-    "inflection": {"stem": "있", "kind": "existential", "tense": "present", "ending": "informal", "tenses": ["present", "past"]},
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "informal",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
     "slots": {
      "item": "연필"
     },
     "meaning": {
      "query": [
       {
-       "triple": ["$item", "location", "?place"],
-       "render": ["$place", "에 있습니다."]
+       "triple": [
+        "$item",
+        "location",
+        "?place"
+       ],
+       "render": [
+        "$place",
+        "에 있습니다."
+       ]
       }
      ]
     }
@@ -1159,7 +1831,10 @@
      "a": "하루",
      "v": "청소"
     },
-    "word_slots": ["a", "v"],
+    "word_slots": [
+     "a",
+     "v"
+    ],
     "meaning": {
      "triple": [
       "$a",
@@ -1242,11 +1917,26 @@
      "effect": "도서관에서"
     },
     "slot_forms": {
-     "connector": ["아서", "어서", "와서", "워서", "해서", "여서", "혀서"]
+     "connector": [
+      "아서",
+      "어서",
+      "와서",
+      "워서",
+      "해서",
+      "여서",
+      "혀서"
+     ]
     },
-    "wide_slots": ["cause", "effect"],
-    "prefer_shortest_slots": ["a"],
-    "allow_inflected_slots": ["cause"],
+    "wide_slots": [
+     "cause",
+     "effect"
+    ],
+    "prefer_shortest_slots": [
+     "a"
+    ],
+    "allow_inflected_slots": [
+     "cause"
+    ],
     "meaning": {
      "cause": {
       "subject": "$a",
@@ -1279,7 +1969,9 @@
      "a": "하루",
      "effect": "밥을 먹지 않은"
     },
-    "wide_slots": ["effect"],
+    "wide_slots": [
+     "effect"
+    ],
     "meaning": {
      "reason_query": {
       "subject": "$a",
@@ -1489,8 +2181,16 @@
     },
     "meaning": {
      "triples": [
-      ["$giver", "count_remove", "$n"],
-      ["$taker", "count_add", "$n"]
+      [
+       "$giver",
+       "count_remove",
+       "$n"
+      ],
+      [
+       "$taker",
+       "count_add",
+       "$n"
+      ]
      ],
      "elided": true
     }
@@ -1531,22 +2231,22 @@
       {
        "op": "emit",
        "triples": [
-      [
-       [
-        "$giver",
-        "$item"
-       ],
-       "count_remove",
-       "$n"
-      ],
-      [
-       [
-        "$taker",
-        "$item"
-       ],
-       "count_add",
-       "$n"
-       ]
+        [
+         [
+          "$giver",
+          "$item"
+         ],
+         "count_remove",
+         "$n"
+        ],
+        [
+         [
+          "$taker",
+          "$item"
+         ],
+         "count_add",
+         "$n"
+        ]
        ]
       }
      ]
@@ -1616,8 +2316,16 @@
      "other": "상대"
     },
     "meaning": {
-     "program": [{"op": "relation", "mode": "create", "kind": "promise",
-                   "actor": "$actor", "other": "$other", "status": "active"}]
+     "program": [
+      {
+       "op": "relation",
+       "mode": "create",
+       "kind": "promise",
+       "actor": "$actor",
+       "other": "$other",
+       "status": "active"
+      }
+     ]
     }
    },
    {
@@ -1627,100 +2335,219 @@
      "other": "상대"
     },
     "meaning": {
-     "program": [{"op": "relation", "mode": "update", "kind": "promise",
-                   "actor": "$actor", "other": "$other", "status": "cancelled"}]
+     "program": [
+      {
+       "op": "relation",
+       "mode": "update",
+       "kind": "promise",
+       "actor": "$actor",
+       "other": "$other",
+       "status": "cancelled"
+      }
+     ]
     }
    },
-  {
-   "text": "하루와 지우개의 약속 상태가 어때",
-    "slots": {"actor": "하루", "other": "지우개"},
+   {
+    "text": "하루와 지우개의 약속 상태가 어때",
+    "slots": {
+     "actor": "하루",
+     "other": "지우개"
+    },
     "meaning": {
-     "relation_query": {"kind": "promise", "actor": "$actor", "other": "$other",
-                        "predicate": "relation_status", "render": ["$status", "입니다."]}
-   }
-  },
-  {
-   "text": "하루가 지우개에게 베푼 것은 어떤 개념이야",
-   "slots": {"actor": "하루", "other": "지우개", "action": "베푼"},
-   "word_slots": ["action"],
-   "meaning": {
-    "concept_query": {"actor": "$actor", "other": "$other", "action": "$action"}
-   }
-  },
-  {
-   "text": "지연은 전달 허가 상태다",
-   "slots": {"person": "지연"},
-   "meaning": {"triple": ["$person", "transfer_permission", "approved"]}
-  },
-  {
-   "text": "지연은 전달 허가 상태가 아니다",
-   "slots": {"person": "지연"},
-   "meaning": {"triple": ["$person", "transfer_permission", "approved"], "polarity": false}
-  },
-  {
-   "text": "공책은 배치 허가 상태다",
-   "slots": {"item": "공책"},
-   "meaning": {"triple": ["$item", "placement_permission", "approved"]}
-  },
-  {
-   "text": "공책은 배치 허가 상태가 아니다",
-   "slots": {"item": "공책"},
-   "meaning": {"triple": ["$item", "placement_permission", "approved"], "polarity": false}
-  },
-  {
-   "text": "하루가 지우개에게 베푼 일은 전달 가능한가",
-   "slots": {"actor": "하루", "other": "지우개", "action": "베푼"},
-   "word_slots": ["action"],
-   "meaning": {"event_relation_query": {
-    "action": "$action", "roles": {"은": "$actor", "에게": "$other"},
-    "predicate": "learned_relation", "value": "transfer_allowed",
-    "premise_predicate": "transfer_permission", "premise_label": "전달 허가 상태",
-    "render": ["전달 가능합니다."]}}
-  },
-  {
-   "text": "하루가 공책을 옮긴 일은 배치 가능한가",
-   "slots": {"actor": "하루", "item": "공책", "action": "옮긴"},
-   "word_slots": ["action"],
-   "meaning": {"event_relation_query": {
-    "action": "$action", "roles": {"은": "$actor", "을": "$item"},
-    "predicate": "learned_relation", "value": "placement_allowed",
-    "premise_predicate": "placement_permission", "premise_label": "배치 허가 상태",
-    "render": ["배치 가능합니다."]}}
-  },
-  {
-   "text": "아까 준 건 2개가 아니라 1개야",
-   "slots": {"verb": "준", "old": "2", "new": "1"},
-   "word_slots": ["verb"],
-   "meaning": {"event_correction": {"verb": "$verb", "old": "$old", "new": "$new"}}
-  },
-  {
-   "text": "왜 그렇게 됐어",
-   "slots": {},
-   "meaning": {"why_last": true}
-  },
-  {
-   "text": "하루 말고 다른 사람은",
-   "slots": {"x": "하루"},
-   "meaning": {"other_than": {"excluded": "$x"}}
-  },
-  {
-   "text": "왜 그렇게 판단했어",
-   "slots": {},
-   "meaning": {"concept_reason_query": true}
-  },
-  {
+     "relation_query": {
+      "kind": "promise",
+      "actor": "$actor",
+      "other": "$other",
+      "predicate": "relation_status",
+      "render": [
+       "$status",
+       "입니다."
+      ]
+     }
+    }
+   },
+   {
+    "text": "하루가 지우개에게 베푼 것은 어떤 개념이야",
+    "slots": {
+     "actor": "하루",
+     "other": "지우개",
+     "action": "베푼"
+    },
+    "word_slots": [
+     "action"
+    ],
+    "meaning": {
+     "concept_query": {
+      "actor": "$actor",
+      "other": "$other",
+      "action": "$action"
+     }
+    }
+   },
+   {
+    "text": "지연은 전달 허가 상태다",
+    "slots": {
+     "person": "지연"
+    },
+    "meaning": {
+     "triple": [
+      "$person",
+      "transfer_permission",
+      "approved"
+     ]
+    }
+   },
+   {
+    "text": "지연은 전달 허가 상태가 아니다",
+    "slots": {
+     "person": "지연"
+    },
+    "meaning": {
+     "triple": [
+      "$person",
+      "transfer_permission",
+      "approved"
+     ],
+     "polarity": false
+    }
+   },
+   {
+    "text": "공책은 배치 허가 상태다",
+    "slots": {
+     "item": "공책"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "placement_permission",
+      "approved"
+     ]
+    }
+   },
+   {
+    "text": "공책은 배치 허가 상태가 아니다",
+    "slots": {
+     "item": "공책"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "placement_permission",
+      "approved"
+     ],
+     "polarity": false
+    }
+   },
+   {
+    "text": "하루가 지우개에게 베푼 일은 전달 가능한가",
+    "slots": {
+     "actor": "하루",
+     "other": "지우개",
+     "action": "베푼"
+    },
+    "word_slots": [
+     "action"
+    ],
+    "meaning": {
+     "event_relation_query": {
+      "action": "$action",
+      "roles": {
+       "은": "$actor",
+       "에게": "$other"
+      },
+      "predicate": "learned_relation",
+      "value": "transfer_allowed",
+      "premise_predicate": "transfer_permission",
+      "premise_label": "전달 허가 상태",
+      "render": [
+       "전달 가능합니다."
+      ]
+     }
+    }
+   },
+   {
+    "text": "하루가 공책을 옮긴 일은 배치 가능한가",
+    "slots": {
+     "actor": "하루",
+     "item": "공책",
+     "action": "옮긴"
+    },
+    "word_slots": [
+     "action"
+    ],
+    "meaning": {
+     "event_relation_query": {
+      "action": "$action",
+      "roles": {
+       "은": "$actor",
+       "을": "$item"
+      },
+      "predicate": "learned_relation",
+      "value": "placement_allowed",
+      "premise_predicate": "placement_permission",
+      "premise_label": "배치 허가 상태",
+      "render": [
+       "배치 가능합니다."
+      ]
+     }
+    }
+   },
+   {
+    "text": "아까 준 건 2개가 아니라 1개야",
+    "slots": {
+     "verb": "준",
+     "old": "2",
+     "new": "1"
+    },
+    "word_slots": [
+     "verb"
+    ],
+    "meaning": {
+     "event_correction": {
+      "verb": "$verb",
+      "old": "$old",
+      "new": "$new"
+     }
+    }
+   },
+   {
+    "text": "왜 그렇게 됐어",
+    "slots": {},
+    "meaning": {
+     "why_last": true
+    }
+   },
+   {
+    "text": "하루 말고 다른 사람은",
+    "slots": {
+     "x": "하루"
+    },
+    "meaning": {
+     "other_than": {
+      "excluded": "$x"
+     }
+    }
+   },
+   {
+    "text": "왜 그렇게 판단했어",
+    "slots": {},
+    "meaning": {
+     "concept_reason_query": true
+    }
+   },
+   {
     "text": "베풀다는 상대에게 구슬 2개를 주는 것이다",
     "slots": {
      "verb": "베풀",
      "body": "상대에게 구슬 2개를 주는"
     },
-   "word_slots": [
-    "verb"
-   ],
-   "allow_inflected_slots": [
-    "body"
-   ],
-   "meaning": {
+    "word_slots": [
+     "verb"
+    ],
+    "allow_inflected_slots": [
+     "body"
+    ],
+    "meaning": {
      "define": {
       "verb": "$verb",
       "몸통": "$body"
@@ -1734,7 +2561,8 @@
   "_뜻풀이": "뜻풀이의 **겉틀** 하나만 선언한다. 몸통이 무슨 뜻인지도, 사건이 어떻게 생겼는지도 안 적는다 — 몸통은 보통 문장이라 이미 있는 사례로 읽고, 사건은 조사가 자리를 짚고 남은 한 낱말이 움직임인 꼴이다. 동사 자리는 `word_slots` 로 한 낱말로 묶고 꼬리를 박지 않는다 — 박으면 그 말투로만 말해야 한다.",
   "_뜻풀이겉틀": "뜻풀이가 어떻게 생겼는지만 적는다. 몸통이 무슨 뜻인지는 적지 않는다 — 몸통은 보통 문장이라 이미 있는 사례로 읽는다. 짜임 하나마다 틀을 더하면 예문 증설과 같은 병이 된다.",
   "_사실여럿": "한 문장이 사실 하나라는 법은 없다. 주고받기는 주는 쪽이 줄고 받는 쪽이 는다 — 둘이다. 사실 하나만 담을 수 있으면 이런 움직임은 보통 문장으로 못 적고 뜻풀이 틀을 손으로 더하게 된다. 자리에 조각을 여럿 적으면 한 이름으로 잇는다 — `[하루, 구슬]` 은 `하루 구슬` 이다.",
-  "_수량표현사례": "양을 글자 그대로 적지 않고 **기준에서 계산해** 적은 보통 문장. 틀이 아니라 문장이다 — `주다` 를 아는 사례가 하나 더 는 것이 아니라, 같은 `주다` 를 양이 표현인 꼴로도 적어 둔 것이다."
+  "_수량표현사례": "양을 글자 그대로 적지 않고 **기준에서 계산해** 적은 보통 문장. 틀이 아니라 문장이다 — `주다` 를 아는 사례가 하나 더 는 것이 아니라, 같은 `주다` 를 양이 표현인 꼴로도 적어 둔 것이다.",
+  "_places_zero_vague": "장소도 가진 쪽이다: 장소에는(주제) X가 N개 있다, X N개가 장소에 있다, 장소에서 X를 가져갔다(장소가 준 쪽), 장소에 X를 두고 왔다·뒀다·맡겼다(장소가 받은 쪽), 장소에서 장소로 옮겼다·옮겨졌다(둘 다). 하나도·한 개도 없다는 수 0이다. 좀 있다(수를 말하지 않음)는 아직 모르는 수(count_unknown)로 적고, 뒤에 임자 없이 말한 수(18개이다, 18개예요)는 그 모르는 수에 붙는다. 조사 없이 물건 뒤에 수가 오는 꼴(하루는 구슬 18개 있다, 구슬 18개가 있다)과 만(구슬만 18개 있다)도 센 값이다. 어디에 쓴 것(잔치에 썼다)은 가진 쪽이 아니다."
  },
  "말수식": {
   "equation": "(?P<left>.+?)\\s+(?P<right>[^\\s.]+?)(?:이|가)\\s*(?:돼|된다|됩니다)[.]\\s*(?:그 수|어떤 수)는\\s*얼마(?:야|인가요)[?]?",
@@ -1801,8 +2629,91 @@
   }
  },
  "이름": "한국어",
- "로마자": {"_설명": "국어의 로마자 표기법(2000)의 자모 대응. 소리 이음 규칙(동화·연음)은 적지 않았다. 다른 글자로 쓴 대화 속 이름을 이 대화의 이름과 맞춰 볼 때만 쓴다 — 이름마다 짝을 적지 않고 글자에서 계산한다.", "onsets": {"ㄱ": "g", "ㄲ": "kk", "ㄴ": "n", "ㄷ": "d", "ㄸ": "tt", "ㄹ": "r", "ㅁ": "m", "ㅂ": "b", "ㅃ": "pp", "ㅅ": "s", "ㅆ": "ss", "ㅇ": "", "ㅈ": "j", "ㅉ": "jj", "ㅊ": "ch", "ㅋ": "k", "ㅌ": "t", "ㅍ": "p", "ㅎ": "h"}, "nuclei": {"ㅏ": "a", "ㅐ": "ae", "ㅑ": "ya", "ㅒ": "yae", "ㅓ": "eo", "ㅔ": "e", "ㅕ": "yeo", "ㅖ": "ye", "ㅗ": "o", "ㅘ": "wa", "ㅙ": "wae", "ㅚ": "oe", "ㅛ": "yo", "ㅜ": "u", "ㅝ": "wo", "ㅞ": "we", "ㅟ": "wi", "ㅠ": "yu", "ㅡ": "eu", "ㅢ": "ui", "ㅣ": "i"}, "codas": {"": "", "ㄱ": "k", "ㄲ": "k", "ㄳ": "k", "ㄴ": "n", "ㄵ": "n", "ㄶ": "n", "ㄷ": "t", "ㄹ": "l", "ㄺ": "k", "ㄻ": "m", "ㄼ": "l", "ㄽ": "l", "ㄾ": "l", "ㄿ": "p", "ㅀ": "l", "ㅁ": "m", "ㅂ": "p", "ㅄ": "p", "ㅅ": "t", "ㅆ": "t", "ㅇ": "ng", "ㅈ": "t", "ㅊ": "t", "ㅋ": "k", "ㅌ": "t", "ㅍ": "p", "ㅎ": "t"}},
- "뜻고리": {"_설명": "낱말 → 언어와 무관한 개념 ID. docs/ko/english-pack-preparation/02-sense-links-ko-en.json 에서 검증(verified)·same_concept·개체 개념인 연결만 옮겼다. 후보·보류·동음이의 분리는 옮기지 않았다.", "words": {"책": "c/entity.book", "사과": "c/entity.apple", "구슬": "c/entity.marble"}},
+ "로마자": {
+  "_설명": "국어의 로마자 표기법(2000)의 자모 대응. 소리 이음 규칙(동화·연음)은 적지 않았다. 다른 글자로 쓴 대화 속 이름을 이 대화의 이름과 맞춰 볼 때만 쓴다 — 이름마다 짝을 적지 않고 글자에서 계산한다.",
+  "onsets": {
+   "ㄱ": "g",
+   "ㄲ": "kk",
+   "ㄴ": "n",
+   "ㄷ": "d",
+   "ㄸ": "tt",
+   "ㄹ": "r",
+   "ㅁ": "m",
+   "ㅂ": "b",
+   "ㅃ": "pp",
+   "ㅅ": "s",
+   "ㅆ": "ss",
+   "ㅇ": "",
+   "ㅈ": "j",
+   "ㅉ": "jj",
+   "ㅊ": "ch",
+   "ㅋ": "k",
+   "ㅌ": "t",
+   "ㅍ": "p",
+   "ㅎ": "h"
+  },
+  "nuclei": {
+   "ㅏ": "a",
+   "ㅐ": "ae",
+   "ㅑ": "ya",
+   "ㅒ": "yae",
+   "ㅓ": "eo",
+   "ㅔ": "e",
+   "ㅕ": "yeo",
+   "ㅖ": "ye",
+   "ㅗ": "o",
+   "ㅘ": "wa",
+   "ㅙ": "wae",
+   "ㅚ": "oe",
+   "ㅛ": "yo",
+   "ㅜ": "u",
+   "ㅝ": "wo",
+   "ㅞ": "we",
+   "ㅟ": "wi",
+   "ㅠ": "yu",
+   "ㅡ": "eu",
+   "ㅢ": "ui",
+   "ㅣ": "i"
+  },
+  "codas": {
+   "": "",
+   "ㄱ": "k",
+   "ㄲ": "k",
+   "ㄳ": "k",
+   "ㄴ": "n",
+   "ㄵ": "n",
+   "ㄶ": "n",
+   "ㄷ": "t",
+   "ㄹ": "l",
+   "ㄺ": "k",
+   "ㄻ": "m",
+   "ㄼ": "l",
+   "ㄽ": "l",
+   "ㄾ": "l",
+   "ㄿ": "p",
+   "ㅀ": "l",
+   "ㅁ": "m",
+   "ㅂ": "p",
+   "ㅄ": "p",
+   "ㅅ": "t",
+   "ㅆ": "t",
+   "ㅇ": "ng",
+   "ㅈ": "t",
+   "ㅊ": "t",
+   "ㅋ": "k",
+   "ㅌ": "t",
+   "ㅍ": "p",
+   "ㅎ": "t"
+  }
+ },
+ "뜻고리": {
+  "_설명": "낱말 → 언어와 무관한 개념 ID. docs/ko/english-pack-preparation/02-sense-links-ko-en.json 에서 검증(verified)·same_concept·개체 개념인 연결만 옮겼다. 후보·보류·동음이의 분리는 옮기지 않았다.",
+  "words": {
+   "책": "c/entity.book",
+   "사과": "c/entity.apple",
+   "구슬": "c/entity.marble"
+  }
+ },
  "답못함": {
   "_설명": "답하지 못할 때의 말. 모르는 것·못 하는 것·딴 이야기를 갈라 말한다. 코드에 두면 다른 언어가 따라오지 못한다.",
   "ask_more": "무엇을 여쭤보시는지 조금 더 말씀해 주세요.",
@@ -1835,19 +2746,77 @@
  },
  "수선": {
   "_설명": "선언된 규칙 어디에도 안 맞는 절을 가장 가까운 규칙에 맞춰 읽는 편집과 그 값. 편집은 친 말을 옮기거나 빼거나 순서를 바꾸는 것, 또는 이 팩이 선언한 조사·맺음을 붙이는 것뿐이다. 친 적도 선언한 적도 없는 말은 들어오지 않는다 — 그것이 추측과의 경계다. 한도를 넘으면 반영하지 않고 무엇이 필요했는지 말한다. 한도는 조용히 넓히지 않는다.",
-  "costs": {"particle_move": 1, "particle_drop": 1, "particle_insert": 1, "ending_restore": 1, "adjacent_swap": 2, "token_skip": 3},
+  "costs": {
+   "particle_move": 1,
+   "particle_drop": 1,
+   "particle_insert": 1,
+   "ending_restore": 1,
+   "adjacent_swap": 2,
+   "token_skip": 3
+  },
   "bound": 2,
   "report_bound": 4,
   "budget": 1500,
   "hold_max_edits": 1,
   "_hold_max_edits": "한도 밖이라 보류할 때, 필요한 편집이 이만큼 이하일 때만 이 턴에서 보류를 말한다. 여러 곳을 고쳐야 닿는 규칙이면 이 말은 다른 부품(셈·지식 그래프)의 몫일 수 있어 넘긴다.",
-  "insert_particles": ["을", "를", "이", "가", "은", "는", "에"],
-  "not_in_names": ["정말", "진짜", "지금", "아까", "이제", "벌써", "방금", "또", "겨우", "딱", "총", "원래", "아직", "더", "덜", "다시", "좀", "많이", "조금"],
+  "insert_particles": [
+   "을",
+   "를",
+   "이",
+   "가",
+   "은",
+   "는",
+   "에"
+  ],
+  "not_in_names": [
+   "정말",
+   "진짜",
+   "지금",
+   "아까",
+   "이제",
+   "벌써",
+   "방금",
+   "또",
+   "겨우",
+   "딱",
+   "총",
+   "원래",
+   "아직",
+   "더",
+   "덜",
+   "다시",
+   "좀",
+   "많이",
+   "조금"
+  ],
   "_not_in_names": "이름 자리에 올 수 없는 닫힌 갈래(정도·때 부사). 수선이 이 말을 대상 이름에 붙이지 못하게 한다. 선언된 규칙에 그대로 맞는 읽기에는 쓰지 않는다.",
   "protected": {
-   "scope": ["둘", "셋", "넷", "모두", "다", "전부", "합쳐서", "합치면", "합하면", "함께", "같이", "각각", "각자", "총", "모든"],
-   "negation": ["^(?:안|못)$", "^(?:않|없|아니|아닌|아닙)"],
-   "negation_in_names": ["^(?:안|못)$", "^(?:않|없)(?!는$|은$|던$|을$|$)", "^(?:아니|아닙)"]
+   "scope": [
+    "둘",
+    "셋",
+    "넷",
+    "모두",
+    "다",
+    "전부",
+    "합쳐서",
+    "합치면",
+    "합하면",
+    "함께",
+    "같이",
+    "각각",
+    "각자",
+    "총",
+    "모든"
+   ],
+   "negation": [
+    "^(?:안|못)$",
+    "^(?:않|없|아니|아닌|아닙)"
+   ],
+   "negation_in_names": [
+    "^(?:안|못)$",
+    "^(?:않|없)(?!는$|은$|던$|을$|$)",
+    "^(?:아니|아닙)"
+   ]
   },
   "_protected": "수선이 절대 바꾸지 못하는 말: 수(선언된 수사와 숫자), 단위(수량단위), 범위말, 부정. 건너뛰기·자리바꿈·조사 옮기기/빼기/붙이기의 대상이 될 수 없고, 읽은 이름 안에 들어갈 수도 없다. 범위말은 값이 어느 임자들을 덮는지 정하는 말(둘·셋·넷, 모두·다·전부·모든, 합쳐서·합치면·합하면, 함께·같이, 각각·각자, 총). 부정은 짧은 부정 안·못과 부정 용언 않다·없다·아니다의 모든 꼴. 가장 가까운 수선이 이런 말을 바꿔야 하면 그 턴은 보류하고 무엇을 바꿔야 했는지 말한다. 선언된 규칙이 곧바로 읽은 이름 안에도 부정은 들 수 없다(negation_in_names): 짧은 부정 안·못과 않다·없다·아니다의 맺음·이음꼴. 관형꼴(없는·않은·아닌 …, `알 수 없는 관찰값`)은 이름을 꾸밀 수 있으므로 여기서 빼고 수선에서만 지킨다.",
   "names": {
@@ -1975,7 +2944,9 @@
     "open_informal": "야",
     "open_polite": "예요",
     "open_go": "고",
-    "open_contrast": "지만"
+    "open_contrast": "지만",
+    "open_exclaim": "네",
+    "open_exclaim_polite": "네요"
    }
   },
   "max_forms": 32,
@@ -2064,7 +3035,17 @@
    "condition",
    "modifier",
    "formal",
-   "myeo"
+   "myeo",
+   "exclaim",
+   "exclaim_polite",
+   "open_exclaim",
+   "open_exclaim_polite",
+   "hearsay",
+   "hearsay_polite",
+   "hearsay_formal",
+   "hearsay_quoted",
+   "hearsay_quoted_formal",
+   "wonder_polite"
   ],
   "boundary_endings": [
    "go",
@@ -2690,6 +3671,190 @@
       }
      ]
     }
+   ],
+   "exclaim": [
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "네"
+      }
+     ]
+    }
+   ],
+   "exclaim_polite": [
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "네요"
+      }
+     ]
+    }
+   ],
+   "open_exclaim": [
+    {
+     "when": {
+      "kind": "copula",
+      "tense": "present"
+     },
+     "steps": [
+      {
+       "op": "lexical",
+       "form": "open_exclaim"
+      }
+     ]
+    }
+   ],
+   "open_exclaim_polite": [
+    {
+     "when": {
+      "kind": "copula",
+      "tense": "present"
+     },
+     "steps": [
+      {
+       "op": "lexical",
+       "form": "open_exclaim_polite"
+      }
+     ]
+    }
+   ],
+   "hearsay": [
+    {
+     "when": {
+      "tense": "past"
+     },
+     "steps": [
+      {
+       "op": "append",
+       "text": "대"
+      }
+     ]
+    },
+    {
+     "when": {
+      "kind": "regular"
+     },
+     "steps": [
+      {
+       "op": "coda_suffix",
+       "coda": "ㄴ",
+       "open": "대",
+       "closed": "는대",
+       "drop_codas": [
+        "ㄹ"
+       ]
+      }
+     ]
+    },
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "대"
+      }
+     ]
+    }
+   ],
+   "hearsay_polite": [
+    {
+     "when": {
+      "tense": "past"
+     },
+     "steps": [
+      {
+       "op": "append",
+       "text": "대요"
+      }
+     ]
+    },
+    {
+     "when": {
+      "kind": "regular"
+     },
+     "steps": [
+      {
+       "op": "coda_suffix",
+       "coda": "ㄴ",
+       "open": "대요",
+       "closed": "는대요",
+       "drop_codas": [
+        "ㄹ"
+       ]
+      }
+     ]
+    },
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "대요"
+      }
+     ]
+    }
+   ],
+   "hearsay_formal": [
+    {
+     "when": {
+      "tense": "past"
+     },
+     "steps": [
+      {
+       "op": "append",
+       "text": "답니다"
+      }
+     ]
+    },
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "답니다"
+      }
+     ]
+    }
+   ],
+   "hearsay_quoted": [
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "다고 해요"
+      }
+     ]
+    }
+   ],
+   "hearsay_quoted_formal": [
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "다고 합니다"
+      }
+     ]
+    }
+   ],
+   "wonder_polite": [
+    {
+     "when": {
+      "tense": "past"
+     },
+     "steps": [
+      {
+       "op": "append",
+       "text": "는지요"
+      }
+     ]
+    },
+    {
+     "steps": [
+      {
+       "op": "append",
+       "text": "는지요"
+      }
+     ]
+    }
    ]
   },
   "question_endings": [
@@ -2703,8 +3868,10 @@
    "question_kka",
    "question_na",
    "question_nayo",
-   "question_ji"
-  ]
+   "question_ji",
+   "wonder_polite"
+  ],
+  "_exclaim_hearsay": "감탄 맺음 -네·-네요(있네요, 여덟 개네요: 잡음씨는 모음 뒤에서 이 없이)와 전해 들은 말의 맺음 -대·-대요·-답니다·-다고 해요·-다고 합니다(줬대요, 준대요)도 읽기 맺음이다. 무엇을 말했는지는 바꾸지 않는다. 조심스레 묻는 -는지요(있는지요, 가지고 있는지요)도 읽기 맺음이다."
  },
  "_설명": "말투는 엔진이 아니라 데이터다. 다른 언어를 쓰려면 이 파일을 하나 더 만든다. 엔진 코드는 안 고친다.",
  "이음규칙": "한국어",
@@ -2816,9 +3983,18 @@
  },
  "_계획": "아직 안 일어난 일. `베풀 예정이다` 처럼 **매김꼴 미래 + 이름 + 잡음씨**로 적는다. 동사 꼴은 활용이 계산하므로 낱말을 적지 않는다. 맺음은 잡음씨의 꼴이라 닫힌 갈래다. 계획은 **사실이 아니다** — 상태를 안 바꾸고 기록만 된다.",
  "관계선택답": {
-  "0": ["첫 번째", "1번"],
-  "1": ["두 번째", "2번"],
-  "2": ["세 번째", "3번"]
+  "0": [
+   "첫 번째",
+   "1번"
+  ],
+  "1": [
+   "두 번째",
+   "2번"
+  ],
+  "2": [
+   "세 번째",
+   "3번"
+  ]
  },
  "_관계선택답": "같은 참여자 사이 관계가 여럿일 때, 이미 열거한 관계 발생 하나를 고르는 짧은 답이다. 번호의 뜻은 코드가 아닌 언어팩이 선언하고, 선택은 현재 사건의 후보 목록 안에서만 이뤄진다.",
  "자리말": [
@@ -2875,22 +4051,86 @@
  ],
  "_수량표현": "글자 그대로의 수가 아니라 **기준이 되는 양에서 계산해 나오는 양**. `자신이 가진 구슬의 절반` 의 `절반` 이 그것이다. 연산 이름은 `말수식` 이 쓰는 것과 같다 — 새 연산을 만들지 않는다. 여기 없는 말은 수량 표현이 아니다. **지금 지원하는 규약**이고, 반례마다 낱말을 더하는 칸이 아니다.",
  "수량연쇄": {
- "단위": ["개"],
- "시작연결": ["중"],
- "시작꼴": [
-  {"물건조사": ["을", "를"], "꼬리": ["가지고 있었는데", "가지고 있었다가"]},
-  {"물건조사": ["은", "는"], "꼬리": ["있었다가"]}
- ],
-  "수량조사": ["을", "를"],
-  "이어말": ["뒤", "후", "그리고", "고"],
-  "동작": [
-   {"관계": "count_remove", "꼴": ["꺼낸", "꺼냈다", "꺼냈어", "덜어낸", "덜어냈다", "덜어냈어"]},
-   {"관계": "count_add", "꼴": ["넣은", "넣었다", "넣었어", "보탠", "보탰다", "보탰어"]}
+  "단위": [
+   "개"
   ],
-  "물음앞말": ["지금", "남은"],
-  "물음조사": ["은", "는", "이", "가"],
-  "물음꼴": ["몇 개야", "몇 개지", "몇 개입니까"],
-  "답": ["$n", "개입니다."]
+  "시작연결": [
+   "중"
+  ],
+  "시작꼴": [
+   {
+    "물건조사": [
+     "을",
+     "를"
+    ],
+    "꼬리": [
+     "가지고 있었는데",
+     "가지고 있었다가"
+    ]
+   },
+   {
+    "물건조사": [
+     "은",
+     "는"
+    ],
+    "꼬리": [
+     "있었다가"
+    ]
+   }
+  ],
+  "수량조사": [
+   "을",
+   "를"
+  ],
+  "이어말": [
+   "뒤",
+   "후",
+   "그리고",
+   "고"
+  ],
+  "동작": [
+   {
+    "관계": "count_remove",
+    "꼴": [
+     "꺼낸",
+     "꺼냈다",
+     "꺼냈어",
+     "덜어낸",
+     "덜어냈다",
+     "덜어냈어"
+    ]
+   },
+   {
+    "관계": "count_add",
+    "꼴": [
+     "넣은",
+     "넣었다",
+     "넣었어",
+     "보탠",
+     "보탰다",
+     "보탰어"
+    ]
+   }
+  ],
+  "물음앞말": [
+   "지금",
+   "남은"
+  ],
+  "물음조사": [
+   "은",
+   "는",
+   "이",
+   "가"
+  ],
+  "물음꼴": [
+   "몇 개야",
+   "몇 개지",
+   "몇 개입니까"
+  ],
+  "답": [
+   "$n",
+   "개입니다."
+  ]
  },
  "_수량연쇄": "초기 양(`물건 14개 중` 또는 선언한 시작꼴)에서 선언 동작을 차례로 적용하고 남은 양을 묻는 구조다. 수와 대상, 동작 관계, 연결말은 각각 일반 자리이며 특정 물건·문장 정답은 적지 않는다. `시작꼴`은 물건 조사와 상태 꼬리만 선언하며, 뒤의 변화 계산은 모두 같은 구조를 쓴다. 동작 꼴은 이 구조가 지금 확인하는 제한된 한국어 표면형이다.",
  "지시어": [
@@ -3194,7 +4434,7 @@
  "외부조사": {
   "의도": [
    {
-   "kind": "location",
+    "kind": "location",
     "질문표지": [
      "어디",
      "어디서"
@@ -3208,11 +4448,43 @@
      "근처"
     ],
     "관계": {
-     "질문동작": ["일어", "진행", "발생", "이루어", "있"],
-     "근거동작": ["일어", "진행", "발생", "이루어", "있"],
-     "값조사": ["안에서", "에서", "에 위치", "위에", "아래", "근처"],
-     "주어조사": ["은", "는", "이", "가"],
-     "절잇기": ["면서", "지만", "는데", "거나", "며", "고", "그리고"]
+     "질문동작": [
+      "일어",
+      "진행",
+      "발생",
+      "이루어",
+      "있"
+     ],
+     "근거동작": [
+      "일어",
+      "진행",
+      "발생",
+      "이루어",
+      "있"
+     ],
+     "값조사": [
+      "안에서",
+      "에서",
+      "에 위치",
+      "위에",
+      "아래",
+      "근처"
+     ],
+     "주어조사": [
+      "은",
+      "는",
+      "이",
+      "가"
+     ],
+     "절잇기": [
+      "면서",
+      "지만",
+      "는데",
+      "거나",
+      "며",
+      "고",
+      "그리고"
+     ]
     }
    },
    {
@@ -3233,11 +4505,45 @@
      "동안"
     ],
     "관계": {
-     "질문동작": ["일어", "진행", "발생", "시작", "끝나"],
-     "근거동작": ["일어", "진행", "발생", "시작", "끝나"],
-     "값조사": ["년", "월", "일", "시", "분", "초", "때", "동안"],
-     "주어조사": ["은", "는", "이", "가"],
-     "절잇기": ["면서", "지만", "는데", "거나", "며", "고", "그리고"]
+     "질문동작": [
+      "일어",
+      "진행",
+      "발생",
+      "시작",
+      "끝나"
+     ],
+     "근거동작": [
+      "일어",
+      "진행",
+      "발생",
+      "시작",
+      "끝나"
+     ],
+     "값조사": [
+      "년",
+      "월",
+      "일",
+      "시",
+      "분",
+      "초",
+      "때",
+      "동안"
+     ],
+     "주어조사": [
+      "은",
+      "는",
+      "이",
+      "가"
+     ],
+     "절잇기": [
+      "면서",
+      "지만",
+      "는데",
+      "거나",
+      "며",
+      "고",
+      "그리고"
+     ]
     }
    },
    {
@@ -3255,9 +4561,27 @@
     "관계": {
      "질문동작": [],
      "근거동작": [],
-     "값조사": ["때문", "므로", "어서", "니까"],
-     "주어조사": ["은", "는", "이", "가"],
-     "절잇기": ["면서", "지만", "는데", "거나", "며", "고", "그리고"]
+     "값조사": [
+      "때문",
+      "므로",
+      "어서",
+      "니까"
+     ],
+     "주어조사": [
+      "은",
+      "는",
+      "이",
+      "가"
+     ],
+     "절잇기": [
+      "면서",
+      "지만",
+      "는데",
+      "거나",
+      "며",
+      "고",
+      "그리고"
+     ]
     }
    }
   ]
@@ -3769,9 +5093,25 @@
  "이음어미": "(?:(?<=고)|(?<=며)|(?<=지만))\\s+(?=[가-힣A-Za-z]{2,12}(?:은|는)\\s)",
  "_이음어미": "앞 대목이 연결어미로 끝나고 뒤에 주제 조사가 다시 나올 때만 가른다. 어미는 앞 대목에 붙여 둔다 — 잘라내면 사람에게 보이는 머리말이 뭉개진다.",
  "event_domains": [
-  {"name": "Quantity", "effect_predicates": ["count_add", "count_remove"]},
-  {"name": "Location", "effect_predicates": ["location"]},
-  {"name": "Social", "operations": ["relation"]}
+  {
+   "name": "Quantity",
+   "effect_predicates": [
+    "count_add",
+    "count_remove"
+   ]
+  },
+  {
+   "name": "Location",
+   "effect_predicates": [
+    "location"
+   ]
+  },
+  {
+   "name": "Social",
+   "operations": [
+    "relation"
+   ]
+  }
  ],
  "_event_domains": "영역 이름은 동사나 사람 이름이 아니라 실행 프로그램이 선언한 effect predicate로만 붙인다. 공통 사건 계약은 이 표를 읽어 분류하되, 다른 영역의 효과를 생성하지 않는다.",
  "이름꼬리": {
@@ -3781,7 +5121,8 @@
  "소유자리": {
   "관계": [
    "count",
-   "location"
+   "location",
+   "count_unknown"
   ],
   "조사": [
    "은",
@@ -3790,11 +5131,14 @@
    "가",
    "에게",
    "에게는",
-   "의"
+   "의",
+   "도",
+   "에게도",
+   "만"
   ],
   "최소글자": 2
  },
- "_소유자리": "센 값을 말하는 문장에서 셀 대상 이름이 조사 붙은 임자로 시작하면(`하루는 구슬이 18개 있다`, `모래한테 단추가 2개 있다`, `하루의 구슬은 18개다`) 그 임자는 이름의 일부가 아니라 가진 쪽이다. 가진 쪽을 가리키는 조사는 주제 은/는, 주격 이/가, 여격 에게(+는), 관형격 의 — 한국어 관형격 조사는 의 하나뿐이다. 여기 적은 관계와 조사일 때만 `하루 구슬` 로 떼어 잇는다. 조사를 뗀 임자가 최소글자보다 짧으면(`작은 단추` 의 `작`) 꾸밈말이지 임자가 아니므로 떼지 않는다. 수선이 조사를 옮겨 읽은 문장에는 쓰지 않는다 — 수선은 조사를 삼킨 이름을 이미 받지 않는다.",
+ "_소유자리": "센 값을 말하는 문장에서 셀 대상 이름이 조사 붙은 임자로 시작하면(`하루는 구슬이 18개 있다`, `모래한테 단추가 2개 있다`, `하루의 구슬은 18개다`) 그 임자는 이름의 일부가 아니라 가진 쪽이다. 가진 쪽을 가리키는 조사는 주제 은/는, 주격 이/가, 여격 에게(+는), 관형격 의 — 한국어 관형격 조사는 의 하나뿐이다. 여기 적은 관계와 조사일 때만 `하루 구슬` 로 떼어 잇는다. 조사를 뗀 임자가 최소글자보다 짧으면(`작은 단추` 의 `작`) 꾸밈말이지 임자가 아니므로 떼지 않는다. 수선이 조사를 옮겨 읽은 문장에는 쓰지 않는다 — 수선은 조사를 삼킨 이름을 이미 받지 않는다. 보조사 도·만(연서도, 연서에게도)이 붙은 임자도 가진 쪽이다.",
  "수량단위": {
   "단위": [
    "개",
@@ -3814,7 +5158,9 @@
    "조각",
    "대",
    "벌",
-   "그루"
+   "그루",
+   "묶음",
+   "개비"
   ],
   "물음말": [
    "몇"
@@ -3829,7 +5175,7 @@
    "도"
   ]
  },
- "_수량단위": "셀 때 수 뒤에 붙는 단위 명사. 예문은 첫째 단위(`개`)로만 적고, 같은 자리에 선언된 어느 단위가 와도 같은 뜻으로 읽는다 — `구슬 세 알` 과 `구슬 3개` 는 같은 틀이다. 예문의 단위 뒤 조사는 그 무리의 어느 꼴로도 읽는다(`2개를` → `세 권을`). 예문에 없는 조사는 여기서 읽지 않고 수선에 맡긴다. 단위 뒤 잡음씨의 `이` 는 받침에 따라 오고 안 온다(`몇 권이야`, `몇 개야`). 붙는조사의 첫째가 그 잡음씨다. 물음말 뒤의 단위도 같다(`몇 장`).",
+ "_수량단위": "셀 때 수 뒤에 붙는 단위 명사. 예문은 첫째 단위(`개`)로만 적고, 같은 자리에 선언된 어느 단위가 와도 같은 뜻으로 읽는다 — `구슬 세 알` 과 `구슬 3개` 는 같은 틀이다. 예문의 단위 뒤 조사는 그 무리의 어느 꼴로도 읽는다(`2개를` → `세 권을`). 예문에 없는 조사는 여기서 읽지 않고 수선에 맡긴다. 단위 뒤 잡음씨의 `이` 는 받침에 따라 오고 안 온다(`몇 권이야`, `몇 개야`). 붙는조사의 첫째가 그 잡음씨다. 물음말 뒤의 단위도 같다(`몇 장`). 묶음(단으로 묶은 것), 개비도 단위다.",
  "같은틀": [
   {
    "as": "주",
@@ -3845,7 +5191,14 @@
     "물려주",
     "보내",
     "팔",
-    "선물하"
+    "선물하",
+    "돌려주",
+    "돌려드리",
+    "빌려드리",
+    "건네드리",
+    "넘겨드리",
+    "보내주",
+    "보내드리"
    ],
    "kind": "regular"
   },
@@ -3879,7 +5232,7 @@
    "kind": "existential"
   }
  ],
- "_같은틀": "이미 예문이 있는 동사의 틀을 그대로 쓰는 동사. 여기 적은 어간이 활용한 꼴은 같은 시제·맺음의 `as` 어간 꼴로도 읽는다(`드렸습니다` → `줬습니다`). 틀의 자리와 뜻은 그 예문의 것이고 동사 낱말만 바뀐다. 적지 않은 동사는 읽지 않는다. 갈래는 뜻으로 묶는다: `주` — 받는 이를 에게(한테·께)로 받는 주기 동사(주다 겹말 V-어 주다 가운데 소유가 옮는 것과 건네다·넘기다·보내다·팔다·선물하다); `꺼내` — 가진 쪽에서 물건이 빠지는 소비·잃음 동사(먹다·마시다·쓰다·사용하다·잃다·잃어버리다·버리다); `넣` — 출처 없이 가진 쪽에 물건이 드는 얻기 동사(사다·얻다·구하다). 받다는 역할바꿈이 읽는다.",
+ "_같은틀": "이미 예문이 있는 동사의 틀을 그대로 쓰는 동사. 여기 적은 어간이 활용한 꼴은 같은 시제·맺음의 `as` 어간 꼴로도 읽는다(`드렸습니다` → `줬습니다`). 틀의 자리와 뜻은 그 예문의 것이고 동사 낱말만 바뀐다. 적지 않은 동사는 읽지 않는다. 갈래는 뜻으로 묶는다: `주` — 받는 이를 에게(한테·께)로 받는 주기 동사(주다 겹말 V-어 주다 가운데 소유가 옮는 것과 건네다·넘기다·보내다·팔다·선물하다); `꺼내` — 가진 쪽에서 물건이 빠지는 소비·잃음 동사(먹다·마시다·쓰다·사용하다·잃다·잃어버리다·버리다); `넣` — 출처 없이 가진 쪽에 물건이 드는 얻기 동사(사다·얻다·구하다). 받다는 역할바꿈이 읽는다. 돌려주다(돌려드리다)도 주기 동사다.",
  "말바꿈": [
   {
    "from": "갖고",
@@ -3944,9 +5297,120 @@
   {
    "from": "가지고",
    "to": ""
+  },
+  {
+   "from": "들고",
+   "to": "가지고",
+   "final": true
+  },
+  {
+   "from": "보관하고",
+   "to": "가지고",
+   "final": true
+  },
+  {
+   "from": "맡고",
+   "to": "가지고",
+   "final": true
+  },
+  {
+   "from": "지금",
+   "to": ""
+  },
+  {
+   "from": "현재",
+   "to": ""
+  },
+  {
+   "from": "이제",
+   "to": ""
+  },
+  {
+   "from": "그다음에",
+   "to": ""
+  },
+  {
+   "from": "그 다음에",
+   "to": ""
+  },
+  {
+   "from": "그러고 나서",
+   "to": ""
+  },
+  {
+   "from": "그리고 나서",
+   "to": ""
+  },
+  {
+   "from": "그 후에",
+   "to": ""
+  },
+  {
+   "from": "그 뒤에",
+   "to": ""
+  },
+  {
+   "from": "이어서",
+   "to": ""
+  },
+  {
+   "from": "그중",
+   "to": ""
+  },
+  {
+   "from": "그 중",
+   "to": ""
+  },
+  {
+   "from": "그중에서",
+   "to": ""
+  },
+  {
+   "from": "같은",
+   "to": ""
+  },
+  {
+   "from": "세어 보니",
+   "to": ""
+  },
+  {
+   "from": "세어보니",
+   "to": ""
+  },
+  {
+   "from": "정확히는",
+   "to": ""
+  },
+  {
+   "from": "정확히",
+   "to": ""
+  },
+  {
+   "from": "아",
+   "to": ""
+  },
+  {
+   "from": "참",
+   "to": ""
+  },
+  {
+   "from": "그리고 또",
+   "to": ""
+  },
+  {
+   "from": "그거",
+   "to": ""
+  },
+  {
+   "from": "그것",
+   "to": ""
+  },
+  {
+   "from": "그것들",
+   "to": ""
   }
  ],
- "_말바꿈": "다른 말로도 읽는 말. 친 말은 그대로 겨루고 읽기 후보가 하나 는다. `갖고` 는 `가지고` 의 준말이고, 문장 앞의 `그리고` 는 앞말과 잇기만 하고 자리를 바꾸지 않는다. 사건의 때와 되풀이를 말하는 부사(때: 아까·방금·어제·오늘·그때·이미·벌써·먼저·나중에·처음에·원래, 되풀이: 또·다시)는 어느 자리도 채우지 않으므로 빼고서도 읽는다. `더`는 넣지 않는다 — 더함(더 넣었다)과 견줌(누가 더 많아)을 함께 나르는 말이라 빼면 견줌의 뜻이 바뀐다. 적지 않은 말은 바꾸지 않는다. 소유의 `가지고 있다`(가지다 + -고 있다)는 가진 쪽에 셀 것이 있다는 `있다` 와 같은 뜻이라, `가지고` 를 빼고서도 읽는다: `모래는 2개 가지고 있어` 는 `모래는 2개 있어`. 셀 것을 적지 않은 둘째 마디가 앞 마디의 셀 것을 물려받는 것은 생략이 한다.",
+ "_말바꿈": "다른 말로도 읽는 말. 친 말은 그대로 겨루고 읽기 후보가 하나 는다. `갖고` 는 `가지고` 의 준말이고, 문장 앞의 `그리고` 는 앞말과 잇기만 하고 자리를 바꾸지 않는다. 사건의 때와 되풀이를 말하는 부사(때: 아까·방금·어제·오늘·그때·이미·벌써·먼저·나중에·처음에·원래, 되풀이: 또·다시)는 어느 자리도 채우지 않으므로 빼고서도 읽는다. `더`는 넣지 않는다 — 더함(더 넣었다)과 견줌(누가 더 많아)을 함께 나르는 말이라 빼면 견줌의 뜻이 바뀐다. 적지 않은 말은 바꾸지 않는다. 소유의 `가지고 있다`(가지다 + -고 있다)는 가진 쪽에 셀 것이 있다는 `있다` 와 같은 뜻이라, `가지고` 를 빼고서도 읽는다: `모래는 2개 가지고 있어` 는 `모래는 2개 있어`. 셀 것을 적지 않은 둘째 마디가 앞 마디의 셀 것을 물려받는 것은 생략이 한다. 소유를 말하는 -고 있다 동사(들고·보관하고·맡고 있다)는 가지고 있다와 같이 읽는다. 때와 차례를 말하는 부사(지금·현재·이제, 그다음에·그러고 나서·그 후에·이어서)와 앞말을 잇는 말(그중, 같은 — 이미 말한 그 물건), 센 까닭을 덧붙인 말(세어 보니, 정확히는)과 감탄사(아, 참)는 어느 자리도 채우지 않는다.",
  "수량물음": {
   "time_words": [
    "지금",
@@ -4022,7 +5486,11 @@
    "두 분",
    "둘",
    "둘 다",
-   "다들"
+   "다들",
+   "둘이",
+   "둘은",
+   "두 사람이",
+   "둘이서"
   ],
   "delimiters": [
    "은",
@@ -4057,12 +5525,32 @@
    "랑",
    "이랑",
    "보다"
-  ]
+  ],
+  "pair_words": [
+   "두 사람",
+   "두 분",
+   "둘",
+   "둘 다",
+   "둘이",
+   "둘은",
+   "두 사람이",
+   "둘이서"
+  ],
+  "declarative_vague": true
  },
- "_수량물음": "`[누구/무엇] [때말] 몇 [단위] [끝말]` 꼴의 셈 물음. 물음말과 단위는 수량단위에서 온다. 여기에는 그 둘레에 올 수 있는 말만 적는다: 뜻을 안 바꾸는 때말·머리말·꾸밈말, 단위 뒤 잡음씨 꼴, 단위 뒤에 올 수 있는 끝말 어간(꼴은 활용이 계산한다). 나머지 말은 모두 이름이고, 이름 낱말 끝의 선언된 조사는 뗀다. 보조사(delimiters: 은/는·도·만·까지·조차·마저·부터·마다·(이)라도·(이)나·(이)야)가 격조사 위에 얹혀 있으면(`다올에게는`, `다올에게도`) 둘 다 뗀다. 보조사가 얹히는 격조사는 부사격·공동격 조사뿐이다(delimited_cases: 에게·한테·께·에게서·한테서·에서·에·(으)로·와/과·하고·(이)랑·보다). 주격 이/가·목적격 을/를·관형격 의 위에는 보조사가 얹히지 않고 그 자리를 대신하므로(`*고양이가는`), `고양이는` 의 `이` 는 조사가 아니라 이름의 끝이다. 격조사 없이 이름 끝에 붙은 보조사는 이름의 일부로 둔다. 한 자리라도 선언에 없으면 읽지 않는다. 합치는 말(total_words)과 여럿을 부르는 말(group_words)이 함께 오면 그 물건을 가진 모두의 합을 묻는 말이다(`두 사람 구슬을 합치면 몇 개야`).",
+ "_수량물음": "`[누구/무엇] [때말] 몇 [단위] [끝말]` 꼴의 셈 물음. 물음말과 단위는 수량단위에서 온다. 여기에는 그 둘레에 올 수 있는 말만 적는다: 뜻을 안 바꾸는 때말·머리말·꾸밈말, 단위 뒤 잡음씨 꼴, 단위 뒤에 올 수 있는 끝말 어간(꼴은 활용이 계산한다). 나머지 말은 모두 이름이고, 이름 낱말 끝의 선언된 조사는 뗀다. 보조사(delimiters: 은/는·도·만·까지·조차·마저·부터·마다·(이)라도·(이)나·(이)야)가 격조사 위에 얹혀 있으면(`다올에게는`, `다올에게도`) 둘 다 뗀다. 보조사가 얹히는 격조사는 부사격·공동격 조사뿐이다(delimited_cases: 에게·한테·께·에게서·한테서·에서·에·(으)로·와/과·하고·(이)랑·보다). 주격 이/가·목적격 을/를·관형격 의 위에는 보조사가 얹히지 않고 그 자리를 대신하므로(`*고양이가는`), `고양이는` 의 `이` 는 조사가 아니라 이름의 끝이다. 격조사 없이 이름 끝에 붙은 보조사는 이름의 일부로 둔다. 한 자리라도 선언에 없으면 읽지 않는다. 합치는 말(total_words)과 여럿을 부르는 말(group_words)이 함께 오면 그 물건을 가진 모두의 합을 묻는 말이다(`두 사람 구슬을 합치면 몇 개야`). 여럿을 부르는 말에 둘이·둘은·두 사람이도 있다. 둘을 부르는 말(pair_words: 두 사람·두 분·둘·둘이 ...)의 합은 그 물건을 가진 쪽이 꼭 둘일 때만 답한다 — 셋 이상이면 어느 둘인지 모른다. 마침표로 끝난 몇 N 꼴(연서도 레몬이 몇 개 있어요.)은 물음이 아니라 수를 말하지 않은 '몇 개'다(declarative_vague).",
  "수량이유물음": {
-  "why": ["왜", "어째서", "어떻게"],
-  "amount": ["그만큼", "그렇게", "이만큼", "저만큼"]
+  "why": [
+   "왜",
+   "어째서",
+   "어떻게"
+  ],
+  "amount": [
+   "그만큼",
+   "그렇게",
+   "이만큼",
+   "저만큼"
+  ]
  },
  "_수량이유물음": "한 임자가 가진 수가 왜 그만큼인지 묻는 말: `[누구/무엇] 왜 [무엇이] 그만큼 [있/되/남/가지 …]`. 이유말(왜·어째서·어떻게)과 양말(그만큼·그렇게·이만큼·저만큼)이 함께 와야 하고, 양말 뒤 첫 낱말은 수량물음에 선언된 끝말 어간으로 시작해야 한다(있는 거야·있어·남았지 …). 나머지 말은 이름이다. 그 임자의 지금 수가 어떤 규칙과 어떤 말에 기대는지를 답한다.",
  "이름답": {
@@ -4073,7 +5561,16 @@
    "그래서",
    "그런데",
    "근데",
-   "또"
+   "또",
+   "아",
+   "아니",
+   "아니요",
+   "아뇨",
+   "제 말은",
+   "내 말은",
+   "그러니까",
+   "죄송해요",
+   "미안해요"
   ],
   "tails": [
    " 말이야",
@@ -4084,14 +5581,30 @@
    "이요",
    "요",
    "는",
-   "은"
+   "은",
+   "를 말한 거예요",
+   "을 말한 거예요",
+   "를 말한 거야",
+   "을 말한 거야",
+   "를 말한 겁니다",
+   "을 말한 겁니다",
+   "를 말했어요",
+   "을 말했어요",
+   "예요",
+   "이에요",
+   "입니다",
+   "야",
+   "이야",
+   " 말씀이에요",
+   " 말씀입니다"
   ]
  },
- "_이름답": "사람 이름만 말한 짧은 말. 지시어 때문에 멈춘 물음 뒤라면 그 이름이 누구인지에 대한 답이고, 아니면 마지막으로 답한 물음을 그 사람에 대해 다시 묻는 말이다(`가람이는?`). 이름 앞뒤에 올 수 있는 말만 적는다. 다른 말이 섞이면 이런 말로 보지 않는다. heads 는 뒤이어 묻는 말을 여는 이음말 갈래(그럼·그러면·그리고·그래서·그런데·근데·또)이고, 여럿이 이어 와도 차례로 뗀다.",
+ "_이름답": "사람 이름만 말한 짧은 말. 지시어 때문에 멈춘 물음 뒤라면 그 이름이 누구인지에 대한 답이고, 아니면 마지막으로 답한 물음을 그 사람에 대해 다시 묻는 말이다(`가람이는?`). 이름 앞뒤에 올 수 있는 말만 적는다. 다른 말이 섞이면 이런 말로 보지 않는다. heads 는 뒤이어 묻는 말을 여는 이음말 갈래(그럼·그러면·그리고·그래서·그런데·근데·또)이고, 여럿이 이어 와도 차례로 뗀다. 스스로 고쳐 말하는 머리말(아, 아니, 아니요, 제 말은, 그러니까)과 꼬리(…를 말한 거예요, …예요, …이에요, …입니다)도 이름 앞뒤에 올 수 있다. 이름에 씨·님이 붙어도 가진 쪽 꼴로 읽는다.",
  "대조정정": {
   "markers": [
    "가 아니라 ",
-   "이 아니라 "
+   "이 아니라 ",
+   " 말고 "
   ],
   "order": "old_new",
   "restate_heads": [
@@ -4103,9 +5616,30 @@
    "내가 틀렸다",
    "내가 틀렸어",
    "제가 틀렸습니다"
+  ],
+  "amount_tails": [
+   "였습니다",
+   "였어요",
+   "였어",
+   "였다",
+   "이었습니다",
+   "이었어요",
+   "이었어",
+   "이었다",
+   "예요",
+   "이에요",
+   "입니다",
+   "이야",
+   "야",
+   "이다",
+   "다",
+   "요",
+   "이요",
+   "이었죠",
+   "였죠"
   ]
  },
- "_대조정정": "두 양을 맞세운 정정: `두 개가 아니라 한 개야`. 표지 앞이 옛 양, 뒤가 새 양이다. 옛 양을 담았던 앞선 말 하나를 그 자리에서 고친다 — 새 사건을 더하지 않는다. 그런 말이 여럿이면 되묻는다. `잘못 말했다` 처럼 앞말이 틀렸다고 하는 말 뒤에 새 양 하나와 사건 동사의 어느 꼴(`준`, `줬어`)이든 — 그 사건 틀의 어느 동사든 — 오면, 그 동사로 일어난 사건이 하나뿐일 때 그 사건의 양을 새 양으로 고친다.",
+ "_대조정정": "두 양을 맞세운 정정: `두 개가 아니라 한 개야`. 표지 앞이 옛 양, 뒤가 새 양이다. 옛 양을 담았던 앞선 말 하나를 그 자리에서 고친다 — 새 사건을 더하지 않는다. 그런 말이 여럿이면 되묻는다. `잘못 말했다` 처럼 앞말이 틀렸다고 하는 말 뒤에 새 양 하나와 사건 동사의 어느 꼴(`준`, `줬어`)이든 — 그 사건 틀의 어느 동사든 — 오면, 그 동사로 일어난 사건이 하나뿐일 때 그 사건의 양을 새 양으로 고친다. `네 개 말고 일곱 개예요` 처럼 말고도 맞세움 표지다(앞이 옛 것, 뒤가 새 것). 수를 이름씨처럼 말하고 잡음씨를 붙인 꼴(하나였습니다, 둘이에요)도 그 수다(amount_tails).",
  "조사바꿈": [
   {
    "from": "께서는",
@@ -4162,11 +5696,58 @@
    "owner_particles": [
     "의"
    ]
+  },
+  {
+   "stem": "빌리",
+   "kind": "regular",
+   "as": "주",
+   "shape": "source",
+   "source_particles": [
+    "에게서",
+    "에게"
+   ],
+   "subject_particles": [
+    "이",
+    "가",
+    "은",
+    "는"
+   ]
+  },
+  {
+   "stem": "돌려받",
+   "kind": "regular",
+   "as": "주",
+   "shape": "source",
+   "source_particles": [
+    "에게서",
+    "에게"
+   ],
+   "subject_particles": [
+    "이",
+    "가",
+    "은",
+    "는"
+   ]
   }
  ],
- "_역할바꿈": "받는 쪽을 임자로 말하는 동사. `A가 B에게서 … 받았다`(source)와 `A가 B(의) … 가져갔다`(owner)는 `B가 A에게 … 줬다` 와 같은 일이다. 시제와 맺음은 그대로 두고 `as` 어간의 같은 꼴로 바꿔 읽는다. 주는 쪽을 찾지 못하면 읽지 않는다. 받다의 출처는 에게서(한테서) 말고 여격 에게(한테)로도 말한다(`B한테 받았다`). 받는 쪽은 주격 이/가나 주제 은/는으로 온다(subject_particles).",
+ "_역할바꿈": "받는 쪽을 임자로 말하는 동사. `A가 B에게서 … 받았다`(source)와 `A가 B(의) … 가져갔다`(owner)는 `B가 A에게 … 줬다` 와 같은 일이다. 시제와 맺음은 그대로 두고 `as` 어간의 같은 꼴로 바꿔 읽는다. 주는 쪽을 찾지 못하면 읽지 않는다. 받다의 출처는 에게서(한테서) 말고 여격 에게(한테)로도 말한다(`B한테 받았다`). 받는 쪽은 주격 이/가나 주제 은/는으로 온다(subject_particles). 빌리다·돌려받다도 받다와 같이 출처(에게서·에게) 쪽이 주는 쪽이다.",
  "요청": {
-  "tails": ["줘", "줘요", "줘라", "주세요", "주십시오", "줄래", "줄래요", "주실래요", "주시겠어요", "주겠니", "세요", "십시오", "어라", "아라"]
+  "tails": [
+   "줘",
+   "줘요",
+   "줘라",
+   "주세요",
+   "주십시오",
+   "줄래",
+   "줄래요",
+   "주실래요",
+   "주시겠어요",
+   "주겠니",
+   "세요",
+   "십시오",
+   "어라",
+   "아라"
+  ]
  },
  "_요청": "요청·명령의 말끝. 도움 용언 주다(V-어 주다)의 명령·청유 꼴(줘·줘요·줘라·주세요·주십시오·줄래·줄래요·주실래요·주시겠어요·주겠니)과 본용언의 명령 맺음(-(으)세요·-(으)십시오·-아라/-어라). 이 꼴로 끝나는 말은 무엇을 해 달라는 것이지 일어난 일을 알리는 말이 아니므로, 읽지 못해도 뒤의 물음을 막는 못 읽은 사건으로 남기지 않는다.",
  "어순바꿈": {
@@ -4186,6 +5767,10 @@
     "는"
    ],
    [
+    "한테도",
+    "한테는",
+    "에게도",
+    "에게는",
     "에게서",
     "에게"
    ],
@@ -4202,7 +5787,7 @@
    "이"
   ]
  },
- "_어순바꿈": "목적어를 앞에 둔 말(`구슬 세 개를 A가 B에게 줬다`)은 목적어 구를 동사 바로 앞으로 옮겨서도 읽는다. 목적어 조사 바로 뒤에 임자 조사가 붙은 낱말이 올 때만 옮긴다. order: 격조사가 붙은 논항은 동사 앞에서 자리를 바꿔 말할 수 있다(뒤섞기, scrambling). 주격 이/가, 여격 에게(한테·께는 조사바꿈이 에게로 읽는다)·출처 에게서, 대격 을/를 — 이 세 무리가 전부다 — 가 붙은 구를 이 차례(주격, 여격, 대격)로 다시 늘어놓아서도 읽는다. 동사 앞 낱말이 모두 이 조사로 끝나는 구에 들 때만 옮긴다. floating_cases: 목적어 수량사 구문. 셀 것과 수·단위는 한 논항이고, 대격 조사 을/를(대격은 이 둘이 전부다)은 수·단위 뒤에도(`사과 세 개를`) 셀 것 뒤에도(`사과를 세 개`) 붙는다. 수·단위 뒤에 붙은 것을 셀 것 뒤로 옮겨서도 읽는다. 주격 이/가가 수·단위 뒤에 붙은 꼴(`사과 세 개가 있어`)은 여기서 읽지 않고 수선(조사 옮기기)이 읽고 알린다: 셀 것은 친 그대로 두고 조사만 그 받침에 맞는 꼴로 붙인다(`고양이 한 마리를` → `고양이를 한 마리`). 셀 것은 수 바로 앞의 한 낱말이고, 조사를 달지 않은 수사나 숫자 뒤에 선언된 단위가 올 때만 옮긴다. 셀 것이 이미 조사로 끝나면(`지연은`, `모래에게`) 다른 논항이므로 옮기지 않는다. 다만 floating_noun_endings(`이`)는 명사의 끝음절일 수 있어(`고양이`, `오이`) 막지 않는다. 이렇게 옮긴 읽기는 친 그대로의 읽기가 없을 때만 쓴다.",
+ "_어순바꿈": "목적어를 앞에 둔 말(`구슬 세 개를 A가 B에게 줬다`)은 목적어 구를 동사 바로 앞으로 옮겨서도 읽는다. 목적어 조사 바로 뒤에 임자 조사가 붙은 낱말이 올 때만 옮긴다. order: 격조사가 붙은 논항은 동사 앞에서 자리를 바꿔 말할 수 있다(뒤섞기, scrambling). 주격 이/가, 여격 에게(한테·께는 조사바꿈이 에게로 읽는다)·출처 에게서, 대격 을/를 — 이 세 무리가 전부다 — 가 붙은 구를 이 차례(주격, 여격, 대격)로 다시 늘어놓아서도 읽는다. 동사 앞 낱말이 모두 이 조사로 끝나는 구에 들 때만 옮긴다. floating_cases: 목적어 수량사 구문. 셀 것과 수·단위는 한 논항이고, 대격 조사 을/를(대격은 이 둘이 전부다)은 수·단위 뒤에도(`사과 세 개를`) 셀 것 뒤에도(`사과를 세 개`) 붙는다. 수·단위 뒤에 붙은 것을 셀 것 뒤로 옮겨서도 읽는다. 주격 이/가가 수·단위 뒤에 붙은 꼴(`사과 세 개가 있어`)은 여기서 읽지 않고 수선(조사 옮기기)이 읽고 알린다: 셀 것은 친 그대로 두고 조사만 그 받침에 맞는 꼴로 붙인다(`고양이 한 마리를` → `고양이를 한 마리`). 셀 것은 수 바로 앞의 한 낱말이고, 조사를 달지 않은 수사나 숫자 뒤에 선언된 단위가 올 때만 옮긴다. 셀 것이 이미 조사로 끝나면(`지연은`, `모래에게`) 다른 논항이므로 옮기지 않는다. 다만 floating_noun_endings(`이`)는 명사의 끝음절일 수 있어(`고양이`, `오이`) 막지 않는다. 이렇게 옮긴 읽기는 친 그대로의 읽기가 없을 때만 쓴다. 여격에 보조사가 얹힌 꼴(에게는, 에게도)도 여격 무리다.",
  "비교물음": {
   "who": [
    "누가"
@@ -4262,7 +5847,264 @@
    "요",
    "이야",
    "야"
-  ]
+  ],
+  "adverbial": {
+   "adverbs": {
+    "많이": "more",
+    "적게": "less"
+   }
+  }
  },
- "_비교물음": "`누가 [무엇이] 더 많아` 꼴의 견줌 물음과, 그 둘을 따로 부른 말(`A야 B야`, `A요, B요`). 물음말·견줌말·끝말 어간(꼴은 활용이 계산하되 묻는 맺음만)과 이름 꼬리만 적는다. 두 이름은 물음 안(`A와 B 중`)에 오거나 같은 말의 다음 절에 온다. 견줌의 방향: 많다(더 많은 쪽)와 적다(order less, 더 적은 쪽) — 양의 견줌 형용사는 이 둘이다. 두 양이 같으면 누가 더 많은지 묻는 말에 같다고 답한다(관계해석.comparison_answers.tie). same: 같음 물음 `A와 B는 [무엇이|무엇 수가] (똑)같아` — 형용사 같다·똑같다(꼴은 활용이 계산), 띄어 쓴 힘줌말(똑 같다의 똑), 셀 것이 아니라 수 자체를 이르는 말(수·개수)만 적는다."
+ "_비교물음": "`누가 [무엇이] 더 많아` 꼴의 견줌 물음과, 그 둘을 따로 부른 말(`A야 B야`, `A요, B요`). 물음말·견줌말·끝말 어간(꼴은 활용이 계산하되 묻는 맺음만)과 이름 꼬리만 적는다. 두 이름은 물음 안(`A와 B 중`)에 오거나 같은 말의 다음 절에 온다. 견줌의 방향: 많다(더 많은 쪽)와 적다(order less, 더 적은 쪽) — 양의 견줌 형용사는 이 둘이다. 두 양이 같으면 누가 더 많은지 묻는 말에 같다고 답한다(관계해석.comparison_answers.tie). same: 같음 물음 `A와 B는 [무엇이|무엇 수가] (똑)같아` — 형용사 같다·똑같다(꼴은 활용이 계산), 띄어 쓴 힘줌말(똑 같다의 똑), 셀 것이 아니라 수 자체를 이르는 말(수·개수)만 적는다. 양의 부사(많이·적게)를 셈 서술어(있다·가지고 있다) 앞에 둔 꼴(누가 구슬을 더 많이 가지고 있어)도 같은 물음이다.",
+ "가진쪽꼴": {
+  "name": "[가-힣]+?",
+  "self": {
+   "reads_as": "나",
+   "particle_forms": {
+    "저는": "나는",
+    "저도": "나도",
+    "제가": "나가",
+    "내가": "나가",
+    "저한테서": "나한테서",
+    "저에게서": "나에게서",
+    "저한테": "나한테",
+    "저에게": "나에게",
+    "제게": "나에게",
+    "내게": "나에게",
+    "저를": "나를",
+    "저의": "나의",
+    "저한테는": "나한테는",
+    "저에게는": "나에게는",
+    "저랑": "나랑",
+    "저하고": "나하고",
+    "저와": "나와",
+    "저까지": "나까지",
+    "제 것": "내 것"
+   }
+  },
+  "possessives": [
+   "제",
+   "내",
+   "우리",
+   "저희"
+  ],
+  "self_possessives": [
+   "제",
+   "내",
+   "우리",
+   "저희"
+  ],
+  "role_titles": [
+   "씨"
+  ],
+  "name_titles": [
+   "씨",
+   "님"
+  ],
+  "delimiters": [
+   "도",
+   "만",
+   "은",
+   "는",
+   "한테는",
+   "에게는",
+   "한테도",
+   "에게도"
+  ],
+  "possessive_suffix": [
+   "의",
+   ""
+  ],
+  "relation_nouns": [
+   "부모",
+   "아버지",
+   "어머니",
+   "아빠",
+   "엄마",
+   "부모님",
+   "형",
+   "오빠",
+   "누나",
+   "언니",
+   "동생",
+   "남동생",
+   "여동생",
+   "형제",
+   "자매",
+   "남매",
+   "아들",
+   "딸",
+   "자녀",
+   "할아버지",
+   "할머니",
+   "손자",
+   "손녀",
+   "삼촌",
+   "외삼촌",
+   "이모",
+   "고모",
+   "숙모",
+   "이모부",
+   "고모부",
+   "큰아버지",
+   "작은아버지",
+   "큰어머니",
+   "작은어머니",
+   "사촌",
+   "조카",
+   "남편",
+   "아내",
+   "부인",
+   "장인",
+   "장모",
+   "시아버지",
+   "시어머니",
+   "사위",
+   "며느리",
+   "처남",
+   "처제",
+   "형부",
+   "제부",
+   "매형",
+   "올케",
+   "시누이",
+   "외할아버지",
+   "외할머니",
+   "친구",
+   "동료",
+   "동기",
+   "동창",
+   "선배",
+   "후배",
+   "이웃",
+   "룸메이트",
+   "짝",
+   "짝꿍",
+   "팀원",
+   "상사",
+   "부하",
+   "제자",
+   "스승",
+   "반 친구",
+   "애인",
+   "남자친구",
+   "여자친구",
+   "약혼자",
+   "배우자",
+   "파트너",
+   "지인",
+   "동업자"
+  ],
+  "job_titles": [
+   "회장",
+   "사장",
+   "부사장",
+   "전무",
+   "상무",
+   "이사",
+   "본부장",
+   "부장",
+   "차장",
+   "과장",
+   "대리",
+   "주임",
+   "팀장",
+   "실장",
+   "원장",
+   "소장",
+   "국장",
+   "교수",
+   "선생",
+   "기사",
+   "박사",
+   "감독",
+   "코치",
+   "작가",
+   "변호사",
+   "의사",
+   "간호사",
+   "약사",
+   "주무관",
+   "반장",
+   "조장"
+  ],
+  "adnominal_past": {
+   "tails": [
+    "던"
+   ],
+   "after_coda": "ㅆ"
+  }
+ },
+ "_가진쪽꼴": "가진 쪽을 이름만으로 말하지 않은 꼴과, 그것을 사실이 쓰는 한 이름으로 읽는 법. self: 말하는 이 자신을 가리키는 한국어 대명사 꼴 전부(저·제·나·내에 조사가 붙은 꼴: 저는, 제가, 저한테, 제게, 내게 ...)는 임자자리말 '나' 에 그 조사를 붙인 꼴로 읽는다(제가 → 나가: 조사를 떼면 나). possessives: 소유를 나타내는 관형어(제, 내, 우리, 저희) + 관계 명사 + 이름은 그 이름이다(제 동기 서준은 → 서준은). self_possessives: 이름 없이 말하는 이의 관계 명사(제 룸메이트 + 조사)는 조사 앞의 그 관계 명사다. role_titles: 조사 없는 직업·역할 낱말 하나나 둘 뒤에 씨를 붙인 이름(인턴 예린 씨, 택배 기사 은우 씨)은 그 이름이다. name_titles: 이름 뒤 호칭 씨·님(띄어도 붙여도)은 빼고, 뒤 조사는 이름 끝 받침에 맞는 꼴로 붙인다(예린 씨가 → 예린이, 안 기사님은 → 안 기사는). 관계 명사와 역할 낱말은 조사가 붙지 않은 낱말이어야 한다. possessive_suffix: 이름 + 의(또는 의 없이 이름 그대로) + 관계 명사 + 이름(가은의 동기 윤우, 가은 동기 윤우)도 뒤의 이름이다. 앞 이름은 조사·수사·때말이 붙지 않은 낱말이어야 한다. relation_nouns: 이름이 조사 없이 명사 곁에 서는 한국어에서는 관계 명사를 닫힌 갈래로 다 적는다 — 친족 명칭 (부모·형제·자녀·조부모·삼촌·이모·고모·사촌·조카·배우자와 그 인척)과 사회 관계 명칭(친구·동료·동기·동창·선배·후배·이웃·룸메이트·짝·팀원·상사·부하·제자·스승·애인·지인; 직함이 되는 말(팀장·선생님)은 넣지 않는다). 관계 꼴은 이 명사로만 읽는다. job_titles: 성 뒤에 붙는 직함(회사 직급 회장·사장·이사·부장·차장·과장·대리·주임·팀장·실장, 기관장 원장·소장·국장, 직업 호칭 교수·선생·기사·박사·감독·코치·작가·변호사·의사·간호사·약사·주무관·반장·조장). 직함 앞의 첫 낱말은 성이다(안 기사의 안은 부정이 아니다). adnominal_past: 과거 받침 ㅆ 뒤의 회상 관형형 -던(잃어버렸던, 줬던)은 관계절의 동사다 — 이름에 들지 않는다.",
+ "말자리": {
+  "fronted_purpose_suffixes": [
+   "때문에",
+   "위해서",
+   "위해",
+   "준비로",
+   "용으로",
+   "하려고"
+  ],
+  "genitive_quantifier": "의",
+  "zero_idiom": {
+   "words": [
+    "하나도",
+    "아무것도"
+   ],
+   "one": "한",
+   "absent": "없",
+   "present": "있",
+   "reads_as": "0개"
+  },
+  "dropped_adverbs": [
+   "지금",
+   "현재",
+   "이제"
+  ],
+  "completive": {
+   "words": [
+    "다",
+    "모두"
+   ],
+   "before": [
+    "썼",
+    "써",
+    "쓰",
+    "사용했",
+    "사용해",
+    "먹었",
+    "먹어",
+    "잃어버렸"
+   ]
+  }
+ },
+ "_말자리": "예문과 다른 자리에 선 말. 목적을 말하는 앞마디(행사 때문에, 이사 준비로, 잔치를 위해서 — 때문에·위해(서)·준비로·용으로·하려고로 끝나는 말)는 어느 자리도 채우지 않으므로 빼고 읽는다. 수량을 관형격 의로 물건 앞에 둔 꼴(열한 개의 구슬을)은 물건 뒤에 둔 꼴(구슬 열한 개를)로 읽는다. 없음을 말하는 관용 꼴(하나도·한 개도·아무것도 + 없다)은 수 0으로 읽는다: 없 을 같은 맺음의 있 으로 두고 수는 0개(접시가 하나도 없어요 → 접시가 0개 있어요). 어느 자리도 채우지 않는 때 부사(지금·현재·이제)는 어느 읽기에서나 뺀다. 다 써 버린 일의 부사(다·모두)가 쓰다·사용하다·먹다·잃어버리다 바로 앞에 오면 어느 자리도 채우지 않으므로 뺀다(다 썼어요).",
+ "이름밖": [
+  "지금",
+  "현재",
+  "이제",
+  "아까",
+  "방금",
+  "어제",
+  "오늘",
+  "그때",
+  "이미",
+  "벌써",
+  "먼저",
+  "나중에",
+  "처음에",
+  "원래",
+  "또",
+  "다시",
+  "그다음에",
+  "그러고",
+  "그리고",
+  "그중",
+  "그중에서",
+  "그거",
+  "그것",
+  "그것들",
+  "그거들"
+ ],
+ "_이름밖": "이름에 들지 않는 낱말: 때와 차례를 말하는 부사(지금·현재·이제·아까·방금·어제·오늘·그때·이미·벌써·먼저·나중에·처음에·원래·그다음에), 되풀이(또·다시), 잇는 말(그러고·그리고). 이름이 이 낱말을 삼킨 읽기는 받지 않는다. 앞서 말한 물건을 도로 가리키는 말(그중·그중에서·그거·그것·그것들)도 이름에 들지 않는다."
 }

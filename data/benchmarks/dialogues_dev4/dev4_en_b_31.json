@@ -1,0 +1,294 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_31",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_085",
+  "half": "build",
+  "focus": [
+   "referent_repairs",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "question_forms:q_left",
+   "question_forms:q_two_total",
+   "referent_repairs:i_mean",
+   "transfer_verbs:transfer",
+   "zero_vague:also_some",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Gavin hasn't got any bulbs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Gavin",
+      "item": "bulbs",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gavin",
+      "item": "bulbs",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Joanna has 14 bulbs and also some ladders.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Joanna",
+      "item": "bulbs",
+      "quantity": 14
+     },
+     {
+      "type": "has",
+      "holder": "Joanna",
+      "item": "ladders",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Joanna",
+      "item": "bulbs",
+      "quantity": 14
+     },
+     {
+      "entity": "Joanna",
+      "item": "ladders",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Joanna transferred two bulbs to Gavin.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:transfer"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Joanna",
+      "to": "Gavin",
+      "item": "bulbs",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Joanna",
+      "item": "bulbs",
+      "quantity": 12
+     },
+     {
+      "entity": "Gavin",
+      "item": "bulbs",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many bulbs does Joanna have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Joanna",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "bulbs"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many bulbs does Gavin have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Gavin",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "bulbs"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many bulbs does Gavin have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Gavin",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "bulbs"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Joanna is who I meant.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Joanna",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "bulbs"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many bulbs do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Gavin",
+     "Joanna"
+    ],
+    "quantity": 14,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "bulbs"
+   }
+  }
+ ]
+}

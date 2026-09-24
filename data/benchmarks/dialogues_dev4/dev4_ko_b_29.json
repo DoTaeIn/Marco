@@ -1,0 +1,276 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_29",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_145",
+  "half": "build",
+  "focus": [
+   "korean_register",
+   "question_forms",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation",
+   "question_forms:q_two_total",
+   "transfer_verbs:pass",
+   "transfer_verbs:send",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 선배 채원은 휴지 세 묶음을 들고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "채원",
+      "item": "휴지",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "채원",
+      "item": "휴지",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "윤서도 휴지가 좀 있습니다. 세어 보니 열여섯 묶음입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "윤서",
+      "item": "휴지",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤서",
+      "item": "휴지",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "윤서가 채원한테 휴지 세 묶음을 넘겼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "윤서",
+      "to": "채원",
+      "item": "휴지",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤서",
+      "item": "휴지",
+      "quantity": 13
+     },
+     {
+      "entity": "채원",
+      "item": "휴지",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "윤서는 지금 휴지가 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "윤서",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "휴지"
+   }
+  },
+  {
+   "n": 5,
+   "say": "윤서가 채원한테 휴지 다섯 묶음을 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "윤서",
+      "to": "채원",
+      "item": "휴지",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤서",
+      "item": "휴지",
+      "quantity": 8
+     },
+     {
+      "entity": "채원",
+      "item": "휴지",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "윤서는 지금 휴지가 몇 묶음 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "윤서",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "휴지"
+   }
+  },
+  {
+   "n": 7,
+   "say": "둘이 합쳐서 휴지가 모두 몇 묶음입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "채원",
+     "윤서"
+    ],
+    "quantity": 19,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "휴지"
+   }
+  }
+ ]
+}

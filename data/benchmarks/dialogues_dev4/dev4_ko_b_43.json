@@ -1,0 +1,408 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_43",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_213",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "partitives",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:recipient",
+   "fronting:front_recipient",
+   "holders:apposition",
+   "holders:first_person",
+   "partitives:gave_them_not",
+   "question_forms:q_hold",
+   "transfer_verbs:send",
+   "zero_vague:exact_later",
+   "zero_vague:only",
+   "zero_vague:vague",
+   "zero_vague:vague_asked"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "시은은 음료수가 아홉 병 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "시은",
+      "item": "음료수",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "시은",
+      "item": "음료수",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "저는 음료수만 여덟 병 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "음료수",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "음료수",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "사서 유찬 씨가 음료수를 좀 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "유찬",
+      "item": "음료수",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "유찬",
+      "item": "음료수",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "유찬 씨는 지금 음료수가 몇 병 있어요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "hold",
+    "entity": "유찬",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "item": "음료수"
+   }
+  },
+  {
+   "n": 5,
+   "say": "유찬 씨는 지금 음료수가 열한 병 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:exact_later"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "유찬",
+      "item": "음료수",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "유찬",
+      "item": "음료수",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "유찬 씨한테는 제가 음료수 다섯 병을 보냈어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "holders:first_person",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "유찬",
+      "item": "음료수",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "음료수",
+      "quantity": 3
+     },
+     {
+      "entity": "유찬",
+      "item": "음료수",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "유찬씨는 음료수를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "유찬",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5,
+      6
+     ]
+    },
+    "item": "음료수"
+   }
+  },
+  {
+   "n": 8,
+   "say": "아, 유찬 씨가 아니라 시은한테 줬어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:recipient",
+    "partitives:gave_them_not"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      8
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "유찬",
+      "item": "음료수",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "시은",
+      "item": "음료수",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "음료수",
+      "quantity": 3
+     },
+     {
+      "entity": "유찬",
+      "item": "음료수",
+      "quantity": 11
+     },
+     {
+      "entity": "시은",
+      "item": "음료수",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "유찬 씨는 음료수를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "유찬",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5,
+      6,
+      8
+     ]
+    },
+    "item": "음료수",
+    "retracted_quantity": 16
+   }
+  },
+  {
+   "n": 10,
+   "say": "시은과 저가 합쳐서 음료수가 몇 병 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "시은",
+     "나"
+    ],
+    "quantity": 17,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      6,
+      8
+     ]
+    },
+    "item": "음료수"
+   }
+  }
+ ]
+}

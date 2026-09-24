@@ -1,0 +1,203 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_09",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_024",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "holders",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation_unnamed",
+   "question_forms:q_two_total",
+   "transfer_verbs:give_back"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Kevin is carrying 13 ladders.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Kevin",
+      "item": "ladders",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "Kevin",
+      "item": "ladders",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my sister has 7 ladders",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "sister",
+      "item": "ladders",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "sister",
+      "item": "ladders",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Kevin gave my sister back the two ladders.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Kevin",
+      "to": "sister",
+      "item": "ladders",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Kevin",
+      "item": "ladders",
+      "quantity": 11
+     },
+     {
+      "entity": "sister",
+      "item": "ladders",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many ladders does my sister have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "sister",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "ladders"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many ladders do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Kevin",
+     "sister"
+    ],
+    "quantity": 20,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "ladders"
+   }
+  }
+ ]
+}

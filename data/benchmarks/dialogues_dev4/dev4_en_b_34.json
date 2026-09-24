@@ -1,0 +1,293 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_34",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_096",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:adv_apparently",
+   "holders:relation_unnamed",
+   "partitives:same",
+   "question_forms:q_left",
+   "transfer_verbs:carrying",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:responsible"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my classmate is responsible for 8 oranges.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "classmate",
+      "item": "oranges",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "classmate",
+      "item": "oranges",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Bianca is carrying 5 oranges.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:carrying"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Bianca",
+      "item": "oranges",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Bianca",
+      "item": "oranges",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my classmate handed over 2 of the same oranges to Bianca, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "partitives:same",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "classmate",
+      "to": "Bianca",
+      "item": "oranges",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "classmate",
+      "item": "oranges",
+      "quantity": 6
+     },
+     {
+      "entity": "Bianca",
+      "item": "oranges",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many oranges does Bianca have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Bianca",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "oranges"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Actually, it was 3, not 2.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "classmate",
+      "to": "Bianca",
+      "item": "oranges",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "classmate",
+      "to": "Bianca",
+      "item": "oranges",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "classmate",
+      "item": "oranges",
+      "quantity": 5
+     },
+     {
+      "entity": "Bianca",
+      "item": "oranges",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many oranges does Bianca have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Bianca",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "oranges",
+    "retracted_quantity": 7,
+    "reexecuted_quantity": 10
+   }
+  },
+  {
+   "n": 7,
+   "say": "Why does Bianca have that many oranges now?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "explain",
+    "entity": "Bianca",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "oranges"
+   }
+  }
+ ]
+}

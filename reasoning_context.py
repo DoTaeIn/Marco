@@ -87,6 +87,10 @@ class ReasoningContext:
         self.last_referents = {}
         # 마지막 답이나 교정을 어떻게 얻었는지. `왜 그렇게 됐어?` 가 이것을 설명한다.
         self.last_explanation = None
+        # (observation index, subject): an amount said without its holder right after a question held
+        # for that count not known yet is that count (the question fixed what the amount is about)
+        self.bind_hints = []
+        self._vague_asked = None
         # 마지막 답·교정에 걸린 사람들. 여럿이면 지시어를 고르지 않는다.
         self.last_mentioned = []
         # The people a pointer may mean: whom the last question named, and
@@ -1031,6 +1035,9 @@ class ReasoningContext:
                              if pair[0] != pair[1])
                 direct = old_direct[:start] + tuple(True for _source in tuple(sources)[start:])
             reusable = {"append": True, "direct": direct}
+        # Every replay path binds a count said without its holder the same way (a pass over the
+        # facts in order; one already bound is not bound again).
+        result = (self._bind_unnamed_counts(parser, [], result[0], getattr(self, "bind_hints", [])),) + tuple(result[1:])
         self._replay_cache = (key, deepcopy(result), reusable)
         if self._last_replay_scope in {"semantic_append", "semantic_resume", "semantic_correction",
                                        "semantic_definition"}:
@@ -2018,8 +2025,13 @@ class ReasoningContext:
         if not 말들 or not query:
             return query, None
         차례표 = {}
+        # A pointer (he, she, 그 사람) names someone other than the speaker: the speaker's
+        # own key (the pack's 임자자리말, I / 나) is never what it points back to.
+        speaker = parser.speaker_placeholder
         for item in facts:
             이름 = str(item["triple"][0])
+            if speaker and 이름.split()[:1] == [speaker]:
+                continue
             차례표[이름] = max(차례표.get(이름, -1), item["evidence"].get("turn", -1))
             if parser.ellipsis.get("part_reference") == "leading_words" and len(이름.split()) > 1:
                 # 앞말만으로 대상을 가리키는 언어라면 그 앞말도 가리킬 수 있는 것이다.
@@ -2058,8 +2070,9 @@ class ReasoningContext:
         that set is exactly one person; with two or more it is asked back.
         """
         people = []
+        speaker = self._parser().speaker_placeholder if self._permitted(None) else ""
         for name in self.salient:
-            if name not in people:
+            if name not in people and name != speaker:
                 people.append(name)
         return people[0] if len(people) == 1 else None
 
@@ -2421,6 +2434,13 @@ class ReasoningContext:
             at = word.find(unit)
             if at > 0:
                 return parse_numeral(word[:at], numerals)
+        # a numeral said as a noun with the copula after it (하나였습니다, 둘이에요): the pack's amount tails
+        tails = (parser.language_pack.get("contrast_correction") or {}).get("amount_tails", [])
+        for tail in sorted(tails, key=len, reverse=True):
+            if word.endswith(tail) and len(word) > len(tail):
+                value = parse_numeral(word[:-len(tail)], numerals)
+                if value is not None:
+                    return value
         return None
 
     def _restatement(self, parser, text):
@@ -2593,6 +2613,16 @@ class ReasoningContext:
                         "ok": False, "reason": "event_reference_" + key}])}
         if not candidates:
             return reply("reference_no_event", 말=said)
+        if len(candidates) > 1 and request["verb"] is None and candidates[-1] == len(self.observations) - 1:
+            # A contrast right after an event that carried the old amount, where every statement that
+            # carried it was an event, corrects the latest one: the narrative's latest change is what "it"
+            # was. Where a stated count also carried it, the contrast is asked back (G3.0 b).
+            def is_event(index):
+                read = self._read_source(parser, self.observations[index], events=True, verbs=verbs) or {}
+                rows = [fact for fact in read.get("facts", []) if fact["triple"][2] == request["old"]]
+                return bool(rows) and all(fact["triple"][1] in updates for fact in rows)
+            if all(is_event(index) for index in candidates):
+                candidates = candidates[-1:]
         if len(candidates) > 1:
             return reply("reference_which_event",
                          {"items": [self.observations[i].strip() for i in candidates]}, 말=said,
@@ -2672,6 +2702,184 @@ class ReasoningContext:
                 "answer": replies["reference_corrected"].format(**{
                     "사건": source.strip(), "전": request["old"], "후": request["new"],
                     "목록": parser.render_changes(changes)})}
+
+    def _holder_keys(self, parser):
+        """The holders this conversation's facts name, by their leading word (the key a
+        holder form reads as: Morales for Dr. Morales, I for me, 나 for 저)."""
+        facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        keys = []
+        for item in facts:
+            subject = item.get("triple", [None])[0]
+            if isinstance(subject, str) and subject.split() and subject.split()[0] not in keys:
+                keys.append(subject.split()[0])
+        # a place of several words is one holder: its whole name before the counted thing
+        for item in facts:
+            subject = item.get("triple", [None])[0]
+            if isinstance(subject, str) and len(subject.split()) > 2:
+                keys.append(" ".join(subject.split()[:-1]))
+        return keys
+
+    def _holder_of(self, parser, surface, keys):
+        """The one holder key ``surface`` names (as typed, or as the pack's holder forms, titles and
+        particles read it), or None."""
+        surface = surface.strip(" ,.!?")
+        if not surface:
+            return None
+        tried = [surface, parser.canonical_name(surface)]
+        tried += [literal for literal, _notes in parser._variant_literals(surface)]
+        particles = sorted({p for group in parser.slot_particles for p in group} | set(parser.case_particles)
+                           | {row["from"] for row in parser.particle_variants if row.get("from")}, key=len, reverse=True)
+        for word in list(tried):
+            for particle in particles:
+                if word.endswith(particle) and len(word) > len(particle):
+                    stem = word[:-len(particle)]
+                    tried += [stem, parser.canonical_name(stem)]
+                    tried += [literal for literal, _notes in parser._variant_literals(stem)]
+                    break
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        for word in tried:
+            word = str(word).strip(" ,.!?")
+            match = [key for key in keys if fold(key) == fold(word)]
+            if len(match) == 1:
+                return match[0]
+        return None
+
+    def _recipient_contrast(self, parser, text):
+        """``They went to me, not Arthur`` / ``동훈이 아니라 연서한테 줬어요``: the receiver of the
+        last transfer to the old one was the new one (대조정정, the same markers and order as the
+        contrast of two amounts, with a holder on each side and no amount)."""
+        if not self.observations:
+            return None
+        spec = parser.language_pack.get("contrast_correction") or {}
+        folded = text.lower() if parser.data.get("ignore_case") else text
+        keys = self._holder_keys(parser)
+        for marker in spec.get("markers", []):
+            mark = marker.lower() if parser.data.get("ignore_case") else marker
+            if folded.count(mark) != 1:
+                continue
+            at = folded.index(mark)
+            left, right = text[:at], text[at + len(mark):]
+            if self._amount_of(parser, left.split()[-1] if left.split() else "") is not None:
+                continue
+            left_words = [w for w in re.split(r"\s+", left.strip(" ,.!?")) if w]
+            right_words = [w for w in re.split(r"\s+", right.strip(" ,.!?")) if w]
+            # Korean markers carry the old side's case particle (가 아니라): put it back on the word.
+            particle = marker.strip().split()[0] if not marker.startswith(",") else ""
+            if particle and left_words and marker.startswith(particle):
+                left_words[-1] = left_words[-1] + particle
+            before_side = [" ".join(left_words[-k:]) for k in (1, 2, 3) if len(left_words) >= k]
+            after_side = [" ".join(right_words[:k]) for k in (1, 2, 3) if len(right_words) >= k]
+            after_side += [" ".join(right_words[1:1 + k]) for k in (1, 2, 3)
+                           if len(right_words) > k and right_words[0].lower() in ("to", "the")]
+            first = next((key for key in (self._holder_of(parser, s, keys) for s in before_side) if key), None)
+            second = next((key for key in (self._holder_of(parser, s, keys) for s in after_side) if key), None)
+            if first is None or second is None or first == second:
+                continue
+            if spec.get("order") == "new_old":
+                new, old = first, second
+                new_said = next(s for s in before_side if self._holder_of(parser, s, keys) == first)
+            else:
+                old, new = first, second
+                new_said = next(s for s in after_side if self._holder_of(parser, s, keys) == second)
+            return {"old": old, "new": new, "new_said": new_said,
+                    "evidence": {"text": text.strip(), "contrast": marker}}
+        return None
+
+    def _correct_recipient(self, parser, request, text, knowledge_path):
+        """The receiver of one earlier transfer, corrected in place: the latest statement whose
+        transfer added to the old receiver is said again with the new one, and must read as the
+        same facts with only that receiver changed. Nothing else is rewritten; no new event."""
+        replies = parser.data["context_replies"]
+        verbs = self._verbs_for(parser, self.observations)
+        updates = parser.data.get("numeric_updates", {})
+        adds = {name for name, spec in updates.items() if isinstance(spec, dict) and spec.get("factor", 0) > 0}
+        removes = {name for name, spec in updates.items() if isinstance(spec, dict) and spec.get("factor", 0) < 0}
+        keys = self._holder_keys(parser)
+        said = request["evidence"]["text"]
+
+        def shape(sentence):
+            read = self._read_source(parser, sentence, events=True, verbs=verbs) or {}
+            return sorted((str(f["triple"][0]), str(f["triple"][1]), str(f["triple"][2]))
+                          for f in read.get("facts", []))
+        target = None
+        for index in range(len(self.observations) - 1, -1, -1):
+            rows = shape(self.observations[index])
+            took = [r for r in rows if r[1] in adds and r[0].split()[:1] == [request["old"]]]
+            gave = [r for r in rows if r[1] in removes]
+            if took and gave:
+                target = (index, rows)
+                break
+        if target is None:
+            # The statement it corrects is not found: what the user called wrong is not fixed
+            # any more; every holder is held until a later statement pins them (G3.0 b).
+            self._remember_unread({"text": said, "at": len(self.observations), "범용": True})
+            return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                    "answer": replies["reference_no_event"].format(말=said),
+                    "meaning": {"act": "hold", "reason": "reference_no_event", "said": said, "by": "contrast"},
+                    "verification": self._verification(knowledge_path, [{
+                        "ok": False, "reason": "recipient_reference_no_event"}])}
+        index, rows = target
+        source = self.observations[index]
+        old, new = request["old"], request["new"]
+        expected = sorted((new + r[0][len(old):] if r[1] in adds and r[0].split()[:1] == [old] else r[0], r[1], r[2])
+                          for r in rows)
+        tokens = source.split(" ")
+        particles = sorted({p for group in parser.slot_particles for p in group} | set(parser.case_particles)
+                           | {row["from"] for row in parser.particle_variants if row.get("from")}, key=len, reverse=True)
+        news = [request["new_said"], new] + [w for w, _n in parser._variant_literals(request["new_said"])]
+        speaker = parser.speaker_placeholder
+        attempts = []
+        for start in range(len(tokens)):
+            for width in (1, 2, 3):
+                span = tokens[start:start + width]
+                if len(span) < width:
+                    continue
+                raw = " ".join(span)
+                core = raw.rstrip(".,!?")
+                trailing = raw[len(core):]
+                if self._holder_of(parser, core, keys) != old:
+                    continue
+                tail = next((p for p in particles if core.endswith(p) and len(core) > len(p)), "")
+                for said_new in news + ([speaker] if speaker and new == speaker else []):
+                    word = said_new.strip(" ,.!?")
+                    if tail:
+                        stem = next((word[:-len(p)] for p in particles if word.endswith(p) and len(word) > len(p)
+                                     and self._holder_of(parser, word[:-len(p)], keys) == new), word)
+                        word = stem + parser._particle_form(stem, tail) if tail in parser.particle_mates else stem + tail
+                    attempts.append(" ".join(tokens[:start] + [word + trailing] + tokens[start + width:]))
+        corrected = None
+        for attempt in attempts:
+            if shape(attempt) != expected:
+                continue
+            try:
+                corrected = self.correct(index, attempt, knowledge_path)
+                break
+            except ValueError:
+                continue
+        if corrected is None:
+            touched = sorted({r[0].split()[0] for r in rows if r[0].split()} | {new})
+            self._remember_unread({"text": said, "at": len(self.observations), "대상": touched})
+            return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                    "answer": replies["reference_value_unclear"].format(사건=source.strip(), 전=old),
+                    "meaning": {"act": "hold", "reason": "reference_value_unclear", "said": said, "by": "contrast",
+                                "event": source.strip(), "field": "recipient", "old_holder": old},
+                    "verification": self._verification(knowledge_path, [{
+                        "ok": False, "reason": "recipient_rewrite_unread"}])}
+        record = self.corrections[-1]
+        record.update({"utterance": text.strip(), "reference": {"field": "recipient", "old": old, "new": new}})
+        changes = [row for row in corrected["transitions"] if row.get("operation") == "quantity_update"
+                   and (row.get("evidence") or {}).get("turn", index) == index]
+        self.last_explanation = {"kind": "correction", "correction": deepcopy(record),
+                                 "transitions": deepcopy(corrected["transitions"])}
+        touched = sorted({str(row.get("subject", "")).split()[0] for row in changes if row.get("subject")})
+        self.last_subject = None
+        self.last_mentioned = touched
+        self.salient += [person for person in touched if person not in self.salient]
+        # The in-place revision's own meaning, with which receiver it replaced (request G4-2:
+        # the realizer has no plan yet for a corrected receiver; the amounts of the correct
+        # act are numbers).
+        return {**corrected, "status": "observed",
+                "meaning": {**corrected["meaning"], "field": "recipient", "old_holder": old, "new_holder": new}}
 
     @staticmethod
     def _agree_number(parser, tokens, position, old, new_word):
@@ -2859,12 +3067,13 @@ class ReasoningContext:
             stripped = False
             for head in sorted(spec.get("heads", []), key=len, reverse=True):
                 folded = said.lower()
-                if folded == head.lower() or folded.startswith(head.lower() + " "):
+                # a head stands before the name as a word of its own, after a space or a comma
+                if folded == head.lower() or folded.startswith((head.lower() + " ", head.lower() + ",")):
                     said = said[len(head):].strip(" ,")
                     stripped = True
                     break
         for tail in sorted(spec.get("tails", []), key=len, reverse=True):
-            if said.endswith(tail) and len(said) > len(tail):
+            if said.lower().endswith(tail.lower()) and len(said) > len(tail):
                 said = said[:-len(tail)]
                 break
         name = parser.canonical_name(said.strip(" ,"))
@@ -2878,6 +3087,13 @@ class ReasoningContext:
                 words = subject.split()
                 people.update(" ".join(words[:k]) for k in range(1, len(words) + 1))
         match = [person for person in people if person.lower() == name.lower()]
+        if not match:
+            # The name as the pack reads a holder said with a title or a relation (Dr. Morales,
+            # 예린 씨): the forms its phrase variants and holder forms read it as.
+            for variant, _notes in parser._variant_literals(name):
+                match = [person for person in people if person.lower() == variant.strip(" ,").lower()]
+                if match:
+                    break
         if len(match) != 1:
             return None
         name = match[0]
@@ -2894,7 +3110,27 @@ class ReasoningContext:
         pattern = re.compile(r"(?<!\w)" + re.escape(old) + r"(?![A-Za-z])",
                              re.IGNORECASE if parser.data.get("ignore_case") else 0)
         if not pattern.search(question):
-            return None
+            # The last question named its person by a pointer (he, 그분): the name takes the
+            # pointer's place, when the question holds exactly one.
+            flags = re.IGNORECASE if parser.data.get("ignore_case") else 0
+            particles = "|".join(re.escape(x) for x in sorted(
+                {x for group in parser.slot_particles for x in group} | set(parser.case_particles)
+                | {row["from"] for row in parser.particle_variants if row.get("from")}, key=len, reverse=True)) or "(?!)"
+            found = []
+            for w in sorted(parser.pointers or [], key=len, reverse=True):
+                m = re.search(r"(?<![\w])%s(?=(?:%s)?(?![\w]))" % (re.escape(w), particles), question, flags)
+                if m and not any(m.start() >= f.start() and m.end() <= f.end() for f in found):
+                    found.append(m)
+            if len(found) != 1:
+                return None
+            at = found[0]
+            tail = re.match(r"(?:%s)(?![\w])" % particles, question[at.end():])
+            said_particle = tail.group(0) if tail else ""
+            question = (question[:at.start()] + old + said_particle + question[at.end() + len(said_particle):])
+            pattern = re.compile(r"(?<!\w)" + re.escape(old) + re.escape(said_particle) + r"(?![A-Za-z])", flags)
+            name_particle = parser._particle_form(name, said_particle) if said_particle in parser.particle_mates \
+                else said_particle
+            name = name + name_particle
         rewritten = pattern.sub(lambda _m: name, question, count=1)
         self._in_name_reply = True
         try:
@@ -3172,6 +3408,54 @@ class ReasoningContext:
                     for stem, rows in timeline.items() for at, candidate in rows}
         return facts, DefinitionTable(latest, versions), pending, 읽힌몸통
 
+    @staticmethod
+    def _bind_unnamed_counts(parser, facts, rows, hints=()):
+        """A count said without its holder is the count of the one count not known yet it fits.
+
+        ``Haru has some marbles`` records a count not known (count_unknown). A later count with no
+        holder (``12 of them``: no subject), with the thing alone (``it's 12 marbles``) or with the
+        holder alone (``Haru has 12 of them``) is bound to the open count not known that it fits:
+        the latest one when nothing is named, else the only one whose subject has the word named.
+        Nothing is bound when no open one fits or two fit.
+        """
+        targets = {spec["target"] for spec in (parser.data.get("numeric_updates") or {}).values()
+                   if isinstance(spec, dict)}
+        out = []
+        for row in rows:
+            triple = row.get("triple") or [None, None, None]
+            if triple[1] in targets and not row.get("resolve"):
+                seen = facts + out
+                known = {str(f["triple"][0]) for f in seen if f["triple"][1] in targets}
+                open_ = []
+                for f in seen:
+                    if f["triple"][1] == "count_unknown" and isinstance(f["triple"][0], str):
+                        name = f["triple"][0]
+                        if name not in open_ and name not in known:
+                            open_.append(name)
+                subject = triple[0]
+                hinted = [name for at, name in hints if at == (row.get("evidence") or {}).get("turn") and name in open_]
+                if hinted and (subject is None or (isinstance(subject, str) and subject not in known
+                                                   and any(w in hinted[0].split() for w in subject.split()))):
+                    open_ = hinted[:1]
+                if subject is None and not open_:
+                    # No count is open: an amount said again without its holder in the same statement
+                    # (정확히는 아홉 자루라고 다시 말할 때) is the count stated just before it in that statement.
+                    turn = (row.get("evidence") or {}).get("turn")
+                    same = [f for f in seen if (f.get("evidence") or {}).get("turn") == turn
+                            and f["triple"][1] in targets and isinstance(f["triple"][0], str)]
+                    fits = [same[-1]["triple"][0]] if same and str(same[-1]["triple"][2]) == str(triple[2]) else []
+                elif subject is None:
+                    fits = open_[-1:]
+                elif isinstance(subject, str) and subject not in known and len(subject.split()) == 1:
+                    fits = [name for name in open_ if subject in name.split()]
+                else:
+                    fits = []
+                if len(fits) == 1:
+                    row = {**row, "triple": [fits[0]] + list(triple[1:]),
+                           "evidence": {**row["evidence"], "bound": {"from": subject, "to": fits[0]}}}
+            out.append(row)
+        return out
+
     def correct(self, index, replacement, knowledge_path=None):
         """Replace one identified observation atomically, then replay all events.
 
@@ -3257,6 +3541,7 @@ class ReasoningContext:
         if result is not None and "answer" in result:
             if isinstance(result.get("meaning"), dict):
                 result["meaning"] = {**result["meaning"], "conversation": self.conversation_id}
+            self._declare_holders(result)
             from marco.language.realizer import default_realizer
             reports = default_realizer().reports
             before = reports[-1] if reports else None
@@ -3278,6 +3563,22 @@ class ReasoningContext:
                                    "blocked": [clause.get("frame") for clause in report.get("clauses") or []
                                                if clause.get("blocked")]})
         return result
+
+    def _declare_holders(self, result):
+        """The meaning block's holders (request W3-1): each place this conversation's statements read
+        as a holder, when the meaning names it, as ``{key: {"kind": "place"}}``."""
+        meaning = result.get("meaning") if isinstance(result.get("meaning"), dict) else None
+        if meaning is None or not self._permitted(None) or not self.observations:
+            return
+        try:
+            facts, _d, _p, _r = self._cached_replay(self._parser(), self.observations, self.fills)
+        except ValueError:
+            return
+        places = {place for fact in facts for place in fact.get("places") or [] if isinstance(place, str)}
+        said = json.dumps(meaning, ensure_ascii=False)
+        holders = {place: {"kind": "place"} for place in sorted(places) if place and place in said}
+        if holders:
+            result["meaning"] = {**meaning, "holders": {**(meaning.get("holders") or {}), **holders}}
 
     def _follow_up(self, text, knowledge_path, language):
         """A question about this conversation's own last reply, as the language declares them
@@ -3548,8 +3849,19 @@ class ReasoningContext:
                             "answer": parser.data["context_replies"]["correction_invalid"], "transitions": [],
                             "meaning": {"act": "hold", "reason": "correction_invalid"},
                             "verification": self._verification(knowledge_path, [{"ok": False, "reason": str(exc)}])}
+        asked, self._vague_asked = getattr(self, "_vague_asked", None), None
+        if asked is not None and asked[1] == len(self.observations):
+            self.bind_hints = [hint for hint in getattr(self, "bind_hints", []) if hint[0] != asked[1]] + [asked[::-1]]
         verbs = self._verbs_for(parser, self.observations + [text])
         current = self._read_source(parser, text, events=True, verbs=verbs)
+        if current is not None and current.get("facts") and all(f.get("unnamed") for f in current["facts"]) \
+                and not any(current.get(key) for key in ("query", "사건", "정의", "원인", "조건")):
+            # An amount said with no holder at all (18 of them, 3명이야) is the count not known yet that
+            # the conversation left open; with none open it is no statement (a short answer, perhaps).
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+            counted = {f["triple"][0] for f in facts if f["triple"][1] == "count"}
+            if not any(f["triple"][1] == "count_unknown" and f["triple"][0] not in counted for f in facts):
+                current = None
         self._turn_repairs = list((current or {}).get("수선", []))
         if current is None or not any(current.get(key) for key in (
                 "query", "사건정정", "정의", "원인", "이유물음", "조건")):
@@ -3562,6 +3874,10 @@ class ReasoningContext:
             if contrast is not None:
                 self._turn_repairs = []
                 return self._correct_by_reference(parser, contrast, text, knowledge_path)
+            recipient = self._recipient_contrast(parser, text)
+            if recipient is not None:
+                self._turn_repairs = []
+                return self._correct_recipient(parser, recipient, text, knowledge_path)
         빠진전제 = None
         if current is not None and current.get("사건정정"):
             return self._correct_by_reference(parser, current["사건정정"][0], text, knowledge_path)
@@ -3731,11 +4047,24 @@ class ReasoningContext:
                 # A request asks for an action; it reports no event.
                 if self._is_request(parser, piece):
                     continue
-                self._remember_unread({"text": piece, "at": len(self.observations)})
+                # An unread piece that says an earlier statement was wrong (a declared contrast,
+                # "..., not ...") may retract any statement: every value is held until a later
+                # statement pins it again (G3.0 b), not only the ones it names.
+                markers = (parser.language_pack.get("contrast_correction") or {}).get("markers", [])
+                fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+                general = any(fold(marker) in fold(piece) for marker in markers)
+                self._remember_unread({"text": piece, "at": len(self.observations),
+                                       **({"범용": True} if general else {})})
             return None
         # 같은 말이 뒤늦게 읽히면 매듭이 풀린 것이다.
         heard = {piece for piece, _asking in self._segments(text, parser)}
         self._forget_heard(heard)
+        marks = parser.clause_grammar.get("question_marks", [])
+        if (current.get("query") and not current.get("facts")
+                and not any(text.rstrip().endswith(mark) for mark in marks) and self._counts_something(text, parser)):
+            # Read only as a question though it asks nothing and states an amount: it may be a statement
+            # this reader did not read, so what it names is not fixed until a later statement pins it.
+            self._remember_unread({"text": text.strip(), "at": len(self.observations)})
         result = {"operator": "relational_graph", "transitions": [],
                   "verification": self._verification(knowledge_path, [])}
         if (current["facts"] or current.get("정의") or current.get("사건") or current.get("원인")
@@ -4240,14 +4569,25 @@ class ReasoningContext:
         if current["query"]:
             premise = self._premise_missing(parser, 풀린물음, 답사실) if 빠진전제 else None
             unknown, self._not_stated = getattr(self, "_not_stated", None), None
-            meaning = ({"act": "refuse", "reason": "premise_missing", **premise} if premise
+            # A count the conversation gave only as "some" (request W3-1: vague_count).
+            asked = [str((q.get("triple") or [None])[0]) for q in (풀린물음 or []) if isinstance(q, dict)]
+            vague = next((str(f["triple"][0]) for f in (답사실 or [])
+                          if f["triple"][1] == "count_unknown" and str(f["triple"][0]) in asked), None)
+            self._vague_asked = (vague, len(self.observations)) if vague else None
+            meaning = ({"act": "hold", "reason": "vague_count", "subject": vague} if vague
+                       else {"act": "refuse", "reason": "premise_missing", **premise} if premise
                        else {"act": "hold", "reason": "not_stated", "subject": unknown} if unknown and 빠진전제
                        else {"act": "hold", "reason": "unresolved"})
         else:
+            said_vague = [str(f["triple"][0]) for f in current.get("facts", [])
+                          if f["triple"][1] == "count_unknown"]
             meaning = {"act": "record",
                        "reason": ("scope_settled" if 정해짐 else "filled_role" if completion is not None
-                                  else "observed_state" if spoken else "observed"),
+                                  else "observed_state" if spoken
+                                  else "vague_count" if said_vague else "observed"),
                        "turn": len(self.observations) - 1, "changes": deepcopy(this_turn)}
+            if said_vague and not spoken:
+                meaning["subject"] = said_vague[0]
             if 정해짐:
                 # The scope as the user's language declares its first word.
                 meaning["scope"] = (parser.scope_words.get(정해짐) or [정해짐])[0]

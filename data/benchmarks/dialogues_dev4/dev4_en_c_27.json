@@ -1,0 +1,369 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_27",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "multi_fact",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_089",
+  "half": "check",
+  "focus": [
+   "partitives",
+   "referent_repairs",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:title",
+   "multi_fact",
+   "partitives:partitive",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "transfer_verbs:borrow",
+   "transfer_verbs:transfer"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Ms. Gonzalez has 6 suitcases and Megan has 14 suitcases.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "multi_fact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Gonzalez",
+      "item": "suitcases",
+      "quantity": 6
+     },
+     {
+      "type": "has",
+      "holder": "Megan",
+      "item": "suitcases",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gonzalez",
+      "item": "suitcases",
+      "quantity": 6
+     },
+     {
+      "entity": "Megan",
+      "item": "suitcases",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Megan transferred 2 of hers to Ms. Gonzalez.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:transfer"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Megan",
+      "to": "Gonzalez",
+      "item": "suitcases",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Megan",
+      "item": "suitcases",
+      "quantity": 12
+     },
+     {
+      "entity": "Gonzalez",
+      "item": "suitcases",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "How many suitcases does Ms. Gonzalez have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "answer",
+    "entity": "Gonzalez",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    },
+    "item": "suitcases"
+   }
+  },
+  {
+   "n": 4,
+   "say": "Megan borrowed three suitcases from Ms. Gonzalez.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Gonzalez",
+      "to": "Megan",
+      "item": "suitcases",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gonzalez",
+      "item": "suitcases",
+      "quantity": 5
+     },
+     {
+      "entity": "Megan",
+      "item": "suitcases",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many suitcases does Ms. Gonzalez have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Gonzalez",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "suitcases"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Wait, make that 7, not 3.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      6
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Gonzalez",
+      "to": "Megan",
+      "item": "suitcases",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Gonzalez",
+      "to": "Megan",
+      "item": "suitcases",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gonzalez",
+      "item": "suitcases",
+      "quantity": 1
+     },
+     {
+      "entity": "Megan",
+      "item": "suitcases",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many suitcases does Ms. Gonzalez have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Gonzalez",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "suitcases",
+    "retracted_quantity": 5,
+    "reexecuted_quantity": -2
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many suitcases does Megan have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Megan",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "suitcases",
+    "retracted_quantity": 15,
+    "reexecuted_quantity": 22
+   }
+  },
+  {
+   "n": 9,
+   "say": "I mean Ms. Gonzalez.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Gonzalez",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "suitcases",
+    "retracted_quantity": 5,
+    "reexecuted_quantity": -2
+   }
+  }
+ ]
+}

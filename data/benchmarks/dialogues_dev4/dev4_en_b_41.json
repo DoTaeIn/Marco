@@ -1,0 +1,330 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_41",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_112",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "referent_repairs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_place_now",
+   "referent_repairs:i_mean",
+   "transfer_verbs:move"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Victor is responsible for 3 baskets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Victor",
+      "item": "baskets",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Victor",
+      "item": "baskets",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Four baskets are in the east warehouse.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "east warehouse",
+      "item": "baskets",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "east warehouse",
+      "item": "baskets",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "the boathouse holds 11 baskets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "boathouse",
+      "item": "baskets",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "boathouse",
+      "item": "baskets",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "my sister Leah is carrying 16 baskets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Leah",
+      "item": "baskets",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Leah",
+      "item": "baskets",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "We moved 5 baskets from the boathouse to the east warehouse.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:move"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "boathouse",
+      "to": "east warehouse",
+      "item": "baskets",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "boathouse",
+      "item": "baskets",
+      "quantity": 6
+     },
+     {
+      "entity": "east warehouse",
+      "item": "baskets",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many baskets are in the east warehouse now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "east warehouse",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      5
+     ]
+    },
+    "item": "baskets"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many baskets does Leah have now?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Leah",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "item": "baskets"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Victor, I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "ownership"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Victor",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "baskets"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many baskets do Victor and Leah have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Victor",
+     "Leah"
+    ],
+    "quantity": 19,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "baskets"
+   }
+  }
+ ]
+}

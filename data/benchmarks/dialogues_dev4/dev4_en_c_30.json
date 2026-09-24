@@ -1,0 +1,384 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_30",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "correction",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_096",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "partitives",
+   "referent_repairs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:recipient",
+   "fronting:adv_apparently",
+   "holders:first_person",
+   "partitives:gave_them_not",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:transfer"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Delia's got 4 bagels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Delia",
+      "item": "bagels",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Delia",
+      "item": "bagels",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Olivia owns 11 bagels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Olivia",
+      "item": "bagels",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Olivia",
+      "item": "bagels",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "I am holding 12 bagels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "bagels",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "bagels",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Delia transferred 3 bagels to me, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:first_person",
+    "transfer_verbs:transfer"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Delia",
+      "to": "I",
+      "item": "bagels",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Delia",
+      "item": "bagels",
+      "quantity": 1
+     },
+     {
+      "entity": "I",
+      "item": "bagels",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many bagels does Delia have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Delia",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "bagels"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many bagels do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "bagels"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Actually they went to Olivia, not to me.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:recipient",
+    "partitives:gave_them_not"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      7
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Delia",
+      "to": "I",
+      "item": "bagels",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Delia",
+      "to": "Olivia",
+      "item": "bagels",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Delia",
+      "item": "bagels",
+      "quantity": 1
+     },
+     {
+      "entity": "I",
+      "item": "bagels",
+      "quantity": 12
+     },
+     {
+      "entity": "Olivia",
+      "item": "bagels",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many bagels does Olivia have now?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Olivia",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      7
+     ]
+    },
+    "item": "bagels"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many bagels does she have now?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Olivia",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      7
+     ]
+    },
+    "item": "bagels",
+    "retracted_quantity": 11
+   }
+  },
+  {
+   "n": 10,
+   "say": "Olivia, I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "ownership"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "Olivia",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      7
+     ]
+    },
+    "item": "bagels"
+   }
+  }
+ ]
+}

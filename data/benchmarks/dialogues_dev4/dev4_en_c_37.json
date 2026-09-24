@@ -1,0 +1,321 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_37",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_109",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_then",
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_left",
+   "question_forms:q_place_now",
+   "transfer_verbs:carrying",
+   "transfer_verbs:take_from",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "the garage holds 4 umbrellas.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "garage",
+      "item": "umbrellas",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "garage",
+      "item": "umbrellas",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "the bakery only has 7 umbrellas, 7 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "bakery",
+      "item": "umbrellas",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "bakery",
+      "item": "umbrellas",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my partner is carrying 13 umbrellas",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:carrying"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "partner",
+      "item": "umbrellas",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "partner",
+      "item": "umbrellas",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Then my partner took 4 umbrellas from the bakery.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "bakery",
+      "to": "partner",
+      "item": "umbrellas",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "bakery",
+      "item": "umbrellas",
+      "quantity": 3
+     },
+     {
+      "entity": "partner",
+      "item": "umbrellas",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many umbrellas are in the bakery now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "bakery",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "umbrellas"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many umbrellas does my partner have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "partner",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "umbrellas"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Then my partner took two umbrellas from the garage.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "garage",
+      "to": "partner",
+      "item": "umbrellas",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "garage",
+      "item": "umbrellas",
+      "quantity": 2
+     },
+     {
+      "entity": "partner",
+      "item": "umbrellas",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many umbrellas does my partner have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "partner",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      7
+     ]
+    },
+    "item": "umbrellas"
+   }
+  }
+ ]
+}

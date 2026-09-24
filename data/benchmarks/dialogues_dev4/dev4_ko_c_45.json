@@ -1,0 +1,248 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_45",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_192",
+  "half": "check",
+  "focus": [
+   "holders",
+   "korean_register",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:apposition",
+   "holders:relation",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:hold",
+   "transfer_verbs:lose",
+   "transfer_verbs:responsible"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 조카 예은은 감자 네 개를 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "transfer_verbs:hold"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "예은",
+      "item": "감자",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "예은",
+      "item": "감자",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "접수 담당 지윤 씨가 감자는 열두 개를 맡고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지윤",
+      "item": "감자",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "지윤",
+      "item": "감자",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "예은이가 지윤 씨한테 감자 두 개를 건넸습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "예은",
+      "to": "지윤",
+      "item": "감자",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "예은",
+      "item": "감자",
+      "quantity": 2
+     },
+     {
+      "entity": "지윤",
+      "item": "감자",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "지윤씨한테 감자가 지금 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "지윤",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "감자"
+   }
+  },
+  {
+   "n": 5,
+   "say": "예은이가 감자 한 개를 잃어버렸습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:lose"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "예은",
+      "item": "감자",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "예은",
+      "item": "감자",
+      "quantity": 1
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "예은씨와 지윤씨 중 누가 지금 감자를 더 많이 가지고 있는지습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "지윤",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "예은",
+     "지윤"
+    ],
+    "item": "감자",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    }
+   }
+  }
+ ]
+}

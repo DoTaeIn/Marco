@@ -1,0 +1,318 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_10",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_031",
+  "half": "build",
+  "focus": [
+   "holders",
+   "question_forms",
+   "referent_repairs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:first_person",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_asked",
+   "transfer_verbs:hand_over"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Joanna is carrying 12 novels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Joanna",
+      "item": "novels",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Joanna",
+      "item": "novels",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Vera owns 16 novels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Vera",
+      "item": "novels",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Vera",
+      "item": "novels",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "I've got 13 novels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "novels",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "novels",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Vera handed over five novels to me.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Vera",
+      "to": "I",
+      "item": "novels",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Vera",
+      "item": "novels",
+      "quantity": 11
+     },
+     {
+      "entity": "I",
+      "item": "novels",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many novels do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "novels"
+   }
+  },
+  {
+   "n": 6,
+   "say": "And how many novels has she got now?",
+   "label": "ambiguous",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_asked"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "clarify",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "candidates": [
+     "Joanna",
+     "Vera"
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "Vera, I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Vera",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "novels"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many novels do Vera and I have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Vera",
+     "I"
+    ],
+    "quantity": 29,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "novels"
+   }
+  },
+  {
+   "n": 9,
+   "say": "Why does Joanna have that many novels now?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "explain",
+    "entity": "Joanna",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "novels"
+   }
+  }
+ ]
+}

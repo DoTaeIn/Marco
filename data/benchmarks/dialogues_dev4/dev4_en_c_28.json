@@ -1,0 +1,339 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_28",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_090",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "referent_repairs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:front_purpose",
+   "holders:first_person",
+   "holders:relation_unnamed",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:give_back"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my cousin has got 15 helmets",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "cousin",
+      "item": "helmets",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "cousin",
+      "item": "helmets",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Carla is holding 4 helmets at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Carla",
+      "item": "helmets",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Carla",
+      "item": "helmets",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Anika is carrying 14 helmets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Anika",
+      "item": "helmets",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Anika",
+      "item": "helmets",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "I've got 10 helmets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "helmets",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "helmets",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "For the fundraiser, Anika gave back five helmets to my cousin.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Anika",
+      "to": "cousin",
+      "item": "helmets",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Anika",
+      "item": "helmets",
+      "quantity": 9
+     },
+     {
+      "entity": "cousin",
+      "item": "helmets",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many helmets does Anika have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Anika",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "item": "helmets"
+   }
+  },
+  {
+   "n": 7,
+   "say": "And how many helmets has she got now?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Anika",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "item": "helmets"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Sorry, I meant Anika.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Anika",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "item": "helmets"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many helmets do Carla and Anika have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Carla",
+     "Anika"
+    ],
+    "quantity": 13,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "helmets"
+   }
+  }
+ ]
+}

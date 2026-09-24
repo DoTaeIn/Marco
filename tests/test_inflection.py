@@ -195,7 +195,13 @@ def test_template_count_stays_constant_and_empty_component_lacks_new_forms():
     # adverb after the subject, a location question without `지금`, a reference
     # correction of one earlier event, `왜 그렇게 됐어`, and `X 말고 다른 사람은`.
     # Each is one reusable shape; what fills the slots is not listed.
-    assert len(parser.templates) == len(parser.data["examples"]) == 78
+    # 78 -> 99 (round 4, natural language): places as holders (에는 … 있다, N개가 장소에 있다,
+    # 장소에서 가져갔다, 장소에 두고 왔다/뒀다/맡겼다, 장소에서 장소로 옮겼다/옮겨졌다, and the place
+    # with 좀), the count not known (좀 있다, 좀 가지고 있다, 도 좀 있다, N개 있고 (,) Y도 좀 있다), the
+    # amount said later without its holder (18개이다), 만 (구슬만 18개 있다/를 가지고 있다, 구슬 18개만
+    # 있다/가지고 있다, 구슬 18개를 가지고 있다), and a thing used for a purpose (잔치에 썼다). 21 shapes,
+    # each a class of the round's cause table; no word of a development set.
+    assert len(parser.templates) == len(parser.data["examples"]) == 99
     pack = copy.deepcopy(load_reasoning_language())
     pack["inflection"] = {}
     old = RelationalParser(language_pack=pack)

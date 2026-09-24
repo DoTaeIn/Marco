@@ -1,0 +1,309 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_23",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_073",
+  "half": "check",
+  "focus": [
+   "holders",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "partitives:partitive",
+   "question_forms:q_got",
+   "transfer_verbs:give_back",
+   "transfer_verbs:keeps",
+   "transfer_verbs:responsible",
+   "transfer_verbs:use_for"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My coworker is responsible for 4 rugs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "coworker",
+      "item": "rugs",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "coworker",
+      "item": "rugs",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Six rugs are in the north warehouse.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "north warehouse",
+      "item": "rugs",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "north warehouse",
+      "item": "rugs",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "David keeps 10 rugs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:keeps"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "David",
+      "item": "rugs",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "David",
+      "item": "rugs",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "My coworker returned 3 of his rugs to David.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "coworker",
+      "to": "David",
+      "item": "rugs",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "coworker",
+      "item": "rugs",
+      "quantity": 1
+     },
+     {
+      "entity": "David",
+      "item": "rugs",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many rugs has David got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "David",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "rugs"
+   }
+  },
+  {
+   "n": 6,
+   "say": "David used one of them for the party.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:use_for"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "David",
+      "item": "rugs",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "David",
+      "item": "rugs",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many rugs does David have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "David",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "rugs"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Why does the north warehouse have that many rugs now?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "explain",
+    "entity": "north warehouse",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "rugs"
+   }
+  }
+ ]
+}

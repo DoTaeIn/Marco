@@ -1,0 +1,368 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_c_33",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "multi_fact",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_c_124",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "holders",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:count_first",
+   "holders:first_person",
+   "holders:title",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "question_forms:q_two_total",
+   "transfer_verbs:lose",
+   "zero_vague:also_some",
+   "zero_vague:only",
+   "zero_vague:vague_asked"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "곽 과장님은 장작이 네 묶음 있고, 명찰도 좀 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "곽 과장",
+      "item": "장작",
+      "quantity": 4
+     },
+     {
+      "type": "has",
+      "holder": "곽 과장",
+      "item": "명찰",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "곽 과장",
+      "item": "장작",
+      "quantity": 4
+     },
+     {
+      "entity": "곽 과장",
+      "item": "명찰",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "저는 장작만 열두 묶음 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "장작",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "장작",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "곽 과장님한테 명찰이 지금 몇 개 있어요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "hold",
+    "entity": "곽 과장",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "명찰"
+   }
+  },
+  {
+   "n": 4,
+   "say": "장작 두 묶음을 곽 과장님이 저한테 주셨어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "holders:first_person"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "곽 과장",
+      "to": "나",
+      "item": "장작",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "곽 과장",
+      "item": "장작",
+      "quantity": 2
+     },
+     {
+      "entity": "나",
+      "item": "장작",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "곽 과장님은 장작이 몇 개 남았어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "곽 과장",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "장작"
+   }
+  },
+  {
+   "n": 6,
+   "say": "저한테 장작이 지금 몇 묶음 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "나",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "장작"
+   }
+  },
+  {
+   "n": 7,
+   "say": "곽 과장님은 장작 한 묶음을 잃어버렸어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:lose"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "곽 과장",
+      "item": "장작",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "곽 과장",
+      "item": "장작",
+      "quantity": 1
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "곽 과장님은 장작을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "곽 과장",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      7
+     ]
+    },
+    "item": "장작"
+   }
+  },
+  {
+   "n": 9,
+   "say": "두 사람 합쳐서 장작이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "곽 과장",
+     "나"
+    ],
+    "quantity": 15,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "장작"
+   }
+  },
+  {
+   "n": 10,
+   "say": "곽 과장님이 왜 지금 장작을 그만큼 가지고 있는지요?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "explain",
+    "entity": "곽 과장",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      7
+     ]
+    },
+    "item": "장작"
+   }
+  }
+ ]
+}

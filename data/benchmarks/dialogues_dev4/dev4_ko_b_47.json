@@ -1,0 +1,274 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_47",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_236",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "holders",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:count_first",
+   "holders:apposition",
+   "holders:relation",
+   "question_forms:q_two_total",
+   "transfer_verbs:pass",
+   "transfer_verbs:use_up"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 팀원 은우는 토마토 아홉 개를 맡고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "은우",
+      "item": "토마토",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "은우",
+      "item": "토마토",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "택배 기사 서준 씨가 지금은 토마토 열 개가 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:apposition"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서준",
+      "item": "토마토",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "서준",
+      "item": "토마토",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "토마토 한 개를 은우가 서준 씨한테 넘겼어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "은우",
+      "to": "서준",
+      "item": "토마토",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "은우",
+      "item": "토마토",
+      "quantity": 8
+     },
+     {
+      "entity": "서준",
+      "item": "토마토",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "서준 씨한테 토마토가 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "서준",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "토마토"
+   }
+  },
+  {
+   "n": 5,
+   "say": "서준 씨가 토마토 한 개를 다 썼어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:use_up"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "서준",
+      "item": "토마토",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "서준",
+      "item": "토마토",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "서준 씨는 지금 토마토가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "서준",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "토마토"
+   }
+  },
+  {
+   "n": 7,
+   "say": "두 사람 합쳐서 토마토가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "은우",
+     "서준"
+    ],
+    "quantity": 18,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "토마토"
+   }
+  }
+ ]
+}

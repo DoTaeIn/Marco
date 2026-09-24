@@ -1,0 +1,362 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_c_22",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "multi_fact",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_c_067",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "holders",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:front_then",
+   "holders:first_person",
+   "holders:relation_unnamed",
+   "question_forms:q_got",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "transfer_verbs:borrow",
+   "transfer_verbs:lend",
+   "zero_vague:also_some",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my brother has 15 tents and also some suitcases.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "brother",
+      "item": "tents",
+      "quantity": 15
+     },
+     {
+      "type": "has",
+      "holder": "brother",
+      "item": "suitcases",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "brother",
+      "item": "tents",
+      "quantity": 15
+     },
+     {
+      "entity": "brother",
+      "item": "suitcases",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Julia has no tents at all.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Julia",
+      "item": "tents",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Julia",
+      "item": "tents",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "I have some tents. Actually, there are 9 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "tents",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "tents",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Then my brother lent Julia four tents.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "brother",
+      "to": "Julia",
+      "item": "tents",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "brother",
+      "item": "tents",
+      "quantity": 11
+     },
+     {
+      "entity": "Julia",
+      "item": "tents",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many tents does my brother hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "brother",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "tents"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many tents does Julia have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Julia",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "tents"
+   }
+  },
+  {
+   "n": 7,
+   "say": "I borrowed 5 tents from my brother, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:first_person",
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "brother",
+      "to": "I",
+      "item": "tents",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "brother",
+      "item": "tents",
+      "quantity": 6
+     },
+     {
+      "entity": "I",
+      "item": "tents",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many tents has I got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      7
+     ]
+    },
+    "item": "tents"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many tents does my brother hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "brother",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      7
+     ]
+    },
+    "item": "tents"
+   }
+  }
+ ]
+}

@@ -262,7 +262,334 @@
     ]
    },
    {
-    "text": "there are 18 marbles",
+    "text": "Haru has no marbles",
+    "slots": {
+     "owner": "Haru",
+     "item": "marbles"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "0"
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ]
+   },
+   {
+    "text": "the oak cupboard has no marbles",
+    "slots": {
+     "owner": "oak cupboard",
+     "item": "marbles"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "0"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "there are no marbles in the oak cupboard",
+    "slots": {
+     "item": "marbles",
+     "owner": "oak cupboard"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "0"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "Haru doesn't have a single marble",
+    "slots": {
+     "owner": "Haru",
+     "item": "marble"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "0"
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ],
+    "item_counted_as_one": true
+   },
+   {
+    "text": "the oak cupboard doesn't have a single marble",
+    "slots": {
+     "owner": "oak cupboard",
+     "item": "marble"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "0"
+     ]
+    },
+    "place": [
+     "owner"
+    ],
+    "item_counted_as_one": true
+   },
+   {
+    "text": "there isn't a single marble in the oak cupboard",
+    "slots": {
+     "item": "marble",
+     "owner": "oak cupboard"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "0"
+     ]
+    },
+    "place": [
+     "owner"
+    ],
+    "item_counted_as_one": true
+   },
+   {
+    "text": "Haru only has marbles, 18 of them",
+    "slots": {
+     "owner": "Haru",
+     "item": "marbles",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ]
+   },
+   {
+    "text": "all Haru has is marbles, 18 of them",
+    "slots": {
+     "owner": "Haru",
+     "item": "marbles",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ]
+   },
+   {
+    "text": "Haru only has marbles, 18",
+    "slots": {
+     "owner": "Haru",
+     "item": "marbles",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ]
+   },
+   {
+    "text": "all Haru has is marbles, 18",
+    "slots": {
+     "owner": "Haru",
+     "item": "marbles",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ]
+   },
+   {
+    "text": "Haru has some marbles",
+    "slots": {
+     "owner": "Haru",
+     "item": "marbles"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count_unknown",
+      "some"
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ]
+   },
+   {
+    "text": "the oak cupboard has some marbles",
+    "slots": {
+     "owner": "oak cupboard",
+     "item": "marbles"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count_unknown",
+      "some"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "there are some marbles in the oak cupboard",
+    "slots": {
+     "item": "marbles",
+     "owner": "oak cupboard"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count_unknown",
+      "some"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "Haru has 18 marbles and some pears",
+    "slots": {
+     "owner": "Haru",
+     "n": "18",
+     "item": "marbles",
+     "other": "pears"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$owner",
+        "$item"
+       ],
+       "count",
+       "$n"
+      ],
+      [
+       [
+        "$owner",
+        "$other"
+       ],
+       "count_unknown",
+       "some"
+      ]
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ]
+   },
+   {
+    "text": "18 of them",
+    "slots": {
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      null,
+      "count",
+      "$n"
+     ],
+     "unnamed": true
+    }
+   },
+   {
+    "text": "there are 18 of them",
+    "slots": {
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      null,
+      "count",
+      "$n"
+     ],
+     "unnamed": true
+    }
+   },
+   {
+    "text": "it's 18 marbles",
     "slots": {
      "n": "18",
      "item": "marbles"
@@ -274,6 +601,21 @@
       "$n"
      ]
     }
+   },
+   {
+    "text": "there are 18 marbles",
+    "slots": {
+     "n": "18",
+     "item": "marbles"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count",
+      "$n"
+     ]
+    },
+    "counted_noun": "may_elide"
    },
    {
     "text": "the box has 18 marbles",
@@ -294,7 +636,77 @@
     },
     "word_slots": [
      "owner"
+    ],
+    "counted_noun": "may_elide",
+    "place": [
+     "owner"
     ]
+   },
+   {
+    "text": "the oak cupboard has 18 marbles",
+    "slots": {
+     "owner": "oak cupboard",
+     "n": "18",
+     "item": "marbles"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "place": [
+     "owner"
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
+    "text": "there are 18 marbles in the oak cupboard",
+    "slots": {
+     "n": "18",
+     "item": "marbles",
+     "owner": "oak cupboard"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "place": [
+     "owner"
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
+    "text": "18 marbles are in the oak cupboard",
+    "slots": {
+     "n": "18",
+     "item": "marbles",
+     "owner": "oak cupboard"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "place": [
+     "owner"
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "Haru gave Moru 2 marbles",
@@ -362,7 +774,8 @@
     "word_slots": [
      "giver",
      "taker"
-    ]
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "Haru gave Moru 2",
@@ -424,7 +837,8 @@
     "word_slots": [
      "taker",
      "giver"
-    ]
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "Haru received 2 marbles from Moru",
@@ -458,7 +872,8 @@
     "word_slots": [
      "taker",
      "giver"
-    ]
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "2 marbles were given to Haru by Moru",
@@ -492,7 +907,8 @@
     "word_slots": [
      "taker",
      "giver"
-    ]
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "18 marbles belong to Haru",
@@ -513,7 +929,8 @@
     },
     "word_slots": [
      "owner"
-    ]
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "Haru took out 2 marbles",
@@ -535,7 +952,8 @@
     "event_verb": "take",
     "word_slots": [
      "owner"
-    ]
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "Haru put in 2 marbles",
@@ -557,7 +975,8 @@
     "event_verb": "put",
     "word_slots": [
      "owner"
-    ]
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "Haru lost 2 marbles",
@@ -601,6 +1020,30 @@
     ]
    },
    {
+    "text": "Haru used 2 marbles for the party",
+    "slots": {
+     "owner": "Haru",
+     "n": "2",
+     "item": "marbles",
+     "purpose": "party"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count_remove",
+      "$n"
+     ]
+    },
+    "event_verb": "use",
+    "word_slots": [
+     "owner"
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
     "text": "Haru got 2 marbles",
     "slots": {
      "owner": "Haru",
@@ -620,7 +1063,8 @@
     "event_verb": "get",
     "word_slots": [
      "owner"
-    ]
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "Haru got 2 marbles from Moru",
@@ -654,7 +1098,230 @@
     "word_slots": [
      "taker",
      "giver"
-    ]
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
+    "text": "Haru left 2 marbles at the oak cupboard",
+    "slots": {
+     "giver": "Haru",
+     "n": "2",
+     "item": "marbles",
+     "taker": "oak cupboard"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "event_verb": "leave",
+    "word_slots": [
+     "giver"
+    ],
+    "place": [
+     "taker"
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
+    "text": "Haru left 2 marbles in the oak cupboard",
+    "slots": {
+     "giver": "Haru",
+     "n": "2",
+     "item": "marbles",
+     "taker": "oak cupboard"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "event_verb": "leave",
+    "word_slots": [
+     "giver"
+    ],
+    "place": [
+     "taker"
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
+    "text": "Haru put 2 marbles in the oak cupboard",
+    "slots": {
+     "giver": "Haru",
+     "n": "2",
+     "item": "marbles",
+     "taker": "oak cupboard"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "event_verb": "put",
+    "word_slots": [
+     "giver"
+    ],
+    "place": [
+     "taker"
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
+    "text": "Haru took 2 marbles from the oak cupboard",
+    "slots": {
+     "taker": "Haru",
+     "n": "2",
+     "item": "marbles",
+     "giver": "oak cupboard"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "event_verb": "take",
+    "word_slots": [
+     "taker"
+    ],
+    "place": [
+     "giver"
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
+    "text": "Haru moved 2 marbles from the oak cupboard to the red trunk",
+    "slots": {
+     "actor": "Haru",
+     "n": "2",
+     "item": "marbles",
+     "giver": "oak cupboard",
+     "taker": "red trunk"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "event_verb": "move",
+    "word_slots": [
+     "actor"
+    ],
+    "place": [
+     "giver",
+     "taker"
+    ],
+    "counted_noun": "may_elide"
+   },
+   {
+    "text": "2 marbles were moved from the oak cupboard to the red trunk",
+    "slots": {
+     "n": "2",
+     "item": "marbles",
+     "giver": "oak cupboard",
+     "taker": "red trunk"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "event_verb": "move",
+    "place": [
+     "giver",
+     "taker"
+    ],
+    "counted_noun": "may_elide"
    },
    {
     "text": "how many marbles does Haru have",
@@ -871,6 +1538,96 @@
     }
    },
    {
+    "text": "how many marbles are in the oak cupboard",
+    "slots": {
+     "item": "marbles",
+     "owner": "oak cupboard"
+    },
+    "meaning": {
+     "query": [
+      {
+       "triple": [
+        [
+         "$owner",
+         "$item"
+        ],
+        "count",
+        "?n"
+       ],
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "how many marbles are there in the oak cupboard",
+    "slots": {
+     "item": "marbles",
+     "owner": "oak cupboard"
+    },
+    "meaning": {
+     "query": [
+      {
+       "triple": [
+        [
+         "$owner",
+         "$item"
+        ],
+        "count",
+        "?n"
+       ],
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "how many marbles does the oak cupboard have",
+    "slots": {
+     "item": "marbles",
+     "owner": "oak cupboard"
+    },
+    "meaning": {
+     "query": [
+      {
+       "triple": [
+        [
+         "$owner",
+         "$item"
+        ],
+        "count",
+        "?n"
+       ],
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
     "text": "how many does Haru have",
     "slots": {
      "owner": "Haru"
@@ -1040,6 +1797,116 @@
       {
        "total": {
         "members": "all",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "text": "how many marbles do the two of them have together",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "text": "how many marbles do both of them have together",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "text": "how many marbles do the two of them have",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "text": "how many marbles do the two of them have in total",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "text": "how many marbles do both of them have in total",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
         "item": "$item"
        },
        "render": [
@@ -1719,7 +2586,12 @@
    "overflow": "an earlier event not read because of the limit"
   },
   "_why_count": "A why-question about how many one holder has: why/how come + does X have | X has + that many (+ thing). It asks for the reasons of that holder's current count: the rules and the statements its value rests on.",
-  "_where_owned": "Where-questions about a thing someone has: where does X keep the Y, where are X's Y, where is X's Y. The thing is keyed by its owner, as a stated count is."
+  "_where_owned": "Where-questions about a thing someone has: where does X keep the Y, where are X's Y, where is X's Y. The thing is keyed by its owner, as a stated count is.",
+  "_places": "A place holds a count like a person: said with its article (the oak cupboard has 18; there are 18 in the oak cupboard; 18 are in the oak cupboard), it receives what is left at, left in or put in it, gives what is taken from it, and both sides of a move (moved, were moved from ... to ...) change. Its name is every word after the article, so a place of several words (the north warehouse) is one holder. Asked: how many are in it, are there in it, does it have.",
+  "_zero_and_only": "A zero count is said with the negative determiner no (Haru has no marbles; there are no marbles in the oak cupboard) and is the count 0. 'only has X, N of them' and 'all Haru has is X, N of them' state the count of X after the thing. 'not a single' says the thing in the singular and is the count 0 of its plural (Haru doesn't have a single marble; the oak cupboard doesn't have a single marble). The partitive 'of them' after the count may be left out (Haru only has marbles, 18).",
+  "_vague": "A count not given yet: 'some' before the thing (Haru has some marbles; the oak cupboard has some marbles; there are some marbles in it; Haru has 18 marbles and some pears) is recorded as a count not known (count_unknown), and a question about it is held. The number said later without its holder (18 of them; there are 18 of them; it's 18 marbles; Haru has 18 of them) is the count of the one count not known yet that it fits: the last one said, the one of that thing, or the one of that holder.",
+  "_use_for": "Things used for a purpose leave the holder; the purpose after 'for the' fills no holder (Haru used 2 marbles for the party).",
+  "_two_of_them": "'the two of them' and 'both of them' ask the sum of exactly two holders of the thing; with more holders the question does not say which two and is not answered."
  },
  "문장분리": {
   "_설명": "Clause boundaries are punctuation and declared connectives. A comma splits only when the part before it is a complete clause.",
@@ -2392,11 +3264,12 @@
   }
  },
  "생략": {
-  "_설명": "coordination: a conjunct after a comma that leaves out the trailing words of the previous conjunct's subject inherits them (Minsu has five apples, and Jiyeon has two -> Jiyeon apples). part_reference: naming only the leading word of a known subject names that subject when exactly one fits. scope 'turn': the coordination ellipsis holds between any two clauses of one turn, whatever joins them -- a comma, a connective, or the period between two sentences said together (Minsu has five apples. Jiyeon has two). gapping 'first_conjunct_verb': a later conjunct of a count statement may leave out the verb it shares with the clause before, and with it the holder or the thing counted (Minsu has five apples and Jiyeon two; Minsu has five apples and two pears): it is read as that clause with the conjunct's words in their places.",
+  "_설명": "coordination: a conjunct after a comma that leaves out the trailing words of the previous conjunct's subject inherits them (Minsu has five apples, and Jiyeon has two -> Jiyeon apples). part_reference: naming only the leading word of a known subject names that subject when exactly one fits. scope 'turn': the coordination ellipsis holds between any two clauses of one turn, whatever joins them -- a comma, a connective, or the period between two sentences said together (Minsu has five apples. Jiyeon has two). gapping 'first_conjunct_verb': a later conjunct of a count statement may leave out the verb it shares with the clause before, and with it the holder or the thing counted (Minsu has five apples and Jiyeon two; Minsu has five apples and two pears): it is read as that clause with the conjunct's words in their places. counted_noun 'after_numeral': a count statement whose example says so (counted_noun: may_elide) may leave out the counted noun after its numeral when the conversation has named it (gave 2 to Bo, left 3 at the shed; what 'gave 2 of them to Bo' reads as); each holder is then named alone and found by its leading words, as part_reference says.",
   "coordination": "trailing_words",
   "part_reference": "leading_words",
   "scope": "turn",
-  "gapping": "first_conjunct_verb"
+  "gapping": "first_conjunct_verb",
+  "counted_noun": "after_numeral"
  },
  "수선": {
   "_설명": "Edits that bring an unmatched clause to the nearest declared rule. Only typed words move, drop or swap; nothing untyped and undeclared is added. Over the bound the clause is held and the needed edit is named.",
@@ -3302,9 +4175,177 @@
   {
    "from": "this few",
    "to": "that many"
+  },
+  {
+   "from": "is responsible for",
+   "to": "has"
+  },
+  {
+   "from": "was responsible for",
+   "to": "had"
+  },
+  {
+   "from": "after that",
+   "to": ""
+  },
+  {
+   "from": "afterwards",
+   "to": ""
+  },
+  {
+   "from": "apparently",
+   "to": ""
+  },
+  {
+   "from": "at all",
+   "to": ""
+  },
+  {
+   "from": "the same",
+   "to": ""
+  },
+  {
+   "from": "same",
+   "to": ""
+  },
+  {
+   "from": "not sure how many",
+   "to": ""
+  },
+  {
+   "from": "to be exact",
+   "to": ""
+  },
+  {
+   "from": "by the way",
+   "to": ""
+  },
+  {
+   "from": "I just counted",
+   "to": ""
+  },
+  {
+   "from": "too",
+   "to": ""
+  },
+  {
+   "from": "also",
+   "to": ""
+  },
+  {
+   "from": "doesn't have any",
+   "to": "has no"
+  },
+  {
+   "from": "does not have any",
+   "to": "has no"
+  },
+  {
+   "from": "hasn't got any",
+   "to": "has no"
+  },
+  {
+   "from": "has not got any",
+   "to": "has no"
+  },
+  {
+   "from": "don't have any",
+   "to": "have no"
+  },
+  {
+   "from": "haven't got any",
+   "to": "have no"
+  },
+  {
+   "from": "of the same",
+   "to": ""
+  },
+  {
+   "from": "do not have any",
+   "to": "have no"
+  },
+  {
+   "from": "have not got any",
+   "to": "have no"
+  },
+  {
+   "from": "does not have a single",
+   "to": "doesn't have a single"
+  },
+  {
+   "from": "don't have a single",
+   "to": "doesn't have a single"
+  },
+  {
+   "from": "do not have a single",
+   "to": "doesn't have a single"
+  },
+  {
+   "from": "a",
+   "to": "1"
+  },
+  {
+   "from": "an",
+   "to": "1"
+  },
+  {
+   "from": "the two of us",
+   "to": "we"
+  },
+  {
+   "from": "and also",
+   "to": "and"
+  },
+  {
+   "from": "actually",
+   "to": ""
+  },
+  {
+   "from": "a lot of",
+   "to": "some"
+  },
+  {
+   "from": "lots of",
+   "to": "some"
+  },
+  {
+   "from": "a few",
+   "to": "some"
+  },
+  {
+   "from": "a couple of",
+   "to": "some"
+  },
+  {
+   "from": "a bunch of",
+   "to": "some"
+  },
+  {
+   "from": "a handful of",
+   "to": "some"
+  },
+  {
+   "from": "a number of",
+   "to": "some"
+  },
+  {
+   "from": "a little",
+   "to": "some"
+  },
+  {
+   "from": "a bit of",
+   "to": "some"
+  },
+  {
+   "from": "a total of",
+   "to": ""
+  },
+  {
+   "from": "a lot",
+   "to": "some"
   }
  ],
- "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many).",
+ "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many). Being responsible for a count is having it (is/was responsible for = has/had). The discourse adverbs that place or source a statement but change no role are left out (after that, afterwards, apparently; too, also; by the way, to be exact, I just counted, not sure how many), and 'at all' after a zero. 'the same' before the counted noun names the kind already said and adds nothing (the same 4 pillows = 4 pillows). The negated possessive with 'any' or 'a single' is a zero count: doesn't have any / hasn't got any / doesn't have a single = has no (don't, haven't: have no). The indefinite article before a counted noun is the numeral one (got a fig = got 1 fig). The article is the numeral one only before a counted noun: the vague quantity idioms (a lot of, lots of, a few, a couple of, a bunch of, a handful of, a number of, a little, a bit of) say 'some', a count not known, and 'a total of' before a numeral adds nothing.",
  "이름답": {
   "heads": [
    "and what about",
@@ -3317,11 +4358,29 @@
    "but",
    "also",
    "i mean",
-   "i meant"
+   "i meant",
+   "sorry",
+   "oh",
+   "no",
+   "wait",
+   "actually",
+   "i'm talking about",
+   "i was asking about",
+   "i was talking about",
+   "i meant to ask about"
   ],
-  "tails": []
+  "tails": [
+   "i mean",
+   "i meant",
+   "is who i meant",
+   "is who i mean",
+   "is the one i meant",
+   "is the one i mean",
+   "is who i'm asking about",
+   "is who i was asking about"
+  ]
  },
- "_이름답": "A reply that only names a person. After a question held for its pointer, the name answers which one; otherwise it asks the last answered question about that person. These words may stand before the name; anything else means it is not such a reply. Heads are the discourse connectives that open a follow-up (and, so, then, but, also), the elliptical question openers (what about, how about, what of) and the reformulations (I mean, I meant); several may stand one after another (and how about ...).",
+ "_이름답": "A reply that only names a person. After a question held for its pointer, the name answers which one; otherwise it asks the last answered question about that person. These words may stand before the name; anything else means it is not such a reply. Heads are the discourse connectives that open a follow-up (and, so, then, but, also), the elliptical question openers (what about, how about, what of) and the reformulations (I mean, I meant); several may stand one after another (and how about ...). A head may be followed by a comma (Sorry, I meant Haru). Tails are the reformulations said after the name (Haru, I mean; Haru is who I meant; Haru is the one I meant), and the apologies and interjections that open a self-repair (sorry, oh, no, wait, actually) are heads. The name may carry a title or a relation; it is read as the pack reads a holder.",
  "대조정정": {
   "markers": [
    ", not "
@@ -3415,5 +4474,90 @@
   "back",
   "than"
  ],
- "_이름밖": "Words that are never part of a holder's or a thing's name in a reading: the English prepositions (all of them but 'of', which a partitive keeps: boxes of crayons; with 'than', so 'Ada has 2 more figs than Bo' is not read as a count of 'figs than Bo') and the adverbial particles away, back. A name that holds one swallowed a phrase the example does not have ('figs to Bo', 'figs at first'), so that reading is not taken."
+ "_이름밖": "Words that are never part of a holder's or a thing's name in a reading: the English prepositions (all of them but 'of', which a partitive keeps: boxes of crayons; with 'than', so 'Ada has 2 more figs than Bo' is not read as a count of 'figs than Bo') and the adverbial particles away, back. A name that holds one swallowed a phrase the example does not have ('figs to Bo', 'figs at first'), so that reading is not taken.",
+ "가진쪽꼴": {
+  "name": "[A-Z][a-z]+(?:-[A-Z][a-z]+)?",
+  "possessives": [
+   "my",
+   "your",
+   "his",
+   "her",
+   "our",
+   "their"
+  ],
+  "possessive_suffix": [
+   "'s"
+  ],
+  "determiners": [
+   "the",
+   "our",
+   "my",
+   "your",
+   "his",
+   "her",
+   "their"
+  ],
+  "self_possessives": [
+   "my"
+  ],
+  "numeral_articles": [
+   "the"
+  ],
+  "self": {
+   "forms": [
+    "me",
+    "myself"
+   ],
+   "contractions": {
+    "I've": "I have",
+    "I'm": "I am",
+    "I'd": "I had"
+   },
+   "agreement": {
+    "have": "has",
+    "am": "is",
+    "do": "does",
+    "don't": "doesn't",
+    "haven't": "hasn't",
+    "keep": "keeps",
+    "own": "owns",
+    "hold": "holds",
+    "carry": "carries"
+   },
+   "inverted": {
+    "do": "does",
+    "have": "has",
+    "am": "is"
+   },
+   "reads_as": "I"
+  },
+  "prefix_titles": [
+   "Mr.",
+   "Ms.",
+   "Mrs.",
+   "Dr.",
+   "Mr",
+   "Ms",
+   "Mrs",
+   "Dr"
+  ],
+  "leading_modifiers": [
+   "back",
+   "away"
+  ]
+ },
+ "_가진쪽꼴": "How a holder is said when it is not a bare name, each form read as the one name the facts use. self: the English first-person pronoun in every case (I; me, myself) reads as I, the pack's 임자자리말; its contractions (I've, I'm, I'd) are said in full; a verb after it agrees as after any other holder, the examples being written in the third person (the verbs whose present differs by person: be, have, do, and the stative possession verbs own, hold, keep, carry), and in a question the auxiliary before it agrees the same way (do I have -> does I have). possessives + a relation noun + a name (close apposition: my cousin Ana, our aunt Ana, Lind's cousin Ana): the name is the holder (the possessive determiners of English, all of them, and the possessive 's). determiners: a determiner, a role of one to three words, a comma, a name and a comma (the courier, Lind, ...): the name is the holder. self_possessives: the user's own relation with no name after it (my sister) is the relation noun. numeral_articles: 'the' before a numeral (gave back the two figs) adds nothing to the amount, unless a partitive follows (the two of them). A name is a capitalised word. prefix_titles: the English courtesy titles before a surname (Mr., Ms., Mrs., Dr., written with or without the period) name the holder by the surname. leading_modifiers: the adverbial particles that are outside names (back, away) may still open a place's name as its modifier (the back hall), never follow a name (figs back).",
+ "말자리": {
+  "fronted_recipient": [
+   "to"
+  ],
+  "fronted_purpose": [
+   "for"
+  ],
+  "shifted_particles": [
+   "back",
+   "over"
+  ]
+ },
+ "_말자리": "Phrases said away from where the examples have them. A fronted recipient: the preposition to and a name before a comma open the clause (To Bo, Ada gave 2 figs) and are read at its end (Ada gave 2 figs to Bo). A fronted purpose: the preposition for and a phrase before a comma open the clause (For the trip, Ada lent Bo 2 figs) and are left out; a purpose fills no role. A shifted particle: the particle of a phrasal transfer verb (back, over: gave back, handed over) said after a one-word object (gave Bo back 2) is read after the verb."
 }
