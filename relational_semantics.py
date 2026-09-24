@@ -833,6 +833,7 @@ class RelationalParser:
                 if word.lower() in self.outside_names or word.isdigit() or \
                         parse_numeral(word.lower(), self.data.get("numerals", {})) is not None:
                     return m.group(0)
+                carries = self._ends_in_particle(word)
                 if spec.get("relation_nouns") is not None:
                     particles = sorted({x for g in self.slot_particles for x in g} | set(self.case_particles)
                                        | set(spec.get("delimiters") or []), key=len, reverse=True)
@@ -840,8 +841,10 @@ class RelationalParser:
                                  and word[:-len(x)] in spec["relation_nouns"]), word)
                     if stem not in spec["relation_nouns"]:
                         return m.group(0)
+                    # (a one-syllable relation noun with its particle, 형이, carries a particle too)
+                    carries = carries or stem != word
                 # a bare relation word before a name belongs to the close apposition (my cousin Ana)
-                if not self._ends_in_particle(word) and re.match(r" (?:%s)(?![\w'])" % name, text[m.end():]):
+                if not carries and re.match(r" (?:%s)(?![\w'])" % name, text[m.end():]):
                     return m.group(0)
                 return word
             new = re.sub(pattern, own_relation, text)
@@ -1059,12 +1062,17 @@ class RelationalParser:
         if found is None:
             return literal, None
         row, verb = found
+        # a surname before a declared job title is one holder with it (탁 차장한테서, 탁 차장이): 가진쪽꼴.job_titles
+        titles = set((self.holder_forms or {}).get("job_titles") or [])
+        lead = 1 if len(words) > 4 and words[0] and not self._ends_in_particle(words[0]) and any(
+            words[1].startswith(t) and words[1][len(t):] in row.get("subject_particles", ["이", "가"])
+            for t in titles) else 0
         subject = next((p for p in row.get("subject_particles", ["이", "가"])
-                        if words[0].endswith(p) and len(words[0]) > len(p)), None)
+                        if words[lead].endswith(p) and len(words[lead]) > len(p)), None)
         if subject is None:
             return literal, None
-        taker = words[0][:-len(subject)]
-        middle = words[1:-1]
+        taker = " ".join(words[:lead] + [words[lead][:-len(subject)]])
+        middle = words[lead + 1:-1]
         if row.get("shape") == "source":
             at = next((i for i, w in enumerate(middle)
                        for p in row.get("source_particles", []) if w.endswith(p) and len(w) > len(p)), None)
@@ -1073,6 +1081,9 @@ class RelationalParser:
             particle = next(p for p in row["source_particles"] if middle[at].endswith(p))
             giver = middle[at][:-len(particle)]
             rest = middle[:at] + middle[at + 1:]
+            if at > 0 and giver in titles and not self._ends_in_particle(middle[at - 1]):
+                giver = middle[at - 1] + " " + giver
+                rest = middle[:at - 1] + middle[at + 1:]
         else:
             from numeral_semantics import parse_numeral
             if len(middle) < 3 or parse_numeral(middle[1], self.data.get("numerals", {})) is not None:
@@ -3513,6 +3524,12 @@ class RelationalParser:
                         if found != candidate:
                             referent = found
                             break
+                    if referent == triple[0] and self.ellipsis.get("thing_reference") == "trailing_word" \
+                            and " " not in triple[0].strip():
+                        # `지금 돌은 몇 개야`: the thing alone names the one subject that holds it (상자 돌)
+                        holders = sorted({s for s, p in present if p == triple[1] and s.endswith(" " + triple[0])})
+                        if len(holders) == 1:
+                            referent = holders[0]
                     if referent != triple[0]:
                         query = {**query, "triple": [referent] + triple[1:], "resolved_from": triple[0]}
                 queries.append(query)

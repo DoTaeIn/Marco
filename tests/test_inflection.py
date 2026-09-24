@@ -203,7 +203,9 @@ def test_template_count_stays_constant_and_empty_component_lacks_new_forms():
     # each a class of the round's cause table; no word of a development set.
     # 99 -> 101 (round 5, batch 1): the thing as topic with the holder after it (구슬 18개는 하루가 가지고
     # 있다) and the holder in a relative clause of holding (하루가 가지고 있는 구슬이 18개 있다).
-    assert len(parser.templates) == len(parser.data["examples"]) == 101
+    # 101 -> 106 (round 5, batch 3): only-counts (가진 것은/건 ... 뿐이다, 한테는 ... 뿐이다), a move said
+    # places first, leaving things said count first.
+    assert len(parser.templates) == len(parser.data["examples"]) == 106
     pack = copy.deepcopy(load_reasoning_language())
     pack["inflection"] = {}
     old = RelationalParser(language_pack=pack)

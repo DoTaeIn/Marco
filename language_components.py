@@ -370,6 +370,7 @@ def _validate_ellipsis(declared):
     if not isinstance(declared, dict):
         raise ValueError("ellipsis must be an object")
     allowed = {"coordination": {"trailing_words"}, "part_reference": {"leading_words"}, "scope": {"turn"},
+               "thing_reference": {"trailing_word"},
                "gapping": {"first_conjunct_verb"}, "counted_noun": {"after_numeral"}}
     for key, value in declared.items():
         if key.startswith("_"):

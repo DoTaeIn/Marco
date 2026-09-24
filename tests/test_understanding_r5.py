@@ -379,6 +379,30 @@ def test_a_count_in_digits_is_never_part_of_the_thing_counted():
     assert asserted_numbers(rows[1]["answer"]) == {7}
 
 
+# G5.3 batch 3 (Korean): a place with 에 holds, a one-syllable relation, titled givers, only-counts, orders ----
+def test_a_place_marked_with_e_holds_what_is_in_it():
+    _ctx, rows = play("한국어", ["옷방에 액자가 여섯 개 있어요.", "혜린은 액자가 두 개 있어요.", "혜린이 옷방에서 액자 한 개를 가져갔어요.",
+                                "옷방에 액자가 몇 개 있어요?", "혜린은 액자가 몇 개 있어요?"])
+    assert [asserted_numbers(r["answer"]) for r in rows[3:]] == [{5}, {3}]
+
+
+def test_a_one_syllable_relation_noun_and_a_titled_giver_keep_their_holders():
+    assert facts_of("한국어", "제 딸이 지선한테 컵 세 개를 줬어요.") == [("딸 컵", "count_remove", "3"), ("지선 컵", "count_add", "3")]
+    assert facts_of("한국어", "지선 씨가 제 딸한테서 컵 두 개를 받았어요.") == [("딸 컵", "count_remove", "2"),
+                                                                      ("지선 컵", "count_add", "2")]
+    assert facts_of("한국어", "해진이 옥 소장님한테서 컵 네 개를 받았습니다.") == [("옥 소장 컵", "count_remove", "4"),
+                                                                        ("해진 컵", "count_add", "4")]
+
+
+def test_korean_only_counts_places_first_moves_and_count_first_leaving():
+    assert facts_of("한국어", "윤호가 가진 건 퍼즐 열두 개뿐이에요.") == [("윤호 퍼즐", "count", "12")]
+    assert facts_of("한국어", "윤호한테는 퍼즐 열두 개뿐입니다.") == [("윤호 퍼즐", "count", "12")]
+    assert facts_of("한국어", "옥상에서 옷방으로 퍼즐 세 개를 옮겼어요.") == [("옥상 퍼즐", "count_remove", "3"),
+                                                                    ("옷방 퍼즐", "count_add", "3")]
+    assert facts_of("한국어", "퍼즐 두 개를 윤호가 옥상에 두고 왔어요.") == sorted([("윤호 퍼즐", "count_remove", "2"),
+                                                                          ("옥상 퍼즐", "count_add", "2")])
+
+
 def test_the_speakers_possessive_before_a_thing_is_the_speaker():
     _ctx, rows = play("한국어", ["저는 앨범이 다섯 권 있어요.", "제 앨범은 지금 몇 권 있어요?", "제 동료는 앨범이 두 권 있어요.",
                                 "제 동료는 앨범이 몇 권 있어요?"])

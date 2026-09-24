@@ -520,14 +520,20 @@
      "item": "구슬",
      "n": "18"
     },
+    "_about": "G5: a place marked with 에 holds what is in it, as 상자에는 구슬이 18개 있다 does (a person takes 에게/한테, never 에): the place is the holder.",
     "meaning": {
      "triple": [
-      "$item",
+      [
+       "$place",
+       "$item"
+      ],
       "count",
       "$n"
-     ],
-     "scope": "$place"
-    }
+     ]
+    },
+    "place": [
+     "place"
+    ]
    },
    {
     "text": "구슬은 18개 있다",
@@ -1131,6 +1137,172 @@
      "taker": "상자",
      "item": "구슬",
      "n": "2"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "place": [
+     "taker"
+    ]
+   },
+   {
+    "text": "하루가 가진 것은 구슬 18개뿐이다",
+    "_about": "G5 (only): what the holder has is only N things (가진 것은 ... 뿐이다).",
+    "inflection": {
+     "stem": "이",
+     "kind": "copula",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "owner": "하루",
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "하루가 가진 건 구슬 18개뿐이다",
+    "_about": "G5 (only): the same with 것은 contracted to 건.",
+    "inflection": {
+     "stem": "이",
+     "kind": "copula",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "owner": "하루",
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "하루한테는 구슬 18개뿐이다",
+    "_about": "G5 (only): the holder as the dative topic, only N things.",
+    "inflection": {
+     "stem": "이",
+     "kind": "copula",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "owner": "하루",
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "상자에서 가방으로 구슬 2개를 옮겼다",
+    "_about": "G5: a move said places first, the things after them.",
+    "inflection": {
+     "stem": "옮기",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "plain"
+    },
+    "slots": {
+     "giver": "상자",
+     "taker": "가방",
+     "item": "구슬",
+     "n": "2"
+    },
+    "meaning": {
+     "triples": [
+      [
+       [
+        "$giver",
+        "$item"
+       ],
+       "count_remove",
+       "$n"
+      ],
+      [
+       [
+        "$taker",
+        "$item"
+       ],
+       "count_add",
+       "$n"
+      ]
+     ]
+    },
+    "place": [
+     "giver",
+     "taker"
+    ]
+   },
+   {
+    "text": "구슬 2개를 하루가 상자에 두고 왔다",
+    "_about": "G5: leaving things at a place said count first.",
+    "inflection": {
+     "stem": "오",
+     "kind": "regular",
+     "tense": "past",
+     "ending": "plain"
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "2",
+     "giver": "하루",
+     "taker": "상자"
     },
     "meaning": {
      "triples": [
@@ -2793,9 +2965,10 @@
   "plan_no_sources": "서로 다른 두 원문 출처가 없어 지식을 저장하지 않습니다"
  },
  "생략": {
-  "_설명": "말하지 않은 부분을 어디서 메우는지. coordination: 쉼표로 이은 마디가 앞 마디 대상의 뒷말을 안 쓰면 물려받는다 (`민수는 사과 다섯 개, 지연은 두 개` 의 `지연` 은 `지연 사과`). part_reference: 상태 대상의 앞말만 말하면 그 앞말로 시작하는 대상이 하나일 때 그것을 가리킨다 (`지연은 몇 개야` 의 `지연` 은 `지연 사과`). 여럿이면 고르지 않는다. scope 'turn': 이 생략은 한 턴 안의 어느 두 마디 사이에서나 쓴다 — 쉼표든, 이음어미(-고·-며·-는데·-지만)든, 두 문장을 이어 말한 마침표든(`민수는 사과가 다섯 개 있어. 그리고 지연은 두 개 있어`). topic_continuity: 주제(은/는)로 가진 쪽을 세운 뒤 이어지는 마디의 임자가 주격 조사(item_particles: 이/가 — 주격 조사는 이 둘이 전부다)로 표시되면 그것은 새 가진 쪽이 아니라 같은 가진 쪽의 다른 셀 것이다: 앞말(가진 쪽)을 물려받는다(`민수는 사과가 다섯 개, 배가 세 개 있어` 의 `배` 는 `민수 배`). 주제 조사로 표시되면 새 가진 쪽이고 뒷말을 물려받는다(`지연은 두 개` → `지연 사과`).",
+  "_설명": "말하지 않은 부분을 어디서 메우는지. coordination: 쉼표로 이은 마디가 앞 마디 대상의 뒷말을 안 쓰면 물려받는다 (`민수는 사과 다섯 개, 지연은 두 개` 의 `지연` 은 `지연 사과`). part_reference: 상태 대상의 앞말만 말하면 그 앞말로 시작하는 대상이 하나일 때 그것을 가리킨다 (`지연은 몇 개야` 의 `지연` 은 `지연 사과`). 여럿이면 고르지 않는다. scope 'turn': 이 생략은 한 턴 안의 어느 두 마디 사이에서나 쓴다 — 쉼표든, 이음어미(-고·-며·-는데·-지만)든, 두 문장을 이어 말한 마침표든(`민수는 사과가 다섯 개 있어. 그리고 지연은 두 개 있어`). topic_continuity: 주제(은/는)로 가진 쪽을 세운 뒤 이어지는 마디의 임자가 주격 조사(item_particles: 이/가 — 주격 조사는 이 둘이 전부다)로 표시되면 그것은 새 가진 쪽이 아니라 같은 가진 쪽의 다른 셀 것이다: 앞말(가진 쪽)을 물려받는다(`민수는 사과가 다섯 개, 배가 세 개 있어` 의 `배` 는 `민수 배`). 주제 조사로 표시되면 새 가진 쪽이고 뒷말을 물려받는다(`지연은 두 개` → `지연 사과`). thing_reference: 가진 쪽 없이 물건만 물으면(`지금 돌은 몇 개야`) 그 물건을 가진 상태 대상이 하나일 때 그것을 묻는 것이다(`상자에 돌이 23개 있다` → `상자 돌`). 여럿이면 고르지 않는다 (G5).",
   "coordination": "trailing_words",
   "part_reference": "leading_words",
+  "thing_reference": "trailing_word",
   "scope": "turn",
   "topic_continuity": {
    "item_particles": [
