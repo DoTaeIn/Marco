@@ -58,7 +58,7 @@ def reads_alone(language, text):
     return bool(parsed.get("facts"))
 
 
-def tables(report, dialogues):
+def tables(report, dialogues, cascade=True):
     rows = {(r["dialogue"], r["n"]): r for r in report["rows"]}
     record, answerable, detail = {}, {}, []
     for d in dialogues:
@@ -69,7 +69,9 @@ def tables(report, dialogues):
                 continue
             if t["expect"]["act"] in ("record", "revise") and row["bucket"] != "correct":
                 cls = turn_class(t, d)
-                alone = t["expect"]["act"] == "record" and reads_alone(d["language"], t["say"])
+                # (without the cascade split -- for a report made by other code than this checkout's --
+                # every statement is counted under its own class)
+                alone = cascade and t["expect"]["act"] == "record" and reads_alone(d["language"], t["say"])
                 counted = ("after:" + missed[1]) if (alone and missed is not None) else cls
                 if t["expect"]["act"] == "record":
                     record[counted] = record.get(counted, 0) + 1
@@ -108,11 +110,13 @@ def main(argv=None):
     parser.add_argument("report", type=Path)
     parser.add_argument("--dataset", type=Path, default=HERE)
     parser.add_argument("--rows", action="store_true", help="list every counted turn")
+    parser.add_argument("--no-cascade", action="store_true",
+                        help="count every statement under its own class (a report made by other code)")
     args = parser.parse_args(argv)
     report = json.loads(args.report.read_text(encoding="utf-8"))
     keep = {r["dialogue"] for r in report["rows"]}
     dialogues = [d for d in gate.load(args.dataset) if d["id"] in keep]
-    record, answerable, detail = tables(report, dialogues)
+    record, answerable, detail = tables(report, dialogues, cascade=not args.no_cascade)
     n_record = sum(1 for r in report["rows"] if r["act"] == "record")
     n_answer = sum(1 for r in report["rows"] if r["label"] == "answerable")
     print("record turns not correct: %d of %d" % (sum(record.values()), n_record))
