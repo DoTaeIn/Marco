@@ -1046,6 +1046,13 @@
     ]
    }
   ],
+  "reading_fits": [
+   {
+    "id": "reading_fits_none",
+    "when": {"polarity": false},
+    "parts": [{"quote": "said", "marks": "double", "case": "topic"}, {"lex": "this"}, {"lex": "conversation", "case": "with"}, {"verb": "fit", "tense": "present", "ending": "adnominal"}, {"lex": "reading_n", "case": "subject"}, {"verb": "not_exist", "predicate": true}]
+   }
+  ],
   "several_readings": [
    {
     "id": "several_readings",

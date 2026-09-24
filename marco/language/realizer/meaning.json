@@ -112,6 +112,7 @@
   "carried_out": {"roles": {}},
   "many_readings": {"roles": {"said": "quote"}},
   "several_readings": {"_about": "A sentence that reads more than one way (goal G5 B): the user's words, quoted.", "roles": {"said": "quote"}},
+  "reading_fits": {"_about": "No reading of the user's sentence fits the conversation's state (goal G5 B). Negative only.", "roles": {"said": "quote"}},
   "shorter_request": {"roles": {}},
   "role_covered": {"roles": {"said": "quote", "rest": "quote"}},
   "definition_conflict": {"roles": {"said": "quote", "declared": "quote", "given": "quote"}},
@@ -615,6 +616,14 @@
    "acts": [
     {"intent": "ASK", "options": true, "props": [{"readings": "$readings", "state": "after"}]},
     {"intent": "ASK", "fallback": true, "props": [{"frame": "several_readings", "roles": {"said": "$said"}}, {"frame": "which_request", "sentence": "request"}]}
+   ]
+  },
+  {
+   "_about": "Every reading of a sentence failed the conversation's state or its constraints (goal G5 B, request W5-2; assumed meaning: act hold, reason no_reading, said, and the failing constraints for the trace): say that no reading fits, ask for it another way.",
+   "match": {"act": "hold", "reason": "no_reading"},
+   "acts": [
+    {"intent": "REFUSE", "props": [{"frame": "reading_fits", "roles": {"said": "$said"}, "polarity": false}]},
+    {"intent": "ASK", "props": [{"frame": "rephrase", "sentence": "request"}]}
    ]
   },
   {

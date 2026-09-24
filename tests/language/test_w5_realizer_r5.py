@@ -342,6 +342,17 @@ def test_an_ambiguous_sentence_asks_which_reading_was_meant(language, index):
         assert options == []
 
 
+@pytest.mark.parametrize("language,said", [
+    ("english", 'No interpretation of "Wynn gave Pell\'s 3 figs" fits this conversation. Please say it another way.'),
+    ("한국어", '"윤이 무화과 세 개 펠 줬어"는 이 대화와 맞는 읽기가 없습니다. 다른 말로 다시 말해 주세요.'),
+])
+def test_a_sentence_no_reading_of_which_fits_is_held_and_asked_again(language, said):
+    result = {"status": "unresolved", "answer": "ENGINE",
+              "meaning": {"act": "hold", "reason": "no_reading", "said": EN_SAID if language == "english" else KO_SAID,
+                          "failed": [{"reading": 0, "constraint": "recipient_is_holder"}]}}
+    assert composed(result, language) == said
+
+
 def test_a_korean_count_offered_as_a_choice_prefers_the_existence_verb():
     said = "민서 도윤 무화과 세 개"
     text = composed(ambiguous(said, [stated("민서 무화과", "3", said)], [stated("도윤 무화과", "3", said)]), "한국어")
