@@ -2580,7 +2580,11 @@ class RelationalParser:
                     rest = rest[len(phrase):].strip()
                     break
             if joiner is not None and len(name) >= 3 and rest:
-                return {"query": [{"total": {"members": [first[:-len(joiner)], name[1]], "item": rest},
+                # the second member may carry the joiner too (A랑 B랑 합쳐서)
+                second = name[1]
+                tail = next((j for j in joiners if second.endswith(j) and len(second) > len(j)), None)
+                second = second[:-len(tail)] if tail else second
+                return {"query": [{"total": {"members": [first[:-len(joiner)], second], "item": rest},
                                    "render": list(spec["render"])}]}
         if total or group:
             if not (total and group):
