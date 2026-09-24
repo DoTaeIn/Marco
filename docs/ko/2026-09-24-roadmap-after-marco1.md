@@ -4,7 +4,8 @@ Written 2026-09-24 by the plan manager from the owner's design note
 `docs/ko/2026-09-24-perception-reasoning-emotion-philosophy.md`. It adds to the
 integrated roadmap (`2026-09-22-mco-integrated-roadmap.md`) and changes nothing
 in the freeze decision: everything below starts after MARCO 1 passes its gate,
-except the three items marked "during MARCO 1", which are docs or one parser class.
+except the items marked "during MARCO 1" (docs, one parser class, and the trace
+ledger core, which is a new package with no engine edits).
 
 ## What the note changes in principle, effective now
 
@@ -25,6 +26,8 @@ except the three items marked "during MARCO 1", which are docs or one parser cla
 | Window | Item | Package | Depends on | Done when |
 | --- | --- | --- | --- | --- |
 | during MARCO 1 | **Q1 multi-query** `queries[]`: several user questions in one turn, answered in order | parsing side, an understanding-round class | nothing | a dev class in the next understanding round; frozen set unaffected |
+| during MARCO 1 | **L1 trace ledger** (owner's note `2026-09-24-trace-logging-design.md`): declared schema, append-only JSONL ledger with DAG parents, adapter from the turn envelope, why chain, failure statistics | `marco/trace/` new | nothing | goal L1, running; the stats table feeds round 5 |
+| round 5 | **L2 trace emission at the sites**: routing candidates and scores, rejected evidence, rule applications with bindings, pointer resolution, emitted where they happen | `engine.py`, `reasoning_context.py` | L1, G4 and W3 merged | request L1-1 closed; every frozen-set turn replayable from its ledger |
 | during MARCO 1 | **P-doc** README design principles rewritten to §24, and this roadmap linked | docs | nothing | docs only, one commit |
 | T1 + 0 to 2 wk | **O0 Observation Graph contract**: Entity, Property, Relation, Event, State, Quantity, Time, Source, Confidence, Provenance, and the observation / hypothesis / verified-fact status; written as a schema with tests, and the existing text `transitions` shown to fit it | `marco/knowledge/` schema, docs | MARCO 1 | text dialogue re-expressed through the contract with identical gate scores |
 | T1 + 0 to 6 wk | **M1–M3 MCO format** (already in the roadmap): native container, overlay, snapshot | `mco/`, `marco/storage/` | O0 for the record schema | a real `.mco` that learns and restores across processes |
@@ -35,6 +38,7 @@ except the three items marked "during MARCO 1", which are docs or one parser cla
 | T1 + 10 to 18 wk | **V2 audio without text**: acoustic observation primitives, prototype matching / DTW for a small set of commands and sounds | `soma/` | V1 | a fixed command set recognised from audio into the Observation Graph, unknown for the rest |
 | T1 + 12 wk on | **N-sensor neural sensors behind the boundary**: detector / OCR / speech outputs enter as unverified observations | `soma/` adapters | V1, the §11 rules as tests | a test that a detector claim never becomes a fact without a rule |
 | months 4 to 12 | **G6–G7 knowledge-gap research loop**, `user_goals[]` vs `generated_subgoals[]` (already in the roadmap) | `marco/cognition/` | POLO P1, G4/G5 | unchanged from the integrated roadmap |
+| with O0, A1', V1, D-lib, M1–M3 | **Trace extensions** (note §24–§31): observation events with source provenance in O0; SOMA perception trace with V1; appraisal and mental-state scope with A1'; budget trace with D-lib; goal and subgoal branches with G6–G7; the ledger stored and consolidated inside the `.mco` with M1–M3 | each item's package | L1 | each item's done-when includes its trace; no item ships a label without a derivation |
 | unscheduled | **Licensing** (§26): attribution requirement for user-facing products, separate white-label licence | repository | legal review | owner's decision after legal review |
 
 Ordering rule: O0 first, because every later item writes into it. V1 and A1'
