@@ -431,7 +431,8 @@ def cmd_layout():
     unmapped = [n for n, t in facts["move"] if not t]
     by_package = {}
     for name, target in moves:
-        by_package.setdefault(target.rsplit(".", 1)[0] if "." in target else target, []).append(name)
+        package, _, leaf = target.rpartition(".")
+        by_package.setdefault(package or target, []).append(name if leaf == name else "%s -> %s" % (name, leaf))
     print("%-46s %s" % ("commit", revision()))
     print("%-46s %s" % ("root .py files", len(facts["root"])))
     print("%-46s %d: %s" % ("stay at the root in S4 (split files, conftest)", len(facts["stay"]),
