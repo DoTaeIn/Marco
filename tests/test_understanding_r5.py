@@ -565,3 +565,12 @@ def test_places_said_in_other_orders_and_taking_from_a_place():
                                                                 ("미소 국자", "count_add", "2")]
     assert facts_of("한국어", "미소가 뒷마당 창고에서 국자 두 개를 가져갔습니다.") == [
         ("뒷마당 창고 국자", "count_remove", "2"), ("미소 국자", "count_add", "2")]
+
+
+def test_a_korean_total_whose_first_holder_is_titled_and_an_only_count_with_spaced_ppun():
+    parser = model("한국어").parser()
+    parsed = parser.parse("문 차장님과 제 처제가 합쳐서 국자가 몇 개 있어요?", partial=True, events=True, repair=True)
+    assert parsed["query"][0]["total"] == {"members": ["문 차장", "처제"], "item": "국자"}
+    assert facts_of("한국어", "사서 해솔 씨가 가진 것은 국자 열네 개 뿐입니다.") == [("해솔 국자", "count", "14")]
+    assert facts_of("한국어", "미소는 국자가 아홉 개 있고, 컵도 좀 있어요.") == [("미소 국자", "count", "9"),
+                                                                 ("미소 컵", "count_unknown", "some")]
