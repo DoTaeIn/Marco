@@ -70,6 +70,9 @@ def test_layout_partitions_the_root():
     moved = [name for name, _target in facts["move"]]
     assert sorted(facts["stay"] + moved) == facts["root"]
     assert "conftest" in facts["stay"] or "conftest" not in facts["root"]
+    assert all(len(names) > 1 for names in facts["shared_targets"].values())
+    for target in facts["taken_targets"]:
+        assert os.path.isfile(os.path.join(ROOT, *target.split(".")) + ".py")
 
 
 def _tree(tmp_path, index_text, files):

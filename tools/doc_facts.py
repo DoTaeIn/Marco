@@ -416,7 +416,13 @@ def layout_facts(root=ROOT):
     names = sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob(os.path.join(root, "*.py")))
     stay = [n for n in names if n in splits or n == "conftest"]
     move = [(n, modules.get(n)) for n in names if n not in stay]
-    return {"root": names, "stay": stay, "move": move}
+    sources = {}
+    for name, target in move:
+        if target:
+            sources.setdefault(target, []).append(name)
+    shared = {t: s for t, s in sorted(sources.items()) if len(s) > 1}
+    taken = sorted(t for t in sources if os.path.exists(os.path.join(root, *t.split(".")) + ".py"))
+    return {"root": names, "stay": stay, "move": move, "shared_targets": shared, "taken_targets": taken}
 
 
 def cmd_layout():
@@ -436,6 +442,12 @@ def cmd_layout():
     print("%-46s %s" % ("root .py files not in the target map", len(unmapped)))
     for name in unmapped:
         print("  %s" % name)
+    print("%-46s %s" % ("targets named by more than one file", len(facts["shared_targets"])))
+    for target, names in facts["shared_targets"].items():
+        print("  %-44s %s" % (target, " + ".join(names)))
+    print("%-46s %s" % ("targets that already exist as a module", len(facts["taken_targets"])))
+    for target in facts["taken_targets"]:
+        print("  %-44s %s" % (target, ", ".join(n for n, t in facts["move"] if t == target)))
     return 0
 
 
