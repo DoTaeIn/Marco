@@ -89,6 +89,8 @@ that code closes it.
 | [W1-3.md](requests/W1-3.md) | Pass the model to `realize`, not only its path |
 | [W2-1.md](requests/W2-1.md) | What the realizer now says, and what is left for the parsing side |
 | [W3-1.md](requests/W3-1.md) | The meaning fields and pack readings the round-4 reply plans read |
+| [W4-1.md](requests/W4-1.md) | Answer a live "why" from the trace graph at the engine's explain site; round 5 |
+| [W4-2.md](requests/W4-2.md) | The trace side of the realizer report's act, reason and plan fields |
 
 ## Korean design records (`docs/ko/`)
 
@@ -248,6 +250,8 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [composition-round3.json](ko/dialogue-gate-2026-09-22/composition-round3.json) | Composition after round 3: 340 of 340 |
 | [after-w3.json](ko/dialogue-gate-2026-09-22/after-w3.json) | After realizer round 3, `ead6302`: 21 of 108, 0 wrong, 0 violations; the README's current numbers |
 | [composition-after-w3.json](ko/dialogue-gate-2026-09-22/composition-after-w3.json) | Composition after realizer round 3: 340 of 340, 0 passed through |
+| [after-w4.json](ko/dialogue-gate-2026-09-22/after-w4.json) | After realizer round 4, `d082278`: 21 of 108, 0 wrong, 0 violations, no turn changed |
+| [composition-after-w4.json](ko/dialogue-gate-2026-09-22/composition-after-w4.json) | Composition after realizer round 4: 340 of 340, 0 passed through |
 
 ### Frozen reasoning gate (`ko/reasoning-gate-2026-09-24/`)
 
@@ -259,6 +263,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [after-w2.json](ko/reasoning-gate-2026-09-24/after-w2.json) | After realizer round 2, `55fb2c8`: 106 of 109, 0 wrong |
 | [round3.json](ko/reasoning-gate-2026-09-24/round3.json) | After understanding round 3, `60d796b`: 108 of 111, 0 wrong |
 | [after-w3.json](ko/reasoning-gate-2026-09-24/after-w3.json) | After realizer round 3, `ead6302`: 108 of 111 problems, 148 of 151 questions, 0 wrong |
+| [after-w4.json](ko/reasoning-gate-2026-09-24/after-w4.json) | After realizer round 4, `d082278`: 108 of 111 problems, 148 of 151 questions, 0 wrong |
 
 ### Model comparison (`ko/model-comparison-2026-09-24/`)
 
