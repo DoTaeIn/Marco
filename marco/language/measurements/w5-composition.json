@@ -245,5 +245,24 @@
    1542,
    5
   ]
+ },
+ "suite": {
+  "command": "KG_ENCODER=문자 python -m pytest -q",
+  "at": "1b972aa",
+  "passed": 1708,
+  "failed": 1,
+  "skipped": 8,
+  "seconds": 401,
+  "failed_tests": [
+   "tests/test_alma_integrated_reproduction.py::test_fixed_alma_life_reproduction_has_no_wrong_checks (macOS RSS, known)"
+  ],
+  "note": "the two machine-dependent tests/test_response_composer.py tests passed on this run",
+  "added": {
+   "tests/language/test_w5_realizer_r5.py": 58,
+   "tests/language/test_w5_trace_fields.py": 6
+  },
+  "changed": {
+   "tests/language/test_w3_round4_meanings.py::test_korean_holds_the_user_where_its_person_forms_declare_no_word": "the tie it held is said since round 5 (request G4-2); it now holds the user in a case still undeclared"
+  }
  }
 }
