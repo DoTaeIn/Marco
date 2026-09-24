@@ -465,7 +465,8 @@ class RelationalParser:
         for row in self.phrase_variants:
             source, target = row.get("from"), row.get("to", "")
             if isinstance(source, str) and source and isinstance(target, str):
-                table.setdefault(source, (target, {"id": "declared-phrase-variant-v1", "from": source, "to": target}))
+                table.setdefault(source, (target, {"id": "declared-phrase-variant-v1", "from": source, "to": target,
+                                                   **({"final": True} if row.get("final") else {})}))
         self._variant_table = table
         return table
 
@@ -530,14 +531,24 @@ class RelationalParser:
                 if note is not None:
                     notes.append(note)
             folded = current.lower() if self.data.get("ignore_case") else current
+            kept = []
             for source, target, note, pattern in patterns:
                 if source not in folded or (kinds is not None and note["id"] not in kinds):
                     continue
-                replaced = pattern.sub(target, current)
+                # A variant the pack marks final is not read again by a later variant (보관하고 ->
+                # 가지고 stays 가지고): its words wait behind a token until every variant is applied.
+                written = target
+                if note.get("final"):
+                    kept.append(target)
+                    written = "QQKEPT%dQQ" % (len(kept) - 1)
+                replaced = pattern.sub(written, current)
                 if replaced != current:
                     current = re.sub(r"\s+([,;:])", r"\1", re.sub(r"\s+", " ", replaced)).strip()
                     folded = current.lower() if self.data.get("ignore_case") else current
                     notes.append({**note, "written": target})
+            for index, target in enumerate(kept):
+                current = current.replace("QQKEPT%dQQ" % index, target)
+            folded = current.lower() if self.data.get("ignore_case") else current
             # A phrase dropped at a clause edge leaves its comma behind ("..., apparently").
             current = re.sub(r"^[,;:\s]+|[,;:\s]+$", "", re.sub(r",\s*,", ",", current))
             current, note = self._holder_forms(current)
@@ -584,6 +595,43 @@ class RelationalParser:
             if m:
                 text, applied = m.group(1), applied + ["fronted_purpose"]
                 break
+        for suffix in spec.get("fronted_purpose_suffixes", []):
+            # 행사 때문에 (,) ... / 이사 준비로, ...: a purpose phrase at the clause's start fills no role
+            m = re.match(r"((?:\S+ ){0,2}?)(\S*)%s,? (.+)$" % re.escape(suffix), text)
+            if m and (m.group(1) or m.group(2)) and not any(
+                    self._ends_in_particle(w) for w in (m.group(1) + m.group(2)).split()):
+                text, applied = m.group(3), applied + ["fronted_purpose"]
+                break
+        zero = spec.get("zero_idiom") or {}
+        if zero:
+            # 하나도 없어요 / 한 켤레도 없습니다: the amount none, said as the count 0 with the verb of
+            # presence in the same form (없어요 -> 0개 있어요)
+            units = "|".join(re.escape(u) for u in sorted(self.counters.get("units", []), key=len, reverse=True))
+            amounts = "|".join([re.escape(w) for w in zero.get("words", [])]
+                               + (["%s ?(?:%s)도" % (re.escape(zero["one"]), units)] if zero.get("one") and units else []))
+            new = re.sub(r"(?<!\S)(?:%s) %s(?=\S*)" % (amounts, re.escape(zero["absent"])),
+                         "%s %s" % (zero["reads_as"], zero["present"]), text)
+            if new != text:
+                text, applied = new, applied + ["zero_idiom"]
+        marker = spec.get("genitive_quantifier")
+        if marker:
+            # 열한 개의 메달을 -> 메달을 열한 개: an amount said before its thing with the genitive
+            from numeral_semantics import parse_numeral
+            units = "|".join(re.escape(u) for u in sorted(self.counters.get("units", []), key=len, reverse=True))
+            if units:
+                def float_back(m):
+                    amount = m.group(1)
+                    if parse_numeral(amount, self.data.get("numerals", {})) is None and not amount.isdigit():
+                        return m.group(0)
+                    # the thing first, the amount after it, the thing's particle on the amount (숟가락 세 개를)
+                    particle = m.group(5) or ""
+                    if particle:
+                        particle = self._particle_form(m.group(2), particle) if particle in self.particle_mates else particle
+                    return "%s %s %s%s" % (m.group(4), amount, m.group(2), particle)
+                new = re.sub(r"(\S+) ?(%s)(%s) (\S+?)(을|를|이|가|은|는|도)?(?=\s|$)" % (units, re.escape(marker)),
+                             float_back, text)
+                if new != text:
+                    text, applied = new, applied + ["genitive_quantifier"]
         particles = spec.get("shifted_particles", [])
         if particles:
             new = re.sub(r"(\S+) (\S+) (%s)(?= )" % "|".join(re.escape(p) for p in particles),
@@ -624,6 +672,14 @@ class RelationalParser:
                             continue
             self._verb_word_cache = words
         return self._verb_word_cache
+
+    def _ends_in_particle(self, word):
+        """A word that ends in one of the pack's case or slot particles (a Korean noun phrase's
+        last word carries its case; a bare noun does not)."""
+        particles = {p for group in self.slot_particles for p in group} | set(self.case_particles)
+        # the stem before it is at least the pack's shortest owner (가은 is a name, not 가 + 은)
+        shortest = int((self.possessor or {}).get("min_length", 1))
+        return any(word.endswith(p) and len(word) - len(p) >= shortest for p in particles if p)
 
     def _holder_forms(self, literal):
         """A holder said other than by its bare name, read as the key the facts use (가진쪽꼴).
@@ -702,16 +758,31 @@ class RelationalParser:
                 owners.append(r"(?i:%s)" % words_re(possessives))
             if suffixes:
                 owners.append(r"%s(?:%s)" % (name, words_re(suffixes)))
-            pattern = r"(?<![\w'])(?:%s) ((?:%s ){0,1}%s) (%s)(?![\w'])" % ("|".join(owners), relation, relation, name)
+            pattern = r"(?<![\w'])(%s) ((?:%s ){0,1}?%s) (%s)(?![\w'])" % ("|".join(owners), relation, relation, name)
+
+            def is_owner(word):
+                # an owner said by name is a bare name: no particle but a declared possessive, no numeral,
+                # no word outside names, no pointer
+                from numeral_semantics import parse_numeral
+                bare = next((word[:-len(x)] for x in suffixes if x and word.endswith(x) and len(word) > len(x)), word)
+                return (word.lower() in {w.lower() for w in possessives} or
+                        (not self._ends_in_particle(bare) and bare.lower() not in self.outside_names
+                         and bare.lower() not in self.pointers and not bare.isdigit()
+                         and parse_numeral(bare.lower(), self.data.get("numerals", {})) is None))
 
             def is_relation(words):
-                # a relation noun is a content word: never a word outside names (a preposition), a
-                # numeral or a word the pack declares a pointer
+                # a relation noun is a bare content word: never a word outside names (a preposition),
+                # a numeral, a pointer, or a word that already carries a case particle; where the pack
+                # declares its relation nouns (a language whose names stand bare beside nouns), one of them
                 from numeral_semantics import parse_numeral
+                if spec.get("relation_nouns") is not None:
+                    return words in spec["relation_nouns"]
                 return all(w.lower() not in self.outside_names and w.lower() not in self.pointers
                            and not w.isdigit() and parse_numeral(w.lower(), self.data.get("numerals", {})) is None
+                           and not self._ends_in_particle(w)
                            for w in words.split())
-            new = re.sub(pattern, lambda m: m.group(2) if is_relation(m.group(1)) else m.group(0), text)
+            new = re.sub(pattern, lambda m: m.group(3) if is_owner(m.group(1)) and is_relation(m.group(2))
+                         else m.group(0), text)
             if new != text:
                 text, applied = new, applied + ["relation_name"]
         determiners = spec.get("determiners") or []
@@ -722,7 +793,7 @@ class RelationalParser:
                 text, applied = new, applied + ["apposition"]
         own = spec.get("self_possessives") or []
         if own:
-            pattern = r"(?<![\w'])(?i:%s) (%s)(?! %s)(?![\w'])" % (words_re(own), relation, name)
+            pattern = r"(?<![\w'])(?i:%s) (%s)(?![\w'])" % (words_re(own), relation)
             from numeral_semantics import parse_numeral
 
             def own_relation(m):
@@ -730,18 +801,43 @@ class RelationalParser:
                 if word.lower() in self.outside_names or word.isdigit() or \
                         parse_numeral(word.lower(), self.data.get("numerals", {})) is not None:
                     return m.group(0)
+                if spec.get("relation_nouns") is not None:
+                    particles = sorted({x for g in self.slot_particles for x in g} | set(self.case_particles)
+                                       | set(spec.get("delimiters") or []), key=len, reverse=True)
+                    stem = next((word[:-len(x)] for x in particles if word.endswith(x) and len(word) > len(x)
+                                 and word[:-len(x)] in spec["relation_nouns"]), word)
+                    if stem not in spec["relation_nouns"]:
+                        return m.group(0)
+                # a bare relation word before a name belongs to the close apposition (my cousin Ana)
+                if not self._ends_in_particle(word) and re.match(r" (?:%s)(?![\w'])" % name, text[m.end():]):
+                    return m.group(0)
                 return word
             new = re.sub(pattern, own_relation, text)
             if new != text:
                 text, applied = new, applied + ["own_relation"]
+        particle_alt = "|".join(re.escape(p) for p in sorted(
+            {p for g in self.slot_particles for p in g} | set(self.case_particles)
+            | {row["from"] for row in self.particle_variants if row.get("from")}
+            | set(spec.get("delimiters") or []), key=len, reverse=True)) or "(?!)"
+        role_titles = spec.get("role_titles") or []
+        if role_titles:
+            # one or two bare role words before a titled name (인턴 예린 씨, 택배 기사 은우 씨): the name
+            def unrole(m):
+                roles = m.group(1).split()
+                if any(self._ends_in_particle(w) or w in role_titles for w in roles):
+                    return m.group(0)
+                return m.group(2) + m.group(3)
+            pattern = r"(?<!\S)((?:%s ){1,2})(%s)( ?(?:%s))(?=(?:%s)?(?![\w]))" % (
+                name, name, words_re(role_titles), particle_alt)
+            new = re.sub(pattern, unrole, text)
+            if new != text:
+                text, applied = new, applied + ["role"]
         titles = spec.get("name_titles") or []
         if titles:
             def untitle(m):
                 stem, particle = m.group(1), m.group(3) or ""
                 return stem + (self._particle_form(stem, particle) if particle else "")
-            pattern = r"(\S+) (%s)(%s)?(?![\w])" % (words_re(titles), "|".join(
-                re.escape(p) for p in sorted({p for g in self.slot_particles for p in g}, key=len, reverse=True))
-                or "(?!)")
+            pattern = r"(?<!\S)(%s) ?(%s)(%s)?(?![\w])" % (name, words_re(titles), particle_alt)
             new = re.sub(pattern, untitle, text)
             if new != text:
                 text, applied = new, applied + ["title"]
@@ -751,8 +847,10 @@ class RelationalParser:
             numerals = self.data.get("numerals", {})
 
             def drop(m):
-                return m.group(2) if parse_numeral(m.group(2).lower() if flags else m.group(2), numerals) is not None \
-                    or m.group(2).isdigit() else m.group(0)
+                # (one after an article is the pronoun: the one given)
+                value = m.group(2) if m.group(2).isdigit() else parse_numeral(
+                    m.group(2).lower() if flags else m.group(2), numerals)
+                return m.group(2) if value is not None and str(value) != "1" else m.group(0)
             # (not before a partitive: the two of them names holders, not an amount)
             new = re.sub(r"(?<![\w'])(%s) (\S+)(?! of\b)" % words_re(articles), drop, text, flags=flags)
             if new != text:
@@ -2034,17 +2132,26 @@ class RelationalParser:
 
     def _clause_meanings(self, literal, *, derivations=None, matched=None, guard_names=True):
         from numeral_semantics import parse_numeral
-        chained = self._quantity_chain_meaning(literal)
-        if chained is not None:
-            return {json.dumps(chained, sort_keys=True, ensure_ascii=False): chained}
-        counted = self._count_question_meaning(literal) or self._why_count_meaning(literal)
-        if counted is not None:
-            return {json.dumps(counted, sort_keys=True, ensure_ascii=False): counted}
-        compared = self._comparison_meaning(literal) or self._same_meaning(literal)
-        if compared is not None:
-            return {json.dumps(compared, sort_keys=True, ensure_ascii=False): compared}
+        # Where a declared holder form rewrites the clause (제 동기 서준 -> 서준, 예린 씨 -> 예린), the
+        # typed words are that form: a reading that keeps them inside a name is not taken.
+        held, holder_note = self._holder_forms(literal)
+        if holder_note is not None and set(holder_note["forms"]) <= {"numeral_article"}:
+            holder_note = None          # an article dropped before a numeral names no holder
+        for said in ([held] if holder_note is not None else []) + [literal]:
+            chained = self._quantity_chain_meaning(said)
+            if chained is not None:
+                return {json.dumps(chained, sort_keys=True, ensure_ascii=False): chained}
+            counted = self._count_question_meaning(said) or self._why_count_meaning(said)
+            if counted is not None:
+                return {json.dumps(counted, sort_keys=True, ensure_ascii=False): counted}
+            compared = self._comparison_meaning(said) or self._same_meaning(said)
+            if compared is not None:
+                return {json.dumps(compared, sort_keys=True, ensure_ascii=False): compared}
         meanings, best_rank = {}, None
         for candidate, normalization in self._clause_candidates(literal):
+            if holder_note is not None and not any(
+                    note.get("id") == "declared-holder-forms-v1" for note in (normalization or {}).get("variants", [])):
+                continue
             # Words a same-frame or phrase variant wrote in place of the typed
             # ones. They stand for the example's own words; inside a slot they
             # would put a word nobody typed into an entity or a quoted effect
@@ -2088,6 +2195,23 @@ class RelationalParser:
                     if written and any(word in written for name, value in slots.items()
                                        if isinstance(value, str) and not str(example["slots"].get(name, "")).isdecimal()
                                        for word in value.split()):
+                        continue
+                    # A name never ends in an object particle the example does not put after it
+                    # (나는 전구를 is not a holder's thing; 전구를 열네 개 reads 전구 with its particle).
+                    # (Nor in a holder's particle: 지연은 alone is a holder whose thing was left out. A particle
+                    # that may end a noun, the pack's floating_noun_endings, is not taken for one.)
+                    objects = set((self.object_fronting or {}).get("object_particles") or [])
+                    objects |= set((self.possessor or {}).get("particles") or [])
+                    objects -= set((self.object_fronting or {}).get("floating_noun_endings") or [])
+                    shortest = max(2, int((self.possessor or {}).get("min_length", 1)))
+                    marked = self._particle_marked_slots(index, example)
+                    if objects and any(isinstance(slots.get(name), str) and name not in marked
+                                       and not str(example["slots"].get(name, "")).isdecimal()
+                                       and slots[name].split()
+                                       and any(slots[name].split()[-1].endswith(o)
+                                               and len(slots[name].split()[-1]) - len(o) >= shortest
+                                               for o in objects)
+                                       for name in example["slots"]):
                         continue
                     # A particle attaches to the word before it, so a value the
                     # example follows with a case particle cannot end in a space:
@@ -2252,7 +2376,9 @@ class RelationalParser:
             for index, word in enumerate(words[:-1]):
                 particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)), None)
                 owner = words[:index] + [word[:-len(particle)]] if particle is not None else []
-                if particle is not None and len("".join(owner)) >= shortest:
+                # The speaker's key (나) is an owner however short it is.
+                if particle is not None and (len("".join(owner)) >= shortest
+                                             or owner == [self.speaker_placeholder]):
                     return " ".join(owner + words[index + 1:])
             return name
 

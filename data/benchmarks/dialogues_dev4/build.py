@@ -1663,6 +1663,13 @@ KO_VERB_CUES = {
     "use_up": r"다\s?썼|다\s?써|써\s?버|다\s?사용", "use_for": r"썼|써|사용", "lose": r"잃어버|잃었|분실",
     "exist": r"있|없", "hold": r"가지고|갖고|가졌", "carry": r"들고", "keep": r"보관", "responsible": r"맡",
 }
+# past forms of the transfer verbs: a statement of what someone has must not tell a transfer
+STORY_VERBS = {
+    "en": r"\b(?:gave|lent|passed|handed|returned|sent|transferred|borrowed|received|left|moved|took|lost|"
+          r"got\b.{0,40}\bfrom)\b",
+    "ko": r"(?:줬|주었|드렸|빌려\s?줬|넘겼|넘겨\s?줬|건넸|건네\s?줬|돌려\s?줬|보냈|빌렸|받았|가져갔|두고\s?왔|옮겼|잃어버렸)"
+          r"(?:어|습|다|대|고|는|던|지)",
+}
 EN_META = r"\bask(?:ing|ed)?\b|\bquestion\b|\bwonder|\bcurious\b"
 KO_META = r"물어|질문|궁금|여쭤|여쭙"
 KO_PARTICLES = (("으로", "으로"), ("이랑", "이랑"), ("은", "은"), ("는", "는"), ("이", "이"), ("가", "가"),
@@ -1675,7 +1682,7 @@ KO_PARTICLES = (("으로", "으로"), ("이랑", "이랑"), ("은", "은"), ("�
 _KO_CASE = ("이|가|을|를|의|한테|에게|께|께서|과|와|랑|이랑|하고|에|에서|로|으로|한테서|에게서|까지|부터|처럼|보다|"
             "이나|나|말고|만큼")
 _KO_DELIM = "은|는|도|만|요|이라도|라도"
-_KO_COPULA = ("이요|예요|이에요|입니다|입니까|이야|야|이다|다|였어요|이었어요|였습니다|이었습니다|였어|이었어|이라고|라고|"
+_KO_COPULA = ("이네요|네요|이네|네|이요|예요|이에요|입니다|입니까|이야|야|이다|다|였어요|이었어요|였습니다|이었습니다|였어|이었어|이라고|라고|"
               "이라|라|이고|고|인데|는데|이죠|죠|이었|였")
 KO_TAILS_RE = re.compile(r"(?:이)?(?:씨|님|들)?(?:%s)?(?:%s)?(?:%s)?" % (_KO_CASE, _KO_DELIM, _KO_COPULA))
 
@@ -1867,6 +1874,15 @@ class Checker:
                 flags = re.I if lang == "en" else 0
                 if not re.search(cues[kind], text, flags):
                     return False, "cue:" + kind
+        if ";" in text:
+            return False, "semicolon"
+        if not question and re.search(r"는지|은지|ㄴ지|\bwhether\b", text):
+            return False, "embedded_question"
+        # a statement of what someone has says no transfer (the model sometimes tells a story instead)
+        if turn["say"].get("act") == "state" and turn["say"].get("what") in ("has", "has_two", "exact"):
+            story = STORY_VERBS[lang]
+            if re.search(story, text, re.I if lang == "en" else 0):
+                return False, "transfer_in_state"
         # the turn's verb, as its class tag says
         verb = (turn.get("say") or {}).get("verb")
         if turn["say"].get("act") == "state" and verb and "transfer_verbs:" + verb in turn["classes"]:
@@ -1953,6 +1969,19 @@ class Checker:
         if re.search(r"(?:자루|장|켤레|묶음)\s?(?:\d+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열)\s?개", text):
             return "counter_as_noun"
         nouns = {t for h in scn["holders"] for t in h["tokens"]} | {i["noun"] for i in scn["items"]} | {"씨", "님"}
+        nouns |= {i["counter"] for i in scn["items"] if i.get("counter")}
+        for noun in sorted(nouns - {"씨"}, key=len, reverse=True):
+            for m in re.finditer(re.escape(noun) + r"(네요|네|예요|야)(?=[.!?~\s]|$)", text):
+                if _jong(noun[-1]) not in (None, 0):
+                    return "copula:%s%s" % (noun, m.group(1))      # 병네요 for 병이네요
+        for h in scn["holders"]:
+            if h["kind"] == "place":
+                for token in h["tokens"]:
+                    if re.search(re.escape(token) + r"(?:한테|에게|께)", text):
+                        return "place_as_person"
+        for m in re.finditer(r"([가-힣])다고\s?(?:해요|합니다|해|하더라|했어요)", text):
+            if _jong(m.group(1)) == 0 and m.group(1) not in "이":
+                return "hearsay_form"
         nouns |= {h["relation"] for h in scn["holders"] if h.get("relation")}
         for noun in sorted(nouns, key=len, reverse=True):
             for m in re.finditer(re.escape(noun), text):
@@ -2330,6 +2359,12 @@ def assemble(write=True):
     for scn in scenarios:
         st = status.get(scn["id"], {})
         if not st.get("dialogue"):
+            continue
+        # The gate finds a holder's recorded value by its name inside the subject; a holder whose name holds
+        # another holder's name (나 in 유나) would be read off the other's row.
+        keys = [h["entity"] for h in scn["holders"]]
+        if any(a != b and a in b for a in keys for b in keys):
+            problems.append("%s: one holder's name holds another's" % scn["id"])
             continue
         texts, said = {}, []
         for turn in scn["turns"]:

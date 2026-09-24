@@ -2818,8 +2818,7 @@ class ReasoningContext:
                 trailing = raw[len(core):]
                 if self._holder_of(parser, core, keys) != old:
                     continue
-                tail = next((p for p in particles if core.endswith(p) and len(core) > len(p)
-                             and self._holder_of(parser, core[:-len(p)], keys) == old), "")
+                tail = next((p for p in particles if core.endswith(p) and len(core) > len(p)), "")
                 for said_new in news + ([speaker] if speaker and new == speaker else []):
                     word = said_new.strip(" ,.!?")
                     if tail:
@@ -2842,7 +2841,7 @@ class ReasoningContext:
             return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
                     "answer": replies["reference_value_unclear"].format(사건=source.strip(), 전=old),
                     "meaning": {"act": "hold", "reason": "reference_value_unclear", "said": said, "by": "contrast",
-                                "event": source.strip(), "old": old},
+                                "event": source.strip(), "field": "recipient", "old_holder": old},
                     "verification": self._verification(knowledge_path, [{
                         "ok": False, "reason": "recipient_rewrite_unread"}])}
         record = self.corrections[-1]
@@ -2859,8 +2858,7 @@ class ReasoningContext:
         # the realizer has no plan yet for a corrected receiver; the amounts of the correct
         # act are numbers).
         return {**corrected, "status": "observed",
-                "meaning": {**corrected["meaning"], "field": "recipient", "old_holder": old, "new_holder": new,
-                            "event": source.strip(), "by": "contrast"}}
+                "meaning": {**corrected["meaning"], "field": "recipient", "old_holder": old, "new_holder": new}}
 
     @staticmethod
     def _agree_number(parser, tokens, position, old, new_word):
@@ -3093,13 +3091,25 @@ class ReasoningContext:
         if not pattern.search(question):
             # The last question named its person by a pointer (he, 그분): the name takes the
             # pointer's place, when the question holds exactly one.
-            found = [w for w in sorted(parser.pointers or [], key=len, reverse=True)
-                     if re.search(r"(?<![\w])%s(?![\w])" % re.escape(w), question,
-                                  re.IGNORECASE if parser.data.get("ignore_case") else 0)]
+            flags = re.IGNORECASE if parser.data.get("ignore_case") else 0
+            particles = "|".join(re.escape(x) for x in sorted(
+                {x for group in parser.slot_particles for x in group} | set(parser.case_particles)
+                | {row["from"] for row in parser.particle_variants if row.get("from")}, key=len, reverse=True)) or "(?!)"
+            found = []
+            for w in sorted(parser.pointers or [], key=len, reverse=True):
+                m = re.search(r"(?<![\w])%s(?=(?:%s)?(?![\w]))" % (re.escape(w), particles), question, flags)
+                if m and not any(m.start() >= f.start() and m.end() <= f.end() for f in found):
+                    found.append(m)
             if len(found) != 1:
                 return None
-            pattern = re.compile(r"(?<![\w])" + re.escape(found[0]) + r"(?![\w])",
-                                 re.IGNORECASE if parser.data.get("ignore_case") else 0)
+            at = found[0]
+            tail = re.match(r"(?:%s)(?![\w])" % particles, question[at.end():])
+            said_particle = tail.group(0) if tail else ""
+            question = (question[:at.start()] + old + said_particle + question[at.end() + len(said_particle):])
+            pattern = re.compile(r"(?<!\w)" + re.escape(old) + re.escape(said_particle) + r"(?![A-Za-z])", flags)
+            name_particle = parser._particle_form(name, said_particle) if said_particle in parser.particle_mates \
+                else said_particle
+            name = name + name_particle
         rewritten = pattern.sub(lambda _m: name, question, count=1)
         self._in_name_reply = True
         try:
@@ -3989,6 +3999,12 @@ class ReasoningContext:
         # 같은 말이 뒤늦게 읽히면 매듭이 풀린 것이다.
         heard = {piece for piece, _asking in self._segments(text, parser)}
         self._forget_heard(heard)
+        marks = parser.clause_grammar.get("question_marks", [])
+        if (current.get("query") and not current.get("facts")
+                and not any(text.rstrip().endswith(mark) for mark in marks) and self._counts_something(text, parser)):
+            # Read only as a question though it asks nothing and states an amount: it may be a statement
+            # this reader did not read, so what it names is not fixed until a later statement pins it.
+            self._remember_unread({"text": text.strip(), "at": len(self.observations)})
         result = {"operator": "relational_graph", "transitions": [],
                   "verification": self._verification(knowledge_path, [])}
         if (current["facts"] or current.get("정의") or current.get("사건") or current.get("원인")
