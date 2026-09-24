@@ -471,7 +471,7 @@ def test_a_record_that_would_rest_on_an_unread_statement_does_not_say_the_count(
     _ctx, rows = play("english", ["Ulla has 7 goblets.", "The boathouse has 2 goblets.",
                                   "Ulla florped 3 goblets.", "Ulla left 1 goblet at the boathouse."])
     assert rows[3]["status"] == "unresolved"
-    assert rows[3]["meaning"] == {"act": "hold", "reason": "unread_event", "said": "Ulla florped 3 goblets.",
+    assert rows[3]["meaning"] == {"act": "hold", "reason": "unread_event", "said": "Ulla florped 3 goblets.", "kept": True,
                                   "conversation": rows[3]["meaning"]["conversation"]}
     _ctx, rows = play("english", ["Ulla has 7 goblets.", "The boathouse has 2 goblets.",
                                   "Ulla florped 3 goblets.", "Ulla has 4 goblets.",
@@ -534,3 +534,10 @@ def test_a_correction_whose_amount_a_later_unread_statement_carried_is_asked_bac
     assert rows[3]["status"] == "unresolved"
     assert rows[3]["meaning"]["reason"] == "reference_which_event"
     assert rows[3]["meaning"]["items"] == ["미소는 컵이 다섯 개 있어요.", "미소가 해솔한테 컵 다섯 개를 쭈굴했어요."]
+
+
+def test_a_total_of_a_name_and_a_titled_holder_keeps_both_words_of_the_title():
+    _ctx, rows = play("한국어", ["약사 해솔 씨가 컵이 여덟 개 있어요.", "문 차장님은 컵만 다섯 개 있어요.",
+                                "해솔 씨와 문 차장님이 합쳐서 컵이 몇 개 있어요?"])
+    assert rows[2]["meaning"]["subjects"] == ["해솔 컵", "문 차장 컵"] and rows[2]["meaning"]["value"] == 13
+    assert rows[2]["meaning"]["holders"]["문 차장"] == {"kind": "named", "said": "문 차장님"}

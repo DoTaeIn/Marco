@@ -4145,15 +4145,16 @@ class ReasoningContext:
             canonical = (evidence.get("normalization") or {}).get("canonical")
             typed = evidence.get("text")
             subject = fact.get("triple", [None])[0]
-            if ((evidence.get("normalization") or {}).get("rule") != "declared-holder-forms-v1"
-                    or not isinstance(canonical, str) or not isinstance(typed, str) or not isinstance(subject, str)):
+            if not isinstance(typed, str) or not isinstance(subject, str):
                 continue
             key = " ".join(subject.split()[:-1])        # the holder part of "<holder> <thing>"
-            at = canonical.find(key) if key else -1
-            if at < 0:
+            if not key:
                 continue
-            before, after = canonical[:at], canonical[at + len(key):]
-            if not (typed.startswith(before) and typed.endswith(after)) or len(typed) < len(before) + len(after):
+            by_form = (evidence.get("normalization") or {}).get("rule") == "declared-holder-forms-v1"
+            at = canonical.find(key) if by_form and isinstance(canonical, str) else -1
+            before, after = (canonical[:at], canonical[at + len(key):]) if at >= 0 else ("", "")
+            if at < 0 or not (typed.startswith(before) and typed.endswith(after)) \
+                    or len(typed) < len(before) + len(after):
                 # another variant rewrote a word around the holder (keeps -> has, me -> I): the words the
                 # pack declares before a holder, as typed before the key (G5 batch 4)
                 words = self._said_before_key(typed, key)
@@ -4174,7 +4175,14 @@ class ReasoningContext:
         spec = getattr(parser, "holder_forms", None) or {}
         lead = {w.lower() for w in list(spec.get("possessives") or []) + list(spec.get("self_possessives") or [])}
         titles = set(spec.get("prefix_titles") or [])
-        found = re.search(r"(?<![\w'])%s(?![\w'])" % re.escape(key), typed)
+        found, behind = None, ""
+        suffixes = sorted(spec.get("name_titles") or [], key=len, reverse=True)
+        if suffixes:
+            # a title after the name (황 팀장님, 채원 씨): said with it
+            found = re.search(r"(?<![\w'])%s(\s?(?:%s))" % (re.escape(key), "|".join(map(re.escape, suffixes))), typed)
+            behind = found.group(1) if found else ""
+        if found is None:
+            found = re.search(r"(?<![\w'])%s(?![\w'])" % re.escape(key), typed)
         if found is None:
             return None
         ahead = typed[:found.start()].split()
@@ -4186,11 +4194,11 @@ class ReasoningContext:
         elif (len(ahead) >= 2 and ahead[-2].lower() in lead and ahead[-1].isalpha()
               and ahead[-1].lower() not in parser._frame_words()):
             taken = ahead[-2:]
-        if not taken:
+        if not taken and not behind:
             return None
-        if taken[0].lower() in lead:
+        if taken and taken[0].lower() in lead:
             taken[0] = taken[0].lower()
-        return " ".join(taken + [key])
+        return " ".join(taken + [key]) + behind
 
     def _follow_up(self, text, knowledge_path, language):
         """A question about this conversation's own last reply, as the language declares them
@@ -5188,7 +5196,7 @@ class ReasoningContext:
         if shaken is not None:
             # G5.3 safety: kept, but a count resting on an unread statement is not said as fixed.
             return {**result, "status": "unresolved",
-                    "meaning": {"act": "hold", "reason": "unread_event", "said": shaken},
+                    "meaning": {"act": "hold", "reason": "unread_event", "said": shaken, "kept": True},
                     "answer": replies["unread_event"].format(**{"말": shaken}),
                     "transitions": changes}
         spoken = parser.render_changes(this_turn) if "observed_state" in replies else ""

@@ -2651,7 +2651,7 @@ class RelationalParser:
             return None
         drop = set(spec.get("time_words", [])) | set(spec.get("modifiers", []))
         heads = set(spec.get("head_words", []))
-        name, total = [], False
+        name, total, marked = [], False, []
         shortest = int((self.possessor or {}).get("min_length", 1))
         for index, word in enumerate(words[:at]):
             if (index == 0 and word in heads) or word in drop:
@@ -2679,6 +2679,7 @@ class RelationalParser:
                     and len("".join(name) + stem) < shortest):
                 particle, stem = None, word
             name.append(stem)
+            marked.append(particle is not None)
         # A declared group word ("두 사람", "둘") in a total names every holder.
         joined_name, group, pair = " ".join(name), False, False
         for phrase in sorted(spec.get("group_words", []), key=len, reverse=True):
@@ -2695,7 +2696,13 @@ class RelationalParser:
             joiners = sorted((self.comparison or {}).get("between", {}).get("joiners", []), key=len, reverse=True)
             first = next((w for i, w in enumerate(words[:at]) if w not in drop and not (i == 0 and w in heads)), "")
             joiner = next((j for j in joiners if first.endswith(j) and len(first) > len(j)), None)
-            rest = " ".join(name[2:])
+            # the second member runs to the first word after it that carries its case (``A와 황 팀장님이``: a
+            # holder of two words); with none, it is one word (G5 batch 5)
+            end = next((i for i in range(1, len(name) - 1) if marked[i]), 1)
+            groups = sorted(spec.get("group_words", []), key=len, reverse=True)
+            end = next((j - 1 for j in range(2, end + 1)
+                        if any(" ".join(name[j:]) == g or " ".join(name[j:]).startswith(g + " ") for g in groups)), end)
+            rest = " ".join(name[end + 1:])
             # A group word after the two names repeats them (``A와 B 둘이``).
             for phrase in sorted(spec.get("group_words", []), key=len, reverse=True):
                 if rest == phrase or rest.startswith(phrase + " "):
@@ -2703,7 +2710,7 @@ class RelationalParser:
                     break
             if joiner is not None and len(name) >= 3 and rest:
                 # the second member may carry the joiner too (A랑 B랑 합쳐서)
-                second = name[1]
+                second = " ".join(name[1:end + 1])
                 tail = next((j for j in joiners if second.endswith(j) and len(second) > len(j)), None)
                 second = second[:-len(tail)] if tail else second
                 return {"query": [{"total": {"members": [first[:-len(joiner)], second], "item": rest},
