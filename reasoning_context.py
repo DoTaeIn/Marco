@@ -13,6 +13,55 @@ from relational_semantics import RelationalParser
 from marco.language import realize
 
 
+# ---------------------------------------------------------------------------
+# Trace emission at this file's sites (request L1-1, the minimum; goal G5.0 b)
+# ---------------------------------------------------------------------------
+# The gap class of every reason a turn of this context is held for, in the seven classes of the
+# adaptive note's taxonomy that goal G5 names (docs/ko/2026-09-24-adaptive-intelligence-design.md §3):
+# routing: the turn reached a place that cannot take it (a limit, another component's request);
+# lexical: a word is not known; concept: what a known word means is not known; relation: how two
+# known things relate is not known; parser: the words were not read into a structure, or read more
+# than one way; evidence: a fact the turn needs was never given, or cannot be told apart; conflict:
+# what was said does not fit what is recorded. The table is the closed class of reasons this file
+# gives (a test reads every reason literal in it); a reason missing here is emitted as parser with
+# ``gap_declared`` false, so the table can be completed from the ledger.
+GAP_CLASSES = {
+    "routing": ("capacity", "graph_limit", "join_limit", "below_threshold", "no_graph_selected"),
+    "lexical": ("unknown_word",),
+    "concept": ("unreadable_definition", "conflicting_definition"),
+    "relation": ("cause_effect_missing_or_ambiguous", "time_unresolved"),
+    "parser": ("unrecognized_observation", "ambiguous_quantity_subject", "ambiguous_state_subject",
+               "ambiguous_property_scope", "repair_over_bound", "repair_protected", "repair_ambiguous",
+               "too_many_readings", "extra_argument", "extra_event", "correction_invalid", "answer_unclear",
+               "role_mismatch", "unread_event", "unread_statement", "input_understanding_failed",
+               "not_phrased", "invalid", "no_reading"),
+    "evidence": ("not_stated", "premise_missing", "vague_count", "explain_nothing", "nothing_to_explain",
+                 "unfilled_role", "unsettled_event", "unresolved", "which_referent", "no_referent",
+                 "which_event", "which_reading", "reference_which_event", "reference_no_event",
+                 "reference_value_unclear", "recipient_reference_no_event", "correction_target",
+                 "unknown_basis", "unknown_lookup", "ambiguous_lookup", "unmeasured_condition",
+                 "condition_false", "missing_initial_quantity"),
+    "conflict": ("contradiction", "conflicting_event", "conflict_scope_unclear", "indivisible_amount",
+                 "invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity"),
+}
+GAP_OF = {reason: gap for gap, reasons in GAP_CLASSES.items() for reason in reasons}
+
+
+def gap_class(reason):
+    """``(gap, declared)`` for a hold reason: its class in ``GAP_CLASSES``, or parser and False."""
+    reason = str(reason or "unresolved")
+    if reason in GAP_OF:
+        return GAP_OF[reason], True
+    if reason.startswith("event_reference_"):
+        return "evidence", True
+    return "parser", False
+
+
+def _sha(text):
+    import hashlib
+    return hashlib.sha256(str(text).strip().encode("utf-8")).hexdigest()
+
+
 class UnknownWord(ValueError):
     """뜻을 아직 모르는 낱말로 된 사건. 틀린 조건이 아니라 **모르는 말**이다."""
 
@@ -34,6 +83,9 @@ class DefinitionTable(dict):
 
 
 class ReasoningContext:
+    # The trace ledger this context writes its own events to (marco.trace.ledger.Ledger), or None:
+    # recording is off unless a recorder or a test sets it (request L1-1, W4-1). Never saved in a snapshot.
+    trace = None
     # 말을 어디에 놓을지 몰라서 터진 자리들.
     UNPLACED = {"unrecognized_observation", "missing_initial_quantity",
                 "ambiguous_quantity_subject", "ambiguous_state_subject",
@@ -174,6 +226,11 @@ class ReasoningContext:
 
     def _remember_unread(self, entry):
         """원문 보류를 유한하게 보관하되, 넘친 보류의 안전 효과는 남긴다."""
+        if self.trace is not None:
+            # L1-1 B8: a statement the reader did not read is evidence rejected (by digest, never its text)
+            self.__dict__.setdefault("_trace_buffer", []).append(
+                ("evidence_rejected", {"reason": str(entry.get("까닭") or "unread"), "at": entry.get("at"),
+                                       "sha256": _sha(entry["text"]), "general": bool(entry.get("범용"))}))
         if any(item["text"] == entry["text"] for item in self.unread):
             return
         self.unread.append(entry)
@@ -2337,12 +2394,35 @@ class ReasoningContext:
         self.last_subject = people[0] if len(people) == 1 else None
         if people:
             self.salient = list(people)
-        return {"operator": "relational_graph", "status": "answered", "answer": answer,
-                "meaning": meaning,
-                "transitions": deepcopy(transitions),
-                "verification": self._verification(knowledge_path, [{
-                    "ok": True, "reason": "explained_recorded_transitions",
-                    "evidence": evidence, "repairs": len(repairs)}])}
+        result = {"operator": "relational_graph", "status": "answered", "answer": answer,
+                  "meaning": meaning,
+                  "transitions": deepcopy(transitions),
+                  "verification": self._verification(knowledge_path, [{
+                      "ok": True, "reason": "explained_recorded_transitions",
+                      "evidence": evidence, "repairs": len(repairs)}])}
+        return self._with_trace_chain(result, last["kind"])
+
+    def _with_trace_chain(self, result, explains):
+        """Request W4-1: with a trace ledger on (``self.trace``), a bare why says the why chain of this
+        conversation's last explainable output (``marco.trace.explain``), composed by the realizer from
+        ``chain_meaning``; everything else of the result stays as the engine built it. With recording off,
+        with no explainable output of this conversation in the ledger, or with a ledger that cannot be
+        read, the result is the engine's own explanation, unchanged."""
+        if self.trace is None:
+            return result
+        try:
+            from marco.trace.explain import chain_meaning, last_explainable
+            from marco.trace.why import Graph
+            graph = Graph(self.trace)
+            output = last_explainable(graph, self.conversation_id)
+            if output is None:
+                return result
+            meaning = {**chain_meaning(graph, output), "explains": explains}
+        except Exception:        # noqa: BLE001 -- LedgerError, a missing event: the engine's explanation
+            return result
+        result["meaning"] = meaning
+        result["verification"]["checks"].append({"ok": True, "reason": "explained_trace_chain", "output": output})
+        return result
 
     def _answer_other_than(self, parser, request, facts, knowledge_path):
         """`그 사람 말고 다른 사람은?`: never pick a referent the context does not fix."""
@@ -3521,10 +3601,24 @@ class ReasoningContext:
 
     def turn(self, text, knowledge_path=None):
         """One turn. Its sentence comes from ``marco.language.realize``."""
+        self._trace_buffer = []
+        observed_before = len(self.observations)
+        result, path = None, "reply"
+        try:
+            result = self._turn_said(text, knowledge_path)
+            path = self._trace_path
+            return result
+        finally:
+            if self.trace is not None:
+                self._emit_turn(text, result, path, observed_before)
+            self._trace_buffer = []
+
+    def _turn_said(self, text, knowledge_path=None):
         language = self.language or next((source["path"] for source in getattr(self.model, "sources", ())
                                           if source["path"].startswith("styles/")), None)
         explained = self.last_explanation
         result = self._follow_up(text, knowledge_path, language)
+        self._trace_path = "follow_up" if result is not None else "reply"
         if result is None:
             result = self._turn_reply(text, knowledge_path)
             # What the last reply's readings changed, for "what did you change?".
@@ -3563,6 +3657,102 @@ class ReasoningContext:
                                    "blocked": [clause.get("frame") for clause in report.get("clauses") or []
                                                if clause.get("blocked")]})
         return result
+
+    def _emit_turn(self, text, result, path, observed_before):
+        """This turn's events in its own trace of ``self.trace`` (request L1-1, the minimum): the path the
+        turn took (``routing_selected``, with the readings it chose between when there were several), each
+        state update it recorded with the rule and its bindings (``rule_applied``), each statement it did not
+        read (``evidence_rejected``), each reading dropped by a constraint (``hypothesis_rejected``), and a
+        hold with its reason and gap class (``hold``, ``payload.gap``). References and digests only; a
+        recording problem never changes the turn."""
+        try:
+            self._emit_turn_events(self.trace, text, result, path, observed_before)
+        except Exception:        # noqa: BLE001 -- the ledger is a record of the turn, never its cause
+            pass
+
+    def _emit_turn_events(self, ledger, text, result, path, observed_before):
+        from marco.trace import runtime as rt
+        pack = next((source["path"] for source in getattr(self.model, "sources", ())
+                     if source["path"].startswith("styles/")), None) or self.language
+        stamp = rt.stamp(pack)
+        trace_id = ledger.new_trace_id()
+        meaning = (result or {}).get("meaning") if isinstance((result or {}).get("meaning"), dict) else {}
+        status = (result or {}).get("status")
+        act = meaning.get("act")
+        if result is None:
+            selected = "not_read"
+        elif path == "follow_up":
+            selected = "follow_up:%s" % (meaning.get("kind") or act)
+        else:
+            selected = {"record": "statement", "revise": "correction", "explain": "explain", "hold": "hold",
+                        "ask": "ask", "refuse": "hold"}.get(act, "question" if status == "answered" else
+                                                            ("statement" if status == "observed" else str(act)))
+        readings = [[str(name), rank] for name, rank in (getattr(self, "_trace_readings", None) or [])]
+        root = ledger.append(
+            "routing_selected", trace_id, subsystem="reasoning", epistemic_status="inferred",
+            runtime={**stamp, **rt.first_stamp(pack)},
+            source={"type": "engine_site", "site": "ReasoningContext.turn", "conversation": self.conversation_id,
+                    "sha256": _sha(text)},
+            payload={"selected": selected, "candidates": readings or [[selected, None]], "status": status,
+                     "act": act, "observations": len(self.observations)})["event_id"]
+        parents = []
+        for kind, payload in list(getattr(self, "_trace_buffer", None) or []):
+            status_of = "failed" if kind in ("rule_blocked", "hypothesis_rejected") else "success"
+            parents.append(ledger.append(kind, trace_id, parent_ids=[root], status=status_of,
+                                         subsystem="reasoning", epistemic_status="unknown" if status_of == "failed"
+                                         else "observed", runtime=stamp,
+                                         payload=dict(payload, **({"checks": payload.get("checks", [])}
+                                                                  if kind == "hypothesis_rejected" else {})))["event_id"])
+        # L1-1 B3 at this file's site: each state update this turn recorded, with its rule and bindings
+        index = len(self.observations) - 1
+        if result is not None and status == "observed" and len(self.observations) > observed_before:
+            rules = {}
+            try:
+                parsed = self._read_source(self._parser(), self.observations[index], events=True,
+                                           verbs=self._verbs_for(self._parser(), self.observations)) or {}
+                for fact in parsed.get("facts", []):
+                    triple = fact.get("triple") or []
+                    if len(triple) == 3 and isinstance(triple[0], str):
+                        rules.setdefault(triple[0], str(triple[1]))
+            except Exception:    # noqa: BLE001
+                rules = {}
+            for row in result.get("transitions") or []:
+                evidence = row.get("evidence") if isinstance(row.get("evidence"), dict) else {}
+                if row.get("operation") not in ("state_update", "quantity_update") or evidence.get("turn") != index:
+                    continue
+                subject = str(row.get("subject"))
+                rule = rules.get(subject) or next((r for s_, r in rules.items() if s_.split()[:1] == subject.split()[:1]),
+                                                  None) or str(row.get("predicate"))
+                ledger.append("rule_applied", trace_id, parent_ids=[root], subsystem="reasoning",
+                              epistemic_status="inferred", runtime=stamp,
+                              operation={"type": "rule", "id": rule, "operation": row.get("operation")},
+                              payload={"operator": str(result.get("operator") or "relational_graph"),
+                                       "bindings": {"subject": subject, "predicate": str(row.get("predicate")),
+                                                    "before": row.get("before"), "after": row.get("after"),
+                                                    "delta": row.get("delta"), "observation": index},
+                                       "normalization": (evidence.get("normalization") or {}).get("rule")})
+        if act == "explain" and meaning.get("rules"):
+            # L1-1 B13: the rules an explanation names, as ids
+            ledger.append("rule_applied", trace_id, parent_ids=[root], subsystem="reasoning",
+                          epistemic_status="inferred", runtime=stamp,
+                          operation={"type": "explanation", "rules": [str(r) for r in meaning["rules"]]},
+                          payload={"operator": "explain", "bindings": {"kind": meaning.get("kind"),
+                                                                      "changes": len(meaning.get("changes") or [])}})
+        held = status == "unresolved" or act in ("hold", "ask", "refuse")
+        if result is None and any(kind == "evidence_rejected" for kind, _p in getattr(self, "_trace_buffer", []) or []):
+            held, reason = True, "unread_statement"
+        else:
+            reason = meaning.get("reason") or "unresolved"
+        if held:
+            detail = next((c.get("reason") for c in ((result or {}).get("verification") or {}).get("checks") or []
+                           if isinstance(c, dict) and not c.get("ok") and c.get("reason")), None)
+            gap, declared = gap_class(detail if reason == "invalid" and detail in GAP_OF else reason)
+            ledger.append("hold", trace_id, parent_ids=parents or [root],
+                          status="refused" if act == "refuse" else "hold", subsystem="reasoning",
+                          epistemic_status="unknown", runtime=stamp,
+                          subject=meaning.get("subject") if isinstance(meaning.get("subject"), str) else None,
+                          payload={"reason": str(reason), "gap": gap, "gap_declared": declared, "act": act,
+                                   "detail": detail})
 
     def _declare_holders(self, result):
         """The meaning block's holders (request W3-1): each place this conversation's statements read
