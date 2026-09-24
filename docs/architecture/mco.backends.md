@@ -34,7 +34,8 @@ without changing user code.
 - `mco.errors`, `mco.formats`, `mco.info`, `mco.result` (parent package).
 - For `marco-kgpack` only: a MARCO checkout found through the `marco_root`
   option, the `MCO_MARCO_ROOT` environment variable, `sys.path`, or the
-  checkout `mco` was installed from; that checkout needs `numpy`.
+  checkout `mco` was installed from. The backend needs `numpy` and `pillow`,
+  which `pip install "mco[marco]"` adds.
 
 ## Public interface
 

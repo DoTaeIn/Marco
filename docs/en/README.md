@@ -3,6 +3,7 @@
 English documentation is maintained separately from the Korean source
 documents. The root [README](../../README.md) is the project overview.
 
+- [The names of MARCO](pipelines.md): the ten pipelines and six structural concepts
 - [Development guide](development.md)
 - [Graph authoring guide](graph-authoring.md)
 - [Design record](design.md)
