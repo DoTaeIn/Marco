@@ -373,7 +373,8 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
             index = row.get("index")
             key = (index, sha(row.get("before")), sha(row.get("after")))
             if key in session.corrections:
-                touched.append(session.corrections[key])
+                if not ledger.is_withdrawn(session.corrections[key]):   # a later correction replaced it
+                    touched.append(session.corrections[key])
                 continue
             current = session.obs.get(index)
             payload = {"field": "observation", "index": index, "before": {"sha256": key[1]},
@@ -409,9 +410,10 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
             touched.append(current["event"])
             last[pair] = current["event"]
             continue
-        stale = next((x for x in reversed(versions) if x["value"] == value), None)
+        stale = None if corrections else next((x for x in reversed(versions) if x["value"] == value), None)
         if stale is not None:
-            # The envelope rests on a version the ledger already withdrew.
+            # The envelope rests on a version the ledger already withdrew (on a correction
+            # turn the same values are a new change: a second correction may restore them).
             touched.append(stale["event"])
             used_withdrawn.append(stale["event"])
             last[pair] = stale["event"]

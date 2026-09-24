@@ -212,6 +212,46 @@ def test_a_reasoning_context_result_and_an_error_are_recorded(tmp_path):
     assert kinds == ["input_received", "error", "output_created"] and failed["status"] == "error"
 
 
+def _context(status, rows, act):
+    return {"status": status, "operator": "relational_graph", "answer": "a", "transitions": rows,
+            "meaning": {"act": act},
+            "verification": {"checks": [{"ok": True, "observation_turns": 2 if len(rows) > 1 else 1}],
+                             "sources": [PACKS["en"]], "model": "0" * 64}}
+
+
+def _row(before, after, turn, operation="quantity_update"):
+    return {"operation": operation, "subject": "X apples", "predicate": "count", "before": before,
+            "after": after, "evidence": {"turn": turn, "start": 0, "end": 5}}
+
+
+def test_an_answer_resting_on_a_withdrawn_value_is_caught_and_a_restored_value_is_not(tmp_path):
+    book = Ledger(tmp_path, "withdrawn")
+    first = _row(None, "5", 0, "state_update")
+    fixed = {"operation": "correction", "index": 1, "before": "gave two", "after": "gave one"}
+    back = {"operation": "correction", "index": 1, "before": "gave one", "after": "gave two"}
+    fact = {"fact": ["X apples", "count", "3"], "evidence": {"turn": 1}}
+    turns = [("observed", [first], "record"),
+             ("observed", [first, _row(5, 3, 1)], "record"),
+             ("observed", [fixed, first, _row(5, 4, 1)], "revise"),
+             ("answered", [fixed, first, _row(5, 3, 1), fact], "inform"),       # rests on the old 5 -> 3
+             ("observed", [fixed, back, first, _row(5, 3, 1)], "revise"),       # a second correction restores it
+             ("answered", [fixed, back, first, _row(5, 3, 1), fact], "inform"),
+             ("answered", [fixed, back, first, _row(5, 3, 1)], "explain")]       # why, after both corrections
+    summaries = [from_turn.record_turn(book, book.new_trace_id(), "t%d" % n, _context(status, rows, act), None,
+                                       conversation="c", pack=PACKS["en"])
+                 for n, (status, rows, act) in enumerate(turns, 1)]
+    assert [s["used_withdrawn"] for s in summaries] == [0, 0, 0, 1, 0, 0, 0]
+    assert [s["new_state"] for s in summaries] == [1, 1, 2, 0, 2, 0, 0]
+    result = stats.table(book)
+    assert result["graph_checks"] == {"answered": 3, "no_statement_or_source": 0, "withdrawn_evidence_used": 1}
+    graph = Graph(book)
+    # the stale change and the statement reading it rests on, both withdrawn by the correction
+    assert sorted(e["kind"] for e in graph.withdrawn_in_chain(summaries[3]["output"])) == [
+        "observation_created", "state_changed"]
+    assert graph.withdrawn_in_chain(summaries[5]["output"]) == []
+    assert graph.withdrawn_in_chain(summaries[6]["output"]) == []
+
+
 # ---------------------------------------------------------------------------
 # L1.4 why chain, pretty projection, CLI
 # ---------------------------------------------------------------------------
