@@ -1,0 +1,321 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_09_v2",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_022_v2",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "only",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_then",
+   "holders:relation",
+   "question_forms:q_hold",
+   "transfer_verbs:lend",
+   "transfer_verbs:receive",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
+  ],
+  "variant_of": "s5_en_b_022",
+  "variant": 2,
+  "variant_changes": [
+   "3:adv_moment",
+   "5:q_got",
+   "6:q_got",
+   "8:q_still"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My grandmother Cora has some erasers. Ten of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Cora",
+      "item": "erasers",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Cora",
+      "item": "erasers",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Dominic has just 13 erasers, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Dominic",
+      "item": "erasers",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "Dominic",
+      "item": "erasers",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Dominic's landlady Lydia has got 15 erasers at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Lydia",
+      "item": "erasers",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lydia",
+      "item": "erasers",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "After that, Cora got 1 eraser from Dominic.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Dominic",
+      "to": "Cora",
+      "item": "erasers",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Dominic",
+      "item": "erasers",
+      "quantity": 12
+     },
+     {
+      "entity": "Cora",
+      "item": "erasers",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many erasers has Cora got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Cora",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "erasers"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many erasers has Dominic got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Dominic",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "erasers"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Dominic lent Cora four erasers.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Dominic",
+      "to": "Cora",
+      "item": "erasers",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Dominic",
+      "item": "erasers",
+      "quantity": 8
+     },
+     {
+      "entity": "Cora",
+      "item": "erasers",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many erasers does Dominic still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Dominic",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "erasers"
+   }
+  }
+ ]
+}

@@ -1,0 +1,211 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_27",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_063",
+  "half": "check",
+  "focus": [
+   "only",
+   "places",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_left",
+   "question_forms:q_place_now",
+   "transfer_verbs:take_from",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The only thing I have is 8 hoses, in the field house.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "field house",
+      "item": "hoses",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "field house",
+      "item": "hoses",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My stepbrother Keith has some hoses. 14 of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Keith",
+      "item": "hoses",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Keith",
+      "item": "hoses",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Keith took two hoses from the field house.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "field house",
+      "to": "Keith",
+      "item": "hoses",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "field house",
+      "item": "hoses",
+      "quantity": 6
+     },
+     {
+      "entity": "Keith",
+      "item": "hoses",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many hoses are in the field house now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "field house",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "hoses"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many hoses does Keith have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Keith",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "hoses"
+   }
+  }
+ ]
+}

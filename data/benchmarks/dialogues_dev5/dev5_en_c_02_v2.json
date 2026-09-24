@@ -1,0 +1,213 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_02_v2",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_004_v2",
+  "half": "check",
+  "focus": [
+   "only",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "question_forms:q_hold",
+   "transfer_verbs:borrow",
+   "transfer_verbs:responsible",
+   "zero_vague:only"
+  ],
+  "variant_of": "s5_en_c_004",
+  "variant": 2,
+  "variant_changes": [
+   "2:adv_moment",
+   "3:omit_taker",
+   "4:q_still"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "All Audrey has is 9 boots.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Audrey",
+      "item": "boots",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Audrey",
+      "item": "boots",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Stanley is responsible for 7 boots right now.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Stanley",
+      "item": "boots",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Stanley",
+      "item": "boots",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "He borrowed 4 boots from Audrey.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Audrey",
+      "to": "Stanley",
+      "item": "boots",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Audrey",
+      "item": "boots",
+      "quantity": 5
+     },
+     {
+      "entity": "Stanley",
+      "item": "boots",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many boots does Stanley still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Stanley",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "boots"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many boots do Audrey and Stanley have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Audrey",
+     "Stanley"
+    ],
+    "quantity": 16,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "boots"
+   }
+  }
+ ]
+}

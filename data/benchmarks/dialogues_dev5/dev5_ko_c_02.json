@@ -1,0 +1,294 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_02",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_013",
+  "half": "check",
+  "focus": [
+   "places",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_place_now",
+   "transfer_verbs:keep",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "작은방에는 이어폰이 열다섯 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "작은방",
+      "item": "이어폰",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "작은방",
+      "item": "이어폰",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 손자는 이어폰 열네 개를 보관하고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:keep"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "손자",
+      "item": "이어폰",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "손자",
+      "item": "이어폰",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "자료실에는 이어폰이 다섯 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "자료실",
+      "item": "이어폰",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "자료실",
+      "item": "이어폰",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 손자가 작은방에서 이어폰 다섯 개를 가져갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "작은방",
+      "to": "손자",
+      "item": "이어폰",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "작은방",
+      "item": "이어폰",
+      "quantity": 10
+     },
+     {
+      "entity": "손자",
+      "item": "이어폰",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 작은방에 이어폰이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "작은방",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "이어폰"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 손자가 작은방에 이어폰 두 개를 두고 왔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "손자",
+      "to": "작은방",
+      "item": "이어폰",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "손자",
+      "item": "이어폰",
+      "quantity": 17
+     },
+     {
+      "entity": "작은방",
+      "item": "이어폰",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "지금 작은방에 이어폰이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "작은방",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6
+     ]
+    },
+    "item": "이어폰"
+   }
+  }
+ ]
+}

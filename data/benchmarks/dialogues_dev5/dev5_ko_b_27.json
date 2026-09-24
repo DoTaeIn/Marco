@@ -1,0 +1,294 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_27",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "multi_fact",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_081",
+  "half": "build",
+  "focus": [
+   "only",
+   "places",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "zero_vague:also_some",
+   "zero_vague:only",
+   "zero_vague:vague_asked"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 할머니는 프라이팬이 열세 개 있고 고구마도 좀 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "할머니",
+      "item": "프라이팬",
+      "quantity": 13
+     },
+     {
+      "type": "has",
+      "holder": "할머니",
+      "item": "고구마",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "할머니",
+      "item": "프라이팬",
+      "quantity": 13
+     },
+     {
+      "entity": "할머니",
+      "item": "고구마",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "신발장은 프라이팬만 열 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "신발장",
+      "item": "프라이팬",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "신발장",
+      "item": "프라이팬",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 할머니한테 고구마가 지금 몇 개 있어요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "zero_vague:vague_asked"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "hold",
+    "entity": "할머니",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "고구마"
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 할머니가 신발장에 프라이팬 세 개를 두고 왔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "할머니",
+      "to": "신발장",
+      "item": "프라이팬",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "할머니",
+      "item": "프라이팬",
+      "quantity": 10
+     },
+     {
+      "entity": "신발장",
+      "item": "프라이팬",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 신발장에 프라이팬이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "신발장",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "프라이팬"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 할머니가 신발장에 프라이팬 다섯 개를 두고 왔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "할머니",
+      "to": "신발장",
+      "item": "프라이팬",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "할머니",
+      "item": "프라이팬",
+      "quantity": 5
+     },
+     {
+      "entity": "신발장",
+      "item": "프라이팬",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "현재 신발장에 프라이팬이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "신발장",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "프라이팬"
+   }
+  }
+ ]
+}

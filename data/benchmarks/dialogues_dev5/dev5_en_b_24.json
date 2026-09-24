@@ -1,0 +1,270 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_24",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_056",
+  "half": "build",
+  "focus": [
+   "places",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "transfer_verbs:carrying",
+   "transfer_verbs:pass",
+   "transfer_verbs:responsible"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "13 cameras are in the print room.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "print room",
+      "item": "cameras",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "print room",
+      "item": "cameras",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Easton is carrying 7 cameras.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:carrying"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Easton",
+      "item": "cameras",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Easton",
+      "item": "cameras",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "My girlfriend is responsible for 14 cameras.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "girlfriend",
+      "item": "cameras",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "girlfriend",
+      "item": "cameras",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Easton passed four cameras to my girlfriend.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Easton",
+      "to": "girlfriend",
+      "item": "cameras",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Easton",
+      "item": "cameras",
+      "quantity": 3
+     },
+     {
+      "entity": "girlfriend",
+      "item": "cameras",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many cameras does my girlfriend hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "girlfriend",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "cameras"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many cameras does Easton have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Easton",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "cameras"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many cameras do Easton and my girlfriend have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Easton",
+     "girlfriend"
+    ],
+    "quantity": 21,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "cameras"
+   }
+  }
+ ]
+}

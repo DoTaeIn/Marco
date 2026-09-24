@@ -1,0 +1,277 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_38",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_090",
+  "half": "build",
+  "focus": [
+   "question_forms",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:apposition",
+   "holders:relation",
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:carrying",
+   "transfer_verbs:pass",
+   "transfer_verbs:responsible",
+   "transfer_verbs:use_up"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The electrician, Ms. Wallace, is carrying 4 donuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "transfer_verbs:carrying"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Wallace",
+      "item": "donuts",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Wallace",
+      "item": "donuts",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my landlady Lily is responsible for 8 donuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Lily",
+      "item": "donuts",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lily",
+      "item": "donuts",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Lily passed 3 donuts to Ms. Wallace.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Lily",
+      "to": "Wallace",
+      "item": "donuts",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lily",
+      "item": "donuts",
+      "quantity": 5
+     },
+     {
+      "entity": "Wallace",
+      "item": "donuts",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many donuts does Lily hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Lily",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "donuts"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Lily used up one donut.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:use_up"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Lily",
+      "item": "donuts",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lily",
+      "item": "donuts",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many donuts does Lily have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Lily",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "donuts"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many donuts do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Wallace",
+     "Lily"
+    ],
+    "quantity": 11,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "donuts"
+   }
+  }
+ ]
+}

@@ -1,0 +1,321 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_37",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_086",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "places",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_then",
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:carrying",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:move_passive"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The field house holds 16 plums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "field house",
+      "item": "plums",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "field house",
+      "item": "plums",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My boss is carrying 5 plums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:carrying"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "boss",
+      "item": "plums",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "boss",
+      "item": "plums",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "There are 3 plums in the gift shop.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "gift shop",
+      "item": "plums",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "gift shop",
+      "item": "plums",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "My boss left two plums at the gift shop.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "boss",
+      "to": "gift shop",
+      "item": "plums",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "boss",
+      "item": "plums",
+      "quantity": 3
+     },
+     {
+      "entity": "gift shop",
+      "item": "plums",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many plums are in the gift shop now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "gift shop",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "plums"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many plums does my boss hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "boss",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "plums"
+   }
+  },
+  {
+   "n": 7,
+   "say": "After that, 4 plums were moved from the gift shop to the field house.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:place",
+    "transfer_verbs:move_passive"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "gift shop",
+      "to": "field house",
+      "item": "plums",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "gift shop",
+      "item": "plums",
+      "quantity": 1
+     },
+     {
+      "entity": "field house",
+      "item": "plums",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many plums are in the field house now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "field house",
+    "quantity": 20,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      7
+     ]
+    },
+    "item": "plums"
+   }
+  }
+ ]
+}

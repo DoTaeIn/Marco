@@ -1,0 +1,396 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_01",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_001",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:front_purpose",
+   "fronting:front_recipient",
+   "holders:apposition",
+   "question_forms:q_echo",
+   "question_forms:q_got",
+   "question_forms:q_still",
+   "transfer_verbs:holding",
+   "transfer_verbs:responsible",
+   "transfer_verbs:send",
+   "transfer_verbs:transfer"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Diana is holding 13 forks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:holding"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Diana",
+      "item": "forks",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "Diana",
+      "item": "forks",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Our tutor, Mr. Perry, is responsible for 5 forks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Perry",
+      "item": "forks",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Perry",
+      "item": "forks",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "To Diana, Mr. Perry sent four forks.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Perry",
+      "to": "Diana",
+      "item": "forks",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Perry",
+      "item": "forks",
+      "quantity": 1
+     },
+     {
+      "entity": "Diana",
+      "item": "forks",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many forks does Diana have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Diana",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "forks"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many forks does Mr. Perry still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Perry",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "forks"
+   }
+  },
+  {
+   "n": 6,
+   "say": "For the trip, Diana transferred three forks to Mr. Perry.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "transfer_verbs:transfer"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Diana",
+      "to": "Perry",
+      "item": "forks",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Diana",
+      "item": "forks",
+      "quantity": 14
+     },
+     {
+      "entity": "Perry",
+      "item": "forks",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "Mr. Perry has how many forks now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_echo"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Perry",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "forks"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Wait, make that 1, not 3.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      8
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Diana",
+      "to": "Perry",
+      "item": "forks",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Diana",
+      "to": "Perry",
+      "item": "forks",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Diana",
+      "item": "forks",
+      "quantity": 16
+     },
+     {
+      "entity": "Perry",
+      "item": "forks",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many forks has Diana got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Diana",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6,
+      8
+     ]
+    },
+    "item": "forks",
+    "retracted_quantity": 14,
+    "reexecuted_quantity": 13
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many forks do Diana and Mr. Perry have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Diana",
+     "Perry"
+    ],
+    "quantity": 18,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6,
+      8
+     ]
+    },
+    "item": "forks"
+   }
+  }
+ ]
+}

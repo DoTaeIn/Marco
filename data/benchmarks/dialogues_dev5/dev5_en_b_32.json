@@ -1,0 +1,323 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_32",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_080",
+  "half": "build",
+  "focus": [
+   "only",
+   "places",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_place_now",
+   "transfer_verbs:move_passive",
+   "transfer_verbs:take_from",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my wife Lydia has just 13 bananas, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Lydia",
+      "item": "bananas",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lydia",
+      "item": "bananas",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The west depot has some bananas. 4 of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "west depot",
+      "item": "bananas",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "west depot",
+      "item": "bananas",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "the dining room holds just 12 bananas, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "dining room",
+      "item": "bananas",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "dining room",
+      "item": "bananas",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Lydia took 1 banana from the west depot.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "west depot",
+      "to": "Lydia",
+      "item": "bananas",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "west depot",
+      "item": "bananas",
+      "quantity": 3
+     },
+     {
+      "entity": "Lydia",
+      "item": "bananas",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many bananas are in the west depot now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "west depot",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "bananas"
+   }
+  },
+  {
+   "n": 6,
+   "say": "5 bananas were moved from the dining room to the west depot.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:move_passive"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "dining room",
+      "to": "west depot",
+      "item": "bananas",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "dining room",
+      "item": "bananas",
+      "quantity": 7
+     },
+     {
+      "entity": "west depot",
+      "item": "bananas",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many bananas are in the dining room now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "dining room",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "item": "bananas"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many bananas are in the west depot now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "west depot",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "bananas"
+   }
+  }
+ ]
+}

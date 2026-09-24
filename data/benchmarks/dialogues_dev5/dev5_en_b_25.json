@@ -1,0 +1,251 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_25",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_058",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "only",
+   "places"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_got",
+   "question_forms:q_place_now",
+   "transfer_verbs:take_from",
+   "transfer_verbs:use_for",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My wife has some quilts. Five of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "wife",
+      "item": "quilts",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "wife",
+      "item": "quilts",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The only thing the tool shed has is quilts, 9 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "tool shed",
+      "item": "quilts",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "tool shed",
+      "item": "quilts",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "My wife took one quilt from the tool shed.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "tool shed",
+      "to": "wife",
+      "item": "quilts",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "tool shed",
+      "item": "quilts",
+      "quantity": 8
+     },
+     {
+      "entity": "wife",
+      "item": "quilts",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many quilts are in the tool shed now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "tool shed",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "quilts"
+   }
+  },
+  {
+   "n": 5,
+   "say": "My wife used the two quilts for the baby shower.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:use_for"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "wife",
+      "item": "quilts",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "wife",
+      "item": "quilts",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many quilts has my wife got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "wife",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "quilts"
+   }
+  }
+ ]
+}

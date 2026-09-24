@@ -1,0 +1,306 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_07",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_029",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "only",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:count_first",
+   "holders:relation",
+   "question_forms:q_hold",
+   "question_forms:q_still",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:receive",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "내 누나 진아한테는 목도리가 하나도 없어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "진아",
+      "item": "목도리",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "진아",
+      "item": "목도리",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "지선은 목도리만 열여섯 개 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지선",
+      "item": "목도리",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "지선",
+      "item": "목도리",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "목도리 세 개를 지선이 진아한테 건넸어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지선",
+      "to": "진아",
+      "item": "목도리",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "지선",
+      "item": "목도리",
+      "quantity": 13
+     },
+     {
+      "entity": "진아",
+      "item": "목도리",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "진아는 목도리를 몇 개 가지고 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "진아",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "목도리"
+   }
+  },
+  {
+   "n": 5,
+   "say": "지선은 아직 목도리가 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "지선",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "목도리"
+   }
+  },
+  {
+   "n": 6,
+   "say": "진아가 지선한테서 목도리 세 개를 받았어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지선",
+      "to": "진아",
+      "item": "목도리",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "지선",
+      "item": "목도리",
+      "quantity": 10
+     },
+     {
+      "entity": "진아",
+      "item": "목도리",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "진아한테 목도리가 지금 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "진아",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "목도리"
+   }
+  },
+  {
+   "n": 8,
+   "say": "진아와 지선이는 합쳐서 목도리가 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "진아",
+     "지선"
+    ],
+    "quantity": 16,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "목도리"
+   }
+  }
+ ]
+}

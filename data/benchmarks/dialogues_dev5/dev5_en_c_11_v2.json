@@ -1,0 +1,288 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_11_v2",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_024_v2",
+  "half": "check",
+  "focus": [
+   "only",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation",
+   "holders:relation_unnamed",
+   "question_forms:q_got",
+   "transfer_verbs:give_back",
+   "transfer_verbs:pass",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ],
+  "variant_of": "s5_en_c_024",
+  "variant": 2,
+  "variant_changes": [
+   "4:q_plain",
+   "6:q_plain"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my supervisor only has 9 shelves, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "supervisor",
+      "item": "shelves",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "supervisor",
+      "item": "shelves",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my godson Joshua doesn't have a single shelf.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Joshua",
+      "item": "shelves",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Joshua",
+      "item": "shelves",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my supervisor passed 4 shelves to Joshua.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "supervisor",
+      "to": "Joshua",
+      "item": "shelves",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "supervisor",
+      "item": "shelves",
+      "quantity": 5
+     },
+     {
+      "entity": "Joshua",
+      "item": "shelves",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many shelves does Joshua have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Joshua",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "shelves"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Joshua gave back three shelves to my supervisor.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Joshua",
+      "to": "supervisor",
+      "item": "shelves",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Joshua",
+      "item": "shelves",
+      "quantity": 1
+     },
+     {
+      "entity": "supervisor",
+      "item": "shelves",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many shelves does my supervisor have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "supervisor",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "shelves"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many shelves does my supervisor and Joshua have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "supervisor",
+     "Joshua"
+    ],
+    "quantity": 9,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "shelves"
+   }
+  }
+ ]
+}

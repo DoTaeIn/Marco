@@ -1,0 +1,343 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_25_v2",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_066_v2",
+  "half": "check",
+  "focus": [
+   "only",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:first_person",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:pass",
+   "transfer_verbs:send",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ],
+  "variant_of": "s5_ko_c_066",
+  "variant": 2,
+  "variant_changes": [
+   "4:q_plain",
+   "8:q_plain"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 아들한테는 행주 열네 장 뿐입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "아들",
+      "item": "행주",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "아들",
+      "item": "행주",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "저는 행주가 하나도 없습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "행주",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "행주",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 아들이 저한테 행주 다섯 장을 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "아들",
+      "to": "나",
+      "item": "행주",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "아들",
+      "item": "행주",
+      "quantity": 9
+     },
+     {
+      "entity": "나",
+      "item": "행주",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "저한테 행주가 지금 몇 장 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "나",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "행주"
+   }
+  },
+  {
+   "n": 5,
+   "say": "제 아들은 지금 행주가 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "아들",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "행주"
+   }
+  },
+  {
+   "n": 6,
+   "say": "저가 제 아들한테 행주 네 장을 넘겼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "아들",
+      "item": "행주",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "행주",
+      "quantity": 1
+     },
+     {
+      "entity": "아들",
+      "item": "행주",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "저한테 행주가 지금 몇 장 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "나",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "행주"
+   }
+  },
+  {
+   "n": 8,
+   "say": "제 아들한테 행주가 지금 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "아들",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "행주"
+   }
+  },
+  {
+   "n": 9,
+   "say": "두 사람이 합쳐서 행주가 모두 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "아들",
+     "나"
+    ],
+    "quantity": 14,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "행주"
+   }
+  }
+ ]
+}

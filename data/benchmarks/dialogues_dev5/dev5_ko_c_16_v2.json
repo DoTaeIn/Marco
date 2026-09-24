@@ -1,0 +1,307 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_16_v2",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_055_v2",
+  "half": "check",
+  "focus": [
+   "only",
+   "places",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:take_from",
+   "zero_vague:only"
+  ],
+  "variant_of": "s5_ko_c_055",
+  "variant": 2,
+  "variant_changes": [
+   "6:q_bare",
+   "8:q_plain"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "용준은 부채만 세 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "용준",
+      "item": "부채",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "용준",
+      "item": "부채",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "꽃집에는 부채가 열한 개 있어요. 꽃집은 부채만 열한 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "꽃집",
+      "item": "부채",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "꽃집",
+      "item": "부채",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "용준이 꽃집에 부채 두 개를 두고 왔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "용준",
+      "to": "꽃집",
+      "item": "부채",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "용준",
+      "item": "부채",
+      "quantity": 1
+     },
+     {
+      "entity": "꽃집",
+      "item": "부채",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "지금 꽃집에 부채가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "꽃집",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "부채"
+   }
+  },
+  {
+   "n": 5,
+   "say": "용준이 꽃집에서 부채 네 개를 가져갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "꽃집",
+      "to": "용준",
+      "item": "부채",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "꽃집",
+      "item": "부채",
+      "quantity": 9
+     },
+     {
+      "entity": "용준",
+      "item": "부채",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "용준이 꽃집에 부채 세 개를 두고 왔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "용준",
+      "to": "꽃집",
+      "item": "부채",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "용준",
+      "item": "부채",
+      "quantity": 2
+     },
+     {
+      "entity": "꽃집",
+      "item": "부채",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "용준은 지금 부채가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "용준",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      6
+     ]
+    },
+    "item": "부채"
+   }
+  }
+ ]
+}

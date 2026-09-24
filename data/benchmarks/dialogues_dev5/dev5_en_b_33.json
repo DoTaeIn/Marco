@@ -1,0 +1,243 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_33",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_081",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "places",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_purpose",
+   "holders:place",
+   "holders:relation_unnamed",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My girlfriend keeps 13 radios.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "girlfriend",
+      "item": "radios",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "girlfriend",
+      "item": "radios",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Ella is carrying 4 radios.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Ella",
+      "item": "radios",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ella",
+      "item": "radios",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "There are 7 radios in the north depot.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "north depot",
+      "item": "radios",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "north depot",
+      "item": "radios",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "For the fundraiser, Ella took three radios from the north depot.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "north depot",
+      "to": "Ella",
+      "item": "radios",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "north depot",
+      "item": "radios",
+      "quantity": 4
+     },
+     {
+      "entity": "Ella",
+      "item": "radios",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many radios does Ella have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Ella",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "radios"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Who has more radios now, my girlfriend or Ella?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "girlfriend",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "girlfriend",
+     "Ella"
+    ],
+    "item": "radios",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    }
+   }
+  }
+ ]
+}

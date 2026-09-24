@@ -1,0 +1,395 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_34",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_095",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "places",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:adv_moment",
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:move",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 오빠는 지금 수박 열다섯 통을 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "오빠",
+      "item": "수박",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "오빠",
+      "item": "수박",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "소방서에는 수박이 열네 통 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "소방서",
+      "item": "수박",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "소방서",
+      "item": "수박",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "주차장에는 수박이 네 통 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "주차장",
+      "item": "수박",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "주차장",
+      "item": "수박",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "소방서에서 주차장으로 수박 한 통을 옮겼어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:move"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "소방서",
+      "to": "주차장",
+      "item": "수박",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "소방서",
+      "item": "수박",
+      "quantity": 13
+     },
+     {
+      "entity": "주차장",
+      "item": "수박",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 소방서에 수박이 몇 통 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "소방서",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "수박"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 오빠가 주차장에 수박 한 통을 두고 왔대요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "오빠",
+      "to": "주차장",
+      "item": "수박",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "오빠",
+      "item": "수박",
+      "quantity": 14
+     },
+     {
+      "entity": "주차장",
+      "item": "수박",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "현재 주차장에 수박이 몇 통 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "주차장",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "수박"
+   }
+  },
+  {
+   "n": 8,
+   "say": "제 오빠가 주차장에서 수박 다섯 통을 가져갔대요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "주차장",
+      "to": "오빠",
+      "item": "수박",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "주차장",
+      "item": "수박",
+      "quantity": 1
+     },
+     {
+      "entity": "오빠",
+      "item": "수박",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "지금 주차장에 수박이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "주차장",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6,
+      8
+     ]
+    },
+    "item": "수박"
+   }
+  },
+  {
+   "n": 10,
+   "say": "제 오빠는 지금 수박이 몇 통 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "오빠",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      6,
+      8
+     ]
+    },
+    "item": "수박"
+   }
+  }
+ ]
+}

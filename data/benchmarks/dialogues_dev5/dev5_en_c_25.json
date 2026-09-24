@@ -1,0 +1,332 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_25",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_060",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "places",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:front_then",
+   "holders:place",
+   "question_forms:q_place_now",
+   "transfer_verbs:move"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "four gloves are in the coat room.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "coat room",
+      "item": "gloves",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "coat room",
+      "item": "gloves",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "7 gloves are in the bike shed.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "bike shed",
+      "item": "gloves",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "bike shed",
+      "item": "gloves",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Scarlett's got 15 gloves.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Scarlett",
+      "item": "gloves",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "Scarlett",
+      "item": "gloves",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Then we moved one glove from the coat room to the bike shed.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:place",
+    "transfer_verbs:move"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "coat room",
+      "to": "bike shed",
+      "item": "gloves",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "coat room",
+      "item": "gloves",
+      "quantity": 3
+     },
+     {
+      "entity": "bike shed",
+      "item": "gloves",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many gloves are in the coat room now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "coat room",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "gloves"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Wait, make that 3, not 1.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      6
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "coat room",
+      "to": "bike shed",
+      "item": "gloves",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "coat room",
+      "to": "bike shed",
+      "item": "gloves",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "coat room",
+      "item": "gloves",
+      "quantity": 1
+     },
+     {
+      "entity": "bike shed",
+      "item": "gloves",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many gloves are in the bike shed now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "bike shed",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "gloves",
+    "retracted_quantity": 8,
+    "reexecuted_quantity": 11
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many gloves do the coat room and the bike shed have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "coat room",
+     "bike shed"
+    ],
+    "quantity": 11,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "gloves"
+   }
+  }
+ ]
+}

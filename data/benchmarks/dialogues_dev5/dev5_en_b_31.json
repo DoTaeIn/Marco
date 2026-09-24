@@ -1,0 +1,210 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_31",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_078",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "only",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_recipient",
+   "question_forms:q_still",
+   "question_forms:q_two_total",
+   "transfer_verbs:hand_over",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The only thing Lincoln has is cameras, 16 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Lincoln",
+      "item": "cameras",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lincoln",
+      "item": "cameras",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Jaxon has just 5 cameras, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Jaxon",
+      "item": "cameras",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jaxon",
+      "item": "cameras",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "To Lincoln, Jaxon handed over one camera.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Jaxon",
+      "to": "Lincoln",
+      "item": "cameras",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jaxon",
+      "item": "cameras",
+      "quantity": 4
+     },
+     {
+      "entity": "Lincoln",
+      "item": "cameras",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many cameras does Jaxon still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Jaxon",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "cameras"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many cameras do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Lincoln",
+     "Jaxon"
+    ],
+    "quantity": 21,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "cameras"
+   }
+  }
+ ]
+}

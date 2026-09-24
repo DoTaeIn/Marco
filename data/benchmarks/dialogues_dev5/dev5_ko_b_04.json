@@ -1,0 +1,335 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_04",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_014",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "only",
+   "places"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:adv_apparently",
+   "holders:place",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "학원은 초콜릿만 열 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "학원",
+      "item": "초콜릿",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "학원",
+      "item": "초콜릿",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "성당은 초콜릿이 하나도 없어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "성당",
+      "item": "초콜릿",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "성당",
+      "item": "초콜릿",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "수현은 초콜릿만 일곱 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "수현",
+      "item": "초콜릿",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "수현",
+      "item": "초콜릿",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "수현이 성당에 초콜릿 두 개를 두고 왔대요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "수현",
+      "to": "성당",
+      "item": "초콜릿",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "수현",
+      "item": "초콜릿",
+      "quantity": 5
+     },
+     {
+      "entity": "성당",
+      "item": "초콜릿",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "수현은 초콜릿을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "수현",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "초콜릿"
+   }
+  },
+  {
+   "n": 6,
+   "say": "지금 성당에 초콜릿이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "성당",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "초콜릿"
+   }
+  },
+  {
+   "n": 7,
+   "say": "아, 두 개가 아니라 여섯 개였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      7
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "수현",
+      "to": "성당",
+      "item": "초콜릿",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "수현",
+      "to": "성당",
+      "item": "초콜릿",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "수현",
+      "item": "초콜릿",
+      "quantity": 1
+     },
+     {
+      "entity": "성당",
+      "item": "초콜릿",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "학원과 성당이 합쳐서 초콜릿이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "학원",
+     "성당"
+    ],
+    "quantity": 16,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "초콜릿"
+   }
+  }
+ ]
+}

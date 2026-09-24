@@ -1,0 +1,415 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_13",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_027",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:adv_apparently",
+   "fronting:front_then",
+   "holders:relation_unnamed",
+   "question_forms:q_got",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "transfer_verbs:carrying",
+   "transfer_verbs:give_back",
+   "transfer_verbs:pass",
+   "transfer_verbs:responsible",
+   "transfer_verbs:send"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my godson is carrying 13 mirrors",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:carrying"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "godson",
+      "item": "mirrors",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "godson",
+      "item": "mirrors",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Stella is responsible for 4 mirrors.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Stella",
+      "item": "mirrors",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Stella",
+      "item": "mirrors",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "My godson sent two mirrors to Stella, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "godson",
+      "to": "Stella",
+      "item": "mirrors",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "godson",
+      "item": "mirrors",
+      "quantity": 11
+     },
+     {
+      "entity": "Stella",
+      "item": "mirrors",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many mirrors does my godson hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "godson",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "mirrors"
+   }
+  },
+  {
+   "n": 5,
+   "say": "My godson gave back five mirrors to Stella.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "godson",
+      "to": "Stella",
+      "item": "mirrors",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "godson",
+      "item": "mirrors",
+      "quantity": 6
+     },
+     {
+      "entity": "Stella",
+      "item": "mirrors",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many mirrors does Stella have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Stella",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "mirrors"
+   }
+  },
+  {
+   "n": 7,
+   "say": "After that, Stella passed four mirrors to my godson.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Stella",
+      "to": "godson",
+      "item": "mirrors",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Stella",
+      "item": "mirrors",
+      "quantity": 7
+     },
+     {
+      "entity": "godson",
+      "item": "mirrors",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many mirrors has my godson got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "godson",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "mirrors"
+   }
+  },
+  {
+   "n": 9,
+   "say": "Sorry, it was 1, not 4.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7,
+      9
+     ]
+    },
+    "target_turn": 7,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Stella",
+      "to": "godson",
+      "item": "mirrors",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Stella",
+      "to": "godson",
+      "item": "mirrors",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Stella",
+      "item": "mirrors",
+      "quantity": 10
+     },
+     {
+      "entity": "godson",
+      "item": "mirrors",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many mirrors does my godson have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "godson",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      7,
+      9
+     ]
+    },
+    "item": "mirrors",
+    "retracted_quantity": 10,
+    "reexecuted_quantity": 11
+   }
+  }
+ ]
+}

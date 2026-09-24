@@ -581,3 +581,38 @@ def test_a_holder_before_a_name_is_never_part_of_the_names_said_words():
                                 "국자 두 개를 제 동생이 해솔 씨한테 돌려줬어요."])
     assert rows[2]["status"] == "observed"
     assert "해솔" not in (rows[2]["meaning"].get("holders") or {})
+
+
+# the sentences of this file and of every file this round changed are in no development set -----------------------
+DEV5 = ROOT / "data/benchmarks/dialogues_dev5"
+
+
+def _tracked_corpus(owned):
+    """The tracked files of the gate's corpus folders without the frozen exam sets (never listed, opened or
+    read by a development run: the owner runs that overlap check) and without ``owned``."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("dialogues_dev4_build",
+                                                  ROOT / "data/benchmarks/dialogues_dev4/build.py")
+    build = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(build)
+    return build.corpus_files(owned)
+
+
+def test_dev5_shares_no_full_sentence_with_any_other_corpus_file():
+    import bench.dialogue_gate as gate
+    result = gate.overlaps(gate.load(DEV5), files=_tracked_corpus(("data/benchmarks/dialogues_dev5/",)))
+    assert result["files"] > 100 and len(result["overlaps"]) == 0
+
+
+def test_no_development_sentence_is_in_a_file_this_round_changed():
+    import bench.dialogue_gate as gate
+    sentences = []
+    for folder in ("dialogues_dev", "dialogues_dev2", "dialogues_dev3", "dialogues_dev4", "dialogues_dev5"):
+        sentences += gate.dialogue_sentences(gate.load(ROOT / "data/benchmarks" / folder))
+    owned = ["relational_semantics.py", "reasoning_context.py", "language_components.py", "engine.py",
+             "tests/test_understanding_r5.py", "styles/english.json", "styles/한국어.json"]
+    found = 0
+    for name in owned:
+        text = gate._normalize_corpus((ROOT / name).read_text(encoding="utf-8"))
+        found += sum(1 for _d, _n, _raw, norm in sentences if norm in text and gate._full_sentence_at(text, norm))
+    assert found == 0

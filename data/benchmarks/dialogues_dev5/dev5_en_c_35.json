@@ -1,0 +1,393 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_35",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_081",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:front_purpose",
+   "fronting:front_then",
+   "holders:apposition",
+   "holders:title",
+   "question_forms:q_left",
+   "question_forms:q_still",
+   "transfer_verbs:give_back",
+   "transfer_verbs:receive",
+   "transfer_verbs:transfer"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Mr. Gonzales has got 14 forks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Gonzales",
+      "item": "forks",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gonzales",
+      "item": "forks",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Wyatt has got 16 forks at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Wyatt",
+      "item": "forks",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Wyatt",
+      "item": "forks",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The barista, Mrs. Robertson, is holding 4 forks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Robertson",
+      "item": "forks",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Robertson",
+      "item": "forks",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "For the trip, Wyatt transferred two forks to Mrs. Robertson.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "transfer_verbs:transfer"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Wyatt",
+      "to": "Robertson",
+      "item": "forks",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Wyatt",
+      "item": "forks",
+      "quantity": 14
+     },
+     {
+      "entity": "Robertson",
+      "item": "forks",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many forks does Mrs. Robertson have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Robertson",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "forks"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Wyatt gave back three forks to Mrs. Robertson.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Wyatt",
+      "to": "Robertson",
+      "item": "forks",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Wyatt",
+      "item": "forks",
+      "quantity": 11
+     },
+     {
+      "entity": "Robertson",
+      "item": "forks",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many forks does Wyatt still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Wyatt",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "forks"
+   }
+  },
+  {
+   "n": 8,
+   "say": "After that, Mr. Gonzales got 5 forks from Mrs. Robertson.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Robertson",
+      "to": "Gonzales",
+      "item": "forks",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Robertson",
+      "item": "forks",
+      "quantity": 4
+     },
+     {
+      "entity": "Gonzales",
+      "item": "forks",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many forks does Mr. Gonzales have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Gonzales",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      8
+     ]
+    },
+    "item": "forks"
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many forks do Wyatt and Mrs. Robertson have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Wyatt",
+     "Robertson"
+    ],
+    "quantity": 15,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4,
+      6,
+      8
+     ]
+    },
+    "item": "forks"
+   }
+  }
+ ]
+}

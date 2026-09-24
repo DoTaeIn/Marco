@@ -1,0 +1,355 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_15",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_033",
+  "half": "build",
+  "focus": [
+   "places",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_got",
+   "question_forms:q_place_now",
+   "transfer_verbs:lose",
+   "transfer_verbs:move_passive",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "11 notepads are in the hardware store.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "hardware store",
+      "item": "notepads",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "hardware store",
+      "item": "notepads",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "15 notepads are in the back room.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "back room",
+      "item": "notepads",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "back room",
+      "item": "notepads",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my daughter Evelyn has 9 notepads.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Evelyn",
+      "item": "notepads",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Evelyn",
+      "item": "notepads",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Evelyn took 5 notepads from the back room.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "back room",
+      "to": "Evelyn",
+      "item": "notepads",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "back room",
+      "item": "notepads",
+      "quantity": 10
+     },
+     {
+      "entity": "Evelyn",
+      "item": "notepads",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many notepads does Evelyn have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Evelyn",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "notepads"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Two notepads were moved from the back room to the hardware store.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:move_passive"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "back room",
+      "to": "hardware store",
+      "item": "notepads",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "back room",
+      "item": "notepads",
+      "quantity": 8
+     },
+     {
+      "entity": "hardware store",
+      "item": "notepads",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many notepads are in the back room now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "back room",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "notepads"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Evelyn lost the two notepads.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:lose"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Evelyn",
+      "item": "notepads",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Evelyn",
+      "item": "notepads",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many notepads has Evelyn got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Evelyn",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      8
+     ]
+    },
+    "item": "notepads"
+   }
+  }
+ ]
+}

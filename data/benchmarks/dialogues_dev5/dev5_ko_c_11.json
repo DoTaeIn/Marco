@@ -1,0 +1,266 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_11",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_037",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "only",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:relation",
+   "holders:title",
+   "question_forms:q_hold",
+   "transfer_verbs:hand_over",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 손녀 지민은 쿠폰이 좀 있어요. 세어 보니 일곱 장이네요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지민",
+      "item": "쿠폰",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "지민",
+      "item": "쿠폰",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "민주 씨는 쿠폰만 아홉 장 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "민주",
+      "item": "쿠폰",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "민주",
+      "item": "쿠폰",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "지민이가 민주씨한테 쿠폰 다섯 장을 건네줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지민",
+      "to": "민주",
+      "item": "쿠폰",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "지민",
+      "item": "쿠폰",
+      "quantity": 2
+     },
+     {
+      "entity": "민주",
+      "item": "쿠폰",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "민주 씨는 쿠폰을 몇 장 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "민주",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "쿠폰"
+   }
+  },
+  {
+   "n": 5,
+   "say": "아, 다섯 개가 아니라 넷이었어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "지민",
+      "to": "민주",
+      "item": "쿠폰",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "지민",
+      "to": "민주",
+      "item": "쿠폰",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "지민",
+      "item": "쿠폰",
+      "quantity": 3
+     },
+     {
+      "entity": "민주",
+      "item": "쿠폰",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "지민이 지금 쿠폰이 몇 장 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "지민",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "쿠폰",
+    "retracted_quantity": 2,
+    "reexecuted_quantity": -2
+   }
+  }
+ ]
+}

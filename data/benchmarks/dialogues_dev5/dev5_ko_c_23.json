@@ -1,0 +1,323 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_23",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_064",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "only",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:count_first",
+   "fronting:front_then",
+   "holders:relation",
+   "question_forms:q_hold",
+   "transfer_verbs:give_back",
+   "transfer_verbs:send",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "진혁도 이어폰이 좀 있습니다. 세어 보니 열 개입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "진혁",
+      "item": "이어폰",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "진혁",
+      "item": "이어폰",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 손자 종민은 이어폰만 아홉 개 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "종민",
+      "item": "이어폰",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "종민",
+      "item": "이어폰",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "이어폰 한 개를 종민이 진혁에게 돌려주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "종민",
+      "to": "진혁",
+      "item": "이어폰",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "종민",
+      "item": "이어폰",
+      "quantity": 8
+     },
+     {
+      "entity": "진혁",
+      "item": "이어폰",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "종민이 지금 이어폰이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "종민",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "이어폰"
+   }
+  },
+  {
+   "n": 5,
+   "say": "그다음에 종민이 진혁한테 이어폰 세 개를 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "종민",
+      "to": "진혁",
+      "item": "이어폰",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "종민",
+      "item": "이어폰",
+      "quantity": 5
+     },
+     {
+      "entity": "진혁",
+      "item": "이어폰",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "진혁은 지금 이어폰을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "진혁",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "이어폰"
+   }
+  },
+  {
+   "n": 7,
+   "say": "진혁이 종민한테 이어폰 두 개를 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "진혁",
+      "to": "종민",
+      "item": "이어폰",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "진혁",
+      "item": "이어폰",
+      "quantity": 12
+     },
+     {
+      "entity": "종민",
+      "item": "이어폰",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "종민이 지금 이어폰이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "종민",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "이어폰"
+   }
+  }
+ ]
+}

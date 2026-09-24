@@ -1,0 +1,306 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_18",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_053",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "places",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:apposition",
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_place_now",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "청소 담당 규민 씨가 치마가 네 벌 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "규민",
+      "item": "치마",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "규민",
+      "item": "치마",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 고모는 치마 열다섯 벌이 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "고모",
+      "item": "치마",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "고모",
+      "item": "치마",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "주차장에는 치마가 열 벌 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "주차장",
+      "item": "치마",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "주차장",
+      "item": "치마",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "규민 씨가 주차장에서 치마 두 벌을 가져갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "주차장",
+      "to": "규민",
+      "item": "치마",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "주차장",
+      "item": "치마",
+      "quantity": 8
+     },
+     {
+      "entity": "규민",
+      "item": "치마",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 주차장에 치마가 몇 벌 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "주차장",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "치마"
+   }
+  },
+  {
+   "n": 6,
+   "say": "틀렸어요, 두 벌 말고 한 벌이 있어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      6
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "주차장",
+      "to": "규민",
+      "item": "치마",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "주차장",
+      "to": "규민",
+      "item": "치마",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "주차장",
+      "item": "치마",
+      "quantity": 9
+     },
+     {
+      "entity": "규민",
+      "item": "치마",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "지금 주차장에 치마가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "주차장",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "치마",
+    "retracted_quantity": 8,
+    "reexecuted_quantity": 7
+   }
+  }
+ ]
+}

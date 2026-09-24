@@ -1,0 +1,334 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_39",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_116",
+  "half": "build",
+  "focus": [
+   "only",
+   "places",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:place",
+   "question_forms:q_place_now",
+   "question_forms:q_relative",
+   "transfer_verbs:move_passive",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "뒷방은 치마만 네 벌 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "뒷방",
+      "item": "치마",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "뒷방",
+      "item": "치마",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "지하 주차장은 치마만 열두 벌 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지하 주차장",
+      "item": "치마",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "지하 주차장",
+      "item": "치마",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "민경은 치마만 열다섯 벌 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "민경",
+      "item": "치마",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "민경",
+      "item": "치마",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "치마 한 벌이 뒷방에서 지하 주차장으로 옮겨졌어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:move_passive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "뒷방",
+      "to": "지하 주차장",
+      "item": "치마",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "뒷방",
+      "item": "치마",
+      "quantity": 3
+     },
+     {
+      "entity": "지하 주차장",
+      "item": "치마",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "민경이 지금 치마를 몇 벌 가지고 있는지요?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "question_forms:q_relative"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "민경",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "치마"
+   }
+  },
+  {
+   "n": 6,
+   "say": "틀렸어요, 한 벌 말고 두 벌이었어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      6
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "뒷방",
+      "to": "지하 주차장",
+      "item": "치마",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "뒷방",
+      "to": "지하 주차장",
+      "item": "치마",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "뒷방",
+      "item": "치마",
+      "quantity": 2
+     },
+     {
+      "entity": "지하 주차장",
+      "item": "치마",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "지금 뒷방에 치마가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "뒷방",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6
+     ]
+    },
+    "item": "치마",
+    "retracted_quantity": 3,
+    "reexecuted_quantity": 1
+   }
+  },
+  {
+   "n": 8,
+   "say": "치마가 뒷방과 지하 주차장에서 몇 벌 가지고 있는지요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "뒷방",
+     "지하 주차장"
+    ],
+    "quantity": 16,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "치마"
+   }
+  }
+ ]
+}

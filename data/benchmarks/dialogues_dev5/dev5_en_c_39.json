@@ -1,0 +1,374 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_39",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_088",
+  "half": "check",
+  "focus": [
+   "only",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:first_person",
+   "question_forms:q_got",
+   "question_forms:q_still",
+   "transfer_verbs:carrying",
+   "transfer_verbs:holding",
+   "transfer_verbs:pass",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Christopher is holding 4 ladles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:holding"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Christopher",
+      "item": "ladles",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Christopher",
+      "item": "ladles",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "I'm carrying 9 ladles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:carrying"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "ladles",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "ladles",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Naomi only has ladles, 12 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Naomi",
+      "item": "ladles",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Naomi",
+      "item": "ladles",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Christopher passed Naomi one ladle.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Christopher",
+      "to": "Naomi",
+      "item": "ladles",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Christopher",
+      "item": "ladles",
+      "quantity": 3
+     },
+     {
+      "entity": "Naomi",
+      "item": "ladles",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many ladles has Christopher got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Christopher",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "ladles"
+   }
+  },
+  {
+   "n": 6,
+   "say": "I passed 4 ladles to Christopher.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "I",
+      "to": "Christopher",
+      "item": "ladles",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "ladles",
+      "quantity": 5
+     },
+     {
+      "entity": "Christopher",
+      "item": "ladles",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many ladles does Christopher still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Christopher",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6
+     ]
+    },
+    "item": "ladles"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many ladles does Naomi still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Naomi",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "ladles"
+   }
+  },
+  {
+   "n": 9,
+   "say": "Who has more ladles now, Naomi or Christopher?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Naomi",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "Naomi",
+     "Christopher"
+    ],
+    "item": "ladles",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4,
+      6
+     ]
+    }
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many ladles do I and Naomi have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "I",
+     "Naomi"
+    ],
+    "quantity": 18,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "ladles"
+   }
+  }
+ ]
+}

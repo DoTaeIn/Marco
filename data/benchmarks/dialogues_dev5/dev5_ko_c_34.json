@@ -1,0 +1,383 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_34",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_096",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_purpose",
+   "fronting:front_recipient",
+   "holders:apposition",
+   "holders:relation",
+   "question_forms:q_hold",
+   "question_forms:q_relative",
+   "question_forms:q_still",
+   "question_forms:q_two_total",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:pass"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 언니 경희는 귤 열다섯 개가 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "경희",
+      "item": "귤",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "경희",
+      "item": "귤",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "매니저 은비 씨가 귤이 일곱 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "은비",
+      "item": "귤",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "은비",
+      "item": "귤",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "행사 때문에 경희가 은비씨한테 귤 한 개를 건네줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "경희",
+      "to": "은비",
+      "item": "귤",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "경희",
+      "item": "귤",
+      "quantity": 14
+     },
+     {
+      "entity": "은비",
+      "item": "귤",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "은비 씨는 귤을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "은비",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "귤"
+   }
+  },
+  {
+   "n": 5,
+   "say": "경희가 은비씨한테 귤 네 개를 건넸어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "경희",
+      "to": "은비",
+      "item": "귤",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "경희",
+      "item": "귤",
+      "quantity": 10
+     },
+     {
+      "entity": "은비",
+      "item": "귤",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "경희는 아직 귤이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "경희",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "귤"
+   }
+  },
+  {
+   "n": 7,
+   "say": "은비 씨가 가진 귤은 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_relative"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "은비",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "귤"
+   }
+  },
+  {
+   "n": 8,
+   "say": "경희한테는 은비가 귤 네 개를 넘겼어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "은비",
+      "to": "경희",
+      "item": "귤",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "은비",
+      "item": "귤",
+      "quantity": 8
+     },
+     {
+      "entity": "경희",
+      "item": "귤",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "은비 씨는 지금 귤이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "은비",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5,
+      8
+     ]
+    },
+    "item": "귤"
+   }
+  },
+  {
+   "n": 10,
+   "say": "두 사람 합쳐서 귤이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "경희",
+     "은비"
+    ],
+    "quantity": 22,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5,
+      8
+     ]
+    },
+    "item": "귤"
+   }
+  }
+ ]
+}

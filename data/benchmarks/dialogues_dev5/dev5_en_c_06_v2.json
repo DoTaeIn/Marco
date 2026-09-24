@@ -1,0 +1,257 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_06_v2",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_013_v2",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "places",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:adv_moment",
+   "holders:first_person",
+   "holders:place",
+   "question_forms:q_place_now",
+   "transfer_verbs:keeps",
+   "transfer_verbs:move"
+  ],
+  "variant_of": "s5_en_c_013",
+  "variant": 2,
+  "variant_changes": [
+   "3:adv_moment"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "16 hoses are in the coat room at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "coat room",
+      "item": "hoses",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "coat room",
+      "item": "hoses",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Nine hoses are in the server room.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "server room",
+      "item": "hoses",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "server room",
+      "item": "hoses",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "I keep 14 hoses at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:keeps"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "hoses",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "hoses",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "We moved three hoses from the coat room to the server room, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:place",
+    "transfer_verbs:move"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "coat room",
+      "to": "server room",
+      "item": "hoses",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "coat room",
+      "item": "hoses",
+      "quantity": 13
+     },
+     {
+      "entity": "server room",
+      "item": "hoses",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many hoses are in the server room now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "server room",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "hoses"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many hoses does the coat room and the server room have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "coat room",
+     "server room"
+    ],
+    "quantity": 25,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "hoses"
+   }
+  }
+ ]
+}

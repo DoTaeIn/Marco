@@ -1,0 +1,321 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_08",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_031",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:adv_moment",
+   "holders:relation",
+   "holders:title",
+   "question_forms:q_hold",
+   "question_forms:q_still",
+   "question_forms:q_two_total",
+   "transfer_verbs:give_back"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "연희 씨는 현재 가위가 열다섯 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:title"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "연희",
+      "item": "가위",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "연희",
+      "item": "가위",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 누나 서영은 가위가 일곱 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서영",
+      "item": "가위",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "서영",
+      "item": "가위",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "연희씨가 서영이한테 가위 한 개를 돌려줬습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "연희",
+      "to": "서영",
+      "item": "가위",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "연희",
+      "item": "가위",
+      "quantity": 14
+     },
+     {
+      "entity": "서영",
+      "item": "가위",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "서영한테 가위가 지금 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "서영",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "가위"
+   }
+  },
+  {
+   "n": 5,
+   "say": "연희님은 지금 가위를 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "연희",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "가위"
+   }
+  },
+  {
+   "n": 6,
+   "say": "아, 하나가 아니라 열두 개였습니다.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "연희",
+      "to": "서영",
+      "item": "가위",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "연희",
+      "to": "서영",
+      "item": "가위",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "연희",
+      "item": "가위",
+      "quantity": 3
+     },
+     {
+      "entity": "서영",
+      "item": "가위",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "서영은 아직 가위가 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "서영",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "가위",
+    "retracted_quantity": 8,
+    "reexecuted_quantity": 20
+   }
+  },
+  {
+   "n": 8,
+   "say": "두 사람이 합쳐서 가위가 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "연희",
+     "서영"
+    ],
+    "quantity": 22,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "가위"
+   }
+  }
+ ]
+}
