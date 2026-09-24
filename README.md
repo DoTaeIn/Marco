@@ -90,9 +90,9 @@ dialogues, fails, and it alone decides the release.
 
 **Where the numbers come from.** The frozen exams are scored once per round by
 the owner and never run during development, so this README runs no exam. Every
-number in the next three tables is read from a recorded report file, named in
-the table, and `python tools/doc_facts.py frozen` prints all of them from those
-files (it reads, it does not re-run). The latest run is the one after realizer
+exam number in this section is read from a recorded report file, named next to
+it, and `python tools/doc_facts.py frozen` prints all of them from those files
+(it reads, it does not re-run). The latest run is the one after realizer
 round 3, recorded with code `ead6302`.
 
 | # | Gate condition | State | Source |
@@ -128,7 +128,7 @@ holders, referent repairs) where every development set had been template
 output. Understanding round 4, running now, builds its development data from
 that kind of language. A statement MARCO does not read also blocks every later
 question that depends on it, which is why 87 of the 108 are holds rather than
-errors.
+wrong answers.
 
 ### Not in this release
 
@@ -150,9 +150,14 @@ is part of MARCO 1.
 
 Every number below was printed by the command next to it, in a checkout of
 `5f321a3` without gitignored files (the generated law knowledge graph
-`data/법지식/지식그래프.json` and the wiki definitions corpus are absent). Python
+`data/법지식/지식그래프.json` and the definitions corpus `data/위키/정의문.jsonl`
+are absent). Python
 3.13.9 (anaconda) on macOS, character encoder (`KG_ENCODER=문자`, the default).
-Other test runs shared the machine, so the times are upper bounds.
+Other test runs shared the machine, so the times are upper bounds. The graph
+engine records which graphs it used in the gitignored `그래프쓰임.json` at the
+root and reads it back to break routing ties; the runtime, self-check and
+routing commands ran in that order from a checkout without it, and the tests
+ran without it.
 
 **Knowledge and code** — `python tools/doc_facts.py counts`
 
@@ -236,14 +241,15 @@ fairness notes and per-turn buckets:
 Read it as two columns that trade against each other today. The 7B model
 understands three and a half times more unseen phrasings than MARCO, and pays
 for it with 25 wrong answers, 5 invented ones on turns where the information was
-never given, and 22 wrong reasoning answers. MARCO understands less and is never
-wrong on what it understood, never invents, and answers in 27 ms without a GPU.
-Closing the first column is the MARCO 1 gate; the other columns are the reason
-the project exists. The one wrong MARCO answer here is a round-2 answer; the
-gate's own scorer counts 0 wrong from round 3 on. Qwen answered 28 Korean turns
-in Chinese; those count as holds, and the report gives its hand-read score too.
-The text scorer has no "unparsed" bucket, so its reasoning column is over all
-156 questions, not the 151 parsed ones of gate condition 6.
+never given, and 22 wrong reasoning answers. MARCO understands less, is almost
+never wrong on what it understood (the one wrong answer here is from the
+round-2 code; the gate's own scorer counts 0 wrong from round 3 on), never
+invents, and answers in 27 ms without a GPU. Closing the first column is the
+MARCO 1 gate; the other columns are the reason the project exists. Qwen
+answered 28 Korean turns in Chinese; those count as holds, and the report gives
+its hand-read score too. The text scorer has no "unparsed" bucket, so its
+reasoning column is over all 156 questions, not the 151 parsed ones of gate
+condition 6.
 
 ## Capabilities, each with its proof
 
@@ -569,7 +575,8 @@ clause said in full, and ellipsis. None of the layers can add a fact, and a
 meaning with no plan, or a clause that fails the round trip, has no path to
 speech: **Aporrhemia**, structural abstention. The whole contract, and why it
 needed names of its own, is in [The names of MARCO](docs/en/pipelines.md#palinorrhesis-speak-only-after-semantic-return).
-The trace below is the real one for the turn *Minsu gave Jiyeon two.*
+The trace below is the real one for the turn *Minsu gave Jiyeon two.*, read
+from the realizer's report at `5f321a3` (`marco.language.realizer.last_report()`).
 
 ```mermaid
 flowchart TD
@@ -606,8 +613,8 @@ reproduced at `5f321a3`):
 
 The correction row is Doxolysis, retraction that propagates, in small: the
 earlier amount is withdrawn, not overwritten, and the counts that rested on it
-are recomputed. Each layer's
-contract and tests: [docs/architecture/marco.language.realizer.md](docs/architecture/marco.language.realizer.md)
+are recomputed. Each layer's contract and tests:
+[docs/architecture/marco.language.realizer.md](docs/architecture/marco.language.realizer.md)
 and `marco/language/W1-report.md`. Proofs are in the capabilities table above.
 
 ## Graph format (`.kg`)
@@ -855,10 +862,11 @@ moves in S4 (53 files)
                                   → marco/perception/ · graphify-out/ → data/ · .vec_*.npz caches
                                   → .marco/cache/
 
-already packages                  marco/ · marco/language/ · marco/language/realizer/ · marco/trace/
-                                  mco/ · mco/backends/ · views/ (stays) · bench/ · tools/ · tests/
+packages already                  marco/ · marco/language/ · marco/language/realizer/ · marco/trace/
+                                  mco/ · mco/backends/
+script folders already            views/ (kgpack_ui, stays) · bench/ · tools/ · tests/ · collectors/
 
-data, does not move               graphs/*.kg · legal/*.kg · cases/ · styles/ · axioms/ · collectors/ · data/
+data, does not move               graphs/*.kg · legal/*.kg · cases/ · styles/ · axioms/ · data/
 docs                              docs/architecture/ · docs/mco/ · docs/en/ · docs/releases/ · docs/requests/
                                   docs/ko/ (design records and goals, Korean)
 ```
