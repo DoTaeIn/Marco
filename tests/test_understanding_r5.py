@@ -574,3 +574,10 @@ def test_a_korean_total_whose_first_holder_is_titled_and_an_only_count_with_spac
     assert facts_of("한국어", "사서 해솔 씨가 가진 것은 국자 열네 개 뿐입니다.") == [("해솔 국자", "count", "14")]
     assert facts_of("한국어", "미소는 국자가 아홉 개 있고, 컵도 좀 있어요.") == [("미소 국자", "count", "9"),
                                                                  ("미소 컵", "count_unknown", "some")]
+
+
+def test_a_holder_before_a_name_is_never_part_of_the_names_said_words():
+    _ctx, rows = play("한국어", ["제 동생은 국자 여덟 개를 보관하고 있어요.", "해솔 씨는 국자가 네 개 있어요.",
+                                "국자 두 개를 제 동생이 해솔 씨한테 돌려줬어요."])
+    assert rows[2]["status"] == "observed"
+    assert "해솔" not in (rows[2]["meaning"].get("holders") or {})

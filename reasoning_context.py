@@ -4177,8 +4177,9 @@ class ReasoningContext:
         titles = set(spec.get("prefix_titles") or [])
         found, behind = None, ""
         suffixes = sorted(spec.get("name_titles") or [], key=len, reverse=True)
-        if suffixes:
-            # a title after the name (황 팀장님, 채원 씨): said with it
+        if suffixes and len(key.split()) > 1:
+            # a title after a key of several words (황 팀장님): said with it, so the realizer keeps the key whole
+            # (W5-3 item 6); a one-word name keeps the realizer's own form (서준 씨 is said 서준)
             found = re.search(r"(?<![\w'])%s(\s?(?:%s))" % (re.escape(key), "|".join(map(re.escape, suffixes))), typed)
             behind = found.group(1) if found else ""
         if found is None:
@@ -4192,7 +4193,10 @@ class ReasoningContext:
         elif ahead and ahead[-1].lower() in lead:
             taken = ahead[-1:]
         elif (len(ahead) >= 2 and ahead[-2].lower() in lead and ahead[-1].isalpha()
-              and ahead[-1].lower() not in parser._frame_words()):
+              and ahead[-1].lower() not in parser._frame_words()
+              and (spec.get("relation_nouns") is None or ahead[-1] in spec["relation_nouns"])):
+            # (where the pack declares its relation nouns, the word between is one of them, bare: 제 팀원이 서준
+            # names two holders)
             taken = ahead[-2:]
         if not taken and not behind:
             return None
