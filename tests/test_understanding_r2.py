@@ -148,9 +148,20 @@ def digest(dialogues):
     return hashlib.sha256("\n".join(rows).encode("utf-8")).hexdigest()
 
 
+def _tracked_corpus(owned):
+    """The tracked files of the gate's corpus folders without the frozen exam sets (never listed, opened or
+    read by a development run: the owner runs that overlap check) and without ``owned`` (G5)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("dialogues_dev4_build",
+                                                  ROOT / "data/benchmarks/dialogues_dev4/build.py")
+    build = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(build)
+    return build.corpus_files(owned)
+
+
 def test_dev2_shares_no_full_sentence_with_any_other_corpus_file():
     import bench.dialogue_gate as gate
-    result = gate.overlaps(gate.load(DEV2), disk_root=ROOT, owned=("data/benchmarks/dialogues_dev2/",))
+    result = gate.overlaps(gate.load(DEV2), files=_tracked_corpus(("data/benchmarks/dialogues_dev2/",)))
     assert result["files"] > 100 and result["overlaps"] == []
 
 

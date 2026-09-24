@@ -2208,7 +2208,9 @@ class RelationalParser:
                     "candidates": candidates}
         return {"stage": "answered", "input": text, **result}
 
-    def _clause_meanings(self, literal, *, derivations=None, matched=None, guard_names=True):
+    def _clause_meanings(self, literal, *, derivations=None, matched=None, guard_names=True, exclude=()):
+        """The clause's readings of the best rank. ``exclude``: meaning keys already returned (by
+        ``readings``): they are left out, so the readings of the next rank are found (goal G5.4 B)."""
         from numeral_semantics import parse_numeral
         # Where a declared holder form rewrites the clause (제 동기 서준 -> 서준, 예린 씨 -> 예린), the
         # typed words are that form: a reading that keeps them inside a name is not taken.
@@ -2217,13 +2219,13 @@ class RelationalParser:
             holder_note = None          # an article dropped before a numeral names no holder
         for said in ([held] if holder_note is not None else []) + [literal]:
             chained = self._quantity_chain_meaning(said)
-            if chained is not None:
+            if chained is not None and json.dumps(chained, sort_keys=True, ensure_ascii=False) not in exclude:
                 return {json.dumps(chained, sort_keys=True, ensure_ascii=False): chained}
             counted = self._count_question_meaning(said) or self._why_count_meaning(said)
-            if counted is not None:
+            if counted is not None and json.dumps(counted, sort_keys=True, ensure_ascii=False) not in exclude:
                 return {json.dumps(counted, sort_keys=True, ensure_ascii=False): counted}
             compared = self._comparison_meaning(said) or self._same_meaning(said)
-            if compared is not None:
+            if compared is not None and json.dumps(compared, sort_keys=True, ensure_ascii=False) not in exclude:
                 return {json.dumps(compared, sort_keys=True, ensure_ascii=False): compared}
         meanings, best_rank = {}, None
         for candidate, normalization in self._clause_candidates(literal):
@@ -2377,6 +2379,9 @@ class RelationalParser:
                     # tails after a past stem, 이름밖꼴).
                     if self._names_hold_adnominal(grounded_names):
                         continue
+                    if exclude and json.dumps(self._grounded(meaning, slots, normalization, example), sort_keys=True,
+                                              ensure_ascii=False) in exclude:
+                        continue
                     if best_rank is None or rank > best_rank:
                         meanings, best_rank = {}, rank
                         if derivations is not None:
@@ -2384,13 +2389,7 @@ class RelationalParser:
                         if matched is not None:
                             matched.clear()
                     if rank == best_rank:
-                        grounded = self._join_actor_target(substitute(meaning, slots))
-                        if normalization and normalization.get("polarity") is False:
-                            grounded = {**grounded, "polarity": False}
-                        if isinstance(example.get("place"), list):
-                            # the slots the example declares places (a holder that is a place: W3-1)
-                            grounded = {**grounded, "places": [self.canonical_name(str(slots[name]).strip())
-                                                               for name in example["place"] if slots.get(name)]}
+                        grounded = self._grounded(meaning, slots, normalization, example)
                         key = json.dumps(grounded, sort_keys=True, ensure_ascii=False)
                         # Exact evidence is tried first; do not replace its proof
                         # with a later equivalent normalization.
@@ -2404,6 +2403,17 @@ class RelationalParser:
                             matched.setdefault(key, index)
                         meanings[key] = grounded
         return meanings
+
+    def _grounded(self, meaning, slots, normalization, example):
+        """An example's meaning with its slots filled: the reading a clause gives."""
+        grounded = self._join_actor_target(substitute(meaning, slots))
+        if normalization and normalization.get("polarity") is False:
+            grounded = {**grounded, "polarity": False}
+        if isinstance(example.get("place"), list):
+            # the slots the example declares places (a holder that is a place: W3-1)
+            grounded = {**grounded, "places": [self.canonical_name(str(slots[name]).strip())
+                                               for name in example["place"] if slots.get(name)]}
+        return grounded
 
     def _join_actor_target(self, meaning):
         """주격 행위자와 수량 대상은 역할을 보존한 채 한 상태 대상을 가리킨다.
@@ -2502,6 +2512,7 @@ class RelationalParser:
                 continue
             new_key = json.dumps(changed, sort_keys=True, ensure_ascii=False)
             out[new_key] = changed
+            self.__dict__.setdefault("_owner_origin", {})[new_key] = key
             if key in derivations.get(literal, {}):
                 derivations[literal][new_key] = derivations[literal][key]
             if key in matched.get(literal, {}):
@@ -2849,7 +2860,41 @@ class RelationalParser:
         return {"query": [{"triple": [asked.group("item").strip(), "count", "?n"],
                             "render": list(render)}]}
 
-    def parse(self, text, *, partial=False, events=False, verbs=None, repair=False, _diagnostics=None):
+    def readings(self, text, *, limit=6, **kw):
+        """Every reading the declarations allow for ``text``, the reader's own first (goal G5.4 B, design note
+        §10). Each is a whole parse (``parse``'s result) with ``used``: the clause readings it rests on. The
+        next is found by parsing again with a clause reading already used left out, so a clause's readings
+        of a lower rank, a repair, an event reading or a gapped reading come in their turn; a clause read two
+        ways at one rank (which ``parse`` alone leaves unread) gives one reading per way. Readings that say
+        the same are given once. Nothing is chosen here: the conversation checks them (reasoning_context)."""
+        out, seen, tried = [], set(), set()
+        queue = [frozenset()]
+        while queue and len(out) < limit and len(tried) < limit * 4:
+            excluded = queue.pop(0)
+            if excluded in tried:
+                continue
+            tried.add(excluded)
+            used, notes = [], []
+            parsed = self.parse(text, _diagnostics=notes, _exclude=excluded, _used=used, **kw)
+            if parsed is None:
+                for note in notes:
+                    keys = note.get("candidate_keys") or []
+                    if note.get("reason") == "ambiguous_clause" and len(keys) > 1:
+                        queue += [excluded | frozenset(k for k in keys if k != keep) for keep in keys]
+                        break
+                continue
+            said = json.dumps([sorted(json.dumps(f["triple"], ensure_ascii=False) for f in parsed.get("facts", [])),
+                               parsed.get("query"),
+                               sorted(json.dumps([e.get("verb"), e.get("자리")], ensure_ascii=False, sort_keys=True)
+                                      for e in parsed.get("사건", []))], ensure_ascii=False, sort_keys=True)
+            if said not in seen:
+                seen.add(said)
+                out.append({"parsed": parsed, "used": list(used), "excluded": sorted(excluded), "said": said})
+            queue += [excluded | {key} for key in used if key not in excluded]
+        return out
+
+    def parse(self, text, *, partial=False, events=False, verbs=None, repair=False, _diagnostics=None,
+              _exclude=(), _used=None):
         """``events`` 를 켜면 아무 사례도 못 읽은 구절을 **사건 꼴**로도 본다.
 
         조사가 자리를 짚고 남은 한 낱말이 움직임인 꼴이다. 뜻은 여기서 안
@@ -2883,6 +2928,8 @@ class RelationalParser:
         # Only a fully recognized prefix authorizes a soft clause boundary.
         # A failed suffix guess (e.g. a noun ending in 고) never drops source text.
         cache, derivations = {}, {}
+        # a clause reading after _owner_items -> the reading _clause_meanings gave (what ``readings`` leaves out)
+        self._owner_origin = {}
 
         def without_hypothetical_prefix(literal):
             leading = literal[:len(literal) - len(literal.lstrip())]
@@ -2901,7 +2948,7 @@ class RelationalParser:
                 matched_examples[literal] = {}
                 candidate, _marker = without_hypothetical_prefix(literal)
                 cache[literal] = self._clause_meanings(candidate, derivations=derivations[literal],
-                                                       matched=matched_examples[literal])
+                                                       matched=matched_examples[literal], exclude=_exclude)
             return cache[literal]
 
         def learned_event(literal):
@@ -3136,14 +3183,19 @@ class RelationalParser:
                     clauses[index] = (winners, evidence)
                     changed = True
             if not changed:
-                diagnostics.extend({"reason": "ambiguous_clause", "evidence": evidence,
-                                    "candidates": options} for options, evidence in clauses if len(options) > 1)
+                origin = getattr(self, "_owner_origin", {})
+                diagnostics.extend({"reason": "ambiguous_clause", "evidence": evidence, "candidates": options,
+                                    "candidate_keys": [origin.get(k, k) for k in (
+                                        json.dumps(o, sort_keys=True, ensure_ascii=False) for o in options)]}
+                                   for options, evidence in clauses if len(options) > 1)
                 return None
         previous_rows, previous_end = [], None
         choices = []
         for options, evidence in clauses:
             meaning = options[0]
             key = json.dumps(meaning, sort_keys=True, ensure_ascii=False)
+            if _used is not None:
+                _used.append(getattr(self, "_owner_origin", {}).get(key, key))
             normalization = derivations.get(evidence["text"], {}).get(key)
             if normalization:
                 evidence = {**evidence, "normalization": normalization}
