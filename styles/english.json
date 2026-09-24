@@ -1810,6 +1810,116 @@
     }
    },
    {
+    "text": "how many marbles do the two of them have together",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "text": "how many marbles do both of them have together",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "text": "how many marbles do the two of them have",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "text": "how many marbles do the two of them have in total",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "text": "how many marbles do both of them have in total",
+    "slots": {
+     "item": "marbles"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": "two",
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    }
+   },
+   {
     "text": "the pencil was in the drawer",
     "slots": {
      "item": "pencil",
@@ -2480,7 +2590,8 @@
   "_places": "A place holds a count like a person: said with its article (the oak cupboard has 18; there are 18 in the oak cupboard; 18 are in the oak cupboard), it receives what is left at, left in or put in it, gives what is taken from it, and both sides of a move (moved, were moved from ... to ...) change. Its name is every word after the article, so a place of several words (the north warehouse) is one holder. Asked: how many are in it, are there in it, does it have.",
   "_zero_and_only": "A zero count is said with the negative determiner no (Haru has no marbles; there are no marbles in the oak cupboard) and is the count 0. 'only has X, N of them' and 'all Haru has is X, N of them' state the count of X after the thing. 'not a single' says the thing in the singular and is the count 0 of its plural (Haru doesn't have a single marble; the oak cupboard doesn't have a single marble). The partitive 'of them' after the count may be left out (Haru only has marbles, 18).",
   "_vague": "A count not given yet: 'some' before the thing (Haru has some marbles; the oak cupboard has some marbles; there are some marbles in it; Haru has 18 marbles and some pears) is recorded as a count not known (count_unknown), and a question about it is held. The number said later without its holder (18 of them; there are 18 of them; it's 18 marbles; Haru has 18 of them) is the count of the one count not known yet that it fits: the last one said, the one of that thing, or the one of that holder.",
-  "_use_for": "Things used for a purpose leave the holder; the purpose after 'for the' fills no holder (Haru used 2 marbles for the party)."
+  "_use_for": "Things used for a purpose leave the holder; the purpose after 'for the' fills no holder (Haru used 2 marbles for the party).",
+  "_two_of_them": "'the two of them' and 'both of them' ask the sum of exactly two holders of the thing; with more holders the question does not say which two and is not answered."
  },
  "문장분리": {
   "_설명": "Clause boundaries are punctuation and declared connectives. A comma splits only when the part before it is a complete clause.",
@@ -4178,14 +4289,6 @@
    "to": "1"
   },
   {
-   "from": "the two of them",
-   "to": "they"
-  },
-  {
-   "from": "both of them",
-   "to": "they"
-  },
-  {
    "from": "the two of us",
    "to": "we"
   },
@@ -4198,7 +4301,7 @@
    "to": ""
   }
  ],
- "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many). Being responsible for a count is having it (is/was responsible for = has/had). The discourse adverbs that place or source a statement but change no role are left out (after that, afterwards, apparently; too, also; by the way, to be exact, I just counted, not sure how many), and 'at all' after a zero. 'the same' before the counted noun names the kind already said and adds nothing (the same 4 pillows = 4 pillows). The negated possessive with 'any' or 'a single' is a zero count: doesn't have any / hasn't got any / doesn't have a single = has no (don't, haven't: have no). The indefinite article before a counted noun is the numeral one (got a fig = got 1 fig). 'the two of them' and 'both of them' name the holders the conversation has, as 'they' does.",
+ "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many). Being responsible for a count is having it (is/was responsible for = has/had). The discourse adverbs that place or source a statement but change no role are left out (after that, afterwards, apparently; too, also; by the way, to be exact, I just counted, not sure how many), and 'at all' after a zero. 'the same' before the counted noun names the kind already said and adds nothing (the same 4 pillows = 4 pillows). The negated possessive with 'any' or 'a single' is a zero count: doesn't have any / hasn't got any / doesn't have a single = has no (don't, haven't: have no). The indefinite article before a counted noun is the numeral one (got a fig = got 1 fig).",
  "이름답": {
   "heads": [
    "and what about",

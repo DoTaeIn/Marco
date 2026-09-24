@@ -1470,10 +1470,13 @@ class RelationalParser:
                   if predicate == "count" and isinstance(subject, str)}
         members = spec.get("members")
         pointers = {word.lower() for word in self.pointers}
-        if members == "all" or (isinstance(members, list)
-                                and any(str(m).lower() in pointers for m in members)):
+        if members in ("all", "two") or (isinstance(members, list)
+                                         and any(str(m).lower() in pointers for m in members)):
             subjects = [s for s in counts if item is None or s == item or s.endswith(" " + item)]
             if item is None and len({tuple(s.split()[1:]) for s in subjects}) > 1:
+                return None
+            # "the two of them" is a sum of two: with more holders it does not say which two
+            if members == "two" and len(set(subjects)) != 2:
                 return None
         elif isinstance(members, list):
             subjects = []
@@ -2557,10 +2560,12 @@ class RelationalParser:
                 particle, stem = None, word
             name.append(stem)
         # A declared group word ("두 사람", "둘") in a total names every holder.
-        joined_name, group = " ".join(name), False
+        joined_name, group, pair = " ".join(name), False, False
         for phrase in sorted(spec.get("group_words", []), key=len, reverse=True):
             if joined_name == phrase or joined_name.startswith(phrase + " "):
                 joined_name, group = joined_name[len(phrase):].strip(), True
+                # a group word that names two (두 사람, 둘이) sums exactly two holders
+                pair = phrase in spec.get("pair_words", [])
                 break
         if total and not group:
             # ``A와 B는 구슬이 모두 몇 개야``: two holders joined by a declared
@@ -2580,7 +2585,7 @@ class RelationalParser:
         if total or group:
             if not (total and group):
                 return None
-            return {"query": [{"total": {"members": "all", "item": joined_name or None},
+            return {"query": [{"total": {"members": "two" if pair else "all", "item": joined_name or None},
                                "render": list(spec["render"])}]}
         if not name:
             return None
