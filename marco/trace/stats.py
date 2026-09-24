@@ -39,17 +39,19 @@ HELD = ("hold", "refused")
 def turns(source):
     """One row per ``input_received``, in ledger order."""
     graph = Graph(source)
-    rows, current = [], {}
+    rows, current, by_input = [], {}, {}
     for event in graph.events:
         kind, payload = event["kind"], event["payload"]
         if kind == "input_received":
             row = {"trace_id": event["trace_id"], "conversation": payload.get("conversation"),
                    "turn": payload.get("turn"), "label": payload.get("label"), "act": payload.get("act"),
                    "input": event["event_id"], "status": None, "gate_status": None, "reason": None,
-                   "reason_source": None, "missing": [], "state_changed": 0, "superseded": 0, "output": None,
-                   "statement_inputs": None, "cited_sources": None, "withdrawn_used": None}
+                   "reason_source": None, "missing": [], "waits_on": None, "state_changed": 0,
+                   "superseded": 0, "output": None, "statement_inputs": None, "cited_sources": None,
+                   "withdrawn_used": None}
             rows.append(row)
             current[event["trace_id"]] = row
+            by_input[event["event_id"]] = row
             continue
         row = current.get(event["trace_id"])
         if row is None:
@@ -60,6 +62,10 @@ def turns(source):
         elif kind == "hold":
             row["reason"], row["reason_source"] = payload.get("reason"), payload.get("reason_source")
             row["missing"] = sorted(payload.get("missing") or {})
+            said = (payload.get("missing") or {}).get("said")
+            if said in by_input and said != row["input"]:
+                earlier = by_input[said]                  # an earlier turn the hold is about
+                row["waits_on"] = {k: earlier[k] for k in ("turn", "label", "act", "status", "reason")}
         elif kind == "output_created":
             row["status"], row["gate_status"], row["output"] = event["status"], payload.get("gate_status"), \
                 event["event_id"]
@@ -90,7 +96,7 @@ def table(source):
         [r for r in rows if r["gate_status"] == "observed"]
     recorded = [r for r in statements if r["state_changed"]]
     answered = [r for r in rows if r["status"] == "answered"]
-    reasons, missing = {}, {}
+    reasons, missing, waiting = {}, {}, {}
     for name, members in groups:
         if name in ("answerable", "all"):
             held = [r for r in members if r["status"] in HELD]
@@ -98,6 +104,10 @@ def table(source):
             missing[name] = {reason: dict(Counter(k for r in held if r["reason"] == reason
                                                   for k in r["missing"]).most_common())
                              for reason in reasons[name]}
+            # A hold about an earlier turn: that turn's expected act (or label) and its own output status.
+            waiting[name] = {"held": len(held), "on_earlier_turn": dict(Counter(
+                "%s turn %s" % (r["waits_on"]["act"] or r["waits_on"]["label"] or "a",
+                                r["waits_on"]["status"]) for r in held if r["waits_on"]).most_common())}
     sources = dict(Counter(r["reason_source"] for r in rows if r["status"] in HELD).most_common())
     return {
         "turns": len(rows),
@@ -106,6 +116,7 @@ def table(source):
         "outputs": {name: _outputs(members) for name, members in groups},
         "holds_by_reason": reasons,
         "hold_missing": missing,
+        "holds_waiting": waiting,
         "hold_reason_sources": sources,
         "record": {"denominator": "turns whose expected act is record" if labelled
                    else "turns the engine recorded (gate status observed)",
@@ -134,6 +145,10 @@ def format_table(result):
             out.append("  %-34s %4d  %5.1f%%  %s" % (
                 reason, count, 100.0 * count / total if total else 0,
                 ("missing: " + ", ".join("%s %d" % kv for kv in keys.items())) if keys else ""))
+        waits = result["holds_waiting"][name]["on_earlier_turn"]
+        if waits:
+            out.append("  of these, about an earlier turn %d: %s" % (
+                sum(waits.values()), ", ".join("%s %d" % kv for kv in waits.items())))
     out += ["", "hold reason taken from: " + ", ".join("%s %d" % kv for kv in result["hold_reason_sources"].items())]
     record = result["record"]
     out += ["", "record rate: %d/%d statement turns followed by state_changed%s (%s)" % (

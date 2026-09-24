@@ -106,6 +106,9 @@ def view(envelope, context_result=None, error=None, meaning=None):
                "retrieval": trace.get("retrieval") if isinstance(trace.get("retrieval"), dict) else {},
                "sources": trace.get("sources") if isinstance(trace.get("sources"), list) else [],
                "rankings": trace.get("rankings") if isinstance(trace.get("rankings"), list) else [],
+               "route": trace.get("route") if isinstance(trace.get("route"), dict) else {},
+               "semantic_model": (answer.get("semantic_parse") or trace.get("semantic_parse") or {}).get("model")
+               if isinstance(answer.get("semantic_parse") or trace.get("semantic_parse"), dict) else None,
                "request": _request_kind(env.get("understanding")),
                "meaning": (context or {}).get("meaning") if isinstance((context or {}).get("meaning"), dict) else None}
     else:
@@ -115,7 +118,8 @@ def view(envelope, context_result=None, error=None, meaning=None):
                "winner": env.get("operator"), "operator": env.get("operator"),
                "transitions": env.get("transitions") or [], "verification": env.get("verification") or {},
                "text": env.get("answer") if isinstance(env.get("answer"), str) else "",
-               "retrieval": {}, "sources": [], "rankings": [], "request": None,
+               "retrieval": {}, "sources": [], "rankings": [], "route": {}, "semantic_model": None,
+               "request": None,
                "meaning": env.get("meaning") if isinstance(env.get("meaning"), dict) else None}
     out["error"] = error
     out["transitions"] = [row for row in out["transitions"] if isinstance(row, dict)]
@@ -283,6 +287,8 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
     approximate = ["web_research"] if v["phase"] == "research" else []
     if report and report.get("learned"):
         approximate.append("realizer_learning")
+    if v["semantic_model"] and v["semantic_model"] not in rt.DETERMINISTIC_SEMANTIC:
+        approximate.append("semantic_backend")
     written = []
 
     def emit(kind, **fields):
@@ -348,7 +354,8 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
                   payload={"operator": str(v["operator"]), "mode": v["mode"], "verdict": v["verdict"],
                            "transitions": len(v["transitions"]), "statements": len(refs)})
     else:
-        candidates = [[_scalar(r[0]), _scalar(r[1])] for r in v["rankings"][:5]
+        ranked = v["route"].get("candidates") if isinstance(v["route"].get("candidates"), list) else v["rankings"]
+        candidates = [[_scalar(r[0]), _scalar(r[1])] for r in ranked[:5]
                       if isinstance(r, (list, tuple)) and len(r) >= 2]
         op = emit("routing_selected", parent_ids=[inp], input_refs=refs, subsystem="routing",
                   epistemic_status="inferred",

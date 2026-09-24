@@ -17,7 +17,7 @@ RT = {"build": "test", "pack": None}
 
 
 def _turn(book, conversation, n, *, label=None, act=None, status="answered", reason=None, changes=0,
-          parents=()):
+          parents=(), missing=None):
     trace = book.new_trace_id()
     payload = {"text": "t", "sha256": "0", "conversation": conversation, "turn": n}
     if label:
@@ -30,7 +30,8 @@ def _turn(book, conversation, n, *, label=None, act=None, status="answered", rea
                                      "cause": said["event_id"]})["event_id"]]
     if status in ("hold", "refused"):
         last = [book.append("hold", trace, parent_ids=last, status=status, runtime=RT,
-                            payload={"reason": reason, "reason_source": "meaning"})["event_id"]]
+                            payload={"reason": reason, "reason_source": "meaning",
+                                     "missing": missing or {}})["event_id"]]
     if status == "answered":
         last = [book.append("conclusion_created", trace, parent_ids=last + list(parents),
                             runtime=RT)["event_id"]]
@@ -81,6 +82,18 @@ def test_holds_by_reason_record_rate_and_graph_checks(tmp_path):
     assert result["graph_checks"] == {"answered": 3, "no_statement_or_source": 1, "withdrawn_evidence_used": 1}
     text = stats.format_table(result)
     assert "unknown_word" in text and "record rate: 1/2" in text
+
+
+def test_a_hold_about_an_earlier_unread_turn_is_counted_as_waiting_on_it(tmp_path):
+    book = Ledger(tmp_path, "cascade")
+    unread, _ = _turn(book, "c", 1, label="hold", act="record", status="hold", reason="unknown_word")
+    _turn(book, "c", 2, label="answerable", act="answer", status="hold", reason="unread_event",
+          missing={"said": unread["event_id"]})
+    _turn(book, "c", 3, label="answerable", act="answer", status="hold", reason="input_understanding_failed")
+    result = stats.table(book)
+    assert result["holds_waiting"]["answerable"] == {"held": 2, "on_earlier_turn": {"record turn hold": 1}}
+    assert result["hold_missing"]["answerable"]["unread_event"] == {"said": 1}
+    assert "about an earlier turn 1: record turn hold 1" in stats.format_table(result)
 
 
 def test_an_unlabelled_ledger_counts_statements_the_engine_recorded(tmp_path):

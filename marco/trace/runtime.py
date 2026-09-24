@@ -34,7 +34,10 @@ ENCODER_DEFAULT = "문자"
 NONDETERMINISTIC = {
     "web_research": "goal_runtime research reads the open web (the gate stubs it)",
     "realizer_learning": "the realizer learns expressions from user sentences (live learning)",
+    "semantic_backend": "semantic_parser ran a backend other than the structural one (an injected model)",
 }
+# semantic_parser backends whose output is a function of the input text alone.
+DETERMINISTIC_SEMANTIC = frozenset({"local-structural-semantic-parser-v1", "no-token-semantic-parser"})
 
 _cache = {}
 
