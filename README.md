@@ -36,6 +36,8 @@ arrives and `40000.0` after (engine.py:4482-4488).
 | [docs/architecture/marco.language.realizer.md](docs/architecture/marco.language.realizer.md) | Package `marco.language.realizer`, the language seam |
 | [docs/architecture/mco.md](docs/architecture/mco.md) | Package `mco`, the public API |
 | [docs/architecture/mco.backends.md](docs/architecture/mco.backends.md) | Package `mco.backends` |
+| [docs/en/pipelines.md](docs/en/pipelines.md) | The ten named pipelines, Aisthesis to Hypomnema, and what each is today |
+| [docs/architecture/pipeline-names.md](docs/architecture/pipeline-names.md) | The canonical naming reference for those pipelines |
 | [docs/architecture/structure-audit.md](docs/architecture/structure-audit.md) | Structure audit at `6195040`: every root file, the import graph, the target layout |
 | [docs/mco/README.md](docs/mco/README.md) | `mco` user guide |
 | [docs/ko/2026-09-22-freeze-decision.md](docs/ko/2026-09-22-freeze-decision.md) | What is frozen, the MARCO 1 gate, the goal queue |

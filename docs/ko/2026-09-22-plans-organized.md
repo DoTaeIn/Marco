@@ -18,6 +18,7 @@ Plans that existed only in conversation are recorded here in full.
 | Language realization design spec | this file §3 | Recorded here in full |
 | Repository architecture refactor | this file §4 | Postponed until running goals finish |
 | Perception / reasoning / emotion philosophy (owner's design note, verbatim) | `docs/ko/2026-09-24-perception-reasoning-emotion-philosophy.md` | Idea. Principles adopted; nothing scheduled before MARCO 1 |
+| Canonical pipeline names (owner's reference, 10 Greek names + 4 reserved) and the reader's article with today's status per pipeline | `docs/architecture/pipeline-names.md`, `docs/en/pipelines.md` | Done 2026-09-24; names to be used in docs and papers from now on |
 | License change: MARCO Engine License 1.0 (Apache 2.0 + visible attribution in user-facing products, white-label on request), graphs CC BY 4.0 | `LICENSE`, `LICENSE-GRAPHS`, `NOTICE`, README §License | Done 2026-09-24 (3d738ec), brought forward because a fork appeared; legal review of the wording still the owner's item |
 | Trace / event logging architecture (owner's design note, verbatim, 45 sections) | `docs/ko/2026-09-24-trace-logging-design.md` | Idea. Ledger core scheduled now as L1; SOMA / ALMA / budget traces post-gate |
 | L1 trace ledger goal: schema, append-only ledger, adapter from the turn envelope, why chain, failure statistics | `docs/ko/2026-09-24-trace-ledger-goal.md` | Done 2026-09-24, merged; emission at the engine sites is request L1-1 for round 5 |
