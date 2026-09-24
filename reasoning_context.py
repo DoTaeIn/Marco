@@ -4023,6 +4023,27 @@ class ReasoningContext:
         places = {place for fact in facts for place in fact.get("places") or [] if isinstance(place, str)}
         said = json.dumps(meaning, ensure_ascii=False)
         holders = {place: {"kind": "place"} for place in sorted(places) if place and place in said}
+        # A titled or relational holder (request W3-1 item 1, W5-3 item 6): the key the facts use, said as the
+        # user said it where a declared holder form rewrote the words to the key (the typed words that stand
+        # where the reading has the key; the latest statement that named it so).
+        for fact in facts:
+            evidence = fact.get("evidence") or {}
+            canonical = (evidence.get("normalization") or {}).get("canonical")
+            typed = evidence.get("text")
+            subject = fact.get("triple", [None])[0]
+            if ((evidence.get("normalization") or {}).get("rule") != "declared-holder-forms-v1"
+                    or not isinstance(canonical, str) or not isinstance(typed, str) or not isinstance(subject, str)):
+                continue
+            key = " ".join(subject.split()[:-1])        # the holder part of "<holder> <thing>"
+            at = canonical.find(key) if key else -1
+            if at < 0:
+                continue
+            before, after = canonical[:at], canonical[at + len(key):]
+            if not (typed.startswith(before) and typed.endswith(after)) or len(typed) < len(before) + len(after):
+                continue
+            words = typed[len(before):len(typed) - len(after)].strip()
+            if words and words != key and key in words and key in said and key not in places:
+                holders[key] = {"kind": "named", "said": words}
         if holders:
             result["meaning"] = {**meaning, "holders": {**(meaning.get("holders") or {}), **holders}}
 
