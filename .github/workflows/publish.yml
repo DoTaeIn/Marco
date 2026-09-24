@@ -16,8 +16,8 @@ jobs:
       - name: Install
         run: |
           python -m pip install --upgrade pip
-          pip install build twine pytest pytest-xdist numpy
-          pip install -e .
+          pip install build twine pytest pytest-xdist
+          pip install -e .[marco]
       - name: Test the package
         env:
           KG_ENCODER: 문자

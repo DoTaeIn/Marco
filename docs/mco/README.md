@@ -37,8 +37,8 @@ pip install -e .
 ```
 
 The `mco` package has no dependencies. Running a model uses the **MARCO
-compatibility backend**, which needs a MARCO checkout and its dependency
-(`numpy`). `mco` looks for the checkout here, in order:
+compatibility backend**, which needs a MARCO checkout and its dependencies
+(`numpy` and `pillow`, installed by `pip install mco[marco]`). `mco` looks for the checkout here, in order:
 
 1. `mco.load(..., marco_root="/path/to/marco")`
 2. the `MCO_MARCO_ROOT` environment variable
@@ -50,7 +50,7 @@ model today, clone the checkout and point `mco` at it:
 
 ```bash
 git clone https://github.com/DoTaeIn/Marco
-pip install mco[marco]          # adds numpy
+pip install mco[marco]          # adds numpy and pillow
 export MCO_MARCO_ROOT=$PWD/Marco
 mco run MARCO-1-preview.mco "12만원 나왔어"
 ```

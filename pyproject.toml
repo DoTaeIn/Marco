@@ -20,7 +20,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 # The public API has no dependencies. The MARCO compatibility backend runs a
-# MARCO checkout (located via MCO_MARCO_ROOT), which itself needs numpy.
+# MARCO checkout (located via MCO_MARCO_ROOT), which itself needs numpy and Pillow.
 dependencies = []
 
 [project.urls]
@@ -31,7 +31,7 @@ Issues = "https://github.com/DoTaeIn/Marco/issues"
 Releases = "https://github.com/DoTaeIn/Marco/releases"
 
 [project.optional-dependencies]
-marco = ["numpy"]
+marco = ["numpy", "pillow"]
 test = ["pytest>=7"]
 
 [project.scripts]
