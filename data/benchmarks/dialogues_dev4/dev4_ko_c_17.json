@@ -4,6 +4,7 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
+  "correction",
   "ownership",
   "transfer"
  ],
@@ -11,34 +12,35 @@
   "word_order": "free",
   "register": "haeyo",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_043",
+  "scenario": "s4_ko_c_050",
   "half": "check",
   "focus": [
    "holders",
-   "transfer_verbs",
-   "zero_vague"
+   "question_forms",
+   "transfer_verbs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:relation_unnamed",
-   "transfer_verbs:give_back",
-   "zero_vague:also_some",
-   "zero_vague:only"
+   "corrections:amount",
+   "holders:relation",
+   "transfer_verbs:carry",
+   "transfer_verbs:hold",
+   "transfer_verbs:pass"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "유준은 건전지만 열한 개 있어요.",
+   "say": "지윤은 자전거 열다섯 대를 가지고 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "zero_vague:only"
+    "transfer_verbs:hold"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -54,30 +56,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "유준",
-      "item": "건전지",
-      "quantity": 11
+      "holder": "지윤",
+      "item": "자전거",
+      "quantity": 15
      }
     ],
     "state": [
      {
-      "entity": "유준",
-      "item": "건전지",
-      "quantity": 11
+      "entity": "지윤",
+      "item": "자전거",
+      "quantity": 15
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "제 조카는 건전지가 여덟 개 있고 망치도 좀 있어요.",
+   "say": "지윤 사촌 상훈은 자전거가 네 대 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation_unnamed",
-    "zero_vague:also_some"
+    "holders:relation"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -93,40 +94,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "조카",
-      "item": "건전지",
-      "quantity": 8
-     },
-     {
-      "type": "has",
-      "holder": "조카",
-      "item": "망치",
-      "quantity": null
+      "holder": "상훈",
+      "item": "자전거",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "조카",
-      "item": "건전지",
-      "quantity": 8
-     },
-     {
-      "entity": "조카",
-      "item": "망치",
-      "quantity": null
+      "entity": "상훈",
+      "item": "자전거",
+      "quantity": 4
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "유준이 제 조카한테 건전지 한 개를 돌려줬어요.",
+   "say": "유진은 자전거 열한 대를 들고 있어요.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "transfer_verbs:give_back"
+    "transfer_verbs:carry"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -141,75 +131,172 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "유준",
-      "to": "조카",
-      "item": "건전지",
-      "quantity": 1
+      "type": "has",
+      "holder": "유진",
+      "item": "자전거",
+      "quantity": 11
      }
     ],
     "state": [
      {
-      "entity": "유준",
-      "item": "건전지",
-      "quantity": 10
-     },
-     {
-      "entity": "조카",
-      "item": "건전지",
-      "quantity": 9
+      "entity": "유진",
+      "item": "자전거",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "제 조카는 지금 건전지가 몇 개 있어요?",
-   "label": "answerable",
+   "say": "상훈이가 지윤한테 자전거 한 대를 넘겼어요.",
+   "label": "hold",
    "tags": [
     "transfer"
    ],
-   "classes": [],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
    "scenario_turn": 4,
    "expect": {
-    "act": "answer",
-    "entity": "조카",
-    "quantity": 9,
-    "relation": "count",
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
     "evidence": {
      "turns": [
-      2,
-      3
+      4
      ]
     },
-    "item": "건전지"
+    "events": [
+     {
+      "type": "transfer",
+      "from": "상훈",
+      "to": "지윤",
+      "item": "자전거",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "상훈",
+      "item": "자전거",
+      "quantity": 3
+     },
+     {
+      "entity": "지윤",
+      "item": "자전거",
+      "quantity": 16
+     }
+    ]
    }
   },
   {
    "n": 5,
-   "say": "유준과 제 조카는 합쳐서 건전지가 몇 개 있어요?",
+   "say": "아, 한 대가 아니라 두 대였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      5
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "상훈",
+      "to": "지윤",
+      "item": "자전거",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "상훈",
+      "to": "지윤",
+      "item": "자전거",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "상훈",
+      "item": "자전거",
+      "quantity": 2
+     },
+     {
+      "entity": "지윤",
+      "item": "자전거",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "지윤이 지금 자전거가 몇 대 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 5,
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "지윤",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "자전거",
+    "retracted_quantity": 16,
+    "reexecuted_quantity": 18
+   }
+  },
+  {
+   "n": 7,
+   "say": "지윤과 유진이 합쳐서 자전거가 몇 대 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
    "expect": {
     "act": "answer",
     "entity": [
-     "유준",
-     "조카"
+     "지윤",
+     "유진"
     ],
-    "quantity": 19,
+    "quantity": 28,
     "relation": "total",
     "evidence": {
      "turns": [
       1,
-      2,
-      3
+      3,
+      4,
+      5
      ]
     },
-    "item": "건전지"
+    "item": "자전거"
    }
   }
  ]

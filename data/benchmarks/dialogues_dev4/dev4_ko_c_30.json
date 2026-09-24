@@ -4,43 +4,44 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "correction",
+  "ambiguous_referent",
   "ownership",
-  "transfer",
-  "why"
+  "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "haeyo",
+  "register": "banmal",
   "split": "one_fact_per_turn",
-  "correction_position": "late",
+  "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_117",
+  "scenario": "s4_ko_c_119",
   "half": "check",
   "focus": [
-   "holders",
-   "partitives",
-   "question_forms"
+   "fronting",
+   "question_forms",
+   "referent_repairs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "corrections:amount",
    "holders:first_person",
    "holders:relation",
-   "question_forms:q_two_total"
+   "holders:relation_unnamed",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "transfer_verbs:hand_over"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 친구 재윤은 스티커 열여섯 장이 있어요.",
+   "say": "나는 여행가방 열여섯 개를 맡고 있어.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "holders:first_person"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -56,15 +57,15 @@
     "events": [
      {
       "type": "has",
-      "holder": "재윤",
-      "item": "스티커",
+      "holder": "나",
+      "item": "여행가방",
       "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "재윤",
-      "item": "스티커",
+      "entity": "나",
+      "item": "여행가방",
       "quantity": 16
      }
     ]
@@ -72,13 +73,13 @@
   },
   {
    "n": 2,
-   "say": "제가 스티커 열 장을 들고 있어요.",
+   "say": "내 조카는 여행가방 일곱 개 있어.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:first_person"
+    "holders:relation_unnamed"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -94,30 +95,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "나",
-      "item": "스티커",
-      "quantity": 10
+      "holder": "조카",
+      "item": "여행가방",
+      "quantity": 7
      }
     ],
     "state": [
      {
-      "entity": "나",
-      "item": "스티커",
-      "quantity": 10
+      "entity": "조카",
+      "item": "여행가방",
+      "quantity": 7
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "재윤이가 저한테 스티커 다섯 장을 줬어요.",
+   "say": "준서는 여행가방 열 개를 맡고 있어.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
-   "classes": [
-    "holders:first_person"
-   ],
+   "classes": [],
    "scenario_turn": 3,
    "expect": {
     "act": "record",
@@ -131,183 +130,174 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "재윤",
-      "to": "나",
-      "item": "스티커",
-      "quantity": 5
+      "type": "has",
+      "holder": "준서",
+      "item": "여행가방",
+      "quantity": 10
      }
     ],
     "state": [
      {
-      "entity": "재윤",
-      "item": "스티커",
-      "quantity": 11
-     },
-     {
-      "entity": "나",
-      "item": "스티커",
-      "quantity": 15
+      "entity": "준서",
+      "item": "여행가방",
+      "quantity": 10
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "재윤은 지금 스티커가 몇 개 있어요?",
-   "label": "answerable",
+   "say": "준서 이웃 수빈은 여행가방 열세 개를 보관하고 있어.",
+   "label": "hold",
    "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 4,
-   "expect": {
-    "act": "answer",
-    "entity": "재윤",
-    "quantity": 11,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3
-     ]
-    },
-    "item": "스티커"
-   }
-  },
-  {
-   "n": 5,
-   "say": "아, 다섯 개가 아니라 열 개였어요.",
-   "label": "correction",
-   "tags": [
-    "correction"
+    "ownership"
    ],
    "classes": [
-    "corrections:amount"
+    "holders:relation"
    ],
-   "scenario_turn": 5,
+   "scenario_turn": 4,
    "expect": {
-    "act": "revise",
+    "act": "record",
     "entity": null,
     "quantity": null,
     "relation": null,
     "evidence": {
      "turns": [
-      3,
-      5
+      4
      ]
     },
-    "target_turn": 3,
-    "replaces": [
+    "events": [
      {
-      "type": "transfer",
-      "from": "재윤",
-      "to": "나",
-      "item": "스티커",
-      "quantity": 5
-     }
-    ],
-    "with": [
-     {
-      "type": "transfer",
-      "from": "재윤",
-      "to": "나",
-      "item": "스티커",
-      "quantity": 10
+      "type": "has",
+      "holder": "수빈",
+      "item": "여행가방",
+      "quantity": 13
      }
     ],
     "state": [
      {
-      "entity": "재윤",
-      "item": "스티커",
-      "quantity": 6
+      "entity": "수빈",
+      "item": "여행가방",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "수빈이가 내 조카한테 여행가방 한 개를 건넸어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "수빈",
+      "to": "조카",
+      "item": "여행가방",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "수빈",
+      "item": "여행가방",
+      "quantity": 12
      },
      {
-      "entity": "나",
-      "item": "스티커",
-      "quantity": 20
+      "entity": "조카",
+      "item": "여행가방",
+      "quantity": 8
      }
     ]
    }
   },
   {
    "n": 6,
-   "say": "재윤이 지금 스티커를 몇 장 가지고 있는지요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "answer",
-    "entity": "재윤",
-    "quantity": 6,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3,
-      5
-     ]
-    },
-    "item": "스티커",
-    "retracted_quantity": 11,
-    "reexecuted_quantity": 1
-   }
-  },
-  {
-   "n": 7,
-   "say": "두 사람 합쳐서 스티커가 몇 개 있어요?",
+   "say": "내 조카는 여행가방이 몇 개 남았어?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "question_forms:q_two_total"
+    "question_forms:q_left"
    ],
-   "scenario_turn": 7,
+   "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": [
-     "재윤",
-     "나"
-    ],
-    "quantity": 26,
-    "relation": "total",
+    "entity": "조카",
+    "quantity": 8,
+    "relation": "count",
     "evidence": {
      "turns": [
-      1,
       2,
-      3,
       5
      ]
     },
-    "item": "스티커"
+    "item": "여행가방"
+   }
+  },
+  {
+   "n": 7,
+   "say": "수빈은 지금 여행가방이 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "수빈",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4,
+      5
+     ]
+    },
+    "item": "여행가방"
    }
   },
   {
    "n": 8,
-   "say": "재윤이 지금 스티커가 왜 그만큼 있어요?",
-   "label": "why",
+   "say": "준서를 말한 거야.",
+   "label": "answerable",
    "tags": [
-    "why"
+    "ambiguous_referent",
+    "ownership"
    ],
-   "classes": [],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
    "scenario_turn": 8,
    "expect": {
-    "act": "explain",
-    "entity": "재윤",
-    "quantity": 6,
+    "act": "answer",
+    "entity": "준서",
+    "quantity": 10,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
-      3,
-      5
+      3
      ]
     },
-    "item": "스티커"
+    "item": "여행가방"
    }
   }
  ]

@@ -15,40 +15,38 @@
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_068",
+  "scenario": "s4_ko_c_071",
   "half": "check",
   "focus": [
    "fronting",
-   "referent_repairs",
-   "transfer_verbs"
+   "question_forms",
+   "referent_repairs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
    "fronting:adv_moment",
-   "fronting:front_then",
+   "fronting:front_recipient",
+   "holders:apposition",
    "holders:relation",
    "question_forms:q_hold",
    "question_forms:q_left",
    "question_forms:q_two_total",
    "referent_repairs:i_mean",
-   "transfer_verbs:carry",
-   "transfer_verbs:keep",
-   "transfer_verbs:lend",
-   "transfer_verbs:send"
+   "transfer_verbs:give_back",
+   "transfer_verbs:use_up"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 이웃 재윤은 장작 열다섯 묶음을 보관하고 있습니다. 지금은 없습니다.",
+   "say": "집주인 다은 씨가 지금은 샌드위치 여섯 개를 들고 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
     "fronting:adv_moment",
-    "holders:relation",
-    "transfer_verbs:keep"
+    "holders:apposition"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -64,30 +62,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "재윤",
-      "item": "장작",
-      "quantity": 15
+      "holder": "다은",
+      "item": "샌드위치",
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "재윤",
-      "item": "장작",
-      "quantity": 15
+      "entity": "다은",
+      "item": "샌드위치",
+      "quantity": 6
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "지안은 지금 장작 다섯 묶음을 들고 있습니다.",
+   "say": "제 친구 한결은 샌드위치 열다섯 개를 가지고 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "fronting:adv_moment",
-    "transfer_verbs:carry"
+    "holders:relation"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -103,30 +100,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "지안",
-      "item": "장작",
-      "quantity": 5
+      "holder": "한결",
+      "item": "샌드위치",
+      "quantity": 15
      }
     ],
     "state": [
      {
-      "entity": "지안",
-      "item": "장작",
-      "quantity": 5
+      "entity": "한결",
+      "item": "샌드위치",
+      "quantity": 15
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "그다음에, 지안이 재윤한테 장작 네 묶음을 보냈습니다.",
+   "say": "한결한테는 다은 씨가 샌드위치 네 개를 돌려주었습니다.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:front_then",
-    "transfer_verbs:send"
+    "fronting:front_recipient",
+    "transfer_verbs:give_back"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -142,21 +139,21 @@
     "events": [
      {
       "type": "transfer",
-      "from": "지안",
-      "to": "재윤",
-      "item": "장작",
+      "from": "다은",
+      "to": "한결",
+      "item": "샌드위치",
       "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "지안",
-      "item": "장작",
-      "quantity": 1
+      "entity": "다은",
+      "item": "샌드위치",
+      "quantity": 2
      },
      {
-      "entity": "재윤",
-      "item": "장작",
+      "entity": "한결",
+      "item": "샌드위치",
       "quantity": 19
      }
     ]
@@ -164,38 +161,36 @@
   },
   {
    "n": 4,
-   "say": "재윤은 장작을 몇 개 가지고 있습니까?",
+   "say": "한결한테 샌드위치가 지금 몇 개 있습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
+   "classes": [],
    "scenario_turn": 4,
    "expect": {
     "act": "answer",
-    "entity": "재윤",
+    "entity": "한결",
     "quantity": 19,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
+      2,
       3
      ]
     },
-    "item": "장작"
+    "item": "샌드위치"
    }
   },
   {
    "n": 5,
-   "say": "재윤이가 지안한테 장작 두 묶음을 빌려줬습니다.",
+   "say": "한결이 쓴 샌드위치가 두 개 다 썼습니다.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:lend"
+    "transfer_verbs:use_up"
    ],
    "scenario_turn": 5,
    "expect": {
@@ -210,40 +205,36 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "재윤",
-      "to": "지안",
-      "item": "장작",
+      "type": "use",
+      "holder": "한결",
+      "item": "샌드위치",
       "quantity": 2
      }
     ],
     "state": [
      {
-      "entity": "재윤",
-      "item": "장작",
+      "entity": "한결",
+      "item": "샌드위치",
       "quantity": 17
-     },
-     {
-      "entity": "지안",
-      "item": "장작",
-      "quantity": 3
      }
     ]
    }
   },
   {
    "n": 6,
-   "say": "지안한테 장작이 지금 몇 개 있습니까?",
+   "say": "한결은 샌드위치를 몇 개 가지고 있습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [],
+   "classes": [
+    "question_forms:q_hold"
+   ],
    "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "지안",
-    "quantity": 3,
+    "entity": "한결",
+    "quantity": 17,
     "relation": "count",
     "evidence": {
      "turns": [
@@ -252,12 +243,12 @@
       5
      ]
     },
-    "item": "장작"
+    "item": "샌드위치"
    }
   },
   {
    "n": 7,
-   "say": "재윤은 장작이 몇 개 남았습니까?",
+   "say": "한결은 샌드위치가 몇 개 남았습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -268,59 +259,8 @@
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "재윤",
+    "entity": "한결",
     "quantity": 17,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3,
-      5
-     ]
-    },
-    "item": "장작"
-   }
-  },
-  {
-   "n": 8,
-   "say": "재윤은 지금 장작이 몇 개 있습니까?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "answer",
-    "entity": "재윤",
-    "quantity": 17,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3,
-      5
-     ]
-    },
-    "item": "장작"
-   }
-  },
-  {
-   "n": 9,
-   "say": "제 말은 지안 씨입니다.",
-   "label": "answerable",
-   "tags": [
-    "ambiguous_referent",
-    "transfer"
-   ],
-   "classes": [
-    "referent_repairs:i_mean"
-   ],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "answer",
-    "entity": "지안",
-    "quantity": 3,
     "relation": "count",
     "evidence": {
      "turns": [
@@ -329,12 +269,38 @@
       5
      ]
     },
-    "item": "장작"
+    "item": "샌드위치"
    }
   },
   {
-   "n": 10,
-   "say": "두 사람 합쳐서 장작이 모두 몇 개입니까?",
+   "n": 8,
+   "say": "아, 다은씨입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "다은",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "샌드위치"
+   }
+  },
+  {
+   "n": 9,
+   "say": "두 사람 합쳐서 샌드위치가 몇 개 있습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -342,14 +308,14 @@
    "classes": [
     "question_forms:q_two_total"
    ],
-   "scenario_turn": 10,
+   "scenario_turn": 9,
    "expect": {
     "act": "answer",
     "entity": [
-     "재윤",
-     "지안"
+     "다은",
+     "한결"
     ],
-    "quantity": 20,
+    "quantity": 19,
     "relation": "total",
     "evidence": {
      "turns": [
@@ -359,7 +325,7 @@
       5
      ]
     },
-    "item": "장작"
+    "item": "샌드위치"
    }
   }
  ]

@@ -4,7 +4,6 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "ambiguous_referent",
   "ownership",
   "transfer"
  ],
@@ -15,36 +14,33 @@
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_018",
+  "scenario": "s4_ko_c_019",
   "half": "check",
   "focus": [
+   "fronting",
    "holders",
-   "referent_repairs",
-   "transfer_verbs"
+   "korean_register"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:place",
-   "holders:relation",
-   "holders:title",
+   "fronting:adv_moment",
+   "fronting:front_then",
+   "holders:apposition",
    "question_forms:q_hold",
-   "referent_repairs:i_mean",
-   "transfer_verbs:leave_at",
-   "transfer_verbs:responsible",
+   "question_forms:q_two_total",
    "transfer_verbs:send"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "양파 열여섯 개는 곽 기사님이 맡고 있어요.",
+   "say": "요리사 태민 씨가 건전지 열다섯 개를 들고 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:title",
-    "transfer_verbs:responsible"
+    "holders:apposition"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -60,29 +56,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "곽 기사",
-      "item": "양파",
-      "quantity": 16
+      "holder": "태민",
+      "item": "건전지",
+      "quantity": 15
      }
     ],
     "state": [
      {
-      "entity": "곽 기사",
-      "item": "양파",
-      "quantity": 16
+      "entity": "태민",
+      "item": "건전지",
+      "quantity": 15
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "곽 기사님 짝꿍 우진은 양파가 일곱 개 있어요.",
+   "say": "현재 시현은 건전지 열한 개를 가지고 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "fronting:adv_moment"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -98,29 +94,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "우진",
-      "item": "양파",
-      "quantity": 7
+      "holder": "시현",
+      "item": "건전지",
+      "quantity": 11
      }
     ],
     "state": [
      {
-      "entity": "우진",
-      "item": "양파",
-      "quantity": 7
+      "entity": "시현",
+      "item": "건전지",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "서쪽 창고에는 양파가 열두 개 있어요.",
+   "say": "그다음에 시현이 태민 씨한테 건전지 한 개를 보냈어요.",
    "label": "hold",
    "tags": [
-    "ownership"
+    "transfer"
    ],
    "classes": [
-    "holders:place"
+    "fronting:front_then",
+    "transfer_verbs:send"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -135,237 +132,102 @@
     },
     "events": [
      {
-      "type": "has",
-      "holder": "서쪽 창고",
-      "item": "양파",
-      "quantity": 12
-     }
-    ],
-    "state": [
-     {
-      "entity": "서쪽 창고",
-      "item": "양파",
-      "quantity": 12
-     }
-    ]
-   }
-  },
-  {
-   "n": 4,
-   "say": "우진이가 곽 기사님한테 양파 세 개를 보냈어요.",
-   "label": "hold",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "transfer_verbs:send"
-   ],
-   "scenario_turn": 4,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      4
-     ]
-    },
-    "events": [
-     {
       "type": "transfer",
-      "from": "우진",
-      "to": "곽 기사",
-      "item": "양파",
-      "quantity": 3
+      "from": "시현",
+      "to": "태민",
+      "item": "건전지",
+      "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "우진",
-      "item": "양파",
-      "quantity": 4
+      "entity": "시현",
+      "item": "건전지",
+      "quantity": 10
      },
      {
-      "entity": "곽 기사",
-      "item": "양파",
-      "quantity": 19
-     }
-    ]
-   }
-  },
-  {
-   "n": 5,
-   "say": "곽 기사님한테 양파가 지금 몇 개 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "answer",
-    "entity": "곽 기사",
-    "quantity": 19,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4
-     ]
-    },
-    "item": "양파"
-   }
-  },
-  {
-   "n": 6,
-   "say": "곽 기사님이 서쪽 창고에 양파 네 개를 두고 왔어요.",
-   "label": "hold",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "holders:place",
-    "transfer_verbs:leave_at"
-   ],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      6
-     ]
-    },
-    "events": [
-     {
-      "type": "transfer",
-      "from": "곽 기사",
-      "to": "서쪽 창고",
-      "item": "양파",
-      "quantity": 4
-     }
-    ],
-    "state": [
-     {
-      "entity": "곽 기사",
-      "item": "양파",
-      "quantity": 15
-     },
-     {
-      "entity": "서쪽 창고",
-      "item": "양파",
+      "entity": "태민",
+      "item": "건전지",
       "quantity": 16
      }
     ]
    }
   },
   {
-   "n": 7,
-   "say": "곽 기사님은 양파를 몇 개 가지고 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
-   "scenario_turn": 7,
-   "expect": {
-    "act": "answer",
-    "entity": "곽 기사",
-    "quantity": 15,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4,
-      6
-     ]
-    },
-    "item": "양파"
-   }
-  },
-  {
-   "n": 8,
-   "say": "우진은 양파를 몇 개 가지고 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "answer",
-    "entity": "우진",
-    "quantity": 4,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      4
-     ]
-    },
-    "item": "양파"
-   }
-  },
-  {
-   "n": 9,
-   "say": "곽 기사님 말이에요.",
-   "label": "answerable",
-   "tags": [
-    "ambiguous_referent",
-    "transfer"
-   ],
-   "classes": [
-    "referent_repairs:i_mean"
-   ],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "answer",
-    "entity": "곽 기사",
-    "quantity": 15,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4,
-      6
-     ]
-    },
-    "item": "양파"
-   }
-  },
-  {
-   "n": 10,
-   "say": "곽 기사님과 우진이는 양파가 몇 개 있어요?",
+   "n": 4,
+   "say": "시현이 지금 건전지가 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 10,
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "시현",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "건전지"
+   }
+  },
+  {
+   "n": 5,
+   "say": "태민 씨는 건전지를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "태민",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "건전지"
+   }
+  },
+  {
+   "n": 6,
+   "say": "두 사람 합쳐서 건전지가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 6,
    "expect": {
     "act": "answer",
     "entity": [
-     "곽 기사",
-     "우진"
+     "태민",
+     "시현"
     ],
-    "quantity": 19,
+    "quantity": 26,
     "relation": "total",
     "evidence": {
      "turns": [
       1,
       2,
-      4,
-      6
+      3
      ]
     },
-    "item": "양파"
+    "item": "건전지"
    }
   }
  ]

@@ -4,6 +4,7 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
+  "correction",
   "ownership",
   "transfer"
  ],
@@ -11,37 +12,38 @@
   "word_order": "free",
   "register": "haeyo",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_104",
+  "scenario": "s4_ko_c_115",
   "half": "check",
   "focus": [
    "holders",
-   "korean_register",
-   "zero_vague"
+   "partitives",
+   "transfer_verbs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:relation",
+   "corrections:amount",
+   "holders:relation_unnamed",
+   "holders:title",
    "question_forms:q_hold",
-   "transfer_verbs:borrow",
-   "transfer_verbs:lend",
-   "zero_vague:only",
-   "zero_vague:vague_then_exact"
+   "transfer_verbs:give_back",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:keep"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 짝꿍 지호는 샌드위치 세 개만 있어요.",
+   "say": "제 친구는 소설 책 여덟 권을 보관하고 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation",
-    "zero_vague:only"
+    "holders:relation_unnamed",
+    "transfer_verbs:keep"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -57,29 +59,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "지호",
-      "item": "샌드위치",
-      "quantity": 3
+      "holder": "친구",
+      "item": "소설책",
+      "quantity": 8
      }
     ],
     "state": [
      {
-      "entity": "지호",
-      "item": "샌드위치",
-      "quantity": 3
+      "entity": "친구",
+      "item": "소설책",
+      "quantity": 8
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "지윤도 샌드위치가 좀 있어요. 열한 개네요.",
+   "say": "시우 씨는 소설책 열여섯 권이 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "zero_vague:vague_then_exact"
+    "holders:title"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -95,29 +97,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "지윤",
-      "item": "샌드위치",
-      "quantity": 11
+      "holder": "시우",
+      "item": "소설책",
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "지윤",
-      "item": "샌드위치",
-      "quantity": 11
+      "entity": "시우",
+      "item": "소설책",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "지호가 지윤이한테 샌드위치 두 개를 빌려줬어요.",
+   "say": "제 친구가 시우 씨한테 소설책 세 권을 돌려줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:lend"
+    "transfer_verbs:give_back"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -133,29 +135,29 @@
     "events": [
      {
       "type": "transfer",
-      "from": "지호",
-      "to": "지윤",
-      "item": "샌드위치",
-      "quantity": 2
+      "from": "친구",
+      "to": "시우",
+      "item": "소설책",
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "지호",
-      "item": "샌드위치",
-      "quantity": 1
+      "entity": "친구",
+      "item": "소설책",
+      "quantity": 5
      },
      {
-      "entity": "지윤",
-      "item": "샌드위치",
-      "quantity": 13
+      "entity": "시우",
+      "item": "소설책",
+      "quantity": 19
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "지윤은 샌드위치를 몇 개 가지고 있어요?",
+   "say": "시우 씨는 소설책을 몇 권 가지고 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -166,8 +168,8 @@
    "scenario_turn": 4,
    "expect": {
     "act": "answer",
-    "entity": "지윤",
-    "quantity": 13,
+    "entity": "시우",
+    "quantity": 19,
     "relation": "count",
     "evidence": {
      "turns": [
@@ -175,20 +177,20 @@
       3
      ]
     },
-    "item": "샌드위치"
+    "item": "소설책"
    }
   },
   {
    "n": 5,
-   "say": "지윤이가 지호한테 샌드위치 네 개를 빌려줬어요.",
+   "say": "시우 씨가 제 친구한테 소설책 두 권을 건네줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:lend"
+    "transfer_verbs:hand_over"
    ],
-   "scenario_turn": 5,
+   "scenario_turn": 6,
    "expect": {
     "act": "record",
     "entity": null,
@@ -202,119 +204,130 @@
     "events": [
      {
       "type": "transfer",
-      "from": "지윤",
-      "to": "지호",
-      "item": "샌드위치",
-      "quantity": 4
+      "from": "시우",
+      "to": "친구",
+      "item": "소설책",
+      "quantity": 2
      }
     ],
     "state": [
      {
-      "entity": "지윤",
-      "item": "샌드위치",
-      "quantity": 9
+      "entity": "시우",
+      "item": "소설책",
+      "quantity": 17
      },
      {
-      "entity": "지호",
-      "item": "샌드위치",
-      "quantity": 5
+      "entity": "친구",
+      "item": "소설책",
+      "quantity": 7
      }
     ]
    }
   },
   {
    "n": 6,
-   "say": "지호는 지금 샌드위치가 몇 개 있어요?",
+   "say": "시우 씨한테 소설책이 지금 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 6,
+   "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "지호",
-    "quantity": 5,
+    "entity": "시우",
+    "quantity": 17,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
+      2,
       3,
       5
      ]
     },
-    "item": "샌드위치"
+    "item": "소설책"
    }
   },
   {
    "n": 7,
-   "say": "지호가 지윤이한테 샌드위치 한 개를 빌렸어요.",
-   "label": "hold",
+   "say": "아, 두 권이 아니라 여섯 권였어요.",
+   "label": "correction",
    "tags": [
-    "transfer"
+    "correction"
    ],
    "classes": [
-    "transfer_verbs:borrow"
+    "corrections:amount"
    ],
-   "scenario_turn": 7,
+   "scenario_turn": 8,
    "expect": {
-    "act": "record",
+    "act": "revise",
     "entity": null,
     "quantity": null,
     "relation": null,
     "evidence": {
      "turns": [
+      5,
       7
      ]
     },
-    "events": [
+    "target_turn": 5,
+    "replaces": [
      {
       "type": "transfer",
-      "from": "지윤",
-      "to": "지호",
-      "item": "샌드위치",
-      "quantity": 1
+      "from": "시우",
+      "to": "친구",
+      "item": "소설책",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "시우",
+      "to": "친구",
+      "item": "소설책",
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "지윤",
-      "item": "샌드위치",
-      "quantity": 8
+      "entity": "시우",
+      "item": "소설책",
+      "quantity": 13
      },
      {
-      "entity": "지호",
-      "item": "샌드위치",
-      "quantity": 6
+      "entity": "친구",
+      "item": "소설책",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 8,
-   "say": "지호는 샌드위치를 몇 개 가지고 있어요?",
+   "say": "시우 씨는 지금 소설책이 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
-   "scenario_turn": 8,
+   "classes": [],
+   "scenario_turn": 9,
    "expect": {
     "act": "answer",
-    "entity": "지호",
-    "quantity": 6,
+    "entity": "시우",
+    "quantity": 13,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
+      2,
       3,
       5,
       7
      ]
     },
-    "item": "샌드위치"
+    "item": "소설책",
+    "retracted_quantity": 17,
+    "reexecuted_quantity": 11
    }
   }
  ]

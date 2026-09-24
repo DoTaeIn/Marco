@@ -271,17 +271,17 @@
 {"scenario": "s4_ko_b_161", "n": 6, "attempt": 0, "seed": 373141610, "text": "시은이 지금 양동이를 몇 개 가지고 있어요?", "ok": true}
 {"scenario": "s4_ko_b_161", "n": 7, "attempt": 0, "seed": 2517049782, "text": "아, 두 개가 아니라 하나였어요.", "ok": true}
 {"scenario": "s4_ko_b_161", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [8], "failed_turn": null, "seconds": 54.0, "peak_mb": 4799}
-{"scenario": "s4_ko_b_163", "n": 1, "attempt": 0, "seed": 1915217906, "text": "제 룸메이트 윤우는 접시 일곱 개를 맡고 있어요.", "ok": true}
-{"scenario": "s4_ko_b_163", "n": 2, "attempt": 0, "seed": 2179664405, "text": "지원은 접시 열네 개가 있어요.", "ok": true}
-{"scenario": "s4_ko_b_163", "n": 3, "attempt": 0, "seed": 3668789643, "text": "지원이 윤우한테 접시 두 개를 빌려줬어요.", "ok": true}
-{"scenario": "s4_ko_b_163", "n": 4, "attempt": 0, "seed": 1773572071, "text": "윤우는 접시를 몇 개 가지고 있어요?", "ok": true}
-{"scenario": "s4_ko_b_163", "n": 5, "attempt": 0, "seed": 4172996553, "text": "지원이 지금 접시가 몇 개 있어요?", "ok": true}
-{"scenario": "s4_ko_b_163", "n": 6, "attempt": 0, "seed": 4111254546, "text": "아, 두 개가 아니라 세 개였어요.", "ok": true}
-{"scenario": "s4_ko_b_163", "n": 7, "attempt": 0, "seed": 3468435592, "text": "윤우는 접시를 몇 개 가지고 있어요?", "ok": true}
-{"scenario": "s4_ko_b_163", "n": 8, "attempt": 3, "seed": 3860722804, "text": "윤우와 지원이 누가 지금 접시가 더 많은지 알아요?", "ok": true}
-{"scenario": "s4_ko_b_163", "n": 9, "attempt": 0, "seed": 1590135562, "text": "두 사람 합쳐서 접시가 몇 개 있어요?", "ok": true}
-{"scenario": "s4_ko_b_163", "n": 10, "attempt": 5, "seed": 2170314528, "text": "지원이 지금 접시가 왜 그만큼 있는지요?", "ok": true}
-{"scenario": "s4_ko_b_163", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 33.5, "peak_mb": 4787}
+{"scenario": "s4_ko_b_163", "n": 1, "attempt": 0, "seed": 3497204407, "text": "제 룸메이트 윤우는 접시 일곱 개를 맡고 있어요.", "ok": true}
+{"scenario": "s4_ko_b_163", "n": 2, "attempt": 0, "seed": 2434130167, "text": "지원은 접시가 열네 개 있어요.", "ok": true}
+{"scenario": "s4_ko_b_163", "n": 3, "attempt": 0, "seed": 3169003093, "text": "지원이 윤우한테 접시 두 개를 빌려주었어요.", "ok": true}
+{"scenario": "s4_ko_b_163", "n": 4, "attempt": 0, "seed": 3925017523, "text": "윤우는 접시를 몇 개 가지고 있어요?", "ok": true}
+{"scenario": "s4_ko_b_163", "n": 5, "attempt": 0, "seed": 1489513015, "text": "지원이 지금 접시가 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_b_163", "n": 6, "attempt": 0, "seed": 2644799598, "text": "아, 두 개가 아니라 세 개였어요.", "ok": true}
+{"scenario": "s4_ko_b_163", "n": 7, "attempt": 0, "seed": 1489150196, "text": "윤우는 접시를 몇 개 가지고 있어요?", "ok": true}
+{"scenario": "s4_ko_b_163", "n": 8, "attempt": 1, "seed": 1850287594, "text": "윤우와 지원이 누가 지금 접시가 더 많아요?", "ok": true}
+{"scenario": "s4_ko_b_163", "n": 9, "attempt": 0, "seed": 3129295695, "text": "두 사람 합쳐서 접시가 몇 개예요?", "ok": true}
+{"scenario": "s4_ko_b_163", "n": 10, "attempt": 3, "seed": 3990626158, "text": "지원이 지금 접시가 왜 그만큼 있어요?", "ok": true}
+{"scenario": "s4_ko_b_163", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 26.6, "peak_mb": 4735}
 {"scenario": "s4_ko_b_166", "n": 1, "attempt": 0, "seed": 350268339, "text": "제 동료 지아는 숟가락 여섯 개를 보관하고 있습니다.", "ok": true}
 {"scenario": "s4_ko_b_166", "n": 2, "attempt": 0, "seed": 4027883642, "text": "제가 숟가락이 열여섯 개 있습니다.", "ok": true}
 {"scenario": "s4_ko_b_166", "n": 3, "attempt": 0, "seed": 780066876, "text": "민지는 숟가락이 여덟 개 있습니다.", "ok": true}
@@ -855,12 +855,6 @@
 {"scenario": "s4_en_b_121", "n": 7, "attempt": 0, "seed": 901289613, "text": "How many blankets does Mr. Phillips have now?", "ok": true}
 {"scenario": "s4_en_b_121", "n": 8, "attempt": 0, "seed": 1353109911, "text": "How many blankets do the two of them have in total?", "ok": true}
 {"scenario": "s4_en_b_121", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 9.8, "peak_mb": 4656}
-{"scenario": "s4_ko_c_001", "n": 1, "attempt": 0, "seed": 937535436, "text": "제 후배는 엽서 여섯 장을 들고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_001", "n": 2, "attempt": 9, "seed": 2455098697, "text": "제 짝꿍 지호는 엽서가 하나도 가지고 없습니다.", "ok": true}
-{"scenario": "s4_ko_c_001", "n": 3, "attempt": 8, "seed": 2712859879, "text": "제 후배가 지호에게 엽서 네 장을 빌려줬습니다.", "ok": true}
-{"scenario": "s4_ko_c_001", "n": 4, "attempt": 0, "seed": 3916079402, "text": "제 후배한테 엽서가 지금 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_001", "n": 5, "attempt": 2, "seed": 1026773594, "text": "지호가 지금 엽서가 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_001", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": 6, "seconds": 75.5, "peak_mb": 4755}
 {"scenario": "s4_ko_c_002", "n": 1, "attempt": 0, "seed": 2528521760, "text": "시우는 머핀 열한 개가 있어요.", "ok": true}
 {"scenario": "s4_ko_c_002", "n": 2, "attempt": 2, "seed": 811784403, "text": "저는 머핀 여섯 개를 가지고 있어요.", "ok": true}
 {"scenario": "s4_ko_c_002", "n": 3, "attempt": 0, "seed": 3353457526, "text": "은서는 머핀이 여덟 개 있어요.", "ok": true}
@@ -890,14 +884,13 @@
 {"scenario": "s4_ko_c_007", "n": 5, "attempt": 0, "seed": 3126138044, "text": "그분은 지금 방석이 몇 개 있어?", "ok": true}
 {"scenario": "s4_ko_c_007", "n": 6, "attempt": 0, "seed": 4203265957, "text": "성진 말이야.", "ok": true}
 {"scenario": "s4_ko_c_007", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": null, "seconds": 13.3, "peak_mb": 4810}
-{"scenario": "s4_ko_c_014", "n": 1, "attempt": 0, "seed": 2020266350, "text": "미경은 명찰이 열세 개 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_014", "n": 2, "attempt": 0, "seed": 3493747948, "text": "미경 후배 지영은 명찰 열다섯 개가 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_014", "n": 3, "attempt": 0, "seed": 3664204847, "text": "지영이 미경한테 명찰 네 개를 빌렸습니다.", "ok": true}
-{"scenario": "s4_ko_c_014", "n": 4, "attempt": 1, "seed": 1723069040, "text": "미경은 지금 명찰이 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_014", "n": 5, "attempt": 0, "seed": 3462285444, "text": "지영은 명찰을 몇 개 가지고 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_014", "n": 6, "attempt": 0, "seed": 2919800602, "text": "미경과 지영 중 누가 지금 명찰을 더 많이 가지고 있는지 났습니까?", "ok": true}
-{"scenario": "s4_ko_c_014", "n": 7, "attempt": 0, "seed": 3452461419, "text": "두 사람이 합쳐서 명찰이 모두 몇 개입니까?", "ok": true}
-{"scenario": "s4_ko_c_014", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 15.5, "peak_mb": 4755}
+{"scenario": "s4_ko_c_014", "n": 1, "attempt": 0, "seed": 1923419507, "text": "미경은 명찰이 열세 개 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_014", "n": 2, "attempt": 0, "seed": 2739041104, "text": "미경 후배 지영은 명찰이 열다섯 개 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_014", "n": 3, "attempt": 0, "seed": 3098974538, "text": "지영이 미경한테 명찰 네 개를 빌렸습니다.", "ok": true}
+{"scenario": "s4_ko_c_014", "n": 4, "attempt": 1, "seed": 74271704, "text": "미경이 지금 명찰이 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_014", "n": 5, "attempt": 0, "seed": 1085743844, "text": "지영은 명찰을 몇 개 가지고 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_014", "n": 7, "attempt": 1, "seed": 2312189688, "text": "두 사람 합쳐서 명찰이 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_014", "dialogue": true, "kept": [1, 2, 3, 4, 5, 7], "skipped": [6], "failed_turn": null, "seconds": 39.0, "peak_mb": 4755}
 {"scenario": "s4_ko_c_017", "n": 1, "attempt": 0, "seed": 2575565336, "text": "예준씨는 스티커가 다섯 장 있습니다.", "ok": true}
 {"scenario": "s4_ko_c_017", "n": 2, "attempt": 0, "seed": 3258000440, "text": "저도 스티커가 좀 있습니다. 세어 보니 여덟 장입니다.", "ok": true}
 {"scenario": "s4_ko_c_017", "n": 3, "attempt": 0, "seed": 2111468505, "text": "제 이웃 하은은 스티커가 좀 있습니다. 세어 보니 열여섯 장입니다.", "ok": true}
@@ -925,16 +918,15 @@
 {"scenario": "s4_ko_c_019", "n": 5, "attempt": 2, "seed": 3601568493, "text": "태민 씨는 건전지를 몇 개 가지고 있어요?", "ok": true}
 {"scenario": "s4_ko_c_019", "n": 6, "attempt": 1, "seed": 2275521721, "text": "두 사람 합쳐서 건전지가 몇 개 있어요?", "ok": true}
 {"scenario": "s4_ko_c_019", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": null, "seconds": 26.6, "peak_mb": 4755}
-{"scenario": "s4_ko_c_021", "n": 1, "attempt": 1, "seed": 1071104297, "text": "제 이웃 서진은 베개 다섯 개를 가지고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_021", "n": 2, "attempt": 0, "seed": 3372365772, "text": "저는 베개만 아홉 개 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_021", "n": 3, "attempt": 0, "seed": 2790203362, "text": "지유도 베개가 좀 있습니다. 세어 보니 여덟 개입니다.", "ok": true}
-{"scenario": "s4_ko_c_021", "n": 4, "attempt": 0, "seed": 436598180, "text": "서진이 저한테 베개 두 개를 보냈습니다.", "ok": true}
-{"scenario": "s4_ko_c_021", "n": 5, "attempt": 0, "seed": 2074951255, "text": "저한테 베개가 지금 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_021", "n": 6, "attempt": 2, "seed": 594228074, "text": "서진이 지금 베개를 몇 개 가지고 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_021", "n": 7, "attempt": 0, "seed": 665438838, "text": "잘못 말했어요, 두 개 말고 세 개입니다.", "ok": true}
-{"scenario": "s4_ko_c_021", "n": 8, "attempt": 8, "seed": 2998231110, "text": "서진은 베개를 몇 개 가지고 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_021", "n": 9, "attempt": 0, "seed": 2295855417, "text": "지유와 서진 중 누가 지금 베개가 더 많이 가지고 있는지 아닙니까?", "ok": true}
-{"scenario": "s4_ko_c_021", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [10], "failed_turn": null, "seconds": 58.9, "peak_mb": 4755}
+{"scenario": "s4_ko_c_021", "n": 1, "attempt": 5, "seed": 4145750255, "text": "제 이웃 서진은 베개 다섯 개를 가지고 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_021", "n": 2, "attempt": 0, "seed": 1170533629, "text": "저는 베개만 아홉 개 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_021", "n": 3, "attempt": 0, "seed": 900483908, "text": "지유도 베개가 좀 있습니다. 세어 보니 여덟 개입니다.", "ok": true}
+{"scenario": "s4_ko_c_021", "n": 4, "attempt": 0, "seed": 4064424347, "text": "서진이 저한테 베개 두 개를 보냈습니다.", "ok": true}
+{"scenario": "s4_ko_c_021", "n": 5, "attempt": 0, "seed": 2639443037, "text": "저한테 베개가 지금 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_021", "n": 6, "attempt": 0, "seed": 701733606, "text": "서진이 지금 베개를 몇 개 가지고 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_021", "n": 7, "attempt": 0, "seed": 1263052556, "text": "잘못 말했어요, 두 개 말고 세 개입니다.", "ok": true}
+{"scenario": "s4_ko_c_021", "n": 8, "attempt": 1, "seed": 1758389057, "text": "서진님은 지금 베개를 몇 개 가지고 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_021", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [9, 10], "failed_turn": null, "seconds": 70.0, "peak_mb": 4755}
 {"scenario": "s4_ko_c_023", "n": 1, "attempt": 0, "seed": 1637817879, "text": "제 조카는 장작이 열네 묶음 있어요.", "ok": true}
 {"scenario": "s4_ko_c_023", "n": 2, "attempt": 0, "seed": 2104306882, "text": "하준은 열두 묶음의 장작을 가지고 있어요.", "ok": true}
 {"scenario": "s4_ko_c_023", "n": 3, "attempt": 0, "seed": 2284645032, "text": "서쪽 창고에는 장작이 열세 묶음 있어요.", "ok": true}
@@ -944,15 +936,15 @@
 {"scenario": "s4_ko_c_023", "n": 7, "attempt": 0, "seed": 4004529392, "text": "그분은 지금 장작이 몇 개 있어요?", "ok": true}
 {"scenario": "s4_ko_c_023", "n": 8, "attempt": 0, "seed": 329006133, "text": "지유 말이에요.", "ok": true}
 {"scenario": "s4_ko_c_023", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [9], "failed_turn": null, "seconds": 41.0, "peak_mb": 4755}
-{"scenario": "s4_ko_c_025", "n": 1, "attempt": 0, "seed": 51933426, "text": "서진은 지금 스티커 여덟 장을 보관하고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_025", "n": 2, "attempt": 1, "seed": 2178732093, "text": "상훈은 스티커만 일곱 장 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_025", "n": 3, "attempt": 0, "seed": 3933767002, "text": "서진한테는 상훈이 스티커 네 장을 넘겼습니다.", "ok": true}
-{"scenario": "s4_ko_c_025", "n": 4, "attempt": 0, "seed": 2158391174, "text": "상훈이 지금 스티커를 몇 개 가지고 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_025", "n": 5, "attempt": 1, "seed": 1720415660, "text": "스티커 세 장을 서진이 상훈한테 넘겼습니다.", "ok": true}
-{"scenario": "s4_ko_c_025", "n": 6, "attempt": 0, "seed": 4022743854, "text": "서진한테 스티커가 지금 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_025", "n": 7, "attempt": 0, "seed": 3866551003, "text": "두 사람 합쳐서 스티커가 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_025", "n": 8, "attempt": 5, "seed": 1500411894, "text": "서진이가 지금 스티커가 얼마나 가지고 있는지 아닙니까?", "ok": true}
-{"scenario": "s4_ko_c_025", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 29.9, "peak_mb": 4767}
+{"scenario": "s4_ko_c_025", "n": 1, "attempt": 0, "seed": 665393983, "text": "서진은 지금 스티커 여덟 장을 보관하고 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_025", "n": 2, "attempt": 1, "seed": 4162056982, "text": "상훈은 스티커만 일곱 장 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_025", "n": 3, "attempt": 0, "seed": 171794667, "text": "서진한테는 상훈이 스티커 네 장을 넘겼습니다.", "ok": true}
+{"scenario": "s4_ko_c_025", "n": 4, "attempt": 0, "seed": 781222225, "text": "상훈이 지금 스티커를 몇 개 가지고 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_025", "n": 5, "attempt": 0, "seed": 2663001098, "text": "스티커 세장을 서진이 상훈한테 넘겼습니다.", "ok": true}
+{"scenario": "s4_ko_c_025", "n": 6, "attempt": 7, "seed": 3304182652, "text": "서진이는 지금 스티커가 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_025", "n": 7, "attempt": 0, "seed": 3554325479, "text": "두 사람 합쳐서 스티커가 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_025", "n": 8, "attempt": 1, "seed": 363987679, "text": "서진이는 지금 스티커가 얼마나 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_025", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 34.7, "peak_mb": 4758}
 {"scenario": "s4_ko_c_027", "n": 1, "attempt": 0, "seed": 3300109520, "text": "동전 여섯 개가 북쪽 창고에 있어요.", "ok": true}
 {"scenario": "s4_ko_c_027", "n": 2, "attempt": 0, "seed": 3842256093, "text": "동전 여덟 개는 제가 맡고 있어요.", "ok": true}
 {"scenario": "s4_ko_c_027", "n": 3, "attempt": 1, "seed": 1799522030, "text": "서연은 동전 열여섯 개를 들고 있어요.", "ok": true}
@@ -1025,28 +1017,26 @@
 {"scenario": "s4_ko_c_064", "n": 7, "attempt": 0, "seed": 2854726039, "text": "하준 말이에요.", "ok": true}
 {"scenario": "s4_ko_c_064", "n": 8, "attempt": 0, "seed": 2958939572, "text": "하준과 태민이는 합쳐서 머핀이 몇 개 있어요?", "ok": true}
 {"scenario": "s4_ko_c_064", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 20.7, "peak_mb": 4767}
-{"scenario": "s4_ko_c_068", "n": 1, "attempt": 2, "seed": 571170530, "text": "제 이웃 재윤은 장작 열다섯 묶음을 보관하고 있습니다. 지금은 없습니다.", "ok": true}
-{"scenario": "s4_ko_c_068", "n": 2, "attempt": 2, "seed": 586589217, "text": "지안은 지금 장작 다섯 묶음을 들고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_068", "n": 3, "attempt": 0, "seed": 2106926990, "text": "그다음에, 지안이 재윤한테 장작 네 묶음을 보냈습니다.", "ok": true}
-{"scenario": "s4_ko_c_068", "n": 4, "attempt": 0, "seed": 1603730556, "text": "재윤은 장작을 몇 개 가지고 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_068", "n": 5, "attempt": 4, "seed": 2031987816, "text": "재윤이가 지안한테 장작 두 묶음을 빌려줬습니다.", "ok": true}
-{"scenario": "s4_ko_c_068", "n": 6, "attempt": 0, "seed": 1737634628, "text": "지안한테 장작이 지금 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_068", "n": 7, "attempt": 0, "seed": 1985317396, "text": "재윤은 장작이 몇 개 남았습니까?", "ok": true}
-{"scenario": "s4_ko_c_068", "n": 8, "attempt": 1, "seed": 710118593, "text": "재윤은 지금 장작이 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_068", "n": 9, "attempt": 0, "seed": 767329758, "text": "제 말은 지안 씨입니다.", "ok": true}
-{"scenario": "s4_ko_c_068", "n": 10, "attempt": 0, "seed": 3316068093, "text": "두 사람 합쳐서 장작이 모두 몇 개입니까?", "ok": true}
-{"scenario": "s4_ko_c_068", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 39.6, "peak_mb": 4784}
-{"scenario": "s4_ko_c_071", "n": 1, "attempt": 0, "seed": 3045899935, "text": "집주인 다은 씨가 지금은 샌드위치 여섯 개를 들고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_071", "n": 2, "attempt": 0, "seed": 183995171, "text": "제 친구 한결은 샌드위치 열다섯 개를 가지고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_071", "n": 3, "attempt": 1, "seed": 4013939820, "text": "한결한테는 다은씨가 샌드위치 네 개를 돌려주었습니다.", "ok": true}
-{"scenario": "s4_ko_c_071", "n": 4, "attempt": 0, "seed": 3204557857, "text": "한결한테 샌드위치가 지금 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_071", "n": 5, "attempt": 0, "seed": 828208935, "text": "한결이가 샌드위치 두 개를 다 썼습니다.", "ok": true}
-{"scenario": "s4_ko_c_071", "n": 6, "attempt": 0, "seed": 1164727417, "text": "한결은 샌드위치를 몇 개 가지고 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_071", "n": 7, "attempt": 0, "seed": 4050341341, "text": "한결은 샌드위치가 몇 개 남았습니까?", "ok": true}
-{"scenario": "s4_ko_c_071", "n": 8, "attempt": 0, "seed": 2260041893, "text": "다은씨를 말한 거입니다.", "ok": true}
-{"scenario": "s4_ko_c_071", "n": 9, "attempt": 0, "seed": 3986945231, "text": "두 사람 합쳐서 샌드위치가 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_071", "n": 10, "attempt": 2, "seed": 1376171414, "text": "다은씨가 지금 샌드위치가 얼마나 가지고 있는지 입니까?", "ok": true}
-{"scenario": "s4_ko_c_071", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 26.3, "peak_mb": 4781}
+{"scenario": "s4_ko_c_068", "n": 1, "attempt": 7, "seed": 3258502825, "text": "제 이웃 재윤은 장작 열다섯 묶음을 보관하고 있습니다. 현재 를 넣어보겠습니다.", "ok": true}
+{"scenario": "s4_ko_c_068", "n": 2, "attempt": 2, "seed": 1068743317, "text": "지안이 현재 다섯 묶음의 장작을 들고 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_068", "n": 3, "attempt": 0, "seed": 3029029174, "text": "그다음에, 지안이 재윤한테 장작 네 묶음을 보냈습니다.", "ok": true}
+{"scenario": "s4_ko_c_068", "n": 4, "attempt": 0, "seed": 3622851762, "text": "재윤은 장작을 몇 개 가지고 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_068", "n": 5, "attempt": 1, "seed": 3323228297, "text": "재윤이가 지안한테 장작 두 묶음을 빌려줬습니다.", "ok": true}
+{"scenario": "s4_ko_c_068", "n": 6, "attempt": 0, "seed": 3555447104, "text": "지안한테 장작이 지금 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_068", "n": 8, "attempt": 1, "seed": 3590212133, "text": "재윤은 지금 장작이 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_068", "n": 9, "attempt": 0, "seed": 3259303290, "text": "제 말은 지안씨입니다.", "ok": true}
+{"scenario": "s4_ko_c_068", "n": 10, "attempt": 0, "seed": 4042075832, "text": "두 사람 합쳐서 장작이 모두 몇 개입니까?", "ok": true}
+{"scenario": "s4_ko_c_068", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 8, 9, 10], "skipped": [7], "failed_turn": null, "seconds": 62.8, "peak_mb": 4758}
+{"scenario": "s4_ko_c_071", "n": 1, "attempt": 0, "seed": 372193616, "text": "집주인 다은 씨가 지금은 샌드위치 여섯 개를 들고 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_071", "n": 2, "attempt": 0, "seed": 4065199932, "text": "제 친구 한결은 샌드위치 열다섯 개를 가지고 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_071", "n": 3, "attempt": 0, "seed": 3774831966, "text": "한결한테는 다은 씨가 샌드위치 네 개를 돌려주었습니다.", "ok": true}
+{"scenario": "s4_ko_c_071", "n": 4, "attempt": 0, "seed": 2044427164, "text": "한결한테 샌드위치가 지금 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_071", "n": 5, "attempt": 0, "seed": 3316587169, "text": "한결이 쓴 샌드위치가 두 개 다 썼습니다.", "ok": true}
+{"scenario": "s4_ko_c_071", "n": 6, "attempt": 0, "seed": 198148532, "text": "한결은 샌드위치를 몇 개 가지고 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_071", "n": 7, "attempt": 0, "seed": 1390966893, "text": "한결은 샌드위치가 몇 개 남았습니까?", "ok": true}
+{"scenario": "s4_ko_c_071", "n": 8, "attempt": 2, "seed": 3139270812, "text": "아, 다은씨입니다.", "ok": true}
+{"scenario": "s4_ko_c_071", "n": 9, "attempt": 0, "seed": 1388081190, "text": "두 사람 합쳐서 샌드위치가 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_071", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [10], "failed_turn": null, "seconds": 42.6, "peak_mb": 4758}
 {"scenario": "s4_ko_c_074", "n": 1, "attempt": 0, "seed": 108135185, "text": "장 부장님은 양말만 열 켤레 있어.", "ok": true}
 {"scenario": "s4_ko_c_074", "n": 2, "attempt": 0, "seed": 1304897419, "text": "서현도 양말을 좀 가지고 있어.", "ok": true}
 {"scenario": "s4_ko_c_074", "n": 3, "attempt": 0, "seed": 3797809016, "text": "아린도 양말이 좀 있어. 세어 보니 여섯 켤레네.", "ok": true}
@@ -1057,17 +1047,17 @@
 {"scenario": "s4_ko_c_074", "n": 8, "attempt": 2, "seed": 2297283640, "text": "틀렸어요, 한 켤레 말고 세 켤레야.", "ok": true}
 {"scenario": "s4_ko_c_074", "n": 9, "attempt": 0, "seed": 3592042355, "text": "아린한테 양말이 지금 몇 켤레 있어?", "ok": true}
 {"scenario": "s4_ko_c_074", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 32.3, "peak_mb": 4810}
-{"scenario": "s4_ko_c_084", "n": 1, "attempt": 0, "seed": 3048794119, "text": "집주인 우진 씨가 지금은 머핀 열두 개를 가지고 있어요.", "ok": true}
-{"scenario": "s4_ko_c_084", "n": 2, "attempt": 0, "seed": 4190333174, "text": "제 사촌 은정은 지금은 열네 개의 머핀을 들고 있어요.", "ok": true}
-{"scenario": "s4_ko_c_084", "n": 3, "attempt": 0, "seed": 3190092494, "text": "우진 씨가 은정한테서 머핀 다섯 개를 받았어요.", "ok": true}
-{"scenario": "s4_ko_c_084", "n": 4, "attempt": 0, "seed": 2085429624, "text": "우진 씨는 지금 머핀을 몇 개 가지고 있어요?", "ok": true}
-{"scenario": "s4_ko_c_084", "n": 5, "attempt": 0, "seed": 777324367, "text": "은정이 우진씨한테 머핀 두 개를 돌려줬어요요.", "ok": true}
-{"scenario": "s4_ko_c_084", "n": 6, "attempt": 0, "seed": 2148376098, "text": "은정이 지금 머핀이 몇 개 있어요?", "ok": true}
-{"scenario": "s4_ko_c_084", "n": 7, "attempt": 0, "seed": 162391512, "text": "우진 씨는 머핀을 몇 개 가지고 있어요?", "ok": true}
-{"scenario": "s4_ko_c_084", "n": 8, "attempt": 0, "seed": 1532346051, "text": "은정은 머핀을 몇 개 가지고 있어요?", "ok": true}
-{"scenario": "s4_ko_c_084", "n": 9, "attempt": 2, "seed": 530322093, "text": "아, 우진요.", "ok": true}
-{"scenario": "s4_ko_c_084", "n": 10, "attempt": 0, "seed": 3512968491, "text": "두 사람 합쳐서 머핀이 몇 개 있어요?", "ok": true}
-{"scenario": "s4_ko_c_084", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 27.7, "peak_mb": 4814}
+{"scenario": "s4_ko_c_084", "n": 1, "attempt": 0, "seed": 521952251, "text": "집주인 우진 씨가 지금은 머핀 열두 개를 가지고 있어요.", "ok": true}
+{"scenario": "s4_ko_c_084", "n": 2, "attempt": 0, "seed": 2570190359, "text": "제 사촌 은정은 지금 머핀 열네 개를 들고 있어요.", "ok": true}
+{"scenario": "s4_ko_c_084", "n": 3, "attempt": 0, "seed": 1821559276, "text": "우진 씨가 은정한테서 머핀 다섯 개를 받았어요.", "ok": true}
+{"scenario": "s4_ko_c_084", "n": 4, "attempt": 0, "seed": 2692394135, "text": "우진씨는 머핀을 몇 개 가지고 있어요?", "ok": true}
+{"scenario": "s4_ko_c_084", "n": 5, "attempt": 0, "seed": 2406648601, "text": "은정이 우진씨한테 머핀 두 개를 돌려줬어요.", "ok": true}
+{"scenario": "s4_ko_c_084", "n": 6, "attempt": 0, "seed": 2340457296, "text": "은정은 지금 머핀이 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_c_084", "n": 7, "attempt": 0, "seed": 2021876827, "text": "우진씨는 머핀을 몇 개 가지고 있어요?", "ok": true}
+{"scenario": "s4_ko_c_084", "n": 8, "attempt": 0, "seed": 1857021561, "text": "은정이는 지금 머핀을 몇 개 가지고 있어요?", "ok": true}
+{"scenario": "s4_ko_c_084", "n": 9, "attempt": 2, "seed": 2992095135, "text": "아, 우진요.", "ok": true}
+{"scenario": "s4_ko_c_084", "n": 10, "attempt": 0, "seed": 1737003709, "text": "두 사람 합쳐서 머핀이 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_c_084", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 23.3, "peak_mb": 4758}
 {"scenario": "s4_ko_c_086", "n": 1, "attempt": 0, "seed": 3106596536, "text": "제 후배 준서는 티켓이 여덟 장 있습니다.", "ok": true}
 {"scenario": "s4_ko_c_086", "n": 2, "attempt": 1, "seed": 678410026, "text": "소연은 지금 티켓 아홉 장을 들고 있습니다.", "ok": true}
 {"scenario": "s4_ko_c_086", "n": 3, "attempt": 0, "seed": 1568434213, "text": "저는 열두 장의 티켓을 가지고 있습니다.", "ok": true}
@@ -1095,15 +1085,15 @@
 {"scenario": "s4_ko_c_097", "n": 6, "attempt": 4, "seed": 3799725679, "text": "지금 본관에 감자가 몇 개 있어요?", "ok": true}
 {"scenario": "s4_ko_c_097", "n": 7, "attempt": 0, "seed": 483033989, "text": "본관이랑 빵집이 합쳐서 감자가 몇 개 있어요?", "ok": true}
 {"scenario": "s4_ko_c_097", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 24.4, "peak_mb": 4784}
-{"scenario": "s4_ko_c_100", "n": 1, "attempt": 0, "seed": 3053317272, "text": "제 이웃은 엽서 열두 장을 가지고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_100", "n": 2, "attempt": 0, "seed": 1577798814, "text": "빵집에는 엽서가 다섯 장 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_100", "n": 3, "attempt": 1, "seed": 4292858284, "text": "코치 지호 씨가 엽서 열세 장을 맡고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_100", "n": 4, "attempt": 0, "seed": 4228571056, "text": "성진은 지금 엽서 열한 장이 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_100", "n": 5, "attempt": 0, "seed": 2790552875, "text": "그다음에 제 이웃이 지호씨한테 엽서 두장을 넘겼습니다.", "ok": true}
-{"scenario": "s4_ko_c_100", "n": 6, "attempt": 0, "seed": 1275008378, "text": "현재 빵집에 있는 엽서가 몇 장 있는지 아닙니까?", "ok": true}
-{"scenario": "s4_ko_c_100", "n": 7, "attempt": 0, "seed": 1150536246, "text": "그분은 지금 엽서가 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_100", "n": 8, "attempt": 0, "seed": 4051882655, "text": "제 말은 성진 씨입니다.", "ok": true}
-{"scenario": "s4_ko_c_100", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 17.8, "peak_mb": 4784}
+{"scenario": "s4_ko_c_100", "n": 1, "attempt": 0, "seed": 2929867791, "text": "제 이웃은 엽서 열두 장을 맡고 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_100", "n": 2, "attempt": 0, "seed": 4143727797, "text": "빵집에는 엽서가 다섯 장 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_100", "n": 3, "attempt": 0, "seed": 2709208231, "text": "코치 지호 씨가 엽서 열세 장을 맡고 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_100", "n": 4, "attempt": 0, "seed": 498110228, "text": "성진은 지금 엽서 열한 장이 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_100", "n": 5, "attempt": 4, "seed": 3159711506, "text": "그다음에 제 이웃이 지호 씨한테 엽서 두 장을 넘겼습니다.", "ok": true}
+{"scenario": "s4_ko_c_100", "n": 6, "attempt": 0, "seed": 454795665, "text": "지금 빵집에 엽서가 몇 장 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_100", "n": 7, "attempt": 0, "seed": 15860171, "text": "그분은 지금 엽서가 몇 개 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_100", "n": 8, "attempt": 0, "seed": 1259334839, "text": "제 말은 성진씨입니다.", "ok": true}
+{"scenario": "s4_ko_c_100", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 24.7, "peak_mb": 4758}
 {"scenario": "s4_ko_c_104", "n": 1, "attempt": 0, "seed": 359829583, "text": "제 짝꿍 지호는 샌드위치 세 개만 있어요.", "ok": true}
 {"scenario": "s4_ko_c_104", "n": 2, "attempt": 0, "seed": 785459931, "text": "지윤도 샌드위치가 좀 있어요. 열한 개네요.", "ok": true}
 {"scenario": "s4_ko_c_104", "n": 3, "attempt": 0, "seed": 3304631570, "text": "지호가 지윤이한테 샌드위치 두 개를 빌려줬어요.", "ok": true}
@@ -1166,14 +1156,13 @@
 {"scenario": "s4_ko_c_134", "n": 5, "attempt": 0, "seed": 91737112, "text": "진우는 머핀을 몇 개 가지고 있어요?", "ok": true}
 {"scenario": "s4_ko_c_134", "n": 6, "attempt": 0, "seed": 1376305934, "text": "지윤은 머핀을 몇 개 가지고 있어요?", "ok": true}
 {"scenario": "s4_ko_c_134", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": 7, "seconds": 32.2, "peak_mb": 4794}
-{"scenario": "s4_ko_c_142", "n": 1, "attempt": 0, "seed": 3601680139, "text": "은정은 선풍기가 열세 대 있어요.", "ok": true}
-{"scenario": "s4_ko_c_142", "n": 2, "attempt": 0, "seed": 489173274, "text": "지윤 씨는 선풍기가 열한 대 있어요.", "ok": true}
-{"scenario": "s4_ko_c_142", "n": 3, "attempt": 0, "seed": 3467693988, "text": "지윤 씨가 은정한테 선풍기 네 대를 보냈어요.", "ok": true}
-{"scenario": "s4_ko_c_142", "n": 4, "attempt": 0, "seed": 2282699700, "text": "지윤 씨한테 선풍기가 지금 몇 개 있어요?", "ok": true}
-{"scenario": "s4_ko_c_142", "n": 5, "attempt": 0, "seed": 2859772469, "text": "은정은 선풍기를 몇 개 가지고 있어요?", "ok": true}
-{"scenario": "s4_ko_c_142", "n": 6, "attempt": 1, "seed": 2303090640, "text": "두 사람 합쳐서 선풍기가 모두 몇 개예요?", "ok": true}
-{"scenario": "s4_ko_c_142", "n": 7, "attempt": 0, "seed": 1055147125, "text": "지윤 씨가 지금 선풍기가 왜 그 만큼 가지고 있는지요?", "ok": true}
-{"scenario": "s4_ko_c_142", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 15.9, "peak_mb": 4794}
+{"scenario": "s4_ko_c_142", "n": 1, "attempt": 0, "seed": 3287471284, "text": "은정은 선풍기가 열세 대 있어요.", "ok": true}
+{"scenario": "s4_ko_c_142", "n": 2, "attempt": 0, "seed": 1347498754, "text": "지윤 씨는 선풍기가 열한 대 있어요.", "ok": true}
+{"scenario": "s4_ko_c_142", "n": 3, "attempt": 0, "seed": 1714792183, "text": "지윤 씨가 은정한테 선풍기 네 대를 보냈어요.", "ok": true}
+{"scenario": "s4_ko_c_142", "n": 4, "attempt": 0, "seed": 402600412, "text": "지윤 씨한테 선풍기가 지금 몇 대 있어요?", "ok": true}
+{"scenario": "s4_ko_c_142", "n": 5, "attempt": 0, "seed": 2643702537, "text": "은정이는 지금 선풍기를 몇 개 가지고 있어요?", "ok": true}
+{"scenario": "s4_ko_c_142", "n": 6, "attempt": 3, "seed": 3341882513, "text": "둘이 합쳐서 선풍기가 모두 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_c_142", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [7], "failed_turn": null, "seconds": 37.4, "peak_mb": 4758}
 {"scenario": "s4_ko_c_154", "n": 1, "attempt": 1, "seed": 3436653717, "text": "제가 꽃다발 열여섯 개를 들고 있어요.", "ok": true}
 {"scenario": "s4_ko_c_154", "n": 2, "attempt": 6, "seed": 430131748, "text": "제 짝꿍은 꽃다발 아홉 개를 보관하고 있어요.", "ok": true}
 {"scenario": "s4_ko_c_154", "n": 3, "attempt": 0, "seed": 3622009872, "text": "꽃다발 다섯 개는 지안이 맡고 있어요.", "ok": true}
@@ -1185,23 +1174,23 @@
 {"scenario": "s4_ko_c_154", "n": 9, "attempt": 0, "seed": 2821604861, "text": "저와 지안이는 합쳐서 꽃다발이 몇 개 있어요?", "ok": true}
 {"scenario": "s4_ko_c_154", "n": 10, "attempt": 0, "seed": 1358881899, "text": "지안이 지금 꽃다발을 왜 그만큼 가지고 있는지요?", "ok": true}
 {"scenario": "s4_ko_c_154", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 35.2, "peak_mb": 4784}
-{"scenario": "s4_ko_c_155", "n": 1, "attempt": 0, "seed": 1842766123, "text": "서연은 젓가락 열두 벌이 있어요.", "ok": true}
-{"scenario": "s4_ko_c_155", "n": 2, "attempt": 0, "seed": 4006050287, "text": "예준 씨는 지금 젓가락이 여덟 벌 있어요.", "ok": true}
-{"scenario": "s4_ko_c_155", "n": 3, "attempt": 1, "seed": 3841978244, "text": "서쪽 창고에는 젓가락이 세 벌 있어요.", "ok": true}
-{"scenario": "s4_ko_c_155", "n": 4, "attempt": 1, "seed": 2346855041, "text": "젓가락 네 벌을 서연이 예준 씨한테 줬어요.", "ok": true}
-{"scenario": "s4_ko_c_155", "n": 5, "attempt": 0, "seed": 1855288382, "text": "예준 씨는 지금 젓가락이 몇 개 있어요?", "ok": true}
-{"scenario": "s4_ko_c_155", "n": 6, "attempt": 0, "seed": 1937218149, "text": "그분은 지금 젓가락이 몇 벌 있어요?", "ok": true}
-{"scenario": "s4_ko_c_155", "n": 7, "attempt": 0, "seed": 2316026172, "text": "서연 말이에요.", "ok": true}
-{"scenario": "s4_ko_c_155", "n": 8, "attempt": 2, "seed": 1767967340, "text": "예준 씨가 지금 젓가락이 왜 그만큼 가지고 있는지요?", "ok": true}
-{"scenario": "s4_ko_c_155", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 23.6, "peak_mb": 4784}
-{"scenario": "s4_ko_c_158", "n": 1, "attempt": 3, "seed": 442715154, "text": "준서가 수진씨한테서 풍선 열한 개를 받아서 수진씨는 여덟 개를 가지고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_158", "n": 2, "attempt": 0, "seed": 3355229883, "text": "태민은 풍선이 세 개 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_158", "n": 3, "attempt": 0, "seed": 2506793744, "text": "풍선 한 개를 준서가 수진 씨한테 넘겼습니다.", "ok": true}
-{"scenario": "s4_ko_c_158", "n": 4, "attempt": 0, "seed": 2941065333, "text": "준서는 풍선을 몇 개 가지고 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_158", "n": 5, "attempt": 0, "seed": 3436570301, "text": "아, 한 개가 아니라 다섯 개였습니다.", "ok": true}
-{"scenario": "s4_ko_c_158", "n": 6, "attempt": 3, "seed": 1678440086, "text": "준서는 풍선이 몇 개 남았습니까?", "ok": true}
-{"scenario": "s4_ko_c_158", "n": 7, "attempt": 0, "seed": 2388409560, "text": "태민씨와 수진씨 중 누가 지금 풍선이 더 많이 가지고 있는지습니까?", "ok": true}
-{"scenario": "s4_ko_c_158", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [8], "failed_turn": null, "seconds": 48.9, "peak_mb": 4784}
+{"scenario": "s4_ko_c_155", "n": 1, "attempt": 0, "seed": 3341171852, "text": "서연은 젓가락 열두 벌이 있어요.", "ok": true}
+{"scenario": "s4_ko_c_155", "n": 2, "attempt": 0, "seed": 3833205165, "text": "예준 씨는 지금 젓가락이 여덟 벌 있어요.", "ok": true}
+{"scenario": "s4_ko_c_155", "n": 3, "attempt": 1, "seed": 3639593693, "text": "서쪽 창고에는 젓가락이 세 벌 있어요.", "ok": true}
+{"scenario": "s4_ko_c_155", "n": 4, "attempt": 5, "seed": 3473331862, "text": "젓가락 네 벌을 서연이 예준 씨한테 주었어요.", "ok": true}
+{"scenario": "s4_ko_c_155", "n": 5, "attempt": 0, "seed": 982634905, "text": "예준 씨는 지금 젓가락이 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_c_155", "n": 6, "attempt": 0, "seed": 553409044, "text": "그분은 지금 젓가락이 몇 벌 있어요?", "ok": true}
+{"scenario": "s4_ko_c_155", "n": 7, "attempt": 0, "seed": 405655767, "text": "서연 말이에요.", "ok": true}
+{"scenario": "s4_ko_c_155", "n": 8, "attempt": 9, "seed": 3720173112, "text": "예준 씨가 지금 젓가락이 왜 그만큼 있어요?", "ok": true}
+{"scenario": "s4_ko_c_155", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 45.9, "peak_mb": 4758}
+{"scenario": "s4_ko_c_158", "n": 1, "attempt": 8, "seed": 2296448684, "text": "준서가 수진씨한테서 풍선 열한 개를 받아서 수진씨는 여덟 개를 가지고 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_158", "n": 2, "attempt": 0, "seed": 375106537, "text": "태민은 풍선이 세 개 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_158", "n": 3, "attempt": 0, "seed": 2121979284, "text": "풍선 한 개를 준서가 수진 씨한테 넘겼습니다.", "ok": true}
+{"scenario": "s4_ko_c_158", "n": 4, "attempt": 0, "seed": 896766720, "text": "준서는 풍선을 몇 개 가지고 있습니까?", "ok": true}
+{"scenario": "s4_ko_c_158", "n": 5, "attempt": 0, "seed": 3635318826, "text": "아, 한 개가 아니라 다섯 개였습니다.", "ok": true}
+{"scenario": "s4_ko_c_158", "n": 6, "attempt": 3, "seed": 1068110308, "text": "준서는 풍선이 몇 개 남았습니까?", "ok": true}
+{"scenario": "s4_ko_c_158", "n": 7, "attempt": 1, "seed": 2614314200, "text": "태민이와 수진이는 지금 풍선을 더 많이 가지고 있는 분이 누구입니까?", "ok": true}
+{"scenario": "s4_ko_c_158", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [8], "failed_turn": null, "seconds": 62.8, "peak_mb": 4758}
 {"scenario": "s4_ko_c_164", "n": 1, "attempt": 0, "seed": 4164461450, "text": "집주인 건우 씨가 지금은 생수 아홉 병을 보관하고 있어요.", "ok": true}
 {"scenario": "s4_ko_c_164", "n": 2, "attempt": 0, "seed": 1104370922, "text": "유진은 지금 생수 다섯 병을 가지고 있어요.", "ok": true}
 {"scenario": "s4_ko_c_164", "n": 3, "attempt": 1, "seed": 3162635509, "text": "유진 후배 재윤은 생수 열여섯 병이 있어요.", "ok": true}
@@ -1222,16 +1211,15 @@
 {"scenario": "s4_ko_c_167", "n": 8, "attempt": 0, "seed": 3349520926, "text": "우진씨를 말한 거입니다.", "ok": true}
 {"scenario": "s4_ko_c_167", "n": 9, "attempt": 4, "seed": 656477837, "text": "우진이랑 다은씨가 합쳐서 여행가방이 몇 개 있습니까?", "ok": true}
 {"scenario": "s4_ko_c_167", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 26.8, "peak_mb": 4784}
-{"scenario": "s4_ko_c_172", "n": 1, "attempt": 0, "seed": 1909048112, "text": "서연은 망치가 좀 있어요.", "ok": true}
-{"scenario": "s4_ko_c_172", "n": 2, "attempt": 1, "seed": 3023810522, "text": "하은은 망치만 열네 개 있어요.", "ok": true}
-{"scenario": "s4_ko_c_172", "n": 3, "attempt": 0, "seed": 334473245, "text": "서연은 지금 망치가 몇 개 있어요?", "ok": true}
-{"scenario": "s4_ko_c_172", "n": 4, "attempt": 0, "seed": 2512379394, "text": "서연은 망치가 열한 개 있어요.", "ok": true}
-{"scenario": "s4_ko_c_172", "n": 5, "attempt": 0, "seed": 2053194200, "text": "망치 다섯 개를 서연이 하은에게 건네주었어요.", "ok": true}
-{"scenario": "s4_ko_c_172", "n": 6, "attempt": 0, "seed": 2761732923, "text": "서연은 망치를 몇 개 가지고 있어요?", "ok": true}
-{"scenario": "s4_ko_c_172", "n": 7, "attempt": 0, "seed": 3561760272, "text": "아, 다섯 개가 아니라 여섯 개였어요.", "ok": true}
-{"scenario": "s4_ko_c_172", "n": 8, "attempt": 0, "seed": 1980898508, "text": "서연은 망치를 몇 개 가지고 있어요?", "ok": true}
-{"scenario": "s4_ko_c_172", "n": 9, "attempt": 1, "seed": 2986254533, "text": "서연이 지금 망치가 왜 그만큼 가지고 있는지요?", "ok": true}
-{"scenario": "s4_ko_c_172", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 20.9, "peak_mb": 4784}
+{"scenario": "s4_ko_c_172", "n": 1, "attempt": 0, "seed": 4190062619, "text": "서연은 망치가 좀 있어요.", "ok": true}
+{"scenario": "s4_ko_c_172", "n": 2, "attempt": 1, "seed": 633589177, "text": "하은은 망치만 열네 개 있어요.", "ok": true}
+{"scenario": "s4_ko_c_172", "n": 3, "attempt": 0, "seed": 1891640649, "text": "서연은 지금 망치가 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_c_172", "n": 4, "attempt": 0, "seed": 3552506479, "text": "서연은 망치가 열한 개 있어요.", "ok": true}
+{"scenario": "s4_ko_c_172", "n": 5, "attempt": 0, "seed": 3323984244, "text": "망치 다섯 개를 서연이 하은한테 건네주었어요.", "ok": true}
+{"scenario": "s4_ko_c_172", "n": 6, "attempt": 0, "seed": 3972146779, "text": "서연은 망치를 몇 개 가지고 있어요?", "ok": true}
+{"scenario": "s4_ko_c_172", "n": 7, "attempt": 0, "seed": 2792936012, "text": "아, 다섯 개가 아니라 여섯 개였어요.", "ok": true}
+{"scenario": "s4_ko_c_172", "n": 8, "attempt": 0, "seed": 1394510831, "text": "서연은 망치를 몇 개 가지고 있어요?", "ok": true}
+{"scenario": "s4_ko_c_172", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [9], "failed_turn": null, "seconds": 37.8, "peak_mb": 4758}
 {"scenario": "s4_ko_c_175", "n": 1, "attempt": 2, "seed": 697691409, "text": "저는 풍선이 하나도 없습니다.", "ok": true}
 {"scenario": "s4_ko_c_175", "n": 2, "attempt": 0, "seed": 30892392, "text": "지호는 풍선만 다섯 개 있습니다.", "ok": true}
 {"scenario": "s4_ko_c_175", "n": 3, "attempt": 0, "seed": 3760339122, "text": "성진은 풍선 열한 개를 가지고 있습니다.", "ok": true}
@@ -1260,13 +1248,6 @@
 {"scenario": "s4_ko_c_188", "n": 7, "attempt": 0, "seed": 3468024584, "text": "아, 지호요.", "ok": true}
 {"scenario": "s4_ko_c_188", "n": 8, "attempt": 0, "seed": 2832856143, "text": "우진과 지호가 합쳐서 헬멧이 몇 개 있어요?", "ok": true}
 {"scenario": "s4_ko_c_188", "dialogue": true, "kept": [1, 2, 3, 4, 6, 7, 8], "skipped": [5], "failed_turn": null, "seconds": 49.6, "peak_mb": 4784}
-{"scenario": "s4_ko_c_192", "n": 1, "attempt": 0, "seed": 2642705698, "text": "제 조카 예은은 감자 네 개를 가지고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_192", "n": 2, "attempt": 0, "seed": 4135329427, "text": "접수 담당 지윤 씨가 감자는 열두 개를 맡고 있습니다.", "ok": true}
-{"scenario": "s4_ko_c_192", "n": 3, "attempt": 0, "seed": 3697783625, "text": "예은이가 지윤 씨한테 감자 두 개를 건넸습니다.", "ok": true}
-{"scenario": "s4_ko_c_192", "n": 4, "attempt": 0, "seed": 1495481365, "text": "지윤씨한테 감자가 지금 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_192", "n": 6, "attempt": 1, "seed": 419275341, "text": "예은이가 감자 한 개를 잃어버렸습니다.", "ok": true}
-{"scenario": "s4_ko_c_192", "n": 8, "attempt": 0, "seed": 3787314710, "text": "예은씨와 지윤씨 중 누가 지금 감자를 더 많이 가지고 있는지습니까?", "ok": true}
-{"scenario": "s4_ko_c_192", "dialogue": true, "kept": [1, 2, 3, 4, 6, 8], "skipped": [5, 7], "failed_turn": null, "seconds": 59.4, "peak_mb": 4760}
 {"scenario": "s4_ko_c_202", "n": 1, "attempt": 1, "seed": 1207704400, "text": "나연은 머핀만 열여섯 개 있어요.", "ok": true}
 {"scenario": "s4_ko_c_202", "n": 2, "attempt": 1, "seed": 1831297144, "text": "도서관에는 머핀이 좀 있어요.", "ok": true}
 {"scenario": "s4_ko_c_202", "n": 3, "attempt": 1, "seed": 980514819, "text": "제 후배는 머핀만 열한 개 있어요.", "ok": true}

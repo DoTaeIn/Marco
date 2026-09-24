@@ -4,47 +4,44 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "ambiguous_referent",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "hapsyo",
+  "register": "haeyo",
   "split": "one_fact_per_turn",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_100",
+  "scenario": "s4_ko_c_104",
   "half": "check",
   "focus": [
-   "fronting",
+   "holders",
    "korean_register",
-   "referent_repairs"
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:adv_moment",
-   "fronting:front_then",
-   "holders:apposition",
-   "holders:place",
-   "holders:relation_unnamed",
-   "question_forms:q_place_now",
-   "referent_repairs:i_mean",
-   "referent_repairs:pronoun_asked",
-   "transfer_verbs:pass"
+   "holders:relation",
+   "question_forms:q_hold",
+   "transfer_verbs:borrow",
+   "transfer_verbs:lend",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 이웃은 엽서 열두 장을 가지고 있습니다.",
+   "say": "제 짝꿍 지호는 샌드위치 세 개만 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation_unnamed"
+    "holders:relation",
+    "zero_vague:only"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -60,29 +57,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "이웃",
-      "item": "엽서",
-      "quantity": 12
+      "holder": "지호",
+      "item": "샌드위치",
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "이웃",
-      "item": "엽서",
-      "quantity": 12
+      "entity": "지호",
+      "item": "샌드위치",
+      "quantity": 3
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "빵집에는 엽서가 다섯 장 있습니다.",
+   "say": "지윤도 샌드위치가 좀 있어요. 열한 개네요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:place"
+    "zero_vague:vague_then_exact"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -98,29 +95,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "빵집",
-      "item": "엽서",
-      "quantity": 5
+      "holder": "지윤",
+      "item": "샌드위치",
+      "quantity": 11
      }
     ],
     "state": [
      {
-      "entity": "빵집",
-      "item": "엽서",
-      "quantity": 5
+      "entity": "지윤",
+      "item": "샌드위치",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "코치 지호 씨가 엽서 열세 장을 맡고 있습니다.",
+   "say": "지호가 지윤이한테 샌드위치 두 개를 빌려줬어요.",
    "label": "hold",
    "tags": [
-    "ownership"
+    "transfer"
    ],
    "classes": [
-    "holders:apposition"
+    "transfer_verbs:lend"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -135,16 +132,22 @@
     },
     "events": [
      {
-      "type": "has",
-      "holder": "지호",
-      "item": "엽서",
-      "quantity": 13
+      "type": "transfer",
+      "from": "지호",
+      "to": "지윤",
+      "item": "샌드위치",
+      "quantity": 2
      }
     ],
     "state": [
      {
       "entity": "지호",
-      "item": "엽서",
+      "item": "샌드위치",
+      "quantity": 1
+     },
+     {
+      "entity": "지윤",
+      "item": "샌드위치",
       "quantity": 13
      }
     ]
@@ -152,52 +155,38 @@
   },
   {
    "n": 4,
-   "say": "성진은 지금 엽서 열한 장이 있습니다.",
-   "label": "hold",
+   "say": "지윤은 샌드위치를 몇 개 가지고 있어요?",
+   "label": "answerable",
    "tags": [
-    "ownership"
+    "transfer"
    ],
    "classes": [
-    "fronting:adv_moment"
+    "question_forms:q_hold"
    ],
    "scenario_turn": 4,
    "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
+    "act": "answer",
+    "entity": "지윤",
+    "quantity": 13,
+    "relation": "count",
     "evidence": {
      "turns": [
-      4
+      2,
+      3
      ]
     },
-    "events": [
-     {
-      "type": "has",
-      "holder": "성진",
-      "item": "엽서",
-      "quantity": 11
-     }
-    ],
-    "state": [
-     {
-      "entity": "성진",
-      "item": "엽서",
-      "quantity": 11
-     }
-    ]
+    "item": "샌드위치"
    }
   },
   {
    "n": 5,
-   "say": "그다음에 제 이웃이 지호씨한테 엽서 두장을 넘겼습니다.",
+   "say": "지윤이가 지호한테 샌드위치 네 개를 빌려줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:front_then",
-    "transfer_verbs:pass"
+    "transfer_verbs:lend"
    ],
    "scenario_turn": 5,
    "expect": {
@@ -213,64 +202,63 @@
     "events": [
      {
       "type": "transfer",
-      "from": "이웃",
+      "from": "지윤",
       "to": "지호",
-      "item": "엽서",
-      "quantity": 2
+      "item": "샌드위치",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "이웃",
-      "item": "엽서",
-      "quantity": 10
+      "entity": "지윤",
+      "item": "샌드위치",
+      "quantity": 9
      },
      {
       "entity": "지호",
-      "item": "엽서",
-      "quantity": 15
+      "item": "샌드위치",
+      "quantity": 5
      }
     ]
    }
   },
   {
    "n": 6,
-   "say": "현재 빵집에 있는 엽서가 몇 장 있는지 아닙니까?",
+   "say": "지호는 지금 샌드위치가 몇 개 있어요?",
    "label": "answerable",
    "tags": [
-    "ownership"
+    "transfer"
    ],
-   "classes": [
-    "holders:place",
-    "question_forms:q_place_now"
-   ],
+   "classes": [],
    "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "빵집",
+    "entity": "지호",
     "quantity": 5,
     "relation": "count",
     "evidence": {
      "turns": [
-      2
+      1,
+      3,
+      5
      ]
     },
-    "item": "엽서"
+    "item": "샌드위치"
    }
   },
   {
    "n": 7,
-   "say": "그분은 지금 엽서가 몇 개 있습니까?",
-   "label": "ambiguous",
+   "say": "지호가 지윤이한테 샌드위치 한 개를 빌렸어요.",
+   "label": "hold",
    "tags": [
-    "ambiguous_referent"
+    "transfer"
    ],
    "classes": [
-    "referent_repairs:pronoun_asked"
+    "transfer_verbs:borrow"
    ],
    "scenario_turn": 7,
    "expect": {
-    "act": "clarify",
+    "act": "record",
     "entity": null,
     "quantity": null,
     "relation": null,
@@ -279,35 +267,54 @@
       7
      ]
     },
-    "candidates": [
-     "성진",
-     "지호"
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지윤",
+      "to": "지호",
+      "item": "샌드위치",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "지윤",
+      "item": "샌드위치",
+      "quantity": 8
+     },
+     {
+      "entity": "지호",
+      "item": "샌드위치",
+      "quantity": 6
+     }
     ]
    }
   },
   {
    "n": 8,
-   "say": "제 말은 성진 씨입니다.",
+   "say": "지호는 샌드위치를 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
-    "ambiguous_referent",
-    "ownership"
+    "transfer"
    ],
    "classes": [
-    "referent_repairs:i_mean"
+    "question_forms:q_hold"
    ],
    "scenario_turn": 8,
    "expect": {
     "act": "answer",
-    "entity": "성진",
-    "quantity": 11,
+    "entity": "지호",
+    "quantity": 6,
     "relation": "count",
     "evidence": {
      "turns": [
-      4
+      1,
+      3,
+      5,
+      7
      ]
     },
-    "item": "엽서"
+    "item": "샌드위치"
    }
   }
  ]

@@ -4,7 +4,6 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "correction",
   "ownership",
   "transfer"
  ],
@@ -12,36 +11,37 @@
   "word_order": "free",
   "register": "haeyo",
   "split": "one_fact_per_turn",
-  "correction_position": "late",
+  "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_091",
+  "scenario": "s4_ko_c_097",
   "half": "check",
   "focus": [
    "holders",
    "korean_register",
-   "transfer_verbs"
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "corrections:amount",
    "holders:place",
+   "holders:relation",
    "question_forms:q_place_now",
-   "transfer_verbs:keep",
-   "transfer_verbs:move_passive",
-   "transfer_verbs:take_from"
+   "transfer_verbs:take_from",
+   "zero_vague:exact_later",
+   "zero_vague:vague"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "헬멧 아홉 개가 동쪽 창고에 있어요.",
+   "say": "본관에도 감자가 좀 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:place"
+    "holders:place",
+    "zero_vague:vague"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -57,29 +57,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "동쪽 창고",
-      "item": "헬멧",
-      "quantity": 9
+      "holder": "본관",
+      "item": "감자",
+      "quantity": null
      }
     ],
     "state": [
      {
-      "entity": "동쪽 창고",
-      "item": "헬멧",
-      "quantity": 9
+      "entity": "본관",
+      "item": "감자",
+      "quantity": null
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "시윤은 헬멧 일곱 개를 보관하고 있어요.",
+   "say": "빵집에는 감자가 아홉 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "transfer_verbs:keep"
+    "holders:place"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -95,29 +95,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "시윤",
-      "item": "헬멧",
-      "quantity": 7
+      "holder": "빵집",
+      "item": "감자",
+      "quantity": 9
      }
     ],
     "state": [
      {
-      "entity": "시윤",
-      "item": "헬멧",
-      "quantity": 7
+      "entity": "빵집",
+      "item": "감자",
+      "quantity": 9
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "헬멧 열두 개가 공방에 있어요.",
+   "say": "제 짝꿍 하린은 감자가 열세 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:place"
+    "holders:relation"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -133,30 +133,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "공방",
-      "item": "헬멧",
-      "quantity": 12
+      "holder": "하린",
+      "item": "감자",
+      "quantity": 13
      }
     ],
     "state": [
      {
-      "entity": "공방",
-      "item": "헬멧",
-      "quantity": 12
+      "entity": "하린",
+      "item": "감자",
+      "quantity": 13
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "시윤이 동쪽 창고에서 헬멧 두 개를 가져갔어요.",
+   "say": "세어 보니 열한 개예요.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "holders:place",
-    "transfer_verbs:take_from"
+    "zero_vague:exact_later"
    ],
    "scenario_turn": 4,
    "expect": {
@@ -171,65 +170,33 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "동쪽 창고",
-      "to": "시윤",
-      "item": "헬멧",
-      "quantity": 2
+      "type": "has",
+      "holder": "본관",
+      "item": "감자",
+      "quantity": 11
      }
     ],
     "state": [
      {
-      "entity": "동쪽 창고",
-      "item": "헬멧",
-      "quantity": 7
-     },
-     {
-      "entity": "시윤",
-      "item": "헬멧",
-      "quantity": 9
+      "entity": "본관",
+      "item": "감자",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 5,
-   "say": "지금 동쪽 창고에 헬멧이 몇 개 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "holders:place",
-    "question_forms:q_place_now"
-   ],
-   "scenario_turn": 5,
-   "expect": {
-    "act": "answer",
-    "entity": "동쪽 창고",
-    "quantity": 7,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4
-     ]
-    },
-    "item": "헬멧"
-   }
-  },
-  {
-   "n": 6,
-   "say": "헬멧 한 개가 동쪽 창고에서 공방으로 옮겨졌어요.",
+   "say": "하린이 본관에서 감자 세 개를 가져갔어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
     "holders:place",
-    "transfer_verbs:move_passive"
+    "transfer_verbs:take_from"
    ],
-   "scenario_turn": 6,
+   "scenario_turn": 5,
    "expect": {
     "act": "record",
     "entity": null,
@@ -237,171 +204,85 @@
     "relation": null,
     "evidence": {
      "turns": [
-      6
+      5
      ]
     },
     "events": [
      {
       "type": "transfer",
-      "from": "동쪽 창고",
-      "to": "공방",
-      "item": "헬멧",
-      "quantity": 1
+      "from": "본관",
+      "to": "하린",
+      "item": "감자",
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "동쪽 창고",
-      "item": "헬멧",
-      "quantity": 6
+      "entity": "본관",
+      "item": "감자",
+      "quantity": 8
      },
      {
-      "entity": "공방",
-      "item": "헬멧",
-      "quantity": 13
+      "entity": "하린",
+      "item": "감자",
+      "quantity": 16
      }
     ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "지금 본관에 감자가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "본관",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "감자"
    }
   },
   {
    "n": 7,
-   "say": "지금 동쪽 창고에 헬멧이 몇 개 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "holders:place",
-    "question_forms:q_place_now"
-   ],
-   "scenario_turn": 7,
-   "expect": {
-    "act": "answer",
-    "entity": "동쪽 창고",
-    "quantity": 6,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4,
-      6
-     ]
-    },
-    "item": "헬멧"
-   }
-  },
-  {
-   "n": 8,
-   "say": "아, 한 개가 아니라 다섯 개였어요.",
-   "label": "correction",
-   "tags": [
-    "correction"
-   ],
-   "classes": [
-    "corrections:amount"
-   ],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "revise",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      6,
-      8
-     ]
-    },
-    "target_turn": 6,
-    "replaces": [
-     {
-      "type": "transfer",
-      "from": "동쪽 창고",
-      "to": "공방",
-      "item": "헬멧",
-      "quantity": 1
-     }
-    ],
-    "with": [
-     {
-      "type": "transfer",
-      "from": "동쪽 창고",
-      "to": "공방",
-      "item": "헬멧",
-      "quantity": 5
-     }
-    ],
-    "state": [
-     {
-      "entity": "동쪽 창고",
-      "item": "헬멧",
-      "quantity": 2
-     },
-     {
-      "entity": "공방",
-      "item": "헬멧",
-      "quantity": 17
-     }
-    ]
-   }
-  },
-  {
-   "n": 9,
-   "say": "지금 동쪽 창고에 헬멧이 몇 개 있어요?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "holders:place",
-    "question_forms:q_place_now"
-   ],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "answer",
-    "entity": "동쪽 창고",
-    "quantity": 2,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4,
-      6,
-      8
-     ]
-    },
-    "item": "헬멧",
-    "retracted_quantity": 6,
-    "reexecuted_quantity": 1
-   }
-  },
-  {
-   "n": 10,
-   "say": "동쪽 창고와 공방이 합쳐서 헬멧이 몇 개 있어요?",
+   "say": "본관이랑 빵집이 합쳐서 감자가 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 10,
+   "scenario_turn": 7,
    "expect": {
     "act": "answer",
     "entity": [
-     "동쪽 창고",
-     "공방"
+     "본관",
+     "빵집"
     ],
-    "quantity": 19,
+    "quantity": 17,
     "relation": "total",
     "evidence": {
      "turns": [
       1,
-      3,
+      2,
       4,
-      6,
-      8
+      5
      ]
     },
-    "item": "헬멧"
+    "item": "감자"
    }
   }
  ]

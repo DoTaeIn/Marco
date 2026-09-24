@@ -4,8 +4,6 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "ambiguous_referent",
-  "follow_up",
   "ownership",
   "transfer"
  ],
@@ -16,35 +14,35 @@
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_027",
+  "scenario": "s4_ko_c_030",
   "half": "check",
   "focus": [
-   "holders",
-   "referent_repairs",
-   "transfer_verbs"
+   "korean_register",
+   "question_forms",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:first_person",
-   "holders:place",
+   "holders:relation",
    "question_forms:q_hold",
-   "referent_repairs:i_mean",
-   "referent_repairs:pronoun_fixed",
-   "transfer_verbs:carry",
-   "transfer_verbs:responsible",
-   "transfer_verbs:take_from"
+   "question_forms:q_two_total",
+   "transfer_verbs:lend",
+   "transfer_verbs:receive",
+   "zero_vague:exact_later",
+   "zero_vague:only",
+   "zero_vague:vague"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "동전 여섯 개가 북쪽 창고에 있어요.",
+   "say": "예원도 자두가 좀 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:place"
+    "zero_vague:vague"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -60,30 +58,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "북쪽 창고",
-      "item": "동전",
-      "quantity": 6
+      "holder": "예원",
+      "item": "자두",
+      "quantity": null
      }
     ],
     "state": [
      {
-      "entity": "북쪽 창고",
-      "item": "동전",
-      "quantity": 6
+      "entity": "예원",
+      "item": "자두",
+      "quantity": null
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "동전 여덟 개는 제가 맡고 있어요.",
+   "say": "제 조카 다은은 자두 다섯 개만 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:first_person",
-    "transfer_verbs:responsible"
+    "holders:relation",
+    "zero_vague:only"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -99,29 +97,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "나",
-      "item": "동전",
-      "quantity": 8
+      "holder": "다은",
+      "item": "자두",
+      "quantity": 5
      }
     ],
     "state": [
      {
-      "entity": "나",
-      "item": "동전",
-      "quantity": 8
+      "entity": "다은",
+      "item": "자두",
+      "quantity": 5
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "서연은 동전 열여섯 개를 들고 있어요.",
+   "say": "세어 보니 열두 개예요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "transfer_verbs:carry"
+    "zero_vague:exact_later"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -137,28 +135,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "서연",
-      "item": "동전",
-      "quantity": 16
+      "holder": "예원",
+      "item": "자두",
+      "quantity": 12
      }
     ],
     "state": [
      {
-      "entity": "서연",
-      "item": "동전",
-      "quantity": 16
+      "entity": "예원",
+      "item": "자두",
+      "quantity": 12
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "시현은 동전 열세 개가 있어요.",
+   "say": "다은이 예원한테서 자두 두 개를 받았어요.",
    "label": "hold",
    "tags": [
-    "ownership"
+    "transfer"
    ],
-   "classes": [],
+   "classes": [
+    "transfer_verbs:receive"
+   ],
    "scenario_turn": 4,
    "expect": {
     "act": "record",
@@ -172,33 +172,62 @@
     },
     "events": [
      {
-      "type": "has",
-      "holder": "시현",
-      "item": "동전",
-      "quantity": 13
+      "type": "transfer",
+      "from": "예원",
+      "to": "다은",
+      "item": "자두",
+      "quantity": 2
      }
     ],
     "state": [
      {
-      "entity": "시현",
-      "item": "동전",
-      "quantity": 13
+      "entity": "예원",
+      "item": "자두",
+      "quantity": 10
+     },
+     {
+      "entity": "다은",
+      "item": "자두",
+      "quantity": 7
      }
     ]
    }
   },
   {
    "n": 5,
-   "say": "서연이 북쪽 창고에서 동전 한 개를 가져갔어요.",
+   "say": "예원이 지금 자두를 몇 개 가지고 있는지요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "예원",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "자두"
+   }
+  },
+  {
+   "n": 6,
+   "say": "예원이 다은한테 자두 다섯 개를 빌려줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "holders:place",
-    "transfer_verbs:take_from"
+    "transfer_verbs:lend"
    ],
-   "scenario_turn": 5,
+   "scenario_turn": 6,
    "expect": {
     "act": "record",
     "entity": null,
@@ -206,61 +235,38 @@
     "relation": null,
     "evidence": {
      "turns": [
-      5
+      6
      ]
     },
     "events": [
      {
       "type": "transfer",
-      "from": "북쪽 창고",
-      "to": "서연",
-      "item": "동전",
-      "quantity": 1
+      "from": "예원",
+      "to": "다은",
+      "item": "자두",
+      "quantity": 5
      }
     ],
     "state": [
      {
-      "entity": "북쪽 창고",
-      "item": "동전",
+      "entity": "예원",
+      "item": "자두",
       "quantity": 5
      },
      {
-      "entity": "서연",
-      "item": "동전",
-      "quantity": 17
+      "entity": "다은",
+      "item": "자두",
+      "quantity": 12
      }
     ]
    }
   },
   {
-   "n": 6,
-   "say": "서연이 지금 동전이 몇 개 있어요?",
+   "n": 7,
+   "say": "다은이 지금 자두를 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "answer",
-    "entity": "서연",
-    "quantity": 17,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      3,
-      5
-     ]
-    },
-    "item": "동전"
-   }
-  },
-  {
-   "n": 7,
-   "say": "시현은 동전을 몇 개 가지고 있어요?",
-   "label": "answerable",
-   "tags": [
-    "ownership"
    ],
    "classes": [
     "question_forms:q_hold"
@@ -268,66 +274,75 @@
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "시현",
-    "quantity": 13,
+    "entity": "다은",
+    "quantity": 12,
     "relation": "count",
     "evidence": {
      "turns": [
-      4
+      2,
+      4,
+      6
      ]
     },
-    "item": "동전"
+    "item": "자두"
    }
   },
   {
    "n": 8,
-   "say": "그분은 지금 동전이 몇 개 있어요?",
+   "say": "예원이는 지금 자두를 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
-    "ambiguous_referent",
-    "follow_up"
+    "transfer"
    ],
    "classes": [
-    "referent_repairs:pronoun_fixed"
+    "question_forms:q_hold"
    ],
    "scenario_turn": 8,
    "expect": {
     "act": "answer",
-    "entity": "시현",
-    "quantity": 13,
+    "entity": "예원",
+    "quantity": 5,
     "relation": "count",
     "evidence": {
      "turns": [
-      4
+      1,
+      3,
+      4,
+      6
      ]
     },
-    "item": "동전"
+    "item": "자두"
    }
   },
   {
    "n": 9,
-   "say": "아, 서연요.",
+   "say": "두 사람이 합쳐서 자두가 몇 개 있어요?",
    "label": "answerable",
    "tags": [
-    "ambiguous_referent",
     "transfer"
    ],
    "classes": [
-    "referent_repairs:i_mean"
+    "question_forms:q_two_total"
    ],
    "scenario_turn": 9,
    "expect": {
     "act": "answer",
-    "entity": "서연",
+    "entity": [
+     "예원",
+     "다은"
+    ],
     "quantity": 17,
-    "relation": "count",
+    "relation": "total",
     "evidence": {
      "turns": [
+      1,
+      2,
       3,
-      5
+      4,
+      6
      ]
     },
-    "item": "동전"
+    "item": "자두"
    }
   }
  ]
