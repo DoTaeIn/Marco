@@ -142,3 +142,4 @@ data/웹_되돌림/
 
 # built model files for releases
 dist/
+logs/
