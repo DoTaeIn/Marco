@@ -2610,14 +2610,23 @@ class RelationalParser:
                 return {"choices": names}
         who = next((i for i, w in enumerate(words) if w in spec.get("who", [])), None)
         more = next((i for i, w in enumerate(words) if w in spec.get("more", [])), None)
+        adverbial = spec.get("adverbial") or {}
+        order = None
+        if (who is not None and more is not None and who < more and more + 1 < len(words) - 1
+                and words[more + 1] in (adverbial.get("adverbs") or {})
+                and words[-1] in self._count_predicate_forms(questions_only=True)
+                and all(w in self._count_predicate_forms() for w in words[more + 2:-1])):
+            # 누가 접시를 더 많이 가지고 있어요: the adverb of amount before a count predicate
+            order = adverbial["adverbs"][words[more + 1]]
+            words = words[:more + 1] + [words[-1]]
         if who is None or more is None or not who < more or more + 1 != len(words) - 1:
             return None
-        if words[-1] not in self._comparison_forms():
+        if order is None and words[-1] not in self._comparison_forms():
             return None
         item = [bare(w) for w in words[who + 1:more] if w not in spec.get("time_words", [])]
         before = [w for w in words[:who] if w not in spec.get("time_words", [])]
         request = {"item": " ".join(item) or None}
-        kind = "fewer" if self._comparison_forms()[words[-1]] == "less" else "more"
+        kind = "fewer" if (order or self._comparison_forms()[words[-1]]) == "less" else "more"
         if before:
             among = spec.get("between", {}).get("among", [])
             joiners = sorted(spec.get("between", {}).get("joiners", []), key=len, reverse=True)
