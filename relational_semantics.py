@@ -603,6 +603,12 @@ class RelationalParser:
                     self._ends_in_particle(w) for w in (m.group(1) + m.group(2)).split()):
                 text, applied = m.group(3), applied + ["fronted_purpose"]
                 break
+        adverbs = spec.get("dropped_adverbs") or []
+        if adverbs:
+            # time adverbs that fill no role are left out in every reading, not only with the phrase variants
+            new = re.sub(r"(?<!\S)(?:%s)(?!\S)\s*" % "|".join(re.escape(w) for w in adverbs), "", text).strip()
+            if new != text and new:
+                text, applied = new, applied + ["adverb"]
         zero = spec.get("zero_idiom") or {}
         if zero:
             # 하나도 없어요 / 한 켤레도 없습니다: the amount none, said as the count 0 with the verb of

@@ -2430,6 +2430,13 @@ class ReasoningContext:
             at = word.find(unit)
             if at > 0:
                 return parse_numeral(word[:at], numerals)
+        # a numeral said as a noun with the copula after it (하나였습니다, 둘이에요): the pack's amount tails
+        tails = (parser.language_pack.get("contrast_correction") or {}).get("amount_tails", [])
+        for tail in sorted(tails, key=len, reverse=True):
+            if word.endswith(tail) and len(word) > len(tail):
+                value = parse_numeral(word[:-len(tail)], numerals)
+                if value is not None:
+                    return value
         return None
 
     def _restatement(self, parser, text):

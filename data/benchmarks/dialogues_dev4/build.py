@@ -1640,6 +1640,15 @@ KO_CUES = {
 }
 KO_TITLES = ("씨", "님")
 # the verb of the turn's class must be the verb the phrasing uses (a class tag says what the text does)
+# an event is told in the past: the past forms of the event verbs (checked on event turns)
+EN_PAST_CUES = {
+    "give": r"\bgave\b", "lend": r"\blent\b|\bloaned\b", "pass": r"\bpassed\b",
+    "hand_over": r"\bhanded\b.{0,40}\bover\b", "give_back": r"\bgave\b.{0,40}\bback\b|\breturned\b",
+    "send": r"\bsent\b", "transfer": r"\btransferred\b", "borrow": r"\bborrowed\b",
+    "receive": r"\breceived\b|\bgot\b", "leave_at": r"\bleft\b|\bdropped off\b", "move": r"\bmoved\b",
+    "move_passive": r"\b(?:were|was|got|have been|had been)\s+moved\b", "take_from": r"\btook\b",
+    "use_up": r"\bused\b.{0,30}\bup\b", "use_for": r"\bused\b", "lose": r"\blost\b",
+}
 EN_VERB_CUES = {
     "give": r"\bg[ai]ve[sn]?\b|\bgiving\b", "lend": r"\blen[dt]s?\b|\blending\b|\bloan",
     "pass": r"\bpass(?:ed|es|ing)?\b", "hand_over": r"\bhand(?:ed|s|ing)?\b.{0,40}\bover\b",
@@ -1751,6 +1760,8 @@ class Checker:
             return False, "shape"
         if re.search(r"[\"“”()\[\]]|^user\s*:|사용자|말하는 사람|the user|the speaker|assistant", text, re.I):
             return False, "quote_or_role"
+        if re.search(r"[/—–]", text):
+            return False, "dash_or_slash"
         if lang == "ko" and re.search(r"[A-Za-z]", text):
             return False, "latin_in_korean"
         if lang == "en" and re.search(r"[가-힣぀-ヿ一-鿿]", text):
@@ -1876,6 +1887,13 @@ class Checker:
                     return False, "cue:" + kind
         if ";" in text:
             return False, "semicolon"
+        if lang == "en" and not question:
+            if re.search(r",\s*(?:who|which)\b", text, re.I):
+                return False, "relative_clause"
+            if re.search(r"\bsome\s+(?:\d|%s)\b" % "|".join(EN_WORDS), text, re.I):
+                return False, "some_and_number"
+            if not spec.get("anaphor") and re.search(r"(?<!\bof )\bthem\b", text, re.I):
+                return False, "them_without_partitive"
         if not question and re.search(r"는지|은지|ㄴ지|\bwhether\b", text):
             return False, "embedded_question"
         # a statement of what someone has says no transfer (the model sometimes tells a story instead)
@@ -1889,6 +1907,9 @@ class Checker:
             table = EN_VERB_CUES if lang == "en" else KO_VERB_CUES
             if verb in table and not re.search(table[verb], text, re.I if lang == "en" else 0):
                 return False, "verb:" + verb
+        if lang == "en" and turn["say"].get("act") == "state" and verb in EN_PAST_CUES:
+            if not re.search(EN_PAST_CUES[verb], text, re.I):
+                return False, "not_past:" + verb
         # a Korean phrasing in the dialogue's register, with a person never marked like a place
         if lang == "ko":
             reason = self._korean(scn, text, question)
@@ -1979,8 +2000,11 @@ class Checker:
                 for token in h["tokens"]:
                     if re.search(re.escape(token) + r"(?:한테|에게|께)", text):
                         return "place_as_person"
-        if re.search(r"[가-힣](?:이|가) (?:\d+|[가-힣]+) ?(?:%s)(?:을|를)" % "|".join(KO_COUNTERS), text):
-            return "case_clash"                                   # 리본이 일곱 개를: subject and object at once
+        for item in scn["items"]:
+            # 리본이 일곱 개를: the thing marked as subject and its amount as object at once
+            if re.search(r"%s(?:이|가) (?:\d+|[가-힣]+) ?(?:%s)(?:을|를)" % (re.escape(item["noun"]), "|".join(KO_COUNTERS)),
+                         text):
+                return "case_clash"
         for m in re.finditer(r"([가-힣])다고\s?(?:해요|합니다|해|하더라|했어요)", text):
             if _jong(m.group(1)) == 0 and m.group(1) not in "이":
                 return "hearsay_form"
