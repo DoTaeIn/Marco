@@ -262,6 +262,7 @@ people some weeks after that.
 | **ALMA** | Pathognosis, memory-linked appraisal, personal state |
 | **POLO** | Bouleusis, the permission and execution boundary of actions |
 | **shared** | Hypomnema |
+| **NERO** | no pipeline of its own: the compute layer that executes what Apodeixis defines, on CPU or GPU, without changing a proof |
 
 These are conceptual boundaries. They do not dictate the package layout, which
 the structure audit plans separately.

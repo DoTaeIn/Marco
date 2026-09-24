@@ -98,6 +98,12 @@ The post-gate schedule for SOMA, ALMA affect, deliberation and audio is in
 `docs/ko/2026-09-24-trace-logging-design.md` is implemented in two parts: the
 ledger core now (L1, a new package, no engine edits), emission at the engine
 sites in round 5.
+Two more owner notes of the same day, the adaptive-intelligence architecture
+(`docs/ko/2026-09-24-adaptive-intelligence-design.md`: self-repair, research, capability
+graph, compilers, persona, development-aware emotion) and the NERO compute layer
+(`docs/ko/2026-09-24-nero-compute-design.md`), are scheduled entirely after the gate in
+the roadmap. Self-repair and capability work fall under the frozen autonomous-planning
+and POLO areas until then; NERO is a new family member with no code yet.
 
 ## Unfreezing
 
