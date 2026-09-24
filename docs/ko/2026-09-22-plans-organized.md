@@ -20,7 +20,7 @@ Plans that existed only in conversation are recorded here in full.
 | Perception / reasoning / emotion philosophy (owner's design note, verbatim) | `docs/ko/2026-09-24-perception-reasoning-emotion-philosophy.md` | Idea. Principles adopted; nothing scheduled before MARCO 1 |
 | License change: MARCO Engine License 1.0 (Apache 2.0 + visible attribution in user-facing products, white-label on request), graphs CC BY 4.0 | `LICENSE`, `LICENSE-GRAPHS`, `NOTICE`, README §License | Done 2026-09-24 (3d738ec), brought forward because a fork appeared; legal review of the wording still the owner's item |
 | Trace / event logging architecture (owner's design note, verbatim, 45 sections) | `docs/ko/2026-09-24-trace-logging-design.md` | Idea. Ledger core scheduled now as L1; SOMA / ALMA / budget traces post-gate |
-| L1 trace ledger goal: schema, append-only ledger, adapter from the turn envelope, why chain, failure statistics | `docs/ko/2026-09-24-trace-ledger-goal.md` | Running 2026-09-24 alongside G4 and W3 |
+| L1 trace ledger goal: schema, append-only ledger, adapter from the turn envelope, why chain, failure statistics | `docs/ko/2026-09-24-trace-ledger-goal.md` | Done 2026-09-24, merged; emission at the engine sites is request L1-1 for round 5 |
 | Roadmap after MARCO 1: O0 observation contract, A1' affect layers, V1 SOMA blocks-and-hand, deliberation levels, audio, neural sensors | `docs/ko/2026-09-24-roadmap-after-marco1.md` | Timeline in weeks from the gate |
 | **Freeze decision and the current queue** | `docs/ko/2026-09-22-freeze-decision.md` | **Read first. Overrides §2 below** |
 | Parallel goals, reduced | `docs/ko/2026-09-22-parallel-goals.md` | F1 now; S3, S2-min, W1, D1 in order |
