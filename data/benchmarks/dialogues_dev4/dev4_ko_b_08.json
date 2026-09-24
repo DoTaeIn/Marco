@@ -1,0 +1,309 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_08",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "multi_fact",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_015",
+  "half": "build",
+  "focus": [
+   "korean_register",
+   "question_forms",
+   "referent_repairs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "multi_fact",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:leave_at"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "수아는 잡지 열다섯 권을 가지고 있어요. 재민이한테서 잡지 네 권을 받았어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "multi_fact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "수아",
+      "item": "잡지",
+      "quantity": 15
+     },
+     {
+      "type": "has",
+      "holder": "재민",
+      "item": "잡지",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "수아",
+      "item": "잡지",
+      "quantity": 15
+     },
+     {
+      "entity": "재민",
+      "item": "잡지",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "안내 데스크에는 잡지가 열세 권 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "안내 데스크",
+      "item": "잡지",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "안내 데스크",
+      "item": "잡지",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 룸메이트는 잡지가 세 권 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "룸메이트",
+      "item": "잡지",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "룸메이트",
+      "item": "잡지",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "재민이 안내 데스크에 잡지 세 권을 두고 왔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "재민",
+      "to": "안내 데스크",
+      "item": "잡지",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "재민",
+      "item": "잡지",
+      "quantity": 1
+     },
+     {
+      "entity": "안내 데스크",
+      "item": "잡지",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "재민이 지금 잡지를 몇 권 가지고 있는지요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "재민",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "잡지"
+   }
+  },
+  {
+   "n": 6,
+   "say": "그분은 지금 잡지가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "재민",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "잡지"
+   }
+  },
+  {
+   "n": 7,
+   "say": "제 말은 재민 씨예요.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "재민",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "잡지"
+   }
+  },
+  {
+   "n": 8,
+   "say": "수아와 재민이 합쳐서 잡지가 몇 권 가지고 있는지요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "수아",
+     "재민"
+    ],
+    "quantity": 16,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "잡지"
+   }
+  }
+ ]
+}

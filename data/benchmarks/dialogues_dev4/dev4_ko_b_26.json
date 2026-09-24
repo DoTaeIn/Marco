@@ -1,0 +1,391 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_26",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "multi_fact",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_122",
+  "half": "build",
+  "focus": [
+   "referent_repairs",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:apposition",
+   "holders:first_person",
+   "holders:title",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:lend",
+   "zero_vague:also_some",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "사서 채원 씨가 쿠키가 열 개 있고 레몬도 좀 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:also_some"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "채원",
+      "item": "쿠키",
+      "quantity": 10
+     },
+     {
+      "type": "has",
+      "holder": "채원",
+      "item": "레몬",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "채원",
+      "item": "쿠키",
+      "quantity": 10
+     },
+     {
+      "entity": "채원",
+      "item": "레몬",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "황 팀장님은 쿠키만 여섯 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "황 팀장",
+      "item": "쿠키",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "황 팀장",
+      "item": "쿠키",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "저는 쿠키 아홉 개만 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "쿠키",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "쿠키",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "황 팀장님은 저한테 쿠키 다섯 개를 건네주었어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "황 팀장",
+      "to": "나",
+      "item": "쿠키",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "황 팀장",
+      "item": "쿠키",
+      "quantity": 1
+     },
+     {
+      "entity": "나",
+      "item": "쿠키",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "황 팀장님은 쿠키를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "황 팀장",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "쿠키"
+   }
+  },
+  {
+   "n": 6,
+   "say": "채원 씨가 저한테 쿠키 한 개를 빌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "채원",
+      "to": "나",
+      "item": "쿠키",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "채원",
+      "item": "쿠키",
+      "quantity": 9
+     },
+     {
+      "entity": "나",
+      "item": "쿠키",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "채원 씨는 쿠키가 몇 개 남았어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "채원",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      6
+     ]
+    },
+    "item": "쿠키"
+   }
+  },
+  {
+   "n": 8,
+   "say": "그분은 지금 쿠키가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "채원",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      6
+     ]
+    },
+    "item": "쿠키"
+   }
+  },
+  {
+   "n": 9,
+   "say": "아, 황 팀장요.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "황 팀장",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "쿠키"
+   }
+  },
+  {
+   "n": 10,
+   "say": "채원 씨와 황 팀장님이 합쳐서 쿠키가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "채원",
+     "황 팀장"
+    ],
+    "quantity": 10,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "쿠키"
+   }
+  }
+ ]
+}

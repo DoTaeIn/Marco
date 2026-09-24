@@ -1,0 +1,281 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_06",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_011",
+  "half": "build",
+  "focus": [
+   "holders",
+   "partitives",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:apposition",
+   "holders:title",
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:borrow",
+   "transfer_verbs:receive"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "동훈님은 머그컵이 일곱 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "동훈",
+      "item": "머그컵",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "동훈",
+      "item": "머그컵",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "인턴 예린 씨가 머그컵이 네 개를 들고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "예린",
+      "item": "머그컵",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "예린",
+      "item": "머그컵",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "동훈 씨가 예린 씨한테 머그컵 두 개를 빌렸습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "예린",
+      "to": "동훈",
+      "item": "머그컵",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "예린",
+      "item": "머그컵",
+      "quantity": 2
+     },
+     {
+      "entity": "동훈",
+      "item": "머그컵",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "동훈씨는 머그컵을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "동훈",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "머그컵"
+   }
+  },
+  {
+   "n": 5,
+   "say": "동훈 씨가 예린 씨한테서 머그컵 한 개를 받았습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "예린",
+      "to": "동훈",
+      "item": "머그컵",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "예린",
+      "item": "머그컵",
+      "quantity": 1
+     },
+     {
+      "entity": "동훈",
+      "item": "머그컵",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "예린씨는 머그컵을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "예린",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "머그컵"
+   }
+  },
+  {
+   "n": 7,
+   "say": "둘이 합쳐서 머그컵이 모두 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "동훈",
+     "예린"
+    ],
+    "quantity": 11,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "머그컵"
+   }
+  }
+ ]
+}

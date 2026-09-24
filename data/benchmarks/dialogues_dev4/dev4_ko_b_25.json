@@ -1,0 +1,293 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_25",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_108",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "partitives",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:front_purpose",
+   "fronting:front_recipient",
+   "holders:first_person",
+   "holders:relation",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "transfer_verbs:give_back",
+   "transfer_verbs:lend"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 선배 영호는 휴지 열 묶음을 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "영호",
+      "item": "휴지",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "영호",
+      "item": "휴지",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "윤서는 휴지가 열한 묶음이 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "윤서",
+      "item": "휴지",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤서",
+      "item": "휴지",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "저는 지금 휴지 열네 묶음을 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:first_person"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "휴지",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "휴지",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "행사 때문에 영호가 윤서한테 휴지 다섯 묶음을 빌려주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "영호",
+      "to": "윤서",
+      "item": "휴지",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "영호",
+      "item": "휴지",
+      "quantity": 5
+     },
+     {
+      "entity": "윤서",
+      "item": "휴지",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "윤서는 휴지를 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "윤서",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "휴지"
+   }
+  },
+  {
+   "n": 6,
+   "say": "영호한테는 윤서가 휴지 네 묶음을 돌려주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "윤서",
+      "to": "영호",
+      "item": "휴지",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤서",
+      "item": "휴지",
+      "quantity": 12
+     },
+     {
+      "entity": "영호",
+      "item": "휴지",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "영호는 휴지가 몇 개 남았습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "영호",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6
+     ]
+    },
+    "item": "휴지"
+   }
+  }
+ ]
+}

@@ -1,0 +1,303 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_19",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_051",
+  "half": "build",
+  "focus": [
+   "holders",
+   "transfer_verbs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:apposition",
+   "holders:relation",
+   "transfer_verbs:send",
+   "zero_vague:exact_later",
+   "zero_vague:only",
+   "zero_vague:vague"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 동료 현우가 장갑이 좀 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "현우",
+      "item": "장갑",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "현우",
+      "item": "장갑",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "관리인 지아 씨는 장갑만 여덟 켤레 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지아",
+      "item": "장갑",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "지아",
+      "item": "장갑",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "현우가 지금 장갑이 열여섯 켤레 있습니다. 정확히는 열여섯 켤레입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:exact_later"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "현우",
+      "item": "장갑",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "현우",
+      "item": "장갑",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "지아씨가 현우한테 장갑 네 켤레를 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지아",
+      "to": "현우",
+      "item": "장갑",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "지아",
+      "item": "장갑",
+      "quantity": 4
+     },
+     {
+      "entity": "현우",
+      "item": "장갑",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "현우는 지금 장갑이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "현우",
+    "quantity": 20,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "장갑"
+   }
+  },
+  {
+   "n": 6,
+   "say": "아, 네 개가 아니라 하나였습니다.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      6
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "지아",
+      "to": "현우",
+      "item": "장갑",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "지아",
+      "to": "현우",
+      "item": "장갑",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "지아",
+      "item": "장갑",
+      "quantity": 7
+     },
+     {
+      "entity": "현우",
+      "item": "장갑",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "지아씨한테 장갑이 지금 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "지아",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "장갑",
+    "retracted_quantity": 4,
+    "reexecuted_quantity": 3
+   }
+  }
+ ]
+}

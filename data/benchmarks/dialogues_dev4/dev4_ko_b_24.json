@@ -1,0 +1,322 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_24",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_104",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "holders",
+   "korean_register"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:count_first",
+   "holders:relation_unnamed",
+   "holders:title",
+   "question_forms:q_hold",
+   "transfer_verbs:give_back",
+   "transfer_verbs:pass",
+   "transfer_verbs:send"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 팀원은 볼펜 여덟 자루를 보관하고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "팀원",
+      "item": "볼펜",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "팀원",
+      "item": "볼펜",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "서준 씨는 현재 볼펜이 네 자루 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:title"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서준",
+      "item": "볼펜",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "서준",
+      "item": "볼펜",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "서준 씨가 제 팀원한테 볼펜 두 자루를 넘겼어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "서준",
+      "to": "팀원",
+      "item": "볼펜",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "서준",
+      "item": "볼펜",
+      "quantity": 2
+     },
+     {
+      "entity": "팀원",
+      "item": "볼펜",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "서준씨한테 볼펜이 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "서준",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "볼펜"
+   }
+  },
+  {
+   "n": 5,
+   "say": "볼펜 다섯 자루를 제 팀원이 서준 씨한테 돌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "팀원",
+      "to": "서준",
+      "item": "볼펜",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "팀원",
+      "item": "볼펜",
+      "quantity": 5
+     },
+     {
+      "entity": "서준",
+      "item": "볼펜",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 팀원은 볼펜을 몇 자루 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "팀원",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "볼펜"
+   }
+  },
+  {
+   "n": 7,
+   "say": "서준 씨한테 볼펜이 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "서준",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "볼펜"
+   }
+  },
+  {
+   "n": 8,
+   "say": "볼펜 세 자루를 제 팀원이 서준 씨한테 보냈어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "팀원",
+      "to": "서준",
+      "item": "볼펜",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "팀원",
+      "item": "볼펜",
+      "quantity": 2
+     },
+     {
+      "entity": "서준",
+      "item": "볼펜",
+      "quantity": 10
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,249 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_12",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_023",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "referent_repairs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:count_first",
+   "holders:place",
+   "question_forms:q_hold",
+   "referent_repairs:i_mean",
+   "transfer_verbs:leave_at",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "진료실한테는 손전등이 한 개도 없습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "진료실",
+      "item": "손전등",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "진료실",
+      "item": "손전등",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "도윤은 손전등만 열세 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "도윤",
+      "item": "손전등",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "도윤",
+      "item": "손전등",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "세영은 손전등만 여덟 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "세영",
+      "item": "손전등",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "세영",
+      "item": "손전등",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "손전등 두 개를 세영이 진료실에 두고 왔습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세영",
+      "to": "진료실",
+      "item": "손전등",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "세영",
+      "item": "손전등",
+      "quantity": 6
+     },
+     {
+      "entity": "진료실",
+      "item": "손전등",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "도윤은 손전등을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "도윤",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "손전등"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 말은 세영 씨입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "세영",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "손전등"
+   }
+  }
+ ]
+}

@@ -2116,10 +2116,78 @@ def _needs_context(turn):
                                                                               "partitive", "same"))
 
 
+def _pointer_after_one(scn, turns, i):
+    """The discourse rule for a pronoun question (as the engine's G3.0 a reads it, and a reader does): right
+    after a question that named exactly one person, of the pronoun's gender in English, the pronoun points to
+    that person; otherwise, with two people it could mean, it is asked back. Returns that person's holder
+    json or None."""
+    if i == 0:
+        return None
+    prev = turns[i - 1]["expect"]
+    if prev.get("act") != "answer" or prev.get("relation") != "count" or not isinstance(prev.get("entity"), str):
+        return None
+    holder = next((h for h in scn["holders"] if h["entity"] == prev["entity"]), None)
+    if holder is None or holder["kind"] in ("place", "first_person"):
+        return None
+    pronoun = turns[i]["say"].get("pronoun")
+    gender = {"she": "f", "he": "m"}.get(pronoun)
+    if scn["language"] == "en" and (gender is None or holder.get("gender") != gender):
+        return None
+    return holder
+
+
+def _answer_for(scn, turns, i, entity, item):
+    """The expected answer for ``entity``'s count of ``item`` at turn ``i`` of ``turns``, replayed as the gate
+    replays it (corrections applied), with the uncorrected value when a correction changed it; or None when
+    another holder has the same value (the gate asks a count to name one holder only)."""
+    upto = turns[i]["n"]
+    state = _state_at(scn["turns"], upto)
+    value = state.get((entity, item))
+    if value is None or any(v == value for (h, it), v in state.items() if it == item and h != entity and v is not None):
+        return None
+    evidence = []
+    for t in scn["turns"][:upto - 1]:
+        e = t["expect"]
+        events = list(e.get("events") or []) + list(e.get("replaces") or []) + list(e.get("with") or [])
+        if any(entity in (ev.get("holder"), ev.get("from"), ev.get("to")) for ev in events):
+            evidence.append(t["n"])
+    out = {"act": "answer", "entity": entity, "quantity": value, "relation": "count",
+           "evidence": {"turns": sorted(set(evidence))}, "item": item}
+    plain = {}
+    for t in scn["turns"][:upto - 1]:
+        if t["expect"]["act"] == "record":
+            for ev in t["expect"]["events"]:
+                if ev["type"] == "has":
+                    plain[ev["holder"], ev["item"]] = ev["quantity"]
+                elif ev["type"] == "use":
+                    plain[ev["holder"], ev["item"]] -= ev["quantity"]
+                else:
+                    plain[ev["from"], ev["item"]] -= ev["quantity"]
+                    plain[ev["to"], ev["item"]] = plain.get((ev["to"], ev["item"]), 0) + ev["quantity"]
+    if plain.get((entity, item)) not in (None, value):
+        out["retracted_quantity"] = plain[entity, item]
+    return out
+
+
 def build_dialogue(scn, texts):
     """The dialogue of the turns kept (``{n: text}``), renumbered from 1, evidence and targets mapped; or None
-    when what is left is not a dialogue (fewer than four turns or two answerable questions)."""
-    kept = [t for t in scn["turns"] if t["n"] in texts]
+    when what is left is not a dialogue (fewer than four turns or two answerable questions). A pronoun question
+    right after a question about one person of its gender is that person's question (``_pointer_after_one``)."""
+    kept = [json.loads(json.dumps(t)) for t in scn["turns"] if t["n"] in texts]
+    for i, t in enumerate(kept):
+        if t["say"].get("what") != "pronoun":
+            continue
+        holder = _pointer_after_one(scn, kept, i)
+        if holder is None:
+            continue
+        answer = _answer_for(scn, kept, i, holder["entity"], t["say"]["item"]["key"])
+        if answer is None:
+            texts = {n: x for n, x in texts.items() if n != t["n"]}
+            continue
+        t["expect"], t["label"] = answer, "answerable"
+        t["tags"] = sorted(set(t["tags"]) | {"follow_up"})
+        t["classes"] = sorted(set(t["classes"]) - {"referent_repairs:pronoun_asked"} | {"referent_repairs:pronoun_fixed"})
+    kept = [t for t in kept if t["n"] in texts]
     if len(kept) < 4 or sum(t["label"] == "answerable" for t in kept) < 2:
         return None
     new = {t["n"]: i + 1 for i, t in enumerate(kept)}

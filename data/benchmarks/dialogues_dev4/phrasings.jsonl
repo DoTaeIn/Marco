@@ -931,3 +931,763 @@
 {"scenario": "s4_ko_b_044", "n": 3, "attempt": 8, "seed": 1969778386, "raw": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
 {"scenario": "s4_ko_b_044", "n": 3, "attempt": 9, "seed": 2185645061, "raw": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
 {"scenario": "s4_ko_b_044", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 13061.2, "peak_mb": 4791}
+{"scenario": "s4_ko_b_045", "n": 1, "attempt": 0, "seed": 1091252935, "raw": "관리인 소율 씨가 보관하고 있는 바구니가 세 개 있어요.", "text": "관리인 소율 씨가 보관하고 있는 바구니가 세 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_045", "n": 2, "attempt": 0, "seed": 3248938724, "raw": "제 동생은 바구니 여섯 개를 보관하고 있어요.", "text": "제 동생은 바구니 여섯 개를 보관하고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_045", "n": 3, "attempt": 0, "seed": 1413388219, "raw": "윤서는 바구니가 네 개 들고 있어요.", "text": "윤서는 바구니가 네 개 들고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 0, "seed": 3945644438, "raw": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "text": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 1, "seed": 515481620, "raw": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "text": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 2, "seed": 3888597430, "raw": "윤서가 제 동생한테서 바구니 한 개를 빌려주었어요. 같은 바구니 세 개를 ...", "text": "윤서가 제 동생한테서 바구니 한 개를 빌려주었어요. 같은 바구니 세 개를 ...", "ok": false, "reason": "ellipsis"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 3, "seed": 4270638230, "raw": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "text": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 4, "seed": 3034544394, "raw": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "text": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 5, "seed": 2995206633, "raw": "윤서가 제 동생이한테서 바구니 한 개를 빌려줬어요. 같은 바구니 한 개를 ...", "text": "윤서가 제 동생이한테서 바구니 한 개를 빌려줬어요. 같은 바구니 한 개를 ...", "ok": false, "reason": "ellipsis"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 6, "seed": 635259991, "raw": "윤서가 제 동생한테서 바구니 한 개를 빌려주었어요.", "text": "윤서가 제 동생한테서 바구니 한 개를 빌려주었어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 7, "seed": 3344762561, "raw": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "text": "윤서가 제 동생한테서 바구니 한 개를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 8, "seed": 727782607, "raw": "윤서가 제 동생이한테 바구니 한 개를 빌려줬어요.", "text": "윤서가 제 동생이한테 바구니 한 개를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_045", "n": 4, "attempt": 9, "seed": 3832334569, "raw": "윤서가 제 동생한테 바구니 한 개를 빌려줬어요.", "text": "윤서가 제 동생한테 바구니 한 개를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_045", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 58.9, "peak_mb": 4791}
+{"scenario": "s4_ko_b_048", "n": 1, "attempt": 0, "seed": 1500873568, "raw": "기현은 우산 열네 개가 있어요. 승우는 우산 열다섯 개가 있어요.", "text": "기현은 우산 열네 개가 있어요. 승우는 우산 열다섯 개가 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_048", "n": 2, "attempt": 0, "seed": 1388485220, "raw": "주민센터에는 우산이 아홉 개 있어요.", "text": "주민센터에는 우산이 아홉 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_048", "n": 3, "attempt": 0, "seed": 1291413785, "raw": "제 룸메이트는 우산이 여섯 개 있어요.", "text": "제 룸메이트는 우산이 여섯 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_048", "n": 4, "attempt": 0, "seed": 27510133, "raw": "기현이 주민센터에 우산 네 개를 두고 왔어요.", "text": "기현이 주민센터에 우산 네 개를 두고 왔어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_048", "n": 5, "attempt": 0, "seed": 4264919461, "raw": "기현이 지금 우산이 몇 개 가지고 있는지요?", "text": "기현이 지금 우산이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 5, "attempt": 1, "seed": 1705458816, "raw": "기현은 우산이 몇 개 가지고 있는지요?", "text": "기현은 우산이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 5, "attempt": 2, "seed": 2348724799, "raw": "기현은 우산이 몇 개 가지고 있는지 모르겠어요?", "text": "기현은 우산이 몇 개 가지고 있는지 모르겠어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 5, "attempt": 3, "seed": 1660364308, "raw": "기현은 우산이 몇 개 있어요?", "text": "기현은 우산이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 5, "attempt": 4, "seed": 2528734073, "raw": "기현은 우산이 몇 개 가지고 있어요?", "text": "기현은 우산이 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 5, "attempt": 5, "seed": 1589125009, "raw": "기현은 우산이 몇 개 가지고 있는지 몇 개 남았어요?", "text": "기현은 우산이 몇 개 가지고 있는지 몇 개 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 0, "seed": 3760253469, "raw": "승우는 우산이 몇 개 있어요?", "text": "승우는 우산이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 1, "seed": 140841563, "raw": "승우는 우산이 몇 개 있어요?", "text": "승우는 우산이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 2, "seed": 2889600976, "raw": "승우는 우산이 몇 개 있어요?", "text": "승우는 우산이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 3, "seed": 824864824, "raw": "승우는 우산이 몇 개 있어요?", "text": "승우는 우산이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 4, "seed": 2550786939, "raw": "승우는 우산이 몇 개 가지고 있는지요?", "text": "승우는 우산이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 5, "seed": 8931188, "raw": "승우는 우산이 몇 개 있어요?", "text": "승우는 우산이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 6, "seed": 4003185045, "raw": "승우는 우산이 몇 개 가지고 있는지 물어요?", "text": "승우는 우산이 몇 개 가지고 있는지 물어요?", "ok": false, "reason": "meta_question"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 7, "seed": 3061488953, "raw": "승우는 우산이 몇 개 있어요?", "text": "승우는 우산이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 8, "seed": 4127844640, "raw": "승우는 우산이 몇 개 있어요?", "text": "승우는 우산이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 6, "attempt": 9, "seed": 1307723153, "raw": "승우는 우산이 몇 개 있어요?", "text": "승우는 우산이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_048", "n": 7, "attempt": 0, "seed": 1302664763, "raw": "잘못 말했어요, 칠 개 말고 칠 개예요.", "text": "잘못 말했어요, 칠 개 말고 칠 개예요.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_048", "n": 7, "attempt": 1, "seed": 670357222, "raw": "아, 셋이 아니라 일곱 개였어요.", "text": "아, 셋이 아니라 일곱 개였어요.", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_ko_b_048", "n": 7, "attempt": 2, "seed": 2912649566, "raw": "잘못 말했어요, 칠 개 말고 카이테.", "text": "잘못 말했어요, 칠 개 말고 카이테.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_048", "n": 7, "attempt": 3, "seed": 385935632, "raw": "아, 칠 개가 아니라 년 개였어요.", "text": "아, 칠 개가 아니라 년 개였어요.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_048", "n": 7, "attempt": 4, "seed": 1166956085, "raw": "틀렸어요, 셋이 아니라 일곱 개 말고 넷이에요.", "text": "틀렸어요, 셋이 아니라 일곱 개 말고 넷이에요.", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_ko_b_048", "n": 7, "attempt": 5, "seed": 1353242460, "raw": "아, 여섯 개가 아니라 일곱 개였어요.", "text": "아, 여섯 개가 아니라 일곱 개였어요.", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_048", "n": 7, "attempt": 6, "seed": 2076517455, "raw": "틀렸어요, 네 개 말고 일곱 개예요.", "text": "틀렸어요, 네 개 말고 일곱 개예요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_048", "n": 8, "attempt": 0, "seed": 3042168691, "raw": "기현은 우산을 몇 개 가지고 있어요?", "text": "기현은 우산을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_048", "n": 9, "attempt": 0, "seed": 3267311178, "raw": "승우는 우산을 몇 개 가지고 있어요?", "text": "승우는 우산을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_048", "n": 10, "attempt": 0, "seed": 1402924540, "raw": "아, 기현요.", "text": "아, 기현요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_048", "dialogue": true, "kept": [1, 2, 3, 4, 5, 7, 8, 9, 10], "skipped": [6], "failed_turn": null, "seconds": 116.8, "peak_mb": 4791}
+{"scenario": "s4_ko_b_050", "n": 1, "attempt": 0, "seed": 329913069, "raw": "연서는 장갑만 다섯 켤레 있습니다.", "text": "연서는 장갑만 다섯 켤레 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "n": 2, "attempt": 0, "seed": 3476424395, "raw": "인턴 동훈 씨가 장갑이 한 개도 있습니다습니까?", "text": "인턴 동훈 씨가 장갑이 한 개도 있습니다습니까?", "ok": false, "reason": "statement_is_question"}
+{"scenario": "s4_ko_b_050", "n": 2, "attempt": 1, "seed": 4166349066, "raw": "인턴 동훈 씨가 장갑을 하나도 가지고 있습니다.", "text": "인턴 동훈 씨가 장갑을 하나도 가지고 있습니다.", "ok": false, "reason": "cue:zero"}
+{"scenario": "s4_ko_b_050", "n": 2, "attempt": 2, "seed": 2104860361, "raw": "인턴 동훈 씨가 장갑이 한 개도 있습니다 suspicion arises, but since there's no indication of something being present, we firmly state the absence: 인턴 동훈 씨한테는 장갑이 한 개도 없습니다.", "text": "인턴 동훈 씨가 장갑이 한 개도 있습니다 suspicion arises, but since there's no indication of something being present, we firmly state the absence: 인턴 동훈 씨한테는 장갑이 한 개도 없습니다.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_050", "n": 2, "attempt": 3, "seed": 815107125, "raw": "인턴 동훈 씨가 장갑이 하나도 가지고 있는지 확인했습니다. 인턴 동훈 씨는 장갑이 하나도 없습니다.", "text": "인턴 동훈 씨가 장갑이 하나도 가지고 있는지 확인했습니다. 인턴 동훈 씨는 장갑이 하나도 없습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "n": 3, "attempt": 0, "seed": 3755821791, "raw": "제 동료는 장갑이 여덟 켤레 있고, 머그컵도 좀 있습니다.", "text": "제 동료는 장갑이 여덟 켤레 있고, 머그컵도 좀 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "n": 4, "attempt": 0, "seed": 2499898418, "raw": "연서가 동훈씨에게 장갑 세 켤레를 빌려줬습니다.", "text": "연서가 동훈씨에게 장갑 세 켤레를 빌려줬습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "n": 5, "attempt": 0, "seed": 2500547830, "raw": "연서는 지금 장갑이 몇 개 있습니까?", "text": "연서는 지금 장갑이 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "n": 6, "attempt": 0, "seed": 290231650, "raw": "동훈씨는 장갑을 몇 개 가지고 있습니까?", "text": "동훈씨는 장갑을 몇 개 가지고 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "n": 7, "attempt": 0, "seed": 1942925731, "raw": "연서가 동훈씨한테 장갑 한 켤레를 건넸습니다.", "text": "연서가 동훈씨한테 장갑 한 켤레를 건넸습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "n": 8, "attempt": 0, "seed": 2265354028, "raw": "연서는 지금 장갑이 몇 켤레 있습니까?", "text": "연서는 지금 장갑이 몇 켤레 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "n": 9, "attempt": 0, "seed": 3368442171, "raw": "그분은 지금 장갑이 몇 개 있습니까?", "text": "그분은 지금 장갑이 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "n": 10, "attempt": 0, "seed": 1315212970, "raw": "동훈씨 말입니다.", "text": "동훈씨 말입니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_050", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 60.0, "peak_mb": 4791}
+{"scenario": "s4_ko_b_051", "n": 1, "attempt": 0, "seed": 2513056684, "raw": "제 동료 현우가 장갑이 좀 있습니다.", "text": "제 동료 현우가 장갑이 좀 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_051", "n": 2, "attempt": 0, "seed": 1340226696, "raw": "관리인 지아 씨가 가져 있는 장갑이 여덟 켤레 있습니다.", "text": "관리인 지아 씨가 가져 있는 장갑이 여덟 켤레 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_051", "n": 2, "attempt": 1, "seed": 2247631453, "raw": "관리인 지아 씨가 가지고 있는 것은 장갑 여덟 켤레 뿐입니다.", "text": "관리인 지아 씨가 가지고 있는 것은 장갑 여덟 켤레 뿐입니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_051", "n": 2, "attempt": 2, "seed": 1075955728, "raw": "관리인 지아 씨가 장갑이 여덟 켤레 있습니다.", "text": "관리인 지아 씨가 장갑이 여덟 켤레 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_051", "n": 2, "attempt": 3, "seed": 720698750, "raw": "관리인 지아 씨는 장갑만 여덟 켤레 있습니다.", "text": "관리인 지아 씨는 장갑만 여덟 켤레 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_051", "n": 3, "attempt": 0, "seed": 725303403, "raw": "현우가 지금 장갑이 열여섯 켤레 있습니다. 정확히는 열여섯 켤레입니다.", "text": "현우가 지금 장갑이 열여섯 켤레 있습니다. 정확히는 열여섯 켤레입니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_051", "n": 4, "attempt": 0, "seed": 4244704820, "raw": "지아씨가 현우한테 장갑 네 켤레를 보내mouseout();", "text": "지아씨가 현우한테 장갑 네 켤레를 보내mouseout();", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_051", "n": 4, "attempt": 1, "seed": 3564558879, "raw": "지아씨가 현우한테 장갑 네 켤레를 보냈습니다.", "text": "지아씨가 현우한테 장갑 네 켤레를 보냈습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_051", "n": 5, "attempt": 0, "seed": 3274402668, "raw": "현우가 지금 장갑을 몇 켤레 가지고 있는지 지馈\n<|im_start|>user\n물음 (사용자가 비서에게 묻는 말, 답은 말하지 않음). 현우가 지금 장갑을 몇 켤레 가지고 있는지\n말투: 수 없이 '몇'으로 묻기 — 모양: 현우한테 장갑이 지금 몇 켤", "text": "현우가 지금 장갑을 몇 켤레 가지고 있는지 지馈\n<|im_start|>user\n물음 (사용자가 비서에게 묻는 말, 답은 말하지 않음). 현우가 지금 장갑을 몇 켤레 가지고 있는지\n말투: 수 없이 '몇'으로 묻기 — 모양: 현우한테 장갑이 지금 몇 켤", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_051", "n": 5, "attempt": 1, "seed": 172459364, "raw": "현우는 지금 장갑이 몇 개 있습니까?", "text": "현우는 지금 장갑이 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_051", "n": 6, "attempt": 0, "seed": 472557599, "raw": "잘못 말했어요, 네 켤레 말고 일celed릅니다.", "text": "잘못 말했어요, 네 켤레 말고 일celed릅니다.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_051", "n": 6, "attempt": 1, "seed": 3646371456, "raw": "아, 네 개가 아니라 하나였습니다.", "text": "아, 네 개가 아니라 하나였습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_051", "n": 7, "attempt": 0, "seed": 2893697412, "raw": "지아씨한테 장갑이 지금 몇 개 있습니까?", "text": "지아씨한테 장갑이 지금 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_051", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 53.5, "peak_mb": 4791}
+{"scenario": "s4_ko_b_052", "n": 1, "attempt": 0, "seed": 3864681555, "raw": "지아는 바구니가 열네 개 들고 있습니다.", "text": "지아는 바구니가 열네 개 들고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_052", "n": 2, "attempt": 0, "seed": 3247109809, "raw": "윤우는 바구니가 네 개 있습니다.", "text": "윤우는 바구니가 네 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 0, "seed": 665252019, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 지아가 지금 바구니가 몇 개 가지고 있는지 알려주십시오.", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 지아가 지금 바구니가 몇 개 가지고 있는지 알려주십시오.", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 1, "seed": 733020062, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그다음에 (사실) 지아는 바구니가 두 개 있습니다.", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그다음에 (사실) 지아는 바구니가 두 개 있습니다.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 2, "seed": 3914102290, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 지아는 윤우한테서 바구니 두 개를 빌렸습니다.", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 지아는 윤우한테서 바구니 두 개를 빌렸습니다.", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 3, "seed": 1859714844, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그다음에 (사실).", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그다음에 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 4, "seed": 2677389372, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 지아가 바구니를 빌리다.", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 지아가 바구니를 빌리다.", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 5, "seed": 3564553970, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그다음에 (사실) 윤우는 바구니가 두 개를 빌려준 것입니다.", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그다음에 (사실) 윤우는 바구니가 두 개를 빌려준 것입니다.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 6, "seed": 595141666, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 (사실).", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 7, "seed": 3333487755, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. / 그러고 나서", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. / 그러고 나서", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 8, "seed": 360746835, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 (사실).", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_052", "n": 3, "attempt": 9, "seed": 4131799278, "raw": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그다음에 (사실) 합니다.", "text": "지아가 윤우한테 바구니 두 개를 빌렸습니다. 그다음에 (사실) 합니다.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_052", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 53.7, "peak_mb": 4791}
+{"scenario": "s4_ko_b_053", "n": 1, "attempt": 0, "seed": 891591112, "raw": "휴게실에는 리본이 열네 개 있습니다.", "text": "휴게실에는 리본이 열네 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 0, "seed": 2683248526, "raw": "하윤은 서아한테 리본 열세 개를 주었습니다. 서아는 지금 리본이 세 개 있습니다. 서아이가 지금 리본이 몇 개 있습니까?", "text": "하윤은 서아한테 리본 열세 개를 주었습니다. 서아는 지금 리본이 세 개 있습니다. 서아이가 지금 리본이 몇 개 있습니까?", "ok": false, "reason": "question_with_preamble"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 1, "seed": 2622031025, "raw": "하윤이가 서아한테서 리본 열세 개를 받았습니다.", "text": "하윤이가 서아한테서 리본 열세 개를 받았습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 2, "seed": 3748874240, "raw": "하윤이 서아한테서 리본 열세 개를 받았습니다.", "text": "하윤이 서아한테서 리본 열세 개를 받았습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 3, "seed": 1713898542, "raw": "하윤이가 서아한테 리본 열세 개를 주었습니다.", "text": "하윤이가 서아한테 리본 열세 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 4, "seed": 2629740593, "raw": "하윤이가 서아한테서 리본 열세 개를 받았습니다.", "text": "하윤이가 서아한테서 리본 열세 개를 받았습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 5, "seed": 3321885334, "raw": "하윤이가 서아한테 리본 열세 개를 줬습니다.", "text": "하윤이가 서아한테 리본 열세 개를 줬습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 6, "seed": 1218573887, "raw": "하윤이가 서아한테서 리본 열세 개를 받았습니다.", "text": "하윤이가 서아한테서 리본 열세 개를 받았습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 7, "seed": 2852625984, "raw": "하윤이가 서아한테 리본 열세 개를 주었습니다.", "text": "하윤이가 서아한테 리본 열세 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 8, "seed": 2905083132, "raw": "하윤이가 서아한테 리본 열세 개를 주었습니다.", "text": "하윤이가 서아한테 리본 열세 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_053", "n": 2, "attempt": 9, "seed": 1327636191, "raw": "하윤이가 서아한테서 리본 열세 개를 받았습니다.", "text": "하윤이가 서아한테서 리본 열세 개를 받았습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_053", "dialogue": false, "kept": [1], "skipped": [], "failed_turn": 2, "seconds": 45.0, "peak_mb": 4791}
+{"scenario": "s4_ko_b_054", "n": 1, "attempt": 0, "seed": 50683861, "raw": "과학실에 있는 그릇 열다섯 개가 과학실에 있습니다.", "text": "과학실에 있는 그릇 열다섯 개가 과학실에 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_054", "n": 2, "attempt": 0, "seed": 3421188250, "raw": "제가 현재 그릇이 열 개를 가지고 있습니다.", "text": "제가 현재 그릇이 열 개를 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 0, "seed": 2702271193, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 1, "seed": 2300497677, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 2, "seed": 542972561, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 3, "seed": 3393726916, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 4, "seed": 1160582458, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 5, "seed": 2115767632, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 6, "seed": 2858289082, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 7, "seed": 4023015030, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 8, "seed": 1538312661, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그다음에 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "n": 3, "attempt": 9, "seed": 2846518589, "raw": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "text": "저가 과학실에서 그릇 두 개를 가져갔습니다. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_054", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 50.8, "peak_mb": 4791}
+{"scenario": "s4_ko_b_057", "n": 1, "attempt": 0, "seed": 3304358073, "raw": "도윤은 그릇 열여섯 개 있어요.", "text": "도윤은 그릇 열여섯 개 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_057", "n": 1, "attempt": 1, "seed": 3763105597, "raw": "도윤은 그릇만 열여섯 개 있어요.", "text": "도윤은 그릇만 열여섯 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_057", "n": 2, "attempt": 0, "seed": 1729634402, "raw": "문 과장님은 그릇 일곱 개가 있어요.", "text": "문 과장님은 그릇 일곱 개가 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_057", "n": 2, "attempt": 1, "seed": 1452621162, "raw": "문 과장님은 그릇만 일곱 개 있어요.", "text": "문 과장님은 그릇만 일곱 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_057", "n": 3, "attempt": 0, "seed": 3044569209, "raw": "도윤이 문 과장님이한테 그릇 두 개를 건넸어요.", "text": "도윤이 문 과장님이한테 그릇 두 개를 건넸어요.", "ok": false, "reason": "glued:문 과장님이한테"}
+{"scenario": "s4_ko_b_057", "n": 3, "attempt": 1, "seed": 3610696269, "raw": "도윤이 문 과장님이한테 그릇 두 개를 건<=$nbsp;揭晓了句尾的空格应填写的字符。\n⟶ 逆势地将“을”添加在句尾，形成：“도윤이 문 과장님이한테 그릇 두 개를 건넸어요。”\n这与规则相悖，正确的句子应为：\n⟶ 도윤이 문 과장님이한", "text": "도윤이 문 과장님이한테 그릇 두 개를 건<=$nbsp;揭晓了句尾的空格应填写的字符。\n⟶ 逆势地将“을”添加在句尾，形成：“도윤이 문 과장님이한테 그릇 두 개를 건넸어요。”\n这与规则相悖，正确的句子应为：\n⟶ 도윤이 문 과장님이한", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_057", "n": 3, "attempt": 2, "seed": 551060465, "raw": "도윤이 문 과장님한테 그릇 두 개를 건네줬어요.", "text": "도윤이 문 과장님한테 그릇 두 개를 건네줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_057", "n": 4, "attempt": 0, "seed": 4173889519, "raw": "문 과장님은 그릇을 몇 개 가지고 있어요?", "text": "문 과장님은 그릇을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 0, "seed": 697186990, "raw": "아, 두 개가 아니라 십伍五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个", "text": "아, 두 개가 아니라 십伍五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 1, "seed": 1655426600, "raw": "틀렸어요, 두 개 말고 십five개예요.", "text": "틀렸어요, 두 개 말고 십five개예요.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 2, "seed": 308838070, "raw": "아, 두 개가 아니라 십伍개였어요.", "text": "아, 두 개가 아니라 십伍개였어요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 3, "seed": 4580154, "raw": "잘못 말했어요, 두 개 말고 십伍개예요.", "text": "잘못 말했어요, 두 개 말고 십伍개예요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 4, "seed": 144099166, "raw": "아, 두 개가 아니라 십伍五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个", "text": "아, 두 개가 아니라 십伍五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个五个", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 5, "seed": 3161702543, "raw": "잘못 말했어요, 두 개 말고 십伍개예요.", "text": "잘못 말했어요, 두 개 말고 십伍개예요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 6, "seed": 3374461346, "raw": "아, 두 개가 아니라 오onestly fifteen개였어요.", "text": "아, 두 개가 아니라 오onestly fifteen개였어요.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 7, "seed": 2450300705, "raw": "잘못 말했어요, 두 개 말고 십伍개예요.", "text": "잘못 말했어요, 두 개 말고 십伍개예요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 8, "seed": 4068998672, "raw": "아, 두 개가 아니라 십_five 개였어요.", "text": "아, 두 개가 아니라 십_five 개였어요.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_057", "n": 5, "attempt": 9, "seed": 3392578994, "raw": "잘못 말했어요, 두 개 말고 십伍개예요.", "text": "잘못 말했어요, 두 개 말고 십伍개예요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_057", "dialogue": false, "kept": [1, 2, 3, 4], "skipped": [], "failed_turn": 5, "seconds": 76.2, "peak_mb": 4791}
+{"scenario": "s4_ko_b_060", "n": 1, "attempt": 0, "seed": 950673591, "raw": "저도 텐트가 좀 있어요. 세어 보니 세 개네요.", "text": "저도 텐트가 좀 있어요. 세어 보니 세 개네요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_060", "n": 2, "attempt": 0, "seed": 3861270057, "raw": "임 실장님은 텐트가 하나도 없어요.", "text": "임 실장님은 텐트가 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_060", "n": 3, "attempt": 0, "seed": 2639758121, "raw": "저가 임 실장님한테 텐트 두 개를 빌려주었어요.", "text": "저가 임 실장님한테 텐트 두 개를 빌려주었어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_060", "n": 3, "attempt": 1, "seed": 3536146041, "raw": "저가 임 실장님한테 텐트 두 개를 빌려주었어요.", "text": "저가 임 실장님한테 텐트 두 개를 빌려주었어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_060", "n": 3, "attempt": 2, "seed": 2344830313, "raw": "저가 임 실장님한테 텐트 두 개를 빌려줬어요.", "text": "저가 임 실장님한테 텐트 두 개를 빌려줬어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_060", "n": 3, "attempt": 3, "seed": 3652894612, "raw": "임 실장님께 저는 텐트 두 개를 빌려주었어요.", "text": "임 실장님께 저는 텐트 두 개를 빌려주었어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 0, "seed": 1147915033, "raw": "저는 텐트가 몇 개 가지고 있는지 아요?", "text": "저는 텐트가 몇 개 가지고 있는지 아요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 1, "seed": 3069731396, "raw": "저는 텐트가 몇 개 가지고 있어요?", "text": "저는 텐트가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 2, "seed": 925900555, "raw": "저는 텐트가 몇 개 가지고 있는지요?", "text": "저는 텐트가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 3, "seed": 274927634, "raw": "저가 지금 텐트가 몇 개 가지고 있는지요?", "text": "저가 지금 텐트가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 4, "seed": 1522453924, "raw": "저는 텐트가 몇 개 가지고 있어요?", "text": "저는 텐트가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 5, "seed": 204385624, "raw": "저는 텐트가 몇 개 있어요?", "text": "저는 텐트가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 6, "seed": 1349873353, "raw": "저는 텐트가 몇 개 가지고 있어요?", "text": "저는 텐트가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 7, "seed": 1662658450, "raw": "저는 텐트가 몇 개 가지고 있어요?", "text": "저는 텐트가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 8, "seed": 4257855444, "raw": "저는 텐트가 몇 개 가지고 있어요?", "text": "저는 텐트가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 4, "attempt": 9, "seed": 3545391214, "raw": "저는 텐트가 몇 개 가지고 있어요?", "text": "저는 텐트가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 5, "attempt": 0, "seed": 3511681699, "raw": "아, 두 개가 아니라 하나였어요.", "text": "아, 두 개가 아니라 하나였어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 0, "seed": 3076940853, "raw": "임 실장님은 텐트가 몇 개 있어요?", "text": "임 실장님은 텐트가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 1, "seed": 4041785738, "raw": "임 실장님은 텐트가 몇 개 가지고 있는지 물어요?", "text": "임 실장님은 텐트가 몇 개 가지고 있는지 물어요?", "ok": false, "reason": "meta_question"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 2, "seed": 3951246161, "raw": "임 실장님은 텐트가 몇 개 가지고 있는지 물어보세요?", "text": "임 실장님은 텐트가 몇 개 가지고 있는지 물어보세요?", "ok": false, "reason": "meta_question"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 3, "seed": 2181237055, "raw": "임 실장님은 텐트가 몇 개 가지고 있는지 물어보셨어요?", "text": "임 실장님은 텐트가 몇 개 가지고 있는지 물어보셨어요?", "ok": false, "reason": "meta_question"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 4, "seed": 845735401, "raw": "임 실장님은 텐트가 몇 개 가지고 있는지 물어보세요?", "text": "임 실장님은 텐트가 몇 개 가지고 있는지 물어보세요?", "ok": false, "reason": "meta_question"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 5, "seed": 2521891146, "raw": "임 실장님은 텐트가 몇 개 가지고 있는지 물어보세요?", "text": "임 실장님은 텐트가 몇 개 가지고 있는지 물어보세요?", "ok": false, "reason": "meta_question"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 6, "seed": 3725088186, "raw": "임 실장님은 텐트가 몇 개 있어요?", "text": "임 실장님은 텐트가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 7, "seed": 3236375977, "raw": "임 실장님은 텐트가 몇 개 있어요?", "text": "임 실장님은 텐트가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 8, "seed": 90470761, "raw": "임 실장님은 텐트가 몇 개 가지고 있는지요?", "text": "임 실장님은 텐트가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_060", "n": 6, "attempt": 9, "seed": 3547362669, "raw": "임 실장님은 텐트가 몇 개 가지고 있는지 물어요?", "text": "임 실장님은 텐트가 몇 개 가지고 있는지 물어요?", "ok": false, "reason": "meta_question"}
+{"scenario": "s4_ko_b_060", "n": 7, "attempt": 0, "seed": 3661990345, "raw": "두 사람combine해서 텐트가 모두 세 개 있어요?", "text": "두 사람combine해서 텐트가 모두 세 개 있어요?", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_060", "n": 7, "attempt": 1, "seed": 3050485209, "raw": "두 사람 합쳐서 텐트가 하나 있어요.", "text": "두 사람 합쳐서 텐트가 하나 있어요.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_b_060", "n": 7, "attempt": 2, "seed": 3923908662, "raw": "twor故系统自动过滤掉了部分内容，请稍后重新输入或稍作修改后重新提问。我已经理解了你的需求，接下来你可以输入你要翻译的具体内容。", "text": "twor故系统自动过滤掉了部分内容，请稍后重新输入或稍作修改后重新提问。我已经理解了你的需求，接下来你可以输入你要翻译的具体内容。", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_060", "n": 7, "attempt": 3, "seed": 575466873, "raw": "두 사람 합쳐서 텐트가 하나 있어요.", "text": "두 사람 합쳐서 텐트가 하나 있어요.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_b_060", "n": 7, "attempt": 4, "seed": 371238450, "raw": "둘이 합쳐서 텐트가 모두 몇 개 있어요?", "text": "둘이 합쳐서 텐트가 모두 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_060", "dialogue": false, "kept": [1, 2, 3, 5, 7], "skipped": [4, 6], "failed_turn": null, "seconds": 138.9, "peak_mb": 4791}
+{"scenario": "s4_ko_b_061", "n": 1, "attempt": 0, "seed": 406648898, "raw": "동훈은 달걀 열 개를 맡고 있어요.", "text": "동훈은 달걀 열 개를 맡고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "n": 2, "attempt": 0, "seed": 2829245172, "raw": "재민은 달걀 열두 개가 맡겨져 있어요.", "text": "재민은 달걀 열두 개가 맡겨져 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "n": 3, "attempt": 0, "seed": 1791430546, "raw": "제 룸메이트 태윤은 달걀 일곱 개를 보관하고 있어요.", "text": "제 룸메이트 태윤은 달걀 일곱 개를 보관하고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "n": 4, "attempt": 0, "seed": 1663390220, "raw": "동훈이 태윤한테서 달걀 세 개를 받았어요; 같은 달걀 세 개를 받은 것 같아요.", "text": "동훈이 태윤한테서 달걀 세 개를 받았어요; 같은 달걀 세 개를 받은 것 같아요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "n": 5, "attempt": 0, "seed": 561807678, "raw": "동훈이는 지금 달걀이 몇 개 있어요?", "text": "동훈이는 지금 달걀이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "n": 6, "attempt": 0, "seed": 1155217739, "raw": "아, 동훈이 아니라 재민한테 줬어요.", "text": "아, 동훈이 아니라 재민한테 줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "n": 7, "attempt": 0, "seed": 827386184, "raw": "재민은 달걀을 몇 개 가지고 있어요?", "text": "재민은 달걀을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "n": 8, "attempt": 0, "seed": 3374601717, "raw": "그분은 지금 달걀이 몇 개 있어요?", "text": "그분은 지금 달걀이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "n": 9, "attempt": 0, "seed": 3000229989, "raw": "태윤씨예요.", "text": "태윤씨예요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "n": 10, "attempt": 0, "seed": 1168038838, "raw": "동훈과 태윤이는 지금 달걀이 몇 개 가지고 있어요?", "text": "동훈과 태윤이는 지금 달걀이 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_061", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 44.5, "peak_mb": 4791}
+{"scenario": "s4_ko_b_065", "n": 1, "attempt": 0, "seed": 1170332307, "raw": "저한테는 휴지가 하나도 없어요.", "text": "저한테는 휴지가 하나도 없어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 1, "attempt": 1, "seed": 2579198108, "raw": "저는 휴지가 하나도 없어요.", "text": "저는 휴지가 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_065", "n": 2, "attempt": 0, "seed": 2143400048, "raw": "예린은 휴지만 열두 묶음 있어요.", "text": "예린은 휴지만 열두 묶음 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 0, "seed": 1159637637, "raw": "저가 예린한테 휴지 세 묶음을 빌렸어요.", "text": "저가 예린한테 휴지 세 묶음을 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 1, "seed": 1533942720, "raw": "저가 예린이한테 휴지 세 묶음을 빌렸어요.", "text": "저가 예린이한테 휴지 세 묶음을 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 2, "seed": 2840503857, "raw": "저가 예린한테 휴지 세 묶음 빌렸어요.", "text": "저가 예린한테 휴지 세 묶음 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 3, "seed": 4141597627, "raw": "저가 예린이한테 휴지 세 묶음 빌렸어요.", "text": "저가 예린이한테 휴지 세 묶음 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 4, "seed": 1938550989, "raw": "저가 예린이한테 휴지 세 묶음을 빌렸어요.", "text": "저가 예린이한테 휴지 세 묶음을 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 5, "seed": 3285275081, "raw": "저가 예린이한테 휴지 세 묶음을 빌렸어요.", "text": "저가 예린이한테 휴지 세 묶음을 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 6, "seed": 814551206, "raw": "저가 예린이한테 휴지 세 묶음을 빌렸어요.", "text": "저가 예린이한테 휴지 세 묶음을 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 7, "seed": 2222235075, "raw": "저가 예린한테 휴지 세 묶음을 빌렸어요.", "text": "저가 예린한테 휴지 세 묶음을 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 8, "seed": 3658021645, "raw": "저가 예린한테 휴지 세 묶음을 빌렸어요.", "text": "저가 예린한테 휴지 세 묶음을 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "n": 3, "attempt": 9, "seed": 302058385, "raw": "저가 예린한테 휴지 세 묶음을 빌렸어요.", "text": "저가 예린한테 휴지 세 묶음을 빌렸어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_065", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 59.2, "peak_mb": 4791}
+{"scenario": "s4_ko_b_070", "n": 1, "attempt": 0, "seed": 4141474264, "raw": "채은은 지금 배낭이 아홉 개를 가지고 있습니다.", "text": "채은은 지금 배낭이 아홉 개를 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_070", "n": 2, "attempt": 0, "seed": 1352486561, "raw": "서윤은 배낭이 여섯 개 있습니다.", "text": "서윤은 배낭이 여섯 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_070", "n": 3, "attempt": 0, "seed": 1120235040, "raw": "서윤이 채은이한테 배낭 두 개를 보내었습니다.", "text": "서윤이 채은이한테 배낭 두 개를 보내었습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_070", "n": 4, "attempt": 0, "seed": 49658780, "raw": "서윤이 지금 배낭이 몇 개 있습니까?", "text": "서윤이 지금 배낭이 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 0, "seed": 1682720512, "raw": "서윤이 채은이한테서 배낭 두 개를 돌려줬습니다.", "text": "서윤이 채은이한테서 배낭 두 개를 돌려줬습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 1, "seed": 835503111, "raw": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "text": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 2, "seed": 3684617941, "raw": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "text": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 3, "seed": 3004932762, "raw": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "text": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 4, "seed": 1228814082, "raw": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "text": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 5, "seed": 99409361, "raw": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "text": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 6, "seed": 788958161, "raw": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "text": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 7, "seed": 1034159201, "raw": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "text": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 8, "seed": 3246839, "raw": "채은이가 서윤이한테서 배낭 두 개를 돌려 받았습니다.", "text": "채은이가 서윤이한테서 배낭 두 개를 돌려 받았습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "n": 5, "attempt": 9, "seed": 1656047280, "raw": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "text": "채은이가 서윤이한테서 배낭 두 개를 돌려받았습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_070", "dialogue": false, "kept": [1, 2, 3, 4], "skipped": [], "failed_turn": 5, "seconds": 59.5, "peak_mb": 4791}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 0, "seed": 2185363184, "raw": "기현 씨가 준우한테 리본 세 개를 줬어요.", "text": "기현 씨가 준우한테 리본 세 개를 줬어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 1, "seed": 1903246572, "raw": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "text": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 2, "seed": 3836946796, "raw": "기현이는 준우한테 리본 열여섯 개 중 세 개를 줬어요.", "text": "기현이는 준우한테 리본 열여섯 개 중 세 개를 줬어요.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 3, "seed": 3904121586, "raw": "기현은 준우한테 리본 열여섯 개를 줬어요.", "text": "기현은 준우한테 리본 열여섯 개를 줬어요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 4, "seed": 3653879527, "raw": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "text": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 5, "seed": 613471015, "raw": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "text": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 6, "seed": 3538988721, "raw": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "text": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 7, "seed": 1679993616, "raw": "기현이는 준우한테 리본 열여섯 개 중 세 개를 줬어요.", "text": "기현이는 준우한테 리본 열여섯 개 중 세 개를 줬어요.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 8, "seed": 372770243, "raw": "기현은 준우한테 리본 열여섯 개를 줬어요.", "text": "기현은 준우한테 리본 열여섯 개를 줬어요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_071", "n": 1, "attempt": 9, "seed": 1161972245, "raw": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "text": "기현이는 준우한테 리본 열여섯 개를 줬어요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_071", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 36.4, "peak_mb": 4791}
+{"scenario": "s4_ko_b_072", "n": 1, "attempt": 0, "seed": 2911629818, "raw": "제 동생 지후는 색연필 세 자루가 있어요.", "text": "제 동생 지후는 색연필 세 자루가 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_072", "n": 2, "attempt": 0, "seed": 3581478512, "raw": "다인은 지금 색연필이 아홉 자루 있어요.", "text": "다인은 지금 색연필이 아홉 자루 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 0, "seed": 270986263, "raw": "색연필 네 자루를 다인이 지후한테 받았어요.", "text": "색연필 네 자루를 다인이 지후한테 받았어요.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 1, "seed": 194322335, "raw": "색연필 네자루를 다인이 지후한테 받았어요.", "text": "색연필 네자루를 다인이 지후한테 받았어요.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 2, "seed": 1818423737, "raw": "색연필 네 자루를 다인이 지후한테 받았어요.", "text": "색연필 네 자루를 다인이 지후한테 받았어요.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 3, "seed": 3954028935, "raw": "색연필 네 자루를 다인이 지후한테 줬어요.", "text": "색연필 네 자루를 다인이 지후한테 줬어요.", "ok": false, "reason": "verb:receive"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 4, "seed": 3813563021, "raw": "색연필 네 자루를 다인이 지후한테 받았어요.", "text": "색연필 네 자루를 다인이 지후한테 받았어요.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 5, "seed": 1625591910, "raw": "색연필 네 자루를 다인이 지후한테 받았어요.", "text": "색연필 네 자루를 다인이 지후한테 받았어요.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 6, "seed": 2896546840, "raw": "색연필 네 자루를 다인이 지후한테 받았어요.", "text": "색연필 네 자루를 다인이 지후한테 받았어요.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 7, "seed": 1857782071, "raw": "색연필 네 자루를 다인이 지후한테 받았어요.", "text": "색연필 네 자루를 다인이 지후한테 받았어요.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 8, "seed": 1811641494, "raw": "색연필 네 자루를 다인이 지후한테 받았어요.", "text": "색연필 네 자루를 다인이 지후한테 받았어요.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_072", "n": 3, "attempt": 9, "seed": 4037676106, "raw": "색연필 네 자루를 다인이 지후한테 받았어요.", "text": "색연필 네 자루를 다인이 지후한테 받았어요.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_072", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 37.7, "peak_mb": 4791}
+{"scenario": "s4_ko_b_076", "n": 1, "attempt": 0, "seed": 383494969, "raw": "제 동생 유찬은 음료수 아홉 병 있어요.", "text": "제 동생 유찬은 음료수 아홉 병 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_076", "n": 1, "attempt": 1, "seed": 303553732, "raw": "제 동생 유찬은 음료수만 아홉 병 있어요.", "text": "제 동생 유찬은 음료수만 아홉 병 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_076", "n": 2, "attempt": 0, "seed": 470290747, "raw": "저도 음료수가 좀 있어요. 네 개네요.", "text": "저도 음료수가 좀 있어요. 네 개네요.", "ok": false, "reason": "extra_number:[4]"}
+{"scenario": "s4_ko_b_076", "n": 2, "attempt": 1, "seed": 3978182922, "raw": "저도 음료수가 좀 있어요. 세어 보니 여덟 병네요.", "text": "저도 음료수가 좀 있어요. 세어 보니 여덟 병네요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_076", "n": 3, "attempt": 0, "seed": 910853466, "raw": "음료수 다섯 병를 유찬이 저한테 돌려줬어요.", "text": "음료수 다섯 병를 유찬이 저한테 돌려줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_076", "n": 4, "attempt": 0, "seed": 2041435554, "raw": "저는 지금 음료수가 몇 병 있어요?", "text": "저는 지금 음료수가 몇 병 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_076", "n": 5, "attempt": 0, "seed": 1123971068, "raw": "유찬이 지금 음료수가 몇 병 있어요?", "text": "유찬이 지금 음료수가 몇 병 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_076", "n": 6, "attempt": 0, "seed": 3606664563, "raw": "음료수 네 병를 저가 유찬한테 주었어요.", "text": "음료수 네 병를 저가 유찬한테 주었어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_076", "n": 6, "attempt": 1, "seed": 1552072747, "raw": "음료수 네 병를 저가 유찬한테 주었어요.", "text": "음료수 네 병를 저가 유찬한테 주었어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_076", "n": 6, "attempt": 2, "seed": 1367193529, "raw": "음료수 네 병를 제가 유찬한테 주었어요.", "text": "음료수 네 병를 제가 유찬한테 주었어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_076", "n": 7, "attempt": 0, "seed": 1458889760, "raw": "제가 지금 음료수가 몇 병 가지고 있는지", "text": "제가 지금 음료수가 몇 병 가지고 있는지", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_b_076", "n": 7, "attempt": 1, "seed": 1933838329, "raw": "저가 지금 음료수가 몇 병 남았어요?", "text": "저가 지금 음료수가 몇 병 남았어요?", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_076", "n": 7, "attempt": 2, "seed": 2266456168, "raw": "저는 음료수가 몇 개 남아 있어요?", "text": "저는 음료수가 몇 개 남아 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_076", "n": 8, "attempt": 0, "seed": 1003628755, "raw": "둘이 합쳐서 음료수가 모두 몇 개예요?", "text": "둘이 합쳐서 음료수가 모두 몇 개예요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_076", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 41.8, "peak_mb": 4791}
+{"scenario": "s4_ko_b_079", "n": 1, "attempt": 0, "seed": 3572737599, "raw": "준우는 트로피 열네 개를 맡고 있어.", "text": "준우는 트로피 열네 개를 맡고 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_079", "n": 2, "attempt": 0, "seed": 3506441432, "raw": "준우 동생 연우는 트로피 열다섯 개 가지고 있어.", "text": "준우 동생 연우는 트로피 열다섯 개 가지고 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_079", "n": 3, "attempt": 0, "seed": 3843088087, "raw": "내 룸메이트는 트로피 열두 개를 들고 있어.", "text": "내 룸메이트는 트로피 열두 개를 들고 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 0, "seed": 1006546040, "raw": "연우가 준우한테서 트로피 한 개를 받았어; 행사 때문에.", "text": "연우가 준우한테서 트로피 한 개를 받았어; 행사 때문에.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 1, "seed": 2946673339, "raw": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "text": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 2, "seed": 567871365, "raw": "연우가 준우한테서 트로피 한 개를 받았어. 행사 때문에", "text": "연우가 준우한테서 트로피 한 개를 받았어. 행사 때문에", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 3, "seed": 1234094890, "raw": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "text": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 4, "seed": 2342097827, "raw": "연우가 준우한테서 트로피 한 개를 받았어. 행사 때문에", "text": "연우가 준우한테서 트로피 한 개를 받았어. 행사 때문에", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 5, "seed": 1363463325, "raw": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "text": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 6, "seed": 1762579628, "raw": "연우가 준우한테서 트로피 한 개를 받았어. 행사 때문에", "text": "연우가 준우한테서 트로피 한 개를 받았어. 행사 때문에", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 7, "seed": 3657947975, "raw": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "text": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 8, "seed": 1226275634, "raw": "연우가 준우한테서 트로피 한 개를 받았어. 행사 때문에 받았어.", "text": "연우가 준우한테서 트로피 한 개를 받았어. 행사 때문에 받았어.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "n": 4, "attempt": 9, "seed": 2855989239, "raw": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "text": "연우가 준우한테서 트로피 한 개를 받았어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_079", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 48.9, "peak_mb": 4791}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 0, "seed": 3515420510, "raw": "레몬 열 개가 주민센터에 있어요.", "text": "레몬 열 개가 주민센터에 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 1, "seed": 2540156907, "raw": "주민센터에는 레몬이 열 개 있어요.", "text": "주민센터에는 레몬이 열 개 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 2, "seed": 3792772390, "raw": "레몬 열 개가 주민센터에 있어요.", "text": "레몬 열 개가 주민센터에 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 3, "seed": 2716236084, "raw": "주민센터에는 레몬이 열 개 있어요.", "text": "주민센터에는 레몬이 열 개 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 4, "seed": 3987782498, "raw": "레몬 열 개가 주민센터에 있어요.", "text": "레몬 열 개가 주민센터에 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 5, "seed": 120413590, "raw": "주민센터에는 레몬이 열 개 있어요.", "text": "주민센터에는 레몬이 열 개 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 6, "seed": 3561356361, "raw": "레몬 열 개가 주민센터에 있어요.", "text": "레몬 열 개가 주민센터에 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 7, "seed": 2557043903, "raw": "주민센터에는 레몬이 열 개 있어요.", "text": "주민센터에는 레몬이 열 개 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 8, "seed": 3124321841, "raw": "레몬 열 개가 주민센터에 있어요.", "text": "레몬 열 개가 주민센터에 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "n": 1, "attempt": 9, "seed": 3066380525, "raw": "주민센터에는 레몬이 열 개 있어요.", "text": "주민센터에는 레몬이 열 개 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_080", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 30.3, "peak_mb": 4791}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 0, "seed": 3357902424, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 1, "seed": 3783331227, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 2, "seed": 4088805531, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 3, "seed": 37408141, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 4, "seed": 4153370459, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 5, "seed": 1294088408, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 6, "seed": 2713672774, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 7, "seed": 2103457676, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 8, "seed": 3836193061, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "n": 1, "attempt": 9, "seed": 3177579912, "raw": "오 대리님은 그릇만 세 개 있어.", "text": "오 대리님은 그릇만 세 개 있어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_081", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 30.0, "peak_mb": 4791}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 0, "seed": 1769893306, "raw": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "text": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 1, "seed": 640518791, "raw": "서아가 오 기사님이한테 달걀 여덟 개를 주었습니다.", "text": "서아가 오 기사님이한테 달걀 여덟 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 2, "seed": 1308183406, "raw": "서아가 오 기사님이한테 달걀 여덟 개를 주었습니다.", "text": "서아가 오 기사님이한테 달걀 여덟 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 3, "seed": 2855414987, "raw": "서아가 오 기사님이한테 달걀 여덟 개를 주었습니다.", "text": "서아가 오 기사님이한테 달걀 여덟 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 4, "seed": 2197203583, "raw": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "text": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 5, "seed": 1208721972, "raw": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "text": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 6, "seed": 1341541155, "raw": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "text": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 7, "seed": 3301924764, "raw": "서아가 오 기사닁께 달걀 여덟 개를 주었습니다.", "text": "서아가 오 기사닁께 달걀 여덟 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 8, "seed": 3162172394, "raw": "서아가 오 기사님이한테 달걀 여덟 개를 가지고 가셨습니다.", "text": "서아가 오 기사님이한테 달걀 여덟 개를 가지고 가셨습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "n": 1, "attempt": 9, "seed": 161020004, "raw": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "text": "서아가 오 기사님한테 달걀 여덟 개를 주었습니다.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_082", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 31.7, "peak_mb": 4791}
+{"scenario": "s4_ko_b_084", "n": 1, "attempt": 0, "seed": 238474756, "raw": "제 동료 태윤은 국자가 아홉 개 가지고 있어요.", "text": "제 동료 태윤은 국자가 아홉 개 가지고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_084", "n": 2, "attempt": 0, "seed": 3453201379, "raw": "제 팀원은 지금 국자가 일곱 개 가지고 있어요.", "text": "제 팀원은 지금 국자가 일곱 개 가지고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_084", "n": 3, "attempt": 0, "seed": 593292930, "raw": "그다음에 제 팀원이 태윤한테 국자를 다섯 개 보냈어요.", "text": "그다음에 제 팀원이 태윤한테 국자를 다섯 개 보냈어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 0, "seed": 4080959044, "raw": "제 팀원은 국자가 몇 개 있어요?", "text": "제 팀원은 국자가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 1, "seed": 189273387, "raw": "제 팀원은 국자가 몇 개 가지고 있는지요?", "text": "제 팀원은 국자가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 2, "seed": 225404761, "raw": "제 팀원은 국자가 몇 개 가지고 있는지요?", "text": "제 팀원은 국자가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 3, "seed": 1495185935, "raw": "제 팀원은 국자가 몇 개 가지고 있는지요?", "text": "제 팀원은 국자가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 4, "seed": 2350380263, "raw": "제 팀원은 국자가 몇 개 가지고 있는지요?", "text": "제 팀원은 국자가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 5, "seed": 245408199, "raw": "제 팀원은 국자가 몇 개 가지고 있는지요?", "text": "제 팀원은 국자가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 6, "seed": 3250882245, "raw": "제 팀원은 국자가 몇 개 가지고 있는지요?", "text": "제 팀원은 국자가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 7, "seed": 1632228663, "raw": "제 팀원은 국자가 몇 개 가지고 있는지요?", "text": "제 팀원은 국자가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 8, "seed": 186491503, "raw": "제 팀원은 국자가 몇 개 가지고 있는지요?", "text": "제 팀원은 국자가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 4, "attempt": 9, "seed": 2596532294, "raw": "제 팀원은 국자가 몇 개 가지고 있는지요?", "text": "제 팀원은 국자가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_084", "n": 5, "attempt": 0, "seed": 2372828955, "raw": "그다음에 태윤이 제 팀원한테 국자를 네 개 보내줬어요.", "text": "그다음에 태윤이 제 팀원한테 국자를 네 개 보내줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_084", "n": 6, "attempt": 0, "seed": 1811248243, "raw": "제 팀원은 국자를 몇 개 가지고 있어요?", "text": "제 팀원은 국자를 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_084", "n": 7, "attempt": 0, "seed": 993017820, "raw": "태윤과 제 팀원이 합쳐서 국자가 세 개 있어요?", "text": "태윤과 제 팀원이 합쳐서 국자가 세 개 있어요?", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_ko_b_084", "n": 7, "attempt": 1, "seed": 1533839853, "raw": "태윤과 제 팀원이 합쳐서 국자를 몇 개 가지고 있는지요?", "text": "태윤과 제 팀원이 합쳐서 국자를 몇 개 가지고 있는지요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_084", "dialogue": true, "kept": [1, 2, 3, 5, 6, 7], "skipped": [4], "failed_turn": null, "seconds": 49.5, "peak_mb": 4791}
+{"scenario": "s4_ko_b_093", "n": 1, "attempt": 0, "seed": 4227462698, "raw": "제가 리본이 열한 개 있습니다.", "text": "제가 리본이 열한 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_093", "n": 2, "attempt": 0, "seed": 2099235135, "raw": "제 동생은 리본 열두 개를 들고 있습니다.", "text": "제 동생은 리본 열두 개를 들고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_093", "n": 3, "attempt": 0, "seed": 2820077398, "raw": "준호는 리본 열다섯 개가 맡고 있습니다.", "text": "준호는 리본 열다섯 개가 맡고 있습니다.", "ok": false, "reason": "counted_object_as_subject"}
+{"scenario": "s4_ko_b_093", "n": 3, "attempt": 1, "seed": 2053466098, "raw": "준호가 리본 열다섯 개를 맡고 있습니다.", "text": "준호가 리본 열다섯 개를 맡고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 0, "seed": 2296160363, "raw": "제 동생이 준호한테 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호한테 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 1, "seed": 584793487, "raw": "제 동생이 준호가한테 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호가한테 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 2, "seed": 446695162, "raw": "제 동생이 준호가한테 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호가한테 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 3, "seed": 2735424536, "raw": "제 동생이 준호가네에서 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호가네에서 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 4, "seed": 3137838389, "raw": "제 동생이 준호가한테 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호가한테 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 5, "seed": 3418940131, "raw": "제 동생이 준호가한테 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호가한테 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 6, "seed": 1004272278, "raw": "제 동생이 준호한테 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호한테 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 7, "seed": 2753833487, "raw": "제 동생이 준호에게 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호에게 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 8, "seed": 3730944622, "raw": "제 동생이 준호한테 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호한테 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "n": 4, "attempt": 9, "seed": 4122937421, "raw": "제 동생이 준호에게서 리본 한 개를 빌렸습니다.", "text": "제 동생이 준호에게서 리본 한 개를 빌렸습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_093", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 60.0, "peak_mb": 4799}
+{"scenario": "s4_ko_b_097", "n": 1, "attempt": 0, "seed": 1955597584, "raw": "현우는 음료수 하나도 가지고 있어요.", "text": "현우는 음료수 하나도 가지고 있어요.", "ok": false, "reason": "cue:zero"}
+{"scenario": "s4_ko_b_097", "n": 1, "attempt": 1, "seed": 3287949693, "raw": "현우는 음료수가 하나도 없어요.", "text": "현우는 음료수가 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_097", "n": 2, "attempt": 0, "seed": 2746064398, "raw": "현우 룸메이트 재민은 음료수가 열다섯 병 있어요.", "text": "현우 룸메이트 재민은 음료수가 열다섯 병 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_097", "n": 3, "attempt": 0, "seed": 3590425547, "raw": "준우는 음료수가 다섯 병 있어요.", "text": "준우는 음료수가 다섯 병 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_097", "n": 4, "attempt": 0, "seed": 3071915216, "raw": "준우가 현우한테 음료수 세 병을 보냈어요.", "text": "준우가 현우한테 음료수 세 병을 보냈어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_097", "n": 5, "attempt": 0, "seed": 3224924853, "raw": "현우가 지금 음료수를 몇 병 가지고 있는지요?", "text": "현우가 지금 음료수를 몇 병 가지고 있는지요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 0, "seed": 3287058005, "raw": "아, 두 개가 아니라 세 개였어요.", "text": "아, 두 개가 아니라 세 개였어요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 1, "seed": 2086297463, "raw": "잘못 말했어요, 두 병 말고 세 병예요.", "text": "잘못 말했어요, 두 병 말고 세 병예요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 2, "seed": 1065621498, "raw": "아, 두 개가 아니라 세 병였어요.", "text": "아, 두 개가 아니라 세 병였어요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 3, "seed": 200193101, "raw": "잘못 말했어요, 두 병 말고 세 병예요.", "text": "잘못 말했어요, 두 병 말고 세 병예요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 4, "seed": 171660862, "raw": "아, 두 병이 아니라 세 병였어요.", "text": "아, 두 병이 아니라 세 병였어요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 5, "seed": 4082591532, "raw": "틀렸어요, 두 병 말고 세 병예요.", "text": "틀렸어요, 두 병 말고 세 병예요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 6, "seed": 3594323235, "raw": "아, 두 개가 아니라 세 병였어요.", "text": "아, 두 개가 아니라 세 병였어요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 7, "seed": 308785298, "raw": "잘못 말했어요, 두 병 말고 세 병예요.", "text": "잘못 말했어요, 두 병 말고 세 병예요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 8, "seed": 3007361038, "raw": "아, 두 개가 아니라 세 병였어요.", "text": "아, 두 개가 아니라 세 병였어요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "n": 6, "attempt": 9, "seed": 1739952920, "raw": "잘못 말했어요, 두 병이 아니라 세 병예요.", "text": "잘못 말했어요, 두 병이 아니라 세 병예요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_097", "dialogue": false, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": 6, "seconds": 61.6, "peak_mb": 4799}
+{"scenario": "s4_ko_b_099", "n": 1, "attempt": 0, "seed": 3748765193, "raw": "현우는 리본이 일곱 개를 가지고 있습니다.", "text": "현우는 리본이 일곱 개를 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_099", "n": 2, "attempt": 0, "seed": 2012494514, "raw": "제 팀원은 리본이 열여섯 개 있습니다.", "text": "제 팀원은 리본이 열여섯 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_099", "n": 3, "attempt": 0, "seed": 1783676938, "raw": "제 팀원이 현우한테 리본 두 개를 건嗫습니다.", "text": "제 팀원이 현우한테 리본 두 개를 건嗫습니다.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_099", "n": 3, "attempt": 1, "seed": 862960910, "raw": "제 팀원이 현우한테 리본 두 개를 건嗫습니다.", "text": "제 팀원이 현우한테 리본 두 개를 건嗫습니다.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_099", "n": 3, "attempt": 2, "seed": 2541617848, "raw": "제 팀원이 현우한테 리본 두 개를 건넸습니다.", "text": "제 팀원이 현우한테 리본 두 개를 건넸습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_099", "n": 4, "attempt": 0, "seed": 1713847939, "raw": "제 팀원한테 리본이 지금 몇 개 있습니까?", "text": "제 팀원한테 리본이 지금 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_099", "n": 5, "attempt": 0, "seed": 3749628465, "raw": "현우는 지금 리본이 몇 개 있습니까?", "text": "현우는 지금 리본이 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 0, "seed": 1414805347, "raw": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 1, "seed": 3751742999, "raw": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 2, "seed": 116957511, "raw": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 3, "seed": 1928125040, "raw": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 4, "seed": 298187113, "raw": "제 팀원한테는 현우가 리본 한 개를 보내고 있습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보내고 있습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 5, "seed": 2895836385, "raw": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 6, "seed": 2519733645, "raw": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 7, "seed": 3625126886, "raw": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 8, "seed": 1042734491, "raw": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "n": 6, "attempt": 9, "seed": 1371530508, "raw": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "text": "제 팀원한테는 현우가 리본 한 개를 보냈습니다.", "ok": false, "reason": "cue:front_recipient"}
+{"scenario": "s4_ko_b_099", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": 6, "seconds": 54.6, "peak_mb": 4799}
+{"scenario": "s4_ko_b_104", "n": 1, "attempt": 0, "seed": 2573058895, "raw": "제 팀원은 볼펜 여덟 자루를 보관하고 있어요.", "text": "제 팀원은 볼펜 여덟 자루를 보관하고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_104", "n": 2, "attempt": 0, "seed": 3471268946, "raw": "서준 씨는 현재 볼펜이 네 자루 있어요.", "text": "서준 씨는 현재 볼펜이 네 자루 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_104", "n": 3, "attempt": 0, "seed": 1365053995, "raw": "서준 씨가 제 팀원한테 볼펜 두 자루를 넘겼어요.", "text": "서준 씨가 제 팀원한테 볼펜 두 자루를 넘겼어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_104", "n": 4, "attempt": 0, "seed": 2658945034, "raw": "서준씨한테 볼펜이 지금 몇 개 있어요?", "text": "서준씨한테 볼펜이 지금 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_104", "n": 5, "attempt": 0, "seed": 1208579422, "raw": "볼펜 다섯 자루를 제 팀원이 서준 씨한테 돌려줬어요.", "text": "볼펜 다섯 자루를 제 팀원이 서준 씨한테 돌려줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_104", "n": 6, "attempt": 0, "seed": 4270267735, "raw": "제 팀원은 볼펜을 몇 자루 가지고 있어요?", "text": "제 팀원은 볼펜을 몇 자루 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_104", "n": 7, "attempt": 0, "seed": 1475265914, "raw": "서준 씨한테 볼펜이 지금 몇 개 있어요?", "text": "서준 씨한테 볼펜이 지금 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_104", "n": 8, "attempt": 0, "seed": 138996428, "raw": "볼펜 세 자루를 제 팀원이 서준 씨한테 보냈어요.", "text": "볼펜 세 자루를 제 팀원이 서준 씨한테 보냈어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 0, "seed": 3190390672, "raw": "제 팀원은 볼펜이 몇 자루 있어요?", "text": "제 팀원은 볼펜이 몇 자루 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 1, "seed": 2530159529, "raw": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "text": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 2, "seed": 2716503062, "raw": "제 팀원은 볼펜이 몇 개 있어요?", "text": "제 팀원은 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 3, "seed": 3617755065, "raw": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "text": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 4, "seed": 984463878, "raw": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "text": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 5, "seed": 3203663302, "raw": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "text": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 6, "seed": 2169791036, "raw": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "text": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 7, "seed": 4051363381, "raw": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "text": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 8, "seed": 2361008291, "raw": "제 팀원은 볼펜이 몇 개 있어요?", "text": "제 팀원은 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "n": 9, "attempt": 9, "seed": 2550014110, "raw": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "text": "제 팀원은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_104", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [9], "failed_turn": null, "seconds": 52.2, "peak_mb": 4799}
+{"scenario": "s4_ko_b_105", "n": 1, "attempt": 0, "seed": 402161222, "raw": "제 선배한테는 태블릿이 하나도 없어요.", "text": "제 선배한테는 태블릿이 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_105", "n": 2, "attempt": 0, "seed": 2161877872, "raw": "문 기사님은 태블릿이 여섯 대 있어요.", "text": "문 기사님은 태블릿이 여섯 대 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 0, "seed": 2376200437, "raw": "문 기사님은 제 선배한테 태블릿 두 대를 빌려줬어요.", "text": "문 기사님은 제 선배한테 태블릿 두 대를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 1, "seed": 520849134, "raw": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "text": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 2, "seed": 4178548469, "raw": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려주었어요.", "text": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려주었어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 3, "seed": 604464965, "raw": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려주可以更好了，现在是2024年2月14日，情人节，也是西方的情人节。这一天人们通常会送花、巧克力或其他礼物给心爱的人。以下是一些适合情人节的礼物建议：\n\n1. **鲜花（玫瑰花）**：象征爱情的花朵，尤其是红玫瑰，", "text": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려주可以更好了，现在是2024年2月14日，情人节，也是西方的情人节。这一天人们通常会送花、巧克力或其他礼物给心爱的人。以下是一些适合情人节的礼物建议：\n\n1. **鲜花（玫瑰花）**：象征爱情的花朵，尤其是红玫瑰，", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 4, "seed": 3775262413, "raw": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "text": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 5, "seed": 518664404, "raw": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "text": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 6, "seed": 421622225, "raw": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "text": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 7, "seed": 554917978, "raw": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "text": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 8, "seed": 234087134, "raw": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "text": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_105", "n": 3, "attempt": 9, "seed": 695468746, "raw": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려주可以更好地说：\n\n 문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "text": "문 기사님이 제 선배한테서 태블릿 두 대를 빌려주可以更好地说：\n\n 문 기사님이 제 선배한테서 태블릿 두 대를 빌려줬어요.", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_105", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 39.9, "peak_mb": 4799}
+{"scenario": "s4_ko_b_106", "n": 1, "attempt": 0, "seed": 2166440268, "raw": "우편실에는 쿠키가 열 다섯 개 있습니다.", "text": "우편실에는 쿠키가 열 다섯 개 있습니다.", "ok": false, "reason": "extra_number:[10, 5]"}
+{"scenario": "s4_ko_b_106", "n": 1, "attempt": 1, "seed": 3608908859, "raw": "쿠키 열다섯개가 우편실에 있습니다.", "text": "쿠키 열다섯개가 우편실에 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_106", "n": 2, "attempt": 0, "seed": 3519424728, "raw": "채원은 쿠키 여덟 개를 가지고 있습니다.", "text": "채원은 쿠키 여덟 개를 가지고 있습니다.", "ok": false, "reason": "verb:carry"}
+{"scenario": "s4_ko_b_106", "n": 2, "attempt": 1, "seed": 200775953, "raw": "채원은 쿠키 여덟 개를 들고 있습니다.", "text": "채원은 쿠키 여덟 개를 들고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_106", "n": 3, "attempt": 0, "seed": 3650320857, "raw": "동훈씨는 쿠키 세 개를 맡고 있습니다.", "text": "동훈씨는 쿠키 세 개를 맡고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 0, "seed": 4131125142, "raw": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 1, "seed": 3323135293, "raw": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 2, "seed": 2287555118, "raw": "동훈 씨가 채원한테서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원한테서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 3, "seed": 380649328, "raw": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 4, "seed": 149102309, "raw": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 5, "seed": 2868324116, "raw": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 6, "seed": 431800016, "raw": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 7, "seed": 2045012778, "raw": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 8, "seed": 1860936897, "raw": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "n": 4, "attempt": 9, "seed": 681849553, "raw": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "text": "동훈 씨가 채원에게서 쿠키 한 개를 빌려주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_106", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 50.5, "peak_mb": 4799}
+{"scenario": "s4_ko_b_108", "n": 1, "attempt": 0, "seed": 555907411, "raw": "제 선배 영호는 휴지 열 묶음이 가지고 있습니다.", "text": "제 선배 영호는 휴지 열 묶음이 가지고 있습니다.", "ok": false, "reason": "counted_object_as_subject"}
+{"scenario": "s4_ko_b_108", "n": 1, "attempt": 1, "seed": 2024860486, "raw": "제 선배 영호는 휴지 열 묶음을 가지고 있습니다.", "text": "제 선배 영호는 휴지 열 묶음을 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_108", "n": 2, "attempt": 0, "seed": 3403349264, "raw": "윤서는 휴지가 열한 묶음이 있습니다.", "text": "윤서는 휴지가 열한 묶음이 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_108", "n": 3, "attempt": 0, "seed": 2817282247, "raw": "저는 지금 휴지 열네 묶음을 가지고 있습니다.", "text": "저는 지금 휴지 열네 묶음을 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_108", "n": 4, "attempt": 0, "seed": 3057500940, "raw": "행사 때문에 영호가 윤서한테 휴지 다섯 묶음을 빌려주었습니다.", "text": "행사 때문에 영호가 윤서한테 휴지 다섯 묶음을 빌려주었습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_108", "n": 5, "attempt": 0, "seed": 3730233618, "raw": "윤서는 휴지를 몇 개 가지고 있습니까?", "text": "윤서는 휴지를 몇 개 가지고 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_108", "n": 6, "attempt": 0, "seed": 942481469, "raw": "영호한테는 윤서가 휴지 네 묶음을 돌려주었습니다.", "text": "영호한테는 윤서가 휴지 네 묶음을 돌려주었습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_108", "n": 7, "attempt": 0, "seed": 4065031790, "raw": "영호는 휴지가 몇 개 남았습니까?", "text": "영호는 휴지가 몇 개 남았습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 0, "seed": 1368217026, "raw": "잘못 말했어요, 네 개 말고 십 개입니다.", "text": "잘못 말했어요, 네 개 말고 십 개입니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 1, "seed": 2293760730, "raw": "아, 네 묶음이 아니라 십 묶음이었습니다.", "text": "아, 네 묶음이 아니라 십 묶음이었습니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 2, "seed": 2698549945, "raw": "잘못 말했어요, 네 묶음 말고 십 묶음입니다.", "text": "잘못 말했어요, 네 묶음 말고 십 묶음입니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 3, "seed": 1733632612, "raw": "아, 네 묶음이 아니라 십 묶음이었습니다.", "text": "아, 네 묶음이 아니라 십 묶음이었습니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 4, "seed": 3618136934, "raw": "잘못 말했어요, 네 묶음 말고 십 묶음입니다.", "text": "잘못 말했어요, 네 묶음 말고 십 묶음입니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 5, "seed": 3421983504, "raw": "아, 네 개가 아니라 십 개였습니다.", "text": "아, 네 개가 아니라 십 개였습니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 6, "seed": 1097783071, "raw": "잘못 말했어요, 네 개 말고 십 개입니다.", "text": "잘못 말했어요, 네 개 말고 십 개입니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 7, "seed": 3716301759, "raw": "아, 네 묶음이 아니라 십 묶음이었습니다.", "text": "아, 네 묶음이 아니라 십 묶음이었습니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 8, "seed": 1717964611, "raw": "잘못 말했어요, 네 묶음 말고 십 묶음입니다.", "text": "잘못 말했어요, 네 묶음 말고 십 묶음입니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "n": 8, "attempt": 9, "seed": 1419347724, "raw": "아, 네 개가 아니라 십 개였습니다.", "text": "아, 네 개가 아니라 십 개였습니다.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_108", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": 8, "seconds": 56.5, "peak_mb": 4799}
+{"scenario": "s4_ko_b_109", "n": 1, "attempt": 0, "seed": 4095858310, "raw": "제가 손전등 열다섯 개를 보관하고 있어요.", "text": "제가 손전등 열다섯 개를 보관하고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_109", "n": 2, "attempt": 0, "seed": 187828383, "raw": "계산원 지아 씨가 지금은 손전등 다섯 개를 보관하고 있어요.", "text": "계산원 지아 씨가 지금은 손전등 다섯 개를 보관하고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_109", "n": 3, "attempt": 0, "seed": 2652787989, "raw": "조 대리님은 손전등이 여섯 개 있어요.", "text": "조 대리님은 손전등이 여섯 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 0, "seed": 3905048687, "raw": "저가 조 대리님한테 손전등 두 개를 건네대요.", "text": "저가 조 대리님한테 손전등 두 개를 건네대요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 1, "seed": 2929920951, "raw": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "text": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 2, "seed": 2050782134, "raw": "저가 조 대리님한테 손전등 두 개를 건嗫대요.", "text": "저가 조 대리님한테 손전등 두 개를 건嗫대요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 3, "seed": 1404405313, "raw": "저가 조 대리님한테 손전등 두 개를 건BOTTOM }}>{TOP}대요.", "text": "저가 조 대리님한테 손전등 두 개를 건BOTTOM }}>{TOP}대요.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 4, "seed": 2248455258, "raw": "저가 조 대리님한테 손전등 두 개를 건.OnItemClickListener()대요.", "text": "저가 조 대리님한테 손전등 두 개를 건.OnItemClickListener()대요.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 5, "seed": 2078331823, "raw": "저가 조 대리님한테 손전등 두 개를 건嗫요.", "text": "저가 조 대리님한테 손전등 두 개를 건嗫요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 6, "seed": 1246534199, "raw": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "text": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 7, "seed": 4270673174, "raw": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "text": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 8, "seed": 592223111, "raw": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "text": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_109", "n": 4, "attempt": 9, "seed": 1357530630, "raw": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "text": "저가 조 대리님한테 손전등 두 개를 건넸대요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_109", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 42.4, "peak_mb": 4799}
+{"scenario": "s4_ko_b_113", "n": 1, "attempt": 0, "seed": 2309830407, "raw": "인턴 준우 씨가 배낭이 하나도 있습니다.", "text": "인턴 준우 씨가 배낭이 하나도 있습니다.", "ok": false, "reason": "cue:zero"}
+{"scenario": "s4_ko_b_113", "n": 1, "attempt": 1, "seed": 3247773445, "raw": "인턴 준우 씨한테는 배낭이 한 개도 있습니다.", "text": "인턴 준우 씨한테는 배낭이 한 개도 있습니다.", "ok": false, "reason": "cue:zero"}
+{"scenario": "s4_ko_b_113", "n": 1, "attempt": 2, "seed": 2048162939, "raw": "인턴 준우 씨는 배낭이 하나도 있습니다습니까?", "text": "인턴 준우 씨는 배낭이 하나도 있습니다습니까?", "ok": false, "reason": "statement_is_question"}
+{"scenario": "s4_ko_b_113", "n": 1, "attempt": 3, "seed": 3721989480, "raw": "인턴 준우 씨는 배낭이 한 개도 가지고 있지 않습니다.", "text": "인턴 준우 씨는 배낭이 한 개도 가지고 있지 않습니다.", "ok": false, "reason": "cue:zero"}
+{"scenario": "s4_ko_b_113", "n": 1, "attempt": 4, "seed": 3654228645, "raw": "인턴 준우 씨가 배낭을 하나도 가지고 있습니다.", "text": "인턴 준우 씨가 배낭을 하나도 가지고 있습니다.", "ok": false, "reason": "cue:zero"}
+{"scenario": "s4_ko_b_113", "n": 1, "attempt": 5, "seed": 2491447139, "raw": "인턴 준우 씨가 배낭이 하나도 있습니다습니까?", "text": "인턴 준우 씨가 배낭이 하나도 있습니다습니까?", "ok": false, "reason": "statement_is_question"}
+{"scenario": "s4_ko_b_113", "n": 1, "attempt": 6, "seed": 4038607025, "raw": "인턴 준우 씨는 배낭이 하나도 가지고 있지 않습니다.", "text": "인턴 준우 씨는 배낭이 하나도 가지고 있지 않습니다.", "ok": false, "reason": "cue:zero"}
+{"scenario": "s4_ko_b_113", "n": 1, "attempt": 7, "seed": 1935246265, "raw": "인턴 준우 씨한테는 배낭이 한 개도 있습니다.", "text": "인턴 준우 씨한테는 배낭이 한 개도 있습니다.", "ok": false, "reason": "cue:zero"}
+{"scenario": "s4_ko_b_113", "n": 1, "attempt": 8, "seed": 4274383483, "raw": "인턴 준우 씨는 배낭이 하나도 없습니다.", "text": "인턴 준우 씨는 배낭이 하나도 없습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_113", "n": 2, "attempt": 0, "seed": 3444246175, "raw": "저는 배낭 다섯 개 있습니다.", "text": "저는 배낭 다섯 개 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_113", "n": 2, "attempt": 1, "seed": 307924736, "raw": "저는 배낭만 다섯 개 있습니다.", "text": "저는 배낭만 다섯 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_113", "n": 3, "attempt": 0, "seed": 4007675393, "raw": "재민은 배낭이 좀 있습니다.", "text": "재민은 배낭이 좀 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 0, "seed": 2917145067, "raw": "저는 준우 씨한테서 배낭 두 개를 돌려줬습니다.", "text": "저는 준우 씨한테서 배낭 두 개를 돌려줬습니다.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 1, "seed": 3228655942, "raw": "저가 준우 씨한테서 배낭 두 개를 돌려준 것입니다.", "text": "저가 준우 씨한테서 배낭 두 개를 돌려준 것입니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 2, "seed": 809527286, "raw": "저는 준우 씨한테서 배낭 두 개를 돌려줬습니다.", "text": "저는 준우 씨한테서 배낭 두 개를 돌려줬습니다.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 3, "seed": 1813441752, "raw": "저는 준우씨한테서 배낭 두 개를 돌려줬습니다.", "text": "저는 준우씨한테서 배낭 두 개를 돌려줬습니다.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 4, "seed": 858610065, "raw": "저는 준우 씨한테서 배낭 두 개를 돌려줬습니다.", "text": "저는 준우 씨한테서 배낭 두 개를 돌려줬습니다.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 5, "seed": 2540456385, "raw": "저는 준우 씨한테서 배낭 두 개를 돌려주었습니다.", "text": "저는 준우 씨한테서 배낭 두 개를 돌려주었습니다.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 6, "seed": 2106310501, "raw": "저가 준우 씨한테 같은 배낭 두 개를 돌려줬습니다.", "text": "저가 준우 씨한테 같은 배낭 두 개를 돌려줬습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 7, "seed": 4251618928, "raw": "저는 준우 씨한테서 배낭 두 개를 돌려줬습니다.", "text": "저는 준우 씨한테서 배낭 두 개를 돌려줬습니다.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 8, "seed": 4117820132, "raw": "저는 준우씨한테서 배낭 두 개를 돌려줬습니다.", "text": "저는 준우씨한테서 배낭 두 개를 돌려줬습니다.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_113", "n": 4, "attempt": 9, "seed": 834608057, "raw": "저가 준우씨한테서 배낭 두 개를 돌려주었습니다.", "text": "저가 준우씨한테서 배낭 두 개를 돌려주었습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_113", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 62.9, "peak_mb": 4799}
+{"scenario": "s4_ko_b_118", "n": 1, "attempt": 0, "seed": 1213196797, "raw": "셔츠 열 벌은 현우씨가 맡고 있어요.", "text": "셔츠 열 벌은 현우씨가 맡고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_118", "n": 2, "attempt": 0, "seed": 3714887742, "raw": "제 선배는 셔츠 일곱 벌을 맡고 있어요.", "text": "제 선배는 셔츠 일곱 벌을 맡고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_118", "n": 3, "attempt": 0, "seed": 560505874, "raw": "제 선배가 현우 씨한테 셔츠 두 벌을 빌렸어요.", "text": "제 선배가 현우 씨한테 셔츠 두 벌을 빌렸어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 0, "seed": 3926110707, "raw": "제 선배는 셔티가 몇 벌 있어요?", "text": "제 선배는 셔티가 몇 벌 있어요?", "ok": false, "reason": "missing_item"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 1, "seed": 1148385951, "raw": "제 선배는 셔츠가 몇 개 있어요?", "text": "제 선배는 셔츠가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 2, "seed": 65752226, "raw": "제 선배는 셔츠가 몇 개 있어요?", "text": "제 선배는 셔츠가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 3, "seed": 3047657831, "raw": "제 선배는 셔츠가 몇 벌 있어요?", "text": "제 선배는 셔츠가 몇 벌 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 4, "seed": 3312527314, "raw": "제 선배는 셔츠가 몇 개 있어요?", "text": "제 선배는 셔츠가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 5, "seed": 2953462377, "raw": "제 선배는 셔츠가 몇 개 있어요?", "text": "제 선배는 셔츠가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 6, "seed": 1307933134, "raw": "제 선배는 셔츠가 몇 개 있어요?", "text": "제 선배는 셔츠가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 7, "seed": 2305911995, "raw": "제 선배는 셔츠가 몇 개 가지고 있는지요?", "text": "제 선배는 셔츠가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 8, "seed": 2114627893, "raw": "제 선배는 셔츠가 몇 벌 있어요?", "text": "제 선배는 셔츠가 몇 벌 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_118", "n": 4, "attempt": 9, "seed": 990909363, "raw": "제 선배는 셔티가 몇 벌 남았어요?", "text": "제 선배는 셔티가 몇 벌 남았어요?", "ok": false, "reason": "missing_item"}
+{"scenario": "s4_ko_b_118", "n": 5, "attempt": 0, "seed": 3905023648, "raw": "현우 씨와 제 선배가 합쳐서 셔츠가 몇 벌 있어요?", "text": "현우 씨와 제 선배가 합쳐서 셔츠가 몇 벌 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_118", "dialogue": false, "kept": [1, 2, 3, 5], "skipped": [4], "failed_turn": null, "seconds": 37.5, "peak_mb": 4799}
+{"scenario": "s4_ko_b_121", "n": 1, "attempt": 0, "seed": 2041609511, "raw": "메달 여섯 개가 지하실에 있어.", "text": "메달 여섯 개가 지하실에 있어.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_121", "n": 1, "attempt": 1, "seed": 2894002599, "raw": "지하실에는 메달이 여섯 개 있어.", "text": "지하실에는 메달이 여섯 개 있어.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_121", "n": 1, "attempt": 2, "seed": 582806578, "raw": "지하실은 메달만 여섯 개 있어.", "text": "지하실은 메달만 여섯 개 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_121", "n": 2, "attempt": 0, "seed": 2061190057, "raw": "소율 씨는 메달만 세 개 있어.", "text": "소율 씨는 메달만 세 개 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 0, "seed": 331757137, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 1, "seed": 3390912645, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 2, "seed": 132302788, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 3, "seed": 3627487278, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 행사를 위해서.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 행사를 위해서.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 4, "seed": 3957478603, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 5, "seed": 1325332877, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 행사 때문에.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 행사 때문에.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 6, "seed": 3063540867, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 7, "seed": 2804613227, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 8, "seed": 1578145775, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 이사 준비로.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "n": 3, "attempt": 9, "seed": 1001029473, "raw": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 행사 때문에.", "text": "소율 씨가 지하실에 메달 두 개를 두고 왔어. 행사 때문에.", "ok": false, "reason": "cue:front_purpose"}
+{"scenario": "s4_ko_b_121", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 47.6, "peak_mb": 4799}
+{"scenario": "s4_ko_b_122", "n": 1, "attempt": 0, "seed": 849868763, "raw": "사서 채원 씨가 쿠키가 열 개 있고 레몬도 좀 있어요.", "text": "사서 채원 씨가 쿠키가 열 개 있고 레몬도 좀 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "n": 2, "attempt": 0, "seed": 2197926639, "raw": "황 팀장님은 쿠키만 여섯 개 있어요.", "text": "황 팀장님은 쿠키만 여섯 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "n": 3, "attempt": 0, "seed": 4114441449, "raw": "저는 쿠키 아홉 개만 있어요.", "text": "저는 쿠키 아홉 개만 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "n": 4, "attempt": 0, "seed": 897429829, "raw": "황 팀장님은 저는 다섯 개의 쿠키를 건네주었어요.", "text": "황 팀장님은 저는 다섯 개의 쿠키를 건네주었어요.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_122", "n": 4, "attempt": 1, "seed": 4122071816, "raw": "황 팀장님은 저한테 쿠키 다섯 개를 건네주었어요.", "text": "황 팀장님은 저한테 쿠키 다섯 개를 건네주었어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "n": 5, "attempt": 0, "seed": 2652940014, "raw": "황 팀장님은 쿠키를 몇 개 가지고 있어요?", "text": "황 팀장님은 쿠키를 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "n": 6, "attempt": 0, "seed": 3045689983, "raw": "채원 씨가 저한테 쿠키 한 개를 빌려줬어요.", "text": "채원 씨가 저한테 쿠키 한 개를 빌려줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "n": 7, "attempt": 0, "seed": 860613178, "raw": "채원さんは现在有多少块饼干요?", "text": "채원さんは现在有多少块饼干요?", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_122", "n": 7, "attempt": 1, "seed": 4146460307, "raw": "채원 씨는 쿠키가 몇 개 남았어요?", "text": "채원 씨는 쿠키가 몇 개 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "n": 8, "attempt": 0, "seed": 3231469654, "raw": "그분은 지금 쿠키가 몇 개 있어요?", "text": "그분은 지금 쿠키가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "n": 9, "attempt": 0, "seed": 3550573988, "raw": "아, 황 팀장요.", "text": "아, 황 팀장요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "n": 10, "attempt": 0, "seed": 3722031207, "raw": "채원 씨와 황 팀장님이 합쳐서 쿠키가 몇 개 있어요?", "text": "채원 씨와 황 팀장님이 합쳐서 쿠키가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_122", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 37.1, "peak_mb": 4799}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 0, "seed": 203446290, "raw": "유나가 영호에게 잡지 다섯 권을 주었어요.", "text": "유나가 영호에게 잡지 다섯 권을 주었어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 1, "seed": 1119401937, "raw": "유나가 영호에게 잡지 다섯 권을 줬어요.", "text": "유나가 영호에게 잡지 다섯 권을 줬어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 2, "seed": 4151703918, "raw": "유나는 영호한테 잡지 다섯 권을 주었어요.", "text": "유나는 영호한테 잡지 다섯 권을 주었어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 3, "seed": 3247544564, "raw": "유나는 영호에게 잡지 다섯 권을 줬어요.", "text": "유나는 영호에게 잡지 다섯 권을 줬어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 4, "seed": 3933256399, "raw": "유나는 영호한테 잡지 다섯 권을 주었어요.", "text": "유나는 영호한테 잡지 다섯 권을 주었어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 5, "seed": 1056614319, "raw": "유나는 영호한테 잡지 다섯 권을 줬어요.", "text": "유나는 영호한테 잡지 다섯 권을 줬어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 6, "seed": 1801361518, "raw": "유나는 영호한테 잡지 다섯 권을 줬어요.", "text": "유나는 영호한테 잡지 다섯 권을 줬어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 7, "seed": 610191822, "raw": "유나가 영호에게 잡지 다섯 권을 주었어요.", "text": "유나가 영호에게 잡지 다섯 권을 주었어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 8, "seed": 2076720339, "raw": "유나는 영호한테 잡지 다섯 권을 줬어요.", "text": "유나는 영호한테 잡지 다섯 권을 줬어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "n": 1, "attempt": 9, "seed": 2945592584, "raw": "유나는 영호한테 잡지 다섯 권을 줬어요.", "text": "유나는 영호한테 잡지 다섯 권을 줬어요.", "ok": false, "reason": "missing_number:16"}
+{"scenario": "s4_ko_b_123", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 29.3, "peak_mb": 4799}
+{"scenario": "s4_ko_b_126", "n": 1, "attempt": 0, "seed": 2550341354, "raw": "편의점에는 주전자가 세 개 있습니다.", "text": "편의점에는 주전자가 세 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_126", "n": 2, "attempt": 0, "seed": 1677596734, "raw": "저는 주전자 네 개를 가지고 있습니다.", "text": "저는 주전자 네 개를 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_126", "n": 3, "attempt": 0, "seed": 2378544777, "raw": "지후는 열세 개의 주전자를 들고 있습니다.", "text": "지후는 열세 개의 주전자를 들고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 0, "seed": 2300988186, "raw": "지후가 편의점에 주전자 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 1, "seed": 4207588341, "raw": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 2, "seed": 3122186836, "raw": "지후가 편의점에 주전자 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 3, "seed": 4227012168, "raw": "지후가 편의점에 주전자 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 4, "seed": 4078427330, "raw": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 5, "seed": 3274579548, "raw": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 6, "seed": 3915213812, "raw": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 7, "seed": 3568390116, "raw": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 8, "seed": 1507847363, "raw": "지후가 편의점에 주전자 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "n": 4, "attempt": 9, "seed": 4279040908, "raw": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "text": "지후가 편의점에 주전자를 한 개를 두고 왔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_126", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 44.0, "peak_mb": 4799}
+{"scenario": "s4_ko_b_128", "n": 1, "attempt": 0, "seed": 1624220565, "raw": "제 선배는 접시가 여덟 개 있어요.", "text": "제 선배는 접시가 여덟 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_128", "n": 2, "attempt": 0, "seed": 2424028549, "raw": "지원은 접시가 열 개 있어요.", "text": "지원은 접시가 열 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_128", "n": 3, "attempt": 0, "seed": 3592098037, "raw": "지원이 제 선배한테 접시 네 개를 줬어요.", "text": "지원이 제 선배한테 접시 네 개를 줬어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_128", "n": 3, "attempt": 1, "seed": 1880370175, "raw": "지원이가 제 선배한테 같은 접시 네 개를 줬어요.", "text": "지원이가 제 선배한테 같은 접시 네 개를 줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_128", "n": 4, "attempt": 0, "seed": 844528884, "raw": "지원이 지금 접시가 몇 개 있어요?", "text": "지원이 지금 접시가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_128", "n": 5, "attempt": 0, "seed": 220197236, "raw": "아, 네 개가 아니라 다섯 개였어요.", "text": "아, 네 개가 아니라 다섯 개였어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_128", "n": 6, "attempt": 0, "seed": 3673291888, "raw": "지원은 접시가 몇 개 가지고 있는지요?", "text": "지원은 접시가 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_128", "n": 6, "attempt": 1, "seed": 3502289871, "raw": "지원은 접시가 몇 개 남았어요?", "text": "지원은 접시가 몇 개 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_128", "n": 7, "attempt": 0, "seed": 2777936811, "raw": "두 사람 합쳐서 접시가 몇 개 있어요?", "text": "두 사람 합쳐서 접시가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_128", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 25.9, "peak_mb": 4799}
+{"scenario": "s4_ko_b_129", "n": 1, "attempt": 0, "seed": 701893006, "raw": "가은도 숟가락이 네 개 있어요. 세어 보니 네 개네요.", "text": "가은도 숟가락이 네 개 있어요. 세어 보니 네 개네요.", "ok": false, "reason": "cue:vague"}
+{"scenario": "s4_ko_b_129", "n": 1, "attempt": 1, "seed": 3630258610, "raw": "가은도 숟가락이 좀 있어요. 세어 보니 네 개네요.", "text": "가은도 숟가락이 좀 있어요. 세어 보니 네 개네요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_129", "n": 2, "attempt": 0, "seed": 1513733393, "raw": "가은 동기 윤우는 숟가락 아홉 개만 있어요.", "text": "가은 동기 윤우는 숟가락 아홉 개만 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_129", "n": 3, "attempt": 0, "seed": 3791399394, "raw": "윤우가 가은한테 숟가락 두 개를 넘겼어요.", "text": "윤우가 가은한테 숟가락 두 개를 넘겼어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_129", "n": 4, "attempt": 0, "seed": 1081535010, "raw": "가은은 숟가락을 몇 개 가지고 있어요?", "text": "가은은 숟가락을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_129", "n": 5, "attempt": 0, "seed": 636687532, "raw": "윤우가 가은한테 숟가락 두 개를 건넸어요.", "text": "윤우가 가은한테 숟가락 두 개를 건넸어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_129", "n": 6, "attempt": 0, "seed": 671903956, "raw": "가은은 숟가락을 몇 개 가지고 있어요?", "text": "가은은 숟가락을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_129", "n": 7, "attempt": 0, "seed": 694033093, "raw": "윤우는 숟가락을 몇 개 가지고 있어요?", "text": "윤우는 숟가락을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_129", "n": 8, "attempt": 0, "seed": 3991733016, "raw": "윤우가 행사에 숟가락 한 개를 썼어요.", "text": "윤우가 행사에 숟가락 한 개를 썼어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_129", "n": 9, "attempt": 0, "seed": 3123738108, "raw": "윤우는 숟가락이 몇 개 남았어요?", "text": "윤우는 숟가락이 몇 개 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_129", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 31.0, "peak_mb": 4799}
+{"scenario": "s4_ko_b_130", "n": 1, "attempt": 0, "seed": 4074725331, "raw": "제 동료 시은은 도넛 열네 개를 가지고 있습니다.", "text": "제 동료 시은은 도넛 열네 개를 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_130", "n": 2, "attempt": 0, "seed": 2595300140, "raw": "사서 도윤 씨가 도넛 일곱 개를 보관하고 있습니다.", "text": "사서 도윤 씨가 도넛 일곱 개를 보관하고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_130", "n": 3, "attempt": 0, "seed": 2688446856, "raw": "도윤씨가 시은한테 도넛 두 개를 보냈습니다.", "text": "도윤씨가 시은한테 도넛 두 개를 보냈습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_130", "n": 4, "attempt": 0, "seed": 4016936943, "raw": "도윤 씨한테 도넛이 지금 몇 개 있습니까?", "text": "도윤 씨한테 도넛이 지금 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_130", "n": 5, "attempt": 0, "seed": 497446708, "raw": "시은이 지금 도넛이 몇 개 있습니까?", "text": "시은이 지금 도넛이 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_130", "n": 6, "attempt": 0, "seed": 2995306103, "raw": "잘못 말했어요, 두 개 말고 여섯 개입니다.", "text": "잘못 말했어요, 두 개 말고 여섯 개입니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_130", "n": 7, "attempt": 0, "seed": 686243739, "raw": "시은이 지금 도넛을 몇 개 가지고 있습니까?", "text": "시은이 지금 도넛을 몇 개 가지고 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 0, "seed": 1631942457, "raw": "두 사람 합쳐서 도넛이 여섯 개입니까?", "text": "두 사람 합쳐서 도넛이 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 1, "seed": 1294437065, "raw": "두 사람 합쳐서 도넛이 모두 여섯 개입니까?", "text": "두 사람 합쳐서 도넛이 모두 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 2, "seed": 3805713199, "raw": "두 사람 합쳐서 도넛이 여섯 개입니까?", "text": "두 사람 합쳐서 도넛이 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 3, "seed": 2405014850, "raw": "둘이 합쳐서 도넛이 모두 여섯 개입니까?", "text": "둘이 합쳐서 도넛이 모두 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 4, "seed": 2718975223, "raw": "두 사람 합쳐서 도넛이 여섯 개입니까?", "text": "두 사람 합쳐서 도넛이 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 5, "seed": 2497427793, "raw": "두 사람합쳐서 도넛이 모두 여섯 개입니까?", "text": "두 사람합쳐서 도넛이 모두 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 6, "seed": 4026277079, "raw": "두 사람 합쳐서 도넛이 여섯 개입니까?", "text": "두 사람 합쳐서 도넛이 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 7, "seed": 3807385568, "raw": "두 사람 합쳐서 도넛이 모두 여섯 개입니까?", "text": "두 사람 합쳐서 도넛이 모두 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 8, "seed": 1396651261, "raw": "두 사람 합쳐서 도넛이 여섯 개입니까?", "text": "두 사람 합쳐서 도넛이 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "n": 8, "attempt": 9, "seed": 3284010761, "raw": "두 사람 합쳐서 도넛이 여섯 개입니까?", "text": "두 사람 합쳐서 도넛이 여섯 개입니까?", "ok": false, "reason": "extra_number:[6]"}
+{"scenario": "s4_ko_b_130", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [8], "failed_turn": null, "seconds": 53.7, "peak_mb": 4799}
+{"scenario": "s4_ko_b_131", "n": 1, "attempt": 0, "seed": 294895710, "raw": "제 팀원한테는 수건이 하나도 없어요.", "text": "제 팀원한테는 수건이 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_131", "n": 2, "attempt": 0, "seed": 3730725846, "raw": "소율은 수건이 열 장 있어요.", "text": "소율은 수건이 열 장 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_131", "n": 2, "attempt": 1, "seed": 1311660207, "raw": "소율은 수건만 십 장 있어요.", "text": "소율은 수건만 십 장 있어요.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_131", "n": 2, "attempt": 2, "seed": 1794907100, "raw": "소율은 수건이 열 장 있어요.", "text": "소율은 수건이 열 장 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_131", "n": 2, "attempt": 3, "seed": 4216861520, "raw": "소율은 수건만 열 장 있어요.", "text": "소율은 수건만 열 장 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_131", "n": 3, "attempt": 0, "seed": 1274342707, "raw": "인턴 도윤 씨는 수건이 한 개도 없어요.", "text": "인턴 도윤 씨는 수건이 한 개도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_131", "n": 4, "attempt": 0, "seed": 3155229165, "raw": "소율이 제 팀원한테 수건 세 장을 빌려줬어요.", "text": "소율이 제 팀원한테 수건 세 장을 빌려줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_131", "n": 5, "attempt": 0, "seed": 3260439103, "raw": "소율은 수건이 몇 개 남았어요?", "text": "소율은 수건이 몇 개 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_131", "n": 6, "attempt": 0, "seed": 3190018926, "raw": "제 팀원은 수건을 몇 개 가지고 있어요?", "text": "제 팀원은 수건을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 0, "seed": 821257194, "raw": "잘못 말했어요, 삼장 말고 팔장예요.", "text": "잘못 말했어요, 삼장 말고 팔장예요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 1, "seed": 3444854787, "raw": "아, 여덟 개가 아니라 여덟 장였어요.", "text": "아, 여덟 개가 아니라 여덟 장였어요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 2, "seed": 3780689593, "raw": "잘못 말했어요, 삼 장 말고 팔장예요.", "text": "잘못 말했어요, 삼 장 말고 팔장예요.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 3, "seed": 801844575, "raw": "아, 여덟 장이 아니라 세 장였어요.", "text": "아, 여덟 장이 아니라 세 장였어요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 4, "seed": 2922657744, "raw": "잘못 말했어요, 여덟 장 말고 세 장예요.", "text": "잘못 말했어요, 여덟 장 말고 세 장예요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 5, "seed": 1549528135, "raw": "아, 여덟 장이 아니라 세 장였어요.", "text": "아, 여덟 장이 아니라 세 장였어요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 6, "seed": 1169406306, "raw": "잘못 말했어요, 삼장 말고 팔장예요.", "text": "잘못 말했어요, 삼장 말고 팔장예요.", "ok": false, "reason": "missing_number:3"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 7, "seed": 2267401096, "raw": "아, восемь 장이 아니라 팔 장였어요.", "text": "아, восемь 장이 아니라 팔 장였어요.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 8, "seed": 1956718588, "raw": "틀렸어요, 8장 말고 세 장예요.", "text": "틀렸어요, 8장 말고 세 장예요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_131", "n": 7, "attempt": 9, "seed": 628143023, "raw": "아, 여덟 장이 아니라 세 장였어요.", "text": "아, 여덟 장이 아니라 세 장였어요.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_131", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": 7, "seconds": 63.8, "peak_mb": 4799}
+{"scenario": "s4_ko_b_133", "n": 1, "attempt": 0, "seed": 1807005214, "raw": "가은은 양초가 여섯 개 있어.", "text": "가은은 양초가 여섯 개 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_133", "n": 2, "attempt": 0, "seed": 2198410169, "raw": "서준은 양초가 좀 있어.", "text": "서준은 양초가 좀 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_133", "n": 3, "attempt": 0, "seed": 4119042029, "raw": "나한테는 양초가 하나도 없어.", "text": "나한테는 양초가 하나도 없어.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_133", "n": 3, "attempt": 1, "seed": 3919332659, "raw": "나는 양초가 하나도 없어.", "text": "나는 양초가 하나도 없어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_133", "n": 4, "attempt": 0, "seed": 1567317125, "raw": "내 팀원은 양초가 하나도 없어.", "text": "내 팀원은 양초가 하나도 없어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_133", "n": 5, "attempt": 0, "seed": 4164206503, "raw": "나는 가은이한테서 양초 네 개를 받았어.", "text": "나는 가은이한테서 양초 네 개를 받았어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_133", "n": 6, "attempt": 0, "seed": 2952694730, "raw": "가은은 지금 양초가 몇 개 있어?", "text": "가은은 지금 양초가 몇 개 있어?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_133", "n": 7, "attempt": 0, "seed": 3283357840, "raw": "가은은 양초 그거 한 개를 다 썼어.", "text": "가은은 양초 그거 한 개를 다 썼어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_133", "n": 8, "attempt": 0, "seed": 1551935970, "raw": "가은은 양초가 몇 개 남았어?", "text": "가은은 양초가 몇 개 남았어?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_133", "n": 9, "attempt": 0, "seed": 3126892244, "raw": "나는 양초를 몇 개 가지고 있어?", "text": "나는 양초를 몇 개 가지고 있어?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_133", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 31.5, "peak_mb": 4799}
+{"scenario": "s4_ko_b_134", "n": 1, "attempt": 0, "seed": 2669612896, "raw": "임 실장님은 잡지만 열한 권 있어요.", "text": "임 실장님은 잡지만 열한 권 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_134", "n": 2, "attempt": 0, "seed": 2047487660, "raw": "다인 씨한테는 잡지가 하나도 없어요.", "text": "다인 씨한테는 잡지가 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_134", "n": 3, "attempt": 0, "seed": 4168620015, "raw": "임 실장님이 다인씨한테 잡지 한 권을 줬어요.", "text": "임 실장님이 다인씨한테 잡지 한 권을 줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_134", "n": 4, "attempt": 0, "seed": 597067879, "raw": "임 실장님은 잡지를 몇 권 가지고 있는지 물어요?", "text": "임 실장님은 잡지를 몇 권 가지고 있는지 물어요?", "ok": false, "reason": "meta_question"}
+{"scenario": "s4_ko_b_134", "n": 4, "attempt": 1, "seed": 502088141, "raw": "임 실장님은 잡지를 몇 권 가지고 있어요?", "text": "임 실장님은 잡지를 몇 권 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_134", "n": 5, "attempt": 0, "seed": 3416698377, "raw": "임 실수가 다인씨한테 잡지 네 권을 돌려주었어요.", "text": "임 실수가 다인씨한테 잡지 네 권을 돌려주었어요.", "ok": false, "reason": "missing_name:임 실장"}
+{"scenario": "s4_ko_b_134", "n": 5, "attempt": 1, "seed": 3859497230, "raw": "임 실장님가다인 씨한테 잡지 네 권을 돌려줬어요.", "text": "임 실장님가다인 씨한테 잡지 네 권을 돌려줬어요.", "ok": false, "reason": "glued:임 실장님가다인"}
+{"scenario": "s4_ko_b_134", "n": 5, "attempt": 2, "seed": 2140767415, "raw": "임 실장님가 다인 씨한테 잡지 네 권을 돌려뒀어요.", "text": "임 실장님가 다인 씨한테 잡지 네 권을 돌려뒀어요.", "ok": false, "reason": "verb:give_back"}
+{"scenario": "s4_ko_b_134", "n": 5, "attempt": 3, "seed": 1623602440, "raw": "임 실장님은 다인 씨한테 잡지 네 권을 돌려줬어요.", "text": "임 실장님은 다인 씨한테 잡지 네 권을 돌려줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_134", "n": 6, "attempt": 0, "seed": 1401879116, "raw": "다인 씨는 잡지를 몇 권 가지고 있어요?", "text": "다인 씨는 잡지를 몇 권 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_134", "n": 7, "attempt": 0, "seed": 282128641, "raw": "아, 네 권이 아니라 다섯 권예요.", "text": "아, 네 권이 아니라 다섯 권예요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_134", "n": 8, "attempt": 0, "seed": 1743169215, "raw": "임 실장님은 잡지를 몇 권 가지고 있어요?", "text": "임 실장님은 잡지를 몇 권 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_134", "n": 9, "attempt": 0, "seed": 1573407927, "raw": "두 사람이 합쳐서 잡지가 다섯 개 있어요?", "text": "두 사람이 합쳐서 잡지가 다섯 개 있어요?", "ok": false, "reason": "extra_number:[5]"}
+{"scenario": "s4_ko_b_134", "n": 9, "attempt": 1, "seed": 3146401051, "raw": "두 사람 합쳐서 잡지가 몇 개 있어요?", "text": "두 사람 합쳐서 잡지가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_134", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 44.2, "peak_mb": 4799}
+{"scenario": "s4_ko_b_136", "n": 1, "attempt": 0, "seed": 166965165, "raw": "제가 양초 열여섯 개를 가지고 있어요.", "text": "제가 양초 열여섯 개를 가지고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_136", "n": 2, "attempt": 0, "seed": 2514072177, "raw": "제 동기 채은은 양초 열한 개가 있어요.", "text": "제 동기 채은은 양초 열한 개가 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 0, "seed": 3075933791, "raw": "저가 채은이한테 양초 네 개를 건nement\n<|endoftext|>Human: You write one message of the user's side of a chat, in natural Korean. The user is an adult keeping an assistant up to date about who has how many of something, and sometimes asks the assistant about it. Write the next message in Korean, in 해요체 (polite: every sentence ends in -요: 있어요", "text": "저가 채은이한테 양초 네 개를 건nement\n<|endoftext|>Human: You write one message of the user's side of a chat, in natural Korean. The user is an adult keeping an assistant up to date about who has how many of something, and sometimes asks the assistant about it. Write the next message in Korean, in 해요체 (polite: every sentence ends in -요: 있어요", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 1, "seed": 3857417195, "raw": "채은에게 양초 네 개를 건！');", "text": "채은에게 양초 네 개를 건！');", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 2, "seed": 1172025163, "raw": "채은이한테 양초 네 개를 건Nguồn대요.", "text": "채은이한테 양초 네 개를 건Nguồn대요.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 3, "seed": 719433544, "raw": "저가 채은이한테 양초 네 개를 건넸대요.", "text": "저가 채은이한테 양초 네 개를 건넸대요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 4, "seed": 3370359219, "raw": "채은이한테 저는 양초 네 개를 건嗫대요.", "text": "채은이한테 저는 양초 네 개를 건嗫대요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 5, "seed": 339526189, "raw": "저는 채은한테 양초 네 개를 건네대요.", "text": "저는 채은한테 양초 네 개를 건네대요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 6, "seed": 1195610564, "raw": "저가 채은이한테 양초 네 개를 건넸대요.", "text": "저가 채은이한테 양초 네 개를 건넸대요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 7, "seed": 2108573187, "raw": "채은이에게 양초 네 개를 건네대요.", "text": "채은이에게 양초 네 개를 건네대요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 8, "seed": 1381183783, "raw": "채은이한테 양초 네 개를 건嗫대요.", "text": "채은이한테 양초 네 개를 건嗫대요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_136", "n": 3, "attempt": 9, "seed": 3929834297, "raw": "저가 채은에게 양초 네 개를 건дов요.", "text": "저가 채은에게 양초 네 개를 건дов요.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_136", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 42.6, "peak_mb": 4799}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 0, "seed": 3258749840, "raw": "심 과장은 장갑이 아홉 켤레 있어.", "text": "심 과장은 장갑이 아홉 켤레 있어.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 1, "seed": 2914861922, "raw": "심 과장은 장갑이 아홉 켤레 있어.", "text": "심 과장은 장갑이 아홉 켤레 있어.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 2, "seed": 808266810, "raw": "심 과장은 장갑이 아홉 켤레 있어.", "text": "심 과장은 장갑이 아홉 켤레 있어.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 3, "seed": 4092433433, "raw": "심 과장은 장갑이 아홉 켤레 있어.", "text": "심 과장은 장갑이 아홉 켤레 있어.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 4, "seed": 1356822260, "raw": "심 과장은 장갑이 아홉 켤레 있어.", "text": "심 과장은 장갑이 아홉 켤레 있어.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 5, "seed": 1967310866, "raw": "심 과장은 장갑이 아홉 켤레 있어.", "text": "심 과장은 장갑이 아홉 켤레 있어.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 6, "seed": 1879346053, "raw": "심 과장은 장갑이 아홉 켤레 있어.", "text": "심 과장은 장갑이 아홉 켤레 있어.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 7, "seed": 1650619635, "raw": "심 과장은 장鳏이 아홉 켤레 있어.", "text": "심 과장은 장鳏이 아홉 켤레 있어.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 8, "seed": 4166749673, "raw": "심 과장은 장갑이 아홉 켤레 있어.", "text": "심 과장은 장갑이 아홉 켤레 있어.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_140", "n": 1, "attempt": 9, "seed": 3760272835, "raw": "심 과장님이 장갑이 아홉 켤레 있어.", "text": "심 과장님이 장갑이 아홉 켤레 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_140", "n": 2, "attempt": 0, "seed": 70696547, "raw": "서아는 장갑 열여섯 켤레를 보관하고 있어.", "text": "서아는 장갑 열여섯 켤레를 보관하고 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_140", "n": 3, "attempt": 0, "seed": 1071550099, "raw": "동훈 씨는 장갑이 네 켤레 가지고 있어.", "text": "동훈 씨는 장갑이 네 켤레 가지고 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_140", "n": 4, "attempt": 0, "seed": 629020784, "raw": "그다음에 동훈 씨가 심 과장님이한테 장갑 두 켤레를 넘겼어.", "text": "그다음에 동훈 씨가 심 과장님이한테 장갑 두 켤레를 넘겼어.", "ok": false, "reason": "glued:심 과장님이한테"}
+{"scenario": "s4_ko_b_140", "n": 4, "attempt": 1, "seed": 1611824325, "raw": "그런 후에 (사실). 동훈 씨가 심 과장한테서 장갑 두 켤레를 넘겼어.", "text": "그런 후에 (사실). 동훈 씨가 심 과장한테서 장갑 두 켤레를 넘겼어.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_140", "n": 4, "attempt": 2, "seed": 388523417, "raw": "그다음에 동훈 씨가 심 과장한테서 장갑 두 켤레를 넘겼어.", "text": "그다음에 동훈 씨가 심 과장한테서 장갑 두 켤레를 넘겼어.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_140", "n": 4, "attempt": 3, "seed": 3958264874, "raw": "그런 후에 그러고 나서 동훈 씨가 심 과장에게서 장갑 두 켤레를 넘겼어.", "text": "그런 후에 그러고 나서 동훈 씨가 심 과장에게서 장갑 두 켤레를 넘겼어.", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_140", "n": 4, "attempt": 4, "seed": 1256211086, "raw": "그다음에 동훈 씨가 심 과장님이한테 장갑 두 켤레를 넘겼어.", "text": "그다음에 동훈 씨가 심 과장님이한테 장갑 두 켤레를 넘겼어.", "ok": false, "reason": "glued:심 과장님이한테"}
+{"scenario": "s4_ko_b_140", "n": 4, "attempt": 5, "seed": 429129316, "raw": "그런 다음에 (사실). 동훈이가 심 과장한테서 장갑 두 켤레를 넘겼어.", "text": "그런 다음에 (사실). 동훈이가 심 과장한테서 장갑 두 켤레를 넘겼어.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_140", "n": 4, "attempt": 6, "seed": 2674053473, "raw": "그다음에 동훈 씨가 심 과장님한테 장갑 두 켤레를 넘겼어. 그러고 나서", "text": "그다음에 동훈 씨가 심 과장님한테 장갑 두 켤레를 넘겼어. 그러고 나서", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_140", "n": 5, "attempt": 0, "seed": 2263567382, "raw": "동훈이는 지금 장갑을 몇 켤레 가지고 있어?", "text": "동훈이는 지금 장갑을 몇 켤레 가지고 있어?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_140", "n": 6, "attempt": 0, "seed": 2947645175, "raw": "서아는 장갑을 몇 개 가지고 있어?", "text": "서아는 장갑을 몇 개 가지고 있어?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_140", "n": 7, "attempt": 0, "seed": 238425322, "raw": "제 말은 동훈 씨야.", "text": "제 말은 동훈 씨야.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_140", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 72.9, "peak_mb": 4799}
+{"scenario": "s4_ko_b_143", "n": 1, "attempt": 0, "seed": 26123441, "raw": "은우는 복숭아 열다섯 개가 있어요. 도윤 씨는 복숭아 열 개가 있어요.", "text": "은우는 복숭아 열다섯 개가 있어요. 도윤 씨는 복숭아 열 개가 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_143", "n": 2, "attempt": 0, "seed": 277526656, "raw": "복숭아 일곱 개는 저가 맡고 있어요.", "text": "복숭아 일곱 개는 저가 맡고 있어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_143", "n": 2, "attempt": 1, "seed": 1159055609, "raw": "복숭아 일곱 개는 제가 맡고 있어요.", "text": "복숭아 일곱 개는 제가 맡고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_143", "n": 3, "attempt": 0, "seed": 3005476621, "raw": "제 룸메이트는 복숭아가 네 개 보관하고 있어요.", "text": "제 룸메이트는 복숭아가 네 개 보관하고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_143", "n": 4, "attempt": 0, "seed": 2238762659, "raw": "도윤 씨가 저한테 복숭아 네 개를 넘겼어요.", "text": "도윤 씨가 저한테 복숭아 네 개를 넘겼어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_143", "n": 5, "attempt": 0, "seed": 2839501875, "raw": "저는 복숭아가 몇 개 가지고 있어요?", "text": "저는 복숭아가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_143", "n": 5, "attempt": 1, "seed": 560203708, "raw": "저는 복숭아가 몇 개 있어요?", "text": "저는 복숭아가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_143", "n": 5, "attempt": 2, "seed": 3137770097, "raw": "저가 지금 복숭아가 몇 개 가지고 있어요?", "text": "저가 지금 복숭아가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_143", "n": 5, "attempt": 3, "seed": 2847620402, "raw": "저는 복숭아가 몇 개 가지고 있어요?", "text": "저는 복숭아가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_143", "n": 5, "attempt": 4, "seed": 3268884015, "raw": "저는 복숭아가 몇 개 가지고 있어요?", "text": "저는 복숭아가 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_143", "n": 5, "attempt": 5, "seed": 1029642238, "raw": "저는 복숭아가 몇 개 남아 있어요?", "text": "저는 복숭아가 몇 개 남아 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_143", "n": 6, "attempt": 0, "seed": 1134345904, "raw": "도윤 씨한테 복숭아가 지금 몇 개 있어요?", "text": "도윤 씨한테 복숭아가 지금 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_143", "n": 7, "attempt": 0, "seed": 1902093293, "raw": "아, 은우요.", "text": "아, 은우요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_143", "n": 8, "attempt": 0, "seed": 3110301123, "raw": "도윤씨와 제 룸메이트가 합쳐서 복숭아가 몇 개 있어요?", "text": "도윤씨와 제 룸메이트가 합쳐서 복숭아가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_143", "n": 9, "attempt": 0, "seed": 3432090025, "raw": "도윤Sir가 지금 복숭아가 그만큼 있어요?", "text": "도윤Sir가 지금 복숭아가 그만큼 있어요?", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_143", "n": 9, "attempt": 1, "seed": 787293993, "raw": "도윤님이 지금 복숭아가 몇 개 가지고 있는지요?", "text": "도윤님이 지금 복숭아가 몇 개 가지고 있는지요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_143", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 51.1, "peak_mb": 4799}
+{"scenario": "s4_ko_b_145", "n": 1, "attempt": 0, "seed": 458770795, "raw": "제 선배 채원은 휴지가 세 묶음 들고 있습니다.", "text": "제 선배 채원은 휴지가 세 묶음 들고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_145", "n": 2, "attempt": 0, "seed": 3032516205, "raw": "윤서도 휴지가 좀 있습니다. 세어 보니 열여섯 묶음입니다.", "text": "윤서도 휴지가 좀 있습니다. 세어 보니 열여섯 묶음입니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_145", "n": 3, "attempt": 0, "seed": 3998542977, "raw": "윤서가 채원한테 휴지 세 묶음을 넘겼습니다.", "text": "윤서가 채원한테 휴지 세 묶음을 넘겼습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_145", "n": 4, "attempt": 0, "seed": 4030554887, "raw": "윤서는 지금 휴지가 몇 개 있습니까?", "text": "윤서는 지금 휴지가 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_145", "n": 5, "attempt": 0, "seed": 690411592, "raw": "윤서가 채원한테 휴지 다섯 묶음이 보내졌습니다.", "text": "윤서가 채원한테 휴지 다섯 묶음이 보내졌습니다.", "ok": false, "reason": "counted_object_as_subject"}
+{"scenario": "s4_ko_b_145", "n": 5, "attempt": 1, "seed": 3056745233, "raw": "윤서가 채원에게서 휴지 다섯 묶음을 보내주었습니다.", "text": "윤서가 채원에게서 휴지 다섯 묶음을 보내주었습니다.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_145", "n": 5, "attempt": 2, "seed": 3578827189, "raw": "윤서가 채원한테 휴지 다섯 묶음을 보냈습니다.", "text": "윤서가 채원한테 휴지 다섯 묶음을 보냈습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_145", "n": 6, "attempt": 0, "seed": 1709052991, "raw": "윤서는 지금 휴지가 몇 묶음 있습니까?", "text": "윤서는 지금 휴지가 몇 묶음 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_145", "n": 7, "attempt": 0, "seed": 1011234577, "raw": "둘이 합쳐서 휴지가 모두 몇 묶음입니까?", "text": "둘이 합쳐서 휴지가 모두 몇 묶음입니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_145", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 31.6, "peak_mb": 4799}
+{"scenario": "s4_ko_b_146", "n": 1, "attempt": 0, "seed": 3810112461, "raw": "계산원 현우 씨가 주전자 열네 개가 있습니다.", "text": "계산원 현우 씨가 주전자 열네 개가 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_146", "n": 2, "attempt": 0, "seed": 3485847599, "raw": "저는 열여섯 개의 주전자를 가지고 있습니다.", "text": "저는 열여섯 개의 주전자를 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_146", "n": 3, "attempt": 0, "seed": 791933159, "raw": "현우 씨한테는 저는 주전자 두 개를 건넸습니다; 같은 주전자 두 개를 건嗫\n<|im_start|><|im_start|>user\n续写：\n_fact._ 주는 쪽: 저 / 받는 쪽: 현우 씨 / 물건: 주전자 2개, 고유어로 두 개 / 동사: 건네다 (지난 일, 과거형: 건넸", "text": "현우 씨한테는 저는 주전자 두 개를 건넸습니다; 같은 주전자 두 개를 건嗫\n<|im_start|><|im_start|>user\n续写：\n_fact._ 주는 쪽: 저 / 받는 쪽: 현우 씨 / 물건: 주전자 2개, 고유어로 두 개 / 동사: 건네다 (지난 일, 과거형: 건넸", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_146", "n": 3, "attempt": 1, "seed": 868310669, "raw": "현우 씨한테는 저가 주전자 두 개를 건네주었습니다; 같은 주전자 두 개를 건네주었습니다.", "text": "현우 씨한테는 저가 주전자 두 개를 건네주었습니다; 같은 주전자 두 개를 건네주었습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_146", "n": 3, "attempt": 2, "seed": 1326892899, "raw": "현우 씨한테는 저는 주전자 두 개를 건Nguồn습니다.", "text": "현우 씨한테는 저는 주전자 두 개를 건Nguồn습니다.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_146", "n": 3, "attempt": 3, "seed": 4281455459, "raw": "현우 씨한테는 제가 주전자 두 개를 건네주었습니다.", "text": "현우 씨한테는 제가 주전자 두 개를 건네주었습니다.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_146", "n": 3, "attempt": 4, "seed": 3617496384, "raw": "현우 씨한테는 저는 주전자 두 개를 건넸습니다; 같은 주전자 두 개를 건嗫\n<|im_start|>用户提供的信息：\nUser: 计算员玄宇先生有十四个水壶。\nUser: 我有十六个水壶。\n\n接下来的信息：\n事实上. 给出方: 我 / 接受方: 玄宇 / 物品: 水壶 2个", "text": "현우 씨한테는 저는 주전자 두 개를 건넸습니다; 같은 주전자 두 개를 건嗫\n<|im_start|>用户提供的信息：\nUser: 计算员玄宇先生有十四个水壶。\nUser: 我有十六个水壶。\n\n接下来的信息：\n事实上. 给出方: 我 / 接受方: 玄宇 / 物品: 水壶 2个", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_146", "n": 3, "attempt": 5, "seed": 3962189290, "raw": "현우 씨한테는 제가 주전자 두 개를 건넸습니다; 같은 주전자 두 개를 건嗫\n<|im_start|>用户提供的信息中包含了一个中文词“建”，这是不符合规则的。根据规则，不应有任何中文字符。以下是修正后的消息：\n\n현우 씨한테는 저가 주전자 두 개를 건네주었습니다; 같은 주전자 두 개를 건嗫\n<|im_start|><|im_start|>user\n继续", "text": "현우 씨한테는 제가 주전자 두 개를 건넸습니다; 같은 주전자 두 개를 건嗫\n<|im_start|>用户提供的信息中包含了一个中文词“建”，这是不符合规则的。根据规则，不应有任何中文字符。以下是修正后的消息：\n\n현우 씨한테는 저가 주전자 두 개를 건네주었습니다; 같은 주전자 두 개를 건嗫\n<|im_start|><|im_start|>user\n继续", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_146", "n": 3, "attempt": 6, "seed": 1089207643, "raw": "현우 씨한테는 저가 주전자 두 개를 건네주었습니다.", "text": "현우 씨한테는 저가 주전자 두 개를 건네주었습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_146", "n": 3, "attempt": 7, "seed": 3156953082, "raw": "현우 씨한테는 저는 주전자 두 개를 건네주었습니다; 같은 주전자 두 개를 건네주었습니다.", "text": "현우 씨한테는 저는 주전자 두 개를 건네주었습니다; 같은 주전자 두 개를 건네주었습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_146", "n": 4, "attempt": 0, "seed": 12723110, "raw": "저는 주전자를 몇 개 가지고 있습니까?", "text": "저는 주전자를 몇 개 가지고 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_146", "n": 5, "attempt": 0, "seed": 809332301, "raw": "현우 씨가 행사에 주전자 한 개를 썼습니다.", "text": "현우 씨가 행사에 주전자 한 개를 썼습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_146", "n": 6, "attempt": 0, "seed": 1815683859, "raw": "현우씨한테 주전자가 지금 몇 개 있습니까?", "text": "현우씨한테 주전자가 지금 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_146", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": null, "seconds": 67.1, "peak_mb": 4799}
+{"scenario": "s4_ko_b_147", "n": 1, "attempt": 0, "seed": 4220431084, "raw": "로비에는 바구니가 몇 개 있습니다?", "text": "로비에는 바구니가 몇 개 있습니다?", "ok": false, "reason": "statement_is_question"}
+{"scenario": "s4_ko_b_147", "n": 1, "attempt": 1, "seed": 1059886448, "raw": "로비에 바구니가 있습니다.", "text": "로비에 바구니가 있습니다.", "ok": false, "reason": "cue:vague"}
+{"scenario": "s4_ko_b_147", "n": 1, "attempt": 2, "seed": 450204089, "raw": "로비에는 바구니가 몇 개 있습니다.", "text": "로비에는 바구니가 몇 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_147", "n": 2, "attempt": 0, "seed": 2435768024, "raw": "저는 바구니가 열 개 있습니다. 그리고 양동이도 좀 있습니다. 양동이의 개수는 몇 개입니까?", "text": "저는 바구니가 열 개 있습니다. 그리고 양동이도 좀 있습니다. 양동이의 개수는 몇 개입니까?", "ok": false, "reason": "question_with_preamble"}
+{"scenario": "s4_ko_b_147", "n": 2, "attempt": 1, "seed": 3192455653, "raw": "저는 바구니가 열 개 있고, 양동이도 좀 있습니다. 양동이는 몇 개입니까?", "text": "저는 바구니가 열 개 있고, 양동이도 좀 있습니다. 양동이는 몇 개입니까?", "ok": false, "reason": "question_with_preamble"}
+{"scenario": "s4_ko_b_147", "n": 2, "attempt": 2, "seed": 634505342, "raw": "저는 바구니가 열 개 있습니다. 그리고 양동이도 좀 있습니다.", "text": "저는 바구니가 열 개 있습니다. 그리고 양동이도 좀 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_147", "n": 3, "attempt": 0, "seed": 1617374815, "raw": "제 팀원은 바구니가 일곱 개 있고, 양동기도 좀 있습니다.", "text": "제 팀원은 바구니가 일곱 개 있고, 양동기도 좀 있습니다.", "ok": false, "reason": "missing_item2"}
+{"scenario": "s4_ko_b_147", "n": 3, "attempt": 1, "seed": 3693925909, "raw": "제 팀원은 바구니가 일곱 개 있고, 양동이도 좀 있습니다.", "text": "제 팀원은 바구니가 일곱 개 있고, 양동이도 좀 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_147", "n": 4, "attempt": 0, "seed": 4169682228, "raw": "로비에는 바구니가 세 개 있습니다.", "text": "로비에는 바구니가 세 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_147", "n": 5, "attempt": 0, "seed": 2295031029, "raw": "저는 지금 양동이가 몇 개 있습니다니까?", "text": "저는 지금 양동이가 몇 개 있습니다니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_147", "n": 6, "attempt": 0, "seed": 2328734081, "raw": "제 팀원한테 양동이가 지금 몇 개 있습니까?", "text": "제 팀원한테 양동이가 지금 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 0, "seed": 1571652272, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 1, "seed": 1500824694, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 2, "seed": 927357961, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 3, "seed": 1458052722, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 4, "seed": 3739583179, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 5, "seed": 333043596, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 6, "seed": 4268099344, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 7, "seed": 95785430, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 8, "seed": 2188436008, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "n": 7, "attempt": 9, "seed": 1537640522, "raw": "저가 로비에서 바구니 두 개를 가져갔습니다.", "text": "저가 로비에서 바구니 두 개를 가져갔습니다.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_147", "dialogue": false, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": 7, "seconds": 82.0, "peak_mb": 4799}
+{"scenario": "s4_ko_b_148", "n": 1, "attempt": 0, "seed": 4057537601, "raw": "민지는 우산이 네 개를 보관하고 있어요.", "text": "민지는 우산이 네 개를 보관하고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_148", "n": 2, "attempt": 0, "seed": 2201083384, "raw": "제 룸메이트 민준은 우산 열세 개가 있어요.", "text": "제 룸메이트 민준은 우산 열세 개가 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 0, "seed": 671021254, "raw": "우산 세 개를 민준이 민지한테 넘겼어요.", "text": "우산 세 개를 민준이 민지한테 넘겼어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 1, "seed": 2504255544, "raw": "우산 세 개를 민준이 민지한테 넘겼어요.", "text": "우산 세 개를 민준이 민지한테 넘겼어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 2, "seed": 815534060, "raw": "우산 세 개를 민준이 민지한테 넘겼어요.", "text": "우산 세 개를 민준이 민지한테 넘겼어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 3, "seed": 4241422233, "raw": "민준이가 민지한테 우산 세 개를 넘겼어요.", "text": "민준이가 민지한테 우산 세 개를 넘겼어요.", "ok": false, "reason": "cue:count_first"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 4, "seed": 842268224, "raw": "우산 세 개를 민준이 민지한테 넘겼어요.", "text": "우산 세 개를 민준이 민지한테 넘겼어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 5, "seed": 2539806712, "raw": "민준이가 민지한테 우산 세 개를 넘겼어요.", "text": "민준이가 민지한테 우산 세 개를 넘겼어요.", "ok": false, "reason": "cue:count_first"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 6, "seed": 3502248173, "raw": "우산 세 개를 민준이 민지한테 넘겼어요.", "text": "우산 세 개를 민준이 민지한테 넘겼어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 7, "seed": 3943802098, "raw": "민준이가 민지한테 우산 세 개를 넘겼어요.", "text": "민준이가 민지한테 우산 세 개를 넘겼어요.", "ok": false, "reason": "cue:count_first"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 8, "seed": 1009213192, "raw": "우산 세 개를 민준이 민지한테 넘겼어요. 같은 우산 세 개를 민지가 받아서 민지의 우산이 네 개가 되었어요.", "text": "우산 세 개를 민준이 민지한테 넘겼어요. 같은 우산 세 개를 민지가 받아서 민지의 우산이 네 개가 되었어요.", "ok": false, "reason": "extra_number:[4]"}
+{"scenario": "s4_ko_b_148", "n": 3, "attempt": 9, "seed": 3393476828, "raw": "우산 세 개를 민준이 민지한테 넘겼어요.", "text": "우산 세 개를 민준이 민지한테 넘겼어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_148", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 45.8, "peak_mb": 4799}
+{"scenario": "s4_ko_b_149", "n": 1, "attempt": 0, "seed": 2926227261, "raw": "채은씨는 복숭아가 열여섯 개 있습니다.", "text": "채은씨는 복숭아가 열여섯 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_149", "n": 2, "attempt": 0, "seed": 1140691965, "raw": "저는 복숭아 열두 개가 있습니다.", "text": "저는 복숭아 열두 개가 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 0, "seed": 212783740, "raw": "저가 채은씨한테서 복숭아 다섯 개를 보내드렸습니다.", "text": "저가 채은씨한테서 복숭아 다섯 개를 보내드렸습니다.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 1, "seed": 598921921, "raw": "저가 채은씨한테서 다섯 개의 복숭아를 보냈습니다.", "text": "저가 채은씨한테서 다섯 개의 복숭아를 보냈습니다.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 2, "seed": 627915863, "raw": "저가 채은씨한테서 다섯 개의 복숭아를 보냈습니다.", "text": "저가 채은씨한테서 다섯 개의 복숭아를 보냈습니다.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 3, "seed": 3129691908, "raw": "저가 채은씨한테서 복숭아 다섯 개를 보냈습니다.", "text": "저가 채은씨한테서 복숭아 다섯 개를 보냈습니다.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 4, "seed": 1414306698, "raw": "저는 채은씨한테서 다섯 개의 복숭아를 보냈습니다.", "text": "저는 채은씨한테서 다섯 개의 복숭아를 보냈습니다.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 5, "seed": 505485304, "raw": "저가 채은씨한테서 복숭아 다섯 개를 보냈습니다.", "text": "저가 채은씨한테서 복숭아 다섯 개를 보냈습니다.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 6, "seed": 2778939222, "raw": "저가 채은씨한테서 복숭아 다섯 개를 보냈습니다.", "text": "저가 채은씨한테서 복숭아 다섯 개를 보냈습니다.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 7, "seed": 2939661437, "raw": "저가 채은씨한테서 복숭아 다섯 개를 보냇다고 해요.", "text": "저가 채은씨한테서 복숭아 다섯 개를 보냇다고 해요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 8, "seed": 1898312351, "raw": "저는 채은씨한테서 복숭아 다섯 개를 보냈습니다.", "text": "저는 채은씨한테서 복숭아 다섯 개를 보냈습니다.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_149", "n": 3, "attempt": 9, "seed": 1383933120, "raw": "저가 채은씨한테서 과일 같은 복숭아 다섯 개를 보냈습니다.", "text": "저가 채은씨한테서 과일 같은 복숭아 다섯 개를 보냈습니다.", "ok": false, "reason": "cue:adv_apparently"}
+{"scenario": "s4_ko_b_149", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 44.0, "peak_mb": 4799}
+{"scenario": "s4_ko_b_153", "n": 1, "attempt": 0, "seed": 1600430669, "raw": "저는 잡지가 열여섯 권 있고, 그리고 장갑도 좀 있어요.", "text": "저는 잡지가 열여섯 권 있고, 그리고 장갑도 좀 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_153", "n": 2, "attempt": 0, "seed": 680364503, "raw": "다인 씨는 잡지만 여섯 권 있어요.", "text": "다인 씨는 잡지만 여섯 권 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_153", "n": 3, "attempt": 0, "seed": 481343572, "raw": "제 팀원은 잡지가 열네 권 있어요. 두 문장: 먼저 좀 있다고만, 다음 문장에서 수는 세어 보니 열네 권네요.", "text": "제 팀원은 잡지가 열네 권 있어요. 두 문장: 먼저 좀 있다고만, 다음 문장에서 수는 세어 보니 열네 권네요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_153", "n": 4, "attempt": 0, "seed": 3225855280, "raw": "다인 씨가 제 팀원한테 잡지 네 권을 건嗫给出了中文回答，这不符合规则。根据规则，回答不应该包含中文。正确的回答应该是：\n\n다인 씨가 제 팀원한테 잡지 네 권을 건嗫给出了中文回答，这不符合规则。根据规则，回答不应该包含中文。正确的回答应该是：\n\n다인 씨가 제 �", "text": "다인 씨가 제 팀원한테 잡지 네 권을 건嗫给出了中文回答，这不符合规则。根据规则，回答不应该包含中文。正确的回答应该是：\n\n다인 씨가 제 팀원한테 잡지 네 권을 건嗫给出了中文回答，这不符合规则。根据规则，回答不应该包含中文。正确的回答应该是：\n\n다인 씨가 제 �", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_153", "n": 4, "attempt": 1, "seed": 2230272273, "raw": "다인 씨가 제 팀원한테 잡지 네 권을 건嗫요.", "text": "다인 씨가 제 팀원한테 잡지 네 권을 건嗫요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_153", "n": 4, "attempt": 2, "seed": 757241277, "raw": "다인 씨가 제 팀원한테 잡지 네 권을 건넸어요.", "text": "다인 씨가 제 팀원한테 잡지 네 권을 건넸어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_153", "n": 5, "attempt": 0, "seed": 3537796252, "raw": "다인 씨는 잡지를 몇 권 가지고 있어요?", "text": "다인 씨는 잡지를 몇 권 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_153", "n": 6, "attempt": 0, "seed": 667920708, "raw": "다인Sir와 제 팀원이 합쳐서 잡지가 몇 권 가지고 있는지요?", "text": "다인Sir와 제 팀원이 합쳐서 잡지가 몇 권 가지고 있는지요?", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_153", "n": 6, "attempt": 1, "seed": 2587553794, "raw": "다인씨와 제 팀원이 합쳐서 잡지가 몇 권 가지고 있는지요?", "text": "다인씨와 제 팀원이 합쳐서 잡지가 몇 권 가지고 있는지요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_153", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": null, "seconds": 31.8, "peak_mb": 4799}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 0, "seed": 492090358, "raw": "민서는 배낭 열두 개를 가지고 있습니다. 세영은 배낭 아홉 개를 가지고 있습니다. 민서가 세영한테서 배낭 세 개를 빌려왔습니다. 민서가 지금 배낭 몇 개를 가지고 있는지 물어볼까요?", "text": "민서는 배낭 열두 개를 가지고 있습니다. 세영은 배낭 아홉 개를 가지고 있습니다. 민서가 세영한테서 배낭 세 개를 빌려왔습니다. 민서가 지금 배낭 몇 개를 가지고 있는지 물어볼까요?", "ok": false, "reason": "question_with_preamble"}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 1, "seed": 139085964, "raw": "민서가 세영한테 배낭 열두 개를 주었습니다.", "text": "민서가 세영한테 배낭 열두 개를 주었습니다.", "ok": false, "reason": "missing_number:9"}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 2, "seed": 386486156, "raw": "민서가 세영한테 배낭 열두 개를 주었습니다.", "text": "민서가 세영한테 배낭 열두 개를 주었습니다.", "ok": false, "reason": "missing_number:9"}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 3, "seed": 1609267320, "raw": "민서가 세영한테 배낭 열두 개를 주었습니다.", "text": "민서가 세영한테 배낭 열두 개를 주었습니다.", "ok": false, "reason": "missing_number:9"}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 4, "seed": 66504620, "raw": "민서가 세영한테 배낭 열두 개를 주었습니다.", "text": "민서가 세영한테 배낭 열두 개를 주었습니다.", "ok": false, "reason": "missing_number:9"}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 5, "seed": 2608564721, "raw": "민서가 세영한테 배낭 열두 개를 주었습니다.", "text": "민서가 세영한테 배낭 열두 개를 주었습니다.", "ok": false, "reason": "missing_number:9"}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 6, "seed": 1170341274, "raw": "민서가 세영한테 배낭 열두 개를 주었습니다.", "text": "민서가 세영한테 배낭 열두 개를 주었습니다.", "ok": false, "reason": "missing_number:9"}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 7, "seed": 477499126, "raw": "민서가 세영한테 배낭 열두 개를 주었습니다.", "text": "민서가 세영한테 배낭 열두 개를 주었습니다.", "ok": false, "reason": "missing_number:9"}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 8, "seed": 3910805581, "raw": "민서가 세영한테 배낭 열두 개를 주었습니다.", "text": "민서가 세영한테 배낭 열두 개를 주었습니다.", "ok": false, "reason": "missing_number:9"}
+{"scenario": "s4_ko_b_154", "n": 1, "attempt": 9, "seed": 3504873819, "raw": "민서는 배낭 열두 개를 가지고 있습니다. 세영은 배낭 아홉 개를 가지고 있습니다. 민서가 세영한테서 배낭 세 개를 빌려왔습니다.", "text": "민서는 배낭 열두 개를 가지고 있습니다. 세영은 배낭 아홉 개를 가지고 있습니다. 민서가 세영한테서 배낭 세 개를 빌려왔습니다.", "ok": false, "reason": "too_many_sentences"}
+{"scenario": "s4_ko_b_154", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 31.5, "peak_mb": 4799}

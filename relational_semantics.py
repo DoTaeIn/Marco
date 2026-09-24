@@ -595,6 +595,17 @@ class RelationalParser:
             return literal, None
         return text, {"id": "declared-word-order-v1", "forms": applied, "from": literal}
 
+    def _only_dropped_words(self, literal):
+        """True when every word of ``literal`` is inside a phrase the pack's phrase variants read
+        as nothing (말바꿈 with an empty ``to``)."""
+        flags = re.IGNORECASE if self.data.get("ignore_case") else 0
+        rest = literal
+        for row in sorted(self.phrase_variants, key=lambda r: len(r.get("from") or ""), reverse=True):
+            source = row.get("from")
+            if source and row.get("to", "") == "":
+                rest = re.sub(r"(?<![\w'])%s(?![\w'])" % re.escape(source), " ", rest, flags=flags)
+        return bool(literal.strip()) and not re.sub(r"[\s,.!?;:]+", "", rest)
+
     def _declared_verb_words(self):
         """Every form the inflection grammar computes for the verbs the pack reads (its examples'
         event verbs and its same-frame stems), lower-cased."""
@@ -2687,10 +2698,18 @@ class RelationalParser:
         bare = whole
         for abbreviation in self.clause_grammar.get("abbreviations", []):
             bare = bare.replace(abbreviation, "")
-        read_whole = bool(whole) and "," in whole and not any(ch in bare for ch in marks) and bool(meanings(whole))
+        read_whole = bool(whole) and not any(ch in bare for ch in marks) and bool(meanings(whole))
+        # A connective splits a sentence read whole only when no example read it with that
+        # connective inside (Haru has 18 marbles and some pears is one example).
+        joined_whole = read_whole and any(
+            any((" %s " % marker) in " %s " % self.data["examples"][index]["text"]
+                for marker in self.clause_grammar.get("after_clause_markers", []))
+            for index in matched_examples.get(whole, {}).values())
 
         def complete_prefix(literal):
-            if read_whole and (literal + ",") in text:
+            if read_whole and "," in whole and (literal + ",") in text:
+                return False
+            if joined_whole and not (literal + ",") in text:
                 return False
             if any(delimiter in literal for delimiter in self.definition_body_delimiters):
                 # A definition body may itself contain a conditional or a
@@ -2814,6 +2833,10 @@ class RelationalParser:
                         meaning["hypothetical"] = True
                     clauses.append(([meaning], evidence))
                     continue
+            if not unique and self._only_dropped_words(evidence["text"]):
+                # A clause of words the pack's phrase variants leave out and nothing else (a
+                # trailing "actually", "by the way") says nothing: it is not an unread clause.
+                continue
             if not unique:
                 diagnostics.append({"reason": "unrecognized_clause", "evidence": evidence,
                                     "candidates": []})

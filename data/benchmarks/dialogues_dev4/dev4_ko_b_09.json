@@ -1,0 +1,369 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_09",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_016",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "korean_register",
+   "referent_repairs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:count_first",
+   "holders:first_person",
+   "question_forms:q_hold",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:hand_over"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "다인은 지금 숟가락 열세 개를 들고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "다인",
+      "item": "숟가락",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "다인",
+      "item": "숟가락",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "승우는 지금 숟가락 열한 개를 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "승우",
+      "item": "숟가락",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "승우",
+      "item": "숟가락",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제가 숟가락 열여섯 개 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "숟가락",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "숟가락",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "숟가락 세 개를 다인이 승우한테 건넸어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "다인",
+      "to": "승우",
+      "item": "숟가락",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "다인",
+      "item": "숟가락",
+      "quantity": 10
+     },
+     {
+      "entity": "승우",
+      "item": "숟가락",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "다인은 지금 숟가락이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "다인",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "숟가락"
+   }
+  },
+  {
+   "n": 6,
+   "say": "승우는 숟가락을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "승우",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "숟가락"
+   }
+  },
+  {
+   "n": 7,
+   "say": "세 개의 숟가락을 다인이 승우한테 건넸어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "다인",
+      "to": "승우",
+      "item": "숟가락",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "다인",
+      "item": "숟가락",
+      "quantity": 7
+     },
+     {
+      "entity": "승우",
+      "item": "숟가락",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "승우가 지금 숟가락이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "승우",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "숟가락"
+   }
+  },
+  {
+   "n": 9,
+   "say": "그분은 지금 숟가락이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "승우",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "숟가락"
+   }
+  },
+  {
+   "n": 10,
+   "say": "승우 말이에요.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "승우",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      7
+     ]
+    },
+    "item": "숟가락"
+   }
+  }
+ ]
+}
