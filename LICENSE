@@ -1,3 +1,71 @@
+MARCO Engine License, Version 1.0 (2026-09-24)
+
+Copyright 2026 DoTaeIn
+
+This software is licensed under the Apache License, Version 2.0, reproduced
+in full below, together with the Additional Condition set out here. The
+Additional Condition is part of this license. Where it conflicts with the
+Apache License, the Additional Condition governs. Because of the Additional
+Condition this license is not the Apache License, Version 2.0 itself and must
+not be described as the Apache License alone.
+
+Copies of this software received under the Apache License, Version 2.0 alone,
+as published in this repository before 2026-09-24, remain under that license.
+This license applies to this version and every later version.
+
+The knowledge graph files are licensed separately; see LICENSE-GRAPHS. They
+are not subject to the Additional Condition.
+
+                          ADDITIONAL CONDITION
+                          Visible Attribution
+
+1. Definitions.
+
+   "Engine" means this software: the MARCO reasoning, dialogue, language,
+   learning, storage and benchmarking code, and builds made from it, whether
+   or not modified.
+
+   "User-Facing Product" means any application, service, device or interface
+   that makes the Engine's functionality available to persons other than the
+   people who develop or operate it, including over a network.
+
+   "Attribution" means the following text, with the link kept:
+
+      Powered by MARCO — Created by DoTaeIn,
+      Original project: https://github.com/DoTaeIn/Marco
+
+2. Requirement. If You distribute, deploy or operate a User-Facing Product,
+   You must display the Attribution where an end user can find it without
+   special effort, in at least one of these places: an about, credits,
+   settings or help screen; the documentation or web page that describes the
+   product; a footer, splash screen or first-run message; or, for a text-only
+   or voice-only interface, the reply to a request for credits or version
+   information. The Attribution must not be removed, hidden, altered or made
+   illegible. Its size and language may be adapted, provided the three parts,
+   the name MARCO, the name DoTaeIn and the project URL, remain and the URL is
+   given as a link where links can be shown and as text otherwise.
+
+3. What does not trigger the Requirement. Personal use; research, evaluation,
+   benchmarking and the publication of their results; development, testing
+   and internal tools; redistribution of the source code or of builds as
+   such, where Section 4(d) of the Apache License (the NOTICE file) applies
+   instead; and software, tools or services that do not expose the Engine's
+   functionality to end users.
+
+4. No other restriction. Apart from the Requirement, every permission of the
+   Apache License remains: use, modification, redistribution and commercial
+   use, without fee.
+
+5. White-label license. A separate license that removes the Requirement may
+   be obtained from the copyright holder. Ask through the project repository.
+
+6. Modified versions. A modified version of the Engine remains subject to
+   this license. You may license your own modifications under other terms as
+   the Apache License allows, but the Attribution stays required for any
+   User-Facing Product that contains the Engine.
+
+                    ------------------------------------
+
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/

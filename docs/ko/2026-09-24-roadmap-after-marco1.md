@@ -39,7 +39,7 @@ ledger core, which is a new package with no engine edits).
 | T1 + 12 wk on | **N-sensor neural sensors behind the boundary**: detector / OCR / speech outputs enter as unverified observations | `soma/` adapters | V1, the §11 rules as tests | a test that a detector claim never becomes a fact without a rule |
 | months 4 to 12 | **G6–G7 knowledge-gap research loop**, `user_goals[]` vs `generated_subgoals[]` (already in the roadmap) | `marco/cognition/` | POLO P1, G4/G5 | unchanged from the integrated roadmap |
 | with O0, A1', V1, D-lib, M1–M3 | **Trace extensions** (note §24–§31): observation events with source provenance in O0; SOMA perception trace with V1; appraisal and mental-state scope with A1'; budget trace with D-lib; goal and subgoal branches with G6–G7; the ledger stored and consolidated inside the `.mco` with M1–M3 | each item's package | L1 | each item's done-when includes its trace; no item ships a label without a derivation |
-| unscheduled | **Licensing** (§26): attribution requirement for user-facing products, separate white-label licence | repository | legal review | owner's decision after legal review |
+| done 2026-09-24 | **Licensing** (§26): `LICENSE` is now the MARCO Engine License 1.0 (Apache 2.0 + visible attribution in user-facing products, white-label on request), graphs CC BY 4.0 in `LICENSE-GRAPHS`, README and release notes updated | repository | owner's call, brought forward because a fork appeared | done; a legal review of the wording is still open, owner's item |
 
 Ordering rule: O0 first, because every later item writes into it. V1 and A1'
 can run in parallel: different packages, both reading O0. Nothing here runs
