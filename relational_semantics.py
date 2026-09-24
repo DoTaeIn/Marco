@@ -758,7 +758,8 @@ class RelationalParser:
                     text, applied = new, applied + ["speaker"]
             inverted = speaker.get("inverted") or {}
             for verb, agreed in inverted.items():
-                new = re.sub(r"(?<![\w'])%s %s(?![\w'])" % (re.escape(verb), re.escape(key)),
+                # (not before a coordinated subject: do I and Vera have is plural and stays as it is)
+                new = re.sub(r"(?<![\w'])%s %s(?![\w'])(?! (?:and|or|nor)(?![\w]))" % (re.escape(verb), re.escape(key)),
                              "%s %s" % (agreed, key), text, flags=flags)
                 if new != text:
                     text, applied = new, applied + ["agreement"]
@@ -1572,10 +1573,18 @@ class RelationalParser:
         consonant-final stem is removed; without a declared suffix nothing is.
         """
         from hangul import batchim
-        suffix = self.name_suffix
-        if not suffix or not isinstance(subject, str) or not subject.strip():
+        if not isinstance(subject, str) or not subject.strip():
             return subject
         words = subject.split(" ")
+        # ``내 사탕``: the speaker's own thing (가진쪽꼴.self_singular_possessives before a word that is no relation noun)
+        forms = self.holder_forms or {}
+        if (len(words) >= 2 and words[0] in (forms.get("self_singular_possessives") or [])
+                and words[1] not in (forms.get("relation_nouns") or []) and self.speaker_placeholder):
+            words[0] = self.speaker_placeholder
+            subject = " ".join(words)
+        suffix = self.name_suffix
+        if not suffix:
+            return subject
         first = words[0]
         if first.endswith(suffix) and len(first) > len(suffix) and batchim(first[:-len(suffix)]):
             words[0] = first[:-len(suffix)]
@@ -2321,6 +2330,11 @@ class RelationalParser:
                     if any(self._inflected_boundary(word) for name, value in slots.items()
                            if name not in example.get("allow_inflected_slots", [])
                            for word in value.split()):
+                        continue
+                    # The thing counted never holds a count in digits (``Claire 7 pans``): the amount leaked
+                    # into the thing's name, so the reading is not taken (G5).
+                    if isinstance(slots.get("item"), str) and re.search(r"(?<![\w])\d+(?![\w])", slots["item"]) \
+                            and not str(example["slots"].get("item", "")).isdecimal():
                         continue
                     for name, annotated in example["slots"].items():
                         if annotated.isdecimal():

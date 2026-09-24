@@ -471,6 +471,44 @@
     ]
    },
    {
+    "text": "the only thing Haru has is marbles, 18 of them",
+    "_about": "G5: the only-count said as the only thing the holder has, the count after the thing.",
+    "slots": {
+     "owner": "Haru",
+     "item": "marbles",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "all Haru has is 18 marbles",
+    "_about": "G5: the only-count with the count before the thing.",
+    "slots": {
+     "owner": "Haru",
+     "item": "marbles",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
     "text": "Haru has some marbles",
     "slots": {
      "owner": "Haru",
@@ -524,6 +562,49 @@
       ],
       "count_unknown",
       "some"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "some marbles are in the oak cupboard",
+    "_about": "G5: a count not known yet, the things first and the place after them, as the counted form '18 marbles are in the oak cupboard' says it.",
+    "slots": {
+     "item": "marbles",
+     "owner": "oak cupboard"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count_unknown",
+      "some"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "the only thing the oak cupboard has is marbles, 18 of them",
+    "_about": "G5: the only-count of a place.",
+    "slots": {
+     "owner": "oak cupboard",
+     "item": "marbles",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
      ]
     },
     "place": [
@@ -1758,6 +1839,38 @@
      ]
     },
     "word_slots": [
+     "a",
+     "b"
+    ]
+   },
+   {
+    "text": "how many marbles do the oak cupboard and the red trunk have together",
+    "_about": "G5: the total of two places, each said with its article.",
+    "slots": {
+     "item": "marbles",
+     "a": "oak cupboard",
+     "b": "red trunk"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": [
+         "$a",
+         "$b"
+        ],
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    },
+    "place": [
      "a",
      "b"
     ]
@@ -4116,6 +4229,62 @@
    "to": ""
   },
   {
+   "from": "only",
+   "to": ""
+  },
+  {
+   "from": "just",
+   "to": ""
+  },
+  {
+   "from": "merely",
+   "to": ""
+  },
+  {
+   "from": ", nothing else",
+   "to": ""
+  },
+  {
+   "from": ", and nothing else",
+   "to": ""
+  },
+  {
+   "from": ", that's all",
+   "to": ""
+  },
+  {
+   "from": ", and that's all",
+   "to": ""
+  },
+  {
+   "from": "and nothing else",
+   "to": ""
+  },
+  {
+   "from": "nothing else",
+   "to": ""
+  },
+  {
+   "from": "and that's all",
+   "to": ""
+  },
+  {
+   "from": "that's all",
+   "to": ""
+  },
+  {
+   "from": "and that is all",
+   "to": ""
+  },
+  {
+   "from": "that is all",
+   "to": ""
+  },
+  {
+   "from": "at the",
+   "to": "in the"
+  },
+  {
    "from": "at the start",
    "to": ""
   },
@@ -4356,7 +4525,7 @@
    "to": "some"
   }
  ],
- "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many). Being responsible for a count is having it (is/was responsible for = has/had). The discourse adverbs that place or source a statement but change no role are left out (after that, afterwards, apparently; too, also; by the way, to be exact, I just counted, not sure how many), and 'at all' after a zero. 'the same' before the counted noun names the kind already said and adds nothing (the same 4 pillows = 4 pillows). The negated possessive with 'any' or 'a single' is a zero count: doesn't have any / hasn't got any / doesn't have a single = has no (don't, haven't: have no). The indefinite article before a counted noun is the numeral one (got a fig = got 1 fig). The article is the numeral one only before a counted noun: the vague quantity idioms (a lot of, lots of, a few, a couple of, a bunch of, a handful of, a number of, a little, a bit of) say 'some', a count not known, and 'a total of' before a numeral adds nothing.",
+ "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many). Being responsible for a count is having it (is/was responsible for = has/had). The discourse adverbs that place or source a statement but change no role are left out (after that, afterwards, apparently; too, also; by the way, to be exact, I just counted, not sure how many), and 'at all' after a zero. 'the same' before the counted noun names the kind already said and adds nothing (the same 4 pillows = 4 pillows). The negated possessive with 'any' or 'a single' is a zero count: doesn't have any / hasn't got any / doesn't have a single = has no (don't, haven't: have no). The indefinite article before a counted noun is the numeral one (got a fig = got 1 fig). The article is the numeral one only before a counted noun: the vague quantity idioms (a lot of, lots of, a few, a couple of, a bunch of, a handful of, a number of, a little, a bit of) say 'some', a count not known, and 'a total of' before a numeral adds nothing. The restrictive adverbs of a count (only, just, merely: the closed class) and a closing ', nothing else' / ', that's all' add nothing to the count and are read without (G5); 'at the' before a place reads as 'in the': a place holds what is at it.",
  "이름답": {
   "heads": [
    "and what about",
@@ -4483,9 +4652,12 @@
   "without",
   "away",
   "back",
-  "than"
+  "than",
+  "and",
+  "or",
+  "nor"
  ],
- "_이름밖": "Words that are never part of a holder's or a thing's name in a reading: the English prepositions (all of them but 'of', which a partitive keeps: boxes of crayons; with 'than', so 'Ada has 2 more figs than Bo' is not read as a count of 'figs than Bo') and the adverbial particles away, back. A name that holds one swallowed a phrase the example does not have ('figs to Bo', 'figs at first'), so that reading is not taken.",
+ "_이름밖": "Words that are never part of a holder's or a thing's name in a reading: the English prepositions (all of them but 'of', which a partitive keeps: boxes of crayons; with 'than', so 'Ada has 2 more figs than Bo' is not read as a count of 'figs than Bo') and the adverbial particles away, back. A name that holds one swallowed a phrase the example does not have ('figs to Bo', 'figs at first'), so that reading is not taken. The coordinating conjunctions and, or, nor join two names and are part of neither (G5: 'my wife and Eliana' is two holders, not the relation 'wife and' before a name).",
  "가진쪽꼴": {
   "name": "[A-Z][a-z]+(?:-[A-Z][a-z]+)?",
   "possessives": [

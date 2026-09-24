@@ -345,6 +345,46 @@ def test_a_name_that_begins_like_the_first_person_is_a_name():
     assert rows[1]["status"] == "answered" and asserted_numbers(rows[1]["answer"]) == {4}
 
 
+# G5.3 batch 2: only-counts, places said with 'at', totals of the user, a relation or two places --------------
+def test_an_only_count_in_every_declared_form_is_the_count():
+    for text in ("Wren has just 13 kettles.", "Wren only has 13 kettles.", "Wren has just 13 kettles, nothing else.",
+                 "Wren only has 13 kettles, and that's all.", "The only thing Wren has is kettles, 13 of them.",
+                 "All Wren has is 13 kettles.", "Wren merely has 13 kettles."):
+        assert facts_of("english", text) == [("Wren kettles", "count", "13")], text
+    assert facts_of("english", "The only thing the attic room has is kettles, 13 of them.") == [
+        ("attic room kettles", "count", "13")]
+    assert facts_of("english", "I only have 4 kettles.") == [("I kettles", "count", "4")]
+
+
+def test_a_place_holds_what_is_at_it_and_a_vague_count_of_it_said_things_first():
+    assert facts_of("english", "There are 7 trays at the bike shop.") == [("bike shop trays", "count", "7")]
+    assert facts_of("english", "Some trays are in the bike shop.") == [("bike shop trays", "count_unknown", "some")]
+    _ctx, rows = play("english", ["There are 7 trays at the bike shop.", "How many trays are at the bike shop?"])
+    assert asserted_numbers(rows[1]["answer"]) == {7}
+
+
+def test_a_total_of_the_user_a_relation_or_two_places_is_asked_together():
+    _ctx, rows = play("english", ["I have 4 trays.", "Dr. Kell has 3 trays.", "My niece has 2 trays.",
+                                  "The bike shop has 5 trays.", "The boat shed has 6 trays.",
+                                  "How many trays do I and Dr. Kell have in total?",
+                                  "How many trays do my niece and Dr. Kell have in total?",
+                                  "How many trays do the bike shop and the boat shed have in total?"])
+    assert [asserted_numbers(r["answer"]) for r in rows[5:]] == [{7}, {5}, {11}]
+
+
+def test_a_count_in_digits_is_never_part_of_the_thing_counted():
+    assert not any(any(ch.isdigit() for ch in holder) for holder, _p, _n in
+                   facts_of("english", "Wren only has 7 kettles, 7 of them."))
+    _ctx, rows = play("english", ["Wren only has 7 kettles, 7 of them.", "How many kettles does Wren have?"])
+    assert asserted_numbers(rows[1]["answer"]) == {7}
+
+
+def test_the_speakers_possessive_before_a_thing_is_the_speaker():
+    _ctx, rows = play("한국어", ["저는 앨범이 다섯 권 있어요.", "제 앨범은 지금 몇 권 있어요?", "제 동료는 앨범이 두 권 있어요.",
+                                "제 동료는 앨범이 몇 권 있어요?"])
+    assert [asserted_numbers(r["answer"]) for r in (rows[1], rows[3])] == [{5}, {2}]
+
+
 def test_a_title_abbreviation_ends_no_sentence_so_a_hold_names_the_whole_statement():
     _ctx, rows = play("english", ["Nell has 6 stools.", "I have 4 stools.", "I zorped Mr. Quill one stool.",
                                   "How many stools does Nell have?", "How many stools do I have?"])
