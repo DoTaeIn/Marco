@@ -36,7 +36,13 @@ in that commit, with the reason in the message.
 ## Scope
 
 The whole-file rows of `target-map.json`: every module that is not in its
-`splits` list. The seven split files stay at the root untouched: `engine.py`,
+`splits` list, 53 files by `python tools/doc_facts.py layout` (D2 counted them;
+the audit said 51). Three targets are named by two files each (`arithmetic`,
+`passages`, `reasoning.state`): merge the pair into one module only if neither
+keeps a name the other needs, otherwise give the second file a sibling name and
+record it in the map. `response_composer` targets `marco.language.realizer.discourse`,
+which already exists: put it beside it as `marco/language/realizer/composer.py`
+and record that too. The seven split files stay at the root untouched: `engine.py`,
 `relational_semantics.py`, `language_components.py`, `encoder.py`,
 `pack_model.py`, `purpose_graph.py`, `goal_runtime.py`. `conftest.py` stays.
 `views/kgpack_ui.py` stays where it is. Data directories do not move.
@@ -49,7 +55,13 @@ into `experiments/`; `document_vision.swift` goes with `document_visual.py` into
 `explain.py` reads if present, `explain.py:1943`) moves under `data/` with that
 path updated; the encoder's `.vec_*.npz` caches at the root move to
 `.marco/cache/` with the writer's path updated. Each with its references, as
-above. Cleaned by the owner on 2026-09-24 already: `NAI.kgpack`, the old logs
+above. The engine writes its routing tie-break file `그래프쓰임.json` at the repository
+root (`engine.py:3241`); any local run then makes
+`tests/test_general_knowledge_coverage.py` fail (D2 found this). Move that
+file, and `.nai/`, `.nai-tools/` and the `.vec_*.npz` caches, under `.marco/`
+(`state/`, `tools/`, `cache/`) with their writers' paths updated, and make the
+test suite point the engine at a temporary state directory so a local run can
+never change a test result. Cleaned by the owner on 2026-09-24 already: `NAI.kgpack`, the old logs
 (`물음기록.jsonl`, `자가학습기록.jsonl`, `그래프쓰임.json`, archived outside the
 repository), `HANDOFF.md` (archived), `practice/` (removed), `Addition.md`
 (moved to `docs/ko/2026-09-20-addition-next-directions.md`).
@@ -64,7 +76,8 @@ S4.1 **Batches.** At most 10 files per commit. Each commit contains the `git mv`
      import-graph tool shows no new upward edge.
 
 S4.2 **Root count.** `ls *.py` at the root: 61 before, 8 after (the seven split
-     files and `conftest.py`). Report the list.
+     files and `conftest.py`); `python tools/doc_facts.py layout` prints 0 files
+     left to move. Report the list.
 
 S4.3 **Layer rule.** `marco/` imports nothing from `alma/`, `views/`, `bench/`,
      `tools/`, `experiments/`. 0 violations, or each violation listed with the
