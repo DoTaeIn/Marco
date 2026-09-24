@@ -279,7 +279,7 @@ def _repair(evidence):
 # ---------------------------------------------------------------------------
 def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversation="default", turn=None,
                 context_result=None, meaning=None, label=None, act=None, restart=False, pack=None,
-                pack_file=None, error=None):
+                pack_file=None, error=None, gap=None):
     """Write one turn's events to ``ledger`` under ``trace_id``. Returns a summary dict.
 
     ``conversation`` keys the adapter state (which statements and state changes
@@ -289,7 +289,8 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
     expectation for the turn, when there is one (stats use the gate's
     denominators). ``pack``: the language pack path (else read from the
     envelope's verification sources). ``pack_file``: the ``.kgpack`` file, for
-    its digest. ``error``: the exception the turn raised; ``envelope`` is then None.
+    its digest. ``error``: the exception the turn raised; ``envelope`` is then None. ``gap``: the gap class
+    the engine gave its own hold of the turn (request G5-1); else the declared class of the hold's reason.
     """
     v = view(envelope, context_result, error, meaning)
     session = session_for(ledger, conversation)
@@ -543,6 +544,9 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
         reason, where = hold_reason(v, report)
         payload = {"reason": reason, "reason_source": where, "verdict": v["verdict"], "phase": v["phase"],
                    "act": meaning.get("act"), "missing": _missing(v, session)}
+        gap = _gap(reason, gap)
+        if gap is not None:
+            payload["gap"] = gap        # the gap class of the hold (request G5-1, the adaptive note's taxonomy)
         parents = [verification] if verification and not verified else [op]
         subject = meaning.get("subject") if isinstance(meaning.get("subject"), str) else None
         hold = emit("hold", parent_ids=parents, status=status, subsystem="dialogue", epistemic_status="unknown",
@@ -563,6 +567,20 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
     summary["status"] = status
     summary["used_withdrawn"] = len(used_withdrawn)
     return summary
+
+
+def _gap(reason, given=None):
+    """The gap class of a held turn (request G5-1): the one the engine gave its own hold of the turn
+    (``given``, the recorder passes it), else the class ``reasoning_context.gap_class`` declares for the
+    reason; None when neither is known (the adapter runs without the engine too)."""
+    if given:
+        return given
+    try:
+        from reasoning_context import gap_class
+    except ImportError:
+        return None
+    gap, declared = gap_class(reason)
+    return gap if declared else None
 
 
 def _output(emit, v, report, status, gate, parents, session, conversation, epistemic):

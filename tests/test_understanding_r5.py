@@ -41,8 +41,10 @@ def play(language, lines, ledger=None, record=True):
         result = current.turn(line)
         rows.append(result or {"status": None, "answer": None})
         if ledger is not None and record:
-            record_turn(ledger, ledger.new_trace_id(), line, result, None, conversation=current.conversation_id,
-                        turn=n, context_result=result)
+            summary = record_turn(ledger, ledger.new_trace_id(), line, result, None,
+                                  conversation=current.conversation_id, turn=n, context_result=result,
+                                  gap=current.trace_gap)
+            current.flush_trace(ledger, summary["input"])
     return current, rows
 
 
@@ -106,6 +108,14 @@ def test_each_turn_writes_its_path_its_rules_with_bindings_what_it_did_not_read_
     traces = engine_traces(ledger)
     assert len(traces) == len(EVENTS)
     roots = [t[0] for t in traces]
+    # every event but an input rests on one: an engine trace rests on its turn's input
+    inputs = [e for e in ledger.events if e["kind"] == "input_received"]
+    assert [r["parent_ids"] for r in roots] == [[e["event_id"]] for e in inputs]
+    assert all(e["parent_ids"] for e in ledger.events if e["kind"] != "input_received")
+    # the turn's own hold carries the gap class the engine gave it (request G5-1)
+    turn_holds = [e for e in ledger.events if e["kind"] == "hold"
+                  and e["trace_id"] in {i["trace_id"] for i in inputs}]
+    assert [h["payload"].get("gap") for h in turn_holds] == ["parser", "parser"]
     assert all(r["kind"] == "routing_selected" and r["payload"]["candidates"] for r in roots)
     assert [r["payload"]["selected"] for r in roots] == ["statement", "statement", "statement", "not_read", "hold"]
     rules = [e for e in traces[2] if e["kind"] == "rule_applied"]
@@ -164,6 +174,7 @@ def test_routing_writes_its_candidates_and_scores_and_a_routing_hold_below_the_t
         assert engine.pick_graph("anything at all", index={"공통층": {}}) == (None, 0.0, [])
     finally:
         engine.TRACE = None
+    assert engine.flush_trace(ledger) and not engine.TRACE_PENDING
     (trace,) = engine_traces(ledger)
     assert [e["kind"] for e in trace] == ["routing_selected", "hold"]
     assert trace[0]["payload"]["candidates"] == [] and trace[0]["payload"]["threshold"] is not None

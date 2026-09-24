@@ -1143,6 +1143,8 @@ def counters(graph, node):
 # unless a recorder or a test sets it. Each call is its own trace; events carry graph names and node ids
 # by digest, never node text.
 TRACE = None
+# Each call's events, kept until the recorder writes them after the turn's input (``flush_trace``).
+TRACE_PENDING = []
 # The gap class of a verdict that answers nothing (the adaptive note's taxonomy, as in
 # reasoning_context.GAP_CLASSES): the declared closed class of judge's verdicts.
 VERDICT_GAP = {"B2": "routing", "B1": "evidence", "A": "evidence", "C": "conflict", "근거없음": "evidence",
@@ -1156,23 +1158,36 @@ def _digest(value):
 def _trace_emit(site, events):
     """``events``: [(kind, fields)] of one call, the first the root; each later one names the root as its
     parent. A recording problem never changes the call's result."""
-    ledger = TRACE
-    if ledger is None:
+    if TRACE is None:
         return
     try:
         from marco.trace import runtime as rt
         stamp = rt.stamp(None)
-        trace_id = ledger.new_trace_id()
-        root = None
+        group = []
         for kind, fields in events:
             fields = dict(fields)
             fields.setdefault("runtime", stamp)
             fields.setdefault("subsystem", "routing" if site == "pick_graph" else "reasoning")
             fields["source"] = {"type": "engine_site", "site": site, **fields.get("source", {})}
-            event = ledger.append(kind, trace_id, parent_ids=[root] if root else [], **fields)
-            root = root or event["event_id"]
+            group.append((kind, fields))
+        TRACE_PENDING.append(group)
     except Exception:            # noqa: BLE001 -- the ledger records the call, it never decides it
         pass
+
+
+def flush_trace(ledger, parent=None):
+    """Write each pending call's events to ``ledger`` as its own trace, the first event resting on ``parent``
+    (the turn's input), the rest on the first. Returns the ids written."""
+    written = []
+    groups, TRACE_PENDING[:] = list(TRACE_PENDING), []
+    for group in groups:
+        trace_id, root = ledger.new_trace_id(), None
+        for kind, fields in group:
+            parents = [root] if root else ([parent] if parent else [])
+            event = ledger.append(kind, trace_id, parent_ids=parents, **fields)
+            root = root or event["event_id"]
+            written.append(event["event_id"])
+    return written
 
 
 def judge(graph, text, streak_A=0, share=None):

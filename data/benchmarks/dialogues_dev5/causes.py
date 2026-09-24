@@ -14,8 +14,8 @@ One run plays the dialogues through the UI turn handler exactly as the gate does
   whose holder an earlier missed statement left without a count), a realizer hold
   (``realizer:not_phrased``), or a wrong or unverifiable answer by its reason. Classes and the cascade
   rule are v4's (``dialogues_dev4/causes.py``: ``turn_class``, ``tables``), so both rounds count alike;
-* **held turns by gap class**: the gap the engine's own ``hold`` event gave the turn (``payload.gap``),
-  joined to the turn by the input's digest.
+* **held turns by gap class**: ``payload.gap`` of the hold in each turn's own trace (the class the engine's
+  own hold gave it, carried by the recorder, else the declared class of the hold's reason: request G5-1).
 
 Each table sums to its total. Nothing of the frozen sets is read (``drive.load`` refuses them).
 
@@ -39,22 +39,14 @@ _spec.loader.exec_module(v4causes)
 
 
 def gap_by_turn(events):
-    """{(conversation, turn): gap} from the engine traces: the engine's hold of the turn whose input digest it
-    carries, taken in ledger order (an engine trace is written just before its turn's own trace)."""
-    roots, gaps, pending = {}, {}, []
+    """{(conversation, turn): gap}: the gap class on the hold of each turn's own trace (the engine's, carried
+    there by the recorder, else the declared class of the hold's reason: request G5-1)."""
+    turns, gaps = {}, {}
     for event in events:
-        source = event.get("source") or {}
-        if source.get("type") == "engine_site" and source.get("site") == "ReasoningContext.turn":
-            roots[event["trace_id"]] = {"sha256": source.get("sha256"), "gap": None}
-            pending.append(event["trace_id"])
-        elif event["kind"] == "hold" and event["trace_id"] in roots:
-            roots[event["trace_id"]]["gap"] = event["payload"].get("gap")
-        elif event["kind"] == "input_received":
-            said = event["payload"]
-            match = next((tid for tid in reversed(pending) if roots[tid]["sha256"] == said.get("sha256")), None)
-            if match is not None:
-                pending.remove(match)
-                gaps[said.get("conversation"), said.get("turn")] = roots[match]["gap"]
+        if event["kind"] == "input_received":
+            turns[event["trace_id"]] = (event["payload"].get("conversation"), event["payload"].get("turn"))
+        elif event["kind"] == "hold" and event["trace_id"] in turns:
+            gaps[turns[event["trace_id"]]] = event["payload"].get("gap")
     return gaps
 
 
@@ -62,8 +54,6 @@ def run(dataset, split, out):
     from bench import dialogue_gate as gate
     from marco.trace import drive, stats
     from marco.trace.ledger import Ledger, read
-    import engine
-    from reasoning_context import ReasoningContext
     dialogues = drive.load(dataset, None, split)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -72,11 +62,9 @@ def run(dataset, split, out):
     if path.exists():
         path.unlink()
     ledger = Ledger(out, name)
-    ReasoningContext.trace, engine.TRACE = ledger, ledger
     try:
-        answers = drive.record(dialogues, ledger)
+        answers = drive.record(dialogues, ledger, engine_sites=True)
     finally:
-        ReasoningContext.trace, engine.TRACE = None, None
         ledger.close()
     report = gate.score(dialogues, answers)
     (out / (name + "_report.json")).write_text(json.dumps(report, ensure_ascii=False, indent=1) + "\n",
@@ -111,7 +99,7 @@ def format_tables(result):
         lines.append("%s: %d" % (title, sum(counts.values())))
         for key, n in sorted(v4causes.family_table(counts).items(), key=lambda kv: -kv[1]):
             lines.append("  %-40s %4d" % (key, n))
-    lines.append("held turns by gap class (the engine's hold of the turn): %s" % json.dumps(
+    lines.append("held turns by gap class (payload.gap of the turn's hold): %s" % json.dumps(
         dict(sorted(result["held_by_gap"].items())), ensure_ascii=False))
     reasons = result["stats"]["holds_by_reason"].get("answerable") or {}
     lines.append("ledger holds of answerable turns by reason: %s" % json.dumps(reasons, ensure_ascii=False))

@@ -87,6 +87,34 @@ def _sha(text):
     return hashlib.sha256(str(text).strip().encode("utf-8")).hexdigest()
 
 
+class PendingTrace:
+    """The events one call of an engine site made, kept until the recorder writes them, as one trace, after
+    the turn's own input event, so each rests on it (every event but an input has a parent). It takes the
+    ledger's ``append`` with local ids; ``write`` gives the events their ledger ids."""
+
+    def __init__(self):
+        self.events = []
+
+    def new_trace_id(self):
+        return "pending"
+
+    def append(self, kind, _trace_id, **fields):
+        local = "local%d" % len(self.events)
+        self.events.append((local, kind, fields))
+        return {"event_id": local}
+
+    def write(self, ledger, parent=None):
+        """Write the events to ``ledger`` as one new trace; a root rests on ``parent`` (the turn's input)."""
+        ids, trace_id = {}, ledger.new_trace_id()
+        for local, kind, fields in self.events:
+            fields = dict(fields)
+            parents = [ids[ref] for ref in fields.pop("parent_ids", []) if ref in ids]
+            if not parents and parent:
+                parents = [parent]
+            ids[local] = ledger.append(kind, trace_id, parent_ids=parents, **fields)["event_id"]
+        return list(ids.values())
+
+
 class UnknownWord(ValueError):
     """뜻을 아직 모르는 낱말로 된 사건. 틀린 조건이 아니라 **모르는 말**이다."""
 
@@ -2444,7 +2472,7 @@ class ReasoningContext:
             from marco.trace.explain import chain_meaning, last_explainable
             from marco.trace.why import Graph
             graph = Graph(self.trace)
-            output = last_explainable(graph, self.conversation_id)
+            output = last_explainable(graph, getattr(self, "trace_conversation", None) or self.conversation_id)
             if output is None:
                 return result
             meaning = {**chain_meaning(graph, output), "explains": explains}
@@ -3870,16 +3898,25 @@ class ReasoningContext:
                     "dropped": self._readings_dropped}])}
 
     def _emit_turn(self, text, result, path, observed_before):
-        """This turn's events in its own trace of ``self.trace`` (request L1-1, the minimum): the path the
-        turn took (``routing_selected``, with the readings it chose between when there were several), each
-        state update it recorded with the rule and its bindings (``rule_applied``), each statement it did not
-        read (``evidence_rejected``), each reading dropped by a constraint (``hypothesis_rejected``), and a
-        hold with its reason and gap class (``hold``, ``payload.gap``). References and digests only; a
-        recording problem never changes the turn."""
+        """This turn's events (request L1-1, the minimum), kept in ``trace_pending`` until the recorder writes
+        them after the turn's input (``flush_trace``): the path the turn took (``routing_selected``, with the
+        readings it chose between when there were several), each state update it recorded with the rule and
+        its bindings (``rule_applied``), each statement it did not read (``evidence_rejected``), each reading a
+        constraint dropped (``hypothesis_rejected``), and a hold with its reason and gap class (``hold``,
+        ``payload.gap``; also ``trace_gap``). References, state keys and digests only; a recording problem never
+        changes the turn."""
+        pending = PendingTrace()
+        self.trace_pending, self.trace_gap = pending, None
         try:
-            self._emit_turn_events(self.trace, text, result, path, observed_before)
+            self._emit_turn_events(pending, text, result, path, observed_before)
         except Exception:        # noqa: BLE001 -- the ledger is a record of the turn, never its cause
-            pass
+            self.trace_pending = None
+
+    def flush_trace(self, ledger, parent=None):
+        """Write the last turn's pending events to ``ledger`` as one trace resting on ``parent`` (the turn's
+        ``input_received``); returns their ids. The recorder calls it after it recorded the turn."""
+        pending, self.trace_pending = getattr(self, "trace_pending", None), None
+        return pending.write(ledger, parent) if pending is not None else []
 
     def _emit_turn_events(self, ledger, text, result, path, observed_before):
         from marco.trace import runtime as rt
@@ -3958,6 +3995,7 @@ class ReasoningContext:
             detail = next((c.get("reason") for c in ((result or {}).get("verification") or {}).get("checks") or []
                            if isinstance(c, dict) and not c.get("ok") and c.get("reason")), None)
             gap, declared = gap_class(detail if reason == "invalid" and detail in GAP_OF else reason)
+            self.trace_gap = gap
             ledger.append("hold", trace_id, parent_ids=parents or [root],
                           status="refused" if act == "refuse" else "hold", subsystem="reasoning",
                           epistemic_status="unknown", runtime=stamp,
