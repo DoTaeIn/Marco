@@ -46,10 +46,18 @@ class FrozenSetRefused(ValueError):
 
 
 def guard(path):
-    """Refuse a path inside a frozen exam set, before it is opened or listed."""
-    resolved = Path(path).resolve()
+    """Refuse a path inside a frozen exam set, before it is opened, listed or even stat-ed.
+
+    The first check is on the path's text alone; the second resolves symbolic links.
+    """
+    plain = Path(os.path.normpath(os.path.abspath(path)))
     for frozen in FROZEN:
-        top = (ROOT / frozen).resolve()
+        top = Path(os.path.normpath(ROOT / frozen))
+        if plain == top or top in plain.parents:
+            raise FrozenSetRefused("%s is a frozen exam set: a development run never reads it" % frozen)
+    resolved = plain.resolve()
+    for frozen in FROZEN:
+        top = ROOT / frozen              # ROOT is resolved; the frozen folder itself is never touched
         if resolved == top or top in resolved.parents:
             raise FrozenSetRefused("%s is a frozen exam set: a development run never reads it" % frozen)
     return resolved
