@@ -28,10 +28,10 @@ def _typed(kind, value, source, holders=()):
         return None
     if kind == "owners":
         # Holders named by compound subjects (owner words, then item words): each said as its
-        # owner; the subjects themselves when two of them share an owner.
+        # owner. Two that share an owner are not told apart by it: no value.
         owners = [_split_subject(item, source, holders)[0] for item in value]
-        if any(not owner for owner in owners) or len(set(owners)) != len(owners):
-            return {"list": [mg.entity(item, source, "compound") for item in value]}
+        if not owners or any(not owner for owner in owners) or len(set(owners)) != len(owners):
+            return None
         return {"list": [mg.entity(owner, source, "agent") for owner in owners]}
     if kind == "numeral":
         return mg.number(value)
@@ -230,9 +230,12 @@ def _rows(template, graph):
                 continue
         else:
             kinds = decl["frames"][case["frame"]]["roles"]
+            typed = {role: _typed(kinds.get(role, "any"), value, source, holders)
+                     for role, value in values.items() if value not in (None, [], "")}
+            if any(typed.get(role) is None for role in case.get("requires", [])):
+                continue
             prop = {"frame": case["frame"], "polarity": case.get("polarity", True),
-                    "roles": {role: _typed(kinds.get(role, "any"), value, source, holders)
-                              for role, value in values.items() if value not in (None, [], "")}}
+                    "roles": {role: value for role, value in typed.items() if value is not None}}
         prop.update({key: case[key] for key in ("tense", "sentence", "optional") if key in case})
         props.append(prop)
     return props
@@ -337,7 +340,13 @@ def _props(template, graph):
             if template.get("optional"):
                 return []
             continue
-        roles[role] = _typed(kinds.get(role, "any"), value, source, holders)
+        typed = _typed(kinds.get(role, "any"), value, source, holders)
+        if typed is None:
+            # A value its kind cannot carry (holders not told apart by their owners).
+            if template.get("optional"):
+                return []
+            continue
+        roles[role] = typed
     prop = {"frame": frame, "roles": roles, "polarity": template.get("polarity", True)}
     for key in ("tense", "sentence"):
         if key in template:
@@ -456,4 +465,5 @@ def plan(graph):
     graph["acts"] = acts
     graph["props"] = [copy.deepcopy(prop) for act in acts for prop in act["props"]]
     graph["plan"] = chosen.get("_about") or chosen["match"]
+    graph["plan_match"] = copy.deepcopy(chosen["match"])
     return True

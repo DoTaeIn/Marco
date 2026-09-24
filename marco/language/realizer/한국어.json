@@ -1,6 +1,7 @@
 {
  "_about": "Korean realizer declarations: orthography, case particles, lexicon, endings, expression candidates per frame, and the reading rules the semantic check applies. Particle mates, the inflection grammar, negation, numerals, senses and romanization are reused from styles/한국어.json through its parser; nothing here repeats them.",
  "language": "한국어",
+ "version": {"release": "0.4.0", "round": "W4"},
  "negation_marker_key": "부정표지",
  "pack": "styles/한국어.json",
  "pack_keys": {

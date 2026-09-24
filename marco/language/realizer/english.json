@@ -1,6 +1,7 @@
 {
  "_about": "English realizer declarations: orthography, prepositions, lexicon, agreement, expression candidates per frame, and the reading rules the semantic check applies. The verb lexicon and inflection rules are reused from styles/english.json through its parser; forms it does not declare are added under lexicon_forms.",
  "language": "english",
+ "version": {"release": "0.4.0", "round": "W4"},
  "negation_marker_key": "부정표지",
  "pack": "styles/english.json",
  "orthography": {

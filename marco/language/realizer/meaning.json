@@ -1,6 +1,7 @@
 {
  "_about": "Language-free declarations of the realizer: the utterance intents, the frames a Meaning Graph may hold, how a turn result becomes a Meaning Graph and a plan of acts, and the discourse rules. No word of any language appears here; each language file (한국어.json, english.json) says how these are expressed.",
  "schema": "marco-meaning-v1",
+ "version": {"_about": "The release of these declarations (request L1-2 item 4): two files with the same version and different digests are an edit not yet released. Raised with every realizer round that changes them.", "release": "0.4.0", "round": "W4"},
  "intents": {
   "INFORM": {"_about": "say what is the case, from recorded state or recorded reasoning"},
   "ASK": {"_about": "ask for what the conversation does not fix; never pick it"},
@@ -315,11 +316,12 @@
     {"intent": "INFORM", "props": [{"rows": "$statements", "cases": [
      {"frame": "chain_statement", "roles": {"turn": "@turn", "said": "@said"}, "requires": ["turn", "said"], "tense": "past"}]}]},
     {"intent": "INFORM", "props": [{"rows": "$changes", "cases": [
-     {"where": {"whole": true, "before": null}, "fact": ["@subject", "@field", "@after"], "tense": "past"},
+     {"where": {"whole": true, "field": "count", "before": null}, "fact": ["@subject", "@field", "@after"],
+      "tense": "past"},
      {"where": {"whole": true, "field": "count"}, "frame": "count_change",
       "roles": {"subject": "@subject", "before": "@before", "after": "@after"}, "requires": ["subject", "before", "after"],
       "tense": "past"},
-     {"where": {"whole": true}, "fact": ["@subject", "@field", "@after"], "tense": "past"}]}]},
+     {"where": {"whole": true}, "fact": ["@subject", "@field", "@after"], "tense": "past", "optional": true}]}]},
     {"intent": "INFORM", "props": [{"each": "$rules", "frame": "rule", "role": "rule", "optional": true}]},
     {"intent": "CORRECT", "props": [
      {"rows": "$corrections", "cases": [
@@ -342,11 +344,12 @@
     {"intent": "INFORM", "props": [{"rows": "$statements", "cases": [
      {"frame": "chain_statement", "roles": {"turn": "@turn", "said": "@said"}, "requires": ["turn", "said"], "tense": "past"}]}]},
     {"intent": "INFORM", "props": [{"rows": "$changes", "cases": [
-     {"where": {"whole": true, "before": null}, "fact": ["@subject", "@field", "@after"], "tense": "past"},
+     {"where": {"whole": true, "field": "count", "before": null}, "fact": ["@subject", "@field", "@after"],
+      "tense": "past"},
      {"where": {"whole": true, "field": "count"}, "frame": "count_change",
       "roles": {"subject": "@subject", "before": "@before", "after": "@after"}, "requires": ["subject", "before", "after"],
       "tense": "past"},
-     {"where": {"whole": true}, "fact": ["@subject", "@field", "@after"], "tense": "past"}]}]},
+     {"where": {"whole": true}, "fact": ["@subject", "@field", "@after"], "tense": "past", "optional": true}]}]},
     {"intent": "CORRECT", "props": [
      {"rows": "$corrections", "cases": [
       {"frame": "reading_corrected", "roles": {"turn": "@turn", "by": "@by", "said": "@said"},
@@ -895,7 +898,7 @@
   }
  },
  "chain": {
-  "_about": "Why said from the trace graph (goal W4, request L1-2). A plan template {rows: $field, cases: [...]} says one proposition per row of a list field: the first case whose `where` the row matches (a null value matches a missing one), its `fact` (a triple of row values, said as the relation's frame) or its `frame` with `roles`; `row_mark` names a row's own field. A row without a value a case `requires` is not said. {from: hold_reason} says the reason of a held reply in the templates hold_reasons lists under the reason's id, with the fields the chain gives: missing (as the hold event recorded it), statement (the input the hold names, resolved to its turn and words), reply (what was said then). A reason without an entry, or whose entry says nothing, takes _default.",
+  "_about": "Why said from the trace graph (goal W4, request L1-2). A plan template {rows: $field, cases: [...]} says one proposition per row of a list field: the first case whose `where` the row matches (a null value matches a missing one), its `fact` (a triple of row values, said as the relation's frame) or its `frame` with `roles`; `row_mark` names a row's own field. A row without a value a case `requires` is not said; a case marked optional is left out when the language cannot say it in words its pack reads back (a state other than a count, in the past). {from: hold_reason} says the reason of a held reply in the templates hold_reasons lists under the reason's id, with the fields the chain gives: missing (as the hold event recorded it), statement (the input the hold names, resolved to its turn and words), reply (what was said then). A reason without an entry, or whose entry says nothing, takes _default.",
   "row_mark": "@",
   "hold_reasons": {
    "unread_event": [{"frame": "chain_unread", "roles": {"turn": "$statement.turn", "said": "$statement.said"}, "polarity": false,
