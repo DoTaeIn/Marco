@@ -8,8 +8,9 @@ outside, without editing them:
 
 * ``views.kgpack_ui.AppState.turn``: after it returns, ``record_turn`` writes
   the turn's events;
-* ``reasoning_context.ReasoningContext.turn``: its result is kept, because the
-  UI envelope drops the ``meaning`` block (request L1-1).
+* ``reasoning_context.ReasoningContext.turn`` and ``AppState._said``: the
+  context's result and the meaning of a hold the UI says itself are kept,
+  because the UI envelope drops the ``meaning`` block (request L1-1).
 
 The realizer's report for the reply is the newest one in
 ``marco.language.realizer.default_realizer().reports`` if the turn added one.
@@ -139,8 +140,8 @@ def record(dialogues, ledger=None, *, code_root=ROOT, timing=None):
             name, k = "%s#%d" % (d["id"], k), k + 1
         taken.add(name)
         names[d["id"]] = name
-    counters, captured = {}, []
-    app_turn, context_turn = AppState.turn, ReasoningContext.turn
+    counters, captured, holds = {}, [], []
+    app_turn, context_turn, app_said = AppState.turn, ReasoningContext.turn, AppState._said
     timing = timing if timing is not None else {}
     timing.setdefault("record_s", 0.0)
     timing.setdefault("turns", 0)
@@ -149,6 +150,10 @@ def record(dialogues, ledger=None, *, code_root=ROOT, timing=None):
         result = context_turn(self, text, knowledge_path)
         captured.append(result)
         return result
+
+    def keep_said(self, meaning, text):
+        holds.append(meaning)
+        return app_said(self, meaning, text)
 
     def recorded_turn(self, text, session_id, approval_mode="risk", conversation_id=None):
         dialogue = by_session.get(session_id)
@@ -159,6 +164,7 @@ def record(dialogues, ledger=None, *, code_root=ROOT, timing=None):
         reports = default_realizer().reports
         before = reports[-1] if reports else None
         del captured[:]
+        del holds[:]
         result, error = None, None
         try:
             result = app_turn(self, text, session_id, approval_mode, conversation_id)
@@ -166,8 +172,9 @@ def record(dialogues, ledger=None, *, code_root=ROOT, timing=None):
             error = exc
         start = time.perf_counter()
         report = reports[-1] if reports and reports[-1] is not before else None
-        record_turn(ledger, ledger.new_trace_id(), text, result, report, conversation=names[dialogue["id"]], turn=n,
-                    context_result=captured[-1] if captured else None, label=expected.get("label"),
+        record_turn(ledger, ledger.new_trace_id(), text, result, report, conversation=names[dialogue["id"]],
+                    turn=n, context_result=captured[-1] if captured else None,
+                    meaning=holds[-1] if holds else None, label=expected.get("label"),
                     act=(expected.get("expect") or {}).get("act"),
                     restart=bool(expected.get("restart_before")), pack=_pack_name(self),
                     pack_file=getattr(self, "pack_path", None), error=error)
@@ -177,7 +184,8 @@ def record(dialogues, ledger=None, *, code_root=ROOT, timing=None):
             raise error
         return result
 
-    with patch.object(AppState, "turn", recorded_turn), patch.object(ReasoningContext, "turn", keep_context):
+    with patch.object(AppState, "turn", recorded_turn), patch.object(AppState, "_said", keep_said), \
+            patch.object(ReasoningContext, "turn", keep_context):
         return dialogue_gate.run(dialogues, code_root)
 
 

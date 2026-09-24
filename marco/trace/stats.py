@@ -3,7 +3,8 @@
 Per turn (one ``input_received`` and the events of its trace):
 
 * the ``output_created`` status: answered, recorded, hold, refused, dialogue, error;
-* for a hold, its reason and where the reason came from;
+* for a hold, its reason, where the reason came from, and what the hold says is
+  missing (the keys of the hold's ``missing`` payload);
 * for a statement, whether a ``state_changed`` followed (the record rate);
 * from the trace graph, gate condition 3 per answered turn: an answer whose why
   chain reaches no statement and no cited source, and an answer whose chain
@@ -45,7 +46,7 @@ def turns(source):
             row = {"trace_id": event["trace_id"], "conversation": payload.get("conversation"),
                    "turn": payload.get("turn"), "label": payload.get("label"), "act": payload.get("act"),
                    "input": event["event_id"], "status": None, "gate_status": None, "reason": None,
-                   "reason_source": None, "state_changed": 0, "superseded": 0, "output": None,
+                   "reason_source": None, "missing": [], "state_changed": 0, "superseded": 0, "output": None,
                    "statement_inputs": None, "cited_sources": None, "withdrawn_used": None}
             rows.append(row)
             current[event["trace_id"]] = row
@@ -58,6 +59,7 @@ def turns(source):
             row["superseded"] += bool(event.get("supersedes"))
         elif kind == "hold":
             row["reason"], row["reason_source"] = payload.get("reason"), payload.get("reason_source")
+            row["missing"] = sorted(payload.get("missing") or {})
         elif kind == "output_created":
             row["status"], row["gate_status"], row["output"] = event["status"], payload.get("gate_status"), \
                 event["event_id"]
@@ -88,10 +90,14 @@ def table(source):
         [r for r in rows if r["gate_status"] == "observed"]
     recorded = [r for r in statements if r["state_changed"]]
     answered = [r for r in rows if r["status"] == "answered"]
-    reasons = {}
+    reasons, missing = {}, {}
     for name, members in groups:
         if name in ("answerable", "all"):
-            reasons[name] = dict(Counter(r["reason"] for r in members if r["status"] in HELD).most_common())
+            held = [r for r in members if r["status"] in HELD]
+            reasons[name] = dict(Counter(r["reason"] for r in held).most_common())
+            missing[name] = {reason: dict(Counter(k for r in held if r["reason"] == reason
+                                                  for k in r["missing"]).most_common())
+                             for reason in reasons[name]}
     sources = dict(Counter(r["reason_source"] for r in rows if r["status"] in HELD).most_common())
     return {
         "turns": len(rows),
@@ -99,6 +105,7 @@ def table(source):
         "labelled": labelled,
         "outputs": {name: _outputs(members) for name, members in groups},
         "holds_by_reason": reasons,
+        "hold_missing": missing,
         "hold_reason_sources": sources,
         "record": {"denominator": "turns whose expected act is record" if labelled
                    else "turns the engine recorded (gate status observed)",
@@ -123,7 +130,10 @@ def format_table(result):
         total = sum(counts.values())
         out += ["", "holds by reason, %s (%d)" % (name, total)]
         for reason, count in counts.items():
-            out.append("  %-34s %4d  %5.1f%%" % (reason, count, 100.0 * count / total if total else 0))
+            keys = result["hold_missing"][name].get(reason) or {}
+            out.append("  %-34s %4d  %5.1f%%  %s" % (
+                reason, count, 100.0 * count / total if total else 0,
+                ("missing: " + ", ".join("%s %d" % kv for kv in keys.items())) if keys else ""))
     out += ["", "hold reason taken from: " + ", ".join("%s %d" % kv for kv in result["hold_reason_sources"].items())]
     record = result["record"]
     out += ["", "record rate: %d/%d statement turns followed by state_changed%s (%s)" % (

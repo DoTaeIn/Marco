@@ -8,7 +8,8 @@ The engine is not edited. ``record_turn`` reads what a turn already returns:
   ``ReasoningContext.turn`` result (``status``, ``operator``, ``transitions``,
   ``verification``, ``meaning``);
 * optionally the ``ReasoningContext.turn`` result behind a UI envelope
-  (``context_result``): the UI envelope drops its ``meaning`` block, which
+  (``context_result``), or the meaning a UI hold was said from (``meaning``,
+  ``AppState._said``): the UI envelope drops the ``meaning`` block, which
   names a hold's reason and what is missing (request L1-1 names the gap);
 * the realizer's report for the reply (``marco.language.realizer``), or None
   when the turn did not pass through it.
@@ -80,10 +81,16 @@ def _request_kind(understanding):
     return node if isinstance(node, str) else None
 
 
-def view(envelope, context_result=None, error=None):
-    """The fields of a turn the adapter reads, from either envelope shape."""
+def view(envelope, context_result=None, error=None, meaning=None):
+    """The fields of a turn the adapter reads, from either envelope shape.
+
+    ``meaning``: the meaning a UI hold was said from (``AppState._said``), used
+    when there is no ``context_result``.
+    """
     env = envelope if isinstance(envelope, dict) else {}
     context = context_result if isinstance(context_result, dict) else None
+    if context is None and isinstance(meaning, dict):
+        context = {"meaning": meaning}
     if "phase" in env or isinstance(env.get("answer"), dict):
         answer = env.get("answer") if isinstance(env.get("answer"), dict) else {}
         trace = answer.get("trace") if isinstance(answer.get("trace"), dict) else {}
@@ -142,10 +149,11 @@ def _acts(report):
     return [str(a) for a in acts]
 
 
-def output_status(v, gate, report):
+def output_status(v, gate):
+    """``refused`` only when the meaning's act is ``refuse`` (a missing premise, declined).
+    The realizer's REFUSE intent is not used: it says many kinds of hold."""
     if gate == "held":
-        act = (v["meaning"] or {}).get("act")
-        return "refused" if act == "refuse" or (act is None and "REFUSE" in _acts(report)) else "hold"
+        return "refused" if (v["meaning"] or {}).get("act") == "refuse" else "hold"
     return OUTPUT_OF_GATE[gate]
 
 
@@ -166,9 +174,13 @@ def hold_reason(v):
     return "unknown", "none"
 
 
-def _missing(v):
+def _missing(v, session):
     meaning = v["meaning"] or {}
     out = {key: meaning[key] for key in MISSING_KEYS if meaning.get(key) not in (None, "", [], {})}
+    if isinstance(meaning.get("said"), str) and meaning["said"].strip():
+        # The statement the hold is about (an unread event, an unknown word's sentence), by reference.
+        said = sha(meaning["said"])
+        out["said"] = session.digests.get(said) or said
     need = v["retrieval"].get("need")
     if isinstance(need, dict) and need:
         out["need"] = {k: _scalar(need[k]) for k in ("kind", "topic", "resolved") if k in need}
@@ -246,18 +258,20 @@ def _repair(evidence):
 # the adapter
 # ---------------------------------------------------------------------------
 def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversation="default", turn=None,
-                context_result=None, label=None, act=None, restart=False, pack=None, pack_file=None,
-                error=None):
+                context_result=None, meaning=None, label=None, act=None, restart=False, pack=None,
+                pack_file=None, error=None):
     """Write one turn's events to ``ledger`` under ``trace_id``. Returns a summary dict.
 
     ``conversation`` keys the adapter state (which statements and state changes
-    the ledger already holds). ``label``/``act``: the dataset's expectation for
-    the turn, when there is one (stats use the gate's denominators). ``pack``:
-    the language pack path (else read from the envelope's verification sources).
-    ``pack_file``: the ``.kgpack`` file, for its digest. ``error``: the exception
-    the turn raised; ``envelope`` is then None.
+    the ledger already holds). ``context_result``: the ``ReasoningContext.turn``
+    result behind a UI envelope; ``meaning``: the meaning a UI hold was said
+    from, when there is no context result. ``label``/``act``: the dataset's
+    expectation for the turn, when there is one (stats use the gate's
+    denominators). ``pack``: the language pack path (else read from the
+    envelope's verification sources). ``pack_file``: the ``.kgpack`` file, for
+    its digest. ``error``: the exception the turn raised; ``envelope`` is then None.
     """
-    v = view(envelope, context_result, error)
+    v = view(envelope, context_result, error, meaning)
     session = session_for(ledger, conversation)
     session.turns = turn if turn is not None else session.turns + 1
     meaning = v["meaning"] or {}
@@ -498,12 +512,12 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
     verified = bool(verification) and ledger.get(verification)["kind"] == "hypothesis_verified"
 
     # 8. hold ------------------------------------------------------------------------------
-    status = output_status(v, gate, report)
+    status = output_status(v, gate)
     hold = None
     if gate == "held":
         reason, where = hold_reason(v)
         payload = {"reason": reason, "reason_source": where, "verdict": v["verdict"], "phase": v["phase"],
-                   "act": meaning.get("act"), "missing": _missing(v)}
+                   "act": meaning.get("act"), "missing": _missing(v, session)}
         parents = [verification] if verification and not verified else [op]
         subject = meaning.get("subject") if isinstance(meaning.get("subject"), str) else None
         hold = emit("hold", parent_ids=parents, status=status, subsystem="dialogue", epistemic_status="unknown",
