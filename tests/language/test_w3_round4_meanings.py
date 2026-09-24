@@ -206,8 +206,14 @@ def test_korean_leaves_the_user_unsaid_and_honours_them_in_the_predicate(result,
 
 
 def test_korean_holds_the_user_where_its_person_forms_declare_no_word():
-    # A list of holders, or the user as a recipient, needs a word for the user the file does not declare.
-    report = held(compared("tie", ["나 자두", "오다 자두"], value=4), "한국어")
+    # Since round 5 (request G4-2) a list of holders and a recipient say the user by the honorific of
+    # the predicate (tests/language/test_w5_realizer_r5.py): the tie this test once held is said.
+    assert composed(compared("tie", ["나 자두", "오다 자두"], value=4), "한국어") == "자두는 오다와 똑같이 4개 있으십니다."
+    # The user as the one a pointer is confirmed to mean needs a word the file does not declare.
+    result = {"status": "unresolved", "answer": "ENGINE",
+              "meaning": {"act": "ask", "reason": "other_than_confirm", "word": "그 사람", "excluded": "오다",
+                          "other": "나"}}
+    report = held(result, "한국어")
     assert any("undeclared_person_form" in str(attempt.get("error"))
                for clause in report["clauses"] for attempt in clause["attempts"])
 

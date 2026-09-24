@@ -1,7 +1,7 @@
 {
  "_about": "Language-free declarations of the realizer: the utterance intents, the frames a Meaning Graph may hold, how a turn result becomes a Meaning Graph and a plan of acts, and the discourse rules. No word of any language appears here; each language file (한국어.json, english.json) says how these are expressed.",
  "schema": "marco-meaning-v1",
- "version": {"_about": "The release of these declarations (request L1-2 item 4): two files with the same version and different digests are an edit not yet released. Raised with every realizer round that changes them.", "release": "0.4.0", "round": "W4"},
+ "version": {"_about": "The release of these declarations (request L1-2 item 4): two files with the same version and different digests are an edit not yet released. Raised with every realizer round that changes them.", "release": "0.5.0", "round": "W5"},
  "intents": {
   "INFORM": {"_about": "say what is the case, from recorded state or recorded reasoning"},
   "ASK": {"_about": "ask for what the conversation does not fix; never pick it"},
@@ -111,6 +111,8 @@
   "condition_holds": {"roles": {"said": "quote"}},
   "carried_out": {"roles": {}},
   "many_readings": {"roles": {"said": "quote"}},
+  "several_readings": {"_about": "A sentence that reads more than one way (goal G5 B): the user's words, quoted.", "roles": {"said": "quote"}},
+  "reading_fits": {"_about": "No reading of the user's sentence fits the conversation's state (goal G5 B). Negative only.", "roles": {"said": "quote"}},
   "shorter_request": {"roles": {}},
   "role_covered": {"roles": {"said": "quote", "rest": "quote"}},
   "definition_conflict": {"roles": {"said": "quote", "declared": "quote", "given": "quote"}},
@@ -135,6 +137,7 @@
   "applied": {"roles": {"said": "quote"}},
   "protected_change": {"roles": {"words": "quotes"}},
   "revised": {"roles": {"before": "quote", "after": "quote"}},
+  "recipient_corrected": {"_about": "The receiver of one earlier event corrected in place (request G4-1): the event as the user said it, the holder that received before and the one that receives now.", "roles": {"event": "quote", "old": "agent", "new": "agent"}},
   "topic_found": {"roles": {}},
   "plainer_request": {"roles": {}},
   "more_request": {"roles": {}},
@@ -191,6 +194,14 @@
   "elide": ["amount"]
  },
  "turn_plans": [
+  {
+   "_about": "Several questions in one turn (Diairesis; goal G5.6, request W5-1; assumed meaning: act inform, kind queries, answers = one meaning block per question in the order asked, each with its own status and, for an answered triple, fact and evidence): each answer said by the plan it would have alone, in order, each naming whose it is; consecutive answers in one sentence. A turn with an answer no plan says is not said in part: the declared hold is said instead. shared: the turn's fields every answer keeps; answer_row: an answer's fields that make its answered fact's row, the triple first.",
+   "match": {"act": "inform", "kind": "queries"},
+   "each": "$answers",
+   "shared": ["holders", "conversation", "conversation_language"],
+   "answer_row": ["fact", "evidence"],
+   "acts": [{"intent": "REFUSE", "fallback": true, "props": [{"frame": "not_phrased"}]}]
+  },
   {
    "_about": "An answered question about the state just before or just after one earlier event (request G3-4): the answer said in the past, with the event it is relative to as a time clause.",
    "match": {
@@ -600,6 +611,22 @@
    ]
   },
   {
+   "_about": "A sentence the conversation's state leaves with more than one reading (goal G5 B, request W5-2; assumed meaning: act ask, reason ambiguous_reading, said, readings = what each reading would record, as changes): ask which was meant, each reading said as a choice and checked like any clause, none chosen. Readings that are not one proposition each: say that the sentence reads more than one way and ask which.",
+   "match": {"act": "ask", "reason": "ambiguous_reading"},
+   "acts": [
+    {"intent": "ASK", "options": true, "props": [{"readings": "$readings", "state": "after"}]},
+    {"intent": "ASK", "fallback": true, "props": [{"frame": "several_readings", "roles": {"said": "$said"}}, {"frame": "which_request", "sentence": "request"}]}
+   ]
+  },
+  {
+   "_about": "Every reading of a sentence failed the conversation's state or its constraints (goal G5 B, request W5-2; assumed meaning: act hold, reason no_reading, said, and the failing constraints for the trace): say that no reading fits, ask for it another way.",
+   "match": {"act": "hold", "reason": "no_reading"},
+   "acts": [
+    {"intent": "REFUSE", "props": [{"frame": "reading_fits", "roles": {"said": "$said"}, "polarity": false}]},
+    {"intent": "ASK", "props": [{"frame": "rephrase", "sentence": "request"}]}
+   ]
+  },
+  {
    "match": {"act": "hold", "reason": "too_many_readings"},
    "acts": [
     {
@@ -810,6 +837,15 @@
       {"frame": "protected_change", "roles": {"words": "$words"}}
      ]
     }
+   ]
+  },
+  {
+   "_about": "The receiver of one earlier transfer corrected in place (request G4-1 part two): the same event, its old and its new receiver named instead of the sentences quoted; no new event; the state after.",
+   "match": {"act": "revise", "fields": {"field": "recipient"}, "fields_has": ["before", "old_holder", "new_holder"]},
+   "acts": [
+    {"intent": "CORRECT", "props": [{"frame": "recipient_corrected", "roles": {"event": "$before", "old": "$old_holder", "new": "$new_holder"}, "tense": "past"}]},
+    {"intent": "REASSURE", "props": [{"frame": "new_event", "polarity": false, "tense": "past"}]},
+    {"intent": "INFORM", "lead": "now", "props": [{"from": "changes", "state": "after"}]}
    ]
   },
   {

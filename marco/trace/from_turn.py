@@ -12,7 +12,10 @@ The engine is not edited. ``record_turn`` reads what a turn already returns:
   ``AppState._said``): the UI envelope drops the ``meaning`` block, which
   names a hold's reason and what is missing (request L1-1 names the gap);
 * the realizer's report for the reply (``marco.language.realizer``), or None
-  when the turn did not pass through it.
+  when the turn did not pass through it. Its ``meaning`` (the act and reason the
+  reply was said from, ids only) and ``plan`` (the matched turn plan's match) go
+  into ``output_created`` (request W4-2); a hold whose envelope gave no meaning
+  takes its reason from the report.
 
 Per turn, one trace (design note §6):
 
@@ -64,6 +67,15 @@ def sha(text):
 
 def _scalar(value):
     return value if value is None or isinstance(value, (str, int, float, bool)) else str(value)
+
+
+def _plain(value):
+    """A declared value (a turn plan's match) as plain JSON: dicts, lists and scalars."""
+    if isinstance(value, dict):
+        return {str(key): _plain(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_plain(item) for item in value]
+    return _scalar(value)
 
 
 def _unique(ids):
@@ -161,11 +173,15 @@ def output_status(v, gate):
     return OUTPUT_OF_GATE[gate]
 
 
-def hold_reason(v):
-    """``(reason, where it came from)``: the meaning first, then what the envelope says."""
+def hold_reason(v, report=None):
+    """``(reason, where it came from)``: the meaning first, then the meaning the realizer said the
+    reply from (request W4-2), then what the envelope says."""
     meaning = v["meaning"] or {}
     if meaning.get("reason"):
         return str(meaning["reason"]), "meaning"
+    said_from = (report or {}).get("meaning")
+    if isinstance(said_from, dict) and said_from.get("reason"):
+        return str(said_from["reason"]), "realizer"
     if v["retrieval"].get("diagnosis"):
         return str(v["retrieval"]["diagnosis"]), "retrieval"
     failed = [c.get("reason") for c in v["checks"] if not c.get("ok") and c.get("reason")]
@@ -524,7 +540,7 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
     status = output_status(v, gate)
     hold = None
     if gate == "held":
-        reason, where = hold_reason(v)
+        reason, where = hold_reason(v, report)
         payload = {"reason": reason, "reason_source": where, "verdict": v["verdict"], "phase": v["phase"],
                    "act": meaning.get("act"), "missing": _missing(v, session)}
         parents = [verification] if verification and not verified else [op]
@@ -560,6 +576,12 @@ def _output(emit, v, report, status, gate, parents, session, conversation, epist
         payload["realizer"] = report.get("reason") or ("held" if report.get("held") else "passthrough")
     if report and report.get("language"):
         payload["language"] = report["language"]
+    if report and isinstance(report.get("meaning"), dict):
+        # What the reply was said from (request W4-2): the meaning's act and reason, ids only, and
+        # for a composed reply the match of the turn plan that said it.
+        payload["meaning"] = {key: _scalar(report["meaning"].get(key)) for key in ("act", "reason")}
+        if isinstance(report.get("plan"), dict):
+            payload["plan"] = _plain(report["plan"])
     if v["text"] and text != v["text"]:
         payload["reply_sha256"] = sha(v["text"])     # the UI changed the realized text (affect, format)
     if epistemic is None:

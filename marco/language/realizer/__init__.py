@@ -134,6 +134,12 @@ class Realizer:
         texts, clauses_report = [], []
         frames = mg.meaning_declarations()["frames"]
         for sentence in sentences:
+            if sentence.get("options"):
+                said = self._options(lang, grammar, checker, sentence, register, frames, clauses_report)
+                if said is None:
+                    return self._hold(lang, grammar, checker, register, counts, clauses_report)
+                texts.append(said)
+                continue
             parts = []
             coordination = lang.decl.get("coordination", {}).get(sentence["clauses"][0]["prop"]["frame"], {})
             prefer = None
@@ -299,6 +305,51 @@ class Realizer:
         event = separator.join(part for part in (opening, separator.join(texts), closing) if part)
         joint = grammar.symbol(spec["join"]) if spec.get("join") else ""
         return event + joint + separator + main
+
+    def _options(self, lang, grammar, checker, sentence, register, frames, clauses_report):
+        """One question offering each clause as a choice (did you mean A, or B?), as the language
+        declares it (``options``): each option clause in the declared sentence form, then the words
+        after each option, the words between two, and the words before the first. Every option
+        passes the semantic check like any clause; the declared words carry no number and no
+        negation. A language that declares no options says none (the turn is held)."""
+        spec = lang.decl.get("options")
+        if not spec:
+            return None
+        separator = grammar.ortho["word_separator"]
+
+        def words(parts):
+            try:
+                clause = ClauseRealizer(grammar).realize({"roles": {}, "polarity": True}, {"parts": parts or []},
+                                                         sentence=sentence["sentence"], register=register)
+            except RealizationError:
+                return None
+            said = ["".join(w["pieces"]) for w in clause.words]
+            if checker.numbers(separator.join(said)) or checker.negated(said):
+                return None
+            return clause
+
+        def joined(left, clause):
+            if clause is None or not clause.words:
+                return left
+            text = clause.text(separator)
+            return left + text if (clause.words[0]["bind"] or not left) else left + separator + text
+        first, after, between = words(spec.get("first")), words(spec.get("after_each")), words(spec.get("between"))
+        if None in (first, after, between):
+            return None
+        body = joined("", first)
+        for index, planned in enumerate(sentence["clauses"]):
+            chosen = self._clause(lang, grammar, checker, dict(planned, elided=set()), spec["sentence"], register,
+                                  gap=False, frames=frames,
+                                  prefer=(spec.get("prefer") or {}).get(planned["prop"]["frame"]))
+            chosen["report"]["option"] = index
+            clauses_report.append(chosen["report"])
+            if chosen["clause"] is None:
+                return None
+            if index:
+                body = joined(body, between)
+            body = body + (separator if body else "") + chosen["clause"].text(separator)
+            body = joined(body, after)
+        return finish_sentence(grammar, body, sentence["sentence"])
 
     def _hold(self, lang, grammar, checker, register, counts, clauses_report):
         """No declared expression kept the meaning: say that the answer is held, nothing else.

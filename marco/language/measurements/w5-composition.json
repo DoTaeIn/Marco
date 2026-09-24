@@ -1,0 +1,268 @@
+{
+ "_about": "Goal W5.6: bench/composition_gate.py on the fixed sets (the 7-step dialogue and the 20 phrasings, played together) and the four development sets on branch realizer-r5, KG_ENCODER=문자, recording off, dev sets as on main e4406e4. 'main' is the same run at e4406e4 before any W5 change. The frozen sets are run by the owner only.",
+ "command": "KG_ENCODER=문자 python bench/composition_gate.py (--seven-step --phrasings | --dataset DIR)",
+ "fixed": {
+  "composed": 71,
+  "spoken": 71,
+  "passed_through": 0,
+  "held": 0,
+  "execution_errors": 0,
+  "by_act": {
+   "answer": [
+    20,
+    20
+   ],
+   "hold": [
+    20,
+    20
+   ],
+   "record": [
+    25,
+    25
+   ],
+   "explain": [
+    2,
+    2
+   ],
+   "ask": [
+    2,
+    2
+   ],
+   "correct": [
+    2,
+    2
+   ]
+  },
+  "by_language": {
+   "ko": [
+    35,
+    35
+   ],
+   "en": [
+    36,
+    36
+   ]
+  },
+  "reasons": {},
+  "main": [
+   71,
+   71,
+   0
+  ]
+ },
+ "dialogues_dev": {
+  "composed": 269,
+  "spoken": 269,
+  "passed_through": 0,
+  "held": 0,
+  "execution_errors": 0,
+  "by_act": {
+   "answer": [
+    68,
+    68
+   ],
+   "hold": [
+    62,
+    62
+   ],
+   "record": [
+    119,
+    119
+   ],
+   "explain": [
+    2,
+    2
+   ],
+   "ask": [
+    10,
+    10
+   ],
+   "correct": [
+    8,
+    8
+   ]
+  },
+  "by_language": {
+   "ko": [
+    133,
+    133
+   ],
+   "en": [
+    136,
+    136
+   ]
+  },
+  "reasons": {},
+  "main": [
+   268,
+   269,
+   1
+  ]
+ },
+ "dialogues_dev2": {
+  "composed": 415,
+  "spoken": 415,
+  "passed_through": 0,
+  "held": 0,
+  "execution_errors": 0,
+  "by_act": {
+   "answer": [
+    151,
+    151
+   ],
+   "hold": [
+    26,
+    26
+   ],
+   "record": [
+    197,
+    197
+   ],
+   "explain": [
+    18,
+    18
+   ],
+   "ask": [
+    11,
+    11
+   ],
+   "correct": [
+    12,
+    12
+   ]
+  },
+  "by_language": {
+   "ko": [
+    208,
+    208
+   ],
+   "en": [
+    207,
+    207
+   ]
+  },
+  "reasons": {},
+  "main": [
+   415,
+   415,
+   0
+  ]
+ },
+ "dialogues_dev3": {
+  "composed": 468,
+  "spoken": 468,
+  "passed_through": 0,
+  "held": 0,
+  "execution_errors": 0,
+  "by_act": {
+   "answer": [
+    202,
+    202
+   ],
+   "hold": [
+    36,
+    36
+   ],
+   "record": [
+    179,
+    179
+   ],
+   "explain": [
+    18,
+    18
+   ],
+   "ask": [
+    12,
+    12
+   ],
+   "correct": [
+    21,
+    21
+   ]
+  },
+  "by_language": {
+   "ko": [
+    234,
+    234
+   ],
+   "en": [
+    234,
+    234
+   ]
+  },
+  "reasons": {},
+  "main": [
+   468,
+   468,
+   0
+  ]
+ },
+ "dialogues_dev4": {
+  "composed": 1542,
+  "spoken": 1542,
+  "passed_through": 0,
+  "held": 0,
+  "execution_errors": 0,
+  "by_act": {
+   "answer": [
+    519,
+    519
+   ],
+   "hold": [
+    220,
+    220
+   ],
+   "record": [
+    712,
+    712
+   ],
+   "explain": [
+    12,
+    12
+   ],
+   "ask": [
+    5,
+    5
+   ],
+   "correct": [
+    74,
+    74
+   ]
+  },
+  "by_language": {
+   "ko": [
+    821,
+    821
+   ],
+   "en": [
+    721,
+    721
+   ]
+  },
+  "reasons": {},
+  "main": [
+   1537,
+   1542,
+   5
+  ]
+ },
+ "suite": {
+  "command": "KG_ENCODER=문자 python -m pytest -q",
+  "at": "1b972aa",
+  "passed": 1708,
+  "failed": 1,
+  "skipped": 8,
+  "seconds": 401,
+  "failed_tests": [
+   "tests/test_alma_integrated_reproduction.py::test_fixed_alma_life_reproduction_has_no_wrong_checks (macOS RSS, known)"
+  ],
+  "note": "the two machine-dependent tests/test_response_composer.py tests passed on this run",
+  "added": {
+   "tests/language/test_w5_realizer_r5.py": 58,
+   "tests/language/test_w5_trace_fields.py": 6
+  },
+  "changed": {
+   "tests/language/test_w3_round4_meanings.py::test_korean_holds_the_user_where_its_person_forms_declare_no_word": "the tie it held is said since round 5 (request G4-2); it now holds the user in a case still undeclared"
+  }
+ }
+}

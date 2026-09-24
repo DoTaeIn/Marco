@@ -1,7 +1,7 @@
 {
  "_about": "English realizer declarations: orthography, prepositions, lexicon, agreement, expression candidates per frame, and the reading rules the semantic check applies. The verb lexicon and inflection rules are reused from styles/english.json through its parser; forms it does not declare are added under lexicon_forms.",
  "language": "english",
- "version": {"release": "0.4.0", "round": "W4"},
+ "version": {"release": "0.5.0", "round": "W5"},
  "negation_marker_key": "부정표지",
  "pack": "styles/english.json",
  "orthography": {
@@ -24,6 +24,7 @@
  },
  "register": {"default": "formal", "from_endings": {"plain": "formal", "third_person": "formal"}},
  "sentence_endings": {
+  "option": {"formal": "plain", "polite": "plain", "casual": "plain", "plain": "plain", "reading": "plain"},
   "declarative": {"formal": "plain", "polite": "plain", "casual": "plain", "plain": "plain", "reading": "plain"},
   "question": {"formal": "plain", "polite": "plain", "casual": "plain", "plain": "plain", "reading": "plain"},
   "request": {"formal": "plain", "polite": "plain", "casual": "plain", "plain": "plain", "reading": "plain"}
@@ -1048,6 +1049,19 @@
     ]
    }
   ],
+  "reading_fits": [
+   {
+    "id": "reading_fits_none",
+    "when": {"polarity": false},
+    "parts": [{"lex": "no"}, {"lex": "interpretation"}, {"lex": "of"}, {"quote": "said", "marks": "double"}, {"verb": "fit", "predicate": true, "tense": "present", "person": "third", "polarity": "positive"}, {"lex": "this"}, {"lex": "conversation"}]
+   }
+  ],
+  "several_readings": [
+   {
+    "id": "several_readings",
+    "parts": [{"quote": "said", "marks": "double"}, {"verb": "can", "tense": "present", "person": "third"}, {"verb": "be", "ending": "base"}, {"verb": "read", "predicate": true, "ending": "participle"}, {"lex": "in"}, {"lex": "several"}, {"lex": "ways"}]
+   }
+  ],
   "many_readings": [
    {
     "id": "many_readings",
@@ -1368,6 +1382,27 @@
      {"lex": "would"},
      {"verb": "change", "predicate": true, "ending": "base"},
      {"list": "words", "each": {"quote": "$item", "marks": "double"}}
+    ]
+   }
+  ],
+  "recipient_corrected": [
+   {
+    "id": "recipient_changed",
+    "_about": "A receiver corrected in place (request G4-1): the same event and its receiver, from the old to the new (I changed the receiver in the same event \"…\" from Arthur to you.).",
+    "parts": [
+     {"lex": "i"},
+     {"verb": "change", "predicate": true, "person": "first"},
+     {"lex": "the"},
+     {"lex": "receiver"},
+     {"lex": "in"},
+     {"lex": "the"},
+     {"lex": "same"},
+     {"lex": "event"},
+     {"quote": "event", "marks": "double"},
+     {"lex": "from"},
+     {"np": ["old"], "det": "definite"},
+     {"lex": "to"},
+     {"np": ["new"], "det": "definite"}
     ]
    }
   ],
@@ -1898,6 +1933,13 @@
   "so": [{"lex": "so"}],
   "answer_yes": {"parts": [{"lex": "answer_yes"}], "polarity": true, "join": "comma"},
   "answer_no": {"parts": [{"lex": "answer_no"}], "polarity": false, "join": "comma"}
+ },
+ "options": {
+  "_about": "A choice between readings, asked (goal G5 B, request W5-2): did you mean that A, or that B?",
+  "sentence": "option",
+  "first": [{"verb": "do", "tense": "past", "person": "second"}, {"lex": "you"}, {"verb": "mean", "ending": "base"}, {"lex": "that"}],
+  "after_each": [],
+  "between": [{"sym": "comma", "bind": true}, {"lex": "or"}, {"lex": "that"}]
  },
  "subordinate": {
   "_about": "An event an answer is relative to in time: a clause of its own, in the past, after the conjunction, joined to the answer by a comma.",
