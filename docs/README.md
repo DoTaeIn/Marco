@@ -60,6 +60,12 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | [2026-09-24-marco-1-preview-1.md](releases/2026-09-24-marco-1-preview-1.md) | MARCO 1 · Preview 1: the `MARCO-1-preview.mco` file on the GitHub pre-release, its measured numbers at round 2 |
 | [2026-09-24-mco-0.1.0.md](releases/2026-09-24-mco-0.1.0.md) | `mco` 0.1.0 on PyPI: what the package is, what it needs, what it cannot do yet, the license |
 
+## Archive (`docs/archive/`)
+
+| Document | What |
+| --- | --- |
+| [2026-09-24-root-cleanup.zip](archive/2026-09-24-root-cleanup.zip) | Retired root files, archived when the root was tidied on 2026-09-24: the old handoff document and the self-learning and graph-usage logs |
+
 ## Requests between goals (`docs/requests/`)
 
 A goal that finds work outside its ownership writes a request; the owner of
@@ -207,7 +213,7 @@ development.
 
 ### Graph-authoring prompts
 
-Prompts handed to another assistant, which then writes graphs.
+Prompts handed whole to another AI, which then writes graphs.
 
 | Document | What |
 | --- | --- |
