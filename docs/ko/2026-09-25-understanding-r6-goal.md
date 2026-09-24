@@ -33,7 +33,7 @@ occur. **No sentence from the exam appears here or anywhere; these are classes.*
    "returned", "sent", "passed", "left N at PLACE".
 3. **Partitive pronoun objects** in transfers and use-ups: "one of them", "N of
    them", 그중 하나, 그중 N개, "used three of them for ...", 그중 N개로 만들었다.
-4. **A count given in a following fragment**: "X has some Y. Six, to be exact."
+4. **A count given in a following fragment**: "X has some Y. N, to be exact."
    / "X한테 Y이 있어. 여섯 개야." / "X가 Y한테 Z를 줬어. 두 개."
 5. **Korean transfer verbs and compounds**: 나눠 주다, 빌려주다, 보내다, 맡기다 (leave
    at a place), 싣고 있다 (carry), 주었다 (plain past formal), and the subject
@@ -54,7 +54,7 @@ occur. **No sentence from the exam appears here or anywhere; these are classes.*
    ("X는 이제 몇 개야?", "그럼 X는 지금 몇 개예요?").
 9. **Other question predicates**: "has X got", "is X responsible for", "맡고
    있습니까", "How many bundles" / "몇 묶음입니까", "모두 몇 개입니까", "combined" /
-   "the two of them in total", "둘 중에 누가 더 많아".
+   "the two of them in total", "둘 중에 누가 더 (many/few)" asked of two named holders.
 10. **Topic-switch ellipsis**: "What about X?", "And X?", "And in PLACE?", "And
     THING?", "X는요?", "X는?", "THING은?", "PLACE는 어떻습니까?" (the question of the
     previous turn asked again about a new holder, place or thing).
@@ -68,9 +68,8 @@ occur. **No sentence from the exam appears here or anywhere; these are classes.*
 ### C. Why questions that restate the fact (all 26 why turns of the exam are held)
 
 13. "Why does X have N?", "Why does X end up with N?", "What is the reason X has
-    N?", "Why is that number N?", "Why did it turn out that way?", "Why do I only
-    have N?", "왜 X가 N개야?", "왜 N개예요?", "X의 Y이 N개가 된 까닭은 무엇인가?", "왜 그렇게
-    된 거야?", "X Y가 왜 N개가 되었습니까?". Today the reader knows bare "왜?" and
+    N?", "Why is that number N?", a why about how the last answer came about, with no holder or number, "Why do I only
+    have N?", "왜 X가 N개야?", "왜 N개예요?", "X의 Y이 N개가 된 까닭은 무엇인가?", the same in Korean, "X Y가 왜 N개가 되었습니까?". Today the reader knows bare "왜?" and
     "왜 그렇게 됐어?". A why that names a holder and a number is a why about that
     holder's current count: resolve the fact, then explain it (the realizer's
     explain plans and the trace chain already say it). The why label is reported
