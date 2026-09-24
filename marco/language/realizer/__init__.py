@@ -134,13 +134,22 @@ class Realizer:
             prefer = None
             for index, planned in enumerate(sentence["clauses"]):
                 last = index == len(sentence["clauses"]) - 1
+                # A clause before the last of a coordination says no predicate (gapped), or says
+                # its verb with the declared joining ending.
+                gap = (coordination.get("verb_joint") or True) if coordination.get("gap_predicate") and not last \
+                    else False
                 subordinate = planned["prop"].get("subordinate")
                 if subordinate and (lang.decl.get("ellipsis") or {}).get("subordinate") == "full":
                     # A language whose answers are fragments says a clause with a time clause in full.
                     planned = dict(planned, elided=set())
                 chosen = self._clause(lang, grammar, checker, planned, sentence["sentence"], register,
-                                      gap=bool(coordination.get("gap_predicate")) and not last,
-                                      frames=frames, prefer=prefer)
+                                      gap=gap, frames=frames, prefer=prefer)
+                if chosen["clause"] is None and planned["prop"].get("alternative"):
+                    # The same meaning in its plainer frame (a count of zero said in digits).
+                    clauses_report.append(dict(chosen["report"], replaced=True))
+                    planned = dict(planned, prop=planned["prop"]["alternative"])
+                    chosen = self._clause(lang, grammar, checker, planned, sentence["sentence"], register,
+                                          gap=gap, frames=frames, prefer=prefer)
                 prefer = chosen["report"].get("candidate")
                 clauses_report.append(chosen["report"])
                 if chosen["clause"] is None:
@@ -180,9 +189,9 @@ class Realizer:
                  "intent": [act["intent"] for act in graph["acts"]],
                  "discourse": [{"act": s["act"], "props": [c["prop"]["id"] for c in s["clauses"]],
                                 "elided": [sorted(c["elided"]) for c in s["clauses"]]} for s in sentences],
-                 "expression": [c["candidate"] for c in clauses_report if not c.get("omitted")],
-                 "grammar": [c["pieces"] for c in clauses_report if not c.get("omitted")],
-                 "check": [c["parse"] for c in clauses_report if not c.get("omitted")],
+                 "expression": [c["candidate"] for c in clauses_report if not c.get("omitted") and not c.get("replaced")],
+                 "grammar": [c["pieces"] for c in clauses_report if not c.get("omitted") and not c.get("replaced")],
+                 "check": [c["parse"] for c in clauses_report if not c.get("omitted") and not c.get("replaced")],
                  # Said in words in the reply; named by id here.
                  "rules": [(p["roles"].get(frames.get(p["frame"], {}).get("select_by", {}).get("role")) or {}).get("id")
                            for p in graph["props"] if frames.get(p["frame"], {}).get("select_by")],
@@ -208,7 +217,7 @@ class Realizer:
                                                          register=register, gap=gap, tense=tense)
                 verdict = checker.check(prop, candidate, clause, elided=elided, sentence=sentence,
                                         register=register, frame_decl=frames.get(prop["frame"]),
-                                        allow_repair=bool(candidate.get("learned")), tense=tense)
+                                        allow_repair=bool(candidate.get("learned")), tense=tense, gap=gap)
             except RealizationError as exc:
                 attempts.append({"candidate": candidate.get("id"), "error": str(exc)})
                 continue

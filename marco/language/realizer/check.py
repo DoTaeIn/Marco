@@ -122,7 +122,7 @@ class Checker:
         return None
 
     def check(self, prop, candidate, clause, *, elided, sentence, register, allow_repair=False,
-              frame_decl=None, tense=None):
+              frame_decl=None, tense=None, gap=False):
         failures = []
         self._prop = prop
         separator = self.g.ortho["word_separator"]
@@ -148,9 +148,15 @@ class Checker:
                              "meant": "negative" if prop.get("polarity", True) is False else "positive"})
         allowed = _quoted_strings(prop.get("roles", {}), set())
         for value in prop.get("roles", {}).values():
-            for item in (value.get("list", []) if isinstance(value, dict) else []):
+            for item in (value.get("list", []) if isinstance(value, dict) else []) + [value]:
                 if isinstance(item, dict) and "text" in item:
+                    # A name is quoted as its key, or as the clause says its holder.
                     allowed.add(self.g.ortho["word_separator"].join(self.g.entity_words(item)))
+                    try:
+                        allowed.add(self.g.ortho["word_separator"].join(
+                            self.g.entity_words(item, register=register, case="quote")))
+                    except Exception:      # a holder the language cannot say is never allowed
+                        pass
         opening_closing = list(self.g.ortho.get("quotes", {}).values())
         for word in clause.words:
             if word["kind"] not in ("quote", "list", "cite", "operation"):
@@ -170,7 +176,9 @@ class Checker:
                 for inner in re.findall(re.escape(opening) + "(.*?)" + re.escape(closing), text):
                     if inner not in allowed:
                         failures.append({"reader": "quotes", "said": inner})
-        full = self.make().realize(prop, candidate, elided=(), sentence=sentence, register=register, tense=tense)
+        # The full clause in the same place of the same coordination (a verb before the last joins it).
+        full = self.make().realize(prop, candidate, elided=(), sentence=sentence, register=register, tense=tense,
+                                   gap=gap if isinstance(gap, str) else False)
         canon = self.g.canonical_piece
         if not _subsequence(clause.pieces(canon), full.pieces(canon)):
             failures.append({"reader": "ellipsis", "said": clause.pieces(), "full": full.pieces()})
@@ -197,13 +205,21 @@ class Checker:
         return {"ok": not failures, "failures": failures, "parse": parse, "repaired": repaired}
 
     # reading rules --------------------------------------------------------
+    def _meant_words(self, value):
+        """The words the pack's reading gives back for a role value: its key; for the user, the
+        pack's own first-person holder word (the reading says the user as the user would)."""
+        if self.g._person_kind(value):
+            holder = self.lang.person()["first"]["holder"]
+            return [holder] if holder else []
+        return self.g.entity_words(value)
+
     def _expected_words(self, prop, roles):
         words = []
         for role in roles:
             value = prop["roles"].get(role)
             if value is None:
                 continue
-            words.extend(self.g.entity_words(value))
+            words.extend(self._meant_words(value))
         return words
 
     def _keyed_subjects(self, prop, spec):
@@ -235,8 +251,12 @@ class Checker:
         said, meant = str(said).split(), list(meant)
         if len(said) != len(meant):
             return False
+        first = set(self.lang.person()["first"]["forms"])
         for a, b in zip(said, meant):
             if a == b:
+                continue
+            if a in first and b in first:
+                # Two forms the pack groups as its one first person (I, me; 나, 내).
                 continue
             ca, cb = self.lang.concept(a), self.lang.concept(b)
             if ca and ca == cb:
@@ -251,7 +271,7 @@ class Checker:
             return False
         if "number" in value:
             return str(said) == str(value["number"])
-        return self.same_words(said, self.g.entity_words(value))
+        return self.same_words(said, self._meant_words(value))
 
     def _reading(self, reading, parsed, prop):
         if not parsed:
@@ -264,9 +284,13 @@ class Checker:
                 problems.append("no_fact:%s" % spec["predicate"])
                 continue
             keyed = self._keyed_subjects(prop, spec)
+            # A reading may fix the value and the polarity it gives back (a count of zero said
+            # as having none: the pack reads the count zero, not a denied count).
+            meant = {"number": spec["value"]} if "value" in spec else prop["roles"].get(spec.get("object"))
+            read_polarity = spec.get("polarity", polarity)
             match = [f for f in facts if any(self.same_words(f["triple"][0], words) for words in keyed)
-                     and self._object_matches(prop["roles"].get(spec["object"]), f["triple"][2])
-                     and f.get("polarity", True) == polarity]
+                     and self._object_matches(meant, f["triple"][2])
+                     and (f.get("polarity") is not False) == read_polarity]
             if not match:
                 problems.append("fact_mismatch:%s:%s" % (spec["predicate"], [f["triple"] for f in facts]))
         if problems and reading.get("events"):
@@ -292,7 +316,7 @@ class Checker:
         mates = self.lang.mates
         for key, text in slots.items():
             if key == particle or (mates.get(key) and mates.get(key) == mates.get(particle)):
-                if self.same_words(text, self.g.entity_words(prop["roles"].get(role) or {})):
+                if self.same_words(text, self._meant_words(prop["roles"].get(role) or {})):
                     return True
         return False
 

@@ -136,6 +136,12 @@
   }
  },
  "relation_words": {"location": "위치", "count": "수량"},
+ "person": {
+  "_about": "The persons of a conversation (meaning.json: holders). user: the words the user says of themself, by the case a reply's part gives the holder (a part with no case, or a holder said juxtaposed before what it holds: default); the reading the semantic check parses says the user so, and each word is one the pack groups with its first person (임자자리말 나; 자리말 나, 내). addressee: the user is not said in a topic or a subject, juxtaposed before what they hold, or as a possessor (zero anaphora), and a predicate that agrees with them takes the honorific stem -(으)시- (a stem that ends in ㄹ drops it: 알 -> 아시); the user in any other case is not declared, and a clause that needs it is not said.",
+  "user": {"subject": "내", "possessive": "내", "default": "나"},
+  "addressee": {"topic": "", "subject": "", "juxtaposed": "", "possessive": ""},
+  "honorific": {"closed": "으시", "open": "시", "drop_codas": ["ㄹ"]}
+ },
  "lexicon": {
   "this": {"word": "이"},
   "conversation": {"word": "대화"},
@@ -243,6 +249,12 @@
   "base_n": {"word": "기준"},
   "divide_evenly": {"verb": "나누어떨어지", "kind": "regular"},
   "how_many": {"word": "몇"},
+  "none_adv": {"word": "하나도"},
+  "know_adn": {"word": "알"},
+  "way_n": {"word": "수"},
+  "put": {"verb": "두", "kind": "regular"},
+  "take_away": {"verb": "가져가", "kind": "regular"},
+  "be_moved": {"verb": "옮겨지", "kind": "regular"},
   "piece": {"word": "개"},
   "divide": {"verb": "나누", "kind": "regular"},
   "measure": {"verb": "재", "kind": "regular"},
@@ -303,8 +315,60 @@
  "expressions": {
   "count": [
    {
+    "id": "count_addressee_exist",
+    "_about": "The user's count: the user is not said, the existence verb takes the honorific (사과는 3개 있으십니다; an answer: 3개 있으십니다).",
+    "when": {"holder": {"owner": "speaker"}},
+    "requires": ["owner"],
+    "parts": [
+     {"np": ["owner", "item"], "case": "topic"},
+     {"num": "value", "counter": "count"},
+     {"verb": "exist", "predicate": true, "honor": "owner", "negation": "not"}
+    ]
+   },
+   {
+    "id": "count_place_exist",
+    "_about": "A place's count: the things are in the place (창고에는 상자가 5개 있습니다).",
+    "when": {"holder": {"owner": "place"}},
+    "requires": ["owner"],
+    "parts": [
+     {"np": ["owner"], "case": "locative_topic"},
+     {"np": ["item"], "case": "subject"},
+     {"num": "value", "counter": "count"},
+     {"verb": "exist", "predicate": true, "negation": "not"}
+    ]
+   },
+   {
     "id": "count_topic_copula",
+    "when": {"holder": {"owner": ["name", "place", "named"]}},
     "parts": [{"np": ["owner", "item"], "case": "topic"}, {"num": "value", "counter": "count", "cop": "predicate"}]
+   }
+  ],
+  "count_none": [
+   {
+    "id": "none_not_even_one",
+    "_about": "A count of zero: not even one (민수 사과는 하나도 없습니다; an answer: 하나도 없습니다).",
+    "parts": [
+     {"np": ["owner", "item"], "case": "topic"},
+     {"lex": "none_adv"},
+     {"verb": "not_exist", "predicate": true, "honor": "owner"}
+    ]
+   }
+  ],
+  "count_unknown": [
+   {
+    "id": "unknown_exists_but",
+    "_about": "A vague count: the holder has the thing, how many cannot be known (우나는 배가 있지만 몇 개인지 알 수 없습니다).",
+    "when": {"polarity": false},
+    "parts": [
+     {"np": ["owner"], "case": "topic"},
+     {"np": ["item"], "case": "subject"},
+     {"verb": "exist", "ending": "contrast", "honor": "owner"},
+     {"lex": "how_many"},
+     {"lex": "piece", "cop": "whether"},
+     {"lex": "know_adn"},
+     {"lex": "way_n"},
+     {"verb": "not_exist", "predicate": true}
+    ]
    }
   ],
   "location": [
@@ -320,12 +384,49 @@
   "transfer": [
    {
     "id": "transfer_give",
+    "when": {"holder": {"giver": ["name", "speaker", "named"], "receiver": ["name", "speaker", "named"]}},
     "parts": [
      {"np": ["giver"], "case": "subject"},
      {"np": ["receiver"], "case": "recipient"},
      {"np": ["item"]},
      {"num": "amount", "counter": "count", "case": "object", "elided_case": "previous"},
-     {"verb": "give", "predicate": true, "negation": "not"}
+     {"verb": "give", "predicate": true, "honor": "giver", "negation": "not"}
+    ]
+   },
+   {
+    "id": "transfer_put_at",
+    "_about": "Into a place: the giver put the things there (창고에 상자 3개를 뒀습니다).",
+    "when": {"holder": {"giver": ["name", "speaker", "named"], "receiver": "place"}},
+    "parts": [
+     {"np": ["giver"], "case": "subject"},
+     {"np": ["receiver"], "case": "locative"},
+     {"np": ["item"]},
+     {"num": "amount", "counter": "count", "case": "object", "elided_case": "previous"},
+     {"verb": "put", "predicate": true, "honor": "giver", "negation": "not"}
+    ]
+   },
+   {
+    "id": "transfer_take_from",
+    "_about": "Out of a place: the receiver took the things from it (창고에서 상자 3개를 가져갔습니다).",
+    "when": {"holder": {"giver": "place", "receiver": ["name", "speaker", "named"]}},
+    "parts": [
+     {"np": ["receiver"], "case": "subject"},
+     {"np": ["giver"], "case": "source"},
+     {"np": ["item"]},
+     {"num": "amount", "counter": "count", "case": "object", "elided_case": "previous"},
+     {"verb": "take_away", "predicate": true, "honor": "receiver", "negation": "not"}
+    ]
+   },
+   {
+    "id": "transfer_moved_between",
+    "_about": "From one place to another: the things were moved (상자 3개가 북쪽 창고에서 남쪽 창고로 옮겨졌습니다).",
+    "when": {"holder": {"giver": "place", "receiver": "place"}},
+    "parts": [
+     {"np": ["item"]},
+     {"num": "amount", "counter": "count", "case": "subject", "elided_case": "previous"},
+     {"np": ["giver"], "case": "source"},
+     {"np": ["receiver"], "case": "goal"},
+     {"verb": "be_moved", "predicate": true, "negation": "not"}
     ]
    }
   ],
@@ -534,7 +635,7 @@
      {"np": ["item"], "case": "topic"},
      {"np": ["winner"], "case": "subject"},
      {"lex": "more_adv"},
-     {"verb": "many", "predicate": true}
+     {"verb": "many", "predicate": true, "honor": "winner"}
     ]
    }
   ],
@@ -545,7 +646,7 @@
      {"np": ["item"], "case": "topic"},
      {"np": ["winner"], "case": "subject"},
      {"lex": "more_adv"},
-     {"verb": "few", "predicate": true}
+     {"verb": "few", "predicate": true, "honor": "winner"}
     ]
    }
   ],
@@ -1406,7 +1507,10 @@
   ],
   "token_skip": [{"quote": "word", "marks": "single"}, {"verb": "skip", "ending": "nominal"}]
  },
- "coordination": {"count": {"gap_predicate": true, "separator": "comma"}},
+ "coordination": {
+  "_about": "Clauses of one frame said in one sentence: every clause before the last says no copula (gapped); a verb there takes the joining ending -고 (사과는 3개 있으시고, 아라는 2개입니다).",
+  "count": {"gap_predicate": true, "separator": "comma", "verb_joint": "go"}
+ },
  "leads": {
   "now": [{"lex": "now"}],
   "answer_yes": {"parts": [{"lex": "answer_yes"}], "polarity": true, "join": "comma"},
@@ -1427,6 +1531,10 @@
   "count": {
    "facts": [{"predicate": "count", "subject": ["owner", "item"], "object": "value"}],
    "default_counter": true
+  },
+  "count_none": {
+   "_about": "Having none of a thing is read as the count zero, not as a denied count.",
+   "facts": [{"predicate": "count", "subject": ["owner", "item"], "value": "0", "polarity": true}]
   },
   "transfer": {
    "facts": [

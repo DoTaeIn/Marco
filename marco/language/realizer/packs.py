@@ -132,6 +132,28 @@ class Language:
         grammar.setdefault("max_forms", 32)
         return grammar
 
+    def person(self):
+        """The persons of a conversation, from two declarations.
+
+        ``first``: the pack's own first person — the word its definitions use for the one who
+        acts (``임자자리말``, the holder key of the user) and every form the pack groups with it
+        (``자리말``: I, me, myself; 나, 내). ``user``: the forms the user says of themself, by the
+        case the reply's part gives the holder, and ``addressee``: the words a reply names the
+        user with, by the same cases (an empty word: the user is not said), both from this
+        language's realizer file; ``honorific``: the stem ending a predicate takes when it
+        agrees with the user, or None. A user form the pack does not group with its first
+        person is not read as the user (``forms``)."""
+        holder = str(getattr(self.parser, "speaker_placeholder", "") or "")
+        groups = getattr(self.parser, "placeholders", None) or {}
+        forms = sorted({word for word, target in groups.items() if holder and target == holder} | (
+            {holder} if holder else set()))
+        declared = self.decl.get("person") or {}
+        return {"first": {"holder": holder, "forms": forms},
+                "user": {key: word for key, word in (declared.get("user") or {}).items() if not key.startswith("_")},
+                "addressee": {key: word for key, word in (declared.get("addressee") or {}).items()
+                              if not key.startswith("_")},
+                "honorific": declared.get("honorific")}
+
     def concept(self, word):
         return self.senses.get(word) or self.senses.get(str(word).lower())
 

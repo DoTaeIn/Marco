@@ -13,7 +13,7 @@ said in full.
 """
 import copy
 
-from hangul import batchim, inflect, is_hangul, romanize
+from hangul import batchim, inflect, is_hangul, romanize, strip_batchim
 
 
 class RealizationError(ValueError):
@@ -32,24 +32,38 @@ class Grammar:
         self.keys = self.decl.get("pack_keys", {})
 
     # ── entities ─────────────────────────────────────────────────────────
-    def entity_words(self, value, number=None, said=None):
+    def entity_words(self, value, number=None, said=None, register=None, case=None):
         """The words of an entity in this language: its own words, a sense link, or a romanized name.
 
         A compound (the engine's owner-then-item subject) is said the way the
         language declares: juxtaposed, or as a possessive. ``said``: the words of the
         statement the value was recorded from, which settle a singular the spelling
-        rules leave open (``singular_of``).
+        rules leave open (``singular_of``). With a ``register`` (a clause being said), a
+        holder that is not a bare name is said as its kind declares (``holder_words``), in
+        the ``case`` its part gives it; without one, the entity's own key words.
         """
         text = value.get("text", "")
         if value.get("kind") == "compound" and len(text.split()) > 1:
             joint = self._compound_separator()
-            head, rest = text.split(joint)[0], joint.join(text.split(joint)[1:])
-            owner = self.entity_words({**value, "text": head, "kind": "agent"})
-            item = self.entity_words({**value, "text": rest, "kind": "thing"}, number, said)
+            head = value.get("owner_text") or text.split(joint)[0]
+            rest = text[len(head):].lstrip(joint) if text.startswith(head + joint) else joint.join(text.split(joint)[1:])
             compound = self.ortho.get("compound") or {}
-            if compound.get("join") == "possessive" and owner:
+            possessive = compound.get("join") == "possessive"
+            owner_value = {**value, "text": head, "kind": "agent"}
+            owner_value.pop("owner_text", None)
+            item_value = {key: item for key, item in value.items() if key not in ("holder", "owner_text")}
+            item = self.entity_words({**item_value, "text": rest, "kind": "thing"}, number, said)
+            person = self._person_kind(owner_value) and register is not None
+            owner = self.entity_words(owner_value, register=register,
+                                      case=("possessive" if possessive else "juxtaposed") if person else None)
+            if possessive and owner and not person:
                 owner = owner[:-1] + [owner[-1] + compound["possessive"]]
             return owner + item
+        holder = value.get("holder") if register is not None else None
+        if holder:
+            words = self.holder_words(value, holder, register, case)
+            if words is not None:
+                return words
         source = value.get("lang")
         if not source or source == self.lang.stem:
             words = text.split()
@@ -77,6 +91,72 @@ class Grammar:
             words.append(word)
         return words
 
+    # ── holders that are not bare names ─────────────────────────────────
+    @staticmethod
+    def _holder_spec():
+        from marco.language.realizer.packs import meaning_declarations
+        return meaning_declarations()["holders"]
+
+    def _person_kind(self, value):
+        """Whether the entity is the user (the speaker of the conversation)."""
+        return (value.get("holder") or {}).get("kind") == self._holder_spec()["speaker"]
+
+    def person_form(self, table, case):
+        """The word a person table gives for ``case`` (else its ``default``); None when neither
+        is declared. An empty word is declared: the person is not said."""
+        forms = self.lang.person()[table]
+        for key in (case, "default"):
+            if key is not None and isinstance(forms.get(key), str):
+                return forms[key]
+        return None
+
+    def holder_words(self, value, holder, register, case):
+        """How a holder that is not a bare name is said (``meaning.json: holders``).
+
+        The speaker: in the reading the check parses, the form the user says of themself
+        (``person.user``, by case); in a reply, the form that names the one addressed
+        (``person.addressee``; an empty word says nothing). A holder the user named with more
+        words (``said``, in the conversation's own language): those words, each of the user's
+        own first-person forms turned to the addressee's in a reply. None: say the key."""
+        kinds = self._holder_spec()
+        if holder.get("kind") == kinds["speaker"]:
+            table = "user" if register == "reading" else "addressee"
+            word = self.person_form(table, case or "object")
+            if word is None:
+                raise RealizationError("undeclared_person_form:%s:%s" % (table, case))
+            return [word] if word else []
+        said = holder.get("said")
+        if not said or (value.get("lang") and value.get("lang") != self.lang.stem):
+            return None
+        words = str(said).split()
+        if register == "reading":
+            return words
+        user = {str(word).lower(): key for key, word in self.lang.person()["user"].items() if word}
+        out = []
+        for word in words:
+            key = user.get(word.lower())
+            if key is None:
+                out.append(word)
+                continue
+            form = self.person_form("addressee", key)
+            if form is None:
+                raise RealizationError("undeclared_person_form:addressee:%s" % key)
+            if form:
+                out.append(form)
+        return out
+
+    def honorific_stem(self, stem):
+        """The stem a predicate takes when it agrees with the one addressed (``person.honorific``:
+        the ending after a closed or an open final syllable), or None when none is declared."""
+        spec = self.lang.person().get("honorific")
+        if not isinstance(spec, dict) or not stem:
+            return None
+        last = stem[-1]
+        coda = batchim(last) if is_hangul(last) else ""
+        if coda and coda in spec.get("drop_codas", []):
+            return strip_batchim(stem) + spec["open"]
+        return stem + (spec["closed"] if coda else spec["open"])
+
     @staticmethod
     def _compound_separator():
         from marco.language.realizer.packs import meaning_declarations
@@ -88,7 +168,13 @@ class Grammar:
             return word[:1].upper() + word[1:]
         return word
 
-    def is_name(self, value, words):
+    def is_name(self, value, words, register=None):
+        holder = value.get("holder") if register is not None else None
+        if holder:
+            # The user and a holder said as the user named it take no determiner; a place does.
+            if holder.get("kind") == self._holder_spec()["place"]:
+                return bool(holder.get("said")) and not (value.get("lang") and value.get("lang") != self.lang.stem)
+            return True
         kind = value.get("kind")
         if kind == "agent":
             return True
@@ -328,10 +414,11 @@ class Grammar:
             raise RealizationError("undeclared_lexeme:%s" % lex)
         return entry
 
-    def verb_words(self, part, *, ending, tense, polarity, person, plural):
-        """Finite or non-finite verb words for one part."""
+    def verb_words(self, part, *, ending, tense, polarity, person, plural, stem=None):
+        """Finite or non-finite verb words for one part. ``stem``: a stem said in place of the
+        lexeme's own (its honorific), inflected as a regular stem."""
         entry = self.lexeme(part["verb"])
-        stem, kind = entry["verb"], entry.get("kind", "regular")
+        stem, kind = (stem, "regular") if stem else (entry["verb"], entry.get("kind", "regular"))
         negate = polarity is False and part.get("negation") and part.get("polarity") != "positive"
         if self.strategy("verbs") == "agreement":
             return self._english_verb(stem, part, ending=ending, tense=tense, negate=negate,
@@ -533,12 +620,22 @@ class ClauseRealizer:
             number_value = roles.get(part["number"])
             number = (number_value or {}).get("number") if isinstance(number_value, dict) else None
         english = self.g.strategy("case_marking") == "prepositions"
+        register = self._context["register"]
+        said = []
+        for index, (role, value) in enumerate(present):
+            # A role said before another in the same phrase stands juxtaposed to it.
+            case = (part.get("case") or "object") if index == len(present) - 1 else "juxtaposed"
+            said.append((role, value, self.g.entity_words(value, number, self._said(), register=register,
+                                                          case=case)))
+        if not any(words for _role, _value, words in said):
+            # Every holder of the phrase is one the language does not say (the one addressed,
+            # in a language that leaves the addressee unsaid): no word, no case marker.
+            return
         preposition = self.g.preposition(part["case"]) if english and part.get("case") else None
         if preposition:
             clause.add([preposition], kind="case", role=None)
-        for index, (role, value) in enumerate(present):
-            words = self.g.entity_words(value, number, self._said())
-            if english and part.get("det") and not self.g.is_name(value, words):
+        for role, value, words in said:
+            if english and part.get("det") and words and not self.g.is_name(value, words, register):
                 clause.add([self.g.decl["determiners"][part["det"]]], kind="det", role=role)
             for word in words:
                 clause.add([word], kind="np", role=role)
@@ -589,22 +686,39 @@ class ClauseRealizer:
         self._finish(clause, part, clause.last_text())
 
     def _verb(self, clause, part, roles):
+        joint = None
+        if part.get("predicate") and self._context["gap"]:
+            # A coordinated clause before the last: its verb joins the next clause with the declared
+            # ending, or is not said (the copula is gapped in _finish).
+            joint = self._context["gap"]
+            if not isinstance(joint, str):
+                return
         entry = self.g.lexeme(part["verb"])
         person, plural = part.get("person"), bool(part.get("plural"))
+        reading = self._context["register"] == "reading"
         if part.get("agree"):
             agreed = roles.get(part["agree"]) or {}
+            if self.g._person_kind(agreed):
+                # The user: the first person in the reading (as the user says it), else the one addressed.
+                person = person or ("first" if reading else "second")
             person = person or ("first" if agreed.get("person") == "first" else "third")
+        honor = None
+        if part.get("honor") and not reading and self.g._person_kind(roles.get(part["honor"]) or {}):
+            # A predicate that agrees with the one addressed takes the declared honorific stem.
+            honor = self.g.honorific_stem(entry.get("verb", ""))
+            if honor is None:
+                raise RealizationError("undeclared_honorific:%s" % part["verb"])
         if part.get("agree_number"):
             count = roles.get(part["agree_number"]) or {}
             plural = str(count.get("number")) != "1"
         if person is None:
             person = "third"
         polarity = self._polarity() if part.get("polarity") != "positive" else True
-        ending = self._ending(part)
+        ending = joint or self._ending(part)
         if ending is None and self.g.strategy("verbs") == "endings":
             raise RealizationError("verb_without_ending:%s" % part["verb"])
         words = self.g.verb_words(part, ending=ending, tense=self._tense(part), polarity=polarity,
-                                  person=person, plural=plural)
+                                  person=person, plural=plural, stem=honor)
         for index, word in enumerate(words):
             clause.add([word], kind="verb", role=None, bind=bool(part.get("bind")) and index == 0)
         del entry
@@ -615,7 +729,8 @@ class ClauseRealizer:
             return
         if isinstance(value, dict) and "text" in value:
             # A name is said in this language, then marked as the one meant.
-            text = self.g.ortho["word_separator"].join(self.g.entity_words(value))
+            text = self.g.ortho["word_separator"].join(
+                self.g.entity_words(value, register=self._context["register"], case="quote"))
         else:
             text = value.get("quote") if isinstance(value, dict) else str(value)
         clause.add([self.g.quote(text, part.get("marks", "double"))], kind="quote", role=part["quote"],
