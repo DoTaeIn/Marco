@@ -383,6 +383,12 @@
   ],
   "count_unknown": [
    {
+    "id": "unknown_place_exists_but",
+    "_about": "A vague count in a place: the things are there, how many cannot be known (도서관에는 머핀이 있지만 몇 개인지 알 수 없습니다).",
+    "when": {"polarity": false, "holder": {"owner": "place"}},
+    "parts": [{"np": ["owner"], "case": "locative_topic"}, {"np": ["item"], "case": "subject"}, {"verb": "exist", "ending": "contrast"}, {"lex": "how_many"}, {"lex": "piece", "cop": "whether"}, {"lex": "know_adn"}, {"lex": "way_n"}, {"verb": "not_exist", "predicate": true}]
+   },
+   {
     "id": "unknown_exists_but",
     "_about": "A vague count: the holder has the thing, how many cannot be known (우나는 배가 있지만 몇 개인지 알 수 없습니다).",
     "when": {"polarity": false},

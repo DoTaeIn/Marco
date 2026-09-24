@@ -221,6 +221,18 @@ def test_a_clause_that_leaves_the_user_unsaid_without_an_honorific_is_refused():
         assert any("unmarked_addressee" in str(error) for error in errors), errors
 
 
+@pytest.mark.parametrize("language,act,said", [
+    ("한국어", "record", "반영했습니다. 도서관에는 머핀이 있지만 몇 개인지 알 수 없습니다."),
+    ("한국어", "hold", "도서관에는 머핀이 있지만 몇 개인지 알 수 없습니다."),
+    ("english", "hold", "The library has some muffins, but I do not know how many."),
+])
+def test_a_vague_count_in_a_place_is_said_as_things_there(language, act, said):
+    subject, place = ("도서관 머핀", "도서관") if language == "한국어" else ("library muffins", "library")
+    result = {"status": "observed" if act == "record" else "unresolved", "answer": "ENGINE",
+              "meaning": {"act": act, "reason": "vague_count", "subject": subject, "holders": {place: {"kind": "place"}}}}
+    assert composed(result, language) == said
+
+
 def test_a_negated_honorific_predicate_takes_it_on_the_auxiliary():
     text = composed(KOREAN_USER[4][0], "한국어")
     assert "같지 않으십니다" in text and "같으시지" not in text

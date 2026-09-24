@@ -9,7 +9,7 @@ Per language (the language of the reply), 20 composed replies:
 
 * every reply round 5 changed how it is said (a plan or an expression declared in round 5:
   the corrected receiver, the Korean user in a total, a comparison or as a recipient, a
-  holder's count said with the existence verb), at most ``ROUND5`` of them;
+  holder's count said with the existence verb, a vague count in a place), at most ``ROUND5``;
 * then one reply of each act the sample does not have yet, drawn with a fixed seed;
 * then replies drawn with the same seed until there are 20.
 
@@ -35,7 +35,7 @@ ROUND5_CANDIDATES = frozenset({
     "same_count_addressee_alike", "same_count_addressee_not_alike", "transfer_receive_from",
     "heard_never_addressee", "known_never_came_up_addressee", "count_became_addressee",
     "withdrew_change_addressee", "withdrew_value_addressee", "count_topic_exist", "several_readings",
-    "reading_fits_none"})
+    "reading_fits_none", "unknown_place_exists_but"})
 
 
 def play(dialogues):
@@ -113,8 +113,9 @@ def table(report, chosen, dialogues, seed=SEED):
              "",
              "Per language: first every reply round 5 changed (marked *round 5*: a corrected receiver named, "
              "request G4-1; the Korean user said by the honorific in a total, a comparison or as a recipient, "
-             "request G4-2; a holder's count said with the existence verb), at most %d; then one reply of each "
-             "act not yet in the sample; then replies drawn at random (seed %d) until 20. The judgement column "
+             "request G4-2; a holder's count said with the existence verb; a vague count in a place), at most "
+             "%d; then one reply of each act not yet in the sample; then replies drawn at random (seed %d) until "
+             "20. The judgement column "
              "is empty on purpose: fluency is judged by a person, not counted." % (ROUND5, seed),
              "", "Regenerate: `KG_ENCODER=문자 python tests/language/w5_fluency.py`.", "",
              "| # | language | turn | act | round 5 | input | composed reply | judgement |",
@@ -125,7 +126,7 @@ def table(report, chosen, dialogues, seed=SEED):
             n += 1
             lines.append("| %d | %s | %s | %s | %s | %s | %s | |" % (
                 n, code, row["turn"], row["act"], "round 5" if round5(row) else "", cell(row["say"]),
-                cell(row["composed_text"])))
+                cell(row["report"].get("text") or row["composed_text"])))
     return "\n".join(lines) + "\n"
 
 
