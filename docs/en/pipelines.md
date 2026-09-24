@@ -1,9 +1,8 @@
 # The names of MARCO: ten pipelines and six structural concepts
 
-*2026-09-24. Two reference documents fix these names:
-[pipeline-names.md](../architecture/pipeline-names.md) for the processes and
-[structural-concepts.md](../architecture/structural-concepts.md) for the
-properties that emerge from how those processes are constrained. This article
+*2026-09-24. The reference that fixes these names is
+[naming.md](../architecture/naming.md): the processes, the reserved names, and
+the properties that emerge from how the processes are constrained. This article
 explains both to a reader, and says for each name what exists in the
 repository today and what is only planned.*
 
