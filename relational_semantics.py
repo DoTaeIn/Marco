@@ -705,6 +705,21 @@ class RelationalParser:
         shortest = int((self.possessor or {}).get("min_length", 1))
         return any(word.endswith(p) and len(word) - len(p) >= shortest for p in particles if p)
 
+    def _frame_words(self):
+        """The words the pack's frames are made of: every word of its examples outside their slots, and every
+        single word a declared variant reads as another (sent, lent, passed). A verb or a function word;
+        never a relation noun (G5 batch 4)."""
+        if getattr(self, "_frame_word_set", None) is None:
+            words = set()
+            for example in self.data.get("examples", []):
+                text = example.get("text", "")
+                for value in (example.get("slots") or {}).values():
+                    text = re.sub(r"(?<!\w)%s(?!\w)" % re.escape(str(value)), " ", text)
+                words |= {w.lower() for w in re.findall(r"[^\W\d_]+", text)}
+            words |= {source.lower() for source in self._variants() if " " not in source.strip()}
+            self._frame_word_set = words
+        return self._frame_word_set
+
     def _holder_forms(self, literal):
         """A holder said other than by its bare name, read as the key the facts use (가진쪽꼴).
 
@@ -809,7 +824,9 @@ class RelationalParser:
                 from numeral_semantics import parse_numeral
                 if spec.get("relation_nouns") is not None:
                     return words in spec["relation_nouns"]
+                # nor a word the pack's own frames are made of (my niece gave Ann: 'gave' is no relation)
                 return all(w.lower() not in self.outside_names and w.lower() not in self.pointers
+                           and w.lower() not in self._frame_words()
                            and not w.isdigit() and parse_numeral(w.lower(), self.data.get("numerals", {})) is None
                            and not self._ends_in_particle(w)
                            for w in words.split())

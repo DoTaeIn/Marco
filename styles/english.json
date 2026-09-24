@@ -612,6 +612,91 @@
     ]
    },
    {
+    "text": "the only thing Haru has is 18 marbles",
+    "_about": "G5 batch 4: the only-thing frames in full (a holder, a place that has, a place things are in; the count before or after the thing); this one: a holder, the count first.",
+    "slots": {
+     "owner": "Haru",
+     "n": "18",
+     "item": "marbles"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "the only thing the oak cupboard has is 18 marbles",
+    "_about": "G5 batch 4: the only-thing frame of a place that has, the count first.",
+    "slots": {
+     "owner": "oak cupboard",
+     "n": "18",
+     "item": "marbles"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "the only thing in the oak cupboard is 18 marbles",
+    "_about": "G5 batch 4: the only-thing frame of a place things are in, the count first.",
+    "slots": {
+     "owner": "oak cupboard",
+     "n": "18",
+     "item": "marbles"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
+    "text": "the only thing in the oak cupboard is marbles, 18 of them",
+    "_about": "G5 batch 4: the only-thing frame of a place things are in, the count after the thing.",
+    "slots": {
+     "owner": "oak cupboard",
+     "item": "marbles",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      [
+       "$owner",
+       "$item"
+      ],
+      "count",
+      "$n"
+     ]
+    },
+    "place": [
+     "owner"
+    ]
+   },
+   {
     "text": "Haru has 18 marbles and some pears",
     "slots": {
      "owner": "Haru",
@@ -1844,8 +1929,72 @@
     ]
    },
    {
+    "text": "how many marbles does Haru and Moru have together",
+    "slots": {
+     "item": "marbles",
+     "a": "Haru",
+     "b": "Moru"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": [
+         "$a",
+         "$b"
+        ],
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    },
+    "word_slots": [
+     "a",
+     "b"
+    ],
+    "_about": "G5 batch 4: a total asked with either present auxiliary before two conjoined holders (do, does: the closed class); speakers say both."
+   },
+   {
     "text": "how many marbles do the oak cupboard and the red trunk have together",
     "_about": "G5: the total of two places, each said with its article.",
+    "slots": {
+     "item": "marbles",
+     "a": "oak cupboard",
+     "b": "red trunk"
+    },
+    "meaning": {
+     "query": [
+      {
+       "total": {
+        "members": [
+         "$a",
+         "$b"
+        ],
+        "item": "$item"
+       },
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    },
+    "place": [
+     "a",
+     "b"
+    ]
+   },
+   {
+    "text": "how many marbles does the oak cupboard and the red trunk have together",
+    "_about": "G5 batch 4: the same with two places.",
     "slots": {
      "item": "marbles",
      "a": "oak cupboard",
@@ -4523,9 +4672,121 @@
   {
    "from": "a lot",
    "to": "some"
+  },
+  {
+   "from": "and that is the only thing he has",
+   "to": ""
+  },
+  {
+   "from": "and that is the only thing she has",
+   "to": ""
+  },
+  {
+   "from": "and that is the only thing it has",
+   "to": ""
+  },
+  {
+   "from": "and that is the only thing they have",
+   "to": ""
+  },
+  {
+   "from": "and that is the only thing I have",
+   "to": ""
+  },
+  {
+   "from": "and that is the only thing we have",
+   "to": ""
+  },
+  {
+   "from": "and that is the only thing you have",
+   "to": ""
+  },
+  {
+   "from": "and that's the only thing he has",
+   "to": ""
+  },
+  {
+   "from": "and that's the only thing she has",
+   "to": ""
+  },
+  {
+   "from": "and that's the only thing it has",
+   "to": ""
+  },
+  {
+   "from": "and that's the only thing they have",
+   "to": ""
+  },
+  {
+   "from": "and that's the only thing I have",
+   "to": ""
+  },
+  {
+   "from": "and that's the only thing we have",
+   "to": ""
+  },
+  {
+   "from": "and that's the only thing you have",
+   "to": ""
+  },
+  {
+   "from": "that is the only thing he has",
+   "to": ""
+  },
+  {
+   "from": "that is the only thing she has",
+   "to": ""
+  },
+  {
+   "from": "that is the only thing it has",
+   "to": ""
+  },
+  {
+   "from": "that is the only thing they have",
+   "to": ""
+  },
+  {
+   "from": "that is the only thing I have",
+   "to": ""
+  },
+  {
+   "from": "that is the only thing we have",
+   "to": ""
+  },
+  {
+   "from": "that is the only thing you have",
+   "to": ""
+  },
+  {
+   "from": "that's the only thing he has",
+   "to": ""
+  },
+  {
+   "from": "that's the only thing she has",
+   "to": ""
+  },
+  {
+   "from": "that's the only thing it has",
+   "to": ""
+  },
+  {
+   "from": "that's the only thing they have",
+   "to": ""
+  },
+  {
+   "from": "that's the only thing I have",
+   "to": ""
+  },
+  {
+   "from": "that's the only thing we have",
+   "to": ""
+  },
+  {
+   "from": "that's the only thing you have",
+   "to": ""
   }
  ],
- "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many). Being responsible for a count is having it (is/was responsible for = has/had). The discourse adverbs that place or source a statement but change no role are left out (after that, afterwards, apparently; too, also; by the way, to be exact, I just counted, not sure how many), and 'at all' after a zero. 'the same' before the counted noun names the kind already said and adds nothing (the same 4 pillows = 4 pillows). The negated possessive with 'any' or 'a single' is a zero count: doesn't have any / hasn't got any / doesn't have a single = has no (don't, haven't: have no). The indefinite article before a counted noun is the numeral one (got a fig = got 1 fig). The article is the numeral one only before a counted noun: the vague quantity idioms (a lot of, lots of, a few, a couple of, a bunch of, a handful of, a number of, a little, a bit of) say 'some', a count not known, and 'a total of' before a numeral adds nothing. The restrictive adverbs of a count (only, just, merely: the closed class) and a closing ', nothing else' / ', that's all' add nothing to the count and are read without (G5); 'at the' before a place reads as 'in the': a place holds what is at it.",
+ "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many). Being responsible for a count is having it (is/was responsible for = has/had). The discourse adverbs that place or source a statement but change no role are left out (after that, afterwards, apparently; too, also; by the way, to be exact, I just counted, not sure how many), and 'at all' after a zero. 'the same' before the counted noun names the kind already said and adds nothing (the same 4 pillows = 4 pillows). The negated possessive with 'any' or 'a single' is a zero count: doesn't have any / hasn't got any / doesn't have a single = has no (don't, haven't: have no). The indefinite article before a counted noun is the numeral one (got a fig = got 1 fig). The article is the numeral one only before a counted noun: the vague quantity idioms (a lot of, lots of, a few, a couple of, a bunch of, a handful of, a number of, a little, a bit of) say 'some', a count not known, and 'a total of' before a numeral adds nothing. The restrictive adverbs of a count (only, just, merely: the closed class) and a closing ', nothing else' / ', that's all' add nothing to the count and are read without (G5); 'at the' before a place reads as 'in the': a place holds what is at it. An only-count may close with 'that is / that's the only thing' and the personal pronoun with the form of have it agrees with ((and) that is the only thing he has, ... they have, ... I have; the closed class of the seven personal pronouns), read without, like ', nothing else' (G5 batch 4).",
  "이름답": {
   "heads": [
    "and what about",

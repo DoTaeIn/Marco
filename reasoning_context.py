@@ -352,6 +352,31 @@ class ReasoningContext:
                     return said, entry.get("까닭")
         return None
 
+    def _shaken_by_unread(self, parser, facts, changes):
+        """G5.3 safety: an earlier statement the reader left unread that names a holder this turn moved (every
+        word of the holder's state key, a plural s aside), said after the last observation that fixed that
+        holder's count; None when there is none. The event is kept, but what it makes the holder's count is not
+        said as known: it would rest on a statement that was never applied. A word said in the singular
+        names the key's plural when the pack declares that plural (명사수)."""
+        from relational_semantics import declared_plural
+        numeric = self._numeric_targets(parser)
+        number = getattr(parser, "noun_number", None) or {}
+        for change in changes:
+            subject = change.get("subject")
+            if not isinstance(subject, str) or change.get("predicate") not in numeric:
+                continue
+            words = [word.lower() for word in subject.split() if word]
+            pinned = max([fact["evidence"].get("turn", -1) for fact in facts
+                          if fact["triple"][0] == subject and fact["triple"][1] in numeric] or [-1])
+            turn = (change.get("evidence") or {}).get("turn", -1)
+            for entry in self.unread_guard + self.unread:
+                said = entry["text"].lower()
+                plurals = {(declared_plural(token, number) or "").lower() for token in re.findall(r"\w+", said)}
+                if (pinned < entry["at"] <= turn and self._counts_something(entry["text"], parser)
+                        and all(word in said or word in plurals for word in words)):
+                    return entry["text"]
+        return None
+
 
     @staticmethod
     def _못잰까닭(까닭):
@@ -2969,13 +2994,20 @@ class ReasoningContext:
         expected = sorted((new + r[0][len(old):] if r[1] in adds and r[0].split()[:1] == [old] else r[0], r[1], r[2])
                           for r in rows)
         tokens = source.split(" ")
+        forms = (parser.holder_forms or {}) if isinstance(getattr(parser, "holder_forms", None), dict) else {}
+        # the particle a holder word ends in, a case particle with its delimiter stacked (한테는) as one
         particles = sorted({p for group in parser.slot_particles for p in group} | set(parser.case_particles)
-                           | {row["from"] for row in parser.particle_variants if row.get("from")}, key=len, reverse=True)
+                           | {row["from"] for row in parser.particle_variants if row.get("from")}
+                           | set(forms.get("delimiters") or []), key=len, reverse=True)
         news = [request["new_said"], new] + [w for w, _n in parser._variant_literals(request["new_said"])]
         speaker = parser.speaker_placeholder
+        # the speaker said as the user says it (제가), not as the key with a particle (나가): W5-3 item 7
+        own = (forms.get("self") or {}).get("particle_forms") or {}
+        said_by_user = request["new_said"].strip(" ,.!?")
         attempts = []
         for start in range(len(tokens)):
-            for width in (1, 2, 3):
+            # the widest span first: a titled holder (다온 씨한테는) is replaced whole, title and particle
+            for width in (3, 2, 1):
                 span = tokens[start:start + width]
                 if len(span) < width:
                     continue
@@ -2991,6 +3023,10 @@ class ReasoningContext:
                         stem = next((word[:-len(p)] for p in particles if word.endswith(p) and len(word) > len(p)
                                      and self._holder_of(parser, word[:-len(p)], keys) == new), word)
                         word = stem + parser._particle_form(stem, tail) if tail in parser.particle_mates else stem + tail
+                    if new == speaker:
+                        users = [form for form, key_form in own.items() if key_form == word]
+                        if users:
+                            word = said_by_user if said_by_user in users else users[0]
                     attempts.append(" ".join(tokens[:start] + [word + trailing] + tokens[start + width:]))
         corrected = None
         for attempt in attempts:
@@ -3831,6 +3867,56 @@ class ReasoningContext:
                 and row.get("operation") in ("state_update", "quantity_update")]
         return None, mine
 
+    def _pointer_readings(self, parser, readings):
+        """G5.3: a statement whose holder is a person pointer (the pack's 사람지시어: he, she, 그분) is read
+        once for each person the conversation named who holds the same thing: never the speaker, never a place,
+        never a person the same statement names (a pointer and a name in one clause are two people). Each is one
+        more reading after the reader's own; the constraints choose, and two that fit are asked back."""
+        pointers = sorted({w.lower() for w in (parser.language_pack or {}).get("person_pointers") or [] if w},
+                          key=len, reverse=True)
+        if not pointers or not readings or not self.observations:
+            return []
+        facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        speaker = (parser.speaker_placeholder or "").lower()
+        places = {place for item in facts for place in item.get("places") or [] if isinstance(place, str)}
+        known = []
+        for item in facts:
+            name = item["triple"][0]
+            if isinstance(name, str) and name not in known:
+                known.append(name)
+        out = []
+        for reading in readings:
+            rows = reading["parsed"].get("facts", [])
+            for row in rows:
+                subject = row["triple"][0]
+                words = subject.split() if isinstance(subject, str) else []
+                pointer = next((w for w in pointers
+                                if [x.lower() for x in words[:len(w.split())]] == w.split()), None)
+                if pointer is None:
+                    continue
+                tail = " ".join(words[len(pointer.split()):])
+
+                def holder(name):
+                    return name[:-len(tail)].strip() if tail and name.endswith(" " + tail) else name.split()[0]
+                named = {holder(str(r["triple"][0])).lower() for r in rows
+                         if isinstance(r["triple"][0], str) and r["triple"][0] != subject}
+                for name in known:
+                    who = holder(name)
+                    if (tail and not name.endswith(" " + tail)) or not who or who.lower() == speaker \
+                            or who.lower() in named or who.lower() in pointers \
+                            or any(name == place or name.startswith(place + " ") for place in places):
+                        continue
+                    parsed = deepcopy(reading["parsed"])
+                    for fact in parsed.get("facts", []):
+                        if fact["triple"][0] == subject:
+                            fact["triple"][0] = name
+                    said = re.sub(r"(?<!\w)%s(?!\w)" % re.escape(pointer), who, reading["said"], count=1,
+                                  flags=re.IGNORECASE)
+                    out.append({**reading, "parsed": parsed,
+                                "said": said if said != reading["said"] else "%s [%s]" % (reading["said"], who)})
+                break
+        return out
+
     def _check_readings(self, parser, text, verbs, knowledge_path, first_failure=None):
         """G5.4 B: every reading the reader gives for a statement it could not apply (or left unread for a
         clause read two ways at one rank), each checked against the state (``READING_CONSTRAINTS``, in order).
@@ -3842,6 +3928,7 @@ class ReasoningContext:
         # the reader's readings that state something; with fewer than two there is nothing to choose between
         readings = [r for r in parser.readings(text, partial=True, events=True, repair=True, verbs=verbs)
                     if self._is_statement(r["parsed"])]
+        readings += self._pointer_readings(parser, readings)
         if first_failure is None and len(readings) < 1:
             return None
         if first_failure is not None and len(readings) < 2:
@@ -4041,7 +4128,9 @@ class ReasoningContext:
             before, after = canonical[:at], canonical[at + len(key):]
             if not (typed.startswith(before) and typed.endswith(after)) or len(typed) < len(before) + len(after):
                 continue
-            words = typed[len(before):len(typed) - len(after)].strip()
+            # a phrase variant dropped before the holder ("After that, my aunt") leaves its words in the
+            # difference; the holder's own words are those after the last comma
+            words = typed[len(before):len(typed) - len(after)].split(",")[-1].strip()
             if words and words != key and key in words and key in said and key not in places:
                 holders[key] = {"kind": "named", "said": words}
         if holders:
@@ -5039,6 +5128,13 @@ class ReasoningContext:
         # 이번 말이 바꾼 것만 말한다. 앞선 턴의 변화는 이미 말했다.
         this_turn = [change for change in changes
                      if (change.get("evidence") or {}).get("turn") == len(self.observations) - 1]
+        shaken = None if current["query"] else self._shaken_by_unread(parser, facts, this_turn)
+        if shaken is not None:
+            # G5.3 safety: kept, but a count resting on an unread statement is not said as fixed.
+            return {**result, "status": "unresolved",
+                    "meaning": {"act": "hold", "reason": "unread_event", "said": shaken},
+                    "answer": replies["unread_event"].format(**{"말": shaken}),
+                    "transitions": changes}
         spoken = parser.render_changes(this_turn) if "observed_state" in replies else ""
         settled = (replies["scope_settled"].format(**{"범위": 정해짐}) if 정해짐
                    else replies["filled_role"] if completion is not None

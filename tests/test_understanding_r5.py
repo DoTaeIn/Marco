@@ -437,3 +437,70 @@ def test_a_conversations_replies_do_not_depend_on_another_played_before_it():
 def test_a_statement_before_a_question_is_still_one_turn():
     _ctx, rows = play("english", ["Mira has 9 lanyards.", "Teo has 4 lanyards. How many lanyards does Teo have?"])
     assert (rows[-1].get("meaning") or {}).get("kind") != "queries"
+
+
+# G5.3 batch 4: the only-thing frames and closing tags in full, a pointer holder read as each person, and a
+# record that would rest on an unread statement ------------------------------------------------------------------
+def test_the_only_thing_frames_and_closing_tags_are_the_count():
+    assert facts_of("english", "The only thing Ulla has is 7 goblets.") == [("Ulla goblets", "count", "7")]
+    assert facts_of("english", "The only thing the boathouse has is 7 goblets.") == [
+        ("boathouse goblets", "count", "7")]
+    assert facts_of("english", "The only thing in the boathouse is 7 goblets.") == [
+        ("boathouse goblets", "count", "7")]
+    assert facts_of("english", "The only thing in the boathouse is goblets, 7 of them.") == [
+        ("boathouse goblets", "count", "7")]
+    assert facts_of("english", "Ulla only has 7 goblets, and that's the only thing she has.") == [
+        ("Ulla goblets", "count", "7")]
+
+
+def test_a_pointer_holder_is_never_a_person_the_same_statement_names():
+    _ctx, rows = play("english", ["Ulla has 7 goblets.", "Dr. Voss only has goblets, 3 of them.",
+                                  "He got two goblets from Ulla.", "How many goblets does Dr. Voss have?"])
+    assert rows[2]["status"] == "observed"
+    assert asserted_numbers(rows[3]["answer"]) == {5}
+
+
+def test_a_pointer_holder_that_could_be_two_people_is_asked_about():
+    _ctx, rows = play("english", ["I have 4 goblets.", "Ulla has 7 goblets.", "Brit has 6 goblets.",
+                                  "She passed 1 goblet to me."])
+    assert rows[3]["status"] == "unresolved"
+    assert rows[3]["meaning"]["reason"] == "ambiguous_reading" and len(rows[3]["meaning"]["readings"]) == 2
+
+
+def test_a_record_that_would_rest_on_an_unread_statement_does_not_say_the_count():
+    _ctx, rows = play("english", ["Ulla has 7 goblets.", "The boathouse has 2 goblets.",
+                                  "Ulla florped 3 goblets.", "Ulla left 1 goblet at the boathouse."])
+    assert rows[3]["status"] == "unresolved"
+    assert rows[3]["meaning"] == {"act": "hold", "reason": "unread_event", "said": "Ulla florped 3 goblets.",
+                                  "conversation": rows[3]["meaning"]["conversation"]}
+    _ctx, rows = play("english", ["Ulla has 7 goblets.", "The boathouse has 2 goblets.",
+                                  "Ulla florped 3 goblets.", "Ulla has 4 goblets.",
+                                  "Ulla left 1 goblet at the boathouse."])
+    assert rows[4]["status"] == "observed"
+
+
+def test_a_relation_giver_keeps_its_verb_and_its_recipient():
+    assert facts_of("english", "My aunt lent Ulla 3 goblets.") == [("Ulla goblets", "count_add", "3"),
+                                                                   ("aunt goblets", "count_remove", "3")]
+    assert facts_of("english", "My aunt Brit lent Ulla 3 goblets.") == [("Brit goblets", "count_remove", "3"),
+                                                                        ("Ulla goblets", "count_add", "3")]
+
+
+def test_a_corrected_recipient_is_written_back_in_the_users_own_forms():
+    # request W5-3 item 7: the title and the stacked particle of the replaced holder, and the speaker as said
+    ctx, rows = play("한국어", ["미소는 컵이 아홉 개 있어요.", "저는 컵이 여덟 개 있어요.", "해솔 씨는 컵이 열한 개 있어요.",
+                               "해솔 씨한테는 제가 컵 다섯 개를 보냈어요.", "아, 해솔 씨가 아니라 미소한테 줬어요."])
+    assert rows[-1]["status"] == "observed" and ctx.observations[3] == "미소한테는 제가 컵 다섯 개를 보냈어요."
+    ctx, rows = play("한국어", ["미소는 컵이 아홉 개 있어요.", "저는 컵이 여덟 개 있어요.", "해솔 씨는 컵이 열한 개 있어요.",
+                               "미소가 해솔 씨에게서 컵 한 개를 받았어요.", "아, 미소가 아니라 제가 받았어요."])
+    assert rows[-1]["status"] == "observed" and ctx.observations[3] == "제가 해솔 씨에게서 컵 한 개를 받았어요."
+
+
+def test_a_total_is_asked_with_either_present_auxiliary():
+    for aux in ("do", "does"):
+        _ctx, rows = play("english", ["Ulla has 7 goblets.", "Brit has 2 goblets.",
+                                      "How many goblets %s Ulla and Brit have in total?" % aux])
+        assert asserted_numbers(rows[2]["answer"]) == {9}
+        _ctx, rows = play("english", ["The boathouse has 7 goblets.", "The pantry has 2 goblets.",
+                                      "How many goblets %s the boathouse and the pantry have in total?" % aux])
+        assert asserted_numbers(rows[2]["answer"]) == {9}
