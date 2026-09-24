@@ -2436,6 +2436,10 @@ class ReasoningContext:
         updates = parser.data.get("numeric_updates", {})
         rules, rule_ids, evidence = [], [], []
         for row in transitions:
+            # a count said without its holder rests also on the statement that named the holder (G5)
+            named_in = str(((row.get("evidence") or {}).get("bound") or {}).get("named_in") or "").strip()
+            if named_in and named_in not in evidence:
+                evidence.append(named_in)
             text = ((row.get("evidence") or {}).get("source") or (row.get("evidence") or {}).get("text") or "").strip()
             if text and text not in evidence:
                 evidence.append(text)
@@ -3655,8 +3659,14 @@ class ReasoningContext:
                 else:
                     fits = []
                 if len(fits) == 1:
+                    # the statement that opened the count names its holder: an explanation cites it (G5)
+                    opener = next((f for f in seen if f["triple"][0] == fits[0]
+                                   and f["triple"][1] == "count_unknown"), None)
+                    named_in = ((opener or {}).get("evidence") or {})
+                    named_in = named_in.get("source") or named_in.get("text")
                     row = {**row, "triple": [fits[0]] + list(triple[1:]),
-                           "evidence": {**row["evidence"], "bound": {"from": subject, "to": fits[0]}}}
+                           "evidence": {**row["evidence"], "bound": {"from": subject, "to": fits[0],
+                                                                     **({"named_in": named_in} if named_in else {})}}}
             out.append(row)
         return out
 

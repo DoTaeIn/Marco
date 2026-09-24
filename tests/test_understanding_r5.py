@@ -521,9 +521,16 @@ def test_a_word_that_fills_no_slot_is_never_part_of_a_holder_or_a_thing():
     assert facts_of("한국어", "사서 해솔 씨가 지금은 컵 아홉 개를 보관하고 있어요.") == [("해솔 컵", "count", "9")]
 
 
+def test_a_why_cites_the_statement_that_named_the_holder_of_a_count_said_without_it():
+    _ctx, rows = play("english", ["I have 12 ladles.", "My neighbor Ivo has some ladles too.", "There are 6 ladles, by the way.",
+                                  "Ivo got 2 ladles from me.", "How many ladles does Ivo have now?",
+                                  "Why does Ivo have that many ladles now?"])
+    assert "My neighbor Ivo has some ladles too." in rows[-1]["meaning"]["evidence"]
+
+
 def test_a_correction_whose_amount_a_later_unread_statement_carried_is_asked_back():
     _ctx, rows = play("한국어", ["미소는 컵이 다섯 개 있어요.", "해솔은 컵이 아홉 개 있어요.", "미소가 해솔한테 컵 다섯 개를 쭈굴했어요.",
-                                "아, 다섯 개가 아니라 세 개였어요."])
+                                "참, 다섯 개가 아니라 두 개였어요."])
     assert rows[3]["status"] == "unresolved"
     assert rows[3]["meaning"]["reason"] == "reference_which_event"
     assert rows[3]["meaning"]["items"] == ["미소는 컵이 다섯 개 있어요.", "미소가 해솔한테 컵 다섯 개를 쭈굴했어요."]
