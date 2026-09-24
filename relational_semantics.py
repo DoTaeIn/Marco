@@ -742,13 +742,20 @@ class RelationalParser:
             for verb, agreed in (speaker.get("agreement") or {}).items():
                 def agree(m):
                     before = text[:m.start()].split()
-                    # after an auxiliary the verb is its infinitive (does I have): left as it is
-                    if before and before[-1].lower() in auxiliaries:
+                    # after an auxiliary the verb is its infinitive (does I have): left as it is; a
+                    # coordinated subject (Vera and I have) is plural and agrees as plural
+                    if before and before[-1].lower() in auxiliaries | {"and", "or", "nor"}:
                         return m.group(0)
                     return "%s %s" % (key, agreed)
                 new = re.sub(r"(?<![\w'])%s %s(?![\w'])" % (re.escape(key), re.escape(verb)), agree, text)
                 if new != text:
                     text, applied = new, applied + ["agreement"]
+        prefix_titles = spec.get("prefix_titles") or []
+        if prefix_titles:
+            # a title before a name (Mr. Lind, Dr. Moore) names the holder by the name
+            new = re.sub(r"(?<![\w'])(?:%s) (?=%s(?![\w]))" % (words_re(prefix_titles), name), "", text)
+            if new != text:
+                text, applied = new, applied + ["title"]
         possessives = spec.get("possessives") or []
         suffixes = spec.get("possessive_suffix") or []
         relation = r"[^\s,.!?]+"
@@ -822,9 +829,16 @@ class RelationalParser:
         role_titles = spec.get("role_titles") or []
         if role_titles:
             # one or two bare role words before a titled name (인턴 예린 씨, 택배 기사 은우 씨): the name
+            from numeral_semantics import parse_numeral
+            all_particles = {x for g in self.slot_particles for x in g} | set(self.case_particles)
+            units = set(self.counters.get("units", []))
+
             def unrole(m):
+                # a role word carries no particle at all, and is no numeral, counter or word outside names
                 roles = m.group(1).split()
-                if any(self._ends_in_particle(w) or w in role_titles for w in roles):
+                if any(any(w.endswith(x) for x in all_particles) or w in role_titles or w in units
+                       or w.lower() in self.outside_names
+                       or parse_numeral(w, self.data.get("numerals", {})) is not None for w in roles):
                     return m.group(0)
                 return m.group(2) + m.group(3)
             pattern = r"(?<!\S)((?:%s ){1,2})(%s)( ?(?:%s))(?=(?:%s)?(?![\w]))" % (
@@ -1161,6 +1175,11 @@ class RelationalParser:
         costs = spec.get("costs", {})
         if not costs or not literal.strip():
             return {}, {}, None
+        # A holder said by a declared holder form (제가, 예린 씨, 제 룸메이트) is repaired as the
+        # holder it names: the typed words are that holder's form, not words to move.
+        held, note = self._holder_forms(literal)
+        if note is not None and held != literal and not set(note["forms"]) <= {"numeral_article"}:
+            return self._repair(held)
         cached = self._repair_cache.get(literal)
         if cached is not None:
             return copy.deepcopy(cached)
@@ -2844,6 +2863,9 @@ class RelationalParser:
                 # seen its complete body.
                 return False
             if meanings(literal) or learned_event(literal) is not None:
+                return True
+            # A comma after words the phrase variants leave out (Actually, ...) ends a clause that says nothing.
+            if (literal + ",") in text and self._only_dropped_words(literal):
                 return True
             # A comma is a strong boundary: a conjunct that only a bounded
             # repair can place is still a complete clause. Weaker boundaries

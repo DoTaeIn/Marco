@@ -1979,6 +1979,8 @@ class Checker:
                 for token in h["tokens"]:
                     if re.search(re.escape(token) + r"(?:한테|에게|께)", text):
                         return "place_as_person"
+        if re.search(r"[가-힣](?:이|가) (?:\d+|[가-힣]+) ?(?:%s)(?:을|를)" % "|".join(KO_COUNTERS), text):
+            return "case_clash"                                   # 리본이 일곱 개를: subject and object at once
         for m in re.finditer(r"([가-힣])다고\s?(?:해요|합니다|해|하더라|했어요)", text):
             if _jong(m.group(1)) == 0 and m.group(1) not in "이":
                 return "hearsay_form"
@@ -2485,9 +2487,38 @@ def coverage(dialogues):
     return table, sub
 
 
+def recheck():
+    """Check every kept sample again with the checker as it is now; a scenario with a sample that fails is
+    taken out of the phrasing log (all its rows), so the next phrase run samples it again, at the same seeds.
+    Returns the scenario ids taken out."""
+    scenarios = {s["id"]: s for s in load_scenarios()}
+    rows, status = load_phrasings()
+    checker = Checker()
+    out = []
+    for sid, st in status.items():
+        if not st.get("dialogue"):
+            continue
+        scn, said = scenarios[sid], []
+        for turn in scn["turns"]:
+            if turn["n"] not in st["kept"]:
+                continue
+            text = [r for r in rows[sid] if r["n"] == turn["n"] and r["ok"]][-1]["text"]
+            ok, _reason = checker.check(scn, turn, text, said)
+            said.append(text)
+            if not ok:
+                out.append(sid)
+                break
+    if out:
+        drop = set(out)
+        lines = [line for line in PHRASINGS.read_text(encoding="utf-8").splitlines()
+                 if json.loads(line)["scenario"] not in drop]
+        PHRASINGS.write_text("".join(line + "\n" for line in lines), encoding="utf-8")
+    return out
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["scenarios", "phrase", "assemble", "coverage"])
+    parser.add_argument("command", choices=["scenarios", "phrase", "assemble", "coverage", "recheck"])
     parser.add_argument("--limit", type=int)
     parser.add_argument("--only", nargs="*")
     parser.add_argument("--cache", type=Path, help="another phrasing cache (a trial run), not phrasings.jsonl")
@@ -2505,6 +2536,9 @@ def main(argv=None):
         print("scenarios", len(out))
     elif args.command == "phrase":
         phrase(args.limit, args.only)
+    elif args.command == "recheck":
+        dropped = recheck()
+        print("taken out for a new sample: %d %s" % (len(dropped), " ".join(dropped)))
     elif args.command == "assemble":
         dialogues, split, problems = assemble()
         print("dialogues %d (build %d, check %d); rechecked problems %d" % (

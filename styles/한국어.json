@@ -624,6 +624,78 @@
     }
    },
    {
+    "text": "구슬 18개만 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "구슬 18개만 가지고 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
+    "text": "구슬 18개를 가지고 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "item": "구슬",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      "$item",
+      "count",
+      "$n"
+     ]
+    }
+   },
+   {
     "text": "구슬이 좀 있다",
     "inflection": {
      "stem": "있",

@@ -4317,9 +4317,19 @@
     "am": "is"
    },
    "reads_as": "I"
-  }
+  },
+  "prefix_titles": [
+   "Mr.",
+   "Ms.",
+   "Mrs.",
+   "Dr.",
+   "Mr",
+   "Ms",
+   "Mrs",
+   "Dr"
+  ]
  },
- "_가진쪽꼴": "How a holder is said when it is not a bare name, each form read as the one name the facts use. self: the English first-person pronoun in every case (I; me, myself) reads as I, the pack's 임자자리말; its contractions (I've, I'm, I'd) are said in full; a verb after it agrees as after any other holder, the examples being written in the third person (the verbs whose present differs by person: be, have, do, and the stative possession verbs own, hold, keep, carry), and in a question the auxiliary before it agrees the same way (do I have -> does I have). possessives + a relation noun + a name (close apposition: my cousin Ana, our aunt Ana, Lind's cousin Ana): the name is the holder (the possessive determiners of English, all of them, and the possessive 's). determiners: a determiner, a role of one to three words, a comma, a name and a comma (the courier, Lind, ...): the name is the holder. self_possessives: the user's own relation with no name after it (my sister) is the relation noun. numeral_articles: 'the' before a numeral (gave back the two figs) adds nothing to the amount, unless a partitive follows (the two of them). A name is a capitalised word; titles (Mr., Ms., Mrs., Dr.) are phrase variants.",
+ "_가진쪽꼴": "How a holder is said when it is not a bare name, each form read as the one name the facts use. self: the English first-person pronoun in every case (I; me, myself) reads as I, the pack's 임자자리말; its contractions (I've, I'm, I'd) are said in full; a verb after it agrees as after any other holder, the examples being written in the third person (the verbs whose present differs by person: be, have, do, and the stative possession verbs own, hold, keep, carry), and in a question the auxiliary before it agrees the same way (do I have -> does I have). possessives + a relation noun + a name (close apposition: my cousin Ana, our aunt Ana, Lind's cousin Ana): the name is the holder (the possessive determiners of English, all of them, and the possessive 's). determiners: a determiner, a role of one to three words, a comma, a name and a comma (the courier, Lind, ...): the name is the holder. self_possessives: the user's own relation with no name after it (my sister) is the relation noun. numeral_articles: 'the' before a numeral (gave back the two figs) adds nothing to the amount, unless a partitive follows (the two of them). A name is a capitalised word. prefix_titles: the English courtesy titles before a surname (Mr., Ms., Mrs., Dr., written with or without the period) name the holder by the surname.",
  "말자리": {
   "fronted_recipient": [
    "to"

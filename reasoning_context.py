@@ -2602,6 +2602,16 @@ class ReasoningContext:
                         "ok": False, "reason": "event_reference_" + key}])}
         if not candidates:
             return reply("reference_no_event", 말=said)
+        if len(candidates) > 1 and request["verb"] is None and candidates[-1] == len(self.observations) - 1:
+            # A contrast right after an event that carried the old amount, where every statement that
+            # carried it was an event, corrects the latest one: the narrative's latest change is what "it"
+            # was. Where a stated count also carried it, the contrast is asked back (G3.0 b).
+            def is_event(index):
+                read = self._read_source(parser, self.observations[index], events=True, verbs=verbs) or {}
+                rows = [fact for fact in read.get("facts", []) if fact["triple"][2] == request["old"]]
+                return bool(rows) and all(fact["triple"][1] in updates for fact in rows)
+            if all(is_event(index) for index in candidates):
+                candidates = candidates[-1:]
         if len(candidates) > 1:
             return reply("reference_which_event",
                          {"items": [self.observations[i].strip() for i in candidates]}, 말=said,
@@ -3412,7 +3422,14 @@ class ReasoningContext:
                         if name not in open_ and name not in known:
                             open_.append(name)
                 subject = triple[0]
-                if subject is None:
+                if subject is None and not open_:
+                    # No count is open: an amount said again without its holder in the same statement
+                    # (정확히는 열여섯 켤레입니다) is the count stated just before it in that statement.
+                    turn = (row.get("evidence") or {}).get("turn")
+                    same = [f for f in seen if (f.get("evidence") or {}).get("turn") == turn
+                            and f["triple"][1] in targets and isinstance(f["triple"][0], str)]
+                    fits = [same[-1]["triple"][0]] if same and str(same[-1]["triple"][2]) == str(triple[2]) else []
+                elif subject is None:
                     fits = open_[-1:]
                 elif isinstance(subject, str) and subject not in known and len(subject.split()) == 1:
                     fits = [name for name in open_ if subject in name.split()]
