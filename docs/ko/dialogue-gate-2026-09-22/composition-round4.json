@@ -1,0 +1,5152 @@
+{
+ "schema": "marco1-composition-gate-v1-report",
+ "meta": {
+  "sources": [
+   "data/benchmarks/dialogues_v1"
+  ],
+  "entry": "views.kgpack_ui.AppState.turn",
+  "report": "marco.language.realizer.last_report()",
+  "encoder": "문자",
+  "seconds": 226.7,
+  "code_commit": "79d13c9a873f8e96949f821a9e315e437c1925dd"
+ },
+ "dialogues": 52,
+ "turns": 340,
+ "total": {
+  "composed": 340,
+  "passed_through": 0,
+  "held": 0,
+  "spoken": 340,
+  "denominator": "every reply the UI returned for a dialogue turn (340); execution errors are not spoken replies and are listed apart (0)"
+ },
+ "by_act": {
+  "answer": {
+   "composed": 40,
+   "passed_through": 0,
+   "held": 0,
+   "spoken": 40
+  },
+  "hold": {
+   "composed": 163,
+   "passed_through": 0,
+   "held": 0,
+   "spoken": 163
+  },
+  "record": {
+   "composed": 117,
+   "passed_through": 0,
+   "held": 0,
+   "spoken": 117
+  },
+  "explain": {
+   "composed": 0,
+   "passed_through": 0,
+   "held": 0,
+   "spoken": 0
+  },
+  "ask": {
+   "composed": 11,
+   "passed_through": 0,
+   "held": 0,
+   "spoken": 11
+  },
+  "correct": {
+   "composed": 9,
+   "passed_through": 0,
+   "held": 0,
+   "spoken": 9
+  }
+ },
+ "by_language": {
+  "ko": {
+   "composed": 170,
+   "passed_through": 0,
+   "held": 0,
+   "spoken": 170
+  },
+  "en": {
+   "composed": 170,
+   "passed_through": 0,
+   "held": 0,
+   "spoken": 170
+  }
+ },
+ "reasons": {},
+ "execution_errors": [],
+ "not_composed": [],
+ "rows": [
+  {
+   "turn": "en-01#1",
+   "say": "Priya's got eight oranges and Tomas has three.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Tomas has 3 oranges.",
+   "composed_text": "Recorded. Tomas has 3 oranges.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-01#2",
+   "say": "Priya handed Tomas two of them.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Priya gave Tomas 2 oranges. Now Priya has 6 oranges and Tomas has 5.",
+   "composed_text": "Recorded. Priya gave Tomas 2 oranges. Now Priya has 6 oranges and Tomas has 5.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-01#3",
+   "say": "How many oranges does Tomas have at this point?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "5 oranges.",
+   "composed_text": "5 oranges.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-01#4",
+   "say": "And Priya?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "6 oranges.",
+   "composed_text": "6 oranges.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-01#5",
+   "say": "How many do the two of them have in total?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-02#1",
+   "say": "Ingrid has four notebooks.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-02#2",
+   "say": "Kofi has no notebooks at all.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-02#3",
+   "say": "Ingrid lent Kofi three notebooks.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Ingrid has 1 notebook and Kofi has 3.",
+   "composed_text": "Recorded. Now Ingrid has 1 notebook and Kofi has 3.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-02#4",
+   "say": "How many notebooks does Kofi have now?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "3 notebooks.",
+   "composed_text": "3 notebooks.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-02#5",
+   "say": "What color are Kofi's notebooks?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-02#6",
+   "say": "Why does Kofi have three?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-03#1",
+   "say": "Eight cookies belong to Marta, and Dev has five.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Dev has 5 cookies.",
+   "composed_text": "Recorded. Dev has 5 cookies.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-03#2",
+   "say": "To Dev, Marta passed three cookies.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Marta has 5 cookies and Dev has 8.",
+   "composed_text": "Recorded. Now Marta has 5 cookies and Dev has 8.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-03#3",
+   "say": "Wait, not three, it was two.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-03#4",
+   "say": "How many cookies has Dev got?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Wait, not three, it was two.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Wait, not three, it was two.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-03#5",
+   "say": "What about Marta?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-04#1",
+   "say": "Leila holds twelve reams of printer paper.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-04#2",
+   "say": "Oskar holds seven reams of the same paper.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-04#3",
+   "say": "Leila transferred four reams to Oskar.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-04#4",
+   "say": "How many reams does that colleague hold now?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I read \"How many reams does that colleague hold now\" as \"How many reams that does colleague hold now\". I could not read \"Leila transferred four reams to Oskar.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I read \"How many reams does that colleague hold now\" as \"How many reams that does colleague hold now\". I could not read \"Leila transferred four reams to Oskar.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-04#5",
+   "say": "I mean Oskar. How many does Oskar hold?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-04#6",
+   "say": "On which floor does Oskar work?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-05#1",
+   "say": "Mina has twenty stickers.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-05#2",
+   "say": "Juno owns fifteen stickers.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-05#3",
+   "say": "Mina gave six stickers to Juno.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Mina has 14 stickers and Juno has 21.",
+   "composed_text": "Recorded. Now Mina has 14 stickers and Juno has 21.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-05#4",
+   "say": "How many stickers does Juno have now?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "21 stickers.",
+   "composed_text": "21 stickers.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-05#5",
+   "say": "미나는 스티커가 몇 장 남았어?",
+   "language": "ko",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "'스티커'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "composed_text": "'스티커'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "en-05#6",
+   "say": "Who has more stickers now, Mina or Juno?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Juno has more stickers.",
+   "composed_text": "Juno has more stickers.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-06#1",
+   "say": "Anika has nine bagels.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-06#2",
+   "say": "Rafael has two bagels.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-06#3",
+   "say": "Anika gave Rafael four bagels.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Anika has 5 bagels and Rafael has 6.",
+   "composed_text": "Recorded. Now Anika has 5 bagels and Rafael has 6.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-06#4",
+   "say": "How many bagels does Rafael have?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "6 bagels.",
+   "composed_text": "6 bagels.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-06#5",
+   "say": "Sorry, Anika started with eleven, not nine.",
+   "language": "en",
+   "act": "correct",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I changed the amount in the same event \"Anika has nine bagels.\" from 9 to 11. No new event was added.",
+   "composed_text": "I changed the amount in the same event \"Anika has nine bagels.\" from 9 to 11. No new event was added.",
+   "reports": 1,
+   "realizer_acts": [
+    "CORRECT",
+    "REASSURE"
+   ]
+  },
+  {
+   "turn": "en-06#6",
+   "say": "So how many does Anika have now?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "7 bagels.",
+   "composed_text": "7 bagels.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-06#7",
+   "say": "Why does Anika end up with seven?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-07#1",
+   "say": "Sunita has five markers, Bram has two, and Yusuf has eight.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Bram has 2 markers and Yusuf has 8.",
+   "composed_text": "Recorded. Bram has 2 markers and Yusuf has 8.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-07#2",
+   "say": "Yusuf gave Bram four markers.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Yusuf has 4 markers and Bram has 6.",
+   "composed_text": "Recorded. Now Yusuf has 4 markers and Bram has 6.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-07#3",
+   "say": "How many does that kid have now?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I read \"How many does that kid have now\" as \"How many that does kid have now\". This conversation never mentioned kid's that. So I did not answer.",
+   "composed_text": "I read \"How many does that kid have now\" as \"How many that does kid have now\". This conversation never mentioned kid's that. So I did not answer.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "en-07#4",
+   "say": "Bram, I mean.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-07#5",
+   "say": "Write a short song about the markers.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-07#6",
+   "say": "How many markers does Sunita have?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Write a short song about the markers.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Write a short song about the markers.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-08#1",
+   "say": "The north warehouse holds thirty crates.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-08#2",
+   "say": "The south warehouse holds ten crates.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-08#3",
+   "say": "Twelve crates were moved from the north warehouse to the south warehouse.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now the north warehouse has 18 crates and the south warehouse has 22.",
+   "composed_text": "Recorded. Now the north warehouse has 18 crates and the south warehouse has 22.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-08#4",
+   "say": "How many crates are in the south warehouse now?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "22 crates.",
+   "composed_text": "22 crates.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-08#5",
+   "say": "And in the north warehouse?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-08#6",
+   "say": "Why does the south warehouse have twenty-two crates?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-09#1",
+   "say": "Clara has ten strawberries, Mateo has one, and Elif has two.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Mateo has 1 strawberries and Elif has 2.",
+   "composed_text": "Recorded. Mateo has 1 strawberries and Elif has 2.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-09#2",
+   "say": "Clara gave Mateo three strawberries.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Clara has 7 strawberries and Mateo has 4.",
+   "composed_text": "Recorded. Now Clara has 7 strawberries and Mateo has 4.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-09#3",
+   "say": "How many strawberries does Mateo have?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "4 strawberries.",
+   "composed_text": "4 strawberries.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-09#4",
+   "say": "No wait, Clara gave them to Elif, not Mateo.",
+   "language": "en",
+   "act": "correct",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I corrected \"Clara gave Mateo three strawberries.\" to \"Clara gave Elif three strawberries.\". Now Mateo has 1 strawberries and Elif has 5.",
+   "composed_text": "I corrected \"Clara gave Mateo three strawberries.\" to \"Clara gave Elif three strawberries.\". Now Mateo has 1 strawberries and Elif has 5.",
+   "reports": 1,
+   "realizer_acts": [
+    "CORRECT",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-09#5",
+   "say": "How many does Mateo have now?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "1 strawberries.",
+   "composed_text": "1 strawberries.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-09#6",
+   "say": "And Clara?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "7 strawberries.",
+   "composed_text": "7 strawberries.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-09#7",
+   "say": "Why does Mateo only have one?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-10#1",
+   "say": "Jonah had twelve eggs.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-10#2",
+   "say": "Jonah used three of them for an omelette.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "[held] I did not read \"Jonah used three of them for an omelette\" (rule \"Haru lost 2 marbles\"; skip 'for'; cost 3; bound 2).",
+   "composed_text": "[held] I did not read \"Jonah used three of them for an omelette\" (rule \"Haru lost 2 marbles\"; skip 'for'; cost 3; bound 2).",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "en-10#3",
+   "say": "Then Jonah gave two eggs to Farah.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-10#4",
+   "say": "How many eggs does Jonah have left?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Jonah used three of them for an omelette.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Jonah used three of them for an omelette.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-10#5",
+   "say": "How many eggs did Farah have before that?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find an earlier event that \"How many eggs did Farah have before that?\" refers to. So I did not correct anything.",
+   "composed_text": "I could not find an earlier event that \"How many eggs did Farah have before that?\" refers to. So I did not correct anything.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "en-10#6",
+   "say": "What is the reason Jonah has seven eggs?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-11#1",
+   "say": "Lukas has one pen.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-11#2",
+   "say": "Imani has seven pens.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-11#3",
+   "say": "Imani gave Lukas two pens, apparently.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Imani has 5 pens and Lukas has 3.",
+   "composed_text": "Recorded. Now Imani has 5 pens and Lukas has 3.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-11#4",
+   "say": "So how many pens does that one have?",
+   "language": "en",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I do not know who 'that one' refers to. Which of 'Lukas pens' and 'Imani pens' do you mean?",
+   "composed_text": "I do not know who 'that one' refers to. Which of 'Lukas pens' and 'Imani pens' do you mean?",
+   "reports": 1,
+   "realizer_acts": [
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-11#5",
+   "say": "Lukas is who I meant.",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "3 pens.",
+   "composed_text": "3 pens.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-11#6",
+   "say": "How many pens are left with Imani?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-12#1",
+   "say": "Sora has six bottles of juice.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-12#2",
+   "say": "Dami has two bottles of juice.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-12#3",
+   "say": "Sora gave Dami four bottles.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-12#4",
+   "say": "Not four, three.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-12#5",
+   "say": "How many bottles does Dami have at the moment?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Sora gave Dami four bottles.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Sora gave Dami four bottles.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-12#6",
+   "say": "소라는 주스가 몇 병 있어?",
+   "language": "ko",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "'주스'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "composed_text": "'주스'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "en-12#7",
+   "say": "Why did it turn out that way?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-13#1",
+   "say": "Theo has ten comic books.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-13#2",
+   "say": "Theo's cousin Rosa has three comic books.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-13#3",
+   "say": "How many comic books does Theo have?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "10 comic books.",
+   "composed_text": "10 comic books.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-13#4",
+   "say": "Where does Rosa keep them?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-13#5",
+   "say": "Rosa lent Theo two of hers.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Rosa gave Theo 2 comic books. Now Rosa has 1 comic book and Theo has 12.",
+   "composed_text": "Recorded. Rosa gave Theo 2 comic books. Now Rosa has 1 comic book and Theo has 12.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-13#6",
+   "say": "How many does Theo have now?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "12 comic books.",
+   "composed_text": "12 comic books.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-13#7",
+   "say": "What's the weather going to be like next week?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-14#1",
+   "say": "For the event, Anders is responsible for twenty-four chairs.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-14#2",
+   "say": "Mei is responsible for six chairs.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-14#3",
+   "say": "Anders handed eight chairs over to Mei.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I read \"Anders handed eight chairs over to Mei\" as \"Anders handed eight over chairs to Mei\". The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "I read \"Anders handed eight chairs over to Mei\" as \"Anders handed eight over chairs to Mei\". The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-14#4",
+   "say": "Mei then returned two chairs to Anders.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-14#5",
+   "say": "How many chairs is Mei responsible for?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-14#6",
+   "say": "Why is that number twelve?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-14#7",
+   "say": "What about Anders?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-15#1",
+   "say": "Omar has five tangerines.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-15#2",
+   "say": "Omar's friend Beatriz also has some tangerines.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Beatriz has some tangerines, but I do not know how many.",
+   "composed_text": "Recorded. Beatriz has some tangerines, but I do not know how many.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-15#3",
+   "say": "Omar gave Beatriz one tangerine.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-15#4",
+   "say": "How many tangerines does Omar have left?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Omar gave Beatriz one tangerine.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Omar gave Beatriz one tangerine.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-15#5",
+   "say": "How many does Beatriz have?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Omar gave Beatriz one tangerine.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Omar gave Beatriz one tangerine.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-15#6",
+   "say": "Where did that friend buy them?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-16#1",
+   "say": "Hugo has eighteen coins.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-16#2",
+   "say": "Ines has seven coins.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-16#3",
+   "say": "Hugo gave Ines five coins.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Hugo has 13 coins and Ines has 12.",
+   "composed_text": "Recorded. Now Hugo has 13 coins and Ines has 12.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-16#4",
+   "say": "Why does Ines have twelve?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-16#5",
+   "say": "Oh, it was six coins, not five.",
+   "language": "en",
+   "act": "correct",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I changed the amount in the same event \"Hugo gave Ines five coins.\" from 5 to 6. No new event was added. Now Hugo has 12 coins and Ines has 13.",
+   "composed_text": "I changed the amount in the same event \"Hugo gave Ines five coins.\" from 5 to 6. No new event was added. Now Hugo has 12 coins and Ines has 13.",
+   "reports": 1,
+   "realizer_acts": [
+    "CORRECT",
+    "REASSURE",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-16#6",
+   "say": "How many coins does Ines have now?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "13 coins.",
+   "composed_text": "13 coins.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-16#7",
+   "say": "And Hugo?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "12 coins.",
+   "composed_text": "12 coins.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-17#1",
+   "say": "Nadia has three plums and two peaches.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-17#2",
+   "say": "Pavel only has plums, six of them.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-17#3",
+   "say": "Pavel gave Nadia three plums.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Pavel has 3 plums and Nadia has 6.",
+   "composed_text": "Recorded. Now Pavel has 3 plums and Nadia has 6.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-17#4",
+   "say": "How many plums does Nadia have?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "6 plums.",
+   "composed_text": "6 plums.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-17#5",
+   "say": "And peaches?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-17#6",
+   "say": "How many plums are left for Pavel?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-18#1",
+   "say": "Mr. Osei has five toner cartridges.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-18#2",
+   "say": "Ms. Lindqvist has two.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-18#3",
+   "say": "Mr. Osei sent one cartridge to Ms. Lindqvist.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-18#4",
+   "say": "How many cartridges does that person have now?",
+   "language": "en",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I do not know who 'that person' refers to. Which of 'Osei toner cartridges' do you mean?",
+   "composed_text": "I do not know who 'that person' refers to. Which of 'Osei toner cartridges' do you mean?",
+   "reports": 1,
+   "realizer_acts": [
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-18#5",
+   "say": "Let me correct that: three cartridges were sent, not one.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find an earlier event that \"Let me correct that: three cartridges were sent, not one.\" refers to. So I did not correct anything.",
+   "composed_text": "I could not find an earlier event that \"Let me correct that: three cartridges were sent, not one.\" refers to. So I did not correct anything.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "en-18#6",
+   "say": "How many cartridges does Ms. Lindqvist have?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Mr. Osei sent one cartridge to Ms. Lindqvist.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Mr. Osei sent one cartridge to Ms. Lindqvist.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-18#7",
+   "say": "And how many does Mr. Osei have?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Mr. Osei sent one cartridge to Ms. Lindqvist.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Mr. Osei sent one cartridge to Ms. Lindqvist.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-19#1",
+   "say": "Ben has some balls. Six, to be exact.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-19#2",
+   "say": "Zara has zero balls.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-19#3",
+   "say": "Ben gave Zara two balls.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-19#4",
+   "say": "Zara then passed one of them to Kai.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The numbers do not add up: \"Zara then passed one of them to Kai.\". Please check it.",
+   "composed_text": "The numbers do not add up: \"Zara then passed one of them to Kai.\". Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-19#5",
+   "say": "How many balls does Zara have?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Ben gave Zara two balls.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Ben gave Zara two balls.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-19#6",
+   "say": "How many balls does Kai have in total?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-19#7",
+   "say": "How many are left with Ben?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-20#1",
+   "say": "Yuna has eleven candies.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-20#2",
+   "say": "Jun has four candies.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-20#3",
+   "say": "Yuna gave Jun three candies.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Yuna has 8 candies and Jun has 7.",
+   "composed_text": "Recorded. Now Yuna has 8 candies and Jun has 7.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-20#4",
+   "say": "How many candies does Jun have?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "7 candies.",
+   "composed_text": "7 candies.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-20#5",
+   "say": "준이는 왜 사탕이 일곱 개야?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-20#6",
+   "say": "What about Yuna?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-21#1",
+   "say": "Leo has five chocolates and Ava has ten.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Ava has 10 chocolates.",
+   "composed_text": "Recorded. Ava has 10 chocolates.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-21#2",
+   "say": "Leo gave Ava two chocolates.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Leo has 3 chocolates and Ava has 12.",
+   "composed_text": "Recorded. Now Leo has 3 chocolates and Ava has 12.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-21#3",
+   "say": "How many does Ava have?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "12 chocolates.",
+   "composed_text": "12 chocolates.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-21#4",
+   "say": "No, it was the other way around: Ava gave Leo two.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-21#5",
+   "say": "How many chocolates does Leo have now?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"No, it was the other way around: Ava gave Leo two.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"No, it was the other way around: Ava gave Leo two.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-21#6",
+   "say": "Why does Leo have seven?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-21#7",
+   "say": "And Ava?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"No, it was the other way around: Ava gave Leo two.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"No, it was the other way around: Ava gave Leo two.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-22#1",
+   "say": "Ms. Tanaka keeps fourteen library books.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-22#2",
+   "say": "Mr. Adeyemi keeps six library books.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-22#3",
+   "say": "Ms. Tanaka passed five books to Mr. Adeyemi.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-22#4",
+   "say": "How many books does that librarian keep now?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I read \"How many books does that librarian keep now\" as \"How many books that does librarian keep now\". I could not read \"Ms. Tanaka passed five books to Mr. Adeyemi.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I read \"How many books does that librarian keep now\" as \"How many books that does librarian keep now\". I could not read \"Ms. Tanaka passed five books to Mr. Adeyemi.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-22#5",
+   "say": "Mr. Adeyemi is the one I mean.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-22#6",
+   "say": "Please summarize the plot of these books.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-22#7",
+   "say": "How many books remain with Ms. Tanaka?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-23#1",
+   "say": "I have eight gummies.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-23#2",
+   "say": "My roommate has three gummies.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-23#3",
+   "say": "I gave my roommate two gummies.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now you have 6 gummies and roommate has 5.",
+   "composed_text": "Recorded. Now you have 6 gummies and roommate has 5.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-23#4",
+   "say": "How many gummies do I have now?",
+   "language": "en",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "6 gummies.",
+   "composed_text": "6 gummies.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-23#5",
+   "say": "And my roommate?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-23#6",
+   "say": "What flavor does my roommate like?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-23#7",
+   "say": "Why do I only have six?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-24#1",
+   "say": "Ella has ten cards.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-24#2",
+   "say": "Sami has five cards.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-24#3",
+   "say": "Ella gave Sami three cards.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded. Now Ella has 7 cards and Sami has 8.",
+   "composed_text": "Recorded. Now Ella has 7 cards and Sami has 8.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-24#4",
+   "say": "Sami gave one card back to Ella.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-24#5",
+   "say": "How many cards does Ella have?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Sami gave one card back to Ella.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Sami gave one card back to Ella.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-24#6",
+   "say": "Hold on, Sami started with four cards, not five.",
+   "language": "en",
+   "act": "correct",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I changed the amount in the same event \"Sami has five cards.\" from 5 to 4. No new event was added.",
+   "composed_text": "I changed the amount in the same event \"Sami has five cards.\" from 5 to 4. No new event was added.",
+   "reports": 1,
+   "realizer_acts": [
+    "CORRECT",
+    "REASSURE"
+   ]
+  },
+  {
+   "turn": "en-24#7",
+   "say": "How many cards does Sami have now?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Sami gave one card back to Ella.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Sami gave one card back to Ella.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-24#8",
+   "say": "How many does Ella have at this point?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Sami gave one card back to Ella.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Sami gave one card back to Ella.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-24#9",
+   "say": "Why does Sami have six?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-24#10",
+   "say": "How many cards do they have combined?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-25#1",
+   "say": "Iris has three loaves of bread.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-25#2",
+   "say": "Malik has eight loaves of bread.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-25#3",
+   "say": "Malik gave Iris two loaves.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-25#4",
+   "say": "How many loaves does that person have?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Malik gave Iris two loaves.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Malik gave Iris two loaves.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-25#5",
+   "say": "It's Iris. How many does Iris have?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-25#6",
+   "say": "And Malik?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-25#7",
+   "say": "What kind of bread does Malik have?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-26#1",
+   "say": "The courier, Mr. Novak, is carrying twenty parcels.",
+   "language": "en",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "Recorded.",
+   "composed_text": "Recorded.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "en-26#2",
+   "say": "Mr. Novak left six parcels at the corner shop.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "The new statement does not fit what was already recorded. Please check it.",
+   "composed_text": "The new statement does not fit what was already recorded. Please check it.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-26#3",
+   "say": "Correction: seven parcels were left, not six.",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find an earlier event that \"Correction: seven parcels were left, not six.\" refers to. So I did not correct anything.",
+   "composed_text": "I could not find an earlier event that \"Correction: seven parcels were left, not six.\" refers to. So I did not correct anything.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "en-26#4",
+   "say": "How many parcels does Mr. Novak have left?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not read \"Mr. Novak left six parcels at the corner shop.\" yet. So I did not fix the current value. Please say it another way.",
+   "composed_text": "I could not read \"Mr. Novak left six parcels at the corner shop.\" yet. So I did not fix the current value. Please say it another way.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-26#5",
+   "say": "How many parcels did the corner shop have before?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "composed_text": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "en-26#6",
+   "say": "Why does Mr. Novak have thirteen parcels?",
+   "language": "en",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "[held] I did not read \"Why does Mr.\" (rule \"why\"; skip 'does'; cost 3; bound 2).",
+   "composed_text": "[held] I did not read \"Why does Mr.\" (rule \"why\"; skip 'does'; cost 3; bound 2).",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-01#1",
+   "say": "태오는 귤을 여섯 개, 은채는 세 개 가지고 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 태오 귤은 6개, 은채는 3개입니다.",
+   "composed_text": "반영했습니다. 태오 귤은 6개, 은채는 3개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-01#2",
+   "say": "태오가 은채한테 귤 두 개를 줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 태오 귤은 4개, 은채는 5개입니다.",
+   "composed_text": "반영했습니다. 이제 태오 귤은 4개, 은채는 5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-01#3",
+   "say": "은채는 이제 귤이 몇 개야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "5개입니다.",
+   "composed_text": "5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-01#4",
+   "say": "태오는?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "4개입니다.",
+   "composed_text": "4개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-01#5",
+   "say": "둘이 합치면 몇 개야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "은채와 태오는 합쳐서 귤 9개입니다.",
+   "composed_text": "은채와 태오는 합쳐서 귤 9개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-02#1",
+   "say": "하린이는 연필을 네 자루 갖고 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-02#2",
+   "say": "도윤이는 연필이 한 자루도 없어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-02#3",
+   "say": "하린이가 도윤이에게 연필 세 자루를 빌려줬어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 하린 연필은 1개, 도윤은 3개입니다.",
+   "composed_text": "반영했습니다. 이제 하린 연필은 1개, 도윤은 3개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-02#4",
+   "say": "도윤이는 지금 연필이 몇 자루예요?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "3개입니다.",
+   "composed_text": "3개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-02#5",
+   "say": "도윤이 연필은 무슨 색이에요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-02#6",
+   "say": "왜 도윤이가 세 자루를 갖게 됐어요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-03#1",
+   "say": "사탕 여덟 개를 시우가 가지고 있고, 나은이는 사탕이 다섯 개 있어.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "[보류] \"사탕 여덟 개를 시우가 가지고 있고\"를 읽지 않았습니다 (규칙 \"구슬 18개를 가지고 있다\", '시우가' 건너뛰기, 비용 3, 한도 2).",
+   "composed_text": "[보류] \"사탕 여덟 개를 시우가 가지고 있고\"를 읽지 않았습니다 (규칙 \"구슬 18개를 가지고 있다\", '시우가' 건너뛰기, 비용 3, 한도 2).",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-03#2",
+   "say": "나은이한테 시우가 사탕 세 개를 줬어.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "composed_text": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-03#3",
+   "say": "아, 세 개가 아니라 두 개였어.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"아, 세 개가 아니라 두 개였어.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "composed_text": "\"아, 세 개가 아니라 두 개였어.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-03#4",
+   "say": "나은이 사탕은 몇 개야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"사탕 여덟 개를 시우가 가지고 있고, 나은이는 사탕이 다섯 개 있어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"사탕 여덟 개를 시우가 가지고 있고, 나은이는 사탕이 다섯 개 있어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-03#5",
+   "say": "그럼 시우는?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-04#1",
+   "say": "건우 씨에게 복사 용지 열두 묶음이 있습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 건우 복사 용지는 12개입니다.",
+   "composed_text": "반영했습니다. 건우 복사 용지는 12개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-04#2",
+   "say": "예린 씨에게는 같은 용지가 일곱 묶음 있습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-04#3",
+   "say": "건우 씨가 예린 씨에게 네 묶음을 넘겼습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 건우 복사 용지는 8개, 예린 용지는 11개입니다.",
+   "composed_text": "반영했습니다. 이제 건우 복사 용지는 8개, 예린 용지는 11개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-04#4",
+   "say": "그분한테는 이제 몇 묶음이 있습니까?",
+   "language": "ko",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "'그분'이 누구를 가리키는지 알지 못합니다. '예린', '건우', '예린 용지', '건우 복사 용지' 가운데 누구인가요?",
+   "composed_text": "'그분'이 누구를 가리키는지 알지 못합니다. '예린', '건우', '예린 용지', '건우 복사 용지' 가운데 누구인가요?",
+   "reports": 1,
+   "realizer_acts": [
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-04#5",
+   "say": "예린 씨 말입니다. 몇 묶음입니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-04#6",
+   "say": "예린 씨 자리는 몇 층입니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-05#1",
+   "say": "재민이는 스티커가 스무 장 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-05#2",
+   "say": "소율이는 스티커 열다섯 장을 갖고 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-05#3",
+   "say": "재민이가 소율이한테 여섯 장 줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 재민이 소율에게 스티커 6개를 줬습니다. 이제 재민 스티커는 14개, 소율은 21개입니다.",
+   "composed_text": "반영했습니다. 재민이 소율에게 스티커 6개를 줬습니다. 이제 재민 스티커는 14개, 소율은 21개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-05#4",
+   "say": "소율이 스티커 지금 몇 장이야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "21개입니다.",
+   "composed_text": "21개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-05#5",
+   "say": "How many stickers does Jaemin have now?",
+   "language": "en",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what 'stickers' refers to in this conversation.",
+   "composed_text": "I could not find what 'stickers' refers to in this conversation.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-05#6",
+   "say": "둘 중에 누가 더 많아?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-06#1",
+   "say": "다온이한테 쿠키가 아홉 개 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-06#2",
+   "say": "현서한테는 쿠키가 두 개 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-06#3",
+   "say": "다온이가 현서한테 쿠키를 네 개 나눠 줬어요.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-06#4",
+   "say": "현서는 쿠키가 몇 개예요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"다온이가 현서한테 쿠키를 네 개 나눠 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"다온이가 현서한테 쿠키를 네 개 나눠 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-06#5",
+   "say": "잠깐, 다온이가 처음에 가진 건 아홉 개가 아니라 열한 개였어요.",
+   "language": "ko",
+   "act": "correct",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "같은 사건 \"다온이한테 쿠키가 아홉 개 있어요.\"의 수량을 9개에서 11개로 고쳤습니다. 새 사건은 더하지 않았습니다.",
+   "composed_text": "같은 사건 \"다온이한테 쿠키가 아홉 개 있어요.\"의 수량을 9개에서 11개로 고쳤습니다. 새 사건은 더하지 않았습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "CORRECT",
+    "REASSURE"
+   ]
+  },
+  {
+   "turn": "ko-06#6",
+   "say": "그럼 다온이는 지금 몇 개예요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"다온이가 현서한테 쿠키를 네 개 나눠 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"다온이가 현서한테 쿠키를 네 개 나눠 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-06#7",
+   "say": "왜 일곱 개예요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-07#1",
+   "say": "채원이는 공책 다섯 권, 주안이는 두 권, 서진이는 여덟 권이 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 채원 공책은 5개, 주안은 2개, 서진은 8개입니다.",
+   "composed_text": "반영했습니다. 채원 공책은 5개, 주안은 2개, 서진은 8개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-07#2",
+   "say": "서진이가 주안이한테 공책 네 권을 줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 서진 공책은 4개, 주안은 6개입니다.",
+   "composed_text": "반영했습니다. 이제 서진 공책은 4개, 주안은 6개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-07#3",
+   "say": "걔는 지금 몇 권 있어?",
+   "language": "ko",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "'걔'가 누구를 가리키는지 알지 못합니다. '주안 공책', '주안', '서진 공책', '서진', '채원 공책', '채원' 가운데 누구인가요?",
+   "composed_text": "'걔'가 누구를 가리키는지 알지 못합니다. '주안 공책', '주안', '서진 공책', '서진', '채원 공책', '채원' 가운데 누구인가요?",
+   "reports": 1,
+   "realizer_acts": [
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-07#4",
+   "say": "주안이 말한 거야.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-07#5",
+   "say": "이 공책들로 시 한 편 써 줘.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-07#6",
+   "say": "채원이는 몇 권이야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "5개입니다.",
+   "composed_text": "5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-08#1",
+   "say": "본관 창고에 상자가 서른 개 있습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-08#2",
+   "say": "별관 창고에는 상자가 열 개 있습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-08#3",
+   "say": "본관 창고에서 별관 창고로 상자 열두 개를 옮겼습니다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"옮겼습니다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "composed_text": "\"옮겼습니다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-08#4",
+   "say": "별관 창고의 상자는 모두 몇 개입니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"별관 창고의 상자는 모두 몇 개입니까?\"는 반영하지 않았습니다. 가장 가까운 읽기가 \"모두\"를 바꿉니다.",
+   "composed_text": "\"별관 창고의 상자는 모두 몇 개입니까?\"는 반영하지 않았습니다. 가장 가까운 읽기가 \"모두\"를 바꿉니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-08#5",
+   "say": "본관 창고는 어떻습니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-08#6",
+   "say": "별관 창고 상자가 왜 스물두 개가 되었습니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-09#1",
+   "say": "라온이는 딸기가 열 개, 유나는 한 개, 한결이는 두 개 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 유나 딸기는 1개, 한결은 2개입니다.",
+   "composed_text": "반영했습니다. 유나 딸기는 1개, 한결은 2개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-09#2",
+   "say": "라온이가 유나한테 딸기 세 개 줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 라온 딸기는 7개, 유나는 4개입니다.",
+   "composed_text": "반영했습니다. 이제 라온 딸기는 7개, 유나는 4개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-09#3",
+   "say": "유나는 딸기 몇 개야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "4개입니다.",
+   "composed_text": "4개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-09#4",
+   "say": "아니다, 유나가 아니라 한결이한테 준 거였어.",
+   "language": "ko",
+   "act": "correct",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"라온이가 유나한테 딸기 세 개 줬어.\"를 \"라온이가 한결이한테 딸기 세 개 줬어.\"로 고쳤습니다. 이제 유나 딸기는 1개, 한결은 5개입니다.",
+   "composed_text": "\"라온이가 유나한테 딸기 세 개 줬어.\"를 \"라온이가 한결이한테 딸기 세 개 줬어.\"로 고쳤습니다. 이제 유나 딸기는 1개, 한결은 5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "CORRECT",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-09#5",
+   "say": "유나는 지금 몇 개야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "1개입니다.",
+   "composed_text": "1개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-09#6",
+   "say": "라온이는?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "7개입니다.",
+   "composed_text": "7개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-09#7",
+   "say": "왜 유나는 한 개밖에 없어?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-10#1",
+   "say": "윤재에게 달걀이 열두 개 있다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-10#2",
+   "say": "윤재는 그중 세 개로 달걀말이를 만들었다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"만들었다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "composed_text": "\"만들었다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-10#3",
+   "say": "그리고 보람에게 두 개를 주었다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"주었다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "composed_text": "\"주었다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-10#4",
+   "say": "윤재에게 남은 달걀은 몇 개인가?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"윤재는 그중 세 개로 달걀말이를 만들었다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"윤재는 그중 세 개로 달걀말이를 만들었다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-10#5",
+   "say": "보람은 원래 달걀을 몇 개 가지고 있었나?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"윤재는 그중 세 개로 달걀말이를 만들었다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"윤재는 그중 세 개로 달걀말이를 만들었다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-10#6",
+   "say": "윤재의 달걀이 일곱 개가 된 까닭은 무엇인가?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-11#1",
+   "say": "세아는 볼펜이 한 자루 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-11#2",
+   "say": "로운이는 볼펜을 일곱 자루 가지고 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-11#3",
+   "say": "로운이가 세아한테 볼펜 두 자루를 줬대요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 로운 볼펜은 5개, 세아는 3개입니다.",
+   "composed_text": "반영했습니다. 이제 로운 볼펜은 5개, 세아는 3개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-11#4",
+   "say": "그 친구는 이제 몇 자루예요?",
+   "language": "ko",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "'그'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "composed_text": "'그'가 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-11#5",
+   "say": "세아요.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-11#6",
+   "say": "로운이는 몇 자루 남았어요?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "5개입니다.",
+   "composed_text": "5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-12#1",
+   "say": "가온이는 우유 여섯 병을 가지고 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-12#2",
+   "say": "누리는 우유가 두 병 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-12#3",
+   "say": "가온이가 누리한테 우유 네 병을 줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 가온 우유는 2개, 누리는 6개입니다.",
+   "composed_text": "반영했습니다. 이제 가온 우유는 2개, 누리는 6개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-12#4",
+   "say": "네 병 말고 세 병이야.",
+   "language": "ko",
+   "act": "correct",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "같은 사건 \"가온이가 누리한테 우유 네 병을 줬어.\"의 수량을 4개에서 3개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 가온 우유는 3개, 누리는 5개입니다.",
+   "composed_text": "같은 사건 \"가온이가 누리한테 우유 네 병을 줬어.\"의 수량을 4개에서 3개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 가온 우유는 3개, 누리는 5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "CORRECT",
+    "REASSURE",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-12#5",
+   "say": "누리한테 지금 우유 몇 병 있어?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "5개입니다.",
+   "composed_text": "5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-12#6",
+   "say": "And how many bottles of milk does Gaon have?",
+   "language": "en",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "I could not find what 'bottles' refers to in this conversation.",
+   "composed_text": "I could not find what 'bottles' refers to in this conversation.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-12#7",
+   "say": "왜 그렇게 된 거야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-13#1",
+   "say": "이안이는 만화책을 열 권 갖고 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-13#2",
+   "say": "이안이 동생 로하는 만화책이 세 권 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-13#3",
+   "say": "이안이는 몇 권이 있지?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "composed_text": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-13#4",
+   "say": "로하는 그 책들을 어디에 뒀어?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-13#5",
+   "say": "로하가 이안이한테 두 권을 빌려줬어.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "composed_text": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-13#6",
+   "say": "이제 이안이는 몇 권?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"로하가 이안이한테 두 권을 빌려줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"로하가 이안이한테 두 권을 빌려줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-13#7",
+   "say": "다음 주 날씨 알려 줘.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-14#1",
+   "say": "행사 준비로 수빈 님이 의자 스물네 개를 맡고 있습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-14#2",
+   "say": "태린 님은 의자 여섯 개를 맡고 있습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-14#3",
+   "say": "수빈 님이 태린 님에게 의자 여덟 개를 넘겼습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 수빈 의자는 16개, 태린은 14개입니다.",
+   "composed_text": "반영했습니다. 이제 수빈 의자는 16개, 태린은 14개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-14#4",
+   "say": "태린 님이 다시 수빈 님에게 두 개를 돌려주었습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 태린이 수빈에게 의자 2개를 줬습니다. 이제 태린 의자는 12개, 수빈은 18개입니다.",
+   "composed_text": "반영했습니다. 태린이 수빈에게 의자 2개를 줬습니다. 이제 태린 의자는 12개, 수빈은 18개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-14#5",
+   "say": "태린 님은 의자를 몇 개 맡고 있습니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 물음의 근거를 그래프에서 찾지 못했습니다.",
+   "composed_text": "이 물음의 근거를 그래프에서 찾지 못했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-14#6",
+   "say": "왜 열두 개입니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-14#7",
+   "say": "수빈 님은요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-15#1",
+   "say": "도하는 귤이 다섯 개 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-15#2",
+   "say": "도하 친구 시온이도 귤을 가지고 있어요.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-15#3",
+   "say": "도하가 시온이에게 귤 한 개를 줬어요.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "composed_text": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-15#4",
+   "say": "도하는 귤이 몇 개 남았어요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"도하 친구 시온이도 귤을 가지고 있어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"도하 친구 시온이도 귤을 가지고 있어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-15#5",
+   "say": "시온이는 귤이 몇 개예요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"도하가 시온이에게 귤 한 개를 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"도하가 시온이에게 귤 한 개를 줬어요.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-15#6",
+   "say": "그 아이 귤은 어디서 샀어요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-16#1",
+   "say": "건희는 동전 열여덟 개가 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 건희 동전은 18개입니다.",
+   "composed_text": "반영했습니다. 건희 동전은 18개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-16#2",
+   "say": "아름이는 동전 일곱 개가 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 아름 동전은 7개입니다.",
+   "composed_text": "반영했습니다. 아름 동전은 7개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-16#3",
+   "say": "건희가 아름이한테 동전 다섯 개를 줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 건희 동전은 13개, 아름은 12개입니다.",
+   "composed_text": "반영했습니다. 이제 건희 동전은 13개, 아름은 12개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-16#4",
+   "say": "왜 아름이가 열두 개야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-16#5",
+   "say": "아, 다섯 개가 아니라 여섯 개 줬어.",
+   "language": "ko",
+   "act": "correct",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "같은 사건 \"건희가 아름이한테 동전 다섯 개를 줬어.\"의 수량을 5개에서 6개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 건희 동전은 12개, 아름은 13개입니다.",
+   "composed_text": "같은 사건 \"건희가 아름이한테 동전 다섯 개를 줬어.\"의 수량을 5개에서 6개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 건희 동전은 12개, 아름은 13개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "CORRECT",
+    "REASSURE",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-16#6",
+   "say": "아름이 동전은 이제 몇 개야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "13개입니다.",
+   "composed_text": "13개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-16#7",
+   "say": "건희는?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "12개입니다.",
+   "composed_text": "12개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-17#1",
+   "say": "예준이는 자두 세 개랑 복숭아 두 개를 갖고 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-17#2",
+   "say": "하율이는 자두만 여섯 개 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-17#3",
+   "say": "하율이가 예준이한테 자두 세 개를 줬어.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "composed_text": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-17#4",
+   "say": "예준이 자두는 몇 개야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"하율이가 예준이한테 자두 세 개를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"하율이가 예준이한테 자두 세 개를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-17#5",
+   "say": "복숭아는?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-17#6",
+   "say": "하율이는 자두 몇 개 남았어?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"하율이가 예준이한테 자두 세 개를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"하율이가 예준이한테 자두 세 개를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-18#1",
+   "say": "지훈 과장에게 토너 카트리지가 다섯 개 있습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-18#2",
+   "say": "경민 과장에게는 두 개가 있습니다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"있습니다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "composed_text": "\"있습니다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-18#3",
+   "say": "지훈 과장이 경민 과장에게 카트리지 한 개를 보냈습니다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "composed_text": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-18#4",
+   "say": "그분은 지금 몇 개를 가지고 있습니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-18#5",
+   "say": "정정하겠습니다. 보낸 것은 한 개가 아니라 세 개입니다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"정정하겠습니다. 보낸 것은 한 개가 아니라 세 개입니다.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "composed_text": "\"정정하겠습니다. 보낸 것은 한 개가 아니라 세 개입니다.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-18#6",
+   "say": "경민 과장의 카트리지는 몇 개입니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-18#7",
+   "say": "그럼 지훈 과장은 몇 개입니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"경민 과장에게는 두 개가 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-19#1",
+   "say": "준서한테 공이 있어. 여섯 개야.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "composed_text": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-19#2",
+   "say": "다은이는 공이 하나도 없어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-19#3",
+   "say": "준서가 다은이한테 공을 줬어. 두 개.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-19#4",
+   "say": "다은이가 그중 하나를 채아한테 줬어.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"줬어\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "composed_text": "\"줬어\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-19#5",
+   "say": "다은이는 공 몇 개 있어?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"두 개.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"두 개.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-19#6",
+   "say": "채아는 공이 전부 몇 개야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"채아는 공이 전부 몇 개야?\"는 반영하지 않았습니다. 가장 가까운 읽기가 \"전부\"를 바꿉니다.",
+   "composed_text": "\"채아는 공이 전부 몇 개야?\"는 반영하지 않았습니다. 가장 가까운 읽기가 \"전부\"를 바꿉니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-19#7",
+   "say": "준서는 몇 개 남았어?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"준서한테 공이 있어. 여섯 개야.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"준서한테 공이 있어. 여섯 개야.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-20#1",
+   "say": "서하는 사탕을 열한 개 가지고 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-20#2",
+   "say": "이준이는 사탕이 네 개 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-20#3",
+   "say": "서하가 이준이한테 사탕 세 개를 줬어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 서하 사탕은 8개, 이준은 7개입니다.",
+   "composed_text": "반영했습니다. 이제 서하 사탕은 8개, 이준은 7개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-20#4",
+   "say": "이준이는 사탕이 몇 개 있어요?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "7개입니다.",
+   "composed_text": "7개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-20#5",
+   "say": "Why does Ijun have seven candies?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-20#6",
+   "say": "서하는요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-21#1",
+   "say": "우진이는 초콜릿 다섯 개, 수아는 열 개가 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 우진 초콜릿은 5개, 수아는 10개입니다.",
+   "composed_text": "반영했습니다. 우진 초콜릿은 5개, 수아는 10개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-21#2",
+   "say": "우진이가 수아한테 초콜릿 두 개를 줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 우진 초콜릿은 3개, 수아는 12개입니다.",
+   "composed_text": "반영했습니다. 이제 우진 초콜릿은 3개, 수아는 12개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-21#3",
+   "say": "수아는 몇 개야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "12개입니다.",
+   "composed_text": "12개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-21#4",
+   "say": "아니, 준 사람은 우진이가 아니라 수아였어. 수아가 우진이한테 줬어.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-21#5",
+   "say": "우진이는 이제 몇 개야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"아니, 준 사람은 우진이가 아니라 수아였어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"아니, 준 사람은 우진이가 아니라 수아였어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-21#6",
+   "say": "왜 일곱 개야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-21#7",
+   "say": "수아는?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"아니, 준 사람은 우진이가 아니라 수아였어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"아니, 준 사람은 우진이가 아니라 수아였어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-22#1",
+   "say": "윤하 님은 도서 열네 권을 보관하고 있습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-22#2",
+   "say": "해솔 님은 도서 여섯 권을 보관하고 있습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-22#3",
+   "say": "윤하 님이 해솔 님께 도서 다섯 권을 넘겼습니다.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 윤하 도서는 9개, 해솔은 11개입니다.",
+   "composed_text": "반영했습니다. 이제 윤하 도서는 9개, 해솔은 11개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-22#4",
+   "say": "그분이 가진 책은 몇 권입니까?",
+   "language": "ko",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "'그분'이 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "composed_text": "'그분'이 가리키는 것을 이 대화에서 찾지 못했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-22#5",
+   "say": "해솔 님입니다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-22#6",
+   "say": "이 책들의 줄거리를 요약해 주십시오.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-22#7",
+   "say": "윤하 님께 남은 책은 몇 권입니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "composed_text": "이 대화에서 나온 조건으로는 답을 정하지 못합니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-23#1",
+   "say": "나 젤리 여덟 개 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 젤리는 8개 있으십니다.",
+   "composed_text": "반영했습니다. 젤리는 8개 있으십니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-23#2",
+   "say": "동생은 젤리 세 개 있고.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 동생 젤리는 3개입니다.",
+   "composed_text": "반영했습니다. 동생 젤리는 3개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-23#3",
+   "say": "내가 동생한테 젤리 두 개 줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 젤리는 6개 있으시고, 동생은 5개입니다.",
+   "composed_text": "반영했습니다. 이제 젤리는 6개 있으시고, 동생은 5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-23#4",
+   "say": "나는 이제 몇 개야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 대화에서 나는에 대한 말은 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "composed_text": "이 대화에서 나는에 대한 말은 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-23#5",
+   "say": "동생은?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-23#6",
+   "say": "동생이 좋아하는 맛은 뭐야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-23#7",
+   "say": "왜 나는 여섯 개밖에 없어?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-24#1",
+   "say": "하온이는 카드 열 장이 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 하온 카드는 10개입니다.",
+   "composed_text": "반영했습니다. 하온 카드는 10개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-24#2",
+   "say": "지율이는 카드 다섯 장이 있어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 지율 카드는 5개입니다.",
+   "composed_text": "반영했습니다. 지율 카드는 5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-24#3",
+   "say": "하온이가 지율이한테 카드 세 장 줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 하온 카드는 7개, 지율은 8개입니다.",
+   "composed_text": "반영했습니다. 이제 하온 카드는 7개, 지율은 8개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-24#4",
+   "say": "지율이가 하온이한테 한 장 돌려줬어.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 지율이 하온에게 카드 1개를 줬습니다. 이제 지율 카드는 7개, 하온은 8개입니다.",
+   "composed_text": "반영했습니다. 지율이 하온에게 카드 1개를 줬습니다. 이제 지율 카드는 7개, 하온은 8개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-24#5",
+   "say": "하온이는 카드 몇 장이야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "8개입니다.",
+   "composed_text": "8개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-24#6",
+   "say": "잠깐만, 지율이는 처음에 다섯 장이 아니라 네 장이었어.",
+   "language": "ko",
+   "act": "correct",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "같은 사건 \"지율이는 카드 다섯 장이 있어.\"의 수량을 5개에서 4개로 고쳤습니다. 새 사건은 더하지 않았습니다.",
+   "composed_text": "같은 사건 \"지율이는 카드 다섯 장이 있어.\"의 수량을 5개에서 4개로 고쳤습니다. 새 사건은 더하지 않았습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "CORRECT",
+    "REASSURE"
+   ]
+  },
+  {
+   "turn": "ko-24#7",
+   "say": "지율이는 지금 몇 장이야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "6개입니다.",
+   "composed_text": "6개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-24#8",
+   "say": "하온이 카드는 몇 장이야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "8개입니다.",
+   "composed_text": "8개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-24#9",
+   "say": "왜 지율이는 여섯 장이야?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-24#10",
+   "say": "둘 합치면 몇 장이야?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "지율과 하온은 합쳐서 카드 14개입니다.",
+   "composed_text": "지율과 하온은 합쳐서 카드 14개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-25#1",
+   "say": "소이한테 빵이 세 개 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-25#2",
+   "say": "도율이한테는 빵이 여덟 개 있어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다.",
+   "composed_text": "반영했습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-25#3",
+   "say": "도율이가 소이한테 빵 두 개를 줬어요.",
+   "language": "ko",
+   "act": "record",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "반영했습니다. 이제 도율 빵은 6개, 소이는 5개입니다.",
+   "composed_text": "반영했습니다. 이제 도율 빵은 6개, 소이는 5개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM",
+    "INFORM",
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-25#4",
+   "say": "그 사람은 빵이 몇 개예요?",
+   "language": "ko",
+   "act": "ask",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "'그 사람'이 누구를 가리키는지 알지 못합니다. '소이 빵', '도율 빵' 가운데 누구인가요?",
+   "composed_text": "'그 사람'이 누구를 가리키는지 알지 못합니다. '소이 빵', '도율 빵' 가운데 누구인가요?",
+   "reports": 1,
+   "realizer_acts": [
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-25#5",
+   "say": "소이요. 소이는 몇 개예요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-25#6",
+   "say": "도율이는요?",
+   "language": "ko",
+   "act": "answer",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "6개입니다.",
+   "composed_text": "6개입니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "INFORM"
+   ]
+  },
+  {
+   "turn": "ko-25#7",
+   "say": "도율이 빵은 무슨 맛이에요?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-26#1",
+   "say": "택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-26#2",
+   "say": "강민 씨가 편의점에 소포 여섯 개를 맡겼습니다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "composed_text": "새 말이 이미 반영한 상태와 맞지 않습니다. 확인해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "WARN",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-26#3",
+   "say": "아닙니다, 여섯 개가 아니라 일곱 개를 맡겼습니다.",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"아닙니다, 여섯 개가 아니라 일곱 개를 맡겼습니다.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "composed_text": "\"아닙니다, 여섯 개가 아니라 일곱 개를 맡겼습니다.\"가 가리키는 앞선 사건을 찾지 못했습니다. 그래서 고치지 않았습니다.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE"
+   ]
+  },
+  {
+   "turn": "ko-26#4",
+   "say": "강민 씨에게 남은 소포는 몇 개입니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-26#5",
+   "say": "편의점에는 원래 소포가 몇 개 있었습니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "\"택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "composed_text": "\"택배 기사 강민 씨는 소포 스무 개를 싣고 있습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "reports": 1,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  },
+  {
+   "turn": "ko-26#6",
+   "say": "강민 씨 소포가 왜 열세 개입니까?",
+   "language": "ko",
+   "act": "hold",
+   "bucket": "composed",
+   "reason": "composed",
+   "spoken": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "composed_text": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "reports": 2,
+   "realizer_acts": [
+    "REFUSE",
+    "ASK"
+   ]
+  }
+ ]
+}
