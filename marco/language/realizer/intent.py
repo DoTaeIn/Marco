@@ -70,7 +70,14 @@ def _matches(plan, graph):
                 return False
             continue
         if key == "fields_has":
-            if graph["fields"].get(wanted) in (None, {}, [], ""):
+            # One field, or every field of a list, carries a value.
+            names = wanted if isinstance(wanted, list) else [wanted]
+            if any(graph["fields"].get(name) in (None, {}, [], "") for name in names):
+                return False
+            continue
+        if key == "fields":
+            # Each named field of the meaning block has exactly this value.
+            if any(graph["fields"].get(name) != value for name, value in wanted.items()):
                 return False
             continue
         if isinstance(wanted, list):

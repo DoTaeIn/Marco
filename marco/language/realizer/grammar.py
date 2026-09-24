@@ -101,6 +101,14 @@ class Grammar:
         """Whether the entity is the user (the speaker of the conversation)."""
         return (value.get("holder") or {}).get("kind") == self._holder_spec()["speaker"]
 
+    def honoured(self, value):
+        """Whether a predicate agreeing with this role value agrees with the user: the value is the
+        user, or a list role value (the members of a total, say) has the user among its members."""
+        if not isinstance(value, dict):
+            return False
+        members = value.get("list") if isinstance(value.get("list"), list) else [value]
+        return any(isinstance(member, dict) and self._person_kind(member) for member in members)
+
     def person_form(self, table, case):
         """The word a person table gives for ``case`` (else its ``default``); None when neither
         is declared. An empty word is declared: the person is not said."""
@@ -144,6 +152,15 @@ class Grammar:
             if form:
                 out.append(form)
         return out
+
+    def addressee_unsaid(self, value, register, case):
+        """Whether a reply leaves this role value unsaid: it is the user, and the language declares
+        the empty word for the one addressed in its case (for a compound, in its owner's)."""
+        if register in (None, "reading") or not isinstance(value, dict) or not self._person_kind(value):
+            return False
+        if value.get("kind") == "compound" and len(str(value.get("text", "")).split()) > 1:
+            case = "possessive" if (self.ortho.get("compound") or {}).get("join") == "possessive" else "juxtaposed"
+        return self.person_form("addressee", case or "object") == ""
 
     def honorific_stem(self, stem):
         """The stem a predicate takes when it agrees with the one addressed (``person.honorific``:
@@ -414,15 +431,27 @@ class Grammar:
             raise RealizationError("undeclared_lexeme:%s" % lex)
         return entry
 
-    def verb_words(self, part, *, ending, tense, polarity, person, plural, stem=None):
-        """Finite or non-finite verb words for one part. ``stem``: a stem said in place of the
-        lexeme's own (its honorific), inflected as a regular stem."""
+    def _honorific_of(self, stem, part):
+        honoured = self.honorific_stem(stem)
+        if honoured is None:
+            raise RealizationError("undeclared_honorific:%s" % part["verb"])
+        return honoured
+
+    def verb_words(self, part, *, ending, tense, polarity, person, plural, honour=False):
+        """Finite or non-finite verb words for one part. ``honour``: the predicate agrees with the
+        one addressed and takes the declared honorific stem (``person.honorific``), inflected as a
+        regular stem; on a negated predicate, on the stem the language declares for it
+        (``person.honorific.negation``: the negation's auxiliary, else the verb's own stem)."""
         entry = self.lexeme(part["verb"])
-        stem, kind = (stem, "regular") if stem else (entry["verb"], entry.get("kind", "regular"))
+        stem, kind = entry["verb"], entry.get("kind", "regular")
         negate = polarity is False and part.get("negation") and part.get("polarity") != "positive"
         if self.strategy("verbs") == "agreement":
             return self._english_verb(stem, part, ending=ending, tense=tense, negate=negate,
                                       person=person, plural=plural)
+        on_auxiliary = bool(honour and negate and (self.lang.person().get("honorific") or {}).get(
+            "negation") == "auxiliary")
+        if honour and not on_auxiliary:
+            stem, kind = self._honorific_of(stem, part), "regular"
         if not negate:
             return [self.inflect(stem, tense, ending, kind)]
         spec = self.decl["grammar"]["negation"].get(part["negation"])
@@ -434,7 +463,10 @@ class Grammar:
                     "kind": self.lang.pack_negation.get(self.keys.get("negation_kind", ""))}
         if not spec.get("connective") or not spec.get("aux"):
             raise RealizationError("negation_not_declared")
-        return [stem + spec["connective"], self.inflect(spec["aux"], tense, ending, spec.get("kind", "regular"))]
+        aux, aux_kind = spec["aux"], spec.get("kind", "regular")
+        if on_auxiliary:
+            aux, aux_kind = self._honorific_of(aux, part), "regular"
+        return [stem + spec["connective"], self.inflect(aux, tense, ending, aux_kind)]
 
     def _english_form(self, lemma, form):
         lexicon = self.lang.inflection.get("lexicon", {})
@@ -556,10 +588,17 @@ class ClauseRealizer:
         """``tense`` replaces the proposition's own tense in this saying only (a clause said in
         the form another clause governs, such as an event before which something held)."""
         clause = Clause()
+        # ``unsaid``: roles whose value is the user left unsaid (the language declares the empty word
+        # for the one addressed there); ``honoured``: roles a predicate of the clause honours.
         self._context = {"prop": prop, "elided": set(elided), "sentence": sentence, "register": register,
-                         "gap": gap, "tense": tense}
+                         "gap": gap, "tense": tense, "unsaid": set(), "honoured": set()}
         for part in (parts if parts is not None else candidate["parts"]):
             self._part(clause, part, prop.get("roles", {}))
+        # The user may be left unsaid only where a predicate of the same clause says them by its
+        # honorific; otherwise the clause would say something of nobody (whose count, who received).
+        unmarked = self._context["unsaid"] - self._context["honoured"]
+        if unmarked:
+            raise RealizationError("unmarked_addressee:%s" % sorted(unmarked))
         return clause
 
     # role values ---------------------------------------------------------
@@ -623,10 +662,15 @@ class ClauseRealizer:
         register = self._context["register"]
         said = []
         for index, (role, value) in enumerate(present):
-            # A role said before another in the same phrase stands juxtaposed to it.
-            case = (part.get("case") or "object") if index == len(present) - 1 else "juxtaposed"
+            # A role said before another in the same phrase stands juxtaposed to it. ``person_case``:
+            # the case a person form is chosen by where the part itself marks none (a list member
+            # its list joins with a particle).
+            case = (part.get("case") or part.get("person_case") or "object") if index == len(present) - 1 \
+                else "juxtaposed"
             said.append((role, value, self.g.entity_words(value, number, self._said(), register=register,
                                                           case=case)))
+            if role != "$item" and self.g.addressee_unsaid(value, register, case):
+                self._context["unsaid"].add(role)
         if not any(words for _role, _value, words in said):
             # Every holder of the phrase is one the language does not say (the one addressed,
             # in a language that leaves the addressee unsaid): no word, no case marker.
@@ -702,12 +746,11 @@ class ClauseRealizer:
                 # The user: the first person in the reading (as the user says it), else the one addressed.
                 person = person or ("first" if reading else "second")
             person = person or ("first" if agreed.get("person") == "first" else "third")
-        honor = None
-        if part.get("honor") and not reading and self.g._person_kind(roles.get(part["honor"]) or {}):
-            # A predicate that agrees with the one addressed takes the declared honorific stem.
-            honor = self.g.honorific_stem(entry.get("verb", ""))
-            if honor is None:
-                raise RealizationError("undeclared_honorific:%s" % part["verb"])
+        # A predicate that agrees with the one addressed (the role is the user, or a list role has
+        # the user among its members) takes the declared honorific stem.
+        honour = bool(part.get("honor")) and not reading and self.g.honoured(roles.get(part["honor"]) or {})
+        if honour:
+            self._context["honoured"].add(part["honor"])
         if part.get("agree_number"):
             count = roles.get(part["agree_number"]) or {}
             plural = str(count.get("number")) != "1"
@@ -718,7 +761,7 @@ class ClauseRealizer:
         if ending is None and self.g.strategy("verbs") == "endings":
             raise RealizationError("verb_without_ending:%s" % part["verb"])
         words = self.g.verb_words(part, ending=ending, tense=self._tense(part), polarity=polarity,
-                                  person=person, plural=plural, stem=honor)
+                                  person=person, plural=plural, honour=honour)
         for index, word in enumerate(words):
             clause.add([word], kind="verb", role=None, bind=bool(part.get("bind")) and index == 0)
         del entry
@@ -790,7 +833,15 @@ class ClauseRealizer:
             inner._context = dict(self._context, item=item)
             sub = Clause()
             inner._part(sub, dict(part["each"]), roles)
-            texts.append(sub.text(word_separator))
+            said = sub.text(word_separator)
+            # A member the language does not say (the one addressed) is left out of the list; the
+            # clause says them another way (the honorific of its predicate).
+            if said:
+                texts.append(said)
+            elif self.g.honoured(item):
+                self._context["unsaid"].add(part["list"])
+        if not texts:
+            return
         if part.get("join_case") and len(texts) > 1:
             # Items joined by a case particle on each but the last (a language
             # that says "A and B" with a particle after A).

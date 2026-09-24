@@ -1,7 +1,7 @@
 {
  "_about": "Korean realizer declarations: orthography, case particles, lexicon, endings, expression candidates per frame, and the reading rules the semantic check applies. Particle mates, the inflection grammar, negation, numerals, senses and romanization are reused from styles/한국어.json through its parser; nothing here repeats them.",
  "language": "한국어",
- "version": {"release": "0.4.0", "round": "W4"},
+ "version": {"release": "0.5.0", "round": "W5"},
  "negation_marker_key": "부정표지",
  "pack": "styles/한국어.json",
  "pack_keys": {
@@ -112,6 +112,7 @@
   "recipient": {"form": "에게"},
   "locative": {"form": "에"},
   "source": {"form": "에서"},
+  "source_person": {"_about": "From a person (받다's giver): 에게서.", "form": "에게서"},
   "genitive": {"form": "의"},
   "or": {"closed": "이나", "open": "나"},
   "goal_topic": {"mate": "으로", "then": "topic"},
@@ -138,10 +139,10 @@
  },
  "relation_words": {"location": "위치", "count": "수량"},
  "person": {
-  "_about": "The persons of a conversation (meaning.json: holders). user: the words the user says of themself, by the case a reply's part gives the holder (a part with no case, or a holder said juxtaposed before what it holds: default); the reading the semantic check parses says the user so, and each word it says is one the pack groups with its first person (임자자리말 나; 자리말 나, 내); the humble forms (저, 제) are the user's words in a polite register, turned like the others when a holder is named with them (제 룸메이트 -> 룸메이트). addressee: the user is not said in a topic or a subject, juxtaposed before what they hold, or as a possessor (zero anaphora), and a predicate that agrees with them takes the honorific stem -(으)시- (a stem that ends in ㄹ drops it: 알 -> 아시); the user in any other case is not declared, and a clause that needs it is not said.",
+  "_about": "The persons of a conversation (meaning.json: holders). user: the words the user says of themself, by the case a reply's part gives the holder (a part with no case, or a holder said juxtaposed before what it holds: default); the reading the semantic check parses says the user so, and each word it says is one the pack groups with its first person (임자자리말 나; 자리말 나, 내); the humble forms (저, 제) are the user's words in a polite register, turned like the others when a holder is named with them (제 룸메이트 -> 룸메이트). addressee: the user is not said in a topic or a subject, juxtaposed before what they hold, or as a possessor (zero anaphora), and a predicate that agrees with them takes the honorific stem -(으)시- (a stem that ends in ㄹ drops it: 알 -> 아시; a negated predicate takes it on the negation's auxiliary: 같지 않으십니다). Round 5 (request G4-2): the user is not said either as a member of a list its particle joins (with: 오다와 합쳐서 … 있으십니다; 자두는 오다와 똑같이 4개 있으십니다), where the clause's predicate honours the list. The user left unsaid is always said by the honorific of a predicate in the same clause; a clause without one is not said (the grammar refuses it). The user in any other case is not declared, and a clause that needs it is not said.",
   "user": {"subject": "내", "possessive": "내", "default": "나", "humble": "저", "humble_possessive": "제"},
-  "addressee": {"topic": "", "subject": "", "juxtaposed": "", "possessive": "", "humble": "", "humble_possessive": ""},
-  "honorific": {"closed": "으시", "open": "시", "drop_codas": ["ㄹ"]}
+  "addressee": {"topic": "", "subject": "", "juxtaposed": "", "possessive": "", "humble": "", "humble_possessive": "", "with": ""},
+  "honorific": {"closed": "으시", "open": "시", "drop_codas": ["ㄹ"], "negation": "auxiliary"}
  },
  "lexicon": {
   "this": {"word": "이"},
@@ -173,6 +174,9 @@
   "particle": {"word": "조사"},
   "behind": {"word": "뒤"},
   "instead": {"word": "대신"},
+  "just_as_adv": {"word": "똑같이"},
+  "receiving_adn": {"word": "받는"},
+  "have_v": {"verb": "가지", "kind": "regular"},
   "ending_form": {"word": "맺음꼴"},
   "order": {"word": "순서"},
   "cost": {"word": "비용"},
@@ -389,8 +393,20 @@
   ],
   "transfer": [
    {
+    "id": "transfer_receive_from",
+    "_about": "To the user (request G4-2): said from the receiver's side, the user not said and 받다 honouring them (오다에게서 자두 2개를 받으셨습니다); the pack reads 받다 by its role swap.",
+    "when": {"holder": {"giver": ["name", "named"], "receiver": "speaker"}},
+    "parts": [
+     {"np": ["receiver"], "case": "subject"},
+     {"np": ["giver"], "case": "source_person"},
+     {"np": ["item"]},
+     {"num": "amount", "counter": "count", "case": "object", "elided_case": "previous"},
+     {"verb": "receive", "predicate": true, "honor": "receiver", "negation": "not"}
+    ]
+   },
+   {
     "id": "transfer_give",
-    "when": {"holder": {"giver": ["name", "speaker", "named"], "receiver": ["name", "speaker", "named"]}},
+    "when": {"holder": {"giver": ["name", "speaker", "named"], "receiver": ["name", "named"]}},
     "parts": [
      {"np": ["giver"], "case": "subject"},
      {"np": ["receiver"], "case": "recipient"},
@@ -437,6 +453,12 @@
    }
   ],
   "known": [
+   {
+    "id": "known_never_came_up_addressee",
+    "_about": "The user's thing is known, the relation never came up (이 대화에서 가지신 사탕의 위치는 나온 적이 없습니다).",
+    "when": {"polarity": false, "holder": {"subject": "speaker"}},
+    "parts": [{"lex": "this"}, {"lex": "conversation", "case": "source"}, {"verb": "have_v", "tense": "present", "ending": "past_adnominal", "honor": "subject"}, {"np": ["subject"], "case": "genitive"}, {"rel": "relation", "case": "topic"}, {"verb": "come_up", "tense": "present", "ending": "past_adnominal"}, {"lex": "experience", "case": "subject"}, {"verb": "not_exist", "predicate": true}]
+   },
    {
     "id": "known_never_came_up",
     "when": {"polarity": false},
@@ -625,6 +647,18 @@
   ],
   "total": [
    {
+    "id": "total_with_addressee",
+    "_about": "A total that includes the user (request G4-2): the user is not said, the others are joined with 과/와 before 합쳐서, and the existence verb honours the list (오다와 합쳐서 자두가 8개 있으십니다).",
+    "when": {"includes": {"members": "speaker"}},
+    "parts": [
+     {"list": "members", "each": {"np": ["$item"], "person_case": "with"}, "join_case": "with", "case": "with"},
+     {"lex": "together"},
+     {"np": ["item"], "case": "subject"},
+     {"num": "value", "counter": "count"},
+     {"verb": "exist", "predicate": true, "honor": "members"}
+    ]
+   },
+   {
     "id": "total_together",
     "parts": [
      {"list": "members", "each": {"np": ["$item"]}, "join_case": "with", "case": "topic"},
@@ -657,6 +691,30 @@
    }
   ],
   "same_count": [
+   {
+    "id": "same_count_addressee_alike",
+    "_about": "The user holds as many as the others (request G4-2): the thing first, the others with 과/와, 똑같이, and the existence verb honours the list (자두는 오다와 똑같이 4개 있으십니다).",
+    "when": {"polarity": true, "includes": {"members": "speaker"}},
+    "requires": ["value"],
+    "parts": [
+     {"np": ["item"], "case": "topic"},
+     {"list": "members", "each": {"np": ["$item"], "person_case": "with"}, "join_case": "with", "case": "with"},
+     {"lex": "just_as_adv"},
+     {"num": "value", "counter": "count"},
+     {"verb": "exist", "predicate": true, "honor": "members"}
+    ]
+   },
+   {
+    "id": "same_count_addressee_not_alike",
+    "_about": "The user does not hold as many as the others (request G4-2): the count of the thing, the others with 과/와, and the negated verb honours the list on its auxiliary (자두 수가 오다와 같지 않으십니다).",
+    "when": {"polarity": false, "includes": {"members": "speaker"}},
+    "parts": [
+     {"np": ["item"]},
+     {"lex": "count_n", "case": "subject"},
+     {"list": "members", "each": {"np": ["$item"], "person_case": "with"}, "join_case": "with", "case": "with"},
+     {"verb": "alike", "predicate": true, "negation": "not", "honor": "members"}
+    ]
+   },
    {
     "id": "same_count_alike",
     "when": {"polarity": true},
@@ -691,6 +749,12 @@
    }
   ],
   "heard": [
+   {
+    "id": "heard_never_addressee",
+    "_about": "The user's thing never came up: the user is not said, the thing is said as the one they have, honoured (이 대화에서 가지신 사탕에 대한 말은 나온 적이 없습니다).",
+    "when": {"polarity": false, "holder": {"subject": "speaker"}},
+    "parts": [{"lex": "this"}, {"lex": "conversation", "case": "source"}, {"verb": "have_v", "tense": "present", "ending": "past_adnominal", "honor": "subject"}, {"np": ["subject"], "case": "locative"}, {"lex": "about_adn"}, {"lex": "statement", "case": "topic"}, {"verb": "come_up", "tense": "present", "ending": "past_adnominal"}, {"lex": "experience", "case": "subject"}, {"verb": "not_exist", "predicate": true}]
+   },
    {
     "id": "heard_never",
     "when": {"polarity": false},
@@ -1229,6 +1293,40 @@
     ]
    }
   ],
+  "recipient_corrected": [
+   {
+    "id": "recipient_corrected_received",
+    "_about": "A receiver corrected in place (request G4-1): the same event, who received before and who received now, each said as having received (같은 사건 \"…\"에서 준호가 받은 것을 도현이 받은 것으로 고쳤습니다); the user is not said and 받다 honours them (…에서 준호가 받은 것을 받으신 것으로 고쳤습니다).",
+    "when": {"holder": {"old": ["name", "speaker", "named"], "new": ["name", "speaker", "named"]}},
+    "parts": [
+     {"lex": "same"},
+     {"lex": "event"},
+     {"quote": "event", "marks": "double", "case": "source"},
+     {"np": ["old"], "case": "subject"},
+     {"verb": "receive", "ending": "past_adnominal", "tense": "present", "honor": "old"},
+     {"lex": "thing", "case": "object"},
+     {"np": ["new"], "case": "subject"},
+     {"verb": "receive", "ending": "past_adnominal", "tense": "present", "honor": "new"},
+     {"lex": "thing", "case": "goal"},
+     {"verb": "fix", "predicate": true}
+    ]
+   },
+   {
+    "id": "recipient_corrected_side",
+    "_about": "A receiving side that is a place, corrected in place: the side the things went to, from the old to the new (같은 사건 \"…\"의 받는 쪽을 북쪽 창고에서 남쪽 창고로 고쳤습니다).",
+    "when": {"holder": {"old": ["name", "place", "named"], "new": ["name", "place", "named"]}},
+    "parts": [
+     {"lex": "same"},
+     {"lex": "event"},
+     {"quote": "event", "marks": "double", "case": "genitive"},
+     {"lex": "receiving_adn"},
+     {"lex": "side", "case": "object"},
+     {"np": ["old"], "case": "source"},
+     {"np": ["new"], "case": "goal"},
+     {"verb": "fix", "predicate": true}
+    ]
+   }
+  ],
   "revised": [
    {
     "id": "revised",
@@ -1485,6 +1583,12 @@
   ],
   "count_change": [
    {
+    "id": "count_became_addressee",
+    "_about": "The user's count changed (가지신 사탕은 3개에서 5개가 되었습니다).",
+    "when": {"holder": {"subject": "speaker"}},
+    "parts": [{"verb": "have_v", "tense": "present", "ending": "past_adnominal", "honor": "subject"}, {"np": ["subject"], "case": "topic"}, {"num": "before", "counter": "count", "case": "source"}, {"num": "after", "counter": "count", "case": "subject"}, {"verb": "become", "predicate": true}]
+   },
+   {
     "id": "count_became",
     "parts": [
      {"np": ["subject"], "case": "topic"},
@@ -1510,6 +1614,19 @@
    }
   ],
   "change_withdrawn": [
+   {
+    "id": "withdrew_change_addressee",
+    "_about": "A change of the user's count withdrawn (가지신 사탕이 3개에서 5개가 된 것은 취소했습니다).",
+    "when": {"holder": {"subject": "speaker"}},
+    "requires": ["before"],
+    "parts": [{"verb": "have_v", "tense": "present", "ending": "past_adnominal", "honor": "subject"}, {"np": ["subject"], "case": "subject"}, {"num": "before", "counter": "count", "case": "source"}, {"num": "after", "counter": "count", "case": "subject"}, {"verb": "become", "tense": "present", "ending": "past_adnominal"}, {"lex": "thing", "case": "topic"}, {"verb": "cancel", "predicate": true}]
+   },
+   {
+    "id": "withdrew_value_addressee",
+    "_about": "An earlier value of the user's count withdrawn (가지신 사탕의 앞선 값 5개는 취소했습니다).",
+    "when": {"holder": {"subject": "speaker"}},
+    "parts": [{"verb": "have_v", "tense": "present", "ending": "past_adnominal", "honor": "subject"}, {"np": ["subject"], "case": "genitive"}, {"lex": "earlier"}, {"lex": "value"}, {"num": "after", "counter": "count", "case": "topic"}, {"verb": "cancel", "predicate": true}]
+   },
    {
     "id": "withdrew_change",
     "requires": ["before"],

@@ -1,7 +1,7 @@
 {
  "_about": "English realizer declarations: orthography, prepositions, lexicon, agreement, expression candidates per frame, and the reading rules the semantic check applies. The verb lexicon and inflection rules are reused from styles/english.json through its parser; forms it does not declare are added under lexicon_forms.",
  "language": "english",
- "version": {"release": "0.4.0", "round": "W4"},
+ "version": {"release": "0.5.0", "round": "W5"},
  "negation_marker_key": "부정표지",
  "pack": "styles/english.json",
  "orthography": {
@@ -1368,6 +1368,27 @@
      {"lex": "would"},
      {"verb": "change", "predicate": true, "ending": "base"},
      {"list": "words", "each": {"quote": "$item", "marks": "double"}}
+    ]
+   }
+  ],
+  "recipient_corrected": [
+   {
+    "id": "recipient_changed",
+    "_about": "A receiver corrected in place (request G4-1): the same event and its receiver, from the old to the new (I changed the receiver in the same event \"…\" from Arthur to you.).",
+    "parts": [
+     {"lex": "i"},
+     {"verb": "change", "predicate": true, "person": "first"},
+     {"lex": "the"},
+     {"lex": "receiver"},
+     {"lex": "in"},
+     {"lex": "the"},
+     {"lex": "same"},
+     {"lex": "event"},
+     {"quote": "event", "marks": "double"},
+     {"lex": "from"},
+     {"np": ["old"], "det": "definite"},
+     {"lex": "to"},
+     {"np": ["new"], "det": "definite"}
     ]
    }
   ],

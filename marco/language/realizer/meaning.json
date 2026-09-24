@@ -1,7 +1,7 @@
 {
  "_about": "Language-free declarations of the realizer: the utterance intents, the frames a Meaning Graph may hold, how a turn result becomes a Meaning Graph and a plan of acts, and the discourse rules. No word of any language appears here; each language file (한국어.json, english.json) says how these are expressed.",
  "schema": "marco-meaning-v1",
- "version": {"_about": "The release of these declarations (request L1-2 item 4): two files with the same version and different digests are an edit not yet released. Raised with every realizer round that changes them.", "release": "0.4.0", "round": "W4"},
+ "version": {"_about": "The release of these declarations (request L1-2 item 4): two files with the same version and different digests are an edit not yet released. Raised with every realizer round that changes them.", "release": "0.5.0", "round": "W5"},
  "intents": {
   "INFORM": {"_about": "say what is the case, from recorded state or recorded reasoning"},
   "ASK": {"_about": "ask for what the conversation does not fix; never pick it"},
@@ -135,6 +135,7 @@
   "applied": {"roles": {"said": "quote"}},
   "protected_change": {"roles": {"words": "quotes"}},
   "revised": {"roles": {"before": "quote", "after": "quote"}},
+  "recipient_corrected": {"_about": "The receiver of one earlier event corrected in place (request G4-1): the event as the user said it, the holder that received before and the one that receives now.", "roles": {"event": "quote", "old": "agent", "new": "agent"}},
   "topic_found": {"roles": {}},
   "plainer_request": {"roles": {}},
   "more_request": {"roles": {}},
@@ -810,6 +811,15 @@
       {"frame": "protected_change", "roles": {"words": "$words"}}
      ]
     }
+   ]
+  },
+  {
+   "_about": "The receiver of one earlier transfer corrected in place (request G4-1 part two): the same event, its old and its new receiver named instead of the sentences quoted; no new event; the state after.",
+   "match": {"act": "revise", "fields": {"field": "recipient"}, "fields_has": ["before", "old_holder", "new_holder"]},
+   "acts": [
+    {"intent": "CORRECT", "props": [{"frame": "recipient_corrected", "roles": {"event": "$before", "old": "$old_holder", "new": "$new_holder"}, "tense": "past"}]},
+    {"intent": "REASSURE", "props": [{"frame": "new_event", "polarity": false, "tense": "past"}]},
+    {"intent": "INFORM", "lead": "now", "props": [{"from": "changes", "state": "after"}]}
    ]
   },
   {
