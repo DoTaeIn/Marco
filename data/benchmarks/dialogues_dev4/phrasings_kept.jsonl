@@ -1,0 +1,365 @@
+{"scenario": "s4_ko_b_001", "n": 1, "attempt": 0, "seed": 2900785375, "text": "연서도 레몬이 좀 있어. 세어 보니 여덟 개네.", "ok": true}
+{"scenario": "s4_ko_b_001", "n": 2, "attempt": 0, "seed": 3246672392, "text": "동훈은 레몬만 열세 개 있어.", "ok": true}
+{"scenario": "s4_ko_b_001", "n": 3, "attempt": 0, "seed": 2060776073, "text": "레몬 세 개를 연서가 동훈한테 건넸어.", "ok": true}
+{"scenario": "s4_ko_b_001", "n": 4, "attempt": 0, "seed": 3776512750, "text": "동훈이 레몬을 몇 개 가지고 있어?", "ok": true}
+{"scenario": "s4_ko_b_001", "n": 5, "attempt": 0, "seed": 3891288396, "text": "동훈이가 연서한테 레몬 한 개를 빌려줬어.", "ok": true}
+{"scenario": "s4_ko_b_001", "n": 6, "attempt": 0, "seed": 3555313181, "text": "동훈은 레몬을 몇 개 가지고 있어?", "ok": true}
+{"scenario": "s4_ko_b_001", "n": 7, "attempt": 7, "seed": 4214999553, "text": "아, 한 개가 아니라 아홉 개였어.", "ok": true}
+{"scenario": "s4_ko_b_001", "n": 8, "attempt": 1, "seed": 656097113, "text": "동훈이 레몬이 몇 개 남았어?", "ok": true}
+{"scenario": "s4_ko_b_001", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [9], "failed_turn": null, "seconds": 56.0, "peak_mb": 4757}
+{"scenario": "s4_ko_b_004", "n": 1, "attempt": 0, "seed": 1545363609, "text": "제가 볼펜 열세 자루 있어요.", "ok": true}
+{"scenario": "s4_ko_b_004", "n": 2, "attempt": 0, "seed": 1511300551, "text": "지아는 볼펜이 다섯 자루 있어요.", "ok": true}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 9, "seed": 3174691087, "text": "그다음에 저는 지아한테 볼펜 한 자루를 돌려줬어요.", "ok": true}
+{"scenario": "s4_ko_b_004", "n": 4, "attempt": 0, "seed": 3791846412, "text": "저는 지금 볼펜이 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_b_004", "n": 5, "attempt": 0, "seed": 3449758746, "text": "지아는 볼펜을 몇 개 가지고 있어요?", "ok": true}
+{"scenario": "s4_ko_b_004", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": 6, "seconds": 87.0, "peak_mb": 4741}
+{"scenario": "s4_ko_b_007", "n": 1, "attempt": 0, "seed": 4285942425, "text": "안 기사님은 열한 개의 메달을 가지고 있어요. 세영은 여섯 개의 메달을 가지고 있어요.", "ok": true}
+{"scenario": "s4_ko_b_007", "n": 2, "attempt": 0, "seed": 2726749801, "text": "세영이 안 기사님한테 메달 다섯 개를 넘겼어요.", "ok": true}
+{"scenario": "s4_ko_b_007", "n": 4, "attempt": 0, "seed": 2528362549, "text": "그분은 지금 메달이 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_b_007", "n": 5, "attempt": 0, "seed": 3358374541, "text": "제 말은 세영 씨예요.", "ok": true}
+{"scenario": "s4_ko_b_007", "n": 6, "attempt": 1, "seed": 3300992151, "text": "두 사람 합쳐서 메달이 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_b_007", "dialogue": true, "kept": [1, 2, 4, 5, 6], "skipped": [3], "failed_turn": null, "seconds": 59.4, "peak_mb": 4755}
+{"scenario": "s4_en_b_002", "n": 1, "attempt": 0, "seed": 2785705887, "text": "The corner shop holds 5 chairs.", "ok": true}
+{"scenario": "s4_en_b_002", "n": 2, "attempt": 0, "seed": 2324577968, "text": "Greta has 13 chairs and Brian has 15 chairs.", "ok": true}
+{"scenario": "s4_en_b_002", "n": 3, "attempt": 0, "seed": 278991359, "text": "Eight chairs are in the music room.", "ok": true}
+{"scenario": "s4_en_b_002", "n": 4, "attempt": 0, "seed": 1373319114, "text": "After that, we moved one chair from the corner shop to the music room.", "ok": true}
+{"scenario": "s4_en_b_002", "n": 5, "attempt": 0, "seed": 3865997508, "text": "How many chairs are in the corner shop now?", "ok": true}
+{"scenario": "s4_en_b_002", "n": 6, "attempt": 0, "seed": 244812193, "text": "Greta took three chairs from the corner shop, apparently.", "ok": true}
+{"scenario": "s4_en_b_002", "n": 7, "attempt": 0, "seed": 1712378453, "text": "How many chairs are in the music room now?", "ok": true}
+{"scenario": "s4_en_b_002", "n": 8, "attempt": 0, "seed": 1833063094, "text": "How many chairs does Brian have left?", "ok": true}
+{"scenario": "s4_en_b_002", "n": 9, "attempt": 0, "seed": 1824882190, "text": "Sorry, I meant Greta.", "ok": true}
+{"scenario": "s4_en_b_002", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 12.9, "peak_mb": 4644}
+{"scenario": "s4_en_b_003", "n": 1, "attempt": 0, "seed": 3235989560, "text": "my nephew Peter has 3 ladders.", "ok": true}
+{"scenario": "s4_en_b_003", "n": 2, "attempt": 0, "seed": 4211166556, "text": "Dr. Garcia is holding 7 ladders.", "ok": true}
+{"scenario": "s4_en_b_003", "n": 3, "attempt": 0, "seed": 2258968658, "text": "After that, Dr. Garcia got a ladder from Peter.", "ok": true}
+{"scenario": "s4_en_b_003", "n": 4, "attempt": 0, "seed": 1340185501, "text": "How many ladders does Peter have now?", "ok": true}
+{"scenario": "s4_en_b_003", "n": 5, "attempt": 0, "seed": 66437301, "text": "Dr. Garcia lent Peter one ladder.", "ok": true}
+{"scenario": "s4_en_b_003", "n": 6, "attempt": 0, "seed": 3023866549, "text": "How many ladders does Dr. Garcia have now?", "ok": true}
+{"scenario": "s4_en_b_003", "n": 7, "attempt": 0, "seed": 428821389, "text": "How many ladders does Peter hold?", "ok": true}
+{"scenario": "s4_en_b_003", "n": 8, "attempt": 0, "seed": 1924240102, "text": "Actually, it was 7, not 1.", "ok": true}
+{"scenario": "s4_en_b_003", "n": 9, "attempt": 0, "seed": 3613835974, "text": "How many ladders does Dr. Garcia have now?", "ok": true}
+{"scenario": "s4_en_b_003", "n": 10, "attempt": 0, "seed": 4130155740, "text": "Who has more ladders now, Peter or Dr. Garcia?", "ok": true}
+{"scenario": "s4_en_b_003", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 14.8, "peak_mb": 4644}
+{"scenario": "s4_en_b_004", "n": 1, "attempt": 0, "seed": 3062824998, "text": "Arthur has 4 onions and Dr. Morales has 3 onions.", "ok": true}
+{"scenario": "s4_en_b_004", "n": 2, "attempt": 0, "seed": 3287235166, "text": "I have 12 onions.", "ok": true}
+{"scenario": "s4_en_b_004", "n": 3, "attempt": 0, "seed": 2484475102, "text": "Dr. Morales lent Arthur two onions.", "ok": true}
+{"scenario": "s4_en_b_004", "n": 4, "attempt": 0, "seed": 3530600640, "text": "How many onions does Arthur hold?", "ok": true}
+{"scenario": "s4_en_b_004", "n": 5, "attempt": 0, "seed": 3973827183, "text": "Actually they went to me, not Arthur.", "ok": true}
+{"scenario": "s4_en_b_004", "n": 6, "attempt": 0, "seed": 997803826, "text": "How many onions do I have now?", "ok": true}
+{"scenario": "s4_en_b_004", "n": 7, "attempt": 0, "seed": 168450221, "text": "And how many onions has he got now?", "ok": true}
+{"scenario": "s4_en_b_004", "n": 8, "attempt": 0, "seed": 6542836, "text": "Sorry, I meant Dr. Morales.", "ok": true}
+{"scenario": "s4_en_b_004", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 11.5, "peak_mb": 4652}
+{"scenario": "s4_en_b_008", "n": 1, "attempt": 0, "seed": 3116607424, "text": "My teammate has some laptops. 12 of them, actually.", "ok": true}
+{"scenario": "s4_en_b_008", "n": 2, "attempt": 0, "seed": 2086203625, "text": "All Martin has is laptops, 16 of them.", "ok": true}
+{"scenario": "s4_en_b_008", "n": 3, "attempt": 0, "seed": 1005346270, "text": "The janitor, Mr. Garcia, also has some laptops, not sure how many.", "ok": true}
+{"scenario": "s4_en_b_008", "n": 4, "attempt": 0, "seed": 1749458447, "text": "Martin borrowed three laptops from my teammate.", "ok": true}
+{"scenario": "s4_en_b_008", "n": 5, "attempt": 0, "seed": 187515893, "text": "How many laptops does Martin hold?", "ok": true}
+{"scenario": "s4_en_b_008", "n": 6, "attempt": 0, "seed": 1546780433, "text": "How many laptops does my teammate hold?", "ok": true}
+{"scenario": "s4_en_b_008", "n": 7, "attempt": 0, "seed": 3962465209, "text": "Actually, it was 9, not 3.", "ok": true}
+{"scenario": "s4_en_b_008", "n": 8, "attempt": 0, "seed": 1051694821, "text": "How many laptops does my teammate have left?", "ok": true}
+{"scenario": "s4_en_b_008", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 12.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_011", "n": 1, "attempt": 0, "seed": 2470698174, "text": "Mr. Morales owns 11 envelopes.", "ok": true}
+{"scenario": "s4_en_b_011", "n": 2, "attempt": 0, "seed": 1743877626, "text": "My nephew is carrying 16 envelopes at the moment.", "ok": true}
+{"scenario": "s4_en_b_011", "n": 3, "attempt": 0, "seed": 1100483428, "text": "my nephew handed over five envelopes to Mr. Morales, apparently.", "ok": true}
+{"scenario": "s4_en_b_011", "n": 4, "attempt": 0, "seed": 3032152063, "text": "How many envelopes does my nephew have left?", "ok": true}
+{"scenario": "s4_en_b_011", "n": 5, "attempt": 0, "seed": 1463559663, "text": "How many envelopes do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_011", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": null, "seconds": 7.4, "peak_mb": 4659}
+{"scenario": "s4_en_b_012", "n": 1, "attempt": 0, "seed": 1500441360, "text": "Jasmine has 13 ribbons.", "ok": true}
+{"scenario": "s4_en_b_012", "n": 2, "attempt": 0, "seed": 2165589982, "text": "Gavin is responsible for 10 ribbons at the moment.", "ok": true}
+{"scenario": "s4_en_b_012", "n": 3, "attempt": 0, "seed": 3095628623, "text": "Gavin transferred two ribbons to Jasmine.", "ok": true}
+{"scenario": "s4_en_b_012", "n": 4, "attempt": 0, "seed": 3363367678, "text": "How many ribbons does Gavin have now?", "ok": true}
+{"scenario": "s4_en_b_012", "n": 5, "attempt": 0, "seed": 2879205947, "text": "Jasmine passed 2 of them to Gavin.", "ok": true}
+{"scenario": "s4_en_b_012", "n": 6, "attempt": 0, "seed": 2330637399, "text": "How many ribbons does Gavin have now?", "ok": true}
+{"scenario": "s4_en_b_012", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": 7, "seconds": 26.2, "peak_mb": 4659}
+{"scenario": "s4_en_b_019", "n": 1, "attempt": 0, "seed": 2476956917, "text": "Yusuf owns 10 potatoes.", "ok": true}
+{"scenario": "s4_en_b_019", "n": 2, "attempt": 0, "seed": 1264438220, "text": "I am responsible for 13 potatoes.", "ok": true}
+{"scenario": "s4_en_b_019", "n": 3, "attempt": 0, "seed": 216902584, "text": "Rafael is carrying 3 potatoes.", "ok": true}
+{"scenario": "s4_en_b_019", "n": 4, "attempt": 0, "seed": 1587720309, "text": "Yusuf gave me three of the same potatoes.", "ok": true}
+{"scenario": "s4_en_b_019", "n": 5, "attempt": 0, "seed": 804024179, "text": "How many potatoes has I got now?", "ok": true}
+{"scenario": "s4_en_b_019", "n": 6, "attempt": 0, "seed": 4056738401, "text": "How many potatoes does Yusuf have now?", "ok": true}
+{"scenario": "s4_en_b_019", "n": 7, "attempt": 0, "seed": 2841400950, "text": "Actually they went to Rafael, not me.", "ok": true}
+{"scenario": "s4_en_b_019", "n": 8, "attempt": 0, "seed": 4171743061, "text": "How many potatoes does Yusuf have now?", "ok": true}
+{"scenario": "s4_en_b_019", "n": 9, "attempt": 0, "seed": 3477456513, "text": "How many potatoes does Yusuf have now?", "ok": true}
+{"scenario": "s4_en_b_019", "n": 10, "attempt": 0, "seed": 212938470, "text": "Sorry, I meant Rafael.", "ok": true}
+{"scenario": "s4_en_b_019", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 13.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_023", "n": 1, "attempt": 0, "seed": 3037278964, "text": "I keep 11 chairs.", "ok": true}
+{"scenario": "s4_en_b_023", "n": 2, "attempt": 0, "seed": 1828679395, "text": "There are no chairs in the classroom.", "ok": true}
+{"scenario": "s4_en_b_023", "n": 3, "attempt": 0, "seed": 2527258779, "text": "I left 3 of them at the classroom.", "ok": true}
+{"scenario": "s4_en_b_023", "n": 4, "attempt": 0, "seed": 2865088357, "text": "How many chairs do I have now?", "ok": true}
+{"scenario": "s4_en_b_023", "n": 5, "attempt": 0, "seed": 3510547245, "text": "How many chairs are in the classroom now?", "ok": true}
+{"scenario": "s4_en_b_023", "n": 6, "attempt": 0, "seed": 1860828978, "text": "I took 2 of them from the classroom.", "ok": true}
+{"scenario": "s4_en_b_023", "n": 7, "attempt": 0, "seed": 3223747381, "text": "How many chairs has I got now?", "ok": true}
+{"scenario": "s4_en_b_023", "n": 8, "attempt": 0, "seed": 2472382298, "text": "How many chairs are in the classroom now?", "ok": true}
+{"scenario": "s4_en_b_023", "n": 9, "attempt": 0, "seed": 30072418, "text": "Wait, make that 1, not 2.", "ok": true}
+{"scenario": "s4_en_b_023", "n": 10, "attempt": 0, "seed": 221107813, "text": "How many chairs are in the classroom now?", "ok": true}
+{"scenario": "s4_en_b_023", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 13.6, "peak_mb": 4659}
+{"scenario": "s4_en_b_024", "n": 1, "attempt": 0, "seed": 1237756361, "text": "Kevin is carrying 13 ladders.", "ok": true}
+{"scenario": "s4_en_b_024", "n": 2, "attempt": 0, "seed": 3638775253, "text": "my sister has 7 ladders", "ok": true}
+{"scenario": "s4_en_b_024", "n": 3, "attempt": 0, "seed": 2060654893, "text": "Kevin gave my sister back the two ladders.", "ok": true}
+{"scenario": "s4_en_b_024", "n": 4, "attempt": 0, "seed": 2009065789, "text": "How many ladders does my sister have now?", "ok": true}
+{"scenario": "s4_en_b_024", "n": 5, "attempt": 0, "seed": 3629215121, "text": "How many ladders do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_024", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": null, "seconds": 6.9, "peak_mb": 4659}
+{"scenario": "s4_en_b_031", "n": 1, "attempt": 0, "seed": 3066013998, "text": "Joanna is carrying 12 novels.", "ok": true}
+{"scenario": "s4_en_b_031", "n": 2, "attempt": 0, "seed": 2283143983, "text": "Vera owns 16 novels.", "ok": true}
+{"scenario": "s4_en_b_031", "n": 3, "attempt": 0, "seed": 3300598961, "text": "I've got 13 novels.", "ok": true}
+{"scenario": "s4_en_b_031", "n": 4, "attempt": 0, "seed": 2773407399, "text": "Vera handed over five novels to me.", "ok": true}
+{"scenario": "s4_en_b_031", "n": 5, "attempt": 0, "seed": 1588383922, "text": "How many novels do I have now?", "ok": true}
+{"scenario": "s4_en_b_031", "n": 6, "attempt": 0, "seed": 1584754249, "text": "And how many novels has she got now?", "ok": true}
+{"scenario": "s4_en_b_031", "n": 7, "attempt": 0, "seed": 318866792, "text": "Vera, I mean.", "ok": true}
+{"scenario": "s4_en_b_031", "n": 8, "attempt": 0, "seed": 2915596249, "text": "How many novels do Vera and I have in total?", "ok": true}
+{"scenario": "s4_en_b_031", "n": 9, "attempt": 0, "seed": 2803547988, "text": "Why does Joanna have that many novels now?", "ok": true}
+{"scenario": "s4_en_b_031", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 11.6, "peak_mb": 4659}
+{"scenario": "s4_en_b_033", "n": 1, "attempt": 0, "seed": 1577312792, "text": "my sister is responsible for 3 potatoes.", "ok": true}
+{"scenario": "s4_en_b_033", "n": 2, "attempt": 0, "seed": 3490677919, "text": "James is carrying 14 potatoes.", "ok": true}
+{"scenario": "s4_en_b_033", "n": 3, "attempt": 0, "seed": 39265177, "text": "my sister got the same 5 potatoes from James.", "ok": true}
+{"scenario": "s4_en_b_033", "n": 4, "attempt": 0, "seed": 4036094728, "text": "How many potatoes does James have left?", "ok": true}
+{"scenario": "s4_en_b_033", "n": 5, "attempt": 0, "seed": 1680172449, "text": "How many potatoes does my sister have now?", "ok": true}
+{"scenario": "s4_en_b_033", "n": 6, "attempt": 0, "seed": 548628135, "text": "Sorry, it was 12, not 5.", "ok": true}
+{"scenario": "s4_en_b_033", "n": 7, "attempt": 0, "seed": 3956717187, "text": "How many potatoes does James have now?", "ok": true}
+{"scenario": "s4_en_b_033", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 9.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_034", "n": 1, "attempt": 0, "seed": 400065875, "text": "my roommate Jasmine keeps 6 flashlights.", "ok": true}
+{"scenario": "s4_en_b_034", "n": 2, "attempt": 0, "seed": 4234006218, "text": "my nephew Peter has got 8 flashlights.", "ok": true}
+{"scenario": "s4_en_b_034", "n": 3, "attempt": 0, "seed": 3090347250, "text": "Jasmine lent Peter three flashlights.", "ok": true}
+{"scenario": "s4_en_b_034", "n": 4, "attempt": 0, "seed": 1189267394, "text": "How many flashlights does Jasmine have left?", "ok": true}
+{"scenario": "s4_en_b_034", "n": 5, "attempt": 0, "seed": 2666066911, "text": "How many flashlights does Peter hold?", "ok": true}
+{"scenario": "s4_en_b_034", "n": 6, "attempt": 0, "seed": 2484548413, "text": "Jasmine is who I meant.", "ok": true}
+{"scenario": "s4_en_b_034", "n": 7, "attempt": 0, "seed": 701675862, "text": "How many flashlights do Jasmine and Peter have in total?", "ok": true}
+{"scenario": "s4_en_b_034", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 9.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_038", "n": 1, "attempt": 0, "seed": 3935837233, "text": "Mr. Gutierrez has 6 peaches and Elena has 16 peaches.", "ok": true}
+{"scenario": "s4_en_b_038", "n": 2, "attempt": 0, "seed": 275889753, "text": "my sister keeps 5 peaches", "ok": true}
+{"scenario": "s4_en_b_038", "n": 3, "attempt": 0, "seed": 3974447664, "text": "my sister hand over two peaches to Mr. Gutierrez.", "ok": true}
+{"scenario": "s4_en_b_038", "n": 4, "attempt": 0, "seed": 3596172745, "text": "How many peaches does my sister have now?", "ok": true}
+{"scenario": "s4_en_b_038", "n": 5, "attempt": 0, "seed": 18444479, "text": "Wait, make that 4, not 2.", "ok": true}
+{"scenario": "s4_en_b_038", "n": 6, "attempt": 0, "seed": 1903408827, "text": "How many peaches does my sister hold?", "ok": true}
+{"scenario": "s4_en_b_038", "n": 7, "attempt": 0, "seed": 427560609, "text": "How many peaches does Elena have left?", "ok": true}
+{"scenario": "s4_en_b_038", "n": 8, "attempt": 0, "seed": 3204078867, "text": "Mr. Gutierrez is who I meant.", "ok": true}
+{"scenario": "s4_en_b_038", "n": 9, "attempt": 0, "seed": 670808504, "text": "How many peaches do Mr. Gutierrez and Elena have in total?", "ok": true}
+{"scenario": "s4_en_b_038", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 12.1, "peak_mb": 4659}
+{"scenario": "s4_en_b_040", "n": 1, "attempt": 0, "seed": 3262119531, "text": "my roommate Bianca is holding 8 blankets.", "ok": true}
+{"scenario": "s4_en_b_040", "n": 2, "attempt": 0, "seed": 2343683089, "text": "All Zack has is blankets, 9 of them.", "ok": true}
+{"scenario": "s4_en_b_040", "n": 3, "attempt": 0, "seed": 2376081008, "text": "Bianca gave back three blankets to Zack.", "ok": true}
+{"scenario": "s4_en_b_040", "n": 4, "attempt": 0, "seed": 2115851016, "text": "How many blankets does Zack have now?", "ok": true}
+{"scenario": "s4_en_b_040", "n": 5, "attempt": 0, "seed": 4090381395, "text": "How many blankets does Bianca hold?", "ok": true}
+{"scenario": "s4_en_b_040", "n": 6, "attempt": 0, "seed": 997836401, "text": "Actually, it was 6, not 3.", "ok": true}
+{"scenario": "s4_en_b_040", "n": 7, "attempt": 0, "seed": 3575062808, "text": "How many blankets does Bianca have now?", "ok": true}
+{"scenario": "s4_en_b_040", "n": 8, "attempt": 0, "seed": 2572592758, "text": "How many blankets do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_040", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 10.5, "peak_mb": 4659}
+{"scenario": "s4_en_b_041", "n": 1, "attempt": 0, "seed": 104349674, "text": "my teammate owns 8 muffins.", "ok": true}
+{"scenario": "s4_en_b_041", "n": 2, "attempt": 0, "seed": 914255099, "text": "I keep 5 muffins.", "ok": true}
+{"scenario": "s4_en_b_041", "n": 3, "attempt": 0, "seed": 909050068, "text": "My teammate borrowed 4 of his muffins from me.", "ok": true}
+{"scenario": "s4_en_b_041", "n": 4, "attempt": 0, "seed": 2465385136, "text": "How many muffins does my teammate have now?", "ok": true}
+{"scenario": "s4_en_b_041", "n": 5, "attempt": 0, "seed": 2246538941, "text": "Actually, it was 1, not 4.", "ok": true}
+{"scenario": "s4_en_b_041", "n": 6, "attempt": 0, "seed": 1750892789, "text": "How many muffins do I have now?", "ok": true}
+{"scenario": "s4_en_b_041", "n": 7, "attempt": 0, "seed": 3880469345, "text": "How many muffins do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_041", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 10.7, "peak_mb": 4659}
+{"scenario": "s4_en_b_043", "n": 1, "attempt": 0, "seed": 1980572628, "text": "The new intern, Mr. Walker, has 6 markers and also some ladders.", "ok": true}
+{"scenario": "s4_en_b_043", "n": 2, "attempt": 0, "seed": 3376721266, "text": "my sister keeps 15 markers", "ok": true}
+{"scenario": "s4_en_b_043", "n": 3, "attempt": 0, "seed": 3249186243, "text": "How many ladders does Mr. Walker have?", "ok": true}
+{"scenario": "s4_en_b_043", "n": 4, "attempt": 0, "seed": 3618733158, "text": "Mr. Walker passed 3 of his markers to my sister.", "ok": true}
+{"scenario": "s4_en_b_043", "n": 5, "attempt": 0, "seed": 508408627, "text": "How many markers does my sister have now?", "ok": true}
+{"scenario": "s4_en_b_043", "n": 6, "attempt": 0, "seed": 3247770407, "text": "How many markers does Mr. Walker have now?", "ok": true}
+{"scenario": "s4_en_b_043", "n": 7, "attempt": 0, "seed": 817788656, "text": "Wait, make that 5, not 3.", "ok": true}
+{"scenario": "s4_en_b_043", "n": 8, "attempt": 0, "seed": 4095294148, "text": "How many markers does my sister have left?", "ok": true}
+{"scenario": "s4_en_b_043", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 11.8, "peak_mb": 4659}
+{"scenario": "s4_en_b_044", "n": 1, "attempt": 0, "seed": 1844251686, "text": "my nephew Jack has 16 candles.", "ok": true}
+{"scenario": "s4_en_b_044", "n": 2, "attempt": 0, "seed": 2295646744, "text": "the attic holds 5 candles at the moment.", "ok": true}
+{"scenario": "s4_en_b_044", "n": 3, "attempt": 0, "seed": 624392931, "text": "The janitor, Ms. Sanchez, owns 7 candles.", "ok": true}
+{"scenario": "s4_en_b_044", "n": 4, "attempt": 0, "seed": 2011710865, "text": "After that, Ms. Sanchez took four candles from the attic.", "ok": true}
+{"scenario": "s4_en_b_044", "n": 5, "attempt": 0, "seed": 2073369195, "text": "How many candles does Ms. Sanchez have now?", "ok": true}
+{"scenario": "s4_en_b_044", "n": 6, "attempt": 0, "seed": 1265742233, "text": "Ms. Sanchez left them at the attic three candles.", "ok": true}
+{"scenario": "s4_en_b_044", "n": 7, "attempt": 0, "seed": 4108169438, "text": "How many candles does Ms. Sanchez hold?", "ok": true}
+{"scenario": "s4_en_b_044", "n": 8, "attempt": 0, "seed": 4164503531, "text": "How many candles are in the attic now?", "ok": true}
+{"scenario": "s4_en_b_044", "n": 9, "attempt": 0, "seed": 4198519952, "text": "How many candles do Jack and Ms. Sanchez have in total?", "ok": true}
+{"scenario": "s4_en_b_044", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 13.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_053", "n": 1, "attempt": 0, "seed": 3783645988, "text": "my roommate hasn't got any trophies.", "ok": true}
+{"scenario": "s4_en_b_053", "n": 2, "attempt": 0, "seed": 2788014926, "text": "Dr. Evans only has trophies, 5 of them.", "ok": true}
+{"scenario": "s4_en_b_053", "n": 3, "attempt": 0, "seed": 1658832857, "text": "The attic is in there with some 15 trophies. The attic has 15 of them, actually.", "ok": true}
+{"scenario": "s4_en_b_053", "n": 4, "attempt": 0, "seed": 428386573, "text": "my roommate got two trophies from Dr. Evans.", "ok": true}
+{"scenario": "s4_en_b_053", "n": 5, "attempt": 0, "seed": 1973344222, "text": "How many trophies does my roommate have now?", "ok": true}
+{"scenario": "s4_en_b_053", "n": 6, "attempt": 0, "seed": 2264863944, "text": "Actually it was 1, not 2.", "ok": true}
+{"scenario": "s4_en_b_053", "n": 7, "attempt": 0, "seed": 275412583, "text": "How many trophies does my roommate hold?", "ok": true}
+{"scenario": "s4_en_b_053", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 10.6, "peak_mb": 4659}
+{"scenario": "s4_en_b_054", "n": 1, "attempt": 2, "seed": 3096136946, "text": "The cashier, Mr. Rodriguez, only has magazines, 11 of them.", "ok": true}
+{"scenario": "s4_en_b_054", "n": 2, "attempt": 0, "seed": 3908569926, "text": "All I have is magazines, 13 of them.", "ok": true}
+{"scenario": "s4_en_b_054", "n": 3, "attempt": 0, "seed": 1361803411, "text": "Mr. Rodriguez sent me 4 of them.", "ok": true}
+{"scenario": "s4_en_b_054", "n": 4, "attempt": 0, "seed": 2775556531, "text": "How many magazines do I hold now?", "ok": true}
+{"scenario": "s4_en_b_054", "n": 5, "attempt": 0, "seed": 1413290300, "text": "How many magazines has Mr. Rodriguez got now?", "ok": true}
+{"scenario": "s4_en_b_054", "n": 6, "attempt": 0, "seed": 1726880600, "text": "I got 1 magazine from Mr. Rodriguez.", "ok": true}
+{"scenario": "s4_en_b_054", "n": 7, "attempt": 0, "seed": 1774782509, "text": "How many magazines does Mr. Rodriguez hold?", "ok": true}
+{"scenario": "s4_en_b_054", "n": 8, "attempt": 0, "seed": 201368665, "text": "Actually, it was 4, not 1.", "ok": true}
+{"scenario": "s4_en_b_054", "n": 9, "attempt": 0, "seed": 635549193, "text": "How many magazines do I have now?", "ok": true}
+{"scenario": "s4_en_b_054", "n": 10, "attempt": 0, "seed": 2697748907, "text": "How many magazines do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_054", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 18.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_055", "n": 1, "attempt": 0, "seed": 942800666, "text": "Priya is carrying 6 novels.", "ok": true}
+{"scenario": "s4_en_b_055", "n": 2, "attempt": 0, "seed": 4189482185, "text": "All Laura has is novels, 10 of them.", "ok": true}
+{"scenario": "s4_en_b_055", "n": 3, "attempt": 0, "seed": 1922335909, "text": "Laura handed over 4 of the same novels to Priya.", "ok": true}
+{"scenario": "s4_en_b_055", "n": 4, "attempt": 0, "seed": 3945009937, "text": "How many novels does Laura hold?", "ok": true}
+{"scenario": "s4_en_b_055", "n": 5, "attempt": 0, "seed": 1742030499, "text": "Laura passed 5 novels to Priya.", "ok": true}
+{"scenario": "s4_en_b_055", "n": 6, "attempt": 0, "seed": 2314880148, "text": "How many novels has Priya got now?", "ok": true}
+{"scenario": "s4_en_b_055", "n": 7, "attempt": 0, "seed": 2253744246, "text": "How many novels does Laura hold?", "ok": true}
+{"scenario": "s4_en_b_055", "n": 8, "attempt": 1, "seed": 4023811938, "text": "Priya used up 1 of them.", "ok": true}
+{"scenario": "s4_en_b_055", "n": 9, "attempt": 0, "seed": 2585250497, "text": "How many novels does Priya have now?", "ok": true}
+{"scenario": "s4_en_b_055", "n": 10, "attempt": 0, "seed": 1457851683, "text": "How many novels do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_055", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 16.1, "peak_mb": 4659}
+{"scenario": "s4_en_b_062", "n": 1, "attempt": 0, "seed": 2578330310, "text": "The new intern, Ms. Jackson, has 12 plates.", "ok": true}
+{"scenario": "s4_en_b_062", "n": 2, "attempt": 0, "seed": 79501127, "text": "My uncle Brian is carrying 6 plates.", "ok": true}
+{"scenario": "s4_en_b_062", "n": 3, "attempt": 0, "seed": 735039835, "text": "Ms. Jackson sent Brian two plates.", "ok": true}
+{"scenario": "s4_en_b_062", "n": 4, "attempt": 0, "seed": 3962187627, "text": "How many plates does Brian have left?", "ok": true}
+{"scenario": "s4_en_b_062", "n": 5, "attempt": 0, "seed": 2120629504, "text": "Sorry, it was 9, not 2.", "ok": true}
+{"scenario": "s4_en_b_062", "n": 6, "attempt": 0, "seed": 1319661181, "text": "How many plates does Ms. Jackson have left?", "ok": true}
+{"scenario": "s4_en_b_062", "n": 7, "attempt": 0, "seed": 196058525, "text": "How many plates do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_062", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 9.4, "peak_mb": 4659}
+{"scenario": "s4_en_b_066", "n": 1, "attempt": 0, "seed": 2873096653, "text": "Dr. Moore has 11 bulbs at the moment.", "ok": true}
+{"scenario": "s4_en_b_066", "n": 2, "attempt": 0, "seed": 149147926, "text": "Dr. Moore's teammate Fiona is responsible for nine bulbs.", "ok": true}
+{"scenario": "s4_en_b_066", "n": 3, "attempt": 0, "seed": 393857670, "text": "Fiona lent Dr. Moore five bulbs.", "ok": true}
+{"scenario": "s4_en_b_066", "n": 4, "attempt": 0, "seed": 3678154293, "text": "How many bulbs does Fiona have now?", "ok": true}
+{"scenario": "s4_en_b_066", "n": 5, "attempt": 0, "seed": 765331987, "text": "How many bulbs do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_066", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": null, "seconds": 7.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_068", "n": 1, "attempt": 0, "seed": 3646722336, "text": "my classmate Zoe keeps 12 pillows.", "ok": true}
+{"scenario": "s4_en_b_068", "n": 2, "attempt": 0, "seed": 2447410571, "text": "I am responsible for 8 pillows.", "ok": true}
+{"scenario": "s4_en_b_068", "n": 3, "attempt": 0, "seed": 1491917009, "text": "I got the same 4 pillows from Zoe.", "ok": true}
+{"scenario": "s4_en_b_068", "n": 4, "attempt": 0, "seed": 1905973268, "text": "How many pillows does Zoe have left?", "ok": true}
+{"scenario": "s4_en_b_068", "n": 5, "attempt": 0, "seed": 647582778, "text": "I got the same 2 pillows from Zoe.", "ok": true}
+{"scenario": "s4_en_b_068", "n": 6, "attempt": 0, "seed": 2956414767, "text": "How many pillows has I got now?", "ok": true}
+{"scenario": "s4_en_b_068", "n": 7, "attempt": 0, "seed": 1850000049, "text": "Sorry, it was 7, not 2.", "ok": true}
+{"scenario": "s4_en_b_068", "n": 8, "attempt": 0, "seed": 4198118997, "text": "How many pillows does Zoe have now?", "ok": true}
+{"scenario": "s4_en_b_068", "n": 9, "attempt": 0, "seed": 2904239487, "text": "How many pillows do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_068", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 12.8, "peak_mb": 4659}
+{"scenario": "s4_en_b_071", "n": 1, "attempt": 0, "seed": 856480803, "text": "Sofia's got 13 lamps.", "ok": true}
+{"scenario": "s4_en_b_071", "n": 2, "attempt": 0, "seed": 1502085487, "text": "The break room doesn't have a single lamp.", "ok": true}
+{"scenario": "s4_en_b_071", "n": 3, "attempt": 0, "seed": 1734214839, "text": "Sofia left four lamps at the break room.", "ok": true}
+{"scenario": "s4_en_b_071", "n": 4, "attempt": 0, "seed": 699068951, "text": "How many lamps are in the break room now?", "ok": true}
+{"scenario": "s4_en_b_071", "n": 5, "attempt": 0, "seed": 892443538, "text": "Sofia left them at the break room — 4 lamps, apparently.", "ok": true}
+{"scenario": "s4_en_b_071", "n": 6, "attempt": 0, "seed": 2689235825, "text": "How many lamps does Sofia hold?", "ok": true}
+{"scenario": "s4_en_b_071", "n": 7, "attempt": 0, "seed": 1457725100, "text": "How many lamps are in the break room now?", "ok": true}
+{"scenario": "s4_en_b_071", "n": 8, "attempt": 1, "seed": 4252559874, "text": "Sofia took two lamps from the break room.", "ok": true}
+{"scenario": "s4_en_b_071", "n": 9, "attempt": 0, "seed": 373922433, "text": "How many lamps are in the break room now?", "ok": true}
+{"scenario": "s4_en_b_071", "n": 10, "attempt": 0, "seed": 1195758528, "text": "How many lamps does Sofia have left?", "ok": true}
+{"scenario": "s4_en_b_071", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 15.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_073", "n": 1, "attempt": 0, "seed": 3088525369, "text": "Paul is responsible for 14 eggs.", "ok": true}
+{"scenario": "s4_en_b_073", "n": 2, "attempt": 0, "seed": 2257603665, "text": "I have 16 eggs.", "ok": true}
+{"scenario": "s4_en_b_073", "n": 3, "attempt": 0, "seed": 2342030234, "text": "my teammate has got 3 eggs.", "ok": true}
+{"scenario": "s4_en_b_073", "n": 4, "attempt": 0, "seed": 2042605807, "text": "My teammate got one egg from me.", "ok": true}
+{"scenario": "s4_en_b_073", "n": 5, "attempt": 0, "seed": 879789345, "text": "How many eggs does my teammate have now?", "ok": true}
+{"scenario": "s4_en_b_073", "n": 6, "attempt": 0, "seed": 855772687, "text": "How many eggs do Paul and I have in total?", "ok": true}
+{"scenario": "s4_en_b_073", "n": 7, "attempt": 0, "seed": 1740736716, "text": "Why does Paul have that many eggs now?", "ok": true}
+{"scenario": "s4_en_b_073", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 8.7, "peak_mb": 4659}
+{"scenario": "s4_en_b_074", "n": 1, "attempt": 0, "seed": 2999791767, "text": "I haven't got any eggs.", "ok": true}
+{"scenario": "s4_en_b_074", "n": 2, "attempt": 0, "seed": 3362921855, "text": "Yusuf only has eggs, 6 of them.", "ok": true}
+{"scenario": "s4_en_b_074", "n": 3, "attempt": 0, "seed": 591348187, "text": "After that, I borrowed 4 eggs from Yusuf.", "ok": true}
+{"scenario": "s4_en_b_074", "n": 4, "attempt": 0, "seed": 3401112655, "text": "How many eggs does Yusuf hold?", "ok": true}
+{"scenario": "s4_en_b_074", "n": 5, "attempt": 0, "seed": 2218702297, "text": "How many eggs do I have now?", "ok": true}
+{"scenario": "s4_en_b_074", "n": 6, "attempt": 0, "seed": 1218170666, "text": "For the trip, I lent Yusuf three eggs.", "ok": true}
+{"scenario": "s4_en_b_074", "n": 7, "attempt": 0, "seed": 1144056478, "text": "How many eggs do I hold now?", "ok": true}
+{"scenario": "s4_en_b_074", "n": 8, "attempt": 0, "seed": 2604721625, "text": "How many eggs do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_074", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 17.1, "peak_mb": 4659}
+{"scenario": "s4_en_b_075", "n": 1, "attempt": 0, "seed": 3080366818, "text": "Victor's got 10 knives.", "ok": true}
+{"scenario": "s4_en_b_075", "n": 2, "attempt": 0, "seed": 3405652626, "text": "my roommate Diego is carrying 14 knives.", "ok": true}
+{"scenario": "s4_en_b_075", "n": 3, "attempt": 0, "seed": 1783557039, "text": "Diego lent Victor 1 of his knives.", "ok": true}
+{"scenario": "s4_en_b_075", "n": 4, "attempt": 0, "seed": 1622713968, "text": "How many knives does Diego have now?", "ok": true}
+{"scenario": "s4_en_b_075", "n": 5, "attempt": 0, "seed": 536317255, "text": "Diego sent 5 of his to Victor.", "ok": true}
+{"scenario": "s4_en_b_075", "n": 6, "attempt": 0, "seed": 4110081273, "text": "How many knives has Diego got now?", "ok": true}
+{"scenario": "s4_en_b_075", "n": 7, "attempt": 0, "seed": 1087970600, "text": "How many knives does Victor have left?", "ok": true}
+{"scenario": "s4_en_b_075", "n": 8, "attempt": 0, "seed": 3234419306, "text": "Actually, it was 8, not 5.", "ok": true}
+{"scenario": "s4_en_b_075", "n": 9, "attempt": 0, "seed": 1492793752, "text": "How many knives does Victor have now?", "ok": true}
+{"scenario": "s4_en_b_075", "n": 10, "attempt": 0, "seed": 1062106662, "text": "How many knives do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_075", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 22.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_078", "n": 1, "attempt": 0, "seed": 369282766, "text": "Jack has some lanterns. Four of them, actually.", "ok": true}
+{"scenario": "s4_en_b_078", "n": 2, "attempt": 0, "seed": 1341166540, "text": "I am responsible for 10 lanterns.", "ok": true}
+{"scenario": "s4_en_b_078", "n": 3, "attempt": 0, "seed": 2665577912, "text": "I borrowed one of his lanterns from Jack.", "ok": true}
+{"scenario": "s4_en_b_078", "n": 4, "attempt": 0, "seed": 1521891550, "text": "How many lanterns does Jack have left?", "ok": true}
+{"scenario": "s4_en_b_078", "n": 5, "attempt": 0, "seed": 2132397903, "text": "How many lanterns do I have now?", "ok": true}
+{"scenario": "s4_en_b_078", "n": 6, "attempt": 0, "seed": 1920292780, "text": "Jack sent me the same two lanterns.", "ok": true}
+{"scenario": "s4_en_b_078", "n": 7, "attempt": 0, "seed": 2562657664, "text": "How many lanterns do I have now?", "ok": true}
+{"scenario": "s4_en_b_078", "n": 8, "attempt": 0, "seed": 1020033097, "text": "Actually, it was 1, not 2.", "ok": true}
+{"scenario": "s4_en_b_078", "n": 9, "attempt": 0, "seed": 400818635, "text": "How many lanterns does Jack have now?", "ok": true}
+{"scenario": "s4_en_b_078", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 27.8, "peak_mb": 4659}
+{"scenario": "s4_en_b_079", "n": 1, "attempt": 0, "seed": 642643079, "text": "Dr. Gutierrez has 7 tablets.", "ok": true}
+{"scenario": "s4_en_b_079", "n": 2, "attempt": 0, "seed": 598747392, "text": "Ms. Taylor owns 14 tablets.", "ok": true}
+{"scenario": "s4_en_b_079", "n": 3, "attempt": 0, "seed": 642297971, "text": "After that, Dr. Gutierrez passed 2 of his tablets to Ms. Taylor.", "ok": true}
+{"scenario": "s4_en_b_079", "n": 4, "attempt": 0, "seed": 3817134697, "text": "How many tablets does Ms. Taylor have left?", "ok": true}
+{"scenario": "s4_en_b_079", "n": 5, "attempt": 0, "seed": 2500621560, "text": "How many tablets does Dr. Gutierrez have now?", "ok": true}
+{"scenario": "s4_en_b_079", "n": 6, "attempt": 0, "seed": 1120047950, "text": "Actually, it was 4, not 2.", "ok": true}
+{"scenario": "s4_en_b_079", "n": 7, "attempt": 0, "seed": 1848885679, "text": "How many tablets does Dr. Gutierrez have now?", "ok": true}
+{"scenario": "s4_en_b_079", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 19.7, "peak_mb": 4659}
+{"scenario": "s4_en_b_081", "n": 1, "attempt": 0, "seed": 3156740622, "text": "My teammate has some hammers. Actually, 16 of them, actually.", "ok": true}
+{"scenario": "s4_en_b_081", "n": 2, "attempt": 1, "seed": 504586958, "text": "Dr. Edwards only has hammers, 9 of them.", "ok": true}
+{"scenario": "s4_en_b_081", "n": 3, "attempt": 0, "seed": 1828255675, "text": "Irene also has some hammers, not sure how many.", "ok": true}
+{"scenario": "s4_en_b_081", "n": 4, "attempt": 0, "seed": 891400665, "text": "How many hammers does Irene have?", "ok": true}
+{"scenario": "s4_en_b_081", "n": 5, "attempt": 0, "seed": 1734824917, "text": "Irene has 7 of them, to be exact.", "ok": true}
+{"scenario": "s4_en_b_081", "n": 6, "attempt": 0, "seed": 503868768, "text": "To Irene, Dr. Edwards sent five hammers.", "ok": true}
+{"scenario": "s4_en_b_081", "n": 7, "attempt": 0, "seed": 1177730106, "text": "How many hammers does Irene have now?", "ok": true}
+{"scenario": "s4_en_b_081", "n": 8, "attempt": 0, "seed": 2403206430, "text": "How many hammers does Irene have left?", "ok": true}
+{"scenario": "s4_en_b_081", "n": 9, "attempt": 0, "seed": 3950193928, "text": "I mean Dr. Edwards.", "ok": true}
+{"scenario": "s4_en_b_081", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 30.9, "peak_mb": 4659}
+{"scenario": "s4_en_b_082", "n": 1, "attempt": 0, "seed": 3801438470, "text": "There are 10 hammers in the front porch.", "ok": true}
+{"scenario": "s4_en_b_082", "n": 2, "attempt": 0, "seed": 1750386201, "text": "Walter keeps 6 hammers.", "ok": true}
+{"scenario": "s4_en_b_082", "n": 3, "attempt": 0, "seed": 1318334795, "text": "Gemma has got 16 hammers.", "ok": true}
+{"scenario": "s4_en_b_082", "n": 4, "attempt": 0, "seed": 1065122760, "text": "Gemma left three hammers at the front porch.", "ok": true}
+{"scenario": "s4_en_b_082", "n": 5, "attempt": 0, "seed": 2762995397, "text": "How many hammers has Walter got now?", "ok": true}
+{"scenario": "s4_en_b_082", "n": 6, "attempt": 0, "seed": 1130122952, "text": "Walter took one of them from the front porch.", "ok": true}
+{"scenario": "s4_en_b_082", "n": 7, "attempt": 0, "seed": 2026738095, "text": "How many hammers are in the front porch now?", "ok": true}
+{"scenario": "s4_en_b_082", "n": 8, "attempt": 0, "seed": 2647068450, "text": "Wait, the front porch gave them to Gemma, not Walter.", "ok": true}
+{"scenario": "s4_en_b_082", "n": 9, "attempt": 0, "seed": 847736363, "text": "How many hammers does Gemma hold?", "ok": true}
+{"scenario": "s4_en_b_082", "n": 10, "attempt": 0, "seed": 3824362651, "text": "How many hammers do Walter and Gemma have in total?", "ok": true}
+{"scenario": "s4_en_b_082", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 26.9, "peak_mb": 4659}
+{"scenario": "s4_en_b_086", "n": 1, "attempt": 0, "seed": 3700810170, "text": "Ahmed is holding 5 chairs.", "ok": true}
+{"scenario": "s4_en_b_086", "n": 2, "attempt": 0, "seed": 676561309, "text": "my uncle is carrying 11 chairs", "ok": true}
+{"scenario": "s4_en_b_086", "n": 3, "attempt": 0, "seed": 3964587388, "text": "Ahmed handed over one chair to my uncle.", "ok": true}
+{"scenario": "s4_en_b_086", "n": 4, "attempt": 0, "seed": 292036810, "text": "How many chairs does Ahmed have now?", "ok": true}
+{"scenario": "s4_en_b_086", "n": 5, "attempt": 0, "seed": 2625164128, "text": "Wait, make that 2, not 1.", "ok": true}
+{"scenario": "s4_en_b_086", "n": 6, "attempt": 0, "seed": 1140973652, "text": "How many chairs does Ahmed hold?", "ok": true}
+{"scenario": "s4_en_b_086", "n": 7, "attempt": 0, "seed": 2932997429, "text": "How many chairs do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_086", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 14.5, "peak_mb": 4659}
+{"scenario": "s4_en_b_095", "n": 1, "attempt": 0, "seed": 2822103394, "text": "my teammate Theo owns 12 plates.", "ok": true}
+{"scenario": "s4_en_b_095", "n": 2, "attempt": 0, "seed": 1642335504, "text": "Joanna has some plates. Actually, 3 of them.", "ok": true}
+{"scenario": "s4_en_b_095", "n": 3, "attempt": 0, "seed": 4124440894, "text": "My roommate Laura has no plates at all.", "ok": true}
+{"scenario": "s4_en_b_095", "n": 4, "attempt": 5, "seed": 3596928628, "text": "For the fundraiser, Joanna returned 2 of them to Laura.", "ok": true}
+{"scenario": "s4_en_b_095", "n": 5, "attempt": 0, "seed": 3010115507, "text": "How many plates does Laura have now?", "ok": true}
+{"scenario": "s4_en_b_095", "n": 6, "attempt": 0, "seed": 2506957963, "text": "Laura handed over one plate to Theo, apparently.", "ok": true}
+{"scenario": "s4_en_b_095", "n": 7, "attempt": 0, "seed": 2133843358, "text": "How many plates does Theo hold?", "ok": true}
+{"scenario": "s4_en_b_095", "n": 8, "attempt": 0, "seed": 2608126093, "text": "Actually they went to Joanna, not to Theo.", "ok": true}
+{"scenario": "s4_en_b_095", "n": 9, "attempt": 0, "seed": 2253474806, "text": "How many plates does Theo hold?", "ok": true}
+{"scenario": "s4_en_b_095", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 39.4, "peak_mb": 4679}
+{"scenario": "s4_en_b_096", "n": 1, "attempt": 0, "seed": 2173557057, "text": "my classmate is responsible for 8 oranges.", "ok": true}
+{"scenario": "s4_en_b_096", "n": 2, "attempt": 0, "seed": 2887695471, "text": "Bianca is carrying 5 oranges.", "ok": true}
+{"scenario": "s4_en_b_096", "n": 3, "attempt": 0, "seed": 3230518960, "text": "my classmate handed over 2 of the same oranges to Bianca, apparently.", "ok": true}
+{"scenario": "s4_en_b_096", "n": 4, "attempt": 0, "seed": 322188236, "text": "How many oranges does Bianca have left?", "ok": true}
+{"scenario": "s4_en_b_096", "n": 5, "attempt": 0, "seed": 3046647473, "text": "Actually, it was 3, not 2.", "ok": true}
+{"scenario": "s4_en_b_096", "n": 6, "attempt": 0, "seed": 950081796, "text": "How many oranges does Bianca have now?", "ok": true}
+{"scenario": "s4_en_b_096", "n": 7, "attempt": 0, "seed": 3468609503, "text": "Why does Bianca have that many oranges now?", "ok": true}
+{"scenario": "s4_en_b_096", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 18.3, "peak_mb": 4679}
+{"scenario": "s4_en_b_097", "n": 1, "attempt": 0, "seed": 478573113, "text": "Rafael owns 8 baskets.", "ok": true}
+{"scenario": "s4_en_b_097", "n": 2, "attempt": 0, "seed": 918356561, "text": "Leah is responsible for 11 baskets.", "ok": true}
+{"scenario": "s4_en_b_097", "n": 3, "attempt": 0, "seed": 3185845887, "text": "Rafael lent Leah one basket, apparently.", "ok": true}
+{"scenario": "s4_en_b_097", "n": 4, "attempt": 0, "seed": 1266130148, "text": "How many baskets does Leah hold?", "ok": true}
+{"scenario": "s4_en_b_097", "n": 5, "attempt": 0, "seed": 3374899884, "text": "How many baskets has Rafael got now?", "ok": true}
+{"scenario": "s4_en_b_097", "n": 6, "attempt": 0, "seed": 2620876608, "text": "How many baskets does Leah have now?", "ok": true}
+{"scenario": "s4_en_b_097", "n": 7, "attempt": 0, "seed": 3864479457, "text": "I mean Rafael.", "ok": true}
+{"scenario": "s4_en_b_097", "n": 8, "attempt": 0, "seed": 184885878, "text": "How many baskets do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_097", "n": 9, "attempt": 0, "seed": 938587501, "text": "Why does Rafael have that many baskets now?", "ok": true}
+{"scenario": "s4_en_b_097", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 19.6, "peak_mb": 4679}
+{"scenario": "s4_en_b_098", "n": 1, "attempt": 0, "seed": 1427102595, "text": "I am carrying 11 eggs.", "ok": true}
+{"scenario": "s4_en_b_098", "n": 2, "attempt": 0, "seed": 504981955, "text": "my uncle Liam has 16 eggs.", "ok": true}
+{"scenario": "s4_en_b_098", "n": 3, "attempt": 0, "seed": 1713941117, "text": "Jasmine owns 7 eggs.", "ok": true}
+{"scenario": "s4_en_b_098", "n": 4, "attempt": 0, "seed": 1868791316, "text": "I gave back four eggs to Jasmine, who had them before.", "ok": true}
+{"scenario": "s4_en_b_098", "n": 5, "attempt": 0, "seed": 2837381966, "text": "How many eggs does Jasmine have left?", "ok": true}
+{"scenario": "s4_en_b_098", "n": 6, "attempt": 0, "seed": 1388513723, "text": "How many eggs has Jasmine got now?", "ok": true}
+{"scenario": "s4_en_b_098", "n": 7, "attempt": 0, "seed": 1119012033, "text": "Liam is who I meant.", "ok": true}
+{"scenario": "s4_en_b_098", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 14.2, "peak_mb": 4679}
+{"scenario": "s4_en_b_107", "n": 1, "attempt": 0, "seed": 3305839757, "text": "my aunt owns 14 bicycles", "ok": true}
+{"scenario": "s4_en_b_107", "n": 2, "attempt": 0, "seed": 4183612541, "text": "Diego is carrying 15 bicycles.", "ok": true}
+{"scenario": "s4_en_b_107", "n": 3, "attempt": 0, "seed": 1857195291, "text": "To Diego, my aunt sent 4 bicycles.", "ok": true}
+{"scenario": "s4_en_b_107", "n": 4, "attempt": 0, "seed": 2848958663, "text": "How many bicycles does my aunt hold?", "ok": true}
+{"scenario": "s4_en_b_107", "n": 5, "attempt": 0, "seed": 312240611, "text": "How many bicycles does Diego have left?", "ok": true}
+{"scenario": "s4_en_b_107", "n": 6, "attempt": 0, "seed": 1022704003, "text": "How many bicycles do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_107", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": null, "seconds": 12.0, "peak_mb": 4679}
+{"scenario": "s4_en_b_108", "n": 1, "attempt": 0, "seed": 2467645404, "text": "I have some hammers too.", "ok": true}
+{"scenario": "s4_en_b_108", "n": 2, "attempt": 0, "seed": 553233404, "text": "Ms. Novak has no hammers at all.", "ok": true}
+{"scenario": "s4_en_b_108", "n": 3, "attempt": 1, "seed": 3845768774, "text": "It's 16 hammers, I just counted.", "ok": true}
+{"scenario": "s4_en_b_108", "n": 4, "attempt": 1, "seed": 3325094760, "text": "I lent Ms. Novak 5 of hers.", "ok": true}
+{"scenario": "s4_en_b_108", "n": 5, "attempt": 0, "seed": 702576039, "text": "How many hammers do I hold?", "ok": true}
+{"scenario": "s4_en_b_108", "n": 6, "attempt": 0, "seed": 637776220, "text": "Wait, make that 4, not 5.", "ok": true}
+{"scenario": "s4_en_b_108", "n": 7, "attempt": 0, "seed": 2143548670, "text": "How many hammers has I got now?", "ok": true}
+{"scenario": "s4_en_b_108", "n": 8, "attempt": 0, "seed": 540632699, "text": "How many hammers do the two of them have in total?", "ok": true}
+{"scenario": "s4_en_b_108", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 20.8, "peak_mb": 4679}

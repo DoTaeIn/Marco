@@ -1,0 +1,208 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_22",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_066",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "holders",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "holders:relation",
+   "holders:title",
+   "question_forms:q_two_total",
+   "transfer_verbs:lend"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Dr. Moore has 11 bulbs at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:title"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Moore",
+      "item": "bulbs",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Moore",
+      "item": "bulbs",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Dr. Moore's teammate Fiona is responsible for nine bulbs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Fiona",
+      "item": "bulbs",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fiona",
+      "item": "bulbs",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Fiona lent Dr. Moore five bulbs.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Fiona",
+      "to": "Moore",
+      "item": "bulbs",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fiona",
+      "item": "bulbs",
+      "quantity": 4
+     },
+     {
+      "entity": "Moore",
+      "item": "bulbs",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many bulbs does Fiona have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Fiona",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "bulbs"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many bulbs do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Moore",
+     "Fiona"
+    ],
+    "quantity": 20,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "bulbs"
+   }
+  }
+ ]
+}

@@ -1,0 +1,933 @@
+{"scenario": "s4_ko_b_001", "n": 1, "attempt": 0, "seed": 2900785375, "raw": "연서도 레몬이 좀 있어. 세어 보니 여덟 개네.", "text": "연서도 레몬이 좀 있어. 세어 보니 여덟 개네.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_001", "n": 2, "attempt": 0, "seed": 3246672392, "raw": "동훈은 레몬만 열세 개 있어.", "text": "동훈은 레몬만 열세 개 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_001", "n": 3, "attempt": 0, "seed": 2060776073, "raw": "레몬 세 개를 연서가 동훈한테 건넸어.", "text": "레몬 세 개를 연서가 동훈한테 건넸어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_001", "n": 4, "attempt": 0, "seed": 3776512750, "raw": "동훈이 레몬을 몇 개 가지고 있어?", "text": "동훈이 레몬을 몇 개 가지고 있어?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_001", "n": 5, "attempt": 0, "seed": 3891288396, "raw": "동훈이가 연서한테 레몬 한 개를 빌려줬어.", "text": "동훈이가 연서한테 레몬 한 개를 빌려줬어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_001", "n": 6, "attempt": 0, "seed": 3555313181, "raw": "동훈은 레몬을 몇 개 가지고 있어?", "text": "동훈은 레몬을 몇 개 가지고 있어?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_001", "n": 7, "attempt": 0, "seed": 478558939, "raw": "틀렸어요, 9개 말고 1개야.", "text": "틀렸어요, 9개 말고 1개야.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_001", "n": 7, "attempt": 1, "seed": 3535123781, "raw": "아, 한 개가 아니라 구 개였어.", "text": "아, 한 개가 아니라 구 개였어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_001", "n": 7, "attempt": 2, "seed": 172490319, "raw": "틀렸다, 구나. 동훈이가 연서한테 레몬을 아홉 개 빌려줬어.", "text": "틀렸다, 구나. 동훈이가 연서한테 레몬을 아홉 개 빌려줬어.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_ko_b_001", "n": 7, "attempt": 3, "seed": 3059069734, "raw": "아, 일 개가 아니라 구 개였어.", "text": "아, 일 개가 아니라 구 개였어.", "ok": false, "reason": "sino_korean_numeral"}
+{"scenario": "s4_ko_b_001", "n": 7, "attempt": 4, "seed": 1507181618, "raw": "틀렸어, 아홉 개 말고 한 개야.", "text": "틀렸어, 아홉 개 말고 한 개야.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_001", "n": 7, "attempt": 5, "seed": 1948481450, "raw": "아, 하나가 아니라 구개였어.", "text": "아, 하나가 아니라 구개였어.", "ok": false, "reason": "missing_number:9"}
+{"scenario": "s4_ko_b_001", "n": 7, "attempt": 6, "seed": 2899175309, "raw": "틀렸어, 구나. 아홉 개 말고 하나야.", "text": "틀렸어, 구나. 아홉 개 말고 하나야.", "ok": false, "reason": "contrast"}
+{"scenario": "s4_ko_b_001", "n": 7, "attempt": 7, "seed": 4214999553, "raw": "아, 한 개가 아니라 아홉 개였어.", "text": "아, 한 개가 아니라 아홉 개였어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_001", "n": 8, "attempt": 0, "seed": 2236460391, "raw": "동훈이 지금 레몬이 몇 개 가지고 있는지 아?", "text": "동훈이 지금 레몬이 몇 개 가지고 있는지 아?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_001", "n": 8, "attempt": 1, "seed": 656097113, "raw": "동훈이 레몬이 몇 개 남았어?", "text": "동훈이 레몬이 몇 개 남았어?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 0, "seed": 2945611249, "raw": "둘이 합쳐서 레몬이 아홉 개야?", "text": "둘이 합쳐서 레몬이 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 1, "seed": 3429341906, "raw": "둘이 합쳐서 레몬이 모두 아홉 개야?", "text": "둘이 합쳐서 레몬이 모두 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 2, "seed": 328846869, "raw": "두 사람 합쳐서 레몬이 아홉 개야?", "text": "두 사람 합쳐서 레몬이 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 3, "seed": 1860464109, "raw": "둘이 합쳐서 레몬이 모두 아홉 개야?", "text": "둘이 합쳐서 레몬이 모두 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 4, "seed": 4238493052, "raw": "둘이 합쳐서 레몬이 아홉 개야?", "text": "둘이 합쳐서 레몬이 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 5, "seed": 1094262005, "raw": "둘이 합쳐서 레몬이 모두 아홉 개야?", "text": "둘이 합쳐서 레몬이 모두 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 6, "seed": 1782002261, "raw": "둘이 합쳐서 레몬이 아홉 개야?", "text": "둘이 합쳐서 레몬이 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 7, "seed": 957333466, "raw": "둘이 합쳐서 레몬이 모두 아홉 개야?", "text": "둘이 합쳐서 레몬이 모두 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 8, "seed": 874426751, "raw": "두 사람 합쳐서 레몬이 아홉 개야?", "text": "두 사람 합쳐서 레몬이 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "n": 9, "attempt": 9, "seed": 3900318211, "raw": "둘이 합쳐서 레몬이 모두 아홉 개야?", "text": "둘이 합쳐서 레몬이 모두 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_001", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [9], "failed_turn": null, "seconds": 56.0, "peak_mb": 4757}
+{"scenario": "s4_en_b_002", "n": 1, "attempt": 0, "seed": 2785705887, "raw": "The corner shop holds 5 chairs.", "text": "The corner shop holds 5 chairs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_002", "n": 2, "attempt": 0, "seed": 2324577968, "raw": "Greta has 13 chairs and Brian has 15 chairs.", "text": "Greta has 13 chairs and Brian has 15 chairs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_002", "n": 3, "attempt": 0, "seed": 278991359, "raw": "Eight chairs are in the music room.", "text": "Eight chairs are in the music room.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_002", "n": 4, "attempt": 0, "seed": 1373319114, "raw": "After that, we moved one chair from the corner shop to the music room.", "text": "After that, we moved one chair from the corner shop to the music room.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_002", "n": 5, "attempt": 0, "seed": 3865997508, "raw": "How many chairs are in the corner shop now?", "text": "How many chairs are in the corner shop now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_002", "n": 6, "attempt": 0, "seed": 244812193, "raw": "Greta took three chairs from the corner shop, apparently.", "text": "Greta took three chairs from the corner shop, apparently.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_002", "n": 7, "attempt": 0, "seed": 1712378453, "raw": "How many chairs are in the music room now?", "text": "How many chairs are in the music room now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_002", "n": 8, "attempt": 0, "seed": 1833063094, "raw": "How many chairs does Brian have left?", "text": "How many chairs does Brian have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_002", "n": 9, "attempt": 0, "seed": 1824882190, "raw": "Sorry, I meant Greta.", "text": "Sorry, I meant Greta.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_002", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 12.9, "peak_mb": 4644}
+{"scenario": "s4_en_b_003", "n": 1, "attempt": 0, "seed": 3235989560, "raw": "my nephew Peter has 3 ladders.", "text": "my nephew Peter has 3 ladders.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "n": 2, "attempt": 0, "seed": 4211166556, "raw": "Dr. Garcia is holding 7 ladders.", "text": "Dr. Garcia is holding 7 ladders.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "n": 3, "attempt": 0, "seed": 2258968658, "raw": "After that, Dr. Garcia got a ladder from Peter.", "text": "After that, Dr. Garcia got a ladder from Peter.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "n": 4, "attempt": 0, "seed": 1340185501, "raw": "How many ladders does Peter have now?", "text": "How many ladders does Peter have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "n": 5, "attempt": 0, "seed": 66437301, "raw": "Dr. Garcia lent Peter one ladder.", "text": "Dr. Garcia lent Peter one ladder.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "n": 6, "attempt": 0, "seed": 3023866549, "raw": "How many ladders does Dr. Garcia have now?", "text": "How many ladders does Dr. Garcia have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "n": 7, "attempt": 0, "seed": 428821389, "raw": "How many ladders does Peter hold?", "text": "How many ladders does Peter hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "n": 8, "attempt": 0, "seed": 1924240102, "raw": "Actually, it was 7, not 1.", "text": "Actually, it was 7, not 1.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "n": 9, "attempt": 0, "seed": 3613835974, "raw": "How many ladders does Dr. Garcia have now?", "text": "How many ladders does Dr. Garcia have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "n": 10, "attempt": 0, "seed": 4130155740, "raw": "Who has more ladders now, Peter or Dr. Garcia?", "text": "Who has more ladders now, Peter or Dr. Garcia?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_003", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 14.8, "peak_mb": 4644}
+{"scenario": "s4_en_b_004", "n": 1, "attempt": 0, "seed": 3062824998, "raw": "Arthur has 4 onions and Dr. Morales has 3 onions.", "text": "Arthur has 4 onions and Dr. Morales has 3 onions.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_004", "n": 2, "attempt": 0, "seed": 3287235166, "raw": "I have 12 onions.", "text": "I have 12 onions.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_004", "n": 3, "attempt": 0, "seed": 2484475102, "raw": "Dr. Morales lent Arthur two onions.", "text": "Dr. Morales lent Arthur two onions.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_004", "n": 4, "attempt": 0, "seed": 3530600640, "raw": "How many onions does Arthur hold?", "text": "How many onions does Arthur hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_004", "n": 5, "attempt": 0, "seed": 3973827183, "raw": "Actually they went to me, not Arthur.", "text": "Actually they went to me, not Arthur.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_004", "n": 6, "attempt": 0, "seed": 997803826, "raw": "How many onions do I have now?", "text": "How many onions do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_004", "n": 7, "attempt": 0, "seed": 168450221, "raw": "And how many onions has he got now?", "text": "And how many onions has he got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_004", "n": 8, "attempt": 0, "seed": 6542836, "raw": "Sorry, I meant Dr. Morales.", "text": "Sorry, I meant Dr. Morales.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_004", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 11.5, "peak_mb": 4652}
+{"scenario": "s4_en_b_008", "n": 1, "attempt": 0, "seed": 3116607424, "raw": "My teammate has some laptops. 12 of them, actually.", "text": "My teammate has some laptops. 12 of them, actually.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_008", "n": 2, "attempt": 0, "seed": 2086203625, "raw": "All Martin has is laptops, 16 of them.", "text": "All Martin has is laptops, 16 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_008", "n": 3, "attempt": 0, "seed": 1005346270, "raw": "The janitor, Mr. Garcia, also has some laptops, not sure how many.", "text": "The janitor, Mr. Garcia, also has some laptops, not sure how many.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_008", "n": 4, "attempt": 0, "seed": 1749458447, "raw": "Martin borrowed three laptops from my teammate.", "text": "Martin borrowed three laptops from my teammate.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_008", "n": 5, "attempt": 0, "seed": 187515893, "raw": "How many laptops does Martin hold?", "text": "How many laptops does Martin hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_008", "n": 6, "attempt": 0, "seed": 1546780433, "raw": "How many laptops does my teammate hold?", "text": "How many laptops does my teammate hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_008", "n": 7, "attempt": 0, "seed": 3962465209, "raw": "Actually, it was 9, not 3.", "text": "Actually, it was 9, not 3.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_008", "n": 8, "attempt": 0, "seed": 1051694821, "raw": "How many laptops does my teammate have left?", "text": "How many laptops does my teammate have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_008", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 12.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_009", "n": 1, "attempt": 0, "seed": 2202831652, "raw": "Ms. Novak is holding three tomatoes.", "text": "Ms. Novak is holding three tomatoes.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_009", "n": 2, "attempt": 0, "seed": 2644433435, "raw": "Nadia keeps 11 tomatoes.", "text": "Nadia keeps 11 tomatoes.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 0, "seed": 2873939638, "raw": "After that, Ms. Novak lent Nadia one tomato.", "text": "After that, Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 1, "seed": 89453282, "raw": "Then Ms. Novak lent Nadia one tomato.", "text": "Then Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 2, "seed": 2711713388, "raw": "After that, Ms. Novak lent Nadia one tomato.", "text": "After that, Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 3, "seed": 2580261854, "raw": "Then Ms. Novak lent Nadia one tomato.", "text": "Then Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 4, "seed": 530169387, "raw": "After that, Ms. Novak lent Nadia one tomato.", "text": "After that, Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 5, "seed": 426148073, "raw": "Then Ms. Novak lent Nadia one tomato.", "text": "Then Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 6, "seed": 2784198119, "raw": "After that, Ms. Novak lent Nadia one tomato.", "text": "After that, Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 7, "seed": 2508356616, "raw": "Then Ms. Novak lent Nadia one tomato.", "text": "Then Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 8, "seed": 4225603660, "raw": "After that, Ms. Novak lent Nadia one tomato.", "text": "After that, Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "n": 3, "attempt": 9, "seed": 2513295391, "raw": "Then Ms. Novak lent Nadia one tomato.", "text": "Then Ms. Novak lent Nadia one tomato.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_009", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 17.8, "peak_mb": 4659}
+{"scenario": "s4_en_b_010", "n": 1, "attempt": 0, "seed": 2257336529, "raw": "Mrs. Williams also has some knives, not sure how many.", "text": "Mrs. Williams also has some knives, not sure how many.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_010", "n": 2, "attempt": 0, "seed": 3770740155, "raw": "my nephew is carrying four knives.", "text": "my nephew is carrying four knives.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_010", "n": 3, "attempt": 0, "seed": 3886158995, "raw": "Ahmed keeps 16 knives.", "text": "Ahmed keeps 16 knives.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_010", "n": 4, "attempt": 0, "seed": 538604703, "raw": "my nephew sent Ahmed one knife.", "text": "my nephew sent Ahmed one knife.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_010", "n": 5, "attempt": 0, "seed": 1608987981, "raw": "How many knives does Ahmed have now?", "text": "How many knives does Ahmed have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_010", "n": 6, "attempt": 0, "seed": 2502597135, "raw": "How many knives does my nephew hold?", "text": "How many knives does my nephew hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_010", "n": 7, "attempt": 0, "seed": 66794916, "raw": "my nephew got 3 knives from Ahmed.", "text": "my nephew got 3 knives from Ahmed.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_010", "n": 8, "attempt": 0, "seed": 2114922878, "raw": "How many knives does my nephew have now?", "text": "How many knives does my nephew have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_010", "n": 9, "attempt": 0, "seed": 3830027309, "raw": "How many knives do my nephew and Ahmed have in total?", "text": "How many knives do my nephew and Ahmed have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_010", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 13.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_011", "n": 1, "attempt": 0, "seed": 2470698174, "raw": "Mr. Morales owns 11 envelopes.", "text": "Mr. Morales owns 11 envelopes.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_011", "n": 2, "attempt": 0, "seed": 1743877626, "raw": "My nephew is carrying 16 envelopes at the moment.", "text": "My nephew is carrying 16 envelopes at the moment.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_011", "n": 3, "attempt": 0, "seed": 1100483428, "raw": "my nephew handed over five envelopes to Mr. Morales, apparently.", "text": "my nephew handed over five envelopes to Mr. Morales, apparently.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_011", "n": 4, "attempt": 0, "seed": 3032152063, "raw": "How many envelopes does my nephew have left?", "text": "How many envelopes does my nephew have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_011", "n": 5, "attempt": 0, "seed": 1463559663, "raw": "How many envelopes do the two of them have in total?", "text": "How many envelopes do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_011", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": null, "seconds": 7.4, "peak_mb": 4659}
+{"scenario": "s4_en_b_012", "n": 1, "attempt": 0, "seed": 1500441360, "raw": "Jasmine has 13 ribbons.", "text": "Jasmine has 13 ribbons.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_012", "n": 2, "attempt": 0, "seed": 2165589982, "raw": "Gavin is responsible for 10 ribbons at the moment.", "text": "Gavin is responsible for 10 ribbons at the moment.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_012", "n": 3, "attempt": 0, "seed": 3095628623, "raw": "Gavin transferred two ribbons to Jasmine.", "text": "Gavin transferred two ribbons to Jasmine.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_012", "n": 4, "attempt": 0, "seed": 3363367678, "raw": "How many ribbons does Gavin have now?", "text": "How many ribbons does Gavin have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_012", "n": 5, "attempt": 0, "seed": 2879205947, "raw": "Jasmine passed 2 of them to Gavin.", "text": "Jasmine passed 2 of them to Gavin.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_012", "n": 6, "attempt": 0, "seed": 2330637399, "raw": "How many ribbons does Gavin have now?", "text": "How many ribbons does Gavin have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 0, "seed": 1801759799, "raw": "Jasmine lent Gavin four ribbons, apparently. Four of them.", "text": "Jasmine lent Gavin four ribbons, apparently. Four of them.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 1, "seed": 1550354016, "raw": "Jasmine lent 4 ribbons to Gavin, apparently.", "text": "Jasmine lent 4 ribbons to Gavin, apparently.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 2, "seed": 223921089, "raw": "Gavin lent 4 ribbons to Jasmine, apparently.", "text": "Gavin lent 4 ribbons to Jasmine, apparently.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 3, "seed": 3212233989, "raw": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons of them.", "text": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons of them.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 4, "seed": 2580948381, "raw": "Gavin lent 4 ribbons to Jasmine, apparently.", "text": "Gavin lent 4 ribbons to Jasmine, apparently.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 5, "seed": 3873346020, "raw": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons of his.", "text": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons of his.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 6, "seed": 859350628, "raw": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons, apparently.", "text": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons, apparently.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 7, "seed": 2131773440, "raw": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons of his.", "text": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons of his.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 8, "seed": 792808197, "raw": "Jasmine lent 4 ribbons to Gavin, apparently.", "text": "Jasmine lent 4 ribbons to Gavin, apparently.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_en_b_012", "n": 7, "attempt": 9, "seed": 1466465996, "raw": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons of them.", "text": "Jasmine lent 4 ribbons to Gavin, apparently. Gavin now has 4 ribbons of them.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_012", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": 7, "seconds": 26.2, "peak_mb": 4659}
+{"scenario": "s4_en_b_015", "n": 1, "attempt": 0, "seed": 1476681167, "raw": "my uncle only has tablets, 14 of them.", "text": "my uncle only has tablets, 14 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_015", "n": 2, "attempt": 0, "seed": 3455499826, "raw": "My sister Chloe only has tablets, 9 of them.", "text": "My sister Chloe only has tablets, 9 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_015", "n": 3, "attempt": 0, "seed": 3040655662, "raw": "Vera keeps 4 tablets.", "text": "Vera keeps 4 tablets.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_015", "n": 4, "attempt": 0, "seed": 2791153582, "raw": "The mailroom holds 11 tablets. I have some tablets. Actually, there are 11 of them.", "text": "The mailroom holds 11 tablets. I have some tablets. Actually, there are 11 of them.", "ok": false, "reason": "too_many_sentences"}
+{"scenario": "s4_en_b_015", "n": 4, "attempt": 1, "seed": 1044848641, "raw": "There are 11 tablets in the mailroom. I have some tablets. 11 of them, actually.", "text": "There are 11 tablets in the mailroom. I have some tablets. 11 of them, actually.", "ok": false, "reason": "too_many_sentences"}
+{"scenario": "s4_en_b_015", "n": 4, "attempt": 2, "seed": 129128279, "raw": "Some tablets are in the mailroom. 11 of them, actually.", "text": "Some tablets are in the mailroom. 11 of them, actually.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 0, "seed": 2567193870, "raw": "my uncle gave back the tablet, apparently.", "text": "my uncle gave back the tablet, apparently.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 1, "seed": 2607270582, "raw": "my uncle gave back one tablet, apparently.", "text": "my uncle gave back one tablet, apparently.", "ok": false, "reason": "missing_name:Vera"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 2, "seed": 3224221464, "raw": "My uncle gave back the tablet, apparently.", "text": "My uncle gave back the tablet, apparently.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 3, "seed": 2359379144, "raw": "my uncle gave back one tablet, apparently.", "text": "my uncle gave back one tablet, apparently.", "ok": false, "reason": "missing_name:Vera"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 4, "seed": 4082925177, "raw": "My uncle gave back the tablet, apparently.", "text": "My uncle gave back the tablet, apparently.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 5, "seed": 3001313170, "raw": "My uncle gave back one tablet, apparently.", "text": "My uncle gave back one tablet, apparently.", "ok": false, "reason": "missing_name:Vera"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 6, "seed": 1669964427, "raw": "my uncle gave back the tablet, apparently.", "text": "my uncle gave back the tablet, apparently.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 7, "seed": 1768808213, "raw": "My uncle gave back one tablet, apparently.", "text": "My uncle gave back one tablet, apparently.", "ok": false, "reason": "missing_name:Vera"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 8, "seed": 410760167, "raw": "My uncle gave back the tablet, apparently.", "text": "My uncle gave back the tablet, apparently.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_015", "n": 5, "attempt": 9, "seed": 3993650478, "raw": "My uncle gave back the tablet, apparently.", "text": "My uncle gave back the tablet, apparently.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_015", "dialogue": false, "kept": [1, 2, 3, 4], "skipped": [], "failed_turn": 5, "seconds": 24.9, "peak_mb": 4659}
+{"scenario": "s4_en_b_016", "n": 1, "attempt": 0, "seed": 3109992546, "raw": "I am responsible for 9 ribbons.", "text": "I am responsible for 9 ribbons.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_016", "n": 2, "attempt": 0, "seed": 3540261365, "raw": "The nurse, Mr. Gutierrez, is responsible for 3 ribbons.", "text": "The nurse, Mr. Gutierrez, is responsible for 3 ribbons.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 0, "seed": 526205000, "raw": "After that, I borrowed two ribbons from Mr. Gutierrez.", "text": "After that, I borrowed two ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 1, "seed": 2782024181, "raw": "Then after that, I borrowed 2 ribbons from Mr. Gutierrez.", "text": "Then after that, I borrowed 2 ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 2, "seed": 322336362, "raw": "After that, I borrowed 2 ribbons from Mr. Gutierrez.", "text": "After that, I borrowed 2 ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 3, "seed": 4254915835, "raw": "Then I borrowed 2 ribbons from Mr. Gutierrez.", "text": "Then I borrowed 2 ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 4, "seed": 3699138223, "raw": "After that, I borrowed 2 ribbons from Mr. Gutierrez.", "text": "After that, I borrowed 2 ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 5, "seed": 4017319855, "raw": "Then I borrowed 2 ribbons from Mr. Gutierrez.", "text": "Then I borrowed 2 ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 6, "seed": 2097936400, "raw": "After that, I borrowed 2 ribbons from Mr. Gutierrez.", "text": "After that, I borrowed 2 ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 7, "seed": 2437278729, "raw": "Then I borrowed 2 ribbons from Mr. Gutierrez.", "text": "Then I borrowed 2 ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 8, "seed": 2944487721, "raw": "After that, I borrowed two ribbons from Mr. Gutierrez.", "text": "After that, I borrowed two ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "n": 3, "attempt": 9, "seed": 1749500731, "raw": "Then I borrowed 2 ribbons from Mr. Gutierrez.", "text": "Then I borrowed 2 ribbons from Mr. Gutierrez.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_016", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 20.7, "peak_mb": 4659}
+{"scenario": "s4_en_b_019", "n": 1, "attempt": 0, "seed": 2476956917, "raw": "Yusuf owns 10 potatoes.", "text": "Yusuf owns 10 potatoes.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "n": 2, "attempt": 0, "seed": 1264438220, "raw": "I am responsible for 13 potatoes.", "text": "I am responsible for 13 potatoes.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "n": 3, "attempt": 0, "seed": 216902584, "raw": "Rafael is carrying 3 potatoes.", "text": "Rafael is carrying 3 potatoes.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "n": 4, "attempt": 0, "seed": 1587720309, "raw": "Yusuf gave me three of the same potatoes.", "text": "Yusuf gave me three of the same potatoes.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "n": 5, "attempt": 0, "seed": 804024179, "raw": "How many potatoes has I got now?", "text": "How many potatoes has I got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "n": 6, "attempt": 0, "seed": 4056738401, "raw": "How many potatoes does Yusuf have now?", "text": "How many potatoes does Yusuf have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "n": 7, "attempt": 0, "seed": 2841400950, "raw": "Actually they went to Rafael, not me.", "text": "Actually they went to Rafael, not me.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "n": 8, "attempt": 0, "seed": 4171743061, "raw": "How many potatoes does Yusuf have now?", "text": "How many potatoes does Yusuf have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "n": 9, "attempt": 0, "seed": 3477456513, "raw": "How many potatoes does Yusuf have now?", "text": "How many potatoes does Yusuf have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "n": 10, "attempt": 0, "seed": 212938470, "raw": "Sorry, I meant Rafael.", "text": "Sorry, I meant Rafael.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_019", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 13.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_023", "n": 1, "attempt": 0, "seed": 3037278964, "raw": "I keep 11 chairs.", "text": "I keep 11 chairs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "n": 2, "attempt": 0, "seed": 1828679395, "raw": "There are no chairs in the classroom.", "text": "There are no chairs in the classroom.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "n": 3, "attempt": 0, "seed": 2527258779, "raw": "I left 3 of them at the classroom.", "text": "I left 3 of them at the classroom.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "n": 4, "attempt": 0, "seed": 2865088357, "raw": "How many chairs do I have now?", "text": "How many chairs do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "n": 5, "attempt": 0, "seed": 3510547245, "raw": "How many chairs are in the classroom now?", "text": "How many chairs are in the classroom now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "n": 6, "attempt": 0, "seed": 1860828978, "raw": "I took 2 of them from the classroom.", "text": "I took 2 of them from the classroom.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "n": 7, "attempt": 0, "seed": 3223747381, "raw": "How many chairs has I got now?", "text": "How many chairs has I got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "n": 8, "attempt": 0, "seed": 2472382298, "raw": "How many chairs are in the classroom now?", "text": "How many chairs are in the classroom now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "n": 9, "attempt": 0, "seed": 30072418, "raw": "Wait, make that 1, not 2.", "text": "Wait, make that 1, not 2.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "n": 10, "attempt": 0, "seed": 221107813, "raw": "How many chairs are in the classroom now?", "text": "How many chairs are in the classroom now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_023", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 13.6, "peak_mb": 4659}
+{"scenario": "s4_en_b_024", "n": 1, "attempt": 0, "seed": 1237756361, "raw": "Kevin is carrying 13 ladders.", "text": "Kevin is carrying 13 ladders.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_024", "n": 2, "attempt": 0, "seed": 3638775253, "raw": "my sister has 7 ladders", "text": "my sister has 7 ladders", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_024", "n": 3, "attempt": 0, "seed": 2060654893, "raw": "Kevin gave my sister back the two ladders.", "text": "Kevin gave my sister back the two ladders.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_024", "n": 4, "attempt": 0, "seed": 2009065789, "raw": "How many ladders does my sister have now?", "text": "How many ladders does my sister have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_024", "n": 5, "attempt": 0, "seed": 3629215121, "raw": "How many ladders do the two of them have in total?", "text": "How many ladders do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_024", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": null, "seconds": 6.9, "peak_mb": 4659}
+{"scenario": "s4_en_b_028", "n": 1, "attempt": 0, "seed": 4053076671, "raw": "Diego has 6 balloons and Arthur has 13 balloons.", "text": "Diego has 6 balloons and Arthur has 13 balloons.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_028", "n": 2, "attempt": 0, "seed": 374079793, "raw": "11 balloons are in the music room.", "text": "11 balloons are in the music room.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_028", "n": 3, "attempt": 0, "seed": 1564090276, "raw": "my nephew's got five balloons.", "text": "my nephew's got five balloons.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_028", "n": 4, "attempt": 0, "seed": 3309984570, "raw": "12 balloons are in the greenhouse.", "text": "12 balloons are in the greenhouse.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 0, "seed": 2965261263, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 1, "seed": 2223738774, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 2, "seed": 2771435719, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 3, "seed": 1260210978, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 4, "seed": 3817018426, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 5, "seed": 899653310, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 6, "seed": 1668242085, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 7, "seed": 3076245416, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 8, "seed": 1687901739, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "n": 5, "attempt": 9, "seed": 3200926563, "raw": "To my nephew, Diego sent one balloon.", "text": "To my nephew, Diego sent one balloon.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_028", "dialogue": false, "kept": [1, 2, 3, 4], "skipped": [], "failed_turn": 5, "seconds": 19.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_031", "n": 1, "attempt": 0, "seed": 3066013998, "raw": "Joanna is carrying 12 novels.", "text": "Joanna is carrying 12 novels.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_031", "n": 2, "attempt": 0, "seed": 2283143983, "raw": "Vera owns 16 novels.", "text": "Vera owns 16 novels.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_031", "n": 3, "attempt": 0, "seed": 3300598961, "raw": "I've got 13 novels.", "text": "I've got 13 novels.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_031", "n": 4, "attempt": 0, "seed": 2773407399, "raw": "Vera handed over five novels to me.", "text": "Vera handed over five novels to me.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_031", "n": 5, "attempt": 0, "seed": 1588383922, "raw": "How many novels do I have now?", "text": "How many novels do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_031", "n": 6, "attempt": 0, "seed": 1584754249, "raw": "And how many novels has she got now?", "text": "And how many novels has she got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_031", "n": 7, "attempt": 0, "seed": 318866792, "raw": "Vera, I mean.", "text": "Vera, I mean.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_031", "n": 8, "attempt": 0, "seed": 2915596249, "raw": "How many novels do Vera and I have in total?", "text": "How many novels do Vera and I have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_031", "n": 9, "attempt": 0, "seed": 2803547988, "raw": "Why does Joanna have that many novels now?", "text": "Why does Joanna have that many novels now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_031", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 11.6, "peak_mb": 4659}
+{"scenario": "s4_en_b_033", "n": 1, "attempt": 0, "seed": 1577312792, "raw": "my sister is responsible for 3 potatoes.", "text": "my sister is responsible for 3 potatoes.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_033", "n": 2, "attempt": 0, "seed": 3490677919, "raw": "James is carrying 14 potatoes.", "text": "James is carrying 14 potatoes.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_033", "n": 3, "attempt": 0, "seed": 39265177, "raw": "my sister got the same 5 potatoes from James.", "text": "my sister got the same 5 potatoes from James.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_033", "n": 4, "attempt": 0, "seed": 4036094728, "raw": "How many potatoes does James have left?", "text": "How many potatoes does James have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_033", "n": 5, "attempt": 0, "seed": 1680172449, "raw": "How many potatoes does my sister have now?", "text": "How many potatoes does my sister have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_033", "n": 6, "attempt": 0, "seed": 548628135, "raw": "Sorry, it was 12, not 5.", "text": "Sorry, it was 12, not 5.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_033", "n": 7, "attempt": 0, "seed": 3956717187, "raw": "How many potatoes does James have now?", "text": "How many potatoes does James have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_033", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 9.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_034", "n": 1, "attempt": 0, "seed": 400065875, "raw": "my roommate Jasmine keeps 6 flashlights.", "text": "my roommate Jasmine keeps 6 flashlights.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_034", "n": 2, "attempt": 0, "seed": 4234006218, "raw": "my nephew Peter has got 8 flashlights.", "text": "my nephew Peter has got 8 flashlights.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_034", "n": 3, "attempt": 0, "seed": 3090347250, "raw": "Jasmine lent Peter three flashlights.", "text": "Jasmine lent Peter three flashlights.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_034", "n": 4, "attempt": 0, "seed": 1189267394, "raw": "How many flashlights does Jasmine have left?", "text": "How many flashlights does Jasmine have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_034", "n": 5, "attempt": 0, "seed": 2666066911, "raw": "How many flashlights does Peter hold?", "text": "How many flashlights does Peter hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_034", "n": 6, "attempt": 0, "seed": 2484548413, "raw": "Jasmine is who I meant.", "text": "Jasmine is who I meant.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_034", "n": 7, "attempt": 0, "seed": 701675862, "raw": "How many flashlights do Jasmine and Peter have in total?", "text": "How many flashlights do Jasmine and Peter have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_034", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 9.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_038", "n": 1, "attempt": 0, "seed": 3935837233, "raw": "Mr. Gutierrez has 6 peaches and Elena has 16 peaches.", "text": "Mr. Gutierrez has 6 peaches and Elena has 16 peaches.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_038", "n": 2, "attempt": 0, "seed": 275889753, "raw": "my sister keeps 5 peaches", "text": "my sister keeps 5 peaches", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_038", "n": 3, "attempt": 0, "seed": 3974447664, "raw": "my sister hand over two peaches to Mr. Gutierrez.", "text": "my sister hand over two peaches to Mr. Gutierrez.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_038", "n": 4, "attempt": 0, "seed": 3596172745, "raw": "How many peaches does my sister have now?", "text": "How many peaches does my sister have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_038", "n": 5, "attempt": 0, "seed": 18444479, "raw": "Wait, make that 4, not 2.", "text": "Wait, make that 4, not 2.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_038", "n": 6, "attempt": 0, "seed": 1903408827, "raw": "How many peaches does my sister hold?", "text": "How many peaches does my sister hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_038", "n": 7, "attempt": 0, "seed": 427560609, "raw": "How many peaches does Elena have left?", "text": "How many peaches does Elena have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_038", "n": 8, "attempt": 0, "seed": 3204078867, "raw": "Mr. Gutierrez is who I meant.", "text": "Mr. Gutierrez is who I meant.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_038", "n": 9, "attempt": 0, "seed": 670808504, "raw": "How many peaches do Mr. Gutierrez and Elena have in total?", "text": "How many peaches do Mr. Gutierrez and Elena have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_038", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 12.1, "peak_mb": 4659}
+{"scenario": "s4_en_b_040", "n": 1, "attempt": 0, "seed": 3262119531, "raw": "my roommate Bianca is holding 8 blankets.", "text": "my roommate Bianca is holding 8 blankets.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_040", "n": 2, "attempt": 0, "seed": 2343683089, "raw": "All Zack has is blankets, 9 of them.", "text": "All Zack has is blankets, 9 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_040", "n": 3, "attempt": 0, "seed": 2376081008, "raw": "Bianca gave back three blankets to Zack.", "text": "Bianca gave back three blankets to Zack.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_040", "n": 4, "attempt": 0, "seed": 2115851016, "raw": "How many blankets does Zack have now?", "text": "How many blankets does Zack have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_040", "n": 5, "attempt": 0, "seed": 4090381395, "raw": "How many blankets does Bianca hold?", "text": "How many blankets does Bianca hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_040", "n": 6, "attempt": 0, "seed": 997836401, "raw": "Actually, it was 6, not 3.", "text": "Actually, it was 6, not 3.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_040", "n": 7, "attempt": 0, "seed": 3575062808, "raw": "How many blankets does Bianca have now?", "text": "How many blankets does Bianca have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_040", "n": 8, "attempt": 0, "seed": 2572592758, "raw": "How many blankets do the two of them have in total?", "text": "How many blankets do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_040", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 10.5, "peak_mb": 4659}
+{"scenario": "s4_en_b_041", "n": 1, "attempt": 0, "seed": 104349674, "raw": "my teammate owns 8 muffins.", "text": "my teammate owns 8 muffins.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_041", "n": 2, "attempt": 0, "seed": 914255099, "raw": "I keep 5 muffins.", "text": "I keep 5 muffins.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_041", "n": 3, "attempt": 0, "seed": 909050068, "raw": "My teammate borrowed 4 of his muffins from me.", "text": "My teammate borrowed 4 of his muffins from me.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_041", "n": 4, "attempt": 0, "seed": 2465385136, "raw": "How many muffins does my teammate have now?", "text": "How many muffins does my teammate have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_041", "n": 5, "attempt": 0, "seed": 2246538941, "raw": "Actually, it was 1, not 4.", "text": "Actually, it was 1, not 4.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_041", "n": 6, "attempt": 0, "seed": 1750892789, "raw": "How many muffins do I have now?", "text": "How many muffins do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_041", "n": 7, "attempt": 0, "seed": 3880469345, "raw": "How many muffins do the two of them have in total?", "text": "How many muffins do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_041", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 10.7, "peak_mb": 4659}
+{"scenario": "s4_en_b_043", "n": 1, "attempt": 0, "seed": 1980572628, "raw": "The new intern, Mr. Walker, has 6 markers and also some ladders.", "text": "The new intern, Mr. Walker, has 6 markers and also some ladders.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_043", "n": 2, "attempt": 0, "seed": 3376721266, "raw": "my sister keeps 15 markers", "text": "my sister keeps 15 markers", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_043", "n": 3, "attempt": 0, "seed": 3249186243, "raw": "How many ladders does Mr. Walker have?", "text": "How many ladders does Mr. Walker have?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_043", "n": 4, "attempt": 0, "seed": 3618733158, "raw": "Mr. Walker passed 3 of his markers to my sister.", "text": "Mr. Walker passed 3 of his markers to my sister.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_043", "n": 5, "attempt": 0, "seed": 508408627, "raw": "How many markers does my sister have now?", "text": "How many markers does my sister have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_043", "n": 6, "attempt": 0, "seed": 3247770407, "raw": "How many markers does Mr. Walker have now?", "text": "How many markers does Mr. Walker have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_043", "n": 7, "attempt": 0, "seed": 817788656, "raw": "Wait, make that 5, not 3.", "text": "Wait, make that 5, not 3.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_043", "n": 8, "attempt": 0, "seed": 4095294148, "raw": "How many markers does my sister have left?", "text": "How many markers does my sister have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_043", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 11.8, "peak_mb": 4659}
+{"scenario": "s4_en_b_044", "n": 1, "attempt": 0, "seed": 1844251686, "raw": "my nephew Jack has 16 candles.", "text": "my nephew Jack has 16 candles.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_044", "n": 2, "attempt": 0, "seed": 2295646744, "raw": "the attic holds 5 candles at the moment.", "text": "the attic holds 5 candles at the moment.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_044", "n": 3, "attempt": 0, "seed": 624392931, "raw": "The janitor, Ms. Sanchez, owns 7 candles.", "text": "The janitor, Ms. Sanchez, owns 7 candles.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_044", "n": 4, "attempt": 0, "seed": 2011710865, "raw": "After that, Ms. Sanchez took four candles from the attic.", "text": "After that, Ms. Sanchez took four candles from the attic.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_044", "n": 5, "attempt": 0, "seed": 2073369195, "raw": "How many candles does Ms. Sanchez have now?", "text": "How many candles does Ms. Sanchez have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_044", "n": 6, "attempt": 0, "seed": 1265742233, "raw": "Ms. Sanchez left them at the attic three candles.", "text": "Ms. Sanchez left them at the attic three candles.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_044", "n": 7, "attempt": 0, "seed": 4108169438, "raw": "How many candles does Ms. Sanchez hold?", "text": "How many candles does Ms. Sanchez hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_044", "n": 8, "attempt": 0, "seed": 4164503531, "raw": "How many candles are in the attic now?", "text": "How many candles are in the attic now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_044", "n": 9, "attempt": 0, "seed": 4198519952, "raw": "How many candles do Jack and Ms. Sanchez have in total?", "text": "How many candles do Jack and Ms. Sanchez have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_044", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 13.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_053", "n": 1, "attempt": 0, "seed": 3783645988, "raw": "my roommate hasn't got any trophies.", "text": "my roommate hasn't got any trophies.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_053", "n": 2, "attempt": 0, "seed": 2788014926, "raw": "Dr. Evans only has trophies, 5 of them.", "text": "Dr. Evans only has trophies, 5 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_053", "n": 3, "attempt": 0, "seed": 1658832857, "raw": "The attic is in there with some 15 trophies. The attic has 15 of them, actually.", "text": "The attic is in there with some 15 trophies. The attic has 15 of them, actually.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_053", "n": 4, "attempt": 0, "seed": 428386573, "raw": "my roommate got two trophies from Dr. Evans.", "text": "my roommate got two trophies from Dr. Evans.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_053", "n": 5, "attempt": 0, "seed": 1973344222, "raw": "How many trophies does my roommate have now?", "text": "How many trophies does my roommate have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_053", "n": 6, "attempt": 0, "seed": 2264863944, "raw": "Actually it was 1, not 2.", "text": "Actually it was 1, not 2.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_053", "n": 7, "attempt": 0, "seed": 275412583, "raw": "How many trophies does my roommate hold?", "text": "How many trophies does my roommate hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_053", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 10.6, "peak_mb": 4659}
+{"scenario": "s4_en_b_054", "n": 1, "attempt": 0, "seed": 1264821490, "raw": "The cashier, Mr. Rodriguez, only has 11 magazines, one of them.", "text": "The cashier, Mr. Rodriguez, only has 11 magazines, one of them.", "ok": false, "reason": "extra_number:[1]"}
+{"scenario": "s4_en_b_054", "n": 1, "attempt": 1, "seed": 3412834673, "raw": "The cashier, Mr. Rodriguez, has all the magazines, 11 of them.", "text": "The cashier, Mr. Rodriguez, has all the magazines, 11 of them.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_en_b_054", "n": 1, "attempt": 2, "seed": 3096136946, "raw": "The cashier, Mr. Rodriguez, only has magazines, 11 of them.", "text": "The cashier, Mr. Rodriguez, only has magazines, 11 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "n": 2, "attempt": 0, "seed": 3908569926, "raw": "All I have is magazines, 13 of them.", "text": "All I have is magazines, 13 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "n": 3, "attempt": 0, "seed": 1361803411, "raw": "Mr. Rodriguez sent me 4 of them.", "text": "Mr. Rodriguez sent me 4 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "n": 4, "attempt": 0, "seed": 2775556531, "raw": "How many magazines do I hold now?", "text": "How many magazines do I hold now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "n": 5, "attempt": 0, "seed": 1413290300, "raw": "How many magazines has Mr. Rodriguez got now?", "text": "How many magazines has Mr. Rodriguez got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "n": 6, "attempt": 0, "seed": 1726880600, "raw": "I got 1 magazine from Mr. Rodriguez.", "text": "I got 1 magazine from Mr. Rodriguez.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "n": 7, "attempt": 0, "seed": 1774782509, "raw": "How many magazines does Mr. Rodriguez hold?", "text": "How many magazines does Mr. Rodriguez hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "n": 8, "attempt": 0, "seed": 201368665, "raw": "Actually, it was 4, not 1.", "text": "Actually, it was 4, not 1.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "n": 9, "attempt": 0, "seed": 635549193, "raw": "How many magazines do I have now?", "text": "How many magazines do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "n": 10, "attempt": 0, "seed": 2697748907, "raw": "How many magazines do the two of them have in total?", "text": "How many magazines do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_054", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 18.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_055", "n": 1, "attempt": 0, "seed": 942800666, "raw": "Priya is carrying 6 novels.", "text": "Priya is carrying 6 novels.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "n": 2, "attempt": 0, "seed": 4189482185, "raw": "All Laura has is novels, 10 of them.", "text": "All Laura has is novels, 10 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "n": 3, "attempt": 0, "seed": 1922335909, "raw": "Laura handed over 4 of the same novels to Priya.", "text": "Laura handed over 4 of the same novels to Priya.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "n": 4, "attempt": 0, "seed": 3945009937, "raw": "How many novels does Laura hold?", "text": "How many novels does Laura hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "n": 5, "attempt": 0, "seed": 1742030499, "raw": "Laura passed 5 novels to Priya.", "text": "Laura passed 5 novels to Priya.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "n": 6, "attempt": 0, "seed": 2314880148, "raw": "How many novels has Priya got now?", "text": "How many novels has Priya got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "n": 7, "attempt": 0, "seed": 2253744246, "raw": "How many novels does Laura hold?", "text": "How many novels does Laura hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "n": 8, "attempt": 0, "seed": 3700469330, "raw": "Priya used up one of her novels.", "text": "Priya used up one of her novels.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_en_b_055", "n": 8, "attempt": 1, "seed": 4023811938, "raw": "Priya used up 1 of them.", "text": "Priya used up 1 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "n": 9, "attempt": 0, "seed": 2585250497, "raw": "How many novels does Priya have now?", "text": "How many novels does Priya have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "n": 10, "attempt": 0, "seed": 1457851683, "raw": "How many novels do the two of them have in total?", "text": "How many novels do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_055", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 16.1, "peak_mb": 4659}
+{"scenario": "s4_en_b_059", "n": 1, "attempt": 0, "seed": 3615897, "raw": "My classmate has some novels. 7 of them, actually.", "text": "My classmate has some novels. 7 of them, actually.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_059", "n": 2, "attempt": 0, "seed": 1604487099, "raw": "The cashier, Mr. Miller, has all eight novels, eight of them.", "text": "The cashier, Mr. Miller, has all eight novels, eight of them.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_en_b_059", "n": 2, "attempt": 1, "seed": 1832942606, "raw": "The cashier, Mr. Miller, only has novels, 8 of them.", "text": "The cashier, Mr. Miller, only has novels, 8 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_059", "n": 3, "attempt": 0, "seed": 2498425713, "raw": "Greta has some novels too.", "text": "Greta has some novels too.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_059", "n": 4, "attempt": 0, "seed": 3299446402, "raw": "It's 16 novels, I just counted.", "text": "It's 16 novels, I just counted.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_059", "n": 5, "attempt": 0, "seed": 260179495, "raw": "Mr. Miller gave my classmate four novels.", "text": "Mr. Miller gave my classmate four novels.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_059", "n": 6, "attempt": 0, "seed": 1780202862, "raw": "How many novels does Mr. Miller have now?", "text": "How many novels does Mr. Miller have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 0, "seed": 2393272716, "raw": "my classmate used it for the book club meeting.", "text": "my classmate used it for the book club meeting.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 1, "seed": 3938816441, "raw": "my classmate used it for the book club meeting.", "text": "my classmate used it for the book club meeting.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 2, "seed": 3896808430, "raw": "my classmate used the novel for the book club meeting.", "text": "my classmate used the novel for the book club meeting.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 3, "seed": 1206389000, "raw": "my classmate used the novel for the book club meeting.", "text": "my classmate used the novel for the book club meeting.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 4, "seed": 4165995613, "raw": "my classmate used the novel for the book report.", "text": "my classmate used the novel for the book report.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 5, "seed": 1599043652, "raw": "my classmate used the novel for the book club meeting.", "text": "my classmate used the novel for the book club meeting.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 6, "seed": 501476058, "raw": "my classmate used the novel for the book report.", "text": "my classmate used the novel for the book report.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 7, "seed": 3503400214, "raw": "my classmate used it for the book club meeting.", "text": "my classmate used it for the book club meeting.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 8, "seed": 2628490902, "raw": "my classmate used the novel for the book club meeting.", "text": "my classmate used the novel for the book club meeting.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "n": 7, "attempt": 9, "seed": 832993644, "raw": "My classmate used the novel for the book club meeting.", "text": "My classmate used the novel for the book club meeting.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_059", "dialogue": false, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": 7, "seconds": 24.6, "peak_mb": 4659}
+{"scenario": "s4_en_b_060", "n": 1, "attempt": 0, "seed": 919926768, "raw": "All Dr. Richardson has is lanterns, 12 of them.", "text": "All Dr. Richardson has is lanterns, 12 of them.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_en_b_060", "n": 1, "attempt": 1, "seed": 2134982626, "raw": "Dr. Richardson only has lanterns, 12 of them.", "text": "Dr. Richardson only has lanterns, 12 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_060", "n": 2, "attempt": 0, "seed": 3621393381, "raw": "The caretaker, Mr. Murphy, has some lanterns too.", "text": "The caretaker, Mr. Murphy, has some lanterns too.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_060", "n": 3, "attempt": 0, "seed": 2215077294, "raw": "my uncle has no lanterns at all.", "text": "my uncle has no lanterns at all.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_060", "n": 4, "attempt": 0, "seed": 4017870007, "raw": "How many lanterns does Mr. Murphy have?", "text": "How many lanterns does Mr. Murphy have?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_060", "n": 5, "attempt": 0, "seed": 2137882803, "raw": "It's four lanterns, I just counted.", "text": "It's four lanterns, I just counted.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 0, "seed": 4015161087, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 1, "seed": 3523757249, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 2, "seed": 1291252531, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 3, "seed": 3322732718, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 4, "seed": 1640309839, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 5, "seed": 4225353848, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 6, "seed": 1826870606, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 7, "seed": 2816438172, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 8, "seed": 380916437, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "n": 6, "attempt": 9, "seed": 3976513129, "raw": "To my uncle, Dr. Richardson lent two lanterns.", "text": "To my uncle, Dr. Richardson lent two lanterns.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_060", "dialogue": false, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": 6, "seconds": 23.7, "peak_mb": 4659}
+{"scenario": "s4_en_b_061", "n": 1, "attempt": 0, "seed": 2191488888, "raw": "All my sister Jasmine has is 8 laptops, eight of them.", "text": "All my sister Jasmine has is 8 laptops, eight of them.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_en_b_061", "n": 1, "attempt": 1, "seed": 4103200266, "raw": "My sister Jasmine only has laptops, 8 of them.", "text": "My sister Jasmine only has laptops, 8 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_061", "n": 2, "attempt": 0, "seed": 1570477350, "raw": "The nurse, Mr. Walker, has some laptops. Nine of them, actually.", "text": "The nurse, Mr. Walker, has some laptops. Nine of them, actually.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 0, "seed": 2116770679, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 1, "seed": 3368546788, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 2, "seed": 2243832643, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 3, "seed": 632168217, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 4, "seed": 1998615884, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 5, "seed": 617075840, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 6, "seed": 3189083181, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 7, "seed": 2115542725, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 8, "seed": 1693842289, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "n": 3, "attempt": 9, "seed": 958325782, "raw": "Jasmine got one laptop from Mr. Walker.", "text": "Jasmine got one laptop from Mr. Walker.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_061", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 19.5, "peak_mb": 4659}
+{"scenario": "s4_en_b_062", "n": 1, "attempt": 0, "seed": 2578330310, "raw": "The new intern, Ms. Jackson, has 12 plates.", "text": "The new intern, Ms. Jackson, has 12 plates.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_062", "n": 2, "attempt": 0, "seed": 79501127, "raw": "My uncle Brian is carrying 6 plates.", "text": "My uncle Brian is carrying 6 plates.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_062", "n": 3, "attempt": 0, "seed": 735039835, "raw": "Ms. Jackson sent Brian two plates.", "text": "Ms. Jackson sent Brian two plates.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_062", "n": 4, "attempt": 0, "seed": 3962187627, "raw": "How many plates does Brian have left?", "text": "How many plates does Brian have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_062", "n": 5, "attempt": 0, "seed": 2120629504, "raw": "Sorry, it was 9, not 2.", "text": "Sorry, it was 9, not 2.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_062", "n": 6, "attempt": 0, "seed": 1319661181, "raw": "How many plates does Ms. Jackson have left?", "text": "How many plates does Ms. Jackson have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_062", "n": 7, "attempt": 0, "seed": 196058525, "raw": "How many plates do the two of them have in total?", "text": "How many plates do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_062", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 9.4, "peak_mb": 4659}
+{"scenario": "s4_en_b_065", "n": 1, "attempt": 0, "seed": 1904802035, "raw": "The receptionist, Mrs. Rodriguez, keeps 5 laptops at the moment.", "text": "The receptionist, Mrs. Rodriguez, keeps 5 laptops at the moment.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_065", "n": 2, "attempt": 0, "seed": 2477476351, "raw": "Kevin is carrying 15 laptops.", "text": "Kevin is carrying 15 laptops.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_065", "n": 3, "attempt": 0, "seed": 4093640477, "raw": "For the trip, Kevin got 1 laptop from Mrs. Rodriguez.", "text": "For the trip, Kevin got 1 laptop from Mrs. Rodriguez.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_065", "n": 4, "attempt": 0, "seed": 4273407278, "raw": "How many laptops does Kevin have now?", "text": "How many laptops does Kevin have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_065", "n": 5, "attempt": 0, "seed": 2507611737, "raw": "Mrs. Rodriguez transferred two laptops to Kevin.", "text": "Mrs. Rodriguez transferred two laptops to Kevin.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_065", "n": 6, "attempt": 0, "seed": 3630037859, "raw": "How many laptops has Mrs. Rodriguez got now?", "text": "How many laptops has Mrs. Rodriguez got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_065", "n": 7, "attempt": 0, "seed": 230709927, "raw": "How many laptops do the two of them have in total?", "text": "How many laptops do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_065", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 9.4, "peak_mb": 4659}
+{"scenario": "s4_en_b_066", "n": 1, "attempt": 0, "seed": 2873096653, "raw": "Dr. Moore has 11 bulbs at the moment.", "text": "Dr. Moore has 11 bulbs at the moment.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_066", "n": 2, "attempt": 0, "seed": 149147926, "raw": "Dr. Moore's teammate Fiona is responsible for nine bulbs.", "text": "Dr. Moore's teammate Fiona is responsible for nine bulbs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_066", "n": 3, "attempt": 0, "seed": 393857670, "raw": "Fiona lent Dr. Moore five bulbs.", "text": "Fiona lent Dr. Moore five bulbs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_066", "n": 4, "attempt": 0, "seed": 3678154293, "raw": "How many bulbs does Fiona have now?", "text": "How many bulbs does Fiona have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_066", "n": 5, "attempt": 0, "seed": 765331987, "raw": "How many bulbs do the two of them have in total?", "text": "How many bulbs do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_066", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": null, "seconds": 7.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_068", "n": 1, "attempt": 0, "seed": 3646722336, "raw": "my classmate Zoe keeps 12 pillows.", "text": "my classmate Zoe keeps 12 pillows.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_068", "n": 2, "attempt": 0, "seed": 2447410571, "raw": "I am responsible for 8 pillows.", "text": "I am responsible for 8 pillows.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_068", "n": 3, "attempt": 0, "seed": 1491917009, "raw": "I got the same 4 pillows from Zoe.", "text": "I got the same 4 pillows from Zoe.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_068", "n": 4, "attempt": 0, "seed": 1905973268, "raw": "How many pillows does Zoe have left?", "text": "How many pillows does Zoe have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_068", "n": 5, "attempt": 0, "seed": 647582778, "raw": "I got the same 2 pillows from Zoe.", "text": "I got the same 2 pillows from Zoe.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_068", "n": 6, "attempt": 0, "seed": 2956414767, "raw": "How many pillows has I got now?", "text": "How many pillows has I got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_068", "n": 7, "attempt": 0, "seed": 1850000049, "raw": "Sorry, it was 7, not 2.", "text": "Sorry, it was 7, not 2.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_068", "n": 8, "attempt": 0, "seed": 4198118997, "raw": "How many pillows does Zoe have now?", "text": "How many pillows does Zoe have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_068", "n": 9, "attempt": 0, "seed": 2904239487, "raw": "How many pillows do the two of them have in total?", "text": "How many pillows do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_068", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 12.8, "peak_mb": 4659}
+{"scenario": "s4_en_b_071", "n": 1, "attempt": 0, "seed": 856480803, "raw": "Sofia's got 13 lamps.", "text": "Sofia's got 13 lamps.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "n": 2, "attempt": 0, "seed": 1502085487, "raw": "The break room doesn't have a single lamp.", "text": "The break room doesn't have a single lamp.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "n": 3, "attempt": 0, "seed": 1734214839, "raw": "Sofia left four lamps at the break room.", "text": "Sofia left four lamps at the break room.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "n": 4, "attempt": 0, "seed": 699068951, "raw": "How many lamps are in the break room now?", "text": "How many lamps are in the break room now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "n": 5, "attempt": 0, "seed": 892443538, "raw": "Sofia left them at the break room — 4 lamps, apparently.", "text": "Sofia left them at the break room — 4 lamps, apparently.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "n": 6, "attempt": 0, "seed": 2689235825, "raw": "How many lamps does Sofia hold?", "text": "How many lamps does Sofia hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "n": 7, "attempt": 0, "seed": 1457725100, "raw": "How many lamps are in the break room now?", "text": "How many lamps are in the break room now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "n": 8, "attempt": 0, "seed": 1390639259, "raw": "Sofia took them from the break room.", "text": "Sofia took them from the break room.", "ok": false, "reason": "missing_number:2"}
+{"scenario": "s4_en_b_071", "n": 8, "attempt": 1, "seed": 4252559874, "raw": "Sofia took two lamps from the break room.", "text": "Sofia took two lamps from the break room.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "n": 9, "attempt": 0, "seed": 373922433, "raw": "How many lamps are in the break room now?", "text": "How many lamps are in the break room now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "n": 10, "attempt": 0, "seed": 1195758528, "raw": "How many lamps does Sofia have left?", "text": "How many lamps does Sofia have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_071", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 15.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_072", "n": 1, "attempt": 0, "seed": 622783290, "raw": "Leah keeps 15 postcards.", "text": "Leah keeps 15 postcards.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_072", "n": 2, "attempt": 0, "seed": 2117624148, "raw": "Dr. Morales is holding 9 postcards.", "text": "Dr. Morales is holding 9 postcards.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 0, "seed": 2348988837, "raw": "Dr. Morales borrowed two postcards from Leah.", "text": "Dr. Morales borrowed two postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 1, "seed": 1796964280, "raw": "Dr. Morales borrowed two postcards from Leah.", "text": "Dr. Morales borrowed two postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 2, "seed": 66282437, "raw": "Dr. Morales borrowed 2 postcards from Leah.", "text": "Dr. Morales borrowed 2 postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 3, "seed": 3148652003, "raw": "Dr. Morales borrowed 2 postcards from Leah.", "text": "Dr. Morales borrowed 2 postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 4, "seed": 2766261401, "raw": "Dr. Morales borrowed 2 postcards from Leah.", "text": "Dr. Morales borrowed 2 postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 5, "seed": 3432818255, "raw": "Dr. Morales borrowed two postcards from Leah.", "text": "Dr. Morales borrowed two postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 6, "seed": 468483596, "raw": "Dr. Morales borrowed 2 postcards from Leah.", "text": "Dr. Morales borrowed 2 postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 7, "seed": 1201680484, "raw": "Dr. Morales borrowed two postcards from Leah.", "text": "Dr. Morales borrowed two postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 8, "seed": 188709007, "raw": "Dr. Morales borrowed two postcards from Leah.", "text": "Dr. Morales borrowed two postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "n": 3, "attempt": 9, "seed": 2713372666, "raw": "Dr. Morales borrowed 2 postcards from Leah.", "text": "Dr. Morales borrowed 2 postcards from Leah.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_en_b_072", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 17.5, "peak_mb": 4659}
+{"scenario": "s4_en_b_073", "n": 1, "attempt": 0, "seed": 3088525369, "raw": "Paul is responsible for 14 eggs.", "text": "Paul is responsible for 14 eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_073", "n": 2, "attempt": 0, "seed": 2257603665, "raw": "I have 16 eggs.", "text": "I have 16 eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_073", "n": 3, "attempt": 0, "seed": 2342030234, "raw": "my teammate has got 3 eggs.", "text": "my teammate has got 3 eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_073", "n": 4, "attempt": 0, "seed": 2042605807, "raw": "My teammate got one egg from me.", "text": "My teammate got one egg from me.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_073", "n": 5, "attempt": 0, "seed": 879789345, "raw": "How many eggs does my teammate have now?", "text": "How many eggs does my teammate have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_073", "n": 6, "attempt": 0, "seed": 855772687, "raw": "How many eggs do Paul and I have in total?", "text": "How many eggs do Paul and I have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_073", "n": 7, "attempt": 0, "seed": 1740736716, "raw": "Why does Paul have that many eggs now?", "text": "Why does Paul have that many eggs now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_073", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 8.7, "peak_mb": 4659}
+{"scenario": "s4_en_b_074", "n": 1, "attempt": 0, "seed": 2999791767, "raw": "I haven't got any eggs.", "text": "I haven't got any eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_074", "n": 2, "attempt": 0, "seed": 3362921855, "raw": "Yusuf only has eggs, 6 of them.", "text": "Yusuf only has eggs, 6 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_074", "n": 3, "attempt": 0, "seed": 591348187, "raw": "After that, I borrowed 4 eggs from Yusuf.", "text": "After that, I borrowed 4 eggs from Yusuf.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_074", "n": 4, "attempt": 0, "seed": 3401112655, "raw": "How many eggs does Yusuf hold?", "text": "How many eggs does Yusuf hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_074", "n": 5, "attempt": 0, "seed": 2218702297, "raw": "How many eggs do I have now?", "text": "How many eggs do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_074", "n": 6, "attempt": 0, "seed": 1218170666, "raw": "For the trip, I lent Yusuf three eggs.", "text": "For the trip, I lent Yusuf three eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_074", "n": 7, "attempt": 0, "seed": 1144056478, "raw": "How many eggs do I hold now?", "text": "How many eggs do I hold now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_074", "n": 8, "attempt": 0, "seed": 2604721625, "raw": "How many eggs do the two of them have in total?", "text": "How many eggs do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_074", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 17.1, "peak_mb": 4659}
+{"scenario": "s4_en_b_075", "n": 1, "attempt": 0, "seed": 3080366818, "raw": "Victor's got 10 knives.", "text": "Victor's got 10 knives.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "n": 2, "attempt": 0, "seed": 3405652626, "raw": "my roommate Diego is carrying 14 knives.", "text": "my roommate Diego is carrying 14 knives.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "n": 3, "attempt": 0, "seed": 1783557039, "raw": "Diego lent Victor 1 of his knives.", "text": "Diego lent Victor 1 of his knives.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "n": 4, "attempt": 0, "seed": 1622713968, "raw": "How many knives does Diego have now?", "text": "How many knives does Diego have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "n": 5, "attempt": 0, "seed": 536317255, "raw": "Diego sent 5 of his to Victor.", "text": "Diego sent 5 of his to Victor.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "n": 6, "attempt": 0, "seed": 4110081273, "raw": "How many knives has Diego got now?", "text": "How many knives has Diego got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "n": 7, "attempt": 0, "seed": 1087970600, "raw": "How many knives does Victor have left?", "text": "How many knives does Victor have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "n": 8, "attempt": 0, "seed": 3234419306, "raw": "Actually, it was 8, not 5.", "text": "Actually, it was 8, not 5.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "n": 9, "attempt": 0, "seed": 1492793752, "raw": "How many knives does Victor have now?", "text": "How many knives does Victor have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "n": 10, "attempt": 0, "seed": 1062106662, "raw": "How many knives do the two of them have in total?", "text": "How many knives do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_075", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 22.0, "peak_mb": 4659}
+{"scenario": "s4_en_b_076", "n": 1, "attempt": 0, "seed": 3783709868, "raw": "All I have is six pillows, six of them.", "text": "All I have is six pillows, six of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_076", "n": 2, "attempt": 0, "seed": 378240709, "raw": "The nurse, Ms. Stewart, has all four pillows, four of them.", "text": "The nurse, Ms. Stewart, has all four pillows, four of them.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_en_b_076", "n": 2, "attempt": 1, "seed": 1736429580, "raw": "The nurse, Ms. Stewart, only has pillows, 4 of them.", "text": "The nurse, Ms. Stewart, only has pillows, 4 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_076", "n": 3, "attempt": 0, "seed": 1869241546, "raw": "I got 3 pillows from Ms. Stewart.", "text": "I got 3 pillows from Ms. Stewart.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_076", "n": 4, "attempt": 0, "seed": 1834746929, "raw": "How many pillows do I have now?", "text": "How many pillows do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 0, "seed": 3884170312, "raw": "I borrowed 2 pillows from Ms. Stewart.", "text": "I borrowed 2 pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 1, "seed": 3792312930, "raw": "I borrowed two pillows from Ms. Stewart.", "text": "I borrowed two pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 2, "seed": 3916527781, "raw": "I borrowed two pillows from Ms. Stewart.", "text": "I borrowed two pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 3, "seed": 2039022720, "raw": "I borrowed two pillows from Ms. Stewart.", "text": "I borrowed two pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 4, "seed": 1395247772, "raw": "I borrowed two pillows from Ms. Stewart.", "text": "I borrowed two pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 5, "seed": 404643238, "raw": "I borrowed two pillows from Ms. Stewart.", "text": "I borrowed two pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 6, "seed": 830970924, "raw": "I borrowed 2 pillows from Ms. Stewart.", "text": "I borrowed 2 pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 7, "seed": 756599146, "raw": "I borrowed two pillows from Ms. Stewart.", "text": "I borrowed two pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 8, "seed": 524149559, "raw": "I borrowed two pillows from Ms. Stewart.", "text": "I borrowed two pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "n": 5, "attempt": 9, "seed": 1438962114, "raw": "I borrowed 2 pillows from Ms. Stewart.", "text": "I borrowed 2 pillows from Ms. Stewart.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_076", "dialogue": false, "kept": [1, 2, 3, 4], "skipped": [], "failed_turn": 5, "seconds": 46.2, "peak_mb": 4659}
+{"scenario": "s4_en_b_078", "n": 1, "attempt": 0, "seed": 369282766, "raw": "Jack has some lanterns. Four of them, actually.", "text": "Jack has some lanterns. Four of them, actually.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_078", "n": 2, "attempt": 0, "seed": 1341166540, "raw": "I am responsible for 10 lanterns.", "text": "I am responsible for 10 lanterns.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_078", "n": 3, "attempt": 0, "seed": 2665577912, "raw": "I borrowed one of his lanterns from Jack.", "text": "I borrowed one of his lanterns from Jack.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_078", "n": 4, "attempt": 0, "seed": 1521891550, "raw": "How many lanterns does Jack have left?", "text": "How many lanterns does Jack have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_078", "n": 5, "attempt": 0, "seed": 2132397903, "raw": "How many lanterns do I have now?", "text": "How many lanterns do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_078", "n": 6, "attempt": 0, "seed": 1920292780, "raw": "Jack sent me the same two lanterns.", "text": "Jack sent me the same two lanterns.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_078", "n": 7, "attempt": 0, "seed": 2562657664, "raw": "How many lanterns do I have now?", "text": "How many lanterns do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_078", "n": 8, "attempt": 0, "seed": 1020033097, "raw": "Actually, it was 1, not 2.", "text": "Actually, it was 1, not 2.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_078", "n": 9, "attempt": 0, "seed": 400818635, "raw": "How many lanterns does Jack have now?", "text": "How many lanterns does Jack have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_078", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 27.8, "peak_mb": 4659}
+{"scenario": "s4_en_b_079", "n": 1, "attempt": 0, "seed": 642643079, "raw": "Dr. Gutierrez has 7 tablets.", "text": "Dr. Gutierrez has 7 tablets.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_079", "n": 2, "attempt": 0, "seed": 598747392, "raw": "Ms. Taylor owns 14 tablets.", "text": "Ms. Taylor owns 14 tablets.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_079", "n": 3, "attempt": 0, "seed": 642297971, "raw": "After that, Dr. Gutierrez passed 2 of his tablets to Ms. Taylor.", "text": "After that, Dr. Gutierrez passed 2 of his tablets to Ms. Taylor.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_079", "n": 4, "attempt": 0, "seed": 3817134697, "raw": "How many tablets does Ms. Taylor have left?", "text": "How many tablets does Ms. Taylor have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_079", "n": 5, "attempt": 0, "seed": 2500621560, "raw": "How many tablets does Dr. Gutierrez have now?", "text": "How many tablets does Dr. Gutierrez have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_079", "n": 6, "attempt": 0, "seed": 1120047950, "raw": "Actually, it was 4, not 2.", "text": "Actually, it was 4, not 2.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_079", "n": 7, "attempt": 0, "seed": 1848885679, "raw": "How many tablets does Dr. Gutierrez have now?", "text": "How many tablets does Dr. Gutierrez have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_079", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 19.7, "peak_mb": 4659}
+{"scenario": "s4_en_b_080", "n": 1, "attempt": 0, "seed": 518753583, "raw": "The janitor, Mr. Lopez, is responsible for 8 peaches.", "text": "The janitor, Mr. Lopez, is responsible for 8 peaches.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_080", "n": 2, "attempt": 0, "seed": 665461487, "raw": "my nephew is holding five peaches.", "text": "my nephew is holding five peaches.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_080", "n": 3, "attempt": 0, "seed": 944069411, "raw": "I am responsible for 6 peaches.", "text": "I am responsible for 6 peaches.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_080", "n": 4, "attempt": 0, "seed": 3967983967, "raw": "Ian keeps 4 peaches.", "text": "Ian keeps 4 peaches.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 0, "seed": 1683290588, "raw": "I gave back the two peaches to Mr. Lopez.", "text": "I gave back the two peaches to Mr. Lopez.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 1, "seed": 4226767819, "raw": "I gave Mr. Lopez two peaches back.", "text": "I gave Mr. Lopez two peaches back.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 2, "seed": 4255351416, "raw": "I gave back the two peaches to Mr. Lopez.", "text": "I gave back the two peaches to Mr. Lopez.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 3, "seed": 2141890364, "raw": "I gave back two peaches to Mr. Lopez.", "text": "I gave back two peaches to Mr. Lopez.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 4, "seed": 508521826, "raw": "I gave back the two peaches to Mr. Lopez.", "text": "I gave back the two peaches to Mr. Lopez.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 5, "seed": 2233589082, "raw": "I gave back two peaches to Mr. Lopez.", "text": "I gave back two peaches to Mr. Lopez.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 6, "seed": 441747136, "raw": "I gave back the two peaches to Mr. Lopez.", "text": "I gave back the two peaches to Mr. Lopez.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 7, "seed": 2691313473, "raw": "I gave back two peaches to Mr. Lopez.", "text": "I gave back two peaches to Mr. Lopez.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 8, "seed": 299922143, "raw": "I gave back two peaches to Mr. Lopez.", "text": "I gave back two peaches to Mr. Lopez.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "n": 5, "attempt": 9, "seed": 3464613411, "raw": "I gave back two peaches to Mr. Lopez.", "text": "I gave back two peaches to Mr. Lopez.", "ok": false, "reason": "direction"}
+{"scenario": "s4_en_b_080", "dialogue": false, "kept": [1, 2, 3, 4], "skipped": [], "failed_turn": 5, "seconds": 38.8, "peak_mb": 4659}
+{"scenario": "s4_en_b_081", "n": 1, "attempt": 0, "seed": 3156740622, "raw": "My teammate has some hammers. Actually, 16 of them, actually.", "text": "My teammate has some hammers. Actually, 16 of them, actually.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_081", "n": 2, "attempt": 0, "seed": 3108676676, "raw": "All Dr. Edwards has is hammers, 9 of them.", "text": "All Dr. Edwards has is hammers, 9 of them.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_en_b_081", "n": 2, "attempt": 1, "seed": 504586958, "raw": "Dr. Edwards only has hammers, 9 of them.", "text": "Dr. Edwards only has hammers, 9 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_081", "n": 3, "attempt": 0, "seed": 1828255675, "raw": "Irene also has some hammers, not sure how many.", "text": "Irene also has some hammers, not sure how many.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_081", "n": 4, "attempt": 0, "seed": 891400665, "raw": "How many hammers does Irene have?", "text": "How many hammers does Irene have?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_081", "n": 5, "attempt": 0, "seed": 1734824917, "raw": "Irene has 7 of them, to be exact.", "text": "Irene has 7 of them, to be exact.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_081", "n": 6, "attempt": 0, "seed": 503868768, "raw": "To Irene, Dr. Edwards sent five hammers.", "text": "To Irene, Dr. Edwards sent five hammers.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_081", "n": 7, "attempt": 0, "seed": 1177730106, "raw": "How many hammers does Irene have now?", "text": "How many hammers does Irene have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_081", "n": 8, "attempt": 0, "seed": 2403206430, "raw": "How many hammers does Irene have left?", "text": "How many hammers does Irene have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_081", "n": 9, "attempt": 0, "seed": 3950193928, "raw": "I mean Dr. Edwards.", "text": "I mean Dr. Edwards.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_081", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 30.9, "peak_mb": 4659}
+{"scenario": "s4_en_b_082", "n": 1, "attempt": 0, "seed": 3801438470, "raw": "There are 10 hammers in the front porch.", "text": "There are 10 hammers in the front porch.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "n": 2, "attempt": 0, "seed": 1750386201, "raw": "Walter keeps 6 hammers.", "text": "Walter keeps 6 hammers.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "n": 3, "attempt": 0, "seed": 1318334795, "raw": "Gemma has got 16 hammers.", "text": "Gemma has got 16 hammers.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "n": 4, "attempt": 0, "seed": 1065122760, "raw": "Gemma left three hammers at the front porch.", "text": "Gemma left three hammers at the front porch.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "n": 5, "attempt": 0, "seed": 2762995397, "raw": "How many hammers has Walter got now?", "text": "How many hammers has Walter got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "n": 6, "attempt": 0, "seed": 1130122952, "raw": "Walter took one of them from the front porch.", "text": "Walter took one of them from the front porch.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "n": 7, "attempt": 0, "seed": 2026738095, "raw": "How many hammers are in the front porch now?", "text": "How many hammers are in the front porch now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "n": 8, "attempt": 0, "seed": 2647068450, "raw": "Wait, the front porch gave them to Gemma, not Walter.", "text": "Wait, the front porch gave them to Gemma, not Walter.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "n": 9, "attempt": 0, "seed": 847736363, "raw": "How many hammers does Gemma hold?", "text": "How many hammers does Gemma hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "n": 10, "attempt": 0, "seed": 3824362651, "raw": "How many hammers do Walter and Gemma have in total?", "text": "How many hammers do Walter and Gemma have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_082", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 26.9, "peak_mb": 4659}
+{"scenario": "s4_en_b_084", "n": 1, "attempt": 0, "seed": 2241109460, "raw": "Laura doesn't have a single balloon.", "text": "Laura doesn't have a single balloon.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_084", "n": 2, "attempt": 0, "seed": 570937572, "raw": "Joanna is carrying 16 balloons.", "text": "Joanna is carrying 16 balloons.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 0, "seed": 2159098720, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 1, "seed": 3866864750, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 2, "seed": 2802318077, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 3, "seed": 3284382190, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 4, "seed": 1450161003, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 5, "seed": 68990406, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 6, "seed": 3707110164, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 7, "seed": 3533161530, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 8, "seed": 1327379777, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "n": 3, "attempt": 9, "seed": 2849992228, "raw": "Joanna lent Laura one balloon.", "text": "Joanna lent Laura one balloon.", "ok": false, "reason": "missing_number:1"}
+{"scenario": "s4_en_b_084", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 26.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_085", "n": 1, "attempt": 0, "seed": 2987365117, "raw": "Gavin hasn't got any bulbs.", "text": "Gavin hasn't got any bulbs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_085", "n": 2, "attempt": 0, "seed": 1461139564, "raw": "Joanna has 14 bulbs and also some ladders.", "text": "Joanna has 14 bulbs and also some ladders.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_085", "n": 3, "attempt": 0, "seed": 1526585694, "raw": "Joanna transferred two bulbs to Gavin.", "text": "Joanna transferred two bulbs to Gavin.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_085", "n": 4, "attempt": 0, "seed": 4144569071, "raw": "How many bulbs does Joanna have now?", "text": "How many bulbs does Joanna have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_085", "n": 5, "attempt": 0, "seed": 607655076, "raw": "How many bulbs does Gavin have now?", "text": "How many bulbs does Gavin have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_085", "n": 6, "attempt": 0, "seed": 1306450532, "raw": "How many bulbs does Gavin have left?", "text": "How many bulbs does Gavin have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_085", "n": 7, "attempt": 0, "seed": 3177712853, "raw": "Joanna is who I meant.", "text": "Joanna is who I meant.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_085", "n": 8, "attempt": 0, "seed": 3547051797, "raw": "How many bulbs do the two of them have in total?", "text": "How many bulbs do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_085", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 18.9, "peak_mb": 4659}
+{"scenario": "s4_en_b_086", "n": 1, "attempt": 0, "seed": 3700810170, "raw": "Ahmed is holding 5 chairs.", "text": "Ahmed is holding 5 chairs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_086", "n": 2, "attempt": 0, "seed": 676561309, "raw": "my uncle is carrying 11 chairs", "text": "my uncle is carrying 11 chairs", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_086", "n": 3, "attempt": 0, "seed": 3964587388, "raw": "Ahmed handed over one chair to my uncle.", "text": "Ahmed handed over one chair to my uncle.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_086", "n": 4, "attempt": 0, "seed": 292036810, "raw": "How many chairs does Ahmed have now?", "text": "How many chairs does Ahmed have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_086", "n": 5, "attempt": 0, "seed": 2625164128, "raw": "Wait, make that 2, not 1.", "text": "Wait, make that 2, not 1.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_086", "n": 6, "attempt": 0, "seed": 1140973652, "raw": "How many chairs does Ahmed hold?", "text": "How many chairs does Ahmed hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_086", "n": 7, "attempt": 0, "seed": 2932997429, "raw": "How many chairs do the two of them have in total?", "text": "How many chairs do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_086", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 14.5, "peak_mb": 4659}
+{"scenario": "s4_en_b_094", "n": 1, "attempt": 0, "seed": 4226072882, "raw": "The nurse, Mrs. Roberts, owns 6 eggs.", "text": "The nurse, Mrs. Roberts, owns 6 eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_094", "n": 2, "attempt": 0, "seed": 1279662884, "raw": "I'm responsible for 13 eggs.", "text": "I'm responsible for 13 eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_094", "n": 3, "attempt": 0, "seed": 3891058126, "raw": "Mrs. Roberts transferred 1 egg to me, apparently.", "text": "Mrs. Roberts transferred 1 egg to me, apparently.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_094", "n": 4, "attempt": 0, "seed": 2456545231, "raw": "How many eggs do I have now?", "text": "How many eggs do I have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_094", "n": 5, "attempt": 0, "seed": 1398541899, "raw": "How many eggs does Mrs. Roberts have now?", "text": "How many eggs does Mrs. Roberts have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_094", "n": 6, "attempt": 0, "seed": 3335228122, "raw": "I lost the two eggs.", "text": "I lost the two eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_094", "n": 7, "attempt": 0, "seed": 3134901035, "raw": "How many eggs does I hold?", "text": "How many eggs does I hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_094", "n": 8, "attempt": 0, "seed": 2593636783, "raw": "How many eggs do the two of them have in total?", "text": "How many eggs do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_094", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 20.3, "peak_mb": 4659}
+{"scenario": "s4_en_b_095", "n": 1, "attempt": 0, "seed": 2822103394, "raw": "my teammate Theo owns 12 plates.", "text": "my teammate Theo owns 12 plates.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_095", "n": 2, "attempt": 0, "seed": 1642335504, "raw": "Joanna has some plates. Actually, 3 of them.", "text": "Joanna has some plates. Actually, 3 of them.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_095", "n": 3, "attempt": 0, "seed": 4124440894, "raw": "My roommate Laura has no plates at all.", "text": "My roommate Laura has no plates at all.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_095", "n": 4, "attempt": 0, "seed": 2808546181, "raw": "For the trip, Joanna returned 3 of her plates to Laura.", "text": "For the trip, Joanna returned 3 of her plates to Laura.", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_en_b_095", "n": 4, "attempt": 1, "seed": 3726728960, "raw": "For the fundraiser, Joanna returned 3 of her plates to Laura.", "text": "For the fundraiser, Joanna returned 3 of her plates to Laura.", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_en_b_095", "n": 4, "attempt": 2, "seed": 2308700698, "raw": "For the trip, Joanna returned 2 of her plates to Laura.", "text": "For the trip, Joanna returned 2 of her plates to Laura.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_en_b_095", "n": 4, "attempt": 3, "seed": 3538358521, "raw": "For the fundraiser, Joanna gave back 3 of hers.", "text": "For the fundraiser, Joanna gave back 3 of hers.", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_en_b_095", "n": 4, "attempt": 4, "seed": 3819671666, "raw": "For the trip, Joanna returned 2 of her plates to Laura.", "text": "For the trip, Joanna returned 2 of her plates to Laura.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_en_b_095", "n": 4, "attempt": 5, "seed": 3596928628, "raw": "For the fundraiser, Joanna returned 2 of them to Laura.", "text": "For the fundraiser, Joanna returned 2 of them to Laura.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_095", "n": 5, "attempt": 0, "seed": 3010115507, "raw": "How many plates does Laura have now?", "text": "How many plates does Laura have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_095", "n": 6, "attempt": 0, "seed": 2506957963, "raw": "Laura handed over one plate to Theo, apparently.", "text": "Laura handed over one plate to Theo, apparently.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_095", "n": 7, "attempt": 0, "seed": 2133843358, "raw": "How many plates does Theo hold?", "text": "How many plates does Theo hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_095", "n": 8, "attempt": 0, "seed": 2608126093, "raw": "Actually they went to Joanna, not to Theo.", "text": "Actually they went to Joanna, not to Theo.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_095", "n": 9, "attempt": 0, "seed": 2253474806, "raw": "How many plates does Theo hold?", "text": "How many plates does Theo hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_095", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 39.4, "peak_mb": 4679}
+{"scenario": "s4_en_b_096", "n": 1, "attempt": 0, "seed": 2173557057, "raw": "my classmate is responsible for 8 oranges.", "text": "my classmate is responsible for 8 oranges.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_096", "n": 2, "attempt": 0, "seed": 2887695471, "raw": "Bianca is carrying 5 oranges.", "text": "Bianca is carrying 5 oranges.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_096", "n": 3, "attempt": 0, "seed": 3230518960, "raw": "my classmate handed over 2 of the same oranges to Bianca, apparently.", "text": "my classmate handed over 2 of the same oranges to Bianca, apparently.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_096", "n": 4, "attempt": 0, "seed": 322188236, "raw": "How many oranges does Bianca have left?", "text": "How many oranges does Bianca have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_096", "n": 5, "attempt": 0, "seed": 3046647473, "raw": "Actually, it was 3, not 2.", "text": "Actually, it was 3, not 2.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_096", "n": 6, "attempt": 0, "seed": 950081796, "raw": "How many oranges does Bianca have now?", "text": "How many oranges does Bianca have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_096", "n": 7, "attempt": 0, "seed": 3468609503, "raw": "Why does Bianca have that many oranges now?", "text": "Why does Bianca have that many oranges now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_096", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 18.3, "peak_mb": 4679}
+{"scenario": "s4_en_b_097", "n": 1, "attempt": 0, "seed": 478573113, "raw": "Rafael owns 8 baskets.", "text": "Rafael owns 8 baskets.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_097", "n": 2, "attempt": 0, "seed": 918356561, "raw": "Leah is responsible for 11 baskets.", "text": "Leah is responsible for 11 baskets.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_097", "n": 3, "attempt": 0, "seed": 3185845887, "raw": "Rafael lent Leah one basket, apparently.", "text": "Rafael lent Leah one basket, apparently.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_097", "n": 4, "attempt": 0, "seed": 1266130148, "raw": "How many baskets does Leah hold?", "text": "How many baskets does Leah hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_097", "n": 5, "attempt": 0, "seed": 3374899884, "raw": "How many baskets has Rafael got now?", "text": "How many baskets has Rafael got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_097", "n": 6, "attempt": 0, "seed": 2620876608, "raw": "How many baskets does Leah have now?", "text": "How many baskets does Leah have now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_097", "n": 7, "attempt": 0, "seed": 3864479457, "raw": "I mean Rafael.", "text": "I mean Rafael.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_097", "n": 8, "attempt": 0, "seed": 184885878, "raw": "How many baskets do the two of them have in total?", "text": "How many baskets do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_097", "n": 9, "attempt": 0, "seed": 938587501, "raw": "Why does Rafael have that many baskets now?", "text": "Why does Rafael have that many baskets now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_097", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 19.6, "peak_mb": 4679}
+{"scenario": "s4_en_b_098", "n": 1, "attempt": 0, "seed": 1427102595, "raw": "I am carrying 11 eggs.", "text": "I am carrying 11 eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_098", "n": 2, "attempt": 0, "seed": 504981955, "raw": "my uncle Liam has 16 eggs.", "text": "my uncle Liam has 16 eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_098", "n": 3, "attempt": 0, "seed": 1713941117, "raw": "Jasmine owns 7 eggs.", "text": "Jasmine owns 7 eggs.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_098", "n": 4, "attempt": 0, "seed": 1868791316, "raw": "I gave back four eggs to Jasmine, who had them before.", "text": "I gave back four eggs to Jasmine, who had them before.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_098", "n": 5, "attempt": 0, "seed": 2837381966, "raw": "How many eggs does Jasmine have left?", "text": "How many eggs does Jasmine have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_098", "n": 6, "attempt": 0, "seed": 1388513723, "raw": "How many eggs has Jasmine got now?", "text": "How many eggs has Jasmine got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_098", "n": 7, "attempt": 0, "seed": 1119012033, "raw": "Liam is who I meant.", "text": "Liam is who I meant.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_098", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 14.2, "peak_mb": 4679}
+{"scenario": "s4_en_b_107", "n": 1, "attempt": 0, "seed": 3305839757, "raw": "my aunt owns 14 bicycles", "text": "my aunt owns 14 bicycles", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_107", "n": 2, "attempt": 0, "seed": 4183612541, "raw": "Diego is carrying 15 bicycles.", "text": "Diego is carrying 15 bicycles.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_107", "n": 3, "attempt": 0, "seed": 1857195291, "raw": "To Diego, my aunt sent 4 bicycles.", "text": "To Diego, my aunt sent 4 bicycles.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_107", "n": 4, "attempt": 0, "seed": 2848958663, "raw": "How many bicycles does my aunt hold?", "text": "How many bicycles does my aunt hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_107", "n": 5, "attempt": 0, "seed": 312240611, "raw": "How many bicycles does Diego have left?", "text": "How many bicycles does Diego have left?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_107", "n": 6, "attempt": 0, "seed": 1022704003, "raw": "How many bicycles do the two of them have in total?", "text": "How many bicycles do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_107", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6], "skipped": [], "failed_turn": null, "seconds": 12.0, "peak_mb": 4679}
+{"scenario": "s4_en_b_108", "n": 1, "attempt": 0, "seed": 2467645404, "raw": "I have some hammers too.", "text": "I have some hammers too.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_108", "n": 2, "attempt": 0, "seed": 553233404, "raw": "Ms. Novak has no hammers at all.", "text": "Ms. Novak has no hammers at all.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_108", "n": 3, "attempt": 0, "seed": 2843668215, "raw": "There are 16 of them, by the way.", "text": "There are 16 of them, by the way.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_en_b_108", "n": 3, "attempt": 1, "seed": 3845768774, "raw": "It's 16 hammers, I just counted.", "text": "It's 16 hammers, I just counted.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_108", "n": 4, "attempt": 0, "seed": 840068942, "raw": "I lent Ms. Novak 5 of her hammers.", "text": "I lent Ms. Novak 5 of her hammers.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_en_b_108", "n": 4, "attempt": 1, "seed": 3325094760, "raw": "I lent Ms. Novak 5 of hers.", "text": "I lent Ms. Novak 5 of hers.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_108", "n": 5, "attempt": 0, "seed": 702576039, "raw": "How many hammers do I hold?", "text": "How many hammers do I hold?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_108", "n": 6, "attempt": 0, "seed": 637776220, "raw": "Wait, make that 4, not 5.", "text": "Wait, make that 4, not 5.", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_108", "n": 7, "attempt": 0, "seed": 2143548670, "raw": "How many hammers has I got now?", "text": "How many hammers has I got now?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_108", "n": 8, "attempt": 0, "seed": 540632699, "raw": "How many hammers do the two of them have in total?", "text": "How many hammers do the two of them have in total?", "ok": true, "reason": "ok"}
+{"scenario": "s4_en_b_108", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 20.8, "peak_mb": 4679}
+{"scenario": "s4_ko_b_004", "n": 1, "attempt": 0, "seed": 1545363609, "raw": "제가 볼펜 열세 자루 있어요.", "text": "제가 볼펜 열세 자루 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_004", "n": 2, "attempt": 0, "seed": 1511300551, "raw": "지아는 볼펜이 다섯 자루 있어요.", "text": "지아는 볼펜이 다섯 자루 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 0, "seed": 1450578193, "raw": "그지고나서 저가 지아한테서 볼펜 한 자루를 돌려줬어요.", "text": "그지고나서 저가 지아한테서 볼펜 한 자루를 돌려줬어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 1, "seed": 2173071799, "raw": "그다음에 저는 지아한테서 볼펜 한 자루를 돌려줬어요.", "text": "그다음에 저는 지아한테서 볼펜 한 자루를 돌려줬어요.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 2, "seed": 2843265553, "raw": "그런 후 지아에게서 볼펜 한 자루를 돌려받았어요.", "text": "그런 후 지아에게서 볼펜 한 자루를 돌려받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 3, "seed": 84196220, "raw": "그다음에 저는 지아한테서 볼펜 한 자루를 돌려줬어요.", "text": "그다음에 저는 지아한테서 볼펜 한 자루를 돌려줬어요.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 4, "seed": 366831832, "raw": "그 antioxidative peptides 원래 제가 지아한테서 받아서 지아한테 돌려줬어요. 그러고 나서 지아는 저한테서 받은 볼펜 한 자루가 있어요?", "text": "그 antioxidative peptides 원래 제가 지아한테서 받아서 지아한테 돌려줬어요. 그러고 나서 지아는 저한테서 받은 볼펜 한 자루가 있어요?", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 5, "seed": 3787384397, "raw": "그다음에 저는 지아한테서 볼펜 한 자루를 돌려줬어요.", "text": "그다음에 저는 지아한테서 볼펜 한 자루를 돌려줬어요.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 6, "seed": 3115932368, "raw": "그러고 나서 저는 지아한테 볼펜 한 자루를 돌려뒀어요.", "text": "그러고 나서 저는 지아한테 볼펜 한 자루를 돌려뒀어요.", "ok": false, "reason": "verb:give_back"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 7, "seed": 1399922166, "raw": "그다음에 저는 지아한테서 볼펜 한 자루를 돌려-Sah요.", "text": "그다음에 저는 지아한테서 볼펜 한 자루를 돌려-Sah요.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 8, "seed": 1390371683, "raw": "그런 다음 저는 지아한테서 볼펜 한 자루를 돌려줬어요.", "text": "그런 다음 저는 지아한테서 볼펜 한 자루를 돌려줬어요.", "ok": false, "reason": "direction_unmarked"}
+{"scenario": "s4_ko_b_004", "n": 3, "attempt": 9, "seed": 3174691087, "raw": "그다음에 저는 지아한테 볼펜 한 자루를 돌려줬어요.", "text": "그다음에 저는 지아한테 볼펜 한 자루를 돌려줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_004", "n": 4, "attempt": 0, "seed": 3791846412, "raw": "저는 지금 볼펜이 몇 개 있어요?", "text": "저는 지금 볼펜이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_004", "n": 5, "attempt": 0, "seed": 3449758746, "raw": "지아는 볼펜을 몇 개 가지고 있어요?", "text": "지아는 볼펜을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 0, "seed": 2706914547, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 1, "seed": 2610808629, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 2, "seed": 3069349051, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 3, "seed": 1730474614, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 4, "seed": 2353379412, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 5, "seed": 2491353062, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 6, "seed": 2250475273, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 7, "seed": 1308381976, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 8, "seed": 4275148890, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "n": 6, "attempt": 9, "seed": 1521117122, "raw": "지아가 저한테서 볼펜 한 자루를 받았어요.", "text": "지아가 저한테서 볼펜 한 자루를 받았어요.", "ok": false, "reason": "cue:first_person"}
+{"scenario": "s4_ko_b_004", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": 6, "seconds": 87.0, "peak_mb": 4741}
+{"scenario": "s4_ko_b_007", "n": 1, "attempt": 0, "seed": 4285942425, "raw": "안 기사님은 열한 개의 메달을 가지고 있어요. 세영은 여섯 개의 메달을 가지고 있어요.", "text": "안 기사님은 열한 개의 메달을 가지고 있어요. 세영은 여섯 개의 메달을 가지고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_007", "n": 2, "attempt": 0, "seed": 2726749801, "raw": "세영이 안 기사님한테 메달 다섯 개를 넘겼어요.", "text": "세영이 안 기사님한테 메달 다섯 개를 넘겼어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 0, "seed": 2764661519, "raw": "세영은 메달이 몇 개 있어요?", "text": "세영은 메달이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 1, "seed": 2677125898, "raw": "세영이는 지금 메달이 몇 개 가지고 있어요?", "text": "세영이는 지금 메달이 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 2, "seed": 2529932186, "raw": "세영이 지금 메달이 몇 개 가지고 있는지요?", "text": "세영이 지금 메달이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 3, "seed": 3755220609, "raw": "세영은 메달이 몇 개 가지고 있는지요?", "text": "세영은 메달이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 4, "seed": 3617265847, "raw": "세영은 메달이 몇 개 가지고 있어요?", "text": "세영은 메달이 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 5, "seed": 2675671954, "raw": "세영이 지금 메달이 몇 개 가지고 있는지요?", "text": "세영이 지금 메달이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 6, "seed": 3526734651, "raw": "세영이 지금 메달이 몇 개 가지고 있는지요?", "text": "세영이 지금 메달이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 7, "seed": 503707167, "raw": "세영은 메달이 몇 개 가지고 있어요?", "text": "세영은 메달이 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 8, "seed": 440520963, "raw": "세영은 메달이 몇 개 가지고 있는지요?", "text": "세영은 메달이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 3, "attempt": 9, "seed": 4253482530, "raw": "세영은 메달이 몇 개 가지고 있는지요?", "text": "세영은 메달이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_007", "n": 4, "attempt": 0, "seed": 2528362549, "raw": "그분은 지금 메달이 몇 개 있어요?", "text": "그분은 지금 메달이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_007", "n": 5, "attempt": 0, "seed": 3358374541, "raw": "제 말은 세영 씨예요.", "text": "제 말은 세영 씨예요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_007", "n": 6, "attempt": 0, "seed": 3842251161, "raw": "두 사람이 합쳐서 메달이 모두 다섯 개 있어요?", "text": "두 사람이 합쳐서 메달이 모두 다섯 개 있어요?", "ok": false, "reason": "extra_number:[5]"}
+{"scenario": "s4_ko_b_007", "n": 6, "attempt": 1, "seed": 3300992151, "raw": "두 사람 합쳐서 메달이 몇 개 있어요?", "text": "두 사람 합쳐서 메달이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_007", "dialogue": true, "kept": [1, 2, 4, 5, 6], "skipped": [3], "failed_turn": null, "seconds": 59.4, "peak_mb": 4755}
+{"scenario": "s4_ko_b_008", "n": 1, "attempt": 0, "seed": 2934456847, "raw": "시은은 쿠키가 열 개 있어요.", "text": "시은은 쿠키가 열 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_008", "n": 2, "attempt": 0, "seed": 3783331027, "raw": "주민센터에는 쿠키가 열한 개 있어요.", "text": "주민센터에는 쿠키가 열한 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_008", "n": 3, "attempt": 0, "seed": 3038110557, "raw": "시은이 주민센터에서 쿠키 두 개를 가져갔어요.", "text": "시은이 주민센터에서 쿠키 두 개를 가져갔어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_008", "n": 4, "attempt": 0, "seed": 4257789535, "raw": "지금 주민센터에 쿠키가 몇 개 있어요?", "text": "지금 주민센터에 쿠키가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_008", "n": 5, "attempt": 0, "seed": 4047163119, "raw": "시은이 주민센터에서 쿠키 한 개를 가져갔어요.", "text": "시은이 주민센터에서 쿠키 한 개를 가져갔어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_008", "n": 6, "attempt": 0, "seed": 1858966270, "raw": "지금 주민센터에 쿠키가 몇 개 있어요?", "text": "지금 주민센터에 쿠키가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_008", "n": 7, "attempt": 0, "seed": 1435642175, "raw": "시은이 지금 쿠키가 몇 개 있어요?", "text": "시은이 지금 쿠키가 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_008", "n": 7, "attempt": 1, "seed": 1979884417, "raw": "시은은 쿠키가 몇 개 남았어요?", "text": "시은은 쿠키가 몇 개 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_008", "n": 8, "attempt": 0, "seed": 3160462181, "raw": "아, 한 개가 아니라 다섯 개였어요.", "text": "아, 한 개가 아니라 다섯 개였어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_008", "n": 9, "attempt": 0, "seed": 400666024, "raw": "지금 주민센터에 쿠키가 몇 개 있어요?", "text": "지금 주민센터에 쿠키가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_008", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 37.8, "peak_mb": 4755}
+{"scenario": "s4_ko_b_009", "n": 1, "attempt": 0, "seed": 1811271905, "raw": "예린 씨한테는 접시가 하나도 없어요.", "text": "예린 씨한테는 접시가 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_009", "n": 2, "attempt": 0, "seed": 2554804856, "raw": "유나는 접시가 세 개 가지고 있어요.", "text": "유나는 접시가 세 개 가지고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_009", "n": 3, "attempt": 0, "seed": 914087500, "raw": "유나가 예린씨한테서 접시 두 개를 빌려주었어요. 그러고 나서 유나는 예린씨한테 접시 두 개를 빌려줬어요.", "text": "유나가 예린씨한테서 접시 두 개를 빌려주었어요. 그러고 나서 유나는 예린씨한테 접시 두 개를 빌려줬어요.", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_009", "n": 3, "attempt": 1, "seed": 1664872949, "raw": "그다음에 유나가 예린씨한테 접시 두 개를 빌려줬어요.", "text": "그다음에 유나가 예린씨한테 접시 두 개를 빌려줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_009", "n": 4, "attempt": 0, "seed": 604732792, "raw": "예린씨는 접시를 몇 개 가지고 있어요?", "text": "예린씨는 접시를 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_009", "n": 5, "attempt": 0, "seed": 3132105598, "raw": "유나가 예린 씨한테 접시 한 개를 빌렸어요.", "text": "유나가 예린 씨한테 접시 한 개를 빌렸어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_009", "n": 6, "attempt": 0, "seed": 1952713978, "raw": "유나는 지금 접시가 몇 개 있어요?", "text": "유나는 지금 접시가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_009", "n": 7, "attempt": 0, "seed": 1713275903, "raw": "유나가 예린씨한테 접시 한 개를 보내대요.", "text": "유나가 예린씨한테 접시 한 개를 보내대요.", "ok": false, "reason": "hearsay_form"}
+{"scenario": "s4_ko_b_009", "n": 7, "attempt": 1, "seed": 989940121, "raw": "유나가 예린씨한테 접시 한 개를 보내다고 해요.", "text": "유나가 예린씨한테 접시 한 개를 보내다고 해요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_009", "n": 8, "attempt": 0, "seed": 3356286284, "raw": "예린 씨는 접시를 몇 개 가지고 있어요?", "text": "예린 씨는 접시를 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_009", "n": 9, "attempt": 0, "seed": 3066372443, "raw": "유나는 접시를 몇 개 가지고 있어요?", "text": "유나는 접시를 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_009", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 44.9, "peak_mb": 4755}
+{"scenario": "s4_ko_b_011", "n": 1, "attempt": 0, "seed": 300867640, "raw": "동훈님은 머그컵이 일곱 개 있습니다.", "text": "동훈님은 머그컵이 일곱 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_011", "n": 2, "attempt": 0, "seed": 1706647074, "raw": "인턴 예린 씨가 머그컵이 네 개를 들고 있습니다.", "text": "인턴 예린 씨가 머그컵이 네 개를 들고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_011", "n": 3, "attempt": 0, "seed": 3367543448, "raw": "동훈 씨가 예린 씨한테 머그컵 두 개를 빌렸습니다.", "text": "동훈 씨가 예린 씨한테 머그컵 두 개를 빌렸습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_011", "n": 4, "attempt": 0, "seed": 1532562423, "raw": "동훈씨는 머그컵을 몇 개 가지고 있습니까?", "text": "동훈씨는 머그컵을 몇 개 가지고 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_011", "n": 5, "attempt": 0, "seed": 305623241, "raw": "동훈 씨가 예린 씨한테서 머그컵 한 개를 받았습니다.", "text": "동훈 씨가 예린 씨한테서 머그컵 한 개를 받았습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_011", "n": 6, "attempt": 0, "seed": 1573848191, "raw": "예린씨는 머그컵을 몇 개 가지고 있습니까?", "text": "예린씨는 머그컵을 몇 개 가지고 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_011", "n": 7, "attempt": 0, "seed": 483236873, "raw": "둘이 합쳐서 머그컵이 모두 몇 개입니까?", "text": "둘이 합쳐서 머그컵이 모두 몇 개입니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_011", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 28.9, "peak_mb": 4762}
+{"scenario": "s4_ko_b_012", "n": 1, "attempt": 0, "seed": 2338802187, "raw": "휴게실에는 양초가 일곱 개 있어요.", "text": "휴게실에는 양초가 일곱 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_012", "n": 2, "attempt": 0, "seed": 3429835106, "raw": "준호는 지금 양초 열여섯 개를 들고 있어요.", "text": "준호는 지금 양초 열여섯 개를 들고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_012", "n": 3, "attempt": 0, "seed": 354191979, "raw": "민준은 양초가 네 개 들고 있어요.", "text": "민준은 양초가 네 개 들고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 0, "seed": 2274348664, "raw": "민준이는 준호가한테서 양초 한 개를 받았어요.", "text": "민준이는 준호가한테서 양초 한 개를 받았어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 1, "seed": 2172248827, "raw": "민준이 준호한테서 양초 한 개를 받았어요.", "text": "민준이 준호한테서 양초 한 개를 받았어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 2, "seed": 1648125119, "raw": "민준이 준호한테서 양초 한 개를 받았어요. 같은 양초 세 개를 받았어요.", "text": "민준이 준호한테서 양초 한 개를 받았어요. 같은 양초 세 개를 받았어요.", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 3, "seed": 1261984977, "raw": "민준이는 준호한테서 양초 한 개를 받았어요.", "text": "민준이는 준호한테서 양초 한 개를 받았어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 4, "seed": 2803512910, "raw": "민준이 준호한테서 양초 한 개를 받았어요. 같은 양초 세 개를 받았어요.", "text": "민준이 준호한테서 양초 한 개를 받았어요. 같은 양초 세 개를 받았어요.", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 5, "seed": 2464859016, "raw": "민준이 준호한테서 양초 한 개를 받았어요.", "text": "민준이 준호한테서 양초 한 개를 받았어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 6, "seed": 624171841, "raw": "민준이는 준호한테서 양초 한 개를 받았어요.", "text": "민준이는 준호한테서 양초 한 개를 받았어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 7, "seed": 4270962213, "raw": "민준이는 준호가한테서 양초 한 개를 받았어요.", "text": "민준이는 준호가한테서 양초 한 개를 받았어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 8, "seed": 2297184778, "raw": "민준이 준호한테서 양초 한 개를 받았어요. 같은 양초 세 개를 받은 민준이에게요.", "text": "민준이 준호한테서 양초 한 개를 받았어요. 같은 양초 세 개를 받은 민준이에게요.", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_ko_b_012", "n": 4, "attempt": 9, "seed": 224544047, "raw": "민준이 준호한테서 양초 한 개를 받았어요.", "text": "민준이 준호한테서 양초 한 개를 받았어요.", "ok": false, "reason": "cue:same"}
+{"scenario": "s4_ko_b_012", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 57.2, "peak_mb": 4783}
+{"scenario": "s4_ko_b_013", "n": 1, "attempt": 0, "seed": 1024149051, "raw": "보관실에는 볼펜이 일곱 자루 있습니다.", "text": "보관실에는 볼펜이 일곱 자루 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_013", "n": 1, "attempt": 1, "seed": 2679780792, "raw": "보관실은 볼펜만 일곱 자루 있습니다.", "text": "보관실은 볼펜만 일곱 자루 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_013", "n": 2, "attempt": 0, "seed": 212671029, "raw": "제 선배 다인은 볼펜 열두 자루만 있습니다.", "text": "제 선배 다인은 볼펜 열두 자루만 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_013", "n": 3, "attempt": 0, "seed": 2080291076, "raw": "윤우 씨한테는 볼펜이 한 개도 없습니다.", "text": "윤우 씨한테는 볼펜이 한 개도 없습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 0, "seed": 2576369294, "raw": "다인가는 윤우 씨한테서 볼펜 한 자루를 빌려주었습니다.", "text": "다인가는 윤우 씨한테서 볼펜 한 자루를 빌려주었습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 1, "seed": 3858059200, "raw": "다인가가 윤우 씨한테서 볼펜 한 자루를 빌려줬습니다.", "text": "다인가가 윤우 씨한테서 볼펜 한 자루를 빌려줬습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 2, "seed": 1648258197, "raw": "다인가가 윤우씨한테서 볼펜 한 자루를 빌려줬습니다.", "text": "다인가가 윤우씨한테서 볼펜 한 자루를 빌려줬습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 3, "seed": 1804512996, "raw": "다인가가 윤우 씨한테서 볼펜 한 자루를 빌려주었습니다.", "text": "다인가가 윤우 씨한테서 볼펜 한 자루를 빌려주었습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 4, "seed": 3284385578, "raw": "다인가가 윤우씨한테서 볼펜 한 자루를 빌려주었습니다.", "text": "다인가가 윤우씨한테서 볼펜 한 자루를 빌려주었습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 5, "seed": 3512847479, "raw": "다인가가 윤우 씨한테서 볼펜 한 자루를 빌려주었습니다.", "text": "다인가가 윤우 씨한테서 볼펜 한 자루를 빌려주었습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 6, "seed": 2308066095, "raw": "다인가가 윤우씨한테서 볼펜 한 자루를 빌려주었습니다.", "text": "다인가가 윤우씨한테서 볼펜 한 자루를 빌려주었습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 7, "seed": 1848340672, "raw": "다인가가 윤우 씨한테서 볼펜 한 자루를 빌려줬습니까?", "text": "다인가가 윤우 씨한테서 볼펜 한 자루를 빌려줬습니까?", "ok": false, "reason": "statement_is_question"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 8, "seed": 273671987, "raw": "다인이 윤우 씨에게서 볼펜 한 자루를 빌려주었습니다.", "text": "다인이 윤우 씨에게서 볼펜 한 자루를 빌려주었습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_013", "n": 4, "attempt": 9, "seed": 1170162186, "raw": "다인가가 윤우씨한테서 볼펜 한 자루를 빌려주었습니다.", "text": "다인가가 윤우씨한테서 볼펜 한 자루를 빌려주었습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_013", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 62.7, "peak_mb": 4789}
+{"scenario": "s4_ko_b_014", "n": 1, "attempt": 0, "seed": 2024492222, "raw": "제 팀원은 배낭이 좀 있어요.", "text": "제 팀원은 배낭이 좀 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "n": 2, "attempt": 0, "seed": 3257745391, "raw": "탈의실도 배낭을 좀 가지고 있어요.", "text": "탈의실도 배낭을 좀 가지고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "n": 3, "attempt": 0, "seed": 260473483, "raw": "별관은 배낭만 다섯 개 있어요.", "text": "별관은 배낭만 다섯 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "n": 4, "attempt": 0, "seed": 3301069699, "raw": "제 팀원은 지금 배낭이 몇 개 있어요?", "text": "제 팀원은 지금 배낭이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "n": 5, "attempt": 0, "seed": 201136478, "raw": "배낭이 여섯 개예요.", "text": "배낭이 여섯 개예요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "n": 6, "attempt": 0, "seed": 808309069, "raw": "탈의실이 지금 배낭이 몇 개 있어요?", "text": "탈의실이 지금 배낭이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "n": 7, "attempt": 0, "seed": 2279560932, "raw": "탈의실은 배낭이 열한 개 있어요.", "text": "탈의실은 배낭이 열한 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "n": 8, "attempt": 0, "seed": 1810674073, "raw": "제 팀원이 탈의실에서 배낭 네 개를 가져갔어요.", "text": "제 팀원이 탈의실에서 배낭 네 개를 가져갔어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "n": 9, "attempt": 0, "seed": 4153180111, "raw": "제 팀원은 배낭을 몇 개 가지고 있어요?", "text": "제 팀원은 배낭을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "n": 10, "attempt": 0, "seed": 4039569929, "raw": "탈의실이랑 별관이 합쳐서 배낭이 몇 개 있어요?", "text": "탈의실이랑 별관이 합쳐서 배낭이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_014", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 37.9, "peak_mb": 4789}
+{"scenario": "s4_ko_b_015", "n": 1, "attempt": 0, "seed": 1994012741, "raw": "수아가 재민한테 잡지 열 다섯 권을 줬어요.", "text": "수아가 재민한테 잡지 열 다섯 권을 줬어요.", "ok": false, "reason": "extra_number:[10, 5]"}
+{"scenario": "s4_ko_b_015", "n": 1, "attempt": 1, "seed": 3306060217, "raw": "수아는 재민한테 잡지 열다섯 권을 줬어요.", "text": "수아는 재민한테 잡지 열다섯 권을 줬어요.", "ok": false, "reason": "missing_number:4"}
+{"scenario": "s4_ko_b_015", "n": 1, "attempt": 2, "seed": 1744860182, "raw": "수아는 잡지 열다섯 권을 가지고 있어요. 재민이한테서 잡지 네 권을 받았어요.", "text": "수아는 잡지 열다섯 권을 가지고 있어요. 재민이한테서 잡지 네 권을 받았어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_015", "n": 2, "attempt": 0, "seed": 2256872802, "raw": "안내 데스크에는 잡지가 열세 권 있어요.", "text": "안내 데스크에는 잡지가 열세 권 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_015", "n": 3, "attempt": 0, "seed": 3298510184, "raw": "제 룸메이트는 잡지가 세 권 있어요.", "text": "제 룸메이트는 잡지가 세 권 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_015", "n": 4, "attempt": 0, "seed": 4173439320, "raw": "재민이 안내 데스크에 잡지 세 권을 두고 왔어요.", "text": "재민이 안내 데스크에 잡지 세 권을 두고 왔어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_015", "n": 5, "attempt": 0, "seed": 980667968, "raw": "재민이 지금 잡지를 몇 권 가지고 있는지요?", "text": "재민이 지금 잡지를 몇 권 가지고 있는지요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_015", "n": 6, "attempt": 0, "seed": 435012563, "raw": "그분은 지금 잡지가 몇 개 있어요?", "text": "그분은 지금 잡지가 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_015", "n": 7, "attempt": 0, "seed": 1248720457, "raw": "제 말은 재민 씨예요.", "text": "제 말은 재민 씨예요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_015", "n": 8, "attempt": 0, "seed": 2593243093, "raw": "수아와 재민이 합쳐서 잡지가 몇 권 가지고 있는지요?", "text": "수아와 재민이 합쳐서 잡지가 몇 권 가지고 있는지요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_015", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 43.9, "peak_mb": 4789}
+{"scenario": "s4_ko_b_016", "n": 1, "attempt": 0, "seed": 2424220736, "raw": "다인은 지금 숟가락 열세 개를 들고 있어요.", "text": "다인은 지금 숟가락 열세 개를 들고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "n": 2, "attempt": 0, "seed": 2076523997, "raw": "승우는 지금 숟가락 열한 개를 가지고 있어요.", "text": "승우는 지금 숟가락 열한 개를 가지고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "n": 3, "attempt": 0, "seed": 2488867141, "raw": "제가 숟가락 열여섯 개 가지고 있어요.", "text": "제가 숟가락 열여섯 개 가지고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "n": 4, "attempt": 0, "seed": 1578426545, "raw": "승우이한테 숟가락 세 개를 다인이 건네줬어요.", "text": "승우이한테 숟가락 세 개를 다인이 건네줬어요.", "ok": false, "reason": "cue:count_first"}
+{"scenario": "s4_ko_b_016", "n": 4, "attempt": 1, "seed": 2782700773, "raw": "숟가락 세 개를 다인이 승우한테 건넸어요.", "text": "숟가락 세 개를 다인이 승우한테 건넸어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "n": 5, "attempt": 0, "seed": 1986525406, "raw": "다인은 지금 숟가락이 몇 개 있어요?", "text": "다인은 지금 숟가락이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "n": 6, "attempt": 0, "seed": 1240447756, "raw": "승우는 숟가락을 몇 개 가지고 있어요?", "text": "승우는 숟가락을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "n": 7, "attempt": 0, "seed": 1699009118, "raw": "세 개의 숟가락을 다인이 승우한테 건넸어요.", "text": "세 개의 숟가락을 다인이 승우한테 건넸어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "n": 8, "attempt": 0, "seed": 3315045823, "raw": "승우가 지금 숟가락이 몇 개 있어요?", "text": "승우가 지금 숟가락이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "n": 9, "attempt": 0, "seed": 1992645003, "raw": "그분은 지금 숟가락이 몇 개 있어요?", "text": "그분은 지금 숟가락이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "n": 10, "attempt": 0, "seed": 2235338585, "raw": "승우 말이에요.", "text": "승우 말이에요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_016", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 43.5, "peak_mb": 4789}
+{"scenario": "s4_ko_b_018", "n": 1, "attempt": 0, "seed": 3563849138, "raw": "나는 지금 열네 개의 전구를 가지고 있어.", "text": "나는 지금 열네 개의 전구를 가지고 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_018", "n": 2, "attempt": 0, "seed": 399222786, "raw": "사서 연우 씨가 전구 다섯 개가 있어.", "text": "사서 연우 씨가 전구 다섯 개가 있어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_018", "n": 3, "attempt": 0, "seed": 6863324, "raw": "연우씨가 나한테 전구 네 개를 보냈어.", "text": "연우씨가 나한테 전구 네 개를 보냈어.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_018", "n": 4, "attempt": 0, "seed": 1899788785, "raw": "연우 씨한테 전구가 지금 몇 개 있어?", "text": "연우 씨한테 전구가 지금 몇 개 있어?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_018", "n": 5, "attempt": 0, "seed": 1858365953, "raw": "두 사람 합쳐서 전구가 아홉 개야?", "text": "두 사람 합쳐서 전구가 아홉 개야?", "ok": false, "reason": "extra_number:[9]"}
+{"scenario": "s4_ko_b_018", "n": 5, "attempt": 1, "seed": 56670996, "raw": "둘이 합쳐서 전구가 모두 다섯 개야?", "text": "둘이 합쳐서 전구가 모두 다섯 개야?", "ok": false, "reason": "extra_number:[5]"}
+{"scenario": "s4_ko_b_018", "n": 5, "attempt": 2, "seed": 1634137443, "raw": "두 사람 합쳐서 전구가 태나?", "text": "두 사람 합쳐서 전구가 태나?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_018", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": null, "seconds": 30.2, "peak_mb": 4789}
+{"scenario": "s4_ko_b_019", "n": 1, "attempt": 0, "seed": 2042788419, "raw": "제 팀원은 주전자 열두 개를 가지고 있습니다.", "text": "제 팀원은 주전자 열두 개를 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_019", "n": 2, "attempt": 0, "seed": 3644715329, "raw": "가은은 주전자가 세 개 있습니다.", "text": "가은은 주전자가 세 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_019", "n": 3, "attempt": 0, "seed": 1967580696, "raw": "정호는 지금 주전자가 아홉 개를 보관하고 있습니다.", "text": "정호는 지금 주전자가 아홉 개를 보관하고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 0, "seed": 963261682, "raw": "가은이 정호이한테서 주전자 한 개를 돌려주랫대요.", "text": "가은이 정호이한테서 주전자 한 개를 돌려주랫대요.", "ok": false, "reason": "register"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 1, "seed": 525685666, "raw": "가은이 정호이한테서 주전자 한 개를 돌려주대요.", "text": "가은이 정호이한테서 주전자 한 개를 돌려주대요.", "ok": false, "reason": "register"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 2, "seed": 1733300224, "raw": "가은이 정호한테서 주전자 한 개를 돌려주었답니다. 정호이는 지금 주전자가 몇 개 있습니까?", "text": "가은이 정호한테서 주전자 한 개를 돌려주었답니다. 정호이는 지금 주전자가 몇 개 있습니까?", "ok": false, "reason": "question_with_preamble"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 3, "seed": 2793415715, "raw": "가은이 정호한테서 주전자 한 개를 돌려주대요.", "text": "가은이 정호한테서 주전자 한 개를 돌려주대요.", "ok": false, "reason": "register"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 4, "seed": 1257387222, "raw": "가은이 정호에게서 주전자 한 개를 돌려줘렸습니다. 정호이가 지금 주전자가 몇 개 가지고 있는지 물어보摇了mö\n<|im_start|>user\n죄송합니다. 다시 시도해 주세요.", "text": "가은이 정호에게서 주전자 한 개를 돌려줘렸습니다. 정호이가 지금 주전자가 몇 개 가지고 있는지 물어보摇了mö\n<|im_start|>user\n죄송합니다. 다시 시도해 주세요.", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 5, "seed": 618974455, "raw": "가은이가 정호이한테서 주전자 한 개를 돌려주_IMETHOD<|endoftext|>Human\n다음 메시지:\n물음 (비서에게). 정호이는 지금 빌려준 주전자를 돌려받았습니까?", "text": "가은이가 정호이한테서 주전자 한 개를 돌려주_IMETHOD<|endoftext|>Human\n다음 메시지:\n물음 (비서에게). 정호이는 지금 빌려준 주전자를 돌려받았습니까?", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 6, "seed": 3399393245, "raw": "가은이 정호에게서 주전자 한 개를 돌려주大队队形：[가은]는 [정호]한테서 주전자를 한 개 돌려줬습니다.", "text": "가은이 정호에게서 주전자 한 개를 돌려주大队队形：[가은]는 [정호]한테서 주전자를 한 개 돌려줬습니다.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 7, "seed": 3037291760, "raw": "가은이 정호이한테서 주전자 한 개를 돌려주대요.", "text": "가은이 정호이한테서 주전자 한 개를 돌려주대요.", "ok": false, "reason": "register"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 8, "seed": 4098346567, "raw": "가은이 정호에게서 주전자 한 개를 돌려주angered대요.", "text": "가은이 정호에게서 주전자 한 개를 돌려주angered대요.", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_019", "n": 4, "attempt": 9, "seed": 1279700591, "raw": "가은이가 정호에게서 주전자 한 개를 돌려주大队队列训练，整齐划一，犹如钢铁铸就一般。士兵们身着统一的军装，头戴整齐的军帽，举手投足间都透露着军人的庄重与纪律。他们排成了一列列，如同一座座静默的山峰，坚不可摧，坚毅不屈。这段描述如何", "text": "가은이가 정호에게서 주전자 한 개를 돌려주大队队列训练，整齐划一，犹如钢铁铸就一般。士兵们身着统一的军装，头戴整齐的军帽，举手投足间都透露着军人的庄重与纪律。他们排成了一列列，如同一座座静默的山峰，坚不可摧，坚毅不屈。这段描述如何", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_019", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 61.1, "peak_mb": 4789}
+{"scenario": "s4_ko_b_020", "n": 1, "attempt": 0, "seed": 3287500835, "raw": "태윤 씨도 태블릿이 좀 있어요.", "text": "태윤 씨도 태블릿이 좀 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "n": 2, "attempt": 0, "seed": 659576442, "raw": "정호는 태블릿을 하나도 가지고 있어요.", "text": "정호는 태블릿을 하나도 가지고 있어요.", "ok": false, "reason": "cue:zero"}
+{"scenario": "s4_ko_b_020", "n": 2, "attempt": 1, "seed": 2166820522, "raw": "정호는 태블릿이 하나도 없어요.", "text": "정호는 태블릿이 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "n": 3, "attempt": 0, "seed": 1599134393, "raw": "유찬은 태블릿 여덟 대만 있어요.", "text": "유찬은 태블릿 여덟 대만 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "n": 4, "attempt": 0, "seed": 3843194276, "raw": "태윤씨는 지금 태블릿이 몇 대 있어요?", "text": "태윤씨는 지금 태블릿이 몇 대 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "n": 5, "attempt": 0, "seed": 942217851, "raw": "태윤씨는 지금 태블릿 열한 대가 있어요.", "text": "태윤씨는 지금 태블릿 열한 대가 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "n": 6, "attempt": 0, "seed": 2187898409, "raw": "태블릿 다섯 대를 태윤 씨가 정호한테 보냈어요.", "text": "태블릿 다섯 대를 태윤 씨가 정호한테 보냈어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "n": 7, "attempt": 0, "seed": 881487637, "raw": "정호는 지금 태블릿을 몇 대 가지고 있는지요?", "text": "정호는 지금 태블릿을 몇 대 가지고 있는지요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "n": 8, "attempt": 0, "seed": 3379749154, "raw": "아, 다섯 대가 아니라 네 대였어요.", "text": "아, 다섯 대가 아니라 네 대였어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "n": 9, "attempt": 0, "seed": 2484586142, "raw": "정호는 태블릿을 몇 개 가지고 있어요?", "text": "정호는 태블릿을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "n": 10, "attempt": 0, "seed": 1167262064, "raw": "태윤씨와 유찬이는 지금까지 태블릿이 세 대 있어요?", "text": "태윤씨와 유찬이는 지금까지 태블릿이 세 대 있어요?", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_ko_b_020", "n": 10, "attempt": 1, "seed": 387812177, "raw": "태윤씨와 유찬이는 지금까지 태블릿이 세 대 가지고 있어요?", "text": "태윤씨와 유찬이는 지금까지 태블릿이 세 대 가지고 있어요?", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_ko_b_020", "n": 10, "attempt": 2, "seed": 530328402, "raw": "태윤 씨와 유찬이는 합쳐서 태블릿이 몇 대 가지고 있는지 있어요?", "text": "태윤 씨와 유찬이는 합쳐서 태블릿이 몇 대 가지고 있는지 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_020", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "skipped": [], "failed_turn": null, "seconds": 54.4, "peak_mb": 4789}
+{"scenario": "s4_ko_b_023", "n": 1, "attempt": 0, "seed": 1403201830, "raw": "진료실한테는 손전등이 한 개도 없습니다.", "text": "진료실한테는 손전등이 한 개도 없습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_023", "n": 2, "attempt": 0, "seed": 2743377493, "raw": "도윤은 손전등 열세 개 있습니다.", "text": "도윤은 손전등 열세 개 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_023", "n": 2, "attempt": 1, "seed": 1520701267, "raw": "도윤은 손전등만 열세 개 있습니다.", "text": "도윤은 손전등만 열세 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_023", "n": 3, "attempt": 0, "seed": 2468442553, "raw": "세영은 손전등 여덟 개 있습니다.", "text": "세영은 손전등 여덟 개 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_023", "n": 3, "attempt": 1, "seed": 172254973, "raw": "세영은 손전등만 여덟 개 있습니다.", "text": "세영은 손전등만 여덟 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_023", "n": 4, "attempt": 0, "seed": 3181510424, "raw": "손전등 두 개를 세영이 진료실한테留下了未完成的对话：\n事实上，人：Se-young / 放置地点：诊室 / 物品：手电筒2个，韩语表达：两个 / 动词：放下（过去时：放下 came）；表达数量在句首 — 模式：携带数量放在句首；句尾用합쇼체（-습니다", "text": "손전등 두 개를 세영이 진료실한테留下了未完成的对话：\n事实上，人：Se-young / 放置地点：诊室 / 物品：手电筒2个，韩语表达：两个 / 动词：放下（过去时：放下 came）；表达数量在句首 — 模式：携带数量放在句首；句尾用합쇼체（-습니다", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_b_023", "n": 4, "attempt": 1, "seed": 1910172, "raw": "손전등 두 개를 세영이 진료실한테 두고 왔습니다.", "text": "손전등 두 개를 세영이 진료실한테 두고 왔습니다.", "ok": false, "reason": "direction"}
+{"scenario": "s4_ko_b_023", "n": 4, "attempt": 2, "seed": 538723808, "raw": "손전등 두 개를 세영이 진료실에 두고 왔습니다.", "text": "손전등 두 개를 세영이 진료실에 두고 왔습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 0, "seed": 4039865250, "raw": "세영이 지금 손전등이 몇 개 가지고 있는지 아닙니까?", "text": "세영이 지금 손전등이 몇 개 가지고 있는지 아닙니까?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 1, "seed": 323376448, "raw": "세영은 손전등이 몇 개 가지고 있는지 아닙니다.", "text": "세영은 손전등이 몇 개 가지고 있는지 아닙니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 2, "seed": 3304717176, "raw": "세영은 손전등이 몇 개 가지고 있는지 알려주실 수 있습니다?", "text": "세영은 손전등이 몇 개 가지고 있는지 알려주실 수 있습니다?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 3, "seed": 1289919328, "raw": "세영은 손전등이 몇 개 가지고 있는지 아닙니다.", "text": "세영은 손전등이 몇 개 가지고 있는지 아닙니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 4, "seed": 2966651860, "raw": "세영은 손전등이 몇 개 남 seiz습니까?", "text": "세영은 손전등이 몇 개 남 seiz습니까?", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 5, "seed": 497424293, "raw": "세영이 지금 손전등이 몇 개 가지고 있는지 들어보셨습니까?", "text": "세영이 지금 손전등이 몇 개 가지고 있는지 들어보셨습니까?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 6, "seed": 3677087862, "raw": "세영은 손전등이 몇 개 가지고 있는지 물어보셨습니다.", "text": "세영은 손전등이 몇 개 가지고 있는지 물어보셨습니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 7, "seed": 2269171760, "raw": "세영이 지금 손전등이 몇 개 가지고 있는지 아닙니까?", "text": "세영이 지금 손전등이 몇 개 가지고 있는지 아닙니까?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 8, "seed": 2506673739, "raw": "세영은 손전등이 몇 개 가지고 있는지 아닙니다.", "text": "세영은 손전등이 몇 개 가지고 있는지 아닙니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_b_023", "n": 5, "attempt": 9, "seed": 3016026631, "raw": "세영이 지금 손전등이 몇 개 가지고 있는지 알고 싶습니다.", "text": "세영이 지금 손전등이 몇 개 가지고 있는지 알고 싶습니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_b_023", "n": 6, "attempt": 0, "seed": 3150743733, "raw": "도윤은 손전등을 몇 개 가지고 있습니까?", "text": "도윤은 손전등을 몇 개 가지고 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_023", "n": 7, "attempt": 0, "seed": 3224116422, "raw": "아, 세영입니다.;", "text": "아, 세영입니다.;", "ok": false, "reason": "cue:repair"}
+{"scenario": "s4_ko_b_023", "n": 7, "attempt": 1, "seed": 1112687218, "raw": "제 말은 세영 씨입니다.", "text": "제 말은 세영 씨입니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_023", "dialogue": true, "kept": [1, 2, 3, 4, 6, 7], "skipped": [5], "failed_turn": null, "seconds": 83.0, "peak_mb": 4789}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 0, "seed": 52263590, "raw": "은우는 토마토 열세 개를 가지고 있어.", "text": "은우는 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 1, "seed": 264310553, "raw": "은우가 토마토 열세 개를 가지고 있어.", "text": "은우가 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 2, "seed": 3724630827, "raw": "은우 씨가 토마토 열세 개를 가지고 있어.", "text": "은우 씨가 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 3, "seed": 355167729, "raw": "은우가 토마토 열세 개를 가지고 있어.", "text": "은우가 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 4, "seed": 831444288, "raw": "은우가 토마토 열세 개를 가지고 있어.", "text": "은우가 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 5, "seed": 2495081063, "raw": "은우는 토마토 열세 개를 가지고 있어.", "text": "은우는 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 6, "seed": 482572859, "raw": "은우가 토마토 열세 개를 가지고 있어.", "text": "은우가 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 7, "seed": 2202674556, "raw": "은우는 토마토 열세 개를 가지고 있어.", "text": "은우는 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 8, "seed": 1367834588, "raw": "은우는 토마토 열세 개를 가지고 있어.", "text": "은우는 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "n": 1, "attempt": 9, "seed": 2579831382, "raw": "은우 씨가 토마토 열세 개를 가지고 있어.", "text": "은우 씨가 토마토 열세 개를 가지고 있어.", "ok": false, "reason": "cue:role"}
+{"scenario": "s4_ko_b_025", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 32.2, "peak_mb": 4789}
+{"scenario": "s4_ko_b_026", "n": 1, "attempt": 0, "seed": 3803800062, "raw": "지하실에 있는 전구가 네 개 있습니다.", "text": "지하실에 있는 전구가 네 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_026", "n": 2, "attempt": 0, "seed": 923926636, "raw": "과학실에는 전구가 열한 개 있습니다.", "text": "과학실에는 전구가 열한 개 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_026", "n": 3, "attempt": 0, "seed": 3159551455, "raw": "윤우 씨는 전구 여섯 개를 맡고 있습니다.", "text": "윤우 씨는 전구 여섯 개를 맡고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 0, "seed": 3576894336, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 1, "seed": 2242561632, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 2, "seed": 2463873775, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 3, "seed": 1558813467, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 4, "seed": 3307395747, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 5, "seed": 2929907121, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 6, "seed": 4947100, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 7, "seed": 302614003, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 8, "seed": 204948929, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "n": 4, "attempt": 9, "seed": 3741552793, "raw": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "text": "윤우 씨가 지하실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_026", "dialogue": false, "kept": [1, 2, 3], "skipped": [], "failed_turn": 4, "seconds": 46.2, "peak_mb": 4791}
+{"scenario": "s4_ko_b_027", "n": 1, "attempt": 0, "seed": 3009777599, "raw": "채원은 리본 열세 개를 들고 있어요.", "text": "채원은 리본 열세 개를 들고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_027", "n": 2, "attempt": 0, "seed": 968870677, "raw": "제 룸메이트는 리본 세 개를 보관하고 있어요.", "text": "제 룸메이트는 리본 세 개를 보관하고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_027", "n": 3, "attempt": 0, "seed": 1722761984, "raw": "채원이제 룸메이트한테 리본 두 개를 넘겼어요.", "text": "채원이제 룸메이트한테 리본 두 개를 넘겼어요.", "ok": false, "reason": "glued:채원이제"}
+{"scenario": "s4_ko_b_027", "n": 3, "attempt": 1, "seed": 3777370811, "raw": "채원이 제 룸메이트한테 리본 두 개를 넘겼어요.", "text": "채원이 제 룸메이트한테 리본 두 개를 넘겼어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_027", "n": 4, "attempt": 0, "seed": 2676639491, "raw": "채원은 리본을 몇 개 가지고 있어요?", "text": "채원은 리본을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_027", "n": 5, "attempt": 0, "seed": 3020824045, "raw": "제 룸메이트는 리본을 몇 개 가지고 있어요?", "text": "제 룸메이트는 리본을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_027", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": null, "seconds": 17.3, "peak_mb": 4791}
+{"scenario": "s4_ko_b_028", "n": 1, "attempt": 0, "seed": 579261568, "raw": "제 동기 서준은 레몬 열여섯 개가 있어요.", "text": "제 동기 서준은 레몬 열여섯 개가 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_028", "n": 2, "attempt": 0, "seed": 637899185, "raw": "유나는 레몬이 여덟 개 있어요.", "text": "유나는 레몬이 여덟 개 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_028", "n": 3, "attempt": 0, "seed": 234873630, "raw": "레몬 세 개를 유나가 서준한테 돌려줬어요.", "text": "레몬 세 개를 유나가 서준한테 돌려줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_028", "n": 4, "attempt": 0, "seed": 1641067430, "raw": "서준이 지금 레몬을 몇 개 가지고 있어요?", "text": "서준이 지금 레몬을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_028", "n": 5, "attempt": 0, "seed": 1398614376, "raw": "유나는 레몬을 몇 개 가지고 있어요?", "text": "유나는 레몬을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 0, "seed": 340939212, "raw": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서 (사실).", "text": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 1, "seed": 4104506346, "raw": "서준이는 유나한테서 레몬 네 개를 받았어요. / 그러고 나서 레몬이 몇 개가 남은지 물어보자.", "text": "서준이는 유나한테서 레몬 네 개를 받았어요. / 그러고 나서 레몬이 몇 개가 남은지 물어보자.", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 2, "seed": 145189389, "raw": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서 (사실).", "text": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 3, "seed": 4064743204, "raw": "서준이는 유나한테서 레몬 네 개를 받았어요. 그다음에 서준이 레몬을 누구한테 줬어요?", "text": "서준이는 유나한테서 레몬 네 개를 받았어요. 그다음에 서준이 레몬을 누구한테 줬어요?", "ok": false, "reason": "question_with_preamble"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 4, "seed": 4124891180, "raw": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서", "text": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 5, "seed": 266342673, "raw": "서준이 유나한테서 레몬 네 개를 받았어요. 그다음에 (사실) 서준은 지금 레몬이 네 개 가지고 있어요.", "text": "서준이 유나한테서 레몬 네 개를 받았어요. 그다음에 (사실) 서준은 지금 레몬이 네 개 가지고 있어요.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 6, "seed": 262424197, "raw": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서 (사실).", "text": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서 (사실).", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 7, "seed": 504511276, "raw": "서준이 유나한테서 레몬 네 개를 받았어요. / 그러고 나서", "text": "서준이 유나한테서 레몬 네 개를 받았어요. / 그러고 나서", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 8, "seed": 3944014731, "raw": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서 (사실) 서준은 레몬이 네 개 가지고 있어요.", "text": "서준이 유나한테서 레몬 네 개를 받았어요. 그러고 나서 (사실) 서준은 레몬이 네 개 가지고 있어요.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_028", "n": 6, "attempt": 9, "seed": 1189198650, "raw": "서준이 유나한테서 레몬 네 개를 받았어요. / 그러고 나서", "text": "서준이 유나한테서 레몬 네 개를 받았어요. / 그러고 나서", "ok": false, "reason": "cue:front_then"}
+{"scenario": "s4_ko_b_028", "dialogue": true, "kept": [1, 2, 3, 4, 5], "skipped": [], "failed_turn": 6, "seconds": 57.9, "peak_mb": 4791}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 0, "seed": 147934403, "raw": "민준 씨는 윤우한테 볼펜 여덟 자루를 줬어요.", "text": "민준 씨는 윤우한테 볼펜 여덟 자루를 줬어요.", "ok": false, "reason": "missing_number:5"}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 1, "seed": 3638456696, "raw": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "text": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "ok": false, "reason": "missing_number:5"}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 2, "seed": 3101024450, "raw": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요. 윤우는 민준이한테서 볼펜 다섯 자루를 받았어요.", "text": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요. 윤우는 민준이한테서 볼펜 다섯 자루를 받았어요.", "ok": false, "reason": "cue:title"}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 3, "seed": 2074655821, "raw": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "text": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "ok": false, "reason": "missing_number:5"}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 4, "seed": 2557079462, "raw": "민준 씨가 윤우한테 볼펜 여덟 자루를 줬어요.", "text": "민준 씨가 윤우한테 볼펜 여덟 자루를 줬어요.", "ok": false, "reason": "missing_number:5"}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 5, "seed": 3685576706, "raw": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "text": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "ok": false, "reason": "missing_number:5"}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 6, "seed": 2611538311, "raw": "민준 씨가 윤우한테 볼펜 여덟 자루를 줬어요.", "text": "민준 씨가 윤우한테 볼펜 여덟 자루를 줬어요.", "ok": false, "reason": "missing_number:5"}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 7, "seed": 23600305, "raw": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "text": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "ok": false, "reason": "missing_number:5"}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 8, "seed": 2489761792, "raw": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "text": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "ok": false, "reason": "missing_number:5"}
+{"scenario": "s4_ko_b_032", "n": 1, "attempt": 9, "seed": 4135434536, "raw": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "text": "민준이는 윤우한테 볼펜 여덟 자루를 줬어요.", "ok": false, "reason": "missing_number:5"}
+{"scenario": "s4_ko_b_032", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 34.6, "peak_mb": 4791}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 0, "seed": 1547030216, "raw": "제 동료 서아는 태블릿 열 다섯 대가 있어요. 두 문장: 먼저 좀 있다고만, 다음 문장에서 수는 세어 보니 열 다섯 대네요.", "text": "제 동료 서아는 태블릿 열 다섯 대가 있어요. 두 문장: 먼저 좀 있다고만, 다음 문장에서 수는 세어 보니 열 다섯 대네요.", "ok": false, "reason": "extra_number:[10, 5, 10, 5]"}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 1, "seed": 900735384, "raw": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 十五대네요.", "text": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 十五대네요.", "ok": false, "reason": "script"}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 2, "seed": 1941834955, "raw": "제 동료 서아는 태블릿 열 다섯 대가 있어요. 두 문장: 먼저 좀 있다고만, 다음 문장에서 수는 세어 보니 열 다섯 대네요.", "text": "제 동료 서아는 태블릿 열 다섯 대가 있어요. 두 문장: 먼저 좀 있다고만, 다음 문장에서 수는 세어 보니 열 다섯 대네요.", "ok": false, "reason": "extra_number:[10, 5, 10, 5]"}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 3, "seed": 2024643437, "raw": "제 동료 서아는 태블릿 열 다섯 대가 있어요. 서아도 태블릿이 열 다섯 대 있어요.", "text": "제 동료 서아는 태블릿 열 다섯 대가 있어요. 서아도 태블릿이 열 다섯 대 있어요.", "ok": false, "reason": "extra_number:[10, 5, 10, 5]"}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 4, "seed": 2853145243, "raw": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 열 다섯 대네요.", "text": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 열 다섯 대네요.", "ok": false, "reason": "extra_number:[10, 5, 10, 5]"}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 5, "seed": 2304264309, "raw": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 열 다섯 대네요.", "text": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 열 다섯 대네요.", "ok": false, "reason": "extra_number:[10, 5, 10, 5]"}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 6, "seed": 755762289, "raw": "제 동료 서아는 태블릿 열 다섯 대가 있어요. 제 동료 서아도 태블릿이 좀 있어요. 세어 보니 열 다섯 대네요.", "text": "제 동료 서아는 태블릿 열 다섯 대가 있어요. 제 동료 서아도 태블릿이 좀 있어요. 세어 보니 열 다섯 대네요.", "ok": false, "reason": "too_many_sentences"}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 7, "seed": 3565221700, "raw": "제 동료 서아는 태블릿 열 다섯 대가 좀 있어요. 세어 보니 열 다섯 대네요.", "text": "제 동료 서아는 태블릿 열 다섯 대가 좀 있어요. 세어 보니 열 다섯 대네요.", "ok": false, "reason": "extra_number:[10, 5, 10, 5]"}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 8, "seed": 264648729, "raw": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 열 다섯 대네요.", "text": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 열 다섯 대네요.", "ok": false, "reason": "extra_number:[10, 5, 10, 5]"}
+{"scenario": "s4_ko_b_033", "n": 1, "attempt": 9, "seed": 768516950, "raw": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 열 다섯 대네요.", "text": "제 동료 서아는 태블릿이 열 다섯 대 있어요. 세어 보니 열 다섯 대네요.", "ok": false, "reason": "extra_number:[10, 5, 10, 5]"}
+{"scenario": "s4_ko_b_033", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 39.9, "peak_mb": 4791}
+{"scenario": "s4_ko_b_035", "n": 1, "attempt": 0, "seed": 3078972803, "raw": "민서는 볼펜 아홉 자루 있습니다.", "text": "민서는 볼펜 아홉 자루 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 1, "attempt": 1, "seed": 1265278812, "raw": "민서는 볼펜만 아홉 자루 있습니다.", "text": "민서는 볼펜만 아홉 자루 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 0, "seed": 837288187, "raw": "볼펜 열세 자루가 휴게실에 있습니다.", "text": "볼펜 열세 자루가 휴게실에 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 1, "seed": 3378471165, "raw": "휴게실에는 볼펜이 열세 자루 있습니다.", "text": "휴게실에는 볼펜이 열세 자루 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 2, "seed": 4063809450, "raw": "휴게실에 볼펜이 열세 자루 있습니다.", "text": "휴게실에 볼펜이 열세 자루 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 3, "seed": 2593219561, "raw": "휴게실에는 볼펜이 열세 자루 있습니다.", "text": "휴게실에는 볼펜이 열세 자루 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 4, "seed": 405483331, "raw": "휴게실에 볼펜 열세 자루가 있습니다.", "text": "휴게실에 볼펜 열세 자루가 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 5, "seed": 204594289, "raw": "휴게실에는 볼펜이 열세 자루 있습니다.", "text": "휴게실에는 볼펜이 열세 자루 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 6, "seed": 1122613468, "raw": "볼펜 열세 자루가 휴게실에 있습니다.", "text": "볼펜 열세 자루가 휴게실에 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 7, "seed": 2448853203, "raw": "휴게실에는 볼펜이 열세 자루 있습니다.", "text": "휴게실에는 볼펜이 열세 자루 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 8, "seed": 3900156840, "raw": "볼펜 열세 자루가 휴게실에 있습니다.", "text": "볼펜 열세 자루가 휴게실에 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "n": 2, "attempt": 9, "seed": 254690306, "raw": "휴게실에는 볼펜이 열세 자루 있습니다.", "text": "휴게실에는 볼펜이 열세 자루 있습니다.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_035", "dialogue": false, "kept": [1], "skipped": [], "failed_turn": 2, "seconds": 41.1, "peak_mb": 4791}
+{"scenario": "s4_ko_b_036", "n": 1, "attempt": 0, "seed": 1512981036, "raw": "연서는 볼펜이 좀 있어요.", "text": "연서는 볼펜이 좀 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_036", "n": 2, "attempt": 0, "seed": 3112920107, "raw": "소율한테는 볼펜이 하나도 없어요.", "text": "소율한테는 볼펜이 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_036", "n": 3, "attempt": 0, "seed": 2369915010, "raw": "연서는 볼펜이 여덟 자루예요.", "text": "연서는 볼펜이 여덟 자루예요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_036", "n": 4, "attempt": 0, "seed": 3681250671, "raw": "연서가 소율한테 볼펜 다섯 자루를 줬어요.", "text": "연서가 소율한테 볼펜 다섯 자루를 줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_036", "n": 5, "attempt": 0, "seed": 2336873741, "raw": "소율은 볼펜이 몇 개 가지고 있는지요?", "text": "소율은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 5, "attempt": 1, "seed": 3895243769, "raw": "소율은 볼펜이 몇 개 있어요?", "text": "소율은 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 5, "attempt": 2, "seed": 1957764085, "raw": "소율은 볼펜이 몇 개 가지고 있는지요?", "text": "소율은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 5, "attempt": 3, "seed": 128130602, "raw": "소율은 볼펜이 몇 개 가지고 있는지요?", "text": "소율은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 5, "attempt": 4, "seed": 1437292430, "raw": "소율은 볼펜이 몇 개 가지고 있는지요?", "text": "소율은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 5, "attempt": 5, "seed": 2400273852, "raw": "소율은 볼펜이 몇 개 있어요?", "text": "소율은 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 5, "attempt": 6, "seed": 1270961240, "raw": "소율은 볼펜이 몇 개 가지고 있는지요?", "text": "소율은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 5, "attempt": 7, "seed": 3223308333, "raw": "소율은 볼펜이 몇 개 남았어요?", "text": "소율은 볼펜이 몇 개 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_036", "n": 6, "attempt": 0, "seed": 3419724217, "raw": "이사 준비로, 연서가 소율한테 볼펜 한 자루를 줬어요.", "text": "이사 준비로, 연서가 소율한테 볼펜 한 자루를 줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_036", "n": 7, "attempt": 0, "seed": 3198349402, "raw": "소율은 볼펜을 몇 개 가지고 있어요?", "text": "소율은 볼펜을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_036", "n": 8, "attempt": 0, "seed": 3884033253, "raw": "연서가 행사에 볼펜 한 자루를 썼어요.", "text": "연서가 행사에 볼펜 한 자루를 썼어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 0, "seed": 1156108410, "raw": "연서는 볼펜이 몇 개 있어요?", "text": "연서는 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 1, "seed": 1266553325, "raw": "연서는 볼펜이 몇 개 있어요?", "text": "연서는 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 2, "seed": 1212787570, "raw": "연서는 볼펜이 몇 개 가지고 있어요?", "text": "연서는 볼펜이 몇 개 가지고 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 3, "seed": 2300755256, "raw": "연서는 볼펜이 몇 개 있어요?", "text": "연서는 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 4, "seed": 554513223, "raw": "연서는 볼펜이 몇 개 있어요?", "text": "연서는 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 5, "seed": 2421318431, "raw": "연서는 볼펜이 몇 개 가지고 있는지요?", "text": "연서는 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 6, "seed": 1176600256, "raw": "연서는 볼펜이 몇 개 있어요?", "text": "연서는 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 7, "seed": 4007528659, "raw": "연서는 볼펜이 몇 개 있어요?", "text": "연서는 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 8, "seed": 909117132, "raw": "연서는 볼펜이 몇 개 있어요?", "text": "연서는 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_036", "n": 9, "attempt": 9, "seed": 1073745395, "raw": "연서는 볼펜이 몇 개 남았어요?", "text": "연서는 볼펜이 몇 개 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_036", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 78.7, "peak_mb": 4791}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 0, "seed": 4112326457, "raw": "민지는 도넛이 열여섯개 있고, (다른 물건)도 좀 있어.", "text": "민지는 도넛이 열여섯개 있고, (다른 물건)도 좀 있어.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 1, "seed": 662141602, "raw": "민지는 도넛이 열여섯 개 있고 (다른 물건)도 좀 있어.", "text": "민지는 도넛이 열여섯 개 있고 (다른 물건)도 좀 있어.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 2, "seed": 3638830323, "raw": "민지는 도넛이 열여섯 개 있고 (다른 물건)도 좀 있어.", "text": "민지는 도넛이 열여섯 개 있고 (다른 물건)도 좀 있어.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 3, "seed": 3699255413, "raw": "민지는 도넛이 열여섯 개 있고, 다른 물건도 좀 있어.", "text": "민지는 도넛이 열여섯 개 있고, 다른 물건도 좀 있어.", "ok": false, "reason": "missing_item2"}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 4, "seed": 1686444466, "raw": "민지는 도넛이 열여섯개 있고 (다른 물건)도 좀 있어.", "text": "민지는 도넛이 열여섯개 있고 (다른 물건)도 좀 있어.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 5, "seed": 3449912078, "raw": "민지는 도넛이 열여섯개 있고 (다른 물건)도 좀 있어.", "text": "민지는 도넛이 열여섯개 있고 (다른 물건)도 좀 있어.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 6, "seed": 976143309, "raw": "민지는 도넛이 열여섯 개 있고 뭐가 하나 더 있는게 있는 것 같아.", "text": "민지는 도넛이 열여섯 개 있고 뭐가 하나 더 있는게 있는 것 같아.", "ok": false, "reason": "extra_number:[1]"}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 7, "seed": 3733189640, "raw": "민지는 도넛이 열여섯개 있고 (다른 물건)도 좀 있어.", "text": "민지는 도넛이 열여섯개 있고 (다른 물건)도 좀 있어.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 8, "seed": 2703191402, "raw": "민지는 도넛이 열여섯 개 있고, (다른 물건)도 좀 있어.", "text": "민지는 도넛이 열여섯 개 있고, (다른 물건)도 좀 있어.", "ok": false, "reason": "quote_or_role"}
+{"scenario": "s4_ko_b_038", "n": 1, "attempt": 9, "seed": 2558794789, "raw": "민지는 도넛이 열여섯 개 있고, 다른 물건도 좀 있어.", "text": "민지는 도넛이 열여섯 개 있고, 다른 물건도 좀 있어.", "ok": false, "reason": "missing_item2"}
+{"scenario": "s4_ko_b_038", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 34.4, "peak_mb": 4791}
+{"scenario": "s4_ko_b_043", "n": 1, "attempt": 0, "seed": 2305154320, "raw": "제 팀원 지후는 볼펜 다섯 자루 있어요.", "text": "제 팀원 지후는 볼펜 다섯 자루 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_043", "n": 1, "attempt": 1, "seed": 281620520, "raw": "제 팀원 지후는 볼펜 다섯 자루 있어요.", "text": "제 팀원 지후는 볼펜 다섯 자루 있어요.", "ok": false, "reason": "cue:only"}
+{"scenario": "s4_ko_b_043", "n": 1, "attempt": 2, "seed": 238983103, "raw": "제 팀원 지후는 볼펜만 다섯 자루 있어요.", "text": "제 팀원 지후는 볼펜만 다섯 자루 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_043", "n": 2, "attempt": 0, "seed": 1626727293, "raw": "도윤 씨는 볼펜이 네 자루 있어요.", "text": "도윤 씨는 볼펜이 네 자루 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_043", "n": 3, "attempt": 0, "seed": 1750483584, "raw": "도윤씨가 지후한테 볼펜 두 자루를 줬어요.", "text": "도윤씨가 지후한테 볼펜 두 자루를 줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_043", "n": 4, "attempt": 0, "seed": 637219531, "raw": "지후는 지금 볼펜이 몇 개 있어요?", "text": "지후는 지금 볼펜이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_043", "n": 5, "attempt": 0, "seed": 3855336940, "raw": "아, 두 자루가 아니라 세 자루였어요.", "text": "아, 두 자루가 아니라 세 자루였어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_043", "n": 6, "attempt": 0, "seed": 1318068683, "raw": "지후는 볼펜을 몇 개 가지고 있어요?", "text": "지후는 볼펜을 몇 개 가지고 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_043", "n": 7, "attempt": 0, "seed": 3534695286, "raw": "두 사람이 합쳐서 볼펜이 모두 세 자루 있어요?", "text": "두 사람이 합쳐서 볼펜이 모두 세 자루 있어요?", "ok": false, "reason": "extra_number:[3]"}
+{"scenario": "s4_ko_b_043", "n": 7, "attempt": 1, "seed": 719363243, "raw": "두 사람 합쳐서 볼펜이 몇 개있어요?", "text": "두 사람 합쳐서 볼펜이 몇 개있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_043", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7], "skipped": [], "failed_turn": null, "seconds": 1114.6, "peak_mb": 4791}
+{"scenario": "s4_ko_b_044", "n": 1, "attempt": 0, "seed": 1027237450, "raw": "휴게실에는 전구 열네 개가 있습니다.", "text": "휴게실에는 전구 열네 개가 있습니다.", "ok": false, "reason": "cue:adv_moment"}
+{"scenario": "s4_ko_b_044", "n": 1, "attempt": 1, "seed": 424242175, "raw": "휴게실에는 전구가 열네 개 있습니다.", "text": "휴게실에는 전구가 열네 개 있습니다.", "ok": false, "reason": "cue:adv_moment"}
+{"scenario": "s4_ko_b_044", "n": 1, "attempt": 2, "seed": 407295682, "raw": "현재 휴게실에 전구 열네 개가 있습니다.", "text": "현재 휴게실에 전구 열네 개가 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_044", "n": 2, "attempt": 0, "seed": 2803014324, "raw": "연서님은 열세 개의 전구를 가지고 있습니다.", "text": "연서님은 열세 개의 전구를 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 0, "seed": 3691122688, "raw": "연서 씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서 씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 1, "seed": 2297035501, "raw": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 2, "seed": 2178517836, "raw": "연서 씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서 씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 3, "seed": 154187973, "raw": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 4, "seed": 2291536238, "raw": "연서 씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서 씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 5, "seed": 83978279, "raw": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 6, "seed": 3169865007, "raw": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 7, "seed": 1466913040, "raw": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 8, "seed": 1969778386, "raw": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "n": 3, "attempt": 9, "seed": 2185645061, "raw": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "text": "연서씨가 휴게실에서 전구 한 개를 가져갔습니다.", "ok": false, "reason": "cue:partitive"}
+{"scenario": "s4_ko_b_044", "dialogue": false, "kept": [1, 2], "skipped": [], "failed_turn": 3, "seconds": 13061.2, "peak_mb": 4791}

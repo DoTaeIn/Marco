@@ -335,7 +335,8 @@ def _cached_reasoning_language(path, stamp, size):
             "passive": dict(pack.get("수동태", {})) if isinstance(pack.get("수동태"), dict) else {},
             "request": dict(pack.get("요청", {})) if isinstance(pack.get("요청"), dict) else {},
             "outside_names": list(pack.get("이름밖", [])) if isinstance(pack.get("이름밖"), list) else [],
-            "why_count": dict(pack.get("수량이유물음", {})) if isinstance(pack.get("수량이유물음"), dict) else {}}
+            "why_count": dict(pack.get("수량이유물음", {})) if isinstance(pack.get("수량이유물음"), dict) else {},
+            "holder_forms": dict(pack.get("가진쪽꼴", {})) if isinstance(pack.get("가진쪽꼴"), dict) else {}}
 
 
 def load_clause_grammar(language: str | None = None) -> dict[str, Any]:
@@ -577,6 +578,7 @@ def decode_language_pack(pack: dict, source: str = "") -> dict[str, Any]:
             "request": dict(pack.get("요청", {})) if isinstance(pack.get("요청"), dict) else {},
             "outside_names": list(pack.get("이름밖", [])) if isinstance(pack.get("이름밖"), list) else [],
             "why_count": dict(pack.get("수량이유물음", {})) if isinstance(pack.get("수량이유물음"), dict) else {},
+            "holder_forms": dict(pack.get("가진쪽꼴", {})) if isinstance(pack.get("가진쪽꼴"), dict) else {},
             "relations": pack.get("관계해석", {}),
             "external_retrieval": {"intents": [dict(item) for item in intents]},
             "response_composition": {"plan_markers": list(response_composition.get("계획표지", []))},

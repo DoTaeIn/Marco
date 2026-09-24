@@ -1,0 +1,3 @@
+seed 20260924 scenario_build 4401 scenario_check 8803 sampling_build 1511 sampling_check 2939
+build dev4_ko_b_01 dev4_ko_b_02 dev4_ko_b_03 dev4_en_b_01 dev4_en_b_02 dev4_en_b_03 dev4_en_b_04 dev4_en_b_05 dev4_en_b_06 dev4_en_b_07 dev4_en_b_08 dev4_en_b_09 dev4_en_b_10 dev4_en_b_11 dev4_en_b_12 dev4_en_b_13 dev4_en_b_14 dev4_en_b_15 dev4_en_b_16 dev4_en_b_17 dev4_en_b_18 dev4_en_b_19 dev4_en_b_20 dev4_en_b_21 dev4_en_b_22 dev4_en_b_23 dev4_en_b_24 dev4_en_b_25 dev4_en_b_26 dev4_en_b_27 dev4_en_b_28 dev4_en_b_29 dev4_en_b_30 dev4_en_b_31 dev4_en_b_32 dev4_en_b_33 dev4_en_b_34 dev4_en_b_35 dev4_en_b_36 dev4_en_b_37 dev4_en_b_38
+check 

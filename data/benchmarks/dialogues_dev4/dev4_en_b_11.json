@@ -1,0 +1,289 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_11",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_033",
+  "half": "build",
+  "focus": [
+   "holders",
+   "partitives",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:relation_unnamed",
+   "partitives:same",
+   "question_forms:q_left",
+   "transfer_verbs:carrying",
+   "transfer_verbs:receive",
+   "transfer_verbs:responsible"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my sister is responsible for 3 potatoes.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "sister",
+      "item": "potatoes",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "sister",
+      "item": "potatoes",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "James is carrying 14 potatoes.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:carrying"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "James",
+      "item": "potatoes",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "James",
+      "item": "potatoes",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my sister got the same 5 potatoes from James.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:same",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "James",
+      "to": "sister",
+      "item": "potatoes",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "James",
+      "item": "potatoes",
+      "quantity": 9
+     },
+     {
+      "entity": "sister",
+      "item": "potatoes",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many potatoes does James have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "James",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "potatoes"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many potatoes does my sister have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "sister",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "potatoes"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Sorry, it was 12, not 5.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "James",
+      "to": "sister",
+      "item": "potatoes",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "James",
+      "to": "sister",
+      "item": "potatoes",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "James",
+      "item": "potatoes",
+      "quantity": 2
+     },
+     {
+      "entity": "sister",
+      "item": "potatoes",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many potatoes does James have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "James",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "potatoes",
+    "retracted_quantity": 9,
+    "reexecuted_quantity": -3
+   }
+  }
+ ]
+}

@@ -1,0 +1,365 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_28",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_078",
+  "half": "build",
+  "focus": [
+   "holders",
+   "partitives",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:first_person",
+   "partitives:partitive",
+   "partitives:same",
+   "question_forms:q_left",
+   "transfer_verbs:borrow",
+   "transfer_verbs:send",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Jack has some lanterns. Four of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Jack",
+      "item": "lanterns",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jack",
+      "item": "lanterns",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "I am responsible for 10 lanterns.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "lanterns",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "lanterns",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "I borrowed one of his lanterns from Jack.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "partitives:partitive",
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Jack",
+      "to": "I",
+      "item": "lanterns",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jack",
+      "item": "lanterns",
+      "quantity": 3
+     },
+     {
+      "entity": "I",
+      "item": "lanterns",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many lanterns does Jack have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Jack",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "lanterns"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many lanterns do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "lanterns"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Jack sent me the same two lanterns.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "partitives:same",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Jack",
+      "to": "I",
+      "item": "lanterns",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jack",
+      "item": "lanterns",
+      "quantity": 1
+     },
+     {
+      "entity": "I",
+      "item": "lanterns",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many lanterns do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "lanterns"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Actually, it was 1, not 2.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      8
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Jack",
+      "to": "I",
+      "item": "lanterns",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Jack",
+      "to": "I",
+      "item": "lanterns",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jack",
+      "item": "lanterns",
+      "quantity": 2
+     },
+     {
+      "entity": "I",
+      "item": "lanterns",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many lanterns does Jack have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Jack",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6,
+      8
+     ]
+    },
+    "item": "lanterns",
+    "retracted_quantity": 1,
+    "reexecuted_quantity": 0
+   }
+  }
+ ]
+}

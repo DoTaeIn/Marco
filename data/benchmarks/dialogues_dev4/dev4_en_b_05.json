@@ -1,0 +1,213 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_05",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_011",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "holders",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:adv_moment",
+   "holders:relation_unnamed",
+   "holders:title",
+   "question_forms:q_left",
+   "question_forms:q_two_total",
+   "transfer_verbs:hand_over"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Mr. Morales owns 11 envelopes.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Morales",
+      "item": "envelopes",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Morales",
+      "item": "envelopes",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My nephew is carrying 16 envelopes at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "nephew",
+      "item": "envelopes",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "nephew",
+      "item": "envelopes",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my nephew handed over five envelopes to Mr. Morales, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "nephew",
+      "to": "Morales",
+      "item": "envelopes",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "nephew",
+      "item": "envelopes",
+      "quantity": 11
+     },
+     {
+      "entity": "Morales",
+      "item": "envelopes",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many envelopes does my nephew have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "nephew",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "envelopes"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many envelopes do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Morales",
+     "nephew"
+    ],
+    "quantity": 27,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "envelopes"
+   }
+  }
+ ]
+}

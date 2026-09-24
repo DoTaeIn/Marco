@@ -1,0 +1,212 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_ko_b_03",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "multi_fact",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_ko_b_007",
+  "half": "build",
+  "focus": [
+   "holders",
+   "question_forms",
+   "referent_repairs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:title",
+   "multi_fact",
+   "question_forms:q_two_total",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_asked",
+   "transfer_verbs:pass"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "안 기사님은 열한 개의 메달을 가지고 있어요. 세영은 여섯 개의 메달을 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "multi_fact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "안 기사",
+      "item": "메달",
+      "quantity": 11
+     },
+     {
+      "type": "has",
+      "holder": "세영",
+      "item": "메달",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "안 기사",
+      "item": "메달",
+      "quantity": 11
+     },
+     {
+      "entity": "세영",
+      "item": "메달",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "세영이 안 기사님한테 메달 다섯 개를 넘겼어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세영",
+      "to": "안 기사",
+      "item": "메달",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "세영",
+      "item": "메달",
+      "quantity": 1
+     },
+     {
+      "entity": "안 기사",
+      "item": "메달",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "그분은 지금 메달이 몇 개 있어요?",
+   "label": "ambiguous",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_asked"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "clarify",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "candidates": [
+     "세영",
+     "안 기사"
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 말은 세영 씨예요.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "세영",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    },
+    "item": "메달"
+   }
+  },
+  {
+   "n": 5,
+   "say": "두 사람 합쳐서 메달이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "안 기사",
+     "세영"
+    ],
+    "quantity": 17,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    },
+    "item": "메달"
+   }
+  }
+ ]
+}

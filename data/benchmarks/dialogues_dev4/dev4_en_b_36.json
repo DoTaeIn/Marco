@@ -1,0 +1,274 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_36",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_098",
+  "half": "build",
+  "focus": [
+   "holders",
+   "referent_repairs",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:first_person",
+   "holders:relation",
+   "question_forms:q_got",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "transfer_verbs:carrying",
+   "transfer_verbs:give_back",
+   "transfer_verbs:owns"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "I am carrying 11 eggs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:carrying"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "eggs",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "eggs",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my uncle Liam has 16 eggs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Liam",
+      "item": "eggs",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Liam",
+      "item": "eggs",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Jasmine owns 7 eggs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:owns"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Jasmine",
+      "item": "eggs",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jasmine",
+      "item": "eggs",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "I gave back four eggs to Jasmine, who had them before.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "I",
+      "to": "Jasmine",
+      "item": "eggs",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "eggs",
+      "quantity": 7
+     },
+     {
+      "entity": "Jasmine",
+      "item": "eggs",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many eggs does Jasmine have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Jasmine",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "eggs"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many eggs has Jasmine got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Jasmine",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "eggs"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Liam is who I meant.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "ownership"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Liam",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "eggs"
+   }
+  }
+ ]
+}

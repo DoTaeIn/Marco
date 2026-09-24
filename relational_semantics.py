@@ -177,6 +177,10 @@ class RelationalParser:
         self.outside_names = {w.lower() for w in language_pack.get("outside_names", []) or []}
         # 수량이유물음: the words of a why-question about one holder's count.
         self.why_count = dict(language_pack.get("why_count", {}) or {})
+        # 가진쪽꼴: how a holder is said when it is not a bare name -- the speaker, a relation
+        # before a name, an apposition, the speaker's own relation -- each read as the one key
+        # the facts use.
+        self.holder_forms = dict(language_pack.get("holder_forms", {}) or {})
         self._role_swap_table = None
         self._variant_table = None
         self._repair_cache = {}
@@ -222,7 +226,8 @@ class RelationalParser:
                               "passive": dict(self.passive),
                               "request": dict(self.request),
                               "outside_names": sorted(self.outside_names),
-                              "why_count": dict(self.why_count)}
+                              "why_count": dict(self.why_count),
+                              "holder_forms": dict(self.holder_forms)}
         # 몸통에서 꺼낸 틀은 예문이 그대로인 동안만 같다. `learn` 이 예문을
         # 늘리면 버린다 — 옛 사례로 읽은 몸통을 그대로 쓰면 안 된다.
         self.induced_frames = {}
@@ -475,6 +480,11 @@ class RelationalParser:
                     current = re.sub(r"\s+([,;:])", r"\1", re.sub(r"\s+", " ", replaced)).strip()
                     folded = current.lower() if self.data.get("ignore_case") else current
                     notes.append({**note, "written": target})
+            # A phrase dropped at a clause edge leaves its comma behind ("..., apparently").
+            current = re.sub(r"^[,;:\s]+|[,;:\s]+$", "", re.sub(r",\s*,", ",", current))
+            current, note = self._holder_forms(current)
+            if note is not None:
+                notes.append(note)
             if floated:
                 current, note = self._float_quantifier(current)
                 if note is None:
@@ -488,6 +498,118 @@ class RelationalParser:
             if notes and current and current != literal_in and all(current != seen for seen, _n in out):
                 out.append((current, notes))
         return out
+
+    def _holder_forms(self, literal):
+        """A holder said other than by its bare name, read as the key the facts use (가진쪽꼴).
+
+        The pack declares every form, each a closed class:
+
+        * ``speaker``: the speaker's pronouns (``forms``: me, myself; 저, 제, 내 ...) read as
+          the one speaker key (``key``: I, 나); after the key a verb form agrees as with any
+          other holder (``agreement``: I have -> I has), contractions first (``contractions``:
+          I've -> I have), and in a question the auxiliary before the key too (``inverted``);
+          whole words of the speaker with a particle (``particle_forms``: 제가 -> 나가, 저한테
+          -> 나한테) read the same way.
+        * ``relation_name``: a possessor (``possessives``: my, our ...; or a name with
+          ``possessive_suffix``: Omar's) and a relation word before a name read as the name
+          (my cousin Ana -> Ana).
+        * ``apposition``: a determiner (``determiners``) and up to three role words, a comma,
+          a name and a comma read as the name (the courier, Lind, -> Lind).
+        * ``own_relation``: the speaker's possessive (``self_possessives``: my; 제, 내) and a
+          relation word with no name after it read as the relation word (my sister -> sister).
+        * ``name_titles``: a title word after a name (씨) left out, the particle after it said
+          in the form the name's last syllable takes (예린 씨가 -> 예린이가).
+        * ``numeral_articles``: an article before a numeral left out (the two ladders -> two
+          ladders).
+
+        Words are matched as the pack writes them; a name is a word the pack's ``name`` pattern
+        matches (a capitalised word in English). Nothing else is rewritten.
+        """
+        spec = self.holder_forms or {}
+        if not spec:
+            return literal, None
+        text, applied = literal, []
+        name = spec.get("name") or r"\S+"
+        flags = re.IGNORECASE if self.data.get("ignore_case") else 0
+
+        def words_re(words):
+            return "|".join(re.escape(w) for w in sorted(words, key=len, reverse=True))
+        speaker = spec.get("speaker") or {}
+        key = speaker.get("key")
+        if key:
+            for source, target in sorted((speaker.get("contractions") or {}).items(), key=lambda kv: -len(kv[0])):
+                new = re.sub(r"(?<![\w'])%s(?![\w'])" % re.escape(source), target, text, flags=flags)
+                if new != text:
+                    text, applied = new, applied + ["contraction"]
+            for source, target in sorted((speaker.get("particle_forms") or {}).items(), key=lambda kv: -len(kv[0])):
+                new = re.sub(r"(?<![\w])%s(?![\w])" % re.escape(source), target, text)
+                if new != text:
+                    text, applied = new, applied + ["speaker"]
+            forms = speaker.get("forms") or []
+            if forms:
+                new = re.sub(r"(?<![\w'])(?:%s)(?![\w'])" % words_re(forms), key, text, flags=flags)
+                if new != text:
+                    text, applied = new, applied + ["speaker"]
+            for verb, agreed in (speaker.get("agreement") or {}).items():
+                new = re.sub(r"(?<![\w'])%s %s(?![\w'])" % (re.escape(key), re.escape(verb)),
+                             "%s %s" % (key, agreed), text)
+                if new != text:
+                    text, applied = new, applied + ["agreement"]
+            for verb, agreed in (speaker.get("inverted") or {}).items():
+                new = re.sub(r"(?<![\w'])%s %s(?![\w'])" % (re.escape(verb), re.escape(key)),
+                             "%s %s" % (agreed, key), text, flags=flags)
+                if new != text:
+                    text, applied = new, applied + ["agreement"]
+        possessives = spec.get("possessives") or []
+        suffixes = spec.get("possessive_suffix") or []
+        relation = r"[^\s,.!?]+"
+        if possessives or suffixes:
+            owners = []
+            if possessives:
+                owners.append(r"(?i:%s)" % words_re(possessives))
+            if suffixes:
+                owners.append(r"%s(?:%s)" % (name, words_re(suffixes)))
+            pattern = r"(?<![\w'])(?:%s) (?:%s ){0,1}%s (%s)(?![\w'])" % ("|".join(owners), relation, relation, name)
+            new = re.sub(pattern, r"\1", text)
+            if new != text:
+                text, applied = new, applied + ["relation_name"]
+        determiners = spec.get("determiners") or []
+        if determiners:
+            pattern = r"(?<![\w'])(?i:%s) (?:[a-z]+ ){0,2}[a-z]+, (%s)(?:,|(?=$))" % (words_re(determiners), name)
+            new = re.sub(pattern, r"\1", text)
+            if new != text:
+                text, applied = new, applied + ["apposition"]
+        own = spec.get("self_possessives") or []
+        if own:
+            pattern = r"(?<![\w'])(?i:%s) (%s)(?! %s)(?![\w'])" % (words_re(own), relation, name)
+            new = re.sub(pattern, r"\1", text)
+            if new != text:
+                text, applied = new, applied + ["own_relation"]
+        titles = spec.get("name_titles") or []
+        if titles:
+            def untitle(m):
+                stem, particle = m.group(1), m.group(3) or ""
+                return stem + (self._particle_form(stem, particle) if particle else "")
+            pattern = r"(\S+) (%s)(%s)?(?![\w])" % (words_re(titles), "|".join(
+                re.escape(p) for p in sorted({p for g in self.slot_particles for p in g}, key=len, reverse=True))
+                or "(?!)")
+            new = re.sub(pattern, untitle, text)
+            if new != text:
+                text, applied = new, applied + ["title"]
+        articles = spec.get("numeral_articles") or []
+        if articles:
+            from numeral_semantics import parse_numeral
+            numerals = self.data.get("numerals", {})
+
+            def drop(m):
+                return m.group(2) if parse_numeral(m.group(2).lower() if flags else m.group(2), numerals) is not None \
+                    or m.group(2).isdigit() else m.group(0)
+            new = re.sub(r"(?<![\w'])(%s) (\S+)" % words_re(articles), drop, text, flags=flags)
+            if new != text:
+                text, applied = new, applied + ["numeral_article"]
+        if not applied:
+            return literal, None
+        return text, {"id": "declared-holder-forms-v1", "forms": sorted(set(applied)), "from": literal}
 
     def _float_quantifier(self, literal):
         """``하루는 꿀꿀이 한 마리를 가지고 있어`` -> ``하루는 꿀꿀이를 한 마리 가지고 있어``.

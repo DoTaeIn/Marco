@@ -1,0 +1,351 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_17",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_044",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:front_then",
+   "holders:apposition",
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:owns",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my nephew Jack has 16 candles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Jack",
+      "item": "candles",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jack",
+      "item": "candles",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "the attic holds 5 candles at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "attic",
+      "item": "candles",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "attic",
+      "item": "candles",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The janitor, Ms. Sanchez, owns 7 candles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "transfer_verbs:owns"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Sanchez",
+      "item": "candles",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Sanchez",
+      "item": "candles",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "After that, Ms. Sanchez took four candles from the attic.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "attic",
+      "to": "Sanchez",
+      "item": "candles",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "attic",
+      "item": "candles",
+      "quantity": 1
+     },
+     {
+      "entity": "Sanchez",
+      "item": "candles",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many candles does Ms. Sanchez have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Sanchez",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "candles"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Ms. Sanchez left them at the attic three candles.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Sanchez",
+      "to": "attic",
+      "item": "candles",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Sanchez",
+      "item": "candles",
+      "quantity": 8
+     },
+     {
+      "entity": "attic",
+      "item": "candles",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many candles does Ms. Sanchez hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Sanchez",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "candles"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many candles are in the attic now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "attic",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "candles"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many candles do Jack and Ms. Sanchez have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Jack",
+     "Sanchez"
+    ],
+    "quantity": 24,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "candles"
+   }
+  }
+ ]
+}

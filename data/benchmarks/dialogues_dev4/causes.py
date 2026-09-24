@@ -3,11 +3,14 @@
 Reads a gate report (``python bench/dialogue_gate.py run --dataset data/benchmarks/dialogues_dev4
 --split build --report-out report.json``) and counts, by the scenario classes each turn carries:
 
-* **record turns not correct**: the class of the statement itself;
+* **record turns not correct**: a statement the parser reads on its own but the conversation did not
+  apply (it names a holder an earlier missed statement left without a count) is a cascade, counted
+  under the first missed statement before it (``after:<class>``); any other under its own class;
 * **answerable turns not correct**: a hold after a statement the engine did not record is caused by
-  that statement (``statement:<class>``, the first one missed before the question); a hold with every
-  statement before it recorded is caused by the question (``question:<class>``); a wrong or
-  unverifiable answer is counted by its reason.
+  the first such statement the parser cannot read on its own (``statement:<class>``), or by a cascade
+  (``statement:cascade``); a hold the realizer made of a parsed answer is ``realizer:not_phrased``; a
+  hold with every statement before it recorded is caused by the question (``question:<class>``); a
+  wrong or unverifiable answer is counted by its reason.
 
 A turn carries several classes; it is counted once, under the first family of ``PRIORITY`` it has
 (its most specific surface class), so each table sums to its total.
@@ -38,27 +41,50 @@ def turn_class(turn, dialogue):
                        turn["expect"].get("relation") or "answer")
 
 
+REALIZER_HOLD = ("This answer is on hold", "답을 보류")
+_PARSERS = {}
+
+
+def reads_alone(language, text):
+    """True when the pack's parser reads the statement by itself (facts or a transfer)."""
+    import os
+    sys.path.insert(0, str(ROOT))
+    os.environ.setdefault("KG_ENCODER", "문자")
+    from pack_model import development_model
+    name = "한국어" if language == "ko" else "english"
+    if name not in _PARSERS:
+        _PARSERS[name] = development_model(name).parser()
+    parsed = _PARSERS[name].parse(text, partial=True, events=True, repair=True) or {}
+    return bool(parsed.get("facts"))
+
+
 def tables(report, dialogues):
-    by_id = {d["id"]: d for d in dialogues}
     rows = {(r["dialogue"], r["n"]): r for r in report["rows"]}
     record, answerable, detail = {}, {}, []
     for d in dialogues:
-        missed = None
+        missed, root = None, None
         for t in d["turns"]:
             row = rows.get((d["id"], t["n"]))
             if row is None:
                 continue
             if t["expect"]["act"] in ("record", "revise") and row["bucket"] != "correct":
                 cls = turn_class(t, d)
+                alone = t["expect"]["act"] == "record" and reads_alone(d["language"], t["say"])
+                counted = ("after:" + missed[1]) if (alone and missed is not None) else cls
                 if t["expect"]["act"] == "record":
-                    record[cls] = record.get(cls, 0) + 1
-                    detail.append(("record", cls, d["id"], t["n"], row["reason"], t["say"]))
+                    record[counted] = record.get(counted, 0) + 1
+                    detail.append(("record", counted, d["id"], t["n"], row["reason"], t["say"]))
                 if missed is None:
                     missed = (t, cls)
+                if root is None and not alone:
+                    root = (t, cls)
             if t["label"] != "answerable" or row["bucket"] == "correct":
                 continue
-            if row["bucket"] == "hold":
-                cause = ("statement:" + missed[1]) if missed is not None else ("question:" + turn_class(t, d))
+            if row["bucket"] == "hold" and any(mark in (row.get("answer") or "") for mark in REALIZER_HOLD):
+                cause = "realizer:not_phrased"
+            elif row["bucket"] == "hold":
+                cause = ("statement:" + root[1]) if root is not None else (
+                    "statement:cascade" if missed is not None else ("question:" + turn_class(t, d)))
             else:
                 cause = "%s:%s" % (row["bucket"], str(row["reason"]).split(":")[0])
             answerable[cause] = answerable.get(cause, 0) + 1
@@ -69,7 +95,8 @@ def tables(report, dialogues):
 def family_table(counts):
     out = {}
     for key, n in counts.items():
-        head = key.split(":")[0] if not key.startswith(("statement:", "question:")) else ":".join(key.split(":")[:2])
+        head = key.split(":")[0] if not key.startswith(("statement:", "question:", "after:")) else \
+            ":".join(key.split(":")[:2])
         out[head] = out.get(head, 0) + n
     return out
 

@@ -1,0 +1,359 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_01",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_002",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "referent_repairs",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:front_then",
+   "holders:place",
+   "multi_fact",
+   "question_forms:q_left",
+   "question_forms:q_place_now",
+   "referent_repairs:i_mean",
+   "transfer_verbs:move",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The corner shop holds 5 chairs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "corner shop",
+      "item": "chairs",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "corner shop",
+      "item": "chairs",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Greta has 13 chairs and Brian has 15 chairs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "multi_fact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Greta",
+      "item": "chairs",
+      "quantity": 13
+     },
+     {
+      "type": "has",
+      "holder": "Brian",
+      "item": "chairs",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "Greta",
+      "item": "chairs",
+      "quantity": 13
+     },
+     {
+      "entity": "Brian",
+      "item": "chairs",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Eight chairs are in the music room.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "music room",
+      "item": "chairs",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "music room",
+      "item": "chairs",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "After that, we moved one chair from the corner shop to the music room.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:place",
+    "transfer_verbs:move"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "corner shop",
+      "to": "music room",
+      "item": "chairs",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "corner shop",
+      "item": "chairs",
+      "quantity": 4
+     },
+     {
+      "entity": "music room",
+      "item": "chairs",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many chairs are in the corner shop now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "corner shop",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "chairs"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Greta took three chairs from the corner shop, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "corner shop",
+      "to": "Greta",
+      "item": "chairs",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "corner shop",
+      "item": "chairs",
+      "quantity": 1
+     },
+     {
+      "entity": "Greta",
+      "item": "chairs",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many chairs are in the music room now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "music room",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "chairs"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many chairs does Brian have left?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Brian",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "chairs"
+   }
+  },
+  {
+   "n": 9,
+   "say": "Sorry, I meant Greta.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Greta",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      6
+     ]
+    },
+    "item": "chairs"
+   }
+  }
+ ]
+}

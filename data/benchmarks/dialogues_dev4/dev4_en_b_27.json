@@ -1,0 +1,391 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_27",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_075",
+  "half": "build",
+  "focus": [
+   "holders",
+   "partitives",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:relation",
+   "partitives:partitive",
+   "question_forms:q_got",
+   "question_forms:q_left",
+   "question_forms:q_two_total",
+   "transfer_verbs:lend",
+   "transfer_verbs:send"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Victor's got 10 knives.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Victor",
+      "item": "knives",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Victor",
+      "item": "knives",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my roommate Diego is carrying 14 knives.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Diego",
+      "item": "knives",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Diego",
+      "item": "knives",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Diego lent Victor 1 of his knives.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Diego",
+      "to": "Victor",
+      "item": "knives",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Diego",
+      "item": "knives",
+      "quantity": 13
+     },
+     {
+      "entity": "Victor",
+      "item": "knives",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many knives does Diego have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Diego",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "knives"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Diego sent 5 of his to Victor.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "partitives:partitive",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Diego",
+      "to": "Victor",
+      "item": "knives",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Diego",
+      "item": "knives",
+      "quantity": 8
+     },
+     {
+      "entity": "Victor",
+      "item": "knives",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many knives has Diego got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Diego",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "knives"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many knives does Victor have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Victor",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "knives"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Actually, it was 8, not 5.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5,
+      8
+     ]
+    },
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Diego",
+      "to": "Victor",
+      "item": "knives",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Diego",
+      "to": "Victor",
+      "item": "knives",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Diego",
+      "item": "knives",
+      "quantity": 5
+     },
+     {
+      "entity": "Victor",
+      "item": "knives",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many knives does Victor have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Victor",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      8
+     ]
+    },
+    "item": "knives",
+    "retracted_quantity": 16,
+    "reexecuted_quantity": 24
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many knives do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Victor",
+     "Diego"
+    ],
+    "quantity": 24,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5,
+      8
+     ]
+    },
+    "item": "knives"
+   }
+  }
+ ]
+}

@@ -2208,7 +2208,8 @@ def phrase(limit=None, only=None):
 # assembly
 # ---------------------------------------------------------------------------
 KEPT = HERE / "phrasings_kept.jsonl"      # the accepted samples of the dialogues in the set, with their seeds
-STATS = HERE / "phrasing_stats.json"      # what the phrasing run tried, kept and discarded, by reason
+STATS = HERE / "phrasing_stats.jsonl"     # what the phrasing run tried, kept and discarded, by reason (not
+                                          # *.json: the gate reads every *.json here as a dialogue)
 OTHER_SETS = ("dialogues_v1", "dialogues_dev", "dialogues_dev2", "dialogues_dev3")
 
 
@@ -2328,7 +2329,7 @@ def assemble(write=True):
                             out.write(json.dumps({k: row[k] for k in ("scenario", "n", "attempt", "seed", "text", "ok")},
                                                  ensure_ascii=False) + "\n")
                     out.write(json.dumps(status[scn["id"]], ensure_ascii=False) + "\n")
-            STATS.write_text(json.dumps(phrasing_stats(rows, status, left_out), ensure_ascii=False, indent=1) + "\n",
+            STATS.write_text(json.dumps(phrasing_stats(rows, status, left_out), ensure_ascii=False) + "\n",
                              encoding="utf-8")
     return dialogues, split, problems
 

@@ -1,0 +1,333 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_04",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_008",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "referent_repairs",
+   "zero_vague"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:apposition",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "transfer_verbs:borrow",
+   "zero_vague:only",
+   "zero_vague:vague",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My teammate has some laptops. 12 of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "teammate",
+      "item": "laptops",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "teammate",
+      "item": "laptops",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "All Martin has is laptops, 16 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Martin",
+      "item": "laptops",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Martin",
+      "item": "laptops",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The janitor, Mr. Garcia, also has some laptops, not sure how many.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:vague"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Garcia",
+      "item": "laptops",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Garcia",
+      "item": "laptops",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Martin borrowed three laptops from my teammate.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "teammate",
+      "to": "Martin",
+      "item": "laptops",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "teammate",
+      "item": "laptops",
+      "quantity": 9
+     },
+     {
+      "entity": "Martin",
+      "item": "laptops",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many laptops does Martin hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Martin",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "laptops"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many laptops does my teammate hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "teammate",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "laptops"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Actually, it was 9, not 3.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      7
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "teammate",
+      "to": "Martin",
+      "item": "laptops",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "teammate",
+      "to": "Martin",
+      "item": "laptops",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "teammate",
+      "item": "laptops",
+      "quantity": 3
+     },
+     {
+      "entity": "Martin",
+      "item": "laptops",
+      "quantity": 25
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many laptops does my teammate have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "teammate",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      7
+     ]
+    },
+    "item": "laptops",
+    "retracted_quantity": 9,
+    "reexecuted_quantity": 0
+   }
+  }
+ ]
+}

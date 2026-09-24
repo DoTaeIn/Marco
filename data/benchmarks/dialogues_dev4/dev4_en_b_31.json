@@ -1,0 +1,408 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev4_en_b_31",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s4_en_b_082",
+  "half": "build",
+  "focus": [
+   "holders",
+   "partitives",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:recipient",
+   "holders:place",
+   "partitives:gave_them_not",
+   "partitives:partitive",
+   "question_forms:q_got",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "There are 10 hammers in the front porch.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "front porch",
+      "item": "hammers",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "front porch",
+      "item": "hammers",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Walter keeps 6 hammers.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Walter",
+      "item": "hammers",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "Walter",
+      "item": "hammers",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Gemma has got 16 hammers.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Gemma",
+      "item": "hammers",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gemma",
+      "item": "hammers",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Gemma left three hammers at the front porch.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Gemma",
+      "to": "front porch",
+      "item": "hammers",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gemma",
+      "item": "hammers",
+      "quantity": 13
+     },
+     {
+      "entity": "front porch",
+      "item": "hammers",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many hammers has Walter got now?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Walter",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "hammers"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Walter took one of them from the front porch.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "partitives:partitive",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "front porch",
+      "to": "Walter",
+      "item": "hammers",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "front porch",
+      "item": "hammers",
+      "quantity": 12
+     },
+     {
+      "entity": "Walter",
+      "item": "hammers",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many hammers are in the front porch now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "front porch",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6
+     ]
+    },
+    "item": "hammers"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Wait, the front porch gave them to Gemma, not Walter.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:recipient",
+    "partitives:gave_them_not"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6,
+      8
+     ]
+    },
+    "target_turn": 6,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "front porch",
+      "to": "Walter",
+      "item": "hammers",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "front porch",
+      "to": "Gemma",
+      "item": "hammers",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "front porch",
+      "item": "hammers",
+      "quantity": 12
+     },
+     {
+      "entity": "Walter",
+      "item": "hammers",
+      "quantity": 6
+     },
+     {
+      "entity": "Gemma",
+      "item": "hammers",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many hammers does Gemma hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Gemma",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      8
+     ]
+    },
+    "item": "hammers"
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many hammers do Walter and Gemma have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Walter",
+     "Gemma"
+    ],
+    "quantity": 20,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4,
+      6,
+      8
+     ]
+    },
+    "item": "hammers"
+   }
+  }
+ ]
+}
