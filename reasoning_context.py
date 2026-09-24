@@ -3854,6 +3854,14 @@ class ReasoningContext:
             self.bind_hints = [hint for hint in getattr(self, "bind_hints", []) if hint[0] != asked[1]] + [asked[::-1]]
         verbs = self._verbs_for(parser, self.observations + [text])
         current = self._read_source(parser, text, events=True, verbs=verbs)
+        if current is not None and current.get("facts") and all(f.get("unnamed") for f in current["facts"]) \
+                and not any(current.get(key) for key in ("query", "사건", "정의", "원인", "조건")):
+            # An amount said with no holder at all (18 of them, 3명이야) is the count not known yet that
+            # the conversation left open; with none open it is no statement (a short answer, perhaps).
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+            counted = {f["triple"][0] for f in facts if f["triple"][1] == "count"}
+            if not any(f["triple"][1] == "count_unknown" and f["triple"][0] not in counted for f in facts):
+                current = None
         self._turn_repairs = list((current or {}).get("수선", []))
         if current is None or not any(current.get(key) for key in (
                 "query", "사건정정", "정의", "원인", "이유물음", "조건")):

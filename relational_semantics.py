@@ -2295,6 +2295,15 @@ class RelationalParser:
                                                for o in objects)
                                        for name in example["slots"]):
                         continue
+                    # An object-marked word never stands inside a name (숫자를 in 숫자를 모르지): the name
+                    # swallowed a clause.
+                    object_only = set((self.object_fronting or {}).get("object_particles") or [])
+                    if object_only and any(isinstance(slots.get(name), str) and name not in marked
+                                           and len(str(example["slots"].get(name, "")).split()) == 1
+                                           and any(w.endswith(o) and len(w) - len(o) >= shortest
+                                                   for w in slots[name].split()[:-1] for o in object_only)
+                                           for name in example["slots"]):
+                        continue
                     # A particle attaches to the word before it, so a value the
                     # example follows with a case particle cannot end in a space:
                     # a cut before a name that starts with 이 reads that 이 as a particle.
@@ -3191,6 +3200,8 @@ class RelationalParser:
                         fact["scope"] = meaning["scope"]
                     if meaning.get("places"):
                         fact["places"] = list(meaning["places"])
+                    if meaning.get("unnamed"):
+                        fact["unnamed"] = True
                     for field in ("polarity", "modality"):
                         if field in meaning:
                             fact[field] = meaning[field]
