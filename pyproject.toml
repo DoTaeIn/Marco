@@ -23,6 +23,13 @@ classifiers = [
 # MARCO checkout (located via MCO_MARCO_ROOT), which itself needs numpy.
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/DoTaeIn/Marco"
+Documentation = "https://github.com/DoTaeIn/Marco/blob/main/docs/mco/README.md"
+Repository = "https://github.com/DoTaeIn/Marco"
+Issues = "https://github.com/DoTaeIn/Marco/issues"
+Releases = "https://github.com/DoTaeIn/Marco/releases"
+
 [project.optional-dependencies]
 marco = ["numpy"]
 test = ["pytest>=7"]

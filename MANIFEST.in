@@ -1,0 +1,7 @@
+include LICENSE LICENSE-GRAPHS NOTICE
+include docs/mco/README.md docs/mco/api.md
+graft mco
+prune tests
+include tests/test_mco_package.py
+exclude README.md
+global-exclude __pycache__ *.pyc

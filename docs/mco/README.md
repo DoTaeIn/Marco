@@ -27,7 +27,7 @@ print(result.trace)     # 1. understand: ...
 ## Install
 
 ```bash
-pip install mco            # proposed distribution name; not yet published
+pip install mco            # the API and CLI; no dependencies
 ```
 
 From a MARCO checkout (development):
@@ -45,7 +45,18 @@ compatibility backend**, which needs a MARCO checkout and its dependency
 3. MARCO modules already importable on `sys.path`
 4. the checkout `mco` itself was installed from (`pip install -e .`)
 
-`mco.inspect()` and `mco backends` work without MARCO installed.
+`mco.inspect()` and `mco backends` work without MARCO installed. To run a
+model today, clone the checkout and point `mco` at it:
+
+```bash
+git clone https://github.com/DoTaeIn/Marco
+pip install mco[marco]          # adds numpy
+export MCO_MARCO_ROOT=$PWD/Marco
+mco run MARCO-1-preview.mco "12만원 나왔어"
+```
+
+The preview model file is attached to the MARCO release on GitHub
+(https://github.com/DoTaeIn/Marco/releases).
 
 ## Python API
 
@@ -130,4 +141,13 @@ the same API. The same `mco.load(...).run(...)` code will open both kinds of
 file. Native files are already recognised by their magic prefix, and loading one
 today raises `UnsupportedFormatError` instead of misreading it.
 
-See [api.md](api.md) for the stability contract and how to write a backend.
+See [api.md](https://github.com/DoTaeIn/Marco/blob/main/docs/mco/api.md) for the
+stability contract and how to write a backend.
+
+## License
+
+MARCO Engine License 1.0: the Apache License 2.0 plus one condition, that a
+product which puts MARCO in front of end users shows "Powered by MARCO — Created
+by DoTaeIn, Original project: https://github.com/DoTaeIn/Marco" somewhere they
+can find it. Library use, research, development and redistribution need nothing
+more than the NOTICE file. Full text: https://github.com/DoTaeIn/Marco/blob/main/LICENSE
