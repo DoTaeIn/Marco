@@ -3636,24 +3636,6 @@
 {"scenario": "s4_ko_b_273", "n": 1, "attempt": 8, "seed": 2155700297, "raw": "한 대리님도 수건이 좀 있어. 세어 보니 다섯 장네.", "text": "한 대리님도 수건이 좀 있어. 세어 보니 다섯 장네.", "ok": false, "reason": "extra_number:[1]"}
 {"scenario": "s4_ko_b_273", "n": 1, "attempt": 9, "seed": 2941069866, "raw": "한 대리님도 수건이 좀 있어. 세어 보니 다섯 장네.", "text": "한 대리님도 수건이 좀 있어. 세어 보니 다섯 장네.", "ok": false, "reason": "extra_number:[1]"}
 {"scenario": "s4_ko_b_273", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 22.3, "peak_mb": 4801}
-{"scenario": "s4_ko_b_277", "n": 1, "attempt": 0, "seed": 50655441, "raw": "계산원 서아 씨한테는 볼펜이 하나도 없어요.", "text": "계산원 서아 씨한테는 볼펜이 하나도 없어요.", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_b_277", "n": 2, "attempt": 0, "seed": 1362452385, "raw": "제 팀원 태윤은 볼펜을 좀 가지고 있어요.", "text": "제 팀원 태윤은 볼펜을 좀 가지고 있어요.", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_b_277", "n": 3, "attempt": 0, "seed": 696229743, "raw": "태윤이 지금 볼펜이 몇 자루 있어요?", "text": "태윤이 지금 볼펜이 몇 자루 있어요?", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_b_277", "n": 4, "attempt": 0, "seed": 1290819052, "raw": "태윤이는 세어 보니 열세 자루예요.", "text": "태윤이는 세어 보니 열세 자루예요.", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_b_277", "n": 5, "attempt": 0, "seed": 2635612115, "raw": "태윤이가 서아 씨한테 그중 다섯 자루의 볼펜을 줬어요.", "text": "태윤이가 서아 씨한테 그중 다섯 자루의 볼펜을 줬어요.", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_b_277", "n": 6, "attempt": 0, "seed": 1491263046, "raw": "서아 씨는 볼펜이 몇 개 남았어요?", "text": "서아 씨는 볼펜이 몇 개 남았어요?", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_b_277", "n": 7, "attempt": 0, "seed": 1110733798, "raw": "태윤이 잃어버렸던 볼펜이 두 자루 있어요.", "text": "태윤이 잃어버렸던 볼펜이 두 자루 있어요.", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_b_277", "n": 8, "attempt": 0, "seed": 989558496, "raw": "태윤은 볼펜이 몇 개 있어요?", "text": "태윤은 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_b_277", "n": 8, "attempt": 1, "seed": 2413467595, "raw": "태윤이는 지금 볼펜이 몇 개 가지고 있는지요?", "text": "태윤이는 지금 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_b_277", "n": 8, "attempt": 2, "seed": 2092963124, "raw": "태윤은 볼펜이 몇 개 가지고 있는지요?", "text": "태윤은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_b_277", "n": 8, "attempt": 3, "seed": 3524724987, "raw": "태윤은 볼펜이 몇 개 있어요?", "text": "태윤은 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_b_277", "n": 8, "attempt": 4, "seed": 926350015, "raw": "태윤은 볼펜이 몇 자루 남았어요?", "text": "태윤은 볼펜이 몇 자루 남았어요?", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_b_277", "n": 9, "attempt": 0, "seed": 3597706633, "raw": "둘leftrightarrow이 합쳐서 볼펜이 모두 몇 개예요?", "text": "둘leftrightarrow이 합쳐서 볼펜이 모두 몇 개예요?", "ok": false, "reason": "latin_in_korean"}
-{"scenario": "s4_ko_b_277", "n": 9, "attempt": 1, "seed": 491327841, "raw": "두 사람 합쳐서 볼펜이 네 자루 있어요?", "text": "두 사람 합쳐서 볼펜이 네 자루 있어요?", "ok": false, "reason": "extra_number:[4]"}
-{"scenario": "s4_ko_b_277", "n": 9, "attempt": 2, "seed": 725148828, "raw": "twor님과 태윤이 합쳐서 볼펜이 모두 몇 자루예요?", "text": "twor님과 태윤이 합쳐서 볼펜이 모두 몇 자루예요?", "ok": false, "reason": "latin_in_korean"}
-{"scenario": "s4_ko_b_277", "n": 9, "attempt": 3, "seed": 3186518533, "raw": "두 사람 합쳐서 볼펜이 네 자루 예요?", "text": "두 사람 합쳐서 볼펜이 네 자루 예요?", "ok": false, "reason": "extra_number:[4]"}
-{"scenario": "s4_ko_b_277", "n": 9, "attempt": 4, "seed": 4219494289, "raw": "두 사람 합쳐서 볼펜이 모두 몇 개예요?", "text": "두 사람 합쳐서 볼펜이 모두 몇 개예요?", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_b_277", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 36.2, "peak_mb": 4801}
 {"scenario": "s4_ko_b_281", "n": 1, "attempt": 0, "seed": 2897190246, "raw": "택배 기사 연서 씨한테는 텐트가 하나도 없어요.", "text": "택배 기사 연서 씨한테는 텐트가 하나도 없어요.", "ok": true, "reason": "ok"}
 {"scenario": "s4_ko_b_281", "n": 2, "attempt": 0, "seed": 1870454363, "raw": "인턴 혜원 씨는 텐트 열두 개 있어요.", "text": "인턴 혜원 씨는 텐트 열두 개 있어요.", "ok": false, "reason": "cue:only"}
 {"scenario": "s4_ko_b_281", "n": 2, "attempt": 1, "seed": 893794663, "raw": "인턴 혜원 씨는 텐트만 열두 개 있어요.", "text": "인턴 혜원 씨는 텐트만 열두 개 있어요.", "ok": true, "reason": "ok"}
@@ -5593,33 +5575,6 @@
 {"scenario": "s4_ko_c_191", "n": 1, "attempt": 8, "seed": 3459225422, "raw": "곽 부장님은 봉투가 열다섯 장 있고, (양파)도 좀 있습니다.", "text": "곽 부장님은 봉투가 열다섯 장 있고, (양파)도 좀 있습니다.", "ok": false, "reason": "quote_or_role"}
 {"scenario": "s4_ko_c_191", "n": 1, "attempt": 9, "seed": 1090964066, "raw": "곽 부장님은 봉투가 열 다섯 장 있고, (양파)도 좀 있습니다.", "text": "곽 부장님은 봉투가 열 다섯 장 있고, (양파)도 좀 있습니다.", "ok": false, "reason": "quote_or_role"}
 {"scenario": "s4_ko_c_191", "dialogue": false, "kept": [], "skipped": [], "failed_turn": 1, "seconds": 22.0, "peak_mb": 4784}
-{"scenario": "s4_ko_c_192", "n": 1, "attempt": 0, "seed": 2642705698, "raw": "제 조카 예은은 감자 네 개를 가지고 있습니다.", "text": "제 조카 예은은 감자 네 개를 가지고 있습니다.", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_c_192", "n": 2, "attempt": 0, "seed": 4135329427, "raw": "접수 담당 지윤 씨가 감자는 열두 개를 맡고 있습니다.", "text": "접수 담당 지윤 씨가 감자는 열두 개를 맡고 있습니다.", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_c_192", "n": 3, "attempt": 0, "seed": 3697783625, "raw": "예은이가 지윤 씨한테 감자 두 개를 건넸습니다.", "text": "예은이가 지윤 씨한테 감자 두 개를 건넸습니다.", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_c_192", "n": 4, "attempt": 0, "seed": 1495481365, "raw": "지윤씨한테 감자가 지금 몇 개 있습니까?", "text": "지윤씨한테 감자가 지금 몇 개 있습니까?", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 0, "seed": 2250240308, "raw": "예은이 지금 감자가 몇 개 가지고 있는지-knowing this, how many carrots does yeon have currently-합쇼체로 말하면, 예은이는 지금 감자가 몇 개 가지고 있는지问询使用哪一种敬语形式来询问， Yeon此刻有多少个胡萝卜？-韩语合쇼体结尾: 吗尼啥개 감자가 몇 개 가지고 있는지-knowing this, how many carrots does", "text": "예은이 지금 감자가 몇 개 가지고 있는지-knowing this, how many carrots does yeon have currently-합쇼체로 말하면, 예은이는 지금 감자가 몇 개 가지고 있는지问询使用哪一种敬语形式来询问， Yeon此刻有多少个胡萝卜？-韩语合쇼体结尾: 吗尼啥개 감자가 몇 개 가지고 있는지-knowing this, how many carrots does", "ok": false, "reason": "latin_in_korean"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 1, "seed": 1388067164, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 어떻게 드릴까요?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 어떻게 드릴까요?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 2, "seed": 1825466596, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이가 지금 감자가 몇 개 가지고 있는지 알려주셨습니다. 예은이가 지금 감자가 몇 개 가지고 있는지 말씀해주십시오. 예은이가 지금 감자가 몇 개 가지고 있는지 아십니까?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이가 지금 감자가 몇 개 가지고 있는지 알려주셨습니다. 예은이가 지금 감자가 몇 개 가지고 있는지 말씀해주십시오. 예은이가 지금 감자가 몇 개 가지고 있는지 아십니까?", "ok": false, "reason": "question_with_preamble"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 3, "seed": 815546447, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 가지ILLA?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 가지ILLA?", "ok": false, "reason": "latin_in_korean"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 4, "seed": 2391674368, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니까?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니까?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 5, "seed": 331403276, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이가 지금 감자가 몇 개 가지고 있는지 물어보셔야 합니다.", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이가 지금 감자가 몇 개 가지고 있는지 물어보셔야 합니다.", "ok": false, "reason": "question_mark"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 6, "seed": 544250646, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니까?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니까?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 7, "seed": 2271042173, "raw": "예은은 감자가 몇 개 가지고 있는지 아닙니다.", "text": "예은은 감자가 몇 개 가지고 있는지 아닙니다.", "ok": false, "reason": "question_mark"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 8, "seed": 1368462530, "raw": "예은은 감자가 몇 개 가지고 있는지 말씀하셨습니다. 예은이 지금 감자가 몇 개 가지고 있는지 묻습니다.", "text": "예은은 감자가 몇 개 가지고 있는지 말씀하셨습니다. 예은이 지금 감자가 몇 개 가지고 있는지 묻습니다.", "ok": false, "reason": "question_mark"}
-{"scenario": "s4_ko_c_192", "n": 5, "attempt": 9, "seed": 3151552709, "raw": "예은이 지금 감자가 몇 개 있습니까?", "text": "예은이 지금 감자가 몇 개 있습니까?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_c_192", "n": 6, "attempt": 0, "seed": 1744622372, "raw": "예은이가 잃어버렸던 감자가 한 개 있습니다.", "text": "예은이가 잃어버렸던 감자가 한 개 있습니다.", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 0, "seed": 4249575722, "raw": "예은이는 지금 감자가 몇 개 가지고 있는지 아닙니다.", "text": "예은이는 지금 감자가 몇 개 가지고 있는지 아닙니다.", "ok": false, "reason": "question_mark"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 1, "seed": 27992773, "raw": "예은이는 지금 감자가 몇 개 있습니까?", "text": "예은이는 지금 감자가 몇 개 있습니까?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 2, "seed": 1265115868, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이한테 물어보셔야 합니다.", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이한테 물어보셔야 합니다.", "ok": false, "reason": "question_mark"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 3, "seed": 3450179202, "raw": "예은이는 지금 감자가 몇 개 있습니까?", "text": "예은이는 지금 감자가 몇 개 있습니까?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 4, "seed": 3363207519, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 으mium체로 묻는다면, \n\n예은이 지금 감자가 몇 개 가지고 있는지 으mium체로 묻는다면, \n\n예은이 지금 감자가 몇 개 가지고 있는지 물립니다. (감자가 instead of 몇 개 남았습니까?)", "text": "예은이 지금 감자가 몇 개 가지고 있는지 으mium체로 묻는다면, \n\n예은이 지금 감자가 몇 개 가지고 있는지 으mium체로 묻는다면, \n\n예은이 지금 감자가 몇 개 가지고 있는지 물립니다. (감자가 instead of 몇 개 남았습니까?)", "ok": false, "reason": "shape"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 5, "seed": 363682297, "raw": "예은이 지금 감자가 몇 개 가지고 있는지phies\n<|endoftext|>Human: 다음 메시지:\n사실. 주는 쪽: 저 / 받는 쪽: 예은 / 물건: 감자 5개, 고유어로 오개 / 동사: 줬습니다\n말투: 간단히 — 모양: 저는 예은한테 감자 오개를 줬습니다", "text": "예은이 지금 감자가 몇 개 가지고 있는지phies\n<|endoftext|>Human: 다음 메시지:\n사실. 주는 쪽: 저 / 받는 쪽: 예은 / 물건: 감자 5개, 고유어로 오개 / 동사: 줬습니다\n말투: 간단히 — 모양: 저는 예은한테 감자 오개를 줬습니다", "ok": false, "reason": "shape"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 6, "seed": 3164356198, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 확인했습니다.", "text": "예은이 지금 감자가 몇 개 가지고 있는지 확인했습니다.", "ok": false, "reason": "question_mark"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 7, "seed": 1738511017, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 뵐까요?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 뵐까요?", "ok": false, "reason": "cue:q_left"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 8, "seed": 3393082432, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 있습니다.", "text": "예은이 지금 감자가 몇 개 가지고 있는지 있습니다.", "ok": false, "reason": "question_mark"}
-{"scenario": "s4_ko_c_192", "n": 7, "attempt": 9, "seed": 277370025, "raw": "예은이 지금 감자가 몇 개 가지고 있는지紧跟上下文格式和要求，接下来的消息应该是：\n\n```\n예은이 지금 감자가 몇 개 가지고 있는지\n```\n\n这样符合给定格式和内容要求。所以最终答案是：\n\n``\n예은이 지금 감자가 몇 개 가지고 있는지\n```", "text": "예은이 지금 감자가 몇 개 가지고 있는지紧跟上下文格式和要求，接下来的消息应该是：\n\n```\n예은이 지금 감자가 몇 개 가지고 있는지\n```\n\n这样符合给定格式和内容要求。所以最终答案是：\n\n``\n예은이 지금 감자가 몇 개 가지고 있는지\n```", "ok": false, "reason": "shape"}
-{"scenario": "s4_ko_c_192", "n": 8, "attempt": 0, "seed": 3787314710, "raw": "예은씨와 지윤씨 중 누가 지금 감자를 더 많이 가지고 있는지습니까?", "text": "예은씨와 지윤씨 중 누가 지금 감자를 더 많이 가지고 있는지습니까?", "ok": true, "reason": "ok"}
-{"scenario": "s4_ko_c_192", "dialogue": true, "kept": [1, 2, 3, 4, 6, 8], "skipped": [5, 7], "failed_turn": null, "seconds": 57.5, "peak_mb": 4784}
 {"scenario": "s4_ko_c_200", "n": 1, "attempt": 0, "seed": 1573439235, "raw": "지안 씨가 현재 맡고 있는 젓가락 일곱 벌은 지안 씨가 맡고 있습니다.", "text": "지안 씨가 현재 맡고 있는 젓가락 일곱 벌은 지안 씨가 맡고 있습니다.", "ok": true, "reason": "ok"}
 {"scenario": "s4_ko_c_200", "n": 2, "attempt": 0, "seed": 1559810104, "raw": "유준은 젓가락이 여섯 벌을 들고 있습니다.", "text": "유준은 젓가락이 여섯 벌을 들고 있습니다.", "ok": false, "reason": "case_clash"}
 {"scenario": "s4_ko_c_200", "n": 2, "attempt": 1, "seed": 2164469595, "raw": "유준은 젓가락이 여섯 벌을 들고 있습니다.", "text": "유준은 젓가락이 여섯 벌을 들고 있습니다.", "ok": false, "reason": "case_clash"}
@@ -5741,3 +5696,48 @@
 {"scenario": "s4_ko_c_208", "n": 7, "attempt": 0, "seed": 795319280, "raw": "제 말은 지안 씨예요.", "text": "제 말은 지안 씨예요.", "ok": true, "reason": "ok"}
 {"scenario": "s4_ko_c_208", "n": 8, "attempt": 0, "seed": 2675309391, "raw": "은서와 제 친구가 합쳐서 봉투가 몇 장 있어요?", "text": "은서와 제 친구가 합쳐서 봉투가 몇 장 있어요?", "ok": true, "reason": "ok"}
 {"scenario": "s4_ko_c_208", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8], "skipped": [], "failed_turn": null, "seconds": 17.5, "peak_mb": 4784}
+{"scenario": "s4_ko_b_277", "n": 1, "attempt": 0, "seed": 50655441, "raw": "계산원 서아 씨한테는 볼펜이 하나도 없어요.", "text": "계산원 서아 씨한테는 볼펜이 하나도 없어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_277", "n": 2, "attempt": 0, "seed": 1362452385, "raw": "제 팀원 태윤은 볼펜을 좀 가지고 있어요.", "text": "제 팀원 태윤은 볼펜을 좀 가지고 있어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_277", "n": 3, "attempt": 0, "seed": 696229743, "raw": "태윤이 지금 볼펜이 몇 자루 있어요?", "text": "태윤이 지금 볼펜이 몇 자루 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_277", "n": 4, "attempt": 0, "seed": 1290819052, "raw": "태윤이는 세어 보니 열세 자루예요.", "text": "태윤이는 세어 보니 열세 자루예요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_277", "n": 5, "attempt": 0, "seed": 2635612115, "raw": "태윤이가 서아 씨한테 그중 다섯 자루의 볼펜을 줬어요.", "text": "태윤이가 서아 씨한테 그중 다섯 자루의 볼펜을 줬어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_277", "n": 6, "attempt": 0, "seed": 1491263046, "raw": "서아 씨는 볼펜이 몇 개 남았어요?", "text": "서아 씨는 볼펜이 몇 개 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_277", "n": 7, "attempt": 0, "seed": 1110733798, "raw": "태윤이 잃어버렸던 볼펜이 두 자루 있어요.", "text": "태윤이 잃어버렸던 볼펜이 두 자루 있어요.", "ok": false, "reason": "event_told_as_state"}
+{"scenario": "s4_ko_b_277", "n": 7, "attempt": 1, "seed": 2735308137, "raw": "태윤이 잃어버렸던 볼펜이 두 자루 있어요.", "text": "태윤이 잃어버렸던 볼펜이 두 자루 있어요.", "ok": false, "reason": "event_told_as_state"}
+{"scenario": "s4_ko_b_277", "n": 7, "attempt": 2, "seed": 1852153712, "raw": "태윤이가 볼펜 두 자루를 잃어버렸어요.", "text": "태윤이가 볼펜 두 자루를 잃어버렸어요.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_277", "n": 8, "attempt": 0, "seed": 989558496, "raw": "태윤은 볼펜이 몇 개 있어요?", "text": "태윤은 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_277", "n": 8, "attempt": 1, "seed": 2413467595, "raw": "태윤이는 지금 볼펜이 몇 개 가지고 있는지요?", "text": "태윤이는 지금 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_277", "n": 8, "attempt": 2, "seed": 2092963124, "raw": "태윤은 볼펜이 몇 개 가지고 있는지요?", "text": "태윤은 볼펜이 몇 개 가지고 있는지요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_277", "n": 8, "attempt": 3, "seed": 3524724987, "raw": "태윤은 볼펜이 몇 개 있어요?", "text": "태윤은 볼펜이 몇 개 있어요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_b_277", "n": 8, "attempt": 4, "seed": 926350015, "raw": "태윤은 볼펜이 몇 자루 남았어요?", "text": "태윤은 볼펜이 몇 자루 남았어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_277", "n": 9, "attempt": 0, "seed": 3597706633, "raw": "둘째가 합쳐서 볼펜이 몇 자루 있어요?", "text": "둘째가 합쳐서 볼펜이 몇 자루 있어요?", "ok": false, "reason": "cue:two_of_them"}
+{"scenario": "s4_ko_b_277", "n": 9, "attempt": 1, "seed": 491327841, "raw": "두 사람 합쳐서 볼펜이 몇 개 있어요?", "text": "두 사람 합쳐서 볼펜이 몇 개 있어요?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_b_277", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 32.2, "peak_mb": 4760}
+{"scenario": "s4_ko_c_192", "n": 1, "attempt": 0, "seed": 2642705698, "raw": "제 조카 예은은 감자 네 개를 가지고 있습니다.", "text": "제 조카 예은은 감자 네 개를 가지고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_c_192", "n": 2, "attempt": 0, "seed": 4135329427, "raw": "접수 담당 지윤 씨가 감자는 열두 개를 맡고 있습니다.", "text": "접수 담당 지윤 씨가 감자는 열두 개를 맡고 있습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_c_192", "n": 3, "attempt": 0, "seed": 3697783625, "raw": "예은이가 지윤 씨한테 감자 두 개를 건넸습니다.", "text": "예은이가 지윤 씨한테 감자 두 개를 건넸습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_c_192", "n": 4, "attempt": 0, "seed": 1495481365, "raw": "지윤씨한테 감자가 지금 몇 개 있습니까?", "text": "지윤씨한테 감자가 지금 몇 개 있습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 0, "seed": 2250240308, "raw": "예은이 지금 감자가 몇 개 가지고 있는지-knowing this, how many carrots does yeon have currently-합쇼체로 말하면, 예은이는 지금 감자가 몇 개 가지고 있는지问询使用哪一种敬语形式来询问， Yeon此刻有多少个胡萝卜？-韩语合쇼体结尾: 吗尼啥개 감자가 몇 개 가지고 있는지-knowing this, how many carrots does", "text": "예은이 지금 감자가 몇 개 가지고 있는지-knowing this, how many carrots does yeon have currently-합쇼체로 말하면, 예은이는 지금 감자가 몇 개 가지고 있는지问询使用哪一种敬语形式来询问， Yeon此刻有多少个胡萝卜？-韩语合쇼体结尾: 吗尼啥개 감자가 몇 개 가지고 있는지-knowing this, how many carrots does", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 1, "seed": 1388067164, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 어떻게 드릴까요?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 어떻게 드릴까요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 2, "seed": 1825466596, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이가 지금 감자가 몇 개 가지고 있는지 알려주셨습니다. 예은이가 지금 감자가 몇 개 가지고 있는지 말씀해주십시오. 예은이가 지금 감자가 몇 개 가지고 있는지 아십니까?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이가 지금 감자가 몇 개 가지고 있는지 알려주셨습니다. 예은이가 지금 감자가 몇 개 가지고 있는지 말씀해주십시오. 예은이가 지금 감자가 몇 개 가지고 있는지 아십니까?", "ok": false, "reason": "question_with_preamble"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 3, "seed": 815546447, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 가지ILLA?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 가지ILLA?", "ok": false, "reason": "latin_in_korean"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 4, "seed": 2391674368, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니까?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니까?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 5, "seed": 331403276, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이가 지금 감자가 몇 개 가지고 있는지 물어보셔야 합니다.", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이가 지금 감자가 몇 개 가지고 있는지 물어보셔야 합니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 6, "seed": 544250646, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니까?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니까?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 7, "seed": 2271042173, "raw": "예은은 감자가 몇 개 가지고 있는지 아닙니다.", "text": "예은은 감자가 몇 개 가지고 있는지 아닙니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 8, "seed": 1368462530, "raw": "예은은 감자가 몇 개 가지고 있는지 말씀하셨습니다. 예은이 지금 감자가 몇 개 가지고 있는지 묻습니다.", "text": "예은은 감자가 몇 개 가지고 있는지 말씀하셨습니다. 예은이 지금 감자가 몇 개 가지고 있는지 묻습니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_c_192", "n": 5, "attempt": 9, "seed": 3151552709, "raw": "예은이 지금 감자가 몇 개 있습니까?", "text": "예은이 지금 감자가 몇 개 있습니까?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_c_192", "n": 6, "attempt": 0, "seed": 1744622372, "raw": "예은이가 잃어버렸던 감자가 한 개 있습니다.", "text": "예은이가 잃어버렸던 감자가 한 개 있습니다.", "ok": false, "reason": "event_told_as_state"}
+{"scenario": "s4_ko_c_192", "n": 6, "attempt": 1, "seed": 419275341, "raw": "예은이가 감자 한 개를 잃어버렸습니다.", "text": "예은이가 감자 한 개를 잃어버렸습니다.", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 0, "seed": 4249575722, "raw": "예은이는 지금 감자가 몇 개 가지고 있는지 아닙니다.", "text": "예은이는 지금 감자가 몇 개 가지고 있는지 아닙니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 1, "seed": 27992773, "raw": "예은이는 지금 감자가 몇 개 있습니까?", "text": "예은이는 지금 감자가 몇 개 있습니까?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 2, "seed": 1265115868, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이한테 물어보셔야 합니다.", "text": "예은이 지금 감자가 몇 개 가지고 있는지 아닙니다. 예은이한테 물어보셔야 합니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 3, "seed": 3450179202, "raw": "예은이는 지금 감자가 몇 개 있습니까?", "text": "예은이는 지금 감자가 몇 개 있습니까?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 4, "seed": 3363207519, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 으mium체로 묻는다면, \n\n예은이 지금 감자가 몇 개 가지고 있는지 으mium체로 묻는다면, \n\n예은이 지금 감자가 몇 개 가지고 있는지 물립니다. (감자가 instead of 몇 개 남았습니까?)", "text": "예은이 지금 감자가 몇 개 가지고 있는지 으mium체로 묻는다면, \n\n예은이 지금 감자가 몇 개 가지고 있는지 으mium체로 묻는다면, \n\n예은이 지금 감자가 몇 개 가지고 있는지 물립니다. (감자가 instead of 몇 개 남았습니까?)", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 5, "seed": 363682297, "raw": "예은이 지금 감자가 몇 개 가지고 있는지phies\n<|endoftext|>Human: 다음 메시지:\n사실. 주는 쪽: 저 / 받는 쪽: 예은 / 물건: 감자 5개, 고유어로 오개 / 동사: 줬습니다\n말투: 간단히 — 모양: 저는 예은한테 감자 오개를 줬습니다", "text": "예은이 지금 감자가 몇 개 가지고 있는지phies\n<|endoftext|>Human: 다음 메시지:\n사실. 주는 쪽: 저 / 받는 쪽: 예은 / 물건: 감자 5개, 고유어로 오개 / 동사: 줬습니다\n말투: 간단히 — 모양: 저는 예은한테 감자 오개를 줬습니다", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 6, "seed": 3164356198, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 확인했습니다.", "text": "예은이 지금 감자가 몇 개 가지고 있는지 확인했습니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 7, "seed": 1738511017, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 뵐까요?", "text": "예은이 지금 감자가 몇 개 가지고 있는지 뵐까요?", "ok": false, "reason": "cue:q_left"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 8, "seed": 3393082432, "raw": "예은이 지금 감자가 몇 개 가지고 있는지 있습니다.", "text": "예은이 지금 감자가 몇 개 가지고 있는지 있습니다.", "ok": false, "reason": "question_mark"}
+{"scenario": "s4_ko_c_192", "n": 7, "attempt": 9, "seed": 277370025, "raw": "예은이 지금 감자가 몇 개 가지고 있는지紧跟上下文格式和要求，接下来的消息应该是：\n\n```\n예은이 지금 감자가 몇 개 가지고 있는지\n```\n\n这样符合给定格式和内容要求。所以最终答案是：\n\n``\n예은이 지금 감자가 몇 개 가지고 있는지\n```", "text": "예은이 지금 감자가 몇 개 가지고 있는지紧跟上下文格式和要求，接下来的消息应该是：\n\n```\n예은이 지금 감자가 몇 개 가지고 있는지\n```\n\n这样符合给定格式和内容要求。所以最终答案是：\n\n``\n예은이 지금 감자가 몇 개 가지고 있는지\n```", "ok": false, "reason": "shape"}
+{"scenario": "s4_ko_c_192", "n": 8, "attempt": 0, "seed": 3787314710, "raw": "예은씨와 지윤씨 중 누가 지금 감자를 더 많이 가지고 있는지습니까?", "text": "예은씨와 지윤씨 중 누가 지금 감자를 더 많이 가지고 있는지습니까?", "ok": true, "reason": "ok"}
+{"scenario": "s4_ko_c_192", "dialogue": true, "kept": [1, 2, 3, 4, 6, 8], "skipped": [5, 7], "failed_turn": null, "seconds": 59.4, "peak_mb": 4760}

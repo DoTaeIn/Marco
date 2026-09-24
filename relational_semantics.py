@@ -1203,6 +1203,9 @@ class RelationalParser:
         held, note = self._holder_forms(literal)
         if note is not None and held != literal and not set(note["forms"]) <= {"numeral_article"}:
             return self._repair(held)
+        # A relative clause's past verb (잃어버렸던) is no place or name to repair a particle onto.
+        if self._names_hold_adnominal({"triple": [literal, "", ""]}):
+            return {}, {}, None
         cached = self._repair_cache.get(literal)
         if cached is not None:
             return copy.deepcopy(cached)
@@ -1779,6 +1782,25 @@ class RelationalParser:
                                                   for i, word in enumerate(value.split()))
                    for row in rows for value in (row[0], row[2]))
 
+    def _names_hold_adnominal(self, meaning):
+        spec = (self.holder_forms or {}).get("adnominal_past") or {}
+        tails, coda = spec.get("tails") or [], spec.get("after_coda")
+        if not tails or not coda:
+            return False
+        from hangul import batchim
+        rows = asserted(meaning) or [joined(q["triple"]) for q in meaning.get("query", [])
+                                     if isinstance(q, dict) and isinstance(q.get("triple"), list)]
+        values = [value for row in rows for value in (row[0], row[2])]
+        values += [meaning.get("scope")] + list(meaning.get("places") or [])
+        for value in values:
+            if True:
+                for word in str(value).split() if isinstance(value, str) else []:
+                    for tail in tails:
+                        stem = word[:-len(tail)]
+                        if word.endswith(tail) and stem and batchim(stem) == coda:
+                            return True
+        return False
+
     @staticmethod
     def _swallows_marked_word(meaning, tail_particle):
         values = []
@@ -2341,6 +2363,10 @@ class RelationalParser:
                     # (English prepositions): it swallowed a phrase the example lacks.
                     if self.outside_names and self._names_hold(grounded_names, self.outside_names,
                                                                self.outside_leading):
+                        continue
+                    # Nor a verb in a relative clause's past form (잃어버렸던 볼펜: the pack's adnominal
+                    # tails after a past stem, 이름밖꼴).
+                    if self._names_hold_adnominal(grounded_names):
                         continue
                     if best_rank is None or rank > best_rank:
                         meanings, best_rank = {}, rank

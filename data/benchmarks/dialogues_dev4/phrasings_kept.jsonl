@@ -419,10 +419,10 @@
 {"scenario": "s4_ko_b_277", "n": 4, "attempt": 0, "seed": 1290819052, "text": "태윤이는 세어 보니 열세 자루예요.", "ok": true}
 {"scenario": "s4_ko_b_277", "n": 5, "attempt": 0, "seed": 2635612115, "text": "태윤이가 서아 씨한테 그중 다섯 자루의 볼펜을 줬어요.", "ok": true}
 {"scenario": "s4_ko_b_277", "n": 6, "attempt": 0, "seed": 1491263046, "text": "서아 씨는 볼펜이 몇 개 남았어요?", "ok": true}
-{"scenario": "s4_ko_b_277", "n": 7, "attempt": 0, "seed": 1110733798, "text": "태윤이 잃어버렸던 볼펜이 두 자루 있어요.", "ok": true}
+{"scenario": "s4_ko_b_277", "n": 7, "attempt": 2, "seed": 1852153712, "text": "태윤이가 볼펜 두 자루를 잃어버렸어요.", "ok": true}
 {"scenario": "s4_ko_b_277", "n": 8, "attempt": 4, "seed": 926350015, "text": "태윤은 볼펜이 몇 자루 남았어요?", "ok": true}
-{"scenario": "s4_ko_b_277", "n": 9, "attempt": 4, "seed": 4219494289, "text": "두 사람 합쳐서 볼펜이 모두 몇 개예요?", "ok": true}
-{"scenario": "s4_ko_b_277", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 36.2, "peak_mb": 4801}
+{"scenario": "s4_ko_b_277", "n": 9, "attempt": 1, "seed": 491327841, "text": "두 사람 합쳐서 볼펜이 몇 개 있어요?", "ok": true}
+{"scenario": "s4_ko_b_277", "dialogue": true, "kept": [1, 2, 3, 4, 5, 6, 7, 8, 9], "skipped": [], "failed_turn": null, "seconds": 32.2, "peak_mb": 4760}
 {"scenario": "s4_ko_b_281", "n": 1, "attempt": 0, "seed": 2897190246, "text": "택배 기사 연서 씨한테는 텐트가 하나도 없어요.", "ok": true}
 {"scenario": "s4_ko_b_281", "n": 2, "attempt": 1, "seed": 893794663, "text": "인턴 혜원 씨는 텐트만 열두 개 있어요.", "ok": true}
 {"scenario": "s4_ko_b_281", "n": 3, "attempt": 4, "seed": 926028640, "text": "혜원 씨가 연서 씨한테 그중 두 개를 넘겼어요.", "ok": true}
@@ -1264,9 +1264,9 @@
 {"scenario": "s4_ko_c_192", "n": 2, "attempt": 0, "seed": 4135329427, "text": "접수 담당 지윤 씨가 감자는 열두 개를 맡고 있습니다.", "ok": true}
 {"scenario": "s4_ko_c_192", "n": 3, "attempt": 0, "seed": 3697783625, "text": "예은이가 지윤 씨한테 감자 두 개를 건넸습니다.", "ok": true}
 {"scenario": "s4_ko_c_192", "n": 4, "attempt": 0, "seed": 1495481365, "text": "지윤씨한테 감자가 지금 몇 개 있습니까?", "ok": true}
-{"scenario": "s4_ko_c_192", "n": 6, "attempt": 0, "seed": 1744622372, "text": "예은이가 잃어버렸던 감자가 한 개 있습니다.", "ok": true}
+{"scenario": "s4_ko_c_192", "n": 6, "attempt": 1, "seed": 419275341, "text": "예은이가 감자 한 개를 잃어버렸습니다.", "ok": true}
 {"scenario": "s4_ko_c_192", "n": 8, "attempt": 0, "seed": 3787314710, "text": "예은씨와 지윤씨 중 누가 지금 감자를 더 많이 가지고 있는지습니까?", "ok": true}
-{"scenario": "s4_ko_c_192", "dialogue": true, "kept": [1, 2, 3, 4, 6, 8], "skipped": [5, 7], "failed_turn": null, "seconds": 57.5, "peak_mb": 4784}
+{"scenario": "s4_ko_c_192", "dialogue": true, "kept": [1, 2, 3, 4, 6, 8], "skipped": [5, 7], "failed_turn": null, "seconds": 59.4, "peak_mb": 4760}
 {"scenario": "s4_ko_c_202", "n": 1, "attempt": 1, "seed": 1207704400, "text": "나연은 머핀만 열여섯 개 있어요.", "ok": true}
 {"scenario": "s4_ko_c_202", "n": 2, "attempt": 1, "seed": 1831297144, "text": "도서관에는 머핀이 좀 있어요.", "ok": true}
 {"scenario": "s4_ko_c_202", "n": 3, "attempt": 1, "seed": 980514819, "text": "제 후배는 머핀만 열한 개 있어요.", "ok": true}

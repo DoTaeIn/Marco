@@ -1789,6 +1789,9 @@ class Checker:
             return False, "comparison_not_who"
         if not question and turn["say"].get("what") in ("transfer", "use") and len(sentences) > 1:
             return False, "event_in_two_sentences"
+        if (lang == "ko" and not question and turn["say"].get("what") in ("transfer", "use")
+                and re.search(r"(?:있어요|있습니다|있어|있다)[.!~]?$", text.strip())):
+            return False, "event_told_as_state"                  # 잃어버렸던 볼펜이 두 자루 있어요
         if spec["question"] != question:
             return False, "question_mark" if spec["question"] else "statement_is_question"
         if "?" in text[:-1]:
