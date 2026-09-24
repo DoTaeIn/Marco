@@ -29,7 +29,7 @@ without evidence" (gate condition 3) is checkable per turn.
 | `drive.py` | plays dialogues through `AppState.turn` exactly as `bench/dialogue_gate.py` does and records them; refuses the frozen exam sets |
 | `__main__.py` | `python -m marco.trace record / why / pretty / stats / cost` |
 
-Also `tests/trace/` (four files, 99 tests), `docs/requests/L1-1.md`,
+Also `tests/trace/` (four files, 96 tests), `docs/requests/L1-1.md`,
 `docs/requests/L1-2.md`, and the `.gitignore` line `logs/`.
 
 ## Does not own
@@ -154,12 +154,28 @@ then alternating runs; turn time is the player's own timing around
 | en | 32.02 | 32.30 | +0.9% | 0.20 | 4478 | 5.9 |
 | ko | 406.96 | 399.31 | -1.9% (noise) | 0.27 | 4607 | 5.9 |
 
+Measured at `6cbfc0a` on a quiet machine. Again at `88d5224` with other runs
+on the machine: en 53.78 off / 53.64 on (-0.3%), recording 0.29 ms/turn; ko
+700.92 / 680.82 (-2.9%), recording 0.42 ms/turn; bytes unchanged. The
+recording itself stays under 0.6% of a turn in both runs; the wall-time
+difference is inside the run-to-run noise.
+
 The budget is 10%. Recording is off unless a ledger is passed or
 `MARCO_TRACE_DIR` is set; `drive.record` then runs the gate's player
 untouched. Events hold references and digests only: a test checks that no
 pack string or graph line of 16 characters or more appears in any event
 outside the user's own text and the shown reply, and that no event exceeds
 2 KB.
+
+### Suite (L1.8)
+
+`KG_ENCODER=문자 python -m pytest -q` (parallel) at `88d5224`: 1404 passed,
+1 failed, 8 skipped (1413 collected, 96 of them in `tests/trace/`). The one
+failure is the known macOS RSS assertion
+(`tests/test_alma_integrated_reproduction.py`); the two machine-dependent
+`test_response_composer` tests passed on this run. No file outside the goal's
+ownership changed, so the other 1317 tests are main's own. The 96 trace tests
+also pass on a trial merge with `main` at `ead6302` (W3 merged).
 
 ### Replay (L1.6)
 

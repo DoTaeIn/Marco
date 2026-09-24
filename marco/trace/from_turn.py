@@ -497,9 +497,9 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
             payload = {"kind": "explanation" if meaning.get("act") == "explain" else "answer"}
             if kind:
                 payload["explains"] = str(kind)
-            conclusions.append(emit("conclusion_created", parent_ids=_unique([op] + touched + new_state
-                                                                            + evidence_events),
-                                    subsystem="reasoning", epistemic_status="inferred", payload=payload))
+            parents = _unique([op] + touched + new_state + evidence_events)
+            conclusions.append(emit("conclusion_created", parent_ids=parents, subsystem="reasoning",
+                                    epistemic_status="inferred", payload=payload))
 
     # 7. verification ----------------------------------------------------------------------
     verification = None

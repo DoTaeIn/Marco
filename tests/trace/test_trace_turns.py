@@ -98,7 +98,7 @@ def test_the_output_is_what_the_user_was_shown_with_the_gate_status(recorded, co
         assert output["payload"]["realized"] is True
         assert output["payload"]["gate_status"] == dialogue_gate.status(row)
     assert [o["status"] for o in outputs] == ["recorded", "recorded", "answered", "refused", "recorded",
-                                             "answered", "hold", "answered", "answered", "answered"]
+                                              "answered", "hold", "answered", "answered", "answered"]
 
 
 @pytest.mark.parametrize("code", LANGUAGES)

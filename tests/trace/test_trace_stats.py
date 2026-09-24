@@ -74,7 +74,7 @@ def test_holds_by_reason_record_rate_and_graph_checks(tmp_path):
     _turn(book, "c", 9, label="answerable", act="answer")
     result = stats.table(book)
     assert result["outputs"]["answerable"] == {"n": 6, "answered": 3, "recorded": 0, "hold": 2, "refused": 1,
-                                                "dialogue": 0, "error": 0, "unknown": 0}
+                                               "dialogue": 0, "error": 0, "unknown": 0}
     assert result["holds_by_reason"]["answerable"] == {"unknown_word": 2, "premise_missing": 1}
     assert result["holds_by_reason"]["all"] == {"unknown_word": 2, "premise_missing": 1, "which_referent": 1}
     assert (result["record"]["n"], result["record"]["with_state_changed"], result["record"]["rate"]) == (2, 1, 0.5)

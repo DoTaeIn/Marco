@@ -49,8 +49,8 @@ SUMMARY = {
         _short(p.get("withdrawn")), p.get("reason"),
         " superseded by %s" % _short(p["superseded_by"]) if p.get("superseded_by") else ""),
     "hypothesis_verified": lambda e, p: "%d checks ok" % len(p.get("checks") or []),
-    "hypothesis_rejected": lambda e, p: "failed: %s" % ", ".join(str(c.get("reason")) for c in p.get("checks") or []
-                                                               if not c.get("ok")),
+    "hypothesis_rejected": lambda e, p: "failed: %s" % ", ".join(
+        str(c.get("reason")) for c in p.get("checks") or [] if not c.get("ok")),
     "contradiction_found": lambda e, p: "contradiction: %s" % ", ".join(
         str(c.get("reason")) for c in p.get("checks") or [] if not c.get("ok")),
     "evidence_found": lambda e, p: "source %s" % _clip(p.get("ref"), 48),
