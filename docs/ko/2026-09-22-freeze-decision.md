@@ -87,6 +87,14 @@ chat opens them or runs them. Development uses its own dev set (G1.1).
 Parallel at most: four chats (raised from three by the owner on 2026-09-23). Each in its own hidden checkout under
 the app's hidden worktrees folder inside the repository, never a sibling folder. The owner merges between goals.
 
+**Principles note (2026-09-24):** the owner's design note
+`docs/ko/2026-09-24-perception-reasoning-emotion-philosophy.md` restates the core as
+"MARCO proves conclusions, not sensors": learned components may serve as sensors
+whose output is an unverified observation with provenance. This changes no frozen
+area and nothing before the gate; MARCO 1 keeps "no language model in the runtime".
+The post-gate schedule for SOMA, ALMA affect, deliberation and audio is in
+`docs/ko/2026-09-24-roadmap-after-marco1.md`.
+
 ## Unfreezing
 
 Only the owner unfreezes, by editing this file and the plan file. A session

@@ -17,6 +17,8 @@ Plans that existed only in conversation are recorded here in full.
 | Next goal: language realizer | `docs/ko/2026-09-22-realization-next-goal.md` | Queued. Untracked in this clone |
 | Language realization design spec | this file §3 | Recorded here in full |
 | Repository architecture refactor | this file §4 | Postponed until running goals finish |
+| Perception / reasoning / emotion philosophy (owner's design note, verbatim) | `docs/ko/2026-09-24-perception-reasoning-emotion-philosophy.md` | Idea. Principles adopted; nothing scheduled before MARCO 1 |
+| Roadmap after MARCO 1: O0 observation contract, A1' affect layers, V1 SOMA blocks-and-hand, deliberation levels, audio, neural sensors | `docs/ko/2026-09-24-roadmap-after-marco1.md` | Timeline in weeks from the gate |
 | **Freeze decision and the current queue** | `docs/ko/2026-09-22-freeze-decision.md` | **Read first. Overrides §2 below** |
 | Parallel goals, reduced | `docs/ko/2026-09-22-parallel-goals.md` | F1 now; S3, S2-min, W1, D1 in order |
 | Structure audit (refactor Phase 0, read-only) | `docs/ko/2026-09-22-structure-audit-goal.md` | May run now. Docs + `tools/` only |
