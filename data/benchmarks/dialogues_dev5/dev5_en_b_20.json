@@ -1,0 +1,248 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_20",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_049",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "only",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_then",
+   "holders:relation",
+   "question_forms:q_left",
+   "transfer_verbs:borrow",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Jaxon doesn't have a single jacket.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Jaxon",
+      "item": "jackets",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jaxon",
+      "item": "jackets",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My husband Calvin has just 16 jackets, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Calvin",
+      "item": "jackets",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Calvin",
+      "item": "jackets",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Silas has just 14 jackets, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Silas",
+      "item": "jackets",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Silas",
+      "item": "jackets",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "After that, Jaxon borrowed 4 jackets from Calvin.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Calvin",
+      "to": "Jaxon",
+      "item": "jackets",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Calvin",
+      "item": "jackets",
+      "quantity": 12
+     },
+     {
+      "entity": "Jaxon",
+      "item": "jackets",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many jackets does Calvin have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Calvin",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "jackets"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many jackets do Jaxon and Silas have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Jaxon",
+     "Silas"
+    ],
+    "quantity": 18,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "jackets"
+   }
+  }
+ ]
+}

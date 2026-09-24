@@ -1,0 +1,425 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_30",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_067",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "places",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:adv_moment",
+   "fronting:front_purpose",
+   "fronting:front_then",
+   "holders:first_person",
+   "holders:place",
+   "question_forms:q_got",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "I have 16 gloves at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:first_person"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "gloves",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "gloves",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "There are 11 gloves in the farm stand.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "farm stand",
+      "item": "gloves",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "farm stand",
+      "item": "gloves",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "For the trip, I took 3 gloves from the farm stand.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "holders:first_person",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "farm stand",
+      "to": "I",
+      "item": "gloves",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "farm stand",
+      "item": "gloves",
+      "quantity": 8
+     },
+     {
+      "entity": "I",
+      "item": "gloves",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many gloves are in the farm stand now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "farm stand",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "gloves"
+   }
+  },
+  {
+   "n": 5,
+   "say": "For the fundraiser, I left 5 gloves at the farm stand.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "holders:first_person",
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "I",
+      "to": "farm stand",
+      "item": "gloves",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "gloves",
+      "quantity": 14
+     },
+     {
+      "entity": "farm stand",
+      "item": "gloves",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many gloves has I got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "gloves"
+   }
+  },
+  {
+   "n": 7,
+   "say": "After that, I took two gloves from the farm stand.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:first_person",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "farm stand",
+      "to": "I",
+      "item": "gloves",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "farm stand",
+      "item": "gloves",
+      "quantity": 11
+     },
+     {
+      "entity": "I",
+      "item": "gloves",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many gloves do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "gloves"
+   }
+  },
+  {
+   "n": 9,
+   "say": "Sorry, it was 4, not 2.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7,
+      9
+     ]
+    },
+    "target_turn": 7,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "farm stand",
+      "to": "I",
+      "item": "gloves",
+      "quantity": 2
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "farm stand",
+      "to": "I",
+      "item": "gloves",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "farm stand",
+      "item": "gloves",
+      "quantity": 9
+     },
+     {
+      "entity": "I",
+      "item": "gloves",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many gloves are in the farm stand now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "farm stand",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5,
+      7,
+      9
+     ]
+    },
+    "item": "gloves",
+    "retracted_quantity": 11,
+    "reexecuted_quantity": 7
+   }
+  }
+ ]
+}

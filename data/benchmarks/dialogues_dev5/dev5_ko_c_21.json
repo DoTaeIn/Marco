@@ -1,0 +1,324 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_21",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_062",
+  "half": "check",
+  "focus": [
+   "only",
+   "places",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_place_now",
+   "transfer_verbs:carry",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:move_passive",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "서점에는 카드가 하나도 없어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서점",
+      "item": "카드",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "서점",
+      "item": "카드",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "방송실에는 카드 일곱 장만 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "방송실",
+      "item": "카드",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "방송실",
+      "item": "카드",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 누나는 카드 열여섯장을 들고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:carry"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "누나",
+      "item": "카드",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "누나",
+      "item": "카드",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "카드 한 장이 방송실에서 서점으로 옮겨졌어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:move_passive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "방송실",
+      "to": "서점",
+      "item": "카드",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "방송실",
+      "item": "카드",
+      "quantity": 6
+     },
+     {
+      "entity": "서점",
+      "item": "카드",
+      "quantity": 1
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 방송실에 카드가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "방송실",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "카드"
+   }
+  },
+  {
+   "n": 6,
+   "say": "지금 서점에 카드가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "서점",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "카드"
+   }
+  },
+  {
+   "n": 7,
+   "say": "제 누나가 서점에 카드 세장을 두고 왔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "누나",
+      "to": "서점",
+      "item": "카드",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "누나",
+      "item": "카드",
+      "quantity": 13
+     },
+     {
+      "entity": "서점",
+      "item": "카드",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "지금 서점에 카드가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "서점",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      7
+     ]
+    },
+    "item": "카드"
+   }
+  }
+ ]
+}

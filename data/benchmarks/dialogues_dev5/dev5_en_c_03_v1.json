@@ -1,0 +1,317 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_03_v1",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_005_v1",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:front_then",
+   "holders:relation_unnamed",
+   "question_forms:q_got",
+   "question_forms:q_two_total",
+   "transfer_verbs:keeps",
+   "transfer_verbs:pass",
+   "transfer_verbs:receive"
+  ],
+  "variant_of": "s5_en_c_005",
+  "variant": 1,
+  "variant_changes": [
+   "register:casual",
+   "1:has:has_got",
+   "2:has:holding",
+   "4:q_echo",
+   "5:q_echo",
+   "6:passive_by",
+   "7:q_still"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my colleague has got 14 cupcakes at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "colleague",
+      "item": "cupcakes",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "colleague",
+      "item": "cupcakes",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Sebastian is holding 9 cupcakes.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:keeps"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Sebastian",
+      "item": "cupcakes",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Sebastian",
+      "item": "cupcakes",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "After that, my colleague got 3 cupcakes from Sebastian.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Sebastian",
+      "to": "colleague",
+      "item": "cupcakes",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Sebastian",
+      "item": "cupcakes",
+      "quantity": 6
+     },
+     {
+      "entity": "colleague",
+      "item": "cupcakes",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "my colleague has how many cupcakes now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "colleague",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "cupcakes"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Sebastian has how many cupcakes now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Sebastian",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "cupcakes"
+   }
+  },
+  {
+   "n": 6,
+   "say": "4 cupcakes were passed to Sebastian by my colleague.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "colleague",
+      "to": "Sebastian",
+      "item": "cupcakes",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "colleague",
+      "item": "cupcakes",
+      "quantity": 13
+     },
+     {
+      "entity": "Sebastian",
+      "item": "cupcakes",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many cupcakes does my colleague still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "colleague",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "cupcakes"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many cupcakes do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "colleague",
+     "Sebastian"
+    ],
+    "quantity": 23,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "cupcakes"
+   }
+  }
+ ]
+}

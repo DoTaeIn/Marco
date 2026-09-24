@@ -1,0 +1,320 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_24",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_075",
+  "half": "build",
+  "focus": [
+   "only",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation_unnamed",
+   "holders:title",
+   "question_forms:q_still",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:receive",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "함 차장님은 프린터만 열여섯 대 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "함 차장",
+      "item": "프린터",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "함 차장",
+      "item": "프린터",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "순자 씨는 프린터만 열다섯 대 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "순자",
+      "item": "프린터",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "순자",
+      "item": "프린터",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 처제는 프린터만 열한 대 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "처제",
+      "item": "프린터",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "처제",
+      "item": "프린터",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "함 차장님은 제 처제한테 프린터 세 대를 건네줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "함 차장",
+      "to": "처제",
+      "item": "프린터",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "함 차장",
+      "item": "프린터",
+      "quantity": 13
+     },
+     {
+      "entity": "처제",
+      "item": "프린터",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "제 처제는 아직 프린터가 몇 대 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "처제",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "프린터"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 처제가 함 차장님한테서 프린터 네 대를 받았어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "함 차장",
+      "to": "처제",
+      "item": "프린터",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "함 차장",
+      "item": "프린터",
+      "quantity": 9
+     },
+     {
+      "entity": "처제",
+      "item": "프린터",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "제 처제는 아직 프린터가 몇 대 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "처제",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "프린터"
+   }
+  },
+  {
+   "n": 8,
+   "say": "순자씨와 제 처제가 합쳐서 프린터가 몇 대 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "순자",
+     "처제"
+    ],
+    "quantity": 33,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "프린터"
+   }
+  }
+ ]
+}

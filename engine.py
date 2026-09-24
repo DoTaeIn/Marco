@@ -1136,6 +1136,60 @@ def counters(graph, node):
     return out
 
 
+# ---------------------------------------------------------------------------
+# Trace emission at this file's sites (request L1-1 B1, B2, the minimum; goal G5.0 b)
+# ---------------------------------------------------------------------------
+# The trace ledger (marco.trace.ledger.Ledger) routing and judging write to, or None: recording is off
+# unless a recorder or a test sets it. Each call is its own trace; events carry graph names and node ids
+# by digest, never node text.
+TRACE = None
+# Each call's events, kept until the recorder writes them after the turn's input (``flush_trace``).
+TRACE_PENDING = []
+# The gap class of a verdict that answers nothing (the adaptive note's taxonomy, as in
+# reasoning_context.GAP_CLASSES): the declared closed class of judge's verdicts.
+VERDICT_GAP = {"B2": "routing", "B1": "evidence", "A": "evidence", "C": "conflict", "근거없음": "evidence",
+               "미지": "evidence", "지식부족": "evidence", "근거불충분": "evidence"}
+
+
+def _digest(value):
+    return hashlib.sha256(str(value).encode("utf-8")).hexdigest()[:16]
+
+
+def _trace_emit(site, events):
+    """``events``: [(kind, fields)] of one call, the first the root; each later one names the root as its
+    parent. A recording problem never changes the call's result."""
+    if TRACE is None:
+        return
+    try:
+        from marco.trace import runtime as rt
+        stamp = rt.stamp(None)
+        group = []
+        for kind, fields in events:
+            fields = dict(fields)
+            fields.setdefault("runtime", stamp)
+            fields.setdefault("subsystem", "routing" if site == "pick_graph" else "reasoning")
+            fields["source"] = {"type": "engine_site", "site": site, **fields.get("source", {})}
+            group.append((kind, fields))
+        TRACE_PENDING.append(group)
+    except Exception:            # noqa: BLE001 -- the ledger records the call, it never decides it
+        pass
+
+
+def flush_trace(ledger, parent=None):
+    """Write each pending call's events to ``ledger`` as its own trace, the first event resting on ``parent``
+    (the turn's input), the rest on the first. Returns the ids written."""
+    written = []
+    groups, TRACE_PENDING[:] = list(TRACE_PENDING), []
+    for group in groups:
+        trace_id, root = ledger.new_trace_id(), None
+        for kind, fields in group:
+            parents = [root] if root else ([parent] if parent else [])
+            event = ledger.append(kind, trace_id, parent_ids=parents, **fields)
+            root = root or event["event_id"]
+            written.append(event["event_id"])
+    return written
+
+
 def judge(graph, text, streak_A=0, share=None):
     """판정과 그래프가 적은 대사 한 줄. 채운 뒤 조사를 고쳐서 돌려준다.
 
@@ -1145,6 +1199,24 @@ def judge(graph, text, streak_A=0, share=None):
     자리마다 따로 고치고 있었고, 그중 한 길이 빠져 있었다."""
     slot = {} if share is None else share
     tag, line = _judge_raw(graph, text, streak_A, slot)
+    if TRACE is not None:
+        # L1-1 B2: the evidence, claim and basis slots the verdict used (by digest), then the conclusion
+        # or a hold with the verdict's gap class
+        used = [(role, slot.get(key)) for role, key in (("evidence", "증거"), ("claim", "주장"), ("basis", "기준"))
+                if slot.get(key)]
+        events = [("rule_applied", {"epistemic_status": "inferred", "operation": {"type": "operator", "id": "judge"},
+                                    "payload": {"operator": "judge", "verdict": tag,
+                                                    "graph": _digest(graph.get("목표") or ""),
+                                                    "sha256": _digest(text)}})]
+        events += [("evidence_found", {"epistemic_status": "reported",
+                                       "payload": {"ref": _digest(node), "role": role}}) for role, node in used]
+        if tag == "인정":
+            events.append(("conclusion_created", {"epistemic_status": "inferred", "payload": {"verdict": tag}}))
+        else:
+            events.append(("hold", {"status": "hold", "epistemic_status": "unknown",
+                                    "payload": {"reason": "verdict_%s" % tag, "gap": VERDICT_GAP.get(tag, "evidence"),
+                                                "gap_declared": tag in VERDICT_GAP}}))
+        _trace_emit("judge", events)
     if not line:
         return tag, line
     ev, claim, basis = slot.get("증거"), slot.get("주장"), slot.get("기준")
@@ -3139,6 +3211,27 @@ def _agree(scores, owners=None):
 
 
 def pick_graph(question, index=None, min_n=None, count=3):
+    """질문 -> (그래프 경로, 점수, 후보들). 고르지 못하면 (None, 점수, 후보들).
+
+    With a trace ledger on (``TRACE``), the choice is recorded (request L1-1 B1): ``routing_selected``
+    with the candidates and their scores, the threshold and the winner, or, with none over the threshold,
+    a ``hold`` (reason ``below_threshold``, gap ``routing``)."""
+    name, best, candidates = _pick_graph(question, index, min_n, count)
+    if TRACE is not None:
+        threshold = encoder.active_runtime().route_thresh if min_n is None else min_n
+        events = [("routing_selected", {"epistemic_status": "inferred",
+                                        "payload": {"selected": _digest(name) if name else None, "score": best,
+                                                    "threshold": threshold, "sha256": _digest(question),
+                                                    "candidates": [[_digest(n), score] for n, score in candidates]}})]
+        if name is None:
+            events.append(("hold", {"status": "hold", "epistemic_status": "unknown",
+                                    "payload": {"reason": "below_threshold", "gap": "routing", "gap_declared": True,
+                                                "score": best, "threshold": threshold}}))
+        _trace_emit("pick_graph", events)
+    return name, best, candidates
+
+
+def _pick_graph(question, index=None, min_n=None, count=3):
     """질문 -> (그래프 경로, 점수, 후보들). 고르지 못하면 (None, 점수, 후보들).
 
     문턱은 encoder.라우팅문턱 이다. 인코더마다 재는 것이 달라 한 값으로 둘

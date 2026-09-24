@@ -1,0 +1,280 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_10",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_036",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:count_first",
+   "holders:relation",
+   "question_forms:q_hold",
+   "question_forms:q_two_total",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:lend"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "내 언니 은비는 시계 열네 개를 보관하고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "은비",
+      "item": "시계",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "은비",
+      "item": "시계",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "내 할아버지 준혁은 시계 여섯 개를 보관하고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "준혁",
+      "item": "시계",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "준혁",
+      "item": "시계",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "은비가 준혁이한테 시계 두 개를 빌려줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "은비",
+      "to": "준혁",
+      "item": "시계",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "은비",
+      "item": "시계",
+      "quantity": 12
+     },
+     {
+      "entity": "준혁",
+      "item": "시계",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "은비는 시계를 몇 개 가지고 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "은비",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "시계"
+   }
+  },
+  {
+   "n": 5,
+   "say": "시계 한 개를 은비가 준혁한테 건넸어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "은비",
+      "to": "준혁",
+      "item": "시계",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "은비",
+      "item": "시계",
+      "quantity": 11
+     },
+     {
+      "entity": "준혁",
+      "item": "시계",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "준혁한테 시계가 지금 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "준혁",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "시계"
+   }
+  },
+  {
+   "n": 7,
+   "say": "두 사람 합쳐서 시계가 몇 개야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "은비",
+     "준혁"
+    ],
+    "quantity": 20,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "시계"
+   }
+  }
+ ]
+}

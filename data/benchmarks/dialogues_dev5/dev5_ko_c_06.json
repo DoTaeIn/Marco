@@ -1,0 +1,312 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_06",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_024",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:adv_moment",
+   "holders:relation",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "question_forms:q_still",
+   "question_forms:q_two_total",
+   "transfer_verbs:hand_over",
+   "transfer_verbs:pass"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 상사는 지금은 시계 열다섯 개가 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "상사",
+      "item": "시계",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "상사",
+      "item": "시계",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 누나 서영은 시계 열여섯 개를 들고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서영",
+      "item": "시계",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "서영",
+      "item": "시계",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "서영이 제 상사한테 시계 세 개를 건넸대요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "서영",
+      "to": "상사",
+      "item": "시계",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "서영",
+      "item": "시계",
+      "quantity": 13
+     },
+     {
+      "entity": "상사",
+      "item": "시계",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "서영은 아직 시계가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "서영",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "시계"
+   }
+  },
+  {
+   "n": 5,
+   "say": "제 상사가 지금 시계를 몇 개 가지고 있는지요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "상사",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "시계"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 상사는 서영한테 시계 네 개를 넘겼대요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "상사",
+      "to": "서영",
+      "item": "시계",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "상사",
+      "item": "시계",
+      "quantity": 14
+     },
+     {
+      "entity": "서영",
+      "item": "시계",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "제 상사는 시계를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "상사",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "시계"
+   }
+  },
+  {
+   "n": 8,
+   "say": "두 사람 합쳐서 시계가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "상사",
+     "서영"
+    ],
+    "quantity": 31,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "시계"
+   }
+  }
+ ]
+}

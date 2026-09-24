@@ -1,0 +1,358 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_01",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_005",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "places",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:count_first",
+   "holders:place",
+   "holders:title",
+   "question_forms:q_place_now",
+   "transfer_verbs:hold",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "소희 씨는 귤 열 개를 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "transfer_verbs:hold"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "소희",
+      "item": "귤",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "소희",
+      "item": "귤",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "복도에는 귤이 열네 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "복도",
+      "item": "귤",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "복도",
+      "item": "귤",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "소희 씨가 복도에서 귤 네 개를 가져갔대요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "복도",
+      "to": "소희",
+      "item": "귤",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "복도",
+      "item": "귤",
+      "quantity": 10
+     },
+     {
+      "entity": "소희",
+      "item": "귤",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "지금 복도에 귤이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "복도",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "귤"
+   }
+  },
+  {
+   "n": 5,
+   "say": "소희가 복도에서 귤 네 개를 가져갔대요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "복도",
+      "to": "소희",
+      "item": "귤",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "복도",
+      "item": "귤",
+      "quantity": 6
+     },
+     {
+      "entity": "소희",
+      "item": "귤",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "지금 복도에 귤이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "복도",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "귤"
+   }
+  },
+  {
+   "n": 7,
+   "say": "귤 두 개를 소희 씨가 복도에서 가져갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "복도",
+      "to": "소희",
+      "item": "귤",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "복도",
+      "item": "귤",
+      "quantity": 4
+     },
+     {
+      "entity": "소희",
+      "item": "귤",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "지금 복도에 귤이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "복도",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "귤"
+   }
+  },
+  {
+   "n": 9,
+   "say": "소희 씨한테 귤이 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "소희",
+    "quantity": 20,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5,
+      7
+     ]
+    },
+    "item": "귤"
+   }
+  }
+ ]
+}

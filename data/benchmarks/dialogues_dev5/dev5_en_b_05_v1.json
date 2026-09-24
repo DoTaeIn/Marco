@@ -1,0 +1,337 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_05_v1",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_011_v1",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_purpose",
+   "fronting:front_then",
+   "holders:first_person",
+   "holders:place",
+   "holders:title",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:responsible",
+   "transfer_verbs:take_from"
+  ],
+  "variant_of": "s5_en_b_011",
+  "variant": 1,
+  "variant_changes": [
+   "register:casual",
+   "1:has:keeps",
+   "2:has:has",
+   "5:q_plain"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "I keep 8 sleds.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "sleds",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "sleds",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Dr. Wagner has 11 sleds.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Wagner",
+      "item": "sleds",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Wagner",
+      "item": "sleds",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "There are 6 sleds in the hardware store.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "hardware store",
+      "item": "sleds",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "hardware store",
+      "item": "sleds",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "After that, I left two sleds at the hardware store.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:first_person",
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "I",
+      "to": "hardware store",
+      "item": "sleds",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "sleds",
+      "quantity": 6
+     },
+     {
+      "entity": "hardware store",
+      "item": "sleds",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many sleds do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "sleds"
+   }
+  },
+  {
+   "n": 6,
+   "say": "For the trip, Dr. Wagner took 5 sleds from the hardware store.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "hardware store",
+      "to": "Wagner",
+      "item": "sleds",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "hardware store",
+      "item": "sleds",
+      "quantity": 3
+     },
+     {
+      "entity": "Wagner",
+      "item": "sleds",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many sleds are in the hardware store now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "hardware store",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "sleds"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many sleds do I and Dr. Wagner have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "I",
+     "Wagner"
+    ],
+    "quantity": 22,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "sleds"
+   }
+  }
+ ]
+}

@@ -13,6 +13,110 @@ from relational_semantics import RelationalParser
 from marco.language import realize
 
 
+# ---------------------------------------------------------------------------
+# Trace emission at this file's sites (request L1-1, the minimum; goal G5.0 b)
+# ---------------------------------------------------------------------------
+# The gap class of every reason a turn of this context is held for, in the seven classes of the
+# adaptive note's taxonomy that goal G5 names (docs/ko/2026-09-24-adaptive-intelligence-design.md §3):
+# routing: the turn reached a place that cannot take it (a limit, another component's request);
+# lexical: a word is not known; concept: what a known word means is not known; relation: how two
+# known things relate is not known; parser: the words were not read into a structure, or read more
+# than one way; evidence: a fact the turn needs was never given, or cannot be told apart; conflict:
+# what was said does not fit what is recorded. The table is the closed class of reasons this file
+# gives (a test reads every reason literal in it); a reason missing here is emitted as parser with
+# ``gap_declared`` false, so the table can be completed from the ledger.
+GAP_CLASSES = {
+    "routing": ("capacity", "graph_limit", "join_limit", "below_threshold", "no_graph_selected"),
+    "lexical": ("unknown_word",),
+    "concept": ("unreadable_definition", "conflicting_definition"),
+    "relation": ("cause_effect_missing_or_ambiguous", "time_unresolved"),
+    "parser": ("unrecognized_observation", "ambiguous_quantity_subject", "ambiguous_state_subject",
+               "ambiguous_property_scope", "repair_over_bound", "repair_protected", "repair_ambiguous",
+               "too_many_readings", "extra_argument", "extra_event", "correction_invalid", "answer_unclear",
+               "role_mismatch", "unread_event", "unread_statement", "input_understanding_failed",
+               "not_phrased", "invalid", "no_reading"),
+    "evidence": ("not_stated", "premise_missing", "vague_count", "explain_nothing", "nothing_to_explain",
+                 "unfilled_role", "unsettled_event", "unresolved", "which_referent", "no_referent",
+                 "which_event", "ambiguous_reading", "reference_which_event", "reference_no_event",
+                 "reference_value_unclear", "recipient_reference_no_event", "correction_target",
+                 "unknown_basis", "unknown_lookup", "ambiguous_lookup", "unmeasured_condition",
+                 "condition_false", "missing_initial_quantity"),
+    "conflict": ("contradiction", "conflicting_event", "conflict_scope_unclear", "indivisible_amount",
+                 "invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity"),
+}
+GAP_OF = {reason: gap for gap, reasons in GAP_CLASSES.items() for reason in reasons}
+
+
+def gap_class(reason):
+    """``(gap, declared)`` for a hold reason: its class in ``GAP_CLASSES``, or parser and False."""
+    reason = str(reason or "unresolved")
+    if reason in GAP_OF:
+        return GAP_OF[reason], True
+    if reason.startswith("event_reference_"):
+        return "evidence", True
+    return "parser", False
+
+
+# Readings as candidates (goal G5.4 B, the design note's hybrid scope). When the reader's first reading of a
+# statement cannot be applied, or the reader left the statement unread because a clause read two ways at one
+# rank, every reading the reader gives (RelationalParser.readings) is checked against the conversation's
+# state. The constraints, in the order they drop a reading, each with the replay's failures it stands for
+# (graph_inference.current_facts, ReasoningContext._replay); the reader's own particle and name guards come
+# first and are applied inside the reader (a reading that breaks one is never returned):
+READING_CONSTRAINTS = (
+    ("statement", "the reading states something (a fact or an event), not a question or a request",
+     ("not_a_statement",)),
+    ("frame", "a transfer moves the thing from one holder to another, not to the same one", ("same_holder",)),
+    ("kinds", "a thing the conversation counts is not a holder: its word never stands where a holder does",
+     ("thing_as_holder",)),
+    ("readable", "the conversation, replayed with the reading, reads every statement", ("unrecognized_observation",)),
+    ("one_subject", "each change names one holder", ("ambiguous_quantity_subject", "ambiguous_state_subject",
+                                                    "ambiguous_property_scope")),
+    ("holder_exists", "a holder whose count changes, the giver and the receiver alike, has a count said before",
+     ("missing_initial_quantity",)),
+    ("count_can_move", "no count falls below zero or contradicts one said before",
+     ("invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity")),
+    ("within_limits", "the replay stays within the graph's limits", ("graph_limit", "join_limit")),
+)
+CONSTRAINT_OF = {failure: name for name, _doc, failures in READING_CONSTRAINTS for failure in failures}
+# Of the readings no constraint drops, those of the reader's best tier stand (a declared example as written
+# before a derived one, the reader's own order); one of them is used; several that would record different
+# things are asked about (reason which_reading); none: the turn holds with every reading's failure.
+
+
+def _sha(text):
+    import hashlib
+    return hashlib.sha256(str(text).strip().encode("utf-8")).hexdigest()
+
+
+class PendingTrace:
+    """The events one call of an engine site made, kept until the recorder writes them, as one trace, after
+    the turn's own input event, so each rests on it (every event but an input has a parent). It takes the
+    ledger's ``append`` with local ids; ``write`` gives the events their ledger ids."""
+
+    def __init__(self):
+        self.events = []
+
+    def new_trace_id(self):
+        return "pending"
+
+    def append(self, kind, _trace_id, **fields):
+        local = "local%d" % len(self.events)
+        self.events.append((local, kind, fields))
+        return {"event_id": local}
+
+    def write(self, ledger, parent=None):
+        """Write the events to ``ledger`` as one new trace; a root rests on ``parent`` (the turn's input)."""
+        ids, trace_id = {}, ledger.new_trace_id()
+        for local, kind, fields in self.events:
+            fields = dict(fields)
+            parents = [ids[ref] for ref in fields.pop("parent_ids", []) if ref in ids]
+            if not parents and parent:
+                parents = [parent]
+            ids[local] = ledger.append(kind, trace_id, parent_ids=parents, **fields)["event_id"]
+        return list(ids.values())
+
+
 class UnknownWord(ValueError):
     """뜻을 아직 모르는 낱말로 된 사건. 틀린 조건이 아니라 **모르는 말**이다."""
 
@@ -34,6 +138,9 @@ class DefinitionTable(dict):
 
 
 class ReasoningContext:
+    # The trace ledger this context writes its own events to (marco.trace.ledger.Ledger), or None:
+    # recording is off unless a recorder or a test sets it (request L1-1, W4-1). Never saved in a snapshot.
+    trace = None
     # 말을 어디에 놓을지 몰라서 터진 자리들.
     UNPLACED = {"unrecognized_observation", "missing_initial_quantity",
                 "ambiguous_quantity_subject", "ambiguous_state_subject",
@@ -162,10 +269,17 @@ class ReasoningContext:
         """
         marks = parser.clause_grammar.get("question_marks", [])
         stops = "".join(marks) + ".!…"
+        # a declared abbreviation's full stop (Mr., Dr.) ends no sentence
+        abbreviations = tuple(parser.clause_grammar.get("abbreviations", []))
+
+        def abbreviated(buffer):
+            tail = buffer.rstrip()
+            return any(tail.endswith(a) and (len(tail) == len(a) or not tail[-len(a) - 1].isalpha())
+                       for a in abbreviations)
         out, buffer = [], ""
         for char in text:
             buffer += char
-            if char in stops and buffer.strip():
+            if char in stops and buffer.strip() and not (char == "." and abbreviated(buffer)):
                 out.append(buffer); buffer = ""
         if buffer.strip():
             out.append(buffer)
@@ -174,6 +288,11 @@ class ReasoningContext:
 
     def _remember_unread(self, entry):
         """원문 보류를 유한하게 보관하되, 넘친 보류의 안전 효과는 남긴다."""
+        if self.trace is not None:
+            # L1-1 B8: a statement the reader did not read is evidence rejected (by digest, never its text)
+            self.__dict__.setdefault("_trace_buffer", []).append(
+                ("evidence_rejected", {"reason": str(entry.get("까닭") or "unread"), "at": entry.get("at"),
+                                       "sha256": _sha(entry["text"]), "general": bool(entry.get("범용"))}))
         if any(item["text"] == entry["text"] for item in self.unread):
             return
         self.unread.append(entry)
@@ -233,6 +352,31 @@ class ReasoningContext:
                         and not any(other and other in said for other in known))
                 if (entry.get("범용") or touches) and entry["at"] > pinned:
                     return said, entry.get("까닭")
+        return None
+
+    def _shaken_by_unread(self, parser, facts, changes):
+        """G5.3 safety: an earlier statement the reader left unread that names a holder this turn moved (every
+        word of the holder's state key, a plural s aside), said after the last observation that fixed that
+        holder's count; None when there is none. The event is kept, but what it makes the holder's count is not
+        said as known: it would rest on a statement that was never applied. A word said in the singular
+        names the key's plural when the pack declares that plural (명사수)."""
+        from relational_semantics import declared_plural
+        numeric = self._numeric_targets(parser)
+        number = getattr(parser, "noun_number", None) or {}
+        for change in changes:
+            subject = change.get("subject")
+            if not isinstance(subject, str) or change.get("predicate") not in numeric:
+                continue
+            words = [word.lower() for word in subject.split() if word]
+            pinned = max([fact["evidence"].get("turn", -1) for fact in facts
+                          if fact["triple"][0] == subject and fact["triple"][1] in numeric] or [-1])
+            turn = (change.get("evidence") or {}).get("turn", -1)
+            for entry in self.unread_guard + self.unread:
+                said = entry["text"].lower()
+                plurals = {(declared_plural(token, number) or "").lower() for token in re.findall(r"\w+", said)}
+                if (pinned < entry["at"] <= turn and self._counts_something(entry["text"], parser)
+                        and all(word in said or word in plurals for word in words)):
+                    return entry["text"]
         return None
 
 
@@ -2052,6 +2196,11 @@ class ReasoningContext:
             후보 = [(차례, 이름) for 이름, 차례 in 차례표.items()
                   if (not 나머지 and 이름) or (나머지 and 이름 != 나머지
                                             and 이름.endswith(나머지))]
+            if 말 in ((parser.language_pack or {}).get("person_pointers") or []):
+                # A pointer to a person (사람지시어: he, she, 그분) never means a place things are kept in (G5).
+                장소 = {place for item in facts for place in item.get("places") or [] if isinstance(place, str)}
+                후보 = [(차례, 이름) for 차례, 이름 in 후보
+                      if not any(이름 == place or 이름.startswith(place + " ") for place in 장소)]
             이름들 = [이름 for _차례, 이름 in sorted(후보, reverse=True)]
             고른것 = self._salient_choice(이름들)
             if 고른것 is None and len(이름들) == 1 and self._alone(이름들[0]):
@@ -2289,6 +2438,10 @@ class ReasoningContext:
         updates = parser.data.get("numeric_updates", {})
         rules, rule_ids, evidence = [], [], []
         for row in transitions:
+            # a count said without its holder rests also on the statement that named the holder (G5)
+            named_in = str(((row.get("evidence") or {}).get("bound") or {}).get("named_in") or "").strip()
+            if named_in and named_in not in evidence:
+                evidence.append(named_in)
             text = ((row.get("evidence") or {}).get("source") or (row.get("evidence") or {}).get("text") or "").strip()
             if text and text not in evidence:
                 evidence.append(text)
@@ -2337,12 +2490,35 @@ class ReasoningContext:
         self.last_subject = people[0] if len(people) == 1 else None
         if people:
             self.salient = list(people)
-        return {"operator": "relational_graph", "status": "answered", "answer": answer,
-                "meaning": meaning,
-                "transitions": deepcopy(transitions),
-                "verification": self._verification(knowledge_path, [{
-                    "ok": True, "reason": "explained_recorded_transitions",
-                    "evidence": evidence, "repairs": len(repairs)}])}
+        result = {"operator": "relational_graph", "status": "answered", "answer": answer,
+                  "meaning": meaning,
+                  "transitions": deepcopy(transitions),
+                  "verification": self._verification(knowledge_path, [{
+                      "ok": True, "reason": "explained_recorded_transitions",
+                      "evidence": evidence, "repairs": len(repairs)}])}
+        return self._with_trace_chain(result, last["kind"])
+
+    def _with_trace_chain(self, result, explains):
+        """Request W4-1: with a trace ledger on (``self.trace``), a bare why says the why chain of this
+        conversation's last explainable output (``marco.trace.explain``), composed by the realizer from
+        ``chain_meaning``; everything else of the result stays as the engine built it. With recording off,
+        with no explainable output of this conversation in the ledger, or with a ledger that cannot be
+        read, the result is the engine's own explanation, unchanged."""
+        if self.trace is None:
+            return result
+        try:
+            from marco.trace.explain import chain_meaning, last_explainable
+            from marco.trace.why import Graph
+            graph = Graph(self.trace)
+            output = last_explainable(graph, getattr(self, "trace_conversation", None) or self.conversation_id)
+            if output is None:
+                return result
+            meaning = {**chain_meaning(graph, output), "explains": explains}
+        except Exception:        # noqa: BLE001 -- LedgerError, a missing event: the engine's explanation
+            return result
+        result["meaning"] = meaning
+        result["verification"]["checks"].append({"ok": True, "reason": "explained_trace_chain", "output": output})
+        return result
 
     def _answer_other_than(self, parser, request, facts, knowledge_path):
         """`그 사람 말고 다른 사람은?`: never pick a referent the context does not fix."""
@@ -2613,6 +2789,23 @@ class ReasoningContext:
                         "ok": False, "reason": "event_reference_" + key}])}
         if not candidates:
             return reply("reference_no_event", 말=said)
+
+        def carries_old(sentence):
+            for word in sentence.split():
+                core = word.strip(".,!?")
+                digits = re.match(r"\d+", core)
+                if parse_numeral(core, numerals) == request["old"] or (digits and str(int(digits.group())) == request["old"]):
+                    return True
+            return False
+        # A statement said after every candidate that carried the old amount but was left unread may be the
+        # one the user means: asked back with it, never an older statement corrected in its place (G5 safety).
+        later = [entry["text"] for entry in self.unread_guard + self.unread
+                 if entry.get("대상") is None and not entry.get("범용") and entry["at"] > candidates[-1]
+                 and entry["text"] != said and carries_old(entry["text"])]
+        if later:
+            items = [self.observations[i].strip() for i in candidates] + [text.strip() for text in later]
+            return reply("reference_which_event", {"items": items}, 말=said,
+                         목록=", ".join('"%s"' % item for item in items))
         if len(candidates) > 1 and request["verb"] is None and candidates[-1] == len(self.observations) - 1:
             # A contrast right after an event that carried the old amount, where every statement that
             # carried it was an event, corrects the latest one: the narrative's latest change is what "it"
@@ -2824,13 +3017,20 @@ class ReasoningContext:
         expected = sorted((new + r[0][len(old):] if r[1] in adds and r[0].split()[:1] == [old] else r[0], r[1], r[2])
                           for r in rows)
         tokens = source.split(" ")
+        forms = (parser.holder_forms or {}) if isinstance(getattr(parser, "holder_forms", None), dict) else {}
+        # the particle a holder word ends in, a case particle with its delimiter stacked (한테는) as one
         particles = sorted({p for group in parser.slot_particles for p in group} | set(parser.case_particles)
-                           | {row["from"] for row in parser.particle_variants if row.get("from")}, key=len, reverse=True)
+                           | {row["from"] for row in parser.particle_variants if row.get("from")}
+                           | set(forms.get("delimiters") or []), key=len, reverse=True)
         news = [request["new_said"], new] + [w for w, _n in parser._variant_literals(request["new_said"])]
         speaker = parser.speaker_placeholder
+        # the speaker said as the user says it (제가), not as the key with a particle (나가): W5-3 item 7
+        own = (forms.get("self") or {}).get("particle_forms") or {}
+        said_by_user = request["new_said"].strip(" ,.!?")
         attempts = []
         for start in range(len(tokens)):
-            for width in (1, 2, 3):
+            # the widest span first: a titled holder (다온 씨한테는) is replaced whole, title and particle
+            for width in (3, 2, 1):
                 span = tokens[start:start + width]
                 if len(span) < width:
                     continue
@@ -2846,6 +3046,10 @@ class ReasoningContext:
                         stem = next((word[:-len(p)] for p in particles if word.endswith(p) and len(word) > len(p)
                                      and self._holder_of(parser, word[:-len(p)], keys) == new), word)
                         word = stem + parser._particle_form(stem, tail) if tail in parser.particle_mates else stem + tail
+                    if new == speaker:
+                        users = [form for form, key_form in own.items() if key_form == word]
+                        if users:
+                            word = said_by_user if said_by_user in users else users[0]
                     attempts.append(" ".join(tokens[:start] + [word + trailing] + tokens[start + width:]))
         corrected = None
         for attempt in attempts:
@@ -3152,7 +3356,13 @@ class ReasoningContext:
         지우는 규칙이 아니다 — 원문은 그대로 남고 읽기 후보가 하나 는 것뿐이다.
         군말은 뜻을 안 나르므로, 떼어 낸 쪽이 읽히면 그쪽이 옳은 읽기다. 군말만으로
         된 말은 언어팩이 이미 안 뗀다 — 그건 군말이 아니라 그 자체가 발화다.
+
+        A statement this conversation read by another of the reader's readings (G5.4 B) is read that
+        way again: the choice is kept on the conversation's parser (``chosen_readings``) and replayed.
         """
+        chosen = (getattr(parser, "chosen_readings", None) or {}).get(str(source).strip())
+        if chosen is not None:
+            return deepcopy(chosen)
         from encoder import strip_fillers
         읽음 = parser.parse(source, partial=True, repair=True, **kw)
         벗긴말 = strip_fillers(source, parser.language_pack)
@@ -3451,8 +3661,14 @@ class ReasoningContext:
                 else:
                     fits = []
                 if len(fits) == 1:
+                    # the statement that opened the count names its holder: an explanation cites it (G5)
+                    opener = next((f for f in seen if f["triple"][0] == fits[0]
+                                   and f["triple"][1] == "count_unknown"), None)
+                    named_in = ((opener or {}).get("evidence") or {})
+                    named_in = named_in.get("source") or named_in.get("text")
                     row = {**row, "triple": [fits[0]] + list(triple[1:]),
-                           "evidence": {**row["evidence"], "bound": {"from": subject, "to": fits[0]}}}
+                           "evidence": {**row["evidence"], "bound": {"from": subject, "to": fits[0],
+                                                                     **({"named_in": named_in} if named_in else {})}}}
             out.append(row)
         return out
 
@@ -3521,10 +3737,83 @@ class ReasoningContext:
 
     def turn(self, text, knowledge_path=None):
         """One turn. Its sentence comes from ``marco.language.realize``."""
+        self._trace_buffer, self._trace_readings, self._readings_dropped = [], None, []
+        observed_before = len(self.observations)
+        result, path = None, "reply"
+        try:
+            result = self._turn_said(text, knowledge_path)
+            path = self._trace_path
+            return result
+        finally:
+            if self.trace is not None:
+                self._emit_turn(text, result, path, observed_before)
+            self._trace_buffer = []
+
+    def _question_parts(self, text):
+        """G5.6 (Diairesis): the questions of a turn that asks two or more, each ended by a declared question
+        mark, in the order said; None for any other turn (a statement before a question stays one turn)."""
+        if not self._permitted(None):
+            return None
+        marks = self._parser().clause_grammar.get("question_marks", [])
+        if not marks or sum(str(text).count(mark) for mark in marks) < 2:
+            return None
+        pieces = [piece.strip() for piece in re.split("(?<=[%s])\\s+" % re.escape("".join(marks)), str(text).strip())
+                  if piece.strip()]
+        if len(pieces) < 2 or not all(any(piece.endswith(mark) for mark in marks) for piece in pieces):
+            return None
+        return pieces
+
+    def _answer_parts(self, pieces, knowledge_path):
+        """Each question answered in order, as the turn it would be alone (its reading, its evidence); the
+        turn's meaning is ``kind: queries`` with one entry per answer (request W5-1): the answer's own
+        meaning, its ``status``, and for an answered fact its ``fact`` and that fact's ``evidence``. The
+        transitions carry every answer's rows, each marked with its ``part``; the checks likewise."""
+        parser = self._parser()
+        results = []
+        for piece in pieces:
+            part = self._turn_reply(piece, knowledge_path)
+            if part is None:
+                part = {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                        "meaning": {"act": "hold", "reason": "unresolved", "said": piece},
+                        "verification": self._verification(knowledge_path, [{"ok": False, "reason": "part_unread"}])}
+            results.append(part)
+        answers = []
+        for part in results:
+            entry = {key: value for key, value in (part.get("meaning") or {}).items() if key != "conversation"}
+            entry["status"] = "answered" if part.get("status") == "answered" else "unresolved"
+            facts = [r for r in part.get("transitions") or [] if isinstance(r, dict)
+                     and isinstance(r.get("fact"), (list, tuple)) and len(r["fact"]) == 3]
+            if entry["status"] == "answered" and entry.get("kind") == "total":
+                # a total is its members' counts summed (the value the single turn says), with their rows
+                latest = {str(r["fact"][0]): r for r in facts}
+                members = [latest.get(str(member)) for member in entry.get("subjects") or []]
+                if members and all(m is not None and str(m["fact"][2]).lstrip("-").isdigit() for m in members):
+                    entry["value"] = sum(int(m["fact"][2]) for m in members)
+                    entry["evidence"] = [deepcopy(m.get("evidence")) for m in members]
+            elif entry["status"] == "answered" and facts and not entry.get("kind"):
+                entry["fact"] = [str(x) for x in facts[-1]["fact"]]
+                entry["evidence"] = deepcopy(facts[-1].get("evidence"))
+            answers.append(entry)
+        answered = all(entry["status"] == "answered" for entry in answers)
+        held = next((entry for entry in answers if entry["status"] != "answered"), None)
+        replies = parser.data["context_replies"]
+        checks = [dict(check, part=index) for index, part in enumerate(results)
+                  for check in ((part.get("verification") or {}).get("checks") or []) if isinstance(check, dict)]
+        return {"operator": "relational_graph", "status": "answered" if answered else "unresolved",
+                "answer": " ".join(str(part.get("answer") or replies["unresolved"]).strip() for part in results),
+                "transitions": [dict(row, part=index) for index, part in enumerate(results)
+                                for row in part.get("transitions") or [] if isinstance(row, dict)],
+                "meaning": {"act": "inform", "kind": "queries", "answers": answers,
+                            **({"reason": held.get("reason") or "unresolved"} if held else {})},
+                "verification": self._verification(knowledge_path, checks)}
+
+    def _turn_said(self, text, knowledge_path=None):
         language = self.language or next((source["path"] for source in getattr(self.model, "sources", ())
                                           if source["path"].startswith("styles/")), None)
         explained = self.last_explanation
-        result = self._follow_up(text, knowledge_path, language)
+        parts = self._question_parts(text)
+        result = self._answer_parts(parts, knowledge_path) if parts else self._follow_up(text, knowledge_path, language)
+        self._trace_path = "follow_up" if result is not None and not parts else "reply"
         if result is None:
             result = self._turn_reply(text, knowledge_path)
             # What the last reply's readings changed, for "what did you change?".
@@ -3564,6 +3853,297 @@ class ReasoningContext:
                                                if clause.get("blocked")]})
         return result
 
+    @staticmethod
+    def _is_statement(parsed):
+        """A reading that states facts the state records (an event of a learned verb, a definition, a
+        condition or a question is not one this check chooses between)."""
+        return bool(parsed) and bool(parsed.get("facts")) and not any(
+            parsed.get(key) for key in ("query", "사건", "사건정정", "정의", "원인", "이유물음", "조건", "가정사건"))
+
+    def _thing_as_holder(self, parser, rows):
+        """G5.4 B, the constraint ``kinds``: a row of a reading whose holder begins with a word the conversation
+        already counts as a thing (the last word of a counted state key)."""
+        if not self.observations:
+            return False
+        try:
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        except ValueError:
+            return False
+        numeric = self._numeric_targets(parser)
+        things = {str(f["triple"][0]).split()[-1] for f in facts
+                  if isinstance(f["triple"][0], str) and len(str(f["triple"][0]).split()) >= 2
+                  and f["triple"][1] in numeric}
+        return any(isinstance(row[0], str) and len(row[0].split()) >= 2
+                   and row[0].split()[0] in things for row in rows)
+
+    def _reading_failure(self, parser, text, parsed):
+        """``(failure, changes)``: the first constraint (``READING_CONSTRAINTS``) the conversation breaks with
+        ``parsed`` as the reading of ``text``, as ``(constraint, reason)``, or None when every one holds with
+        it; and the state rows the reading would record (``current_facts``' changes of this statement)."""
+        if not self._is_statement(parsed):
+            return ("statement", "not_a_statement"), []
+        rows = [f["triple"] for f in parsed.get("facts", []) if isinstance(f.get("triple"), list)]
+        updates = parser.data.get("numeric_updates") or {}
+        removed = {str(t[0]).split()[0] for t in rows if isinstance(t[0], str) and t[1] in updates
+                   and float((updates[t[1]] or {}).get("factor", 1) or 1) < 0}
+        added = {str(t[0]).split()[0] for t in rows if isinstance(t[0], str) and t[1] in updates
+                 and float((updates[t[1]] or {}).get("factor", 1) or 1) > 0}
+        if removed and removed == added:
+            return ("frame", "same_holder"), []
+        if self._thing_as_holder(parser, rows):
+            return ("kinds", "thing_as_holder"), []
+        key = str(text).strip()
+        table = parser.__dict__.setdefault("chosen_readings", {})
+        before = table.get(key)
+        table[key] = parsed
+        index = len(self.observations)
+        try:
+            facts, _d, _p, _r = self._replay(parser, self.observations + [text], self.fills,
+                                             deepcopy(self.event_ids) if self.event_ids is not None else None)
+            facts = self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", []))
+            _state, changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+        except ValueError as exc:
+            reason = str(exc).split(":")[0]
+            return (CONSTRAINT_OF.get(reason, "readable"), reason), []
+        finally:
+            if before is None:
+                table.pop(key, None)
+            else:
+                table[key] = before
+        mine = [deepcopy(row) for row in changes if (row.get("evidence") or {}).get("turn") == index
+                and row.get("operation") in ("state_update", "quantity_update")]
+        return None, mine
+
+    def _pointer_readings(self, parser, readings):
+        """G5.3: a statement whose holder is a person pointer (the pack's 사람지시어: he, she, 그분) is read
+        once for each person the conversation named who holds the same thing: never the speaker, never a place,
+        never a person the same statement names (a pointer and a name in one clause are two people). Each is one
+        more reading after the reader's own; the constraints choose, and two that fit are asked back."""
+        pointers = sorted({w.lower() for w in (parser.language_pack or {}).get("person_pointers") or [] if w},
+                          key=len, reverse=True)
+        if not pointers or not readings or not self.observations:
+            return []
+        facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        speaker = (parser.speaker_placeholder or "").lower()
+        places = {place for item in facts for place in item.get("places") or [] if isinstance(place, str)}
+        known = []
+        for item in facts:
+            name = item["triple"][0]
+            if isinstance(name, str) and name not in known:
+                known.append(name)
+        out = []
+        for reading in readings:
+            rows = reading["parsed"].get("facts", [])
+            for row in rows:
+                subject = row["triple"][0]
+                words = subject.split() if isinstance(subject, str) else []
+                pointer = next((w for w in pointers
+                                if [x.lower() for x in words[:len(w.split())]] == w.split()), None)
+                if pointer is None:
+                    continue
+                tail = " ".join(words[len(pointer.split()):])
+
+                def holder(name):
+                    return name[:-len(tail)].strip() if tail and name.endswith(" " + tail) else name.split()[0]
+                named = {holder(str(r["triple"][0])).lower() for r in rows
+                         if isinstance(r["triple"][0], str) and r["triple"][0] != subject}
+                for name in known:
+                    who = holder(name)
+                    if (tail and not name.endswith(" " + tail)) or not who or who.lower() == speaker \
+                            or who.lower() in named or who.lower() in pointers \
+                            or any(name == place or name.startswith(place + " ") for place in places):
+                        continue
+                    parsed = deepcopy(reading["parsed"])
+                    for fact in parsed.get("facts", []):
+                        if fact["triple"][0] == subject:
+                            fact["triple"][0] = name
+                    said = re.sub(r"(?<!\w)%s(?!\w)" % re.escape(pointer), who, reading["said"], count=1,
+                                  flags=re.IGNORECASE)
+                    out.append({**reading, "parsed": parsed,
+                                "said": said if said != reading["said"] else "%s [%s]" % (reading["said"], who)})
+                break
+        return out
+
+    def _check_readings(self, parser, text, verbs, knowledge_path, first_failure=None):
+        """G5.4 B: every reading the reader gives for a statement it could not apply (or left unread for a
+        clause read two ways at one rank), each checked against the state (``READING_CONSTRAINTS``, in order).
+        One reading of the best tier left: the turn is played again with it (the choice is kept for replay).
+        Several that would record different things: the turn asks which (``ambiguous_reading``, request W5-2).
+        None, when the reader had readings to choose between: the turn holds (``no_reading``) with each
+        reading's failure. With nothing to choose between: None, and the caller holds as before. The dropped
+        readings and their reasons go to the trace and the checks."""
+        # the reader's readings that state something; with fewer than two there is nothing to choose between
+        readings = [r for r in parser.readings(text, partial=True, events=True, repair=True, verbs=verbs)
+                    if self._is_statement(r["parsed"])]
+        readings += self._pointer_readings(parser, readings)
+        if first_failure is None and len(readings) < 1:
+            return None
+        if first_failure is not None and len(readings) < 2:
+            return None
+        survivors, dropped = [], []
+        for index, reading in enumerate(readings):
+            if index == 0 and first_failure is not None:
+                failure, changes = (CONSTRAINT_OF.get(first_failure, "readable"), first_failure), []
+            else:
+                failure, changes = self._reading_failure(parser, text, reading["parsed"])
+            if failure is None:
+                survivors.append(dict(reading, changes=changes, index=index))
+            else:
+                dropped.append((index, reading, failure))
+        buffer = self.__dict__.setdefault("_trace_buffer", [])
+        for index, reading, (constraint, failure) in dropped:
+            buffer.append(("hypothesis_rejected", {"checks": [{"ok": False, "reason": failure}],
+                                                   "constraint": constraint, "tier": reading["tier"],
+                                                   "reading": index, "said": _sha(reading["said"])}))
+        self._trace_readings = [[_sha(r["said"])[:16], r["tier"]] for r in readings]
+        self._readings_dropped = [{"reading": i, "constraint": c, "reason": f, "tier": r["tier"]}
+                                  for i, r, (c, f) in dropped]
+        replies = parser.data["context_replies"]
+        said = str(text).strip()
+        if not survivors:
+            if len(readings) < 2 and first_failure is None:
+                return None
+            self._remember_unread({"text": said, "at": len(self.observations)})
+            failed = [{"reading": d["reading"], "constraint": d["constraint"]} for d in self._readings_dropped]
+            return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                    "answer": replies["no_reading"].format(**{"말": said}),
+                    "meaning": {"act": "hold", "reason": "no_reading", "said": said, "failed": failed},
+                    "verification": self._verification(knowledge_path, [{
+                        "ok": False, "reason": "no_reading", "readings": len(readings),
+                        "dropped": self._readings_dropped}])}
+        tier = min(r["tier"] for r in survivors)
+        best = [r for r in survivors if r["tier"] == tier]
+        if len({r["said"] for r in best}) == 1:
+            parser.__dict__.setdefault("chosen_readings", {})[said] = best[0]["parsed"]
+            self._replay_cache = None        # a replay made with the first reading is not this one
+            self._rereading = True
+            try:
+                result = self._turn(text, knowledge_path)
+            finally:
+                self._rereading = False
+            if result is not None and isinstance(result.get("verification"), dict):
+                result["verification"].setdefault("checks", []).append({
+                    "ok": True, "reason": "reading_checked", "readings": len(readings), "tier": tier,
+                    "dropped": self._readings_dropped})
+            if result is None or result.get("status") != "observed":
+                parser.chosen_readings.pop(said, None)
+                self._replay_cache = None
+            return result
+        self._remember_unread({"text": said, "at": len(self.observations)})
+        return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                "answer": replies["ambiguous_reading"].format(**{"말": said}),
+                "meaning": {"act": "ask", "reason": "ambiguous_reading", "said": said,
+                            "readings": [{"changes": r["changes"]} for r in best]},
+                "verification": self._verification(knowledge_path, [{
+                    "ok": False, "reason": "ambiguous_reading", "readings": len(best), "tier": tier,
+                    "dropped": self._readings_dropped}])}
+
+    def _emit_turn(self, text, result, path, observed_before):
+        """This turn's events (request L1-1, the minimum), kept in ``trace_pending`` until the recorder writes
+        them after the turn's input (``flush_trace``): the path the turn took (``routing_selected``, with the
+        readings it chose between when there were several), each state update it recorded with the rule and
+        its bindings (``rule_applied``), each statement it did not read (``evidence_rejected``), each reading a
+        constraint dropped (``hypothesis_rejected``), and a hold with its reason and gap class (``hold``,
+        ``payload.gap``; also ``trace_gap``). References, state keys and digests only; a recording problem never
+        changes the turn."""
+        pending = PendingTrace()
+        self.trace_pending, self.trace_gap = pending, None
+        try:
+            self._emit_turn_events(pending, text, result, path, observed_before)
+        except Exception:        # noqa: BLE001 -- the ledger is a record of the turn, never its cause
+            self.trace_pending = None
+
+    def flush_trace(self, ledger, parent=None):
+        """Write the last turn's pending events to ``ledger`` as one trace resting on ``parent`` (the turn's
+        ``input_received``); returns their ids. The recorder calls it after it recorded the turn."""
+        pending, self.trace_pending = getattr(self, "trace_pending", None), None
+        return pending.write(ledger, parent) if pending is not None else []
+
+    def _emit_turn_events(self, ledger, text, result, path, observed_before):
+        from marco.trace import runtime as rt
+        pack = next((source["path"] for source in getattr(self.model, "sources", ())
+                     if source["path"].startswith("styles/")), None) or self.language
+        stamp = rt.stamp(pack)
+        trace_id = ledger.new_trace_id()
+        meaning = (result or {}).get("meaning") if isinstance((result or {}).get("meaning"), dict) else {}
+        status = (result or {}).get("status")
+        act = meaning.get("act")
+        if result is None:
+            selected = "not_read"
+        elif path == "follow_up":
+            selected = "follow_up:%s" % (meaning.get("kind") or act)
+        else:
+            selected = {"record": "statement", "revise": "correction", "explain": "explain", "hold": "hold",
+                        "ask": "ask", "refuse": "hold"}.get(act, "question" if status == "answered" else
+                                                            ("statement" if status == "observed" else str(act)))
+        readings = [[str(name), rank] for name, rank in (getattr(self, "_trace_readings", None) or [])]
+        root = ledger.append(
+            "routing_selected", trace_id, subsystem="reasoning", epistemic_status="inferred",
+            runtime={**stamp, **rt.first_stamp(pack)},
+            source={"type": "engine_site", "site": "ReasoningContext.turn", "conversation": self.conversation_id,
+                    "sha256": _sha(text)},
+            payload={"selected": selected, "candidates": readings or [[selected, None]], "status": status,
+                     "act": act, "observations": len(self.observations)})["event_id"]
+        parents = []
+        for kind, payload in list(getattr(self, "_trace_buffer", None) or []):
+            status_of = "failed" if kind in ("rule_blocked", "hypothesis_rejected") else "success"
+            parents.append(ledger.append(kind, trace_id, parent_ids=[root], status=status_of,
+                                         subsystem="reasoning", epistemic_status="unknown" if status_of == "failed"
+                                         else "observed", runtime=stamp,
+                                         payload=dict(payload, **({"checks": payload.get("checks", [])}
+                                                                  if kind == "hypothesis_rejected" else {})))["event_id"])
+        # L1-1 B3 at this file's site: each state update this turn recorded, with its rule and bindings
+        index = len(self.observations) - 1
+        if result is not None and status == "observed" and len(self.observations) > observed_before:
+            rules = {}
+            try:
+                parsed = self._read_source(self._parser(), self.observations[index], events=True,
+                                           verbs=self._verbs_for(self._parser(), self.observations)) or {}
+                for fact in parsed.get("facts", []):
+                    triple = fact.get("triple") or []
+                    if len(triple) == 3 and isinstance(triple[0], str):
+                        rules.setdefault(triple[0], str(triple[1]))
+            except Exception:    # noqa: BLE001
+                rules = {}
+            for row in result.get("transitions") or []:
+                evidence = row.get("evidence") if isinstance(row.get("evidence"), dict) else {}
+                if row.get("operation") not in ("state_update", "quantity_update") or evidence.get("turn") != index:
+                    continue
+                subject = str(row.get("subject"))
+                rule = rules.get(subject) or next((r for s_, r in rules.items() if s_.split()[:1] == subject.split()[:1]),
+                                                  None) or str(row.get("predicate"))
+                ledger.append("rule_applied", trace_id, parent_ids=[root], subsystem="reasoning",
+                              epistemic_status="inferred", runtime=stamp,
+                              operation={"type": "rule", "id": rule, "operation": row.get("operation")},
+                              payload={"operator": str(result.get("operator") or "relational_graph"),
+                                       "bindings": {"subject": subject, "predicate": str(row.get("predicate")),
+                                                    "before": row.get("before"), "after": row.get("after"),
+                                                    "delta": row.get("delta"), "observation": index},
+                                       "normalization": (evidence.get("normalization") or {}).get("rule")})
+        if act == "explain" and meaning.get("rules"):
+            # L1-1 B13: the rules an explanation names, as ids
+            ledger.append("rule_applied", trace_id, parent_ids=[root], subsystem="reasoning",
+                          epistemic_status="inferred", runtime=stamp,
+                          operation={"type": "explanation", "rules": [str(r) for r in meaning["rules"]]},
+                          payload={"operator": "explain", "bindings": {"kind": meaning.get("kind"),
+                                                                      "changes": len(meaning.get("changes") or [])}})
+        held = status == "unresolved" or act in ("hold", "ask", "refuse")
+        if result is None and any(kind == "evidence_rejected" for kind, _p in getattr(self, "_trace_buffer", []) or []):
+            held, reason = True, "unread_statement"
+        else:
+            reason = meaning.get("reason") or "unresolved"
+        if held:
+            detail = next((c.get("reason") for c in ((result or {}).get("verification") or {}).get("checks") or []
+                           if isinstance(c, dict) and not c.get("ok") and c.get("reason")), None)
+            gap, declared = gap_class(detail if reason == "invalid" and detail in GAP_OF else reason)
+            self.trace_gap = gap
+            ledger.append("hold", trace_id, parent_ids=parents or [root],
+                          status="refused" if act == "refuse" else "hold", subsystem="reasoning",
+                          epistemic_status="unknown", runtime=stamp,
+                          subject=meaning.get("subject") if isinstance(meaning.get("subject"), str) else None,
+                          payload={"reason": str(reason), "gap": gap, "gap_declared": declared, "act": act,
+                                   "detail": detail})
+
     def _declare_holders(self, result):
         """The meaning block's holders (request W3-1): each place this conversation's statements read
         as a holder, when the meaning names it, as ``{key: {"kind": "place"}}``."""
@@ -3577,8 +4157,72 @@ class ReasoningContext:
         places = {place for fact in facts for place in fact.get("places") or [] if isinstance(place, str)}
         said = json.dumps(meaning, ensure_ascii=False)
         holders = {place: {"kind": "place"} for place in sorted(places) if place and place in said}
+        # A titled or relational holder (request W3-1 item 1, W5-3 item 6): the key the facts use, said as the
+        # user said it where a declared holder form rewrote the words to the key (the typed words that stand
+        # where the reading has the key; the latest statement that named it so).
+        for fact in facts:
+            evidence = fact.get("evidence") or {}
+            canonical = (evidence.get("normalization") or {}).get("canonical")
+            typed = evidence.get("text")
+            subject = fact.get("triple", [None])[0]
+            if not isinstance(typed, str) or not isinstance(subject, str):
+                continue
+            key = " ".join(subject.split()[:-1])        # the holder part of "<holder> <thing>"
+            if not key:
+                continue
+            by_form = (evidence.get("normalization") or {}).get("rule") == "declared-holder-forms-v1"
+            at = canonical.find(key) if by_form and isinstance(canonical, str) else -1
+            before, after = (canonical[:at], canonical[at + len(key):]) if at >= 0 else ("", "")
+            if at < 0 or not (typed.startswith(before) and typed.endswith(after)) \
+                    or len(typed) < len(before) + len(after):
+                # another variant rewrote a word around the holder (keeps -> has, me -> I): the words the
+                # pack declares before a holder, as typed before the key (G5 batch 4)
+                words = self._said_before_key(typed, key)
+            else:
+                # a phrase variant dropped before the holder ("After that, my aunt") leaves its words in the
+                # difference; the holder's own words are those after the last comma
+                words = typed[len(before):len(typed) - len(after)].split(",")[-1].strip()
+            if words and words != key and key in words and key in said and key not in places:
+                holders[key] = {"kind": "named", "said": words}
         if holders:
             result["meaning"] = {**meaning, "holders": {**(meaning.get("holders") or {}), **holders}}
+
+    def _said_before_key(self, typed, key):
+        """The holder as typed: ``key`` with the declared words before it (가진쪽꼴): a title before a name
+        (Mr. Fischer), a possessive (my wife), a possessive and one relation word before a name (my tenant
+        Eliana); None when the words before the key are none of these."""
+        parser = self._parser()
+        spec = getattr(parser, "holder_forms", None) or {}
+        lead = {w.lower() for w in list(spec.get("possessives") or []) + list(spec.get("self_possessives") or [])}
+        titles = set(spec.get("prefix_titles") or [])
+        found, behind = None, ""
+        suffixes = sorted(spec.get("name_titles") or [], key=len, reverse=True)
+        if suffixes and len(key.split()) > 1:
+            # a title after a key of several words (황 팀장님): said with it, so the realizer keeps the key whole
+            # (W5-3 item 6); a one-word name keeps the realizer's own form (서준 씨 is said 서준)
+            found = re.search(r"(?<![\w'])%s(\s?(?:%s))" % (re.escape(key), "|".join(map(re.escape, suffixes))), typed)
+            behind = found.group(1) if found else ""
+        if found is None:
+            found = re.search(r"(?<![\w'])%s(?![\w'])" % re.escape(key), typed)
+        if found is None:
+            return None
+        ahead = typed[:found.start()].split()
+        taken = []
+        if ahead and ahead[-1] in titles:
+            taken = ahead[-1:]
+        elif ahead and ahead[-1].lower() in lead:
+            taken = ahead[-1:]
+        elif (len(ahead) >= 2 and ahead[-2].lower() in lead and ahead[-1].isalpha()
+              and ahead[-1].lower() not in parser._frame_words()
+              and (spec.get("relation_nouns") is None or ahead[-1] in spec["relation_nouns"])):
+            # (where the pack declares its relation nouns, the word between is one of them, bare: 제 팀원이 서준
+            # names two holders)
+            taken = ahead[-2:]
+        if not taken and not behind:
+            return None
+        if taken and taken[0].lower() in lead:
+            taken[0] = taken[0].lower()
+        return " ".join(taken + [key]) + behind
 
     def _follow_up(self, text, knowledge_path, language):
         """A question about this conversation's own last reply, as the language declares them
@@ -4030,6 +4674,11 @@ class ReasoningContext:
             짧은답 = [(ask, {값[1]: 값[0]})]
         if 짧은답 is not None:
             current = {"facts": [], "query": None, "정의": [], "사건": []}
+        if current is None and not getattr(self, "_rereading", False):
+            # G5.4 B: a statement the reader left unread only because a clause read two ways at one rank
+            checked = self._check_readings(parser, text, verbs, knowledge_path, first_failure=None)
+            if checked is not None:
+                return checked
         if current is None:
             # 못 읽은 말을 구간마다 적어 둔다. 이 대화의 어느 값을 흔들었는지
             # 모르므로, 그 말이 가리킨 것에 대해서는 지금 값을 확정하지 않는다.
@@ -4113,6 +4762,14 @@ class ReasoningContext:
             ask, fill = 관계보완
             새채움.append({"사건": ask["사건"], **fill, "근거": text.strip()})
         새채움 += 문맥채움 + 새덮기
+        if (keeps and self._is_statement(current) and not current.get("query") and not getattr(self, "_rereading", False)
+                and completion is None and self._thing_as_holder(
+                    parser, [f["triple"] for f in current.get("facts", []) if isinstance(f.get("triple"), list)])):
+            # G5.4 B: the first reading puts a thing the conversation counts where a holder stands (청소기는 창민이
+            # N대 가지고 있어요 read as the 청소기's 창민): the reader's other readings are checked
+            checked = self._check_readings(parser, text, verbs, knowledge_path, first_failure="thing_as_holder")
+            if checked is not None:
+                return checked
         try:
             facts, defined, unsettled, 읽힘 = self._cached_replay(
                 parser, pending, self.fills + 새채움)
@@ -4503,6 +5160,12 @@ class ReasoningContext:
             #              없다. 처음 수량이 틀렸을 수도, 중간 사건이 빠졌을 수도
             #              있다. 두 말을 다 남기고 값은 확정하지 않은 채 묻는다.
             said, reason = text.strip(), str(exc)
+            if (reason in self.UNPLACED | self.CONTRADICTION and keeps and not current.get("query")
+                    and not getattr(self, "_rereading", False)):
+                # G5.4 B: the reader's first reading does not fit the state; its other readings are checked
+                checked = self._check_readings(parser, text, verbs, knowledge_path, first_failure=reason)
+                if checked is not None:
+                    return checked
             if reason in self.UNPLACED | self.CONTRADICTION and keeps:
                 # 대상이 생략된 가변 상태 변화는 어느 기존 대상을 바꿨는지
                 # 모르므로, 원문에 이름이 없더라도 같은 관계의 질의를 막는다.
@@ -4561,6 +5224,13 @@ class ReasoningContext:
         # 이번 말이 바꾼 것만 말한다. 앞선 턴의 변화는 이미 말했다.
         this_turn = [change for change in changes
                      if (change.get("evidence") or {}).get("turn") == len(self.observations) - 1]
+        shaken = None if current["query"] else self._shaken_by_unread(parser, facts, this_turn)
+        if shaken is not None:
+            # G5.3 safety: kept, but a count resting on an unread statement is not said as fixed.
+            return {**result, "status": "unresolved",
+                    "meaning": {"act": "hold", "reason": "unread_event", "said": shaken, "kept": True},
+                    "answer": replies["unread_event"].format(**{"말": shaken}),
+                    "transitions": changes}
         spoken = parser.render_changes(this_turn) if "observed_state" in replies else ""
         settled = (replies["scope_settled"].format(**{"범위": 정해짐}) if 정해짐
                    else replies["filled_role"] if completion is not None

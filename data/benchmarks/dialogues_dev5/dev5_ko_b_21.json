@@ -1,0 +1,248 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_21",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_060",
+  "half": "build",
+  "focus": [
+   "places",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "question_forms:q_still",
+   "transfer_verbs:carry",
+   "transfer_verbs:take_from",
+   "transfer_verbs:use_for"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "거실에는 거울이 여섯 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "거실",
+      "item": "거울",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "거실",
+      "item": "거울",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 처제는 거울 열다섯 개를 들고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "transfer_verbs:carry"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "처제",
+      "item": "거울",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "처제",
+      "item": "거울",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 처제가 거실에서 거울 다섯 개를 가져갔습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "거실",
+      "to": "처제",
+      "item": "거울",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "거실",
+      "item": "거울",
+      "quantity": 1
+     },
+     {
+      "entity": "처제",
+      "item": "거울",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 처제는 아직 거울이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "처제",
+    "quantity": 20,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "거울"
+   }
+  },
+  {
+   "n": 5,
+   "say": "제 처제가 행사에 거울 한 개를 썼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:use_for"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "처제",
+      "item": "거울",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "처제",
+      "item": "거울",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 처제는 거울을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "처제",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "거울"
+   }
+  }
+ ]
+}

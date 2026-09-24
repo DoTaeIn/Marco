@@ -1,0 +1,326 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_14",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_032",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "only",
+   "places"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_then",
+   "holders:place",
+   "holders:relation",
+   "holders:title",
+   "question_forms:q_hold",
+   "question_forms:q_left",
+   "question_forms:q_place_now",
+   "transfer_verbs:pass",
+   "transfer_verbs:take_from",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The north depot has some donuts. 5 of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "north depot",
+      "item": "donuts",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "north depot",
+      "item": "donuts",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Dr. Graham only has 7 donuts, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Graham",
+      "item": "donuts",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Graham",
+      "item": "donuts",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "My grandmother Cecilia has no donuts at all.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Cecilia",
+      "item": "donuts",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Cecilia",
+      "item": "donuts",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Then Dr. Graham passed one donut to Cecilia.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Graham",
+      "to": "Cecilia",
+      "item": "donuts",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Graham",
+      "item": "donuts",
+      "quantity": 6
+     },
+     {
+      "entity": "Cecilia",
+      "item": "donuts",
+      "quantity": 1
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many donuts are in the north depot now?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "north depot",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "donuts"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many donuts does Dr. Graham have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Graham",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "donuts"
+   }
+  },
+  {
+   "n": 7,
+   "say": "After that, Cecilia took three donuts from the north depot.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "north depot",
+      "to": "Cecilia",
+      "item": "donuts",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "north depot",
+      "item": "donuts",
+      "quantity": 2
+     },
+     {
+      "entity": "Cecilia",
+      "item": "donuts",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many donuts does Cecilia hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Cecilia",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      7
+     ]
+    },
+    "item": "donuts"
+   }
+  }
+ ]
+}

@@ -1,0 +1,249 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_38",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_109",
+  "half": "build",
+  "focus": [
+   "places",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:apposition",
+   "holders:place",
+   "question_forms:q_place_now",
+   "transfer_verbs:hold",
+   "transfer_verbs:keep",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "비서 예나 씨가 앨범 열다섯 권을 보관하고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "transfer_verbs:keep"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "예나",
+      "item": "앨범",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "예나",
+      "item": "앨범",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "동현은 앨범 아홉 권을 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:hold"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "동현",
+      "item": "앨범",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "동현",
+      "item": "앨범",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "과수원에는 앨범이 여섯 권 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "과수원",
+      "item": "앨범",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "과수원",
+      "item": "앨범",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "동현이 과수원에서 앨범 두 권을 가져갔습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "과수원",
+      "to": "동현",
+      "item": "앨범",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "과수원",
+      "item": "앨범",
+      "quantity": 4
+     },
+     {
+      "entity": "동현",
+      "item": "앨범",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "현재 과수원에 있는 앨범이 몇 권 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "과수원",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "앨범"
+   }
+  },
+  {
+   "n": 6,
+   "say": "예나 씨와 동현이는 지금 앨범이 몇 권 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "예나",
+     "동현"
+    ],
+    "quantity": 26,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "앨범"
+   }
+  }
+ ]
+}

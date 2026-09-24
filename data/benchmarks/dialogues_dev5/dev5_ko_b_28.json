@@ -1,0 +1,286 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_28",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_082",
+  "half": "build",
+  "focus": [
+   "only",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "transfer_verbs:borrow",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "승민은 인형만 다섯 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "승민",
+      "item": "인형",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "승민",
+      "item": "인형",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 삼촌은 인형만 열두 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "삼촌",
+      "item": "인형",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "삼촌",
+      "item": "인형",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 삼촌이 승민이한테 인형 한 개를 빌렸습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "승민",
+      "to": "삼촌",
+      "item": "인형",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "승민",
+      "item": "인형",
+      "quantity": 4
+     },
+     {
+      "entity": "삼촌",
+      "item": "인형",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 삼촌이 지금 인형이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "삼촌",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "인형"
+   }
+  },
+  {
+   "n": 5,
+   "say": "승민이 지금 인형을 몇 개 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "승민",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "인형"
+   }
+  },
+  {
+   "n": 6,
+   "say": "잘못 말했어요, 한 개 말고 두 개입니다.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "승민",
+      "to": "삼촌",
+      "item": "인형",
+      "quantity": 1
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "승민",
+      "to": "삼촌",
+      "item": "인형",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "승민",
+      "item": "인형",
+      "quantity": 3
+     },
+     {
+      "entity": "삼촌",
+      "item": "인형",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "제 삼촌은 지금 인형이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "삼촌",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "인형",
+    "retracted_quantity": 13,
+    "reexecuted_quantity": 15
+   }
+  }
+ ]
+}

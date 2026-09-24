@@ -308,6 +308,7 @@ def _cached_reasoning_language(path, stamp, size):
             "quantity_chain": _validate_quantity_chain(pack.get("수량연쇄", {})),
             "event_domains": _validate_event_domains(pack.get("event_domains", [])),
             "pointers": list(pack.get("지시어", [])),
+            "person_pointers": list(pack.get("사람지시어", [])),
             "plan": dict(pack.get("계획", {})),
             "slot_questions": dict(pack.get("자리물음", {})),
             "short_tails": list(pack.get("짧은답꼬리", [])),
@@ -369,6 +370,7 @@ def _validate_ellipsis(declared):
     if not isinstance(declared, dict):
         raise ValueError("ellipsis must be an object")
     allowed = {"coordination": {"trailing_words"}, "part_reference": {"leading_words"}, "scope": {"turn"},
+               "thing_reference": {"trailing_word"},
                "gapping": {"first_conjunct_verb"}, "counted_noun": {"after_numeral"}}
     for key, value in declared.items():
         if key.startswith("_"):
@@ -551,6 +553,7 @@ def decode_language_pack(pack: dict, source: str = "") -> dict[str, Any]:
             "quantity_chain": _validate_quantity_chain(pack.get("수량연쇄", {})),
             "event_domains": _validate_event_domains(pack.get("event_domains", [])),
             "pointers": list(pack.get("지시어", [])),
+            "person_pointers": list(pack.get("사람지시어", [])),
             "plan": dict(pack.get("계획", {})),
             "slot_questions": dict(pack.get("자리물음", {})),
             "short_tails": list(pack.get("짧은답꼬리", [])),

@@ -148,9 +148,20 @@ def digest(dialogues):
     return hashlib.sha256("\n".join(rows).encode("utf-8")).hexdigest()
 
 
+def _tracked_corpus(owned):
+    """The tracked files of the gate's corpus folders without the frozen exam sets (never listed, opened or
+    read by a development run: the owner runs that overlap check) and without ``owned`` (G5)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("dialogues_dev4_build",
+                                                  ROOT / "data/benchmarks/dialogues_dev4/build.py")
+    build = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(build)
+    return build.corpus_files(owned)
+
+
 def test_dev2_shares_no_full_sentence_with_any_other_corpus_file():
     import bench.dialogue_gate as gate
-    result = gate.overlaps(gate.load(DEV2), disk_root=ROOT, owned=("data/benchmarks/dialogues_dev2/",))
+    result = gate.overlaps(gate.load(DEV2), files=_tracked_corpus(("data/benchmarks/dialogues_dev2/",)))
     assert result["files"] > 100 and result["overlaps"] == []
 
 
@@ -302,8 +313,11 @@ def test_a_repair_that_would_change_a_protected_word_is_held_and_says_which(lang
     assert (unguarded.get("meaning") or {}).get("reason") != "repair_protected"
     if not text.endswith("?"):
         # It was read as a statement: recorded, or recorded-and-checked against the
-        # earlier counts (a changed amount or a negation turned into a name).
-        assert unguarded["status"] == "observed" or unguarded["meaning"]["reason"] in ("invalid", "contradiction")
+        # earlier counts (a changed amount or a negation turned into a name). (Round 5: with the
+        # only-count N밖에 없다 declared, the unguarded nearest reading of 누리는 단추가 없어 여섯 개 is
+        # over the bound: it is left unread, which is no reading either.)
+        assert unguarded["status"] in ("observed", None) or unguarded["meaning"]["reason"] in (
+            "invalid", "contradiction", "no_reading")
 
 
 def test_injected_repairs_cover_every_protected_kind_and_are_at_least_twelve():

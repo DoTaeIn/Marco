@@ -1,0 +1,257 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_13_v2",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_039_v2",
+  "half": "build",
+  "focus": [
+   "only",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation",
+   "question_forms:q_hold",
+   "transfer_verbs:receive",
+   "transfer_verbs:send",
+   "zero_vague:only"
+  ],
+  "variant_of": "s5_ko_b_039",
+  "variant": 2,
+  "variant_changes": [
+   "4:q_plain",
+   "6:q_plain"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 처제 슬기는 치마만 열한 벌 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "슬기",
+      "item": "치마",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "슬기",
+      "item": "치마",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 남편 형준은 치마가 열두 벌 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "형준",
+      "item": "치마",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "형준",
+      "item": "치마",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "슬기가 형준한테 치마 네 벌을 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "슬기",
+      "to": "형준",
+      "item": "치마",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "슬기",
+      "item": "치마",
+      "quantity": 7
+     },
+     {
+      "entity": "형준",
+      "item": "치마",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "형준이 지금 치마가 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "형준",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "치마"
+   }
+  },
+  {
+   "n": 5,
+   "say": "슬기가 형준한테서 치마 한 벌을 받았습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "형준",
+      "to": "슬기",
+      "item": "치마",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "형준",
+      "item": "치마",
+      "quantity": 15
+     },
+     {
+      "entity": "슬기",
+      "item": "치마",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "형준이 지금 치마가 몇 벌 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "형준",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "치마"
+   }
+  }
+ ]
+}

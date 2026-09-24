@@ -4,9 +4,7 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "ambiguous_referent",
   "correction",
-  "follow_up",
   "ownership",
   "transfer"
  ],
@@ -17,34 +15,37 @@
   "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_002",
+  "scenario": "s4_ko_c_006",
   "half": "check",
   "focus": [
    "korean_register",
-   "referent_repairs",
-   "transfer_verbs"
+   "question_forms",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
    "corrections:amount",
-   "holders:first_person",
-   "holders:relation_unnamed",
+   "holders:title",
    "question_forms:q_hold",
-   "referent_repairs:i_mean",
-   "referent_repairs:pronoun_fixed",
-   "transfer_verbs:hold",
-   "transfer_verbs:receive"
+   "question_forms:q_left",
+   "transfer_verbs:give_back",
+   "transfer_verbs:send",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "시우는 머핀 열한 개가 있어요.",
+   "say": "최 기사님도 자두가 좀 있어요. 세어 보니 다섯 개네요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [],
+   "classes": [
+    "holders:title",
+    "zero_vague:vague_then_exact"
+   ],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -59,30 +60,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "시우",
-      "item": "머핀",
-      "quantity": 11
+      "holder": "최 기사",
+      "item": "자두",
+      "quantity": 5
      }
     ],
     "state": [
      {
-      "entity": "시우",
-      "item": "머핀",
-      "quantity": 11
+      "entity": "최 기사",
+      "item": "자두",
+      "quantity": 5
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "저는 머핀 여섯 개를 가지고 있어요.",
+   "say": "서연은 자두가 하나도 없어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:first_person",
-    "transfer_verbs:hold"
+    "zero_vague:zero"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -98,28 +98,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "나",
-      "item": "머핀",
-      "quantity": 6
+      "holder": "서연",
+      "item": "자두",
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "나",
-      "item": "머핀",
-      "quantity": 6
+      "entity": "서연",
+      "item": "자두",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "은서는 머핀이 여덟 개 있어요.",
+   "say": "최 기사님이 서연한테 자두 한 개를 보냈어요.",
    "label": "hold",
    "tags": [
-    "ownership"
+    "transfer"
    ],
-   "classes": [],
+   "classes": [
+    "transfer_verbs:send"
+   ],
    "scenario_turn": 3,
    "expect": {
     "act": "record",
@@ -133,129 +135,146 @@
     },
     "events": [
      {
-      "type": "has",
-      "holder": "은서",
-      "item": "머핀",
-      "quantity": 8
+      "type": "transfer",
+      "from": "최 기사",
+      "to": "서연",
+      "item": "자두",
+      "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "은서",
-      "item": "머핀",
-      "quantity": 8
+      "entity": "최 기사",
+      "item": "자두",
+      "quantity": 4
+     },
+     {
+      "entity": "서연",
+      "item": "자두",
+      "quantity": 1
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "제 짝꿍은 머핀 열세 개가 있어요.",
-   "label": "hold",
-   "tags": [
-    "ownership"
-   ],
-   "classes": [
-    "holders:relation_unnamed"
-   ],
-   "scenario_turn": 4,
-   "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      4
-     ]
-    },
-    "events": [
-     {
-      "type": "has",
-      "holder": "짝꿍",
-      "item": "머핀",
-      "quantity": 13
-     }
-    ],
-    "state": [
-     {
-      "entity": "짝꿍",
-      "item": "머핀",
-      "quantity": 13
-     }
-    ]
-   }
-  },
-  {
-   "n": 5,
-   "say": "제 짝꿍이 은서한테서 머핀 네 개를 받았어요.",
-   "label": "hold",
+   "say": "최 기사님은 자두가 몇 개 남았어요?",
+   "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:receive"
+    "question_forms:q_left"
    ],
-   "scenario_turn": 5,
+   "scenario_turn": 4,
    "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
+    "act": "answer",
+    "entity": "최 기사",
+    "quantity": 4,
+    "relation": "count",
     "evidence": {
      "turns": [
-      5
+      1,
+      3
      ]
     },
-    "events": [
-     {
-      "type": "transfer",
-      "from": "은서",
-      "to": "짝꿍",
-      "item": "머핀",
-      "quantity": 4
-     }
-    ],
-    "state": [
-     {
-      "entity": "은서",
-      "item": "머핀",
-      "quantity": 4
-     },
-     {
-      "entity": "짝꿍",
-      "item": "머핀",
-      "quantity": 17
-     }
-    ]
+    "item": "자두"
    }
   },
   {
-   "n": 6,
-   "say": "제 짝꿍한테 머핀이 지금 몇 개 있어요?",
+   "n": 5,
+   "say": "서연이 지금 자두를 몇 개 가지고 있는지요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 6,
+   "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "짝꿍",
-    "quantity": 17,
+    "entity": "서연",
+    "quantity": 1,
     "relation": "count",
     "evidence": {
      "turns": [
-      4,
-      5
+      2,
+      3
      ]
     },
-    "item": "머핀"
+    "item": "자두"
+   }
+  },
+  {
+   "n": 6,
+   "say": "최 기사님은 서연이한테 자두 두 개를 돌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "최 기사",
+      "to": "서연",
+      "item": "자두",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "최 기사",
+      "item": "자두",
+      "quantity": 2
+     },
+     {
+      "entity": "서연",
+      "item": "자두",
+      "quantity": 3
+     }
+    ]
    }
   },
   {
    "n": 7,
-   "say": "잘못 말했어요, 네 개 말고 일곱 개예요.",
+   "say": "최 기사님한테 자두가 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "최 기사",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "자두"
+   }
+  },
+  {
+   "n": 8,
+   "say": "아, 두 개가 아니라 하나였어요.",
    "label": "correction",
    "tags": [
     "correction"
@@ -263,7 +282,7 @@
    "classes": [
     "corrections:amount"
    ],
-   "scenario_turn": 7,
+   "scenario_turn": 8,
    "expect": {
     "act": "revise",
     "entity": null,
@@ -271,46 +290,46 @@
     "relation": null,
     "evidence": {
      "turns": [
-      5,
-      7
+      6,
+      8
      ]
     },
-    "target_turn": 5,
+    "target_turn": 6,
     "replaces": [
      {
       "type": "transfer",
-      "from": "은서",
-      "to": "짝꿍",
-      "item": "머핀",
-      "quantity": 4
+      "from": "최 기사",
+      "to": "서연",
+      "item": "자두",
+      "quantity": 2
      }
     ],
     "with": [
      {
       "type": "transfer",
-      "from": "은서",
-      "to": "짝꿍",
-      "item": "머핀",
-      "quantity": 7
+      "from": "최 기사",
+      "to": "서연",
+      "item": "자두",
+      "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "은서",
-      "item": "머핀",
-      "quantity": 1
+      "entity": "최 기사",
+      "item": "자두",
+      "quantity": 3
      },
      {
-      "entity": "짝꿍",
-      "item": "머핀",
-      "quantity": 20
+      "entity": "서연",
+      "item": "자두",
+      "quantity": 2
      }
     ]
    }
   },
   {
-   "n": 8,
-   "say": "은서는 머핀을 몇 개 가지고 있어요?",
+   "n": 9,
+   "say": "최 기사님은 자두를 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -318,79 +337,52 @@
    "classes": [
     "question_forms:q_hold"
    ],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "answer",
-    "entity": "은서",
-    "quantity": 1,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      3,
-      5,
-      7
-     ]
-    },
-    "item": "머핀",
-    "retracted_quantity": 4,
-    "reexecuted_quantity": -3
-   }
-  },
-  {
-   "n": 9,
-   "say": "그분은 지금 머핀이 몇 개 있어요?",
-   "label": "answerable",
-   "tags": [
-    "ambiguous_referent",
-    "follow_up"
-   ],
-   "classes": [
-    "referent_repairs:pronoun_fixed"
-   ],
    "scenario_turn": 9,
    "expect": {
     "act": "answer",
-    "entity": "은서",
-    "quantity": 1,
+    "entity": "최 기사",
+    "quantity": 3,
     "relation": "count",
     "evidence": {
      "turns": [
+      1,
       3,
-      5,
-      7
+      6,
+      8
      ]
     },
-    "item": "머핀",
-    "retracted_quantity": 4
+    "item": "자두",
+    "retracted_quantity": 2,
+    "reexecuted_quantity": 1
    }
   },
   {
    "n": 10,
-   "say": "은서 씨를 말한 거예요.",
+   "say": "최 기사님과 서연이는 지금 자두가 몇 개 있어요?",
    "label": "answerable",
    "tags": [
-    "ambiguous_referent",
     "transfer"
    ],
-   "classes": [
-    "referent_repairs:i_mean"
-   ],
+   "classes": [],
    "scenario_turn": 10,
    "expect": {
     "act": "answer",
-    "entity": "은서",
-    "quantity": 1,
-    "relation": "count",
+    "entity": [
+     "최 기사",
+     "서연"
+    ],
+    "quantity": 5,
+    "relation": "total",
     "evidence": {
      "turns": [
+      1,
+      2,
       3,
-      5,
-      7
+      6,
+      8
      ]
     },
-    "item": "머핀",
-    "retracted_quantity": 4,
-    "reexecuted_quantity": -3
+    "item": "자두"
    }
   }
  ]

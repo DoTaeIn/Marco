@@ -1,49 +1,54 @@
 {
  "schema": "marco1-dialogue-gate-v1",
- "id": "dev4_ko_c_51",
- "language": "ko",
+ "id": "dev5_en_c_11_v2",
+ "language": "en",
  "domain": "everyday",
  "categories": [
-  "ambiguous_referent",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "haeyo",
-  "split": "multi_fact",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_231",
+  "scenario": "s5_en_c_024_v2",
   "half": "check",
   "focus": [
-   "korean_register",
-   "partitives",
-   "referent_repairs"
+   "only",
+   "question_forms",
+   "relations"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:first_person",
-   "multi_fact",
-   "partitives:partitive",
-   "question_forms:q_hold",
-   "referent_repairs:i_mean",
-   "referent_repairs:pronoun_asked",
+   "holders:relation",
+   "holders:relation_unnamed",
+   "question_forms:q_got",
+   "transfer_verbs:give_back",
    "transfer_verbs:pass",
-   "transfer_verbs:use_for"
+   "zero_vague:only",
+   "zero_vague:zero"
+  ],
+  "variant_of": "s5_en_c_024",
+  "variant": 2,
+  "variant_changes": [
+   "4:q_plain",
+   "6:q_plain"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "수진은 충전기 세 개를 가지고 있어요. 은서는 수진한테서 충전기 네 개를 받아요.",
+   "say": "my supervisor only has 9 shelves, nothing else.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "multi_fact"
+    "holders:relation_unnamed",
+    "zero_vague:only"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -59,40 +64,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "수진",
-      "item": "충전기",
-      "quantity": 3
-     },
-     {
-      "type": "has",
-      "holder": "은서",
-      "item": "충전기",
-      "quantity": 4
+      "holder": "supervisor",
+      "item": "shelves",
+      "quantity": 9
      }
     ],
     "state": [
      {
-      "entity": "수진",
-      "item": "충전기",
-      "quantity": 3
-     },
-     {
-      "entity": "은서",
-      "item": "충전기",
-      "quantity": 4
+      "entity": "supervisor",
+      "item": "shelves",
+      "quantity": 9
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "저는 충전기 여덟 개를 보관하고 있어요.",
+   "say": "my godson Joshua doesn't have a single shelf.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:first_person"
+    "holders:relation",
+    "zero_vague:zero"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -108,29 +103,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "나",
-      "item": "충전기",
-      "quantity": 8
+      "holder": "Joshua",
+      "item": "shelves",
+      "quantity": 0
      }
     ],
     "state": [
      {
-      "entity": "나",
-      "item": "충전기",
-      "quantity": 8
+      "entity": "Joshua",
+      "item": "shelves",
+      "quantity": 0
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "수진이 은서한테 그중 두 개의 충전기를 넘겼어요.",
+   "say": "my supervisor passed 4 shelves to Joshua.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "partitives:partitive",
     "transfer_verbs:pass"
    ],
    "scenario_turn": 3,
@@ -147,60 +141,60 @@
     "events": [
      {
       "type": "transfer",
-      "from": "수진",
-      "to": "은서",
-      "item": "충전기",
-      "quantity": 2
+      "from": "supervisor",
+      "to": "Joshua",
+      "item": "shelves",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "수진",
-      "item": "충전기",
-      "quantity": 1
+      "entity": "supervisor",
+      "item": "shelves",
+      "quantity": 5
      },
      {
-      "entity": "은서",
-      "item": "충전기",
-      "quantity": 6
+      "entity": "Joshua",
+      "item": "shelves",
+      "quantity": 4
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "은서는 충전기를 몇 개 가지고 있어요?",
+   "say": "How many shelves does Joshua have now?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "question_forms:q_hold"
+    "question_forms:q_got"
    ],
    "scenario_turn": 4,
    "expect": {
     "act": "answer",
-    "entity": "은서",
-    "quantity": 6,
+    "entity": "Joshua",
+    "quantity": 4,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
+      2,
       3
      ]
     },
-    "item": "충전기"
+    "item": "shelves"
    }
   },
   {
    "n": 5,
-   "say": "은서가 행사에 충전기 세 개를 썼어요.",
+   "say": "Joshua gave back three shelves to my supervisor.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:use_for"
+    "transfer_verbs:give_back"
    ],
    "scenario_turn": 5,
    "expect": {
@@ -215,72 +209,79 @@
     },
     "events": [
      {
-      "type": "use",
-      "holder": "은서",
-      "item": "충전기",
+      "type": "transfer",
+      "from": "Joshua",
+      "to": "supervisor",
+      "item": "shelves",
       "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "은서",
-      "item": "충전기",
-      "quantity": 3
+      "entity": "Joshua",
+      "item": "shelves",
+      "quantity": 1
+     },
+     {
+      "entity": "supervisor",
+      "item": "shelves",
+      "quantity": 8
      }
     ]
    }
   },
   {
    "n": 6,
-   "say": "그분은 지금 충전기가 몇 개 있어요?",
-   "label": "ambiguous",
-   "tags": [
-    "ambiguous_referent"
-   ],
-   "classes": [
-    "referent_repairs:pronoun_asked"
-   ],
-   "scenario_turn": 7,
-   "expect": {
-    "act": "clarify",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      6
-     ]
-    },
-    "candidates": [
-     "수진",
-     "은서"
-    ]
-   }
-  },
-  {
-   "n": 7,
-   "say": "아, 수진요.",
+   "say": "How many shelves does my supervisor have now?",
    "label": "answerable",
    "tags": [
-    "ambiguous_referent",
     "transfer"
    ],
    "classes": [
-    "referent_repairs:i_mean"
+    "question_forms:q_got"
    ],
-   "scenario_turn": 8,
+   "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "수진",
-    "quantity": 1,
+    "entity": "supervisor",
+    "quantity": 8,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
-      3
+      3,
+      5
      ]
     },
-    "item": "충전기"
+    "item": "shelves"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many shelves does my supervisor and Joshua have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "supervisor",
+     "Joshua"
+    ],
+    "quantity": 9,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "shelves"
    }
   }
  ]

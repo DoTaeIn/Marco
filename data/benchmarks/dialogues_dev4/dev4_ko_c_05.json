@@ -4,6 +4,8 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
+  "ambiguous_referent",
+  "follow_up",
   "ownership",
   "transfer"
  ],
@@ -14,30 +16,36 @@
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_014",
+  "scenario": "s4_ko_c_017",
   "half": "check",
   "focus": [
-   "holders",
-   "question_forms",
-   "transfer_verbs"
+   "referent_repairs",
+   "transfer_verbs",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
+   "holders:first_person",
    "holders:relation",
-   "question_forms:q_hold",
-   "question_forms:q_two_total",
-   "transfer_verbs:borrow"
+   "holders:title",
+   "question_forms:q_left",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:hand_over",
+   "zero_vague:vague_then_exact"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "미경은 명찰이 열세 개 있습니다.",
+   "say": "예준씨는 스티커가 다섯 장 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [],
+   "classes": [
+    "holders:title"
+   ],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -52,29 +60,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "미경",
-      "item": "명찰",
-      "quantity": 13
+      "holder": "예준",
+      "item": "스티커",
+      "quantity": 5
      }
     ],
     "state": [
      {
-      "entity": "미경",
-      "item": "명찰",
-      "quantity": 13
+      "entity": "예준",
+      "item": "스티커",
+      "quantity": 5
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "미경 후배 지영은 명찰 열다섯 개가 있습니다.",
+   "say": "저도 스티커가 좀 있습니다. 세어 보니 여덟 장입니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "holders:first_person",
+    "zero_vague:vague_then_exact"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -90,29 +99,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "지영",
-      "item": "명찰",
-      "quantity": 15
+      "holder": "나",
+      "item": "스티커",
+      "quantity": 8
      }
     ],
     "state": [
      {
-      "entity": "지영",
-      "item": "명찰",
-      "quantity": 15
+      "entity": "나",
+      "item": "스티커",
+      "quantity": 8
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "지영이 미경한테 명찰 네 개를 빌렸습니다.",
+   "say": "제 이웃 하은은 스티커가 좀 있습니다. 세어 보니 열여섯 장입니다.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "transfer_verbs:borrow"
+    "holders:relation",
+    "zero_vague:vague_then_exact"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -127,130 +137,168 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "미경",
-      "to": "지영",
-      "item": "명찰",
-      "quantity": 4
+      "type": "has",
+      "holder": "하은",
+      "item": "스티커",
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "미경",
-      "item": "명찰",
-      "quantity": 9
-     },
-     {
-      "entity": "지영",
-      "item": "명찰",
-      "quantity": 19
+      "entity": "하은",
+      "item": "스티커",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "미경은 지금 명찰이 몇 개 있습니까?",
-   "label": "answerable",
+   "say": "저는 예준씨한테 스티커 세 장을 건넸습니다.",
+   "label": "hold",
    "tags": [
     "transfer"
    ],
-   "classes": [],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:hand_over"
+   ],
    "scenario_turn": 4,
    "expect": {
-    "act": "answer",
-    "entity": "미경",
-    "quantity": 9,
-    "relation": "count",
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
     "evidence": {
      "turns": [
-      1,
-      3
+      4
      ]
     },
-    "item": "명찰"
+    "events": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "예준",
+      "item": "스티커",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "스티커",
+      "quantity": 5
+     },
+     {
+      "entity": "예준",
+      "item": "스티커",
+      "quantity": 8
+     }
+    ]
    }
   },
   {
    "n": 5,
-   "say": "지영은 명찰을 몇 개 가지고 있습니까?",
+   "say": "예준씨는 스티커가 몇 개 남았습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "question_forms:q_hold"
+    "question_forms:q_left"
    ],
    "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "지영",
-    "quantity": 19,
+    "entity": "예준",
+    "quantity": 8,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
-      3
+      1,
+      4
      ]
     },
-    "item": "명찰"
+    "item": "스티커"
    }
   },
   {
    "n": 6,
-   "say": "미경과 지영 중 누가 지금 명찰을 더 많이 가지고 있는지 났습니까?",
+   "say": "그분은 지금 스티커가 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "예준",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "스티커"
+   }
+  },
+  {
+   "n": 7,
+   "say": "아, 예준씨입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "예준",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "스티커"
+   }
+  },
+  {
+   "n": 8,
+   "say": "저와 하은이는 지금 스티커가 몇 장 있습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "answer",
-    "entity": "지영",
-    "quantity": null,
-    "relation": "more",
-    "candidates": [
-     "미경",
-     "지영"
-    ],
-    "item": "명찰",
-    "evidence": {
-     "turns": [
-      1,
-      2,
-      3
-     ]
-    }
-   }
-  },
-  {
-   "n": 7,
-   "say": "두 사람이 합쳐서 명찰이 모두 몇 개입니까?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_two_total"
-   ],
-   "scenario_turn": 7,
+   "scenario_turn": 8,
    "expect": {
     "act": "answer",
     "entity": [
-     "미경",
-     "지영"
+     "나",
+     "하은"
     ],
-    "quantity": 28,
+    "quantity": 21,
     "relation": "total",
     "evidence": {
      "turns": [
-      1,
       2,
-      3
+      3,
+      4
      ]
     },
-    "item": "명찰"
+    "item": "스티커"
    }
   }
  ]

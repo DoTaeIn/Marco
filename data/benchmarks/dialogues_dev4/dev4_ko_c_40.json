@@ -4,46 +4,47 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "ambiguous_referent",
-  "follow_up",
+  "correction",
+  "missing_premise",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "hapsyo",
+  "register": "haeyo",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_167",
+  "scenario": "s4_ko_c_172",
   "half": "check",
   "focus": [
    "fronting",
-   "holders",
-   "referent_repairs"
+   "partitives",
+   "zero_vague"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:adv_moment",
-   "holders:apposition",
-   "holders:relation",
+   "corrections:amount",
+   "fronting:count_first",
    "question_forms:q_hold",
-   "referent_repairs:i_mean",
-   "referent_repairs:pronoun_fixed",
-   "transfer_verbs:borrow"
+   "transfer_verbs:hand_over",
+   "zero_vague:exact_later",
+   "zero_vague:only",
+   "zero_vague:vague",
+   "zero_vague:vague_asked"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "제 친구 미경은 여행가방 열여섯 개를 맡고 있습니다.",
+   "say": "서연은 망치가 좀 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "zero_vague:vague"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -59,29 +60,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "미경",
-      "item": "여행가방",
-      "quantity": 16
+      "holder": "서연",
+      "item": "망치",
+      "quantity": null
      }
     ],
     "state": [
      {
-      "entity": "미경",
-      "item": "여행가방",
-      "quantity": 16
+      "entity": "서연",
+      "item": "망치",
+      "quantity": null
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "제 이웃 우진은 여행가방이 세 개 있습니다.",
+   "say": "하은은 망치만 열네 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "zero_vague:only"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -97,68 +98,53 @@
     "events": [
      {
       "type": "has",
-      "holder": "우진",
-      "item": "여행가방",
-      "quantity": 3
+      "holder": "하은",
+      "item": "망치",
+      "quantity": 14
      }
     ],
     "state": [
      {
-      "entity": "우진",
-      "item": "여행가방",
-      "quantity": 3
+      "entity": "하은",
+      "item": "망치",
+      "quantity": 14
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "경비원 다은 씨가 지금은 여행가방 일곱 개를 들고 있습니다.",
+   "say": "서연은 지금 망치가 몇 개 있어요?",
    "label": "hold",
    "tags": [
-    "ownership"
+    "missing_premise"
    ],
    "classes": [
-    "fronting:adv_moment",
-    "holders:apposition"
+    "zero_vague:vague_asked"
    ],
    "scenario_turn": 3,
    "expect": {
-    "act": "record",
-    "entity": null,
+    "act": "hold",
+    "entity": "서연",
     "quantity": null,
-    "relation": null,
+    "relation": "count",
     "evidence": {
      "turns": [
       3
      ]
     },
-    "events": [
-     {
-      "type": "has",
-      "holder": "다은",
-      "item": "여행가방",
-      "quantity": 7
-     }
-    ],
-    "state": [
-     {
-      "entity": "다은",
-      "item": "여행가방",
-      "quantity": 7
-     }
-    ]
+    "item": "망치"
    }
   },
   {
    "n": 4,
-   "say": "우진이 미경에게 여행가방 세 개를 빌렸습니다.",
+   "say": "서연은 망치가 열한 개 있어요.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "transfer_verbs:borrow"
+    "zero_vague:exact_later"
    ],
    "scenario_turn": 4,
    "expect": {
@@ -173,30 +159,69 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "미경",
-      "to": "우진",
-      "item": "여행가방",
-      "quantity": 3
+      "type": "has",
+      "holder": "서연",
+      "item": "망치",
+      "quantity": 11
      }
     ],
     "state": [
      {
-      "entity": "미경",
-      "item": "여행가방",
-      "quantity": 13
-     },
-     {
-      "entity": "우진",
-      "item": "여행가방",
-      "quantity": 6
+      "entity": "서연",
+      "item": "망치",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 5,
-   "say": "우진은 여행가방을 몇 개 가지고 있습니까?",
+   "say": "망치 다섯 개를 서연이 하은한테 건네주었어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "서연",
+      "to": "하은",
+      "item": "망치",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "서연",
+      "item": "망치",
+      "quantity": 6
+     },
+     {
+      "entity": "하은",
+      "item": "망치",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "서연은 망치를 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -204,121 +229,104 @@
    "classes": [
     "question_forms:q_hold"
    ],
-   "scenario_turn": 5,
+   "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "우진",
+    "entity": "서연",
     "quantity": 6,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
-      4
-     ]
-    },
-    "item": "여행가방"
-   }
-  },
-  {
-   "n": 6,
-   "say": "미경은 지금 여행가방이 몇 개 있습니까?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "answer",
-    "entity": "미경",
-    "quantity": 13,
-    "relation": "count",
-    "evidence": {
-     "turns": [
       1,
-      4
+      4,
+      5
      ]
     },
-    "item": "여행가방"
+    "item": "망치"
    }
   },
   {
    "n": 7,
-   "say": "그분은 지금 여행가방이 몇 개 있습니까?",
-   "label": "answerable",
+   "say": "아, 다섯 개가 아니라 여섯 개였어요.",
+   "label": "correction",
    "tags": [
-    "ambiguous_referent",
-    "follow_up"
+    "correction"
    ],
    "classes": [
-    "referent_repairs:pronoun_fixed"
+    "corrections:amount"
    ],
    "scenario_turn": 7,
    "expect": {
-    "act": "answer",
-    "entity": "미경",
-    "quantity": 13,
-    "relation": "count",
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
     "evidence": {
      "turns": [
-      1,
-      4
+      5,
+      7
      ]
     },
-    "item": "여행가방"
+    "target_turn": 5,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "서연",
+      "to": "하은",
+      "item": "망치",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "서연",
+      "to": "하은",
+      "item": "망치",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "서연",
+      "item": "망치",
+      "quantity": 5
+     },
+     {
+      "entity": "하은",
+      "item": "망치",
+      "quantity": 20
+     }
+    ]
    }
   },
   {
    "n": 8,
-   "say": "우진씨를 말한 거입니다.",
+   "say": "서연은 망치를 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
-    "ambiguous_referent",
     "transfer"
    ],
    "classes": [
-    "referent_repairs:i_mean"
+    "question_forms:q_hold"
    ],
    "scenario_turn": 8,
    "expect": {
     "act": "answer",
-    "entity": "우진",
-    "quantity": 6,
+    "entity": "서연",
+    "quantity": 5,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
-      4
+      1,
+      4,
+      5,
+      7
      ]
     },
-    "item": "여행가방"
-   }
-  },
-  {
-   "n": 9,
-   "say": "우진이랑 다은씨가 합쳐서 여행가방이 몇 개 있습니까?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "answer",
-    "entity": [
-     "우진",
-     "다은"
-    ],
-    "quantity": 13,
-    "relation": "total",
-    "evidence": {
-     "turns": [
-      2,
-      3,
-      4
-     ]
-    },
-    "item": "여행가방"
+    "item": "망치",
+    "retracted_quantity": 6,
+    "reexecuted_quantity": 0
    }
   }
  ]

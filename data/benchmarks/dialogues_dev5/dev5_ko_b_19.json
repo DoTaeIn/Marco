@@ -1,0 +1,246 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_19",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_056",
+  "half": "build",
+  "focus": [
+   "places",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "내 처제 가영은 앨범 열다섯권을 가지고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "가영",
+      "item": "앨범",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "가영",
+      "item": "앨범",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "상담실에는 앨범이 일곱 권 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "상담실",
+      "item": "앨범",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "상담실",
+      "item": "앨범",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "주차장에는 앨범이 열여섯 권 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "주차장",
+      "item": "앨범",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "주차장",
+      "item": "앨범",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "가영이 주차장에 앨범 네 권을 두고 왔어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "가영",
+      "to": "주차장",
+      "item": "앨범",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "가영",
+      "item": "앨범",
+      "quantity": 11
+     },
+     {
+      "entity": "주차장",
+      "item": "앨범",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 주차장에 앨범이 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "주차장",
+    "quantity": 20,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "앨범"
+   }
+  },
+  {
+   "n": 6,
+   "say": "상담실과 주차장이 합쳐서 앨범이 몇 권 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "상담실",
+     "주차장"
+    ],
+    "quantity": 27,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "앨범"
+   }
+  }
+ ]
+}

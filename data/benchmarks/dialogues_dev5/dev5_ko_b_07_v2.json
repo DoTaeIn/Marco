@@ -1,0 +1,272 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_07_v2",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_019_v2",
+  "half": "build",
+  "focus": [
+   "places",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_place_now",
+   "transfer_verbs:take_from"
+  ],
+  "variant_of": "s5_ko_b_019",
+  "variant": 2,
+  "variant_changes": []
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "당근 여섯 개가 행정실에 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "행정실",
+      "item": "당근",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "행정실",
+      "item": "당근",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "과수원에는 당근이 일곱 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "과수원",
+      "item": "당근",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "과수원",
+      "item": "당근",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 남편은 당근 열여섯 개가 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "남편",
+      "item": "당근",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "남편",
+      "item": "당근",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 남편이 과수원에서 당근 다섯 개를 가져갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "과수원",
+      "to": "남편",
+      "item": "당근",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "과수원",
+      "item": "당근",
+      "quantity": 2
+     },
+     {
+      "entity": "남편",
+      "item": "당근",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 과수원에 당근이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "과수원",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "당근"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 남편한테 당근이 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "남편",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "당근"
+   }
+  },
+  {
+   "n": 7,
+   "say": "행정실과 과수원이 합쳐서 당근이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "행정실",
+     "과수원"
+    ],
+    "quantity": 8,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "당근"
+   }
+  }
+ ]
+}

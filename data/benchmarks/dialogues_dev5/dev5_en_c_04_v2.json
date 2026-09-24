@@ -1,0 +1,309 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_04_v2",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_010_v2",
+  "half": "check",
+  "focus": [
+   "only",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation",
+   "question_forms:q_left",
+   "question_forms:q_still",
+   "transfer_verbs:send",
+   "zero_vague:only"
+  ],
+  "variant_of": "s5_en_c_010",
+  "variant": 2,
+  "variant_changes": [
+   "2:adv_moment",
+   "4:q_plain",
+   "6:q_left",
+   "7:q_got"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my colleague Andrew has just 13 locks, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Andrew",
+      "item": "locks",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "Andrew",
+      "item": "locks",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my boyfriend Levi keeps 12 locks at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Levi",
+      "item": "locks",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Levi",
+      "item": "locks",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Andrew gave Levi four locks.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Andrew",
+      "to": "Levi",
+      "item": "locks",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Andrew",
+      "item": "locks",
+      "quantity": 9
+     },
+     {
+      "entity": "Levi",
+      "item": "locks",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many locks does Andrew have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Andrew",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "locks"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Levi sent Andrew two locks.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Levi",
+      "to": "Andrew",
+      "item": "locks",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Levi",
+      "item": "locks",
+      "quantity": 14
+     },
+     {
+      "entity": "Andrew",
+      "item": "locks",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many locks does Andrew have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Andrew",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "locks"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many locks has Levi got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Levi",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "locks"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many locks do Andrew and Levi have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Andrew",
+     "Levi"
+    ],
+    "quantity": 25,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "locks"
+   }
+  }
+ ]
+}

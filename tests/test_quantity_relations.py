@@ -110,7 +110,8 @@ def test_ui_answers_quantity_events_without_research(tmp_path):
         result = app.turn("상자에 돌이 23개 있다. 8개를 꺼내고 2개를 넣었다. 지금 돌은 몇 개야?", "session_quantity1")
     research.assert_not_called()
     assert result["phase"] == "answer"
-    assert result["answer"]["answer"] == "17개입니다."
+    # round 5: the box said with 에 holds the stones (상자 돌), so the answer may name it (상자는 17개입니다)
+    assert result["answer"]["answer"] in ("17개입니다.", "상자는 17개입니다.")
 
 
 def test_ui_answers_declared_quantity_chain_without_research(tmp_path):

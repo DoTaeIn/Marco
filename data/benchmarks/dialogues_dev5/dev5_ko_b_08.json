@@ -1,0 +1,279 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_08",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_022",
+  "half": "build",
+  "focus": [
+   "only",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:apposition",
+   "holders:relation_unnamed",
+   "question_forms:q_relative",
+   "question_forms:q_still",
+   "transfer_verbs:receive",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 형은 쟁반만 열한 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "형",
+      "item": "쟁반",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "형",
+      "item": "쟁반",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "청소 담당 순자 씨는 쟁반만 열여섯 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "순자",
+      "item": "쟁반",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "순자",
+      "item": "쟁반",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "순자 씨가 제 형한테서 쟁반 두 개를 받았어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "형",
+      "to": "순자",
+      "item": "쟁반",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "형",
+      "item": "쟁반",
+      "quantity": 9
+     },
+     {
+      "entity": "순자",
+      "item": "쟁반",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "순자씨는 아직 쟁반이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "순자",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "쟁반"
+   }
+  },
+  {
+   "n": 5,
+   "say": "제 형이 순자씨한테 쟁반 세 개를 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "형",
+      "to": "순자",
+      "item": "쟁반",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "형",
+      "item": "쟁반",
+      "quantity": 6
+     },
+     {
+      "entity": "순자",
+      "item": "쟁반",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 형이 가지고 있는 쟁반은 지금 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_relative"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "형",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "쟁반"
+   }
+  },
+  {
+   "n": 7,
+   "say": "제 형과 순자 씨가 합쳐서 쟁반이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "형",
+     "순자"
+    ],
+    "quantity": 27,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "쟁반"
+   }
+  }
+ ]
+}

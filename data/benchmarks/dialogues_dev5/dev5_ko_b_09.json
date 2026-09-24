@@ -1,0 +1,329 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_09",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "late",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_023",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "only",
+   "places"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "corrections:amount",
+   "fronting:count_first",
+   "holders:place",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "민경은 지갑만 열한 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "민경",
+      "item": "지갑",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "민경",
+      "item": "지갑",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "분장실도 지갑이 좀 있습니다. 세어 보니 일곱 개입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "분장실",
+      "item": "지갑",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "분장실",
+      "item": "지갑",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "은영은 지갑만 다섯 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "은영",
+      "item": "지갑",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "은영",
+      "item": "지갑",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "지갑 세 개를 민경이 분장실에 두고 왔습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:count_first",
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "민경",
+      "to": "분장실",
+      "item": "지갑",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "민경",
+      "item": "지갑",
+      "quantity": 8
+     },
+     {
+      "entity": "분장실",
+      "item": "지갑",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 분장실에 지갑이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "분장실",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "지갑"
+   }
+  },
+  {
+   "n": 6,
+   "say": "민경한테 지갑이 지금 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "민경",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "지갑"
+   }
+  },
+  {
+   "n": 7,
+   "say": "잘못 말했어요, 세 개 말고 일곱 개입니다.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      7
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "민경",
+      "to": "분장실",
+      "item": "지갑",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "민경",
+      "to": "분장실",
+      "item": "지갑",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "민경",
+      "item": "지갑",
+      "quantity": 4
+     },
+     {
+      "entity": "분장실",
+      "item": "지갑",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "민경한테 지갑이 지금 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "민경",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      7
+     ]
+    },
+    "item": "지갑",
+    "retracted_quantity": 8,
+    "reexecuted_quantity": 1
+   }
+  }
+ ]
+}

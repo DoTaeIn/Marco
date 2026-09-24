@@ -1,0 +1,345 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_31",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_091",
+  "half": "build",
+  "focus": [
+   "places",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_place_now",
+   "transfer_verbs:carry",
+   "transfer_verbs:move_passive",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "프린터 열다섯 대가 상담실에 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "상담실",
+      "item": "프린터",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "상담실",
+      "item": "프린터",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 처제 소영은 프린터 다섯 대를 들고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "transfer_verbs:carry"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "소영",
+      "item": "프린터",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "소영",
+      "item": "프린터",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "프린터 열여섯 대가 주차장에 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "주차장",
+      "item": "프린터",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "주차장",
+      "item": "프린터",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "프린터 한 대가 주차장에서 상담실로 옮겨졌어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:move_passive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "주차장",
+      "to": "상담실",
+      "item": "프린터",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "주차장",
+      "item": "프린터",
+      "quantity": 15
+     },
+     {
+      "entity": "상담실",
+      "item": "프린터",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 상담실에 프린터가 몇 대 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "상담실",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "프린터"
+   }
+  },
+  {
+   "n": 6,
+   "say": "소영이 주차장에서 프린터 한 대를 가져갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "주차장",
+      "to": "소영",
+      "item": "프린터",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "주차장",
+      "item": "프린터",
+      "quantity": 14
+     },
+     {
+      "entity": "소영",
+      "item": "프린터",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "소영한테 프린터가 지금 몇 대 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "소영",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      6
+     ]
+    },
+    "item": "프린터"
+   }
+  },
+  {
+   "n": 8,
+   "say": "지금 주차장에 프린터가 몇 대 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "주차장",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "프린터"
+   }
+  },
+  {
+   "n": 9,
+   "say": "상담실과 주차장이 합쳐서 프린터가 몇 대 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "상담실",
+     "주차장"
+    ],
+    "quantity": 30,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "프린터"
+   }
+  }
+ ]
+}

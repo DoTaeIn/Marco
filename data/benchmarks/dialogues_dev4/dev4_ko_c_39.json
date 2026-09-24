@@ -5,18 +5,18 @@
  "domain": "everyday",
  "categories": [
   "ambiguous_referent",
-  "correction",
+  "follow_up",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "haeyo",
+  "register": "hapsyo",
   "split": "one_fact_per_turn",
-  "correction_position": "late",
+  "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_164",
+  "scenario": "s4_ko_c_167",
   "half": "check",
   "focus": [
    "fronting",
@@ -25,27 +25,25 @@
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "corrections:amount",
    "fronting:adv_moment",
-   "fronting:count_first",
    "holders:apposition",
    "holders:relation",
    "question_forms:q_hold",
    "referent_repairs:i_mean",
-   "transfer_verbs:pass"
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:borrow"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "집주인 건우 씨가 지금은 생수 아홉 병을 보관하고 있어요.",
+   "say": "제 친구 미경은 여행가방 열여섯 개를 맡고 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "fronting:adv_moment",
-    "holders:apposition"
+    "holders:relation"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -61,29 +59,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "건우",
-      "item": "생수",
-      "quantity": 9
+      "holder": "미경",
+      "item": "여행가방",
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "건우",
-      "item": "생수",
-      "quantity": 9
+      "entity": "미경",
+      "item": "여행가방",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "유진은 지금 생수 다섯 병을 가지고 있어요.",
+   "say": "제 이웃 우진은 여행가방이 세 개 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "fronting:adv_moment"
+    "holders:relation"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -99,29 +97,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "유진",
-      "item": "생수",
-      "quantity": 5
+      "holder": "우진",
+      "item": "여행가방",
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "유진",
-      "item": "생수",
-      "quantity": 5
+      "entity": "우진",
+      "item": "여행가방",
+      "quantity": 3
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "유진 후배 재윤은 생수 열여섯 병이 있어요.",
+   "say": "경비원 다은 씨가 지금은 여행가방 일곱 개를 들고 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "fronting:adv_moment",
+    "holders:apposition"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -137,30 +136,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "재윤",
-      "item": "생수",
-      "quantity": 16
+      "holder": "다은",
+      "item": "여행가방",
+      "quantity": 7
      }
     ],
     "state": [
      {
-      "entity": "재윤",
-      "item": "생수",
-      "quantity": 16
+      "entity": "다은",
+      "item": "여행가방",
+      "quantity": 7
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "생수 다섯 병을 건우 씨가 유진한테 넘겼어요.",
+   "say": "우진이 미경에게 여행가방 세 개를 빌렸습니다.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:count_first",
-    "transfer_verbs:pass"
+    "transfer_verbs:borrow"
    ],
    "scenario_turn": 4,
    "expect": {
@@ -176,29 +174,29 @@
     "events": [
      {
       "type": "transfer",
-      "from": "건우",
-      "to": "유진",
-      "item": "생수",
-      "quantity": 5
+      "from": "미경",
+      "to": "우진",
+      "item": "여행가방",
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "건우",
-      "item": "생수",
-      "quantity": 4
+      "entity": "미경",
+      "item": "여행가방",
+      "quantity": 13
      },
      {
-      "entity": "유진",
-      "item": "생수",
-      "quantity": 10
+      "entity": "우진",
+      "item": "여행가방",
+      "quantity": 6
      }
     ]
    }
   },
   {
    "n": 5,
-   "say": "건우 씨는 생수를 몇 개 가지고 있어요?",
+   "say": "우진은 여행가방을 몇 개 가지고 있습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -209,8 +207,31 @@
    "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "건우",
-    "quantity": 4,
+    "entity": "우진",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "여행가방"
+   }
+  },
+  {
+   "n": 6,
+   "say": "미경은 지금 여행가방이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "미경",
+    "quantity": 13,
     "relation": "count",
     "evidence": {
      "turns": [
@@ -218,139 +239,86 @@
       4
      ]
     },
-    "item": "생수"
-   }
-  },
-  {
-   "n": 6,
-   "say": "아, 다섯 개가 아니라 세 개였어요.",
-   "label": "correction",
-   "tags": [
-    "correction"
-   ],
-   "classes": [
-    "corrections:amount"
-   ],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "revise",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      4,
-      6
-     ]
-    },
-    "target_turn": 4,
-    "replaces": [
-     {
-      "type": "transfer",
-      "from": "건우",
-      "to": "유진",
-      "item": "생수",
-      "quantity": 5
-     }
-    ],
-    "with": [
-     {
-      "type": "transfer",
-      "from": "건우",
-      "to": "유진",
-      "item": "생수",
-      "quantity": 3
-     }
-    ],
-    "state": [
-     {
-      "entity": "건우",
-      "item": "생수",
-      "quantity": 6
-     },
-     {
-      "entity": "유진",
-      "item": "생수",
-      "quantity": 8
-     }
-    ]
+    "item": "여행가방"
    }
   },
   {
    "n": 7,
-   "say": "유진은 지금 생수가 몇 병 있어요?",
+   "say": "그분은 지금 여행가방이 몇 개 있습니까?",
    "label": "answerable",
    "tags": [
-    "transfer"
+    "ambiguous_referent",
+    "follow_up"
    ],
-   "classes": [],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "유진",
-    "quantity": 8,
+    "entity": "미경",
+    "quantity": 13,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
-      4,
-      6
+      1,
+      4
      ]
     },
-    "item": "생수",
-    "retracted_quantity": 10,
-    "reexecuted_quantity": 13
+    "item": "여행가방"
    }
   },
   {
    "n": 8,
-   "say": "유진이 지금 생수를 몇 병 가지고 있는지요?",
+   "say": "우진씨를 말한 거입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "우진",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "여행가방"
+   }
+  },
+  {
+   "n": 9,
+   "say": "우진이랑 다은씨가 합쳐서 여행가방이 몇 개 있습니까?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 8,
-   "expect": {
-    "act": "answer",
-    "entity": "유진",
-    "quantity": 8,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      4,
-      6
-     ]
-    },
-    "item": "생수",
-    "retracted_quantity": 10,
-    "reexecuted_quantity": 13
-   }
-  },
-  {
-   "n": 9,
-   "say": "아, 재윤요.",
-   "label": "answerable",
-   "tags": [
-    "ambiguous_referent",
-    "ownership"
-   ],
-   "classes": [
-    "referent_repairs:i_mean"
-   ],
    "scenario_turn": 9,
    "expect": {
     "act": "answer",
-    "entity": "재윤",
-    "quantity": 16,
-    "relation": "count",
+    "entity": [
+     "우진",
+     "다은"
+    ],
+    "quantity": 13,
+    "relation": "total",
     "evidence": {
      "turns": [
-      3
+      2,
+      3,
+      4
      ]
     },
-    "item": "생수"
+    "item": "여행가방"
    }
   }
  ]

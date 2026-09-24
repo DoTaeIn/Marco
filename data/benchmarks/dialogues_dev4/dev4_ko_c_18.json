@@ -4,7 +4,8 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
-  "correction",
+  "ambiguous_referent",
+  "follow_up",
   "ownership",
   "transfer"
  ],
@@ -12,36 +13,32 @@
   "word_order": "free",
   "register": "haeyo",
   "split": "one_fact_per_turn",
-  "correction_position": "late",
+  "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_050",
+  "scenario": "s4_ko_c_064",
   "half": "check",
   "focus": [
-   "holders",
+   "korean_register",
    "question_forms",
-   "transfer_verbs"
+   "referent_repairs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "corrections:amount",
-   "holders:relation",
-   "transfer_verbs:carry",
-   "transfer_verbs:hold",
-   "transfer_verbs:pass"
+   "holders:first_person",
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "지윤은 자전거 열다섯 대를 가지고 있어요.",
+   "say": "하준은 열여섯 개의 머핀을 가지고 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "transfer_verbs:hold"
-   ],
+   "classes": [],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -56,29 +53,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "지윤",
-      "item": "자전거",
-      "quantity": 15
+      "holder": "하준",
+      "item": "머핀",
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "지윤",
-      "item": "자전거",
-      "quantity": 15
+      "entity": "하준",
+      "item": "머핀",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "지윤 사촌 상훈은 자전거가 네 대 있어요.",
+   "say": "저는 머핀 열다섯 개가 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "holders:first_person"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -94,30 +91,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "상훈",
-      "item": "자전거",
-      "quantity": 4
+      "holder": "나",
+      "item": "머핀",
+      "quantity": 15
      }
     ],
     "state": [
      {
-      "entity": "상훈",
-      "item": "자전거",
-      "quantity": 4
+      "entity": "나",
+      "item": "머핀",
+      "quantity": 15
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "유진은 자전거 열한 대를 들고 있어요.",
+   "say": "태민은 머핀이 네 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "transfer_verbs:carry"
-   ],
+   "classes": [],
    "scenario_turn": 3,
    "expect": {
     "act": "record",
@@ -132,30 +127,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "유진",
-      "item": "자전거",
-      "quantity": 11
+      "holder": "태민",
+      "item": "머핀",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "유진",
-      "item": "자전거",
-      "quantity": 11
+      "entity": "태민",
+      "item": "머핀",
+      "quantity": 4
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "상훈이가 지윤한테 자전거 한 대를 넘겼어요.",
+   "say": "하준이가 태민한테 머핀 세 개를 줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "transfer_verbs:pass"
-   ],
+   "classes": [],
    "scenario_turn": 4,
    "expect": {
     "act": "record",
@@ -170,110 +163,104 @@
     "events": [
      {
       "type": "transfer",
-      "from": "상훈",
-      "to": "지윤",
-      "item": "자전거",
-      "quantity": 1
+      "from": "하준",
+      "to": "태민",
+      "item": "머핀",
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "상훈",
-      "item": "자전거",
-      "quantity": 3
+      "entity": "하준",
+      "item": "머핀",
+      "quantity": 13
      },
      {
-      "entity": "지윤",
-      "item": "자전거",
-      "quantity": 16
+      "entity": "태민",
+      "item": "머핀",
+      "quantity": 7
      }
     ]
    }
   },
   {
    "n": 5,
-   "say": "아, 한 대가 아니라 두 대였어요.",
-   "label": "correction",
-   "tags": [
-    "correction"
-   ],
-   "classes": [
-    "corrections:amount"
-   ],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "revise",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
-    "evidence": {
-     "turns": [
-      4,
-      5
-     ]
-    },
-    "target_turn": 4,
-    "replaces": [
-     {
-      "type": "transfer",
-      "from": "상훈",
-      "to": "지윤",
-      "item": "자전거",
-      "quantity": 1
-     }
-    ],
-    "with": [
-     {
-      "type": "transfer",
-      "from": "상훈",
-      "to": "지윤",
-      "item": "자전거",
-      "quantity": 2
-     }
-    ],
-    "state": [
-     {
-      "entity": "상훈",
-      "item": "자전거",
-      "quantity": 2
-     },
-     {
-      "entity": "지윤",
-      "item": "자전거",
-      "quantity": 17
-     }
-    ]
-   }
-  },
-  {
-   "n": 6,
-   "say": "지윤이 지금 자전거가 몇 대 있어요?",
+   "say": "하준은 지금 머핀이 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 7,
+   "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "지윤",
-    "quantity": 17,
+    "entity": "하준",
+    "quantity": 13,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
-      4,
-      5
+      4
      ]
     },
-    "item": "자전거",
-    "retracted_quantity": 16,
-    "reexecuted_quantity": 18
+    "item": "머핀"
+   }
+  },
+  {
+   "n": 6,
+   "say": "그분은 지금 머핀이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up"
+   ],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "하준",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "머핀"
    }
   },
   {
    "n": 7,
-   "say": "지윤과 유진이 합쳐서 자전거가 몇 대 있어요?",
+   "say": "하준 말이에요.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "하준",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "머핀"
+   }
+  },
+  {
+   "n": 8,
+   "say": "하준과 태민이는 합쳐서 머핀이 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -283,20 +270,19 @@
    "expect": {
     "act": "answer",
     "entity": [
-     "지윤",
-     "유진"
+     "하준",
+     "태민"
     ],
-    "quantity": 28,
+    "quantity": 20,
     "relation": "total",
     "evidence": {
      "turns": [
       1,
       3,
-      4,
-      5
+      4
      ]
     },
-    "item": "자전거"
+    "item": "머핀"
    }
   }
  ]

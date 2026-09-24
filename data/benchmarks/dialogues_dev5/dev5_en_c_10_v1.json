@@ -1,0 +1,252 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_10_v1",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_020_v1",
+  "half": "check",
+  "focus": [
+   "places",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_place_now",
+   "transfer_verbs:move_passive"
+  ],
+  "variant_of": "s5_en_c_020",
+  "variant": 1,
+  "variant_changes": [
+   "register:casual",
+   "2:has:has",
+   "8:q_got"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "There are 4 boots in the gift shop.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "gift shop",
+      "item": "boots",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "gift shop",
+      "item": "boots",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my stepsister Beth has 9 boots.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Beth",
+      "item": "boots",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Beth",
+      "item": "boots",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "the nursery holds 11 boots.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "nursery",
+      "item": "boots",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "nursery",
+      "item": "boots",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "4 boots were moved from the nursery to the gift shop.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:move_passive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "nursery",
+      "to": "gift shop",
+      "item": "boots",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "nursery",
+      "item": "boots",
+      "quantity": 7
+     },
+     {
+      "entity": "gift shop",
+      "item": "boots",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many boots are in the gift shop now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "gift shop",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "boots"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many boots are in the nursery now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "nursery",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "boots"
+   }
+  }
+ ]
+}

@@ -1,0 +1,210 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_34",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_082",
+  "half": "build",
+  "focus": [
+   "only",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation_unnamed",
+   "holders:title",
+   "question_forms:q_still",
+   "transfer_verbs:hand_over",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my tenant has just 7 cameras, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "tenant",
+      "item": "cameras",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "tenant",
+      "item": "cameras",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Dr. Freeman doesn't have a single camera.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:title",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Freeman",
+      "item": "cameras",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Freeman",
+      "item": "cameras",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my tenant handed over four cameras to Dr. Freeman.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:hand_over"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "tenant",
+      "to": "Freeman",
+      "item": "cameras",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "tenant",
+      "item": "cameras",
+      "quantity": 3
+     },
+     {
+      "entity": "Freeman",
+      "item": "cameras",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many cameras does my tenant still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "tenant",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "cameras"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many cameras does my tenant and Dr. Freeman have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "tenant",
+     "Freeman"
+    ],
+    "quantity": 7,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "cameras"
+   }
+  }
+ ]
+}

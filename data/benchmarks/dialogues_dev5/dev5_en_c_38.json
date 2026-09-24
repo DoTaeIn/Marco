@@ -1,0 +1,383 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_38",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_087",
+  "half": "check",
+  "focus": [
+   "only",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:first_person",
+   "holders:relation",
+   "question_forms:q_left",
+   "transfer_verbs:lose",
+   "transfer_verbs:pass",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "I haven't got any keys.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "keys",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "keys",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Harper has some keys. Actually, 13 of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Harper",
+      "item": "keys",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "Harper",
+      "item": "keys",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "My godson Charles has just 11 keys, nothing else.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Charles",
+      "item": "keys",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Charles",
+      "item": "keys",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Harper passed me two keys.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Harper",
+      "to": "I",
+      "item": "keys",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Harper",
+      "item": "keys",
+      "quantity": 11
+     },
+     {
+      "entity": "I",
+      "item": "keys",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many keys do I have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "keys"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Harper passed 5 keys to Charles.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Harper",
+      "to": "Charles",
+      "item": "keys",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Harper",
+      "item": "keys",
+      "quantity": 6
+     },
+     {
+      "entity": "Charles",
+      "item": "keys",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many keys does Charles have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Charles",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "item": "keys"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many keys does Harper have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Harper",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "keys"
+   }
+  },
+  {
+   "n": 9,
+   "say": "Harper lost a key.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:lose"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Harper",
+      "item": "keys",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Harper",
+      "item": "keys",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many keys does Harper have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "answer",
+    "entity": "Harper",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6,
+      9
+     ]
+    },
+    "item": "keys"
+   }
+  }
+ ]
+}

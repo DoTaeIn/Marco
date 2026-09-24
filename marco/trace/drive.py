@@ -115,12 +115,14 @@ def _pack_name(app):
     return next((s["path"] for s in getattr(app.model, "sources", ()) if s["path"].startswith("styles/")), None)
 
 
-def record(dialogues, ledger=None, *, code_root=ROOT, timing=None):
+def record(dialogues, ledger=None, *, code_root=ROOT, timing=None, engine_sites=False):
     """Play ``dialogues`` through ``AppState.turn``; record each turn when a ledger is on.
 
     Returns the gate's per-turn observations ``{dialogue id: [observation]}``
     (``bench.dialogue_gate.run``), so the same run can be scored by the gate.
     ``timing``: a dict that receives the recording's own cost (``record_s``, ``turns``).
+    ``engine_sites``: the engine sites write their own events too (request G5-1, L1-1): each reasoning
+    context's turn and graph routing and judging, each call a trace of its own resting on the turn's input.
     """
     from bench import dialogue_gate
     ledger = ledger if ledger is not None else from_env()
@@ -142,6 +144,10 @@ def record(dialogues, ledger=None, *, code_root=ROOT, timing=None):
         names[d["id"]] = name
     counters, captured, holds = {}, [], []
     app_turn, context_turn, app_said = AppState.turn, ReasoningContext.turn, AppState._said
+    import engine
+    sites = (ReasoningContext.trace, engine.TRACE)
+    if engine_sites:
+        ReasoningContext.trace, engine.TRACE = ledger, ledger
     timing = timing if timing is not None else {}
     timing.setdefault("record_s", 0.0)
     timing.setdefault("turns", 0)
@@ -165,28 +171,46 @@ def record(dialogues, ledger=None, *, code_root=ROOT, timing=None):
         before = reports[-1] if reports else None
         del captured[:]
         del holds[:]
+        key = "chat_" + str(conversation_id) if conversation_id else session_id
+        if engine_sites:
+            # nothing of an earlier turn is written as this one's
+            engine.TRACE_PENDING[:] = []
+            if self.reasoning_contexts.get(key) is not None:
+                self.reasoning_contexts[key].trace_pending = self.reasoning_contexts[key].trace_gap = None
         result, error = None, None
         try:
             result = app_turn(self, text, session_id, approval_mode, conversation_id)
         except Exception as exc:  # recorded as an error event, then raised as before
             error = exc
+        context = self.reasoning_contexts.get(key)
+        if context is not None:
+            # a live "why" finds this conversation's outputs under the name they are recorded with (W4-1)
+            context.trace_conversation = names[dialogue["id"]]
         start = time.perf_counter()
         report = reports[-1] if reports and reports[-1] is not before else None
-        record_turn(ledger, ledger.new_trace_id(), text, result, report, conversation=names[dialogue["id"]],
+        summary = record_turn(ledger, ledger.new_trace_id(), text, result, report, conversation=names[dialogue["id"]],
                     turn=n, context_result=captured[-1] if captured else None,
                     meaning=holds[-1] if holds else None, label=expected.get("label"),
                     act=(expected.get("expect") or {}).get("act"),
                     restart=bool(expected.get("restart_before")), pack=_pack_name(self),
-                    pack_file=getattr(self, "pack_path", None), error=error)
+                    pack_file=getattr(self, "pack_path", None), error=error,
+                    gap=getattr(context, "trace_gap", None) if context is not None and engine_sites else None)
+        if engine_sites:
+            if context is not None:
+                context.flush_trace(ledger, summary.get("input"))
+            engine.flush_trace(ledger, summary.get("input"))
         timing["record_s"] += time.perf_counter() - start
         timing["turns"] += 1
         if error is not None:
             raise error
         return result
 
-    with patch.object(AppState, "turn", recorded_turn), patch.object(AppState, "_said", keep_said), \
-            patch.object(ReasoningContext, "turn", keep_context):
-        return dialogue_gate.run(dialogues, code_root)
+    try:
+        with patch.object(AppState, "turn", recorded_turn), patch.object(AppState, "_said", keep_said), \
+                patch.object(ReasoningContext, "turn", keep_context):
+            return dialogue_gate.run(dialogues, code_root)
+    finally:
+        ReasoningContext.trace, engine.TRACE = sites
 
 
 def cost(language="en", repeat=5, directory=None):

@@ -1,0 +1,282 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_08_v2",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_021_v2",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "holders:first_person",
+   "holders:relation",
+   "holders:relation_unnamed",
+   "question_forms:q_left",
+   "question_forms:q_still",
+   "transfer_verbs:pass"
+  ],
+  "variant_of": "s5_en_b_021",
+  "variant": 2,
+  "variant_changes": [
+   "1:adv_moment",
+   "4:omit_giver",
+   "5:q_left",
+   "6:q_plain"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "I own 10 frisbees right now.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:first_person"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "frisbees",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "frisbees",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "my wife keeps 13 frisbees at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "wife",
+      "item": "frisbees",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "wife",
+      "item": "frisbees",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my tenant Eliana keeps 16 frisbees at the moment.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:relation"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Eliana",
+      "item": "frisbees",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Eliana",
+      "item": "frisbees",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "She passed 1 frisbee to me.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:first_person",
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Eliana",
+      "to": "I",
+      "item": "frisbees",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Eliana",
+      "item": "frisbees",
+      "quantity": 15
+     },
+     {
+      "entity": "I",
+      "item": "frisbees",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many frisbees does Eliana have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Eliana",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "frisbees"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many frisbees does my wife have now?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "wife",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "frisbees"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many frisbees do my wife and Eliana have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "wife",
+     "Eliana"
+    ],
+    "quantity": 28,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "frisbees"
+   }
+  }
+ ]
+}

@@ -1,0 +1,209 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_26",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_072",
+  "half": "check",
+  "focus": [
+   "question_forms",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation_unnamed",
+   "question_forms:q_still",
+   "question_forms:q_two_total",
+   "transfer_verbs:keep",
+   "transfer_verbs:send"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "지민은 포도 다섯 송이를 보관하고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:keep"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지민",
+      "item": "포도",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "지민",
+      "item": "포도",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 이모는 포도가 네 송이 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "이모",
+      "item": "포도",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "이모",
+      "item": "포도",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "지민이가 제 이모한테 포도 네 송이를 보냈어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지민",
+      "to": "이모",
+      "item": "포도",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "지민",
+      "item": "포도",
+      "quantity": 1
+     },
+     {
+      "entity": "이모",
+      "item": "포도",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 이모는 아직 포도가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "이모",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "포도"
+   }
+  },
+  {
+   "n": 5,
+   "say": "두 사람 합쳐서 포도가 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_two_total"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "지민",
+     "이모"
+    ],
+    "quantity": 9,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "포도"
+   }
+  }
+ ]
+}

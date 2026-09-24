@@ -1,0 +1,283 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_15",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_045",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:front_purpose",
+   "holders:apposition",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "question_forms:q_relative",
+   "transfer_verbs:lend",
+   "transfer_verbs:receive"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "약사 재현 씨가 당근 세 개를 맡고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "재현",
+      "item": "당근",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "재현",
+      "item": "당근",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 처제는 당근 일곱 개가 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "처제",
+      "item": "당근",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "처제",
+      "item": "당근",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "이사 준비로, 제 처제가 재현 씨한테 당근 세 개를 빌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_purpose",
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "처제",
+      "to": "재현",
+      "item": "당근",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "처제",
+      "item": "당근",
+      "quantity": 4
+     },
+     {
+      "entity": "재현",
+      "item": "당근",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 처제는 당근을 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "처제",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "당근"
+   }
+  },
+  {
+   "n": 5,
+   "say": "재현 씨가 제 처제한테서 당근 세 개를 받았대요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "처제",
+      "to": "재현",
+      "item": "당근",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "처제",
+      "item": "당근",
+      "quantity": 1
+     },
+     {
+      "entity": "재현",
+      "item": "당근",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "재현 씨가 가지고 있는 당근은 지금 몇 개예요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_relative"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "재현",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "당근"
+   }
+  },
+  {
+   "n": 7,
+   "say": "재현 씨와 제 처제가 합쳐서 당근이 몇 개 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "재현",
+     "처제"
+    ],
+    "quantity": 10,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      5
+     ]
+    },
+    "item": "당근"
+   }
+  }
+ ]
+}

@@ -1,0 +1,344 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_35",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_102",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:front_recipient",
+   "fronting:front_then",
+   "holders:title",
+   "question_forms:q_relative",
+   "transfer_verbs:give_back",
+   "transfer_verbs:send"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "지현은 키위가 열한 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지현",
+      "item": "키위",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "지현",
+      "item": "키위",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "현준씨는 지금 키위가 여덟 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:title"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "현준",
+      "item": "키위",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "현준",
+      "item": "키위",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "현준 씨한테는 지현이 키위 한 개를 돌려줬습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지현",
+      "to": "현준",
+      "item": "키위",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "지현",
+      "item": "키위",
+      "quantity": 10
+     },
+     {
+      "entity": "현준",
+      "item": "키위",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "지현이 지금 키위가 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "지현",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "키위"
+   }
+  },
+  {
+   "n": 5,
+   "say": "현준씨가 가진 키위는 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_relative"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "현준",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "키위"
+   }
+  },
+  {
+   "n": 6,
+   "say": "그다음에, 현준 씨가 지현에게 키위 두 개를 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "현준",
+      "to": "지현",
+      "item": "키위",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "현준",
+      "item": "키위",
+      "quantity": 7
+     },
+     {
+      "entity": "지현",
+      "item": "키위",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "지현이 지금 키위가 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "지현",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      6
+     ]
+    },
+    "item": "키위"
+   }
+  },
+  {
+   "n": 8,
+   "say": "현준 씨한테는 지현이 키위 두 개를 돌려줘야 합니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지현",
+      "to": "현준",
+      "item": "키위",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "지현",
+      "item": "키위",
+      "quantity": 10
+     },
+     {
+      "entity": "현준",
+      "item": "키위",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "현준씨한테 키위가 지금 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "현준",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6,
+      8
+     ]
+    },
+    "item": "키위"
+   }
+  }
+ ]
+}

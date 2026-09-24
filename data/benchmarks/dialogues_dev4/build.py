@@ -1554,7 +1554,11 @@ FEEDBACK = {
            "too_many_sentences": "한두 문장만 씁니다.", "contrast": "'M개가 아니라 N개' 처럼 바로잡습니다.",
            "relation_owner": "관계 앞의 '제'(반말은 '내')를 그대로 씁니다 (제 룸메이트).",
            "missing_item2": "두 번째 물건 이름을 주어진 그대로 씁니다.",
-           "glued": "이름과 조사를 바르게 띄어 씁니다 (조사는 하나만).", "ellipsis": "말줄임표 없이 씁니다."},
+           "glued": "이름과 조사를 바르게 띄어 씁니다 (조사는 하나만).", "ellipsis": "말줄임표 없이 씁니다.",
+           "doubled_ending": "문장 끝맺음은 한 번만 씁니다 (줬어요요가 아니라 줬어요).",
+           "embedded_question_frame": "'몇 개 있어요?'처럼 바로 묻습니다 ('있는지 아닙니까' 같은 꼴 없이).",
+           "having_with_none": "없을 때는 '하나도 없어요'로 씁니다 ('가지고 없다'는 쓰지 않습니다).",
+           "contradiction": "주어진 사실만 씁니다. 있다고 한 것을 없다고 덧붙이지 않습니다."},
 }
 
 
@@ -1680,7 +1684,7 @@ STORY_VERBS = {
           r"(?:어|습|다|대|고|는|던|지)",
 }
 EN_META = r"\bask(?:ing|ed)?\b|\bquestion\b|\bwonder|\bcurious\b"
-KO_META = r"물어|질문|궁금|여쭤|여쭙|들어보|알고 계|아세요|아십니까"
+KO_META = r"물어|질문|궁금|여쭤|여쭙|들어보|알고 계|아세요|아십니까|알아요|아나요|압니까|알아\?"
 # a question asks with a question word
 QUESTION_WORDS = {"en": r"\bhow many\b|\bwho\b|\bhow much\b|\bwhy\b|\bhow come\b",
                   "ko": r"몇|누가|누구|얼마|왜"}
@@ -1923,6 +1927,11 @@ class Checker:
         if lang == "en" and turn["say"].get("act") == "state" and verb in EN_PAST_CUES:
             if not re.search(EN_PAST_CUES[verb], text, re.I):
                 return False, "not_past:" + verb
+        # a Korean statement that gives an amount and says none in the same breath contradicts itself
+        # (15 bundles ... 지금은 없습니다); 밖에 없다 is the Korean 'only', not a denial (G5.0 c)
+        if lang == "ko" and not question and not spec.get("zero"):
+            if any(v > 0 for v, _s, _e in found) and re.search(r"없", re.sub(r"(?:밖에|뿐)\s?없", "", text)):
+                return False, "contradiction"
         # a Korean phrasing in the dialogue's register, with a person never marked like a place
         if lang == "ko":
             reason = self._korean(scn, text, question)
@@ -2015,6 +2024,17 @@ class Checker:
             return "ending_stack"
         if re.search(r"하나도\s?(?:가지고|갖고|들고|보관하고|맡고)\s?있", text):
             return "zero_with_having"
+        # G5.0 c: forms no Korean speaker writes -- a doubled sentence ending (줬어요요), an embedded
+        # question left inside another frame (있는지 아닙니까, 있는지습니까, 많은지 알아요?), a verb
+        # of holding negated by 없다 (하나도 가지고 없습니다)
+        if re.search(r"(요|니다|니까)\1(?=[.?!~\s]|$)|습니다요|어요습니다|요습니다", text):
+            return "doubled_ending"
+        if question:
+            for m in re.finditer(r"(?<=[가-힣])(?:는|은)지", text):
+                if text[m.end():].strip() not in ("요?", "?"):
+                    return "embedded_question_frame"
+        if re.search(r"(?:가지고|갖고|들고|보관하고|맡고)\s?없", text):
+            return "having_with_none"
         if re.search(r"(?:저는|제가|나는|내가)\b.*(?:셨|시었|시어|하셔|주셔|주시)", text):
             return "honorific_on_self"
         nouns = {t for h in scn["holders"] for t in h["tokens"]} | {i["noun"] for i in scn["items"]} | {"씨", "님"}
@@ -2036,6 +2056,10 @@ class Checker:
                 return "case_clash"
             if re.search(r"%s(?:이|가) (?:\d+|[가-힣]+) ?(?:%s)\s?(?:가지고|갖고|들고|보관하고|맡고)" % (
                     re.escape(item["noun"]), "|".join(KO_COUNTERS)), text):
+                return "case_clash"
+            # (the same with adverbs of amount between: 베개가 더 많이 가지고, 스티커가 얼마나 가지고)
+            if re.search(r"%s(?:이|가)\s(?:[가-힣\d]+\s){0,3}(?:가지고|갖고|들고|보관하고|맡고)" % re.escape(item["noun"]),
+                         text):
                 return "case_clash"
         for m in re.finditer(r"([가-힣])다고\s?(?:해요|합니다|해|하더라|했어요)", text):
             if _jong(m.group(1)) == 0 and m.group(1) not in "이":
@@ -2145,8 +2169,27 @@ class Checker:
 # ---------------------------------------------------------------------------
 # phrasing (the only place the model is loaded)
 # ---------------------------------------------------------------------------
+# G5.0 c: a scenario whose kept phrasing the round-5 checker refused is phrased again whole, at a new
+# sampling seed; RESEEDED lists them (one id per line, again for each further try), so the same run can be
+# made again. The k-th listing of an id phrases it at RESEED + 1000 (k - 1).
+RESEED = {"build": 1733, "check": 3307}
+RESEEDED = HERE / "reseeded.txt"
+
+
+def reseeded():
+    """{scenario id: how many times it was listed}."""
+    out = {}
+    if RESEEDED.exists():
+        for line in RESEEDED.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                out[line.split()[0]] = out.get(line.split()[0], 0) + 1
+    return out
+
+
 def _seed(half, sid, n, attempt):
-    digest = hashlib.sha256(("%d/%s/%d/%d" % (SAMPLING[half], sid, n, attempt)).encode()).hexdigest()
+    times = reseeded().get(sid, 0)
+    base = RESEED[half] + 1000 * (times - 1) if times else SAMPLING[half]
+    digest = hashlib.sha256(("%d/%s/%d/%d" % (base, sid, n, attempt)).encode()).hexdigest()
     return int(digest[:8], 16)
 
 
@@ -2365,7 +2408,22 @@ def phrase(limit=None, only=None):
 KEPT = HERE / "phrasings_kept.jsonl"      # the accepted samples of the dialogues in the set, with their seeds
 STATS = HERE / "phrasing_stats.jsonl"     # what the phrasing run tried, kept and discarded, by reason (not
                                           # *.json: the gate reads every *.json here as a dialogue)
-OTHER_SETS = ("dialogues_v1", "dialogues_dev", "dialogues_dev2", "dialogues_dev3")
+# the earlier development sets; the frozen exam sets are never read here, not even for the overlap check
+# (the owner runs that one): FROZEN names them only to leave them out of the corpus below
+OTHER_SETS = ("dialogues_dev", "dialogues_dev2", "dialogues_dev3")
+FROZEN = ("data/benchmarks/dialogues_v1", "data/benchmarks/reasoning_v1")
+
+
+def corpus_files(owned):
+    """The tracked files of the gate's corpus folders, from the repository index, without the frozen exam
+    sets and without ``owned`` (this set's own folder): no frozen path is listed, opened or read."""
+    import subprocess
+    exclude = [":(exclude)%s" % path for path in FROZEN] + [":(exclude)%s" % path.rstrip("/") for path in owned]
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "-z", "--", "tests", "bench", "cases", "data",
+                          "styles", *exclude], check=True, capture_output=True).stdout.decode("utf-8")
+    names = [name for name in out.split("\0") if name]
+    assert not any(name.startswith(FROZEN) for name in names)
+    return [name for name in names if (ROOT / name).is_file()]
 
 
 def load_phrasings():
@@ -2385,11 +2443,11 @@ def load_phrasings():
 
 def _overlapping(dialogues):
     """Ids of dialogues that share a full sentence with another dialogue file: one of theirs found in any
-    corpus file outside this folder, or one of another set's found in theirs (the frozen set included, read
-    by the gate's own functions; nothing of it is printed, only how many dialogues are left out)."""
+    tracked corpus file outside this folder, or one of another development set's found in theirs. The frozen
+    exam sets are not read (G5: the owner runs that overlap check)."""
     sys.path.insert(0, str(ROOT / "bench"))
     import dialogue_gate as gate
-    found = gate.overlaps(dialogues, disk_root=ROOT, owned=("data/benchmarks/dialogues_dev4/",))
+    found = gate.overlaps(dialogues, files=corpus_files(("data/benchmarks/dialogues_dev4/",)))
     out = {item["dialogue"] for item in found["overlaps"]}
     others = []
     for name in OTHER_SETS:
@@ -2569,7 +2627,7 @@ def recheck():
 
 def main(argv=None):
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["scenarios", "phrase", "assemble", "coverage", "recheck"])
+    parser.add_argument("command", choices=["scenarios", "phrase", "assemble", "coverage", "recheck", "reseed"])
     parser.add_argument("--limit", type=int)
     parser.add_argument("--only", nargs="*")
     parser.add_argument("--cache", type=Path, help="another phrasing cache (a trial run), not phrasings.jsonl")
@@ -2590,6 +2648,21 @@ def main(argv=None):
     elif args.command == "recheck":
         dropped = recheck()
         print("taken out for a new sample: %d %s" % (len(dropped), " ".join(dropped)))
+    elif args.command == "reseed":
+        # recheck, list what it took out as phrased again at the RESEED seed, then phrase those; with --only,
+        # phrase those scenarios again at the next seed (a scenario the last try dropped)
+        dropped = recheck() + [sid for sid in (args.only or []) if sid in reseeded()]
+        if args.only:
+            lines = [line for line in PHRASINGS.read_text(encoding="utf-8").splitlines()
+                     if json.loads(line)["scenario"] not in set(args.only)]
+            PHRASINGS.write_text("".join(line + "\n" for line in lines), encoding="utf-8")
+        if dropped:
+            with RESEEDED.open("a", encoding="utf-8") as out:
+                for sid in dropped:
+                    out.write(sid + "\n")
+        print("taken out, to be phrased at a new seed: %d %s" % (len(dropped), " ".join(dropped)), flush=True)
+        if dropped:
+            phrase(10 ** 6, set(dropped))
     elif args.command == "assemble":
         dialogues, split, problems = assemble()
         print("dialogues %d (build %d, check %d); rechecked problems %d" % (

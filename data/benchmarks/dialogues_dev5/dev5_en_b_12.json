@@ -1,0 +1,249 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_12",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_025",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_moment",
+   "fronting:front_then",
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_echo",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:owns"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Caroline's got 8 rackets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Caroline",
+      "item": "rackets",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Caroline",
+      "item": "rackets",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "There are 6 rackets at the flower shop right now.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "fronting:adv_moment",
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "flower shop",
+      "item": "rackets",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "flower shop",
+      "item": "rackets",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my landlady Vivian owns 4 rackets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "transfer_verbs:owns"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Vivian",
+      "item": "rackets",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Vivian",
+      "item": "rackets",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Then Caroline left 3 rackets at the flower shop.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Caroline",
+      "to": "flower shop",
+      "item": "rackets",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Caroline",
+      "item": "rackets",
+      "quantity": 5
+     },
+     {
+      "entity": "flower shop",
+      "item": "rackets",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Caroline has how many rackets now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_echo"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Caroline",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "rackets"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many rackets do Caroline and Vivian have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Caroline",
+     "Vivian"
+    ],
+    "quantity": 9,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "rackets"
+   }
+  }
+ ]
+}

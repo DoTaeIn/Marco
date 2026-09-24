@@ -1,0 +1,307 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_26",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_059",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "only",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:front_recipient",
+   "holders:apposition",
+   "question_forms:q_got",
+   "question_forms:q_hold",
+   "transfer_verbs:lend",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The usher, Mr. Meyer, only has 3 pretzels, and that is the only thing he has.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Meyer",
+      "item": "pretzels",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Meyer",
+      "item": "pretzels",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The electrician, Mr. Ruiz, only has pretzels, 5 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Ruiz",
+      "item": "pretzels",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ruiz",
+      "item": "pretzels",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "To Mr. Meyer, Mr. Ruiz lent four pretzels.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_recipient",
+    "transfer_verbs:lend"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Ruiz",
+      "to": "Meyer",
+      "item": "pretzels",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ruiz",
+      "item": "pretzels",
+      "quantity": 1
+     },
+     {
+      "entity": "Meyer",
+      "item": "pretzels",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many pretzels does Mr. Meyer have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Meyer",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "pretzels"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many pretzels has Mr. Ruiz got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Ruiz",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "pretzels"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Mr. Meyer gave Mr. Ruiz 5 pretzels, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Meyer",
+      "to": "Ruiz",
+      "item": "pretzels",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Meyer",
+      "item": "pretzels",
+      "quantity": 2
+     },
+     {
+      "entity": "Ruiz",
+      "item": "pretzels",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many pretzels does Mr. Ruiz hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Ruiz",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    },
+    "item": "pretzels"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Who has more pretzels now, Mr. Ruiz or Mr. Meyer?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Ruiz",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "Ruiz",
+     "Meyer"
+    ],
+    "item": "pretzels",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6
+     ]
+    }
+   }
+  }
+ ]
+}

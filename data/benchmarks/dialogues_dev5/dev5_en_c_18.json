@@ -1,0 +1,321 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_18",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_043",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_then",
+   "holders:apposition",
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:receive",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "my supervisor has got 6 teapots",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "supervisor",
+      "item": "teapots",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "supervisor",
+      "item": "teapots",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The barista, Mr. Fernandez, has got 10 teapots.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Fernandez",
+      "item": "teapots",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fernandez",
+      "item": "teapots",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "the guard booth holds 9 teapots.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "guard booth",
+      "item": "teapots",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "guard booth",
+      "item": "teapots",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Then my supervisor got 1 teapot from Mr. Fernandez.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Fernandez",
+      "to": "supervisor",
+      "item": "teapots",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fernandez",
+      "item": "teapots",
+      "quantity": 9
+     },
+     {
+      "entity": "supervisor",
+      "item": "teapots",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many teapots does my supervisor hold?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "supervisor",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "teapots"
+   }
+  },
+  {
+   "n": 6,
+   "say": "my supervisor took 5 teapots from the guard booth.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "guard booth",
+      "to": "supervisor",
+      "item": "teapots",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "guard booth",
+      "item": "teapots",
+      "quantity": 4
+     },
+     {
+      "entity": "supervisor",
+      "item": "teapots",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many teapots are in the guard booth now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "guard booth",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "item": "teapots"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many teapots do my supervisor and Mr. Fernandez have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "supervisor",
+     "Fernandez"
+    ],
+    "quantity": 21,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "teapots"
+   }
+  }
+ ]
+}

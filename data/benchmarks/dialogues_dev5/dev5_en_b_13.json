@@ -1,0 +1,255 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_13",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_028",
+  "half": "build",
+  "focus": [
+   "only",
+   "places",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:apposition",
+   "holders:place",
+   "question_forms:q_got",
+   "question_forms:q_left",
+   "transfer_verbs:take_from",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The electrician, Mr. Hughes, has the only thing he has, 14 cameras.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:apposition",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Hughes",
+      "item": "cameras",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Hughes",
+      "item": "cameras",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The only thing the north depot has is cameras, 16 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "north depot",
+      "item": "cameras",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "north depot",
+      "item": "cameras",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Mr. Hughes took two cameras from the north depot.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "north depot",
+      "to": "Hughes",
+      "item": "cameras",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "north depot",
+      "item": "cameras",
+      "quantity": 14
+     },
+     {
+      "entity": "Hughes",
+      "item": "cameras",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many cameras does Mr. Hughes have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Hughes",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "cameras"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Mr. Hughes took 5 cameras from the north depot.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "north depot",
+      "to": "Hughes",
+      "item": "cameras",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "north depot",
+      "item": "cameras",
+      "quantity": 9
+     },
+     {
+      "entity": "Hughes",
+      "item": "cameras",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many cameras has Mr. Hughes got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Hughes",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "cameras"
+   }
+  }
+ ]
+}

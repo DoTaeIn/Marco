@@ -1,0 +1,205 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_38",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_106",
+  "half": "check",
+  "focus": [
+   "only",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:relation",
+   "question_forms:q_hold",
+   "transfer_verbs:pass",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 딸 민주는 주스가 좀 있어요. 네 병이네요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "민주",
+      "item": "주스",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "민주",
+      "item": "주스",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 아들 윤호는 주스만 열다섯 병 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "윤호",
+      "item": "주스",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤호",
+      "item": "주스",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "민주는 윤호한테 주스 두 병을 넘겼어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "민주",
+      "to": "윤호",
+      "item": "주스",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "민주",
+      "item": "주스",
+      "quantity": 2
+     },
+     {
+      "entity": "윤호",
+      "item": "주스",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "민주한테 주스가 지금 몇 병 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "민주",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "주스"
+   }
+  },
+  {
+   "n": 5,
+   "say": "윤호는 주스를 몇 병 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "윤호",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "주스"
+   }
+  }
+ ]
+}

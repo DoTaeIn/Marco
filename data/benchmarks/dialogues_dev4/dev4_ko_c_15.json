@@ -5,6 +5,7 @@
  "domain": "everyday",
  "categories": [
   "ambiguous_referent",
+  "correction",
   "follow_up",
   "ownership",
   "transfer"
@@ -13,37 +14,39 @@
   "word_order": "free",
   "register": "banmal",
   "split": "one_fact_per_turn",
-  "correction_position": "none",
+  "correction_position": "late",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_038",
+  "scenario": "s4_ko_c_039",
   "half": "check",
   "focus": [
    "fronting",
-   "question_forms",
-   "referent_repairs"
+   "referent_repairs",
+   "transfer_verbs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:apposition",
-   "question_forms:q_left",
-   "question_forms:q_two_total",
+   "corrections:amount",
+   "fronting:adv_apparently",
+   "fronting:adv_moment",
+   "holders:first_person",
    "referent_repairs:i_mean",
    "referent_repairs:pronoun_fixed",
-   "transfer_verbs:send",
-   "transfer_verbs:use_for"
+   "transfer_verbs:borrow",
+   "transfer_verbs:carry"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "경비원 미경 씨가 장작이 아홉 묶음 있어.",
+   "say": "하은은 지금 노트북 다섯 대를 들고 있어.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:apposition"
+    "fronting:adv_moment",
+    "transfer_verbs:carry"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -59,28 +62,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "미경",
-      "item": "장작",
-      "quantity": 9
+      "holder": "하은",
+      "item": "노트북",
+      "quantity": 5
      }
     ],
     "state": [
      {
-      "entity": "미경",
-      "item": "장작",
-      "quantity": 9
+      "entity": "하은",
+      "item": "노트북",
+      "quantity": 5
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "서진은 장작이 네 묶음 있어.",
+   "say": "상훈은 노트북 여섯 대를 들고 있어.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [],
+   "classes": [
+    "transfer_verbs:carry"
+   ],
    "scenario_turn": 2,
    "expect": {
     "act": "record",
@@ -95,29 +100,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "서진",
-      "item": "장작",
-      "quantity": 4
+      "holder": "상훈",
+      "item": "노트북",
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "서진",
-      "item": "장작",
-      "quantity": 4
+      "entity": "상훈",
+      "item": "노트북",
+      "quantity": 6
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "미경이가 서진한테 장작 세 묶음을 보냈어.",
+   "say": "나는 현재 노트북 열두 대를 가지고 있어.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "transfer_verbs:send"
+    "fronting:adv_moment",
+    "holders:first_person"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -132,63 +138,33 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "미경",
-      "to": "서진",
-      "item": "장작",
-      "quantity": 3
+      "type": "has",
+      "holder": "나",
+      "item": "노트북",
+      "quantity": 12
      }
     ],
     "state": [
      {
-      "entity": "미경",
-      "item": "장작",
-      "quantity": 6
-     },
-     {
-      "entity": "서진",
-      "item": "장작",
-      "quantity": 7
+      "entity": "나",
+      "item": "노트북",
+      "quantity": 12
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "서진은 장작이 몇 개 남았어?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_left"
-   ],
-   "scenario_turn": 4,
-   "expect": {
-    "act": "answer",
-    "entity": "서진",
-    "quantity": 7,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      3
-     ]
-    },
-    "item": "장작"
-   }
-  },
-  {
-   "n": 5,
-   "say": "서진이 행사에 장작 세 묶음을 썼어.",
+   "say": "하은이 상훈한테 노트북 네 대를 빌렸대.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "transfer_verbs:use_for"
+    "fronting:adv_apparently",
+    "transfer_verbs:borrow"
    ],
-   "scenario_turn": 5,
+   "scenario_turn": 4,
    "expect": {
     "act": "record",
     "entity": null,
@@ -196,80 +172,139 @@
     "relation": null,
     "evidence": {
      "turns": [
-      5
+      4
      ]
     },
     "events": [
      {
-      "type": "use",
-      "holder": "서진",
-      "item": "장작",
-      "quantity": 3
+      "type": "transfer",
+      "from": "상훈",
+      "to": "하은",
+      "item": "노트북",
+      "quantity": 4
      }
     ],
     "state": [
      {
-      "entity": "서진",
-      "item": "장작",
-      "quantity": 4
+      "entity": "상훈",
+      "item": "노트북",
+      "quantity": 2
+     },
+     {
+      "entity": "하은",
+      "item": "노트북",
+      "quantity": 9
      }
     ]
    }
   },
   {
-   "n": 6,
-   "say": "서진은 장작이 몇 개 남았어?",
+   "n": 5,
+   "say": "하은은 지금 노트북이 몇 대 있어?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "question_forms:q_left"
-   ],
+   "classes": [],
    "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "서진",
-    "quantity": 4,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      3,
-      5
-     ]
-    },
-    "item": "장작"
-   }
-  },
-  {
-   "n": 7,
-   "say": "미경 씨는 장작이 몇 개 남았어?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_left"
-   ],
-   "scenario_turn": 7,
-   "expect": {
-    "act": "answer",
-    "entity": "미경",
-    "quantity": 6,
+    "entity": "하은",
+    "quantity": 9,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
-      3
+      4
      ]
     },
-    "item": "장작"
+    "item": "노트북"
+   }
+  },
+  {
+   "n": 6,
+   "say": "아, 네 대가 아니라 세 대였어.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "classes": [
+    "corrections:amount"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "revise",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4,
+      6
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "상훈",
+      "to": "하은",
+      "item": "노트북",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "상훈",
+      "to": "하은",
+      "item": "노트북",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "상훈",
+      "item": "노트북",
+      "quantity": 3
+     },
+     {
+      "entity": "하은",
+      "item": "노트북",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "하은은 지금 노트북이 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "하은",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6
+     ]
+    },
+    "item": "노트북",
+    "retracted_quantity": 9,
+    "reexecuted_quantity": 12
    }
   },
   {
    "n": 8,
-   "say": "걔는 지금 장작이 몇 개 있어?",
+   "say": "그분은 지금 노트북이 몇 개 있어?",
    "label": "answerable",
    "tags": [
     "ambiguous_referent",
@@ -278,24 +313,26 @@
    "classes": [
     "referent_repairs:pronoun_fixed"
    ],
-   "scenario_turn": 8,
+   "scenario_turn": 9,
    "expect": {
     "act": "answer",
-    "entity": "미경",
-    "quantity": 6,
+    "entity": "하은",
+    "quantity": 8,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
-      3
+      4,
+      6
      ]
     },
-    "item": "장작"
+    "item": "노트북",
+    "retracted_quantity": 9
    }
   },
   {
    "n": 9,
-   "say": "제 말은 미경 씨야.",
+   "say": "상훈 씨를 말한 거야.",
    "label": "answerable",
    "tags": [
     "ambiguous_referent",
@@ -304,49 +341,22 @@
    "classes": [
     "referent_repairs:i_mean"
    ],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "answer",
-    "entity": "미경",
-    "quantity": 6,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      3
-     ]
-    },
-    "item": "장작"
-   }
-  },
-  {
-   "n": 10,
-   "say": "두 사람 합쳐서 장작이 몇 개야?",
-   "label": "answerable",
-   "tags": [
-    "transfer"
-   ],
-   "classes": [
-    "question_forms:q_two_total"
-   ],
    "scenario_turn": 10,
    "expect": {
     "act": "answer",
-    "entity": [
-     "미경",
-     "서진"
-    ],
-    "quantity": 10,
-    "relation": "total",
+    "entity": "상훈",
+    "quantity": 3,
+    "relation": "count",
     "evidence": {
      "turns": [
-      1,
       2,
-      3,
-      5
+      4,
+      6
      ]
     },
-    "item": "장작"
+    "item": "노트북",
+    "retracted_quantity": 2,
+    "reexecuted_quantity": -1
    }
   }
  ]

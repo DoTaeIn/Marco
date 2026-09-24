@@ -1,0 +1,302 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_b_25_v2",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_b_076_v2",
+  "half": "build",
+  "focus": [
+   "only",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:give_back",
+   "transfer_verbs:leave_at",
+   "zero_vague:only",
+   "zero_vague:zero"
+  ],
+  "variant_of": "s5_ko_b_076",
+  "variant": 2,
+  "variant_changes": [
+   "5:q_bare",
+   "7:q_plain"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 사위 동현은 와인 열다섯 병만 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "동현",
+      "item": "와인",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "동현",
+      "item": "와인",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 제자 수현은 와인만 열네 병 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "수현",
+      "item": "와인",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "수현",
+      "item": "와인",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "소방서는 와인이 하나도 없습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "소방서",
+      "item": "와인",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "소방서",
+      "item": "와인",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "동현이 소방서에 와인 두 병을 두고 왔습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "동현",
+      "to": "소방서",
+      "item": "와인",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "동현",
+      "item": "와인",
+      "quantity": 13
+     },
+     {
+      "entity": "소방서",
+      "item": "와인",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "동현이가 수현이한테 와인 네 병을 돌려주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:give_back"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "동현",
+      "to": "수현",
+      "item": "와인",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "동현",
+      "item": "와인",
+      "quantity": 9
+     },
+     {
+      "entity": "수현",
+      "item": "와인",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "동현이 지금 와인이 몇 병 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "동현",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "와인"
+   }
+  },
+  {
+   "n": 7,
+   "say": "지금 소방서에 와인이 몇 병 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "소방서",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "와인"
+   }
+  }
+ ]
+}

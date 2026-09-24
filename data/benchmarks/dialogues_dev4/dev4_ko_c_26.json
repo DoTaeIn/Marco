@@ -4,44 +4,47 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
+  "ambiguous_referent",
   "ownership",
   "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "haeyo",
+  "register": "hapsyo",
   "split": "one_fact_per_turn",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_097",
+  "scenario": "s4_ko_c_100",
   "half": "check",
   "focus": [
-   "holders",
+   "fronting",
    "korean_register",
-   "zero_vague"
+   "referent_repairs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
+   "fronting:adv_moment",
+   "fronting:front_then",
+   "holders:apposition",
    "holders:place",
-   "holders:relation",
+   "holders:relation_unnamed",
    "question_forms:q_place_now",
-   "transfer_verbs:take_from",
-   "zero_vague:exact_later",
-   "zero_vague:vague"
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_asked",
+   "transfer_verbs:pass"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "본관에도 감자가 좀 있어요.",
+   "say": "제 이웃은 엽서 열두 장을 맡고 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:place",
-    "zero_vague:vague"
+    "holders:relation_unnamed"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -57,23 +60,23 @@
     "events": [
      {
       "type": "has",
-      "holder": "본관",
-      "item": "감자",
-      "quantity": null
+      "holder": "이웃",
+      "item": "엽서",
+      "quantity": 12
      }
     ],
     "state": [
      {
-      "entity": "본관",
-      "item": "감자",
-      "quantity": null
+      "entity": "이웃",
+      "item": "엽서",
+      "quantity": 12
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "빵집에는 감자가 아홉 개 있어요.",
+   "say": "빵집에는 엽서가 다섯 장 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
@@ -96,28 +99,28 @@
      {
       "type": "has",
       "holder": "빵집",
-      "item": "감자",
-      "quantity": 9
+      "item": "엽서",
+      "quantity": 5
      }
     ],
     "state": [
      {
       "entity": "빵집",
-      "item": "감자",
-      "quantity": 9
+      "item": "엽서",
+      "quantity": 5
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "제 짝꿍 하린은 감자가 열세 개 있어요.",
+   "say": "코치 지호 씨가 엽서 열세 장을 맡고 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation"
+    "holders:apposition"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -133,15 +136,15 @@
     "events": [
      {
       "type": "has",
-      "holder": "하린",
-      "item": "감자",
+      "holder": "지호",
+      "item": "엽서",
       "quantity": 13
      }
     ],
     "state": [
      {
-      "entity": "하린",
-      "item": "감자",
+      "entity": "지호",
+      "item": "엽서",
       "quantity": 13
      }
     ]
@@ -149,13 +152,13 @@
   },
   {
    "n": 4,
-   "say": "세어 보니 열한 개예요.",
+   "say": "성진은 지금 엽서 열한 장이 있습니다.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "zero_vague:exact_later"
+    "fronting:adv_moment"
    ],
    "scenario_turn": 4,
    "expect": {
@@ -171,15 +174,15 @@
     "events": [
      {
       "type": "has",
-      "holder": "본관",
-      "item": "감자",
+      "holder": "성진",
+      "item": "엽서",
       "quantity": 11
      }
     ],
     "state": [
      {
-      "entity": "본관",
-      "item": "감자",
+      "entity": "성진",
+      "item": "엽서",
       "quantity": 11
      }
     ]
@@ -187,14 +190,14 @@
   },
   {
    "n": 5,
-   "say": "하린이 본관에서 감자 세 개를 가져갔어요.",
+   "say": "그다음에 제 이웃이 지호 씨한테 엽서 두 장을 넘겼습니다.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "holders:place",
-    "transfer_verbs:take_from"
+    "fronting:front_then",
+    "transfer_verbs:pass"
    ],
    "scenario_turn": 5,
    "expect": {
@@ -210,32 +213,32 @@
     "events": [
      {
       "type": "transfer",
-      "from": "본관",
-      "to": "하린",
-      "item": "감자",
-      "quantity": 3
+      "from": "이웃",
+      "to": "지호",
+      "item": "엽서",
+      "quantity": 2
      }
     ],
     "state": [
      {
-      "entity": "본관",
-      "item": "감자",
-      "quantity": 8
+      "entity": "이웃",
+      "item": "엽서",
+      "quantity": 10
      },
      {
-      "entity": "하린",
-      "item": "감자",
-      "quantity": 16
+      "entity": "지호",
+      "item": "엽서",
+      "quantity": 15
      }
     ]
    }
   },
   {
    "n": 6,
-   "say": "지금 본관에 감자가 몇 개 있어요?",
+   "say": "지금 빵집에 엽서가 몇 장 있습니까?",
    "label": "answerable",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
     "holders:place",
@@ -244,45 +247,67 @@
    "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "본관",
-    "quantity": 8,
+    "entity": "빵집",
+    "quantity": 5,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
-      4,
-      5
+      2
      ]
     },
-    "item": "감자"
+    "item": "엽서"
    }
   },
   {
    "n": 7,
-   "say": "본관이랑 빵집이 합쳐서 감자가 몇 개 있어요?",
-   "label": "answerable",
+   "say": "그분은 지금 엽서가 몇 개 있습니까?",
+   "label": "ambiguous",
    "tags": [
-    "transfer"
+    "ambiguous_referent"
    ],
-   "classes": [],
+   "classes": [
+    "referent_repairs:pronoun_asked"
+   ],
    "scenario_turn": 7,
    "expect": {
-    "act": "answer",
-    "entity": [
-     "본관",
-     "빵집"
-    ],
-    "quantity": 17,
-    "relation": "total",
+    "act": "clarify",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
     "evidence": {
      "turns": [
-      1,
-      2,
-      4,
-      5
+      7
      ]
     },
-    "item": "감자"
+    "candidates": [
+     "성진",
+     "지호"
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "제 말은 성진씨입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "ownership"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "성진",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "item": "엽서"
    }
   }
  ]

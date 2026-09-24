@@ -1,0 +1,269 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_32",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_090",
+  "half": "check",
+  "focus": [
+   "places",
+   "question_forms",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "question_forms:q_place_now",
+   "question_forms:q_still",
+   "transfer_verbs:leave_at"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "옥상에는 사진이 열네 장 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "옥상",
+      "item": "사진",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "옥상",
+      "item": "사진",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "사진 다섯 장이 우체국에 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "우체국",
+      "item": "사진",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "우체국",
+      "item": "사진",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "지민은 사진 일곱 장이 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "지민",
+      "item": "사진",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "지민",
+      "item": "사진",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "지민이 우체국에 사진 다섯장을 두고 왔어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "지민",
+      "to": "우체국",
+      "item": "사진",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "지민",
+      "item": "사진",
+      "quantity": 2
+     },
+     {
+      "entity": "우체국",
+      "item": "사진",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 우체국에 사진이 몇 장 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "우체국",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "사진"
+   }
+  },
+  {
+   "n": 6,
+   "say": "지민은 아직 사진이 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_still"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "지민",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "사진"
+   }
+  },
+  {
+   "n": 7,
+   "say": "옥상과 우체국이 합쳐서 사진이 몇 장 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "옥상",
+     "우체국"
+    ],
+    "quantity": 24,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "사진"
+   }
+  }
+ ]
+}

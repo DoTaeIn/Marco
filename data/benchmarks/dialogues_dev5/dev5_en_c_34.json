@@ -1,0 +1,343 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_34",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_078",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "only",
+   "question_forms"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:adv_apparently",
+   "fronting:front_then",
+   "question_forms:q_echo",
+   "question_forms:q_left",
+   "transfer_verbs:send",
+   "zero_vague:only"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Alexander only has tires, 7 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Alexander",
+      "item": "tires",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alexander",
+      "item": "tires",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The only thing Lloyd has is tires, 8 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Lloyd",
+      "item": "tires",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lloyd",
+      "item": "tires",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "All Doris has is 12 tires.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Doris",
+      "item": "tires",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Doris",
+      "item": "tires",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Alexander gave Lloyd five tires, apparently.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:adv_apparently"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Alexander",
+      "to": "Lloyd",
+      "item": "tires",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alexander",
+      "item": "tires",
+      "quantity": 2
+     },
+     {
+      "entity": "Lloyd",
+      "item": "tires",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Lloyd has how many tires now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_echo"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Lloyd",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "tires"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Then Doris sent one tire to Lloyd.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Doris",
+      "to": "Lloyd",
+      "item": "tires",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Doris",
+      "item": "tires",
+      "quantity": 11
+     },
+     {
+      "entity": "Lloyd",
+      "item": "tires",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many tires does Doris have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Doris",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "item": "tires"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Lloyd has how many tires now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_echo"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Lloyd",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "tires"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many tires do Alexander and Doris have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Alexander",
+     "Doris"
+    ],
+    "quantity": 13,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "tires"
+   }
+  }
+ ]
+}

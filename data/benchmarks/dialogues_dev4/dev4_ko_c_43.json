@@ -5,10 +5,8 @@
  "domain": "everyday",
  "categories": [
   "ambiguous_referent",
-  "follow_up",
   "ownership",
-  "transfer",
-  "why"
+  "transfer"
  ],
  "variation": {
   "word_order": "free",
@@ -17,35 +15,29 @@
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_177",
+  "scenario": "s4_ko_c_188",
   "half": "check",
   "focus": [
+   "fronting",
    "question_forms",
-   "referent_repairs",
-   "zero_vague"
+   "referent_repairs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:relation_unnamed",
-   "holders:title",
-   "referent_repairs:i_mean",
-   "referent_repairs:pronoun_fixed",
-   "transfer_verbs:pass",
-   "zero_vague:only",
-   "zero_vague:zero"
+   "fronting:adv_moment",
+   "holders:place",
+   "referent_repairs:i_mean"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "수진은 킥보드 여섯 대만 있어요.",
+   "say": "우진은 헬멧이 열 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "zero_vague:only"
-   ],
+   "classes": [],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -60,30 +52,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "수진",
-      "item": "킥보드",
-      "quantity": 6
+      "holder": "우진",
+      "item": "헬멧",
+      "quantity": 10
      }
     ],
     "state": [
      {
-      "entity": "수진",
-      "item": "킥보드",
-      "quantity": 6
+      "entity": "우진",
+      "item": "헬멧",
+      "quantity": 10
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "정 과장님은 킥보드가 하나도 없어요.",
+   "say": "현재 헬멧 열세 개가 음악실에 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:title",
-    "zero_vague:zero"
+    "fronting:adv_moment",
+    "holders:place"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -99,30 +91,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "정 과장",
-      "item": "킥보드",
-      "quantity": 0
+      "holder": "음악실",
+      "item": "헬멧",
+      "quantity": 13
      }
     ],
     "state": [
      {
-      "entity": "정 과장",
-      "item": "킥보드",
-      "quantity": 0
+      "entity": "음악실",
+      "item": "헬멧",
+      "quantity": 13
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "제 이웃은 킥보드 열네 대가 있어요.",
+   "say": "지호는 헬멧이 열다섯 개 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "holders:relation_unnamed"
-   ],
+   "classes": [],
    "scenario_turn": 3,
    "expect": {
     "act": "record",
@@ -137,30 +127,28 @@
     "events": [
      {
       "type": "has",
-      "holder": "이웃",
-      "item": "킥보드",
-      "quantity": 14
+      "holder": "지호",
+      "item": "헬멧",
+      "quantity": 15
      }
     ],
     "state": [
      {
-      "entity": "이웃",
-      "item": "킥보드",
-      "quantity": 14
+      "entity": "지호",
+      "item": "헬멧",
+      "quantity": 15
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "수진이 정 과장님한테 킥보드 두 대를 넘겼어요.",
+   "say": "우진이 지호한테 헬멧 세 개를 줬어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
-   "classes": [
-    "transfer_verbs:pass"
-   ],
+   "classes": [],
    "scenario_turn": 4,
    "expect": {
     "act": "record",
@@ -175,39 +163,39 @@
     "events": [
      {
       "type": "transfer",
-      "from": "수진",
-      "to": "정 과장",
-      "item": "킥보드",
-      "quantity": 2
+      "from": "우진",
+      "to": "지호",
+      "item": "헬멧",
+      "quantity": 3
      }
     ],
     "state": [
      {
-      "entity": "수진",
-      "item": "킥보드",
-      "quantity": 4
+      "entity": "우진",
+      "item": "헬멧",
+      "quantity": 7
      },
      {
-      "entity": "정 과장",
-      "item": "킥보드",
-      "quantity": 2
+      "entity": "지호",
+      "item": "헬멧",
+      "quantity": 18
      }
     ]
    }
   },
   {
    "n": 5,
-   "say": "수진이 지금 킥보드가 몇 개 있어요?",
+   "say": "우진이 지금 헬멧이 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
-   "scenario_turn": 5,
+   "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "수진",
-    "quantity": 4,
+    "entity": "우진",
+    "quantity": 7,
     "relation": "count",
     "evidence": {
      "turns": [
@@ -215,38 +203,12 @@
       4
      ]
     },
-    "item": "킥보드"
+    "item": "헬멧"
    }
   },
   {
    "n": 6,
-   "say": "걔는 지금 킥보드가 몇 대 있어요?",
-   "label": "answerable",
-   "tags": [
-    "ambiguous_referent",
-    "follow_up"
-   ],
-   "classes": [
-    "referent_repairs:pronoun_fixed"
-   ],
-   "scenario_turn": 6,
-   "expect": {
-    "act": "answer",
-    "entity": "수진",
-    "quantity": 4,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      1,
-      4
-     ]
-    },
-    "item": "킥보드"
-   }
-  },
-  {
-   "n": 7,
-   "say": "제 말은 정 과장님 씨예요.",
+   "say": "아, 지호요.",
    "label": "answerable",
    "tags": [
     "ambiguous_referent",
@@ -258,21 +220,21 @@
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": "정 과장",
-    "quantity": 2,
+    "entity": "지호",
+    "quantity": 18,
     "relation": "count",
     "evidence": {
      "turns": [
-      2,
+      3,
       4
      ]
     },
-    "item": "킥보드"
+    "item": "헬멧"
    }
   },
   {
-   "n": 8,
-   "say": "수진과 제 이웃이 합쳐서 킥보드가 몇 대 있어요?",
+   "n": 7,
+   "say": "우진과 지호가 합쳐서 헬멧이 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -282,10 +244,10 @@
    "expect": {
     "act": "answer",
     "entity": [
-     "수진",
-     "이웃"
+     "우진",
+     "지호"
     ],
-    "quantity": 18,
+    "quantity": 25,
     "relation": "total",
     "evidence": {
      "turns": [
@@ -294,30 +256,7 @@
       4
      ]
     },
-    "item": "킥보드"
-   }
-  },
-  {
-   "n": 9,
-   "say": "정 과장님이 지금 킥보드가 몇 개 있어요?",
-   "label": "why",
-   "tags": [
-    "why"
-   ],
-   "classes": [],
-   "scenario_turn": 9,
-   "expect": {
-    "act": "explain",
-    "entity": "정 과장",
-    "quantity": 2,
-    "relation": "count",
-    "evidence": {
-     "turns": [
-      2,
-      4
-     ]
-    },
-    "item": "킥보드"
+    "item": "헬멧"
    }
   }
  ]

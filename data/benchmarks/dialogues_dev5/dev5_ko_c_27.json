@@ -1,0 +1,347 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_ko_c_27",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_ko_c_074",
+  "half": "check",
+  "focus": [
+   "places",
+   "question_forms",
+   "relations"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "holders:place",
+   "holders:relation_unnamed",
+   "question_forms:q_hold",
+   "question_forms:q_place_now",
+   "transfer_verbs:leave_at",
+   "transfer_verbs:take_from"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "구청에는 지도가 열네 장 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "구청",
+      "item": "지도",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "구청",
+      "item": "지도",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "제 손녀는 지도가 열 장 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "손녀",
+      "item": "지도",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "손녀",
+      "item": "지도",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "교회에는 지도가 여섯 장 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "교회",
+      "item": "지도",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "교회",
+      "item": "지도",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "제 손녀가 구청에 지도 다섯장을 두고 왔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:leave_at"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "손녀",
+      "to": "구청",
+      "item": "지도",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "손녀",
+      "item": "지도",
+      "quantity": 5
+     },
+     {
+      "entity": "구청",
+      "item": "지도",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 구청에 지도가 몇 장 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "구청",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "지도"
+   }
+  },
+  {
+   "n": 6,
+   "say": "제 손녀가 구청에서 지도 다섯장을 가져갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "구청",
+      "to": "손녀",
+      "item": "지도",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "구청",
+      "item": "지도",
+      "quantity": 14
+     },
+     {
+      "entity": "손녀",
+      "item": "지도",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "제 손녀는 지도를 몇 개 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_hold"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "손녀",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      6
+     ]
+    },
+    "item": "지도"
+   }
+  },
+  {
+   "n": 8,
+   "say": "지금 구청에 지도가 몇 장 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "구청",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      6
+     ]
+    },
+    "item": "지도"
+   }
+  },
+  {
+   "n": 9,
+   "say": "구청과 교회가 합쳐서 지도가 몇 장 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "구청",
+     "교회"
+    ],
+    "quantity": 20,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4,
+      6
+     ]
+    },
+    "item": "지도"
+   }
+  }
+ ]
+}

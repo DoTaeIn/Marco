@@ -4,45 +4,47 @@
  "language": "ko",
  "domain": "everyday",
  "categories": [
+  "ambiguous_referent",
+  "follow_up",
   "ownership",
-  "transfer",
-  "why"
+  "transfer"
  ],
  "variation": {
   "word_order": "free",
-  "register": "hapsyo",
+  "register": "haeyo",
   "split": "one_fact_per_turn",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_025",
+  "scenario": "s4_ko_c_027",
   "half": "check",
   "focus": [
-   "fronting",
-   "korean_register",
-   "zero_vague"
+   "holders",
+   "referent_repairs",
+   "transfer_verbs"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "fronting:adv_moment",
-   "fronting:count_first",
-   "fronting:front_recipient",
+   "holders:first_person",
+   "holders:place",
    "question_forms:q_hold",
-   "question_forms:q_two_total",
-   "transfer_verbs:pass",
-   "zero_vague:only"
+   "referent_repairs:i_mean",
+   "referent_repairs:pronoun_fixed",
+   "transfer_verbs:carry",
+   "transfer_verbs:responsible",
+   "transfer_verbs:take_from"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "서진은 지금 스티커 여덟 장을 보관하고 있습니다.",
+   "say": "동전 여섯 개가 북쪽 창고에 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "fronting:adv_moment"
+    "holders:place"
    ],
    "scenario_turn": 1,
    "expect": {
@@ -58,29 +60,30 @@
     "events": [
      {
       "type": "has",
-      "holder": "서진",
-      "item": "스티커",
-      "quantity": 8
+      "holder": "북쪽 창고",
+      "item": "동전",
+      "quantity": 6
      }
     ],
     "state": [
      {
-      "entity": "서진",
-      "item": "스티커",
-      "quantity": 8
+      "entity": "북쪽 창고",
+      "item": "동전",
+      "quantity": 6
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "상훈은 스티커만 일곱 장 있습니다.",
+   "say": "동전 여덟 개는 제가 맡고 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "zero_vague:only"
+    "holders:first_person",
+    "transfer_verbs:responsible"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -96,30 +99,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "상훈",
-      "item": "스티커",
-      "quantity": 7
+      "holder": "나",
+      "item": "동전",
+      "quantity": 8
      }
     ],
     "state": [
      {
-      "entity": "상훈",
-      "item": "스티커",
-      "quantity": 7
+      "entity": "나",
+      "item": "동전",
+      "quantity": 8
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "서진한테는 상훈이 스티커 네 장을 넘겼습니다.",
+   "say": "서연은 동전 열여섯 개를 들고 있어요.",
    "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "fronting:front_recipient",
-    "transfer_verbs:pass"
+    "transfer_verbs:carry"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -134,62 +136,67 @@
     },
     "events": [
      {
-      "type": "transfer",
-      "from": "상훈",
-      "to": "서진",
-      "item": "스티커",
-      "quantity": 4
+      "type": "has",
+      "holder": "서연",
+      "item": "동전",
+      "quantity": 16
      }
     ],
     "state": [
      {
-      "entity": "상훈",
-      "item": "스티커",
-      "quantity": 3
-     },
-     {
-      "entity": "서진",
-      "item": "스티커",
-      "quantity": 12
+      "entity": "서연",
+      "item": "동전",
+      "quantity": 16
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "상훈이 지금 스티커를 몇 개 가지고 있습니까?",
-   "label": "answerable",
+   "say": "시현은 동전 열세 개가 있어요.",
+   "label": "hold",
    "tags": [
-    "transfer"
+    "ownership"
    ],
-   "classes": [
-    "question_forms:q_hold"
-   ],
+   "classes": [],
    "scenario_turn": 4,
    "expect": {
-    "act": "answer",
-    "entity": "상훈",
-    "quantity": 3,
-    "relation": "count",
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
     "evidence": {
      "turns": [
-      2,
-      3
+      4
      ]
     },
-    "item": "스티커"
+    "events": [
+     {
+      "type": "has",
+      "holder": "시현",
+      "item": "동전",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "시현",
+      "item": "동전",
+      "quantity": 13
+     }
+    ]
    }
   },
   {
    "n": 5,
-   "say": "스티커 세 장을 서진이 상훈한테 넘겼습니다.",
+   "say": "서연이 북쪽 창고에서 동전 한 개를 가져갔어요.",
    "label": "hold",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "fronting:count_first",
-    "transfer_verbs:pass"
+    "holders:place",
+    "transfer_verbs:take_from"
    ],
    "scenario_turn": 5,
    "expect": {
@@ -205,29 +212,29 @@
     "events": [
      {
       "type": "transfer",
-      "from": "서진",
-      "to": "상훈",
-      "item": "스티커",
-      "quantity": 3
+      "from": "북쪽 창고",
+      "to": "서연",
+      "item": "동전",
+      "quantity": 1
      }
     ],
     "state": [
      {
-      "entity": "서진",
-      "item": "스티커",
-      "quantity": 9
+      "entity": "북쪽 창고",
+      "item": "동전",
+      "quantity": 5
      },
      {
-      "entity": "상훈",
-      "item": "스티커",
-      "quantity": 6
+      "entity": "서연",
+      "item": "동전",
+      "quantity": 17
      }
     ]
    }
   },
   {
    "n": 6,
-   "say": "서진한테 스티커가 지금 몇 개 있습니까?",
+   "say": "서연이 지금 동전이 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -236,71 +243,91 @@
    "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "서진",
-    "quantity": 9,
+    "entity": "서연",
+    "quantity": 17,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
       3,
       5
      ]
     },
-    "item": "스티커"
+    "item": "동전"
    }
   },
   {
    "n": 7,
-   "say": "두 사람 합쳐서 스티커가 몇 개 있습니까?",
+   "say": "시현은 동전을 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
-    "transfer"
+    "ownership"
    ],
    "classes": [
-    "question_forms:q_two_total"
+    "question_forms:q_hold"
    ],
    "scenario_turn": 7,
    "expect": {
     "act": "answer",
-    "entity": [
-     "서진",
-     "상훈"
-    ],
-    "quantity": 15,
-    "relation": "total",
+    "entity": "시현",
+    "quantity": 13,
+    "relation": "count",
     "evidence": {
      "turns": [
-      1,
-      2,
-      3,
-      5
+      4
      ]
     },
-    "item": "스티커"
+    "item": "동전"
    }
   },
   {
    "n": 8,
-   "say": "서진이가 지금 스티커가 얼마나 가지고 있는지 아닙니까?",
-   "label": "why",
+   "say": "그분은 지금 동전이 몇 개 있어요?",
+   "label": "answerable",
    "tags": [
-    "why"
+    "ambiguous_referent",
+    "follow_up"
    ],
-   "classes": [],
+   "classes": [
+    "referent_repairs:pronoun_fixed"
+   ],
    "scenario_turn": 8,
    "expect": {
-    "act": "explain",
-    "entity": "서진",
-    "quantity": 9,
+    "act": "answer",
+    "entity": "시현",
+    "quantity": 13,
     "relation": "count",
     "evidence": {
      "turns": [
-      1,
+      4
+     ]
+    },
+    "item": "동전"
+   }
+  },
+  {
+   "n": 9,
+   "say": "아, 서연요.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "referent_repairs:i_mean"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "서연",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
       3,
       5
      ]
     },
-    "item": "스티커"
+    "item": "동전"
    }
   }
  ]

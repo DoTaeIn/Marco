@@ -1,0 +1,251 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_b_27",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_b_064",
+  "half": "build",
+  "focus": [
+   "fronting",
+   "only",
+   "places"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_then",
+   "holders:place",
+   "question_forms:q_place_now",
+   "transfer_verbs:take_from",
+   "zero_vague:only",
+   "zero_vague:vague_then_exact",
+   "zero_vague:zero"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Ivan hasn't got any lunchboxes.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "zero_vague:zero"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Ivan",
+      "item": "lunchboxes",
+      "quantity": 0
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ivan",
+      "item": "lunchboxes",
+      "quantity": 0
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The north depot has some lunchboxes. 10 of them, actually.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:vague_then_exact"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "north depot",
+      "item": "lunchboxes",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "north depot",
+      "item": "lunchboxes",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The only thing the tool shed has is lunchboxes, 12 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "tool shed",
+      "item": "lunchboxes",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "tool shed",
+      "item": "lunchboxes",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "After that, Ivan took 5 lunchboxes from the north depot.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "holders:place",
+    "transfer_verbs:take_from"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "north depot",
+      "to": "Ivan",
+      "item": "lunchboxes",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "north depot",
+      "item": "lunchboxes",
+      "quantity": 5
+     },
+     {
+      "entity": "Ivan",
+      "item": "lunchboxes",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many lunchboxes are in the tool shed now?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:place",
+    "question_forms:q_place_now"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "tool shed",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "lunchboxes"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many lunchboxes do the north depot and the tool shed have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "north depot",
+     "tool shed"
+    ],
+    "quantity": 17,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "lunchboxes"
+   }
+  }
+ ]
+}

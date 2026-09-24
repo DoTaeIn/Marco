@@ -1,0 +1,362 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_17",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_041",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "relations",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_then",
+   "holders:relation_unnamed",
+   "question_forms:q_got",
+   "question_forms:q_left",
+   "transfer_verbs:borrow",
+   "transfer_verbs:holding",
+   "transfer_verbs:pass",
+   "transfer_verbs:receive",
+   "transfer_verbs:responsible"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Lloyd is holding 12 whisks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:holding"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Lloyd",
+      "item": "whisks",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lloyd",
+      "item": "whisks",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Michael is responsible for 10 whisks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "transfer_verbs:responsible"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Michael",
+      "item": "whisks",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Michael",
+      "item": "whisks",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "my boyfriend has 15 whisks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "boyfriend",
+      "item": "whisks",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "boyfriend",
+      "item": "whisks",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "After that, my boyfriend borrowed two whisks from Lloyd.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:borrow"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Lloyd",
+      "to": "boyfriend",
+      "item": "whisks",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lloyd",
+      "item": "whisks",
+      "quantity": 10
+     },
+     {
+      "entity": "boyfriend",
+      "item": "whisks",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many whisks does my boyfriend have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "boyfriend",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "whisks"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Michael passed my boyfriend a whisk.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:pass"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Michael",
+      "to": "boyfriend",
+      "item": "whisks",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Michael",
+      "item": "whisks",
+      "quantity": 9
+     },
+     {
+      "entity": "boyfriend",
+      "item": "whisks",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many whisks has Michael got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Michael",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      6
+     ]
+    },
+    "item": "whisks"
+   }
+  },
+  {
+   "n": 8,
+   "say": "My boyfriend got two whisks from Michael.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Michael",
+      "to": "boyfriend",
+      "item": "whisks",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Michael",
+      "item": "whisks",
+      "quantity": 7
+     },
+     {
+      "entity": "boyfriend",
+      "item": "whisks",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many whisks has Michael got now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_got"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Michael",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      6,
+      8
+     ]
+    },
+    "item": "whisks"
+   }
+  }
+ ]
+}

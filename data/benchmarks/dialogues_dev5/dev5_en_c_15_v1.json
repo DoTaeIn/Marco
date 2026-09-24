@@ -1,0 +1,261 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev5_en_c_15_v1",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s5_en_c_035_v1",
+  "half": "check",
+  "focus": [
+   "fronting",
+   "only",
+   "transfer_verbs"
+  ],
+  "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "classes": [
+   "fronting:front_then",
+   "holders:relation",
+   "holders:relation_unnamed",
+   "question_forms:q_left",
+   "transfer_verbs:receive",
+   "transfer_verbs:send",
+   "zero_vague:only"
+  ],
+  "variant_of": "s5_en_c_035",
+  "variant": 1,
+  "variant_changes": [
+   "register:formal",
+   "3:passive_by",
+   "4:q_echo",
+   "6:q_still"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My mentor Josephine only has 4 posters, four of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Josephine",
+      "item": "posters",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Josephine",
+      "item": "posters",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My stepsister only has 13 posters, 13 of them.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "holders:relation_unnamed",
+    "zero_vague:only"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "stepsister",
+      "item": "posters",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "stepsister",
+      "item": "posters",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The two posters were sent to Josephine by my stepsister.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "transfer_verbs:send"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "stepsister",
+      "to": "Josephine",
+      "item": "posters",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "stepsister",
+      "item": "posters",
+      "quantity": 11
+     },
+     {
+      "entity": "Josephine",
+      "item": "posters",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "My stepsister has how many posters now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "stepsister",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "posters"
+   }
+  },
+  {
+   "n": 5,
+   "say": "After that, my stepsister got 1 poster from Josephine.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "fronting:front_then",
+    "transfer_verbs:receive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Josephine",
+      "to": "stepsister",
+      "item": "posters",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Josephine",
+      "item": "posters",
+      "quantity": 5
+     },
+     {
+      "entity": "stepsister",
+      "item": "posters",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many posters does Josephine still have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "question_forms:q_left"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Josephine",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    },
+    "item": "posters"
+   }
+  }
+ ]
+}

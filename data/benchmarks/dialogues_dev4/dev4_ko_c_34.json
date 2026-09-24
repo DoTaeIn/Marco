@@ -10,38 +10,34 @@
  "variation": {
   "word_order": "free",
   "register": "haeyo",
-  "split": "multi_fact",
+  "split": "one_fact_per_turn",
   "correction_position": "none",
   "roles": "scenario",
   "initial_values": {},
-  "scenario": "s4_ko_c_134",
+  "scenario": "s4_ko_c_142",
   "half": "check",
   "focus": [
-   "korean_register",
-   "question_forms",
-   "zero_vague"
+   "fronting",
+   "holders",
+   "question_forms"
   ],
   "phraser": "mlx-community/Qwen2.5-7B-Instruct-4bit",
   "classes": [
-   "holders:relation",
-   "holders:relation_unnamed",
+   "holders:title",
    "question_forms:q_hold",
-   "zero_vague:also_some",
-   "zero_vague:only",
-   "zero_vague:zero"
+   "question_forms:q_two_total",
+   "transfer_verbs:send"
   ]
  },
  "turns": [
   {
    "n": 1,
-   "say": "진우는 머핀이 세 개 있고, 꽃다발도 좀 있어요.",
+   "say": "은정은 선풍기가 열세 대 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
-   "classes": [
-    "zero_vague:also_some"
-   ],
+   "classes": [],
    "scenario_turn": 1,
    "expect": {
     "act": "record",
@@ -56,41 +52,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "진우",
-      "item": "머핀",
-      "quantity": 3
-     },
-     {
-      "type": "has",
-      "holder": "진우",
-      "item": "꽃다발",
-      "quantity": null
+      "holder": "은정",
+      "item": "선풍기",
+      "quantity": 13
      }
     ],
     "state": [
      {
-      "entity": "진우",
-      "item": "머핀",
-      "quantity": 3
-     },
-     {
-      "entity": "진우",
-      "item": "꽃다발",
-      "quantity": null
+      "entity": "은정",
+      "item": "선풍기",
+      "quantity": 13
      }
     ]
    }
   },
   {
    "n": 2,
-   "say": "제 사촌은 머핀만 열두 개 있어요.",
+   "say": "지윤 씨는 선풍기가 열한 대 있어요.",
    "label": "hold",
    "tags": [
     "ownership"
    ],
    "classes": [
-    "holders:relation_unnamed",
-    "zero_vague:only"
+    "holders:title"
    ],
    "scenario_turn": 2,
    "expect": {
@@ -106,30 +90,29 @@
     "events": [
      {
       "type": "has",
-      "holder": "사촌",
-      "item": "머핀",
-      "quantity": 12
+      "holder": "지윤",
+      "item": "선풍기",
+      "quantity": 11
      }
     ],
     "state": [
      {
-      "entity": "사촌",
-      "item": "머핀",
-      "quantity": 12
+      "entity": "지윤",
+      "item": "선풍기",
+      "quantity": 11
      }
     ]
    }
   },
   {
    "n": 3,
-   "say": "제 짝꿍 지윤은 머핀이 하나도 없어요.",
+   "say": "지윤 씨가 은정한테 선풍기 네 대를 보냈어요.",
    "label": "hold",
    "tags": [
-    "ownership"
+    "transfer"
    ],
    "classes": [
-    "holders:relation",
-    "zero_vague:zero"
+    "transfer_verbs:send"
    ],
    "scenario_turn": 3,
    "expect": {
@@ -144,66 +127,53 @@
     },
     "events": [
      {
-      "type": "has",
-      "holder": "지윤",
-      "item": "머핀",
-      "quantity": 0
+      "type": "transfer",
+      "from": "지윤",
+      "to": "은정",
+      "item": "선풍기",
+      "quantity": 4
      }
     ],
     "state": [
      {
       "entity": "지윤",
-      "item": "머핀",
-      "quantity": 0
+      "item": "선풍기",
+      "quantity": 7
+     },
+     {
+      "entity": "은정",
+      "item": "선풍기",
+      "quantity": 17
      }
     ]
    }
   },
   {
    "n": 4,
-   "say": "진우가 지윤한테 머핀 두 개를 줬어요.",
-   "label": "hold",
+   "say": "지윤 씨한테 선풍기가 지금 몇 대 있어요?",
+   "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [],
    "scenario_turn": 4,
    "expect": {
-    "act": "record",
-    "entity": null,
-    "quantity": null,
-    "relation": null,
+    "act": "answer",
+    "entity": "지윤",
+    "quantity": 7,
+    "relation": "count",
     "evidence": {
      "turns": [
-      4
+      2,
+      3
      ]
     },
-    "events": [
-     {
-      "type": "transfer",
-      "from": "진우",
-      "to": "지윤",
-      "item": "머핀",
-      "quantity": 2
-     }
-    ],
-    "state": [
-     {
-      "entity": "진우",
-      "item": "머핀",
-      "quantity": 1
-     },
-     {
-      "entity": "지윤",
-      "item": "머핀",
-      "quantity": 2
-     }
-    ]
+    "item": "선풍기"
    }
   },
   {
    "n": 5,
-   "say": "진우는 머핀을 몇 개 가지고 있어요?",
+   "say": "은정이는 지금 선풍기를 몇 개 가지고 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
@@ -214,41 +184,45 @@
    "scenario_turn": 5,
    "expect": {
     "act": "answer",
-    "entity": "진우",
-    "quantity": 1,
+    "entity": "은정",
+    "quantity": 17,
     "relation": "count",
     "evidence": {
      "turns": [
       1,
-      4
+      3
      ]
     },
-    "item": "머핀"
+    "item": "선풍기"
    }
   },
   {
    "n": 6,
-   "say": "지윤은 머핀을 몇 개 가지고 있어요?",
+   "say": "둘이 합쳐서 선풍기가 모두 몇 개 있어요?",
    "label": "answerable",
    "tags": [
     "transfer"
    ],
    "classes": [
-    "question_forms:q_hold"
+    "question_forms:q_two_total"
    ],
    "scenario_turn": 6,
    "expect": {
     "act": "answer",
-    "entity": "지윤",
-    "quantity": 2,
-    "relation": "count",
+    "entity": [
+     "은정",
+     "지윤"
+    ],
+    "quantity": 24,
+    "relation": "total",
     "evidence": {
      "turns": [
-      3,
-      4
+      1,
+      2,
+      3
      ]
     },
-    "item": "머핀"
+    "item": "선풍기"
    }
   }
  ]
