@@ -143,16 +143,20 @@ class Language:
         language's realizer file; ``honorific``: the stem ending a predicate takes when it
         agrees with the user, or None. A user form the pack does not group with its first
         person is not read as the user (``forms``)."""
+        if getattr(self, "_person", None) is not None:
+            return self._person
         holder = str(getattr(self.parser, "speaker_placeholder", "") or "")
         groups = getattr(self.parser, "placeholders", None) or {}
         forms = sorted({word for word, target in groups.items() if holder and target == holder} | (
             {holder} if holder else set()))
         declared = self.decl.get("person") or {}
-        return {"first": {"holder": holder, "forms": forms},
-                "user": {key: word for key, word in (declared.get("user") or {}).items() if not key.startswith("_")},
-                "addressee": {key: word for key, word in (declared.get("addressee") or {}).items()
-                              if not key.startswith("_")},
-                "honorific": declared.get("honorific")}
+        self._person = {"first": {"holder": holder, "forms": forms},
+                        "user": {key: word for key, word in (declared.get("user") or {}).items()
+                                 if not key.startswith("_")},
+                        "addressee": {key: word for key, word in (declared.get("addressee") or {}).items()
+                                      if not key.startswith("_")},
+                        "honorific": declared.get("honorific")}
+        return self._person
 
     def concept(self, word):
         return self.senses.get(word) or self.senses.get(str(word).lower())
