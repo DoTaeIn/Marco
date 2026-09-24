@@ -137,9 +137,9 @@
  },
  "relation_words": {"location": "위치", "count": "수량"},
  "person": {
-  "_about": "The persons of a conversation (meaning.json: holders). user: the words the user says of themself, by the case a reply's part gives the holder (a part with no case, or a holder said juxtaposed before what it holds: default); the reading the semantic check parses says the user so, and each word is one the pack groups with its first person (임자자리말 나; 자리말 나, 내). addressee: the user is not said in a topic or a subject, juxtaposed before what they hold, or as a possessor (zero anaphora), and a predicate that agrees with them takes the honorific stem -(으)시- (a stem that ends in ㄹ drops it: 알 -> 아시); the user in any other case is not declared, and a clause that needs it is not said.",
-  "user": {"subject": "내", "possessive": "내", "default": "나"},
-  "addressee": {"topic": "", "subject": "", "juxtaposed": "", "possessive": ""},
+  "_about": "The persons of a conversation (meaning.json: holders). user: the words the user says of themself, by the case a reply's part gives the holder (a part with no case, or a holder said juxtaposed before what it holds: default); the reading the semantic check parses says the user so, and each word it says is one the pack groups with its first person (임자자리말 나; 자리말 나, 내); the humble forms (저, 제) are the user's words in a polite register, turned like the others when a holder is named with them (제 룸메이트 -> 룸메이트). addressee: the user is not said in a topic or a subject, juxtaposed before what they hold, or as a possessor (zero anaphora), and a predicate that agrees with them takes the honorific stem -(으)시- (a stem that ends in ㄹ drops it: 알 -> 아시); the user in any other case is not declared, and a clause that needs it is not said.",
+  "user": {"subject": "내", "possessive": "내", "default": "나", "humble": "저", "humble_possessive": "제"},
+  "addressee": {"topic": "", "subject": "", "juxtaposed": "", "possessive": "", "humble": "", "humble_possessive": ""},
   "honorific": {"closed": "으시", "open": "시", "drop_codas": ["ㄹ"]}
  },
  "lexicon": {

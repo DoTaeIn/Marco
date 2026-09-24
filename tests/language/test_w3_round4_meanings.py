@@ -65,7 +65,7 @@ class _Parser:
 # The readings W3-1 asks for, as phrases the present pack already reads.
 EN_READS = [("I have", "I has"), ("The warehouse", "Warehouse"), ("has no", "has 0"),
             ("My roommate Ivo", "Ivo"), (" put ", " gave "), (" in the warehouse", " to warehouse")]
-KO_READS = [(" 씨", ""), ("하나도 없다", "0개이다"), ("에는", "는"), ("내 룸메이트 ", "")]
+KO_READS = [(" 씨", ""), ("하나도 없다", "0개이다"), ("에는", "는"), ("내 룸메이트 ", ""), ("제 동생 ", "")]
 
 
 def answered(fact, asked=None, holders=None, said=""):
@@ -233,9 +233,13 @@ def test_korean_holds_the_user_where_its_person_forms_declare_no_word():
                                                   holders={"이보": {"kind": "named", "said": "내 룸메이트 이보"}},
                                                   said="내 룸메이트 이보는 펜이 2개 있어"),
      "룸메이트 이보는 2개입니다."),
+    ("한국어", ReadsAs("한국어", KO_READS), answered(["미로 펜", "count", "5"], asked=["그", "count", "?n"],
+                                                  holders={"미로": {"kind": "named", "said": "제 동생 미로"}},
+                                                  said="제 동생 미로는 펜이 5개 있어요"),
+     "동생 미로는 5개입니다."),
 ])
 def test_a_named_holder_is_said_as_the_user_named_them(language, model, result, said):
-    # The user's own first-person words turn to the one addressed (my -> your; 내 -> not said).
+    # The user's own first-person words turn to the one addressed (my -> your; 내, 제 -> not said).
     assert composed(result, language, model) == said
 
 
