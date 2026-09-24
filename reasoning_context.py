@@ -3424,7 +3424,7 @@ class ReasoningContext:
                 subject = triple[0]
                 if subject is None and not open_:
                     # No count is open: an amount said again without its holder in the same statement
-                    # (정확히는 열여섯 켤레입니다) is the count stated just before it in that statement.
+                    # (정확히는 아홉 자루라고 다시 말할 때) is the count stated just before it in that statement.
                     turn = (row.get("evidence") or {}).get("turn")
                     same = [f for f in seen if (f.get("evidence") or {}).get("turn") == turn
                             and f["triple"][1] in targets and isinstance(f["triple"][0], str)]

@@ -175,6 +175,7 @@ class RelationalParser:
         self.request = dict(language_pack.get("request", {}) or {})
         # 이름밖: words that are never part of a name in a reading.
         self.outside_names = {w.lower() for w in language_pack.get("outside_names", []) or []}
+        self.outside_leading = {w.lower() for w in (language_pack.get("holder_forms") or {}).get("leading_modifiers", [])}
         # 수량이유물음: the words of a why-question about one holder's count.
         self.why_count = dict(language_pack.get("why_count", {}) or {})
         # 가진쪽꼴: how a holder is said when it is not a bare name -- the speaker, a relation
@@ -1734,12 +1735,15 @@ class RelationalParser:
         return out
 
     @staticmethod
-    def _names_hold(meaning, outside):
+    def _names_hold(meaning, outside, leading=()):
+        """A name holds a word declared outside names (``leading``: words outside names except as a
+        name's first word -- the back hall, but not figs back)."""
         if not outside:
             return False
         rows = asserted(meaning) or [joined(q["triple"]) for q in meaning.get("query", [])
                                      if isinstance(q, dict) and isinstance(q.get("triple"), list)]
-        return any(isinstance(value, str) and any(word.lower() in outside for word in value.split())
+        return any(isinstance(value, str) and any(word.lower() in outside and not (i == 0 and word.lower() in leading)
+                                                  for i, word in enumerate(value.split()))
                    for row in rows for value in (row[0], row[2]))
 
     @staticmethod
@@ -2298,7 +2302,8 @@ class RelationalParser:
                         continue
                     # A name never holds a word the pack declares outside names
                     # (English prepositions): it swallowed a phrase the example lacks.
-                    if self.outside_names and self._names_hold(grounded_names, self.outside_names):
+                    if self.outside_names and self._names_hold(grounded_names, self.outside_names,
+                                                               self.outside_leading):
                         continue
                     if best_rank is None or rank > best_rank:
                         meanings, best_rank = {}, rank
