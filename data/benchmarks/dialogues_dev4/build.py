@@ -1275,10 +1275,10 @@ SYSTEM = {
            "- 말투 지시를 따릅니다. 모양 예시의 괄호는 자리 표시입니다. 그 턴의 낱말로 채우고 괄호는 쓰지 않습니다.\n"
            "- 인사, 감사, 따옴표, 설명 없이 메시지만 씁니다.\n\n"
            "예시 (다른 사람과 물건입니다. 이 낱말들은 쓰지 않습니다):\n"
-           "사실. 가진 쪽: 수호 / 물건: 화분 4개 (네 개) / 동사: 있다  ->  수호는 화분이 네 개 있어요.\n"
-           "사실. 주는 쪽: 수호 / 받는 쪽: 하람 / 물건: 화분 2개 (두 개) / 동사: 빌려주다 (지난 일, 과거형: 빌려줬어요)"
+           "사실. 가진 쪽: 수호 / 물건: 화분 4개, 고유어로 네 개 / 동사: 있다  ->  수호는 화분이 네 개 있어요.\n"
+           "사실. 주는 쪽: 수호 / 받는 쪽: 하람 / 물건: 화분 2개, 고유어로 두 개 / 동사: 빌려주다 (지난 일, 과거형: 빌려줬어요)"
            "  ->  수호가 하람이한테 화분 두 개를 빌려줬어요.\n"
-           "사실. 받는 쪽 (주어): 저 / 준 쪽: 하람 / 물건: 화분 1개 (한 개) / 동사: 받다 (지난 일, 과거형: 받았어요)"
+           "사실. 받는 쪽 (주어): 저 / 준 쪽: 하람 / 물건: 화분 1개, 고유어로 한 개 / 동사: 받다 (지난 일, 과거형: 받았어요)"
            "  ->  저는 하람이한테서 화분 한 개를 받았어요.\n"
            "물음 (사용자가 비서에게 묻는 말, 답은 말하지 않음). 하람이(가) 지금 화분을(를) 몇 개 가지고 있는지  ->  "
            "하람이는 지금 화분이 몇 개 있어요?\n"
@@ -1305,10 +1305,10 @@ SYSTEM_KO_EN = (
     "the turn's own words and never write the brackets.\n"
     "- No greetings, no thanks, no quotation marks, no explanations. Write only the message.\n\n"
     "Examples, with other people and things than yours (never use these words); your message uses the register given above:\n"
-    "사실. 가진 쪽: 수호 / 물건: 화분 4개 (네 개) / 동사: 있다  ->  수호는 화분이 네 개 있어요.\n"
-    "사실. 주는 쪽: 수호 / 받는 쪽: 하람 / 물건: 화분 2개 (두 개) / 동사: 빌려주다 (지난 일, 과거형: 빌려줬어요)"
+    "사실. 가진 쪽: 수호 / 물건: 화분 4개, 고유어로 네 개 / 동사: 있다  ->  수호는 화분이 네 개 있어요.\n"
+    "사실. 주는 쪽: 수호 / 받는 쪽: 하람 / 물건: 화분 2개, 고유어로 두 개 / 동사: 빌려주다 (지난 일, 과거형: 빌려줬어요)"
     "  ->  수호가 하람이한테 화분 두 개를 빌려줬어요.\n"
-    "사실. 받는 쪽 (주어): 저 / 준 쪽: 하람 / 물건: 화분 1개 (한 개) / 동사: 받다 (지난 일, 과거형: 받았어요)"
+    "사실. 받는 쪽 (주어): 저 / 준 쪽: 하람 / 물건: 화분 1개, 고유어로 한 개 / 동사: 받다 (지난 일, 과거형: 받았어요)"
     "  ->  저는 하람이한테서 화분 한 개를 받았어요.\n"
     "물음 (사용자가 비서에게 묻는 말, 답은 말하지 않음). 하람이(가) 지금 화분을(를) 몇 개 가지고 있는지  ->  "
     "하람이는 지금 화분이 몇 개 있어요?\n"
@@ -1327,7 +1327,9 @@ def _amount(lang, n, item):
     if lang == "en":
         return "%d %s" % (n, item["one"] if n == 1 else item["plural"])
     c = item["counter"]
-    return "%s %d%s (%s %s)" % (item["noun"], n, c, KO_NATIVE_SAY.get(n, str(n)), c)
+    # the native numeral is said after the word 고유어로, never alone in brackets: a bracketed amount is a
+    # sentence of its own to a full-sentence comparison, and one other dialogue file has such a sentence
+    return "%s %d%s, 고유어로 %s %s" % (item["noun"], n, c, KO_NATIVE_SAY.get(n, str(n)), c)
 
 
 def _note(lang, feature, rng, attempt=0, verb=None):
@@ -2205,11 +2207,18 @@ def phrase(limit=None, only=None):
 # ---------------------------------------------------------------------------
 # assembly
 # ---------------------------------------------------------------------------
+KEPT = HERE / "phrasings_kept.jsonl"      # the accepted samples of the dialogues in the set, with their seeds
+STATS = HERE / "phrasing_stats.json"      # what the phrasing run tried, kept and discarded, by reason
+OTHER_SETS = ("dialogues_v1", "dialogues_dev", "dialogues_dev2", "dialogues_dev3")
+
+
 def load_phrasings():
+    """The raw phrasing log (every sample, kept or discarded) when it is here, else the kept samples."""
     rows, status = {}, {}
-    if not PHRASINGS.exists():
+    path = PHRASINGS if PHRASINGS.exists() else KEPT
+    if not path.exists():
         return rows, status
-    for line in PHRASINGS.read_text(encoding="utf-8").splitlines():
+    for line in path.read_text(encoding="utf-8").splitlines():
         row = json.loads(line)
         if "dialogue" in row:
             status[row["scenario"]] = row
@@ -2218,17 +2227,40 @@ def load_phrasings():
     return rows, status
 
 
+def _overlapping(dialogues):
+    """Ids of dialogues that share a full sentence with another dialogue file: one of theirs found in any
+    corpus file outside this folder, or one of another set's found in theirs (the frozen set included, read
+    by the gate's own functions; nothing of it is printed, only how many dialogues are left out)."""
+    sys.path.insert(0, str(ROOT / "bench"))
+    import dialogue_gate as gate
+    found = gate.overlaps(dialogues, disk_root=ROOT, owned=("data/benchmarks/dialogues_dev4/",))
+    out = {item["dialogue"] for item in found["overlaps"]}
+    others = []
+    for name in OTHER_SETS:
+        folder = ROOT / "data/benchmarks" / name
+        if folder.exists():
+            others += [norm for _d, _n, _raw, norm in gate.dialogue_sentences(gate.load(folder))]
+    others = set(others)
+    for d in dialogues:
+        text = gate._normalize_corpus("\n".join(t["say"] for t in d["turns"]))
+        if any(norm in text and gate._full_sentence_at(text, norm) for norm in others):
+            out.add(d["id"])
+    return out
+
+
 def assemble(write=True):
     """The dialogues from the phrasing cache: per half and language the first ``PER_HALF`` usable scenarios in
-    scenario order, each with the turns its phrasing kept, every kept text checked again."""
+    scenario order that share no full sentence with another dialogue file or with a dialogue already taken,
+    each with the turns its phrasing kept, every kept text checked again."""
+    sys.path.insert(0, str(ROOT / "bench"))
+    import dialogue_gate as gate
     scenarios = load_scenarios()
     rows, status = load_phrasings()
     checker = Checker()
-    dialogues, split, counts, problems = [], {"build": [], "check": []}, {}, []
+    candidates, problems = [], []
     for scn in scenarios:
-        key = (scn["half"], scn["language"])
         st = status.get(scn["id"], {})
-        if counts.get(key, 0) >= PER_HALF or not st.get("dialogue"):
+        if not st.get("dialogue"):
             continue
         texts, said = {}, []
         for turn in scn["turns"]:
@@ -2245,10 +2277,8 @@ def assemble(write=True):
         if turns is None:
             problems.append("%s: not a dialogue" % scn["id"])
             continue
-        counts[key] = counts.get(key, 0) + 1
-        did = "dev4_%s_%s_%02d" % (scn["language"], scn["half"][0], counts[key])
-        dialogues.append({
-            "schema": SCHEMA, "id": did, "language": scn["language"], "domain": "everyday",
+        candidates.append({
+            "schema": SCHEMA, "id": scn["id"], "language": scn["language"], "domain": "everyday",
             "categories": sorted({tag for t in turns for tag in t["tags"]}),
             "variation": {"word_order": "free", "register": scn["register"],
                           "split": "multi_fact" if len(turns[0]["expect"].get("events") or []) > 1 else
@@ -2258,7 +2288,25 @@ def assemble(write=True):
                           "focus": scn["focus"], "phraser": PHRASER["weights"],
                           "classes": sorted({c for t in turns for c in t["classes"]})},
             "turns": turns})
-        split[scn["half"]].append(did)
+    shared = _overlapping(candidates)
+    dialogues, split, counts, taken, left_out = [], {"build": [], "check": []}, {}, set(), {"other_file": 0,
+                                                                                         "same_set": 0}
+    for d in candidates:
+        key = (d["variation"]["half"], d["language"])
+        if counts.get(key, 0) >= PER_HALF:
+            continue
+        sentences = {norm for _d, _n, _raw, norm in gate.dialogue_sentences([d])}
+        if d["id"] in shared:
+            left_out["other_file"] += 1
+            continue
+        if sentences & taken:
+            left_out["same_set"] += 1
+            continue
+        taken |= sentences
+        counts[key] = counts.get(key, 0) + 1
+        d = dict(d, id="dev4_%s_%s_%02d" % (d["language"], d["variation"]["half"][0], counts[key]))
+        dialogues.append(d)
+        split[d["variation"]["half"]].append(d["id"])
     if write:
         for path in HERE.glob("dev4_*.json"):
             path.unlink()
@@ -2269,7 +2317,45 @@ def assemble(write=True):
             SEED, SCENARIO_SEEDS["build"], SCENARIO_SEEDS["check"], SAMPLING["build"], SAMPLING["check"]),
             "build " + " ".join(split["build"]), "check " + " ".join(split["check"])]
         (HERE / "split.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        if PHRASINGS.exists():
+            used = {d["variation"]["scenario"] for d in dialogues}
+            with KEPT.open("w", encoding="utf-8") as out:
+                for scn in scenarios:
+                    if scn["id"] not in used:
+                        continue
+                    for row in rows[scn["id"]]:
+                        if row["ok"]:
+                            out.write(json.dumps({k: row[k] for k in ("scenario", "n", "attempt", "seed", "text", "ok")},
+                                                 ensure_ascii=False) + "\n")
+                    out.write(json.dumps(status[scn["id"]], ensure_ascii=False) + "\n")
+            STATS.write_text(json.dumps(phrasing_stats(rows, status, left_out), ensure_ascii=False, indent=1) + "\n",
+                             encoding="utf-8")
     return dialogues, split, problems
+
+
+def phrasing_stats(rows, status, left_out):
+    """What the phrasing run tried and discarded: samples by checker reason, scenarios by outcome, per half and
+    language, and the dialogues left out for a shared sentence."""
+    by_scenario = {s["id"]: s for s in load_scenarios()}
+    out = {"phraser": PHRASER, "attempts_per_turn": ATTEMPTS, "left_out_for_a_shared_sentence": left_out,
+           "by_half_language": {}}
+    for sid, st in status.items():
+        scn = by_scenario[sid]
+        key = "%s_%s" % (scn["half"], scn["language"])
+        row = out["by_half_language"].setdefault(key, {"scenarios": 0, "usable": 0, "ended_early": 0,
+                                                       "turns_left_out": 0, "samples": 0, "reasons": {},
+                                                       "peak_mb": 0, "seconds": 0.0})
+        row["scenarios"] += 1
+        row["usable"] += bool(st["dialogue"])
+        row["ended_early"] += st.get("failed_turn") is not None
+        row["turns_left_out"] += len(st.get("skipped") or [])
+        row["peak_mb"] = max(row["peak_mb"], st.get("peak_mb") or 0)
+        row["seconds"] = round(row["seconds"] + (st.get("seconds") or 0), 1)
+        for r in rows.get(sid, []):
+            row["samples"] += 1
+            reason = r["reason"].split(":")[0]
+            row["reasons"][reason] = row["reasons"].get(reason, 0) + 1
+    return out
 
 
 def coverage(dialogues):
