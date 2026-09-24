@@ -1,6 +1,6 @@
 # ALMA 0.1 완료 기준 매핑
 
-이 표는 `Addition.md`의 11개 완료 기준을 구현 단위와 실행 검증에 연결한다. 표의
+이 표는 `2026-09-20-addition-next-directions.md`의 11개 완료 기준을 구현 단위와 실행 검증에 연결한다. 표의
 항목은 계획만으로 완료가 아니며, 각 행의 시나리오가 원시 결과와 함께 통과해야 한다.
 next goal A–H의 세부 감사는 [2026-09-20-next-goal-evidence.md](2026-09-20-next-goal-evidence.md)를
 함께 본다.

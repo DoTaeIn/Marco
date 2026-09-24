@@ -41,6 +41,19 @@ The whole-file rows of `target-map.json`: every module that is not in its
 `pack_model.py`, `purpose_graph.py`, `goal_runtime.py`. `conftest.py` stays.
 `views/kgpack_ui.py` stays where it is. Data directories do not move.
 
+## Also in scope: non-Python files that belong with what moves
+
+`raw_data.txt` and `algorithms/` go with `universal_agent.py` and `codegen.py`
+into `experiments/`; `document_vision.swift` goes with `document_visual.py` into
+`marco/perception/`; `graphify-out/` (a generated co-occurrence graph that
+`explain.py` reads if present, `explain.py:1943`) moves under `data/` with that
+path updated; the encoder's `.vec_*.npz` caches at the root move to
+`.marco/cache/` with the writer's path updated. Each with its references, as
+above. Cleaned by the owner on 2026-09-24 already: `NAI.kgpack`, the old logs
+(`물음기록.jsonl`, `자가학습기록.jsonl`, `그래프쓰임.json`, archived outside the
+repository), `HANDOFF.md` (archived), `practice/` (removed), `Addition.md`
+(moved to `docs/ko/2026-09-20-addition-next-directions.md`).
+
 ## Definition of done — all six, measured
 
 S4.1 **Batches.** At most 10 files per commit. Each commit contains the `git mv`,

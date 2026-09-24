@@ -1,6 +1,6 @@
 # MARCO / ALMA / POLO 통합 개발 기획과 타임라인
 
-작성: 2026-09-22. 이전 20개 개발 방향과 추가 48개 MCO 기획을 합친 최신 실행 순서다. **기획이며 구현 완료 보고가 아니다.** 기존 [상세 기능 로드맵](2026-09-21-marco-polo-roadmap.md), [언어 그래프 goal](2026-09-20-language-graph-goal.md), [Addition.md](../../Addition.md)의 요구와 미완료 사항은 보존한다. 이 문서로 실행 중인 다른 작업의 goal을 바꾸거나 새 goal을 시작하지 않는다.
+작성: 2026-09-22. 이전 20개 개발 방향과 추가 48개 MCO 기획을 합친 최신 실행 순서다. **기획이며 구현 완료 보고가 아니다.** 기존 [상세 기능 로드맵](2026-09-21-marco-polo-roadmap.md), [언어 그래프 goal](2026-09-20-language-graph-goal.md), [2026-09-20-addition-next-directions.md](2026-09-20-addition-next-directions.md)의 요구와 미완료 사항은 보존한다. 이 문서로 실행 중인 다른 작업의 goal을 바꾸거나 새 goal을 시작하지 않는다.
 
 ## 1. 이번에 바꾸는 순서
 
@@ -409,7 +409,7 @@ G1의 첫 사용성 검증은 다음과 같은 하나의 실제 대화가 공통
 | 19 | Document Learning | G2 수동 투입 → G6 획득/학습 loop |
 | 20 | 전체 인지·행동 구조 | G1~G9 + M1~M4/P1, ALMA/SOMA 갈래 |
 
-Addition.md의 사건 identity, SYSTEM/COGNITION/LIFE 로그, Episodic/Semantic/Procedural 기억, 개념/구조 학습, chunking, 네 영역, 원인 기반 감정, 경험 기반 취향은 계속 유효하다. 파일 형식 변경이 그 의미나 기존 완료 조건을 삭제하지 않는다. 기존 10개 goal과의 더 자세한 대응은 [이전 로드맵 18절](2026-09-21-marco-polo-roadmap.md#18-기존-로드맵과-additionmd를-버리지-않는-방법)에 보존한다.
+2026-09-20-addition-next-directions.md의 사건 identity, SYSTEM/COGNITION/LIFE 로그, Episodic/Semantic/Procedural 기억, 개념/구조 학습, chunking, 네 영역, 원인 기반 감정, 경험 기반 취향은 계속 유효하다. 파일 형식 변경이 그 의미나 기존 완료 조건을 삭제하지 않는다. 기존 10개 goal과의 더 자세한 대응은 [이전 로드맵 18절](2026-09-21-marco-polo-roadmap.md#18-기존-로드맵과-additionmd를-버리지-않는-방법)에 보존한다.
 
 ## 16. 지금 할 일과 공통 완료 원칙
 

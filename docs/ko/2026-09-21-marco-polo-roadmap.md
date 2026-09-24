@@ -2,7 +2,7 @@
 
 최신 통합 기획: [2026-09-22 MCO·overlay·권한·모바일·SOMA 통합 로드맵과 타임라인](2026-09-22-mco-integrated-roadmap.md). 아래의 G0~G10/A1/A2 세부 기능 요구는 유지하며, 최신 문서에서 추가 48개 항목의 합류 시점과 일정 예산을 연결했다. 당시 확인 상태는 아래에 이력으로 남긴다.
 
-기획 시작: 2026-09-21. 정리: 2026-09-22. 사용자가 제안한 20개 항목을 기존 Addition.md, 이전 goal, 언어 그래프 goal과 연결한 실행 로드맵이다. 구현 완료 보고가 아니다. 이 문서 작성으로 실행 중인 다른 작업의 goal을 변경하거나 새 goal을 시작하지 않는다.
+기획 시작: 2026-09-21. 정리: 2026-09-22. 사용자가 제안한 20개 항목을 기존 2026-09-20-addition-next-directions.md, 이전 goal, 언어 그래프 goal과 연결한 실행 로드맵이다. 구현 완료 보고가 아니다. 이 문서 작성으로 실행 중인 다른 작업의 goal을 변경하거나 새 goal을 시작하지 않는다.
 
 ## 1. 순서에 대한 결정안
 
@@ -240,7 +240,7 @@ G1 내부에서 의미 계약을 고정한 뒤에는 G2의 자료·후보 모델
 | 19 | Document Learning | G2 수동 자료 투입 | G6 정보 공백·자료 획득·학습 loop |
 | 20 | 전체 구조 | G1~G4의 공통 연결 | G5 이후 능력 확장, A1/A2 병렬 |
 
-## 18. 기존 로드맵과 Addition.md를 버리지 않는 방법
+## 18. 기존 로드맵과 2026-09-20-addition-next-directions.md를 버리지 않는 방법
 
 | 이전 10개 goal | 새 위치 |
 | --- | --- |
@@ -255,7 +255,7 @@ G1 내부에서 의미 계약을 고정한 뒤에는 G2의 자료·후보 모델
 | 9 감정/취향/목표 | 기존 기반은 G0에서 검증, A1/A2 사회적 활용 |
 | 10 추론 압축/장기 운영 | 기존 shortcut은 G0 유지, 이관/장기 복원은 모든 단계, 추가 최적화는 G9 |
 
-Addition.md의 Binary KG 유지, 사건 identity, SYSTEM/COGNITION/LIFE 로그, Episodic/Semantic/Procedural 기억, 개념 후보, 구조 변경, chunking, 네 영역, 원인 기반 감정, 경험 기반 취향, capability 요구는 보존한다. 새 로드맵으로 미완료를 삭제하거나 성공 범위를 확대하지 않는다.
+2026-09-20-addition-next-directions.md의 Binary KG 유지, 사건 identity, SYSTEM/COGNITION/LIFE 로그, Episodic/Semantic/Procedural 기억, 개념 후보, 구조 변경, chunking, 네 영역, 원인 기반 감정, 경험 기반 취향, capability 요구는 보존한다. 새 로드맵으로 미완료를 삭제하거나 성공 범위를 확대하지 않는다.
 
 ## 19. 지금 병행할 수 있는 준비와 합류 시점
 
