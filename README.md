@@ -880,7 +880,7 @@ packages already                  marco/ · marco/language/ · marco/language/re
 script folders already            views/ (kgpack_ui, stays) · bench/ · tools/ · tests/ · collectors/
 
 data, does not move               graphs/*.kg · legal/*.kg · cases/ · styles/ · axioms/ · data/
-docs                              docs/architecture/ · docs/mco/ · docs/en/ · docs/releases/ · docs/requests/
+docs                              docs/architecture/ · docs/mco/ · docs/en/ · docs/releases/ · docs/requests/ · docs/archive/
                                   docs/ko/ (design records and goals, Korean)
 ```
 
