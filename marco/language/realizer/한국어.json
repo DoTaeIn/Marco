@@ -1,6 +1,7 @@
 {
  "_about": "Korean realizer declarations: orthography, case particles, lexicon, endings, expression candidates per frame, and the reading rules the semantic check applies. Particle mates, the inflection grammar, negation, numerals, senses and romanization are reused from styles/한국어.json through its parser; nothing here repeats them.",
  "language": "한국어",
+ "version": {"release": "0.4.0", "round": "W4"},
  "negation_marker_key": "부정표지",
  "pack": "styles/한국어.json",
  "pack_keys": {
@@ -116,7 +117,7 @@
   "goal_topic": {"mate": "으로", "then": "topic"},
   "locative_topic": {"form": "에", "then": "topic"}
  },
- "counters": {"count": {"form": "개"}},
+ "counters": {"count": {"form": "개"}, "turn": {"_about": "The turn of a conversation, by its number (goal W4).", "form": "번째"}},
  "numbers": {
   "_about": "How a number is said. Digits by default; numeral words (native Korean before a counter) when an expression asks for them.",
   "style": "digits",
@@ -309,7 +310,12 @@
   "not_be": {"verb": "아니", "kind": "descriptive"},
   "alike": {"verb": "같", "kind": "descriptive"},
   "correct_v": {"verb": "정정하", "kind": "regular"},
-  "cannot_short": {"word": "못"}
+  "cannot_short": {"word": "못"},
+  "become": {"verb": "되", "kind": "regular"},
+  "cancel": {"verb": "취소하", "kind": "regular"},
+  "follow": {"verb": "따르", "kind": "regular"},
+  "ask_hon": {"_about": "To ask, said of the one addressed: the stem with the honorific.", "verb": "물으시", "kind": "regular"},
+  "quote_go": {"_about": "The ending that closes a quotation before a verb of saying.", "word": "라고"}
  },
  "lexicon_forms": {},
  "expressions": {
@@ -1452,6 +1458,155 @@
      {"verb": "find", "predicate": true, "negation": "cannot"}
     ]
    }
+  ],
+  "chain_statement": [
+   {
+    "id": "statement_recorded_at",
+    "_about": "Why from the trace graph (goal W4): a statement the answer rests on, with its turn.",
+    "parts": [
+     {"num": "turn", "counter": "turn"},
+     {"lex": "word"},
+     {"quote": "said", "marks": "double", "case": "object"},
+     {"verb": "record", "predicate": true}
+    ]
+   }
+  ],
+  "chain_asked": [
+   {
+    "id": "asked_at",
+    "parts": [
+     {"num": "turn", "counter": "turn"},
+     {"lex": "word", "case": "source"},
+     {"quote": "said", "marks": "double"},
+     {"lex": "quote_go", "bind": true},
+     {"verb": "ask_hon", "predicate": true}
+    ]
+   }
+  ],
+  "count_change": [
+   {
+    "id": "count_became",
+    "parts": [
+     {"np": ["subject"], "case": "topic"},
+     {"num": "before", "counter": "count", "case": "source"},
+     {"num": "after", "counter": "count", "case": "subject"},
+     {"verb": "become", "predicate": true}
+    ]
+   }
+  ],
+  "reading_corrected": [
+   {
+    "id": "correction_reread",
+    "parts": [
+     {"num": "by", "counter": "turn"},
+     {"lex": "word"},
+     {"quote": "said", "marks": "double", "case": "locative"},
+     {"verb": "follow", "tense": "present", "ending": "informal"},
+     {"num": "turn", "counter": "turn"},
+     {"lex": "word", "case": "object"},
+     {"verb": "fix", "tense": "present", "ending": "informal"},
+     {"verb": "read", "predicate": true}
+    ]
+   }
+  ],
+  "change_withdrawn": [
+   {
+    "id": "withdrew_change",
+    "requires": ["before"],
+    "parts": [
+     {"np": ["subject"], "case": "subject"},
+     {"num": "before", "counter": "count", "case": "source"},
+     {"num": "after", "counter": "count", "case": "subject"},
+     {"verb": "become", "tense": "present", "ending": "past_adnominal"},
+     {"lex": "thing", "case": "topic"},
+     {"verb": "cancel", "predicate": true}
+    ]
+   },
+   {
+    "id": "withdrew_value",
+    "parts": [
+     {"np": ["subject"], "case": "genitive"},
+     {"lex": "earlier"},
+     {"lex": "value"},
+     {"num": "after", "counter": "count", "case": "topic"},
+     {"verb": "cancel", "predicate": true}
+    ]
+   }
+  ],
+  "chain_held": [
+   {
+    "id": "held_answer_to",
+    "parts": [
+     {"num": "turn", "counter": "turn"},
+     {"lex": "word"},
+     {"quote": "said", "marks": "double", "case": "locative_topic"},
+     {"lex": "answer_n", "case": "object"},
+     {"verb": "hold", "predicate": true}
+    ]
+   }
+  ],
+  "chain_unread": [
+   {
+    "id": "unread_at",
+    "when": {"polarity": false},
+    "parts": [
+     {"num": "turn", "counter": "turn"},
+     {"lex": "word"},
+     {"quote": "said", "marks": "double", "case": "object"},
+     {"verb": "read", "predicate": true, "negation": "cannot"}
+    ]
+   }
+  ],
+  "chain_which": [
+   {
+    "id": "which_could_not_tell",
+    "when": {"polarity": false},
+    "parts": [
+     {"quote": "word", "marks": "single", "case": "subject"},
+     {"list": "candidates", "each": {"np": ["$item"]}, "join_case": "with"},
+     {"lex": "among"},
+     {"lex": "who", "cop": "whether"},
+     {"verb": "know", "predicate": true, "negation": "cannot"}
+    ]
+   }
+  ],
+  "chain_which_event": [
+   {
+    "id": "which_event_could_not_tell",
+    "when": {"polarity": false},
+    "parts": [
+     {"lex": "correction", "case": "subject"},
+     {"lex": "which_det"},
+     {"lex": "earlier"},
+     {"lex": "event", "case": "object"},
+     {"verb": "point_to", "tense": "present", "ending": "whether"},
+     {"verb": "know", "predicate": true, "negation": "cannot"}
+    ]
+   }
+  ],
+  "chain_value_place": [
+   {
+    "id": "value_place_could_not_find",
+    "when": {"polarity": false},
+    "parts": [
+     {"lex": "correction", "case": "subject"},
+     {"verb": "change", "tense": "present", "ending": "adnominal"},
+     {"lex": "value", "case": "object"},
+     {"verb": "find", "predicate": true, "negation": "cannot"}
+    ]
+   }
+  ],
+  "chain_replied": [
+   {
+    "id": "replied_at",
+    "parts": [
+     {"num": "turn", "counter": "turn"},
+     {"lex": "word", "case": "locative_topic"},
+     {"quote": "said", "marks": "double"},
+     {"lex": "quote_go", "bind": true},
+     {"verb": "answer", "predicate": true}
+    ]
+   }
   ]
  },
  "rules": {
@@ -1513,6 +1668,7 @@
  },
  "leads": {
   "now": [{"lex": "now"}],
+  "so": [{"lex": "so"}],
   "answer_yes": {"parts": [{"lex": "answer_yes"}], "polarity": true, "join": "comma"},
   "answer_no": {"parts": [{"lex": "answer_no"}], "polarity": false, "join": "comma"}
  },

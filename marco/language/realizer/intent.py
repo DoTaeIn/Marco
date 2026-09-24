@@ -22,10 +22,17 @@ def _field(fields, path):
     return value
 
 
-def _typed(kind, value, source):
+def _typed(kind, value, source, holders=()):
     """A role value of the declared kind, from a field value."""
     if value is None:
         return None
+    if kind == "owners":
+        # Holders named by compound subjects (owner words, then item words): each said as its
+        # owner. Two that share an owner are not told apart by it: no value.
+        owners = [_split_subject(item, source, holders)[0] for item in value]
+        if not owners or any(not owner for owner in owners) or len(set(owners)) != len(owners):
+            return None
+        return {"list": [mg.entity(owner, source, "agent") for owner in owners]}
     if kind == "numeral":
         return mg.number(value)
     if kind == "quote":
@@ -183,10 +190,80 @@ def _event_props(time, source, holders=()):
     return [{"frame": frame, "tense": "past", "polarity": True, "roles": {"said": mg.quote(said)}}]
 
 
+def _row_value(ref, row, fields):
+    """A value a row case names: the row's own field (``chain.row_mark``), a meaning field (``$``),
+    or the value as written."""
+    mark = meaning_declarations()["chain"]["row_mark"]
+    if isinstance(ref, str) and ref.startswith(mark):
+        return _field(row, ref[len(mark):])
+    if isinstance(ref, str) and ref.startswith("$"):
+        return _field(fields, ref[1:])
+    return ref
+
+
+def _row_matches(where, row):
+    return all(row.get(key) == wanted for key, wanted in (where or {}).items())
+
+
+def _rows(template, graph):
+    """One proposition per row of a list field, by the first case the row matches
+    (``meaning.json: chain``). A row no case covers, or without a value its case requires,
+    says nothing."""
+    decl = meaning_declarations()
+    fields, source = graph["fields"], graph["source"]
+    holders = mg.holder_keys(fields)
+    rows = _field(fields, template["rows"][1:])
+    props = []
+    for row in rows if isinstance(rows, list) else []:
+        if not isinstance(row, dict):
+            continue
+        case = next((c for c in template["cases"] if _row_matches(c.get("where"), row)), None)
+        if case is None:
+            continue
+        values = {role: _row_value(ref, row, fields) for role, ref in (case.get("roles") or {}).items()}
+        if any(values.get(role) in (None, [], "") for role in case.get("requires", [])):
+            continue
+        if "fact" in case:
+            triple = [_row_value(ref, row, fields) for ref in case["fact"]]
+            prop = mg.fact_prop(triple, source, holders=holders) if None not in triple else None
+            if prop is None:
+                continue
+        else:
+            kinds = decl["frames"][case["frame"]]["roles"]
+            typed = {role: _typed(kinds.get(role, "any"), value, source, holders)
+                     for role, value in values.items() if value not in (None, [], "")}
+            if any(typed.get(role) is None for role in case.get("requires", [])):
+                continue
+            prop = {"frame": case["frame"], "polarity": case.get("polarity", True),
+                    "roles": {role: value for role, value in typed.items() if value is not None}}
+        prop.update({key: case[key] for key in ("tense", "sentence", "optional") if key in case})
+        props.append(prop)
+    return props
+
+
+def _hold_reason(template, graph):
+    """The reason a reply was held, in the templates ``chain.hold_reasons`` lists under its id;
+    ``_default`` when there is no entry or the entry says nothing."""
+    table = meaning_declarations()["chain"]["hold_reasons"]
+    reason = _field(graph["fields"], template.get("reason", "$reason")[1:])
+    for key in (reason, "_default"):
+        templates = table.get(key) if isinstance(key, str) else None
+        if not isinstance(templates, list):
+            continue
+        props = [prop for entry in templates for prop in _props(entry, graph)]
+        if props:
+            return props
+    return []
+
+
 def _props(template, graph):
     decl = meaning_declarations()
     fields, source = graph["fields"], graph["source"]
     holders = mg.holder_keys(fields)
+    if template.get("rows"):
+        return _rows(template, graph)
+    if template.get("from") == "hold_reason":
+        return _hold_reason(template, graph)
     if template.get("from") == "fact":
         row = graph["fact"]
         prop = mg.fact_prop(row["fact"], source, focus=template.get("focus"), evidence=row.get("evidence"),
@@ -263,7 +340,13 @@ def _props(template, graph):
             if template.get("optional"):
                 return []
             continue
-        roles[role] = _typed(kinds.get(role, "any"), value, source)
+        typed = _typed(kinds.get(role, "any"), value, source, holders)
+        if typed is None:
+            # A value its kind cannot carry (holders not told apart by their owners).
+            if template.get("optional"):
+                return []
+            continue
+        roles[role] = typed
     prop = {"frame": frame, "roles": roles, "polarity": template.get("polarity", True)}
     for key in ("tense", "sentence"):
         if key in template:
@@ -382,4 +465,5 @@ def plan(graph):
     graph["acts"] = acts
     graph["props"] = [copy.deepcopy(prop) for act in acts for prop in act["props"]]
     graph["plan"] = chosen.get("_about") or chosen["match"]
+    graph["plan_match"] = copy.deepcopy(chosen["match"])
     return True

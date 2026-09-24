@@ -75,7 +75,11 @@ class Realizer:
         said_in = (result.get("meaning") or {}).get("conversation_language") if isinstance(
             result.get("meaning"), dict) else None
         source = stem_of(said_in) if said_in else speaker
-        report = {"realized": False, "intent": intent, "source": source}
+        block = result.get("meaning") if isinstance(result.get("meaning"), dict) else {}
+        # What the turn meant, whatever is said of it (request L1-2 item 3): the trace can say
+        # what was held and why even when its caller has no engine meaning.
+        report = {"realized": False, "intent": intent, "source": source,
+                  "meaning": {"act": block.get("act"), "reason": block.get("reason")}}
         if not available(source, model if source == speaker else None):
             report["reason"] = "no_declarations"
             return self._passthrough(result, report)
@@ -102,6 +106,7 @@ class Realizer:
         if not intents.plan(graph):
             report["reason"] = "no_plan"
             return self._passthrough(result, report)
+        report["plan"] = graph.get("plan_match")
         text, detail = self.realize_graph(graph, graph["answer_language"])
         report.update(detail)
         report["realized"] = True

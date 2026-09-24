@@ -1,6 +1,7 @@
 {
  "_about": "Language-free declarations of the realizer: the utterance intents, the frames a Meaning Graph may hold, how a turn result becomes a Meaning Graph and a plan of acts, and the discourse rules. No word of any language appears here; each language file (한국어.json, english.json) says how these are expressed.",
  "schema": "marco-meaning-v1",
+ "version": {"_about": "The release of these declarations (request L1-2 item 4): two files with the same version and different digests are an edit not yet released. Raised with every realizer round that changes them.", "release": "0.4.0", "round": "W4"},
  "intents": {
   "INFORM": {"_about": "say what is the case, from recorded state or recorded reasoning"},
   "ASK": {"_about": "ask for what the conversation does not fix; never pick it"},
@@ -141,7 +142,18 @@
   "topic_sure": {"roles": {}},
   "evidence_found": {"roles": {}},
   "graph_chosen": {"roles": {}},
-  "sources_complete": {"roles": {}}
+  "sources_complete": {"roles": {}},
+  "chain_statement": {"_about": "Why, from the trace graph (goal W4): a statement the answer rests on, recorded at a turn; the user's words quoted.", "roles": {"turn": "numeral", "said": "quote"}, "numbers": ["turn"]},
+  "chain_asked": {"_about": "The question an answer answered, at its turn, quoted.", "roles": {"turn": "numeral", "said": "quote"}, "numbers": ["turn"]},
+  "count_change": {"_about": "A recorded change of a count, from one value to another.", "roles": {"subject": "compound", "before": "numeral", "after": "numeral"}, "numbers": ["before", "after"]},
+  "reading_corrected": {"_about": "A correction at turn `by`, quoted, replaced the reading of the statement at turn `turn`: the old reading is withdrawn and superseded.", "roles": {"turn": "numeral", "by": "numeral", "said": "quote"}, "numbers": ["turn", "by"]},
+  "change_withdrawn": {"_about": "A change the answer no longer rests on: withdrawn after a correction, superseded by a change said before it. Without a value before, the earlier value is withdrawn.", "roles": {"subject": "compound", "before": "numeral", "after": "numeral"}, "numbers": ["before", "after"]},
+  "chain_held": {"_about": "A held reply: the turn whose answer was held, its words quoted.", "roles": {"turn": "numeral", "said": "quote"}, "numbers": ["turn"]},
+  "chain_unread": {"_about": "The hold waits on a statement not read, at its turn, quoted.", "roles": {"turn": "numeral", "said": "quote"}, "numbers": ["turn"]},
+  "chain_which": {"_about": "The hold's pointer could name any of the holders listed.", "roles": {"word": "quote", "candidates": "owners"}},
+  "chain_which_event": {"_about": "A correction could point to more than one earlier event.", "roles": {}},
+  "chain_value_place": {"_about": "A correction's old value had no single place in the event it names.", "roles": {}},
+  "chain_replied": {"_about": "A hold whose reason no declared frame says: the reply as it was said, quoted, at its turn.", "roles": {"turn": "numeral", "said": "quote"}, "numbers": ["turn"]}
  },
  "relations": {
   "_about": "Triple predicate -> frame, and where the triple's subject and object go. A subject listed as several roles is the engine's compound subject (owner words, then item words).",
@@ -295,6 +307,60 @@
     {"intent": "INFORM", "props": [{"each": "$rules", "frame": "rule", "role": "rule"}]},
     {"intent": "INFORM", "props": [{"frame": "evidence", "roles": {"statements": "$evidence"}}]},
     {"intent": "INFORM", "props": [{"frame": "repairs", "roles": {"pairs": "$repairs"}, "optional": true}]}
+   ]
+  },
+  {
+   "_about": "Why, from the trace graph's why chain (goal W4, request L1-2; marco/trace/explain.py builds the meaning): in order, what was recorded, what changed and by which rule, what a correction withdrew, and what was concluded. Rows are the chain's own events in ledger order; a row a case does not cover is not said.",
+   "match": {"act": "explain", "kind": "chain"},
+   "acts": [
+    {"intent": "INFORM", "props": [{"rows": "$statements", "cases": [
+     {"frame": "chain_statement", "roles": {"turn": "@turn", "said": "@said"}, "requires": ["turn", "said"], "tense": "past"}]}]},
+    {"intent": "INFORM", "props": [{"rows": "$changes", "cases": [
+     {"where": {"whole": true, "field": "count", "before": null}, "fact": ["@subject", "@field", "@after"],
+      "tense": "past"},
+     {"where": {"whole": true, "field": "count"}, "frame": "count_change",
+      "roles": {"subject": "@subject", "before": "@before", "after": "@after"}, "requires": ["subject", "before", "after"],
+      "tense": "past"},
+     {"where": {"whole": true}, "fact": ["@subject", "@field", "@after"], "tense": "past", "optional": true}]}]},
+    {"intent": "INFORM", "props": [{"each": "$rules", "frame": "rule", "role": "rule", "optional": true}]},
+    {"intent": "CORRECT", "props": [
+     {"rows": "$corrections", "cases": [
+      {"frame": "reading_corrected", "roles": {"turn": "@turn", "by": "@by", "said": "@said"},
+       "requires": ["turn", "by", "said"], "tense": "past"}]},
+     {"rows": "$withdrawn", "cases": [
+      {"where": {"what": "change", "whole": true}, "frame": "change_withdrawn",
+       "roles": {"subject": "@subject", "before": "@before", "after": "@after"}, "requires": ["subject", "after"],
+       "tense": "past"}]}]},
+    {"intent": "INFORM", "props": [{"frame": "chain_asked", "roles": {"turn": "$asked.turn", "said": "$asked.said"},
+                                    "tense": "past", "optional": true}]},
+    {"intent": "INFORM", "lead": "so", "props": [{"rows": "$facts", "cases": [
+     {"fact": ["@subject", "@relation", "@value"]}]}]}
+   ]
+  },
+  {
+   "_about": "Why a reply was held, from the trace graph's why chain (goal W4, request L1-2 item 2): what the chain recorded, changed and withdrew, if anything; the turn whose answer was held; then the hold's reason in the frames chain.hold_reasons declares for it, with what was missing.",
+   "match": {"act": "explain", "kind": "chain_hold"},
+   "acts": [
+    {"intent": "INFORM", "props": [{"rows": "$statements", "cases": [
+     {"frame": "chain_statement", "roles": {"turn": "@turn", "said": "@said"}, "requires": ["turn", "said"], "tense": "past"}]}]},
+    {"intent": "INFORM", "props": [{"rows": "$changes", "cases": [
+     {"where": {"whole": true, "field": "count", "before": null}, "fact": ["@subject", "@field", "@after"],
+      "tense": "past"},
+     {"where": {"whole": true, "field": "count"}, "frame": "count_change",
+      "roles": {"subject": "@subject", "before": "@before", "after": "@after"}, "requires": ["subject", "before", "after"],
+      "tense": "past"},
+     {"where": {"whole": true}, "fact": ["@subject", "@field", "@after"], "tense": "past", "optional": true}]}]},
+    {"intent": "CORRECT", "props": [
+     {"rows": "$corrections", "cases": [
+      {"frame": "reading_corrected", "roles": {"turn": "@turn", "by": "@by", "said": "@said"},
+       "requires": ["turn", "by", "said"], "tense": "past"}]},
+     {"rows": "$withdrawn", "cases": [
+      {"where": {"what": "change", "whole": true}, "frame": "change_withdrawn",
+       "roles": {"subject": "@subject", "before": "@before", "after": "@after"}, "requires": ["subject", "after"],
+       "tense": "past"}]}]},
+    {"intent": "REFUSE", "props": [{"frame": "chain_held", "roles": {"turn": "$held.turn", "said": "$held.said"},
+                                    "tense": "past"}]},
+    {"intent": "REFUSE", "props": [{"from": "hold_reason"}]}
    ]
   },
   {
@@ -829,6 +895,33 @@
   "coordinate": {
    "_about": "Consecutive clauses of one frame in one act are joined into one sentence.",
    "frames": ["count"]
+  }
+ },
+ "chain": {
+  "_about": "Why said from the trace graph (goal W4, request L1-2). A plan template {rows: $field, cases: [...]} says one proposition per row of a list field: the first case whose `where` the row matches (a null value matches a missing one), its `fact` (a triple of row values, said as the relation's frame) or its `frame` with `roles`; `row_mark` names a row's own field. A row without a value a case `requires` is not said; a case marked optional is left out when the language cannot say it in words its pack reads back (a state other than a count, in the past). {from: hold_reason} says the reason of a held reply in the templates hold_reasons lists under the reason's id, with the fields the chain gives: missing (as the hold event recorded it), statement (the input the hold names, resolved to its turn and words), reply (what was said then). A reason without an entry, or whose entry says nothing, takes _default.",
+  "row_mark": "@",
+  "hold_reasons": {
+   "unread_event": [{"frame": "chain_unread", "roles": {"turn": "$statement.turn", "said": "$statement.said"}, "polarity": false,
+                     "tense": "past", "optional": true}],
+   "which_referent": [{"frame": "chain_which", "roles": {"word": "$missing.word", "candidates": "$missing.candidates"},
+                       "polarity": false, "tense": "past", "optional": true}],
+   "no_referent": [{"frame": "referent_found", "roles": {"word": "$missing.word"}, "polarity": false, "tense": "past",
+                    "optional": true}],
+   "input_understanding_failed": [{"frame": "topic_found", "polarity": false, "tense": "past"}],
+   "not_stated": [{"frame": "heard", "roles": {"subject": "$missing.subject"}, "polarity": false, "optional": true}],
+   "premise_missing": [{"frame": "known", "roles": {"subject": "$missing.subject", "relation": "$missing.relation"},
+                        "polarity": false, "optional": true}],
+   "unknown_word": [{"frame": "word_known", "roles": {"word": "$missing.word"}, "polarity": false, "optional": true}],
+   "reference_which_event": [{"frame": "chain_which_event", "polarity": false, "tense": "past"}],
+   "reference_value_unclear": [{"frame": "chain_value_place", "polarity": false, "tense": "past"}],
+   "unresolved": [{"frame": "decided", "polarity": false}],
+   "contradiction": [{"frame": "sum_mismatch", "roles": {"said": "$statement.said"}, "polarity": false, "optional": true}],
+   "invalid": [{"frame": "conflict", "polarity": false}],
+   "vague_count": [{"frame": "count_unknown", "split": "$missing.subject", "polarity": false}],
+   "explain_nothing": [{"frame": "explainable", "polarity": false}],
+   "capacity": [{"frame": "limit_reached", "tense": "past"}],
+   "_default": [{"frame": "chain_replied", "roles": {"turn": "$reply.turn", "said": "$reply.said"}, "tense": "past",
+                 "optional": true}]
   }
  },
  "hold": {

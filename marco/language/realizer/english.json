@@ -1,6 +1,7 @@
 {
  "_about": "English realizer declarations: orthography, prepositions, lexicon, agreement, expression candidates per frame, and the reading rules the semantic check applies. The verb lexicon and inflection rules are reused from styles/english.json through its parser; forms it does not declare are added under lexicon_forms.",
  "language": "english",
+ "version": {"release": "0.4.0", "round": "W4"},
  "negation_marker_key": "부정표지",
  "pack": "styles/english.json",
  "orthography": {
@@ -277,7 +278,16 @@
   "want": {"verb": "want", "kind": "regular"},
   "seem": {"verb": "seem", "kind": "regular"},
   "than": {"word": "than"},
-  "differently": {"word": "differently"}
+  "differently": {"word": "differently"},
+  "at": {"word": "at"},
+  "turn_n": {"word": "turn"},
+  "my": {"word": "my"},
+  "understanding_n": {"word": "understanding"},
+  "change_n": {"word": "change"},
+  "whether": {"word": "whether"},
+  "withdraw": {"verb": "withdraw", "kind": "regular"},
+  "replace": {"verb": "replace", "kind": "regular"},
+  "reply": {"verb": "reply", "kind": "regular"}
  },
  "lexicon_forms": {
   "be": {"present_plural": "are", "present_first": "am", "past_plural": "were"},
@@ -311,9 +321,12 @@
   "ask": {"past": "asked"},
   "reach": {"past": "reached"},
   "build": {"past": "built"},
-  "go": {"third_person": "goes"},
-  "hold": {"third_person": "holds"},
-  "decide": {"past": "decided"}
+  "go": {"third_person": "goes", "past": "went"},
+  "hold": {"third_person": "holds", "past": "held"},
+  "decide": {"past": "decided"},
+  "withdraw": {"past": "withdrew", "participle": "withdrawn"},
+  "replace": {"past": "replaced", "participle": "replaced"},
+  "reply": {"past": "replied", "third_person": "replies"}
  },
  "expressions": {
   "count": [
@@ -1645,6 +1658,186 @@
      {"lex": "conversation"}
     ]
    }
+  ],
+  "chain_statement": [
+   {
+    "id": "statement_recorded_at",
+    "_about": "Why from the trace graph (goal W4): a statement the answer rests on, with its turn.",
+    "parts": [
+     {"lex": "i"},
+     {"verb": "record", "predicate": true, "person": "first"},
+     {"quote": "said", "marks": "double"},
+     {"lex": "at"},
+     {"lex": "turn_n"},
+     {"num": "turn"}
+    ]
+   }
+  ],
+  "chain_asked": [
+   {
+    "id": "asked_at",
+    "parts": [
+     {"lex": "you"},
+     {"verb": "ask", "predicate": true, "person": "second"},
+     {"quote": "said", "marks": "double"},
+     {"lex": "at"},
+     {"lex": "turn_n"},
+     {"num": "turn"}
+    ]
+   }
+  ],
+  "count_change": [
+   {
+    "id": "count_went_from_to",
+    "parts": [
+     {"np": ["subject"], "case": "subject", "det": "definite"},
+     {"verb": "go", "predicate": true, "person": "third"},
+     {"lex": "from"},
+     {"num": "before"},
+     {"lex": "to"},
+     {"num": "after"}
+    ]
+   }
+  ],
+  "reading_corrected": [
+   {
+    "id": "correction_replaced_reading",
+    "parts": [
+     {"lex": "your"},
+     {"lex": "correction"},
+     {"quote": "said", "marks": "double"},
+     {"lex": "at"},
+     {"lex": "turn_n"},
+     {"num": "by"},
+     {"verb": "replace", "predicate": true, "person": "third"},
+     {"lex": "my"},
+     {"lex": "understanding_n"},
+     {"lex": "of"},
+     {"lex": "turn_n"},
+     {"num": "turn"}
+    ]
+   }
+  ],
+  "change_withdrawn": [
+   {
+    "id": "withdrew_change",
+    "requires": ["before"],
+    "parts": [
+     {"lex": "i"},
+     {"verb": "withdraw", "predicate": true, "person": "first"},
+     {"lex": "the"},
+     {"lex": "change_n"},
+     {"lex": "of"},
+     {"np": ["subject"], "det": "definite"},
+     {"lex": "from"},
+     {"num": "before"},
+     {"lex": "to"},
+     {"num": "after"}
+    ]
+   },
+   {
+    "id": "withdrew_value",
+    "parts": [
+     {"lex": "i"},
+     {"verb": "withdraw", "predicate": true, "person": "first"},
+     {"lex": "the"},
+     {"lex": "earlier"},
+     {"lex": "value"},
+     {"lex": "of"},
+     {"np": ["subject"], "det": "definite"},
+     {"sym": "comma", "bind": true},
+     {"num": "after"}
+    ]
+   }
+  ],
+  "chain_held": [
+   {
+    "id": "held_answer_to",
+    "parts": [
+     {"lex": "i"},
+     {"verb": "hold_v", "predicate": true, "person": "first"},
+     {"lex": "my"},
+     {"lex": "answer_n"},
+     {"lex": "to"},
+     {"quote": "said", "marks": "double"},
+     {"lex": "at"},
+     {"lex": "turn_n"},
+     {"num": "turn"}
+    ]
+   }
+  ],
+  "chain_unread": [
+   {
+    "id": "unread_at",
+    "when": {"polarity": false},
+    "parts": [
+     {"lex": "i"},
+     {"verb": "read", "predicate": true, "person": "first", "negation": "cannot"},
+     {"quote": "said", "marks": "double"},
+     {"lex": "at"},
+     {"lex": "turn_n"},
+     {"num": "turn"}
+    ]
+   }
+  ],
+  "chain_which": [
+   {
+    "id": "which_could_not_tell",
+    "when": {"polarity": false},
+    "parts": [
+     {"lex": "i"},
+     {"verb": "tell", "predicate": true, "person": "first", "negation": "cannot"},
+     {"lex": "whether"},
+     {"quote": "word", "marks": "single"},
+     {"verb": "mean", "person": "third"},
+     {"list": "candidates", "each": {"np": ["$item"]}, "last_lex": "or"}
+    ]
+   }
+  ],
+  "chain_which_event": [
+   {
+    "id": "which_event_could_not_tell",
+    "when": {"polarity": false},
+    "parts": [
+     {"lex": "i"},
+     {"verb": "tell", "predicate": true, "person": "first", "negation": "cannot"},
+     {"lex": "which"},
+     {"lex": "earlier"},
+     {"lex": "event"},
+     {"lex": "your"},
+     {"lex": "correction"},
+     {"verb": "refer", "tense": "present", "person": "third"},
+     {"lex": "to"}
+    ]
+   }
+  ],
+  "chain_value_place": [
+   {
+    "id": "value_place_could_not_find",
+    "when": {"polarity": false},
+    "parts": [
+     {"lex": "i"},
+     {"verb": "find", "predicate": true, "person": "first", "negation": "cannot"},
+     {"lex": "the"},
+     {"lex": "value"},
+     {"lex": "your"},
+     {"lex": "correction"},
+     {"verb": "replace", "tense": "present", "person": "third"}
+    ]
+   }
+  ],
+  "chain_replied": [
+   {
+    "id": "replied_at",
+    "parts": [
+     {"lex": "at"},
+     {"lex": "turn_n"},
+     {"num": "turn"},
+     {"lex": "i"},
+     {"verb": "reply", "predicate": true, "person": "first"},
+     {"quote": "said", "marks": "double"}
+    ]
+   }
   ]
  },
  "rules": {
@@ -1702,6 +1895,7 @@
  "coordination": {"count": {"gap_predicate": false, "separator": "list"}},
  "leads": {
   "now": [{"lex": "now"}],
+  "so": [{"lex": "so"}],
   "answer_yes": {"parts": [{"lex": "answer_yes"}], "polarity": true, "join": "comma"},
   "answer_no": {"parts": [{"lex": "answer_no"}], "polarity": false, "join": "comma"}
  },
