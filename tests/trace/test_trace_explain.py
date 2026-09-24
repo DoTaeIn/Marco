@@ -14,7 +14,7 @@ import pytest
 from marco.language.realizer import last_report
 from marco.trace import drive, from_turn
 from marco.trace.__main__ import main
-from marco.trace.explain import chain_meaning, explain, say_why
+from marco.trace.explain import chain_meaning, explain, last_explainable, say_why
 from marco.trace.ledger import Ledger
 from marco.trace.why import Graph
 
@@ -228,3 +228,22 @@ def test_the_explanation_is_json_safe_and_small(recorded):
         meaning = chain_meaning(graph, output["event_id"])
         assert json.loads(json.dumps(meaning, ensure_ascii=False)) == meaning
         assert len(json.dumps(meaning, ensure_ascii=False).encode("utf-8")) < 8000
+
+
+@pytest.mark.parametrize("code", LANGUAGES)
+def test_the_output_a_bare_why_asks_about_is_found_in_the_ledger(recorded, code):
+    """What request W4-1 wires into the engine's why: the last answer or correction of the
+    conversation before the why, from the ledger alone; an explanation or a hold is not one."""
+    book = recorded[code]
+    graph, outputs, said = Graph(book), _outputs(book), _inputs(book)
+    conversation = outputs[0]["payload"]["conversation"]
+    turn_of = {o["event_id"]: o["payload"]["turn"] for o in outputs}
+    assert last_explainable(graph, conversation, before=said[3]["event_id"]) is None      # only records so far
+    assert turn_of[last_explainable(graph, conversation, before=said[4]["event_id"])] == 3
+    assert turn_of[last_explainable(graph, conversation, before=said[6]["event_id"])] == 5  # the correction
+    assert turn_of[last_explainable(graph, conversation, before=said[8]["event_id"])] == 5  # not the why, not the hold
+    assert turn_of[last_explainable(graph, conversation)] == 10
+    assert last_explainable(graph, "another conversation") is None
+    text, report = explain(graph, last_explainable(graph, conversation, before=said[6]["event_id"]), code)
+    assert report["realized"] and not report["held"]
+    assert _frames(report)[-2:] == ["change_withdrawn", "change_withdrawn"]

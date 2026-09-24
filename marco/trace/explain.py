@@ -21,6 +21,8 @@ from marco.trace.why import Graph
 # The output statuses that end in a hold (marco/trace/from_turn.py: output_status).
 HELD = ("hold", "refused", "error", "unknown")
 LANGUAGES = {"ko": "styles/한국어.json", "en": "styles/english.json"}
+# The check an engine explanation passes (reasoning_context.ReasoningContext._explain_last).
+EXPLAINED = "explained_recorded_transitions"
 STEMS = {"한국어": "ko", "english": "en", "korean": "ko"}
 
 
@@ -238,6 +240,33 @@ def chain_meaning(graph, output_id):
         meaning["reply"] = {"turn": output["payload"].get("turn"),
                             "said": str(output["payload"].get("text") or "").strip()}
     return meaning
+
+
+def last_explainable(source, conversation, before=None):
+    """The output a bare "why" asks about, from the ledger alone: the latest ``output_created``
+    of ``conversation`` (before the event ``before``, if given) whose trace concluded a fact or
+    corrected a statement's reading. An explanation's own output is not one (a "why" after a
+    "why" explains the same answer), nor is a hold. None when the conversation has none: the
+    engine's own explanation is then the fallback (request ``docs/requests/W4-1.md``)."""
+    graph = _graph(source)
+    end = graph.position[before] if before is not None else len(graph.events)
+    facts, corrected, explained = set(), set(), set()
+    for event in graph.events[:end]:
+        if event["kind"] == "conclusion_created" and isinstance(event["payload"].get("fact"), list):
+            facts.add(event["trace_id"])
+        elif event["kind"] == "state_changed" and event["payload"].get("field") == "observation":
+            corrected.add(event["trace_id"])
+        elif event["kind"] == "hypothesis_verified" and any(
+                check.get("reason") == EXPLAINED for check in event["payload"].get("checks") or ()):
+            explained.add(event["trace_id"])
+    for event in reversed(graph.events[:end]):
+        if event["kind"] != "output_created" or event["payload"].get("conversation") != conversation:
+            continue
+        if event["trace_id"] in explained:
+            continue
+        if (event["trace_id"] in facts and event["status"] == "answered") or event["trace_id"] in corrected:
+            return event["event_id"]
+    return None
 
 
 def _target(language):
