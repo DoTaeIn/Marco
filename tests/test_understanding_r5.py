@@ -171,3 +171,133 @@ def test_routing_writes_its_candidates_and_scores_and_a_routing_hold_below_the_t
     # recording off: nothing is written and routing answers the same
     assert engine.pick_graph("anything at all", index={"공통층": {}}) == (None, 0.0, [])
     assert len(read(ledger.path)[0]) == 2
+
+
+# G5.4 B: readings as candidates, checked against the state -------------------------------------------------
+def asserted_numbers(text):
+    import bench.dialogue_gate as gate
+    return gate.quantities(gate.asserted(text or ""))
+
+
+def test_the_readers_readings_come_the_readers_own_first_in_tier_order():
+    parser = model("한국어").parser()
+    text = "제 삼촌이 거실에서 부채 두 개를 가져갔어요."
+    first = parser.parse(text, partial=True, events=True, repair=True)
+    readings = parser.readings(text, partial=True, events=True, repair=True)
+    assert len(readings) >= 2 and readings[0]["parsed"]["facts"] == first["facts"]
+    assert [r["tier"] for r in readings] == sorted(r["tier"] for r in readings)
+    assert len({r["said"] for r in readings}) == len(readings)
+
+
+def test_a_reading_whose_holder_has_no_count_gives_way_to_the_one_whose_holder_has():
+    current, rows = play("한국어", ["제 삼촌은 부채가 여섯 개 있어요.", "거실은 부채가 아홉 개 있어요.",
+                                   "제 삼촌이 거실에서 부채 두 개를 가져갔어요.", "거실은 부채가 몇 개 있어요?"])
+    taken = rows[2]
+    assert taken["status"] == "observed"
+    checked = [c for c in taken["verification"]["checks"] if c.get("reason") == "reading_checked"]
+    assert checked and checked[0]["dropped"][0]["constraint"] == "holder_exists"
+    assert rows[3]["status"] == "answered" and asserted_numbers(rows[3]["answer"]) == {7}
+    # the choice is replayed: a later turn reads the conversation the same way
+    assert current.turn("제 삼촌은 부채가 몇 개 있어요?")["status"] == "answered"
+
+
+def _checked(language, lines, text, readings):
+    current = context(language)
+    for line in lines:
+        current.turn(line)
+    parser = current._parser()
+    parser.readings = lambda said, **kw: readings(parser, said)
+    return current, current._check_readings(parser, text, None, None, first_failure=None)
+
+
+def _reading(parser, said, tier):
+    parsed = parser.parse(said, partial=True, events=True, repair=True)
+    return {"parsed": parsed, "tier": tier, "said": json.dumps([f["triple"] for f in parsed["facts"]]), "used": []}
+
+
+def test_two_readings_of_one_tier_that_both_fit_and_differ_are_asked_about():
+    lines = ["Ada has 6 trays.", "Bex has 4 trays."]
+    current, result = _checked("english", lines, "Ada and Bex swapped 2 trays.", lambda parser, said: [
+        _reading(parser, "Ada gave Bex 2 trays.", 0), _reading(parser, "Bex gave Ada 2 trays.", 0)])
+    assert result["status"] == "unresolved" and result["meaning"]["act"] == "ask"
+    assert result["meaning"]["reason"] == "ambiguous_reading"
+    first, second = result["meaning"]["readings"]
+    assert {(r["subject"], r["delta"]) for r in first["changes"]} == {("Ada trays", -2), ("Bex trays", 2)}
+    assert {(r["subject"], r["delta"]) for r in second["changes"]} == {("Ada trays", 2), ("Bex trays", -2)}
+    assert rc.gap_class("ambiguous_reading") == ("evidence", True)
+    # nothing is recorded, and what the statement names is held until it is said again
+    assert current.observations == lines
+    assert current.turn("How many trays does Bex have?")["status"] == "unresolved"
+
+
+def test_when_no_reading_fits_the_turn_holds_with_each_readings_failure_in_the_declared_order():
+    lines = ["Ada has 1 tray.", "Bex has 4 trays."]
+    current, result = _checked("english", lines, "Ada moved 3 trays.", lambda parser, said: [
+        _reading(parser, "Ada gave Bex 3 trays.", 0), _reading(parser, "Cyd gave Bex 3 trays.", 1)])
+    assert result["meaning"]["act"] == "hold" and result["meaning"]["reason"] == "no_reading"
+    assert result["meaning"]["failed"] == [{"reading": 0, "constraint": "count_can_move"},
+                                           {"reading": 1, "constraint": "holder_exists"}]
+    order = [name for name, _doc, _failures in rc.READING_CONSTRAINTS]
+    assert order == ["statement", "frame", "readable", "one_subject", "holder_exists", "count_can_move",
+                     "within_limits"]
+    assert set(ReasoningContext.UNPLACED) | set(ReasoningContext.CONTRADICTION) <= set(rc.CONSTRAINT_OF)
+    assert current.observations == lines
+
+
+def test_a_person_pointer_never_means_a_place():
+    _ctx, rows = play("한국어", ["준영은 앨범이 열두 권 있어요.", "서점에는 앨범이 다섯 권 있어요.", "창민은 앨범이 열한 권 있어요.",
+                                "지금 서점에 앨범이 몇 권 있어요?", "그분은 지금 앨범이 몇 권 있어요?"])
+    assert rows[3]["status"] == "answered"
+    assert rows[4]["status"] == "unresolved" and rows[4]["meaning"]["act"] == "ask"
+    assert rows[4]["meaning"]["candidates"] and not any("서점" in str(n) for n in rows[4]["meaning"]["candidates"])
+
+
+# G5.6: two questions in one turn, answered in order, each with its own evidence -----------------------------
+SETUP = {
+    "english": ["Mira has 9 lanyards.", "Teo has 4 lanyards.", "Mira sent Teo 3 lanyards."],
+    "한국어": ["보영은 목도리가 아홉 개 있어요.", "태호는 목도리가 네 개 있어요.", "보영이 태호한테 목도리 세 개를 보냈어요."],
+}
+TWO_QUESTIONS = {
+    "english": [("How many lanyards does Mira have? And how many does Teo have?", [6, 7]),
+                ("How many lanyards does Teo have? How many does Mira have?", [7, 6]),
+                ("How many lanyards does Mira have now? And Teo?", [6, 7]),
+                ("How many lanyards has Teo got? And Mira?", [7, 6]),
+                ("How many lanyards does Mira have left? How many lanyards does Teo have left?", [6, 7]),
+                ("How many lanyards do Mira and Teo have in total? And how many does Mira have?", [13, 6]),
+                ("How many lanyards does Teo have? And how many do Mira and Teo have in total?", [7, 13]),
+                ("How many lanyards does Mira hold? And Teo?", [6, 7]),
+                ("How many lanyards does Teo hold? How many lanyards does Mira hold?", [7, 6]),
+                ("How many lanyards does Mira have? And how many lanyards does Teo have now?", [6, 7])],
+    "한국어": [("보영은 목도리가 몇 개 있어요? 태호는요?", [6, 7]),
+            ("태호는 목도리가 몇 개 있어요? 보영은 몇 개 있어요?", [7, 6]),
+            ("보영은 지금 목도리가 몇 개 있어요? 태호는요?", [6, 7]),
+            ("태호는 목도리를 몇 개 가지고 있어요? 보영은요?", [7, 6]),
+            ("보영은 목도리가 몇 개 남았어요? 태호는 목도리가 몇 개 있어요?", [6, 7]),
+            ("보영이랑 태호는 합쳐서 목도리가 몇 개 있어요? 보영은 몇 개 있어요?", [13, 6]),
+            ("태호는 목도리가 몇 개 있어요? 보영이랑 태호는 합쳐서 목도리가 몇 개 있어요?", [7, 13]),
+            ("보영한테 목도리가 몇 개 있어요? 태호한테는요?", [6, 7]),
+            ("태호는 지금 목도리가 몇 개예요? 보영은 지금 몇 개예요?", [7, 6]),
+            ("보영은 목도리를 몇 개 가지고 있어요? 태호는 목도리를 몇 개 가지고 있어요?", [6, 7])],
+}
+
+
+@pytest.mark.parametrize("language,case", [(lang, i) for lang in TWO_QUESTIONS for i in range(10)])
+def test_two_questions_in_one_turn_are_answered_in_order_each_with_its_evidence(language, case):
+    text, values = TWO_QUESTIONS[language][case]
+    _ctx, rows = play(language, SETUP[language] + [text])
+    result = rows[-1]
+    assert result["status"] == "answered"
+    meaning = result["meaning"]
+    assert meaning["act"] == "inform" and meaning["kind"] == "queries" and len(meaning["answers"]) == 2
+    assert [a["value"] if a.get("kind") == "total" else int(a["fact"][2]) for a in meaning["answers"]] == values
+    for index, answer in enumerate(meaning["answers"]):
+        sources = [e["source"] for e in (answer["evidence"] if isinstance(answer["evidence"], list)
+                                         else [answer["evidence"]])]
+        assert answer["status"] == "answered" and sources and set(sources) <= set(SETUP[language])
+        assert any(row.get("part") == index and row.get("fact") for row in result["transitions"])
+        assert any(c.get("part") == index and c.get("ok") for c in result["verification"]["checks"])
+
+
+def test_a_statement_before_a_question_is_still_one_turn():
+    _ctx, rows = play("english", ["Mira has 9 lanyards.", "Teo has 4 lanyards. How many lanyards does Teo have?"])
+    assert (rows[-1].get("meaning") or {}).get("kind") != "queries"

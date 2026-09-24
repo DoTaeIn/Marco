@@ -37,7 +37,7 @@ GAP_CLASSES = {
                "not_phrased", "invalid", "no_reading"),
     "evidence": ("not_stated", "premise_missing", "vague_count", "explain_nothing", "nothing_to_explain",
                  "unfilled_role", "unsettled_event", "unresolved", "which_referent", "no_referent",
-                 "which_event", "which_reading", "reference_which_event", "reference_no_event",
+                 "which_event", "ambiguous_reading", "reference_which_event", "reference_no_event",
                  "reference_value_unclear", "recipient_reference_no_event", "correction_target",
                  "unknown_basis", "unknown_lookup", "ambiguous_lookup", "unmeasured_condition",
                  "condition_false", "missing_initial_quantity"),
@@ -55,6 +55,31 @@ def gap_class(reason):
     if reason.startswith("event_reference_"):
         return "evidence", True
     return "parser", False
+
+
+# Readings as candidates (goal G5.4 B, the design note's hybrid scope). When the reader's first reading of a
+# statement cannot be applied, or the reader left the statement unread because a clause read two ways at one
+# rank, every reading the reader gives (RelationalParser.readings) is checked against the conversation's
+# state. The constraints, in the order they drop a reading, each with the replay's failures it stands for
+# (graph_inference.current_facts, ReasoningContext._replay); the reader's own particle and name guards come
+# first and are applied inside the reader (a reading that breaks one is never returned):
+READING_CONSTRAINTS = (
+    ("statement", "the reading states something (a fact or an event), not a question or a request",
+     ("not_a_statement",)),
+    ("frame", "a transfer moves the thing from one holder to another, not to the same one", ("same_holder",)),
+    ("readable", "the conversation, replayed with the reading, reads every statement", ("unrecognized_observation",)),
+    ("one_subject", "each change names one holder", ("ambiguous_quantity_subject", "ambiguous_state_subject",
+                                                    "ambiguous_property_scope")),
+    ("holder_exists", "a holder whose count changes, the giver and the receiver alike, has a count said before",
+     ("missing_initial_quantity",)),
+    ("count_can_move", "no count falls below zero or contradicts one said before",
+     ("invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity")),
+    ("within_limits", "the replay stays within the graph's limits", ("graph_limit", "join_limit")),
+)
+CONSTRAINT_OF = {failure: name for name, _doc, failures in READING_CONSTRAINTS for failure in failures}
+# Of the readings no constraint drops, those of the reader's best tier stand (a declared example as written
+# before a derived one, the reader's own order); one of them is used; several that would record different
+# things are asked about (reason which_reading); none: the turn holds with every reading's failure.
 
 
 def _sha(text):
@@ -2109,6 +2134,11 @@ class ReasoningContext:
             후보 = [(차례, 이름) for 이름, 차례 in 차례표.items()
                   if (not 나머지 and 이름) or (나머지 and 이름 != 나머지
                                             and 이름.endswith(나머지))]
+            if 말 in ((parser.language_pack or {}).get("person_pointers") or []):
+                # A pointer to a person (사람지시어: he, she, 그분) never means a place things are kept in (G5).
+                장소 = {place for item in facts for place in item.get("places") or [] if isinstance(place, str)}
+                후보 = [(차례, 이름) for 차례, 이름 in 후보
+                      if not any(이름 == place or 이름.startswith(place + " ") for place in 장소)]
             이름들 = [이름 for _차례, 이름 in sorted(후보, reverse=True)]
             고른것 = self._salient_choice(이름들)
             if 고른것 is None and len(이름들) == 1 and self._alone(이름들[0]):
@@ -3232,7 +3262,13 @@ class ReasoningContext:
         지우는 규칙이 아니다 — 원문은 그대로 남고 읽기 후보가 하나 는 것뿐이다.
         군말은 뜻을 안 나르므로, 떼어 낸 쪽이 읽히면 그쪽이 옳은 읽기다. 군말만으로
         된 말은 언어팩이 이미 안 뗀다 — 그건 군말이 아니라 그 자체가 발화다.
+
+        A statement this conversation read by another of the reader's readings (G5.4 B) is read that
+        way again: the choice is kept on the conversation's parser (``chosen_readings``) and replayed.
         """
+        chosen = (getattr(parser, "chosen_readings", None) or {}).get(str(source).strip())
+        if chosen is not None:
+            return deepcopy(chosen)
         from encoder import strip_fillers
         읽음 = parser.parse(source, partial=True, repair=True, **kw)
         벗긴말 = strip_fillers(source, parser.language_pack)
@@ -3601,7 +3637,7 @@ class ReasoningContext:
 
     def turn(self, text, knowledge_path=None):
         """One turn. Its sentence comes from ``marco.language.realize``."""
-        self._trace_buffer = []
+        self._trace_buffer, self._trace_readings, self._readings_dropped = [], None, []
         observed_before = len(self.observations)
         result, path = None, "reply"
         try:
@@ -3613,12 +3649,71 @@ class ReasoningContext:
                 self._emit_turn(text, result, path, observed_before)
             self._trace_buffer = []
 
+    def _question_parts(self, text):
+        """G5.6 (Diairesis): the questions of a turn that asks two or more, each ended by a declared question
+        mark, in the order said; None for any other turn (a statement before a question stays one turn)."""
+        if not self._permitted(None):
+            return None
+        marks = self._parser().clause_grammar.get("question_marks", [])
+        if not marks or sum(str(text).count(mark) for mark in marks) < 2:
+            return None
+        pieces = [piece.strip() for piece in re.split("(?<=[%s])\\s+" % re.escape("".join(marks)), str(text).strip())
+                  if piece.strip()]
+        if len(pieces) < 2 or not all(any(piece.endswith(mark) for mark in marks) for piece in pieces):
+            return None
+        return pieces
+
+    def _answer_parts(self, pieces, knowledge_path):
+        """Each question answered in order, as the turn it would be alone (its reading, its evidence); the
+        turn's meaning is ``kind: queries`` with one entry per answer (request W5-1): the answer's own
+        meaning, its ``status``, and for an answered fact its ``fact`` and that fact's ``evidence``. The
+        transitions carry every answer's rows, each marked with its ``part``; the checks likewise."""
+        parser = self._parser()
+        results = []
+        for piece in pieces:
+            part = self._turn_reply(piece, knowledge_path)
+            if part is None:
+                part = {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                        "meaning": {"act": "hold", "reason": "unresolved", "said": piece},
+                        "verification": self._verification(knowledge_path, [{"ok": False, "reason": "part_unread"}])}
+            results.append(part)
+        answers = []
+        for part in results:
+            entry = {key: value for key, value in (part.get("meaning") or {}).items() if key != "conversation"}
+            entry["status"] = "answered" if part.get("status") == "answered" else "unresolved"
+            facts = [r for r in part.get("transitions") or [] if isinstance(r, dict)
+                     and isinstance(r.get("fact"), (list, tuple)) and len(r["fact"]) == 3]
+            if entry["status"] == "answered" and entry.get("kind") == "total":
+                # a total is its members' counts summed (the value the single turn says), with their rows
+                latest = {str(r["fact"][0]): r for r in facts}
+                members = [latest.get(str(member)) for member in entry.get("subjects") or []]
+                if members and all(m is not None and str(m["fact"][2]).lstrip("-").isdigit() for m in members):
+                    entry["value"] = sum(int(m["fact"][2]) for m in members)
+                    entry["evidence"] = [deepcopy(m.get("evidence")) for m in members]
+            elif entry["status"] == "answered" and facts and not entry.get("kind"):
+                entry["fact"] = [str(x) for x in facts[-1]["fact"]]
+                entry["evidence"] = deepcopy(facts[-1].get("evidence"))
+            answers.append(entry)
+        answered = all(entry["status"] == "answered" for entry in answers)
+        held = next((entry for entry in answers if entry["status"] != "answered"), None)
+        replies = parser.data["context_replies"]
+        checks = [dict(check, part=index) for index, part in enumerate(results)
+                  for check in ((part.get("verification") or {}).get("checks") or []) if isinstance(check, dict)]
+        return {"operator": "relational_graph", "status": "answered" if answered else "unresolved",
+                "answer": " ".join(str(part.get("answer") or replies["unresolved"]).strip() for part in results),
+                "transitions": [dict(row, part=index) for index, part in enumerate(results)
+                                for row in part.get("transitions") or [] if isinstance(row, dict)],
+                "meaning": {"act": "inform", "kind": "queries", "answers": answers,
+                            **({"reason": held.get("reason") or "unresolved"} if held else {})},
+                "verification": self._verification(knowledge_path, checks)}
+
     def _turn_said(self, text, knowledge_path=None):
         language = self.language or next((source["path"] for source in getattr(self.model, "sources", ())
                                           if source["path"].startswith("styles/")), None)
         explained = self.last_explanation
-        result = self._follow_up(text, knowledge_path, language)
-        self._trace_path = "follow_up" if result is not None else "reply"
+        parts = self._question_parts(text)
+        result = self._answer_parts(parts, knowledge_path) if parts else self._follow_up(text, knowledge_path, language)
+        self._trace_path = "follow_up" if result is not None and not parts else "reply"
         if result is None:
             result = self._turn_reply(text, knowledge_path)
             # What the last reply's readings changed, for "what did you change?".
@@ -3657,6 +3752,122 @@ class ReasoningContext:
                                    "blocked": [clause.get("frame") for clause in report.get("clauses") or []
                                                if clause.get("blocked")]})
         return result
+
+    @staticmethod
+    def _is_statement(parsed):
+        """A reading that states facts the state records (an event of a learned verb, a definition, a
+        condition or a question is not one this check chooses between)."""
+        return bool(parsed) and bool(parsed.get("facts")) and not any(
+            parsed.get(key) for key in ("query", "사건", "사건정정", "정의", "원인", "이유물음", "조건", "가정사건"))
+
+    def _reading_failure(self, parser, text, parsed):
+        """``(failure, changes)``: the first constraint (``READING_CONSTRAINTS``) the conversation breaks with
+        ``parsed`` as the reading of ``text``, as ``(constraint, reason)``, or None when every one holds with
+        it; and the state rows the reading would record (``current_facts``' changes of this statement)."""
+        if not self._is_statement(parsed):
+            return ("statement", "not_a_statement"), []
+        rows = [f["triple"] for f in parsed.get("facts", []) if isinstance(f.get("triple"), list)]
+        updates = parser.data.get("numeric_updates") or {}
+        removed = {str(t[0]).split()[0] for t in rows if isinstance(t[0], str) and t[1] in updates
+                   and float((updates[t[1]] or {}).get("factor", 1) or 1) < 0}
+        added = {str(t[0]).split()[0] for t in rows if isinstance(t[0], str) and t[1] in updates
+                 and float((updates[t[1]] or {}).get("factor", 1) or 1) > 0}
+        if removed and removed == added:
+            return ("frame", "same_holder"), []
+        key = str(text).strip()
+        table = parser.__dict__.setdefault("chosen_readings", {})
+        before = table.get(key)
+        table[key] = parsed
+        index = len(self.observations)
+        try:
+            facts, _d, _p, _r = self._replay(parser, self.observations + [text], self.fills,
+                                             deepcopy(self.event_ids) if self.event_ids is not None else None)
+            facts = self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", []))
+            _state, changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+        except ValueError as exc:
+            reason = str(exc).split(":")[0]
+            return (CONSTRAINT_OF.get(reason, "readable"), reason), []
+        finally:
+            if before is None:
+                table.pop(key, None)
+            else:
+                table[key] = before
+        mine = [deepcopy(row) for row in changes if (row.get("evidence") or {}).get("turn") == index
+                and row.get("operation") in ("state_update", "quantity_update")]
+        return None, mine
+
+    def _check_readings(self, parser, text, verbs, knowledge_path, first_failure=None):
+        """G5.4 B: every reading the reader gives for a statement it could not apply (or left unread for a
+        clause read two ways at one rank), each checked against the state (``READING_CONSTRAINTS``, in order).
+        One reading of the best tier left: the turn is played again with it (the choice is kept for replay).
+        Several that would record different things: the turn asks which (``ambiguous_reading``, request W5-2).
+        None, when the reader had readings to choose between: the turn holds (``no_reading``) with each
+        reading's failure. With nothing to choose between: None, and the caller holds as before. The dropped
+        readings and their reasons go to the trace and the checks."""
+        # the reader's readings that state something; with fewer than two there is nothing to choose between
+        readings = [r for r in parser.readings(text, partial=True, events=True, repair=True, verbs=verbs)
+                    if self._is_statement(r["parsed"])]
+        if first_failure is None and len(readings) < 1:
+            return None
+        if first_failure is not None and len(readings) < 2:
+            return None
+        survivors, dropped = [], []
+        for index, reading in enumerate(readings):
+            if index == 0 and first_failure is not None:
+                failure, changes = (CONSTRAINT_OF.get(first_failure, "readable"), first_failure), []
+            else:
+                failure, changes = self._reading_failure(parser, text, reading["parsed"])
+            if failure is None:
+                survivors.append(dict(reading, changes=changes, index=index))
+            else:
+                dropped.append((index, reading, failure))
+        buffer = self.__dict__.setdefault("_trace_buffer", [])
+        for index, reading, (constraint, failure) in dropped:
+            buffer.append(("hypothesis_rejected", {"checks": [{"ok": False, "reason": failure}],
+                                                   "constraint": constraint, "tier": reading["tier"],
+                                                   "reading": index, "said": _sha(reading["said"])}))
+        self._trace_readings = [[_sha(r["said"])[:16], r["tier"]] for r in readings]
+        self._readings_dropped = [{"reading": i, "constraint": c, "reason": f, "tier": r["tier"]}
+                                  for i, r, (c, f) in dropped]
+        replies = parser.data["context_replies"]
+        said = str(text).strip()
+        if not survivors:
+            if len(readings) < 2 and first_failure is None:
+                return None
+            self._remember_unread({"text": said, "at": len(self.observations)})
+            failed = [{"reading": d["reading"], "constraint": d["constraint"]} for d in self._readings_dropped]
+            return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                    "answer": replies["no_reading"].format(**{"말": said}),
+                    "meaning": {"act": "hold", "reason": "no_reading", "said": said, "failed": failed},
+                    "verification": self._verification(knowledge_path, [{
+                        "ok": False, "reason": "no_reading", "readings": len(readings),
+                        "dropped": self._readings_dropped}])}
+        tier = min(r["tier"] for r in survivors)
+        best = [r for r in survivors if r["tier"] == tier]
+        if len({r["said"] for r in best}) == 1:
+            parser.__dict__.setdefault("chosen_readings", {})[said] = best[0]["parsed"]
+            self._replay_cache = None        # a replay made with the first reading is not this one
+            self._rereading = True
+            try:
+                result = self._turn(text, knowledge_path)
+            finally:
+                self._rereading = False
+            if result is not None and isinstance(result.get("verification"), dict):
+                result["verification"].setdefault("checks", []).append({
+                    "ok": True, "reason": "reading_checked", "readings": len(readings), "tier": tier,
+                    "dropped": self._readings_dropped})
+            if result is None or result.get("status") != "observed":
+                parser.chosen_readings.pop(said, None)
+                self._replay_cache = None
+            return result
+        self._remember_unread({"text": said, "at": len(self.observations)})
+        return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                "answer": replies["ambiguous_reading"].format(**{"말": said}),
+                "meaning": {"act": "ask", "reason": "ambiguous_reading", "said": said,
+                            "readings": [{"changes": r["changes"]} for r in best]},
+                "verification": self._verification(knowledge_path, [{
+                    "ok": False, "reason": "ambiguous_reading", "readings": len(best), "tier": tier,
+                    "dropped": self._readings_dropped}])}
 
     def _emit_turn(self, text, result, path, observed_before):
         """This turn's events in its own trace of ``self.trace`` (request L1-1, the minimum): the path the
@@ -4220,6 +4431,11 @@ class ReasoningContext:
             짧은답 = [(ask, {값[1]: 값[0]})]
         if 짧은답 is not None:
             current = {"facts": [], "query": None, "정의": [], "사건": []}
+        if current is None and not getattr(self, "_rereading", False):
+            # G5.4 B: a statement the reader left unread only because a clause read two ways at one rank
+            checked = self._check_readings(parser, text, verbs, knowledge_path, first_failure=None)
+            if checked is not None:
+                return checked
         if current is None:
             # 못 읽은 말을 구간마다 적어 둔다. 이 대화의 어느 값을 흔들었는지
             # 모르므로, 그 말이 가리킨 것에 대해서는 지금 값을 확정하지 않는다.
@@ -4693,6 +4909,12 @@ class ReasoningContext:
             #              없다. 처음 수량이 틀렸을 수도, 중간 사건이 빠졌을 수도
             #              있다. 두 말을 다 남기고 값은 확정하지 않은 채 묻는다.
             said, reason = text.strip(), str(exc)
+            if (reason in self.UNPLACED | self.CONTRADICTION and keeps and not current.get("query")
+                    and not getattr(self, "_rereading", False)):
+                # G5.4 B: the reader's first reading does not fit the state; its other readings are checked
+                checked = self._check_readings(parser, text, verbs, knowledge_path, first_failure=reason)
+                if checked is not None:
+                    return checked
             if reason in self.UNPLACED | self.CONTRADICTION and keeps:
                 # 대상이 생략된 가변 상태 변화는 어느 기존 대상을 바꿨는지
                 # 모르므로, 원문에 이름이 없더라도 같은 관계의 질의를 막는다.

@@ -116,6 +116,8 @@
    "capacity": "This conversation reached its state limit. Please restate the conditions in a new conversation.",
    "which_event": "I asked about several events, so I do not know which one this answers: {목록}. Please say which event.",
    "which_referent": "I do not know what '{말}' refers to. Which of {목록} do you mean?",
+   "ambiguous_reading": "\"{말}\" can be read in several ways. Please say which you mean.",
+   "no_reading": "No interpretation of \"{말}\" fits this conversation. Please say it another way.",
    "no_referent": "I found nothing in this conversation that '{말}' refers to.",
    "role_mismatch": "\"{말}\" does not seem to answer the role I asked about. {물음} If '{값}' is right for it, please say so.",
    "answer_unclear": "I did not take \"{말}\" as an answer. {물음} One name is enough.",
@@ -2962,6 +2964,15 @@
   "there"
  ],
  "_지시어": "Words that point back at something already said in this conversation. When several things fit, ask; never pick.",
+ "사람지시어": [
+  "that person",
+  "this person",
+  "he",
+  "she",
+  "him",
+  "her"
+ ],
+ "_사람지시어": "The pointers of 지시어 that point back at a person, the closed class in full: a place this conversation holds things in is never what they mean.",
  "임자자리말": "I",
  "임자조사": "",
  "행위대상결합": {},

@@ -205,6 +205,7 @@ class RelationalParser:
                               "event_domains": copy.deepcopy(self.event_domains),
                               "fillers": copy.deepcopy(self.fillers),
                               "pointers": list(self.pointers),
+                              "person_pointers": list(language_pack.get("person_pointers", []) or []),
                               "plan": copy.deepcopy(language_pack.get("plan", {})),
                               "slot_questions": dict(self.slot_questions),
                               "short_tails": list(self.short_tails),
@@ -2868,9 +2869,11 @@ class RelationalParser:
         ways at one rank (which ``parse`` alone leaves unread) gives one reading per way. Readings that say
         the same are given once. Nothing is chosen here: the conversation checks them (reasoning_context)."""
         out, seen, tried = [], set(), set()
-        queue = [frozenset()]
+        # (excluded clause readings, tier): a tier is the reader's rank order -- a reading found by leaving a
+        # used clause reading out is one tier below; the ways of an ambiguous clause share their tier
+        queue = [(frozenset(), 0)]
         while queue and len(out) < limit and len(tried) < limit * 4:
-            excluded = queue.pop(0)
+            excluded, tier = queue.pop(0)
             if excluded in tried:
                 continue
             tried.add(excluded)
@@ -2880,7 +2883,7 @@ class RelationalParser:
                 for note in notes:
                     keys = note.get("candidate_keys") or []
                     if note.get("reason") == "ambiguous_clause" and len(keys) > 1:
-                        queue += [excluded | frozenset(k for k in keys if k != keep) for keep in keys]
+                        queue += [(excluded | frozenset(k for k in keys if k != keep), tier) for keep in keys]
                         break
                 continue
             said = json.dumps([sorted(json.dumps(f["triple"], ensure_ascii=False) for f in parsed.get("facts", [])),
@@ -2889,8 +2892,9 @@ class RelationalParser:
                                       for e in parsed.get("사건", []))], ensure_ascii=False, sort_keys=True)
             if said not in seen:
                 seen.add(said)
-                out.append({"parsed": parsed, "used": list(used), "excluded": sorted(excluded), "said": said})
-            queue += [excluded | {key} for key in used if key not in excluded]
+                out.append({"parsed": parsed, "used": list(used), "excluded": sorted(excluded), "said": said,
+                            "tier": tier})
+            queue += [(excluded | {key}, tier + 1) for key in used if key not in excluded]
         return out
 
     def parse(self, text, *, partial=False, events=False, verbs=None, repair=False, _diagnostics=None,
