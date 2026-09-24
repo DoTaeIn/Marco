@@ -1,0 +1,23 @@
+Knowledge graph license
+
+The knowledge graphs in this repository are licensed under the Creative
+Commons Attribution 4.0 International License (CC BY 4.0):
+https://creativecommons.org/licenses/by/4.0/
+
+Covered: every `.kg` file under `graphs/`, `legal/` and `axioms/`, the `.mmd`
+diagrams drawn from them, and any other `.kg` knowledge file in the repository
+that is not a benchmark. Knowledge should be accessible to everyone: use it,
+change it, share it, sell what you build with it, in any format, as long as you
+credit the source.
+
+Attribution to give:
+
+   Knowledge graphs from MARCO by DoTaeIn, https://github.com/DoTaeIn/Marco,
+   CC BY 4.0
+
+Not covered: the engine code (see LICENSE, the MARCO Engine License) and the
+frozen benchmark sets under `data/benchmarks/`, which are part of the engine's
+exams and stay under the engine license.
+
+Graphs published in this repository before 2026-09-24 were under the Apache
+License, Version 2.0; copies received then remain under it.

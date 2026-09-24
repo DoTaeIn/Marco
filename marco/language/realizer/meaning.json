@@ -72,6 +72,21 @@
   "changed": {"roles": {}},
   "total": {"roles": {"members": "names", "item": "thing", "value": "numeral"}, "numbers": ["value"]},
   "more": {"roles": {"winner": "agent", "item": "thing"}},
+  "fewer": {"_about": "Of two holders, the one that holds fewer of a thing.", "roles": {"winner": "agent", "item": "thing"}},
+  "same_count": {
+   "_about": "Two or more holders hold the same number of a thing; the number is said when it is the same. Negative: they do not hold the same number.",
+   "roles": {"members": "names", "item": "thing", "value": "numeral"},
+   "numbers": ["value"]
+  },
+  "event_said": {"_about": "An earlier event named by the user's own statement of it, quoted.", "roles": {"said": "quote"}},
+  "count_unknown": {
+   "_about": "A holder has some of a thing; how many was never said (a vague count). Negative: the number is not known.",
+   "roles": {"owner": "agent", "item": "thing"}
+  },
+  "count_none": {
+   "_about": "A holder has none of a thing: a count of zero said as the negation of having any (meaning.json: zero_count). Its reading is the count fact with the value zero.",
+   "roles": {"owner": "agent", "item": "thing"}
+  },
   "heard": {"roles": {"subject": "compound"}},
   "decided": {"roles": {}},
   "word_known": {"roles": {"word": "quote"}},
@@ -141,7 +156,40 @@
   "amount": "amount",
   "item": "item"
  },
+ "holders": {
+  "_about": "Holders that are not bare names (round 4; the meaning block field is the one request docs/requests/W3-1.md asks goal G4 for). The meaning block may carry holders: {key: {kind, said}} for the holder keys its triples, changes and fields use. speaker: the user, said as the one addressed, in the person forms the language file declares (each form the user says of themself one of its pack's first-person forms). place: a place that holds things, said with the language's place expressions. named: a holder the user named with more words than its key (a title, a relation, an apposition), said as the user named it, the user's own first-person words turned to the one addressed. A holder whose key is the conversation language's first-person holder word (its pack's 임자자리말) is the speaker without the field. A holder key of several words is the owner of a compound subject that begins with it. In the reading the semantic check parses, every holder is said as the user would say it (the speaker in the first person), so the pack reads its key back; any other saying of it is never checked against the key.",
+  "field": "holders",
+  "kinds": ["speaker", "place", "named"],
+  "speaker": "speaker",
+  "place": "place",
+  "named": "named",
+  "name": "name"
+ },
+ "zero_count": {
+  "_about": "A count of zero (round 4: 'has no X at all', 'none left') is said as having none of the thing, when the language says that in words its pack reads back as the count zero; otherwise the count itself is said, its zero in digits. Nothing is held for it.",
+  "frame": "count",
+  "value": "value",
+  "zero": "0",
+  "said_as": "count_none"
+ },
+ "time_orders": ["before", "after"],
+ "time_event": {
+  "_about": "The event an answer about an earlier time is relative to: the one transfer its recorded changes make, composed; any other event (one side only, a move, several transfers) is the user's own statement of it, quoted in this frame. The event's amount is not said: it names which event, and the reply states one quantity, the answer's.",
+  "quoted_frame": "event_said",
+  "elide": ["amount"]
+ },
  "turn_plans": [
+  {
+   "_about": "An answered question about the state just before or just after one earlier event (request G3-4): the answer said in the past, with the event it is relative to as a time clause.",
+   "match": {
+    "status": "answered",
+    "source": "fact",
+    "act": [null, "inform"],
+    "fields_has": "time",
+    "checks_exclude": ["explained_recorded_transitions"]
+   },
+   "acts": [{"intent": "INFORM", "props": [{"from": "fact", "focus": "object", "time": "$time"}]}]
+  },
   {
    "_about": "An answered question: the answer fact, its asked value as focus. A result the engine marks as an explanation carries facts too; it is not an answer.",
    "match": {
@@ -315,6 +363,36 @@
    "_about": "Which of two holders has more: the one that has more is named; the other is not.",
    "match": {"act": "inform", "kind": "more"},
    "acts": [{"intent": "INFORM", "props": [{"from": "compared", "frame": "more"}]}]
+  },
+  {
+   "_about": "Which of two holders has fewer (request G3-4): the one that has fewer is named; the other is not.",
+   "match": {"act": "inform", "kind": "fewer"},
+   "acts": [{"intent": "INFORM", "props": [{"from": "compared", "frame": "fewer"}]}]
+  },
+  {
+   "_about": "Asked which of two holders has more or fewer when both hold the same number: neither is chosen; both are said with the number.",
+   "match": {"act": "inform", "kind": "tie"},
+   "acts": [{"intent": "INFORM", "props": [{"from": "compared", "frame": "same_count"}]}]
+  },
+  {
+   "_about": "Asked whether two holders hold the same number, and they do: yes, with the number.",
+   "match": {"act": "inform", "kind": "same"},
+   "acts": [
+    {"intent": "INFORM", "lead": "answer_yes", "lead_optional": true, "props": [{"from": "compared", "frame": "same_count"}]}
+   ]
+  },
+  {
+   "_about": "Asked whether two holders hold the same number, and they do not: no, then each holder's own count.",
+   "match": {"act": "inform", "kind": "different"},
+   "acts": [
+    {
+     "intent": "INFORM",
+     "lead": "answer_no",
+     "lead_optional": true,
+     "props": [{"from": "compared", "frame": "same_count", "polarity": false}]
+    },
+    {"intent": "INFORM", "props": [{"from": "compared", "frame": "count"}]}
+   ]
   },
   {
    "_about": "Asked what was changed: every repair note of the last reply in full (rule, operations, cost).",
@@ -614,6 +692,19 @@
    ]
   },
   {
+   "_about": "A holder said to have some of a thing, with no number (round 4, assumed meaning: act record, reason vague_count, subject = the holder and the thing as a compound): recorded, and the number is not known.",
+   "match": {"act": "record", "reason": "vague_count"},
+   "acts": [
+    {"intent": "INFORM", "props": [{"frame": "recorded", "tense": "past"}]},
+    {"intent": "INFORM", "props": [{"frame": "count_unknown", "split": "$subject", "polarity": false}]}
+   ]
+  },
+  {
+   "_about": "Asked how many when only a vague count was said (round 4, assumed meaning: act hold, reason vague_count, subject): the holder has some, the number was never said.",
+   "match": {"act": "hold", "reason": "vague_count"},
+   "acts": [{"intent": "REFUSE", "props": [{"frame": "count_unknown", "split": "$subject", "polarity": false}]}]
+  },
+  {
    "_about": "A statement recorded that changed no count or place (a definition, a condition).",
    "match": {"act": "record", "reason": "observed"},
    "acts": [{"intent": "INFORM", "props": [{"frame": "recorded", "tense": "past"}]}]
@@ -717,9 +808,10 @@
    "holder_roles": ["owner"]
   },
   "repeat_ellipsis": {
-   "_about": "Inside one utterance, a role repeated from the previous clause of the same frame is not said again.",
+   "_about": "Inside one utterance, a role repeated from the previous clause of the same frame is not said again; except in a clause whose holder is the user, who a language may leave unsaid: the repeated role then tells whose count it is.",
    "frames": ["count"],
-   "roles": ["item"]
+   "roles": ["item"],
+   "not_for_holders": ["speaker"]
   },
   "known_facts": {
    "_about": "A fact the user stated in this turn is not repeated, unless its reading added something not typed (inherited by ellipsis, read through a repair).",

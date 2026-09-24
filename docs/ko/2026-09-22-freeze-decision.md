@@ -59,7 +59,8 @@ No storage format, test count, or refactor progress counts toward this gate.
 | F2 | Frozen reasoning set (114 problems, 63 ko / 51 en) + composition gate | `main` a7c20b2, merged 2026-09-24 | done. Reasoning baseline at 70ba9f8: 80/109 parsed (73.4%), 24 wrong, all the one-holder-count realizer bug G2 fixed; composition 71/71 on fixed sets. Round-2 runs of both gates recorded below |
 | G3 | Understanding round 3: violations fixed, 1,200-word and 200-statement probes at 100%, dev v3 check half **94/106 (88.7%)** with disjoint vocabulary, 0 wrong, 0 violations; F2-2 declarations; 수선 → 수정 | `main` 60d796b, merged 2026-09-24 | done. **Frozen round 3: 21/108 (19.4%) again**, but 0 wrong, **0 violations (gate 3 met)**, record 82/150; composition **340/340 (gate 5 met)**; reasoning 148/151, 0 wrong (gate 6 met). Owner read the failing turns: the frozen set is natural adult language (zero and vague counts, lend/pass/hand/return/send, titles, relational nouns, first person, places as holders, fronting, partitives, referent repairs); every dev set so far was template output |
 | G4 | Understanding round 4: dev v4 phrased by a local language model from structured scenarios, the natural-language classes above, statements first, places as holders, referent repairs | `docs/ko/2026-09-24-understanding-r4-goal.md` | running 2026-09-24, background agent |
-| W3 | Realizer round 3: requests G3-1 to G3-4 (수선 tag, "1 knives", held-answer status, fewer/equal/before/after), plans for round-4 meanings, fluency sample 3 | `docs/ko/2026-09-24-realizer-r3-goal.md` | running 2026-09-24, background agent, alongside G4 |
+| W3 | Realizer round 3: requests G3-1 to G3-4 closed (수선 gone, "1 knife", held answers become holds, fewer/same/tie/before/after composed), plans for round-4 meanings (user as holder, places, titled and relational holders, zero, vague counts; 59 tests), request W3-1 tells G4 the meaning fields those plans expect, fluency sample 3 (40 replies), suite 1,407 / 1 known / 8 | `main` 0edfd2b, merged 2026-09-24 | done. Frozen after W3 (`after-w3.json` in both report folders): dialogue **21/108 unchanged**, 0 wrong, 0 violations; composition **340/340**; reasoning 148/151, gate 6 PASS. Scorer fix ead6302: a local in the overlap loop shadowed `status()` and crashed every non-quiet run |
+| L1 | Trace ledger: declared schema, append-only JSONL event ledger with DAG parents, adapter from the turn envelope, why chain, failure statistics; emission at the engine sites deferred to round 5 as request L1-1 | `docs/ko/2026-09-24-trace-ledger-goal.md` | running 2026-09-24, background agent, alongside G4 and W3; owns only `marco/trace/` |
 | W2 | Realizer round 2: every reply through `realize()`, answers name their subject, why in words, repair notes to the trace, bare 왜?, fluency sample 2 | `main` 55fb2c8, merged 2026-09-24 | done. Frozen composition **339/340** (1 held, 0 passed through): gate 5 met. Dialogue score unchanged 21/108; reasoning unchanged 146/149 |
 | C1 | Model comparison on the same frozen exams | `main` f621ba5, merged 2026-09-24 | done. MARCO 21/108, 0 invented, reasoning 0 wrong, 27 ms; Qwen2.5-7B 4-bit 75/108, 25 wrong, 5 invented, 22 reasoning wrong, 749 ms; GPT-2 1/108. In the README and the release notes |
 | V1 (folded into G3.7 and W2.3–W2.5) | Spoken-reply cleanup (owner judged the 25-reply fluency sample natural except these): rename 수선 → 수정 in the Korean pack templates; move repair notes and rule ids (count_remove, count_add) out of the spoken reply into the trace, reachable by asking; bare 왜? handled like 왜 그렇게 됐어? | pack strings + realizer explain plan, small | after G2 merges |
@@ -86,6 +87,17 @@ chat opens them or runs them. Development uses its own dev set (G1.1).
 
 Parallel at most: four chats (raised from three by the owner on 2026-09-23). Each in its own hidden checkout under
 the app's hidden worktrees folder inside the repository, never a sibling folder. The owner merges between goals.
+
+**Principles note (2026-09-24):** the owner's design note
+`docs/ko/2026-09-24-perception-reasoning-emotion-philosophy.md` restates the core as
+"MARCO proves conclusions, not sensors": learned components may serve as sensors
+whose output is an unverified observation with provenance. This changes no frozen
+area and nothing before the gate; MARCO 1 keeps "no language model in the runtime".
+The post-gate schedule for SOMA, ALMA affect, deliberation and audio is in
+`docs/ko/2026-09-24-roadmap-after-marco1.md`. The owner's trace-logging note
+`docs/ko/2026-09-24-trace-logging-design.md` is implemented in two parts: the
+ledger core now (L1, a new package, no engine edits), emission at the engine
+sites in round 5.
 
 ## Unfreezing
 

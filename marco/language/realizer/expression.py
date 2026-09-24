@@ -3,7 +3,8 @@
 Candidates come from the language file (``expressions``, and ``rules`` for a
 rule id) and from learned candidates. A candidate is usable when the roles it
 requires are present and its conditions hold: polarity, register, the act it
-serves. Learned candidates are tried first in the register they were observed
+serves, the kind of holder a role is (``when.holder``: the user, a place, a named holder or
+a bare ``name``). Learned candidates are tried first in the register they were observed
 in; declared candidates follow in declared order, so the last declared one is
 the plainest fallback. The semantic check decides; selection only orders.
 """
@@ -21,7 +22,20 @@ def _usable(candidate, prop, *, register, intent):
     registers = candidate.get("register")
     if registers and register not in registers:
         return False
+    if "holder" in when and not all(role not in roles or _holder_kind(roles[role]) in (
+            kinds if isinstance(kinds, list) else [kinds]) for role, kinds in when["holder"].items()):
+        # A role the candidate names must be a holder of one of those kinds, when it is there.
+        return False
     return True
+
+
+def _holder_kind(value):
+    """The kind of holder a role value is (``meaning.json: holders``); a bare name is ``name``."""
+    from marco.language.realizer.packs import meaning_declarations
+    spec = meaning_declarations()["holders"]
+    if not isinstance(value, dict):
+        return None
+    return (value.get("holder") or {}).get("kind") or spec["name"]
 
 
 def candidates(decl, prop, *, register, intent, learned=(), prefer=None):

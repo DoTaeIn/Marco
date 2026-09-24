@@ -29,13 +29,30 @@ def quote(text):
     return {"quote": str(text)}
 
 
-def _subject_roles(subject, roles, source):
-    """Split the engine's compound subject (owner words, then item words) into roles."""
+def holder_keys(fields):
+    """The holder keys of several words the meaning block declares (``meaning.json: holders``),
+    longest first: a compound subject that begins with one has that holder as its owner."""
+    spec = meaning_declarations().get("holders") or {}
+    declared = (fields or {}).get(spec.get("field")) if isinstance(fields, dict) else None
+    joint = meaning_declarations()["compound_subject"]["separator"]
+    keys = [key for key in (declared or {}) if isinstance(key, str) and len(key.split(joint)) > 1]
+    return tuple(sorted(keys, key=len, reverse=True))
+
+
+def _subject_roles(subject, roles, source, holders=()):
+    """Split the engine's compound subject (owner words, then item words) into roles.
+
+    The owner is the first word, or a declared holder key of several words the subject
+    begins with (``holders``: a place or a named holder, ``holder_keys``)."""
     joint = meaning_declarations()["compound_subject"]["separator"]
     words = str(subject).split(joint)
     frame_roles = meaning_declarations()["frames"]
     if len(roles) == 1:
         return {roles[0]: joint.join(words)}
+    for key in holders:
+        size = len(key.split(joint))
+        if len(roles) == 2 and len(words) > size and joint.join(words[:size]) == key:
+            return {roles[0]: key, roles[1]: joint.join(words[size:])}
     if len(words) >= len(roles):
         head = words[:len(roles) - 1]
         return dict(zip(roles, head + [joint.join(words[len(roles) - 1:])]))
@@ -54,7 +71,7 @@ def _role_kind(frames, role):
     return "any"
 
 
-def fact_prop(triple, source, *, focus=None, evidence=None, polarity=True):
+def fact_prop(triple, source, *, focus=None, evidence=None, polarity=True, holders=()):
     """A proposition from a state triple, or None when its relation is not declared."""
     decl = meaning_declarations()
     subject, predicate, value = triple
@@ -64,7 +81,7 @@ def fact_prop(triple, source, *, focus=None, evidence=None, polarity=True):
     frame = relation["frame"]
     kinds = decl["frames"][frame]["roles"]
     roles = {}
-    for role, text in _subject_roles(subject, relation["subject"], source).items():
+    for role, text in _subject_roles(subject, relation["subject"], source, holders).items():
         roles[role] = entity(text, source, kinds.get(role, "any"))
     object_role = relation["object"]
     roles[object_role] = (number(value) if kinds.get(object_role) == "numeral"
@@ -77,7 +94,7 @@ def fact_prop(triple, source, *, focus=None, evidence=None, polarity=True):
     return prop
 
 
-def change_props(changes, source, *, state):
+def change_props(changes, source, *, state, holders=()):
     """The state each change leaves, one count/location proposition per changed subject."""
     props = []
     for row in changes:
@@ -87,7 +104,7 @@ def change_props(changes, source, *, state):
         if value is None:
             continue
         prop = fact_prop([row.get("subject"), row.get("predicate"), value], source,
-                         evidence=row.get("evidence"))
+                         evidence=row.get("evidence"), holders=holders)
         if prop is None:
             continue
         evidence = row.get("evidence") or {}
@@ -104,7 +121,7 @@ def change_props(changes, source, *, state):
     return props
 
 
-def transfer_props(changes, source):
+def transfer_props(changes, source, holders=()):
     """Changes that together are one transfer: one side loses what the other gains in one event."""
     spec = meaning_declarations()["quantity_effects"]
     kinds = meaning_declarations()["frames"][spec["frame"]]["roles"]
@@ -121,16 +138,18 @@ def transfer_props(changes, source):
         gaining = [r for r in rows if r["delta"] > 0]
         if len(losing) != 1 or len(gaining) != 1 or -losing[0]["delta"] != gaining[0]["delta"]:
             continue
-        joint = meaning_declarations()["compound_subject"]["separator"]
-        giver_words, receiver_words = str(losing[0]["subject"]).split(joint), str(gaining[0]["subject"]).split(joint)
-        if len(giver_words) < 2 or giver_words[1:] != receiver_words[1:]:
+        pair = ["owner", "item"]
+        giver = _subject_roles(losing[0]["subject"], pair, source, holders)
+        receiver = _subject_roles(gaining[0]["subject"], pair, source, holders)
+        if not (giver.get("owner") and receiver.get("owner") and giver.get("item")) \
+                or giver["item"] != receiver.get("item"):
             continue
         amount = gaining[0]["delta"]
         amount = int(amount) if float(amount).is_integer() else amount
         props.append({"frame": spec["frame"], "tense": "past", "polarity": True,
-                      "roles": {spec["loses"]: entity(giver_words[0], source, kinds[spec["loses"]]),
-                                spec["gains"]: entity(receiver_words[0], source, kinds[spec["gains"]]),
-                                spec["item"]: entity(joint.join(giver_words[1:]), source, kinds[spec["item"]]),
+                      "roles": {spec["loses"]: entity(giver["owner"], source, kinds[spec["loses"]]),
+                                spec["gains"]: entity(receiver["owner"], source, kinds[spec["gains"]]),
+                                spec["item"]: entity(giver["item"], source, kinds[spec["item"]]),
                                 spec["amount"]: number(amount)},
                       "marks": ["resolved"] if any(r.get("resolved_from") for r in rows) else [],
                       "stated": True,

@@ -3239,6 +3239,7 @@ class ReasoningContext:
         """One turn. Its sentence comes from ``marco.language.realize``."""
         language = self.language or next((source["path"] for source in getattr(self.model, "sources", ())
                                           if source["path"].startswith("styles/")), None)
+        explained = self.last_explanation
         result = self._follow_up(text, knowledge_path, language)
         if result is None:
             result = self._turn_reply(text, knowledge_path)
@@ -3256,7 +3257,26 @@ class ReasoningContext:
         if result is not None and "answer" in result:
             if isinstance(result.get("meaning"), dict):
                 result["meaning"] = {**result["meaning"], "conversation": self.conversation_id}
+            from marco.language.realizer import default_realizer
+            reports = default_realizer().reports
+            before = reports[-1] if reports else None
             result["answer"] = realize(result, result.get("status"), self._speaker(result, language))
+            report = reports[-1] if reports and reports[-1] is not before else None
+            if report is not None and report.get("held") and report.get("text") == result["answer"] \
+                    and result.get("status") == "answered":
+                # Nothing of the answer was said (request G3-3): the turn is a hold, with the
+                # realizer's reason, and a later "why" does not explain an answer never given.
+                self.last_explanation = explained
+                result["status"] = "unresolved"
+                result["meaning"] = {"act": "hold", "reason": report.get("reason") or "not_phrased",
+                                     "held": {key: value for key, value in (result.get("meaning") or {}).items()
+                                              if key != "conversation"},
+                                     "conversation": self.conversation_id}
+                checks = (result.get("verification") or {}).get("checks")
+                if isinstance(checks, list):
+                    checks.append({"ok": False, "reason": "realizer_hold",
+                                   "blocked": [clause.get("frame") for clause in report.get("clauses") or []
+                                               if clause.get("blocked")]})
         return result
 
     def _follow_up(self, text, knowledge_path, language):
@@ -3283,10 +3303,12 @@ class ReasoningContext:
 
     @staticmethod
     def _compared(asked, transitions):
-        """A total or a comparison as meaning: the holders its proof read, and the sum or the one
-        with more. A count another listed count rests on is not a holder."""
+        """A total or a comparison as meaning: the holders its proof read, and the sum, the one
+        with more or fewer, or whether they hold the same number (request G3-4). Two equal
+        counts asked which has more or fewer are a tie. A count another listed count rests on
+        is not a holder."""
         spec = asked if isinstance(asked, dict) else {}
-        kind = next((key for key in ("total", "more") if isinstance(spec.get(key), dict)), None)
+        kind = next((key for key in ("total", "more", "fewer", "same") if isinstance(spec.get(key), dict)), None)
         if kind is None:
             return {}
         rows = [row for row in transitions or [] if isinstance(row.get("fact"), list) and len(row["fact"]) == 3
@@ -3294,15 +3316,22 @@ class ReasoningContext:
         parents = {tuple(parent) for row in rows for parent in row.get("parents") or []
                    if isinstance(parent, (list, tuple))}
         held = {row["fact"][0]: int(row["fact"][2]) for row in rows if tuple(row["fact"]) not in parents}
-        named = spec["total"].get("members") if kind == "total" else [spec["more"].get("a"), spec["more"].get("b")]
+        named = spec["total"].get("members") if kind == "total" else [spec[kind].get("a"), spec[kind].get("b")]
         named = [name for name in named or [] if isinstance(name, str)] if isinstance(named, list) else []
         subjects = sorted(held, key=lambda subject: (next(
             (i for i, name in enumerate(named) if str(subject).startswith(name)), len(named)), str(subject)))
         if kind == "total":
             return {"kind": "total", "subjects": subjects, "value": sum(held.values())} if len(held) >= 2 else {}
-        if len(held) != 2 or len(set(held.values())) != 2:
+        if len(held) != 2:
             return {}
-        return {"kind": "more", "winner": max(held, key=held.get), "than": min(held, key=held.get)}
+        values = [held[subject] for subject in subjects]
+        if values[0] == values[1]:
+            return {"kind": "same" if kind == "same" else "tie", "subjects": subjects, "value": values[0]}
+        if kind == "same":
+            return {"kind": "different", "subjects": subjects, "values": values}
+        pick = max if kind == "more" else min
+        winner = pick(held, key=held.get)
+        return {"kind": kind, "winner": winner, "than": next(s for s in subjects if s != winner)}
 
     def _speaker(self, result, language):
         """The model the reply is said in (request W1-3): this conversation's model, or the
@@ -3424,7 +3453,10 @@ class ReasoningContext:
         first = query[0] if query and isinstance(query[0], dict) else {}
         return {"operator": "relational_graph", "status": "answered", **outcome,
                 "meaning": {"act": "inform", "query": deepcopy(first.get("triple")), "render": deepcopy(first.get("render")),
-                            "time": {"order": order, "event": self.observations[at].strip()}},
+                            # The event as recorded too (request G3-4): the reply says it from its changes.
+                            "time": {"order": order, "event": self.observations[at].strip(),
+                                     "changes": deepcopy([change for change in changes
+                                                          if (change.get("evidence") or {}).get("turn") == at])}},
                 "verification": self._verification(knowledge_path, [{
                     "ok": True, "reason": "state_%s_event" % order, "event_turn": at}])}
 

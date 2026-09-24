@@ -756,3 +756,24 @@ runtime table above.
   there. State questions read number words (capability table).
 - **No structural learning in the graph engine.** It learns aliases, not nodes
   or edges.
+
+## License
+
+- **Engine** (all code, packs, tests, benchmarks): the **MARCO Engine License 1.0**
+  (`LICENSE`), which is the Apache License 2.0 plus one Additional Condition:
+  a product that puts MARCO in front of end users must show, somewhere an end
+  user can find it (about screen, docs page, footer, first-run text, or a
+  credits reply in a text-only interface):
+
+  > Powered by MARCO — Created by DoTaeIn,
+  > Original project: https://github.com/DoTaeIn/Marco
+
+  Personal use, research, evaluation, development, internal tools and plain
+  redistribution do not trigger it. Everything else Apache 2.0 allows stays
+  allowed, including commercial use. A white-label license without the
+  attribution is available from the copyright holder.
+- **Knowledge graphs** (`graphs/`, `legal/`, `axioms/`, every non-benchmark
+  `.kg`): **CC BY 4.0** (`LICENSE-GRAPHS`). Knowledge stays accessible to
+  everyone.
+- Copies received under the plain Apache License 2.0 before 2026-09-24 remain
+  under it; this license applies from that date on.

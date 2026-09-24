@@ -77,6 +77,12 @@
   }
  },
  "relation_words": {"location": "location", "count": "number"},
+ "person": {
+  "_about": "The persons of a conversation (meaning.json: holders). user: the words the user says of themself, by the case a reply's part gives the holder (a part with no case: default); the reading the semantic check parses says the user so, and each word is one the pack groups with its first person (임자자리말, 자리말; my is asked of it in docs/requests/W3-1.md). addressee: the words a reply names the user with, by the same cases; a verb that agrees with them takes the second person.",
+  "user": {"subject": "I", "possessive": "my", "default": "me"},
+  "addressee": {"subject": "you", "possessive": "your", "default": "you"},
+  "honorific": null
+ },
  "lexicon": {
   "i": {"word": "I", "person": "first"},
   "you": {"word": "you", "person": "second"},
@@ -182,6 +188,19 @@
   "last": {"word": "last"},
   "together": {"word": "together"},
   "more": {"word": "more"},
+  "fewer": {"word": "fewer"},
+  "both": {"word": "both"},
+  "number_n": {"word": "number"},
+  "before_conj": {"word": "before"},
+  "after_conj": {"word": "after"},
+  "answer_yes": {
+   "_about": "The pack's own yes: the word its answer that two counts are the same begins with.",
+   "from_pack": {"answer": "same"}
+  },
+  "answer_no": {
+   "_about": "The pack's own no: the word its answer that two counts differ begins with.",
+   "from_pack": {"answer": "different"}
+  },
   "conditions": {"word": "conditions"},
   "a": {"word": "a"},
   "its": {"word": "its"},
@@ -209,6 +228,8 @@
   "parts": {"word": "parts"},
   "definition": {"word": "definition"},
   "but": {"word": "but"},
+  "some": {"word": "some"},
+  "put": {"verb": "put", "kind": "regular"},
   "far": {"word": "far"},
   "role": {"word": "role"},
   "still": {"word": "still"},
@@ -301,7 +322,7 @@
     "requires": ["owner"],
     "keep": ["item"],
     "parts": [
-     {"np": ["owner"], "case": "subject"},
+     {"np": ["owner"], "case": "subject", "det": "definite"},
      {"verb": "have", "predicate": true, "agree": "owner", "negation": "not", "elide_with": "owner"},
      {"num": "value"},
      {"np": ["item"], "number": "value"}
@@ -319,6 +340,39 @@
     ]
    }
   ],
+  "count_none": [
+   {
+    "id": "none_have_no",
+    "_about": "A count of zero: the holder has no X (an answer: No X.).",
+    "requires": ["owner"],
+    "keep": ["item"],
+    "parts": [
+     {"np": ["owner"], "case": "subject", "det": "definite"},
+     {"verb": "have", "predicate": true, "agree": "owner", "polarity": "positive", "elide_with": "owner"},
+     {"lex": "no"},
+     {"np": ["item"]}
+    ]
+   }
+  ],
+  "count_unknown": [
+   {
+    "id": "unknown_some_but",
+    "_about": "A vague count: the holder has some X, and how many was never said.",
+    "when": {"polarity": false},
+    "parts": [
+     {"np": ["owner"], "case": "subject", "det": "definite"},
+     {"verb": "have", "agree": "owner", "polarity": "positive"},
+     {"lex": "some"},
+     {"np": ["item"]},
+     {"sym": "comma", "bind": true},
+     {"lex": "but"},
+     {"lex": "i"},
+     {"verb": "know", "predicate": true, "person": "first", "negation": "not"},
+     {"lex": "how"},
+     {"lex": "many"}
+    ]
+   }
+  ],
   "location": [
    {
     "id": "location_be_in",
@@ -332,12 +386,50 @@
   "transfer": [
    {
     "id": "transfer_give",
+    "when": {"holder": {"giver": ["name", "speaker", "named"], "receiver": ["name", "speaker", "named"]}},
     "parts": [
      {"np": ["giver"], "case": "subject"},
      {"verb": "give", "predicate": true, "agree": "giver", "negation": "not"},
      {"np": ["receiver"]},
      {"num": "amount"},
      {"np": ["item"], "number": "amount"}
+    ]
+   },
+   {
+    "id": "transfer_put_in",
+    "_about": "Into a place: the giver put the things in it.",
+    "when": {"holder": {"giver": ["name", "speaker", "named"], "receiver": "place"}},
+    "parts": [
+     {"np": ["giver"], "case": "subject"},
+     {"verb": "put", "predicate": true, "agree": "giver", "negation": "not"},
+     {"num": "amount"},
+     {"np": ["item"], "number": "amount"},
+     {"np": ["receiver"], "case": "in", "det": "definite"}
+    ]
+   },
+   {
+    "id": "transfer_take_from",
+    "_about": "Out of a place: the receiver took the things from it.",
+    "when": {"holder": {"giver": "place", "receiver": ["name", "speaker", "named"]}},
+    "parts": [
+     {"np": ["receiver"], "case": "subject"},
+     {"verb": "take", "predicate": true, "agree": "receiver", "negation": "not"},
+     {"num": "amount"},
+     {"np": ["item"], "number": "amount"},
+     {"np": ["giver"], "case": "from", "det": "definite"}
+    ]
+   },
+   {
+    "id": "transfer_moved_between",
+    "_about": "From one place to another: the things were moved.",
+    "when": {"holder": {"giver": "place", "receiver": "place"}},
+    "parts": [
+     {"num": "amount"},
+     {"np": ["item"], "number": "amount"},
+     {"verb": "be", "predicate": true, "agree_number": "amount", "negation": "not"},
+     {"verb": "move", "ending": "participle"},
+     {"np": ["giver"], "case": "from", "det": "definite"},
+     {"np": ["receiver"], "case": "to", "det": "definite"}
     ]
    }
   ],
@@ -593,6 +685,44 @@
     ]
    }
   ],
+  "fewer": [
+   {
+    "id": "fewer_have",
+    "parts": [
+     {"np": ["winner"], "case": "subject"},
+     {"verb": "have", "predicate": true, "agree": "winner"},
+     {"lex": "fewer"},
+     {"np": ["item"]}
+    ]
+   }
+  ],
+  "same_count": [
+   {
+    "id": "same_count_both",
+    "when": {"polarity": true},
+    "requires": ["value"],
+    "parts": [
+     {"list": "members", "each": {"np": ["$item"]}},
+     {"lex": "both"},
+     {"verb": "have", "predicate": true, "plural": true},
+     {"num": "value"},
+     {"np": ["item"], "number": "value"}
+    ]
+   },
+   {
+    "id": "same_count_not",
+    "when": {"polarity": false},
+    "parts": [
+     {"list": "members", "each": {"np": ["$item"]}},
+     {"verb": "have", "predicate": true, "plural": true, "negation": "not"},
+     {"lex": "the"},
+     {"lex": "same"},
+     {"lex": "number_n"},
+     {"np": ["item"], "case": "of"}
+    ]
+   }
+  ],
+  "event_said": [{"id": "event_quoted", "parts": [{"quote": "said", "marks": "double"}]}],
   "heard": [
    {
     "id": "heard_never",
@@ -1570,14 +1700,28 @@
   ]
  },
  "coordination": {"count": {"gap_predicate": false, "separator": "list"}},
- "leads": {"now": [{"lex": "now"}]},
+ "leads": {
+  "now": [{"lex": "now"}],
+  "answer_yes": {"parts": [{"lex": "answer_yes"}], "polarity": true, "join": "comma"},
+  "answer_no": {"parts": [{"lex": "answer_no"}], "polarity": false, "join": "comma"}
+ },
+ "subordinate": {
+  "_about": "An event an answer is relative to in time: a clause of its own, in the past, after the conjunction, joined to the answer by a comma.",
+  "before": {"sentence": "declarative", "tense": "past", "open": [{"lex": "before_conj"}], "close": [], "join": "comma"},
+  "after": {"sentence": "declarative", "tense": "past", "open": [{"lex": "after_conj"}], "close": [], "join": "comma"}
+ },
  "ellipsis": {
-  "_about": "A given subject is not said; the answer is the fragment that carries the focus, with its counted noun.",
-  "strategy": "fragment"
+  "_about": "A given subject is not said; the answer is the fragment that carries the focus, with its counted noun. An answer with a time clause is not a fragment: it is said in full.",
+  "strategy": "fragment",
+  "subordinate": "full"
  },
  "readings": {
   "_about": "How the pack parser's reading of a clause maps back onto frame roles. Used only by the semantic check.",
   "count": {"facts": [{"predicate": "count", "subject": ["owner", "item"], "object": "value"}]},
+  "count_none": {
+   "_about": "Having none of a thing is read as the count zero, not as a denied count.",
+   "facts": [{"predicate": "count", "subject": ["owner", "item"], "value": "0", "polarity": true}]
+  },
   "transfer": {
    "facts": [
     {"predicate": "count_remove", "subject": ["giver", "item"], "object": "amount"},

@@ -945,11 +945,11 @@ def main(argv=None):
         print("%s reads one dataset" % args.command)
         return 2
     if args.command == "overlap" and len(datasets) > 1:
-        status = 0
+        combined = 0
         for one in datasets:
-            status |= main([arg for arg in _without_datasets(argv if argv is not None else sys.argv[1:])]
+            combined |= main([arg for arg in _without_datasets(argv if argv is not None else sys.argv[1:])]
                            + ["--dataset", str(one)])
-        return status
+        return combined
     dataset = datasets[0]
     frozen_set = dataset == DATASET.resolve()
     if args.command == "baseline" and not frozen_set:

@@ -66,6 +66,13 @@ POLO automation, the native MCO binary format with overlay and snapshot,
 autonomous planning and self-modification, and ALMA persona features. All are
 frozen until MARCO 1 passes its gate.
 
+## License
+
+MARCO Engine License 1.0 (`LICENSE`): Apache 2.0 plus visible attribution in
+user-facing products, "Powered by MARCO — Created by DoTaeIn, Original project:
+https://github.com/DoTaeIn/Marco". Knowledge graphs CC BY 4.0 (`LICENSE-GRAPHS`).
+White-label licenses on request.
+
 ## Reports
 
 `docs/ko/dialogue-gate-2026-09-22/` (round 2), `docs/ko/reasoning-gate-2026-09-24/`
