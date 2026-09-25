@@ -107,6 +107,14 @@ G6.0b **Withdrawn evidence: the ledger says 5, the gate says 0.** `python -m
      `docs/requests/G6-1.md` for the owner). Report which, with the five turn
      ids of dev4.
 
+G6.0c **External phrasing.** `build.py phrase` stays as it is for the local model, and
+     `build.py assemble --phrasings-from <jsonl>` accepts phrasings written outside by
+     another model or agent, in the same record format (scenario id, language, the
+     turns as written, the source's name and date). The owner's data rule applies: the
+     external source receives only the scenarios and the class descriptions of this
+     document; the checker runs on its output unchanged; failed lines are dropped.
+     Build and check halves come from separate sessions of the source.
+
 G6.1 **Dev set v6.** 100 or more dialogues per language, every class 1 to 13 in
      at least 12 dialogues per language, build and check halves disjoint in
      names, items and places, **both check halves phrased and scored before the
