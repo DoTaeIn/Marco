@@ -605,11 +605,16 @@ class RelationalParser:
             if m:
                 text, applied = m.group(1), applied + ["fronted_purpose"]
                 break
+        objects = spec.get("fronted_purpose_objects") or {}
         for suffix in spec.get("fronted_purpose_suffixes", []):
             # 행사 때문에 (,) ... / 이사 준비로, ...: a purpose phrase at the clause's start fills no role
             m = re.match(r"((?:\S+ ){0,2}?)(\S*)%s,? (.+)$" % re.escape(suffix), text)
+            # 바자회를 위해: a suffix that takes an object keeps its object particle on the word before it
+            taken = tuple(objects.get("particles", [])) if suffix in objects.get("suffixes", []) else ()
+            words = (m.group(1) + m.group(2)).split() if m else []
             if m and (m.group(1) or m.group(2)) and not any(
-                    self._ends_in_particle(w) for w in (m.group(1) + m.group(2)).split()):
+                    self._ends_in_particle(w) and not (taken and index == len(words) - 1 and w.endswith(taken))
+                    for index, w in enumerate(words)):
                 text, applied = m.group(3), applied + ["fronted_purpose"]
                 break
         completive = spec.get("completive") or {}
