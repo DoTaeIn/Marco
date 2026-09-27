@@ -743,6 +743,34 @@
     }
    },
    {
+    "text": "18, to be exact",
+    "slots": {
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      null,
+      "count",
+      "$n"
+     ],
+     "unnamed": true
+    }
+   },
+   {
+    "text": "exactly 18",
+    "slots": {
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      null,
+      "count",
+      "$n"
+     ],
+     "unnamed": true
+    }
+   },
+   {
     "text": "there are 18 of them",
     "slots": {
      "n": "18"
@@ -1493,6 +1521,66 @@
    },
    {
     "text": "how many marbles does Haru have",
+    "slots": {
+     "item": "marbles",
+     "owner": "Haru"
+    },
+    "meaning": {
+     "query": [
+      {
+       "triple": [
+        [
+         "$owner",
+         "$item"
+        ],
+        "count",
+        "?n"
+       ],
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ]
+   },
+   {
+    "text": "how many marbles is Haru responsible for",
+    "slots": {
+     "item": "marbles",
+     "owner": "Haru"
+    },
+    "meaning": {
+     "query": [
+      {
+       "triple": [
+        [
+         "$owner",
+         "$item"
+        ],
+        "count",
+        "?n"
+       ],
+       "render": [
+        "$n",
+        " ",
+        "$item",
+        "."
+       ]
+      }
+     ]
+    },
+    "word_slots": [
+     "owner"
+    ]
+   },
+   {
+    "text": "how many marbles are left with Haru",
     "slots": {
      "item": "marbles",
      "owner": "Haru"
@@ -4218,6 +4306,18 @@
    "to": "now"
   },
   {
+   "from": "remain with",
+   "to": "are left with"
+  },
+  {
+   "from": "remain for",
+   "to": "are left with"
+  },
+  {
+   "from": "are left for",
+   "to": "are left with"
+  },
+  {
    "from": "have left",
    "to": "have"
   },
@@ -4786,7 +4886,7 @@
    "to": ""
   }
  ],
- "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many). Being responsible for a count is having it (is/was responsible for = has/had). The discourse adverbs that place or source a statement but change no role are left out (after that, afterwards, apparently; too, also; by the way, to be exact, I just counted, not sure how many), and 'at all' after a zero. 'the same' before the counted noun names the kind already said and adds nothing (the same 4 pillows = 4 pillows). The negated possessive with 'any' or 'a single' is a zero count: doesn't have any / hasn't got any / doesn't have a single = has no (don't, haven't: have no). The indefinite article before a counted noun is the numeral one (got a fig = got 1 fig). The article is the numeral one only before a counted noun: the vague quantity idioms (a lot of, lots of, a few, a couple of, a bunch of, a handful of, a number of, a little, a bit of) say 'some', a count not known, and 'a total of' before a numeral adds nothing. The restrictive adverbs of a count (only, just, merely: the closed class) and a closing ', nothing else' / ', that's all' add nothing to the count and are read without (G5); 'at the' before a place reads as 'in the': a place holds what is at it. An only-count may close with 'that is / that's the only thing' and the personal pronoun with the form of have it agrees with ((and) that is the only thing he has, ... they have, ... I have; the closed class of the seven personal pronouns), read without, like ', nothing else' (G5 batch 4).",
+ "_말바꿈": "Phrases read as another phrase, one more candidate beside the typed text: a contraction of have got; a partitive 'of them/hers' that leaves the item to the elided frame ('gave Moru 2'); a time word that places the event but changes no role, and the adverbs of repetition (again, once again, once more; the class the Korean pack declares as 또, 다시); a title before a name. A phrase not listed is not rewritten. The progressive of the stative possession verbs that take it (be + holding/keeping/carrying) reads as has (is) or had (was); a plural subject is read by no count statement of this pack. Time and aspect adverbs that place a state but change no role are left out (now, still, currently, right now, at the moment, at present, so far, by now), wherever they stand. Partitives with a determiner leave the determiner phrase to the noun (two of her/his/their/my/your/our/its/the/these/those figs = two figs). Phrasal particles of transfer and consumption verbs are read with the verb (handed over, passed on, gave back, handed back, paid back = gave/handed/passed/paid; gave away = lost, the receiver unnamed; used up, ate up, drank up = used/ate/drank). Expressions of the initial state are left out (at first, at the start, at the beginning, in the beginning, to begin with, initially, originally) and 'started (out) with', 'began with' read as had. Additive quantifiers after a numeral add nothing to the amount (2 more, extra, additional, further figs = 2 figs). The degree phrases of a why-question about an amount read alike (so many, so few, that few, this many, this few = that many). Being responsible for a count is having it (is/was responsible for = has/had), and asked with the holder between the verb and its preposition (how many marbles is Haru responsible for, an example: a phrase variant cannot reorder) (G6). The discourse adverbs that place or source a statement but change no role are left out (after that, afterwards, apparently; too, also; by the way, to be exact, I just counted, not sure how many), and 'at all' after a zero. 'the same' before the counted noun names the kind already said and adds nothing (the same 4 pillows = 4 pillows). The negated possessive with 'any' or 'a single' is a zero count: doesn't have any / hasn't got any / doesn't have a single = has no (don't, haven't: have no). The indefinite article before a counted noun is the numeral one (got a fig = got 1 fig). The article is the numeral one only before a counted noun: the vague quantity idioms (a lot of, lots of, a few, a couple of, a bunch of, a handful of, a number of, a little, a bit of) say 'some', a count not known, and 'a total of' before a numeral adds nothing. The restrictive adverbs of a count (only, just, merely: the closed class) and a closing ', nothing else' / ', that's all' add nothing to the count and are read without (G5); 'at the' before a place reads as 'in the': a place holds what is at it. An only-count may close with 'that is / that's the only thing' and the personal pronoun with the form of have it agrees with ((and) that is the only thing he has, ... they have, ... I have; the closed class of the seven personal pronouns), read without, like ', nothing else' (G5 batch 4). What is left or remains with or for a holder is what the holder has: 'remain with', 'remain for' and 'are left for' read as 'are left with', asked by the example how many marbles are left with Haru (G6).",
  "이름답": {
   "heads": [
    "and what about",
@@ -4808,7 +4908,9 @@
    "i'm talking about",
    "i was asking about",
    "i was talking about",
-   "i meant to ask about"
+   "i meant to ask about",
+   "it's",
+   "it is"
   ],
   "tails": [
    "i mean",
@@ -4821,7 +4923,7 @@
    "is who i was asking about"
   ]
  },
- "_이름답": "A reply that only names a person. After a question held for its pointer, the name answers which one; otherwise it asks the last answered question about that person. These words may stand before the name; anything else means it is not such a reply. Heads are the discourse connectives that open a follow-up (and, so, then, but, also), the elliptical question openers (what about, how about, what of) and the reformulations (I mean, I meant); several may stand one after another (and how about ...). A head may be followed by a comma (Sorry, I meant Haru). Tails are the reformulations said after the name (Haru, I mean; Haru is who I meant; Haru is the one I meant), and the apologies and interjections that open a self-repair (sorry, oh, no, wait, actually) are heads. The name may carry a title or a relation; it is read as the pack reads a holder.",
+ "_이름답": "A reply that only names a person. After a question held for its pointer, the name answers which one; otherwise it asks the last answered question about that person. These words may stand before the name; anything else means it is not such a reply. Heads are the discourse connectives that open a follow-up (and, so, then, but, also), the elliptical question openers (what about, how about, what of) and the reformulations (I mean, I meant, and the identifying it is / it's: It's Haru); several may stand one after another (and how about ...). A head may be followed by a comma (Sorry, I meant Haru). Tails are the reformulations said after the name (Haru, I mean; Haru is who I meant; Haru is the one I meant), and the apologies and interjections that open a self-repair (sorry, oh, no, wait, actually) are heads. The name may carry a title or a relation; it is read as the pack reads a holder.",
  "대조정정": {
   "markers": [
    ", not "
@@ -4992,6 +5094,14 @@
  },
  "_가진쪽꼴": "How a holder is said when it is not a bare name, each form read as the one name the facts use. self: the English first-person pronoun in every case (I; me, myself) reads as I, the pack's 임자자리말; its contractions (I've, I'm, I'd) are said in full; a verb after it agrees as after any other holder, the examples being written in the third person (the verbs whose present differs by person: be, have, do, and the stative possession verbs own, hold, keep, carry), and in a question the auxiliary before it agrees the same way (do I have -> does I have). possessives + a relation noun + a name (close apposition: my cousin Ana, our aunt Ana, Lind's cousin Ana): the name is the holder (the possessive determiners of English, all of them, and the possessive 's). determiners: a determiner, a role of one to three words, a comma, a name and a comma (the courier, Lind, ...): the name is the holder. self_possessives: the user's own relation with no name after it (my sister) is the relation noun. numeral_articles: 'the' before a numeral (gave back the two figs) adds nothing to the amount, unless a partitive follows (the two of them). A name is a capitalised word. prefix_titles: the English courtesy titles before a surname (Mr., Ms., Mrs., Dr., written with or without the period) name the holder by the surname. leading_modifiers: the adverbial particles that are outside names (back, away) may still open a place's name as its modifier (the back hall), never follow a name (figs back).",
  "말자리": {
+  "fragment_amount": {
+   "heads": [
+    "exactly"
+   ],
+   "vague": [
+    "some"
+   ]
+  },
   "fronted_recipient": [
    "to"
   ],
@@ -5003,5 +5113,5 @@
    "over"
   ]
  },
- "_말자리": "Phrases said away from where the examples have them. A fronted recipient: the preposition to and a name before a comma open the clause (To Bo, Ada gave 2 figs) and are read at its end (Ada gave 2 figs to Bo). A fronted purpose: the preposition for and a phrase before a comma open the clause (For the trip, Ada lent Bo 2 figs) and are left out; a purpose fills no role. A shifted particle: the particle of a phrasal transfer verb (back, over: gave back, handed over) said after a one-word object (gave Bo back 2) is read after the verb."
+ "_말자리": "Phrases said away from where the examples have them. A fronted recipient: the preposition to and a name before a comma open the clause (To Bo, Ada gave 2 figs) and are read at its end (Ada gave 2 figs to Bo). A fronted purpose: the preposition for and a phrase before a comma open the clause (For the trip, Ada lent Bo 2 figs) and are left out; a purpose fills no role. A shifted particle: the particle of a phrasal transfer verb (back, over: gave back, handed over) said after a one-word object (gave Bo back 2) is read after the verb. A count given in a following fragment (fragment_amount): a sentence that says only an amount (Two, to be exact; Exactly two), after a statement whose amount was said with the vague word some and not read, in the same turn or as the very next turn, is that statement with the amount in the vague word's place (Ada gave Bo some figs. Two, to be exact. = Ada gave Bo 2 figs). Nothing else in the fragment is read; a statement that was read is not changed (a count not known yet takes the amount as the vague section says) (G6)."
 }
