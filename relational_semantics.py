@@ -405,6 +405,11 @@ class RelationalParser:
         # A reverse suffix trie shares stems/endings across templates. The
         # existing compiled sentence templates remain one per annotation.
         self._inflection_trie = {}
+        # A literal's variant readings and clause candidates, memoized per literal. They follow the
+        # examples and this trie, and every change to those comes through here (__init__, learn,
+        # expression_learning.propose), so the memos start over with the trie.
+        # ponytail: unbounded per parser; a parser lives for one conversation.
+        self._variant_memo, self._candidate_memo = {}, {}
         for index, example in enumerate(self.data["examples"]):
             forms = self._inflected_examples(example)
             for surface, canonical, trace in forms:
@@ -505,7 +510,14 @@ class RelationalParser:
         return " ".join(words), notes
 
     def _variant_literals(self, literal):
-        """``literal`` with every declared variant replaced, one reading per step."""
+        """``literal`` with every declared variant replaced, one reading per step (memoized, see
+        ``_rebuild_inflections``)."""
+        found = self._variant_memo.get(literal)
+        if found is None:
+            found = self._variant_memo[literal] = self._variant_literals_of(literal)
+        return list(found)
+
+    def _variant_literals_of(self, literal):
         patterns = self._variant_patterns()
         literal_in = literal
         literal, particle_notes = self._particle_variant_words(literal)
@@ -1162,6 +1174,13 @@ class RelationalParser:
         return " ".join(swapped), {"id": "declared-role-swap-v1", "verb": words[-1], "as": verb}
 
     def _clause_candidates(self, literal):
+        """Every (candidate, normalization) of ``literal`` (memoized, see ``_rebuild_inflections``)."""
+        found = self._candidate_memo.get(literal)
+        if found is None:
+            found = self._candidate_memo[literal] = list(self._all_clause_candidates(literal))
+        return iter(found)
+
+    def _all_clause_candidates(self, literal):
         yield from self._clause_candidates_of(literal)
         for replaced, notes in self._variant_literals(literal):
             for candidate, normalization in self._clause_candidates_of(replaced):
