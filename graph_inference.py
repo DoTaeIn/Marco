@@ -68,17 +68,30 @@ def current_facts(facts, mutable_predicates, numeric_updates=None):
             if (subject, target) not in current and item.get("resolve") == "leading_words":
                 subject, resolved_from = leading_word_referent(subject, target, current), subject
             previous = current.get((subject, target))
-            if previous is None:
-                raise ValueError("missing_initial_quantity")
             if not isinstance(value, str) or not value.isdecimal():
                 raise ValueError("invalid_quantity_delta")
+            delta = int(value) * update["factor"]
+            if previous is None or previous.get("at_least") is not None:
+                # A holder whose count was never said. Something added to it happened, and the holder
+                # now has at least that much, but its count stays not known (count_unknown, the same
+                # state as "has some"): neither zero nor the amount added. Taking away needs a known
+                # count, or at least that much known to be there; otherwise it cannot be checked.
+                at_least = (previous or {}).get("at_least", 0) + delta
+                if at_least < 0:
+                    raise ValueError("missing_initial_quantity")
+                changes.append({"operation": "quantity_update", "subject": subject, "predicate": target,
+                                "before": None, "after": None, "delta": delta, "evidence": item["evidence"],
+                                **({"resolved_from": resolved_from} if resolved_from else {})})
+                current[(subject, target)] = {**item, "triple": [subject, "count_unknown", "some"],
+                                              "at_least": at_least}
+                continue
             before = int(previous["triple"][2])
-            after = before + int(value) * update["factor"]
+            after = before + delta
             if type(after) is not int or after < 0:
                 raise ValueError("invalid_quantity_result")
             changes.append({"operation": "quantity_update", "subject": subject,
                             "predicate": target, "before": before, "after": after,
-                            "delta": int(value) * update["factor"], "evidence": item["evidence"],
+                            "delta": delta, "evidence": item["evidence"],
                             **({"resolved_from": resolved_from} if resolved_from else {})})
             current[(subject, target)] = {**previous, "triple": [subject, target, str(after)], "evidence": item["evidence"]}
             continue
@@ -104,7 +117,8 @@ def current_facts(facts, mutable_predicates, numeric_updates=None):
         if previous and previous.get("scope") != item.get("scope"):
             raise ValueError("ambiguous_property_scope")
         changes.append({"operation": "state_update", "subject": subject, "predicate": predicate,
-                        "before": previous["triple"][2] if previous else None,
+                        # A count said after an unknown one is the count now, not a start to add to.
+                        "before": previous["triple"][2] if previous and "at_least" not in previous else None,
                         "after": value, "evidence": item["evidence"]})
         current[key] = item
     return stable + list(current.values()), changes
