@@ -152,7 +152,8 @@ class ReasoningContext:
     CONTRADICTION = {"invalid_quantity_result", "invalid_quantity_delta",
                      "invalid_initial_quantity"}
 
-    def __init__(self, max_turns=128, *, model=None, companions=(), language=None):
+    def __init__(self, max_turns=128, *, model=None, companions=(), language=None,
+                 hypothesize=True):
         self.observations = []
         self.corrections = []
         # Allocation is independent of parsed role values: correcting a role
@@ -206,6 +207,12 @@ class ReasoningContext:
         # 되물어서 받은 답들. **어느 사건의 어느 역할을 어떤 값으로 채웠다.**
         # 원문을 고쳐 쓰지 않으므로 근거와 차례와 그때의 뜻이 그대로 남는다.
         self.fills = []
+        # 모르는 말을 **이 대화에서 배운 뜻**으로 읽기로 확인받은 것. 꼴 하나가
+        # 어간 하나를 가리킨다. 이 대화 안에서만 살고 팩에는 쓰지 않는다.
+        self.aliases = []
+        # 모르는 말을 만나면 배운 뜻 가운데 자리와 상태가 맞는 것을 찾아 묻는다.
+        # 끄면 예전처럼 모른다고만 한다 — 전후 비교용이다.
+        self.hypothesize = hypothesize
         # 이해하지 못한 말. 버리지 않는다 — 버리면 그 말이 바꿨을 상태를
         # 예전 값 그대로 확정하게 된다. 기억을 통째로 지우지도 않는다.
         self.unread = []
@@ -631,13 +638,18 @@ class ReasoningContext:
         if self._parser_instance is None:
             self._parser_instance = (RelationalParser(language=self.language) if self.model is None
                                      else self.model.parser())
+            # 이 대화가 확인받은 표현 틀은 파서에 산다. 파서를 새로 만들 때마다 다시 배운다 —
+            # 복원 뒤 파서를 버리는 실행기(ALMA)에서도 배운 말이 사라지지 않게.
+            for alias in self.aliases:
+                if alias.get("바꿈"):
+                    self._read_as(self._parser_instance, alias["말"], alias["바꿈"])
         return self._parser_instance
 
     def _verbs_for(self, parser, sources):
         """이전 관찰 접두어의 활용표는 유지하고, 새 원문만 더 읽는다."""
         source_key = tuple(sources)
         if self._verb_cache is not None and self._verb_cache[0] == source_key:
-            return deepcopy(self._verb_cache[2])
+            return {**deepcopy(self._verb_cache[2]), **self._alias_table()}
         if (self._verb_cache is not None
                 and source_key[:len(self._verb_cache[0])] == self._verb_cache[0]):
             stems = set(self._verb_cache[1])
@@ -665,7 +677,243 @@ class ReasoningContext:
                     stems.update(rule["verb"] for rule in parsed.get("정의", []))
             forms = self._forms_of(parser, stems)
         self._verb_cache = (source_key, frozenset(stems), deepcopy(forms))
-        return forms
+        return {**forms, **self._alias_table()}
+
+    @staticmethod
+    def _read_as(parser, surface, token):
+        """확인받은 꼴을 팩이 아는 끝말로 읽게 한다. 팩의 `말바꿈` 과 같은 길이다.
+
+        원문은 그대로 두고 읽는 법만 더한다. 이 대화의 파서에만 얹는다.
+        """
+        row = {"from": surface, "to": token}
+        if row not in parser.phrase_variants:
+            parser.phrase_variants.append(row)
+            ReasoningContext._forget_variants(parser)
+
+    @staticmethod
+    def _forget_variants(parser):
+        """파서가 말바꿈에서 미리 만들어 둔 것들을 버린다. 다음 읽기에서 다시 만든다."""
+        for cached in ("_slotless_word_set", "_verb_word_cache", "_variant_table", "_variant_compiled"):
+            if cached in parser.__dict__:
+                parser.__dict__[cached] = None
+        if isinstance(getattr(parser, "_repair_cache", None), dict):
+            parser._repair_cache.clear()
+
+    def _alias_table(self, defined=None):
+        """확인받은 별칭을 활용표 꼴로. 꼴 그대로만 잇는다 — 어간을 지어내지 않는다.
+
+        팩 끝말로 읽는 표현(`바꿈`)과 전후 상태로 배운 표현(`유도`)은 여기 안 든다.
+        확인받은 뜻풀이 판이 더는 없으면(정정되어 사라졌으면) 그 별칭은 모르는 말로
+        되돌린다 — 근거가 사라진 뜻을 조용히 쥐고 있지 않는다.
+        """
+        out = {}
+        for alias in self.aliases:
+            if alias.get("바꿈"):
+                continue
+            if (defined is not None and alias.get("판") is not None and not alias.get("유도")
+                    and "%s@%s" % (alias["동사"], alias["판"]) not in getattr(defined, "programs", {})):
+                continue
+            out[alias["말"]] = {"stem": alias["동사"], "물음": False}
+        return out
+
+    def _alias_key(self, parser):
+        """재생 결과를 바꾸는 것만. 근거 목록은 아니다."""
+        return [[a["말"], a["동사"], a.get("판"), a.get("바꿈"), a.get("유도")]
+                for a in self.aliases]
+
+    def learned_expressions(self):
+        """이 대화에서 확인받은 표현과 근거. 서로 다른 문장 둘 이상에서 쓰였을 때만 active."""
+        rows = []
+        for alias in self.aliases:
+            uses = list(alias.get("사례") or [])
+            distinct = {" ".join(w for w in use.split() if w.rstrip(".!?…") != alias["말"])
+                        for use in uses}
+            rows.append({"말": alias["말"], "동사": alias["동사"], "근거": alias["근거"], "사례": uses,
+                         "status": "active" if len(distinct) >= 2 else "temporary"})
+        return rows
+
+    @staticmethod
+    def _pack_forms(parser):
+        """팩 사례가 보여 준 동사 끝말 하나씩. 지난 일을 평서로 적은 사례의 끝말이다."""
+        out, seen = [], set()
+        for example in parser.data.get("examples", []):
+            inflection = example.get("inflection") or {}
+            stem = inflection.get("stem")
+            if (stem and stem not in seen and inflection.get("tense") == "past"
+                    and inflection.get("ending") == "plain"):
+                seen.add(stem)
+                out.append((stem, example["text"].split()[-1]))
+        return out
+
+    @staticmethod
+    def _effect(parser, facts, triples):
+        """이 사실들을 더하면 지금 상태가 어떻게 바뀌나. 상태가 거부하면 None."""
+        rules = (parser.data.get("mutable_predicates", []), parser.data.get("numeric_updates", {}))
+        try:
+            before, _ = current_facts(list(facts), *rules)
+            after, _ = current_facts(list(facts) + [{"triple": triple, "evidence": {}}
+                                                    for triple in triples], *rules)
+        except ValueError:
+            return None
+        old = {(str(row["triple"][0]), row["triple"][1]): row["triple"][2] for row in before}
+        return [{"대상": str(row["triple"][0]), "관계": row["triple"][1],
+                 "앞": old.get((str(row["triple"][0]), row["triple"][1])), "뒤": row["triple"][2]}
+                for row in after
+                if old.get((str(row["triple"][0]), row["triple"][1])) != row["triple"][2]]
+
+    def _guess_unknown(self, parser, event, defined, facts):
+        """모르는 말을 이미 아는 **변화**로 읽어 본다.
+
+        자리가 맞고, 지금 상태에 넣어도 어긋나지 않는 뜻만 남긴다. 뜻을 정하지는
+        않는다 — 하나가 남아도 묻고, 여럿이면 사용자가 고른다. 후보는 말이 아니라
+        **상태가 어떻게 바뀌는가**로 가른다: 같은 변화를 내는 후보는 한 가설이다.
+        """
+        이름 = {str(item["triple"][0]) for item in facts}
+        이름.update(part for name in list(이름) for part in name.split())
+        out, seen = [], set()
+
+        def keep(guess, effect):
+            key = json.dumps(effect, ensure_ascii=False, sort_keys=True)
+            if effect and key not in seen:
+                seen.add(key)
+                out.append({**guess, "효과": effect})
+
+        # 관계 사건은 제 이름표가 있어야 실행된다. 가설 실행의 사실은 버리므로 임시 이름표면 된다.
+        trial = {**event, "실행": {"id": "hypothesis:%s" % event["verb"]}}
+        for stem, rule in defined.items():
+            applied = self._triples(parser, rule, trial, 이름, {}, {}, facts, defined.programs)
+            if (applied["빈자리"] or applied["충돌"] or applied["헛자리"]
+                    or applied.get("못잼") or not applied["사실"]):
+                continue
+            keep({"동사": stem, "몸통": rule["몸통"],
+                  "판": (rule.get("프로그램") or {}).get("definition_version")},
+                 self._effect(parser, facts, applied["사실"]))
+        # 팩 사례 동사. 모르는 끝말 자리에 팩이 아는 끝말을 놓아 읽히는지 본다. 물건과 수량은
+        # 문장에서 온다. 문장을 새로 짓지 않는다 — 확인받으면 그 끝말로 읽는 법만 더한다.
+        clause = ((event.get("evidence") or {}).get("text") or "").rstrip(".!?…")
+        head = clause.rsplit(" ", 1)[0] if " " in clause else ""
+        for stem, token in (self._pack_forms(parser) if head else ()):
+            probe = head + " " + token
+            parsed = parser.parse(probe, partial=True)
+            if (not parsed or parsed["query"] or not parsed["facts"]
+                    or parsed.get("사건") or parsed.get("정의") or parsed.get("조건")):
+                continue
+            triples = [fact["triple"] for fact in parsed["facts"]]
+            # 확인받은 뒤 **정말 그렇게 읽히는 끝말만** 내놓는다. 팩이 두 번 건너 읽는 끝말은
+            # 말바꿈 하나로는 안 읽힌다.
+            surface = event["verb"] + (event.get("꼬리") or "")
+            before = list(parser.phrase_variants)
+            self._read_as(parser, surface, token)
+            read = parser.parse(clause, partial=True)
+            parser.phrase_variants[:] = before
+            self._forget_variants(parser)
+            if (not read or read.get("사건")
+                    or [fact["triple"] for fact in read["facts"]] != triples):
+                continue
+            keep({"동사": stem, "몸통": probe, "바꿈": token}, self._effect(parser, facts, triples))
+        return out
+
+    @staticmethod
+    def _induced_rule(parser, verb, body, induced, at):
+        """뜻틀 하나를 실행할 수 있는 뜻풀이 꼴로. 뜻풀이 문장에서 온 것과 같은 길로 실행된다."""
+        from action_runtime import compile_program
+        rule = {"verb": verb, "몸통": body, "유도": deepcopy(induced), "쓴동사": [], "참조": {},
+                "evidence": {"text": body}}
+        program = compile_program(rule)
+        domain = ReasoningContext._declared_event_domain(parser, program)
+        if domain:
+            program["domain"] = domain
+        return {**rule, "프로그램": {**program, "definition_version": at}}
+
+    def _learn_from_change(self, text, knowledge_path, result):
+        """못 읽고 둔 사건 뒤에 **달라진 상태**를 들었다. 그 차이가 그 말의 뜻인지 묻는다.
+
+        아는 동사가 하나도 안 맞을 때의 길이다. 뜻을 정하지 않는다 — 차이가 그 문장의
+        자리와 빠짐없이 맞을 때만 묻고, 하나라도 안 맞으면 예전처럼 둔다.
+        """
+        # ponytail: 수량 하나(더하기·빼기)만 본다. 위치·관계의 전후와 여러 사건이 섞인
+        # 차이는 안 본다. 넓히려면 predicate 마다 "차이 → 연산" 을 팩이 선언하게 한다.
+        if (not self.hypothesize or not result or result.get("status") != "observed"
+                or len(self.unread) != 1 or self.unread_guard
+                or not self.observations or self.observations[-1] != text):
+            return result
+        entry = self.unread[0]
+        if not entry.get("말") or entry.get("추측들"):
+            return result
+        parser, now = self._parser(), len(self.observations) - 1
+        replies = parser.data["context_replies"]
+        if "observed_change_guess" not in replies or now <= entry["at"]:
+            return result
+        facts, _defined, pending, _read = self._cached_replay(parser, self.observations, self.fills)
+        updates = parser.data.get("numeric_updates", {})
+        rules = (parser.data.get("mutable_predicates", []), updates)
+        targets = {spec.get("target") for spec in updates.values()}
+        turn_of = lambda fact: (fact.get("evidence") or {}).get("turn", -1)
+        earlier = [fact for fact in facts if turn_of(fact) < entry["at"]]
+        stated = [fact for fact in facts if turn_of(fact) == now]
+        if (pending or not stated or len(earlier) + len(stated) != len(facts)
+                or any(fact["triple"][1] not in targets for fact in stated)):
+            return result        # 그 사이에 다른 일이 있었거나, 셀 수 있는 상태가 아니다
+        read = self._read_source(parser, entry["text"], events=True, verbs=self._alias_table())
+        events = (read or {}).get("사건") or []
+        if len(events) != 1 or events[0]["verb"] != entry["말"] or events[0].get("polarity") is False:
+            return result
+        event = {**events[0], "실행": {"id": "hypothesis:%s" % entry["말"]}}
+        try:
+            before = {str(row["triple"][0]): row["triple"] for row in current_facts(earlier, *rules)[0]}
+            change = {str(fact["triple"][0]): (fact["triple"][1],
+                                              int(fact["triple"][2]) - int(before[str(fact["triple"][0])][2]))
+                      for fact in stated}
+        except (KeyError, ValueError, TypeError):
+            return result        # 앞 값을 모르거나 수가 아니다
+        slots, holders, items = dict(event["자리"]), {}, set()
+        for subject, (predicate, delta) in change.items():
+            key = next((k for k, v in slots.items() if subject.startswith(v + " ")), None)
+            if key is None or key in holders or not delta or before[subject][1] != predicate:
+                return result    # 문장에 없는 것이 바뀌었다, 또는 안 바뀌었다
+            holders[key] = (subject, predicate, delta)
+            items.add(subject[len(slots[key]) + 1:])
+        item_keys = [k for k, v in slots.items() if k not in holders and v in items]
+        if (len(items) != 1 or len(holders) not in (1, 2) or len(item_keys) > 1
+                or set(slots) != set(holders) | set(item_keys)
+                or (len(holders) == 2 and sum(d for _s, _p, d in holders.values()) != 0)):
+            return result        # 자리가 남거나, 주고받은 양이 안 맞는다
+        name_of = {(spec.get("target"), spec.get("factor")): name for name, spec in updates.items()}
+        triples, places = [], {}
+        for number, (key, (_subject, predicate, delta)) in enumerate(sorted(holders.items())):
+            update = name_of.get((predicate, 1 if delta > 0 else -1))
+            if update is None:
+                return result
+            triples.append([["$r%d" % number, "$item"], update, "$n"])
+            places["r%d" % number] = key
+        values = {"n": str(abs(next(iter(holders.values()))[2]))}
+        if item_keys:
+            places["item"] = item_keys[0]
+        else:
+            values["item"] = next(iter(items))
+        induced = {"뜻": {"triples": triples}, "값": values, "자리": dict(places),
+                   "채울자리": dict(places), "빈자리": {}}
+        rule = self._induced_rule(parser, entry["말"], entry["text"], induced, entry["at"])
+        applied = self._triples(parser, rule, event, set(), {}, {}, earlier, {})
+        effect = (None if applied["빈자리"] or applied["충돌"] or applied["헛자리"] or applied.get("못잼")
+                  else self._effect(parser, earlier, applied["사실"]))
+        if not effect or {row["대상"]: row["뒤"] for row in effect} != {
+                str(fact["triple"][0]): fact["triple"][2] for fact in stated}:
+            return result        # 만든 뜻이 들은 상태를 그대로 내지 못한다
+        entry["추측들"] = [{"동사": entry["말"], "몸통": entry["text"], "유도": induced,
+                         "때": entry["at"], "효과": effect}]
+        return {**result,
+                "meaning": {"act": "hold", "reason": "unknown_word_guess", "word": entry["말"],
+                            "said": entry["text"], "effects": [effect], "from": "observed_change"},
+                "answer": replies["observed_change_guess"].format(**{
+                    "말": entry["말"], "효과": self._effect_text(replies, effect)})}
+
+    @staticmethod
+    def _effect_text(replies, effect):
+        """변화를 팩이 적은 틀로 말한다. 틀이 없으면 값만 늘어놓는다."""
+        changed = replies.get("guess_effect", "{대상} {앞} → {뒤}")
+        fresh = replies.get("guess_effect_new", "{대상} {뒤}")
+        return ", ".join((fresh if row["앞"] is None else changed).format(**row) for row in effect)
 
     @staticmethod
     def _incremental_source(parser, source):
@@ -1135,32 +1383,34 @@ class ReasoningContext:
         return facts, definitions, pending, set(old_result[3])
 
     def _cached_replay(self, parser, sources, fills):
-        key = (tuple(sources), json.dumps(fills, ensure_ascii=False, sort_keys=True,
-                                          separators=(",", ":")))
+        key = (tuple(sources), json.dumps([fills, self._alias_key(parser)], ensure_ascii=False,
+                                          sort_keys=True, separators=(",", ":")))
         if self._replay_cache is not None and self._replay_cache[0] == key:
             self._last_replay_scope = "same_input"
             return deepcopy(self._replay_cache[1])
-        result = self._incremental_replay(parser, key, sources, fills)
+        # 판을 고정했거나 값을 연 별칭은 전체 재생만 안다. 빠른 길은 건너뛴다.
+        plain = not any(not alias.get("바꿈") for alias in self.aliases)
+        result = self._incremental_replay(parser, key, sources, fills) if plain else None
         reusable = {"append": False, "direct": ()}
         if result is None:
-            result = self._resume_semantic_replay(parser, key, sources, fills)
+            result = self._resume_semantic_replay(parser, key, sources, fills) if plain else None
             if result is not None:
                 self._last_replay_scope = "semantic_resume"
             else:
-                result = self._append_semantic_replay(parser, key, sources, fills)
+                result = self._append_semantic_replay(parser, key, sources, fills) if plain else None
             if result is not None:
                 if self._last_replay_scope != "semantic_resume":
                     self._last_replay_scope = "semantic_append"
             if result is None:
-                result = self._append_semantic_definition(parser, key, sources, fills)
+                result = self._append_semantic_definition(parser, key, sources, fills) if plain else None
                 if result is not None:
                     self._last_replay_scope = "semantic_definition"
             if result is None:
-                result = self._semantic_correction_replay(parser, key, sources, fills)
+                result = self._semantic_correction_replay(parser, key, sources, fills) if plain else None
                 if result is not None:
                     self._last_replay_scope = "semantic_correction"
             if result is None:
-                result = self._replay(parser, sources, fills, self.event_ids)
+                result = self._replay(parser, sources, fills, self.event_ids, self.aliases)
                 self._last_replay_scope = "full"
                 direct = tuple(self._incremental_source(parser, source) for source in sources)
                 reusable = {"append": not result[2] and not fills, "direct": direct}
@@ -1747,7 +1997,8 @@ class ReasoningContext:
                 "corrections": deepcopy(self.corrections), "unread": deepcopy(self.unread),
                 "unread_guard": deepcopy(self.unread_guard),
                 "asked": deepcopy(self.asked), "held_question": self.held_question,
-                "fills": deepcopy(self.fills), "last_subject": self.last_subject,
+                "fills": deepcopy(self.fills), "aliases": deepcopy(self.aliases),
+                "last_subject": self.last_subject,
                 "salient": list(self.salient),
                 "last_referents": deepcopy(self.last_referents),
                 "last_concept_relation": deepcopy(self.last_concept_relation),
@@ -1851,6 +2102,13 @@ class ReasoningContext:
                 or any(not valid_fill(item) for item in fills)):
             raise ValueError("invalid_reasoning_context_snapshot")
         self.fills = deepcopy(fills)
+        aliases = snapshot.get("aliases", [])
+        if (not isinstance(aliases, list) or len(aliases) > self.max_turns
+                or any(not isinstance(a, dict) or not isinstance(a.get("말"), str)
+                       or not isinstance(a.get("동사"), str) for a in aliases)):
+            raise ValueError("invalid_reasoning_context_snapshot")
+        self.aliases = deepcopy(aliases)
+        self._parser_instance = None      # 배운 틀은 파서를 만들 때 다시 얹는다
         마지막 = snapshot.get("last_subject")
         if 마지막 is not None and not isinstance(마지막, str):
             raise ValueError("invalid_reasoning_context_snapshot")
@@ -1910,8 +2168,9 @@ class ReasoningContext:
                         DefinitionTable(deepcopy(replay["definitions"]),
                                         deepcopy(replay["programs"])),
                         deepcopy(replay["pending"]), set(replay["read"]))
-            key = (tuple(self.observations), json.dumps(self.fills, ensure_ascii=False,
-                                                        sort_keys=True, separators=(",", ":")))
+            key = (tuple(self.observations), json.dumps([self.fills, self._alias_key(self._parser())],
+                                                        ensure_ascii=False, sort_keys=True,
+                                                        separators=(",", ":")))
             self._replay_cache = (key, restored, {"append": False, "direct": ()})
             # The saved definition programs also supply inflected learned
             # verb forms; only a newly typed sentence needs parsing now.
@@ -3382,7 +3641,7 @@ class ReasoningContext:
         return ReasoningContext._forms_of(parser, stems)
 
     @staticmethod
-    def _replay(parser, sources, fills=(), event_ids=None):
+    def _replay(parser, sources, fills=(), event_ids=None, aliases=()):
         """관찰을 다시 읽어 사실을 만든다. (사실, 뜻이 정해진 낱말, 못 채운 사건, 읽힌 몸통).
 
         ``fills`` 는 되물어서 받은 답이다 — **어느 사건의 어느 역할을 어떤 값으로
@@ -3401,6 +3660,9 @@ class ReasoningContext:
             rule["verb"] for source in sources
             for parsed in [parser.parse(source, partial=True)] if parsed is not None
             for rule in parsed.get("정의", [])})
+        pins = {alias["말"]: alias for alias in aliases if not alias.get("바꿈")}
+        for alias in pins.values():
+            table.setdefault(alias["말"], {"stem": alias["동사"], "물음": False})
         read = []
         for source in sources:
             parsed = ReasoningContext._read_source(parser, source, events=True, verbs=table)
@@ -3456,6 +3718,12 @@ class ReasoningContext:
             add(rule["프로그램"])
             return registry
 
+        # 전후 상태로 배운 말은 뜻풀이 문장이 없다. 확인받은 프로그램을 그 사건의 차례에 놓는다.
+        for alias in pins.values():
+            if alias.get("유도"):
+                timeline.setdefault(alias["동사"], []).append((alias.get("때", 0), ReasoningContext._induced_rule(
+                    parser, alias["동사"], (alias.get("사례") or [""])[0], alias["유도"],
+                    alias.get("때", 0))))
         stems = set(timeline)
         채움, 조회값, 조회사실, 덮기 = {}, {}, {}, []
         for fill in fills:
@@ -3499,6 +3767,13 @@ class ReasoningContext:
                 이름표 = (ReasoningContext._event_id(index, stem, event["자리"], 차례)
                          if event_ids is None else event_ids.setdefault(slot, "event:%s" % slot))
                 rule = rule_for(stem, index) if stem else None
+                alias = pins.get(event["verb"] + (event.get("꼬리") or ""))
+                if alias is not None and stem == alias["동사"]:
+                    # 확인받은 말은 **확인받을 때의 뜻풀이 판**으로 읽는다. 뒤에 뜻풀이를
+                    # 고쳐도 따라 바뀌지 않고, 그 판이 사라졌으면 모르는 말로 되돌아간다.
+                    if alias.get("판") is not None:
+                        rule = next((row for at, row in timeline.get(stem, [])
+                                     if at == alias["판"]), None)
                 if rule is None or event.get("polarity") is False:
                     continue        # 뜻을 모르거나, 안 한 일이다
                 받은값, 덮을값 = 채움.get(이름표, {}), 덮을것(이름표, stem, index)
@@ -3741,7 +4016,8 @@ class ReasoningContext:
         observed_before = len(self.observations)
         result, path = None, "reply"
         try:
-            result = self._turn_said(text, knowledge_path)
+            result = self._learn_from_change(text, knowledge_path,
+                                             self._turn_said(text, knowledge_path))
             path = self._trace_path
             return result
         finally:
@@ -4608,6 +4884,58 @@ class ReasoningContext:
         # 답은 상태를 바꾸는 사건이 아니다 — 못 알아들어도 못 읽은 사건으로
         # 남기지 않는다. 남기면 틀리게 답한 말이 영영 값을 막는다.
         짧은답, 관계보완, 새덮기, 정해짐 = None, None, [], None
+        # 모르는 말을 배운 뜻으로 읽어도 되냐고 물었고, 그렇다는 답이 왔다.
+        # 원문은 안 고친다 — 그 꼴이 그 어간을 가리킨다고만 적고 다시 센다.
+        추측 = next((entry for entry in self.unread if entry.get("추측들")), None)
+        고름 = None
+        if current is None and 추측 is not None:
+            said = text.strip().rstrip(".!?…")
+            if len(추측["추측들"]) == 1:
+                if self._choice(text, getattr(parser, "confirm_words", {})) == "맞음":
+                    고름 = 0
+            else:
+                # 여럿이면 **몇 번째인지** 말해야 한다. `맞아` 는 아무것도 고르지 않는다.
+                picks = [index for index, words in (parser.relation_choice_words or {}).items()
+                         if any(said == word for word in words)]
+                if len(picks) == 1 and str(picks[0]).isdigit() and int(picks[0]) < len(추측["추측들"]):
+                    고름 = int(picks[0])
+        if 고름 is not None:
+            guess = 추측["추측들"][고름]
+            surface = 추측["말"] + (추측.get("꼬리") or "")
+            if guess.get("유도"):
+                accepted = True
+            elif guess.get("바꿈"):
+                self._read_as(parser, surface, guess["바꿈"])
+                # 확인받은 말이 **정말 읽히는지** 본다. 안 읽히는데 보류만 풀면 그 사건이
+                # 조용히 사라지고 옛 값이 답으로 나간다.
+                read = parser.parse(추측["text"], partial=True)
+                accepted = bool(read and read["facts"] and not read.get("사건"))
+                if not accepted:
+                    parser.phrase_variants[:] = [row for row in parser.phrase_variants
+                                                 if row.get("from") != surface]
+                    self._forget_variants(parser)
+            else:
+                defined = self._cached_replay(parser, self.observations, self.fills)[1]
+                accepted = defined.get(guess["동사"]) is not None
+            if accepted:
+                self.aliases.append({"말": surface, "동사": guess["동사"], "근거": text.strip(),
+                                     "사례": [추측["text"]],
+                                     **{key: guess[key] for key in ("바꿈", "판", "유도", "때")
+                                        if guess.get(key) is not None}})
+                del self.aliases[:-self.max_turns]
+                self.unread = [e for e in self.unread if e.get("말") != 추측["말"]]
+                self.unread_guard = [e for e in self.unread_guard if e.get("말") != 추측["말"]]
+                return {"operator": "relational_graph", "status": "observed", "transitions": [],
+                        "meaning": {"act": "record", "reason": "alias_confirmed", "word": surface,
+                                    "effect": guess["효과"]},
+                        "answer": replies.get("alias_accepted", replies["observed"]).format(
+                            **{"말": surface, "몸통": guess["몸통"],
+                               "효과": self._effect_text(replies, guess["효과"])}),
+                        "verification": self._verification(knowledge_path, [{
+                            "ok": True, "reason": "alias_confirmed", "alias": surface,
+                            "stem": guess["동사"], "chosen": 고름,
+                            "kind": ("observed_change" if guess.get("유도") else
+                                     "pack_form" if guess.get("바꿈") else "definition")}])}
         굳은것 = [ask for ask in 사는것 if ask["종류"] in ("충돌", "정정대상")]
         if current is None and 굳은것:
             ask = 굳은것[0]
@@ -4783,12 +5111,17 @@ class ReasoningContext:
             # 근거에 반영해, 답이 캐시인지 영향 꼬리인지 확인 가능하게 한다.
             result["verification"] = self._verification(knowledge_path, [])
             # 뜻을 알게 된 낱말의 사건은 더 이상 막지 않는다 — 설명을 듣고 이어 푼다.
+            said_words = {w.rstrip(".!?…") for w in text.split()}
+            for alias in self.aliases:
+                if alias["말"] in said_words and text.strip() not in alias.setdefault("사례", []):
+                    alias["사례"].append(text.strip())
+            known = {**self._forms_of(parser, defined), **self._alias_table(defined)}
             self.unread = [entry for entry in self.unread if entry.get("말") is None
                            or self._lookup(parser, {"verb": entry["말"], "꼬리": entry.get("꼬리", "")},
-                                           defined) is None]
+                                           defined, known) is None]
             self.unread_guard = [entry for entry in self.unread_guard if entry.get("말") is None
                                  or self._lookup(parser, {"verb": entry["말"], "꼬리": entry.get("꼬리", "")},
-                                                 defined) is None]
+                                                 defined, known) is None]
             # Validate a new observation even if no question has been asked yet.
             _, changes = current_facts(facts, parser.data.get("mutable_predicates", []),
                                        parser.data.get("numeric_updates", {}))
@@ -4804,7 +5137,7 @@ class ReasoningContext:
                         "meaning": {"act": "hold", "reason": "unreadable_definition", "said": unreadable},
                         "answer": replies["unreadable_definition"].format(**{"몸통": unreadable})}
             unknown = next((event["verb"] for event in current.get("사건", [])
-                            if self._lookup(parser, event, defined) is None), None)
+                            if self._lookup(parser, event, defined, known) is None), None)
             if unknown is not None:
                 # 모르는 말은 틀린 조건이 아니다. 무엇을 모르는지 짚어서 물어본다.
                 # 관찰로는 **남긴다** — 나중에 설명을 들으면 이어서 풀어야 한다.
@@ -4812,8 +5145,33 @@ class ReasoningContext:
                 said = text.strip()
                 꼬리 = next((event.get("꼬리", "") for event in current.get("사건", [])
                             if event["verb"] == unknown), "")
-                self._remember_unread({"text": said, "at": len(self.observations) - 1,
-                                     "말": unknown, "꼬리": 꼬리})
+                entry = {"text": said, "at": len(self.observations) - 1, "말": unknown, "꼬리": 꼬리}
+                # 배운 뜻 가운데 자리와 상태가 맞는 것이 있으면 그것으로 읽어도 되는지
+                # 묻는다. 하나여도 확정하지 않고, 여럿이면 고르지 않는다.
+                event = next(e for e in current["사건"] if e["verb"] == unknown)
+                guesses = self._guess_unknown(parser, event, defined, facts) if self.hypothesize else []
+                labels = [words[-1] for _index, words in sorted(
+                    (parser.relation_choice_words or {}).items(), key=lambda row: str(row[0])) if words]
+                if len(guesses) > max(1, len(labels)):
+                    guesses = []        # 고를 말이 모자라면 묻지 않는다. 예전처럼 모른다고 한다
+                if guesses:
+                    entry["추측들"] = guesses
+                self._remember_unread(entry)
+                if len(guesses) == 1 and "unknown_word_guess" in replies:
+                    return {**result, "status": "unresolved",
+                            "meaning": {"act": "hold", "reason": "unknown_word_guess", "word": unknown,
+                                        "said": said, "effects": [guesses[0]["효과"]]},
+                            "answer": replies["unknown_word_guess"].format(**{
+                                "말": unknown, "몸통": guesses[0]["몸통"],
+                                "효과": self._effect_text(replies, guesses[0]["효과"])})}
+                if len(guesses) > 1 and "unknown_word_guesses" in replies:
+                    return {**result, "status": "unresolved",
+                            "meaning": {"act": "hold", "reason": "unknown_word_guesses", "word": unknown,
+                                        "said": said, "effects": [guess["효과"] for guess in guesses]},
+                            "answer": replies["unknown_word_guesses"].format(**{
+                                "말": unknown, "목록": "; ".join(
+                                    "%s %s" % (label, self._effect_text(replies, guess["효과"]))
+                                    for label, guess in zip(labels, guesses))})}
                 return {**result, "status": "unresolved",
                         "meaning": {"act": "hold", "reason": "unknown_word", "word": unknown, "said": said},
                         "answer": replies["unknown_word"].format(**{"말": unknown})}

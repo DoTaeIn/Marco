@@ -1,0 +1,667 @@
+{
+ "input_mode": "natural_language_dialogue",
+ "cases": 22,
+ "before": {
+  "hypothesize": false,
+  "outcomes": {
+   "solved": 1,
+   "safe_hold": 21,
+   "wrong": 0
+  },
+  "cases": [
+   {
+    "id": "taught-verb-unseen-form",
+    "stage": "U1",
+    "expected": "5개입니다.",
+    "actual": "\"민수가 지연에게 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": true,
+    "aliases": []
+   },
+   {
+    "id": "taught-verb-form-reused",
+    "stage": "U1",
+    "expected": "4개입니다.",
+    "actual": "\"민수가 지연에게 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": null,
+    "aliases": []
+   },
+   {
+    "id": "taught-verb-other-people",
+    "stage": "U1",
+    "expected": "2개입니다.",
+    "actual": "\"하루가 도윤에게 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": null,
+    "aliases": []
+   },
+   {
+    "id": "taught-place-verb",
+    "stage": "U1",
+    "expected": "서랍에 있습니다.",
+    "actual": "\"하루가 공책을 치웠다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": null,
+    "aliases": []
+   },
+   {
+    "id": "taught-relation-verb",
+    "stage": "U1",
+    "expected": "active입니다.",
+    "actual": "\"민수가 지연에게 다짐했다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": null,
+    "aliases": []
+   },
+   {
+    "id": "dropped-particle",
+    "stage": "U2",
+    "expected": "상자에 있습니다.",
+    "actual": "상자에 있습니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "pack-verb-unseen-form",
+    "stage": "U2",
+    "expected": "서랍에 있습니다.",
+    "actual": "\"하루가 공책을 서랍으로 치웠다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": true,
+    "aliases": []
+   },
+   {
+    "id": "pack-verb-new-things",
+    "stage": "U2",
+    "expected": "상자에 있습니다.",
+    "actual": "\"민수가 연필을 상자로 치웠다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": null,
+    "aliases": []
+   },
+   {
+    "id": "several-fit-yes-picks-nothing",
+    "stage": "U3",
+    "expected": null,
+    "actual": "\"민수가 구슬 3개를 뺐어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": true,
+    "aliases": []
+   },
+   {
+    "id": "several-fit-first-picked",
+    "stage": "U3",
+    "expected": "5개입니다.",
+    "actual": "\"민수가 구슬 3개를 뺐어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": true,
+    "aliases": []
+   },
+   {
+    "id": "several-fit-second-picked",
+    "stage": "U3",
+    "expected": "11개입니다.",
+    "actual": "\"민수가 구슬 3개를 뺐어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": true,
+    "aliases": []
+   },
+   {
+    "id": "confirmed-form-keeps-its-definition",
+    "stage": "U4",
+    "expected": "7개입니다.",
+    "actual": "\"민수가 지연에게 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": null,
+    "aliases": []
+   },
+   {
+    "id": "taught-verb-follows-its-redefinition",
+    "stage": "U4",
+    "expected": "8개입니다.",
+    "actual": "\"민수가 지연에게 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": null,
+    "aliases": []
+   },
+   {
+    "id": "thing-and-amount-from-sentence",
+    "stage": "U5",
+    "expected": "4개입니다.",
+    "actual": "\"민수가 지연에게 사과 3개를 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": true,
+    "aliases": []
+   },
+   {
+    "id": "other-thing-other-amount",
+    "stage": "U5",
+    "expected": "4개입니다.",
+    "actual": "\"민수가 지연에게 사과 3개를 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": null,
+    "aliases": []
+   },
+   {
+    "id": "learned-from-observed-change",
+    "stage": "U6",
+    "expected": "3개입니다.",
+    "actual": "\"하루가 도윤에게 구슬을 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": true,
+    "aliases": []
+   },
+   {
+    "id": "learned-change-other-thing",
+    "stage": "U6",
+    "expected": "2개입니다.",
+    "actual": "\"민수가 지연에게 구슬을 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": null,
+    "aliases": []
+   },
+   {
+    "id": "no-slot-fits",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"민수가 구슬을 삼켰다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "state-rejects",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"지연이 민수에게 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "change-does-not-balance",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"하루가 도윤에게 구슬을 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "someone-outside-the-sentence-changed",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"도윤이 가람에게 구슬을 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "two-unread-events",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"하루가 도윤에게 구슬을 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   }
+  ]
+ },
+ "after": {
+  "hypothesize": true,
+  "outcomes": {
+   "solved": 16,
+   "safe_hold": 6,
+   "wrong": 0
+  },
+  "cases": [
+   {
+    "id": "taught-verb-unseen-form",
+    "stage": "U1",
+    "expected": "5개입니다.",
+    "actual": "5개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": true,
+    "aliases": [
+     {
+      "말": "쥐여줬다",
+      "동사": "베풀",
+      "근거": "맞아",
+      "사례": [
+       "민수가 지연에게 쥐여줬다."
+      ],
+      "판": 0
+     }
+    ]
+   },
+   {
+    "id": "taught-verb-form-reused",
+    "stage": "U1",
+    "expected": "4개입니다.",
+    "actual": "4개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": null,
+    "aliases": [
+     {
+      "말": "쥐여줬다",
+      "동사": "베풀",
+      "근거": "맞아",
+      "사례": [
+       "민수가 지연에게 쥐여줬다."
+      ],
+      "판": 0
+     }
+    ]
+   },
+   {
+    "id": "taught-verb-other-people",
+    "stage": "U1",
+    "expected": "2개입니다.",
+    "actual": "2개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": null,
+    "aliases": [
+     {
+      "말": "쥐여줬다",
+      "동사": "베풀",
+      "근거": "맞아",
+      "사례": [
+       "하루가 도윤에게 쥐여줬다."
+      ],
+      "판": 0
+     }
+    ]
+   },
+   {
+    "id": "taught-place-verb",
+    "stage": "U1",
+    "expected": "서랍에 있습니다.",
+    "actual": "서랍에 있습니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": null,
+    "aliases": [
+     {
+      "말": "치웠다",
+      "동사": "옮기",
+      "근거": "맞아",
+      "사례": [
+       "하루가 공책을 치웠다."
+      ],
+      "판": 0
+     }
+    ]
+   },
+   {
+    "id": "taught-relation-verb",
+    "stage": "U1",
+    "expected": "active입니다.",
+    "actual": "active입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": null,
+    "aliases": [
+     {
+      "말": "다짐했다",
+      "동사": "약속하",
+      "근거": "맞아",
+      "사례": [
+       "민수가 지연에게 다짐했다."
+      ],
+      "판": 0
+     }
+    ]
+   },
+   {
+    "id": "dropped-particle",
+    "stage": "U2",
+    "expected": "상자에 있습니다.",
+    "actual": "상자에 있습니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "pack-verb-unseen-form",
+    "stage": "U2",
+    "expected": "서랍에 있습니다.",
+    "actual": "서랍에 있습니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": true,
+    "aliases": [
+     {
+      "말": "치웠다",
+      "동사": "옮기",
+      "근거": "맞아",
+      "사례": [
+       "하루가 공책을 서랍으로 치웠다."
+      ],
+      "바꿈": "옮겼다"
+     }
+    ]
+   },
+   {
+    "id": "pack-verb-new-things",
+    "stage": "U2",
+    "expected": "상자에 있습니다.",
+    "actual": "상자에 있습니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": null,
+    "aliases": [
+     {
+      "말": "치웠다",
+      "동사": "옮기",
+      "근거": "맞아",
+      "사례": [
+       "하루가 공책을 서랍으로 치웠다.",
+       "민수가 연필을 상자로 치웠다."
+      ],
+      "바꿈": "옮겼다"
+     }
+    ]
+   },
+   {
+    "id": "several-fit-yes-picks-nothing",
+    "stage": "U3",
+    "expected": null,
+    "actual": "\"민수가 구슬 3개를 뺐어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": true,
+    "must_ask": true,
+    "aliases": []
+   },
+   {
+    "id": "several-fit-first-picked",
+    "stage": "U3",
+    "expected": "5개입니다.",
+    "actual": "5개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": true,
+    "aliases": [
+     {
+      "말": "뺐어",
+      "동사": "꺼내",
+      "근거": "첫 번째",
+      "사례": [
+       "민수가 구슬 3개를 뺐어."
+      ],
+      "바꿈": "꺼냈다"
+     }
+    ]
+   },
+   {
+    "id": "several-fit-second-picked",
+    "stage": "U3",
+    "expected": "11개입니다.",
+    "actual": "11개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": true,
+    "aliases": [
+     {
+      "말": "뺐어",
+      "동사": "넣",
+      "근거": "2번",
+      "사례": [
+       "민수가 구슬 3개를 뺐어."
+      ],
+      "바꿈": "넣었다"
+     }
+    ]
+   },
+   {
+    "id": "confirmed-form-keeps-its-definition",
+    "stage": "U4",
+    "expected": "7개입니다.",
+    "actual": "7개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": null,
+    "aliases": [
+     {
+      "말": "쥐여줬다",
+      "동사": "베풀",
+      "근거": "맞아",
+      "사례": [
+       "민수가 지연에게 쥐여줬다."
+      ],
+      "판": 0
+     }
+    ]
+   },
+   {
+    "id": "taught-verb-follows-its-redefinition",
+    "stage": "U4",
+    "expected": "8개입니다.",
+    "actual": "8개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": null,
+    "aliases": [
+     {
+      "말": "쥐여줬다",
+      "동사": "베풀",
+      "근거": "맞아",
+      "사례": [
+       "민수가 지연에게 쥐여줬다."
+      ],
+      "판": 0
+     }
+    ]
+   },
+   {
+    "id": "thing-and-amount-from-sentence",
+    "stage": "U5",
+    "expected": "4개입니다.",
+    "actual": "4개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": true,
+    "aliases": [
+     {
+      "말": "쥐여줬다",
+      "동사": "주",
+      "근거": "맞아",
+      "사례": [
+       "민수가 지연에게 사과 3개를 쥐여줬다."
+      ],
+      "바꿈": "줬다"
+     }
+    ]
+   },
+   {
+    "id": "other-thing-other-amount",
+    "stage": "U5",
+    "expected": "4개입니다.",
+    "actual": "4개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": null,
+    "aliases": [
+     {
+      "말": "쥐여줬다",
+      "동사": "주",
+      "근거": "맞아",
+      "사례": [
+       "민수가 지연에게 사과 3개를 쥐여줬다.",
+       "민수가 지연에게 구슬 4개를 쥐여줬다."
+      ],
+      "바꿈": "줬다"
+     }
+    ]
+   },
+   {
+    "id": "learned-from-observed-change",
+    "stage": "U6",
+    "expected": "3개입니다.",
+    "actual": "3개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": true,
+    "aliases": [
+     {
+      "말": "쥐여줬다",
+      "동사": "쥐여줬다",
+      "근거": "맞아",
+      "사례": [
+       "민수가 지연에게 구슬을 쥐여줬다.",
+       "하루가 도윤에게 구슬을 쥐여줬다."
+      ],
+      "때": 1
+     }
+    ]
+   },
+   {
+    "id": "learned-change-other-thing",
+    "stage": "U6",
+    "expected": "2개입니다.",
+    "actual": "2개입니다.",
+    "status": "answered",
+    "outcome": "solved",
+    "asks": true,
+    "must_ask": null,
+    "aliases": [
+     {
+      "말": "쥐여줬다",
+      "동사": "쥐여줬다",
+      "근거": "맞아",
+      "사례": [
+       "민수가 지연에게 구슬을 쥐여줬다.",
+       "민수가 지연에게 사과를 쥐여줬다."
+      ],
+      "때": 1
+     }
+    ]
+   },
+   {
+    "id": "no-slot-fits",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"민수가 구슬을 삼켰다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "state-rejects",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"지연이 민수에게 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "change-does-not-balance",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"하루가 도윤에게 구슬을 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "someone-outside-the-sentence-changed",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"도윤이 가람에게 구슬을 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   },
+   {
+    "id": "two-unread-events",
+    "stage": "counter",
+    "expected": null,
+    "actual": "\"하루가 도윤에게 구슬을 쥐여줬다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+    "status": "unresolved",
+    "outcome": "safe_hold",
+    "asks": false,
+    "must_ask": false,
+    "aliases": []
+   }
+  ]
+ },
+ "delta": {
+  "solved": 15,
+  "safe_hold": -15,
+  "wrong": 0
+ }
+}

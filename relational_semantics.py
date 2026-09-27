@@ -125,6 +125,9 @@ class RelationalParser:
         # 뜻풀이와 어긋난 값이 **어디까지** 미치는지 묻고 받는 말. 셋뿐이다.
         self.scope_words = dict(language_pack.get("scope_words", {}))
         self.target_words = dict(language_pack.get("target_words", {}))
+        self.confirm_words = dict(language_pack.get("confirm_words", {}))
+        # 사건 문장에서 떨어질 수 있는 조사. `구슬 세 개 뺐어` 의 `를`.
+        self.elidable_particles = list(language_pack.get("elidable_particles", []))
         # Ordinal surface forms for choosing one already enumerated
         # relationship occurrence.  The algorithm only maps an ordinal to a
         # bounded candidate list; each language supplies the words.
@@ -231,7 +234,9 @@ class RelationalParser:
                               "outside_names": sorted(self.outside_names),
                               "why_count": dict(self.why_count),
                               "holder_forms": dict(self.holder_forms),
-                              "word_order_forms": dict(self.word_order_forms)}
+                              "word_order_forms": dict(self.word_order_forms),
+                              "confirm_words": dict(self.confirm_words),
+                              "elidable_particles": list(self.elidable_particles)}
         # 몸통에서 꺼낸 틀은 예문이 그대로인 동안만 같다. `learn` 이 예문을
         # 늘리면 버린다 — 옛 사례로 읽은 몸통을 그대로 쓰면 안 된다.
         self.induced_frames = {}
@@ -2170,7 +2175,11 @@ class RelationalParser:
                 or meaning.get("modality", "asserted") not in {"asserted", "planned", "conditional"}
                 or not isinstance(triple, list) or len(triple) != 3
                 or any(not isinstance(x, str) for x in triple)
-                or len(slots) < 2 or any("$" + name not in triple for name in slots)
+                # 뜻에 안 쓰는 자리는 팩 사례가 이미 쓰는 이름(actor 등)일 때만 둔다.
+                or len(slots) < 2 or any("$" + name not in triple and name not in {
+                    role for prior in self.data.get("examples", []) for role in prior.get("slots", {})
+                    if "$" + role not in prior.get("meaning", {}).get("triple", [])}
+                                         for name in slots)
                 or any(x.startswith("$") and x[1:] not in slots for x in triple)):
             raise ValueError("correction_requires_grounded_relation_slots")
         compiled = self.compile(correction, self.data.get("numerals", {}), self.slot_particles,
@@ -3092,7 +3101,8 @@ class RelationalParser:
             candidate, marker = without_hypothetical_prefix(literal)
             from frame_induction import read_event
             event = read_event(candidate, self.case_particles, self.slot_particles,
-                               self.negation, verbs, self.plan, self.inflection_grammar)
+                               self.negation, verbs, self.plan, self.inflection_grammar,
+                               elidable=self.elidable_particles)
             # Clause boundaries for an unknown verb would split a definition
             # body such as "... 주고, ... 주는 것이다" before induction gets
             # to read the whole body.  Only an already learned surface form is
@@ -3247,7 +3257,8 @@ class RelationalParser:
                 # diagnosis.
                 candidate, marker = without_hypothetical_prefix(evidence["text"])
                 event = read_event(candidate, self.case_particles, self.slot_particles,
-                                   self.negation, verbs, self.plan, self.inflection_grammar)
+                                   self.negation, verbs, self.plan, self.inflection_grammar,
+                                   elidable=self.elidable_particles)
                 if event is not None and marker and (verbs or {}).get(event["verb"], {}).get("조건"):
                     event = {**event, "hypothetical": True}
                 if event is not None:

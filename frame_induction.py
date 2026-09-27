@@ -513,7 +513,7 @@ def asks(text, negation=None, verbs=None):
     return bool((verbs or {}).get(words[-1], {}).get("물음"))
 
 
-def _chunkings(words, particles, groups, limit=12):
+def _chunkings(words, particles, groups, limit=12, elidable=()):
     """자리 나누기의 갈래들. 어느 자름이 옳은지 여기서는 못 정한다.
 
         사과 상자를   ->   [사][상자]   또는   [사과 상자]
@@ -527,6 +527,18 @@ def _chunkings(words, particles, groups, limit=12):
         if index == len(words):
             if not current:
                 yield done
+                return
+            # 맨 끝에 조사 없이 남은 낱말은 **떨어진 조사** 자리로도 읽는다. 어느 조사가
+            # 떨어질 수 있는지는 팩이 말한다(`생략조사`). 이미 찬 자리에는 안 놓는다.
+            # 조사를 단 낱말이 하나라도 섞여 있으면 떨어진 조사가 아니라 자름이 틀린 것이다.
+            # ponytail: `사과` 처럼 이름 끝이 조사와 겹치는 낱말은 여기서 못 읽는다.
+            # 조사가 짚은 자리가 하나도 없으면 사건 꼴이 아니다 — `민수 아냐` 를 사건으로 안 읽는다.
+            if not done or any(split_particle(word, particles, groups) for word in current):
+                return
+            for particle in elidable:
+                key = particle_key(particle, groups)
+                if all(k != key for k, _v in done):
+                    yield done + [(key, " ".join(current))]
             return
         piece = split_particle(words[index], particles, groups)
         if piece is not None and piece[0]:
@@ -546,7 +558,7 @@ def _chunkings(words, particles, groups, limit=12):
 
 
 def read_event(text, particles, groups, negation=None, verbs=None,
-               plan=None, grammar=None):
+               plan=None, grammar=None, elidable=()):
     """조사가 자리를 짚고 남은 한 낱말이 움직임인 꼴. 사건은 이렇게 생겼다.
 
     **뜻을 몰라도 꼴은 안다.** 그래야 모르는 말을 만났을 때 "그 말을 모릅니다"
@@ -581,7 +593,11 @@ def read_event(text, particles, groups, negation=None, verbs=None,
         polarity, tail, words = False, [stem], words[:-1]
     if len(words) < 2:
         return None
-    후보, 잘림 = _chunkings(words[:-1], particles, groups)
+    # 떨어진 조사는 **아는 움직임** 앞에서만 읽는다. 모르는 끝말까지 받으면 사건이 아닌
+    # 말(`관찰만 기록한다`)이 모르는 사건으로 남아 값을 막는다.
+    if not any(word in (verbs or {}) for word in (text.strip().rstrip(".!?…").split()[-1], tail[0])):
+        elidable = ()
+    후보, 잘림 = _chunkings(words[:-1], particles, groups, elidable=elidable)
     if not 후보:
         return None             # 조사 없는 낱말이 남으면 자리를 못 짚은 것이다
     # 자름이 너무 많아 다 못 봤으면 그렇다고 적어 둔다. 남은 하나를 유일한
