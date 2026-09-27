@@ -65,3 +65,38 @@ def test_compiled_patterns_are_shared_by_text_and_flags_not_by_parser():
     assert [p.pattern for p in parser.templates[-1][0]] == [
         p.pattern for p in RelationalParser.compile(REMOVE, parser.data.get("numerals", {}), parser.slot_particles,
                                                     counters=parser.counters, pointers=parser.pointers)[0]]
+
+
+def test_two_conversations_on_one_model_do_not_share_what_one_learns():
+    from expression_learning import propose
+    from pack_model import _built_parsers, development_model
+    from reasoning_context import ReasoningContext
+    from tests.test_expression_learning import payload
+    model = development_model("한국어")
+    first, second = ReasoningContext(model=model), ReasoningContext(model=model)
+    one, other = first._parser(), second._parser()
+    assert one is not other and one.data is not other.data and one.templates is not other.templates
+    assert one._inflection_trie is other._inflection_trie        # shared until one of them learns
+    text = "소라의 키는 다미의 키를 웃돈다"
+    assert other.parse(text, partial=True) is None
+    correction, validation = payload()
+    assert propose(one, correction, validation)["accepted"]
+    one.learn(REMOVE)
+    assert one.parse(text, partial=True)["facts"][0]["triple"] == ["소라", "taller", "다미"]
+    assert one.answer(one.parse(QUESTION))["answer"] == "28개입니다."
+    # the other conversation, a restart and the kept build read neither
+    for parser in (other, ReasoningContext(model=model)._parser(), _built_parsers[model.fingerprint]):
+        assert parser.parse(text, partial=True) is None and parser.parse(QUESTION) is None
+        assert len(parser.data["examples"]) == len(parser.templates) == len(one.templates) - 2
+    assert one._inflection_trie is not other._inflection_trie
+
+
+def test_a_copied_parser_reads_as_a_fresh_build():
+    from pack_model import development_model
+    model = development_model("한국어")
+    copied = model.parser()
+    built = RelationalParser(data=model.relational_data, language_pack=model.language)
+    assert copied.data == built.data and copied._inflection_trie == built._inflection_trie
+    assert [[p.pattern for p in patterns] for patterns, _m in copied.templates] ==         [[p.pattern for p in patterns] for patterns, _m in built.templates]
+    for text in (QUESTION, "하루가 모래에게 구슬 3개를 줬다", "소라의 키는 다미의 키를 웃돈다"):
+        assert copied.parse(text, partial=True) == built.parse(text, partial=True)
