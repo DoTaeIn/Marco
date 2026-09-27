@@ -3807,7 +3807,91 @@ class ReasoningContext:
                             **({"reason": held.get("reason") or "unresolved"} if held else {})},
                 "verification": self._verification(knowledge_path, checks)}
 
+    def _fragment_amount(self, parser, spec, piece):
+        """The amount of a sentence that says only an amount (``Two, to be exact.``, ``두 개.``,
+        ``정확히는 네 자루예요``): (the amount as it goes into a statement, its value), else None. The
+        words around it are the pack's: its fragment heads, the phrases its variants read as nothing, the
+        copula tails and the counters."""
+        from numeral_semantics import parse_numeral
+        flags = re.IGNORECASE if parser.data.get("ignore_case") else 0
+        rest = piece.strip().rstrip(".!…").strip()
+        for phrase in sorted(list(spec.get("heads", [])) + [row["from"] for row in parser.phrase_variants
+                                                             if row.get("from") and row.get("to", "") == ""],
+                             key=len, reverse=True):
+            rest = re.sub(r"(?<![\w])%s(?![\w])" % re.escape(phrase), " ", rest, flags=flags)
+        rest = re.sub(r"\s+", " ", rest.replace(",", " ")).strip()
+        for tail in sorted(spec.get("tails", []), key=len, reverse=True):
+            if rest.endswith(tail) and len(rest) > len(tail):
+                rest = rest[:-len(tail)].strip()
+                break
+        units = sorted(parser.counters.get("units", []), key=len, reverse=True)
+        counter = next((u for u in units if rest.endswith(u) and len(rest) > len(u)), "")
+        number = rest[:-len(counter)].strip() if counter else rest
+        value = number if number.isdigit() else parse_numeral(number.lower() if flags else number,
+                                                              parser.data.get("numerals", {}))
+        if not number or value is None:
+            return None
+        if spec.get("insert") == "before_verb":
+            return (rest if counter else "%s%s" % (value, spec.get("counter", ""))), str(value)
+        return str(value), str(value)
+
+    def _spliced_fragment(self, text):
+        """A statement said without its amount and the amount said after it as a fragment, in the same turn
+        (``지유가 은호한테 사과를 줬어. 두 개.``) or as the very next turn after the statement went unread
+        (``Tessa gave Hugo some spoons.`` / ``Two, to be exact.``), read as one statement: the amount takes
+        the place of the vague word the pack declares, or stands right before the verb (fragment_amount).
+        Returns the statement to read and the unread statement it replaces, or None."""
+        if not self._permitted(None):
+            return None
+        parser = self._parser()
+        spec = (getattr(parser, "word_order_forms", None) or {}).get("fragment_amount") or {}
+        if not spec:
+            return None
+        segments = self._segments(text, parser)
+        if not segments or segments[-1][1]:
+            return None
+        amount = self._fragment_amount(parser, spec, segments[-1][0])
+        if amount is None:
+            return None
+        replaced = None
+        if len(segments) >= 2:
+            statement = " ".join(piece for piece, _q in segments[:-1])
+            if any(question for _p, question in segments[:-1]):
+                return None
+            read = parser.parse(statement, partial=True, events=True, repair=True) or {}
+            if read.get("facts") or read.get("query"):
+                return None
+        else:
+            last = getattr(self, "_last_said", None)
+            entry = self.unread[-1] if self.unread else None
+            if not last or entry is None or entry["text"].strip() != last or entry.get("at") != len(self.observations):
+                return None
+            statement, replaced = last, entry["text"]
+        flags = re.IGNORECASE if parser.data.get("ignore_case") else 0
+        body = statement.strip()
+        stop = body[-1] if body[-1:] in ".!…" else ""
+        body = body[:-1].strip() if stop else body
+        vague = [w for w in spec.get("vague", []) if re.search(r"(?<![\w])%s(?![\w])" % re.escape(w), body, flags)]
+        if len(vague) == 1:
+            spliced = re.sub(r"(?<![\w])%s(?![\w])" % re.escape(vague[0]), amount[0], body, count=1, flags=flags)
+        elif not vague and spec.get("insert") == "before_verb" and " " in body:
+            head, verb = body.rsplit(" ", 1)
+            spliced = "%s %s %s" % (head, amount[0], verb)
+        else:
+            return None
+        spliced += stop or "."
+        read = parser.parse(spliced, partial=True, events=True, repair=True) or {}
+        if not read.get("facts") or any(f.get("unnamed") for f in read["facts"]) or read.get("query"):
+            return None
+        return spliced, replaced
+
     def _turn_said(self, text, knowledge_path=None):
+        spliced = self._spliced_fragment(text)
+        if spliced is not None:
+            text, replaced = spliced
+            if replaced is not None:
+                self._forget_heard({replaced})
+        self._last_said = str(text).strip()
         language = self.language or next((source["path"] for source in getattr(self.model, "sources", ())
                                           if source["path"].startswith("styles/")), None)
         explained = self.last_explanation

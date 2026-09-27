@@ -705,6 +705,24 @@ class RelationalParser:
             return literal, None
         return text, {"id": "declared-word-order-v1", "forms": applied, "from": literal}
 
+    def _holds_counted_amount(self, value):
+        """True when ``value`` has a numeral word right before a declared counter (여섯 권, 여섯권을)."""
+        from numeral_semantics import parse_numeral
+        units = self.counters.get("units", [])
+        if not units:
+            return False
+        # the native numerals only: the Sino-Korean digits are also syllables of common words (사장)
+        numerals = {k: v for k, v in self.data.get("numerals", {}).items() if k in ("atoms", "tens")}
+        words = value.split()
+        for index, word in enumerate(words):
+            for unit in units:
+                if word.startswith(unit) and index and parse_numeral(words[index - 1], numerals) is not None:
+                    return True
+                at = word.find(unit)
+                if at > 0 and parse_numeral(word[:at], numerals) is not None:
+                    return True
+        return False
+
     def _same_form_table(self, stem, target):
         """{form of ``stem``: the form of ``target`` in the same tense and ending}, by the pack's inflection."""
         cache = self.__dict__.setdefault("_same_form_cache", {})
@@ -2467,6 +2485,9 @@ class RelationalParser:
                     # into the thing's name, so the reading is not taken (G5).
                     if isinstance(slots.get("item"), str) and re.search(r"(?<![\w])\d+(?![\w])", slots["item"]) \
                             and not str(example["slots"].get("item", "")).isdecimal():
+                        continue
+                    # nor a numeral word with its counter (공 여섯 권을: an amount said, not a thing's name, G6)
+                    if isinstance(slots.get("item"), str) and self._holds_counted_amount(slots["item"]):
                         continue
                     # A word the pack declares as filling no slot (a phrase variant read as nothing: 지금은,
                     # 오늘은, now, still) is never part of a holder or a thing: the reading without it is taken
