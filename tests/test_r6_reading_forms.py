@@ -179,6 +179,40 @@ CASES = {
                   "예나는 접시를 몇 개 맡고 있어요?"], 6),
         ],
     },
+    # B7. Leftover and remaining questions.
+    "B7": {
+        "build": [
+            (EN, ["Nora has 9 pens.", "Otto has 2 pens.", "Nora gave 4 pens to Otto.", "How many pens are left with Nora?"],
+             5),
+            (EN, ["Lena has 12 cups.", "Lena used 3 cups.", "How many cups remain with Lena?"], 9),
+            (EN, ["Ivo has 8 kites.", "Pia has 1 kite.", "Ivo gave Pia 2 kites.", "How many kites are left for Ivo?"], 6),
+            (EN, ["Tessa has 6 spoons.", "Hugo has 3 spoons.", "Tessa lent Hugo 4 spoons.",
+                  "How many spoons are left with Tessa now?"], 2),
+            (KO, ["보라는 연필이 아홉 개 있어.", "하늘은 연필이 두 개 있어.", "보라가 하늘에게 연필 네 개를 줬어.",
+                  "보라에게 남은 연필은 몇 개인가?"], 5),
+            (KO, ["다온은 우표가 열두 장 있어요.", "다온이 우표 세 장을 썼어요.", "우표 몇 장 남았어요?"], 9),
+            (KO, ["지유 님은 공책이 여덟 권 있습니다.", "은호 님은 공책이 한 권 있습니다.", "지유 님이 은호 님께 공책 두 권을 드렸습니다.",
+                  "지유 님께 남은 공책은 몇 권입니까?"], 6),
+            (KO, ["민재는 붓이 여섯 자루 있어.", "수아는 붓이 세 자루 있어.", "민재가 수아에게 붓 네 자루를 줬어.",
+                  "민재한테 남은 붓은 몇 자루야?"], 2),
+        ],
+        "check": [
+            (EN, ["Rosa has 17 plates.", "Felix has 7 plates.", "Rosa gave 10 plates to Felix.",
+                  "How many plates are left with Rosa?"], 7),
+            (EN, ["Mona has 15 candles.", "Mona used 11 candles.", "How many candles remain with Mona?"], 4),
+            (EN, ["Ada has 19 ribbons.", "Cole has 10 ribbons.", "Ada gave Cole 13 ribbons.",
+                  "How many ribbons are left for Ada?"], 6),
+            (EN, ["June has 16 mugs.", "Ravi has 11 mugs.", "June lent Ravi 7 mugs.", "How many mugs are left with June now?"],
+             9),
+            (KO, ["윤서는 책이 열한 권 있어.", "도현은 책이 일곱 권 있어.", "윤서가 도현에게 책 열 권을 줬어.",
+                  "윤서에게 남은 책은 몇 권인가?"], 1),
+            (KO, ["채원은 귤이 열다섯 개 있어요.", "채원이 귤 일곱 개를 먹었어요.", "귤 몇 개 남았어요?"], 8),
+            (KO, ["하린 님은 사진이 열아홉 장 있습니다.", "준호 님은 사진이 열 장 있습니다.", "하린 님이 준호 님께 사진 열세 장을 드렸습니다.",
+                  "하린 님께 남은 사진은 몇 장입니까?"], 6),
+            (KO, ["예나는 볼펜이 열일곱 자루 있어.", "태민은 볼펜이 열한 자루 있어.", "예나가 태민에게 볼펜 열 자루를 줬어.",
+                  "예나한테 남은 볼펜은 몇 자루야?"], 7),
+        ],
+    },
 }
 
 
