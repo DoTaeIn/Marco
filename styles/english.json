@@ -2836,6 +2836,27 @@
     }
    },
    {
+    "text": "how did that come about",
+    "slots": {},
+    "meaning": {
+     "why_last": true
+    }
+   },
+   {
+    "text": "how did that happen",
+    "slots": {},
+    "meaning": {
+     "why_last": true
+    }
+   },
+   {
+    "text": "how come",
+    "slots": {},
+    "meaning": {
+     "why_last": true
+    }
+   },
+   {
     "text": "why does Haru have that many marbles",
     "slots": {
      "owner": "Haru",
@@ -5021,8 +5042,35 @@
   "nor"
  ],
  "_이름밖": "Words that are never part of a holder's or a thing's name in a reading: the English prepositions (all of them but 'of', which a partitive keeps: boxes of crayons; with 'than', so 'Ada has 2 more figs than Bo' is not read as a count of 'figs than Bo') and the adverbial particles away, back. A name that holds one swallowed a phrase the example does not have ('figs to Bo', 'figs at first'), so that reading is not taken. The coordinating conjunctions and, or, nor join two names and are part of neither (G5: 'my wife and Eliana' is two holders, not the relation 'wife and' before a name).",
+ "수량이유물음": {
+  "facts": [
+   {
+    "pattern": "(?:why|how come) (?:do|did) (?P<h>I|we) (?:only |still )?(?:have|hold|keep|end up with|get)(?: only)? {수}(?: (?P<i>.+?))?(?: now| left| at the moment)?",
+    "ask": "how many {i} do {h} have"
+   },
+   {
+    "pattern": "(?:why|how come) (?:does|did) (?P<h>.+?) (?:only |still )?(?:have|hold|keep|end up with|get)(?: only)? {수}(?: (?P<i>.+?))?(?: now| left| at the moment)?",
+    "ask": "how many {i} does {h} have"
+   },
+   {
+    "pattern": "(?:how come|what is the reason|what's the reason)(?: why| that)? (?P<h>I|we) (?:only |still )?(?:have|hold|keep|ended up with|end up with|got)(?: only)? {수}(?: (?P<i>.+?))?(?: now| left| at the moment)?",
+    "ask": "how many {i} do {h} have"
+   },
+   {
+    "pattern": "(?:how come|what is the reason|what's the reason)(?: why| that)? (?P<h>.+?) (?:only |still )?(?:has|holds|keeps|ended up with|ends up with|got)(?: only)? {수}(?: (?P<i>.+?))?(?: now| left| at the moment)?",
+    "ask": "how many {i} does {h} have"
+   },
+   {
+    "pattern": "why is (?:that|the|this|it) (?:number |count |total )?{수}"
+   },
+   {
+    "pattern": "why (?:only )?{수}"
+   }
+  ]
+ },
+ "_수량이유물음": "A why that restates a count (why does Nora have 4, why does Nora end up with 4 pens, what is the reason Nora has 4, how come Nora only has 4, why do I only have 4, why is that number 4): {수} is the number (digits or a number word), h the holder, i the thing. ask is the count question the same holder is asked with; the holder is the one that question reads, so a why names a holder exactly as a count question does. A form without ask names no holder (the last answer's, or asked back). A number that is not the holder's current count is not explained.",
  "가진쪽꼴": {
-  "name": "[A-Z][a-z]+(?:-[A-Z][a-z]+)?",
+  "name":"[A-Z][a-z]+(?:-[A-Z][a-z]+)?",
   "possessives": [
    "my",
    "your",
