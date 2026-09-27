@@ -18,6 +18,11 @@ class ModelError(ValueError):
     pass
 
 
+# fingerprint -> the parser built from that model's assets, kept only to be copied (PackModel.parser).
+# The fingerprint hashes every asset the parser is built from, so an entry never goes stale.
+_built_parsers = {}
+
+
 def descriptor(assets, language=None):
     languages = sorted(p for p in assets if p.startswith("styles/") and p.endswith(".json"))
     if language is None:
@@ -183,8 +188,19 @@ class PackModel:
         return operation in self._axioms["operators"]
 
     def parser(self):
+        """A parser of this model for one caller.
+
+        Built once per model fingerprint (a restart and the realizer ask again for the same model) and
+        handed out as a deep copy of that build, which no caller ever holds: what one conversation
+        learns (examples, templates, rules, memos) stays in its copy. The copies share the compiled
+        patterns and the first suffix trie; learning replaces a trie, it never changes one in place.
+        """
         from relational_semantics import RelationalParser
-        return RelationalParser(data=self._relational, language_pack=self._language)
+        built = _built_parsers.get(self.fingerprint)
+        if built is None:
+            built = _built_parsers[self.fingerprint] = RelationalParser(data=self._relational,
+                                                                        language_pack=self._language)
+        return deepcopy(built, {id(built._inflection_trie): built._inflection_trie})
 
     def parse_expression(self, text):
         from expression_graph import parse

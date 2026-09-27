@@ -10,6 +10,21 @@ from pathlib import Path
 import re
 import tempfile
 
+# Every pattern this module matches, compiled once per process. Parsing builds a few thousand distinct
+# patterns (pack words escaped into them), more than the 512 `re` keeps, so its own cache thrashed and
+# recompiled. A compiled pattern depends only on its text and flags, never on a parser, so parsers share
+# it and nothing a parser learns makes it stale.
+# ponytail: unbounded; the patterns come from the loaded packs, a few thousand per language.
+_patterns = {}
+
+
+def _compiled(pattern, flags=0):
+    found = _patterns.get((pattern, flags))
+    if found is None:
+        found = _patterns[pattern, flags] = re.compile(pattern, flags)
+    return found
+
+
 def asserted(meaning):
     """이 뜻이 내놓는 사실들. 한 문장이 사실 하나라는 법은 없다.
 
@@ -405,6 +420,11 @@ class RelationalParser:
         # A reverse suffix trie shares stems/endings across templates. The
         # existing compiled sentence templates remain one per annotation.
         self._inflection_trie = {}
+        # A literal's variant readings and clause candidates, memoized per literal. They follow the
+        # examples and this trie, and every change to those comes through here (__init__, learn,
+        # expression_learning.propose), so the memos start over with the trie.
+        # ponytail: unbounded per parser; a parser lives for one conversation.
+        self._variant_memo, self._candidate_memo = {}, {}
         for index, example in enumerate(self.data["examples"]):
             forms = self._inflected_examples(example)
             for surface, canonical, trace in forms:
@@ -486,7 +506,7 @@ class RelationalParser:
                 left = "" if not source[:1].isalnum() else r"(?<![\w])"
                 right = "" if not source[-1:].isalnum() else r"(?![\w])"
                 compiled.append((source.lower() if flags else source, target, note,
-                                 re.compile(left + re.escape(source) + right, flags)))
+                                 _compiled(left + re.escape(source) + right, flags)))
             self._variant_compiled = compiled
         return self._variant_compiled
 
@@ -505,7 +525,14 @@ class RelationalParser:
         return " ".join(words), notes
 
     def _variant_literals(self, literal):
-        """``literal`` with every declared variant replaced, one reading per step."""
+        """``literal`` with every declared variant replaced, one reading per step (memoized, see
+        ``_rebuild_inflections``)."""
+        found = self._variant_memo.get(literal)
+        if found is None:
+            found = self._variant_memo[literal] = self._variant_literals_of(literal)
+        return list(found)
+
+    def _variant_literals_of(self, literal):
         patterns = self._variant_patterns()
         literal_in = literal
         literal, particle_notes = self._particle_variant_words(literal)
@@ -548,14 +575,14 @@ class RelationalParser:
                     written = "QQKEPT%dQQ" % (len(kept) - 1)
                 replaced = pattern.sub(written, current)
                 if replaced != current:
-                    current = re.sub(r"\s+([,;:])", r"\1", re.sub(r"\s+", " ", replaced)).strip()
+                    current = _compiled(r"\s+([,;:])").sub(r"\1", _compiled(r"\s+").sub(" ", replaced)).strip()
                     folded = current.lower() if self.data.get("ignore_case") else current
                     notes.append({**note, "written": target})
             for index, target in enumerate(kept):
                 current = current.replace("QQKEPT%dQQ" % index, target)
             folded = current.lower() if self.data.get("ignore_case") else current
             # A phrase dropped at a clause edge leaves its comma behind ("..., apparently").
-            current = re.sub(r"^[,;:\s]+|[,;:\s]+$", "", re.sub(r",\s*,", ",", current))
+            current = _compiled(r"^[,;:\s]+|[,;:\s]+$").sub("", _compiled(r",\s*,").sub(",", current))
             current, note = self._holder_forms(current)
             if note is not None:
                 notes.append(note)
@@ -596,19 +623,19 @@ class RelationalParser:
             return literal, None
         text, applied = literal, []
         for preposition in spec.get("fronted_recipient", []):
-            m = re.match(r"(?i:%s) ([^,]+), (.+)$" % re.escape(preposition), text)
+            m = _compiled(r"(?i:%s) ([^,]+), (.+)$" % re.escape(preposition)).match(text)
             if m and len(m.group(1).split()) <= 4:
                 text, applied = "%s %s %s" % (m.group(2), preposition, m.group(1)), applied + ["fronted_recipient"]
                 break
         for preposition in spec.get("fronted_purpose", []):
-            m = re.match(r"(?i:%s) [^,]+, (.+)$" % re.escape(preposition), text)
+            m = _compiled(r"(?i:%s) [^,]+, (.+)$" % re.escape(preposition)).match(text)
             if m:
                 text, applied = m.group(1), applied + ["fronted_purpose"]
                 break
         objects = spec.get("fronted_purpose_objects") or {}
         for suffix in spec.get("fronted_purpose_suffixes", []):
             # 행사 때문에 (,) ... / 이사 준비로, ...: a purpose phrase at the clause's start fills no role
-            m = re.match(r"((?:\S+ ){0,2}?)(\S*)%s,? (.+)$" % re.escape(suffix), text)
+            m = _compiled(r"((?:\S+ ){0,2}?)(\S*)%s,? (.+)$" % re.escape(suffix)).match(text)
             # 바자회를 위해: a suffix that takes an object keeps its object particle on the word before it
             taken = tuple(objects.get("particles", [])) if suffix in objects.get("suffixes", []) else ()
             words = (m.group(1) + m.group(2)).split() if m else []
@@ -620,9 +647,8 @@ class RelationalParser:
         completive = spec.get("completive") or {}
         if completive:
             # 다 썼어요 (used up): the completive adverb before a verb of using up fills no role
-            new = re.sub(r"(?<!\S)(?:%s) (?=(?:%s))" % ("|".join(re.escape(w) for w in completive.get("words", [])),
-                                                        "|".join(re.escape(v) for v in completive.get("before", []))),
-                         "", text)
+            new = _compiled(r"(?<!\S)(?:%s) (?=(?:%s))" % ("|".join(re.escape(w) for w in completive.get("words", [])),
+                                                        "|".join(re.escape(v) for v in completive.get("before", [])))).sub("", text)
             if new != text:
                 text, applied = new, applied + ["completive"]
         auxiliaries = spec.get("spaced_auxiliary") or []
@@ -683,7 +709,7 @@ class RelationalParser:
         adverbs = spec.get("dropped_adverbs") or []
         if adverbs:
             # time adverbs that fill no role are left out in every reading, not only with the phrase variants
-            new = re.sub(r"(?<!\S)(?:%s)(?!\S)\s*" % "|".join(re.escape(w) for w in adverbs), "", text).strip()
+            new = _compiled(r"(?<!\S)(?:%s)(?!\S)\s*" % "|".join(re.escape(w) for w in adverbs)).sub("", text).strip()
             if new != text and new:
                 text, applied = new, applied + ["adverb"]
         zero = spec.get("zero_idiom") or {}
@@ -693,8 +719,7 @@ class RelationalParser:
             units = "|".join(re.escape(u) for u in sorted(self.counters.get("units", []), key=len, reverse=True))
             amounts = "|".join([re.escape(w) for w in zero.get("words", [])]
                                + (["%s ?(?:%s)도" % (re.escape(zero["one"]), units)] if zero.get("one") and units else []))
-            new = re.sub(r"(?<!\S)(?:%s) %s(?=\S*)" % (amounts, re.escape(zero["absent"])),
-                         "%s %s" % (zero["reads_as"], zero["present"]), text)
+            new = _compiled(r"(?<!\S)(?:%s) %s(?=\S*)" % (amounts, re.escape(zero["absent"]))).sub("%s %s" % (zero["reads_as"], zero["present"]), text)
             if new != text:
                 text, applied = new, applied + ["zero_idiom"]
         marker = spec.get("genitive_quantifier")
@@ -712,14 +737,12 @@ class RelationalParser:
                     if particle:
                         particle = self._particle_form(m.group(2), particle) if particle in self.particle_mates else particle
                     return "%s %s %s%s" % (m.group(4), amount, m.group(2), particle)
-                new = re.sub(r"(\S+) ?(%s)(%s) (\S+?)(을|를|이|가|은|는|도)?(?=\s|$)" % (units, re.escape(marker)),
-                             float_back, text)
+                new = _compiled(r"(\S+) ?(%s)(%s) (\S+?)(을|를|이|가|은|는|도)?(?=\s|$)" % (units, re.escape(marker))).sub(float_back, text)
                 if new != text:
                     text, applied = new, applied + ["genitive_quantifier"]
         particles = spec.get("shifted_particles", [])
         if particles:
-            new = re.sub(r"(\S+) (\S+) (%s)(?= )" % "|".join(re.escape(p) for p in particles),
-                         lambda m: "%s %s %s" % (m.group(1), m.group(3), m.group(2))
+            new = _compiled(r"(\S+) (\S+) (%s)(?= )" % "|".join(re.escape(p) for p in particles)).sub(lambda m: "%s %s %s" % (m.group(1), m.group(3), m.group(2))
                          if m.group(1).lower() in self._declared_verb_words() else m.group(0), text)
             if new != text:
                 text, applied = new, applied + ["shifted_particle"]
@@ -779,8 +802,8 @@ class RelationalParser:
         for row in sorted(self.phrase_variants, key=lambda r: len(r.get("from") or ""), reverse=True):
             source = row.get("from")
             if source and row.get("to", "") == "":
-                rest = re.sub(r"(?<![\w'])%s(?![\w'])" % re.escape(source), " ", rest, flags=flags)
-        return bool(literal.strip()) and not re.sub(r"[\s,.!?;:]+", "", rest)
+                rest = _compiled(r"(?<![\w'])%s(?![\w'])" % re.escape(source), flags).sub(" ", rest)
+        return bool(literal.strip()) and not _compiled(r"[\s,.!?;:]+").sub("", rest)
 
     def _declared_verb_words(self):
         """Every form the inflection grammar computes for the verbs the pack reads (its examples'
@@ -857,8 +880,8 @@ class RelationalParser:
             for example in self.data.get("examples", []):
                 text = example.get("text", "")
                 for value in (example.get("slots") or {}).values():
-                    text = re.sub(r"(?<!\w)%s(?!\w)" % re.escape(str(value)), " ", text)
-                words |= {w.lower() for w in re.findall(r"[^\W\d_]+", text)}
+                    text = _compiled(r"(?<!\w)%s(?!\w)" % re.escape(str(value))).sub(" ", text)
+                words |= {w.lower() for w in _compiled(r"[^\W\d_]+").findall(text)}
             words |= {source.lower() for source in self._variants() if " " not in source.strip()}
             self._frame_word_set = words
         return self._frame_word_set
@@ -902,23 +925,22 @@ class RelationalParser:
         key = speaker.get("reads_as")
         if key:
             for source, target in sorted((speaker.get("contractions") or {}).items(), key=lambda kv: -len(kv[0])):
-                new = re.sub(r"(?<![\w'])%s(?![\w'])" % re.escape(source), target, text, flags=flags)
+                new = _compiled(r"(?<![\w'])%s(?![\w'])" % re.escape(source), flags).sub(target, text)
                 if new != text:
                     text, applied = new, applied + ["contraction"]
             for source, target in sorted((speaker.get("particle_forms") or {}).items(), key=lambda kv: -len(kv[0])):
-                new = re.sub(r"(?<![\w])%s(?![\w])" % re.escape(source), target, text)
+                new = _compiled(r"(?<![\w])%s(?![\w])" % re.escape(source)).sub(target, text)
                 if new != text:
                     text, applied = new, applied + ["speaker"]
             forms = speaker.get("forms") or []
             if forms:
-                new = re.sub(r"(?<![\w'])(?:%s)(?![\w'])" % words_re(forms), key, text, flags=flags)
+                new = _compiled(r"(?<![\w'])(?:%s)(?![\w'])" % words_re(forms), flags).sub(key, text)
                 if new != text:
                     text, applied = new, applied + ["speaker"]
             inverted = speaker.get("inverted") or {}
             for verb, agreed in inverted.items():
                 # (not before a coordinated subject: do I and Vera have is plural and stays as it is)
-                new = re.sub(r"(?<![\w'])%s %s(?![\w'])(?! (?:and|or|nor)(?![\w]))" % (re.escape(verb), re.escape(key)),
-                             "%s %s" % (agreed, key), text, flags=flags)
+                new = _compiled(r"(?<![\w'])%s %s(?![\w'])(?! (?:and|or|nor)(?![\w]))" % (re.escape(verb), re.escape(key)), flags).sub("%s %s" % (agreed, key), text)
                 if new != text:
                     text, applied = new, applied + ["agreement"]
             auxiliaries = {w.lower() for pair in inverted.items() for w in pair}
@@ -930,13 +952,13 @@ class RelationalParser:
                     if before and before[-1].lower() in auxiliaries | {"and", "or", "nor"}:
                         return m.group(0)
                     return "%s %s" % (key, agreed)
-                new = re.sub(r"(?<![\w'])%s %s(?![\w'])" % (re.escape(key), re.escape(verb)), agree, text)
+                new = _compiled(r"(?<![\w'])%s %s(?![\w'])" % (re.escape(key), re.escape(verb))).sub(agree, text)
                 if new != text:
                     text, applied = new, applied + ["agreement"]
         prefix_titles = spec.get("prefix_titles") or []
         if prefix_titles:
             # a title before a name (Mr. Lind, Dr. Moore) names the holder by the name
-            new = re.sub(r"(?<![\w'])(?:%s) (?=%s(?![\w]))" % (words_re(prefix_titles), name), "", text)
+            new = _compiled(r"(?<![\w'])(?:%s) (?=%s(?![\w]))" % (words_re(prefix_titles), name)).sub("", text)
             if new != text:
                 text, applied = new, applied + ["title"]
         possessives = spec.get("possessives") or []
@@ -973,14 +995,14 @@ class RelationalParser:
                            and not w.isdigit() and parse_numeral(w.lower(), self.data.get("numerals", {})) is None
                            and not self._ends_in_particle(w)
                            for w in words.split())
-            new = re.sub(pattern, lambda m: m.group(3) if is_owner(m.group(1)) and is_relation(m.group(2))
+            new = _compiled(pattern).sub(lambda m: m.group(3) if is_owner(m.group(1)) and is_relation(m.group(2))
                          else m.group(0), text)
             if new != text:
                 text, applied = new, applied + ["relation_name"]
         determiners = spec.get("determiners") or []
         if determiners:
             pattern = r"(?<![\w'])(?i:%s) (?:[a-z]+ ){0,2}[a-z]+, (%s)(?:,|(?=$))" % (words_re(determiners), name)
-            new = re.sub(pattern, r"\1", text)
+            new = _compiled(pattern).sub(r"\1", text)
             if new != text:
                 text, applied = new, applied + ["apposition"]
         own = spec.get("self_possessives") or []
@@ -1004,10 +1026,10 @@ class RelationalParser:
                     # (a one-syllable relation noun with its particle, 형이, carries a particle too)
                     carries = carries or stem != word
                 # a bare relation word before a name belongs to the close apposition (my cousin Ana)
-                if not carries and re.match(r" (?:%s)(?![\w'])" % name, text[m.end():]):
+                if not carries and _compiled(r" (?:%s)(?![\w'])" % name).match(text[m.end():]):
                     return m.group(0)
                 return word
-            new = re.sub(pattern, own_relation, text)
+            new = _compiled(pattern).sub(own_relation, text)
             if new != text:
                 text, applied = new, applied + ["own_relation"]
         particle_alt = "|".join(re.escape(p) for p in sorted(
@@ -1031,7 +1053,7 @@ class RelationalParser:
                 return m.group(2) + m.group(3)
             pattern = r"(?<!\S)((?:%s ){1,2})(%s)( ?(?:%s))(?=(?:%s)?(?![\w]))" % (
                 name, name, words_re(role_titles), particle_alt)
-            new = re.sub(pattern, unrole, text)
+            new = _compiled(pattern).sub(unrole, text)
             if new != text:
                 text, applied = new, applied + ["role"]
         titles = spec.get("name_titles") or []
@@ -1040,7 +1062,7 @@ class RelationalParser:
                 stem, particle = m.group(1), m.group(3) or ""
                 return stem + (self._particle_form(stem, particle) if particle else "")
             pattern = r"(?<!\S)(%s) ?(%s)(%s)?(?![\w])" % (name, words_re(titles), particle_alt)
-            new = re.sub(pattern, untitle, text)
+            new = _compiled(pattern).sub(untitle, text)
             if new != text:
                 text, applied = new, applied + ["title"]
         articles = spec.get("numeral_articles") or []
@@ -1054,7 +1076,7 @@ class RelationalParser:
                     m.group(2).lower() if flags else m.group(2), numerals)
                 return m.group(2) if value is not None and str(value) != "1" else m.group(0)
             # (not before a partitive: the two of them names holders, not an amount)
-            new = re.sub(r"(?<![\w'])(%s) (\S+)(?! of\b)" % words_re(articles), drop, text, flags=flags)
+            new = _compiled(r"(?<![\w'])(%s) (\S+)(?! of\b)" % words_re(articles), flags).sub(drop, text)
             if new != text:
                 text, applied = new, applied + ["numeral_article"]
         if not applied:
@@ -1077,12 +1099,12 @@ class RelationalParser:
         numerals = self.data.get("numerals", {})
         for at in range(1, len(words) - 1):
             number, counted = words[at], words[at + 1]
-            fused = re.fullmatch(r"(\d+)(.+)", number)
+            fused = _compiled(r"(\d+)(.+)").fullmatch(number)
             if fused:                       # ``1마리를``: digits and counter in one word
                 number, counted, span = fused.group(1), fused.group(2), 1
             else:
                 span = 2
-            if not (re.fullmatch(r"\d+", number) or parse_numeral(number, numerals) is not None):
+            if not (_compiled(r"\d+").fullmatch(number) or parse_numeral(number, numerals) is not None):
                 continue
             unit = next((u for u in units if counted.startswith(u)), None)
             case = counted[len(unit):] if unit else None
@@ -1159,8 +1181,8 @@ class RelationalParser:
         if not auxiliaries or not to or not by:
             return literal, None
         flags = re.IGNORECASE if self.data.get("ignore_case") else 0
-        match = re.fullmatch(r"(?P<theme>.+?) (?P<aux>%s) (?P<part>\S+) %s (?P<to>.+?) %s (?P<by>.+)" % (
-            "|".join(re.escape(a) for a in auxiliaries), re.escape(to), re.escape(by)), literal, flags)
+        match = _compiled(r"(?P<theme>.+?) (?P<aux>%s) (?P<part>\S+) %s (?P<to>.+?) %s (?P<by>.+)" % (
+            "|".join(re.escape(a) for a in auxiliaries), re.escape(to), re.escape(by)), flags).fullmatch(literal)
         if not match:
             return literal, None
         past = self._participle_pasts().get(match.group("part").lower() if flags else match.group("part"))
@@ -1266,6 +1288,13 @@ class RelationalParser:
         return " ".join(swapped), {"id": "declared-role-swap-v1", "verb": words[-1], "as": verb}
 
     def _clause_candidates(self, literal):
+        """Every (candidate, normalization) of ``literal`` (memoized, see ``_rebuild_inflections``)."""
+        found = self._candidate_memo.get(literal)
+        if found is None:
+            found = self._candidate_memo[literal] = list(self._all_clause_candidates(literal))
+        return iter(found)
+
+    def _all_clause_candidates(self, literal):
         yield from self._clause_candidates_of(literal)
         for replaced, notes in self._variant_literals(literal):
             for candidate, normalization in self._clause_candidates_of(replaced):
@@ -1538,7 +1567,7 @@ class RelationalParser:
         declared = (self.repair or {}).get("protected", {})
         core = str(word).strip(".,!?\"'")
         folded = core.lower()
-        if any(re.search(pattern, folded) for pattern in declared.get("negation", [])):
+        if any(_compiled(pattern).search(folded) for pattern in declared.get("negation", [])):
             return "negation"
         particles = sorted(set(self.case_particles) | {p for group in self.slot_particles for p in group},
                            key=len, reverse=True)
@@ -1549,7 +1578,7 @@ class RelationalParser:
         if folded in declared.get("scope", []) or bare.lower() in declared.get("scope", []):
             return "scope"
         numerals = self.data.get("numerals", {})
-        if re.search(r"\d", core) or parse_numeral(folded, numerals) is not None \
+        if _compiled(r"\d").search(core) or parse_numeral(folded, numerals) is not None \
                 or parse_numeral(bare.lower(), numerals) is not None:
             return "numeral"
         units = (self.counters or {}).get("units", [])
@@ -1595,7 +1624,7 @@ class RelationalParser:
                        for word, after in zip(words, words[1:])):
                     return True
                 # digits written together with their counter (``12개``)
-                if any(re.fullmatch(r"\d+(%s)\S*" % "|".join(map(re.escape, units)), word) for word in words
+                if any(_compiled(r"\d+(%s)\S*" % "|".join(map(re.escape, units))).fullmatch(word) for word in words
                        if units):
                     return True
         return False
@@ -1619,7 +1648,7 @@ class RelationalParser:
                     kind = self._protected_kind(word)
                     # A numeral word can also be a noun (공 is a ball and zero, 사
                     # a word and four); inside a name only written digits count.
-                    if kind in ("numeral", "counter") and not re.search(r"\d", word):
+                    if kind in ("numeral", "counter") and not _compiled(r"\d").search(word):
                         continue
                     if kind and not any(item["word"] == word for item in out):
                         out.append({"word": word, "kind": kind})
@@ -1865,10 +1894,10 @@ class RelationalParser:
         fold = (lambda word: word.lower()) if ignore else (lambda word: word)
 
         def amount(words):
-            return any(re.search(r"\d", word) or parse_numeral(fold(word.strip(",.")), numerals) is not None
+            return any(_compiled(r"\d").search(word) or parse_numeral(fold(word.strip(",.")), numerals) is not None
                        for word in words)
         for pronoun in spec.get("pronouns", []):
-            pattern = re.compile(r"(?P<head>[^\s,]+), %s (?P<body>[^,.;!?]+), (?P<rest>[^.;!?]+)"
+            pattern = _compiled(r"(?P<head>[^\s,]+), %s (?P<body>[^,.;!?]+), (?P<rest>[^.;!?]+)"
                                  % re.escape(pronoun), re.IGNORECASE if ignore else 0)
             found = pattern.search(text)
             if found and amount(found.group("body").split()):
@@ -1919,7 +1948,7 @@ class RelationalParser:
 
         def number_at(words):
             return next((i for i, word in enumerate(words)
-                         if re.fullmatch(r"\d+", word) or parse_numeral(fold(word), numerals) is not None), None)
+                         if _compiled(r"\d+").fullmatch(word) or parse_numeral(fold(word), numerals) is not None), None)
         words, before = literal.split(), previous_text.split()
         at, then = number_at(words), number_at(before)
         subject = next((row[0] for row in previous_rows if isinstance(row[0], str)), None)
@@ -2144,7 +2173,7 @@ class RelationalParser:
                     marker = re.escape(asker + " " + units[0])
                     if marker in piece:
                         head, _sep, tail = piece.partition(marker)
-                        unescaped = re.sub(r"\\(.)", r"\1", tail)
+                        unescaped = _compiled(r"\\(.)").sub(r"\1", tail)
                         piece = head + re.escape(asker) + r"\s*" + unit_class + counted_rest(unescaped)
                 out.append(piece)
             return out
@@ -2193,7 +2222,7 @@ class RelationalParser:
 
         spans = []
         for name, literal in slots.items():
-            if not re.fullmatch(r"[a-z][a-z0-9_]*", name) or text.count(literal) != 1:
+            if not _compiled(r"[a-z][a-z0-9_]*").fullmatch(name) or text.count(literal) != 1:
                 raise ValueError("ambiguous_slot_annotation")
             start = text.index(literal)
             spans.append((start, start + len(literal), name))
@@ -2262,7 +2291,7 @@ class RelationalParser:
         variants = branch(variants, with_askers(pieces))
         # 대소문자를 가르지 않는 글자를 쓰는 언어는 팩이 그렇게 선언한다.
         flags = re.IGNORECASE if ignore_case else 0
-        return [re.compile(variant, flags) for variant in variants], example["meaning"]
+        return [_compiled(variant, flags) for variant in variants], example["meaning"]
 
     def learn(self, correction):
         """Return a new reusable template; do not change inference rules."""
@@ -2513,7 +2542,7 @@ class RelationalParser:
                         continue
                     # The thing counted never holds a count in digits (``Claire 7 pans``): the amount leaked
                     # into the thing's name, so the reading is not taken (G5).
-                    if isinstance(slots.get("item"), str) and re.search(r"(?<![\w])\d+(?![\w])", slots["item"]) \
+                    if isinstance(slots.get("item"), str) and _compiled(r"(?<![\w])\d+(?![\w])").search(slots["item"]) \
                             and not str(example["slots"].get("item", "")).isdecimal():
                         continue
                     # nor a numeral word with its counter (공 여섯 권을: an amount said, not a thing's name, G6)
@@ -2572,7 +2601,7 @@ class RelationalParser:
                     # (The repair search asks without this guard and checks every
                     # protected word itself, so it can say what a repair would change.)
                     if guard_names and any(row["kind"] == "scope" or (row["kind"] == "negation" and any(
-                            re.search(pattern, row["word"].lower()) for pattern in in_names))
+                            _compiled(pattern).search(row["word"].lower()) for pattern in in_names))
                            for row in self._protected_in_names(grounded_names)):
                         continue
                     # A name never holds a word the pack declares outside names
@@ -3079,7 +3108,7 @@ class RelationalParser:
                 r"\s*(?P<item>.+?)" + particles + r"\s+(?P<n>[^.!?,]+?)\s*" + unit
                 + r"\s+" + tails + r"\s+(?P<tail>.+?)\s*")
         initial = next((match for pattern in initial_patterns
-                        for match in [re.fullmatch(pattern, literal)] if match is not None), None)
+                        for match in [_compiled(pattern).fullmatch(literal)] if match is not None), None)
         if initial is not None:
             item = initial.group("item").strip()
             amount = parse_numeral(initial.group("n"), self.data.get("numerals", {}))
@@ -3092,7 +3121,7 @@ class RelationalParser:
             particle = spec.get("object_particles", [])
             particle = ("(?:%s)?" % "|".join(re.escape(value) for value in
                                                 sorted(particle, key=len, reverse=True)) if particle else "")
-            step = re.compile(r"\s*(?P<n>[^.!?,]+?)\s*" + unit + r"\s*" + particle
+            step = _compiled(r"\s*(?P<n>[^.!?,]+?)\s*" + unit + r"\s*" + particle
                               + r"\s*(?P<form>" + form + r")(?:\s*|$)")
             tail, triples = initial.group("tail"), [[item, "count", amount]]
             while tail:
@@ -3124,8 +3153,7 @@ class RelationalParser:
         prefix = "(?:%s)" % "|".join(re.escape(value) for value in sorted(prefixes, key=len, reverse=True))
         particle = "(?:%s)" % "|".join(re.escape(value) for value in sorted(particles, key=len, reverse=True))
         question = "(?:%s)" % "|".join(re.escape(value) for value in sorted(query_forms, key=len, reverse=True))
-        asked = re.fullmatch(r"\s*" + prefix + r"\s+(?P<item>.+?)" + particle + r"\s*" + question + r"\s*",
-                              literal)
+        asked = _compiled(r"\s*" + prefix + r"\s+(?P<item>.+?)" + particle + r"\s*" + question + r"\s*").fullmatch(literal)
         if asked is None or not asked.group("item").strip():
             return None
         return {"query": [{"triple": [asked.group("item").strip(), "count", "?n"],
@@ -3687,8 +3715,7 @@ class RelationalParser:
             if not isinstance(render, list) or not all(isinstance(part, str) for part in render):
                 return None
             answer = "".join(
-                re.sub(r"\$([a-z][a-z0-9_]*)",
-                       lambda matched: str(record.get(matched.group(1), matched.group(0))), part)
+                _compiled(r"\$([a-z][a-z0-9_]*)").sub(lambda matched: str(record.get(matched.group(1), matched.group(0))), part)
                 for part in render)
             return {"answer": answer,
                     "transitions": [{"operation": "cause_for_effect",
