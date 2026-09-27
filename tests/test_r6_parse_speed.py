@@ -47,3 +47,21 @@ def test_expression_learning_drops_the_literal_memos():
     assert propose(parser, correction, validation)["accepted"]
     assert parser._candidate_memo is not memo and not parser._candidate_memo
     assert parser.parse(text, partial=True)["facts"][0]["triple"] == ["소라", "taller", "다미"]
+
+
+def test_compiled_patterns_are_shared_by_text_and_flags_not_by_parser():
+    import re
+    from relational_semantics import _compiled, _patterns
+    first = _compiled(r"r6-probe (\d+)")
+    assert _compiled(r"r6-probe (\d+)") is first and _patterns[r"r6-probe (\d+)", 0] is first
+    assert _compiled(r"r6-probe (\d+)", re.IGNORECASE) is not first
+    assert _compiled(r"r6-probe (\d+)", re.IGNORECASE).match("R6-PROBE 4").group(1) == "4"
+    # a pattern is a function of its text alone: a parser learning keeps what it compiled, and a
+    # parser built after that reads with the same objects
+    parser = RelationalParser()
+    before = dict(_patterns)
+    parser.learn(REMOVE)
+    assert all(_patterns[key] is value for key, value in before.items())
+    assert [p.pattern for p in parser.templates[-1][0]] == [
+        p.pattern for p in RelationalParser.compile(REMOVE, parser.data.get("numerals", {}), parser.slot_particles,
+                                                    counters=parser.counters, pointers=parser.pointers)[0]]
