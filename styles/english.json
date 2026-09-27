@@ -743,6 +743,34 @@
     }
    },
    {
+    "text": "18, to be exact",
+    "slots": {
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      null,
+      "count",
+      "$n"
+     ],
+     "unnamed": true
+    }
+   },
+   {
+    "text": "exactly 18",
+    "slots": {
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      null,
+      "count",
+      "$n"
+     ],
+     "unnamed": true
+    }
+   },
+   {
     "text": "there are 18 of them",
     "slots": {
      "n": "18"
@@ -4992,6 +5020,14 @@
  },
  "_가진쪽꼴": "How a holder is said when it is not a bare name, each form read as the one name the facts use. self: the English first-person pronoun in every case (I; me, myself) reads as I, the pack's 임자자리말; its contractions (I've, I'm, I'd) are said in full; a verb after it agrees as after any other holder, the examples being written in the third person (the verbs whose present differs by person: be, have, do, and the stative possession verbs own, hold, keep, carry), and in a question the auxiliary before it agrees the same way (do I have -> does I have). possessives + a relation noun + a name (close apposition: my cousin Ana, our aunt Ana, Lind's cousin Ana): the name is the holder (the possessive determiners of English, all of them, and the possessive 's). determiners: a determiner, a role of one to three words, a comma, a name and a comma (the courier, Lind, ...): the name is the holder. self_possessives: the user's own relation with no name after it (my sister) is the relation noun. numeral_articles: 'the' before a numeral (gave back the two figs) adds nothing to the amount, unless a partitive follows (the two of them). A name is a capitalised word. prefix_titles: the English courtesy titles before a surname (Mr., Ms., Mrs., Dr., written with or without the period) name the holder by the surname. leading_modifiers: the adverbial particles that are outside names (back, away) may still open a place's name as its modifier (the back hall), never follow a name (figs back).",
  "말자리": {
+  "fragment_amount": {
+   "heads": [
+    "exactly"
+   ],
+   "vague": [
+    "some"
+   ]
+  },
   "fronted_recipient": [
    "to"
   ],
@@ -5003,5 +5039,5 @@
    "over"
   ]
  },
- "_말자리": "Phrases said away from where the examples have them. A fronted recipient: the preposition to and a name before a comma open the clause (To Bo, Ada gave 2 figs) and are read at its end (Ada gave 2 figs to Bo). A fronted purpose: the preposition for and a phrase before a comma open the clause (For the trip, Ada lent Bo 2 figs) and are left out; a purpose fills no role. A shifted particle: the particle of a phrasal transfer verb (back, over: gave back, handed over) said after a one-word object (gave Bo back 2) is read after the verb."
+ "_말자리": "Phrases said away from where the examples have them. A fronted recipient: the preposition to and a name before a comma open the clause (To Bo, Ada gave 2 figs) and are read at its end (Ada gave 2 figs to Bo). A fronted purpose: the preposition for and a phrase before a comma open the clause (For the trip, Ada lent Bo 2 figs) and are left out; a purpose fills no role. A shifted particle: the particle of a phrasal transfer verb (back, over: gave back, handed over) said after a one-word object (gave Bo back 2) is read after the verb. A count given in a following fragment (fragment_amount): a sentence that says only an amount (Two, to be exact; Exactly two), after a statement whose amount was said with the vague word some and not read, in the same turn or as the very next turn, is that statement with the amount in the vague word's place (Ada gave Bo some figs. Two, to be exact. = Ada gave Bo 2 figs). Nothing else in the fragment is read; a statement that was read is not changed (a count not known yet takes the amount as the vague section says) (G6)."
 }

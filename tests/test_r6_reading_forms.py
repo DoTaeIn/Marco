@@ -90,6 +90,33 @@ CASES = {
                   "태민은 볼펜이 몇 자루 있어요?"], 14),
         ],
     },
+    # A4. A count given in a following fragment: of a holding said without its count, or of a transfer.
+    "A4": {
+        "build": [
+            (EN, ["Nora has some pens.", "Six, to be exact.", "How many pens does Nora have?"], 6),
+            (EN, ["Lena has some cups.", "Twelve, to be exact.", "How many cups does Lena have?"], 12),
+            (EN, ["Ivo has some kites.", "Exactly four.", "How many kites does Ivo have?"], 4),
+            (EN, ["Tessa has 8 spoons.", "Hugo has 3 spoons.", "Tessa gave Hugo some spoons.", "Two, to be exact.",
+                  "How many spoons does Hugo have?"], 5),
+            (KO, ["보라한테 연필이 있어.", "여섯 개야.", "보라는 연필이 몇 개 있어?"], 6),
+            (KO, ["다온은 우표가 좀 있어요.", "열두 장이에요.", "다온은 우표가 몇 장 있어요?"], 12),
+            (KO, ["지유는 사과가 여덟 개 있어.", "은호는 사과가 한 개 있어.", "지유가 은호한테 사과를 줬어. 두 개.",
+                  "은호는 사과가 몇 개 있어?"], 3),
+            (KO, ["민재는 붓을 가지고 있어요.", "정확히는 네 자루예요.", "민재는 붓이 몇 자루 있어요?"], 4),
+        ],
+        "check": [
+            (EN, ["Rosa has some plates.", "Nine, to be exact.", "How many plates does Rosa have?"], 9),
+            (EN, ["Mona has some candles.", "Exactly seventeen.", "How many candles does Mona have?"], 17),
+            (EN, ["Ada has 15 ribbons.", "Cole has 10 ribbons.", "Ada gave Cole some ribbons.", "Seven, to be exact.",
+                  "How many ribbons does Cole have?"], 17),
+            (EN, ["June has some mugs.", "Eleven of them.", "How many mugs does June have?"], 11),
+            (KO, ["윤서한테 책이 있어.", "일곱 권이야.", "윤서는 책이 몇 권 있어?"], 7),
+            (KO, ["채원은 귤이 좀 있어요.", "열다섯 개예요.", "채원은 귤이 몇 개 있어요?"], 15),
+            (KO, ["하린은 쿠키가 열세 개 있어.", "준호는 쿠키가 열 개 있어.", "하린이 준호한테 쿠키를 줬어. 아홉 개.",
+                  "준호는 쿠키가 몇 개 있어?"], 19),
+            (KO, ["예나는 볼펜을 가지고 있어요.", "정확히는 열한 자루예요.", "예나는 볼펜이 몇 자루 있어요?"], 11),
+        ],
+    },
 }
 
 
