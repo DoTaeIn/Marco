@@ -620,6 +620,22 @@ class RelationalParser:
                          "", text)
             if new != text:
                 text, applied = new, applied + ["completive"]
+        auxiliaries = spec.get("spaced_auxiliary") or []
+        if auxiliaries:
+            # 나눠 줬어 -> 나눠줬어: a same-frame compound (V-어 주다) written with a space before its auxiliary
+            def build():
+                prefixes = sorted({stem[:-len(a)] for row in self.same_frame for stem in row.get("stems", [])
+                                   for a in auxiliaries if stem.endswith(a) and len(stem) > len(a)},
+                                  key=len, reverse=True)
+                if not prefixes:
+                    return None
+                return re.compile(r"(?<!\S)(%s) (\S+?)(?=[.,!?]*(?:\s|$))" % "|".join(map(re.escape, prefixes)))
+            pattern, known = self._form_pattern("spaced_auxiliary", build), self._declared_verb_words()
+            if pattern is not None and " " in text:
+                new = pattern.sub(lambda m: m.group(1) + m.group(2) if (m.group(1) + m.group(2)) in known
+                                  else m.group(0), text)
+                if new != text:
+                    text, applied = new, applied + ["spaced_auxiliary"]
         nouns = spec.get("numeral_nouns") or {}
         if nouns:
             # 하나를 줬어요: a native numeral said as a noun, as an object, is that many of the first counter.
@@ -634,8 +650,8 @@ class RelationalParser:
                 if value is None or m.group(1).endswith(tuple(nouns.get("determiners", []))):
                     return m.group(0)
                 return "%s%s%s" % (value, counter, self._particle_form(counter, m.group(2)))
-            new = re.sub(r"(?<!\S)(\S+?)(%s)(?=[\s.,!?]|$)" % "|".join(map(re.escape, nouns["particles"])),
-                         counted, text)
+            new = self._form_pattern("numeral_nouns", lambda: re.compile(
+                r"(?<!\S)(\S+?)(%s)(?=[\s.,!?]|$)" % "|".join(map(re.escape, nouns["particles"])))).sub(counted, text)
             if new != text:
                 text, applied = new, applied + ["numeral_noun"]
         made = spec.get("made_from") or {}
@@ -644,7 +660,7 @@ class RelationalParser:
             # (세 개를 썼어), the verb in the same tense and ending; the product fills no role.
             forms = self._same_form_table(made["verb"], made["reads_as"])
             units = "|".join(re.escape(u) for u in sorted(self.counters.get("units", []), key=len, reverse=True))
-            if forms and units:
+            if forms and units and made["verb"] in text:
                 def used(m):
                     amount = m.group(1).strip()
                     from numeral_semantics import parse_numeral
@@ -653,9 +669,10 @@ class RelationalParser:
                     unit = m.group(2)
                     return "%s%s%s %s" % (m.group(1), unit, self._particle_form(unit, made["object"][-1]),
                                          forms[m.group(3)])
-                new = re.sub(r"(?<!\S)(\S+ ?)(%s)(?:%s) \S+?(?:%s) (%s)(?=[\s.,!?]|$)" % (
-                    units, "|".join(map(re.escape, made["source"])), "|".join(map(re.escape, made["object"])),
-                    "|".join(map(re.escape, sorted(forms, key=len, reverse=True)))), used, text)
+                new = self._form_pattern("made_from", lambda: re.compile(
+                    r"(?<!\S)(\S+ ?)(%s)(?:%s) \S+?(?:%s) (%s)(?=[\s.,!?]|$)" % (
+                        units, "|".join(map(re.escape, made["source"])), "|".join(map(re.escape, made["object"])),
+                        "|".join(map(re.escape, sorted(forms, key=len, reverse=True)))))).sub(used, text)
                 if new != text:
                     text, applied = new, applied + ["made_from"]
         adverbs = spec.get("dropped_adverbs") or []
@@ -722,6 +739,13 @@ class RelationalParser:
                 if at > 0 and parse_numeral(word[:at], numerals) is not None:
                     return True
         return False
+
+    def _form_pattern(self, key, build):
+        """A word-order form's pattern, compiled once per parser (the module cache of re is too small)."""
+        cache = self.__dict__.setdefault("_form_pattern_cache", {})
+        if key not in cache:
+            cache[key] = build()
+        return cache[key]
 
     def _same_form_table(self, stem, target):
         """{form of ``stem``: the form of ``target`` in the same tense and ending}, by the pack's inflection."""
@@ -3434,6 +3458,15 @@ class RelationalParser:
                     stated, previous_rows, self._counted_subjects(evidence["text"], stated))
                 if inherited:
                     evidence = {**evidence, "ellipsis": inherited}
+            if stated and in_turn and self.ellipsis.get("omitted_subject") == "same_relation":
+                # 그리고 은호에게 네 장을 주었다: a clause whose example leaves its subject out takes the subject of
+                # the clause before it in the turn with the same relation (the giver who gave just before)
+                carried = []
+                for row in stated:
+                    prior = next((p for p in previous_rows if row[0] is None and p[1] == row[1]
+                                  and isinstance(p[0], str)), None)
+                    carried.append([prior[0]] + list(row[1:]) if prior else row)
+                stated = carried
             previous_rows, previous_end = (stated or []), evidence["end"]
             if stated:
                 role_bindings = meaning.get("role_bindings", [])

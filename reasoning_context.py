@@ -349,10 +349,23 @@ class ReasoningContext:
                     touches = (any(word in said for word in parts)
                                or entry.get("관계") in asked_predicates) or (
                         asks_number and self._counts_something(said, parser)
-                        and not any(other and other in said for other in known))
+                        and not any(other and other in said for other in known)) or (
+                        asks_number and self._moves_someone_unnamed(said, parser))
                 if (entry.get("범용") or touches) and entry["at"] > pinned:
                     return said, entry.get("까닭")
         return None
+
+    def _moves_someone_unnamed(self, said, parser):
+        """An unread statement whose reading moves an amount from or to a holder it leaves unsaid (``그중
+        하나를 준호한테 줬어`` after two holders: the giver could be anyone). It may have changed any holder's
+        count, so no count is said as known after it (G6)."""
+        cache = self.__dict__.setdefault("_unnamed_mover_cache", {})
+        if said not in cache:
+            targets = {name for name, spec in (parser.data.get("numeric_updates") or {}).items()
+                       if isinstance(spec, dict)}
+            read = parser.parse(said, partial=True, events=True, repair=True) or {}
+            cache[said] = any(f["triple"][0] is None and f["triple"][1] in targets for f in read.get("facts", []))
+        return cache[said]
 
     def _shaken_by_unread(self, parser, facts, changes):
         """G5.3 safety: an earlier statement the reader left unread that names a holder this turn moved (every
