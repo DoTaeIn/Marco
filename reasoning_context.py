@@ -2403,22 +2403,76 @@ class ReasoningContext:
         is the one ``why`` gives for an answer (rules and statements). A holder
         whose count is not known, or is held by an unread event, is not
         explained.
+
+        G6 class 13: the why may restate the count (``value``) and may name no
+        holder. With no holder it is about the last answer's holder; a last
+        answer that named none or several is asked back. A holder named
+        without its thing takes the thing of the last answer when only the
+        thing differs among the holder's counts, otherwise it is asked back. A
+        restated number that is not the current count is held, not explained.
         """
         replies = parser.data["context_replies"]
-        subject = parser.canonical_name(" ".join(request["subject"]))
+        said, value = text.strip(), request.get("value")
+        last = self.last_explanation or {}
+        answered = last.get("subject") or (
+            (self.last_question or {}).get("subject")
+            if last.get("kind") == "answer" and (self.last_question or {}).get("text") == last.get("question") else None)
+
+        def held(reason, check, **fields):
+            return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                    "answer": replies.get(reason, replies["unresolved"]),
+                    "meaning": {"act": "hold", "reason": reason, "said": said, **fields},
+                    "verification": self._verification(knowledge_path, [{"ok": False, "reason": check}])}
+
+        def ask(word, candidates):
+            reason = "which_referent" if candidates else "no_referent"
+            return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                    "answer": replies[reason].format(**{"말": word, "목록": ", ".join("'%s'" % c for c in candidates)}),
+                    "meaning": {"act": "ask", "reason": reason, "word": word, "candidates": list(candidates)},
+                    "verification": self._verification(knowledge_path, [{"ok": False, "reason": reason}])}
+
+        if request.get("subject"):
+            subject = parser.canonical_name(" ".join(request["subject"]))
+            resolved, pointer = self._resolve_pointers(parser, [{"triple": [subject, "count", "?n"]}], facts)
+            if pointer is not None:
+                return ask(pointer["말"], pointer["후보"])
+            subject = resolved[0]["triple"][0]
+            held_counts = {str(row["triple"][0]) for row in facts if row["triple"][1] == "count"}
+            named = sorted(name for name in held_counts if name.startswith(subject + " "))
+            if subject not in held_counts and len(named) == 1:
+                subject = named[0]
+            elif subject not in held_counts and len(named) > 1:
+                # the thing left out: the last answer's, when the counts differ in their thing only
+                if answered in named and len({tuple(name.split()[:-1]) for name in named}) == 1:
+                    subject = answered
+                else:
+                    return ask(subject, named)
+        elif not last:
+            return held("explain_nothing", "nothing_to_explain")
+        elif answered:
+            subject = answered
+        else:
+            told = sorted({str(row["fact"][0]) for row in last.get("transitions") or []
+                           if isinstance(row.get("fact"), list) and len(row["fact"]) == 3 and row["fact"][1] == "count"})
+            return ask(str(value) if value is not None else said, told)
         query = [{"triple": [subject, "count", "?n"], "render": ["$n"]}]
         blocked = self._blocked_by(query, parser, facts)
         outcome = None if blocked is not None else parser.answer({"facts": facts, "query": query})
         if outcome is None:
-            return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
-                    "answer": replies["explain_nothing"],
-                    "meaning": {"act": "hold", "reason": "explain_nothing", "said": text.strip()},
-                    "verification": self._verification(knowledge_path, [{"ok": False, "reason": "nothing_to_explain"}])}
-        self.last_explanation = {"kind": "answer", "question": text.strip(), "answer": outcome.get("answer"),
-                                 "transitions": deepcopy(outcome.get("transitions", []))}
-        return self._explain_last(parser, knowledge_path)
+            return held("explain_nothing", "nothing_to_explain")
+        recorded = str(outcome.get("answer"))
+        about = {"holder": subject, "value": int(recorded) if recorded.lstrip("-").isdigit() else recorded}
+        if value is not None and str(value) != recorded:
+            # the restated number is not the count: never explain a number that is not true (request G6-2)
+            return held("unresolved", "restated_count_differs", about={**about, "value": value, "recorded": about["value"]},
+                        differs=True)
+        self.last_explanation = {"kind": "answer", "question": said, "answer": outcome.get("answer"),
+                                 "transitions": deepcopy(outcome.get("transitions", [])), "subject": subject}
+        result = self._explain_last(parser, knowledge_path, chain=subject == answered)
+        result["meaning"] = {**result["meaning"], "about": about}
+        return result
 
-    def _explain_last(self, parser, knowledge_path):
+    def _explain_last(self, parser, knowledge_path, chain=True):
         """`왜 그렇게 됐어?`: the last answer or correction, its rules and its evidence.
 
         Composed from the recorded transitions only: the evidence sentences
@@ -2496,7 +2550,8 @@ class ReasoningContext:
                   "verification": self._verification(knowledge_path, [{
                       "ok": True, "reason": "explained_recorded_transitions",
                       "evidence": evidence, "repairs": len(repairs)}])}
-        return self._with_trace_chain(result, last["kind"])
+        # the ledger's chain is that of the last output: said only when the explanation is about it
+        return self._with_trace_chain(result, last["kind"]) if chain else result
 
     def _with_trace_chain(self, result, explains):
         """Request W4-1: with a trace ledger on (``self.trace``), a bare why says the why chain of this

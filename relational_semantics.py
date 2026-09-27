@@ -2306,7 +2306,8 @@ class RelationalParser:
             chained = self._quantity_chain_meaning(said)
             if chained is not None and json.dumps(chained, sort_keys=True, ensure_ascii=False) not in exclude:
                 return {json.dumps(chained, sort_keys=True, ensure_ascii=False): chained}
-            counted = self._count_question_meaning(said) or self._why_count_meaning(said)
+            counted = (self._count_question_meaning(said) or self._why_count_meaning(said)
+                       or self._why_fact_meaning(said))
             if counted is not None and json.dumps(counted, sort_keys=True, ensure_ascii=False) not in exclude:
                 return {json.dumps(counted, sort_keys=True, ensure_ascii=False): counted}
             compared = self._comparison_meaning(said) or self._same_meaning(said)
@@ -2661,6 +2662,44 @@ class RelationalParser:
         if not name:
             return None
         return {"query": [{"why_count": {"subject": name}}]}
+
+    def _why_fact_meaning(self, literal):
+        """``왜 보라가 4개야`` / ``Why does Nora have 4?`` -> ``{"why_count": {"subject": [보라], "value": 4}}``.
+
+        A why that restates a count (G6 class 13). The pack declares its forms (수량이유물음.facts): a
+        pattern with ``{수}`` for the number (and ``{단위}`` for a counter), and ``ask``, the count
+        question the same holder would be asked with (``{h}``, ``{i}`` from the pattern's groups). The
+        holder is read by reading that question, so a why names a holder exactly as a count question
+        does. A form without ``ask`` names no holder (``왜 4개예요``); a form with no number names none.
+        """
+        from numeral_semantics import parse_numeral
+        forms = (self.why_count or {}).get("facts") or []
+        said = " ".join(literal.strip().rstrip("".join(self.clause_grammar.get("question_marks", [])) + ".! ").split())
+        units = "|".join(re.escape(u) for u in sorted(self.counters.get("units", []), key=len, reverse=True))
+        for form in forms:
+            pattern = form["pattern"].replace("{수}", r"(?P<n>\S+?)").replace("{단위}", "(?P<c>%s)" % (units or "(?!)"))
+            found = re.fullmatch(pattern, said, re.IGNORECASE)
+            if found is None:
+                continue
+            groups = {key: (value or "").strip() for key, value in found.groupdict().items()}
+            value = parse_numeral(groups["n"], self.data.get("numerals", {})) if "n" in groups else None
+            if "n" in groups and value is None:
+                continue
+            subject = []
+            if form.get("ask"):
+                question = " ".join(form["ask"].format(**groups).split())
+                asked = [q["triple"] for meaning in self._clause_meanings(question).values()
+                         for q in meaning.get("query") or []
+                         if isinstance(q, dict) and isinstance(q.get("triple"), list) and len(q["triple"]) == 3
+                         and q["triple"][1] == "count"]
+                if len(asked) != 1:
+                    continue
+                holder = asked[0][0]
+                holder = " ".join(holder) if isinstance(holder, list) else str(holder)
+                subject = [self.canonical_name(holder)]
+            return {"query": [{"why_count": {"subject": subject,
+                                             **({"value": int(value)} if value is not None else {})}}]}
+        return None
 
     def _count_question_meaning(self, literal):
         """``가람이는 이제 구슬 몇 개야`` -> ``[가람 구슬] count ?n``.
