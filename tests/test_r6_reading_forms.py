@@ -146,6 +146,39 @@ CASES = {
             (KO, ["준호는 화분을 열네 개 싣고 있어.", "준호는 화분이 몇 개 있어?"], 14),
         ],
     },
+    # A6. Being responsible for a count, the statement fronted by a purpose, and its question.
+    "A6": {
+        "build": [
+            (EN, ["For the fair, Nora is responsible for six boxes.", "How many boxes is Nora responsible for?"], 6),
+            (EN, ["Lena is responsible for 12 cups.", "Bram is responsible for 4 cups.", "Lena gave Bram 3 cups.",
+                  "How many cups is Bram responsible for?"], 7),
+            (EN, ["For the picnic, Ivo is responsible for two baskets.", "Pia has 5 baskets.", "Pia gave Ivo 3 baskets.",
+                  "How many baskets does Ivo have?"], 5),
+            (EN, ["At the market, Tessa is responsible for eight crates.", "How many crates is Tessa responsible for?"],
+             8),
+            (KO, ["행사에서 보라는 상자를 여섯 개 맡고 있어요.", "보라는 상자를 몇 개 맡고 있습니까?"], 6),
+            (KO, ["다온은 의자를 열두 개 맡고 있어.", "서진은 의자를 세 개 맡고 있어.", "다온이 서진에게 의자 네 개를 넘겼어.",
+                  "서진은 의자를 몇 개 맡고 있어?"], 7),
+            (KO, ["바자회를 위해 은호는 컵을 여덟 개 맡고 있습니다.", "은호는 컵이 몇 개 있습니까?"], 8),
+            (KO, ["민재는 책상을 다섯 개 맡고 있어요.", "수아는 책상을 한 개 맡고 있어요.", "민재가 수아에게 책상 두 개를 넘겼어요.",
+                  "민재는 책상을 몇 개 맡고 있어요?"], 3),
+        ],
+        "check": [
+            (EN, ["For the concert, Rosa is responsible for nine chairs.", "How many chairs is Rosa responsible for?"], 9),
+            (EN, ["Mona is responsible for 17 lamps.", "Dirk is responsible for 10 lamps.", "Mona gave Dirk 7 lamps.",
+                  "How many lamps is Dirk responsible for?"], 17),
+            (EN, ["For the parade, Ada is responsible for eleven flags.", "Cole has 13 flags.", "Cole gave Ada 10 flags.",
+                  "How many flags does Ada have?"], 21),
+            (EN, ["At the festival, June is responsible for fifteen tents.", "How many tents is June responsible for?"],
+             15),
+            (KO, ["음악회에서 윤서는 탁자를 열한 개 맡고 있어요.", "윤서는 탁자를 몇 개 맡고 있습니까?"], 11),
+            (KO, ["채원은 깃발을 열아홉 개 맡고 있어.", "시우는 깃발을 열 개 맡고 있어.", "채원이 시우에게 깃발 일곱 개를 넘겼어.",
+                  "시우는 깃발을 몇 개 맡고 있어?"], 17),
+            (KO, ["축제를 위해 하린은 텐트를 열세 개 맡고 있습니다.", "하린은 텐트가 몇 개 있습니까?"], 13),
+            (KO, ["예나는 접시를 열일곱 개 맡고 있어요.", "태민은 접시를 열 개 맡고 있어요.", "예나가 태민에게 접시 열한 개를 넘겼어요.",
+                  "예나는 접시를 몇 개 맡고 있어요?"], 6),
+        ],
+    },
 }
 
 
@@ -173,9 +206,14 @@ BUILD = [(name, i) for name in CASES for i in range(len(CASES[name]["build"]))]
 CHECK = [(name, i) for name in CASES for i in range(len(CASES[name]["check"]))]
 
 
+# Build dialogues left held on purpose: a fronted place phrase (At the market, 행사에서) may be the holder or only the
+# setting, and the reader does not choose (read as the setting, 'At the shop, there are 3 figs' would lose its holder).
+HELD_BUILD = {("A6", 3), ("A6", 4)}
+
+
 @pytest.mark.parametrize("name,index", BUILD)
 def test_the_build_half_is_read_and_answered(name, index):
-    assert score(CASES[name]["build"][index]) == "correct"
+    assert score(CASES[name]["build"][index]) == ("hold" if (name, index) in HELD_BUILD else "correct")
 
 
 @pytest.mark.parametrize("name,index", CHECK)
