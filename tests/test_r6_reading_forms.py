@@ -117,6 +117,35 @@ CASES = {
             (KO, ["예나는 볼펜을 가지고 있어요.", "정확히는 열한 자루예요.", "예나는 볼펜이 몇 자루 있어요?"], 11),
         ],
     },
+    # A5. Korean transfer verbs and compounds, and the giver left out in a second sentence of the turn.
+    "A5": {
+        "build": [
+            (KO, ["보라는 연필이 아홉 개 있어.", "하늘은 연필이 두 개 있어.", "보라가 하늘에게 연필 네 개를 나눠 줬어.",
+                  "하늘은 연필이 몇 개 있어?"], 6),
+            (KO, ["다온은 우표가 열두 장 있어요.", "서진은 우표가 한 장 있어요.", "은호는 우표가 세 장 있어요.",
+                  "다온이 서진에게 우표 두 장을 줬어요. 그리고 은호에게 네 장을 주었다.", "다온은 우표가 몇 장 있어요?"], 6),
+            (KO, ["지유는 사과가 여덟 개 있어.", "은호는 사과가 한 개 있어.", "지유가 은호한테 사과 세 개를 보냈어.",
+                  "은호는 사과가 몇 개 있어?"], 4),
+            (KO, ["민재는 붓이 열두 자루 있어요.", "창고에는 붓이 두 자루 있어요.", "민재가 창고에 붓 다섯 자루를 맡겼어요.",
+                  "창고에는 붓이 몇 자루 있어요?"], 7),
+            (KO, ["수아는 공책이 여섯 권 있어.", "하늘은 공책이 두 권 있어.", "다온은 공책이 한 권 있어.",
+                  "수아가 하늘에게 공책 세 권을 나눠 주었다. 그리고 다온에게 두 권을 나눠 주었다.", "수아는 공책이 몇 권 있어?"], 1),
+            (KO, ["은호는 상자를 다섯 개 싣고 있어.", "은호는 상자가 몇 개 있어?"], 5),
+        ],
+        "check": [
+            (KO, ["윤서는 책이 열한 권 있어.", "도현은 책이 일곱 권 있어.", "윤서가 도현에게 책 열 권을 나눠 줬어.",
+                  "도현은 책이 몇 권 있어?"], 17),
+            (KO, ["채원은 사진이 열아홉 장 있어요.", "시우는 사진이 열 장 있어요.", "준호는 사진이 열한 장 있어요.",
+                  "채원이 시우에게 사진 일곱 장을 줬어요. 그리고 준호에게 열 장을 주었다.", "채원은 사진이 몇 장 있어요?"], 2),
+            (KO, ["하린은 귤이 열세 개 있어.", "예나는 귤이 열 개 있어.", "하린이 예나한테 귤 일곱 개를 보냈어.",
+                  "예나는 귤이 몇 개 있어?"], 17),
+            (KO, ["태민은 볼펜이 열일곱 자루 있어요.", "가게에는 볼펜이 열한 자루 있어요.", "태민이 가게에 볼펜 열 자루를 맡겼어요.",
+                  "가게에는 볼펜이 몇 자루 있어요?"], 21),
+            (KO, ["시우는 쿠키가 열아홉 개 있어.", "도현은 쿠키가 열 개 있어.", "윤서는 쿠키가 열한 개 있어.",
+                  "시우가 도현에게 쿠키 일곱 개를 나눠 주었다. 그리고 윤서에게 열 개를 나눠 주었다.", "시우는 쿠키가 몇 개 있어?"], 2),
+            (KO, ["준호는 화분을 열네 개 싣고 있어.", "준호는 화분이 몇 개 있어?"], 14),
+        ],
+    },
 }
 
 
@@ -161,6 +190,28 @@ def test_the_halves_share_no_name():
                   if w not in {"How", "Why", "And", "What", "The", "For", "I", "It", "Six"}}
                  for h in ("build", "check")]
         assert not words[0] & words[1], name
+
+
+def test_a_transfer_left_unread_whose_giver_is_unsaid_holds_every_holders_count():
+    # A5: across turns the giver is not carried; the statement could have moved anyone's count
+    _ctx, rows = play(KO, ["하린은 쿠키가 열세 개 있어.", "준호는 쿠키가 열 개 있어.", "그중 하나를 준호한테 줬어.",
+                           "하린은 쿠키가 몇 개 있어?"])
+    assert rows[2]["status"] != "observed" and rows[3]["status"] != "answered"
+
+
+def test_an_amount_alone_changes_no_statement_that_was_read_or_is_not_the_last_turn():
+    # A4: the fragment goes only into the statement said just before it and left unread
+    _ctx, rows = play(EN, ["Nora has 5 pens.", "Otto has 2 pens.", "Nora gave Otto some pens.",
+                           "How many pens does Otto have?", "Three.", "How many pens does Otto have?"])
+    assert rows[-1]["status"] != "answered"
+    _ctx, rows = play(KO, ["보라는 연필이 다섯 개 있어. 두 개.", "보라는 연필이 몇 개 있어?"])
+    assert rows[-1]["status"] != "answered"
+
+
+def test_a_numeral_said_before_a_counter_is_not_a_noun_object():
+    # A3: 두를 (a repair's reading) is not 2개를; a protected counter stays held (test_understanding_r2)
+    _ctx, rows = play(KO, ["누리는 단추가 여섯 개 있어.", "다올은 단추가 두 개 있어.", "누리가 다올에게 단추 개를 두 줬어."])
+    assert rows[-1]["status"] not in ("answered", "observed")
 
 
 if __name__ == "__main__":
