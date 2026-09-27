@@ -27,7 +27,7 @@ from marco.language import realize
 # ``gap_declared`` false, so the table can be completed from the ledger.
 GAP_CLASSES = {
     "routing": ("capacity", "graph_limit", "join_limit", "below_threshold", "no_graph_selected"),
-    "lexical": ("unknown_word",),
+    "lexical": ("unknown_word", "unknown_word_guess", "unknown_word_guesses"),
     "concept": ("unreadable_definition", "conflicting_definition"),
     "relation": ("cause_effect_missing_or_ambiguous", "time_unresolved"),
     "parser": ("unrecognized_observation", "ambiguous_quantity_subject", "ambiguous_state_subject",
