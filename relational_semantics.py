@@ -1941,7 +1941,7 @@ class RelationalParser:
             shape = shapes.get(change.get("operation"))
             if isinstance(shape, dict):
                 shape = shape.get(change.get("predicate"))
-            if not isinstance(shape, str):
+            if not isinstance(shape, str) or change.get("after") is None:
                 continue
             spoken.append(shape.format(**{"대상": change.get("subject", ""),
                                           "전": change.get("before", ""),

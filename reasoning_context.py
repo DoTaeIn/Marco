@@ -72,7 +72,8 @@ READING_CONSTRAINTS = (
     ("readable", "the conversation, replayed with the reading, reads every statement", ("unrecognized_observation",)),
     ("one_subject", "each change names one holder", ("ambiguous_quantity_subject", "ambiguous_state_subject",
                                                     "ambiguous_property_scope")),
-    ("holder_exists", "a holder whose count changes, the giver and the receiver alike, has a count said before",
+    ("holder_exists", "a holder that loses some has a count said before, or at least that many received; "
+                      "a receiver with none said keeps a count not known",
      ("missing_initial_quantity",)),
     ("count_can_move", "no count falls below zero or contradicts one said before",
      ("invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity")),
@@ -3912,7 +3913,19 @@ class ReasoningContext:
                 table[key] = before
         mine = [deepcopy(row) for row in changes if (row.get("evidence") or {}).get("turn") == index
                 and row.get("operation") in ("state_update", "quantity_update")]
+        if self._pointer_unknown(parser, mine):
+            return ("holder_exists", "missing_initial_quantity"), []
         return None, mine
+
+    @staticmethod
+    def _pointer_unknown(parser, changes):
+        """A count not known started for a holder that is a pointer as written (the pack's 지시어: he, 그분):
+        a pointer names someone already said, never a new holder; the pointer readings choose whom."""
+        pointers = [w.lower().split() for w in parser.pointers or [] if w]
+        return any(row.get("operation") == "quantity_update" and row.get("before") is None
+                   and row.get("after") is None and isinstance(row.get("subject"), str)
+                   and any(row["subject"].lower().split()[:len(p)] == p for p in pointers)
+                   for row in changes)
 
     def _pointer_readings(self, parser, readings):
         """G5.3: a statement whose holder is a person pointer (the pack's 사람지시어: he, she, 그분) is read
@@ -4792,6 +4805,11 @@ class ReasoningContext:
             # Validate a new observation even if no question has been asked yet.
             _, changes = current_facts(facts, parser.data.get("mutable_predicates", []),
                                        parser.data.get("numeric_updates", {}))
+            if keeps and self._pointer_unknown(parser, [row for row in changes if (row.get("evidence") or {})
+                                                        .get("turn") == len(pending) - 1]):
+                # A pointer as a new holder is no holder: fail as a holder without a count, so the
+                # pointer readings are checked (G6, receiver count), or the statement is held as before.
+                raise ValueError("missing_initial_quantity")
             # 설명을 듣긴 했는데 몸통을 못 읽었다면 그렇다고 말한다. "모르는
             # 낱말" 이라고만 하면 방금 설명한 사람에게는 틀린 말로 들린다.
             # 다시 읽기가 **그때까지 배운 것**을 쥐고 이미 판정했다. 여기서 맨손으로
@@ -5241,10 +5259,20 @@ class ReasoningContext:
             unknown, self._not_stated = getattr(self, "_not_stated", None), None
             # A count the conversation gave only as "some" (request W3-1: vague_count).
             asked = [str((q.get("triple") or [None])[0]) for q in (풀린물음 or []) if isinstance(q, dict)]
-            vague = next((str(f["triple"][0]) for f in (답사실 or [])
-                          if f["triple"][1] == "count_unknown" and str(f["triple"][0]) in asked), None)
+            try:
+                # A holder that received something but whose count was never said is count_unknown after
+                # the projection (graph_inference.current_facts), with the least it is known to hold.
+                projected = current_facts(답사실 or [], parser.data.get("mutable_predicates", []),
+                                          parser.data.get("numeric_updates", {}))[0]
+            except ValueError:
+                projected = 답사실 or []
+            vague_fact = next((f for f in projected
+                               if f["triple"][1] == "count_unknown" and str(f["triple"][0]) in asked), None)
+            vague = str(vague_fact["triple"][0]) if vague_fact else None
             self._vague_asked = (vague, len(self.observations)) if vague else None
-            meaning = ({"act": "hold", "reason": "vague_count", "subject": vague} if vague
+            meaning = ({"act": "hold", "reason": "vague_count", "subject": vague,
+                        # G6-2: the count was never said and something was added since (at least this many)
+                        **({"at_least": vague_fact["at_least"]} if "at_least" in vague_fact else {})} if vague
                        else {"act": "refuse", "reason": "premise_missing", **premise} if premise
                        else {"act": "hold", "reason": "not_stated", "subject": unknown} if unknown and 빠진전제
                        else {"act": "hold", "reason": "unresolved"})
