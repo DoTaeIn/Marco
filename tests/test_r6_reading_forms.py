@@ -54,6 +54,42 @@ CASES = {
                   "태민은 볼펜이 몇 자루 있어요?"], 17),
         ],
     },
+    # A3. Partitive pronoun objects: "N of them", 그중 N개, used up or made into something.
+    "A3": {
+        "build": [
+            (EN, ["Nora has 6 pens.", "Otto has 2 pens.", "Nora gave two of them to Otto.",
+                  "How many pens does Otto have?"], 4),
+            (EN, ["Lena has 9 cups.", "Bram has 4 cups.", "Lena gave one of them to Bram.",
+                  "How many cups does Lena have?"], 8),
+            (EN, ["Ivo has 12 kites.", "Ivo used three of them for the festival.", "How many kites does Ivo have?"], 9),
+            (EN, ["Tessa has 5 spoons.", "Hugo has 3 spoons.", "Tessa lent Hugo two of them.",
+                  "How many spoons does Hugo have?"], 5),
+            (KO, ["보라는 연필이 다섯 개 있어.", "하늘은 연필이 세 개 있어.", "보라가 그중 2개를 하늘에게 줬어.",
+                  "하늘은 연필이 몇 개 있어?"], 5),
+            (KO, ["다온은 우표가 열두 장 있어요.", "서진은 우표가 네 장 있어요.", "다온이 그중 하나를 서진에게 줬어요.",
+                  "서진은 우표가 몇 장 있어요?"], 5),
+            (KO, ["지유는 사과가 여덟 개 있어.", "지유는 그중 세 개로 잼을 만들었어.", "지유는 사과가 몇 개 있어?"], 5),
+            (KO, ["민재는 붓이 여섯 자루 있어요.", "수아는 붓이 두 자루 있어요.", "민재는 그중 두 자루를 수아에게 빌려줬어요.",
+                  "민재는 붓이 몇 자루 있어요?"], 4),
+        ],
+        "check": [
+            (EN, ["Rosa has 11 plates.", "Felix has 7 plates.", "Rosa gave seven of them to Felix.",
+                  "How many plates does Felix have?"], 14),
+            (EN, ["Mona has 13 candles.", "Mona used ten of them for the dinner.", "How many candles does Mona have?"],
+             3),
+            (EN, ["Ada has 15 ribbons.", "Cole has 10 ribbons.", "Ada gave Cole one of them.",
+                  "How many ribbons does Cole have?"], 11),
+            (EN, ["June has 14 mugs.", "Ravi has 11 mugs.", "June handed seven of them to Ravi.",
+                  "How many mugs does June have?"], 7),
+            (KO, ["윤서는 책이 열한 권 있어.", "도현은 책이 일곱 권 있어.", "윤서가 그중 한 권을 도현에게 줬어.",
+                  "도현은 책이 몇 권 있어?"], 8),
+            (KO, ["채원은 귤이 열다섯 개 있어요.", "채원은 그중 열 개로 주스를 만들었어요.", "채원은 귤이 몇 개 있어요?"], 5),
+            (KO, ["하린은 쿠키가 열세 개 있어.", "준호는 쿠키가 열 개 있어.", "하린은 그중 하나를 준호한테 줬어.",
+                  "하린은 쿠키가 몇 개 있어?"], 12),
+            (KO, ["예나는 볼펜이 열네 자루 있어요.", "태민은 볼펜이 일곱 자루 있어요.", "예나가 태민에게 그중 일곱 자루를 빌려줬어요.",
+                  "태민은 볼펜이 몇 자루 있어요?"], 14),
+        ],
+    },
 }
 
 

@@ -620,6 +620,44 @@ class RelationalParser:
                          "", text)
             if new != text:
                 text, applied = new, applied + ["completive"]
+        nouns = spec.get("numeral_nouns") or {}
+        if nouns:
+            # 하나를 줬어요: a native numeral said as a noun, as an object, is that many of the first counter.
+            # Only the native numerals (atoms and tens): the Sino-Korean digits are also common words (일을).
+            from numeral_semantics import parse_numeral
+            native = {k: v for k, v in self.data.get("numerals", {}).items() if k in ("atoms", "tens")}
+            counter = nouns["counter"]
+
+            def counted(m):
+                value = parse_numeral(m.group(1), native)
+                # the determiner forms (두, 열두) stand before a counter, never as a noun
+                if value is None or m.group(1).endswith(tuple(nouns.get("determiners", []))):
+                    return m.group(0)
+                return "%s%s%s" % (value, counter, self._particle_form(counter, m.group(2)))
+            new = re.sub(r"(?<!\S)(\S+?)(%s)(?=[\s.,!?]|$)" % "|".join(map(re.escape, nouns["particles"])),
+                         counted, text)
+            if new != text:
+                text, applied = new, applied + ["numeral_noun"]
+        made = spec.get("made_from") or {}
+        if made:
+            # 세 개로 잼을 만들었어: things an amount of which something was made from are used up
+            # (세 개를 썼어), the verb in the same tense and ending; the product fills no role.
+            forms = self._same_form_table(made["verb"], made["reads_as"])
+            units = "|".join(re.escape(u) for u in sorted(self.counters.get("units", []), key=len, reverse=True))
+            if forms and units:
+                def used(m):
+                    amount = m.group(1).strip()
+                    from numeral_semantics import parse_numeral
+                    if not amount.isdigit() and parse_numeral(amount, self.data.get("numerals", {})) is None:
+                        return m.group(0)
+                    unit = m.group(2)
+                    return "%s%s%s %s" % (m.group(1), unit, self._particle_form(unit, made["object"][-1]),
+                                         forms[m.group(3)])
+                new = re.sub(r"(?<!\S)(\S+ ?)(%s)(?:%s) \S+?(?:%s) (%s)(?=[\s.,!?]|$)" % (
+                    units, "|".join(map(re.escape, made["source"])), "|".join(map(re.escape, made["object"])),
+                    "|".join(map(re.escape, sorted(forms, key=len, reverse=True)))), used, text)
+                if new != text:
+                    text, applied = new, applied + ["made_from"]
         adverbs = spec.get("dropped_adverbs") or []
         if adverbs:
             # time adverbs that fill no role are left out in every reading, not only with the phrase variants
@@ -666,6 +704,25 @@ class RelationalParser:
         if not applied:
             return literal, None
         return text, {"id": "declared-word-order-v1", "forms": applied, "from": literal}
+
+    def _same_form_table(self, stem, target):
+        """{form of ``stem``: the form of ``target`` in the same tense and ending}, by the pack's inflection."""
+        cache = self.__dict__.setdefault("_same_form_cache", {})
+        if (stem, target) not in cache:
+            from hangul import inflect
+            grammar, table = self.inflection_grammar or {}, {}
+            for tense in grammar.get("tenses", {}):
+                for ending in grammar.get("endings", {}):
+                    try:
+                        forms = [f["text"] for f in inflect(stem, tense, ending, grammar, kind="regular")]
+                        targets = [f["text"] for f in inflect(target, tense, ending, grammar, kind="regular")]
+                    except (ValueError, KeyError):
+                        continue
+                    for form in forms:
+                        if targets and " " not in form:
+                            table.setdefault(form, targets[0])
+            cache[(stem, target)] = table
+        return cache[(stem, target)]
 
     def _only_dropped_words(self, literal):
         """True when every word of ``literal`` is inside a phrase the pack's phrase variants read
