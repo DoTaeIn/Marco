@@ -605,11 +605,16 @@ class RelationalParser:
             if m:
                 text, applied = m.group(1), applied + ["fronted_purpose"]
                 break
+        objects = spec.get("fronted_purpose_objects") or {}
         for suffix in spec.get("fronted_purpose_suffixes", []):
             # 행사 때문에 (,) ... / 이사 준비로, ...: a purpose phrase at the clause's start fills no role
             m = re.match(r"((?:\S+ ){0,2}?)(\S*)%s,? (.+)$" % re.escape(suffix), text)
+            # 바자회를 위해: a suffix that takes an object keeps its object particle on the word before it
+            taken = tuple(objects.get("particles", [])) if suffix in objects.get("suffixes", []) else ()
+            words = (m.group(1) + m.group(2)).split() if m else []
             if m and (m.group(1) or m.group(2)) and not any(
-                    self._ends_in_particle(w) for w in (m.group(1) + m.group(2)).split()):
+                    self._ends_in_particle(w) and not (taken and index == len(words) - 1 and w.endswith(taken))
+                    for index, w in enumerate(words)):
                 text, applied = m.group(3), applied + ["fronted_purpose"]
                 break
         completive = spec.get("completive") or {}
@@ -620,6 +625,61 @@ class RelationalParser:
                          "", text)
             if new != text:
                 text, applied = new, applied + ["completive"]
+        auxiliaries = spec.get("spaced_auxiliary") or []
+        if auxiliaries:
+            # 나눠 줬어 -> 나눠줬어: a same-frame compound (V-어 주다) written with a space before its auxiliary
+            def build():
+                prefixes = sorted({stem[:-len(a)] for row in self.same_frame for stem in row.get("stems", [])
+                                   for a in auxiliaries if stem.endswith(a) and len(stem) > len(a)},
+                                  key=len, reverse=True)
+                if not prefixes:
+                    return None
+                return re.compile(r"(?<!\S)(%s) (\S+?)(?=[.,!?]*(?:\s|$))" % "|".join(map(re.escape, prefixes)))
+            pattern, known = self._form_pattern("spaced_auxiliary", build), self._declared_verb_words()
+            if pattern is not None and " " in text:
+                new = pattern.sub(lambda m: m.group(1) + m.group(2) if (m.group(1) + m.group(2)) in known
+                                  else m.group(0), text)
+                if new != text:
+                    text, applied = new, applied + ["spaced_auxiliary"]
+        nouns = spec.get("numeral_nouns") or {}
+        if nouns:
+            # 하나를 줬어요: a native numeral said as a noun, as an object, is that many of the first counter.
+            # Only the native numerals (atoms and tens): the Sino-Korean digits are also common words (일을).
+            from numeral_semantics import parse_numeral
+            native = {k: v for k, v in self.data.get("numerals", {}).items() if k in ("atoms", "tens")}
+            counter = nouns["counter"]
+
+            def counted(m):
+                value = parse_numeral(m.group(1), native)
+                # the determiner forms (두, 열두) stand before a counter, never as a noun
+                if value is None or m.group(1).endswith(tuple(nouns.get("determiners", []))):
+                    return m.group(0)
+                return "%s%s%s" % (value, counter, self._particle_form(counter, m.group(2)))
+            new = self._form_pattern("numeral_nouns", lambda: re.compile(
+                r"(?<!\S)(\S+?)(%s)(?=[\s.,!?]|$)" % "|".join(map(re.escape, nouns["particles"])))).sub(counted, text)
+            if new != text:
+                text, applied = new, applied + ["numeral_noun"]
+        made = spec.get("made_from") or {}
+        if made:
+            # 세 개로 잼을 만들었어: things an amount of which something was made from are used up
+            # (세 개를 썼어), the verb in the same tense and ending; the product fills no role.
+            forms = self._same_form_table(made["verb"], made["reads_as"])
+            units = "|".join(re.escape(u) for u in sorted(self.counters.get("units", []), key=len, reverse=True))
+            if forms and units and made["verb"] in text:
+                def used(m):
+                    amount = m.group(1).strip()
+                    from numeral_semantics import parse_numeral
+                    if not amount.isdigit() and parse_numeral(amount, self.data.get("numerals", {})) is None:
+                        return m.group(0)
+                    unit = m.group(2)
+                    return "%s%s%s %s" % (m.group(1), unit, self._particle_form(unit, made["object"][-1]),
+                                         forms[m.group(3)])
+                new = self._form_pattern("made_from", lambda: re.compile(
+                    r"(?<!\S)(\S+ ?)(%s)(?:%s) \S+?(?:%s) (%s)(?=[\s.,!?]|$)" % (
+                        units, "|".join(map(re.escape, made["source"])), "|".join(map(re.escape, made["object"])),
+                        "|".join(map(re.escape, sorted(forms, key=len, reverse=True)))))).sub(used, text)
+                if new != text:
+                    text, applied = new, applied + ["made_from"]
         adverbs = spec.get("dropped_adverbs") or []
         if adverbs:
             # time adverbs that fill no role are left out in every reading, not only with the phrase variants
@@ -666,6 +726,50 @@ class RelationalParser:
         if not applied:
             return literal, None
         return text, {"id": "declared-word-order-v1", "forms": applied, "from": literal}
+
+    def _holds_counted_amount(self, value):
+        """True when ``value`` has a numeral word right before a declared counter (여섯 권, 여섯권을)."""
+        from numeral_semantics import parse_numeral
+        units = self.counters.get("units", [])
+        if not units:
+            return False
+        # the native numerals only: the Sino-Korean digits are also syllables of common words (사장)
+        numerals = {k: v for k, v in self.data.get("numerals", {}).items() if k in ("atoms", "tens")}
+        words = value.split()
+        for index, word in enumerate(words):
+            for unit in units:
+                if word.startswith(unit) and index and parse_numeral(words[index - 1], numerals) is not None:
+                    return True
+                at = word.find(unit)
+                if at > 0 and parse_numeral(word[:at], numerals) is not None:
+                    return True
+        return False
+
+    def _form_pattern(self, key, build):
+        """A word-order form's pattern, compiled once per parser (the module cache of re is too small)."""
+        cache = self.__dict__.setdefault("_form_pattern_cache", {})
+        if key not in cache:
+            cache[key] = build()
+        return cache[key]
+
+    def _same_form_table(self, stem, target):
+        """{form of ``stem``: the form of ``target`` in the same tense and ending}, by the pack's inflection."""
+        cache = self.__dict__.setdefault("_same_form_cache", {})
+        if (stem, target) not in cache:
+            from hangul import inflect
+            grammar, table = self.inflection_grammar or {}, {}
+            for tense in grammar.get("tenses", {}):
+                for ending in grammar.get("endings", {}):
+                    try:
+                        forms = [f["text"] for f in inflect(stem, tense, ending, grammar, kind="regular")]
+                        targets = [f["text"] for f in inflect(target, tense, ending, grammar, kind="regular")]
+                    except (ValueError, KeyError):
+                        continue
+                    for form in forms:
+                        if targets and " " not in form:
+                            table.setdefault(form, targets[0])
+            cache[(stem, target)] = table
+        return cache[(stem, target)]
 
     def _only_dropped_words(self, literal):
         """True when every word of ``literal`` is inside a phrase the pack's phrase variants read
@@ -2411,6 +2515,9 @@ class RelationalParser:
                     if isinstance(slots.get("item"), str) and re.search(r"(?<![\w])\d+(?![\w])", slots["item"]) \
                             and not str(example["slots"].get("item", "")).isdecimal():
                         continue
+                    # nor a numeral word with its counter (공 여섯 권을: an amount said, not a thing's name, G6)
+                    if isinstance(slots.get("item"), str) and self._holds_counted_amount(slots["item"]):
+                        continue
                     # A word the pack declares as filling no slot (a phrase variant read as nothing: 지금은,
                     # 오늘은, now, still) is never part of a holder or a thing: the reading without it is taken
                     # (G5 batch 5)
@@ -3356,6 +3463,15 @@ class RelationalParser:
                     stated, previous_rows, self._counted_subjects(evidence["text"], stated))
                 if inherited:
                     evidence = {**evidence, "ellipsis": inherited}
+            if stated and in_turn and self.ellipsis.get("omitted_subject") == "same_relation":
+                # 그리고 은호에게 네 장을 주었다: a clause whose example leaves its subject out takes the subject of
+                # the clause before it in the turn with the same relation (the giver who gave just before)
+                carried = []
+                for row in stated:
+                    prior = next((p for p in previous_rows if row[0] is None and p[1] == row[1]
+                                  and isinstance(p[0], str)), None)
+                    carried.append([prior[0]] + list(row[1:]) if prior else row)
+                stated = carried
             previous_rows, previous_end = (stated or []), evidence["end"]
             if stated:
                 role_bindings = meaning.get("role_bindings", [])
