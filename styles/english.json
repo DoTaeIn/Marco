@@ -4908,7 +4908,9 @@
    "i'm talking about",
    "i was asking about",
    "i was talking about",
-   "i meant to ask about"
+   "i meant to ask about",
+   "it's",
+   "it is"
   ],
   "tails": [
    "i mean",
@@ -4921,7 +4923,7 @@
    "is who i was asking about"
   ]
  },
- "_이름답": "A reply that only names a person. After a question held for its pointer, the name answers which one; otherwise it asks the last answered question about that person. These words may stand before the name; anything else means it is not such a reply. Heads are the discourse connectives that open a follow-up (and, so, then, but, also), the elliptical question openers (what about, how about, what of) and the reformulations (I mean, I meant); several may stand one after another (and how about ...). A head may be followed by a comma (Sorry, I meant Haru). Tails are the reformulations said after the name (Haru, I mean; Haru is who I meant; Haru is the one I meant), and the apologies and interjections that open a self-repair (sorry, oh, no, wait, actually) are heads. The name may carry a title or a relation; it is read as the pack reads a holder.",
+ "_이름답": "A reply that only names a person. After a question held for its pointer, the name answers which one; otherwise it asks the last answered question about that person. These words may stand before the name; anything else means it is not such a reply. Heads are the discourse connectives that open a follow-up (and, so, then, but, also), the elliptical question openers (what about, how about, what of) and the reformulations (I mean, I meant, and the identifying it is / it's: It's Haru); several may stand one after another (and how about ...). A head may be followed by a comma (Sorry, I meant Haru). Tails are the reformulations said after the name (Haru, I mean; Haru is who I meant; Haru is the one I meant), and the apologies and interjections that open a self-repair (sorry, oh, no, wait, actually) are heads. The name may carry a title or a relation; it is read as the pack reads a holder.",
  "대조정정": {
   "markers": [
    ", not "
