@@ -5,7 +5,9 @@ Only called for slots explicitly annotated as numeric. Entity text is untouched.
 
 
 def parse_numeral(text, vocabulary):
-    compact = "".join(text.split())
+    # A hyphen joins numeral words as a space does ("twenty-four"), the separator the
+    # numeric slot pattern of relational_semantics.compile already accepts.
+    compact = "".join(text.replace("-", " ").split())
     if compact.isdecimal():
         return str(int(compact))
     atoms = vocabulary.get("atoms", {})
