@@ -3898,6 +3898,22 @@ class ReasoningContext:
             return None
         return spliced, replaced
 
+    def _repair_and_question(self, text, knowledge_path):
+        """A referent repair followed by the question in the same turn (``I mean Nora. How many pens does Nora
+        have?``, ``다솜 말입니다. 몇 장입니까?``): the first sentence is read as the name reply it is; then the
+        question, answered on its own when it can be, else the repaired question stands as the answer."""
+        if not self._permitted(knowledge_path) or self._live() or not (self.pending_pointer or self.last_question):
+            return None
+        parser = self._parser()
+        segments = self._segments(text, parser)
+        if len(segments) < 2 or segments[0][1] or not segments[-1][1]:
+            return None
+        named = self._name_reply(parser, segments[0][0], knowledge_path)
+        if named is None:
+            return None
+        asked = self._turn_reply(" ".join(piece for piece, _q in segments[1:]), knowledge_path)
+        return asked if asked is not None and asked.get("status") == "answered" else named
+
     def _turn_said(self, text, knowledge_path=None):
         spliced = self._spliced_fragment(text)
         if spliced is not None:
@@ -3908,8 +3924,10 @@ class ReasoningContext:
         language = self.language or next((source["path"] for source in getattr(self.model, "sources", ())
                                           if source["path"].startswith("styles/")), None)
         explained = self.last_explanation
-        parts = self._question_parts(text)
-        result = self._answer_parts(parts, knowledge_path) if parts else self._follow_up(text, knowledge_path, language)
+        repaired = self._repair_and_question(text, knowledge_path)
+        parts = None if repaired is not None else self._question_parts(text)
+        result = repaired if repaired is not None else (
+            self._answer_parts(parts, knowledge_path) if parts else self._follow_up(text, knowledge_path, language))
         self._trace_path = "follow_up" if result is not None and not parts else "reply"
         if result is None:
             result = self._turn_reply(text, knowledge_path)

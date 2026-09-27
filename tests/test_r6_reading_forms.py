@@ -213,6 +213,45 @@ CASES = {
                   "예나한테 남은 볼펜은 몇 자루야?"], 7),
         ],
     },
+    # B11. A referent repair with the question in the same turn, and a bare-name repair before the question.
+    "B11": {
+        "build": [
+            (EN, ["Nora has 6 pens.", "Mira has 3 pens.", "How many pens does she have?",
+                  "I mean Nora. How many pens does Nora have?"], 6),
+            (EN, ["Lena has 12 cups.", "Pia has 4 cups.", "How many cups does she have?",
+                  "It's Pia. How many cups does Pia have?"], 4),
+            (EN, ["Otto has 8 spoons.", "Hugo has 3 spoons.", "How many spoons does he have?", "Otto is the one I mean.",
+                  "How many spoons does Otto have?"], 8),
+            (EN, ["Ivo has 2 kites.", "Bram has 11 kites.", "How many kites does he hold?", "Bram, I mean.",
+                  "How many kites does Bram hold?"], 11),
+            (KO, ["보라는 연필이 여섯 개 있어요.", "보미는 연필이 세 개 있어요.", "걔는 연필이 몇 개 있어요?",
+                  "보라요. 보라는 연필이 몇 개예요?"], 6),
+            (KO, ["다온은 우표가 열두 장 있어요.", "다솜은 우표가 네 장 있어요.", "그 사람은 우표가 몇 장 있어요?",
+                  "다솜 말입니다. 몇 장입니까?"], 4),
+            (KO, ["지유 님은 공책이 여덟 권 있습니다.", "지민 님은 공책이 두 권 있습니다.", "그분은 공책이 몇 권 있습니까?",
+                  "지민 님입니다.", "지민 님은 공책이 몇 권 있습니까?"], 2),
+            (KO, ["민재는 붓이 다섯 자루 있어.", "민수는 붓이 두 자루 있어.", "그 사람은 붓이 몇 자루 있어?", "민재야.",
+                  "민재는 붓이 몇 자루 있어?"], 5),
+        ],
+        "check": [
+            (EN, ["Rosa has 17 plates.", "Ada has 9 plates.", "How many plates does she have?",
+                  "I mean Ada. How many plates does Ada have?"], 9),
+            (EN, ["Mona has 15 candles.", "June has 7 candles.", "How many candles does she have?",
+                  "It's Mona. How many candles does Mona have?"], 15),
+            (EN, ["Felix has 10 ribbons.", "Cole has 13 ribbons.", "How many ribbons does he have?",
+                  "Felix is the one I mean.", "How many ribbons does Felix have?"], 10),
+            (EN, ["Ravi has 11 mugs.", "Dirk has 19 mugs.", "How many mugs does he hold?", "Dirk, I mean.",
+                  "How many mugs does Dirk hold?"], 19),
+            (KO, ["윤서는 책이 열한 권 있어요.", "윤아는 책이 일곱 권 있어요.", "걔는 책이 몇 권 있어요?",
+                  "윤아요. 윤아는 책이 몇 권이에요?"], 7),
+            (KO, ["채원은 사진이 열다섯 장 있어요.", "채은은 사진이 열 장 있어요.", "그 사람은 사진이 몇 장 있어요?",
+                  "채원 말입니다. 몇 장입니까?"], 15),
+            (KO, ["하린 님은 귤이 열세 개 있습니다.", "하준 님은 귤이 열일곱 개 있습니다.", "그분은 귤이 몇 개 있습니까?",
+                  "하준 님입니다.", "하준 님은 귤이 몇 개 있습니까?"], 17),
+            (KO, ["예나는 볼펜이 열아홉 자루 있어.", "예진은 볼펜이 열한 자루 있어.", "그 사람은 볼펜이 몇 자루 있어?", "예진이야.",
+                  "예진은 볼펜이 몇 자루 있어?"], 11),
+        ],
+    },
 }
 
 
@@ -257,11 +296,13 @@ def test_the_check_half_is_never_answered_wrong(name, index):
 
 def test_the_halves_share_no_name():
     import re
+    # the holders stated: the subject of each statement that gives a count (a name, or a Korean name before its particle)
+    holder = re.compile(r"^(?:(?:For|At) the \w+, |\S+에서 |\S+ 위해 )?([A-Z][a-z]+|[가-힣]{2})(?: 님)?"
+                        r"(?: has | is responsible|은 |는 |이 |가 |한테 |에게 )")
     for name, halves in CASES.items():
-        words = [{w for _l, lines, _e in halves[h] for line in lines for w in re.findall(r"\b[A-Z][a-z]+\b", line)
-                  if w not in {"How", "Why", "And", "What", "The", "For", "I", "It", "Six"}}
-                 for h in ("build", "check")]
-        assert not words[0] & words[1], name
+        holders = [{m.group(1) for _l, lines, _e in halves[h] for line in lines if not line.endswith("?")
+                    for m in [holder.match(line)] if m} for h in ("build", "check")]
+        assert holders[0] and holders[1] and not holders[0] & holders[1], name
 
 
 def test_a_transfer_left_unread_whose_giver_is_unsaid_holds_every_holders_count():
