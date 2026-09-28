@@ -10,7 +10,7 @@
 그래프에 던져 복구 행동을 찾는다.
 
 사용법
-  python universal_agent.py                                   # raw_data.txt → result.json
+  python universal_agent.py                                   # experiments/raw_data.txt → result.json
   python universal_agent.py --입력 자료.txt --출력 결과.json
   python universal_agent.py --요청 "데이터 처리해줘"
   python universal_agent.py --check
@@ -105,7 +105,7 @@ def _main():
     def value(name, default):
         return argv[argv.index(name) + 1] if name in argv and argv.index(name) + 1 < len(argv) else default
 
-    context = {"입력": value("--입력", "raw_data.txt"), "출력": value("--출력", "result.json")}
+    context = {"입력": value("--입력", "experiments/raw_data.txt"), "출력": value("--출력", "result.json")}
     phrase = value("--요청", "데이터 변환 파이프라인 실행해줘")
 
     g = act.load(graph)

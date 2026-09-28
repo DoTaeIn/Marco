@@ -23,7 +23,7 @@ from PIL import Image, ImageOps
 
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-VISION_SOURCE = ROOT / "document_vision.swift"
+VISION_SOURCE = Path(__file__).resolve().with_name("document_vision.swift")
 VISION_BINARY = ROOT / ".nai-tools" / "document_vision"
 VLM_SOURCE = ROOT / "marco/perception/vlm.py"
 VLM_PYTHON = ROOT / ".venv-vision" / "bin" / "python"

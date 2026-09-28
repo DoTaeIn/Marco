@@ -234,7 +234,7 @@ def measure(algo, langs):
     return acc
 
 
-def regression(folder="algorithms", langs=None):
+def regression(folder="experiments/algorithms", langs=None):
     """있는 알고리즘 전부를 있는 언어 전부로 찍어 돌린다.
 
     N개 알고리즘 x M개 언어 = N*M 벌이고, 사람이 쓴 것은 N + M 벌뿐이다.
@@ -264,7 +264,7 @@ def _selfcheck():
     _pass_count, _whole, _leaked, _penalty = groups()
     assert _whole and _pass_count == _whole, (_pass_count, _whole)
     assert _penalty, "망가뜨릴 자리가 없다 — 묶임을 못 잰다"
-    know = read_algo("algorithms/이진검색.json")
+    know = read_algo("experiments/algorithms/이진검색.json")
     py = build(know, read_dialect("python"))
     assert "def binary_search(a, target):" in py, py
     assert "(lo + hi) // 2" in py, py
@@ -276,7 +276,7 @@ def _selfcheck():
     # 같은 내용이 말투만 갈려 나온다 - 한국어/영어와 같은 연산이다.
     for txt in (py, java, skin):
         assert txt.count("return") >= 2, txt
-    ps = build(read_algo("algorithms/최대공약수.json"), read_dialect("powershell"))
+    ps = build(read_algo("experiments/algorithms/최대공약수.json"), read_dialect("powershell"))
     assert "(gcd $b ($a % $b))" in ps, ps    # 부르는 자리 구분자가 다르다
     # 왕복 - 찍은 산문을 도로 뜯으면 처음 설계도가 그대로 나와야 한다
     one_ = read_dialect("한국어")
@@ -518,7 +518,7 @@ def _fill_shape(trunk, col_name):
                 _fill_shape(x, col_name)
 
 
-def prose_regression(folder="algorithms/산문", lang="한국어"):
+def prose_regression(folder="experiments/algorithms/산문", lang="한국어"):
     """사람이 손으로 쓴 한국어를 그대로 코드로 만들어 돌린다.
 
     왕복과 다르다. 왕복은 제가 찍은 산문을 도로 읽는 것이라 문체가 제
@@ -550,7 +550,7 @@ def prose_regression(folder="algorithms/산문", lang="한국어"):
     return alive, penalty
 
 
-def roundtrip(folder="algorithms", lang="한국어"):
+def roundtrip(folder="experiments/algorithms", lang="한국어"):
     """설계도 → 산문 → 설계도. 그리고 뜯어낸 것으로 코드를 찍어 돌린다.
 
     앞의 견줌이 읽기가 맞았는지 보고, 뒤의 실행이 그 읽은 것이 진짜 도는
@@ -789,7 +789,7 @@ def mutate(algo, n_, rng):
     return penalty if mental_score(penalty, True) < full_score else None
 
 
-def gather_algo(folder="algorithms"):
+def gather_algo(folder="experiments/algorithms"):
     """설계도(.json)와 산문(.txt) 을 한 목록으로. 채점기는 출처를 안 가린다."""
     parts = []
     workdir = _abs(folder)
@@ -811,7 +811,7 @@ def gather_algo(folder="algorithms"):
     return parts
 
 
-def groups(folder="algorithms", n__penalty=12, seed=11):
+def groups(folder="experiments/algorithms", n__penalty=12, seed=11):
     """시험이 프로그램을 묶는가 — 채점기가 옳고 그름을 **구별하는지** 잰다.
 
     통과 개수만 세면 채점기가 전부 통과시켜도 전부 떨어뜨려도 모른다.
@@ -855,7 +855,7 @@ def groups(folder="algorithms", n__penalty=12, seed=11):
     return pass_count, whole, leaked, penalty_count
 
 
-def fix_regression(folder="algorithms", n__penalty=8, seed=7, self_test=12):
+def fix_regression(folder="experiments/algorithms", n__penalty=8, seed=7, self_test=12):
     """망가뜨린 설계도를 혼자 고쳐내는가. 그리고 고친 것이 진짜로 도는가.
 
     두 가지를 갈라 센다.
@@ -971,7 +971,7 @@ if __name__ == "__main__":
         except ValueError as e:
             print(e)
             sys.exit(1)
-    algo = read_algo(argv[0] if argv else "algorithms/이진검색.json")
+    algo = read_algo(argv[0] if argv else "experiments/algorithms/이진검색.json")
     if "--show" in sys.argv:
         for lang_ in langs:
             print("=" * 60)

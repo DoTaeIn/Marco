@@ -17,7 +17,7 @@
 data/법지식/지식그래프.json
 
 # graphify 중간 캐시
-graphify-out/cache/
+data/graphify-out/cache/
 
 AGENTS.md
 CLAUDE.md

@@ -1943,7 +1943,7 @@ def _selfcheck():
         assert dialogue_question("아까 뭐 물어봤지", DialogueMemory()) is None
 
         # 자기 코드 그래프. 관계가 calls/contains/rationale_for 라 말투 표에 있다.
-        _co = _abs("graphify-out/graph.json")
+        _co = _abs("data/graphify-out/graph.json")
         if os.path.exists(_co):
             _cg = open_(_co)
             _short = ask(_cg, "judge 가 뭐야")[1] or ""
@@ -1989,8 +1989,8 @@ def _selfcheck():
 
             # 절차와 코드를 엮는다. 문서는 '무엇을 어떤 순서로' 를 알고
             # 코드 그래프는 '그것이 어디 있고 무엇을 건드리는지' 를 안다.
-            if os.path.exists(_abs("graphify-out/graph.json")):
-                _cg2 = open_("graphify-out/graph.json")
+            if os.path.exists(_abs("data/graphify-out/graph.json")):
+                _cg2 = open_("data/graphify-out/graph.json")
                 # 어느 절이 잡히느냐는 인코더마다 다르다. 예전엔 '매칭 방식을
                 # 바꾸려면' 으로 물었는데 문자 인코더에서는 아무것도 안 잡혀
                 # 이 시험이 통째로 죽어 있었다. 검색 품질이 아니라 **엮는
@@ -2174,8 +2174,8 @@ if __name__ == "__main__":
         doc = argv[:-1] or ["docs/ko/development.md", "README.md", "docs/ko/graph-authoring.md"]
         group = read_procedure([f for f in doc if os.path.exists(_abs(f))])
         code = None
-        if os.path.exists(_abs("graphify-out/graph.json")):
-            code = open_("graphify-out/graph.json")
+        if os.path.exists(_abs("data/graphify-out/graph.json")):
+            code = open_("data/graphify-out/graph.json")
         template = dialect.get("_자세히")
         scale = 3 if (template and template.search(question)) else 1
         ans = woven_answer(question, group, code, scale)
