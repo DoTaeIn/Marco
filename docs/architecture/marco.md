@@ -5,14 +5,15 @@ The MARCO core package. Written 2026-09-23 against commit `78bd062`; the
 
 ## Purpose
 
-Give the MARCO modules one importable home. Today it holds two subpackages:
-the language seam with Hermeneia, the language realizer (`marco.language`), and
-Hypomnema, the provenance ledger (`marco.trace`). Every other part of MARCO
-still lives in the root modules (`engine.py`, `marco/reasoning/context.py`, ...).
-Goal S4 (`docs/ko/2026-09-24-file-moves-goal.md`) moves the whole-file root
-modules into this package between understanding rounds 4 and 5, on the owner's
-go; `python tools/doc_facts.py layout` prints which files move where. The
-splits of the seven large root files stay frozen until MARCO 1 ships
+Give the MARCO modules one importable home. It holds the language seam with
+Hermeneia, the language realizer (`marco.language`), Hypomnema, the provenance
+ledger (`marco.trace`), and, since goal S4
+(`docs/ko/2026-09-24-file-moves-goal.md`), the whole-file modules that stood at
+the root: `marco.reasoning`, `marco.runtime`, `marco.storage`,
+`marco.knowledge`, `marco.learning`, `marco.perception`, `marco.host`.
+`python tools/doc_facts.py layout` prints which file went where. Seven large
+files stay at the root (`engine.py`, `relational_semantics.py`, ...); their
+splits stay frozen until MARCO 1 ships
 ([freeze decision](../ko/2026-09-22-freeze-decision.md)).
 
 ## Owns
@@ -24,12 +25,10 @@ splits of the seven large root files stay frozen until MARCO 1 ships
 
 ## Does not own
 
-- Any root module. Routing, judging, sessions, the `.kg` reader and the dialogue
-  state machine stay at the repository root until the frozen refactor runs.
-- The planned subpackages `marco/runtime/`, `marco/reasoning/`,
-  `marco/knowledge/`, `marco/memory/`, `marco/learning/`, `marco/cognition/`,
-  `marco/perception/`, `marco/storage/`, `marco/host/`. None of them exists
-  before S4 runs.
+- The seven split files at the root. Routing, judging and the `.kg` reader stay
+  at the repository root until the frozen refactor runs.
+- The planned subpackages `marco/memory/` and `marco/cognition/`. They come with
+  the splits; S4 made only the packages a moved file needed.
 - ALMA, POLO and the public `mco` API. They sit beside `marco`, not inside it.
 
 ## Depends on
