@@ -80,6 +80,11 @@ def _matches(plan, graph):
             if any(graph["fields"].get(name) != value for name, value in wanted.items()):
                 return False
             continue
+        if key == "fields_number":
+            # The named field is a number as said in digits (a word that is a number, not a name).
+            if not str(graph["fields"].get(wanted, "")).isdigit():
+                return False
+            continue
         if isinstance(wanted, list):
             if graph.get(key) not in wanted:
                 return False
@@ -302,6 +307,12 @@ def _props(template, graph):
         return _reading_props(template, graph)
     if template.get("from") == "hold_reason":
         return _hold_reason(template, graph)
+    if template.get("fact"):
+        # A state triple from meaning fields, said as its relation's frame, in the polarity declared.
+        triple = [_row_value(ref, {}, fields) for ref in template["fact"]]
+        prop = mg.fact_prop(triple, source, polarity=template.get("polarity", True), holders=holders) \
+            if None not in triple else None
+        return [dict(prop, **{key: template[key] for key in ("tense", "sentence") if key in template})] if prop else []
     if template.get("from") == "fact":
         row = graph["fact"]
         prop = mg.fact_prop(row["fact"], source, focus=template.get("focus"), evidence=row.get("evidence"),
@@ -361,6 +372,12 @@ def _props(template, graph):
         kinds = decl["frames"][template["frame"]]["roles"]
         prop = {"frame": template["frame"], "polarity": template.get("polarity", True),
                 "roles": {"owner": mg.entity(holder, source, kinds["owner"]), "item": mg.entity(item, source, kinds["item"])}}
+        if template.get("roles"):
+            # The frame's other roles, from their own fields (the holder's least count).
+            rest = _props(dict({key: value for key, value in template.items() if key != "split"}), graph)
+            if not rest:
+                return []
+            prop["roles"].update(rest[0]["roles"])
         return [dict(prop, **{key: template[key] for key in ("tense", "sentence") if key in template})]
     if template.get("each"):
         items = _field(fields, template["each"][1:]) or []
@@ -371,6 +388,11 @@ def _props(template, graph):
                 for item in items]
     frame = template["frame"]
     kinds = decl["frames"][frame]["roles"]
+    for role in template.get("positive") or []:
+        # A number that says nothing at zero (at least none): the proposition is left out.
+        value = _field(fields, template["roles"][role][1:])
+        if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
+            return []
     roles = {}
     for role, ref in (template.get("roles") or {}).items():
         value = _field(fields, ref[1:]) if isinstance(ref, str) and ref.startswith("$") else ref
