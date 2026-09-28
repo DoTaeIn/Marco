@@ -60,7 +60,7 @@ PER_HALF = 60               # dialogues per language per half: 240 in all
 CROSS_EVERY = 8             # slot % 8 == 0: one question in the other language (8 of 60 per half, 13%)
 LANGS = ("ko", "en")
 HALVES = ("build", "check")
-PHRASING = HERE / "PHRASING.md"
+PHRASING = HERE.parents[2] / "docs" / "ko" / "dev6-phrasing.md"
 
 
 def scenarios_path(half, lang, folder=HERE):
@@ -284,7 +284,7 @@ FORMS = {
         "ko": "'맡고 있다'로 묻는다: (누구)는 (물건)을 몇 (단위) 맡고 있습니까?"}),
     "q_bundles": ("9_other_predicates", {
         "en": "Ask by the unit: How many bundles does (holder) have?",
-        "ko": "단위로 묻는다: (누구)는 (물건)이 몇 묶음입니까?"}),
+        "ko": "단위로 묻는다: (누구)는 (물건)이 몇 묶음입니까"}),
     "q_all": ("9_other_predicates", {
         "en": "Ask for the holder's count in all: How many (things) does (holder) have in all?",
         "ko": "'모두'로 묻는다: (누구)의 (물건)은 모두 몇 (단위)입니까?"}),
@@ -313,7 +313,7 @@ FORMS = {
     "repair_question": ("11_repair_with_question", {
         "en": "Say which holder you meant and ask again in the same message: I mean (holder). How many does "
               "(holder) have? / It's (holder). How many does (holder) hold?",
-        "ko": "뜻한 사람을 밝히고 같은 메시지에서 다시 묻는다: (누구) 말입니다. 몇 묶음입니까? / (누구)요. (누구)는 몇 개예요?"}),
+        "ko": "뜻한 사람을 밝히고 같은 메시지에서 다시 묻는다: (누구) 말입니다. (누구)는 몇 묶음입니까 / (누구)요. (누구)는 몇 개예요?"}),
     "repair_bare": ("11_repair_with_question", {
         "en": "Only the name of the holder you meant, no question: (holder), I mean. / (holder) is the one I mean.",
         "ko": "뜻한 사람의 이름만, 질문 없이: (누구)요. / (누구) 님입니다."}),
@@ -1522,7 +1522,7 @@ def coverage(scenarios):
 
 CLASS_TEXT = {
     "1_count_words": "Counts as words, not digits. English number words in transfer and ownership statements "
-                     "(\"one\" to \"twenty-four\", \"some ... six, to be exact\"); Korean native numerals with "
+                     "(\"one\" to \"twenty-four\", \"some ... seven, to be exact\"); Korean native numerals with "
                      "counters (한·두·세·네·여섯·스무 + 개·권·장·묶음·자루) in transfer statements.",
     "2_en_transfer_forms": "English double-object transfer (\"gave RECIPIENT N THINGS\", no \"to\") and split "
                            "particle verbs (\"handed N THINGS over to R\"), plus \"transferred\", \"returned\", "
@@ -1530,7 +1530,7 @@ CLASS_TEXT = {
     "3_partitive": "Partitive pronoun objects in transfers and use-ups: \"one of them\", \"N of them\", 그중 하나, "
                    "그중 N개, \"used three of them for ...\", 그중 N개로 만들었다.",
     "4_fragment_count": "A count given in a following fragment: \"X has some Y. N, to be exact.\" / "
-                        "\"X한테 Y이 있어. 여섯 개야.\" / \"X가 Y한테 Z를 줬어. 두 개.\"",
+                        "\"X한테 Y이 있어. 일곱 개야.\" / \"X가 Y한테 Z를 줬어. 세 개.\"",
     "5_ko_transfer_verbs": "Korean transfer verbs and compounds: 나눠 주다, 빌려주다, 보내다, 맡기다 (leave at a "
                            "place), 싣고 있다 (carry), 주었다 (plain past formal), and the subject omitted in a "
                            "second sentence (\"그리고 R에게 N개를 주었다\").",
@@ -1545,13 +1545,13 @@ CLASS_TEXT = {
     "8_time_adverb_questions": "Aspect and time adverbs in questions: \"at the moment\", \"now\", 이제, 지금 "
                                "(\"X는 이제 몇 개야?\", \"그럼 X는 지금 몇 개예요?\").",
     "9_other_predicates": "Other question predicates: \"has X got\", \"is X responsible for\", \"맡고 있습니까\", "
-                          "\"How many bundles\" / \"몇 묶음입니까\", \"모두 몇 개입니까\", \"combined\" / \"the two of "
+                          "\"How many bundles\" / \"몇 묶음\", \"모두 몇 개입니까\", \"combined\" / \"the two of "
                           "them in total\", \"둘 중에 누가 더 (many/few)\" asked of two named holders.",
     "10_topic_switch": "Topic-switch ellipsis: \"What about X?\", \"And X?\", \"And in PLACE?\", \"And THING?\", "
                        "\"X는요?\", \"X는?\", \"THING은?\", \"PLACE는 어떻습니까?\" (the question of the previous turn "
                        "asked again about a new holder, place or thing).",
     "11_repair_with_question": "Referent repair with the question in the same turn: \"I mean X. How many does X "
-                               "hold?\", \"It's X. How many does X have?\", \"X 말입니다. 몇 묶음입니까?\", \"X요. X는 "
+                               "hold?\", \"It's X. How many does X have?\", \"X 말입니다. X는 몇 묶음입니까\", \"X요. X는 "
                                "몇 개예요?\"; and bare-name repairs as a turn (\"X요.\", \"X 님입니다.\", \"X, I "
                                "mean.\", \"X is the one I mean.\") followed by the question next turn.",
     "12_cross_language": "Cross-language turns: a question in the other language inside a dialogue.",

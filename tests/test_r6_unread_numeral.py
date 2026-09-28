@@ -20,6 +20,9 @@ def test_a_numeral_with_a_particle_counts_as_a_number():
     assert ReasoningContext._counts_something("셋을 더 넣었다", parser)
     # a word that only ends like a particle is not a number
     assert not ReasoningContext._counts_something("단추 이야기는 재밌다", parser)
+    # a Sino-Korean digit that is also a word is not a count (일: a matter, 이: a tooth)
+    assert not ReasoningContext._counts_something("도윤이 소라에게 베푼 일은 전달 가능한가", parser)
+    assert not ReasoningContext._counts_something("이가 아프다", parser)
 
 
 def test_an_unread_statement_with_such_a_numeral_holds_the_count():

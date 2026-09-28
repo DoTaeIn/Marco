@@ -389,6 +389,10 @@ class RelationalParser:
         if not endings:
             raise ValueError("question_inflection_requires_declared_question_endings"
                              if asking else "inflection_requires_declared_parsing_endings")
+        if annotation.get("endings"):
+            # The example names the endings it is said with: a statement that ends the sentence
+            # is not also read as the opening clause of a longer one (있었는데 ...).
+            endings = [ending for ending in endings if ending in annotation["endings"]]
         args = {key: annotation[key] for key in ("stem", "tense", "ending", "kind")}
         canonical_forms = inflect(**args, grammar=self.inflection_grammar)
         slot_end = max((example["text"].index(value) + len(value) for value in example["slots"].values()), default=0)

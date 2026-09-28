@@ -93,15 +93,15 @@ CASES = {
     # A4. A count given in a following fragment: of a holding said without its count, or of a transfer.
     "A4": {
         "build": [
-            (EN, ["Nora has some pens.", "Six, to be exact.", "How many pens does Nora have?"], 6),
+            (EN, ["Nora has some pens.", "Seven, to be exact.", "How many pens does Nora have?"], 7),
             (EN, ["Lena has some cups.", "Twelve, to be exact.", "How many cups does Lena have?"], 12),
             (EN, ["Ivo has some kites.", "Exactly four.", "How many kites does Ivo have?"], 4),
             (EN, ["Tessa has 8 spoons.", "Hugo has 3 spoons.", "Tessa gave Hugo some spoons.", "Two, to be exact.",
                   "How many spoons does Hugo have?"], 5),
-            (KO, ["보라한테 연필이 있어.", "여섯 개야.", "보라는 연필이 몇 개 있어?"], 6),
+            (KO, ["보라한테 연필이 있어.", "일곱 개야.", "보라는 연필이 몇 개 있어?"], 7),
             (KO, ["다온은 우표가 좀 있어요.", "열두 장이에요.", "다온은 우표가 몇 장 있어요?"], 12),
-            (KO, ["지유는 사과가 여덟 개 있어.", "은호는 사과가 한 개 있어.", "지유가 은호한테 사과를 줬어. 두 개.",
-                  "은호는 사과가 몇 개 있어?"], 3),
+            (KO, ["지유는 사과가 여덟 개 있어.", "은호는 사과가 한 개 있어.", "지유가 은호한테 사과를 줬어. 세 개.",
+                  "은호는 사과가 몇 개 있어?"], 4),
             (KO, ["민재는 붓을 가지고 있어요.", "정확히는 네 자루예요.", "민재는 붓이 몇 자루 있어요?"], 4),
         ],
         "check": [
@@ -222,8 +222,8 @@ CASES = {
                   "It's Pia. How many cups does Pia have?"], 4),
             (EN, ["Otto has 8 spoons.", "Hugo has 3 spoons.", "How many spoons does he have?", "Otto is the one I mean.",
                   "How many spoons does Otto have?"], 8),
-            (EN, ["Ivo has 2 kites.", "Bram has 11 kites.", "How many kites does he hold?", "Bram, I mean.",
-                  "How many kites does Bram hold?"], 11),
+            (EN, ["Ivo has 2 kites.", "Bruno has 11 kites.", "How many kites does he hold?", "Bruno, I mean.",
+                  "How many kites does Bruno hold?"], 11),
             (KO, ["보라는 연필이 여섯 개 있어요.", "보미는 연필이 세 개 있어요.", "걔는 연필이 몇 개 있어요?",
                   "보라요. 보라는 연필이 몇 개예요?"], 6),
             (KO, ["다온은 우표가 열두 장 있어요.", "다솜은 우표가 네 장 있어요.", "그 사람은 우표가 몇 장 있어요?",
@@ -320,7 +320,7 @@ def test_an_amount_alone_changes_no_statement_that_was_read_or_is_not_the_last_t
     _ctx, rows = play(EN, ["Nora has 5 pens.", "Otto has 2 pens.", "Nora gave Otto some pens.",
                            "How many pens does Otto have?", "Three.", "How many pens does Otto have?"])
     assert rows[-1]["status"] != "answered"
-    _ctx, rows = play(KO, ["보라는 연필이 다섯 개 있어. 두 개.", "보라는 연필이 몇 개 있어?"])
+    _ctx, rows = play(KO, ["보라는 연필이 다섯 개 있어. 세 개.", "보라는 연필이 몇 개 있어?"])
     assert rows[-1]["status"] != "answered"
 
 

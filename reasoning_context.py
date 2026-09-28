@@ -261,9 +261,14 @@ class ReasoningContext:
                 return True
             # 조사를 단 수사도 수다. `그중 하나를 빌려줬어` 의 `하나를` 을 놓치면, 못 읽은
             # 그 말이 누군가의 수를 옮겼는데도 옛 값을 답으로 낸다.
+            # Only the native numerals said as nouns (하나를, 셋을): the Sino-Korean digits are also
+            # common words (일은, 이가), and a determiner form (두, 세) stands before a counter.
+            nouns = (getattr(parser, "word_order_forms", None) or {}).get("numeral_nouns") or {}
             bare = split_particle(token, getattr(parser, "case_particles", ()) or (),
-                                  getattr(parser, "slot_particles", ()) or ())
-            if bare and parse_numeral(bare[0], numerals) is not None:
+                                  getattr(parser, "slot_particles", ()) or ()) if nouns else None
+            native = {k: v for k, v in numerals.items() if k in ("atoms", "tens")}
+            if (bare and not bare[0].endswith(tuple(nouns.get("determiners", [])))
+                    and parse_numeral(bare[0], native) is not None):
                 return True
         return False
 
