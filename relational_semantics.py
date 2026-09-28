@@ -2771,6 +2771,12 @@ class RelationalParser:
 
         def split(name):
             words = name.split()
+            if len(words) == 1:
+                # a one-word holder keeps a case the example's own particle stood on (도서관에는 일곱 개예요 ->
+                # 도서관에): the case is no part of the name (소유자리.홀로떼는조사)
+                case = next((p for p in (self.possessor or {}).get("lone_cases", [])
+                             if name.endswith(p) and len(name) - len(p) >= shortest), None)
+                return name[:-len(case)] if case else name
             for index, word in enumerate(words[:-1]):
                 # (a particle the owner's last sound does not take is no particle: 나은 is a name, not 나 + 은)
                 particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)

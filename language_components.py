@@ -220,7 +220,8 @@ def _validate_possessor(declared):
         raise ValueError("language pack '소유자리' needs a 관계 list and a 조사 list")
     return {"relations": list(declared["관계"]),
             "particles": sorted(declared["조사"], key=len, reverse=True),
-            "min_length": int(declared.get("최소글자", 1))}
+            "min_length": int(declared.get("최소글자", 1)),
+            "lone_cases": [value for value in declared.get("홀로떼는조사", []) if isinstance(value, str) and value]}
 
 
 def _validate_quantity_chain(declared):

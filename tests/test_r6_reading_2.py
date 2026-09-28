@@ -294,6 +294,22 @@ def test_a_subject_with_do_in_a_clause_that_leaves_the_thing_out_is_not_read():
     assert "3" in asked["answer"]
 
 
+def test_an_amount_said_with_man_restates_the_holders_count():
+    # a wrong answer on main: 구슬이 stayed in the thing's name and the old count was said
+    *_, asked = run(KO, ["하루는 구슬이 다섯 개 있어.", "하루가 모루에게 구슬 한 개를 줬어.", "하루는 구슬이 세 개만 있어.",
+                         "하루는 구슬이 몇 개 있어?"])
+    assert asked["status"] == "answered" and "3" in asked["answer"]
+    # a place said with 에는: the same place as its other statements
+    *_, asked = run(KO, ["상자에는 구슬이 다섯 개 있어.", "상자에는 구슬이 세 개만 있어.", "상자에는 구슬이 몇 개 있어?"])
+    assert "3" in asked["answer"]
+
+
+def test_an_elliptic_count_of_a_place_said_with_its_case():
+    # G5-2 item 5: the elliptic count after a place with 에는 counts that place's things
+    *_, asked = run(KO, ["창고에 상자가 있어.", "창고에는 정확히 아홉 개예요.", "창고에는 상자가 몇 개 있어?"])
+    assert asked["status"] == "answered" and "9" in asked["answer"]
+
+
 def score(case):
     from tests.test_r6_reading_forms import score as scored
     return scored(case)

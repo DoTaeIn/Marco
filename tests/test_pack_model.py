@@ -56,7 +56,7 @@ def test_creation_includes_sources_not_runtime_indexes_and_preserves_content():
     # the elided-location event shape, and state-lookup action syntax are pack
     # data, not runtime indexes.
     # Promise creation/cancellation/status are pack-declared state examples.
-    assert len(candidate.relational_data["examples"]) == 115   # round 6: a use-up with the counted noun left out, a holding said without its count (two forms), the giver left out, and the fragment amounts
+    assert len(candidate.relational_data["examples"]) == 116   # round 6: a use-up with the counted noun left out, a holding said without its count (two forms), the giver left out, and the fragment amounts; reading 2: the thing with its subject particle and the amount with 만 (구슬이 18개만 있다)
     assert len(candidate.relational_data["rules"]) == 6
     assert "rules" not in candidate.language["relations"]
 
