@@ -830,29 +830,29 @@ Code identifiers (file, function and variable names) are English. The knowledge
 is Korean: `.kg` section headers, node names, verdicts and reply templates are
 the product, and they stay as authored.
 
-**The root is about to change.** Most code still sits at the repository root:
-61 `.py` files. Goal S4 ([file moves](docs/ko/2026-09-24-file-moves-goal.md))
-moves 53 of them into packages between understanding rounds 4 and 5, on the
-owner's go, rewriting every reference in the same commit and leaving no
-compatibility shims; 8 stay. `python tools/doc_facts.py layout` prints this
-split from `docs/architecture/target-map.json`, and the tree below is its
-output at `5f321a3`, old file name → new module name where the name changes.
-After S4 a flat `import engine` still works for the seven split files that
-stay; everything else is imported by its package path.
+**The root changed in S4.** The repository root held 61 `.py` files. Goal S4
+([file moves](docs/ko/2026-09-24-file-moves-goal.md)) moved 53 of them into
+packages after understanding round 6, rewriting every reference in the same
+commit and leaving no compatibility shims; 8 stay. `python tools/doc_facts.py
+layout` prints the split from `docs/architecture/target-map.json`; the tree
+below shows old file name → new module name where the name changed.
+A flat `import engine` still works for the seven split files that stay;
+everything else is imported by its package path
+(`from marco.reasoning.context import ReasoningContext`).
 
 ```text
 stays at the root in S4           engine · relational_semantics · language_components · encoder
 (split later; frozen until          pack_model · purpose_graph · goal_runtime · conftest
  MARCO 1)
 
-moves in S4 (53 files)
+moved in S4 (53 files)
   marco/                          progress
   marco/language/                 hangul · frame_induction → frames · input_understanding → understanding
                                   numeral_semantics → numerals · semantic_parser → representation
-                                  expression_graph + verbal_expression → arithmetic
-                                  passage_classifier + passage_components → passages
+                                  expression_graph → arithmetic · verbal_expression → arithmetic_spoken
+                                  passage_classifier → passages · passage_components (same name)
   marco/language/realizer/        affect_state → affect · output_contracts → contracts
-                                  response_composer → discourse (a module the realizer already has)
+                                  response_composer → composer (beside discourse)
   marco/perception/               document_visual → visual · document_vlm → vlm
                                   document_objects → objects · document_pose → pose
   marco/storage/                  kgpack · kgbin · conversation_store → conversations
@@ -860,7 +860,8 @@ moves in S4 (53 files)
   marco/knowledge/ingest/         build → text · document_kg → documents · dict_extract → dictionary
                                   web_learn → web
   marco/reasoning/                graph_inference → inference · reasoning_context → context
-                                  action_runtime → actions · situation_reasoner + state_engine → state
+                                  action_runtime → actions · state_engine → state
+                                  situation_reasoner → situation
   marco/learning/                 experience_concepts → concepts · rule_learning → rules
                                   proof_chunking → chunking · expression_learning → expressions
                                   semantic_feedback → feedback · self_authoring → authoring
@@ -873,7 +874,8 @@ moves in S4 (53 files)
 
   with them (S4 goal):            raw_data.txt, algorithms/ → experiments/ · document_vision.swift
                                   → marco/perception/ · graphify-out/ → data/ · .vec_*.npz caches
-                                  → .marco/cache/
+                                  → .marco/cache/ · 그래프쓰임.json, conversations.json
+                                  → .marco/state/ · vision tools → .marco/tools/
 
 packages already                  marco/ · marco/language/ · marco/language/realizer/ · marco/trace/
                                   mco/ · mco/backends/

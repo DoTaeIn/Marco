@@ -1,5 +1,5 @@
 {
- "_about": "Structure audit A1/A6, 2026-09-22, audited commit 6195040. Current module -> target module. 'layers': a module may import only targets whose layer is <= its own. Checked by `python tools/import_graph.py --targets docs/architecture/target-map.json`. Split modules name their primary target under modules; splits gives line ranges of the audited commit. Layers follow docs/architecture/structure-audit.md A6.",
+ "_about": "Structure audit A1/A6, 2026-09-22, audited commit 6195040. Current module -> target module. 'layers': a module may import only targets whose layer is <= its own. Checked by `python tools/import_graph.py --targets docs/architecture/target-map.json`. Split modules name their primary target under modules; splits gives line ranges of the audited commit. Layers follow docs/architecture/structure-audit.md A6. 'moved_in_s4': the whole-file rows done by goal S4 on 2026-09-28; four of them took a sibling name (arithmetic_spoken, passage_components, situation, composer) and their rows name it.",
  "layers": {
   "marco": 0,
   "marco._paths": 0,
@@ -161,5 +161,16 @@
    [1, 146, "marco.cognition.goals"],
    [147, 210, "marco.host.permissions"]
   ]
- }
+ },
+ "moved_in_s4": [
+  "act", "action_runtime", "affect_state", "alias_diag", "alma_cli", "alma_environment",
+  "alma_runtime", "autocoder", "build", "cache_tool", "codegen", "conversation_store",
+  "dict_extract", "document_kg", "document_objects", "document_pose", "document_visual", "document_vlm",
+  "experience_concepts", "explain", "expression_graph", "expression_learning", "frame_induction", "graph_dialogue",
+  "graph_inference", "hangul", "input_understanding", "intelligence_check", "kgbin", "kgpack",
+  "local_definitions", "nai", "numeral_semantics", "output_contracts", "passage_classifier", "passage_components",
+  "progress", "proof_chunking", "reasoning_context", "response_composer", "routing_benchmark", "rule_learning",
+  "self_authoring", "self_learning", "semantic_feedback", "semantic_parser", "situation_reasoner", "state_engine",
+  "universal_agent", "verbal_expression", "vision", "web_learn", "yardstick"
+ ]
 }

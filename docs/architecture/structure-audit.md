@@ -555,6 +555,15 @@ before the gate above holds, even if it looks clean.
 
 ## A8. Phase plan with gates
 
+**S4, 2026-09-28.** Phases 2, 4 and 5 are done for the 53 whole files: moved in six batches of at most
+nine, every import package-qualified in the same commit, no shim written, so none to remove. Four files
+took a sibling name instead of a merge (`docs/architecture/target-map.json`, `moved_in_s4`). Phase 3, the
+splits of the seven root files, is pending and frozen until MARCO 1. `marco._paths` was not needed:
+each moved file finds the root from its own depth. Layer rule after S4: 7 edges from `marco/` to
+`bench/` or `views/`; 5 stood before in `marco/trace` (`drive.py`, `__main__.py`, the drivers of the scorers),
+2 came with `marco/learning/authoring.py` (`bench.routing_benchmark`, `bench.yardstick`, imported inside
+its self-check). All 7 are deferred to the split phase: removing them edits logic, which S4 may not.
+
 Test command for every gate: the A0 command, on an export of the phase's commit plus
 this clone's ignored files. **Base number:** A0 = 770 passed / 4 failed (the 4 ids
 above). If `main` moved before Phase 1 (it will: goals 1 and 2 merge first), re-run A0
@@ -566,7 +575,7 @@ with the same failing ids. `K` = cases in the compatibility test added in Phase 
 | 1 Skeleton | 0. Create `marco/__init__.py`, `marco/_paths.py`, and `__init__.py` for `language`, `language/realizer`, `perception`, `storage`, `knowledge`, `knowledge/ingest`, `reasoning`, `learning`, `host`, `cognition`, `runtime`; `alma/__init__.py` | none | passed = A0′; failed ids = A0′; root `.py` = 61; `--targets` rows 61, TBD 0; `all_modules_top` SCCs = 0; runtime SCCs = 2 (5 elementary) |
 | 2 Clean moves | the 51 unsplit rows of A1 in batches of ≤ 10, not on A7 until A7's gate holds; each moved file's `__file__` paths switch to `marco._paths` in the same commit | one per moved file (template below); plus `tests/test_compat_imports.py`: old name imports and `is` the new module | per batch: passed = A0′ + K; failed ids = A0′; root `.py` = 61; `--targets` upward ≤ 9, never a new one; runtime SCCs ≤ 2 |
 | 3 Splits | `engine` (20 parts), `relational_semantics` (4), `language_components` (2), `encoder` (2), `pack_model` (2), `goal_runtime` (2), `purpose_graph` (2); `explain` per its A1 row; fix the 8 edges of A6 | the old file becomes the shim (engine.py keeps every name its 40 importers take) | passed = A0′ + K; `--targets` upward inside `marco` = 0; package SCCs = 0; `engine.py --check` same outcome as A0 (exit 1, same assertion) unless fixed in its own commit first; `bench/routing_benchmark.py --답` stdout sha1 = A0's (`d1937d7e…`) |
-| 4 Imports | every internal import package-qualified; `NAI_*` → `MARCO_*` with fallback; pack string `marco.runtime.graph_dialogue:backend` (styles/한국어.json:2993) → `marco.runtime.marco.runtime.graph_dialogue:backend`; `mco/backends/marco.py:54–55` (W2) | unchanged | passed = A0′ + K; edges into a shim from outside `tests/test_compat_imports.py` = 0 (tool: edges whose target is a root shim); upward = 0; package SCCs = 0 |
+| 4 Imports | every internal import package-qualified; `NAI_*` → `MARCO_*` with fallback; pack string `graph_dialogue:backend` (styles/한국어.json:2993) → `marco.runtime.graph_dialogue:backend`; `mco/backends/marco.py:54–55` (W2) | unchanged | passed = A0′ + K; edges into a shim from outside `tests/test_compat_imports.py` = 0 (tool: edges whose target is a root shim); upward = 0; package SCCs = 0 |
 | 5 Remove shims | delete the 59 shims (51 + 7 split sources + `explain`) and `marco/reasoning/situation.py` (0 importers); keep `conftest.py`; `tests/test_compat_imports.py` goes | — | root `.py` = 1; passed = A0′; failed ids = A0′; README commands updated and each run once |
 
 Shim template. It keeps module identity, so a test that patches a module attribute
