@@ -284,6 +284,16 @@ def test_getting_from_a_source_is_the_source_giving(verb):
     assert "3" in buyer["answer"]
 
 
+def test_a_subject_with_do_in_a_clause_that_leaves_the_thing_out_is_not_read():
+    # a wrong answer on main: 단추도 was read as a holder of marbles, and the total of marbles said 5 (G5-2 item 10)
+    *_, total, own = run(KO, ["하루는 구슬이 두 개 있고 단추도 세 개 있어.", "다들 구슬을 합치면 몇 개야?",
+                              "하루는 구슬이 몇 개 있어?"])
+    assert total["status"] != "answered" and own["status"] != "answered"
+    # the holder said with 도 and its thing is read (모루도 구슬이 세 개 있어: 모루's marbles)
+    *_, asked = run(KO, ["하루는 구슬이 두 개 있어.", "모루도 구슬이 세 개 있어.", "모루는 구슬이 몇 개 있어?"])
+    assert "3" in asked["answer"]
+
+
 def score(case):
     from tests.test_r6_reading_forms import score as scored
     return scored(case)

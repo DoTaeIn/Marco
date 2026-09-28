@@ -377,8 +377,9 @@ def _validate_ellipsis(declared):
         if key.startswith("_"):
             continue
         if key == "topic_continuity":
-            if (not isinstance(value, dict) or set(value) - {"item_particles"}
-                    or not all(isinstance(p, str) and p for p in value.get("item_particles", []))):
+            if (not isinstance(value, dict) or set(value) - {"item_particles", "undecided_particles"}
+                    or not all(isinstance(p, str) and p for key in ("item_particles", "undecided_particles")
+                               for p in value.get(key, []))):
                 raise ValueError("invalid ellipsis declaration: topic_continuity")
             continue
         if key not in allowed or value not in allowed[key]:
