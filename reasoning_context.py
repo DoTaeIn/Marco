@@ -403,6 +403,16 @@ class ReasoningContext:
                 if (pinned < entry["at"] <= turn and self._counts_something(entry["text"], parser)
                         and all(word in said or word in plurals for word in words)):
                     return entry["text"]
+            # A holder whose count was never said under this key, but an earlier statement counted a key with
+            # every word of it (민혁 트럭에 자두 for 민혁 자두, a place phrase kept in the name): that statement may be
+            # this holder's count, so what the transfer makes it is not said as known (G6).
+            if change.get("before") is None and pinned < 0:
+                other = next((fact for fact in facts if fact["triple"][1] in numeric and fact["triple"][0] != subject
+                              and isinstance(fact["triple"][0], str)
+                              and (fact.get("evidence") or {}).get("turn", -1) < turn
+                              and all(word in fact["triple"][0].lower().split() for word in words)), None)
+                if other is not None:
+                    return (other.get("evidence") or {}).get("text") or other["triple"][0]
         return None
 
 
