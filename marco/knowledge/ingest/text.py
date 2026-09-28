@@ -23,6 +23,9 @@ Mnemosyne 의 concept_graph 와 같은 모양이다.
 제목이 있으면 그것이 그 대목의 주제가 되어 '설명함' 엣지가 생긴다.
 제목을 잘 달수록 그래프가 좋아진다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 import glob
 import json
 import os
@@ -934,7 +937,7 @@ if __name__ == "__main__":
     # 얹어서 다시 지어야 하기 때문이다 — 따로 지으면 두 그래프가 되고,
     # 그러면 배운 것이 원래 알던 것과 한자리에서 겨루지 못한다.
     folders = argv or [os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "data/법지식")]
+        os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, os.pardir, os.pardir)), "data/법지식")]
     folder = folders[0]
     out_edges = (sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv
             else os.path.join(folder, "지식그래프.json"))

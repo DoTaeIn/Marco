@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 import kgpack
-import web_learn
+import marco.knowledge.ingest.web as web_learn
 from conversation_store import ConversationStore
 from goal_runtime import GoalRuntime
 from views.kgpack_ui import AppState
@@ -20,9 +20,9 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "내가 어제 멀미가 심했는데 어떤 약을 먹으면 좋을까?"
         hits = [{"url": "https://a.example/motion", "도메인": "a.example"},
                 {"url": "https://b.example/motion", "도메인": "b.example"}]
-        with patch("web_learn.question_word", return_value="멀미"), \
-             patch("web_learn.search", return_value=hits) as search, \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.question_word", return_value="멀미"), \
+             patch("marco.knowledge.ingest.web.search", return_value=hits) as search, \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["멀미는 이동 중 생길 수 있는 증상이다."]),
                  ("B", ["멀미가 계속되면 의료 전문가와 상담할 수 있다."]),
              ]):
@@ -35,8 +35,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         self.assertEqual(research["need"], {"kind": "external_fact", "topic": "멀미", "resolved": True})
 
     def test_research_keeps_missing_external_evidence_distinct(self):
-        with patch("web_learn.question_word", return_value="없는주제"), \
-             patch("web_learn.search", return_value=[]):
+        with patch("marco.knowledge.ingest.web.question_word", return_value="없는주제"), \
+             patch("marco.knowledge.ingest.web.search", return_value=[]):
             research = GoalRuntime(".").research("없는주제를 알려줘")
         self.assertFalse(research["verified"])
         self.assertEqual(research["diagnosis"], "external_evidence_missing")
@@ -46,8 +46,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "광합성은 어디에서 일어나?"
         hits = [{"url": "https://a.example/photosynthesis", "도메인": "a.example"},
                 {"url": "https://b.example/photosynthesis", "도메인": "b.example"}]
-        with patch("web_learn.search", return_value=hits), \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["광합성은 빛에너지를 이용하여 유기물을 합성하는 과정이다."]),
                  ("B", ["광합성은 식물의 중요한 생명 활동 중 하나이다."]),
              ]):
@@ -63,8 +63,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "광합성은 어디에서 일어나?"
         hits = [{"url": "https://a.example/photosynthesis", "도메인": "a.example"},
                 {"url": "https://b.example/photosynthesis", "도메인": "b.example"}]
-        with patch("web_learn.search", return_value=hits), \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["광합성은 식물 세포의 엽록체에서 일어난다."]),
                  ("B", ["광합성은 엽록체 안에서 빛을 이용해 진행된다."]),
              ]):
@@ -77,8 +77,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "광합성은 어디에서 일어나?"
         hits = [{"url": "https://a.example/photosynthesis", "도메인": "a.example"},
                 {"url": "https://b.example/photosynthesis", "도메인": "b.example"}]
-        with patch("web_learn.search", return_value=hits), \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["광합성은 생명 활동이다.", "광합성은 빛을 쓴다.", "광합성은 중요하다.",
                         "광합성은 엽록체에서 일어난다."]),
                  ("B", ["광합성은 식물이 한다.", "광합성은 에너지를 만든다.", "광합성은 널리 알려졌다.",
@@ -94,8 +94,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "광합성은 어디에서 일어나?"
         hits = [{"url": "https://a.example/photosynthesis", "도메인": "a.example"},
                 {"url": "https://b.example/photosynthesis", "도메인": "b.example"}]
-        with patch("web_learn.search", return_value=hits), \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["광합성은 학교에서 배운다."]),
                  ("B", ["광합성은 교실에서 공부한다."]),
              ]):
@@ -109,8 +109,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "광합성은 어디에서 일어나?"
         hits = [{"url": "https://a.example/photosynthesis", "도메인": "a.example"},
                 {"url": "https://b.example/photosynthesis", "도메인": "b.example"}]
-        with patch("web_learn.search", return_value=hits), \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["광합성은 학교에서 배우며 운동장에서 경기가 일어난다."]),
                  ("B", ["광합성은 교실에서 배우며 마당에서 행사가 진행된다."]),
              ]):
@@ -123,8 +123,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "광합성은 어디에서 일어나?"
         hits = [{"url": "https://a.example/photosynthesis", "도메인": "a.example"},
                 {"url": "https://b.example/photosynthesis", "도메인": "b.example"}]
-        with patch("web_learn.search", return_value=hits), \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["광합성과 세포 호흡은 서로 다른 세포 구획에서 일어난다."]),
                  ("B", ["광합성과 세포 호흡은 서로 다른 세포 구획에서 진행된다."]),
              ]):
@@ -136,8 +136,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "광합성은 어디에서 일어나?"
         hits = [{"url": "https://a.example/photosynthesis", "도메인": "a.example"},
                 {"url": "https://b.example/photosynthesis", "도메인": "b.example"}]
-        with patch("web_learn.search", return_value=hits), \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["광합성은 엽록체에서 일어난다."]),
                  ("B", ["광합성은 미토콘드리아에서 일어난다."]),
              ]):
@@ -151,8 +151,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "광합성은 어디에서 일어나?"
         hits = [{"url": "https://a.example/photosynthesis", "도메인": "a.example"},
                 {"url": "https://b.example/photosynthesis", "도메인": "b.example"}]
-        with patch("web_learn.search", return_value=hits), \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["광합성은 식물의 중요한 생명 활동이다.", "엽록체 안에서 빛을 이용한다."]),
                  ("B", ["광합성은 엽록체에서 일어난다."]),
              ]):
@@ -166,8 +166,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
         question = "광합성은 어디에서 일어나?"
         hits = [{"url": "https://a.example/photosynthesis", "도메인": "a.example"},
                 {"url": "https://b.example/photosynthesis", "도메인": "b.example"}]
-        with patch("web_learn.search", return_value=hits), \
-             patch("web_learn.read_source", side_effect=[
+        with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+             patch("marco.knowledge.ingest.web.read_source", side_effect=[
                  ("A", ["광합성은 엽록체에서 일어난다."]),
                  ("B", ["광합성은 엽록체에서 일어나지 않는다."]),
              ]):
@@ -187,8 +187,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
             pack = root / "sample.kgpack"
             kgpack.write_pack(pack, [Path("graphs/graph_자가학습.kg")] + kgpack.model_files(Path(".")), root=Path("."))
             app = AppState(pack, overlay_root=root / "overlay")
-            with patch("web_learn.search", return_value=hits), \
-                 patch("web_learn.read_source", side_effect=[
+            with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+                 patch("marco.knowledge.ingest.web.read_source", side_effect=[
                      ("A", ["광합성은 빛에너지를 이용하여 유기물을 합성하는 과정이다."]),
                      ("B", ["광합성은 식물의 중요한 생명 활동 중 하나이다."]),
                  ]):
@@ -206,8 +206,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
             pack = root / "sample.kgpack"
             kgpack.write_pack(pack, [Path("graphs/graph_자가학습.kg")] + kgpack.model_files(Path(".")), root=Path("."))
             app = AppState(pack, overlay_root=root / "overlay")
-            with patch("web_learn.search", return_value=hits), \
-                 patch("web_learn.read_source", side_effect=[
+            with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+                 patch("marco.knowledge.ingest.web.read_source", side_effect=[
                      ("A", ["광합성은 엽록체에서 일어난다."]),
                      ("B", ["광합성은 미토콘드리아에서 일어난다."]),
                  ]):
@@ -238,7 +238,7 @@ class LearningQuestionFlowTests(unittest.TestCase):
         # 코드에 '요청끝'이라는 표현이 없어도, 언어 데이터가 선언하면 학습
         # 질문으로 인식한다. 반대로 선언 밖의 문장은 평서문으로 남는다.
         style = {"학습질문종결": ["요청끝"], "학습주제제외": [], "질문틀": [], "떼는조사": []}
-        with patch("web_learn._read_dialect", return_value=style):
+        with patch("marco.knowledge.ingest.web._read_dialect", return_value=style):
             self.assertEqual(web_learn.extract_topic({}, "사과 요청끝")[0], "사과")
             self.assertEqual(web_learn.extract_topic({}, "사과 요청아님"), (None, []))
 
@@ -253,7 +253,7 @@ class LearningQuestionFlowTests(unittest.TestCase):
             plan = runtime.plan_learning(question, research, "risk", target)
             self.assertEqual(plan["actions"][0]["payload"]["topic"], "멀미")
             runtime.remember("session_123", plan)
-            with patch("web_learn.save_verified_knowledge", return_value=[{"주제": "멀미"}]) as learn:
+            with patch("marco.knowledge.ingest.web.save_verified_knowledge", return_value=[{"주제": "멀미"}]) as learn:
                 outcome = runtime.approve("session_123", plan["plan_id"], plan["plan_hash"], [plan["actions"][0]["id"]])
             self.assertEqual(outcome["executed"][0]["status"], "done")
             self.assertEqual(learn.call_args.args[1], "멀미")
@@ -314,8 +314,8 @@ class LearningQuestionFlowTests(unittest.TestCase):
             app = AppState(source_pack, overlay_root=root / "overlay")
             # 앞선 수량 대화는 실제 상태 계산으로 끝나고, 아래 조사 주제와 섞이지 않는다.
             state = app.turn("사과는 5개 있다. 사과 1개를 꺼냈다. 지금 사과는 몇 개야?", "new_topic_flow")
-            with patch("web_learn.search", return_value=hits), \
-                 patch("web_learn.read_source", side_effect=[
+            with patch("marco.knowledge.ingest.web.search", return_value=hits), \
+                 patch("marco.knowledge.ingest.web.read_source", side_effect=[
                      ("A", ["광합성은 빛 에너지를 화학 에너지로 전환한다."]),
                      ("B", ["광합성은 식물이 이산화탄소로 유기물을 만드는 과정이다."]),
                  ]):

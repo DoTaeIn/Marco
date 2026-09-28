@@ -21,8 +21,7 @@ _sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import json
 import sys
 
-import act
-
+import marco.host.act as act
 graph = "graphs/graph_범용작업.kg"
 
 

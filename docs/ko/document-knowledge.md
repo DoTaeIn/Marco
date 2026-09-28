@@ -25,6 +25,6 @@ OCR·원문·페이지 위치 등 다음에 필요한 자료와 검토 지점을
 CLI에서도 확인할 수 있다.
 
 ```sh
-python document_kg.py 논문.pdf --out /private/tmp/paper.graph.json
-python document_kg.py 발표자료.pptx --report
+python -m marco.knowledge.ingest.documents 논문.pdf --out /private/tmp/paper.graph.json
+python -m marco.knowledge.ingest.documents 발표자료.pptx --report
 ```

@@ -76,7 +76,7 @@ class StructuralBackend:
         relational = parser.parse(raw)
         if relational:
             return self._candidate(raw, "relational_graph", relational)
-        import expression_graph
+        import marco.language.arithmetic as expression_graph
         expression = expression_graph.parse(raw) if self.model is None else self.model.parse_expression(raw)
         if expression:
             relation = "linear_equation" if len(expression["roots"]) == 2 else "arithmetic"

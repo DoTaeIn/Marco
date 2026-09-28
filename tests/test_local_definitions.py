@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import pytest
 
-from local_definitions import DefinitionLookup
+from marco.knowledge.definitions import DefinitionLookup
 import engine
 
 

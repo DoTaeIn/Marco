@@ -56,7 +56,7 @@ def is_noun(word):
 
 def build(max_n=5):
     """-> {상위어: [하위어, ...]}. 하위어가 max_n 개를 넘는 상위어는 뺀다."""
-    import dict_extract
+    import marco.knowledge.ingest.dictionary as dict_extract
     genus, _target, _action = dict_extract.build_chain(dict_extract.read_dict())
     below = collections.defaultdict(list)
     for word, upper in genus.items():

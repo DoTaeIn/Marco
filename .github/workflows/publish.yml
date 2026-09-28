@@ -29,10 +29,10 @@ jobs:
           tag="${{ github.event.release.tag_name }}"
           test "$tag" = "mco-v$version" || { echo "tag $tag is not mco-v$version"; exit 1; }
       - name: Build
-        # Run from outside the checkout: the repository's own build.py shadows the build tool.
+        # Run from outside the checkout: the repository's own marco/knowledge/ingest/text.py shadows the build tool.
         run: |
           cd /tmp
-          python -m build --outdir "$GITHUB_WORKSPACE/pkg" "$GITHUB_WORKSPACE"
+          python -m marco.knowledge.ingest.text --outdir "$GITHUB_WORKSPACE/pkg" "$GITHUB_WORKSPACE"
           python -m twine check "$GITHUB_WORKSPACE"/pkg/*
       - uses: actions/upload-artifact@v4
         with:

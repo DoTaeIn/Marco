@@ -22,6 +22,9 @@ KG_LEARN_MAX_RECORDS, KG_LEARN_MAX_BYTES, KG_LEARN_COOLDOWN 환경변수로
 
 인코더는 KG_ENCODER=문자 를 기본으로 둔다. 토큰을 쓰지 않는다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 import html
 from html.parser import HTMLParser
 import json
@@ -410,7 +413,7 @@ def topic_related(topic, txt, dialect=None):
 
 def _morph():
     """`개념뽑기`가 쓰는 형태소기를 그대로 함께 쓴다. 두 벌 띄우지 않는다."""
-    import build
+    import marco.knowledge.ingest.text as build
     if build._kiwi is None:
         from kiwipiepy import Kiwi
         build._kiwi = Kiwi()
@@ -435,7 +438,7 @@ def question_word(phrase, dialect=None):
     if not phrase:
         return []
     try:
-        import build
+        import marco.knowledge.ingest.text as build
         # 팩 런타임은 저작 도구의 도메인 불용어를 답변 판단에 빌려오지
         # 않는다. 형태소 분석기는 구조 도구일 뿐이고, 어떤 낱말을 버릴지는
         # 선택된 언어팩이 정한다.

@@ -1,6 +1,6 @@
 import re
 
-with open("vision.py", "r", encoding="utf-8") as f:
+with open("experiments/vision.py", "r", encoding="utf-8") as f:
     content = f.read()
 
 # 1. Modify _표적덩어리후보 signature and return logic
@@ -95,5 +95,5 @@ content = content.replace(
     '연결="--연결" in sys.argv, 볼록껍질="--볼록껍질" in sys.argv)'
 )
 
-with open("vision.py", "w", encoding="utf-8") as f:
+with open("experiments/vision.py", "w", encoding="utf-8") as f:
     f.write(content)

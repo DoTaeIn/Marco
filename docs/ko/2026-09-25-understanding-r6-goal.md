@@ -107,8 +107,8 @@ G6.0b **Withdrawn evidence: the ledger says 5, the gate says 0.** `python -m
      `docs/requests/G6-1.md` for the owner). Report which, with the five turn
      ids of dev4.
 
-G6.0c **External phrasing.** `build.py phrase` stays as it is for the local model, and
-     `build.py assemble --phrasings-from <jsonl>` accepts phrasings written outside by
+G6.0c **External phrasing.** `marco/knowledge/ingest/text.py phrase` stays as it is for the local model, and
+     `marco/knowledge/ingest/text.py assemble --phrasings-from <jsonl>` accepts phrasings written outside by
      another model or agent, in the same record format (scenario id, language, the
      turns as written, the source's name and date). The owner's data rule applies: the
      external source receives only the scenarios and the class descriptions of this
@@ -157,7 +157,7 @@ in `engine.py`, `reasoning_context.py`, `views/kgpack_ui.py`, and all of
 `marco/language/`. Requests to `docs/requests/G6-<n>.md`.
 
 Must not touch: `marco/language/`, `mco/`, `alma_*`, the gate scorers beyond
-`--dataset`, any frozen area. `build.py` never reads `data/benchmarks/dialogues_v1/`
+`--dataset`, any frozen area. `marco/knowledge/ingest/text.py` never reads `data/benchmarks/dialogues_v1/`
 or `reasoning_v1/`.
 
 ## Working conditions

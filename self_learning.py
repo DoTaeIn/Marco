@@ -84,7 +84,7 @@ def unknown_ones(lines=None, widen=False):
     -> [(말, 횟수, 그 말이 나온 물음 하나)]. 물음을 들고 다니는 이유는
     검색어로 쓰기 위해서다. 낱말 하나로 찾으면 `정리` 가 수학의 정리를
     물어 온다 — 사람은 그렇게 안 찾는다. 물음째로 넣으면 문맥이 가른다."""
-    import build
+    import marco.knowledge.ingest.text as build
     import explain
     g = explain.open_(explain._abs(graph_dir))
     known = set(g.get("어휘") or ())
@@ -185,7 +185,7 @@ def revert(received):
 
 def author():
     folder = [d for d in corpus if os.path.isdir(d)]
-    cmd = [sys.executable, os.path.join(here, "build.py")] + folder + ["--out", graph_dir]
+    cmd = [sys.executable, os.path.join(here, "marco/knowledge/ingest/text.py")] + folder + ["--out", graph_dir]
     r = subprocess.run(cmd, capture_output=True, text=True, cwd=here)
     for line in (r.stdout or "").splitlines():
         if line.strip() and "Quantization" not in line:

@@ -11,7 +11,7 @@ from functools import lru_cache
 import io, json, os, re, sys
 from collections import deque
 
-from build import extract_concepts
+from marco.knowledge.ingest.text import extract_concepts
 from encoder import DEVICE, MODEL, _abs, _embed, _embed_all, _model, _embed_sub, _embed_sub_all, mask_numbers, split_fragments
 
 def graphify_read(path, max_n=1200):

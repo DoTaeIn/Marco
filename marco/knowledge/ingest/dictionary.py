@@ -27,6 +27,9 @@
 뿌리는 물체(2,776) · 구역(1,990) · 모양(1,456) · 공간(914) · 도구(532) ·
 음식(333) · 옷(177) 처럼 도식을 붙일 수 있는 것들이다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[3]))
 import collections
 import math
 import re

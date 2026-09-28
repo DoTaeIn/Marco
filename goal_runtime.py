@@ -13,9 +13,7 @@ import subprocess
 import time
 import threading
 
-import web_learn
-
-
+import marco.knowledge.ingest.web as web_learn
 DIRECT_RISKS = {"destructive", "external", "credential_or_unknown", "unknown"}
 
 

@@ -15,7 +15,7 @@ shared legal graph as `../legal/...`.
 Build a graph from a source folder with:
 
 ```bash
-python build.py data/법지식 --out graph.json
+python -m marco.knowledge.ingest.text data/법지식 --out graph.json
 ```
 
 Review suggested nodes and edges before promoting them into a tracked `.kg`

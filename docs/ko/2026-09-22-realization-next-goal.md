@@ -52,7 +52,7 @@ failures, and this goal resolves them:
   English. Steps 3b (missing premise), 5 (why) and 6 (ambiguous referent) need
   answers that nothing currently composes. They will block.
 - Its G4 ("no Korean in Python") spans 1224 words at ~1000 sites in 34 files, many
-  off the dialogue path (`build.py`, `experiments/codegen.py`, `web_learn.py`). It may block.
+  off the dialogue path (`marco/knowledge/ingest/text.py`, `experiments/codegen.py`, `marco/knowledge/ingest/web.py`). It may block.
   This goal does not inherit that breadth; see R8 for its own exact scope.
 
 ## Definition of done

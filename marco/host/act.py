@@ -23,6 +23,9 @@ web_learn.py 가 "웹에서 주워온 것을 그래프에 얹는다"면 이 파�
 
 인코더는 KG_ENCODER=문자 를 기본으로 둔다. 토큰을 쓰지 않는다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[2]))
 import json
 import os
 import sys

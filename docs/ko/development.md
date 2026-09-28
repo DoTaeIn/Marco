@@ -35,7 +35,7 @@
 encoder.py     문장 → 정규화 벡터. 신경망은 여기 한 곳뿐이다 (함수 5개)
 engine.py      논증·판정·학습·진단·회귀. 도메인 지식 0줄 (함수 60 + 세션 클래스)
 explain.py     판정하지 않고 발췌를 조립하는 설명 엔진 (함수 20)
-build.py       문서 폴더 → 설명그래프 JSON (함수 17)
+marco/knowledge/ingest/text.py       문서 폴더 → 설명그래프 JSON (함수 17)
 experiments/codegen.py     언어중립 알고리즘 → 언어별 소스. 실행이 채점한다
 collectors/    법제처·위키백과 수집기 (법령·판례·문서)
 views/         웹 UI와 지식 그래프 시각화
@@ -216,7 +216,7 @@ flowchart TD
 ## 6. 개발 흐름
 
 ```bash
-python build.py   --check
+python -m marco.knowledge.ingest.text   --check
 python explain.py --check
 python -m experiments.codegen --check     # 채점기가 옳고 그름을 구별하는지부터 본다
 python engine.py  --check     # 엔진 자체 검사 (판례 회귀 6건 포함)
@@ -227,8 +227,8 @@ python engine.py  --regress   # 판례 회귀만 따로
 `.gitignore` 에 있어 새로 받은 저장소에는 없습니다. 먼저 지으십시오.
 
 ```bash
-python build.py data/법지식
-python build.py docs/ko --out 문서그래프.json
+python -m marco.knowledge.ingest.text data/법지식
+python -m marco.knowledge.ingest.text docs/ko --out 문서그래프.json
 ```
 
 **PR 전에 위가 전부 통과해야 합니다.** `--check`는 회귀 세트를 포함하므로

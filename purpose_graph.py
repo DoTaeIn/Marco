@@ -28,7 +28,7 @@ from __future__ import annotations
 import re
 import sys
 
-from build import extract_target
+from marco.knowledge.ingest.text import extract_target
 
 # 도식마다 다른 것은 **말버릇뿐**이다. 논증 뼈대는 셋 다 같다 —
 # 대상이 그 자리에 있어야 목적이 서고, 없으면 무너진다. 구조가 다르다고

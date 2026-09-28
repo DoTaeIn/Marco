@@ -172,7 +172,7 @@ def dig(max_n=200, folder="data/사전", resume=True):
 
     표제 수가 달라지면 진도를 버린다. 사전이 바뀐 것이라 자리 번호가
     가리키는 곳이 달라지기 때문이다."""
-    import dict_extract
+    import marco.knowledge.ingest.dictionary as dict_extract
     entry = dict_extract.read_dict(os.path.join(here, folder))
     seen_upto, old_headword_count, dropped_phrase = read_progress() if resume else (0, 0, set())
     if old_headword_count != len(entry):

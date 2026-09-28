@@ -31,7 +31,7 @@
 | [kgbin.py](../../kgbin.py) | 자체 바이너리 routing index, 정렬된 배열·mmap·양자화·원본 해시 | 모델 전체의 포맷은 아님. 테이블/스키마/버전 검증을 확장하고 실제 메모리·정확성 재측정 |
 | [views/kgpack_ui.py](../../views/kgpack_ui.py) | pack별 overlay 경로와 기존 그래프/대화 상태 연결 | base/학습/persona/session의 일관된 읽기·철회·색인 계약 필요 |
 | [alma/runtime.py](../../alma_runtime.py), [reasoning_context.py](../../reasoning_context.py) | 상태 저장·identity·사건·근거·교정·capability journal | 저장 분리 후에도 같은 identity와 proof를 유지하고 원자적 snapshot/복원을 연결 |
-| [document_kg.py](../../document_kg.py) | 문서 읽기·주장·원문 위치 | Entity/Event/Rule 의미 컴파일과 검토·승인 후 추론 사용을 G2에서 완성 |
+| [marco/knowledge/ingest/documents.py](../../document_kg.py) | 문서 읽기·주장·원문 위치 | Entity/Event/Rule 의미 컴파일과 검토·승인 후 추론 사용을 G2에서 완성 |
 | [goal_runtime.py](../../goal_runtime.py), [experiments/codegen.py](../../codegen.py) | 등록 도구 실행과 제한된 코드 표현/출력 | 범용 planner나 임의 코드 자기 제작의 완성을 의미하지 않음. G4/G8에서 재사용 |
 | [document_visual.py](../../document_visual.py), [document_vlm.py](../../document_vlm.py) | 기존 OCR/시각 adapter와 선택적 생성형 VLM 경로 | V1의 탐지/추적/의미 사건 경로와 분리. 기존 VLM 존재가 언어 모델 사용 허가를 뜻하지 않음 |
 
