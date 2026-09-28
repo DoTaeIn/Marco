@@ -72,7 +72,7 @@ A turn's `forms` say the shape of its message. The description is for the turn's
 - `q_got` (en): Ask with 'has ... got': How many (things) has (holder) got?
 - `q_responsible` (ko): '맡고 있다'로 묻는다: (누구)는 (물건)을 몇 (단위) 맡고 있습니까?
 - `q_responsible` (en): Ask with 'responsible for': How many (things) is (holder) responsible for?
-- `q_bundles` (ko): 단위로 묻는다: (누구)는 (물건)이 몇 묶음입니까?
+- `q_bundles` (ko): 단위로 묻는다: (누구)는 (물건)이 몇 묶음입니까
 - `q_bundles` (en): Ask by the unit: How many bundles does (holder) have?
 - `q_all` (ko): '모두'로 묻는다: (누구)의 (물건)은 모두 몇 (단위)입니까?
 - `q_all` (en): Ask for the holder's count in all: How many (things) does (holder) have in all?
@@ -88,7 +88,7 @@ A turn's `forms` say the shape of its message. The description is for the turn's
 - `switch_place` (en): Only the new place, as an ellipsis of the question before: And in the (place)? / What about the (place)?
 - `switch_thing` (ko): 앞 질문을 같은 사람의 다른 물건에 대해 생략형으로만: (물건)은요? / (물건)은?
 - `switch_thing` (en): Only the new thing, as an ellipsis of the question before (same holder): And (things)?
-- `repair_question` (ko): 뜻한 사람을 밝히고 같은 메시지에서 다시 묻는다: (누구) 말입니다. 몇 묶음입니까? / (누구)요. (누구)는 몇 개예요?
+- `repair_question` (ko): 뜻한 사람을 밝히고 같은 메시지에서 다시 묻는다: (누구) 말입니다. (누구)는 몇 묶음입니까 / (누구)요. (누구)는 몇 개예요?
 - `repair_question` (en): Say which holder you meant and ask again in the same message: I mean (holder). How many does (holder) have? / It's (holder). How many does (holder) hold?
 - `repair_bare` (ko): 뜻한 사람의 이름만, 질문 없이: (누구)요. / (누구) 님입니다.
 - `repair_bare` (en): Only the name of the holder you meant, no question: (holder), I mean. / (holder) is the one I mean.
@@ -109,17 +109,17 @@ A turn's `forms` say the shape of its message. The description is for the turn's
 
 Each turn is tagged with the classes it belongs to. These are the classes, as the goal of this set describes them; X, Y, N, R, THING and PLACE stand for the scenario's holders, things, numbers and places.
 
-- **1_count_words**: Counts as words, not digits. English number words in transfer and ownership statements ("one" to "twenty-four", "some ... six, to be exact"); Korean native numerals with counters (한·두·세·네·여섯·스무 + 개·권·장·묶음·자루) in transfer statements.
+- **1_count_words**: Counts as words, not digits. English number words in transfer and ownership statements ("one" to "twenty-four", "some ... seven, to be exact"); Korean native numerals with counters (한·두·세·네·여섯·스무 + 개·권·장·묶음·자루) in transfer statements.
 - **2_en_transfer_forms**: English double-object transfer ("gave RECIPIENT N THINGS", no "to") and split particle verbs ("handed N THINGS over to R"), plus "transferred", "returned", "sent", "passed", "left N at PLACE".
 - **3_partitive**: Partitive pronoun objects in transfers and use-ups: "one of them", "N of them", 그중 하나, 그중 N개, "used three of them for ...", 그중 N개로 만들었다.
-- **4_fragment_count**: A count given in a following fragment: "X has some Y. N, to be exact." / "X한테 Y이 있어. 여섯 개야." / "X가 Y한테 Z를 줬어. 두 개."
+- **4_fragment_count**: A count given in a following fragment: "X has some Y. N, to be exact." / "X한테 Y이 있어. 일곱 개야." / "X가 Y한테 Z를 줬어. 세 개."
 - **5_ko_transfer_verbs**: Korean transfer verbs and compounds: 나눠 주다, 빌려주다, 보내다, 맡기다 (leave at a place), 싣고 있다 (carry), 주었다 (plain past formal), and the subject omitted in a second sentence ("그리고 R에게 N개를 주었다").
 - **6_holder_forms**: Holder forms: a title after a name with 에게는 and the thing omitted ("X 과장에게는 두 개가 있습니다"); a job-title apposition before a name ("택배 기사 X 씨는"); a relational noun with 도 and a vague count ("X 친구 Y도 Y을 가지고 있어요"); "For the event, X is responsible for N" (fronting + responsible-for + number word); a place as recipient ("left N at the shop" / "편의점에 맡겼습니다").
 - **7_leftover_questions**: Leftover and remaining forms: "does X have left", "are left with X", "left for X", "remain with X", "X에게 남은 Y은 몇 개인가", "Y 몇 개 남았어", "X 님께 남은 Y은 몇 권입니까".
 - **8_time_adverb_questions**: Aspect and time adverbs in questions: "at the moment", "now", 이제, 지금 ("X는 이제 몇 개야?", "그럼 X는 지금 몇 개예요?").
-- **9_other_predicates**: Other question predicates: "has X got", "is X responsible for", "맡고 있습니까", "How many bundles" / "몇 묶음입니까", "모두 몇 개입니까", "combined" / "the two of them in total", "둘 중에 누가 더 (many/few)" asked of two named holders.
+- **9_other_predicates**: Other question predicates: "has X got", "is X responsible for", "맡고 있습니까", "How many bundles" / "몇 묶음", "모두 몇 개입니까", "combined" / "the two of them in total", "둘 중에 누가 더 (many/few)" asked of two named holders.
 - **10_topic_switch**: Topic-switch ellipsis: "What about X?", "And X?", "And in PLACE?", "And THING?", "X는요?", "X는?", "THING은?", "PLACE는 어떻습니까?" (the question of the previous turn asked again about a new holder, place or thing).
-- **11_repair_with_question**: Referent repair with the question in the same turn: "I mean X. How many does X hold?", "It's X. How many does X have?", "X 말입니다. 몇 묶음입니까?", "X요. X는 몇 개예요?"; and bare-name repairs as a turn ("X요.", "X 님입니다.", "X, I mean.", "X is the one I mean.") followed by the question next turn.
+- **11_repair_with_question**: Referent repair with the question in the same turn: "I mean X. How many does X hold?", "It's X. How many does X have?", "X 말입니다. X는 몇 묶음입니까", "X요. X는 몇 개예요?"; and bare-name repairs as a turn ("X요.", "X 님입니다.", "X, I mean.", "X is the one I mean.") followed by the question next turn.
 - **12_cross_language**: Cross-language turns: a question in the other language inside a dialogue.
 - **13_why_with_fact**: Why questions that restate the fact: "Why does X have N?", "Why does X end up with N?", "What is the reason X has N?", "Why is that number N?", a why about how the last answer came about, with no holder or number, "Why do I only have N?", "왜 X가 N개야?", "왜 N개예요?", "X의 Y이 N개가 된 까닭은 무엇인가?", the same in Korean, "X Y가 왜 N개가 되었습니까?".
 - **15_unstated_receiver**: A transfer to a holder whose starting count is never stated: the giver's count can be answered, the receiver's cannot (it is asked, and the true answer is that it is not known).
