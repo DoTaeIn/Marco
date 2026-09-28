@@ -807,29 +807,6 @@
     }
    },
    {
-    "text": "구슬이 있다",
-    "inflection": {
-     "stem": "있",
-     "kind": "existential",
-     "tense": "present",
-     "ending": "plain",
-     "tenses": [
-      "present",
-      "past"
-     ]
-    },
-    "slots": {
-     "item": "구슬"
-    },
-    "meaning": {
-     "triple": [
-      "$item",
-      "count_unknown",
-      "some"
-     ]
-    }
-   },
-   {
     "text": "구슬을 가지고 있다",
     "inflection": {
      "stem": "있",
