@@ -332,8 +332,13 @@ class ReasoningContext:
         총량을 확정하지 못한다. 반례마다 조건을 덧붙이지 않는다.
         """
         numeric = self._numeric_targets(parser)
-        named = {value for item in (query or []) for value in (item.get("triple") or [])
-                 if isinstance(value, str) and not value.startswith(("?", "$"))}
+        # Only the holders the question names are pinned. The predicate (`count`) and a count's value are
+        # no holder: no observation pins them, so a later statement of the count never released the hold.
+        named = set()
+        for item in query or []:
+            subject, predicate, value = (list(item.get("triple") or []) + [None] * 3)[:3]
+            named.update(word for word in (subject, None if predicate in numeric else value)
+                         if isinstance(word, str) and not word.startswith(("?", "$")))
         asks_number = any((item.get("triple") or [None, None])[1] in numeric
                           for item in (query or []))
         asked_predicates = {(item.get("triple") or [None, None])[1]
