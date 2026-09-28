@@ -340,13 +340,16 @@ class ReasoningContext:
                             for item in (query or [])}
         known = named | {fact["triple"][0] for fact in facts
                          if isinstance(fact.get("triple", [None])[0], str)}
-        for name in named or {None}:
-            # 이 대상의 값을 마지막으로 못 박은 관찰이 몇 번째였나. 증감 사건은
-            # 못 박는 것이 아니라 흔드는 것이므로 세지 않는다.
-            pinned = max([fact["evidence"].get("turn", -1) for fact in facts
-                          if fact["triple"][0] == name and fact["triple"][1] in numeric] or [-1])
-            for entry in self.unread_guard + self.unread:
-                said = entry["text"]
+        # 이 대상의 값을 마지막으로 못 박은 관찰이 몇 번째였나. 증감 사건은
+        # 못 박는 것이 아니라 흔드는 것이므로 세지 않는다.
+        pinned = {name: max([fact["evidence"].get("turn", -1) for fact in facts
+                             if fact["triple"][0] == name and fact["triple"][1] in numeric] or [-1])
+                  for name in named or {None}}
+        # W5-3 (b): the statement named is the earliest unread one that blocks the question, in the
+        # conversation's order; looping over the names first made it follow the set's hash order.
+        for entry in self.unread_guard + self.unread:
+            said = entry["text"]
+            for name in pinned:
                 # 이름이 여러 낱말이면 낱말째로 본다. 물음은 `민수 구슬` 인데
                 # 못 읽은 말은 `민수가 지연에게 베풀었다` 라 통째로는 안 걸린다.
                 parts = [word for word in (name or "").split() if word]
@@ -359,7 +362,7 @@ class ReasoningContext:
                         asks_number and self._counts_something(said, parser)
                         and not any(other and other in said for other in known)) or (
                         asks_number and self._moves_someone_unnamed(said, parser))
-                if (entry.get("범용") or touches) and entry["at"] > pinned:
+                if (entry.get("범용") or touches) and entry["at"] > pinned[name]:
                     return said, entry.get("까닭")
         return None
 
