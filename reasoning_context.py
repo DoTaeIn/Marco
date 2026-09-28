@@ -332,8 +332,13 @@ class ReasoningContext:
         총량을 확정하지 못한다. 반례마다 조건을 덧붙이지 않는다.
         """
         numeric = self._numeric_targets(parser)
-        named = {value for item in (query or []) for value in (item.get("triple") or [])
-                 if isinstance(value, str) and not value.startswith(("?", "$"))}
+        # Only the holders the question names are pinned. The predicate (`count`) and a count's value are
+        # no holder: no observation pins them, so a later statement of the count never released the hold.
+        named = set()
+        for item in query or []:
+            subject, predicate, value = (list(item.get("triple") or []) + [None] * 3)[:3]
+            named.update(word for word in (subject, None if predicate in numeric else value)
+                         if isinstance(word, str) and not word.startswith(("?", "$")))
         asks_number = any((item.get("triple") or [None, None])[1] in numeric
                           for item in (query or []))
         asked_predicates = {(item.get("triple") or [None, None])[1]
@@ -401,6 +406,16 @@ class ReasoningContext:
                 if (pinned < entry["at"] <= turn and self._counts_something(entry["text"], parser)
                         and all(word in said or word in plurals for word in words)):
                     return entry["text"]
+            # A holder whose count was never said under this key, but an earlier statement counted a key with
+            # every word of it (민혁 트럭에 자두 for 민혁 자두, a place phrase kept in the name): that statement may be
+            # this holder's count, so what the transfer makes it is not said as known (G6).
+            if change.get("before") is None and pinned < 0:
+                other = next((fact for fact in facts if fact["triple"][1] in numeric and fact["triple"][0] != subject
+                              and isinstance(fact["triple"][0], str)
+                              and (fact.get("evidence") or {}).get("turn", -1) < turn
+                              and all(word in fact["triple"][0].lower().split() for word in words)), None)
+                if other is not None:
+                    return (other.get("evidence") or {}).get("text") or other["triple"][0]
         return None
 
 
@@ -3943,14 +3958,24 @@ class ReasoningContext:
         else:
             last = getattr(self, "_last_said", None)
             entry = self.unread[-1] if self.unread else None
-            if not last or entry is None or entry["text"].strip() != last or entry.get("at") != len(self.observations):
+            # the unread statement is the last thing said: left out of the observations, or kept as the last one
+            # for a word to be explained later (가람이 나래에게 연필을 줬어 with no amount reads as an unknown event)
+            kept = bool(self.observations) and self.observations[-1].strip() == last
+            if (not last or entry is None or entry["text"].strip() != last
+                    or entry.get("at") != len(self.observations) - (1 if kept else 0)):
+                return None
+            # a question left unread takes no amount (그 사람은 어디 있어? / 여섯 개.)
+            if any(question for _p, question in self._segments(last, parser)):
                 return None
             statement, replaced = last, entry["text"]
         flags = re.IGNORECASE if parser.data.get("ignore_case") else 0
         body = statement.strip()
         stop = body[-1] if body[-1:] in ".!…" else ""
         body = body[:-1].strip() if stop else body
-        vague = [w for w in spec.get("vague", []) if re.search(r"(?<![\w])%s(?![\w])" % re.escape(w), body, flags)]
+        # a phrase the pack reads as a vague word is that word (a few, a couple of -> some)
+        vagues = list(spec.get("vague", [])) + [row["from"] for row in parser.phrase_variants if row.get("from")
+                                                 and row.get("to") in spec.get("vague", [])]
+        vague = [w for w in sorted(vagues, key=len, reverse=True) if re.search(r"(?<![\w])%s(?![\w])" % re.escape(w), body, flags)]
         if len(vague) == 1:
             spliced = re.sub(r"(?<![\w])%s(?![\w])" % re.escape(vague[0]), amount[0], body, count=1, flags=flags)
         elif not vague and spec.get("insert") == "before_verb" and " " in body:
@@ -3986,6 +4011,9 @@ class ReasoningContext:
             text, replaced = spliced
             if replaced is not None:
                 self._forget_heard({replaced})
+                # the statement kept as an observation is replaced by the one with its amount, not read twice
+                if self.observations and self.observations[-1].strip() == replaced.strip():
+                    self.observations.pop()
         self._last_said = str(text).strip()
         language = self.language or next((source["path"] for source in getattr(self.model, "sources", ())
                                           if source["path"].startswith("styles/")), None)

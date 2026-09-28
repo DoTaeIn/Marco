@@ -281,9 +281,10 @@ CHECK = [(name, i) for name in CASES for i in range(len(CASES[name]["check"]))]
 
 # Build dialogues left held on purpose: a fronted place phrase (At the market, 행사에서) may be the holder or only the
 # setting, and the reader does not choose (read as the setting, 'At the shop, there are 3 figs' would lose its holder).
-# ("A4", 4): a holding said with 이/가 있다 and no count. The example that read it also took the
-# location question of the fixed seven-step dialogue (그 사람은 어디 있어?), so it was taken out again.
-HELD_BUILD = {("A6", 3), ("A6", 4), ("A4", 4)}
+# ("A4", 4), a holding said with 이/가 있다 and no count, was held when the example that read it was taken out (it
+# also took the location question of the fixed seven-step dialogue, 그 사람은 어디 있어?). It is read again without
+# that example: the statement is kept for its unknown word, and the amount said next goes into it (reading 2).
+HELD_BUILD = {("A6", 3), ("A6", 4)}
 
 
 @pytest.mark.parametrize("name,index", BUILD)

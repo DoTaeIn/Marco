@@ -484,6 +484,30 @@ class RelationalParser:
                                     table.setdefault(form, (targets[0], {"id": "declared-same-frame-v1",
                                                                          "stem": stem, "as": row.get("as") or row.get("read_as"),
                                                                          "tense": tense, "ending": ending}))
+        # The subject honorific (쓰셨습니다, 파셨어요, 주셨다) of a verb the examples use or a same-frame verb reads as
+        # the plain form of the same tense and ending (활용.honorific).
+        honorific = grammar.get("honorific") or {}
+        if honorific.get("infix"):
+            pairs = [(stem, row.get("as") or stem, row.get("read_as")) for row in self.same_frame
+                     for stem in row.get("stems", [])]
+            pairs += [(e["event_verb"], e["event_verb"], None) for e in self.data["examples"] if e.get("event_verb")]
+            for stem, target_stem, read_as in pairs:
+                raised = self._honorific_stem(stem)
+                if raised is None:
+                    continue
+                for tense in grammar.get("tenses", {}):
+                    for ending in honorific.get("endings", []):
+                        try:
+                            forms = [f["text"] for f in inflect(raised, tense, ending, grammar, kind="regular")]
+                            targets = [read_as] if read_as else [
+                                f["text"] for f in inflect(target_stem, tense, ending, grammar, kind="regular")]
+                        except (ValueError, KeyError):
+                            continue
+                        for form in forms:
+                            if targets and form != targets[0] and parse_numeral(form, numerals) is None:
+                                table.setdefault(form, (targets[0], {"id": "declared-same-frame-v1", "stem": raised,
+                                                                     "as": read_as or target_stem, "tense": tense,
+                                                                     "ending": ending, "honorific": True}))
         for row in self.phrase_variants:
             source, target = row.get("from"), row.get("to", "")
             if isinstance(source, str) and source and isinstance(target, str):
@@ -491,6 +515,20 @@ class RelationalParser:
                                                    **({"final": True} if row.get("final") else {})}))
         self._variant_table = table
         return table
+
+    def _honorific_stem(self, stem):
+        """The stem with the declared subject honorific (활용.honorific): 쓰 -> 쓰시, 받 -> 받으시, 팔 -> 파시."""
+        from hangul import compose, decompose
+        honorific = (self.inflection_grammar or {}).get("honorific") or {}
+        if not honorific.get("infix") or not stem:
+            return None
+        last = decompose(stem[-1])
+        if last is None:
+            return None
+        coda = last[2] if len(last) > 2 else ""
+        if coda in honorific.get("dropped_coda", []):
+            return stem[:-1] + compose(last[0], last[1]) + honorific["infix"]
+        return stem + (honorific.get("after_coda", honorific["infix"]) if coda else honorific["infix"])
 
     def _variant_patterns(self):
         """The declared variants, longest first, each compiled once per parser."""
@@ -507,8 +545,16 @@ class RelationalParser:
                 right = "" if not source[-1:].isalnum() else r"(?![\w])"
                 compiled.append((source.lower() if flags else source, target, note,
                                  _compiled(left + re.escape(source) + right, flags)))
-            self._variant_compiled = compiled
+            # The honorific forms are looked for only in a text with one of the declared honorific marks
+            # (활용.honorific.marks): hundreds of forms that most clauses cannot contain.
+            self._variant_compiled_all = compiled
+            self._variant_compiled = [row for row in compiled if not row[2].get("honorific")]
         return self._variant_compiled
+
+    def _variant_patterns_for(self, literal):
+        plain = self._variant_patterns()
+        marks = ((self.inflection_grammar or {}).get("honorific") or {}).get("marks", [])
+        return self._variant_compiled_all if any(mark in literal for mark in marks) else plain
 
     def _particle_variant_words(self, literal):
         """Each word ending in a declared particle variant, with the particle it reads as."""
@@ -533,7 +579,7 @@ class RelationalParser:
         return list(found)
 
     def _variant_literals_of(self, literal):
-        patterns = self._variant_patterns()
+        patterns = self._variant_patterns_for(literal)
         literal_in = literal
         literal, particle_notes = self._particle_variant_words(literal)
         # The passive is recognised by its participle, before a same-frame
@@ -644,6 +690,18 @@ class RelationalParser:
                     for index, w in enumerate(words)):
                 text, applied = m.group(3), applied + ["fronted_purpose"]
                 break
+        determiners = spec.get("possessive_before_numeral") or []
+        if determiners:
+            # lost his one radio: a possessive determiner right before a count says whose the things are, which
+            # the subject already says; the count is read without it (never before a noun: gave his sister)
+            from numeral_semantics import parse_numeral
+            numerals = self.data.get("numerals", {})
+            words = text.split(" ")
+            kept = [w for i, w in enumerate(words)
+                    if not (w.lower() in determiners and i + 1 < len(words) and (
+                        words[i + 1].isdigit() or parse_numeral(words[i + 1].lower(), numerals) is not None))]
+            if len(kept) != len(words):
+                text, applied = " ".join(kept), applied + ["possessive_before_numeral"]
         completive = spec.get("completive") or {}
         if completive:
             # 다 썼어요 (used up): the completive adverb before a verb of using up fills no role
@@ -1232,6 +1290,14 @@ class RelationalParser:
                         for form in forms:
                             if target:
                                 table.setdefault(form, (row, target[0]))
+                        # the subject honorific of the taker's verb (받으셨어요 -> 줬어요)
+                        raised = self._honorific_stem(row["stem"])
+                        if raised and target and ending in (grammar.get("honorific") or {}).get("endings", []):
+                            try:
+                                for f in inflect(raised, tense, ending, grammar, kind="regular"):
+                                    table.setdefault(f["text"], (row, target[0]))
+                            except (ValueError, KeyError):
+                                pass
             self._role_swap_table = table
         return self._role_swap_table
 
@@ -2019,6 +2085,41 @@ class RelationalParser:
                             return True
         return False
 
+    def _splits_titled_holder(self, meaning, literal):
+        """A reading that names the surname of a surname-and-title holder without the title, or the title
+        without the surname (the declared job titles: 변 과장한테 -> 변 and 과장)."""
+        titles = sorted((self.holder_forms or {}).get("job_titles") or [], key=len, reverse=True)
+        if not titles:
+            return False
+        words = literal.split()
+        particles = {p for group in self.slot_particles for p in group} | set(self.case_particles) | {""}
+        honorifics = [h for h in (self.holder_forms or {}).get("name_titles") or [] if isinstance(h, str)]
+        def is_title(word, title):
+            if not word.startswith(title):
+                return False
+            rest = word[len(title):]
+            rest = next((rest[len(h):] for h in honorifics if h and rest.startswith(h)), rest)
+            return rest in particles or any(rest.startswith(p) and rest[len(p):] in particles for p in particles if p)
+        pairs = []
+        for before, word in zip(words, words[1:]):
+            title = next((t for t in titles if is_title(word, t)), None)
+            if title is not None and not self._ends_in_particle(before):
+                pairs.append((before, title))
+        if not pairs:
+            return False
+        rows = asserted(meaning) or [joined(q["triple"]) for q in meaning.get("query", [])
+                                     if isinstance(q, dict) and isinstance(q.get("triple"), list)]
+        for row in rows:
+            for value in (row[0], row[2]):
+                tokens = value.split() if isinstance(value, str) else []
+                for surname, title in pairs:
+                    for i, token in enumerate(tokens):
+                        if token == surname and not (i + 1 < len(tokens) and is_title(tokens[i + 1], title)):
+                            return True
+                        if is_title(token, title) and (i == 0 or tokens[i - 1] != surname):
+                            return True
+        return False
+
     @staticmethod
     def _swallows_marked_word(meaning, tail_particle):
         values = []
@@ -2613,6 +2714,10 @@ class RelationalParser:
                     # tails after a past stem, 이름밖꼴).
                     if self._names_hold_adnominal(grounded_names):
                         continue
+                    # Nor a surname without its job title, or the title without its surname (변 과장한테 ...: 변
+                    # the giver and 과장 the receiver): the two are one holder (가진쪽꼴.job_titles).
+                    if self._splits_titled_holder(grounded_names, literal):
+                        continue
                     if exclude and json.dumps(self._grounded(meaning, slots, normalization, example), sort_keys=True,
                                               ensure_ascii=False) in exclude:
                         continue
@@ -2717,6 +2822,12 @@ class RelationalParser:
 
         def split(name):
             words = name.split()
+            if len(words) == 1:
+                # a one-word holder keeps a case the example's own particle stood on (도서관에는 일곱 개예요 ->
+                # 도서관에): the case is no part of the name (소유자리.홀로떼는조사)
+                case = next((p for p in (self.possessor or {}).get("lone_cases", [])
+                             if name.endswith(p) and len(name) - len(p) >= shortest), None)
+                return name[:-len(case)] if case else name
             for index, word in enumerate(words[:-1]):
                 # (a particle the owner's last sound does not take is no particle: 나은 is a name, not 나 + 은)
                 particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)
@@ -2951,6 +3062,13 @@ class RelationalParser:
                                "render": list(spec["render"])}]}
         if not name:
             return None
+        # The one name word said in a holder's case (수량물음.owner_cases, with or without a delimiter on it) is the
+        # holder, wherever it stands: 사과는 라온한테 몇 개 있어 asks 라온's apples, as 라온한테 사과가 몇 개 있어 does.
+        cases = spec.get("owner_cases", [])
+        endings = [c + d for c in cases for d in [""] + list(spec.get("delimiters", []))]
+        owners = [i for i, word in enumerate(raw) if any(word.endswith(e) and len(word) > len(e) for e in endings)]
+        if len(owners) == 1 and owners[0] > 0:
+            name = [name[owners[0]]] + name[:owners[0]] + name[owners[0] + 1:]
         return {"query": [{"triple": [" ".join(name), "count", "?n"], "render": list(spec["render"])}]}
 
     def _comparison_meaning(self, literal):
@@ -3528,6 +3646,14 @@ class RelationalParser:
             if stated and (joined_by_comma or in_turn) and self.ellipsis.get("coordination") == "trailing_words":
                 stated, inherited = self._inherit_trailing(
                     stated, previous_rows, self._counted_subjects(evidence["text"], stated))
+                # A subject marked with an undecided particle (도) may be another holder (모루도: Moru too) or
+                # another thing of the topic (고구마도: sweet potatoes too), and the particle stays in the name:
+                # the clause is not read (생략.topic_continuity.undecided_particles).
+                undecided = ((self.ellipsis or {}).get("topic_continuity") or {}).get("undecided_particles") or []
+                if any(isinstance(row["subject"], str) and any(row["subject"].endswith(p) and len(row["subject"]) > len(p)
+                                                               for p in undecided) for row in inherited):
+                    diagnostics.append({"reason": "undecided_subject", "evidence": evidence})
+                    return None
                 if inherited:
                     evidence = {**evidence, "ellipsis": inherited}
             if stated and in_turn and self.ellipsis.get("omitted_subject") == "same_relation":
