@@ -1,0 +1,270 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_35",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_042",
+  "half": "check",
+  "focus": [
+   "11_repair_with_question",
+   "4_fragment_count",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "4_fragment_count",
+   "5_ko_transfer_verbs",
+   "6_holder_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 삼촌 상현은 팔찌가 5개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "상현",
+      "item": "팔찌",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "상현",
+      "item": "팔찌",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "현정은 팔찌가 있습니다. 열다섯 개입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "4_fragment_count"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "현정",
+      "item": "팔찌",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "현정",
+      "item": "팔찌",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "세탁소에는 팔찌가 11개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "세탁소",
+      "item": "팔찌",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "세탁소",
+      "item": "팔찌",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "상현이 세탁소에 팔찌 두 개를 맡겼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "상현",
+      "to": "세탁소",
+      "item": "팔찌",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "상현",
+      "item": "팔찌",
+      "quantity": 3
+     },
+     {
+      "entity": "세탁소",
+      "item": "팔찌",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "상현에게 남은 팔찌는 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "상현",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "팔찌"
+   }
+  },
+  {
+   "n": 6,
+   "say": "현정 님입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "ownership"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "현정",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "팔찌"
+   }
+  },
+  {
+   "n": 7,
+   "say": "현정은 팔찌가 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "현정",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "팔찌"
+   }
+  }
+ ]
+}

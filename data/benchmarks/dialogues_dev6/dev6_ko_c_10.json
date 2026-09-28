@@ -1,0 +1,289 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_10",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_012",
+  "half": "check",
+  "focus": [
+   "10_topic_switch",
+   "3_partitive",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "3_partitive",
+   "5_ko_transfer_verbs",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "한수는 서류가방이 20개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "한수",
+      "item": "서류가방",
+      "quantity": 20
+     }
+    ],
+    "state": [
+     {
+      "entity": "한수",
+      "item": "서류가방",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "한수는 교과서가 세 권 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "한수",
+      "item": "교과서",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "한수",
+      "item": "교과서",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "한수 사촌 시혁은 서류가방이 18개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "시혁",
+      "item": "서류가방",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "시혁",
+      "item": "서류가방",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "한수가 시혁에게 서류가방을 두 개 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "한수",
+      "to": "시혁",
+      "item": "서류가방",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "한수",
+      "item": "서류가방",
+      "quantity": 18
+     },
+     {
+      "entity": "시혁",
+      "item": "서류가방",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "한수가 그중 하나를 바자회 준비에 썼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "한수",
+      "item": "서류가방",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "한수",
+      "item": "서류가방",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "한수에게 남은 서류가방은 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "한수",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "서류가방"
+   }
+  },
+  {
+   "n": 7,
+   "say": "교과서는요?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "한수",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "교과서"
+   }
+  }
+ ]
+}

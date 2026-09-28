@@ -1,0 +1,274 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_21",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "cross_language",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_033",
+  "half": "build",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "12_cross_language",
+   "15_unstated_receiver",
+   "1_count_words",
+   "6_holder_forms",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "용호한테 살구가 14개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "용호",
+      "item": "살구",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "용호",
+      "item": "살구",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "천 차장님에게는 열 개가 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "천 차장",
+      "item": "살구",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "천 차장",
+      "item": "살구",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "우 차장님에게는 여덟 개가 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "우 차장",
+      "item": "살구",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "우 차장",
+      "item": "살구",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "천 차장님이 감 소장님한테 살구 5개를 주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "천 차장",
+      "to": "감 소장",
+      "item": "살구",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "천 차장",
+      "item": "살구",
+      "quantity": 5
+     },
+     {
+      "entity": "감 소장",
+      "item": "살구",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "천 차장님 살구는 모두 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "천 차장",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "살구"
+   }
+  },
+  {
+   "n": 6,
+   "say": "감 소장님은 살구가 몇 개 있습니까?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "hold",
+    "entity": "감 소장",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "item": "살구"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many apricots does 용호 have?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "ownership"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "용호",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "살구"
+   },
+   "lang": "en"
+  }
+ ]
+}

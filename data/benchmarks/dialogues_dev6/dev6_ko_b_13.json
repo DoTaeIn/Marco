@@ -1,0 +1,299 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_13",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_022",
+  "half": "build",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "6_holder_forms",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "가람한테 수첩이 열세 권 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "가람",
+      "item": "수첩",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "가람",
+      "item": "수첩",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "용호한테는 수첩이 24권 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "용호",
+      "item": "수첩",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "용호",
+      "item": "수첩",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "가람 고모 선아도 수첩을 가지고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "선아",
+      "item": "수첩",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "선아",
+      "item": "수첩",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "용호가 인 과장님한테 수첩 3권을 빌려줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "용호",
+      "to": "인 과장",
+      "item": "수첩",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "용호",
+      "item": "수첩",
+      "quantity": 21
+     },
+     {
+      "entity": "인 과장",
+      "item": "수첩",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "용호 수첩은 모두 몇 권이야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "용호",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "수첩"
+   }
+  },
+  {
+   "n": 6,
+   "say": "인 과장님은 수첩이 몇 권 있어?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "hold",
+    "entity": "인 과장",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "item": "수첩"
+   }
+  },
+  {
+   "n": 7,
+   "say": "선아는 수첩이 몇 권 있어?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "hold",
+    "entity": "선아",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "item": "수첩"
+   }
+  },
+  {
+   "n": 8,
+   "say": "가람이랑 용호 수첩이 합쳐서 몇 권이야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "가람",
+     "용호"
+    ],
+    "quantity": 34,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "수첩"
+   }
+  }
+ ]
+}

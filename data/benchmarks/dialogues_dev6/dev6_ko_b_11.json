@@ -1,0 +1,388 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_11",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_019",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "3_partitive",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "3_partitive",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 동료 연주한테 바이올린이 세 대 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "연주",
+      "item": "바이올린",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "연주",
+      "item": "바이올린",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "연주한테는 일기장이 스물네 권 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "연주",
+      "item": "일기장",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "연주",
+      "item": "일기장",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "보은한테는 바이올린이 11대 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "보은",
+      "item": "바이올린",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "보은",
+      "item": "바이올린",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "태웅한테는 바이올린이 열세 대 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "태웅",
+      "item": "바이올린",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "태웅",
+      "item": "바이올린",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "보은 동료 종현도 바이올린을 가지고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "종현",
+      "item": "바이올린",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "종현",
+      "item": "바이올린",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "태웅이 연주한테 바이올린 한 대를 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "태웅",
+      "to": "연주",
+      "item": "바이올린",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "태웅",
+      "item": "바이올린",
+      "quantity": 12
+     },
+     {
+      "entity": "연주",
+      "item": "바이올린",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "연주가 그중 두 대를 바자회 준비에 썼어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "연주",
+      "item": "바이올린",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "연주",
+      "item": "바이올린",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "연주는 바이올린이 몇 대 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "연주",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      6,
+      7
+     ]
+    },
+    "item": "바이올린"
+   }
+  },
+  {
+   "n": 9,
+   "say": "일기장은요?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "연주",
+    "quantity": 24,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      6,
+      7
+     ]
+    },
+    "item": "일기장"
+   }
+  },
+  {
+   "n": 10,
+   "say": "종현은 바이올린이 몇 대 있어요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "hold",
+    "entity": "종현",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      10
+     ]
+    },
+    "item": "바이올린"
+   }
+  }
+ ]
+}

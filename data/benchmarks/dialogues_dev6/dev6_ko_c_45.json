@@ -1,0 +1,271 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_45",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_053",
+  "half": "check",
+  "focus": [
+   "11_repair_with_question",
+   "4_fragment_count",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "4_fragment_count",
+   "5_ko_transfer_verbs",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "주 주임님은 크루아상이 있다. 스물세 개다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "주 주임",
+      "item": "크루아상",
+      "quantity": 23
+     }
+    ],
+    "state": [
+     {
+      "entity": "주 주임",
+      "item": "크루아상",
+      "quantity": 23
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "민규는 크루아상이 아홉 개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "민규",
+      "item": "크루아상",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "민규",
+      "item": "크루아상",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "세희는 크루아상이 16개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "세희",
+      "item": "크루아상",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "세희",
+      "item": "크루아상",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "세희가 주 주임님에게 크루아상을 5개 빌려주었다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세희",
+      "to": "주 주임",
+      "item": "크루아상",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "세희",
+      "item": "크루아상",
+      "quantity": 11
+     },
+     {
+      "entity": "주 주임",
+      "item": "크루아상",
+      "quantity": 28
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "세희에게 남은 크루아상은 몇 개인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "세희",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "크루아상"
+   }
+  },
+  {
+   "n": 6,
+   "say": "주 주임님입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "주 주임",
+    "quantity": 28,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "크루아상"
+   }
+  },
+  {
+   "n": 7,
+   "say": "주 주임님은 크루아상이 몇 개인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "주 주임",
+    "quantity": 28,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "크루아상"
+   }
+  }
+ ]
+}

@@ -1,0 +1,316 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_09",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_011",
+  "half": "build",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Mr. Keller has 9 pumpkins.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Keller",
+      "item": "pumpkins",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Keller",
+      "item": "pumpkins",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Mr. Keller's coworker, Bonnie, has 15 pumpkins.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Bonnie",
+      "item": "pumpkins",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "Bonnie",
+      "item": "pumpkins",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The gazebo has 5 pumpkins.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "gazebo",
+      "item": "pumpkins",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "gazebo",
+      "item": "pumpkins",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Bonnie passed Xena 1 pumpkin.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Bonnie",
+      "to": "Xena",
+      "item": "pumpkins",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Bonnie",
+      "item": "pumpkins",
+      "quantity": 14
+     },
+     {
+      "entity": "Xena",
+      "item": "pumpkins",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Bonnie gave Mr. Keller three pumpkins.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Bonnie",
+      "to": "Keller",
+      "item": "pumpkins",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Bonnie",
+      "item": "pumpkins",
+      "quantity": 11
+     },
+     {
+      "entity": "Keller",
+      "item": "pumpkins",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many pumpkins does Bonnie have in all?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Bonnie",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "pumpkins"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many pumpkins does Xena have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "hold",
+    "entity": "Xena",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "item": "pumpkins"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many pumpkins do Mr. Keller and Bonnie have combined?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Keller",
+     "Bonnie"
+    ],
+    "quantity": 23,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "pumpkins"
+   }
+  }
+ ]
+}

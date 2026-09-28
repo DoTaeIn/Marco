@@ -1,0 +1,315 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_18",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_021",
+  "half": "build",
+  "focus": [
+   "13_why_with_fact",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Mrs. Lynch has twelve drums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Lynch",
+      "item": "drums",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lynch",
+      "item": "drums",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Hector has 8 drums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Hector",
+      "item": "drums",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Hector",
+      "item": "drums",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Jonah has some drums. 17, to be exact.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "4_fragment_count"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Jonah",
+      "item": "drums",
+      "quantity": 17
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jonah",
+      "item": "drums",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Hector passed Jonah 4 drums.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Hector",
+      "to": "Jonah",
+      "item": "drums",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Hector",
+      "item": "drums",
+      "quantity": 4
+     },
+     {
+      "entity": "Jonah",
+      "item": "drums",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Mrs. Lynch passed Jonah two drums.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Lynch",
+      "to": "Jonah",
+      "item": "drums",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lynch",
+      "item": "drums",
+      "quantity": 10
+     },
+     {
+      "entity": "Jonah",
+      "item": "drums",
+      "quantity": 23
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many drums does Hector have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Hector",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "drums"
+   }
+  },
+  {
+   "n": 7,
+   "say": "What is the reason Hector has four?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact",
+    "1_count_words"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "explain",
+    "entity": "Hector",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "drums"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many drums does Mrs. Lynch have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Lynch",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "drums"
+   }
+  }
+ ]
+}

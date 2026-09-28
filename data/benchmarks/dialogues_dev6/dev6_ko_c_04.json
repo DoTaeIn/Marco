@@ -1,0 +1,321 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_04",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_006",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "4_fragment_count",
+   "5_ko_transfer_verbs",
+   "6_holder_forms",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "목 주임님에게 라임이 있다. 15개다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "목 주임",
+      "item": "라임",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "목 주임",
+      "item": "라임",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "경아는 라임이 열세 개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "경아",
+      "item": "라임",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "경아",
+      "item": "라임",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "수선집에는 라임이 열아홉 개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "수선집",
+      "item": "라임",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "수선집",
+      "item": "라임",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "목 주임님이 경아에게 라임을 두 개 보냈다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "목 주임",
+      "to": "경아",
+      "item": "라임",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "목 주임",
+      "item": "라임",
+      "quantity": 13
+     },
+     {
+      "entity": "경아",
+      "item": "라임",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "목 주임님이 수선집에 라임 세 개를 맡겼다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "목 주임",
+      "to": "수선집",
+      "item": "라임",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "목 주임",
+      "item": "라임",
+      "quantity": 10
+     },
+     {
+      "entity": "수선집",
+      "item": "라임",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "목 주임님은 이제 라임이 몇 개인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "목 주임",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "라임"
+   }
+  },
+  {
+   "n": 7,
+   "say": "방금 그 답이 어떻게 나온 건가?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "explain",
+    "entity": "목 주임",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "라임"
+   }
+  },
+  {
+   "n": 8,
+   "say": "경아는 라임이 몇 개인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "경아",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "라임"
+   }
+  }
+ ]
+}

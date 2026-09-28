@@ -1,0 +1,281 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_28",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_032",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "경아는 승합차에 형광펜을 23자루 싣고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "경아",
+      "item": "형광펜",
+      "quantity": 23
+     }
+    ],
+    "state": [
+     {
+      "entity": "경아",
+      "item": "형광펜",
+      "quantity": 23
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "채영은 수레에 형광펜을 15자루 싣고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "채영",
+      "item": "형광펜",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "채영",
+      "item": "형광펜",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "경아가 채영에게 형광펜을 다섯 자루 줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "경아",
+      "to": "채영",
+      "item": "형광펜",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "경아",
+      "item": "형광펜",
+      "quantity": 18
+     },
+     {
+      "entity": "채영",
+      "item": "형광펜",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "그리고 채영에게 형광펜을 한 자루 줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "경아",
+      "to": "채영",
+      "item": "형광펜",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "경아",
+      "item": "형광펜",
+      "quantity": 17
+     },
+     {
+      "entity": "채영",
+      "item": "형광펜",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "경아는 이제 형광펜이 몇 자루야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "경아",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "형광펜"
+   }
+  },
+  {
+   "n": 6,
+   "say": "왜 열일곱 자루야?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact",
+    "1_count_words"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "explain",
+    "entity": "경아",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "형광펜"
+   }
+  },
+  {
+   "n": 7,
+   "say": "채영은 형광펜이 몇 자루야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "채영",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "형광펜"
+   }
+  }
+ ]
+}

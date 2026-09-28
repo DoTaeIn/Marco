@@ -1,0 +1,242 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_10",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_011",
+  "half": "check",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "For the fundraiser, Derek is responsible for eight purses.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Derek",
+      "item": "purses",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Derek",
+      "item": "purses",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My boyfriend, Reid, has eleven purses.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Reid",
+      "item": "purses",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Reid",
+      "item": "purses",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Reid passed Mr. Walsh one purse.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Reid",
+      "to": "Walsh",
+      "item": "purses",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Reid",
+      "item": "purses",
+      "quantity": 10
+     },
+     {
+      "entity": "Walsh",
+      "item": "purses",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many purses is Reid responsible for?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Reid",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "purses"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many purses does Mr. Walsh have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "hold",
+    "entity": "Walsh",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "item": "purses"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Who has more purses, Derek or Reid?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Reid",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "Derek",
+     "Reid"
+    ],
+    "item": "purses",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

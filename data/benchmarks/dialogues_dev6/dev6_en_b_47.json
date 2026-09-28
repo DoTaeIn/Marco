@@ -1,0 +1,272 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_47",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_050",
+  "half": "build",
+  "focus": [
+   "13_why_with_fact",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Elliot has thirteen graters.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Elliot",
+      "item": "graters",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "Elliot",
+      "item": "graters",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The box office has 23 graters.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "box office",
+      "item": "graters",
+      "quantity": 23
+     }
+    ],
+    "state": [
+     {
+      "entity": "box office",
+      "item": "graters",
+      "quantity": 23
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Elliot's aunt, Georgia, has eighteen graters.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Georgia",
+      "item": "graters",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "Georgia",
+      "item": "graters",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Georgia passed Elliot three of them.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "3_partitive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Georgia",
+      "to": "Elliot",
+      "item": "graters",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Georgia",
+      "item": "graters",
+      "quantity": 15
+     },
+     {
+      "entity": "Elliot",
+      "item": "graters",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many graters does Georgia have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Georgia",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "graters"
+   }
+  },
+  {
+   "n": 6,
+   "say": "What is the reason Georgia has fifteen?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact",
+    "1_count_words"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "explain",
+    "entity": "Georgia",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "graters"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many graters does Elliot have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Elliot",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "graters"
+   }
+  }
+ ]
+}

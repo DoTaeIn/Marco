@@ -1,0 +1,314 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_01",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "cross_language",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_001",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "3_partitive",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "12_cross_language",
+   "1_count_words",
+   "3_partitive",
+   "5_ko_transfer_verbs",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "기범한테 수첩이 24권 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "기범",
+      "item": "수첩",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "기범",
+      "item": "수첩",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "희정한테는 수첩이 다섯 권 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "희정",
+      "item": "수첩",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "희정",
+      "item": "수첩",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "태희한테는 수첩이 6권 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "태희",
+      "item": "수첩",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "태희",
+      "item": "수첩",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "희정이 태희한테 수첩 세 권을 빌려줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "희정",
+      "to": "태희",
+      "item": "수첩",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "희정",
+      "item": "수첩",
+      "quantity": 2
+     },
+     {
+      "entity": "태희",
+      "item": "수첩",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "기범이 그중 세 권을 바자회 준비에 썼어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "기범",
+      "item": "수첩",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "기범",
+      "item": "수첩",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "희정한테 남은 수첩은 몇 권이야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "희정",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "수첩"
+   }
+  },
+  {
+   "n": 7,
+   "say": "기범은?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "기범",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "수첩"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many notebooks does 희정 have?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "희정",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "수첩"
+   },
+   "lang": "en"
+  }
+ ]
+}

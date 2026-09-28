@@ -1,0 +1,293 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_28",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_034",
+  "half": "check",
+  "focus": [
+   "10_topic_switch",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The recording room has 3 wallets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "recording room",
+      "item": "wallets",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "recording room",
+      "item": "wallets",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Brooke has 18 wallets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Brooke",
+      "item": "wallets",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "Brooke",
+      "item": "wallets",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The cabin has ten wallets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "cabin",
+      "item": "wallets",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "cabin",
+      "item": "wallets",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Brooke left three wallets at the recording room.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Brooke",
+      "to": "recording room",
+      "item": "wallets",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Brooke",
+      "item": "wallets",
+      "quantity": 15
+     },
+     {
+      "entity": "recording room",
+      "item": "wallets",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Brooke left two wallets at the cabin.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Brooke",
+      "to": "cabin",
+      "item": "wallets",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Brooke",
+      "item": "wallets",
+      "quantity": 13
+     },
+     {
+      "entity": "cabin",
+      "item": "wallets",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many wallets does the recording room have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "recording room",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "wallets"
+   }
+  },
+  {
+   "n": 7,
+   "say": "And in the cabin?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "cabin",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "item": "wallets"
+   }
+  }
+ ]
+}

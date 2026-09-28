@@ -1,0 +1,279 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_15",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_024",
+  "half": "build",
+  "focus": [
+   "11_repair_with_question",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "도훈한테 샤프가 있습니다. 다섯 자루입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "도훈",
+      "item": "샤프",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "도훈",
+      "item": "샤프",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "태희한테는 샤프가 여덟 자루 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "태희",
+      "item": "샤프",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "태희",
+      "item": "샤프",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "태희가 도훈한테 샤프 2자루를 주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "태희",
+      "to": "도훈",
+      "item": "샤프",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "태희",
+      "item": "샤프",
+      "quantity": 6
+     },
+     {
+      "entity": "도훈",
+      "item": "샤프",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "도훈이 태희한테 샤프 네 자루를 주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "도훈",
+      "to": "태희",
+      "item": "샤프",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "도훈",
+      "item": "샤프",
+      "quantity": 3
+     },
+     {
+      "entity": "태희",
+      "item": "샤프",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "태희는 지금 샤프가 몇 자루입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "태희",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "샤프"
+   }
+  },
+  {
+   "n": 6,
+   "say": "도훈입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "도훈",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "샤프"
+   }
+  },
+  {
+   "n": 7,
+   "say": "도훈은 샤프가 몇 자루 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "도훈",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "샤프"
+   }
+  }
+ ]
+}

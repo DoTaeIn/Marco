@@ -1,0 +1,319 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_43",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_051",
+  "half": "check",
+  "focus": [
+   "15_unstated_receiver",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "세훈은 코코넛이 15개 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "세훈",
+      "item": "코코넛",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "세훈",
+      "item": "코코넛",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "한수는 코코넛이 열네 개 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "한수",
+      "item": "코코넛",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "한수",
+      "item": "코코넛",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "원석은 코코넛이 7개 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "원석",
+      "item": "코코넛",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "원석",
+      "item": "코코넛",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "세훈이 은지에게 코코넛을 3개 빌려줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세훈",
+      "to": "은지",
+      "item": "코코넛",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "세훈",
+      "item": "코코넛",
+      "quantity": 12
+     },
+     {
+      "entity": "은지",
+      "item": "코코넛",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "그리고 한수에게 코코넛을 1개 주었어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세훈",
+      "to": "한수",
+      "item": "코코넛",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "세훈",
+      "item": "코코넛",
+      "quantity": 11
+     },
+     {
+      "entity": "한수",
+      "item": "코코넛",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "세훈의 코코넛은 모두 몇 개야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "세훈",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "코코넛"
+   }
+  },
+  {
+   "n": 7,
+   "say": "은지는 코코넛이 몇 개야?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "hold",
+    "entity": "은지",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "item": "코코넛"
+   }
+  },
+  {
+   "n": 8,
+   "say": "세훈이랑 한수 중에 누가 코코넛을 더 많이 가지고 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "한수",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "세훈",
+     "한수"
+    ],
+    "item": "코코넛",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      5
+     ]
+    }
+   }
+  }
+ ]
+}

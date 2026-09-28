@@ -1,0 +1,272 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_37",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_044",
+  "half": "check",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "영훈은 모종삽이 세 자루 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "영훈",
+      "item": "모종삽",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "영훈",
+      "item": "모종삽",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "원석은 모종삽이 15자루 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "원석",
+      "item": "모종삽",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "원석",
+      "item": "모종삽",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "신발가게에는 모종삽이 20자루 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "신발가게",
+      "item": "모종삽",
+      "quantity": 20
+     }
+    ],
+    "state": [
+     {
+      "entity": "신발가게",
+      "item": "모종삽",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "원석이 동하에게 모종삽을 3자루 빌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "원석",
+      "to": "동하",
+      "item": "모종삽",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "원석",
+      "item": "모종삽",
+      "quantity": 12
+     },
+     {
+      "entity": "동하",
+      "item": "모종삽",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "원석의 모종삽은 모두 몇 자루예요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "원석",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "모종삽"
+   }
+  },
+  {
+   "n": 6,
+   "say": "동하는 모종삽이 몇 자루예요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "hold",
+    "entity": "동하",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "item": "모종삽"
+   }
+  },
+  {
+   "n": 7,
+   "say": "영훈이랑 원석의 모종삽을 합치면 몇 자루예요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "영훈",
+     "원석"
+    ],
+    "quantity": 15,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "모종삽"
+   }
+  }
+ ]
+}

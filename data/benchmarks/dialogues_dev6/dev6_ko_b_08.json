@@ -1,0 +1,273 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_08",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_011",
+  "half": "build",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "창구에 이쑤시개가 열아홉 묶음 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "창구",
+      "item": "이쑤시개",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "창구",
+      "item": "이쑤시개",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "희정한테는 이쑤시개가 여덟 묶음 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "희정",
+      "item": "이쑤시개",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "희정",
+      "item": "이쑤시개",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "반 주임님한테는 이쑤시개가 스물두 묶음 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "반 주임",
+      "item": "이쑤시개",
+      "quantity": 22
+     }
+    ],
+    "state": [
+     {
+      "entity": "반 주임",
+      "item": "이쑤시개",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "반 주임님이 보은한테 이쑤시개 3묶음을 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "반 주임",
+      "to": "보은",
+      "item": "이쑤시개",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "반 주임",
+      "item": "이쑤시개",
+      "quantity": 19
+     },
+     {
+      "entity": "보은",
+      "item": "이쑤시개",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "희정은 이쑤시개가 몇 묶음이에요?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "희정",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "이쑤시개"
+   }
+  },
+  {
+   "n": 6,
+   "say": "보은은 이쑤시개가 몇 묶음 있어요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "hold",
+    "entity": "보은",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "item": "이쑤시개"
+   }
+  },
+  {
+   "n": 7,
+   "say": "희정이랑 반 주임님 이쑤시개가 합쳐서 몇 묶음이에요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "희정",
+     "반 주임"
+    ],
+    "quantity": 27,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "이쑤시개"
+   }
+  }
+ ]
+}

@@ -1,0 +1,262 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_57",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_060",
+  "half": "build",
+  "focus": [
+   "11_repair_with_question",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Hector has 15 marbles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Hector",
+      "item": "marbles",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "Hector",
+      "item": "marbles",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Mabel has 7 marbles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Mabel",
+      "item": "marbles",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Mabel",
+      "item": "marbles",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Elliot has 11 marbles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Elliot",
+      "item": "marbles",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Elliot",
+      "item": "marbles",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Elliot handed 4 marbles over to Mabel.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Elliot",
+      "to": "Mabel",
+      "item": "marbles",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Elliot",
+      "item": "marbles",
+      "quantity": 7
+     },
+     {
+      "entity": "Mabel",
+      "item": "marbles",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many marbles does Elliot have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Elliot",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "marbles"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Hector, I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "ownership"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Hector",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "marbles"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many marbles does Hector have?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Hector",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "marbles"
+   }
+  }
+ ]
+}

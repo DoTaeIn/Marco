@@ -1,0 +1,332 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_47",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_055",
+  "half": "check",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "6_holder_forms",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "제 사촌 채영은 약초가 8묶음 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "채영",
+      "item": "약초",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "채영",
+      "item": "약초",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "현정은 약초가 열여섯 묶음 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "현정",
+      "item": "약초",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "현정",
+      "item": "약초",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "시혁은 약초가 5묶음 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "시혁",
+      "item": "약초",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "시혁",
+      "item": "약초",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "현정 오빠 원석도 약초를 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "원석",
+      "item": "약초",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "원석",
+      "item": "약초",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "채영이 경아에게 약초를 3묶음 주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "채영",
+      "to": "경아",
+      "item": "약초",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "채영",
+      "item": "약초",
+      "quantity": 5
+     },
+     {
+      "entity": "경아",
+      "item": "약초",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "현정은 약초가 몇 묶음입니까?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "현정",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "약초"
+   }
+  },
+  {
+   "n": 7,
+   "say": "경아는 약초가 몇 묶음입니까?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "hold",
+    "entity": "경아",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "item": "약초"
+   }
+  },
+  {
+   "n": 8,
+   "say": "원석은 약초가 몇 묶음입니까?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "hold",
+    "entity": "원석",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "item": "약초"
+   }
+  },
+  {
+   "n": 9,
+   "say": "채영과 현정의 약초를 합치면 몇 묶음입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "채영",
+     "현정"
+    ],
+    "quantity": 21,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      5
+     ]
+    },
+    "item": "약초"
+   }
+  }
+ ]
+}

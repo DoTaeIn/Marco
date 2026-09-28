@@ -1,0 +1,287 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_09",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_012",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "3_partitive",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "3_partitive",
+   "5_ko_transfer_verbs",
+   "6_holder_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "녹음실에 아보카도가 10개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "녹음실",
+      "item": "아보카도",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "녹음실",
+      "item": "아보카도",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "윤희한테는 아보카도가 열두 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "윤희",
+      "item": "아보카도",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤희",
+      "item": "아보카도",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "연습실에는 아보카도가 스물한 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "연습실",
+      "item": "아보카도",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "연습실",
+      "item": "아보카도",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "윤희가 녹음실에 아보카도 2개를 맡겼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "윤희",
+      "to": "녹음실",
+      "item": "아보카도",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤희",
+      "item": "아보카도",
+      "quantity": 10
+     },
+     {
+      "entity": "녹음실",
+      "item": "아보카도",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "윤희가 그중 하나를 만들기 수업에 썼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "윤희",
+      "item": "아보카도",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤희",
+      "item": "아보카도",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "녹음실에 남은 아보카도는 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "녹음실",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "아보카도"
+   }
+  },
+  {
+   "n": 7,
+   "say": "연습실은 어떻습니까?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "연습실",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "아보카도"
+   }
+  }
+ ]
+}

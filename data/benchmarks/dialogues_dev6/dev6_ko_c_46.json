@@ -1,0 +1,278 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_46",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_054",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "목 선생님은 핸드백이 18개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "목 선생",
+      "item": "핸드백",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "목 선생",
+      "item": "핸드백",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "혜미는 수레에 핸드백을 9개 싣고 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "혜미",
+      "item": "핸드백",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "혜미",
+      "item": "핸드백",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "혜미가 목 선생님에게 핸드백을 3개 주었다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "혜미",
+      "to": "목 선생",
+      "item": "핸드백",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "혜미",
+      "item": "핸드백",
+      "quantity": 6
+     },
+     {
+      "entity": "목 선생",
+      "item": "핸드백",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "그리고 목 선생님에게 핸드백을 두 개 주었다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "혜미",
+      "to": "목 선생",
+      "item": "핸드백",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "혜미",
+      "item": "핸드백",
+      "quantity": 4
+     },
+     {
+      "entity": "목 선생",
+      "item": "핸드백",
+      "quantity": 23
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "혜미는 이제 핸드백이 몇 개인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "혜미",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "핸드백"
+   }
+  },
+  {
+   "n": 6,
+   "say": "혜미의 핸드백이 4개가 된 까닭은 무엇인가?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "explain",
+    "entity": "혜미",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "핸드백"
+   }
+  },
+  {
+   "n": 7,
+   "say": "목 선생님은 핸드백이 몇 개인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "목 선생",
+    "quantity": 23,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "핸드백"
+   }
+  }
+ ]
+}

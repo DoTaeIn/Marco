@@ -1,0 +1,294 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_11",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_013",
+  "half": "check",
+  "focus": [
+   "11_repair_with_question",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "4_fragment_count",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "상현은 로봇이 여섯 대 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "상현",
+      "item": "로봇",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "상현",
+      "item": "로봇",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "진희는 로봇이 있어. 14대야.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "4_fragment_count"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "진희",
+      "item": "로봇",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "진희",
+      "item": "로봇",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "목 이사님은 로봇이 열여섯 대 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "목 이사",
+      "item": "로봇",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "목 이사",
+      "item": "로봇",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "진희가 목 이사님에게 로봇을 2대 보냈어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "진희",
+      "to": "목 이사",
+      "item": "로봇",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "진희",
+      "item": "로봇",
+      "quantity": 12
+     },
+     {
+      "entity": "목 이사",
+      "item": "로봇",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "상현이 진희에게 로봇을 두 대 줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "상현",
+      "to": "진희",
+      "item": "로봇",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "상현",
+      "item": "로봇",
+      "quantity": 4
+     },
+     {
+      "entity": "진희",
+      "item": "로봇",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "진희는 이제 로봇이 몇 대야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "진희",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "로봇"
+   }
+  },
+  {
+   "n": 7,
+   "say": "상현 말이야. 상현은 로봇이 몇 대야?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "상현",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "로봇"
+   }
+  }
+ ]
+}

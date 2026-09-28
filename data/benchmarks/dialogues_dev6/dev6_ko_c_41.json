@@ -1,0 +1,250 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_41",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "cross_language",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_049",
+  "half": "check",
+  "focus": [
+   "11_repair_with_question",
+   "3_partitive",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "12_cross_language",
+   "1_count_words",
+   "3_partitive",
+   "5_ko_transfer_verbs",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "은호는 교과서가 열한 권 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "은호",
+      "item": "교과서",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "은호",
+      "item": "교과서",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "은호 처제 세희는 교과서가 스물한 권 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "세희",
+      "item": "교과서",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "세희",
+      "item": "교과서",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "세희가 은호에게 교과서를 3권 빌려주었다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세희",
+      "to": "은호",
+      "item": "교과서",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "세희",
+      "item": "교과서",
+      "quantity": 18
+     },
+     {
+      "entity": "은호",
+      "item": "교과서",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "은호가 그중 1권으로 전시 작품을 만들었다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "3_partitive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "은호",
+      "item": "교과서",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "은호",
+      "item": "교과서",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "세희에게 남은 교과서는 몇 권인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "세희",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "교과서"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many textbooks does 세희 have?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "세희",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "교과서"
+   },
+   "lang": "en"
+  }
+ ]
+}

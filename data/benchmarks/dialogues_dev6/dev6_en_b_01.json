@@ -1,0 +1,324 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_01",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "cross_language",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_001",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "12_cross_language",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Nell has eight coconuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Nell",
+      "item": "coconuts",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Nell",
+      "item": "coconuts",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The ice rink has 15 coconuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "ice rink",
+      "item": "coconuts",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "ice rink",
+      "item": "coconuts",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The exhibit hall has ten coconuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "exhibit hall",
+      "item": "coconuts",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "exhibit hall",
+      "item": "coconuts",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Nell left 5 coconuts at the ice rink.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Nell",
+      "to": "ice rink",
+      "item": "coconuts",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Nell",
+      "item": "coconuts",
+      "quantity": 3
+     },
+     {
+      "entity": "ice rink",
+      "item": "coconuts",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Nell left one more coconut at the ice rink.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Nell",
+      "to": "ice rink",
+      "item": "coconuts",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Nell",
+      "item": "coconuts",
+      "quantity": 2
+     },
+     {
+      "entity": "ice rink",
+      "item": "coconuts",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many coconuts does the ice rink have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "ice rink",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "coconuts"
+   }
+  },
+  {
+   "n": 7,
+   "say": "And the exhibit hall?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "exhibit hall",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "coconuts"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Nell는 코코넛이 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Nell",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "coconuts"
+   },
+   "lang": "ko"
+  }
+ ]
+}

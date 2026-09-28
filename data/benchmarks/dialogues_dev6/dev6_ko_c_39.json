@@ -1,0 +1,270 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_39",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_047",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "혜미는 만화책이 9권 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "혜미",
+      "item": "만화책",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "혜미",
+      "item": "만화책",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "기 주임님은 만화책이 10권 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "기 주임",
+      "item": "만화책",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "기 주임",
+      "item": "만화책",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "채영은 만화책이 19권 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "채영",
+      "item": "만화책",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "채영",
+      "item": "만화책",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "혜미가 채영에게 만화책을 한 권 주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "혜미",
+      "to": "채영",
+      "item": "만화책",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "혜미",
+      "item": "만화책",
+      "quantity": 8
+     },
+     {
+      "entity": "채영",
+      "item": "만화책",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "혜미의 만화책은 모두 몇 권입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "혜미",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "만화책"
+   }
+  },
+  {
+   "n": 6,
+   "say": "왜 8권입니까?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "explain",
+    "entity": "혜미",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "만화책"
+   }
+  },
+  {
+   "n": 7,
+   "say": "혜미와 기 주임님 중에 누가 만화책을 더 많이 가지고 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "기 주임",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "혜미",
+     "기 주임"
+    ],
+    "item": "만화책",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    }
+   }
+  }
+ ]
+}

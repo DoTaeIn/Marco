@@ -1,0 +1,307 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_25",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_028",
+  "half": "build",
+  "focus": [
+   "13_why_with_fact",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Blake has 15 trowels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Blake",
+      "item": "trowels",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "Blake",
+      "item": "trowels",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Mr. Keller has 18 trowels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Keller",
+      "item": "trowels",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "Keller",
+      "item": "trowels",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Alan has seven trowels.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Alan",
+      "item": "trowels",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "trowels",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Alan sent Blake two trowels.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Alan",
+      "to": "Blake",
+      "item": "trowels",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "trowels",
+      "quantity": 5
+     },
+     {
+      "entity": "Blake",
+      "item": "trowels",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Blake used 3 of them for a window display.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "3_partitive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Blake",
+      "item": "trowels",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Blake",
+      "item": "trowels",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many trowels does Alan have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Alan",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "trowels"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Why is that number 5?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "explain",
+    "entity": "Alan",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "trowels"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many trowels does Blake have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Blake",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "trowels"
+   }
+  }
+ ]
+}

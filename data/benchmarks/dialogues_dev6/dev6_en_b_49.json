@@ -1,0 +1,355 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_49",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_052",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The station office has eleven tambourines.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "station office",
+      "item": "tambourines",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "station office",
+      "item": "tambourines",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Dr. Hayes has 15 tambourines.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Hayes",
+      "item": "tambourines",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "Hayes",
+      "item": "tambourines",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The gazebo has twelve tambourines.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "gazebo",
+      "item": "tambourines",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "gazebo",
+      "item": "tambourines",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Dr. Hayes's partner, Abel, also has some tambourines.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Abel",
+      "item": "tambourines",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Abel",
+      "item": "tambourines",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Dr. Hayes left three tambourines at the station office.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Hayes",
+      "to": "station office",
+      "item": "tambourines",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Hayes",
+      "item": "tambourines",
+      "quantity": 12
+     },
+     {
+      "entity": "station office",
+      "item": "tambourines",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "Dr. Hayes left one more tambourine at the station office.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Hayes",
+      "to": "station office",
+      "item": "tambourines",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Hayes",
+      "item": "tambourines",
+      "quantity": 11
+     },
+     {
+      "entity": "station office",
+      "item": "tambourines",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many tambourines does the station office have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "station office",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5,
+      6
+     ]
+    },
+    "item": "tambourines"
+   }
+  },
+  {
+   "n": 8,
+   "say": "And the gazebo?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "gazebo",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "tambourines"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many tambourines does Abel have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "hold",
+    "entity": "Abel",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "item": "tambourines"
+   }
+  }
+ ]
+}
