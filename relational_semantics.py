@@ -484,6 +484,30 @@ class RelationalParser:
                                     table.setdefault(form, (targets[0], {"id": "declared-same-frame-v1",
                                                                          "stem": stem, "as": row.get("as") or row.get("read_as"),
                                                                          "tense": tense, "ending": ending}))
+        # The subject honorific (쓰셨습니다, 파셨어요, 주셨다) of a verb the examples use or a same-frame verb reads as
+        # the plain form of the same tense and ending (활용.honorific).
+        honorific = grammar.get("honorific") or {}
+        if honorific.get("infix"):
+            pairs = [(stem, row.get("as") or stem, row.get("read_as")) for row in self.same_frame
+                     for stem in row.get("stems", [])]
+            pairs += [(e["event_verb"], e["event_verb"], None) for e in self.data["examples"] if e.get("event_verb")]
+            for stem, target_stem, read_as in pairs:
+                raised = self._honorific_stem(stem)
+                if raised is None:
+                    continue
+                for tense in grammar.get("tenses", {}):
+                    for ending in honorific.get("endings", []):
+                        try:
+                            forms = [f["text"] for f in inflect(raised, tense, ending, grammar, kind="regular")]
+                            targets = [read_as] if read_as else [
+                                f["text"] for f in inflect(target_stem, tense, ending, grammar, kind="regular")]
+                        except (ValueError, KeyError):
+                            continue
+                        for form in forms:
+                            if targets and form != targets[0] and parse_numeral(form, numerals) is None:
+                                table.setdefault(form, (targets[0], {"id": "declared-same-frame-v1", "stem": raised,
+                                                                     "as": read_as or target_stem, "tense": tense,
+                                                                     "ending": ending}))
         for row in self.phrase_variants:
             source, target = row.get("from"), row.get("to", "")
             if isinstance(source, str) and source and isinstance(target, str):
@@ -491,6 +515,20 @@ class RelationalParser:
                                                    **({"final": True} if row.get("final") else {})}))
         self._variant_table = table
         return table
+
+    def _honorific_stem(self, stem):
+        """The stem with the declared subject honorific (활용.honorific): 쓰 -> 쓰시, 받 -> 받으시, 팔 -> 파시."""
+        from hangul import compose, decompose
+        honorific = (self.inflection_grammar or {}).get("honorific") or {}
+        if not honorific.get("infix") or not stem:
+            return None
+        last = decompose(stem[-1])
+        if last is None:
+            return None
+        coda = last[2] if len(last) > 2 else ""
+        if coda in honorific.get("dropped_coda", []):
+            return stem[:-1] + compose(last[0], last[1]) + honorific["infix"]
+        return stem + (honorific.get("after_coda", honorific["infix"]) if coda else honorific["infix"])
 
     def _variant_patterns(self):
         """The declared variants, longest first, each compiled once per parser."""
@@ -1232,6 +1270,14 @@ class RelationalParser:
                         for form in forms:
                             if target:
                                 table.setdefault(form, (row, target[0]))
+                        # the subject honorific of the taker's verb (받으셨어요 -> 줬어요)
+                        raised = self._honorific_stem(row["stem"])
+                        if raised and target and ending in (grammar.get("honorific") or {}).get("endings", []):
+                            try:
+                                for f in inflect(raised, tense, ending, grammar, kind="regular"):
+                                    table.setdefault(f["text"], (row, target[0]))
+                            except (ValueError, KeyError):
+                                pass
             self._role_swap_table = table
         return self._role_swap_table
 
@@ -2951,6 +2997,13 @@ class RelationalParser:
                                "render": list(spec["render"])}]}
         if not name:
             return None
+        # The one name word said in a holder's case (수량물음.owner_cases, with or without a delimiter on it) is the
+        # holder, wherever it stands: 사과는 라온한테 몇 개 있어 asks 라온's apples, as 라온한테 사과가 몇 개 있어 does.
+        cases = spec.get("owner_cases", [])
+        endings = [c + d for c in cases for d in [""] + list(spec.get("delimiters", []))]
+        owners = [i for i, word in enumerate(raw) if any(word.endswith(e) and len(word) > len(e) for e in endings)]
+        if len(owners) == 1 and owners[0] > 0:
+            name = [name[owners[0]]] + name[:owners[0]] + name[owners[0] + 1:]
         return {"query": [{"triple": [" ".join(name), "count", "?n"], "render": list(spec["render"])}]}
 
     def _comparison_meaning(self, literal):
