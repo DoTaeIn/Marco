@@ -1,0 +1,281 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_07",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_010",
+  "half": "build",
+  "focus": [
+   "13_why_with_fact",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "반 실장님은 승합차에 샤프를 24자루 싣고 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "반 실장",
+      "item": "샤프",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "반 실장",
+      "item": "샤프",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "보은한테는 샤프가 열여섯 자루 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "보은",
+      "item": "샤프",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "보은",
+      "item": "샤프",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "보은이 반 실장님한테 샤프 세 자루를 보냈다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "보은",
+      "to": "반 실장",
+      "item": "샤프",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "보은",
+      "item": "샤프",
+      "quantity": 13
+     },
+     {
+      "entity": "반 실장",
+      "item": "샤프",
+      "quantity": 27
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "그리고 반 실장님한테 세 자루를 줬다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "보은",
+      "to": "반 실장",
+      "item": "샤프",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "보은",
+      "item": "샤프",
+      "quantity": 10
+     },
+     {
+      "entity": "반 실장",
+      "item": "샤프",
+      "quantity": 30
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "보은은 지금 샤프가 몇 자루인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "보은",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "샤프"
+   }
+  },
+  {
+   "n": 6,
+   "say": "방금 답이 어떻게 그렇게 된 건가?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "explain",
+    "entity": "보은",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "샤프"
+   }
+  },
+  {
+   "n": 7,
+   "say": "반 실장님은 샤프가 몇 자루 있나?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "반 실장",
+    "quantity": 30,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "샤프"
+   }
+  }
+ ]
+}

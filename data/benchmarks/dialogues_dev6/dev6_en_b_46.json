@@ -1,0 +1,294 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_46",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_049",
+  "half": "build",
+  "focus": [
+   "11_repair_with_question",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My brother, Alan, has ten whistles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Alan",
+      "item": "whistles",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "whistles",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Ms. Fowler has sixteen whistles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Fowler",
+      "item": "whistles",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fowler",
+      "item": "whistles",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The box office has 13 whistles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "box office",
+      "item": "whistles",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "box office",
+      "item": "whistles",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Alan left 4 whistles at the box office.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Alan",
+      "to": "box office",
+      "item": "whistles",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "whistles",
+      "quantity": 6
+     },
+     {
+      "entity": "box office",
+      "item": "whistles",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Alan left two more whistles at the box office.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Alan",
+      "to": "box office",
+      "item": "whistles",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "whistles",
+      "quantity": 4
+     },
+     {
+      "entity": "box office",
+      "item": "whistles",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many whistles does Alan have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Alan",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "whistles"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Ms. Fowler, I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "ownership"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Fowler",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "whistles"
+   }
+  }
+ ]
+}

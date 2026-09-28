@@ -1,0 +1,288 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_19",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_022",
+  "half": "build",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My wife, Celeste, has five pancakes.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Celeste",
+      "item": "pancakes",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Celeste",
+      "item": "pancakes",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Our driver, Mr. Doyle, has three pancakes.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Doyle",
+      "item": "pancakes",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Doyle",
+      "item": "pancakes",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Celeste passed Alan 2 pancakes.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Celeste",
+      "to": "Alan",
+      "item": "pancakes",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Celeste",
+      "item": "pancakes",
+      "quantity": 3
+     },
+     {
+      "entity": "Alan",
+      "item": "pancakes",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Mr. Doyle sent Celeste two pancakes.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Doyle",
+      "to": "Celeste",
+      "item": "pancakes",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Doyle",
+      "item": "pancakes",
+      "quantity": 1
+     },
+     {
+      "entity": "Celeste",
+      "item": "pancakes",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many pancakes does Celeste have in all?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Celeste",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "pancakes"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many pancakes does Alan have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "hold",
+    "entity": "Alan",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "item": "pancakes"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Who has more pancakes, Celeste or Mr. Doyle?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Celeste",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "Celeste",
+     "Doyle"
+    ],
+    "item": "pancakes",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      4
+     ]
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,237 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_41",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_044",
+  "half": "build",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "6_holder_forms",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "For the reunion, Ms. Lynch is responsible for 21 journals.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Lynch",
+      "item": "journals",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lynch",
+      "item": "journals",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Rudy has eleven journals.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Rudy",
+      "item": "journals",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rudy",
+      "item": "journals",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Rudy gave Dr. Keller 1 journal.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Rudy",
+      "to": "Keller",
+      "item": "journals",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rudy",
+      "item": "journals",
+      "quantity": 10
+     },
+     {
+      "entity": "Keller",
+      "item": "journals",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many journals has Rudy got?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Rudy",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "journals"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many journals does Dr. Keller have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "hold",
+    "entity": "Keller",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "item": "journals"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many journals do Ms. Lynch and Rudy have combined?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Lynch",
+     "Rudy"
+    ],
+    "quantity": 31,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "journals"
+   }
+  }
+ ]
+}

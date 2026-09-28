@@ -1,0 +1,231 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_36",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_050",
+  "half": "build",
+  "focus": [
+   "13_why_with_fact",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "석훈한테 색종이가 있습니다. 22장입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "석훈",
+      "item": "색종이",
+      "quantity": 22
+     }
+    ],
+    "state": [
+     {
+      "entity": "석훈",
+      "item": "색종이",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "가람한테는 색종이가 열한 장 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "가람",
+      "item": "색종이",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "가람",
+      "item": "색종이",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "가람이 석훈한테 색종이 4장을 주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "가람",
+      "to": "석훈",
+      "item": "색종이",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "가람",
+      "item": "색종이",
+      "quantity": 7
+     },
+     {
+      "entity": "석훈",
+      "item": "색종이",
+      "quantity": 26
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "가람은 지금 색종이가 몇 장입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "가람",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "색종이"
+   }
+  },
+  {
+   "n": 5,
+   "say": "왜 일곱 장입니까?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact",
+    "1_count_words"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "explain",
+    "entity": "가람",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "색종이"
+   }
+  },
+  {
+   "n": 6,
+   "say": "석훈은 색종이가 몇 장 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "석훈",
+    "quantity": 26,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "색종이"
+   }
+  }
+ ]
+}

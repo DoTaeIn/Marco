@@ -1,0 +1,342 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_34",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_037",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Georgia has twenty-two platters.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Georgia",
+      "item": "platters",
+      "quantity": 22
+     }
+    ],
+    "state": [
+     {
+      "entity": "Georgia",
+      "item": "platters",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Our tutor, Mrs. Keller, has six platters.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Keller",
+      "item": "platters",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "Keller",
+      "item": "platters",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Georgia's wife, Camila, has nineteen platters.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Camila",
+      "item": "platters",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "Camila",
+      "item": "platters",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Camila passed Mrs. McCoy one platter.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Camila",
+      "to": "McCoy",
+      "item": "platters",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Camila",
+      "item": "platters",
+      "quantity": 18
+     },
+     {
+      "entity": "McCoy",
+      "item": "platters",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Mrs. Keller lent Georgia three platters.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Keller",
+      "to": "Georgia",
+      "item": "platters",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Keller",
+      "item": "platters",
+      "quantity": 3
+     },
+     {
+      "entity": "Georgia",
+      "item": "platters",
+      "quantity": 25
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many platters does Camila have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Camila",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "platters"
+   }
+  },
+  {
+   "n": 7,
+   "say": "What about Georgia?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Georgia",
+    "quantity": 25,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "platters"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many platters does Camila have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Camila",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "platters"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many platters does Mrs. McCoy have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "hold",
+    "entity": "McCoy",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "item": "platters"
+   }
+  }
+ ]
+}

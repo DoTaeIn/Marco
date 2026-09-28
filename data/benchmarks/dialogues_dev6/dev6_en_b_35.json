@@ -1,0 +1,316 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_35",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_038",
+  "half": "build",
+  "focus": [
+   "11_repair_with_question",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Maeve has eighteen drums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Maeve",
+      "item": "drums",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "Maeve",
+      "item": "drums",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Maeve's sister, Xena, has 3 drums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Xena",
+      "item": "drums",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "drums",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The shoe store has thirteen drums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "shoe store",
+      "item": "drums",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "shoe store",
+      "item": "drums",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Xena left 1 drum at the shoe store.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Xena",
+      "to": "shoe store",
+      "item": "drums",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "drums",
+      "quantity": 2
+     },
+     {
+      "entity": "shoe store",
+      "item": "drums",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Maeve left 4 drums at the shoe store.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Maeve",
+      "to": "shoe store",
+      "item": "drums",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Maeve",
+      "item": "drums",
+      "quantity": 14
+     },
+     {
+      "entity": "shoe store",
+      "item": "drums",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many drums does Xena have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Xena",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "drums"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Maeve is the one I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Maeve",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "drums"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many drums does Maeve have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Maeve",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "drums"
+   }
+  }
+ ]
+}

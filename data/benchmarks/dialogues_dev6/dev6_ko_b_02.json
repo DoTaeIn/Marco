@@ -1,0 +1,294 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_02",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_004",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "1_count_words",
+   "5_ko_transfer_verbs"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "역무실에 영수증이 열아홉 장 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "역무실",
+      "item": "영수증",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "역무실",
+      "item": "영수증",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "동아리방에는 영수증이 열네 장 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "동아리방",
+      "item": "영수증",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "동아리방",
+      "item": "영수증",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "내 남편 성호한테 영수증이 세 장 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "성호",
+      "item": "영수증",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "성호",
+      "item": "영수증",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "성호가 희정한테 영수증 두 장을 보냈다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "성호",
+      "to": "희정",
+      "item": "영수증",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "성호",
+      "item": "영수증",
+      "quantity": 1
+     },
+     {
+      "entity": "희정",
+      "item": "영수증",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "역무실은 영수증이 몇 장 있나?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "역무실",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "영수증"
+   }
+  },
+  {
+   "n": 6,
+   "say": "동아리방은?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "동아리방",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "영수증"
+   }
+  },
+  {
+   "n": 7,
+   "say": "성호는 영수증이 몇 장 있나?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "성호",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "영수증"
+   }
+  },
+  {
+   "n": 8,
+   "say": "희정은 영수증이 몇 장 있나?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "hold",
+    "entity": "희정",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      8
+     ]
+    },
+    "item": "영수증"
+   }
+  }
+ ]
+}

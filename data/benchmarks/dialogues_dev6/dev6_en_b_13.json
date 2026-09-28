@@ -1,0 +1,341 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_13",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_015",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The stationery store has twelve belts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "stationery store",
+      "item": "belts",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "stationery store",
+      "item": "belts",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The box office has fourteen belts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "box office",
+      "item": "belts",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "box office",
+      "item": "belts",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Troy has ten belts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Troy",
+      "item": "belts",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Troy",
+      "item": "belts",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Troy gave Blake four belts.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "1_count_words"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Troy",
+      "to": "Blake",
+      "item": "belts",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Troy",
+      "item": "belts",
+      "quantity": 6
+     },
+     {
+      "entity": "Blake",
+      "item": "belts",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Troy left 2 belts at the box office.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Troy",
+      "to": "box office",
+      "item": "belts",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Troy",
+      "item": "belts",
+      "quantity": 4
+     },
+     {
+      "entity": "box office",
+      "item": "belts",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many belts does the stationery store have?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "stationery store",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "belts"
+   }
+  },
+  {
+   "n": 7,
+   "say": "And the box office?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "box office",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      5
+     ]
+    },
+    "item": "belts"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many belts does Troy have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Troy",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      5
+     ]
+    },
+    "item": "belts"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many belts does Blake have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "hold",
+    "entity": "Blake",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "item": "belts"
+   }
+  }
+ ]
+}

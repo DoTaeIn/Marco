@@ -1,0 +1,316 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_51",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_054",
+  "half": "build",
+  "focus": [
+   "13_why_with_fact",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "I have 7 drums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "drums",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "drums",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My boss, Igor, has some drums. 8, to be exact.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "4_fragment_count"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Igor",
+      "item": "drums",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Igor",
+      "item": "drums",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Hector has nine drums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Hector",
+      "item": "drums",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Hector",
+      "item": "drums",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Hector sent Igor five drums.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Hector",
+      "to": "Igor",
+      "item": "drums",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Hector",
+      "item": "drums",
+      "quantity": 4
+     },
+     {
+      "entity": "Igor",
+      "item": "drums",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Igor lent me one drum.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Igor",
+      "to": "I",
+      "item": "drums",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Igor",
+      "item": "drums",
+      "quantity": 12
+     },
+     {
+      "entity": "I",
+      "item": "drums",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many drums do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "drums"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Why do I only have eight?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact",
+    "1_count_words"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "explain",
+    "entity": "I",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "drums"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many drums does Igor have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Igor",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "drums"
+   }
+  }
+ ]
+}

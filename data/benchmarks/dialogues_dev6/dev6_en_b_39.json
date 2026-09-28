@@ -1,0 +1,308 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_39",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_042",
+  "half": "build",
+  "focus": [
+   "11_repair_with_question",
+   "3_partitive",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "3_partitive",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Mr. Reeves has twelve coconuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Reeves",
+      "item": "coconuts",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Reeves",
+      "item": "coconuts",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Georgia has nineteen coconuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Georgia",
+      "item": "coconuts",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "Georgia",
+      "item": "coconuts",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Mrs. Doyle has 8 coconuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Doyle",
+      "item": "coconuts",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Doyle",
+      "item": "coconuts",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Georgia gave Mr. Reeves 1 coconut.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Georgia",
+      "to": "Reeves",
+      "item": "coconuts",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Georgia",
+      "item": "coconuts",
+      "quantity": 18
+     },
+     {
+      "entity": "Reeves",
+      "item": "coconuts",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Mr. Reeves used two of them for the bake sale.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Reeves",
+      "item": "coconuts",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Reeves",
+      "item": "coconuts",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many coconuts does Georgia have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Georgia",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "coconuts"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Mr. Reeves, I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Reeves",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "coconuts"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many coconuts does Mr. Reeves have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Reeves",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "coconuts"
+   }
+  }
+ ]
+}

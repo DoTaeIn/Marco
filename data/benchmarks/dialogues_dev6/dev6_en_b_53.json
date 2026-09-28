@@ -1,0 +1,248 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_53",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_056",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The shoe store has 3 harmonicas.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "shoe store",
+      "item": "harmonicas",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "shoe store",
+      "item": "harmonicas",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The gazebo has sixteen harmonicas.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "gazebo",
+      "item": "harmonicas",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "gazebo",
+      "item": "harmonicas",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Mrs. Maxwell has ten harmonicas.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Maxwell",
+      "item": "harmonicas",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Maxwell",
+      "item": "harmonicas",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Mrs. Maxwell left one harmonica at the gazebo.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Maxwell",
+      "to": "gazebo",
+      "item": "harmonicas",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Maxwell",
+      "item": "harmonicas",
+      "quantity": 9
+     },
+     {
+      "entity": "gazebo",
+      "item": "harmonicas",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many harmonicas does the shoe store have left?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "shoe store",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "harmonicas"
+   }
+  },
+  {
+   "n": 6,
+   "say": "And the gazebo?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "gazebo",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "harmonicas"
+   }
+  }
+ ]
+}

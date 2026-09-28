@@ -1,0 +1,238 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_31",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_036",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "원석은 트럭에 빨대를 열세 묶음 싣고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "원석",
+      "item": "빨대",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "원석",
+      "item": "빨대",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "모 원장님은 빨대가 열아홉 묶음 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "모 원장",
+      "item": "빨대",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "모 원장",
+      "item": "빨대",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "모 원장님이 원석에게 빨대를 1묶음 줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "모 원장",
+      "to": "원석",
+      "item": "빨대",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "모 원장",
+      "item": "빨대",
+      "quantity": 18
+     },
+     {
+      "entity": "원석",
+      "item": "빨대",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "모 원장님은 빨대가 몇 묶음이야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "모 원장",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "빨대"
+   }
+  },
+  {
+   "n": 5,
+   "say": "방금 그 답이 어떻게 나온 거야?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "explain",
+    "entity": "모 원장",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "빨대"
+   }
+  },
+  {
+   "n": 6,
+   "say": "원석이랑 모 원장님 중에 누가 빨대를 더 많이 가지고 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "모 원장",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "원석",
+     "모 원장"
+    ],
+    "item": "빨대",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

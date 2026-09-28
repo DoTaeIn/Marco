@@ -1,0 +1,278 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_54",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "cross_language",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_057",
+  "half": "build",
+  "focus": [
+   "11_repair_with_question",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "12_cross_language",
+   "1_count_words",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Blake has ten spools.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Blake",
+      "item": "spools",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Blake",
+      "item": "spools",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Seth has 16 spools.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Seth",
+      "item": "spools",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Seth",
+      "item": "spools",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Blake gave Seth five spools.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Blake",
+      "to": "Seth",
+      "item": "spools",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Blake",
+      "item": "spools",
+      "quantity": 5
+     },
+     {
+      "entity": "Seth",
+      "item": "spools",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Blake used three of them for a window display.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Blake",
+      "item": "spools",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Blake",
+      "item": "spools",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many spools does Blake have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Blake",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "spools"
+   }
+  },
+  {
+   "n": 6,
+   "say": "It's Seth. How many does Seth have?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Seth",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "spools"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Blake는 실패가 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Blake",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "spools"
+   },
+   "lang": "ko"
+  }
+ ]
+}

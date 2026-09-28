@@ -1,0 +1,248 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_21",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_023",
+  "half": "check",
+  "focus": [
+   "10_topic_switch",
+   "3_partitive",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "3_partitive",
+   "5_ko_transfer_verbs",
+   "6_holder_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "캠핑장에는 핸드백이 7개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "캠핑장",
+      "item": "핸드백",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "캠핑장",
+      "item": "핸드백",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "선착장에는 핸드백이 열한 개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "선착장",
+      "item": "핸드백",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "선착장",
+      "item": "핸드백",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "은지는 핸드백이 4개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "은지",
+      "item": "핸드백",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "은지",
+      "item": "핸드백",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "은지가 그중 세 개를 선착장에 맡겼다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive",
+    "5_ko_transfer_verbs",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "은지",
+      "to": "선착장",
+      "item": "핸드백",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "은지",
+      "item": "핸드백",
+      "quantity": 1
+     },
+     {
+      "entity": "선착장",
+      "item": "핸드백",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "캠핑장에 남은 핸드백은 몇 개인가?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "캠핑장",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "핸드백"
+   }
+  },
+  {
+   "n": 6,
+   "say": "선착장은?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "선착장",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "핸드백"
+   }
+  }
+ ]
+}

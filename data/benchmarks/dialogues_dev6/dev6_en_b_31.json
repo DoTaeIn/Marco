@@ -1,0 +1,248 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_31",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_034",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The box office has 12 apricots.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "box office",
+      "item": "apricots",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "box office",
+      "item": "apricots",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Mabel has sixteen apricots.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Mabel",
+      "item": "apricots",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Mabel",
+      "item": "apricots",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The stable has twenty-three apricots.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "stable",
+      "item": "apricots",
+      "quantity": 23
+     }
+    ],
+    "state": [
+     {
+      "entity": "stable",
+      "item": "apricots",
+      "quantity": 23
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Mabel left three apricots at the box office.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Mabel",
+      "to": "box office",
+      "item": "apricots",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Mabel",
+      "item": "apricots",
+      "quantity": 13
+     },
+     {
+      "entity": "box office",
+      "item": "apricots",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many apricots does the box office have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "box office",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "apricots"
+   }
+  },
+  {
+   "n": 6,
+   "say": "And the stable?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "stable",
+    "quantity": 23,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "apricots"
+   }
+  }
+ ]
+}

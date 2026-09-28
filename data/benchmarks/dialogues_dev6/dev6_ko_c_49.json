@@ -1,0 +1,275 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_49",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "cross_language",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_057",
+  "half": "check",
+  "focus": [
+   "11_repair_with_question",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "12_cross_language",
+   "1_count_words",
+   "4_fragment_count",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "재희는 핸드백이 있다. 일곱 개다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "재희",
+      "item": "핸드백",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "재희",
+      "item": "핸드백",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "은지는 핸드백이 10개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "은지",
+      "item": "핸드백",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "은지",
+      "item": "핸드백",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "은숙은 핸드백이 8개 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "은숙",
+      "item": "핸드백",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "은숙",
+      "item": "핸드백",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "은지가 재희에게 핸드백을 5개 빌려주었다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "은지",
+      "to": "재희",
+      "item": "핸드백",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "은지",
+      "item": "핸드백",
+      "quantity": 5
+     },
+     {
+      "entity": "재희",
+      "item": "핸드백",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "은지는 이제 핸드백이 몇 개인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "은지",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "핸드백"
+   }
+  },
+  {
+   "n": 6,
+   "say": "재희입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "재희",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "핸드백"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many handbags does 재희 have?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "재희",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "핸드백"
+   },
+   "lang": "en"
+  }
+ ]
+}

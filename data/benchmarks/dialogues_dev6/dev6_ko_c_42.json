@@ -1,0 +1,309 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_42",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_050",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "저는 모종삽이 있어요. 열일곱 자루예요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "모종삽",
+      "quantity": 17
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "모종삽",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "영주는 모종삽이 12자루 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "영주",
+      "item": "모종삽",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "영주",
+      "item": "모종삽",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "시혁은 모종삽이 아홉 자루 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "시혁",
+      "item": "모종삽",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "시혁",
+      "item": "모종삽",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "시혁이 영주에게 모종삽을 1자루 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "시혁",
+      "to": "영주",
+      "item": "모종삽",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "시혁",
+      "item": "모종삽",
+      "quantity": 8
+     },
+     {
+      "entity": "영주",
+      "item": "모종삽",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "제가 시혁에게 모종삽을 2자루 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "시혁",
+      "item": "모종삽",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "모종삽",
+      "quantity": 15
+     },
+     {
+      "entity": "시혁",
+      "item": "모종삽",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "저는 이제 모종삽이 몇 자루예요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "나",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "모종삽"
+   }
+  },
+  {
+   "n": 7,
+   "say": "저는 왜 15자루밖에 없어요?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "explain",
+    "entity": "나",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "모종삽"
+   }
+  },
+  {
+   "n": 8,
+   "say": "영주는 모종삽이 몇 자루예요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "영주",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "모종삽"
+   }
+  }
+ ]
+}

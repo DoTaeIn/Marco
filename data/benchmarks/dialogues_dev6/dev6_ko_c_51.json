@@ -1,0 +1,357 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_51",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_059",
+  "half": "check",
+  "focus": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "시혁은 팬케이크가 열두 장 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "시혁",
+      "item": "팬케이크",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "시혁",
+      "item": "팬케이크",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "시혁은 단추가 13개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "시혁",
+      "item": "단추",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "시혁",
+      "item": "단추",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "제 동기 혜미는 팬케이크가 14장 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "혜미",
+      "item": "팬케이크",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "혜미",
+      "item": "팬케이크",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "문구점에는 팬케이크가 열여덟 장 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "문구점",
+      "item": "팬케이크",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "문구점",
+      "item": "팬케이크",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "시혁이 계 선생님에게 팬케이크를 1장 빌려주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "시혁",
+      "to": "계 선생",
+      "item": "팬케이크",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "시혁",
+      "item": "팬케이크",
+      "quantity": 11
+     },
+     {
+      "entity": "계 선생",
+      "item": "팬케이크",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "시혁이 문구점에 팬케이크 두 장을 맡겼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "시혁",
+      "to": "문구점",
+      "item": "팬케이크",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "시혁",
+      "item": "팬케이크",
+      "quantity": 9
+     },
+     {
+      "entity": "문구점",
+      "item": "팬케이크",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "시혁은 팬케이크가 몇 장입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "시혁",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      5,
+      6
+     ]
+    },
+    "item": "팬케이크"
+   }
+  },
+  {
+   "n": 8,
+   "say": "단추는요?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "시혁",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      5,
+      6
+     ]
+    },
+    "item": "단추"
+   }
+  },
+  {
+   "n": 9,
+   "say": "계 선생님은 팬케이크가 몇 장입니까?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "hold",
+    "entity": "계 선생",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "item": "팬케이크"
+   }
+  }
+ ]
+}

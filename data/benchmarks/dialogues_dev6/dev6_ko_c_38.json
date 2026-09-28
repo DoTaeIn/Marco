@@ -1,0 +1,288 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_38",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_045",
+  "half": "check",
+  "focus": [
+   "10_topic_switch",
+   "3_partitive",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "3_partitive",
+   "5_ko_transfer_verbs",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "복 실장님은 만두가 4개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "복 실장",
+      "item": "만두",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "복 실장",
+      "item": "만두",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "복 실장님은 골무가 열두 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "복 실장",
+      "item": "골무",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "복 실장",
+      "item": "골무",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "재희는 만두가 열여덟 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "재희",
+      "item": "만두",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "재희",
+      "item": "만두",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "복 실장님이 재희에게 만두를 3개 빌려주었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "복 실장",
+      "to": "재희",
+      "item": "만두",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "복 실장",
+      "item": "만두",
+      "quantity": 1
+     },
+     {
+      "entity": "재희",
+      "item": "만두",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "재희가 그중 두 개로 선물 꾸러미를 만들었습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "재희",
+      "item": "만두",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "재희",
+      "item": "만두",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "복 실장님에게 남은 만두는 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "복 실장",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "만두"
+   }
+  },
+  {
+   "n": 7,
+   "say": "골무는요?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "복 실장",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    },
+    "item": "골무"
+   }
+  }
+ ]
+}

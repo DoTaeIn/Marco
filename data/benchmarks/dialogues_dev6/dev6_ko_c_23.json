@@ -1,0 +1,306 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_23",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "cross_language",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_025",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "12_cross_language",
+   "13_why_with_fact",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "매장에는 약초가 스물한 묶음 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "매장",
+      "item": "약초",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "매장",
+      "item": "약초",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "라 원장님은 약초가 열 묶음 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "라 원장",
+      "item": "약초",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "라 원장",
+      "item": "약초",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "하 교수님은 승합차에 약초를 다섯 묶음 싣고 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "하 교수",
+      "item": "약초",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "하 교수",
+      "item": "약초",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "라 원장님이 하 교수님에게 약초를 3묶음 보냈다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "라 원장",
+      "to": "하 교수",
+      "item": "약초",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "라 원장",
+      "item": "약초",
+      "quantity": 7
+     },
+     {
+      "entity": "하 교수",
+      "item": "약초",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "라 원장님은 약초가 몇 묶음인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "라 원장",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "약초"
+   }
+  },
+  {
+   "n": 6,
+   "say": "라 원장님의 약초가 일곱 묶음이 된 까닭은 무엇인가?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact",
+    "1_count_words"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "explain",
+    "entity": "라 원장",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "약초"
+   }
+  },
+  {
+   "n": 7,
+   "say": "라 원장님과 하 교수님의 약초를 합치면 몇 묶음인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "라 원장",
+     "하 교수"
+    ],
+    "quantity": 15,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "약초"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many bundles of herbs does 매장 have?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "ownership"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "매장",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "약초"
+   },
+   "lang": "en"
+  }
+ ]
+}
