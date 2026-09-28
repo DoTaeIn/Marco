@@ -76,7 +76,7 @@ def live_key():
 
 
 def view(purge=False, dry_run=False, upto_index=False):
-    vec = sorted(glob.glob(os.path.join(here, ".vec_*.npz")))
+    vec = sorted(glob.glob(os.path.join(here, ".marco", "cache", ".vec_*.npz")))
     print("캐시")
     print("  .vec_*.npz        %4d개  %8s" % (len(vec), _human_size(_size(vec))))
     for name in (".색인벡터.npz", ".색인예시.json", ".색인.kgbin"):

@@ -24,7 +24,7 @@ from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 VISION_SOURCE = Path(__file__).resolve().with_name("document_vision.swift")
-VISION_BINARY = ROOT / ".nai-tools" / "document_vision"
+VISION_BINARY = ROOT / ".marco" / "tools" / "document_vision"
 VLM_SOURCE = ROOT / "marco/perception/vlm.py"
 VLM_PYTHON = ROOT / ".venv-vision" / "bin" / "python"
 VLM_MODELS = (ROOT / "data" / "models" / "Qwen2.5-VL-3B-Instruct",
@@ -465,7 +465,7 @@ def _objects(path: Path) -> tuple[list[dict], list[str]]:
     if not (VLM_PYTHON.is_file() and OBJECT_SOURCE.is_file() and OBJECT_MODEL.is_file()):
         return [], []
     try:
-        env = dict(os.environ, YOLO_CONFIG_DIR=str(ROOT / ".nai-tools" / "ultralytics"))
+        env = dict(os.environ, YOLO_CONFIG_DIR=str(ROOT / ".marco" / "tools" / "ultralytics"))
         proc = subprocess.run([str(VLM_PYTHON), str(OBJECT_SOURCE), str(path)], capture_output=True, text=True,
                               timeout=120, env=env)
         data = json.loads(proc.stdout or "{}")
@@ -481,7 +481,7 @@ def _people_pose(path: Path) -> tuple[list[dict], list[str]]:
     if not (VLM_PYTHON.is_file() and POSE_SOURCE.is_file() and POSE_MODEL.is_file()):
         return [], []
     try:
-        env = dict(os.environ, YOLO_CONFIG_DIR=str(ROOT / ".nai-tools" / "ultralytics"))
+        env = dict(os.environ, YOLO_CONFIG_DIR=str(ROOT / ".marco" / "tools" / "ultralytics"))
         proc = subprocess.run([str(VLM_PYTHON), str(POSE_SOURCE), str(path)], capture_output=True, text=True,
                               timeout=120, env=env)
         data = json.loads(proc.stdout or "{}")

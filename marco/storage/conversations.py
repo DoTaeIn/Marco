@@ -1,4 +1,4 @@
-"""로컬 프로젝트/일반 대화 저장소. 외부 전송 없이 .nai에만 기록한다."""
+"""로컬 프로젝트/일반 대화 저장소. 외부 전송 없이 .marco/state에만 기록한다."""
 import json
 import os
 import time
