@@ -310,6 +310,20 @@ def test_an_elliptic_count_of_a_place_said_with_its_case():
     assert asked["status"] == "answered" and "9" in asked["answer"]
 
 
+def test_a_surname_and_its_title_are_never_split_into_two_roles():
+    # a wrong answer on main: in 변 과장님한테 세 개를 주었다 (the giver left out, the turn before named it) the
+    # surname was read as the giver and the title as the receiver, and 변 과장's count went down
+    rows = run(KO, ["변 과장님한테 컵이 8개 있다.", "내 친구 소연한테 컵이 열네 개 있다.", "소연이 변 과장님한테 컵 2개를 나눠 줬다.",
+                    "그리고 변 과장님한테 세 개를 주었다.", "소연은 컵이 몇 개 있어?", "변 과장님은 컵이 몇 개 있어?"])
+    for asked, right in zip(rows[-2:], ("9", "13")):
+        assert asked["status"] != "answered" or right in asked["answer"]
+    # in one turn the giver of the clause before gives again
+    *_, giver, taker = run(KO, ["윤하는 컵이 8개 있다.", "소연은 컵이 열네 개 있다.",
+                                "소연이 윤하한테 컵 2개를 줬다. 그리고 윤하한테 세 개를 주었다.",
+                                "소연은 컵이 몇 개 있어?", "윤하는 컵이 몇 개 있어?"])
+    assert "9" in giver["answer"] and "13" in taker["answer"]
+
+
 def score(case):
     from tests.test_r6_reading_forms import score as scored
     return scored(case)

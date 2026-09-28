@@ -2073,6 +2073,39 @@ class RelationalParser:
                             return True
         return False
 
+    def _splits_titled_holder(self, meaning, literal):
+        """A reading that names the surname of a surname-and-title holder without the title, or the title
+        without the surname (the declared job titles: 변 과장한테 -> 변 and 과장)."""
+        titles = sorted((self.holder_forms or {}).get("job_titles") or [], key=len, reverse=True)
+        if not titles:
+            return False
+        words = literal.split()
+        particles = {p for group in self.slot_particles for p in group} | set(self.case_particles) | {""}
+        honorifics = [h for h in (self.holder_forms or {}).get("name_titles") or [] if isinstance(h, str)]
+        pairs = []
+        for before, word in zip(words, words[1:]):
+            title = next((t for t in titles if word.startswith(t)), None)
+            if title is None or self._ends_in_particle(before):
+                continue
+            rest = word[len(title):]
+            rest = next((rest[len(h):] for h in honorifics if h and rest.startswith(h)), rest)
+            if rest in particles or any(rest.startswith(p) and rest[len(p):] in particles for p in particles if p):
+                pairs.append((before, title))
+        if not pairs:
+            return False
+        rows = asserted(meaning) or [joined(q["triple"]) for q in meaning.get("query", [])
+                                     if isinstance(q, dict) and isinstance(q.get("triple"), list)]
+        for row in rows:
+            for value in (row[0], row[2]):
+                tokens = value.split() if isinstance(value, str) else []
+                for surname, title in pairs:
+                    for i, token in enumerate(tokens):
+                        if token == surname and tokens[i + 1:i + 2] != [title]:
+                            return True
+                        if token == title and (i == 0 or tokens[i - 1] != surname):
+                            return True
+        return False
+
     @staticmethod
     def _swallows_marked_word(meaning, tail_particle):
         values = []
@@ -2666,6 +2699,10 @@ class RelationalParser:
                     # Nor a verb in a relative clause's past form (잃어버렸던 볼펜: the pack's adnominal
                     # tails after a past stem, 이름밖꼴).
                     if self._names_hold_adnominal(grounded_names):
+                        continue
+                    # Nor a surname without its job title, or the title without its surname (변 과장한테 ...: 변
+                    # the giver and 과장 the receiver): the two are one holder (가진쪽꼴.job_titles).
+                    if self._splits_titled_holder(grounded_names, literal):
                         continue
                     if exclude and json.dumps(self._grounded(meaning, slots, normalization, example), sort_keys=True,
                                               ensure_ascii=False) in exclude:
