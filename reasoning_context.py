@@ -3961,6 +3961,9 @@ class ReasoningContext:
             if (not last or entry is None or entry["text"].strip() != last
                     or entry.get("at") != len(self.observations) - (1 if kept else 0)):
                 return None
+            # a question left unread takes no amount (그 사람은 어디 있어? / 여섯 개.)
+            if any(question for _p, question in self._segments(last, parser)):
+                return None
             statement, replaced = last, entry["text"]
         flags = re.IGNORECASE if parser.data.get("ignore_case") else 0
         body = statement.strip()

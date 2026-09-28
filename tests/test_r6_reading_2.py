@@ -306,7 +306,7 @@ def test_an_amount_said_with_man_restates_the_holders_count():
 
 def test_an_elliptic_count_of_a_place_said_with_its_case():
     # G5-2 item 5: the elliptic count after a place with 에는 counts that place's things
-    *_, asked = run(KO, ["창고에 상자가 있어.", "창고에는 정확히 아홉 개예요.", "창고에는 상자가 몇 개 있어?"])
+    *_, asked = run(KO, ["창고에는 상자가 좀 있어.", "창고에는 정확히 아홉 개예요.", "창고에는 상자가 몇 개 있어?"])
     assert asked["status"] == "answered" and "9" in asked["answer"]
 
 
@@ -389,6 +389,9 @@ def test_a_fragment_replaces_a_statement_kept_for_its_unknown_word():
     *_, fragment, asked = run(KO, ["누리는 구슬이 열 개 있어.", "다올은 구슬이 두 개 있어.", "누리가 다올에게 구슬을 줬어.",
                                   "네 개.", "누리는 구슬이 몇 개 있어?"])
     assert fragment["status"] == "observed" and "6" in asked["answer"]
+    # a question left unread takes no amount
+    *_, fragment, asked = run(KO, ["누리는 구슬이 열 개 있어.", "그 사람은 어디 있어?", "네 개.", "누리는 구슬이 몇 개 있어?"])
+    assert (fragment or {}).get("status") != "observed"
     # an amount alone after a statement that was read goes into nothing: it is held, never read into that statement
     *_, fragment, asked = run(EN, ["Nora has 5 pens.", "Otto has 2 pens.", "Nora gave Otto 2 pens.", "It was three.",
                                    "How many pens does Otto have?"])
