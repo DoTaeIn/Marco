@@ -18,7 +18,7 @@ import time
 import uuid
 
 from reasoning_context import ReasoningContext
-from proof_chunking import applicable as shortcut_applicable, evaluate as evaluate_shortcut, invalidate as invalidate_shortcut, propose as propose_shortcut
+from marco.learning.chunking import applicable as shortcut_applicable, evaluate as evaluate_shortcut, invalidate as invalidate_shortcut, propose as propose_shortcut
 from graph_inference import closure
 
 
@@ -363,7 +363,7 @@ class AlmaRuntime:
 
     def propose_rule_change(self, corrections, validation):
         """Create a supervised rule candidate without changing active inference."""
-        from rule_learning import propose
+        from marco.learning.rules import propose
         parser = self.context._parser()
         before = _key(parser.data.get("rules", []))
         report = propose(parser.data, corrections, validation)

@@ -18,8 +18,7 @@ DATASET = ROOT / "data/benchmarks/everyday_phrasing.json"
 
 
 def run(dataset_path=None, language=None):
-    import input_understanding
-
+    import marco.language.understanding as input_understanding
     raw = Path(dataset_path or DATASET).read_bytes()
     dataset = json.loads(raw)
     rows = []

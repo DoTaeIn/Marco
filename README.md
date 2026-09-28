@@ -420,14 +420,14 @@ other target package is created by goal S4 ([Layout](#layout)).
 
 | Component | Today | Target package | Tests |
 | --- | --- | --- | --- |
-| Parser | `relational_semantics.py` (`RelationalParser.parse`), `marco/language/frames.py`, `input_understanding.py` | `marco/language/` | `test_relational_transfer.py`, `test_frame_induction.py`, `test_input_understanding.py` |
+| Parser | `relational_semantics.py` (`RelationalParser.parse`), `marco/language/frames.py`, `marco/language/understanding.py` | `marco/language/` | `test_relational_transfer.py`, `test_frame_induction.py`, `test_input_understanding.py` |
 | Semantic Representation | `marco/language/representation.py` (validated state JSON), facts and events from the parser | `marco/language/` | `test_semantic_parser.py` |
 | Graph Router | `engine.py` graph index, `pick_graph` | `marco/runtime/router.py` | `test_grounded_routing.py`, `test_evidence_routing.py`, `test_rare_word_routing.py` |
 | Reasoning | `engine.py` judge, `graph_inference.py`, `reasoning_context.py`, `state_engine.py`, `action_runtime.py` | `marco/reasoning/` | `test_reasoning_context.py`, `test_state_engine.py`, `test_signed_inference.py`, `test_action_runtime.py` |
 | Cognition / Decision | `engine.py` answer ranking and `utterance_plan`, graph activation, `goal_runtime.py` | `marco/cognition/` | `test_goal_runtime.py` |
 | Semantic Graph | `graphs/*.kg`, concept net, `engine.py` reader | `marco/knowledge/` | `engine.py --check` |
-| Event / Experience Graph | event ledger in `reasoning_context.py`, `experience_concepts.py`; the provenance ledger `marco/trace/` (Hypomnema) | `marco/reasoning/`, `marco/learning/`; `marco/trace/` exists | `test_event_provenance.py`, `test_experience_concepts.py`, `tests/trace/` |
-| Rule Store | `axioms/*.json`, pack rules, `rule_learning.py`, `proof_chunking.py` | `axioms/`, `marco/learning/` | `test_rule_learning.py`, `test_proof_chunking.py` |
+| Event / Experience Graph | event ledger in `reasoning_context.py`, `marco/learning/concepts.py`; the provenance ledger `marco/trace/` (Hypomnema) | `marco/reasoning/`, `marco/learning/`; `marco/trace/` exists | `test_event_provenance.py`, `test_experience_concepts.py`, `tests/trace/` |
+| Rule Store | `axioms/*.json`, pack rules, `marco/learning/rules.py`, `marco/learning/chunking.py` | `axioms/`, `marco/learning/` | `test_rule_learning.py`, `test_proof_chunking.py` |
 | Working Memory | `Session` activation, `explain.py` dialogue memory, ALMA working memory | `marco/cognition/`, `marco/memory/` | `test_alma_runtime.py` |
 | Episodic / Semantic / Procedural | ALMA state (`alma/runtime.py`), replay ledger, learned action programs | `marco/memory/` | `test_alma_runtime.py`, `test_alma_cli.py` |
 | Meaning Graph | `marco/language/realizer/meaning.py`, built from the turn's language-free `meaning` block | exists | `language/test_w1_r1_thin_slice.py` |

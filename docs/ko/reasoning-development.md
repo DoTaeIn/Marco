@@ -77,18 +77,18 @@
 
 ## 교정된 추론 예시에서 규칙 학습
 
-`rule_learning.py`는 여러 개의 정렬된 전제·결론 사례를 받아 공통된 관계와
+`marco/learning/rules.py`는 여러 개의 정렬된 전제·결론 사례를 받아 공통된 관계와
 개체의 대응을 유지한 변수 규칙을 유도한다. 후보 생성에는 검증 사례의 정답을
 사용하지 않는다. 별도 개체로 구성된 긍정·부정 검증을 모두 통과하고 기존 오류를
 개선할 때 `RelationalParser.learn_rule`이 후보와 검증 기록을 모델에 반영한다.
 검증 실패 시 모델을 변경하지 않는다. 본문에 없는 변수가 결론에 나타나는 후보도 거부한다.
 
-`semantic_feedback.py`로 실제 진단·교정을 실행할 수 있다.
+`marco/learning/feedback.py`로 실제 진단·교정을 실행할 수 있다.
 
 ```sh
-python semantic_feedback.py diagnose '질문'
-python semantic_feedback.py expression correction.json --output /private/tmp/nai-semantic-model.json
-python semantic_feedback.py rule corrected-proofs.json --model /private/tmp/nai-semantic-model.json --output /private/tmp/nai-semantic-model.json
+python -m marco.learning.feedback diagnose '질문'
+python -m marco.learning.feedback expression correction.json --output /private/tmp/nai-semantic-model.json
+python -m marco.learning.feedback rule corrected-proofs.json --model /private/tmp/nai-semantic-model.json --output /private/tmp/nai-semantic-model.json
 ```
 
 `expression` 입력은 `text`, `slots`, `meaning.triple`을 가진 주석 사례다.

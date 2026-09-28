@@ -1,6 +1,6 @@
 # 검증된 표현 교정 저장
 
-`semantic_feedback.py expression`은 이제 교정 사례와 별도 검증 사례를 함께 받는다.
+`marco/learning/feedback.py expression`은 이제 교정 사례와 별도 검증 사례를 함께 받는다.
 예전의 주석 사례 하나만 담은 JSON은 이 CLI에서 더 이상 저장 입력으로 쓰지 않는다.
 직접 `RelationalParser.learn`을 부르는 저수준 감독 학습 API는 그대로 남는다.
 
@@ -15,8 +15,8 @@
 개체 문자열이 검증 문장에 포함되면 거부한다.
 
 ```sh
-python semantic_feedback.py expression correction.json --output /private/tmp/learned-relations.json
-NAI_RELATIONAL_MODEL=/private/tmp/learned-relations.json python semantic_feedback.py diagnose '질문'
+python -m marco.learning.feedback expression correction.json --output /private/tmp/learned-relations.json
+NAI_RELATIONAL_MODEL=/private/tmp/learned-relations.json python -m marco.learning.feedback diagnose '질문'
 ```
 
 교정 한 개로 복사한 모델에 후보를 먼저 만든다. 검증의 기대 구조는 후보 생성에

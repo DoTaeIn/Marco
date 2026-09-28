@@ -172,7 +172,7 @@ def test_a_question_in_the_other_language_uses_the_same_events():
 # schema keys — single tokens without spaces or punctuation.
 DIALOGUE_MODULES = ["reasoning_context.py", "relational_semantics.py", "marco/language/frames.py",
                     "graph_inference.py", "marco/language/numerals.py", "pack_model.py", "action_runtime.py",
-                    "experience_concepts.py", "language_components.py"]
+                    "marco/learning/concepts.py", "language_components.py"]
 
 
 PROSE = re.compile("[\uac00-\ud7a3]+ +[\uac00-\ud7a3]+|[\uac00-\ud7a3][.!?]\\s*$")

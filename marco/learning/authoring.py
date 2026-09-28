@@ -73,6 +73,9 @@
 제가 답하는 것이라 평균이 저절로 오른다. 볼 것은 퍼센트가 아니라 *들이기
 전에 맞히던 물음을 그대로 맞히는가* 와 *밖 거절이 안 줄었는가* 둘이다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[2]))
 import glob
 import io
 import json
@@ -81,7 +84,7 @@ import random
 import shutil
 import sys
 
-here = os.path.dirname(os.path.abspath(__file__))
+here = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, os.pardir))
 sys.path.insert(0, here)
 os.environ.setdefault("KG_ENCODER", "문자")
 

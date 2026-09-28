@@ -2,7 +2,7 @@ import copy
 
 import pytest
 
-from expression_learning import propose
+from marco.learning.expressions import propose
 from relational_semantics import RelationalParser
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
@@ -68,7 +68,7 @@ def test_cli_only_publishes_successful_validation(tmp_path):
     source = tmp_path / "correction.json"
     output = tmp_path / "model.json"
     root = Path(__file__).resolve().parents[1]
-    command = [sys.executable, str(root / "semantic_feedback.py"), "expression", str(source),
+    command = [sys.executable, str(root / "marco/learning/feedback.py"), "expression", str(source),
                "--output", str(output)]
     invalid = copy.deepcopy(validation)
     invalid[0]["expected"]["facts"][0]["triple"] = ["wrong", "taller", "wrong"]

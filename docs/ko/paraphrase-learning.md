@@ -16,7 +16,7 @@
 ```
 
 ```sh
-python semantic_feedback.py paraphrase pairs.json --output /private/tmp/relations.json
+python -m marco.learning.feedback paraphrase pairs.json --output /private/tmp/relations.json
 ```
 
 기존 파서가 `equivalent`를 정확히 한 관찰로 해석해야 한다. 그 관찰의 주체와

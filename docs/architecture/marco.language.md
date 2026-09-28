@@ -27,7 +27,7 @@ ones waits for MARCO 1.
 ## Does not own
 
 - Parsing. `relational_semantics.py`, `marco/language/frames.py`,
-  `input_understanding.py` and `marco/language/representation.py` are root modules.
+  `marco/language/understanding.py` and `marco/language/representation.py` are root modules.
 - Language packs. `styles/한국어.json` and `styles/english.json` are read by
   `pack_model.py`, `language_components.py` and `reasoning_context.py`.
 - Korean particles and inflection (`marco/language/hangul.py`), which the realizer's grammar

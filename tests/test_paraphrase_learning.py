@@ -2,7 +2,7 @@ import copy
 
 import pytest
 
-from expression_learning import from_paraphrase, propose_paraphrase
+from marco.learning.expressions import from_paraphrase, propose_paraphrase
 from relational_semantics import RelationalParser
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
@@ -76,7 +76,7 @@ def test_cli_accepts_sentence_pairs_without_explicit_semantic_annotations(tmp_pa
     root = Path(__file__).resolve().parents[1]
     source, output = tmp_path / "pairs.json", tmp_path / "model.json"
     source.write_text(json.dumps(payload(), ensure_ascii=False), encoding="utf-8")
-    result = subprocess.check_output([sys.executable, str(root / "semantic_feedback.py"), "paraphrase",
+    result = subprocess.check_output([sys.executable, str(root / "marco/learning/feedback.py"), "paraphrase",
                                       str(source), "--output", str(output)], text=True, encoding="utf-8", cwd=root)
     assert json.loads(result)["accepted"]
     restored = RelationalParser(model_path=output)

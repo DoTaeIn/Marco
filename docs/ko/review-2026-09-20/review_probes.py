@@ -12,7 +12,7 @@ os.environ.setdefault("KG_ENCODER", "문자")
 
 from alma.runtime import AlmaRuntime
 from graph_inference import closure
-from proof_chunking import evaluate, propose
+from marco.learning.chunking import evaluate, propose
 
 
 def run():
@@ -57,7 +57,7 @@ def run():
             measured_scans.append(kwargs.get("metrics", {}).get("rule_scans", 0))
             return result
 
-        with patch("proof_chunking.closure", side_effect=measured_closure):
+        with patch("marco.learning.chunking.closure", side_effect=measured_closure):
             result = evaluate(facts, rules, shortcut, ("n", "d", "m"))
         baseline = closure(facts, rules)
         findings["shortcut_drops_branch_and_runs_both_closures"] = {

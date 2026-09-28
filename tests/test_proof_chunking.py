@@ -1,4 +1,4 @@
-from proof_chunking import evaluate, invalidate, propose
+from marco.learning.chunking import evaluate, invalidate, propose
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

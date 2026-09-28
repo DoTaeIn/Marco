@@ -55,7 +55,7 @@ outside_dir = os.path.join(here, "data", "benchmarks", "라우팅_밖.json")
 def _self_learning_authored():
     """자가저작이 들인 그래프. 잣대에서 뺀다."""
     try:
-        import self_authoring
+        import marco.learning.authoring as self_authoring
         return self_authoring.self_authored()
     except Exception:
         return set()
