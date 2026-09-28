@@ -9,7 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from passage_classifier import LabelLearnedClassifier
+from marco.language.passages import LabelLearnedClassifier
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

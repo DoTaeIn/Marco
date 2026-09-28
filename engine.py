@@ -507,7 +507,7 @@ def _merge_shared_net(g):
 # 반말 '맞아' 만 없어서, 되물어 놓고 사람이 맞다고 해도 못 알아들었다.
 # 한국어 규칙은 hangul.py 한 곳에 있다. 여기 또 두면 고칠 때 두 군데를
 # 봐야 하고, 한쪽만 고쳐서 어긋난 적이 실제로 있다.
-import hangul as _ko
+import marco.language.hangul as _ko
 yes, no = _ko.yes_words, _ko.no_words
 
 
@@ -2053,12 +2053,12 @@ def utterance_plan(graph, tag, ev, claim, 그판=None):
 # 들어올 때 말을 망가뜨린다 — '철수이랑' 이 '철수가랑' 이 되고 있었다.
 def fix_particles(sentence, words):
     """치환된 노드 이름 뒤의 조사를 받침에 맞게 고친다. -> 한글.조사고치기"""
-    import hangul
+    import marco.language.hangul as hangul
     return hangul.fix_particles(sentence, words)
 
 
 def _has_batchim(char):
-    import hangul
+    import marco.language.hangul as hangul
     ㄴ = hangul.batchim(char)
     return None if ㄴ is None else bool(ㄴ)
 
@@ -3440,7 +3440,7 @@ def _state_reasoning(question):
         return None
     try:
         if _state_parser is None:
-            import semantic_parser
+            import marco.language.representation as semantic_parser
             _state_parser = semantic_parser.SemanticParser()
         import state_engine
         state = _state_parser.parse(question)
@@ -3450,7 +3450,7 @@ def _state_reasoning(question):
         # 정직한 미지 경계를 바꾸지 않는다.
         return None
     if result.get("status") == "answered" and result.get("answer"):
-        from output_contracts import apply as apply_output_contract
+        from marco.language.realizer.contracts import apply as apply_output_contract
         return _relpath(knowledge_path), "상태추론", apply_output_contract(question, result["answer"])
     if result.get("status") == "premise_invalid" and result.get("answer"):
         return _relpath(knowledge_path), "전제오류", result["answer"]

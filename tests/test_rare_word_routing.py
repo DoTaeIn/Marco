@@ -68,13 +68,13 @@ class ParticleFoldingTest(unittest.TestCase):
     """같은 낱말의 여러 꼴을 한 낱말로 센다."""
 
     def test_a_trailing_particle_is_folded_away(self):
-        import hangul
+        import marco.language.hangul as hangul
         self.assertEqual(hangul.drop_particle("생태는"), "생태")
         self.assertEqual(hangul.drop_particle("기수역에서"), "기수역")
 
     def test_a_short_stem_is_left_alone(self):
         """'사과' 의 '과' 를 떼면 '사' 가 된다. 한 글자는 조사와 못 가른다."""
-        import hangul
+        import marco.language.hangul as hangul
         self.assertEqual(hangul.drop_particle("사과"), "사과")
         self.assertEqual(hangul.drop_particle("강과"), "강과")
 

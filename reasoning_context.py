@@ -249,8 +249,8 @@ class ReasoningContext:
 
         수사는 언어팩이 선언한다. 코드가 한국어 수사를 따로 알 필요는 없다.
         """
-        from frame_induction import split_particle
-        from numeral_semantics import parse_numeral
+        from marco.language.frames import split_particle
+        from marco.language.numerals import parse_numeral
         numerals = parser.data.get("numerals") or {}
         for token in said.replace(".", " ").split():
             if any(char.isdigit() for char in token):
@@ -643,7 +643,7 @@ class ReasoningContext:
         답이 **자리를 밝혔으면 그 자리를 지킨다.** `민수에게` 는 받는이를 말한
         것이지 누가 했는지를 말한 것이 아니다.
         """
-        from frame_induction import particle_key, split_particle
+        from marco.language.frames import particle_key, split_particle
         said = text.strip().rstrip(".!…")
         if not said or said != said.rstrip("?") or len(said.split()) != 1:
             return ("못씀", None, None)
@@ -1977,7 +1977,7 @@ class ReasoningContext:
         낱말만 봐서는 못 가르는 것을 개체 증거로 가르는 자리다.
         """
         from action_runtime import execute
-        from frame_induction import particle_key
+        from marco.language.frames import particle_key
         임자 = particle_key(parser.doer_particle, parser.slot_particles)
         best = None
         for 후보 in event.get("자리후보") or [event.get("자리", {})]:
@@ -2099,7 +2099,7 @@ class ReasoningContext:
         `베풀` 로 이어지면서 물음이라는 것이 사라져, 물어본 일이 실제로 일어난다.
         묻기에만 쓰는 꼬리라야 물음의 표다 — `베풀었어요` 는 서술로도 쓴다.
         """
-        from hangul import inflect
+        from marco.language.hangul import inflect
         grammar = parser.inflection_grammar or {}
         asking = parser._asking(grammar)
         table = {}
@@ -2169,7 +2169,7 @@ class ReasoningContext:
                                   ((배운것 or {}).get("때") or {}).items())))
         cache = parser.induced_frames
         if 열쇠 not in cache:
-            from frame_induction import induce
+            from marco.language.frames import induce
             cache[열쇠] = induce(parser, body, 배운것)
         유도 = cache[열쇠]
         if 유도 is None:
@@ -2326,7 +2326,7 @@ class ReasoningContext:
         Same spelling, the same declared concept id, or the same name written
         in another script by a declared romanization. Nothing else counts.
         """
-        from hangul import romanize
+        from marco.language.hangul import romanize
         if word.lower() == other.lower():
             return True
         concept = source.senses.get(word) or source.senses.get(word.lower())
@@ -2658,7 +2658,7 @@ class ReasoningContext:
         (대조정정). One number must stand on each side, next to the marker:
         the last one before it and the first one after it.
         """
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         spec = parser.language_pack.get("contrast_correction") or {}
         numerals = parser.data.get("numerals", {})
         folded = text.lower() if parser.data.get("ignore_case") else text
@@ -2700,7 +2700,7 @@ class ReasoningContext:
     def _amount_of(parser, word):
         """The amount a typed word says: a numeral word or digits, or one written
         together with a counter the pack declares (``1개가``, ``3개였어요``)."""
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         numerals = parser.data.get("numerals", {})
         value = parse_numeral(word, numerals)
         if value is not None:
@@ -2726,7 +2726,7 @@ class ReasoningContext:
         form; exactly one earlier change made by that verb must exist, and its
         amount is the old one. Anything else is not read here.
         """
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         spec = parser.language_pack.get("contrast_correction") or {}
         fold = (lambda value: value.lower()) if parser.data.get("ignore_case") else (lambda value: value)
         heads = [head for head in spec.get("restate_heads", []) if head and fold(head) in fold(text)]
@@ -2833,7 +2833,7 @@ class ReasoningContext:
         and everything after it is replayed. No new transfer is executed.
         Nothing is picked when zero or several events fit.
         """
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         replies = parser.data["context_replies"]
         numerals = parser.data.get("numerals", {})
         updates = parser.data.get("numeric_updates", {})
@@ -3911,7 +3911,7 @@ class ReasoningContext:
         ``정확히는 네 자루예요``): (the amount as it goes into a statement, its value), else None. The
         words around it are the pack's: its fragment heads, the phrases its variants read as nothing, the
         copula tails and the counters."""
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         flags = re.IGNORECASE if parser.data.get("ignore_case") else 0
         rest = piece.strip().rstrip(".!…").strip()
         for phrase in sorted(list(spec.get("heads", [])) + [row["from"] for row in parser.phrase_variants

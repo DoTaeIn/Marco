@@ -332,7 +332,7 @@ class RelationalParser:
         `않았다`·`않아요`·`않습니다` 를 손으로 적지 않는다. 언어팩이 이미
         활용을 계산하고 있으므로, 부정도 낱말이 아니라 한 줄이면 된다.
         """
-        from hangul import inflect
+        from marco.language.hangul import inflect
         grammar = self.inflection_grammar
         if declared and "do_support" in declared:
             return {"연결": "", "forms": set(), "물음": set(),
@@ -376,7 +376,7 @@ class RelationalParser:
 
     def _inflected_examples(self, example):
         """Generate suffix realizations, never a separate regex per sentence form."""
-        from hangul import inflect
+        from marco.language.hangul import inflect
         annotation = example.get("inflection")
         if not annotation or not self.inflection_grammar:
             return []
@@ -459,8 +459,8 @@ class RelationalParser:
         """
         if self._variant_table is not None:
             return self._variant_table
-        from hangul import inflect
-        from numeral_semantics import parse_numeral
+        from marco.language.hangul import inflect
+        from marco.language.numerals import parse_numeral
         grammar = self.inflection_grammar or {}
         numerals = self.data.get("numerals", {})
         table = {}
@@ -522,7 +522,7 @@ class RelationalParser:
 
     def _honorific_stem(self, stem):
         """The stem with the declared subject honorific (활용.honorific): 쓰 -> 쓰시, 받 -> 받으시, 팔 -> 파시."""
-        from hangul import compose, decompose
+        from marco.language.hangul import compose, decompose
         honorific = (self.inflection_grammar or {}).get("honorific") or {}
         if not honorific.get("infix") or not stem:
             return None
@@ -698,7 +698,7 @@ class RelationalParser:
         if determiners:
             # lost his one radio: a possessive determiner right before a count says whose the things are, which
             # the subject already says; the count is read without it (never before a noun: gave his sister)
-            from numeral_semantics import parse_numeral
+            from marco.language.numerals import parse_numeral
             numerals = self.data.get("numerals", {})
             words = text.split(" ")
             kept = [w for i, w in enumerate(words)
@@ -733,7 +733,7 @@ class RelationalParser:
         if nouns:
             # 하나를 줬어요: a native numeral said as a noun, as an object, is that many of the first counter.
             # Only the native numerals (atoms and tens): the Sino-Korean digits are also common words (일을).
-            from numeral_semantics import parse_numeral
+            from marco.language.numerals import parse_numeral
             native = {k: v for k, v in self.data.get("numerals", {}).items() if k in ("atoms", "tens")}
             counter = nouns["counter"]
 
@@ -756,7 +756,7 @@ class RelationalParser:
             if forms and units and made["verb"] in text:
                 def used(m):
                     amount = m.group(1).strip()
-                    from numeral_semantics import parse_numeral
+                    from marco.language.numerals import parse_numeral
                     if not amount.isdigit() and parse_numeral(amount, self.data.get("numerals", {})) is None:
                         return m.group(0)
                     unit = m.group(2)
@@ -787,7 +787,7 @@ class RelationalParser:
         marker = spec.get("genitive_quantifier")
         if marker:
             # 열한 개의 메달을 -> 메달을 열한 개: an amount said before its thing with the genitive
-            from numeral_semantics import parse_numeral
+            from marco.language.numerals import parse_numeral
             units = "|".join(re.escape(u) for u in sorted(self.counters.get("units", []), key=len, reverse=True))
             if units:
                 def float_back(m):
@@ -814,7 +814,7 @@ class RelationalParser:
 
     def _holds_counted_amount(self, value):
         """True when ``value`` has a numeral word right before a declared counter (여섯 권, 여섯권을)."""
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         units = self.counters.get("units", [])
         if not units:
             return False
@@ -841,7 +841,7 @@ class RelationalParser:
         """{form of ``stem``: the form of ``target`` in the same tense and ending}, by the pack's inflection."""
         cache = self.__dict__.setdefault("_same_form_cache", {})
         if (stem, target) not in cache:
-            from hangul import inflect
+            from marco.language.hangul import inflect
             grammar, table = self.inflection_grammar or {}, {}
             for tense in grammar.get("tenses", {}):
                 for ending in grammar.get("endings", {}):
@@ -871,7 +871,7 @@ class RelationalParser:
         """Every form the inflection grammar computes for the verbs the pack reads (its examples'
         event verbs and its same-frame stems), lower-cased."""
         if getattr(self, "_verb_word_cache", None) is None:
-            from hangul import inflect
+            from marco.language.hangul import inflect
             grammar = self.inflection_grammar or {}
             stems = {e["event_verb"] for e in self.data["examples"] if e.get("event_verb")}
             stems |= {stem for row in self.same_frame for stem in row.get("stems", [])}
@@ -1037,7 +1037,7 @@ class RelationalParser:
             def is_owner(word):
                 # an owner said by name is a bare name: no particle but a declared possessive, no numeral,
                 # no word outside names, no pointer
-                from numeral_semantics import parse_numeral
+                from marco.language.numerals import parse_numeral
                 bare = next((word[:-len(x)] for x in suffixes if x and word.endswith(x) and len(word) > len(x)), word)
                 return (word.lower() in {w.lower() for w in possessives} or
                         (not self._ends_in_particle(bare) and bare.lower() not in self.outside_names
@@ -1048,7 +1048,7 @@ class RelationalParser:
                 # a relation noun is a bare content word: never a word outside names (a preposition),
                 # a numeral, a pointer, or a word that already carries a case particle; where the pack
                 # declares its relation nouns (a language whose names stand bare beside nouns), one of them
-                from numeral_semantics import parse_numeral
+                from marco.language.numerals import parse_numeral
                 if spec.get("relation_nouns") is not None:
                     return words in spec["relation_nouns"]
                 # nor a word the pack's own frames are made of (my niece gave Ann: 'gave' is no relation)
@@ -1070,7 +1070,7 @@ class RelationalParser:
         own = spec.get("self_possessives") or []
         if own:
             pattern = r"(?<![\w'])(?i:%s) (%s)(?![\w'])" % (words_re(own), relation)
-            from numeral_semantics import parse_numeral
+            from marco.language.numerals import parse_numeral
 
             def own_relation(m):
                 word = m.group(1)
@@ -1101,7 +1101,7 @@ class RelationalParser:
         role_titles = spec.get("role_titles") or []
         if role_titles:
             # one or two bare role words before a titled name (인턴 예린 씨, 택배 기사 은우 씨): the name
-            from numeral_semantics import parse_numeral
+            from marco.language.numerals import parse_numeral
             all_particles = {x for g in self.slot_particles for x in g} | set(self.case_particles)
             units = set(self.counters.get("units", []))
 
@@ -1129,7 +1129,7 @@ class RelationalParser:
                 text, applied = new, applied + ["title"]
         articles = spec.get("numeral_articles") or []
         if articles:
-            from numeral_semantics import parse_numeral
+            from marco.language.numerals import parse_numeral
             numerals = self.data.get("numerals", {})
 
             def drop(m):
@@ -1152,7 +1152,7 @@ class RelationalParser:
         is read on the counted noun right before the numeral instead; the noun
         is kept as typed and takes the particle's form its last syllable selects.
         """
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         cases = sorted((self.object_fronting or {}).get("floating_cases") or [], key=len, reverse=True)
         units = sorted((self.counters or {}).get("units", []), key=len, reverse=True)
         words = literal.split()
@@ -1256,7 +1256,7 @@ class RelationalParser:
     def _participle_pasts(self):
         """Participle -> the past form the examples are written with, for every declared verb."""
         if getattr(self, "_participle_table", None) is None:
-            from hangul import inflect
+            from marco.language.hangul import inflect
             grammar = self.inflection_grammar or {}
             table = {}
             reads = {}
@@ -1280,7 +1280,7 @@ class RelationalParser:
     def _role_swap_forms(self):
         """Inflected form of a taker-side verb -> (row, the same form of its giver-side verb)."""
         if self._role_swap_table is None:
-            from hangul import inflect
+            from marco.language.hangul import inflect
             grammar = self.inflection_grammar or {}
             table = {}
             for row in self.role_swaps:
@@ -1337,7 +1337,7 @@ class RelationalParser:
                 giver = middle[at - 1] + " " + giver
                 rest = middle[:at - 1] + middle[at + 1:]
         else:
-            from numeral_semantics import parse_numeral
+            from marco.language.numerals import parse_numeral
             if len(middle) < 3 or parse_numeral(middle[1], self.data.get("numerals", {})) is not None:
                 return literal, None
             # the owner shape is owner, thing, amount (모루의 구슬 두 개를): the amount comes right after the thing
@@ -1372,7 +1372,7 @@ class RelationalParser:
                 yield candidate, {**base, "variants": notes}
 
     def _clause_candidates_of(self, literal):
-        from hangul import canonical_clauses
+        from marco.language.hangul import canonical_clauses
         yield from canonical_clauses(literal, self.clause_grammar)
         node = self._inflection_trie
         for length, char in enumerate(reversed(literal), 1):
@@ -1422,7 +1422,7 @@ class RelationalParser:
         (its lexicon, or a same-frame stem); its form is computed. The reading
         is the positive clause with polarity False: nothing it names changes.
         """
-        from hangul import inflect
+        from marco.language.hangul import inflect
         spec = self.negation or {}
         support = spec.get("do_support") or {}
         if not support:
@@ -1633,7 +1633,7 @@ class RelationalParser:
         """What a repair may not change in ``word``: a numeral, a counter, a scope
         word or a negation (the pack's 수선.protected and its numerals and
         counters), or None."""
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         declared = (self.repair or {}).get("protected", {})
         core = str(word).strip(".,!?\"'")
         folded = core.lower()
@@ -1850,7 +1850,7 @@ class RelationalParser:
         keeps facts and questions on the same key. Only a suffix after a
         consonant-final stem is removed; without a declared suffix nothing is.
         """
-        from hangul import batchim
+        from marco.language.hangul import batchim
         if not isinstance(subject, str) or not subject.strip():
             return subject
         words = subject.split(" ")
@@ -1884,7 +1884,7 @@ class RelationalParser:
 
     def _suffix_variants(self, subject):
         """``가람 구슬`` <-> ``가람이 구슬``: the leading name with and without the declared suffix."""
-        from hangul import batchim
+        from marco.language.hangul import batchim
         suffix, words = self.name_suffix, subject.split()
         if not suffix or not words:
             return []
@@ -1901,7 +1901,7 @@ class RelationalParser:
         The pack declares the suffix. Case particles do not stack, so the suffix
         in front of a particle is part of the name, not a second marker.
         """
-        from hangul import batchim
+        from marco.language.hangul import batchim
         suffix, found = self.name_suffix, set()
         if not suffix:
             return found
@@ -1955,7 +1955,7 @@ class RelationalParser:
         before its head, with what each reads as. Only a clause that holds an
         amount is split; anything else is left as typed.
         """
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         spec = (self.clause_grammar or {}).get("relative_clauses") or {}
         if not spec or not isinstance(text, str):
             return text
@@ -1977,7 +1977,7 @@ class RelationalParser:
         particles = sorted({p for p in self.case_particles} | {p for group in self.slot_particles for p in group},
                            key=len, reverse=True)
         for row in spec.get("adnominal", []):
-            from hangul import inflect
+            from marco.language.hangul import inflect
             try:
                 forms = {form["text"] for form in inflect(row["stem"], row["tense"], row["ending"],
                                                           self.inflection_grammar, kind=row["kind"])}
@@ -2010,7 +2010,7 @@ class RelationalParser:
         [thing?] and nothing else; a part it leaves out is the clause before's.
         Returns the rebuilt clause, or None.
         """
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         if (self.ellipsis or {}).get("gapping") != "first_conjunct_verb":
             return None
         numerals = self.data.get("numerals", {})
@@ -2075,7 +2075,7 @@ class RelationalParser:
         tails, coda = spec.get("tails") or [], spec.get("after_coda")
         if not tails or not coda:
             return False
-        from hangul import batchim
+        from marco.language.hangul import batchim
         rows = asserted(meaning) or [joined(q["triple"]) for q in meaning.get("query", [])
                                      if isinstance(q, dict) and isinstance(q.get("triple"), list)]
         values = [value for row in rows for value in (row[0], row[2])]
@@ -2154,7 +2154,7 @@ class RelationalParser:
 
     def _particle_form(self, stem, particle):
         """The form of ``particle`` the pack's mate table selects after ``stem``."""
-        from hangul import batchim
+        from marco.language.hangul import batchim
         mates = self.particle_mates.get(particle)
         if not mates or len(mates) != 2:
             return particle
@@ -2231,7 +2231,7 @@ class RelationalParser:
                                       "목록": ", ".join('"%s"' % r for r in report.get("readings", []))})
 
     def _inflected_forms(self, stem, tense, ending, kind):
-        from hangul import inflect
+        from marco.language.hangul import inflect
         return [form["text"] for form in inflect(stem, tense, ending,
                                                   self.inflection_grammar, kind=kind)]
 
@@ -2425,7 +2425,7 @@ class RelationalParser:
             if any(prior != expected for prior in self._clause_meanings(realized).values()):
                 raise ValueError("correction_conflicts_with_previous_inflection")
         # Reject an interpretation that changes any previous supervised example.
-        from hangul import canonical_clauses
+        from marco.language.hangul import canonical_clauses
         for prior in self.data["examples"]:
             for literal, normalization in canonical_clauses(prior["text"], self.clause_grammar):
                 if normalization and any(correction.get(k) != v for k, v in
@@ -2534,7 +2534,7 @@ class RelationalParser:
     def _clause_meanings(self, literal, *, derivations=None, matched=None, guard_names=True, exclude=()):
         """The clause's readings of the best rank. ``exclude``: meaning keys already returned (by
         ``readings``): they are left out, so the readings of the next rank are found (goal G5.4 B)."""
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         # Where a declared holder form rewrites the clause (제 동기 서준 -> 서준, 예린 씨 -> 예린), the
         # typed words are that form: a reading that keeps them inside a name is not taken.
         held, holder_note = self._holder_forms(literal)
@@ -2923,7 +2923,7 @@ class RelationalParser:
         holder is read by reading that question, so a why names a holder exactly as a count question
         does. A form without ``ask`` names no holder (``왜 4개예요``); a form with no number names none.
         """
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         forms = (self.why_count or {}).get("facts") or []
         said = " ".join(literal.strip().rstrip("".join(self.clause_grammar.get("question_marks", [])) + ".! ").split())
         units = "|".join(re.escape(u) for u in sorted(self.counters.get("units", []), key=len, reverse=True))
@@ -3133,7 +3133,7 @@ class RelationalParser:
         cached = rows is None and getattr(self, "_comparison_cache", None) is not None
         if cached:
             return self._comparison_cache
-        from hangul import inflect
+        from marco.language.hangul import inflect
         grammar = self.inflection_grammar or {}
         forms = {}
         for row in (self.comparison or {}).get("predicates", []) if rows is None else rows:
@@ -3184,7 +3184,7 @@ class RelationalParser:
     def _count_predicate_forms(self, questions_only=False):
         """Forms of the declared count-question predicate stems (only question forms if asked)."""
         if self._count_predicates is None:
-            from hangul import inflect
+            from marco.language.hangul import inflect
             grammar = self.inflection_grammar or {}
             asking = set(grammar.get("question_endings", []))
             forms, questions = set(), set()
@@ -3209,7 +3209,7 @@ class RelationalParser:
         연결, 변화 관계와 표면형은 언어 팩이 주고, 이곳은 순서와 수량 슬롯을
         검증해 공통 상태 전이로 만든다.
         """
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         spec = self.quantity_chain
         units, starts = spec.get("units", []), spec.get("from_markers", [])
         operations = spec.get("operations", [])
@@ -3330,7 +3330,7 @@ class RelationalParser:
         만으로는 모자란다** — 물어본 것인지 실제로 일어난 일인지가 같이 와야
         `민수가 지연에게 베풉니까` 가 구슬을 옮기지 않는다.
         """
-        from hangul import clause_spans
+        from marco.language.hangul import clause_spans
         # A relative clause that states a holder's amount is its own clause
         # (문장분리.relative_clauses): said first, then the clause it modified.
         text = self._relative_clauses(text)
@@ -3386,7 +3386,7 @@ class RelationalParser:
             if not events:
                 return None
             candidate, marker = without_hypothetical_prefix(literal)
-            from frame_induction import read_event
+            from marco.language.frames import read_event
             event = read_event(candidate, self.case_particles, self.slot_particles,
                                self.negation, verbs, self.plan, self.inflection_grammar)
             # Clause boundaries for an unknown verb would split a definition
@@ -3499,7 +3499,7 @@ class RelationalParser:
             # 아무 말이나 한 이름으로 삼켜 맞기 때문에, 맞았다는 이유로 이기면
             # `민수가 지연에게 베풀 예정이다` 가 `민수 isa 지연에게 베풀 예정` 이 된다.
             if unique and events and not asking:
-                from frame_induction import _marked
+                from marco.language.frames import _marked
                 # A generic relation can leave its subject unmarked while
                 # swallowing only the object/recipient case marker.  Requiring
                 # *every* generated field to be marked made a known planned
@@ -3530,7 +3530,7 @@ class RelationalParser:
                             for value in event["자리"].values()):
                         unique = {}
             if not unique and events and not asking:
-                from frame_induction import asks, read_event
+                from marco.language.frames import asks, read_event
                 if asks(evidence["text"], self.negation, verbs):
                     # 물음표가 없어도 묻는 말이다. 사건으로 읽으면 안 된다.
                     diagnostics.append({"reason": "question_is_not_an_observation",

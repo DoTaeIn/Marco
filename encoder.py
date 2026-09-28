@@ -234,7 +234,7 @@ def _decompose_jamo(text):
     음절로 자르면 '해고' 와 '해구' 가 한 글자도 안 겹친다. 자모로 펴면
     ㅎㅐㄱㅗ / ㅎㅐㄱㅜ 라 대부분이 겹친다. 재보니 분리도가 0.355 -> 0.519
     로 올랐고 오타 '침해/짐해' 가 0.17 -> 0.57 이 됐다."""
-    import hangul
+    import marco.language.hangul as hangul
     return hangul.flatten_jamo(text)
 
 
@@ -541,7 +541,7 @@ def split_fragments(text, *, language_pack=None):
     실제 사용자는 '증거를 보면 A입니다. 따라서 B이고, 그러므로 C입니다' 처럼
     한 번에 여러 주장을 한다. 문장 하나 = 주장 하나로 가정하면 전체 평균이
     흐려져 아무 노드에도 안 걸리고 미지로 떨어진다."""
-    from hangul import clause_spans
+    from marco.language.hangul import clause_spans
     from language_components import load_clause_grammar
     grammar = load_clause_grammar() if language_pack is None else language_pack.get("clauses", {})
     fragments = [part["text"] for part in clause_spans(text, grammar)

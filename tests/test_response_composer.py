@@ -1,4 +1,4 @@
-from response_composer import compare, compose
+from marco.language.realizer.composer import compare, compose
 from unittest.mock import patch
 from pathlib import Path
 import pytest

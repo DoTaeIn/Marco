@@ -5,7 +5,7 @@ import json
 import pytest
 
 from encoder import split_fragments
-from hangul import canonical_clauses, clause_spans
+from marco.language.hangul import canonical_clauses, clause_spans
 from language_components import load_clause_grammar, load_language_pack
 from relational_semantics import RelationalParser
 

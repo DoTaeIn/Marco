@@ -1,5 +1,5 @@
 from graph_inference import closure, current_facts
-from semantic_parser import SemanticParser
+from marco.language.representation import SemanticParser
 from state_engine import evaluate
 import pytest
 

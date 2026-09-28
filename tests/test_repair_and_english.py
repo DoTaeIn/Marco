@@ -143,7 +143,7 @@ def test_two_packs_in_one_process_do_not_share_declarations():
 
 
 def test_english_forms_come_from_the_declared_lexicon_or_the_declared_suffix():
-    from hangul import inflect
+    from marco.language.hangul import inflect
     grammar = development_model("english").parser().inflection_grammar
     assert [f["text"] for f in inflect("give", "past", "participle", grammar, kind="regular")] == ["given"]
     assert [f["text"] for f in inflect("walk", "past", "participle", grammar, kind="regular")] == ["walked"]
@@ -151,7 +151,7 @@ def test_english_forms_come_from_the_declared_lexicon_or_the_declared_suffix():
 
 
 def test_names_are_matched_across_scripts_by_the_declared_romanization():
-    from hangul import romanize
+    from marco.language.hangul import romanize
     table = development_model("한국어").parser().romanization
     assert [romanize(name, table) for name in ["민수", "지연", "서연"]] == ["minsu", "jiyeon", "seoyeon"]
 
@@ -170,8 +170,8 @@ def test_a_question_in_the_other_language_uses_the_same_events():
 # The dialogue path must carry no language: no Hangul sentence, word list or
 # pattern in these modules. What may remain are internal state tags and pack
 # schema keys — single tokens without spaces or punctuation.
-DIALOGUE_MODULES = ["reasoning_context.py", "relational_semantics.py", "frame_induction.py",
-                    "graph_inference.py", "numeral_semantics.py", "pack_model.py", "action_runtime.py",
+DIALOGUE_MODULES = ["reasoning_context.py", "relational_semantics.py", "marco/language/frames.py",
+                    "graph_inference.py", "marco/language/numerals.py", "pack_model.py", "action_runtime.py",
                     "experience_concepts.py", "language_components.py"]
 
 

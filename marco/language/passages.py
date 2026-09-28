@@ -18,7 +18,7 @@ import math
 import os
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 LABELS = ROOT / "docs" / "ko" / "_발췌꼴.json"
 
 # 학습 안 5겹 교차검증이 고른 값. 평가 자료는 이 선택에 쓰이지 않았다.

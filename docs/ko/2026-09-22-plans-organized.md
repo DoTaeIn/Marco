@@ -668,7 +668,7 @@ morphology / particles / grammar · future natural-language realization.
 
 Likely mappings:
 
-    hangul.py                → language/grammar.py
+    marco/language/hangul.py                → language/grammar.py
     parts of parser logic    → language/parser.py
 
 Future planned output structure (see §3):
@@ -790,7 +790,7 @@ commands. Produce a mapping table:
 `__init__.py`. Do not move behavior yet. All tests must continue to pass.
 
 **Phase 2 — Move clean modules first.** Start with files that already have a clear
-single responsibility. Good candidates may include `hangul.py`, `kgbin.py`,
+single responsibility. Good candidates may include `marco/language/hangul.py`, `kgbin.py`,
 `kgpack.py`, `proof_chunking.py`. Verify before moving. Add compatibility shims. Run
 relevant tests after every move.
 
@@ -983,7 +983,7 @@ Starting hypothesis only. Inspect each file before moving it.
     reasoning_context.py   → reasoning/context.py
     relational_semantics.py→ reasoning/semantics.py
     explain.py             → reasoning/explanation.py
-    hangul.py              → language/grammar.py
+    marco/language/hangul.py              → language/grammar.py
     experience_concepts.py → learning/concepts.py
     rule_learning.py       → learning/structural.py
     semantic_feedback.py   → learning/feedback.py

@@ -16,7 +16,7 @@ import copy
 
 from marco.language.realizer import meaning as mg
 from marco.language.realizer.grammar import ClauseRealizer, Grammar, RealizationError
-from numeral_semantics import parse_numeral
+from marco.language.numerals import parse_numeral
 
 
 def json_key(value):

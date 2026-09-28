@@ -208,7 +208,7 @@ class PackModel:
                      numerals=self._relational.get("numerals", {}))
 
     def format_output(self, question, answer):
-        from output_contracts import apply
+        from marco.language.realizer.contracts import apply
         return apply(question, answer, config=self._language["output_contracts"])
 
     def number_answer(self, value, unit=""):

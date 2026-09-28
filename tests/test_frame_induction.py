@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from frame_induction import induce, read_event, split_particle
+from marco.language.frames import induce, read_event, split_particle
 from relational_semantics import RelationalParser
 from reasoning_context import ReasoningContext
 import pytest

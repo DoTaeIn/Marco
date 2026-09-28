@@ -80,7 +80,7 @@ def build(definition, src="", phrase=None, schema="물건", index=False):
     지은 그래프가 조용히 색인에 끼면 남의 물음을 가져가서 거기서 미지가
     된다(742개를 그냥 넣으니 답함이 62.3% 에서 60.0% 로 떨어졌다).
     켜는 것은 `자가저작` 의 관문을 지난 뒤여야 한다."""
-    import hangul
+    import marco.language.hangul as hangul
     habit = speech_habit.get(schema) or speech_habit["물건"]
 
     def attach(word, particle):
@@ -175,7 +175,7 @@ def build_concurrent(phrase, roles, unit, src=""):
     roles = tuple(dict.fromkeys(str(x).strip() for x in roles if str(x).strip()))
     if len(roles) < 2 or not str(unit).strip() or not str(phrase).strip():
         return None
-    import hangul
+    import marco.language.hangul as hangul
     tail = ("@" + src) if src else ""
     j = hangul.attach_particle
     case = "\n".join('*%s참여: "%s %s에 참여한다"' % (r, j(r, "가"), unit) for r in roles)
