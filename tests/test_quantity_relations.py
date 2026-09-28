@@ -101,7 +101,7 @@ def test_quantity_expression_correction_transfers_after_model_reload(tmp_path, m
 def test_ui_answers_quantity_events_without_research(tmp_path):
     from pathlib import Path
     from unittest.mock import patch
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
     pack = tmp_path / "quantity.kgpack"
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg")] + kgpack.model_files(Path(".")), root=Path("."))
@@ -117,7 +117,7 @@ def test_ui_answers_quantity_events_without_research(tmp_path):
 def test_ui_answers_declared_quantity_chain_without_research(tmp_path):
     from pathlib import Path
     from unittest.mock import patch
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
     pack = tmp_path / "quantity-chain.kgpack"
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg")] + kgpack.model_files(Path(".")), root=Path("."))
@@ -131,7 +131,7 @@ def test_ui_answers_declared_quantity_chain_without_research(tmp_path):
 def test_ui_answers_declared_quantity_chain_start_form_without_research(tmp_path):
     from pathlib import Path
     from unittest.mock import patch
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
     pack = tmp_path / "quantity-chain-start.kgpack"
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg")] + kgpack.model_files(Path(".")), root=Path("."))
@@ -147,7 +147,7 @@ def test_ui_answers_connected_clauses_through_the_packed_dialogue_path(tmp_path)
     """구조 직접 입력이 아니라 팩을 다시 읽는 앱 대화에서도 같은 절을 잇는다."""
     from pathlib import Path
     from unittest.mock import patch
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
 
     pack = tmp_path / "connected-clauses.kgpack"

@@ -3,7 +3,7 @@ from unittest.mock import patch
 from unittest.mock import patch
 
 import engine
-import kgpack
+import marco.storage.kgpack as kgpack
 from relational_semantics import RelationalParser
 from marco.reasoning.context import ReasoningContext
 from views.kgpack_ui import AppState

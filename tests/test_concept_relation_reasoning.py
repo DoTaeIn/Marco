@@ -183,7 +183,7 @@ def test_actual_app_active_and_corrected_relation_restore_in_separate_processes(
     code = """
 import json, sys
 from pathlib import Path
-from conversation_store import ConversationStore
+from marco.storage.conversations import ConversationStore
 from views.kgpack_ui import AppState
 pack, root, chat, question = map(Path, sys.argv[1:5])
 app = AppState(pack, overlay_root=root / 'subprocess-overlay')

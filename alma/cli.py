@@ -72,7 +72,7 @@ def main(argv=None):
     model, graph_name = None, args.pack_graph or args.graph
     temporary = nullcontext(None)
     if args.pack:
-        import kgpack
+        import marco.storage.kgpack as kgpack
         from pack_model import PackModel
         manifest, assets = kgpack.read(args.pack)
         if graph_name not in assets or not graph_name.endswith(".kg"):

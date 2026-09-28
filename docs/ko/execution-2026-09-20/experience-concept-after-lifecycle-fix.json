@@ -52,7 +52,7 @@
       " M encoder.py",
       " M marco/learning/concepts.py",
       " M marco/reasoning/inference.py",
-      " M kgpack.py",
+      " M marco/storage/kgpack.py",
       " M marco/reasoning/context.py",
       " M relational_semantics.py",
       " M marco/learning/feedback.py",

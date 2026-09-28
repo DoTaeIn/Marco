@@ -2826,7 +2826,7 @@ def graph_index(root=None, max_example=180):
     binkey = os.path.join(_here, ".색인.kgbin")
     if os.environ.get("KG_INDEX") != "npz" and os.path.exists(binkey):
         try:
-            import kgbin
+            import marco.storage.kgbin as kgbin
             sparse, head = kgbin.unpack(binkey)
             table = {name: hashlib.sha1((encoder.active_runtime().model_name + "\n".join(example)).encode("utf-8"))
                        .hexdigest()[:16]
@@ -3157,7 +3157,7 @@ def _sparse_score(slot, v, question_length=None, inner_vec=None, owners=None):
     # kgbin 은 값을 눌러 둔다. 그 그래프를 잴 때만 편다 — 통째로 펴면
     # 파일만 작아지고 메모리는 float32 그대로다.
     if isinstance(value, tuple):
-        import kgbin
+        import marco.storage.kgbin as kgbin
         value = kgbin.expand(value)
         if rear is not None and isinstance(rear[0], tuple):
             rear = (kgbin.expand(rear[0]),) + tuple(rear[1:])
@@ -3593,7 +3593,7 @@ def _answer(question):
         # 다룬다.
         if not cand_name.endswith(".kg"):
             try:
-                import explain
+                import marco.runtime.explain as explain
                 if cand_name not in _explain_slots:
                     _explain_slots.clear()       # 설명 그래프는 크다. 한 번에 하나만.
                     _explain_slots[cand_name] = explain.open_(_abs(cand_name))
@@ -3863,7 +3863,7 @@ class Dialogue:
                 continue
             if not pick.endswith(".kg"):
                 try:
-                    import explain
+                    import marco.runtime.explain as explain
                     if pick not in _explain_slots:
                         _explain_slots.clear()
                         _explain_slots[pick] = explain.open_(_abs(pick))

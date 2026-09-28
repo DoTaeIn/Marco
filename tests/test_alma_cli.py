@@ -37,8 +37,7 @@ def test_cli_backup_keeps_personal_life_separate_from_its_original_state(tmp_pat
 
 
 def test_cli_restores_personal_state_from_a_pack_in_a_clean_working_directory(tmp_path):
-    import kgpack
-
+    import marco.storage.kgpack as kgpack
     clean = tmp_path / "clean"; clean.mkdir()
     pack, life, backup = clean / "knowledge.kgpack", clean / "life.json", clean / "life-backup.json"
     kgpack.write_pack(pack, [Path(KG)] + kgpack.model_files(Path.cwd()), root=Path.cwd())

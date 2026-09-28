@@ -35,8 +35,8 @@ def _process_peak_rss_bytes():
 
 
 def run(dataset_path=None):
-    import kgpack
-    from conversation_store import ConversationStore
+    import marco.storage.kgpack as kgpack
+    from marco.storage.conversations import ConversationStore
     from views.kgpack_ui import AppState
     raw = Path(dataset_path or ROOT / "data/benchmarks/reasoning_transfer_v1.json").read_bytes()
     dataset = json.loads(raw)

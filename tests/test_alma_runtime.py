@@ -1355,8 +1355,7 @@ def test_supervised_rule_candidate_requires_approval_survives_restart_and_can_ro
 
 
 def test_graph_asset_candidate_uses_event_lineage_and_exports_only_after_approval(tmp_path):
-    import kgpack
-
+    import marco.storage.kgpack as kgpack
     runtime = AlmaRuntime(tmp_path / "alma.json", "agent-a")
     for text in ("베풀다는 상대에게 구슬 2개를 주는 것이다.",
                  "민수 구슬은 8개 있다. 지연 구슬은 3개 있다. 가람 구슬은 8개 있다. 하루 구슬은 3개 있다. 서준 구슬은 8개 있다. 유나 구슬은 3개 있다. 도윤 구슬은 8개 있다. 소라 구슬은 3개 있다.",

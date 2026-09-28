@@ -13,7 +13,7 @@ out of scope and gets written down as a Phase 1 task instead.
 
 ## Why now
 
-- Two sessions edit `engine.py`, `explain.py`, `language_components.py`,
+- Two sessions edit `engine.py`, `marco/runtime/explain.py`, `language_components.py`,
   `pack_model.py`, `relational_semantics.py`, `alma/runtime.py`,
   `marco/learning/concepts.py`, `marco/learning/chunking.py`, `marco/reasoning/context.py`.
   Moving those now causes silent merge loss.
@@ -46,7 +46,7 @@ A4. **The four `nai` artifacts get names and homes.** Today the project name
     is used for four unrelated things:
     - `marco/runtime/conversation.py` — CLI entry point, tracked
     - `NAI.kgpack` — built model file, ignored
-    - `.nai/` — runtime conversation store written by `conversation_store.py`, ignored
+    - `.nai/` — runtime conversation store written by `marco/storage/conversations.py`, ignored
     - `.nai-tools/` — downloaded vision binary and YOLO config, ignored
     Decide one target path for each and say which code paths read them
     (`views/kgpack_ui.py:249`, `marco/perception/visual.py:27`). Do not move them.

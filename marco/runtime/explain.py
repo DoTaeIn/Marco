@@ -7,6 +7,9 @@
 
 논증 엔진(engine.py)과 나뉘어 있다. 이쪽은 판정하지 않는다. 설명한다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[2]))
 from functools import lru_cache
 import io, json, os, re, sys
 from collections import deque
@@ -514,7 +517,7 @@ def prepare_knowledge(g):
         span.append((len(sentence), len(sentence) + len(example)))
         sentence += [mask_numbers(x) for x in example]
     key = hashlib.sha1(("\n".join(sentence) + MODEL).encode("utf-8")).hexdigest()[:16]
-    cache = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+    cache = os.path.join(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, os.pardir)),
                         ".vec_설명_%s.npz" % key)
     # 압축하지 않고 저장하면 mmap 으로 열 수 있다. 7,195노드 벡터가 28.5MB 인데
     # 통째로 램에 올릴 이유가 없다 — 한 번에 보는 것은 행렬 한 판뿐이다.

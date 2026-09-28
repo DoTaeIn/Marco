@@ -118,7 +118,7 @@
 
     pytest                   348 -> 369 통과
     engine.py --regress      6/6 그대로
-    kgpack.py --check        통과
+    marco/storage/kgpack.py --check        통과
     고정 잣대                깨끗한 HEAD 의 **안정값**과 한 자리도 다르지 않음
       대조 374/400 · 안 물음 150/400 · 셋 안 265 · 근거까지 봄 197 · 밖 거절 24/24
 

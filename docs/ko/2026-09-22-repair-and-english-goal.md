@@ -74,7 +74,7 @@ structure the runtime executes.
    `Minsu has 8 apples. Jiyeon has 3 apples. Minsu gave Jiyeon 2 apples. how many
    apples does Jiyeon have?` with `5 apples.` Word order alone carried the roles.
 3. Default selection moves to English in every path that chooses a language:
-   `language_components._language_path`, `explain.py` (`KG_LANG`), and
+   `language_components._language_path`, `marco/runtime/explain.py` (`KG_LANG`), and
    `pack_model.descriptor` (`default_model_language`). One declaration, not three
    defaults drifting apart.
 4. `engine.py:108` returns a hardcoded Korean refusal. Move it to the pack. Find

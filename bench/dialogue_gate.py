@@ -413,8 +413,8 @@ def _import_code(code_root):
         sys.path.remove(code_root)
     sys.path.insert(0, code_root)
     os.environ.setdefault("KG_ENCODER", "문자")
-    import kgpack  # noqa: E402
-    from conversation_store import ConversationStore  # noqa: E402
+    import marco.storage.kgpack as kgpack  # noqa: E402
+    from marco.storage.conversations import ConversationStore  # noqa: E402
     from views.kgpack_ui import AppState  # noqa: E402
     return kgpack, ConversationStore, AppState
 

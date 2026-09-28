@@ -43,7 +43,7 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | [graph-authoring.md](en/graph-authoring.md) | Graph authoring guide: claims, evidence and the relations that reach a conclusion |
 | [design.md](en/design.md) | Design record: constrained, inspectable reasoning |
 | [direction.md](en/direction.md) | Project direction: every conclusion traceable to evidence |
-| [explain.md](en/explain.md) | Explanation-engine guide (`explain.py`) |
+| [explain.md](en/explain.md) | Explanation-engine guide (`marco/runtime/explain.py`) |
 | [legal-theory.md](en/legal-theory.md) | Legal-theory guide: the reusable legal layers in `legal/` |
 
 ## `mco` (`docs/mco/`)

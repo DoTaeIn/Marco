@@ -102,7 +102,7 @@ G3.9 **Hand-off:** the commit hash to score. The owner runs the frozen
 ## Owns
 
 `marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
-`marco/language/hangul.py`, `engine.py`, `explain.py`, `marco/reasoning/context.py`,
+`marco/language/hangul.py`, `engine.py`, `marco/runtime/explain.py`, `marco/reasoning/context.py`,
 `marco/reasoning/state.py`, `pack_model.py`, `styles/*.json`,
 `data/benchmarks/vocab_probe/`, `data/benchmarks/dialogues_dev3/`,
 `tests/test_understanding_r3.py`, `tests/` files for those modules, the

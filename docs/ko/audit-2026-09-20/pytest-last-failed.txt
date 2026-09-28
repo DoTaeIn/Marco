@@ -5,7 +5,7 @@ tests\test_action_runtime.py:389: in test_app_dialogue_keeps_lookup_action_ident
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ______ test_app_dialogue_resumes_a_state_lookup_after_the_requested_fact ______
@@ -13,7 +13,7 @@ tests\test_action_runtime.py:426: in test_app_dialogue_resumes_a_state_lookup_af
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ___ test_app_dialogue_resolves_context_referents_as_saved_event_role_fills ____
@@ -21,7 +21,7 @@ tests\test_action_runtime.py:588: in test_app_dialogue_resolves_context_referent
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_app_plan_uses_a_learned_action_definition_without_reexecuting_an_event _
@@ -29,7 +29,7 @@ tests\test_action_runtime.py:605: in test_app_plan_uses_a_learned_action_definit
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ___ test_app_explanation_uses_executed_action_evidence_but_not_a_hypothesis ___
@@ -37,7 +37,7 @@ tests\test_action_runtime.py:626: in test_app_explanation_uses_executed_action_e
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _______ test_restarted_app_restores_learned_plan_and_execution_evidence _______
@@ -45,7 +45,7 @@ tests\test_action_runtime.py:648: in test_restarted_app_restores_learned_plan_an
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_actual_app_active_and_corrected_relation_restore_in_separate_processes _
@@ -53,7 +53,7 @@ tests\test_concept_relation_reasoning.py:105: in test_actual_app_active_and_corr
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _________ test_app_restart_reads_saved_replay_record_before_answering _________
@@ -61,7 +61,7 @@ tests\test_event_provenance.py:126: in test_app_restart_reads_saved_replay_recor
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 __________ test_app_restart_continues_saved_event_with_a_new_action ___________
@@ -69,7 +69,7 @@ tests\test_event_review_regressions.py:64: in test_app_restart_continues_saved_e
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ___ test_app_restart_resumes_pending_event_then_corrects_saved_direct_fact ____
@@ -77,7 +77,7 @@ tests\test_event_review_regressions.py:82: in test_app_restart_resumes_pending_e
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_same_party_relationship_occurrences_are_independent_and_selection_persists _
@@ -85,7 +85,7 @@ tests\test_event_review_regressions.py:215: in test_same_party_relationship_occu
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ____ test_app_dialogue_persists_active_overlay_and_its_derived_application ____
@@ -93,7 +93,7 @@ tests\test_experience_concepts.py:98: in test_app_dialogue_persists_active_overl
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_active_concept_changes_a_natural_app_query_and_exposes_its_learning_chain _
@@ -101,7 +101,7 @@ tests\test_experience_concepts.py:120: in test_active_concept_changes_a_natural_
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ________________ test_local_definition_coverage_across_domains ________________
@@ -173,7 +173,7 @@ tests\test_output_contracts.py:14: in test_numeric_output_contract_reaches_engin
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_numeric_output_contract_reaches_engine_and_ui[2x + 1 = 2\uc57c. \uc22b\uc790\ub9cc \ub2f5\ud574\uc8fc\uc138\uc694.-1/2] _
@@ -181,7 +181,7 @@ tests\test_output_contracts.py:14: in test_numeric_output_contract_reaches_engin
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ___ test_actual_ui_restart_preserves_correction_and_save_failure_rolls_back ___
@@ -189,7 +189,7 @@ tests\test_reasoning_corrections.py:73: in test_actual_ui_restart_preserves_corr
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_actual_ui_restart_preserves_a_definition_correction_and_its_later_effect _
@@ -197,7 +197,7 @@ tests\test_reasoning_corrections.py:94: in test_actual_ui_restart_preserves_a_de
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_one_ui_conversation_learns_clarifies_corrects_and_reuses_without_touching_another_target _
@@ -205,7 +205,7 @@ tests\test_reasoning_corrections.py:109: in test_one_ui_conversation_learns_clar
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ________ test_actual_app_restart_restores_only_committed_observations _________
@@ -213,7 +213,7 @@ tests\test_reasoning_persistence.py:23: in test_actual_app_restart_restores_only
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ______________ test_save_failure_rolls_back_both_chat_and_memory ______________
@@ -221,7 +221,7 @@ tests\test_reasoning_persistence.py:44: in test_save_failure_rolls_back_both_cha
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 __________ test_legacy_chat_is_not_reinterpreted_as_verified_memory ___________
@@ -229,7 +229,7 @@ tests\test_reasoning_persistence.py:57: in test_legacy_chat_is_not_reinterpreted
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ________ test_ui_summary_uses_a_local_definition_as_its_only_material _________
@@ -237,7 +237,7 @@ tests\test_response_composer.py:131: in test_ui_summary_uses_a_local_definition_
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 ______ test_ui_compare_request_reuses_the_same_two_verified_definitions _______
@@ -245,7 +245,7 @@ tests\test_response_composer.py:142: in test_ui_compare_request_reuses_the_same_
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_recognized_unsolved_question_has_no_research_or_learning_plan[12 \ub098\ub204\uae30 0\uc740 \uc5bc\ub9c8\uc57c?] _
@@ -253,7 +253,7 @@ tests\test_ui_unresolved_state.py:10: in test_recognized_unsolved_question_has_n
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_recognized_unsolved_question_has_no_research_or_learning_plan[2x+1=2x+8\uc774\uba74?] _
@@ -261,7 +261,7 @@ tests\test_ui_unresolved_state.py:10: in test_recognized_unsolved_question_has_n
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _ test_unreadable_problem_is_not_misclassified_as_an_external_fact_request[5x + 4\ub9cc \uc54c\uc544. x\ub294 \uc5bc\ub9c8\uc57c?] _
@@ -269,7 +269,7 @@ tests\test_ui_unresolved_state.py:26: in test_unreadable_problem_is_not_misclass
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 _______________ test_ui_solves_verbal_equation_without_research _______________
@@ -277,7 +277,7 @@ tests\test_verbal_expression.py:31: in test_ui_solves_verbal_equation_without_re
     app = create_app(tmp_path)
 tests\test_reasoning_persistence.py:14: in create_app
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg"),
-kgpack.py:126: in write_pack
+marco/storage/kgpack.py:126: in write_pack
     raise KGPackError("파일이 없습니다: %s" % path)
 E   kgpack.KGPackError: 파일이 없습니다: C:\Users\hirob\Desktop\Marco\data\위키\정의문.jsonl
 =========================== short test summary info ===========================

@@ -13,7 +13,7 @@ from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault("KG_ENCODER", "문자")
-import explain  # noqa: E402
+import marco.runtime.explain as explain  # noqa: E402
 
 
 def grade(graph="문서그래프.json", author=None):

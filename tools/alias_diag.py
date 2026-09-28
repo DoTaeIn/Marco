@@ -56,12 +56,15 @@
 겹쳐서 쉬운 문제이기 때문이다. 결과는 그 노드가 아니라 **같은 그래프에
 누가 같이 있느냐**가 정한다. 그래서 흡수력만 낸다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import glob
 import itertools
 import os
 import sys
 
-here = os.path.dirname(os.path.abspath(__file__))
+here = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 sys.path.insert(0, here)
 os.environ.setdefault("KG_ENCODER", "문자")
 

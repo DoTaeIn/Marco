@@ -218,7 +218,7 @@ def test_template_count_stays_constant_and_empty_component_lacks_new_forms():
 def test_inflected_location_move_reaches_ui_without_research(tmp_path):
     from pathlib import Path
     from unittest.mock import patch
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
     path = tmp_path / "forms.kgpack"
     kgpack.write_pack(path, [Path("graphs/graph_일상추론.kg")] + kgpack.model_files(Path(".")), root=Path("."))

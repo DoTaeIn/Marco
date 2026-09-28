@@ -17,8 +17,8 @@ sys.path.insert(0, str(ROOT))
 
 
 def run(language):
-    import kgpack
-    from conversation_store import ConversationStore
+    import marco.storage.kgpack as kgpack
+    from marco.storage.conversations import ConversationStore
     from views.kgpack_ui import AppState
     from bench.seven_step_dialogue import SCRIPTS, _numbers
     script = SCRIPTS[language]

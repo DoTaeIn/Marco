@@ -14,7 +14,7 @@ if str(ROOT) not in sys.path:
 
 from alma.environment import run_local_environment
 from alma.runtime import AlmaRuntime
-import kgpack
+import marco.storage.kgpack as kgpack
 from bench.alma_environment_reproduction import scenario
 
 

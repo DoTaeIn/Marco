@@ -53,7 +53,7 @@ def test_engine_does_not_route_away_from_recognized_conflict():
 def test_ui_preserves_location_for_planned_move_without_web(tmp_path):
     from pathlib import Path
     from unittest.mock import patch
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
     pack = tmp_path / "sample.kgpack"
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg")] + kgpack.model_files(Path(".")), root=Path("."))

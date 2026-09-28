@@ -24,8 +24,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-import kgpack
-from conversation_store import ConversationStore
+import marco.storage.kgpack as kgpack
+from marco.storage.conversations import ConversationStore
 from views.kgpack_ui import AppState
 
 
