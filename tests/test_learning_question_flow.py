@@ -4,9 +4,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import kgpack
+import marco.storage.kgpack as kgpack
 import marco.knowledge.ingest.web as web_learn
-from conversation_store import ConversationStore
+from marco.storage.conversations import ConversationStore
 from goal_runtime import GoalRuntime
 from views.kgpack_ui import AppState
 from unittest.mock import patch

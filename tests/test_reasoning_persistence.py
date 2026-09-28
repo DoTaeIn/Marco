@@ -2,8 +2,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-import kgpack
-from conversation_store import ConversationStore
+import marco.storage.kgpack as kgpack
+from marco.storage.conversations import ConversationStore
 from marco.reasoning.context import ReasoningContext
 from views.kgpack_ui import AppState
 

@@ -286,7 +286,7 @@ python engine.py --suggest   # 원문에서 노드 후보
 바탕
   encoder.py       문장 → 벡터. 문자 n-gram 포함도(기본)와 신경망 둘 다
   engine.py        논증·판정·값 나르기·학습·라우터·진단·회귀
-  explain.py       그래프 경로 기반 설명 (문서형 .json 그래프)
+  marco/runtime/explain.py       그래프 경로 기반 설명 (문서형 .json 그래프)
   marco/knowledge/ingest/text.py         문서 → 지식 그래프 저작
   marco/runtime/conversation.py           .kg 와 .json 을 같은 API 로 여는 대화 계약
 

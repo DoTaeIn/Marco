@@ -126,7 +126,7 @@ def test_a_reason_question_for_a_different_effect_does_not_take_the_waiting_caus
 def test_actual_dialogue_keeps_cause_and_binds_it_only_to_the_asked_effect(tmp_path):
     """원인은 대화에 남지만, 다른 결과의 이유로 재사용되지는 않는다."""
     from pathlib import Path
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
 
     pack = tmp_path / "sample.kgpack"
@@ -157,7 +157,7 @@ def test_saved_dialogue_rebinds_the_causal_event_after_restart():
 def test_ui_answers_graph_chain_without_web_research(tmp_path):
     from pathlib import Path
     from unittest.mock import patch
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
     pack = tmp_path / "sample.kgpack"
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg")] + kgpack.model_files(Path(".")), root=Path("."))

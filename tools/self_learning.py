@@ -20,13 +20,16 @@
 퇴화도 같이 센다. 아는 것이 늘면 헷갈리는 것도 는다. 나아진 것만 세면
 회로가 스스로를 속인다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import io
 import json
 import os
 import subprocess
 import sys
 
-here = os.path.dirname(os.path.abspath(__file__))
+here = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 sys.path.insert(0, here)
 os.environ.setdefault("KG_ENCODER", "문자")
 
@@ -85,7 +88,7 @@ def unknown_ones(lines=None, widen=False):
     검색어로 쓰기 위해서다. 낱말 하나로 찾으면 `정리` 가 수학의 정리를
     물어 온다 — 사람은 그렇게 안 찾는다. 물음째로 넣으면 문맥이 가른다."""
     import marco.knowledge.ingest.text as build
-    import explain
+    import marco.runtime.explain as explain
     g = explain.open_(explain._abs(graph_dir))
     known = set(g.get("어휘") or ())
     acc, seen_place = {}, {}
@@ -197,7 +200,7 @@ def author():
 
 def solve(graph=None):
     """물음기록 전체를 지금 그래프로 다시 푼다. -> {질문: (판정, 주제)}"""
-    import explain
+    import marco.runtime.explain as explain
     g = explain.open_(explain._abs(graph or graph_dir))
     out = {}
     for d in prompts():

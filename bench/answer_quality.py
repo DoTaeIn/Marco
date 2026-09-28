@@ -171,8 +171,8 @@ def _judge(case, answer_text, known, trace, error=False):
 
 
 def run(dataset_path=None, split=None):
-    import kgpack
-    from conversation_store import ConversationStore
+    import marco.storage.kgpack as kgpack
+    from marco.storage.conversations import ConversationStore
     from views.kgpack_ui import AppState
 
     raw = Path(dataset_path or DATASET).read_bytes()

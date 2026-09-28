@@ -307,7 +307,7 @@ def test_structured_lookup_compute_condition_and_call_use_one_bounded_executor()
 def test_app_dialogue_uses_the_same_hypothetical_action_execution(tmp_path):
     """Natural language reaches the program through the public app entry."""
     from pathlib import Path
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
 
     pack = tmp_path / "action-runtime.kgpack"
@@ -326,7 +326,7 @@ def test_app_dialogue_uses_the_same_hypothetical_action_execution(tmp_path):
 def test_app_dialogue_executes_a_naturally_composed_versioned_call_in_a_hypothesis(tmp_path):
     """The public app path does not replace learned calls with a JSON-only route."""
     from pathlib import Path
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
 
     pack = tmp_path / "composed-action-runtime.kgpack"
@@ -403,7 +403,7 @@ def test_role_then_state_completion_advances_one_event_through_the_same_executor
 
 def test_app_dialogue_naturally_compiles_and_executes_location_lookup(tmp_path):
     from pathlib import Path
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
 
     pack = tmp_path / "location-program.kgpack"

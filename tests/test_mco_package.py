@@ -110,7 +110,7 @@ def test_inspect_reports_model(model_path: Path) -> None:
 
 
 def test_fingerprint_matches_marco(model_path: Path) -> None:
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from pack_model import PackModel
     payload = model_path.parent / "fp.kgpack"
     payload.write_bytes(detect(model_path).payload_bytes())

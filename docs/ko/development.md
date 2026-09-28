@@ -34,7 +34,7 @@
 ```text
 encoder.py     문장 → 정규화 벡터. 신경망은 여기 한 곳뿐이다 (함수 5개)
 engine.py      논증·판정·학습·진단·회귀. 도메인 지식 0줄 (함수 60 + 세션 클래스)
-explain.py     판정하지 않고 발췌를 조립하는 설명 엔진 (함수 20)
+marco/runtime/explain.py     판정하지 않고 발췌를 조립하는 설명 엔진 (함수 20)
 marco/knowledge/ingest/text.py       문서 폴더 → 설명그래프 JSON (함수 17)
 experiments/codegen.py     언어중립 알고리즘 → 언어별 소스. 실행이 채점한다
 collectors/    법제처·위키백과 수집기 (법령·판례·문서)
@@ -174,7 +174,7 @@ flowchart TD
 | 새 성장 도구 | `제안` / `엣지제안` / `의미관계제안` / `조문제안` 을 본떠 만드세요 |
 | 새 도메인의 관계 표지 | `_의미표지` 표에 정규식 한 줄. 아래 참고 |
 | 시각화 | `views/kgpack_ui.py` — 대화·그래프·자가학습을 한 화면에서 봅니다 |
-| 대화 맥락 | `explain.py` 의 `대화기억` — 창이 아니라 감쇠. 파일로 저장됩니다 |
+| 대화 맥락 | `marco/runtime/explain.py` 의 `대화기억` — 창이 아니라 감쇠. 파일로 저장됩니다 |
 | 절차 답변 | `절차읽기` / `절차찾기` / `절차답` — 문서의 순서를 그대로 들고 옵니다 |
 | 절차 + 코드 | `엮은답` — 문서 단계에 코드 그래프의 위치·호출을 붙입니다 |
 | 오타 처리 | `_자모거리` / `오타고침` — 자모 하나 차이면 되묻습니다 |
@@ -217,13 +217,13 @@ flowchart TD
 
 ```bash
 python -m marco.knowledge.ingest.text   --check
-python explain.py --check
+python -m marco.runtime.explain --check
 python -m experiments.codegen --check     # 채점기가 옳고 그름을 구별하는지부터 본다
 python engine.py  --check     # 엔진 자체 검사 (판례 회귀 6건 포함)
 python engine.py  --regress   # 판례 회귀만 따로
 ```
 
-`explain.py --check` 와 `engine.py --check` 는 생성물을 필요로 하는데
+`marco/runtime/explain.py --check` 와 `engine.py --check` 는 생성물을 필요로 하는데
 `.gitignore` 에 있어 새로 받은 저장소에는 없습니다. 먼저 지으십시오.
 
 ```bash

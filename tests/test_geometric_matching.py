@@ -47,7 +47,7 @@ def test_sparse_score_handles_empty_final_rows_and_negative_overlap():
 
 
 def test_geometric_score_survives_kgbin_roundtrip(tmp_path):
-    import kgbin
+    import marco.storage.kgbin as kgbin
     phrase = "서로 독립적인 작업의 완료 시간"
     g = graph([phrase])
     reverse = engine._reverse_examples(g, "node")

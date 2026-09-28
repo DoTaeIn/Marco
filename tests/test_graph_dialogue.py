@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import graph_dialogue
+import marco.runtime.graph_dialogue as graph_dialogue
 import marco.language.understanding as input_understanding
 from language_components import load_language_pack
 import pytest

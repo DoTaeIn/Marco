@@ -27,13 +27,16 @@
 저절로 다시 만들어지고, 지우면 다음 실행이 몇 분 느려질 뿐이다. 정말
 비우고 싶으면 --색인까지 를 준다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import glob
 import hashlib
 import json
 import os
 import sys
 
-here = os.path.dirname(os.path.abspath(__file__))
+here = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 sys.path.insert(0, here)
 os.environ.setdefault("KG_ENCODER", "문자")
 

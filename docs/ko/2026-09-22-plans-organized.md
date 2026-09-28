@@ -563,8 +563,8 @@ Intended long-term structure:
     │  │
     │  └ storage/
     │     ├ __init__.py
-    │     ├ kgpack.py
-    │     ├ kgbin.py
+    │     ├ marco/storage/kgpack.py
+    │     ├ marco/storage/kgbin.py
     │     ├ overlay.py
     │     └ snapshot.py
     │
@@ -634,7 +634,7 @@ Likely current mappings:
 
     marco/reasoning/context.py     → marco/reasoning/context.py
     relational_semantics.py  → marco/reasoning/semantics.py
-    explain.py               → marco/reasoning/explanation.py
+    marco/runtime/explain.py               → marco/reasoning/explanation.py
 
 Do not blindly move them before checking actual responsibilities.
 
@@ -694,8 +694,8 @@ MCO overlays.
 
 Likely mappings:
 
-    kgpack.py → storage/kgpack.py
-    kgbin.py  → storage/kgbin.py
+    marco/storage/kgpack.py → storage/kgpack.py
+    marco/storage/kgbin.py  → storage/kgbin.py
 
 ### 4.5 ALMA boundary
 
@@ -790,8 +790,8 @@ commands. Produce a mapping table:
 `__init__.py`. Do not move behavior yet. All tests must continue to pass.
 
 **Phase 2 — Move clean modules first.** Start with files that already have a clear
-single responsibility. Good candidates may include `marco/language/hangul.py`, `kgbin.py`,
-`kgpack.py`, `marco/learning/chunking.py`. Verify before moving. Add compatibility shims. Run
+single responsibility. Good candidates may include `marco/language/hangul.py`, `marco/storage/kgbin.py`,
+`marco/storage/kgpack.py`, `marco/learning/chunking.py`. Verify before moving. Add compatibility shims. Run
 relevant tests after every move.
 
 **Phase 3 — Split mixed modules.** Identify modules such as `engine.py` and
@@ -982,7 +982,7 @@ Starting hypothesis only. Inspect each file before moving it.
     encoder.py             → language or runtime routing layer (decide after audit)
     marco/reasoning/context.py   → reasoning/context.py
     relational_semantics.py→ reasoning/semantics.py
-    explain.py             → reasoning/explanation.py
+    marco/runtime/explain.py             → reasoning/explanation.py
     marco/language/hangul.py              → language/grammar.py
     marco/learning/concepts.py → learning/concepts.py
     marco/learning/rules.py       → learning/structural.py
@@ -991,8 +991,8 @@ Starting hypothesis only. Inspect each file before moving it.
     marco/learning/authoring.py      → learning/structural or authoring submodule
     alma/runtime.py        → alma/runtime.py
                              then gradually extract memory, preference, identity, etc.
-    kgbin.py               → storage/kgbin.py
-    kgpack.py              → storage/kgpack.py
+    marco/storage/kgbin.py               → storage/kgbin.py
+    marco/storage/kgpack.py              → storage/kgpack.py
 
 Do not treat this mapping as authoritative if code inspection disagrees.
 
@@ -1042,11 +1042,11 @@ Why postponed:
 
 - It moves exactly the files the two running sessions edit: ALMA
   (`alma/runtime.py`, `marco/learning/concepts.py`, `marco/learning/chunking.py`,
-  `marco/reasoning/context.py`) and repair + English (`engine.py`, `explain.py`,
+  `marco/reasoning/context.py`) and repair + English (`engine.py`, `marco/runtime/explain.py`,
   `language_components.py`, `pack_model.py`, `relational_semantics.py`, ~52 test files).
   A move here plus an edit in another clone produces conflicts, and "take theirs"
   silently loses work.
-- The running goals cite exact file:line locations (`engine.py:108`, `explain.py:62`);
+- The running goals cite exact file:line locations (`engine.py:108`, `marco/runtime/explain.py:62`);
   moving files mid-goal breaks them.
 - §4.14 itself forbids two agents doing repository-wide rewrites at once.
 
@@ -1063,7 +1063,7 @@ measurable gates:
 - every subsystem document contains the five template headings (§4.12)
 - `engine.py` (6062 lines) split: each extracted responsibility named, no behavior diff
 
-Sizes that matter for Phase 3: `engine.py` 6062 lines, `explain.py` 2306,
+Sizes that matter for Phase 3: `engine.py` 6062 lines, `marco/runtime/explain.py` 2306,
 `alma/runtime.py` large. Korean hardcoded in Python as matching patterns: 1224 words at
 ~1000 sites in 34 files (engine 310, build 213, explain 180, hangul 78).
 
@@ -1080,7 +1080,7 @@ Measured in this clone unless stated.
 | English pack | `styles/english.json`: 25 keys, 0 examples, lacks 37 reasoning keys, no `인코더`, no `default_model_language` |
 | Korean graphs | 905 graphs, all Korean |
 | Default-language blast radius | 52 of 75 test files feed Korean without selecting a language; ALMA `test_alma_runtime.py` 53 pass → 30 fail / 23 pass under English default |
-| Language selection split | `language_components._language_path` reads `NAI_LANGUAGE → KG_LANG → 한국어`; `explain.py:62` reads `KG_LANG` only; `engine.py:108` has a hardcoded Korean refusal |
+| Language selection split | `language_components._language_path` reads `NAI_LANGUAGE → KG_LANG → 한국어`; `marco/runtime/explain.py:62` reads `KG_LANG` only; `engine.py:108` has a hardcoded Korean refusal |
 | Corpus test fixture | `tests/test_reasoning_persistence.py:create_app` passes the gitignored 86MB `data/위키/정의문.jsonl` unconditionally. On corpus-less clones: 27 of 38 failures (32 incl. direct corpus tests, 84% noise). Product code is unaffected. User declined the fix (not lethal) |
 | Machine-dependent tests | `test_response_composer` 2 fail here (`'manager' ≠ 'extractive_grounded_response'`, verdict `입력이해실패 ≠ 원문정의비교`), pass on the other machine. This clone differs: 1 untracked learned file, 440 ignored cache files |
 | Full suite | Here at `f02d803`: 3 failed / 771 passed, 19m53s. Other machine at `6195040`: 766 passed / 8 skipped / exit 0, ~22 min |

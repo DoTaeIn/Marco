@@ -22,7 +22,7 @@ What counts as a reference (the audit measured these, A8 hazards):
 - `python x.py`, `python -m x` in README, `docs/`, `pyproject.toml`, launch
   files, scripts;
 - strings: `mock.patch("x.attr")` and `monkeypatch.setattr("x.attr", …)` in
-  tests, the pack string `graph_dialogue:backend` in `styles/한국어.json`, any
+  tests, the pack string `marco.runtime.graph_dialogue:backend` in `styles/한국어.json`, any
   `importlib.import_module("x")`;
 - data paths built from `__file__`: 22 root files at 24 sites resolve `graphs/`,
   `styles/`, `data/` relative to their own location. Moved one level down they
@@ -52,7 +52,7 @@ and record that too. The seven split files stay at the root untouched: `engine.p
 `raw_data.txt` and `algorithms/` go with `experiments/universal_agent.py` and `experiments/codegen.py`
 into `experiments/`; `document_vision.swift` goes with `marco/perception/visual.py` into
 `marco/perception/`; `graphify-out/` (a generated co-occurrence graph that
-`explain.py` reads if present, `explain.py:1943`) moves under `data/` with that
+`marco/runtime/explain.py` reads if present, `marco/runtime/explain.py:1943`) moves under `data/` with that
 path updated; the encoder's `.vec_*.npz` caches at the root move to
 `.marco/cache/` with the writer's path updated. Each with its references, as
 above. The engine writes its routing tie-break file `그래프쓰임.json` at the repository

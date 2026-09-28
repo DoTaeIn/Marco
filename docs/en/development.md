@@ -9,7 +9,7 @@ supporting path.
 
 - `encoder.py`: sentence vectorization and shared path helpers.
 - `engine.py`: graph loading, matching, reasoning, sessions, and evaluation.
-- `explain.py`: evidence-based explanation and document procedures.
+- `marco/runtime/explain.py`: evidence-based explanation and document procedures.
 - `marco/knowledge/ingest/text.py`: source documents to knowledge-graph authoring tool.
 - `experiments/codegen.py`: algorithm-description to code generation tool.
 - `graphs/`, `cases/`, `legal/`, and `data/`: domain knowledge and source data.

@@ -518,8 +518,7 @@ class AlmaRuntime:
         The base pack is verified first; neither it nor the agent's personal
         state is modified.  Every active asset must name that exact base pack.
         """
-        import kgpack
-
+        import marco.storage.kgpack as kgpack
         base_pack, output_pack = Path(base_pack), Path(output_pack)
         if output_pack.exists():
             raise ValueError("graph_asset_output_exists")

@@ -51,7 +51,8 @@ OPTIONS = frozenset({"marco_root", "overlay_dir", "allow_network"})
 #: Options accepted by :func:`mco.compile` for this backend.
 COMPILE_OPTIONS = frozenset({"marco_root", "graphs", "language"})
 
-_REQUIRED_MODULES = ("kgpack", "pack_model", "engine")
+_KGPACK = "marco.storage.kgpack"
+_REQUIRED_MODULES = (_KGPACK, "pack_model", "engine")
 _UI_MODULE = "views.kgpack_ui"
 _import_lock = threading.Lock()
 _POOL_SIZE = 4
@@ -100,7 +101,7 @@ def _status_for(verdict: Optional[str], answer: Mapping[str, Any]) -> Status:
 # --- runtime discovery ---------------------------------------------------------
 
 def _is_marco_root(path: Path) -> bool:
-    return (all((path / f"{m}.py").is_file() for m in _REQUIRED_MODULES)
+    return (all(path.joinpath(*m.split(".")).with_suffix(".py").is_file() for m in _REQUIRED_MODULES)
             and (path / "views" / "kgpack_ui.py").is_file())
 
 
@@ -221,7 +222,7 @@ class MarcoKgpackBackend(Backend):
         unknown = set(options) - COMPILE_OPTIONS
         if unknown:
             raise InvalidInputError(f"unknown compile option(s) for backend {self.name!r}: {sorted(unknown)}")
-        kgpack = _import("kgpack", options.get("marco_root"))
+        kgpack = _import(_KGPACK, options.get("marco_root"))
         root = source.resolve()
         graphs = options.get("graphs")
         if graphs:
@@ -253,7 +254,7 @@ class MarcoModel(BackendModel):
         self._backend = backend
         self._options = options
         self._ui = _import(_UI_MODULE, options.get("marco_root"))
-        self._store_module = _import("conversation_store", options.get("marco_root"))
+        self._store_module = _import("marco.storage.conversations", options.get("marco_root"))
         self.info = backend.describe(file)
         self._workdir = Path(tempfile.mkdtemp(prefix="mco-marco-"))
         self._lock = threading.RLock()

@@ -5,7 +5,7 @@
 
 ```bash
 python -m marco.knowledge.ingest.text 내폴더                    # 폴더 -> 지식그래프.json
-python explain.py 내폴더/지식그래프.json         # 대화
+python -m marco.runtime.explain 내폴더/지식그래프.json         # 대화
 ```
 
 ## 1. 폴더에 글을 넣는다

@@ -16,7 +16,7 @@ python -m alma.cli --state .nai/alma-state.json --identity demo --mental-holder 
 python -m alma.cli --state .nai/alma-state.json --identity demo --turn "지연의 믿음은 뭐야?"
 python -m alma.cli --state .nai/alma-state.json --identity demo --search "민수" --search-kinds event,log
 python -m alma.cli --state .nai/alma-state.json --identity demo --backup-state .nai/alma-backup.json
-python kgpack.py --pack .nai/knowledge.kgpack --root .
+python -m marco.storage.kgpack --pack .nai/knowledge.kgpack --root .
 python -m alma.cli --pack .nai/knowledge.kgpack --state .nai/packed-state.json --identity packed-demo --turn "민수 구슬은 8개 있다."
 python -m alma.cli --pack .nai/knowledge.kgpack --state .nai/packed-state.json --identity packed-demo --backup-state .nai/packed-backup.json
 python -m alma.cli --pack .nai/knowledge.kgpack --state .nai/packed-backup.json --identity packed-demo --turn "지금 민수 구슬은 몇 개야?"

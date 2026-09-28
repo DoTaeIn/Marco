@@ -118,7 +118,7 @@ line for `logs/`.
 
 Must not touch: `engine.py`, `marco/reasoning/context.py`, `marco/reasoning/state.py`,
 `marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
-`explain.py`, `pack_model.py`, `styles/`, `views/`, `marco/language/`, `bench/`,
+`marco/runtime/explain.py`, `pack_model.py`, `styles/`, `views/`, `marco/language/`, `bench/`,
 `mco/`, `alma_*`, any frozen area, any frozen benchmark. If the envelope lacks
 something the adapter needs, the adapter records what is there and request
 L1-1 names the gap.

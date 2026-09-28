@@ -77,7 +77,7 @@ class Conversation:
             self._session = engine.Session(self.graph)
             self._memory = None
         else:
-            import explain
+            import marco.runtime.explain as explain
             self.graph = explain.open_(self.path)
             self._engine = explain
             self._memory = explain.DialogueMemory()

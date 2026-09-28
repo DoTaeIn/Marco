@@ -39,7 +39,7 @@ def test_state_projection_prevents_stale_facts_entering_closure():
 def test_ui_uses_latest_location_without_research(tmp_path):
     from pathlib import Path
     from unittest.mock import patch
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
     pack = tmp_path / "temporal.kgpack"
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg")] + kgpack.model_files(Path(".")), root=Path("."))

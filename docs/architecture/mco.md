@@ -35,7 +35,7 @@ engine and the file format change.
 
 - Answering. Every answer comes from the MARCO engine through the backend in
   [`mco.backends`](mco.backends.md).
-- The `.kgpack` format (`kgpack.py`) and the pack model (`pack_model.py`).
+- The `.kgpack` format (`marco/storage/kgpack.py`) and the pack model (`pack_model.py`).
 - The native MCO Format 1 binary, overlays, snapshots, consolidation (frozen).
 
 ## Depends on

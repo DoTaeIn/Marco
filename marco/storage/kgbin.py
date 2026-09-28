@@ -65,6 +65,9 @@ uint4 까지 손실이 없다(±3 은 잡음). 처음 잰 값은 손실 0 이었
 일은 23% 느려진다. 늘 켜 두는 서버라면 npz 가 낫고, 껐다 켜는 작은
 기기라면 bin 이 낫다. 그래서 고르게 두었다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[2]))
 import json
 import os
 import sys
@@ -229,7 +232,7 @@ if __name__ == "__main__":
         value_fmt = sys.argv[sys.argv.index("--값") + 1]
     reversible = "없음" not in sys.argv[sys.argv.index("--되집기") + 1:][:1] \
         if "--되집기" in sys.argv else True
-    here = os.path.dirname(os.path.abspath(__file__))
+    here = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, os.pardir))
     loc = os.path.join(here, ".색인.kgbin")
     if "--자가검사" in sys.argv:
         _selfcheck()

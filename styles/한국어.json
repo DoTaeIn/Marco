@@ -5246,7 +5246,7 @@
     }
    ]
   },
-  "backend": "graph_dialogue:backend",
+  "backend": "marco.runtime.graph_dialogue:backend",
   "request": {
    "_설명": "동작 어간만 적는다. '요약해줘'·'요약해 주세요'·'요약 좀'의 말끝은 활용에서 만들며, 어미를 하나 늘리면 모든 동작이 그 꼴을 함께 얻는다.",
    "light_verb": "하",

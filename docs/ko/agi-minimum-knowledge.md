@@ -20,8 +20,8 @@
 
 ```sh
 KG_ENCODER=문자 python -m unittest -v test_agi_minimum_knowledge.py
-KG_ENCODER=문자 python kgpack.py --pack NAI.kgpack --root .
-python kgpack.py --list NAI.kgpack
+KG_ENCODER=문자 python -m marco.storage.kgpack --pack NAI.kgpack --root .
+python -m marco.storage.kgpack --list NAI.kgpack
 ```
 
 `test_agi_minimum_knowledge.py`는 대표 문항이 의도한 노드에 연결되어 사람이 읽을 수

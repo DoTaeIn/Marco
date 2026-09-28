@@ -194,7 +194,7 @@ def test_invalid_clause_configuration_fails_on_load(tmp_path, clauses):
 def test_connected_reasoning_reaches_ui_without_web(tmp_path):
     from pathlib import Path
     from unittest.mock import patch
-    import kgpack
+    import marco.storage.kgpack as kgpack
     from views.kgpack_ui import AppState
     pack = tmp_path / "clauses.kgpack"
     kgpack.write_pack(pack, [Path("graphs/graph_일상추론.kg")] + kgpack.model_files(Path(".")), root=Path("."))

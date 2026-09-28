@@ -37,7 +37,7 @@ class CommonConversationTest(unittest.TestCase):
         explain.DialogueMemory = Memory
         explain.ask = lambda _g, text, memory: ("이유", "그래프의 근거입니다.", "정의")
         sys.modules["engine"] = engine
-        sys.modules["explain"] = explain
+        sys.modules["marco.runtime.explain"] = explain
         import marco.runtime.conversation as nai
         self.nai = nai
 
