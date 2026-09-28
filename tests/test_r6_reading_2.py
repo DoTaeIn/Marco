@@ -295,6 +295,45 @@ def table():
                    for half, cases in halves.items()} for name, halves in CASES.items()}
 
 
+BUILD = [(name, i) for name in CASES for i in range(len(CASES[name]["build"]))]
+CHECK = [(name, i) for name in CASES for i in range(len(CASES[name]["check"]))]
+
+# Build dialogues left held on purpose: selling with no buyer said (다솔은 그중 네 장을 팔았어요) may have moved the
+# count to a holder of the conversation; the reader does not choose.
+HELD_BUILD = {("partitive", 6)}
+
+
+@pytest.mark.parametrize("name,index", BUILD)
+def test_the_build_half_is_read_and_answered(name, index):
+    assert score(CASES[name]["build"][index]) == ("hold" if (name, index) in HELD_BUILD else "correct")
+
+
+@pytest.mark.parametrize("name,index", CHECK)
+def test_the_check_half_is_never_answered_wrong(name, index):
+    assert score(CASES[name]["check"][index]) != "wrong"
+
+
+def test_the_halves_share_no_name_and_no_thing():
+    import re
+    for name, halves in CASES.items():
+        # the holder and the thing of each statement of a starting count (Gwen has 8 marbles, 가람은 연필이 여덟 개 있어)
+        start = re.compile(r"^([A-Z][a-z]+) has \S+ (\w+)\.$|^([가-힣]{2})(?: 님)?[은는] ([가-힣]+)[이가] ")
+        found = [{w for _l, lines, _e in halves[h] for line in lines for m in [start.match(line)] if m
+                  for w in m.groups() if w} for h in ("build", "check")]
+        assert found[0] and found[1] and not found[0] & found[1], (name, found[0] & found[1])
+
+
+def test_a_fragment_replaces_a_statement_kept_for_its_unknown_word():
+    # the statement said without its amount is kept as an observation; the fragment's reading replaces it
+    *_, fragment, asked = run(KO, ["누리는 구슬이 열 개 있어.", "다올은 구슬이 두 개 있어.", "누리가 다올에게 구슬을 줬어.",
+                                  "네 개.", "누리는 구슬이 몇 개 있어?"])
+    assert fragment["status"] == "observed" and "6" in asked["answer"]
+    # an amount alone after a statement that was read goes into nothing: it is held, never read into that statement
+    *_, fragment, asked = run(EN, ["Nora has 5 pens.", "Otto has 2 pens.", "Nora gave Otto 2 pens.", "It was three.",
+                                   "How many pens does Otto have?"])
+    assert (fragment or {}).get("status") != "observed" and asked["status"] != "answered"
+
+
 if __name__ == "__main__":
     import sys
     import time
