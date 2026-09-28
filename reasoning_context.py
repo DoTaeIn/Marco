@@ -3945,14 +3945,21 @@ class ReasoningContext:
         else:
             last = getattr(self, "_last_said", None)
             entry = self.unread[-1] if self.unread else None
-            if not last or entry is None or entry["text"].strip() != last or entry.get("at") != len(self.observations):
+            # the unread statement is the last thing said: left out of the observations, or kept as the last one
+            # for a word to be explained later (가람이 나래에게 연필을 줬어 with no amount reads as an unknown event)
+            kept = bool(self.observations) and self.observations[-1].strip() == last
+            if (not last or entry is None or entry["text"].strip() != last
+                    or entry.get("at") != len(self.observations) - (1 if kept else 0)):
                 return None
             statement, replaced = last, entry["text"]
         flags = re.IGNORECASE if parser.data.get("ignore_case") else 0
         body = statement.strip()
         stop = body[-1] if body[-1:] in ".!…" else ""
         body = body[:-1].strip() if stop else body
-        vague = [w for w in spec.get("vague", []) if re.search(r"(?<![\w])%s(?![\w])" % re.escape(w), body, flags)]
+        # a phrase the pack reads as a vague word is that word (a few, a couple of -> some)
+        vagues = list(spec.get("vague", [])) + [row["from"] for row in parser.phrase_variants if row.get("from")
+                                                 and row.get("to") in spec.get("vague", [])]
+        vague = [w for w in sorted(vagues, key=len, reverse=True) if re.search(r"(?<![\w])%s(?![\w])" % re.escape(w), body, flags)]
         if len(vague) == 1:
             spliced = re.sub(r"(?<![\w])%s(?![\w])" % re.escape(vague[0]), amount[0], body, count=1, flags=flags)
         elif not vague and spec.get("insert") == "before_verb" and " " in body:
@@ -3988,6 +3995,9 @@ class ReasoningContext:
             text, replaced = spliced
             if replaced is not None:
                 self._forget_heard({replaced})
+                # the statement kept as an observation is replaced by the one with its amount, not read twice
+                if self.observations and self.observations[-1].strip() == replaced.strip():
+                    self.observations.pop()
         self._last_said = str(text).strip()
         language = self.language or next((source["path"] for source in getattr(self.model, "sources", ())
                                           if source["path"].startswith("styles/")), None)
