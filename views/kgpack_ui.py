@@ -249,7 +249,7 @@ class AppState:
         self.affect_sessions = {}
         self.project_roots = {}
         self.document_history = {}
-        self.conversations = conversation_store.ConversationStore(repo_root / ".nai" / "conversations.json")
+        self.conversations = conversation_store.ConversationStore(repo_root / ".marco" / "state" / "conversations.json")
         # 정의문도 응답 근거다. 호스트 저장소의 자료를 대체물로 읽으면 같은
         # pack이 실행 위치에 따라 다른 답을 낸다. 팩에 없는 선택 기능은 빈
         # 경로로 두어 정의 응답만 비활성화한다.

@@ -871,8 +871,7 @@ def _example_vecs(graph, cache_loc=None):
     key = hashlib.sha1(
         (encoder.active_runtime().model_name + json.dumps(material, ensure_ascii=False, sort_keys=True)).encode("utf-8")
     ).hexdigest()[:16]
-    cache = cache_loc or os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                    ".vec_%s.npz" % key)
+    cache = cache_loc or os.path.join(_here, ".marco", "cache", ".vec_%s.npz" % key)
     if os.path.exists(cache):
         try:
             z = np.load(cache, allow_pickle=False)
@@ -886,6 +885,7 @@ def _example_vecs(graph, cache_loc=None):
             out[node] = np.array(encoder._model().encode([mask_numbers(e) for e in exs],
                                                  normalize_embeddings=True))
     try:
+        os.makedirs(os.path.dirname(cache) or ".", exist_ok=True)
         np.savez_compressed(cache, **out)
         _purge_stale_vecs(os.path.dirname(cache))
     except OSError:
@@ -3331,7 +3331,9 @@ def _pick_graph(question, index=None, min_n=None, count=3):
 # 같은 규율을 그래프 층에 올린 것이다(docs/ko/direction.md '맥락은 창이
 # 아니라 감쇠다'). 사람이 적은 지식이 무겁게 눌리면 안 되므로 가산은
 # 작게 둔다 — 엇비슷할 때만 갈린다.
-_usage_dir = "그래프쓰임.json"
+# The engine writes it while it runs: under .marco/state, or where MARCO_STATE_DIR says.
+_usage_dir = os.path.join(os.environ.get("MARCO_STATE_DIR") or os.path.join(_here, ".marco", "state"),
+                          "그래프쓰임.json")
 _USAGE_WEIGHT = 0.05          # 언어 벌점(0.85 곱)보다 훨씬 약하게
 _USAGE_DECAY = 0.98          # 한 번 쓸 때마다 남들이 이만큼 식는다
 _USAGE_MIN = 0.02
@@ -3342,7 +3344,7 @@ def graph_usage():
     """{그래프: 활성값}. 파일이 없으면 빈 것 — 그때는 아무 일도 안 일어난다."""
     if _usage_slots:
         return _usage_slots.get("값") or {}
-    loc = _abs(_usage_dir)
+    loc = _usage_dir
     try:
         _usage_slots["값"] = json.load(open(loc, encoding="utf-8")).get("값") or {}
     except Exception:
@@ -3365,7 +3367,8 @@ def mark_graph_used(name):
     value[name] = min(1.0, value.get(name, 0.0) + 1.0)
     _usage_slots["값"] = value
     try:
-        json.dump({"값": value}, open(_abs(_usage_dir), "w", encoding="utf-8"),
+        os.makedirs(os.path.dirname(_usage_dir), exist_ok=True)
+        json.dump({"값": value}, open(_usage_dir, "w", encoding="utf-8"),
                   ensure_ascii=False, indent=1)
     except OSError:
         pass                            # 못 적어도 답은 나가야 한다

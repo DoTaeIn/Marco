@@ -518,7 +518,7 @@ def prepare_knowledge(g):
         sentence += [mask_numbers(x) for x in example]
     key = hashlib.sha1(("\n".join(sentence) + MODEL).encode("utf-8")).hexdigest()[:16]
     cache = os.path.join(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, os.pardir)),
-                        ".vec_설명_%s.npz" % key)
+                        ".marco", "cache", ".vec_설명_%s.npz" % key)
     # 압축하지 않고 저장하면 mmap 으로 열 수 있다. 7,195노드 벡터가 28.5MB 인데
     # 통째로 램에 올릴 이유가 없다 — 한 번에 보는 것은 행렬 한 판뿐이다.
     # docs/ko/direction.md 의 층 구조가 원래 이것을 노렸다(SSD 순차 I/O, 콜드 66ms).
@@ -534,6 +534,7 @@ def prepare_knowledge(g):
         V = np.array(_model().encode(sentence, normalize_embeddings=True,
                                      batch_size=64, show_progress_bar=False))
         try:
+            os.makedirs(os.path.dirname(cache), exist_ok=True)
             np.savez(cache, V=V)            # 압축하면 mmap 이 안 된다
         except OSError:
             pass

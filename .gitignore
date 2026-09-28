@@ -6,6 +6,7 @@
 *.kgpack
 .kgpack_runtime/
 .nai/
+.marco/
 
 # 임베딩 캐시. 키가 모델+그래프 해시라 그래프를 고치면 자동 무효화된다
 .vec_*.npz

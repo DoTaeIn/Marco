@@ -16,6 +16,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import pytest
 
+# What the engine writes while it runs goes to a folder of this run, so a run on this machine
+# never changes what a test reads. Set before any test imports the engine.
+import tempfile
+os.environ.setdefault("MARCO_STATE_DIR", tempfile.mkdtemp(prefix="marco-state-"))
+
 
 def pytest_configure(config):
     config.addinivalue_line(
