@@ -61,8 +61,8 @@ G1.6 **Hand-off for the frozen run.** The report ends with the commit hash to
 
 ## Owns
 
-`frame_induction.py`, `language_components.py`, `relational_semantics.py`,
-`hangul.py`, `engine.py`, `explain.py`, `reasoning_context.py`, `state_engine.py`,
+`marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
+`marco/language/hangul.py`, `engine.py`, `explain.py`, `reasoning_context.py`, `state_engine.py`,
 `styles/*.json`, `data/benchmarks/dialogues_dev/`, `tests/` files for those
 modules, and the one flag in `bench/dialogue_gate.py`.
 

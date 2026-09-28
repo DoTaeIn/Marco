@@ -34,7 +34,7 @@ import sys
 from collections import Counter, defaultdict
 from functools import lru_cache
 
-from passage_components import resolve_backend as excerpt_classifier
+from marco.language.passage_components import resolve_backend as excerpt_classifier
 
 stopwords = {
     "경우", "때문", "정도", "가지", "대한", "통해", "위해", "다음", "이하", "이상",
@@ -264,7 +264,7 @@ def _strip_adnominal(phrase):
     m = _adnominal.match(phrase)
     if m:
         return m.group("줄기") or None
-    import hangul
+    import marco.language.hangul as hangul
     if hangul.batchim(phrase) not in ("ㄴ", "ㄹ"):
         return None
     stem = hangul.strip_batchim(phrase)

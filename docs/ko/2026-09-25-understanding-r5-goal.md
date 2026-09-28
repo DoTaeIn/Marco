@@ -93,8 +93,8 @@ G5.8 **Hand-off:** the commit hash and the tables. The owner scores the frozen s
 
 ## Owns
 
-Same as G4: `frame_induction.py`, `language_components.py`, `relational_semantics.py`,
-`hangul.py`, `engine.py`, `explain.py`, `reasoning_context.py`, `state_engine.py`,
+Same as G4: `marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
+`marco/language/hangul.py`, `engine.py`, `explain.py`, `reasoning_context.py`, `state_engine.py`,
 `pack_model.py`, `styles/*.json`, `data/benchmarks/dialogues_dev4/` and `dialogues_dev5/`,
 `tests/test_understanding_r5.py`, `tests/` files for those modules, the `--dataset`
 handling in `bench/dialogue_gate.py`. The carve-out with W5 is the same as with W3

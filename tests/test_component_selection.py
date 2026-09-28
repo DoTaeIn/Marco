@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-import passage_components
+import marco.language.passage_components as passage_components
 from pack_model import PackModel, ModelError, descriptor
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
@@ -27,7 +27,7 @@ def _model(component=None):
 
 
 def test_two_packs_choose_different_components_without_touching_each_other():
-    chosen = _model("passage_classifier:LabelLearnedClassifier")
+    chosen = _model("marco.language.passages:LabelLearnedClassifier")
     plain = _model()
     sentence = "실험 결과 정확도가 12% 올랐다."
 
@@ -54,7 +54,7 @@ def test_an_injected_component_outranks_the_declaration():
         def classify(self, _text):
             return ["코드"]
 
-    chosen = _model("passage_classifier:LabelLearnedClassifier")
+    chosen = _model("marco.language.passages:LabelLearnedClassifier")
     assert passage_components.resolve_backend(Fixed(), model=chosen).classify("무엇") == ["코드"]
 
 

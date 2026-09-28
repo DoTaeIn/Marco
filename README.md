@@ -196,7 +196,7 @@ the log's usage bonus broke a routing tie the other way.
 | `python engine.py --check` | `selfcheck ok` | 214.3 s |
 | `python engine.py --regress` | `일치 6/6 (100.0%)`, the six cases of `cases/사건_회귀.json` | 0.2 s |
 | `python encoder.py --check` | `인코더 selfcheck ok` | 0.1 s |
-| `python hangul.py` | `자가검사 ok` | |
+| `python -m marco.language.hangul` | `자가검사 ok` | |
 
 **Routing** — `python -m bench.routing_benchmark --답` (266.7 s)
 
@@ -308,7 +308,7 @@ A claim is listed only if a test or a self-check asserts it. Pytest nodes are in
 | `포함:` merges another graph's concepts, axioms and edges; relation names are translated by role | `test_learning_question_flow.py::test_materializing_graph_also_materializes_its_includes`; `--check` L4867-4875 |
 | Learning: an unknown phrase is asked back among the evidence that still reaches an unfilled requirement; "네" stores it as an alias of the existing node, "아니요" as a counter-example; the router index picks up learned aliases | `--check` L4671-4694, L5218-5284, L4564-4583 |
 | Requirements are conjunctive: one piece of evidence cannot fill two requirements | `--check` L5067-5085 |
-| Korean particle agreement (`은/는`, `이/가`, `을/를`, `으로/로`) | `python hangul.py` (hangul.py:593-611) |
+| Korean particle agreement (`은/는`, `이/가`, `을/를`, `으로/로`) | `python -m marco.language.hangul` (marco/language/hangul.py:593-611) |
 | The `mco` API: load, run, sessions, `reason`, inspect, compile, benchmark, CLI | every test function of `test_mco_package.py`, listed per claim in [docs/architecture/mco.md](docs/architecture/mco.md) |
 
 Other tested areas, not part of the MARCO 1 gate: words defined in conversation
@@ -420,8 +420,8 @@ other target package is created by goal S4 ([Layout](#layout)).
 
 | Component | Today | Target package | Tests |
 | --- | --- | --- | --- |
-| Parser | `relational_semantics.py` (`RelationalParser.parse`), `frame_induction.py`, `input_understanding.py` | `marco/language/` | `test_relational_transfer.py`, `test_frame_induction.py`, `test_input_understanding.py` |
-| Semantic Representation | `semantic_parser.py` (validated state JSON), facts and events from the parser | `marco/language/` | `test_semantic_parser.py` |
+| Parser | `relational_semantics.py` (`RelationalParser.parse`), `marco/language/frames.py`, `input_understanding.py` | `marco/language/` | `test_relational_transfer.py`, `test_frame_induction.py`, `test_input_understanding.py` |
+| Semantic Representation | `marco/language/representation.py` (validated state JSON), facts and events from the parser | `marco/language/` | `test_semantic_parser.py` |
 | Graph Router | `engine.py` graph index, `pick_graph` | `marco/runtime/router.py` | `test_grounded_routing.py`, `test_evidence_routing.py`, `test_rare_word_routing.py` |
 | Reasoning | `engine.py` judge, `graph_inference.py`, `reasoning_context.py`, `state_engine.py`, `action_runtime.py` | `marco/reasoning/` | `test_reasoning_context.py`, `test_state_engine.py`, `test_signed_inference.py`, `test_action_runtime.py` |
 | Cognition / Decision | `engine.py` answer ranking and `utterance_plan`, graph activation, `goal_runtime.py` | `marco/cognition/` | `test_goal_runtime.py` |
@@ -432,9 +432,9 @@ other target package is created by goal S4 ([Layout](#layout)).
 | Episodic / Semantic / Procedural | ALMA state (`alma/runtime.py`), replay ledger, learned action programs | `marco/memory/` | `test_alma_runtime.py`, `test_alma_cli.py` |
 | Meaning Graph | `marco/language/realizer/meaning.py`, built from the turn's language-free `meaning` block | exists | `language/test_w1_r1_thin_slice.py` |
 | Utterance Intent | `marco/language/realizer/intent.py`, the declared turn plans | exists | `language/test_w2_realizer_r2.py` |
-| Discourse Planner | `marco/language/realizer/discourse.py`; `response_composer.py` still selects content for the graph engine | exists | `language/test_w1_r5_discourse.py`, `test_response_composer.py` |
-| Expression Selector | `marco/language/realizer/expression.py`, `learning.py`; `affect_state.py` | exists; `affect_state.py` moves in S4 | `language/test_w1_r7_learning.py`, `test_affect_state.py` |
-| Grammar Realizer | `marco/language/realizer/grammar.py` over `hangul.py`; `engine.py` `compose_line` for graph lines | exists | `language/test_w1_r6_two_languages.py`, `test_inflection.py`, `python hangul.py` |
+| Discourse Planner | `marco/language/realizer/discourse.py`; `marco/language/realizer/composer.py` still selects content for the graph engine | exists | `language/test_w1_r5_discourse.py`, `test_response_composer.py` |
+| Expression Selector | `marco/language/realizer/expression.py`, `learning.py`; `marco/language/realizer/affect.py` | exists; `marco/language/realizer/affect.py` moves in S4 | `language/test_w1_r7_learning.py`, `test_affect_state.py` |
+| Grammar Realizer | `marco/language/realizer/grammar.py` over `marco/language/hangul.py`; `engine.py` `compose_line` for graph lines | exists | `language/test_w1_r6_two_languages.py`, `test_inflection.py`, `python -m marco.language.hangul` |
 | Semantic Check | `marco/language/realizer/check.py` | exists | `language/test_w1_r3_injected_errors.py` |
 
 The target layer rule: a package may import its own layer and the ones to its

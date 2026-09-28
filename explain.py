@@ -109,7 +109,7 @@ def _intent_keys():
     선언된 어미로 활용한다. 어간이 아니면 만들어진 꼴이 아무것도 안 맞아
     표가 그대로 동작한다.
     """
-    import hangul
+    import marco.language.hangul as hangul
     grammar = dialect.get("활용", {})
     expanded = []
     for k, v in intent_table:
@@ -465,7 +465,7 @@ def _link_form(phrase):
     if phrase.endswith("는다") and len(phrase) > 2:
         return phrase[:-2] + "고"
     if phrase.endswith("다") and len(phrase) > 1:
-        import hangul
+        import marco.language.hangul as hangul
         front = phrase[:-1]
         if hangul.batchim(front) == "ㄴ":
             return hangul.strip_batchim(front) + "고"
@@ -752,7 +752,7 @@ def _name_as_is(g, question, exclude=None):
 def _jamo(phrase):
     """한글을 자모로 푼다. 오타는 대개 자모 하나 차이라 글자 단위로는 안 보인다.
     '해고' 와 '해구' 는 글자로 보면 완전히 다르지만 자모로 보면 ㅗ/ㅜ 하나다."""
-    import hangul
+    import marco.language.hangul as hangul
     return hangul.jamo_index(phrase)
 
 
@@ -997,7 +997,7 @@ def fit_particle(txt):
     if pos:
         # 종성 차례. 0번은 받침 없음이라 자리를 비운다 — 한 칸이라도 밀리면
         # ㄹ 을 ㄷ 으로 읽어 예외가 통째로 안 걸린다.
-        import hangul
+        import marco.language.hangul as hangul
         exception = dialect.get("조사예외") or {}
         def fixes(m):
             front, particle = m.group(1), m.group(2)

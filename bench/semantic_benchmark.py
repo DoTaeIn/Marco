@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from semantic_parser import SemanticParser
+from marco.language.representation import SemanticParser
 import state_engine
 
 

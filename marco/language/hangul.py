@@ -39,6 +39,9 @@
 다른 언어를 붙일 때도 같은 자리다. 영어의 a/an 도 뒤에 오는 소리로
 갈리는 같은 종류의 규칙이라 `문법` 아래에 나란히 두면 된다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[2]))
 import re
 
 _start, _end = 0xAC00, 0xD7A3

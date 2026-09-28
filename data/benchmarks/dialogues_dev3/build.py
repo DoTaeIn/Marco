@@ -480,7 +480,7 @@ def plural(word):
 def romanized(name):
     import sys
     sys.path.insert(0, str(ROOT))
-    from hangul import romanize
+    from marco.language.hangul import romanize
     table = json.loads((ROOT / "styles/한국어.json").read_text(encoding="utf-8"))["로마자"]
     spelled = romanize(name, table)
     return spelled[:1].upper() + spelled[1:] if spelled else name

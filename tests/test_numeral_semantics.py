@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 
 import engine
-from numeral_semantics import parse_numeral
+from marco.language.numerals import parse_numeral
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
 

@@ -5,7 +5,7 @@ The full input must match; unknown clauses and ambiguous trees are rejected.
 """
 import re
 
-from numeral_semantics import parse_numeral
+from marco.language.numerals import parse_numeral
 
 def parse(text, *, grammar=None, numerals=None):
     if len(text) > 512:

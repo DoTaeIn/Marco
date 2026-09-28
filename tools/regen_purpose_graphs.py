@@ -72,7 +72,7 @@ def repair(text):
     **아는 낱말 뒤만 건드린다.** 무엇이 낱말인지 정규식으로 짐작하면
     '걷는 게 더 빠르다' 의 '걷' 을 명사로 보고 '걷은 게' 로 만든다 —
     실제로 그랬다. 이 파일이 아는 낱말은 둘뿐이다: 말과 대상."""
-    import hangul
+    import marco.language.hangul as hangul
     phrase = re.search(r"^역할:\s*(.+?)\s*상담\s*$", text, re.M)
     target = re.search(r"^(\S+?)있음:", text, re.M)
     words = [m.group(1) for m in (phrase, target) if m]

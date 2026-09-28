@@ -20,7 +20,7 @@ A clause that fails any reader is never emitted.
 """
 import re
 
-from numeral_semantics import parse_numeral
+from marco.language.numerals import parse_numeral
 
 _DIGITS = re.compile(r"\d+")
 

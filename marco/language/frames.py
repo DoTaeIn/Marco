@@ -19,7 +19,7 @@
 """
 from copy import deepcopy
 
-from hangul import inflect
+from marco.language.hangul import inflect
 from relational_semantics import asserted, substitute
 
 
@@ -365,7 +365,7 @@ def _compile(parser, example, piece):
 
 
 def _read_body(parser, body, reorder):
-    from numeral_semantics import parse_numeral
+    from marco.language.numerals import parse_numeral
     particles = parser.case_particles
     groups = parser.slot_particles
     numerals = parser.data.get("numerals", {})
@@ -594,7 +594,7 @@ def read_event(text, particles, groups, negation=None, verbs=None,
 
 def _plan_stem(word, verbs, plan, grammar):
     """`베풀` 처럼 매김꼴 미래로 적힌 말의 어간. **아는 어간만** 되돌린다."""
-    from hangul import inflect
+    from marco.language.hangul import inflect
     for surface, found in (verbs or {}).items():
         stem = found["stem"] if isinstance(found, dict) else found
         try:

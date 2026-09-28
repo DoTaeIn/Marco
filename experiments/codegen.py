@@ -66,7 +66,7 @@ def _batchim(txt, pos):
         return True
     c = txt[i]
     if "가" <= c <= "힣":
-        import hangul
+        import marco.language.hangul as hangul
         return bool(hangul.batchim(c))
     if c.isdigit():
         return c in "01367"          # 영 일 삼 육 칠 팔 에 받침이 있다

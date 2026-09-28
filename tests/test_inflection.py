@@ -3,7 +3,7 @@ import copy
 
 import pytest
 
-from hangul import inflect
+from marco.language.hangul import inflect
 from language_components import load_reasoning_language
 from relational_semantics import RelationalParser
 

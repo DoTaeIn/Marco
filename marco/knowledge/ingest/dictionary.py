@@ -49,7 +49,7 @@ def _is_noun_form(phrase):
     if phrase.endswith("기"):
         return True
     end = phrase[-1]
-    import hangul
+    import marco.language.hangul as hangul
     return hangul.batchim(end) == "ㅁ"
 
 # 둘째 뜻은 잘라낸다. '…않음. 또는 그런 대상.' 에서 뒷말을 유로 잡으면

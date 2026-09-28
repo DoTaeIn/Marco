@@ -109,8 +109,8 @@ G2.8 **Hand-off.** The report ends with the commit hash to score. The owner runs
 
 ## Owns
 
-`frame_induction.py`, `language_components.py`, `relational_semantics.py`,
-`hangul.py`, `engine.py`, `explain.py`, `reasoning_context.py`, `state_engine.py`,
+`marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
+`marco/language/hangul.py`, `engine.py`, `explain.py`, `reasoning_context.py`, `state_engine.py`,
 `pack_model.py`, `styles/*.json`, `data/benchmarks/dialogues_dev2/`,
 `tests/test_understanding_r2.py`, `tests/` files for those modules, the
 `--dataset` handling in `bench/dialogue_gate.py`, and for G2.0(b) only the one

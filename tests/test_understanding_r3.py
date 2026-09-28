@@ -472,7 +472,7 @@ def test_no_development_sentence_is_in_a_file_this_round_changed():
     sentences = []
     for folder in ("dialogues_dev", "dialogues_dev2", "dialogues_dev3"):
         sentences += gate.dialogue_sentences(gate.load(ROOT / "data/benchmarks" / folder))
-    owned = ["frame_induction.py", "language_components.py", "relational_semantics.py", "hangul.py", "engine.py",
+    owned = ["marco/language/frames.py", "language_components.py", "relational_semantics.py", "marco/language/hangul.py", "engine.py",
              "explain.py", "reasoning_context.py", "state_engine.py", "pack_model.py",
              "tests/test_understanding_r3.py"] + sorted(
         p.relative_to(ROOT).as_posix() for p in (ROOT / "styles").glob("*.json"))

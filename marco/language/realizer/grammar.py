@@ -13,7 +13,7 @@ said in full.
 """
 import copy
 
-from hangul import batchim, inflect, is_hangul, romanize, strip_batchim
+from marco.language.hangul import batchim, inflect, is_hangul, romanize, strip_batchim
 
 
 class RealizationError(ValueError):

@@ -14,7 +14,7 @@ import kgpack
 import encoder
 from pack_model import ModelError, PackModel, descriptor
 from reasoning_context import ReasoningContext
-from semantic_parser import SemanticParser
+from marco.language.representation import SemanticParser
 import state_engine
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

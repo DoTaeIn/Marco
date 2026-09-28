@@ -3,7 +3,7 @@ import pytest
 
 from graph_inference import closure, proof
 from relational_semantics import RelationalParser
-from semantic_parser import SemanticParser
+from marco.language.representation import SemanticParser
 from state_engine import evaluate
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

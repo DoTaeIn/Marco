@@ -47,7 +47,7 @@ none passed through (gate condition 5,
   `reasoning_context.py`, `state_engine.py`, `graph_inference.py` (Apodeixis,
   evidence-bounded reasoning). The realizer adds no fact.
 - **Parsing the user.** Noesis, semantic apprehension of text, is
-  `relational_semantics.py`, `frame_induction.py`, `input_understanding.py`;
+  `relational_semantics.py`, `marco/language/frames.py`, `input_understanding.py`;
   `check.py` calls the pack's parser, it does not define one.
 - **The language packs** `styles/한국어.json` and `styles/english.json`, read
   through `pack_model.py` and `language_components.py`.

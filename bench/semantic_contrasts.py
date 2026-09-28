@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT))
 
 
 def run():
-    from semantic_parser import SemanticParser
+    from marco.language.representation import SemanticParser
     from state_engine import evaluate
     raw = (ROOT / "data/benchmarks/semantic_contrasts_v1.json").read_bytes()
     parser = SemanticParser()

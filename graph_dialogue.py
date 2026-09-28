@@ -19,9 +19,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-import hangul
-
-
+import marco.language.hangul as hangul
 def _squeeze(text: str) -> str:
     return "".join(text.split())
 
@@ -249,7 +247,7 @@ def _numeral(word: str, numerals: dict[str, Any]):
     if not numerals:
         return None
     try:
-        from numeral_semantics import parse_numeral
+        from marco.language.numerals import parse_numeral
         return parse_numeral(word, numerals)
     except Exception:
         return None

@@ -69,7 +69,7 @@ W4.6 **Nothing regresses.** Composition on dev, dev2, dev3 and the fixed sets
 `marco/language/measurements/`, `docs/requests/W4-*.md`.
 
 Must not touch: `engine.py`, `reasoning_context.py`, `state_engine.py`,
-`frame_induction.py`, `language_components.py`, `relational_semantics.py`,
+`marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
 `explain.py`, `pack_model.py`, `styles/`, `views/`, `bench/`, `mco/`, `alma_*`,
 the rest of `marco/trace/`, any frozen area, any frozen benchmark.
 
