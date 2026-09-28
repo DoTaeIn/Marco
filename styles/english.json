@@ -5199,6 +5199,15 @@
   "fronted_recipient": [
    "to"
   ],
+  "possessive_before_numeral": [
+   "his",
+   "her",
+   "their",
+   "my",
+   "your",
+   "our",
+   "its"
+  ],
   "fronted_purpose": [
    "for"
   ],
@@ -5207,5 +5216,5 @@
    "over"
   ]
  },
- "_말자리": "Phrases said away from where the examples have them. A fronted recipient: the preposition to and a name before a comma open the clause (To Bo, Ada gave 2 figs) and are read at its end (Ada gave 2 figs to Bo). A fronted purpose: the preposition for and a phrase before a comma open the clause (For the trip, Ada lent Bo 2 figs) and are left out; a purpose fills no role. A shifted particle: the particle of a phrasal transfer verb (back, over: gave back, handed over) said after a one-word object (gave Bo back 2) is read after the verb. A count given in a following fragment (fragment_amount): a sentence that says only an amount (Two, to be exact; Exactly two), after a statement whose amount was said with the vague word some and not read, in the same turn or as the very next turn, is that statement with the amount in the vague word's place (Ada gave Bo some figs. Two, to be exact. = Ada gave Bo 2 figs). A phrase the variants read as some is that vague word (a few, a couple of), and the fragment may open with it was / it's / that was / that's (It was three.) (G6). Nothing else in the fragment is read; a statement that was read is not changed (a count not known yet takes the amount as the vague section says) (G6)."
+ "_말자리": "Phrases said away from where the examples have them. A fronted recipient: the preposition to and a name before a comma open the clause (To Bo, Ada gave 2 figs) and are read at its end (Ada gave 2 figs to Bo). A fronted purpose: the preposition for and a phrase before a comma open the clause (For the trip, Ada lent Bo 2 figs) and are left out; a purpose fills no role. A shifted particle: the particle of a phrasal transfer verb (back, over: gave back, handed over) said after a one-word object (gave Bo back 2) is read after the verb. A count given in a following fragment (fragment_amount): a sentence that says only an amount (Two, to be exact; Exactly two), after a statement whose amount was said with the vague word some and not read, in the same turn or as the very next turn, is that statement with the amount in the vague word's place (Ada gave Bo some figs. Two, to be exact. = Ada gave Bo 2 figs). A possessive determiner right before a count (possessive_before_numeral: the closed class his, her, their, my, your, our, its) says whose the things are, which the subject says already: lost his one fig = lost one fig; before a noun it stays (gave his sister 2 figs) (G6). A phrase the variants read as some is that vague word (a few, a couple of), and the fragment may open with it was / it's / that was / that's (It was three.) (G6). Nothing else in the fragment is read; a statement that was read is not changed (a count not known yet takes the amount as the vague section says) (G6)."
 }

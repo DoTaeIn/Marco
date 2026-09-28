@@ -690,6 +690,18 @@ class RelationalParser:
                     for index, w in enumerate(words)):
                 text, applied = m.group(3), applied + ["fronted_purpose"]
                 break
+        determiners = spec.get("possessive_before_numeral") or []
+        if determiners:
+            # lost his one radio: a possessive determiner right before a count says whose the things are, which
+            # the subject already says; the count is read without it (never before a noun: gave his sister)
+            from numeral_semantics import parse_numeral
+            numerals = self.data.get("numerals", {})
+            words = text.split(" ")
+            kept = [w for i, w in enumerate(words)
+                    if not (w.lower() in determiners and i + 1 < len(words) and (
+                        words[i + 1].isdigit() or parse_numeral(words[i + 1].lower(), numerals) is not None))]
+            if len(kept) != len(words):
+                text, applied = " ".join(kept), applied + ["possessive_before_numeral"]
         completive = spec.get("completive") or {}
         if completive:
             # 다 썼어요 (used up): the completive adverb before a verb of using up fills no role

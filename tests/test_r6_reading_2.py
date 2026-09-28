@@ -324,6 +324,27 @@ def test_a_surname_and_its_title_are_never_split_into_two_roles():
     assert "9" in giver["answer"] and "13" in taker["answer"]
 
 
+def test_a_transfer_to_a_holder_counted_under_another_key_is_held():
+    # the carrier's count was recorded with the place in its name (민혁 트럭에 자두): the receiver 민혁 자두 is no
+    # holder never counted, so the transfer is kept but what it makes the receiver's count is not said
+    rows = run(KO, ["가윤은 자두가 16개 있어.", "가윤 사위 태오는 자두가 23개 있어.", "가윤 삼촌 민혁은 트럭에 자두를 7개 싣고 있어.",
+                    "태오가 민혁에게 자두를 네 개 빌려줬어.", "민혁은 자두가 몇 개 있어?", "태오는 자두가 몇 개 있어?"])
+    assert rows[3]["status"] != "observed" and rows[4]["status"] != "answered"
+    assert "19" in rows[5]["answer"]
+    # a receiver whose count was never said anywhere is still recorded as not known
+    rows = run(KO, ["태오는 자두가 23개 있어.", "태오가 세린에게 자두를 네 개 빌려줬어.", "태오는 자두가 몇 개 있어?"])
+    assert rows[1]["status"] == "observed" and "19" in rows[2]["answer"]
+
+
+def test_a_possessive_determiner_before_a_count_is_read_without():
+    # G5-2 item 6
+    *_, asked = run(EN, ["Rhea has 3 lamps.", "Rhea lost her one lamp.", "How many lamps does Rhea have?"])
+    assert asked["status"] == "answered" and "2" in asked["answer"]
+    # before a noun it stays: the relation is not read away
+    rows = run(EN, ["Rhea has 3 lamps.", "Rhea gave her brother 1 lamp.", "How many lamps does Rhea have?"])
+    assert rows[-1]["status"] != "answered" or "2" in rows[-1]["answer"]
+
+
 def score(case):
     from tests.test_r6_reading_forms import score as scored
     return scored(case)
