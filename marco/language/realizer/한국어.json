@@ -1,7 +1,7 @@
 {
  "_about": "Korean realizer declarations: orthography, case particles, lexicon, endings, expression candidates per frame, and the reading rules the semantic check applies. Particle mates, the inflection grammar, negation, numerals, senses and romanization are reused from styles/한국어.json through its parser; nothing here repeats them.",
  "language": "한국어",
- "version": {"release": "0.5.0", "round": "W5"},
+ "version": {"release": "0.6.0", "round": "W6"},
  "negation_marker_key": "부정표지",
  "pack": "styles/한국어.json",
  "pack_keys": {
@@ -329,7 +329,10 @@
   "cancel": {"verb": "취소하", "kind": "regular"},
   "follow": {"verb": "따르", "kind": "regular"},
   "ask_hon": {"_about": "To ask, said of the one addressed: the stem with the honorific.", "verb": "물으시", "kind": "regular"},
-  "quote_go": {"_about": "The ending that closes a quotation before a verb of saying.", "word": "라고"}
+  "quote_go": {"_about": "The ending that closes a quotation before a verb of saying.", "word": "라고"},
+  "first_adv": {"word": "처음에"},
+  "at_least": {"word": "적어도"},
+  "hear": {"verb": "듣", "kind": "regular"}
  },
  "lexicon_forms": {},
  "expressions": {
@@ -402,6 +405,41 @@
      {"lex": "way_n"},
      {"verb": "not_exist", "predicate": true}
     ]
+   }
+  ],
+  "count_before_unheard": [
+   {
+    "id": "before_place_not_heard",
+    "_about": "A place's count before was never said (창고에는 처음에 연필이 몇 개 있었는지 듣지 못했습니다).",
+    "when": {"polarity": false, "holder": {"owner": "place"}},
+    "parts": [{"np": ["owner"], "case": "locative_topic"}, {"lex": "first_adv"}, {"np": ["item"], "case": "subject"}, {"lex": "how_many"}, {"lex": "piece"}, {"verb": "exist", "ending": "whether"}, {"verb": "hear", "predicate": true, "negation": "cannot"}]
+   },
+   {
+    "id": "before_not_heard",
+    "_about": "The holder's count before was never said (하늘은 처음에 연필이 몇 개 있었는지 듣지 못했습니다).",
+    "when": {"polarity": false},
+    "parts": [{"np": ["owner"], "case": "topic"}, {"lex": "first_adv"}, {"np": ["item"], "case": "subject"}, {"lex": "how_many"}, {"lex": "piece"}, {"verb": "exist", "ending": "whether", "honor": "owner"}, {"verb": "hear", "predicate": true, "negation": "cannot"}]
+   }
+  ],
+  "count_at_least": [
+   {
+    "id": "at_least_place_exist",
+    "_about": "The least a place is known to hold (창고에는 연필이 적어도 3개 있습니다).",
+    "when": {"holder": {"owner": "place"}},
+    "parts": [{"np": ["owner"], "case": "locative_topic"}, {"np": ["item"], "case": "subject"}, {"lex": "at_least"}, {"num": "value", "counter": "count"}, {"verb": "exist", "predicate": true}]
+   },
+   {
+    "id": "at_least_exist",
+    "_about": "The least a holder is known to have (하늘은 연필이 적어도 3개 있습니다).",
+    "parts": [{"np": ["owner"], "case": "topic"}, {"np": ["item"], "case": "subject"}, {"lex": "at_least"}, {"num": "value", "counter": "count"}, {"verb": "exist", "predicate": true, "honor": "owner"}]
+   }
+  ],
+  "count_whose": [
+   {
+    "id": "whose_count_unknown",
+    "_about": "A number no holder was named for ('4'가 누구의 수인지 알지 못합니다).",
+    "when": {"polarity": false},
+    "parts": [{"quote": "word", "marks": "single", "case": "subject"}, {"lex": "who", "case": "genitive"}, {"lex": "count_n", "cop": "whether"}, {"verb": "know", "predicate": true, "negation": "cannot"}]
    }
   ],
   "location": [
