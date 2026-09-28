@@ -1,7 +1,7 @@
 {
  "_about": "English realizer declarations: orthography, prepositions, lexicon, agreement, expression candidates per frame, and the reading rules the semantic check applies. The verb lexicon and inflection rules are reused from styles/english.json through its parser; forms it does not declare are added under lexicon_forms.",
  "language": "english",
- "version": {"release": "0.5.0", "round": "W5"},
+ "version": {"release": "0.6.0", "round": "W6"},
  "negation_marker_key": "부정표지",
  "pack": "styles/english.json",
  "orthography": {
@@ -288,12 +288,17 @@
   "whether": {"word": "whether"},
   "withdraw": {"verb": "withdraw", "kind": "regular"},
   "replace": {"verb": "replace", "kind": "regular"},
-  "reply": {"verb": "reply", "kind": "regular"}
+  "reply": {"verb": "reply", "kind": "regular"},
+  "hear": {"verb": "hear", "kind": "regular"},
+  "before_adv": {"word": "before"},
+  "at_least": {"word": "at least"},
+  "whose": {"word": "whose"}
  },
  "lexicon_forms": {
   "be": {"present_plural": "are", "present_first": "am", "past_plural": "were"},
   "do": {"third_person": "does", "past": "did"},
   "know": {"past": "knew"},
+  "hear": {"past": "heard", "participle": "heard"},
   "mean": {"past": "meant", "third_person": "means"},
   "choose": {"past": "chose", "participle": "chosen"},
   "change": {"past": "changed", "participle": "changed"},
@@ -384,6 +389,51 @@
      {"verb": "know", "predicate": true, "person": "first", "negation": "not"},
      {"lex": "how"},
      {"lex": "many"}
+    ]
+   }
+  ],
+  "count_before_unheard": [
+   {
+    "id": "before_not_heard",
+    "_about": "The holder's count before was never said: I did not hear how many X the holder had before.",
+    "when": {"polarity": false},
+    "parts": [
+     {"lex": "i"},
+     {"verb": "hear", "predicate": true, "person": "first", "negation": "not"},
+     {"lex": "how"},
+     {"lex": "many"},
+     {"np": ["item"]},
+     {"np": ["owner"], "case": "subject", "det": "definite"},
+     {"verb": "have", "agree": "owner", "polarity": "positive"},
+     {"lex": "before_adv"}
+    ]
+   }
+  ],
+  "count_at_least": [
+   {
+    "id": "at_least_have",
+    "_about": "The least the holder is known to have: the holder has at least N X.",
+    "parts": [
+     {"np": ["owner"], "case": "subject", "det": "definite"},
+     {"verb": "have", "predicate": true, "agree": "owner"},
+     {"lex": "at_least"},
+     {"num": "value"},
+     {"np": ["item"], "number": "value"}
+    ]
+   }
+  ],
+  "count_whose": [
+   {
+    "id": "whose_count_unknown",
+    "_about": "A number no holder was named for: I do not know whose number 'N' is.",
+    "when": {"polarity": false},
+    "parts": [
+     {"lex": "i"},
+     {"verb": "know", "predicate": true, "tense": "present", "person": "first", "negation": "not"},
+     {"lex": "whose"},
+     {"lex": "number_n"},
+     {"quote": "word", "marks": "single"},
+     {"verb": "be", "tense": "present", "person": "third"}
     ]
    }
   ],

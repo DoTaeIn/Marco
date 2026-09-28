@@ -1,7 +1,7 @@
 {
  "_about": "Language-free declarations of the realizer: the utterance intents, the frames a Meaning Graph may hold, how a turn result becomes a Meaning Graph and a plan of acts, and the discourse rules. No word of any language appears here; each language file (한국어.json, english.json) says how these are expressed.",
  "schema": "marco-meaning-v1",
- "version": {"_about": "The release of these declarations (request L1-2 item 4): two files with the same version and different digests are an edit not yet released. Raised with every realizer round that changes them.", "release": "0.5.0", "round": "W5"},
+ "version": {"_about": "The release of these declarations (request L1-2 item 4): two files with the same version and different digests are an edit not yet released. Raised with every realizer round that changes them.", "release": "0.6.0", "round": "W6"},
  "intents": {
   "INFORM": {"_about": "say what is the case, from recorded state or recorded reasoning"},
   "ASK": {"_about": "ask for what the conversation does not fix; never pick it"},
@@ -87,6 +87,19 @@
   "count_none": {
    "_about": "A holder has none of a thing: a count of zero said as the negation of having any (meaning.json: zero_count). Its reading is the count fact with the value zero.",
    "roles": {"owner": "agent", "item": "thing"}
+  },
+  "count_before_unheard": {
+   "_about": "How many of a thing a holder had before was never said (request G6-2): the holder received some, its count before is not known. Negative only.",
+   "roles": {"owner": "agent", "item": "thing"}
+  },
+  "count_at_least": {
+   "_about": "The least a holder is known to have of a thing (request G6-2: what it received minus what it gave since).",
+   "roles": {"owner": "agent", "item": "thing", "value": "numeral"},
+   "numbers": ["value"]
+  },
+  "count_whose": {
+   "_about": "A number the user said that no holder was named for (request G6-3 item 3): whose count it is. Negative only.",
+   "roles": {"word": "quote"}
   },
   "heard": {"roles": {"subject": "compound"}},
   "decided": {"roles": {}},
@@ -237,6 +250,19 @@
    ]
   },
   {
+   "_about": "A why that restated a number and named no holder, after an answer that named none or several (request G6-3 item 3; the meaning's word is the number as said): say that it is not known whose count the number is, name the candidates, choose none.",
+   "match": {"act": "ask", "reason": "which_referent", "fields_number": "word"},
+   "acts": [
+    {
+     "intent": "ASK",
+     "props": [
+      {"frame": "count_whose", "roles": {"word": "$word"}, "polarity": false},
+      {"frame": "choice", "roles": {"candidates": "$candidates"}, "sentence": "question"}
+     ]
+    }
+   ]
+  },
+  {
    "_about": "6 of §12, the pointer fixes no referent: name the candidates, choose none.",
    "match": {"act": "ask", "reason": "which_referent"},
    "acts": [
@@ -311,6 +337,16 @@
    ]
   },
   {
+   "_about": "Why a named holder has a number (goal W6.3, request G6-3 item 2; about = {holder, value}, the holder's current count): that count first, then the rules and the statements it rests on.",
+   "match": {"act": "explain", "kind": "answer", "fields_has": "about"},
+   "acts": [
+    {"intent": "INFORM", "conclusion": true, "props": [{"fact": ["$about.holder", "count", "$about.value"]}]},
+    {"intent": "INFORM", "props": [{"each": "$rules", "frame": "rule", "role": "rule"}]},
+    {"intent": "INFORM", "props": [{"frame": "evidence", "roles": {"statements": "$evidence"}}]},
+    {"intent": "INFORM", "props": [{"frame": "repairs", "roles": {"pairs": "$repairs"}, "optional": true}]}
+   ]
+  },
+  {
    "_about": "Why, after an answer: the answer again, then the rules and the statements used.",
    "match": {"act": "explain", "kind": "answer"},
    "acts": [
@@ -318,6 +354,33 @@
     {"intent": "INFORM", "props": [{"each": "$rules", "frame": "rule", "role": "rule"}]},
     {"intent": "INFORM", "props": [{"frame": "evidence", "roles": {"statements": "$evidence"}}]},
     {"intent": "INFORM", "props": [{"frame": "repairs", "roles": {"pairs": "$repairs"}, "optional": true}]}
+   ]
+  },
+  {
+   "_about": "Why a named holder has a number, from the trace graph's why chain (goal W6.3, request G6-3 item 2; about = {holder, value}): that count first, then the chain as the plan below says it, without its closing conclusion, which the count already said.",
+   "match": {"act": "explain", "kind": "chain", "fields_has": "about"},
+   "acts": [
+    {"intent": "INFORM", "conclusion": true, "props": [{"fact": ["$about.holder", "count", "$about.value"]}]},
+    {"intent": "INFORM", "props": [{"rows": "$statements", "cases": [
+     {"frame": "chain_statement", "roles": {"turn": "@turn", "said": "@said"}, "requires": ["turn", "said"], "tense": "past"}]}]},
+    {"intent": "INFORM", "props": [{"rows": "$changes", "cases": [
+     {"where": {"whole": true, "field": "count", "before": null}, "fact": ["@subject", "@field", "@after"],
+      "tense": "past"},
+     {"where": {"whole": true, "field": "count"}, "frame": "count_change",
+      "roles": {"subject": "@subject", "before": "@before", "after": "@after"}, "requires": ["subject", "before", "after"],
+      "tense": "past"},
+     {"where": {"whole": true}, "fact": ["@subject", "@field", "@after"], "tense": "past", "optional": true}]}]},
+    {"intent": "INFORM", "props": [{"each": "$rules", "frame": "rule", "role": "rule", "optional": true}]},
+    {"intent": "CORRECT", "props": [
+     {"rows": "$corrections", "cases": [
+      {"frame": "reading_corrected", "roles": {"turn": "@turn", "by": "@by", "said": "@said"},
+       "requires": ["turn", "by", "said"], "tense": "past"}]},
+     {"rows": "$withdrawn", "cases": [
+      {"where": {"what": "change", "whole": true}, "frame": "change_withdrawn",
+       "roles": {"subject": "@subject", "before": "@before", "after": "@after"}, "requires": ["subject", "after"],
+       "tense": "past"}]}]},
+    {"intent": "INFORM", "props": [{"frame": "chain_asked", "roles": {"turn": "$asked.turn", "said": "$asked.said"},
+                                    "tense": "past", "optional": true}]}
    ]
   },
   {
@@ -397,6 +460,21 @@
    "acts": [
     {"intent": "WARN", "props": [{"frame": "sum_mismatch", "roles": {"said": "$said"}, "polarity": false}]},
     {"intent": "ASK", "props": [{"frame": "check_request", "sentence": "request"}]}
+   ]
+  },
+  {
+   "_about": "A statement kept while its count is not said (goal W6.1, request G5-2 item 1; kept: true): it was recorded, but a count it moves rests on an earlier statement still unread, so the current value is not fixed.",
+   "match": {"act": "hold", "reason": "unread_event", "fields": {"kept": true}},
+   "acts": [
+    {"intent": "INFORM", "props": [{"frame": "recorded", "tense": "past"}]},
+    {
+     "intent": "REFUSE",
+     "props": [
+      {"frame": "unread", "roles": {"said": "$said"}, "polarity": false, "tense": "past"},
+      {"frame": "value_fixed", "polarity": false, "tense": "past"}
+     ]
+    },
+    {"intent": "ASK", "props": [{"frame": "rephrase", "sentence": "request"}]}
    ]
   },
   {
@@ -492,6 +570,14 @@
       {"frame": "answered", "polarity": false, "tense": "past"}
      ]
     }
+   ]
+  },
+  {
+   "_about": "A why that restated a number that is not the holder's count (goal W6.3, request G6-3 item 1; differs: true, about = {holder, value: the number said, recorded: the count}): the recorded count, then that the holder does not have the number said. The number said is never confirmed.",
+   "match": {"act": "hold", "reason": "unresolved", "fields": {"differs": true}, "fields_has": "about"},
+   "acts": [
+    {"intent": "INFORM", "conclusion": true, "props": [{"fact": ["$about.holder", "count", "$about.recorded"]}]},
+    {"intent": "CORRECT", "props": [{"fact": ["$about.holder", "count", "$about.value"], "polarity": false}]}
    ]
   },
   {
@@ -793,6 +879,20 @@
    ]
   },
   {
+   "_about": "Asked how many a holder has that received some while its count before was never said (request G6-2; at_least = what it received minus what it gave since): the number is not known, why, and the least it has. At least none is not said.",
+   "match": {"act": "hold", "reason": "vague_count", "fields_has": "at_least"},
+   "acts": [
+    {
+     "intent": "REFUSE",
+     "props": [
+      {"frame": "count_unknown", "split": "$subject", "polarity": false},
+      {"frame": "count_before_unheard", "split": "$subject", "polarity": false, "tense": "past"}
+     ]
+    },
+    {"intent": "INFORM", "props": [{"frame": "count_at_least", "split": "$subject", "roles": {"value": "$at_least"}, "positive": ["value"]}]}
+   ]
+  },
+  {
    "_about": "Asked how many when only a vague count was said (round 4, assumed meaning: act hold, reason vague_count, subject): the holder has some, the number was never said.",
    "match": {"act": "hold", "reason": "vague_count"},
    "acts": [{"intent": "REFUSE", "props": [{"frame": "count_unknown", "split": "$subject", "polarity": false}]}]
@@ -811,8 +911,10 @@
       {"frame": "several_events", "roles": {"said": "$said", "items": "$items"}},
       {"frame": "chosen", "polarity": false, "tense": "past"}
      ]
-    }
-   ]
+    },
+    {"intent": "ASK", "props": [{"frame": "which_request", "sentence": "request"}]}
+   ],
+   "_about": "A correction that could point to more than one earlier event, a statement left unread among them (goal W6.2, request G5-2 item 2): name every one, choose none, ask which."
   },
   {
    "match": {"act": "hold", "reason": "reference_value_unclear"},

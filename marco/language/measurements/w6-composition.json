@@ -1,0 +1,100 @@
+{
+ "_about": "Goal W6.5: bench/composition_gate.py on the fixed sets (the 7-step dialogue and the 20 phrasings, played together) and the five development sets on branch realizer-r6, KG_ENCODER=문자, recording off. 'main' is the same run on main b857899 before any W6 change. The frozen sets are run by the owner only.",
+ "command": "KG_ENCODER=문자 python bench/composition_gate.py (--seven-step --phrasings | --dataset DIR) --quiet",
+ "fixed": {
+  "composed_spoken_held_passed_errors": [
+   71,
+   71,
+   0,
+   0,
+   0
+  ],
+  "main": [
+   71,
+   71,
+   0,
+   0,
+   0
+  ]
+ },
+ "dialogues_dev": {
+  "composed_spoken_held_passed_errors": [
+   269,
+   269,
+   0,
+   0,
+   0
+  ],
+  "main": [
+   269,
+   269,
+   0,
+   0,
+   0
+  ]
+ },
+ "dialogues_dev2": {
+  "composed_spoken_held_passed_errors": [
+   415,
+   415,
+   0,
+   0,
+   0
+  ],
+  "main": [
+   415,
+   415,
+   0,
+   0,
+   0
+  ]
+ },
+ "dialogues_dev3": {
+  "composed_spoken_held_passed_errors": [
+   468,
+   468,
+   0,
+   0,
+   0
+  ],
+  "main": [
+   468,
+   468,
+   0,
+   0,
+   0
+  ]
+ },
+ "dialogues_dev4": {
+  "composed_spoken_held_passed_errors": [
+   1525,
+   1525,
+   0,
+   0,
+   0
+  ],
+  "main": [
+   1525,
+   1525,
+   0,
+   0,
+   0
+  ]
+ },
+ "dialogues_dev5": {
+  "composed_spoken_held_passed_errors": [
+   1745,
+   1745,
+   0,
+   0,
+   0
+  ],
+  "main": [
+   1745,
+   1745,
+   0,
+   0,
+   0
+  ]
+ }
+}

@@ -14,8 +14,10 @@ realizer's declaration version and the replay status.
   (SHA-256 over the model's source paths and their digests).
 * encoder: ``KG_ENCODER``, defaulting to 문자 as ``bench/dialogue_gate.py`` does.
 * realizer: the declaration files ``marco/language/realizer/<stem>.json`` and
-  ``meaning.json``, by schema id and SHA-256. They carry no version field of
-  their own (request L1-2 asks for one).
+  ``meaning.json``, by schema id, SHA-256 and ``version.release`` (request W5-4):
+  two stamps with the same release and different digests are an edit not yet released.
+* release: the release stamp (goal W6.4): the version ``mco/_version.py`` declares
+  (read as text, not imported), the build, and the pack digest, in one field.
 
 Only the standard library; files are read, nothing is imported from the engine.
 """
@@ -23,10 +25,12 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 REALIZER = ROOT / "marco" / "language" / "realizer"
+VERSION_FILE = ROOT / "mco" / "_version.py"
 ENCODER_DEFAULT = "문자"
 
 # Components whose output is not a function of the recorded inputs. A turn that
@@ -71,6 +75,30 @@ def build():
     return _cache["build"]
 
 
+def version():
+    """The release version ``mco/_version.py`` declares (``__version__``), once per process; None without it."""
+    if "version" not in _cache:
+        try:
+            found = re.search(r"""__version__\s*=\s*["']([^"']+)["']""", VERSION_FILE.read_text(encoding="utf-8"))
+        except OSError:
+            found = None
+        _cache["version"] = found.group(1) if found else None
+    return _cache["version"]
+
+
+def release(pack_file=None):
+    """The release stamp: the declared version, the build, and the pack digest."""
+    return {"version": version(), "build": build(), "pack_digest": pack_digest(pack_file)}
+
+
+def _release_of(path):
+    try:
+        declared = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return ((declared.get("version") or {}).get("release")) if isinstance(declared, dict) else None
+
+
 def pack_digest(path):
     """SHA-256 of a pack file's bytes, cached per (path, size, mtime)."""
     if path is None:
@@ -110,8 +138,10 @@ def realizer_version(stem):
                 meaning_schema = None
             _cache[key] = {"declarations": "marco/language/realizer/%s.json" % stem,
                            "sha256": _sha256_file(path)[:16],
+                           "release": _release_of(path),
                            "meaning_schema": meaning_schema,
-                           "meaning_sha256": _sha256_file(meaning)[:16] if meaning.is_file() else None}
+                           "meaning_sha256": _sha256_file(meaning)[:16] if meaning.is_file() else None,
+                           "meaning_release": _release_of(meaning)}
     return _cache[key]
 
 
@@ -123,7 +153,7 @@ def stamp(pack):
 def first_stamp(pack, *, pack_file=None, model_digest=None, approximate=()):
     """The fields the first event of a trace carries in addition to ``stamp``."""
     out = {"pack_digest": pack_digest(pack_file), "model_digest": model_digest, "encoder": encoder(),
-           "realizer": realizer_version(pack_stem(pack)),
+           "realizer": realizer_version(pack_stem(pack)), "release": release(pack_file),
            "replay_status": "approximate" if approximate else "exact"}
     if approximate:
         out["approximate"] = sorted(set(approximate))
