@@ -249,7 +249,8 @@ class Session:
                     event["event_id"]
             elif event["kind"] == "state_changed" and payload.get("row"):
                 session.rows.setdefault(tuple(payload["row"]), []).append(
-                    {"event": event["event_id"], "value": [payload["before"], payload["after"]]})
+                    {"event": event["event_id"], "value": [payload["before"], payload["after"]],
+                     "cause": payload.get("cause")})
         return session
 
 
@@ -423,11 +424,16 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
         versions = session.rows.setdefault(key, [])
         current = next((x for x in reversed(versions) if not ledger.is_withdrawn(x["event"])), None)
         pair = (key[1], key[2])
-        if current is not None and current["value"] == value:
+        cause = statement(key[3])
+        # The same change read from a corrected statement: its cause is the revision now, not the
+        # withdrawn reading (a corrected receiver leaves the giver's change as it was).
+        recaused = current is not None and cause is not None and current.get("cause") not in (None, cause)
+        if current is not None and current["value"] == value and not recaused:
             touched.append(current["event"])
             last[pair] = current["event"]
             continue
-        stale = None if corrections else next((x for x in reversed(versions) if x["value"] == value), None)
+        stale = None if corrections or recaused else \
+            next((x for x in reversed(versions) if x["value"] == value), None)
         if stale is not None:
             # The envelope rests on a version the ledger already withdrew (on a correction
             # turn the same values are a new change: a second correction may restore them).
@@ -436,7 +442,6 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
             last[pair] = stale["event"]
             continue
         evidence = row.get("evidence") if isinstance(row.get("evidence"), dict) else {}
-        cause = statement(key[3])
         payload = {"field": key[2], "before": value[0], "after": value[1], "cause": cause or inp,
                    "row": list(key), "observation": key[3]}
         if row.get("delta") is not None:
@@ -461,13 +466,20 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
             event = new["event_id"]
         else:
             event = emit("state_changed", **fields)
-        versions.append({"event": event, "value": value})
+        versions.append({"event": event, "value": value, "cause": payload["cause"]})
         new_state.append(event)
         last[pair] = event
     if corrections:
         # A correction replays the whole conversation: a change it no longer makes is withdrawn.
+        # When the engine names the states the correction changed (``affected_state``), its rows
+        # are those states' only: a change to any other state still stands and is not withdrawn.
+        scopes = [c["affected_state"] for c in v["checks"] if isinstance(c.get("affected_state"), list)]
+        affected = {tuple(str(x) for x in k[:2]) for scope in scopes for k in scope
+                    if isinstance(k, (list, tuple)) and len(k) >= 2}
         seen = set(touched) | set(new_state)
         for key, versions in session.rows.items():
+            if scopes and (key[1], key[2]) not in affected:
+                continue
             current = next((x for x in reversed(versions) if not ledger.is_withdrawn(x["event"])), None)
             if current is not None and current["event"] not in seen:
                 gone = ledger.withdraw(current["event"], trace_id, parent_ids=corrections,
