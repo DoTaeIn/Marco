@@ -252,6 +252,51 @@ def test_an_answer_resting_on_a_withdrawn_value_is_caught_and_a_restored_value_i
     assert graph.withdrawn_in_chain(summaries[6]["output"]) == []
 
 
+def test_a_correction_withdraws_only_the_states_it_changed(tmp_path):
+    """G6.0b (dev4_en_c_31#9, dev4_ko_c_17#7): the engine's correction turn carries only the rows of
+    the states it changed (``affected_state``). A's own count and A's giving stand after "not to B,
+    to C"; an answer about A rests on them and on the revision, on nothing withdrawn."""
+    book = Ledger(tmp_path, "scoped")
+
+    def row(holder, before, after, turn, operation="quantity_update"):
+        return {"operation": operation, "subject": "%s apples" % holder, "predicate": "count",
+                "before": before, "after": after, "evidence": {"turn": turn, "start": 0, "end": 5}}
+
+    def turn(status, rows, act, seen, affected=None):
+        check = {"ok": True, "observation_turns": seen}
+        if affected is not None:
+            check["affected_state"] = affected
+        return {"status": status, "operator": "relational_graph", "answer": "a", "transitions": rows,
+                "meaning": {"act": act}, "verification": {"checks": [check], "sources": [PACKS["en"]],
+                                                          "model": "0" * 64}}
+
+    a, b, c = row("A", None, "5", 0, "state_update"), row("B", None, "7", 1, "state_update"), \
+        row("C", None, "1", 2, "state_update")
+    fixed = {"operation": "correction", "index": 3, "before": "A gave B two", "after": "A gave C two"}
+    fact = {"fact": ["A apples", "count", "3"], "evidence": {"turn": 3}}
+    turns = [turn("observed", [a], "record", 1), turn("observed", [a, b], "record", 2),
+             turn("observed", [a, b, c], "record", 3),
+             turn("observed", [a, b, c, row("A", 5, 3, 3), row("B", 7, 9, 3)], "record", 4),
+             turn("observed", [fixed, b, c, row("C", 1, 3, 3)], "revise", 4,
+                  affected=[["B apples", "count"], ["C apples", "count"]]),
+             turn("answered", [a, b, c, row("A", 5, 3, 3), row("C", 1, 3, 3), fact], "inform", 4)]
+    summaries = [from_turn.record_turn(book, book.new_trace_id(), "t%d" % n, context, None,
+                                       conversation="c", pack=PACKS["en"])
+                 for n, context in enumerate(turns, 1)]
+    # the old reading of the statement and B's +2; A's count and A's -2 stand
+    assert summaries[4]["withdrawn"] == 2
+    own = next(e for e in summaries[0]["events"] if book.get(e)["kind"] == "state_changed")
+    assert not book.is_withdrawn(own)
+    graph = Graph(book)
+    assert graph.withdrawn_in_chain(summaries[5]["output"]) == []
+    # A's -2 is read again from the revision: a new version whose cause is the corrected statement
+    assert summaries[5]["new_state"] == 1 and summaries[5]["used_withdrawn"] == 0
+    revision = next(e for e in summaries[4]["events"] if book.get(e)["kind"] == "state_changed")
+    assert revision in [e["event_id"] for e in graph.chain(summaries[5]["output"])]
+    assert stats.table(book)["graph_checks"] == {"answered": 1, "no_statement_or_source": 0,
+                                                 "withdrawn_evidence_used": 0}
+
+
 # ---------------------------------------------------------------------------
 # L1.4 why chain, pretty projection, CLI
 # ---------------------------------------------------------------------------
