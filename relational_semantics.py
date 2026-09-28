@@ -3589,6 +3589,14 @@ class RelationalParser:
             if stated and (joined_by_comma or in_turn) and self.ellipsis.get("coordination") == "trailing_words":
                 stated, inherited = self._inherit_trailing(
                     stated, previous_rows, self._counted_subjects(evidence["text"], stated))
+                # A subject marked with an undecided particle (도) may be another holder (모루도: Moru too) or
+                # another thing of the topic (고구마도: sweet potatoes too), and the particle stays in the name:
+                # the clause is not read (생략.topic_continuity.undecided_particles).
+                undecided = ((self.ellipsis or {}).get("topic_continuity") or {}).get("undecided_particles") or []
+                if any(isinstance(row["subject"], str) and any(row["subject"].endswith(p) and len(row["subject"]) > len(p)
+                                                               for p in undecided) for row in inherited):
+                    diagnostics.append({"reason": "undecided_subject", "evidence": evidence})
+                    return None
                 if inherited:
                     evidence = {**evidence, "ellipsis": inherited}
             if stated and in_turn and self.ellipsis.get("omitted_subject") == "same_relation":
