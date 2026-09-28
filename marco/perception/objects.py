@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """비토큰 객체 검출기(YOLO)의 상자 결과를 JSON으로 내보낸다."""
 from __future__ import annotations
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[2]))
 
 import argparse
 import json
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 MODEL = ROOT / "data" / "models" / "yolo11n.pt"
 
 

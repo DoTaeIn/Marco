@@ -1,6 +1,6 @@
 # 관계 해석 실패의 위치와 원인
 
-`python semantic_feedback.py diagnose '질문'`은 관계 해석 실패를 문장별로 나눈다.
+`python -m marco.learning.feedback diagnose '질문'`은 관계 해석 실패를 문장별로 나눈다.
 처음 실패한 곳에서 나머지를 버리지 않고 모든 미인식 절의 원문과 시작·끝 위치를
 `diagnostics`에 기록한다. 이 부분 자료를 답의 전제로 사용하는 것은 아니다.
 원문 전체를 해석하지 못하면 기존처럼 답변을 보류한다.

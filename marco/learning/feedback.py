@@ -5,6 +5,9 @@ Examples:
   python semantic_feedback.py rule corrections.json --output /path/model.json
   NAI_RELATIONAL_MODEL=/path/model.json python semantic_feedback.py diagnose '질문'
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[2]))
 import argparse
 import hashlib
 import json
@@ -23,10 +26,10 @@ def apply_feedback(parser, payload, kind):
     if kind == "rule":
         report = parser.learn_rule(payload["corrections"], payload["validation"])
     elif kind == "expression":
-        from expression_learning import propose
+        from marco.learning.expressions import propose
         report = propose(parser, payload["correction"], payload["validation"])
     elif kind == "paraphrase":
-        from expression_learning import propose_paraphrase
+        from marco.learning.expressions import propose_paraphrase
         report = propose_paraphrase(parser, payload)
     else:
         raise ValueError("unknown_feedback_kind")

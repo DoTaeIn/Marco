@@ -2470,7 +2470,7 @@ class RelationalParser:
                 temporary.unlink()
 
     def learn_rule(self, corrections, validation):
-        from rule_learning import propose
+        from marco.learning.rules import propose
         report = propose(self.data, corrections, validation)
         if report["accepted"]:
             self.data["rules"].append(report["candidate"])

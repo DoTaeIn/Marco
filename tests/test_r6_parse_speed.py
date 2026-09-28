@@ -37,7 +37,7 @@ def test_learn_drops_the_literal_memos():
 
 def test_expression_learning_drops_the_literal_memos():
     from tests.test_expression_learning import payload
-    from expression_learning import propose
+    from marco.learning.expressions import propose
     parser = RelationalParser()
     correction, validation = payload()
     text = "소라의 키는 다미의 키를 웃돈다"
@@ -68,7 +68,7 @@ def test_compiled_patterns_are_shared_by_text_and_flags_not_by_parser():
 
 
 def test_two_conversations_on_one_model_do_not_share_what_one_learns():
-    from expression_learning import propose
+    from marco.learning.expressions import propose
     from pack_model import _built_parsers, development_model
     from reasoning_context import ReasoningContext
     from tests.test_expression_learning import payload

@@ -167,7 +167,7 @@ class ReasoningContext:
         self._event_records_count = 0
         # A per-conversation overlay learned solely from durable event
         # envelopes.  It is never written into the base pack.
-        from experience_concepts import ExperienceConceptStore
+        from marco.learning.concepts import ExperienceConceptStore
         self.concepts = ExperienceConceptStore()
         # The last concept-backed relation request is semantic state, not a
         # canned answer.  A following "why" recomputes its evidence against

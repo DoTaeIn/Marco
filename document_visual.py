@@ -29,9 +29,9 @@ VLM_SOURCE = ROOT / "document_vlm.py"
 VLM_PYTHON = ROOT / ".venv-vision" / "bin" / "python"
 VLM_MODELS = (ROOT / "data" / "models" / "Qwen2.5-VL-3B-Instruct",
               ROOT / "data" / "models" / "SmolVLM2-500M-Video-Instruct")
-OBJECT_SOURCE = ROOT / "document_objects.py"
+OBJECT_SOURCE = ROOT / "marco/perception/objects.py"
 OBJECT_MODEL = ROOT / "data" / "models" / "yolo11n.pt"
-POSE_SOURCE = ROOT / "document_pose.py"
+POSE_SOURCE = ROOT / "marco/perception/pose.py"
 POSE_MODEL = ROOT / "data" / "models" / "yolo11n-pose.pt"
 
 

@@ -1,6 +1,6 @@
 """Fixed evaluation for evidence-derived concept overlays."""
 
-from experience_concepts import ExperienceConceptStore
+from marco.learning.concepts import ExperienceConceptStore
 from reasoning_context import ReasoningContext
 import pytest
 

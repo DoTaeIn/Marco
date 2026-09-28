@@ -196,7 +196,7 @@ development.
 | [evidence-routing.md](ko/evidence-routing.md) | Evidence picks the graph, not the router rank alone |
 | [explanation-learning.md](ko/explanation-learning.md) | Learning from an explanation, then solving what could not be solved |
 | [expression-learning.md](ko/expression-learning.md) | Storing verified expression corrections |
-| [failure-diagnosis.md](ko/failure-diagnosis.md) | Where and why relation parsing fails (`semantic_feedback.py diagnose`) |
+| [failure-diagnosis.md](ko/failure-diagnosis.md) | Where and why relation parsing fails (`marco/learning/feedback.py diagnose`) |
 | [filler-prefix.md](ko/filler-prefix.md) | Stripping filler before a question |
 | [fragment-weight.md](ko/fragment-weight.md) | Fragments score below the full sentence |
 | [frame-induction.md](ko/frame-induction.md) | Frames induced from examples instead of written by hand |

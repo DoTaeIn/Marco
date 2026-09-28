@@ -147,7 +147,7 @@ def view(argv):
 
     # 별칭이 문턱 아래인 노드 — 한 개만 더 쓰면 넘는 자리다.
     try:
-        import self_authoring
+        import marco.learning.authoring as self_authoring
         mine = self_authoring.self_authored()
     except Exception:
         mine = set()

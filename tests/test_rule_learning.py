@@ -3,7 +3,7 @@ import copy
 import pytest
 
 from relational_semantics import RelationalParser
-from rule_learning import induce, propose
+from marco.learning.rules import induce, propose
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
 
@@ -90,7 +90,7 @@ def test_cli_publishes_only_validated_rule(tmp_path, accepted):
     feedback.write_text(json.dumps({"corrections": [example("a"), example("b")],
                                     "validation": [example("c"), example("d", False, accepted)]}), encoding="utf-8")
     destination = tmp_path / "candidate.json"
-    command = [sys.executable, str(Path(__file__).resolve().parents[1] / "semantic_feedback.py"),
+    command = [sys.executable, str(Path(__file__).resolve().parents[1] / "marco/learning/feedback.py"),
                "rule", str(feedback), "--model", str(model), "--output", str(destination)]
     completed = subprocess.run(command, capture_output=True, text=True, check=True)
     report = json.loads(completed.stdout)

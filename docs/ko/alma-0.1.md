@@ -107,7 +107,7 @@ baseline closure와 candidate를 더한 simulated closure를 같은 facts로 비
 
 ## Proof shortcut
 
-`proof_chunking.py`는 반복된 **정확한 단항 Horn rule chain**만 shortcut 후보로
+`marco/learning/chunking.py`는 반복된 **정확한 단항 Horn rule chain**만 shortcut 후보로
 합성한다. 원 rule ID·version·body·head를 함께 저장하므로 규칙/조건이 바뀌면
 사용하지 않고 원 경로로 돌아간다. 이는 query cache가 아니라 실제 closure의 rule
 scan/join 계측을 비교하는 경로다. 중간 proof는 유지되어 설명과 반례 철회에 쓴다.

@@ -645,11 +645,11 @@ proof chunking · unlearning / retraction logic.
 
 Likely mappings:
 
-    experience_concepts.py → learning/concepts.py
-    rule_learning.py       → learning/structural.py or rules-related learning module
-    semantic_feedback.py   → learning/feedback.py
-    proof_chunking.py      → learning/chunking.py
-    self_authoring.py      → learning/structural.py or an authoring submodule
+    marco/learning/concepts.py → learning/concepts.py
+    marco/learning/rules.py       → learning/structural.py or rules-related learning module
+    marco/learning/feedback.py   → learning/feedback.py
+    marco/learning/chunking.py      → learning/chunking.py
+    marco/learning/authoring.py      → learning/structural.py or an authoring submodule
 
 Split by responsibility, not filename.
 
@@ -791,7 +791,7 @@ commands. Produce a mapping table:
 
 **Phase 2 — Move clean modules first.** Start with files that already have a clear
 single responsibility. Good candidates may include `marco/language/hangul.py`, `kgbin.py`,
-`kgpack.py`, `proof_chunking.py`. Verify before moving. Add compatibility shims. Run
+`kgpack.py`, `marco/learning/chunking.py`. Verify before moving. Add compatibility shims. Run
 relevant tests after every move.
 
 **Phase 3 — Split mixed modules.** Identify modules such as `engine.py` and
@@ -984,11 +984,11 @@ Starting hypothesis only. Inspect each file before moving it.
     relational_semantics.py→ reasoning/semantics.py
     explain.py             → reasoning/explanation.py
     marco/language/hangul.py              → language/grammar.py
-    experience_concepts.py → learning/concepts.py
-    rule_learning.py       → learning/structural.py
-    semantic_feedback.py   → learning/feedback.py
-    proof_chunking.py      → learning/chunking.py
-    self_authoring.py      → learning/structural or authoring submodule
+    marco/learning/concepts.py → learning/concepts.py
+    marco/learning/rules.py       → learning/structural.py
+    marco/learning/feedback.py   → learning/feedback.py
+    marco/learning/chunking.py      → learning/chunking.py
+    marco/learning/authoring.py      → learning/structural or authoring submodule
     alma/runtime.py        → alma/runtime.py
                              then gradually extract memory, preference, identity, etc.
     kgbin.py               → storage/kgbin.py
@@ -1041,7 +1041,7 @@ behavior first. Make architectural boundaries visible in both code and documenta
 Why postponed:
 
 - It moves exactly the files the two running sessions edit: ALMA
-  (`alma/runtime.py`, `experience_concepts.py`, `proof_chunking.py`,
+  (`alma/runtime.py`, `marco/learning/concepts.py`, `marco/learning/chunking.py`,
   `reasoning_context.py`) and repair + English (`engine.py`, `explain.py`,
   `language_components.py`, `pack_model.py`, `relational_semantics.py`, ~52 test files).
   A move here plus an edit in another clone produces conflicts, and "take theirs"

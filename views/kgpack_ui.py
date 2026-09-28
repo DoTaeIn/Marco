@@ -30,12 +30,12 @@ sys.path.insert(0, str(repo_root))
 
 import engine  # noqa: E402
 import encoder  # noqa: E402
-import self_authoring  # noqa: E402
+import marco.learning.authoring as self_authoring  # noqa: E402
 import marco.language.realizer.affect as affect_state  # noqa: E402
 import conversation_store  # noqa: E402
 import marco.knowledge.ingest.documents as document_kg  # noqa: E402
 import goal_runtime  # noqa: E402
-import input_understanding  # noqa: E402
+import marco.language.understanding as input_understanding  # noqa: E402
 import kgpack  # noqa: E402
 import marco.knowledge.definitions as local_definitions  # noqa: E402
 import marco.language.realizer.composer as response_composer  # noqa: E402
