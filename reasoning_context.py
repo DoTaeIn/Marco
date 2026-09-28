@@ -249,6 +249,7 @@ class ReasoningContext:
 
         수사는 언어팩이 선언한다. 코드가 한국어 수사를 따로 알 필요는 없다.
         """
+        from frame_induction import split_particle
         from numeral_semantics import parse_numeral
         numerals = parser.data.get("numerals") or {}
         for token in said.replace(".", " ").split():
@@ -257,6 +258,12 @@ class ReasoningContext:
             # 낱말째로 본다. 글자로 보면 `단추 이야기는 재밌다` 의 `다` 가
             # `다섯` 에 걸려 잡담까지 수량 사건이 된다.
             if parse_numeral(token, numerals) is not None:
+                return True
+            # 조사를 단 수사도 수다. `그중 하나를 빌려줬어` 의 `하나를` 을 놓치면, 못 읽은
+            # 그 말이 누군가의 수를 옮겼는데도 옛 값을 답으로 낸다.
+            bare = split_particle(token, getattr(parser, "case_particles", ()) or (),
+                                  getattr(parser, "slot_particles", ()) or ())
+            if bare and parse_numeral(bare[0], numerals) is not None:
                 return True
         return False
 
