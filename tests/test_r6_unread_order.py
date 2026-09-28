@@ -1,8 +1,8 @@
 """W5-3 (b), G6.7: the unread statement a hold names is a function of the conversation only.
 
-Two unread statements block a question, each through a different key of the question (the
-holder, and the count asked). The hold names the earlier of the two in the conversation's order:
-the same statements in the other order name the other one, and the hash seed changes nothing.
+Two unread statements stand in the conversation. The hold names the earliest one that blocks the
+holder asked about: an unread statement about another holder, said before the asked holder's count
+was stated again, does not block it. The hash seed changes nothing.
 """
 import os
 from pathlib import Path
@@ -36,7 +36,10 @@ def named(language, lines):
 def test_the_hold_names_the_earliest_unread_statement_in_either_order():
     for language, orders in ORDERS.items():
         for lines in orders:
-            assert named(language, lines) == ("unread_event", lines[1]), (language, lines)
+            # first order: the statement about the other holder came before the count was stated again,
+            # so the later one blocks; second order: the statement about the asked holder came first
+            blocking = lines[3] if lines is orders[0] else lines[1]
+            assert named(language, lines) == ("unread_event", blocking), (language, lines)
 
 
 def test_the_named_statement_does_not_follow_the_hash_seed():
