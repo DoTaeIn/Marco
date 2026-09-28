@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 os.environ.setdefault("KG_ENCODER", "문자")
 
-from alma_runtime import AlmaRuntime
+from alma.runtime import AlmaRuntime
 from graph_inference import closure
 from proof_chunking import evaluate, propose
 

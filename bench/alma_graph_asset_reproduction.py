@@ -11,7 +11,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import kgpack
-from alma_runtime import AlmaRuntime
+from alma.runtime import AlmaRuntime
 
 
 KG = ROOT / "graphs" / "graph_일상추론.kg"

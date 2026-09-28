@@ -17,7 +17,7 @@ try:
 except ImportError:
     resource = None
 
-from alma_runtime import AlmaRuntime
+from alma.runtime import AlmaRuntime
 from graph_inference import closure
 
 

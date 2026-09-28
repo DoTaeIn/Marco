@@ -19,7 +19,8 @@ DATASET = ROOT / "data/benchmarks/filler_prefix.json"
 
 
 def run(dataset_path=None, *, keep_fillers=False):
-    import engine, yardstick
+    import engine
+    import bench.yardstick as yardstick
     from unittest.mock import patch
     import language_components as lc
 

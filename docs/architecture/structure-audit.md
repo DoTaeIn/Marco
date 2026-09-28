@@ -71,7 +71,7 @@ commit, not whatever the shared working tree holds.
   | Command | Exit | Time | Output |
   | --- | --- | --- | --- |
   | `KG_ENCODER=문자 python engine.py --check` | **1** | 3 s | `AssertionError: graphs/graph_일상추론.kg` at engine.py:4768 (`2등인 사람을 추월했습니다` expected to route to `graph_순위_추월.kg`) |
-  | `KG_ENCODER=문자 python routing_benchmark.py --답` | 0 | 185 s | `제자리 2807/6912 (40.6%)  답함 5259 (76.1%)  밖 거절 24/24` — the whole stdout, 92 bytes, sha1 `d1937d7e1eb111e46b04da6f033a75049fb0cf32` |
+  | `KG_ENCODER=문자 python -m bench.routing_benchmark --답` | 0 | 185 s | `제자리 2807/6912 (40.6%)  답함 5259 (76.1%)  밖 거절 24/24` — the whole stdout, 92 bytes, sha1 `d1937d7e1eb111e46b04da6f033a75049fb0cf32` |
 
 - Why an export and not the working tree: at audit time the shared tree held another
   session's uncommitted merge of `repair-and-english` (reset at 15:12 by that session,
@@ -224,7 +224,7 @@ Cycles, with the lines that make them (all `lazy`; none can fail at import time)
 | SCC | Edges |
 | --- | --- |
 | 6 modules | `pack_model.py:186` → relational_semantics, `:190` → expression_graph, `:195` → output_contracts; `relational_semantics.py:51`, `output_contracts.py:10`, `verbal_expression.py:14` → `pack_model.development_model`; `relational_semantics.py:805,860,891` → frame_induction; `frame_induction.py:23` → relational_semantics (top); `expression_graph.py:12` → verbal_expression |
-| 2 modules | `self_authoring.py:261` → yardstick; `yardstick.py:55` → self_authoring |
+| 2 modules | `self_authoring.py:261` → yardstick; `bench/yardstick.py:55` → self_authoring |
 | not a cycle | `engine.py:2740,3071` → kgbin (lazy); `kgbin.py:239` → engine only under `__main__` |
 
 Importing modules, tests included: `engine` 40 (22 tests), `relational_semantics` 29,
@@ -248,13 +248,13 @@ A6 layout. "+ split" rows name the primary target; the line ranges are in
 | `action_runtime.py` | 453 | JSON action-program contract: compile an induced definition, bind roles, execute emit/lookup/select/compute/when/call into one event's effects | `marco/reasoning/actions.py` | sure |  |
 | `affect_state.py` | 65 | Session-only affect expression mode from the user's own affect words (pack-declared); `decorate` prefixes a verified answer; never changes facts | `marco/language/realizer/affect.py` | unsure | Expression-only today (Expression Selector input). Moves to `cognition/` if affect ever feeds decisions |
 | `alias_diag.py` | 188 | Diagnostic CLI: nodes that absorb other nodes' phrasings, nodes short of aliases | `tools/alias_diag.py` | sure |  |
-| `alma_cli.py` | 123 | ALMA command line over `AlmaRuntime` (turns, memory, recall, mental, cycles, environment, backup) | `alma/cli.py` | sure |  |
-| `alma_environment.py` | 177 | Bounded local observation environment for ALMA: read adapters, persisted run advanced by a step budget | `alma/environment.py` | sure |  |
-| `alma_runtime.py` | 2071 | `AlmaRuntime`: personal state (logs, episodic/semantic/procedural memory, mental states, goals, affect, preferences, capabilities, cycles, rule/asset/shortcut proposals) over `ReasoningContext` | `alma/runtime.py` | sure | Target is certain; §4.5 split (identity/emotion/preference/memory) is Phase 3+ |
-| `autocoder.py` | 144 | Demo tool set for `act.py`: assembles code from templates (two deliberately buggy), runs it, applies graph-chosen fixes | `experiments/autocoder.py` | sure |  |
+| `alma/cli.py` | 123 | ALMA command line over `AlmaRuntime` (turns, memory, recall, mental, cycles, environment, backup) | `alma/cli.py` | sure |  |
+| `alma/environment.py` | 177 | Bounded local observation environment for ALMA: read adapters, persisted run advanced by a step budget | `alma/environment.py` | sure |  |
+| `alma/runtime.py` | 2071 | `AlmaRuntime`: personal state (logs, episodic/semantic/procedural memory, mental states, goals, affect, preferences, capabilities, cycles, rule/asset/shortcut proposals) over `ReasoningContext` | `alma/runtime.py` | sure | Target is certain; §4.5 split (identity/emotion/preference/memory) is Phase 3+ |
+| `experiments/autocoder.py` | 144 | Demo tool set for `act.py`: assembles code from templates (two deliberately buggy), runs it, applies graph-chosen fixes | `experiments/autocoder.py` | sure |  |
 | `build.py` | 971 | Text folder → concept graph JSON: passage/article splitting, compound-noun concepts (kiwipiepy), definitions, genus/target, concept net, excerpts | `marco/knowledge/ingest/text.py` | sure |  |
 | `cache_tool.py` | 137 | Reports vector caches and deletes dead ones (keys are content hashes) | `tools/cache_tool.py` | sure |  |
-| `codegen.py` | 982 | Language-neutral algorithm blueprints → source in code dialects (`styles/코드`), prose ↔ blueprint parsing, mental evaluation, mutate/fix search, regressions. 0 importers | `experiments/codegen.py` | sure |  |
+| `experiments/codegen.py` | 982 | Language-neutral algorithm blueprints → source in code dialects (`styles/코드`), prose ↔ blueprint parsing, mental evaluation, mutate/fix search, regressions. 0 importers | `experiments/codegen.py` | sure |  |
 | `conftest.py` | 14 | Puts the repo root on `sys.path` for pytest | root (stays) | sure | Stays at root |
 | `conversation_store.py` | 85 | JSON store of projects and chats at `.nai/conversations.json` | `marco/storage/conversations.py` | sure |  |
 | `dict_extract.py` | 344 | National dictionary XML → genus/action/target chains, schema/concurrency seeds, sense picking | `marco/knowledge/ingest/dictionary.py` | sure |  |
@@ -275,7 +275,7 @@ A6 layout. "+ split" rows name the primary target; the line ranges are in
 | `graph_inference.py` | 336 | Finite positive Horn-rule closure, `current_facts` projection, replayable proof bundles | `marco/reasoning/inference.py` | sure |  |
 | `hangul.py` | 586 | Hangul syllable arithmetic, jamo, particle pick/attach/strip/fix, pack-declared `inflect`, clause spans, word spans, yes/no word lists | `marco/language/hangul.py` | sure | §4.19 said `language/grammar.py`; that name is reserved for the Grammar Realizer |
 | `input_understanding.py` | 140 | Structures a user utterance: segments, command/URL safety, session context, goals, via pack + `DialogueBackend` | `marco/language/understanding.py` | sure |  |
-| `intelligence_check.py` | 151 | Per-ability test: out-of-domain refusal, traps, paraphrase vs control, sense, multi-turn | `bench/intelligence_check.py` | sure |  |
+| `bench/intelligence_check.py` | 151 | Per-ability test: out-of-domain refusal, traps, paraphrase vs control, sense, multi-turn | `bench/intelligence_check.py` | sure |  |
 | `kgbin.py` | 262 | Routing index → one flat mmap-able `.kgbin` (bit packing); `unpack` | `marco/storage/kgbin.py` | sure |  |
 | `kgpack.py` | 308 | `.kgpack` ZIP with manifest, SHA-256 per file, default inputs, manager graph; write/read/unpack/selfcheck | `marco/storage/kgpack.py` | sure |  |
 | `language_components.py` | 502 | Language pack: path choice (`NAI_LANGUAGE`), validation of every declared section, `decode_language_pack`; `DialogueBackend`, `TemplateBackend`, `resolve_backend` | `marco/language/pack.py` + split | sure | Split: 24–403 → `pack.py`, rest → `backends.py` |
@@ -292,7 +292,7 @@ A6 layout. "+ split" rows name the primary target; the line ranges are in
 | `reasoning_context.py` | 2971 | `ReasoningContext`: per-conversation evidence ledger replayed per turn; definitions/programs; asks and completions; pointer resolution; incremental/correction replay; concept-relation reasoning; snapshot/restore; `turn()` | `marco/reasoning/context.py` | sure | Target certain; later split: ledger/snapshot → memory, asks/pointers → cognition |
 | `relational_semantics.py` | 1170 | `RelationalParser`: compile pack examples into slot templates, `parse` sentences into facts/events, `learn`/`save` templates, `answer` by closure, `diagnose` | `marco/language/parser.py` + split | sure | Split: 1–42 → `language/facts.py`, 405–478 → `learning/templates.py`, 479–532 + 1077–1170 → `reasoning/semantics.py`, rest → `language/parser.py` |
 | `response_composer.py` | 257 | Selects verified evidence sentences; summary/explanation/plan along declared preconditions, goal steps, causal chain; comparison only on certified shared attributes | `marco/language/realizer/discourse.py` | sure | Seed of the Discourse Planner |
-| `routing_benchmark.py` | 180 | Held-out routing benchmark (last alias removed from the index) | `bench/routing_benchmark.py` | sure |  |
+| `bench/routing_benchmark.py` | 180 | Held-out routing benchmark (last alias removed from the index) | `bench/routing_benchmark.py` | sure |  |
 | `rule_learning.py` | 91 | Supervised Horn-rule induction from aligned, corrected proof examples | `marco/learning/rules.py` | sure | §4.19 said `learning/structural.py`; content is rule induction |
 | `self_authoring.py` | 579 | Dictionary → candidate graphs → lint → gate against stolen questions → admit/revert/re-audit; round records read by the UI | `marco/learning/authoring.py` | unsure | UI calls `one_round`, so it is library; imports `engine` + 2 benchmarks at top level — 4 upward edges (A6) |
 | `self_learning.py` | 360 | Wrong answers → unknown words → wiki fetch → rebuild → re-grade; `import_module("위키")` never resolves | `tools/self_learning.py` | sure | 0 importers; CLI loop |
@@ -300,11 +300,11 @@ A6 layout. "+ split" rows name the primary target; the line ranges are in
 | `semantic_parser.py` | 294 | Candidate meaning JSON → validated state JSON (spans, types, relations); token-free `StructuralBackend` | `marco/language/representation.py` | sure |  |
 | `situation_reasoner.py` | 13 | 13-line compatibility name forwarding to `semantic_parser`/`state_engine`. 0 importers | `marco/reasoning/state.py` | sure | Delete in Phase 5 |
 | `state_engine.py` | 164 | Pure state transition/calculation over validated state JSON using KG axioms | `marco/reasoning/state.py` | sure |  |
-| `universal_agent.py` | 119 | Demo tool set for `act.py`: data pipeline raising real errors | `experiments/universal_agent.py` | sure |  |
+| `experiments/universal_agent.py` | 119 | Demo tool set for `act.py`: data pipeline raising real errors | `experiments/universal_agent.py` | sure |  |
 | `verbal_expression.py` | 87 | Declared phrase grammar → bounded arithmetic graph; full match only | `marco/language/arithmetic.py` | sure |  |
 | `vision.py` | 1725 | Image-vocabulary experiments: gradient descriptors, LSH words, Heaps' law, SLIC region graphs, COIL-100 angle/clutter tests. 0 importers | `experiments/vision.py` | sure |  |
 | `web_learn.py` | 1344 | Open-web search, page reading, topic extraction, relation evidence coverage, verified save to `.수집.jsonl`, stacking onto a graph, `ask` | `marco/knowledge/ingest/web.py` | unsure | Network fetch should become a runtime capability; overlay part stays in knowledge |
-| `yardstick.py` | 353 | Frozen question set from human-authored graphs; measures with those aliases removed | `bench/yardstick.py` | sure |  |
+| `bench/yardstick.py` | 353 | Frozen question set from human-authored graphs; measures with those aliases removed | `bench/yardstick.py` | sure |  |
 
 Totals: 61 rows, 31,396 lines. Where the reading disagrees with the plan's
 first-pass guess (§4.19): `relational_semantics` is mostly a parser (language), not
@@ -539,8 +539,8 @@ merged, and the ALMA goal's final commit an ancestor of `main`
 
 | File | Owner |
 | --- | --- |
-| `alma_cli.py`, `alma_runtime.py`, `encoder.py`, `graph_inference.py`, `kgpack.py`, `language_components.py`, `reasoning_context.py`, `relational_semantics.py`, `web_learn.py`, `views/kgpack_ui.py`, `styles/한국어.json` | both goals |
-| `action_runtime.py`, `alma_environment.py`, `experience_concepts.py`, `proof_chunking.py`, `semantic_feedback.py`, `semantic_parser.py` | goal 1 ALMA (Windows clone; edited in `f02d803`) |
+| `alma/cli.py`, `alma/runtime.py`, `encoder.py`, `graph_inference.py`, `kgpack.py`, `language_components.py`, `reasoning_context.py`, `relational_semantics.py`, `web_learn.py`, `views/kgpack_ui.py`, `styles/한국어.json` | both goals |
+| `action_runtime.py`, `alma/environment.py`, `experience_concepts.py`, `proof_chunking.py`, `semantic_feedback.py`, `semantic_parser.py` | goal 1 ALMA (Windows clone; edited in `f02d803`) |
 | `conftest.py`, `engine.py`, `explain.py`, `goal_runtime.py`, `hangul.py`, `pack_model.py`, `state_engine.py`, `styles/english.json`, `data/benchmarks/unseen_phrasing_v1.json` | goal 2 repair + English (`f985857`, not on `main`) |
 | 17 `bench/*.py` and 67 `tests/*.py` in `git diff --name-only main repair-and-english` | goal 2 (ALMA shares the `alma_*` ones) |
 | `mco/`, `pyproject.toml`, `tests/test_mco_package.py`, `docs/mco/`, the uncommitted `README.md` hunk | unregistered `mco` session (branch `mco-package`) |
@@ -565,7 +565,7 @@ with the same failing ids. `K` = cases in the compatibility test added in Phase 
 | --- | --- | --- | --- |
 | 1 Skeleton | 0. Create `marco/__init__.py`, `marco/_paths.py`, and `__init__.py` for `language`, `language/realizer`, `perception`, `storage`, `knowledge`, `knowledge/ingest`, `reasoning`, `learning`, `host`, `cognition`, `runtime`; `alma/__init__.py` | none | passed = A0′; failed ids = A0′; root `.py` = 61; `--targets` rows 61, TBD 0; `all_modules_top` SCCs = 0; runtime SCCs = 2 (5 elementary) |
 | 2 Clean moves | the 51 unsplit rows of A1 in batches of ≤ 10, not on A7 until A7's gate holds; each moved file's `__file__` paths switch to `marco._paths` in the same commit | one per moved file (template below); plus `tests/test_compat_imports.py`: old name imports and `is` the new module | per batch: passed = A0′ + K; failed ids = A0′; root `.py` = 61; `--targets` upward ≤ 9, never a new one; runtime SCCs ≤ 2 |
-| 3 Splits | `engine` (20 parts), `relational_semantics` (4), `language_components` (2), `encoder` (2), `pack_model` (2), `goal_runtime` (2), `purpose_graph` (2); `explain` per its A1 row; fix the 8 edges of A6 | the old file becomes the shim (engine.py keeps every name its 40 importers take) | passed = A0′ + K; `--targets` upward inside `marco` = 0; package SCCs = 0; `engine.py --check` same outcome as A0 (exit 1, same assertion) unless fixed in its own commit first; `routing_benchmark.py --답` stdout sha1 = A0's (`d1937d7e…`) |
+| 3 Splits | `engine` (20 parts), `relational_semantics` (4), `language_components` (2), `encoder` (2), `pack_model` (2), `goal_runtime` (2), `purpose_graph` (2); `explain` per its A1 row; fix the 8 edges of A6 | the old file becomes the shim (engine.py keeps every name its 40 importers take) | passed = A0′ + K; `--targets` upward inside `marco` = 0; package SCCs = 0; `engine.py --check` same outcome as A0 (exit 1, same assertion) unless fixed in its own commit first; `bench/routing_benchmark.py --답` stdout sha1 = A0's (`d1937d7e…`) |
 | 4 Imports | every internal import package-qualified; `NAI_*` → `MARCO_*` with fallback; pack string `graph_dialogue:backend` (styles/한국어.json:2993) → `marco.runtime.graph_dialogue:backend`; `mco/backends/marco.py:54–55` (W2) | unchanged | passed = A0′ + K; edges into a shim from outside `tests/test_compat_imports.py` = 0 (tool: edges whose target is a root shim); upward = 0; package SCCs = 0 |
 | 5 Remove shims | delete the 59 shims (51 + 7 split sources + `explain`) and `situation_reasoner.py` (0 importers); keep `conftest.py`; `tests/test_compat_imports.py` goes | — | root `.py` = 1; passed = A0′; failed ids = A0′; README commands updated and each run once |
 
@@ -600,7 +600,7 @@ Hazards to carry into Phase 2, measured at `6195040`:
 | `tests/test_alma_integrated_reproduction.py:31` | asserts RSS is unsupported; true on Windows only |
 | `engine.py:4768` | `python engine.py --check` fails at `6195040`: `2등인 사람을 추월했습니다` routes to `graph_일상추론.kg`, not `graph_순위_추월.kg` |
 | `engine.py:4425–5555` | 1131-line `_selfcheck` inside the engine; `explain.py` has another 337 lines (1814–2150) |
-| `README.md` (at `6195040`) | "145 graphs · 2,092 nodes"; tree has 904 `graphs/*.kg` + 7 `cases/` + 2 `legal/`. "Code 8,692 lines" for four files; `engine.py` alone is 6,072. Routing figures (27/27, 37.0 %, 64.0 % over 2,018) vs today's `routing_benchmark.py --답`: 24/24, 40.6 %, 76.1 % over 6,912 — README table updated with the commit named; latency/memory rows not re-measured |
+| `README.md` (at `6195040`) | "145 graphs · 2,092 nodes"; tree has 904 `graphs/*.kg` + 7 `cases/` + 2 `legal/`. "Code 8,692 lines" for four files; `engine.py` alone is 6,072. Routing figures (27/27, 37.0 %, 64.0 % over 2,018) vs today's `bench/routing_benchmark.py --답`: 24/24, 40.6 %, 76.1 % over 6,912 — README table updated with the commit named; latency/memory rows not re-measured |
 | `docs/ko/audit-2026-09-20/audit-probes.py:14` | a docs script imports a test module |
 | `views/kgpack_ui.py:33` | the UI imports `self_authoring` at top level and runs authoring rounds |
 | `engine.py:108` | hardcoded Korean refusal (already known, plan §5) |

@@ -711,7 +711,7 @@ Target:
     ├ preference.py
     └ relationships.py
 
-The current `alma_runtime.py` likely owns too many responsibilities. Do not split it
+The current `alma/runtime.py` likely owns too many responsibilities. Do not split it
 purely by line count. First classify functions by responsibility. Then extract one
 responsibility at a time.
 
@@ -795,7 +795,7 @@ single responsibility. Good candidates may include `hangul.py`, `kgbin.py`,
 relevant tests after every move.
 
 **Phase 3 — Split mixed modules.** Identify modules such as `engine.py` and
-`alma_runtime.py` that contain multiple architectural responsibilities. Extract one
+`alma/runtime.py` that contain multiple architectural responsibilities. Extract one
 responsibility at a time. Example:
 
     engine.py
@@ -989,7 +989,7 @@ Starting hypothesis only. Inspect each file before moving it.
     semantic_feedback.py   → learning/feedback.py
     proof_chunking.py      → learning/chunking.py
     self_authoring.py      → learning/structural or authoring submodule
-    alma_runtime.py        → alma/runtime.py
+    alma/runtime.py        → alma/runtime.py
                              then gradually extract memory, preference, identity, etc.
     kgbin.py               → storage/kgbin.py
     kgpack.py              → storage/kgpack.py
@@ -1041,7 +1041,7 @@ behavior first. Make architectural boundaries visible in both code and documenta
 Why postponed:
 
 - It moves exactly the files the two running sessions edit: ALMA
-  (`alma_runtime.py`, `experience_concepts.py`, `proof_chunking.py`,
+  (`alma/runtime.py`, `experience_concepts.py`, `proof_chunking.py`,
   `reasoning_context.py`) and repair + English (`engine.py`, `explain.py`,
   `language_components.py`, `pack_model.py`, `relational_semantics.py`, ~52 test files).
   A move here plus an edit in another clone produces conflicts, and "take theirs"
@@ -1064,7 +1064,7 @@ measurable gates:
 - `engine.py` (6062 lines) split: each extracted responsibility named, no behavior diff
 
 Sizes that matter for Phase 3: `engine.py` 6062 lines, `explain.py` 2306,
-`alma_runtime.py` large. Korean hardcoded in Python as matching patterns: 1224 words at
+`alma/runtime.py` large. Korean hardcoded in Python as matching patterns: 1224 words at
 ~1000 sites in 34 files (engine 310, build 213, explain 180, hangul 78).
 
 ---

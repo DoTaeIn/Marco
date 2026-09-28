@@ -14,7 +14,7 @@ out of scope and gets written down as a Phase 1 task instead.
 ## Why now
 
 - Two sessions edit `engine.py`, `explain.py`, `language_components.py`,
-  `pack_model.py`, `relational_semantics.py`, `alma_runtime.py`,
+  `pack_model.py`, `relational_semantics.py`, `alma/runtime.py`,
   `experience_concepts.py`, `proof_chunking.py`, `reasoning_context.py`.
   Moving those now causes silent merge loss.
 - The realization goal (next) must build straight into `marco/language/`.

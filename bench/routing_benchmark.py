@@ -13,6 +13,9 @@
     KG_ENCODER=문자 python routing_benchmark.py
     python routing_benchmark.py --상한 2 3 4 0   # 노드당 색인 예시 수를 쓸어본다
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import glob
 import json
 import os

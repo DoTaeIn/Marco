@@ -16,8 +16,8 @@ Its report is the f985857 message plus the HANDOFF stop-point notes. Re-run here
 | `bench/error_injection.py` | caught 6/6 |
 | `bench/repair_checks.py` | 7/7 |
 | `bench/unseen_phrasing.py` | solved 10/20 (answered 8, correct hold 2, held 10, wrong 0, error 0) |
-| `yardstick.py`, English default | 대조 375/400, 안 물음 151/400, 근거까지 201/400, 밖 거절 24/24 |
-| `yardstick.py`, `NAI_LANGUAGE=한국어` | same, except 근거까지 199/400 |
+| `bench/yardstick.py`, English default | 대조 375/400, 안 물음 151/400, 근거까지 201/400, 밖 거절 24/24 |
+| `bench/yardstick.py`, `NAI_LANGUAGE=한국어` | same, except 근거까지 199/400 |
 
 Left blocked or open by the previous goal:
 
@@ -103,7 +103,7 @@ Structured input (graphs given directly): R1, R3, R4, R6 tests. Natural-language
 All 13 identical in outcome: seven_step_dialogue 7/7+7/7, seven_step_ui 10/10+10/10, removal_test 11/11,
 error_injection 6/6, repair_checks 7/7, unseen_phrasing 10/20, answer_quality 21/34 wrong 0,
 dialogue_evaluation (resource timings only), event_runtime 12/1/6/0, experience_concept 31/14/0/0,
-question_endings, relational_learning, semantic_contrasts. `yardstick.py` identical to R0 with the engine seam in.
+question_endings, relational_learning, semantic_contrasts. `bench/yardstick.py` identical to R0 with the engine seam in.
 One regression found on the way and fixed (4461976): answer_quality 경계-01 was held because the
 Korean parser offers the right roles only as its second candidate.
 

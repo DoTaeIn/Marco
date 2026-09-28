@@ -30,6 +30,9 @@
 고정 세트는 data/benchmarks/고정물음.json 에 들어가고 저장소에 올린다.
 캐시가 아니라 잣대라서다 — 지우면 지난 값과 견줄 수 없게 된다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import glob
 import copy
 import io
@@ -38,7 +41,7 @@ import os
 import random
 import sys
 
-here = os.path.dirname(os.path.abspath(__file__))
+here = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 sys.path.insert(0, here)
 os.environ.setdefault("KG_ENCODER", "문자")
 
@@ -118,7 +121,7 @@ def freeze(count=400, seed=11):
 
 def index_without(words_to_remove):
     """그 말들을 별칭에서 지운 색인. 안 지우면 외운 것을 재게 된다."""
-    import routing_benchmark as bench
+    import bench.routing_benchmark as bench
     remove = set(words_to_remove)
     loaded = {}
     for name, g in bench._bodies().items():

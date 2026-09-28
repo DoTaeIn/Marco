@@ -36,7 +36,7 @@ encoder.py     문장 → 정규화 벡터. 신경망은 여기 한 곳뿐이다
 engine.py      논증·판정·학습·진단·회귀. 도메인 지식 0줄 (함수 60 + 세션 클래스)
 explain.py     판정하지 않고 발췌를 조립하는 설명 엔진 (함수 20)
 build.py       문서 폴더 → 설명그래프 JSON (함수 17)
-codegen.py     언어중립 알고리즘 → 언어별 소스. 실행이 채점한다
+experiments/codegen.py     언어중립 알고리즘 → 언어별 소스. 실행이 채점한다
 collectors/    법제처·위키백과 수집기 (법령·판례·문서)
 views/         웹 UI와 지식 그래프 시각화
 ```
@@ -218,7 +218,7 @@ flowchart TD
 ```bash
 python build.py   --check
 python explain.py --check
-python codegen.py --check     # 채점기가 옳고 그름을 구별하는지부터 본다
+python -m experiments.codegen --check     # 채점기가 옳고 그름을 구별하는지부터 본다
 python engine.py  --check     # 엔진 자체 검사 (판례 회귀 6건 포함)
 python engine.py  --regress   # 판례 회귀만 따로
 ```
@@ -237,7 +237,7 @@ python build.py docs/ko --out 문서그래프.json
 채점기 자체를 의심할 때는 `--묶임` 을 봅니다.
 
 ```bash
-python codegen.py --묶임
+python -m experiments.codegen --묶임
   원본이 제 시험에 성함     9/9
   망가뜨렸는데 통과한 벌   15/91 (16%)  낮을수록 시험이 좁다
 ```

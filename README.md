@@ -198,7 +198,7 @@ the log's usage bonus broke a routing tie the other way.
 | `python encoder.py --check` | `인코더 selfcheck ok` | 0.1 s |
 | `python hangul.py` | `자가검사 ok` | |
 
-**Routing** — `python routing_benchmark.py --답` (266.7 s)
+**Routing** — `python -m bench.routing_benchmark --답` (266.7 s)
 
 | | Value | Meaning |
 | --- | --- | --- |
@@ -429,7 +429,7 @@ other target package is created by goal S4 ([Layout](#layout)).
 | Event / Experience Graph | event ledger in `reasoning_context.py`, `experience_concepts.py`; the provenance ledger `marco/trace/` (Hypomnema) | `marco/reasoning/`, `marco/learning/`; `marco/trace/` exists | `test_event_provenance.py`, `test_experience_concepts.py`, `tests/trace/` |
 | Rule Store | `axioms/*.json`, pack rules, `rule_learning.py`, `proof_chunking.py` | `axioms/`, `marco/learning/` | `test_rule_learning.py`, `test_proof_chunking.py` |
 | Working Memory | `Session` activation, `explain.py` dialogue memory, ALMA working memory | `marco/cognition/`, `marco/memory/` | `test_alma_runtime.py` |
-| Episodic / Semantic / Procedural | ALMA state (`alma_runtime.py`), replay ledger, learned action programs | `marco/memory/` | `test_alma_runtime.py`, `test_alma_cli.py` |
+| Episodic / Semantic / Procedural | ALMA state (`alma/runtime.py`), replay ledger, learned action programs | `marco/memory/` | `test_alma_runtime.py`, `test_alma_cli.py` |
 | Meaning Graph | `marco/language/realizer/meaning.py`, built from the turn's language-free `meaning` block | exists | `language/test_w1_r1_thin_slice.py` |
 | Utterance Intent | `marco/language/realizer/intent.py`, the declared turn plans | exists | `language/test_w2_realizer_r2.py` |
 | Discourse Planner | `marco/language/realizer/discourse.py`; `response_composer.py` still selects content for the graph engine | exists | `language/test_w1_r5_discourse.py`, `test_response_composer.py` |
@@ -776,7 +776,7 @@ python engine.py --diagnose graphs/graph_순위_추월.kg
 
 python engine.py --check      # engine self-check
 python engine.py --regress    # case regression
-python routing_benchmark.py --답
+python -m bench.routing_benchmark --답
 python tools/doc_facts.py counts
 python tools/doc_facts.py runtime
 python tools/doc_facts.py frozen       # the recorded frozen-exam numbers
@@ -799,17 +799,17 @@ python engine.py --suggest   # node candidates from source text
 
 ### ALMA 0.1 research loop (not in this release)
 
-`alma_cli.py` is a small, resumable environment that reuses the event and proof
+`alma/cli.py` is a small, resumable environment that reuses the event and proof
 core. It keeps personal state outside portable `.kgpack` knowledge. ALMA
 advancement is frozen; the existing loop stays and its tests run. Design record:
 [docs/ko/alma-0.1.md](docs/ko/alma-0.1.md).
 
 ```bash
-python alma_cli.py --state .nai/alma-state.json --identity demo --turn "민수 구슬은 8개 있다."
-python alma_cli.py --state .nai/alma-state.json --identity demo --search "민수" --search-kinds event,log
-python alma_cli.py --state .nai/alma-state.json --identity demo --project-state-at 2
-python alma_cli.py --state .nai/alma-state.json --identity demo --backup-state .nai/alma-backup.json
-python alma_cli.py --state .nai/alma-environment.json --identity demo --environment bench/alma_local_environment.json --step-budget 1
+python -m alma.cli --state .nai/alma-state.json --identity demo --turn "민수 구슬은 8개 있다."
+python -m alma.cli --state .nai/alma-state.json --identity demo --search "민수" --search-kinds event,log
+python -m alma.cli --state .nai/alma-state.json --identity demo --project-state-at 2
+python -m alma.cli --state .nai/alma-state.json --identity demo --backup-state .nai/alma-backup.json
+python -m alma.cli --state .nai/alma-environment.json --identity demo --environment bench/alma_local_environment.json --step-budget 1
 ```
 
 | Claim | Test in `tests/test_alma_cli.py` |
