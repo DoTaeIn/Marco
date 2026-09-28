@@ -1,0 +1,318 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_12",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "banmal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_014",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "다솜은 라임이 16개 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "다솜",
+      "item": "라임",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "다솜",
+      "item": "라임",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "다솜 사위 한수는 라임이 23개 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "한수",
+      "item": "라임",
+      "quantity": 23
+     }
+    ],
+    "state": [
+     {
+      "entity": "한수",
+      "item": "라임",
+      "quantity": 23
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "다솜 삼촌 영훈은 승합차에 라임을 7개 싣고 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "영훈",
+      "item": "라임",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "영훈",
+      "item": "라임",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "한수가 영훈에게 라임을 네 개 빌려줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "한수",
+      "to": "영훈",
+      "item": "라임",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "한수",
+      "item": "라임",
+      "quantity": 19
+     },
+     {
+      "entity": "영훈",
+      "item": "라임",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "그리고 영훈에게 라임을 네 개 줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "한수",
+      "to": "영훈",
+      "item": "라임",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "한수",
+      "item": "라임",
+      "quantity": 15
+     },
+     {
+      "entity": "영훈",
+      "item": "라임",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "다솜은 라임을 몇 개 맡고 있어?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "다솜",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "라임"
+   }
+  },
+  {
+   "n": 7,
+   "say": "왜 16개야?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "explain",
+    "entity": "다솜",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "라임"
+   }
+  },
+  {
+   "n": 8,
+   "say": "다솜이랑 한수 중에 누가 라임을 더 많이 가지고 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "다솜",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "다솜",
+     "한수"
+    ],
+    "item": "라임",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      5
+     ]
+    }
+   }
+  }
+ ]
+}

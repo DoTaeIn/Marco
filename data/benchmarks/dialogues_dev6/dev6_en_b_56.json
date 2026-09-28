@@ -1,0 +1,341 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_56",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_059",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "1_count_words",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "For the picnic, Dr. Maxwell is responsible for sixteen teacups.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Maxwell",
+      "item": "teacups",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Maxwell",
+      "item": "teacups",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Mr. Fleming has twenty-one teacups.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Fleming",
+      "item": "teacups",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fleming",
+      "item": "teacups",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Georgia has twenty-four teacups.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Georgia",
+      "item": "teacups",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "Georgia",
+      "item": "teacups",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Mr. Fleming lent Ms. Fowler one teacup.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "1_count_words"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Fleming",
+      "to": "Fowler",
+      "item": "teacups",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fleming",
+      "item": "teacups",
+      "quantity": 20
+     },
+     {
+      "entity": "Fowler",
+      "item": "teacups",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Mr. Fleming gave Georgia three teacups.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Fleming",
+      "to": "Georgia",
+      "item": "teacups",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Fleming",
+      "item": "teacups",
+      "quantity": 17
+     },
+     {
+      "entity": "Georgia",
+      "item": "teacups",
+      "quantity": 27
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many teacups does Mr. Fleming have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Fleming",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "teacups"
+   }
+  },
+  {
+   "n": 7,
+   "say": "What about Dr. Maxwell?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Maxwell",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "teacups"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many teacups does Mr. Fleming have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Fleming",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4,
+      5
+     ]
+    },
+    "item": "teacups"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many teacups does Ms. Fowler have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "hold",
+    "entity": "Fowler",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "item": "teacups"
+   }
+  }
+ ]
+}

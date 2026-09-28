@@ -1,0 +1,322 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_26",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_029",
+  "half": "check",
+  "focus": [
+   "15_unstated_receiver",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "세희는 빨대가 14묶음 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "세희",
+      "item": "빨대",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "세희",
+      "item": "빨대",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "한수는 수레에 빨대를 19묶음 싣고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "한수",
+      "item": "빨대",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "한수",
+      "item": "빨대",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "주 반장님은 트럭에 빨대를 6묶음 싣고 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "주 반장",
+      "item": "빨대",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "주 반장",
+      "item": "빨대",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "세희가 은숙에게 빨대를 3묶음 빌려줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세희",
+      "to": "은숙",
+      "item": "빨대",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "세희",
+      "item": "빨대",
+      "quantity": 11
+     },
+     {
+      "entity": "은숙",
+      "item": "빨대",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "주 반장님이 세희에게 빨대를 네 묶음 나눠 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "주 반장",
+      "to": "세희",
+      "item": "빨대",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "주 반장",
+      "item": "빨대",
+      "quantity": 2
+     },
+     {
+      "entity": "세희",
+      "item": "빨대",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "세희는 빨대가 몇 묶음이에요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "세희",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4,
+      5
+     ]
+    },
+    "item": "빨대"
+   }
+  },
+  {
+   "n": 7,
+   "say": "은숙은 빨대가 몇 묶음이에요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "hold",
+    "entity": "은숙",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "item": "빨대"
+   }
+  },
+  {
+   "n": 8,
+   "say": "세희랑 한수 중에 누가 빨대를 더 많이 가지고 있어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "한수",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "세희",
+     "한수"
+    ],
+    "item": "빨대",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      5
+     ]
+    }
+   }
+  }
+ ]
+}

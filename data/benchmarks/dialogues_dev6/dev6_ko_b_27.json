@@ -1,0 +1,356 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_27",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "cross_language",
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_041",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "3_partitive",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "12_cross_language",
+   "1_count_words",
+   "3_partitive",
+   "5_ko_transfer_verbs",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "정육점에 동화책이 열다섯 권 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "정육점",
+      "item": "동화책",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "정육점",
+      "item": "동화책",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "빈 이사님한테는 동화책이 아홉 권 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "빈 이사",
+      "item": "동화책",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "빈 이사",
+      "item": "동화책",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "공장에는 동화책이 세 권 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "공장",
+      "item": "동화책",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "공장",
+      "item": "동화책",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "빈 이사님 손녀 미란도 동화책을 가지고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "미란",
+      "item": "동화책",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "미란",
+      "item": "동화책",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "빈 이사님이 공장에 동화책 네 권을 맡겼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "빈 이사",
+      "to": "공장",
+      "item": "동화책",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "빈 이사",
+      "item": "동화책",
+      "quantity": 5
+     },
+     {
+      "entity": "공장",
+      "item": "동화책",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "빈 이사님이 그중 두 권을 학교 과제에 썼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "빈 이사",
+      "item": "동화책",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "빈 이사",
+      "item": "동화책",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many storybooks does the 정육점 have?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "ownership"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "정육점",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "item": "동화책"
+   },
+   "lang": "en"
+  },
+  {
+   "n": 8,
+   "say": "공장은 어떻습니까?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "공장",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      5
+     ]
+    },
+    "item": "동화책"
+   }
+  },
+  {
+   "n": 9,
+   "say": "미란은 동화책이 몇 권 있습니까?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "hold",
+    "entity": "미란",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "item": "동화책"
+   }
+  }
+ ]
+}

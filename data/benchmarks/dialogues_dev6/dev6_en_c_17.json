@@ -1,0 +1,282 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_17",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_021",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "4_fragment_count",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "I have nineteen pencils.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "I",
+      "item": "pencils",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "I",
+      "item": "pencils",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Ms. Sutton has eight pencils.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Sutton",
+      "item": "pencils",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Sutton",
+      "item": "pencils",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Ms. Sutton sent me some pencils. 2, to be exact.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms",
+    "4_fragment_count"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Sutton",
+      "to": "I",
+      "item": "pencils",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Sutton",
+      "item": "pencils",
+      "quantity": 6
+     },
+     {
+      "entity": "I",
+      "item": "pencils",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Ms. Sutton gave me one pencil.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Sutton",
+      "to": "I",
+      "item": "pencils",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Sutton",
+      "item": "pencils",
+      "quantity": 5
+     },
+     {
+      "entity": "I",
+      "item": "pencils",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many pencils do I have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "I",
+    "quantity": 22,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "pencils"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Why do I only have twenty-two?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact",
+    "1_count_words"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "explain",
+    "entity": "I",
+    "quantity": 22,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "pencils"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many pencils does Ms. Sutton have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Sutton",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "pencils"
+   }
+  }
+ ]
+}

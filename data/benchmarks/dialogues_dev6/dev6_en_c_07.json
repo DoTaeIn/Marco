@@ -1,0 +1,239 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_07",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_007",
+  "half": "check",
+  "focus": [
+   "15_unstated_receiver",
+   "4_fragment_count",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "4_fragment_count",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Luna has some sketchbooks. Five, to be exact.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Luna",
+      "item": "sketchbooks",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Luna",
+      "item": "sketchbooks",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Dr. Rhodes has 8 sketchbooks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Rhodes",
+      "item": "sketchbooks",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rhodes",
+      "item": "sketchbooks",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Dr. Rhodes sent Dr. Yates 5 sketchbooks.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Rhodes",
+      "to": "Yates",
+      "item": "sketchbooks",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rhodes",
+      "item": "sketchbooks",
+      "quantity": 3
+     },
+     {
+      "entity": "Yates",
+      "item": "sketchbooks",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many sketchbooks does Dr. Rhodes have in all?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Rhodes",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "sketchbooks"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many sketchbooks does Dr. Yates have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "hold",
+    "entity": "Yates",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "item": "sketchbooks"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Who has more sketchbooks, Luna or Dr. Rhodes?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Luna",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "Luna",
+     "Rhodes"
+    ],
+    "item": "sketchbooks",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

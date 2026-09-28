@@ -1,0 +1,327 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_30",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "cross_language",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_033",
+  "half": "build",
+  "focus": [
+   "15_unstated_receiver",
+   "6_holder_forms",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "12_cross_language",
+   "15_unstated_receiver",
+   "1_count_words",
+   "6_holder_forms",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Alan has twenty-four coconuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Alan",
+      "item": "coconuts",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "coconuts",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Alan's son, Pablo, has 12 coconuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Pablo",
+      "item": "coconuts",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Pablo",
+      "item": "coconuts",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Alan's sister, Xena, also has some coconuts.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Xena",
+      "item": "coconuts",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "coconuts",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Alan lent Mabel three coconuts.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "1_count_words"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Alan",
+      "to": "Mabel",
+      "item": "coconuts",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "coconuts",
+      "quantity": 21
+     },
+     {
+      "entity": "Mabel",
+      "item": "coconuts",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many coconuts has Alan got?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Alan",
+    "quantity": 21,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "coconuts"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many coconuts does Mabel have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "hold",
+    "entity": "Mabel",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "item": "coconuts"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many coconuts does Xena have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "hold",
+    "entity": "Xena",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "item": "coconuts"
+   }
+  },
+  {
+   "n": 8,
+   "say": "Who has more coconuts, Alan or Pablo?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Alan",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "Alan",
+     "Pablo"
+    ],
+    "item": "coconuts",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4
+     ]
+    }
+   }
+  },
+  {
+   "n": 9,
+   "say": "Pablo는 코코넛이 몇 개 있습니까?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "ownership"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Pablo",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "coconuts"
+   },
+   "lang": "ko"
+  }
+ ]
+}

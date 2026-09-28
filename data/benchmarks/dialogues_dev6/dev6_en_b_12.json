@@ -1,0 +1,236 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_12",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_014",
+  "half": "build",
+  "focus": [
+   "13_why_with_fact",
+   "4_fragment_count",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "4_fragment_count",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Igor has some drums. 22, to be exact.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Igor",
+      "item": "drums",
+      "quantity": 22
+     }
+    ],
+    "state": [
+     {
+      "entity": "Igor",
+      "item": "drums",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Zara has 24 drums.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Zara",
+      "item": "drums",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "Zara",
+      "item": "drums",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Igor gave Zara five drums.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Igor",
+      "to": "Zara",
+      "item": "drums",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Igor",
+      "item": "drums",
+      "quantity": 17
+     },
+     {
+      "entity": "Zara",
+      "item": "drums",
+      "quantity": 29
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many drums does Igor have in all?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Igor",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "drums"
+   }
+  },
+  {
+   "n": 5,
+   "say": "Why is that number 17?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "explain",
+    "entity": "Igor",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "drums"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many drums do the two of them have in total?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Igor",
+     "Zara"
+    ],
+    "quantity": 46,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "drums"
+   }
+  }
+ ]
+}

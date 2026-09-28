@@ -1,0 +1,270 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_b_29",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haera",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_b_043",
+  "half": "build",
+  "focus": [
+   "13_why_with_fact",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "재석한테 바이올린이 17대 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "재석",
+      "item": "바이올린",
+      "quantity": 17
+     }
+    ],
+    "state": [
+     {
+      "entity": "재석",
+      "item": "바이올린",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "석훈이는 승합차에 바이올린을 여덟 대 싣고 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "석훈",
+      "item": "바이올린",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "석훈",
+      "item": "바이올린",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "태 대리님은 승합차에 바이올린을 9대 싣고 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "태 대리",
+      "item": "바이올린",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "태 대리",
+      "item": "바이올린",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "석훈이 재석한테 바이올린 1대를 보냈다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "석훈",
+      "to": "재석",
+      "item": "바이올린",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "석훈",
+      "item": "바이올린",
+      "quantity": 7
+     },
+     {
+      "entity": "재석",
+      "item": "바이올린",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "석훈은 지금 바이올린이 몇 대인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "석훈",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "바이올린"
+   }
+  },
+  {
+   "n": 6,
+   "say": "석훈 바이올린이 왜 일곱 대가 되었나?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact",
+    "1_count_words"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "explain",
+    "entity": "석훈",
+    "quantity": 7,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "바이올린"
+   }
+  },
+  {
+   "n": 7,
+   "say": "재석은 바이올린이 몇 대 있나?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "재석",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "바이올린"
+   }
+  }
+ ]
+}

@@ -1,0 +1,392 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_16",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_019",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Xena has fourteen tambourines.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Xena",
+      "item": "tambourines",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "tambourines",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Xena has thirteen diaries.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Xena",
+      "item": "diaries",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "diaries",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Xena's son, Troy, has 4 tambourines.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Troy",
+      "item": "tambourines",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Troy",
+      "item": "tambourines",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "My uncle, Abel, has 19 tambourines.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Abel",
+      "item": "tambourines",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "Abel",
+      "item": "tambourines",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Xena's neighbor, Celeste, also has some tambourines.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Celeste",
+      "item": "tambourines",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Celeste",
+      "item": "tambourines",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "Xena passed Troy five tambourines.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Xena",
+      "to": "Troy",
+      "item": "tambourines",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "tambourines",
+      "quantity": 9
+     },
+     {
+      "entity": "Troy",
+      "item": "tambourines",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "Xena transferred 4 tambourines to Abel.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Xena",
+      "to": "Abel",
+      "item": "tambourines",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "tambourines",
+      "quantity": 5
+     },
+     {
+      "entity": "Abel",
+      "item": "tambourines",
+      "quantity": 23
+     }
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many tambourines does Xena have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Xena",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      6,
+      7
+     ]
+    },
+    "item": "tambourines"
+   }
+  },
+  {
+   "n": 9,
+   "say": "And diaries?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "answer",
+    "entity": "Xena",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      6,
+      7
+     ]
+    },
+    "item": "diaries"
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many tambourines does Celeste have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "hold",
+    "entity": "Celeste",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      10
+     ]
+    },
+    "item": "tambourines"
+   }
+  }
+ ]
+}

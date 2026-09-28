@@ -1,0 +1,246 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_02",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_002",
+  "half": "check",
+  "focus": [
+   "11_repair_with_question",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Bella has 21 waffles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Bella",
+      "item": "waffles",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "Bella",
+      "item": "waffles",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Eden has sixteen waffles.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Eden",
+      "item": "waffles",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "Eden",
+      "item": "waffles",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Eden lent Bella 3 waffles.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Eden",
+      "to": "Bella",
+      "item": "waffles",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Eden",
+      "item": "waffles",
+      "quantity": 13
+     },
+     {
+      "entity": "Bella",
+      "item": "waffles",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Bella used four of them for the spring fair.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Bella",
+      "item": "waffles",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Bella",
+      "item": "waffles",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many waffles does Eden have at the moment?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Eden",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "waffles"
+   }
+  },
+  {
+   "n": 6,
+   "say": "I mean Bella. How many does Bella have?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Bella",
+    "quantity": 20,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "waffles"
+   }
+  }
+ ]
+}

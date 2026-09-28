@@ -1,0 +1,209 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_18",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_020",
+  "half": "check",
+  "focus": [
+   "11_repair_with_question",
+   "4_fragment_count",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "4_fragment_count",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "채영은 핸드백이 있어요. 열두 개예요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "채영",
+      "item": "핸드백",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "채영",
+      "item": "핸드백",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "재성은 핸드백이 스물두 개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "재성",
+      "item": "핸드백",
+      "quantity": 22
+     }
+    ],
+    "state": [
+     {
+      "entity": "재성",
+      "item": "핸드백",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "채영이 재성에게 핸드백을 3개 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "채영",
+      "to": "재성",
+      "item": "핸드백",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "채영",
+      "item": "핸드백",
+      "quantity": 9
+     },
+     {
+      "entity": "재성",
+      "item": "핸드백",
+      "quantity": 25
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "채영에게 남은 핸드백은 몇 개예요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "채영",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "핸드백"
+   }
+  },
+  {
+   "n": 5,
+   "say": "재성 말이에요. 재성은 핸드백이 몇 개예요?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "재성",
+    "quantity": 25,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "핸드백"
+   }
+  }
+ ]
+}

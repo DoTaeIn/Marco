@@ -1440,7 +1440,11 @@ def assemble(paths, folder=HERE, out_dir=None, write=True, overlap=overlapping_t
     first = []
     for sid, (scn, texts, failed, record) in candidates.items():
         kept = keep_turns(scn, texts, failed)
-        first.append(dialogue_json(scn, gate_turns(scn, kept, texts)))
+        turns = gate_turns(scn, kept, texts)
+        if not turns:          # every turn of the record was refused: nothing to compare or keep
+            drop("dialogues_dropped", "no_turn_left")
+            continue
+        first.append(dialogue_json(scn, turns))
     words = {sid: {tok for h in scn["holders"] for tok in h["tokens"]}
              | {w for t in scn["things"] for w in (t.get("plural"), t.get("one"), t.get("noun")) if w}
              for sid, (scn, _t, _f, _r) in candidates.items()}
@@ -1448,6 +1452,8 @@ def assemble(paths, folder=HERE, out_dir=None, write=True, overlap=overlapping_t
     by_id = {d["id"]: d for d in first}
     dialogues, split, counts = [], {"build": [], "check": []}, {}
     for sid, (scn, texts, failed, record) in candidates.items():
+        if sid not in by_id:
+            continue
         numbered = {t["n"]: t["scenario_turn"] for t in by_id[sid]["turns"]}
         over = {numbered[n] for d, n in shared if d == sid}
         for _n in over:

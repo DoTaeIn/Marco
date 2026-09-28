@@ -1,0 +1,240 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_07",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "cross_language",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_009",
+  "half": "build",
+  "focus": [
+   "11_repair_with_question",
+   "3_partitive",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "12_cross_language",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "3_partitive",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Celeste has eight bracelets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Celeste",
+      "item": "bracelets",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Celeste",
+      "item": "bracelets",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Joel has 23 bracelets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Joel",
+      "item": "bracelets",
+      "quantity": 23
+     }
+    ],
+    "state": [
+     {
+      "entity": "Joel",
+      "item": "bracelets",
+      "quantity": 23
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Joel passed Celeste five of them.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "3_partitive"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Joel",
+      "to": "Celeste",
+      "item": "bracelets",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Joel",
+      "item": "bracelets",
+      "quantity": 18
+     },
+     {
+      "entity": "Celeste",
+      "item": "bracelets",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many bracelets does Joel have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Joel",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "bracelets"
+   }
+  },
+  {
+   "n": 5,
+   "say": "I mean Celeste. How many bracelets does Celeste have?",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Celeste",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    },
+    "item": "bracelets"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Joel은 팔찌 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "cross_language",
+    "transfer"
+   ],
+   "classes": [
+    "12_cross_language"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Joel",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "bracelets"
+   },
+   "lang": "ko"
+  }
+ ]
+}

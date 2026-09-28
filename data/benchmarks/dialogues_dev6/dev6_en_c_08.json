@@ -1,0 +1,242 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_08",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_008",
+  "half": "check",
+  "focus": [
+   "10_topic_switch",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The sunroom has 10 wallets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "sunroom",
+      "item": "wallets",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "sunroom",
+      "item": "wallets",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Dr. Walsh has 9 wallets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Walsh",
+      "item": "wallets",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Walsh",
+      "item": "wallets",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The carport has nineteen wallets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "carport",
+      "item": "wallets",
+      "quantity": 19
+     }
+    ],
+    "state": [
+     {
+      "entity": "carport",
+      "item": "wallets",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Dr. Walsh left 2 wallets at the sunroom.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Walsh",
+      "to": "sunroom",
+      "item": "wallets",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Walsh",
+      "item": "wallets",
+      "quantity": 7
+     },
+     {
+      "entity": "sunroom",
+      "item": "wallets",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many wallets does the sunroom have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "sunroom",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "wallets"
+   }
+  },
+  {
+   "n": 6,
+   "say": "What about the carport?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "carport",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "wallets"
+   }
+  }
+ ]
+}

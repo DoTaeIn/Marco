@@ -1,0 +1,278 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_22",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_027",
+  "half": "check",
+  "focus": [
+   "11_repair_with_question",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Dr. Holt has fourteen turnips.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Holt",
+      "item": "turnips",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "Holt",
+      "item": "turnips",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Kurt has 11 turnips.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Kurt",
+      "item": "turnips",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Kurt",
+      "item": "turnips",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Dr. Holt gave Kurt 5 turnips.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Holt",
+      "to": "Kurt",
+      "item": "turnips",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Holt",
+      "item": "turnips",
+      "quantity": 9
+     },
+     {
+      "entity": "Kurt",
+      "item": "turnips",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Kurt handed 3 turnips over to Dr. Holt.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Kurt",
+      "to": "Holt",
+      "item": "turnips",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Kurt",
+      "item": "turnips",
+      "quantity": 13
+     },
+     {
+      "entity": "Holt",
+      "item": "turnips",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many turnips does Dr. Holt have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "Holt",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    },
+    "item": "turnips"
+   }
+  },
+  {
+   "n": 6,
+   "say": "Kurt, I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Kurt",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "turnips"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many turnips does Kurt have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Kurt",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "turnips"
+   }
+  }
+ ]
+}

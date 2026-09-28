@@ -1,0 +1,325 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_05",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_007",
+  "half": "build",
+  "focus": [
+   "15_unstated_receiver",
+   "4_fragment_count",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "4_fragment_count",
+   "6_holder_forms",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The stationery store has some bundles of twigs. 20, to be exact.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "stationery store",
+      "item": "bundles of twigs",
+      "quantity": 20
+     }
+    ],
+    "state": [
+     {
+      "entity": "stationery store",
+      "item": "bundles of twigs",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Bonnie has 7 bundles of twigs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Bonnie",
+      "item": "bundles of twigs",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Bonnie",
+      "item": "bundles of twigs",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Xena has twenty-one bundles of twigs.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Xena",
+      "item": "bundles of twigs",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "bundles of twigs",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Xena passed Jasper three bundles of twigs.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Xena",
+      "to": "Jasper",
+      "item": "bundles of twigs",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "bundles of twigs",
+      "quantity": 18
+     },
+     {
+      "entity": "Jasper",
+      "item": "bundles of twigs",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Xena left two bundles of twigs at the stationery store.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Xena",
+      "to": "stationery store",
+      "item": "bundles of twigs",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Xena",
+      "item": "bundles of twigs",
+      "quantity": 16
+     },
+     {
+      "entity": "stationery store",
+      "item": "bundles of twigs",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many bundles does Xena have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Xena",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4,
+      5
+     ]
+    },
+    "item": "bundles of twigs"
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many bundles of twigs does Jasper have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "hold",
+    "entity": "Jasper",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      7
+     ]
+    },
+    "item": "bundles of twigs"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many bundles of twigs do Bonnie and Xena have combined?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Bonnie",
+     "Xena"
+    ],
+    "quantity": 23,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    "item": "bundles of twigs"
+   }
+  }
+ ]
+}
