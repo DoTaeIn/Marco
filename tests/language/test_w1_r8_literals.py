@@ -21,7 +21,11 @@ ROOT = Path(__file__).resolve().parents[2]
 PACKAGE = ROOT / "marco" / "language"
 HANGUL_WORD = re.compile("[가-힣ㄱ-ㆎ]+")
 def files():
-    return sorted(PACKAGE.rglob("*.py"))
+    """The realization path fixed at R0. The file moves put the reader's own modules (hangul, frames,
+    numerals ...) beside it under marco/language; the target map names them, and they are not on the path."""
+    moved = json.loads((ROOT / "docs" / "architecture" / "target-map.json").read_text(encoding="utf-8"))
+    beside = {ROOT.joinpath(*target.split(".")).with_suffix(".py") for target in moved["modules"].values()}
+    return sorted(path for path in PACKAGE.rglob("*.py") if path not in beside)
 
 
 def surface_forms():

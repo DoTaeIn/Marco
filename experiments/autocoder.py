@@ -21,6 +21,9 @@
   python autocoder.py --요청 "웹 서버 만들어줘"   # 도구 없음을 정직하게 보고
   python autocoder.py --check
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import re
 import subprocess
 import sys

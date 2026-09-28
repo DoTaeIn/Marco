@@ -43,8 +43,7 @@ def classify(expected, selected, edges):
 
 def run():
     import engine
-    import yardstick
-
+    import bench.yardstick as yardstick
     frozen = Path(yardstick.frozen_dir)
     before = frozen.read_bytes()
     dataset = json.loads(before)

@@ -259,7 +259,7 @@ KG_ENCODER=문자 python engine.py --diagnose graphs/graph_순위_추월.kg
 # 자체 검사 · 회귀 · 라우팅 벤치마크
 KG_ENCODER=문자 python engine.py --check
 KG_ENCODER=문자 python engine.py --regress
-KG_ENCODER=문자 python routing_benchmark.py --답
+KG_ENCODER=문자 python -m bench.routing_benchmark --답
 ```
 
 신경망 인코더(`jhgan/ko-sroberta-multitask`)를 쓰려면 `pip install
@@ -298,7 +298,7 @@ python engine.py --suggest   # 원문에서 노드 후보
   docs/ko/         저작 프롬프트와 설계 기록
 
 곁
-  routing_benchmark.py   안 본 말투로 라우팅을 잰다 (고정 시험)
+  bench/routing_benchmark.py   안 본 말투로 라우팅을 잰다 (고정 시험)
   tests/                 pytest
   views/                 웹 UI · 그래프 시각화
 ```

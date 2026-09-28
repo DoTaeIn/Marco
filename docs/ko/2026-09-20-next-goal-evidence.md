@@ -28,7 +28,7 @@
 | D5 node/edge/rule 변경 이력 | 검증됨(로컬 graph asset 범위) | rule proposal/approval/benchmark/rollback과 `alma-graph-asset-report.json`이 공통 `structural_changes` ledger에 graph asset의 construction/validation event lineage, lint, node/edge 수, base pack 버전, 승인·새 pack export·재시작·withdrawal을 기록한다. 원 pack은 바꾸지 않는다. |
 | D6 정책·승인 | 검증됨(로컬 graph asset 범위) | rule과 graph asset의 기본 `manual`은 pending approval로 대기하고, 검증을 통과한 `local_auto` graph asset만 고정된 로컬 정책으로 active가 된다. 어느 경우도 기존 pack을 덮어쓰지 않으며 export는 명시적 output path를 요구한다. |
 | D7 OFF/ON 이후 적용 | 검증됨 | lifecycle과 structural-transfer의 ON/OFF, 철회 회귀 |
-| E1–2 로컬 환경·관찰 경계 | 검증됨 | `alma_environment.py`, local JSON config, environment raw report |
+| E1–2 로컬 환경·관찰 경계 | 검증됨 | `alma/environment.py`, local JSON config, environment raw report |
 | E3–4 정보 공백·capability 계약 | 검증됨 | episodic provenance→read 선택, 관련/무관 read 대조와 기존 capability의 permission/provides/input/output schema 전체 계약 일치 검사. `test_environment_rejects_an_existing_read_with_a_different_io_contract`는 이름과 제공 기능이 같아도 입력 schema가 다르면 환경 adapter를 연결하지 않음을 고정한다. |
 | E5 예산·중단·재개 | 검증됨 | budget pause와 CLI subprocess resume raw reports |
 | E6 외부 승인 유지 | 검증됨 | read local simulation, write approval journal 회귀 |

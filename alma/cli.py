@@ -1,4 +1,7 @@
 """Run a tiny resumable ALMA research loop using MARCO's event core."""
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import argparse
 from contextlib import nullcontext
 import json
@@ -6,8 +9,8 @@ from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
 
-from alma_runtime import AlmaRuntime
-from alma_environment import run_local_environment
+from alma.runtime import AlmaRuntime
+from alma.environment import run_local_environment
 
 
 def main(argv=None):
@@ -74,7 +77,7 @@ def main(argv=None):
         manifest, assets = kgpack.read(args.pack)
         if graph_name not in assets or not graph_name.endswith(".kg"):
             parser.error("--pack graph is missing: " + graph_name)
-        from alma_runtime import LANGUAGE
+        from alma.runtime import LANGUAGE
         from pack_model import descriptor
         # ALMA names its language; a pack built with another default still serves it.
         model = PackModel({**manifest, "model": descriptor(assets, "styles/%s.json" % LANGUAGE)}, assets)

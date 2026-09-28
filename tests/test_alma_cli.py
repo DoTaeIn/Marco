@@ -3,7 +3,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-from alma_runtime import AlmaRuntime
+from alma.runtime import AlmaRuntime
 from bench.alma_environment_reproduction import scenario
 import pytest
 
@@ -17,7 +17,7 @@ def test_cli_exposes_durable_ledger_search(tmp_path):
     state = tmp_path / "alma.json"
     runtime = AlmaRuntime(state, "cli-agent")
     runtime.turn("민수 구슬은 8개 있다.", KG)
-    command = [sys.executable, "alma_cli.py", "--state", str(state), "--identity", "cli-agent",
+    command = [sys.executable, "alma/cli.py", "--state", str(state), "--identity", "cli-agent",
                "--search", "민수", "--search-kinds", "log"]
     result = subprocess.run(command, cwd=Path.cwd(), check=True, capture_output=True, text=True, encoding="utf-8")
     rows = json.loads(result.stdout)
@@ -28,7 +28,7 @@ def test_cli_backup_keeps_personal_life_separate_from_its_original_state(tmp_pat
     state, backup = tmp_path / "alma.json", tmp_path / "backup.json"
     runtime = AlmaRuntime(state, "cli-agent")
     runtime.set_goal("관계 유지")
-    command = [sys.executable, "alma_cli.py", "--state", str(state), "--identity", "cli-agent",
+    command = [sys.executable, "alma/cli.py", "--state", str(state), "--identity", "cli-agent",
                "--backup-state", str(backup)]
     result = subprocess.run(command, cwd=Path.cwd(), check=True, capture_output=True, text=True, encoding="utf-8")
     receipt = json.loads(result.stdout)
@@ -42,7 +42,7 @@ def test_cli_restores_personal_state_from_a_pack_in_a_clean_working_directory(tm
     clean = tmp_path / "clean"; clean.mkdir()
     pack, life, backup = clean / "knowledge.kgpack", clean / "life.json", clean / "life-backup.json"
     kgpack.write_pack(pack, [Path(KG)] + kgpack.model_files(Path.cwd()), root=Path.cwd())
-    base = [sys.executable, str(Path.cwd() / "alma_cli.py"), "--pack", str(pack),
+    base = [sys.executable, str(Path.cwd() / "alma/cli.py"), "--pack", str(pack),
             "--state", str(life), "--identity", "packed-agent"]
     for text in ("베풀다는 상대에게 구슬 2개를 주는 것이다.",
                  "민수 구슬은 8개 있다. 지연 구슬은 3개 있다.",
@@ -60,7 +60,7 @@ def test_cli_restores_personal_state_from_a_pack_in_a_clean_working_directory(tm
 def test_cli_starts_and_resumes_the_local_environment(tmp_path):
     state, environment = tmp_path / "alma.json", tmp_path / "environment.json"
     environment.write_text(json.dumps(scenario(), ensure_ascii=False), encoding="utf-8")
-    base = [sys.executable, "alma_cli.py", "--state", str(state), "--identity", "cli-agent",
+    base = [sys.executable, "alma/cli.py", "--state", str(state), "--identity", "cli-agent",
             "--environment", str(environment)]
     paused = subprocess.run(base + ["--step-budget", "1"], cwd=Path.cwd(), check=True,
                            capture_output=True, text=True, encoding="utf-8")
@@ -80,7 +80,7 @@ def test_cli_projects_a_timed_personal_state(tmp_path):
     event = next(row for row in runtime.snapshot()["event_index"]
                  if row["execution_status"] == "executed")
     runtime.annotate_event(event["id"], effective_at=2)
-    command = [sys.executable, "alma_cli.py", "--state", str(state), "--identity", "cli-agent",
+    command = [sys.executable, "alma/cli.py", "--state", str(state), "--identity", "cli-agent",
                "--project-state-at", "2"]
     result = subprocess.run(command, cwd=Path.cwd(), check=True, capture_output=True, text=True, encoding="utf-8")
     values = {(row["subject"], row["predicate"]): row["value"]
@@ -95,7 +95,7 @@ def test_cli_evaluates_a_structured_mental_event_condition(tmp_path):
     source = runtime.snapshot()["event_index"][0]["id"]
     runtime.update_mental("민지", "expectation", ["책", "location", "서랍"], modality="conditional",
                           conditions=[{"event_id": source}])
-    command = [sys.executable, "alma_cli.py", "--state", str(state), "--identity", "cli-agent",
+    command = [sys.executable, "alma/cli.py", "--state", str(state), "--identity", "cli-agent",
                "--mental-holder", "민지", "--mental-kind", "expectation",
                "--mental-condition-event", source]
     result = subprocess.run(command, cwd=Path.cwd(), check=True, capture_output=True, text=True, encoding="utf-8")

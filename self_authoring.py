@@ -87,7 +87,7 @@ os.environ.setdefault("KG_ENCODER", "문자")
 
 import engine                                    # noqa: E402
 import purpose_graph                                  # noqa: E402
-import routing_benchmark as bench                 # noqa: E402
+import bench.routing_benchmark as bench                 # noqa: E402
 from progress import Bar                             # noqa: E402
 
 cand_dir = os.path.join(here, "graphs", "후보")
@@ -258,7 +258,7 @@ def sample_questions(orig, count=600, seed=7, others_only=True):
     # 실제로 그렇게 물러져서 버림율이 41% 에서 9% 로 떨어졌다.
     if others_only:
         try:
-            import yardstick
+            import bench.yardstick as yardstick
             slot = yardstick.read()
             if slot and slot.get("안"):
                 frozen = [(x["물음"], x["그래프"]) for x in slot["안"]

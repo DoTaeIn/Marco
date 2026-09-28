@@ -12,6 +12,9 @@ styles/한국어.json 이 있는 자리에 styles/코드/python.json 이 있을 
 문장은 사람이 봐줘야 하지만 코드는 아니다. 창작 루프를 여기서 먼저 만드는
 이유가 그것이다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import copy
 import io
 import json
@@ -22,7 +25,7 @@ import subprocess
 import sys
 import tempfile
 
-here = os.path.dirname(os.path.abspath(__file__))
+here = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 
 
 def _abs(p):

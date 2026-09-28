@@ -53,7 +53,7 @@ def test_changed_rule_or_counterexample_disables_shortcut_and_returns_to_origina
 
 
 def test_validated_shortcut_is_available_to_the_parser_common_rule_selector(tmp_path):
-    from alma_runtime import AlmaRuntime
+    from alma.runtime import AlmaRuntime
     from relational_semantics import RelationalParser
 
     rules = _rules()[:2]

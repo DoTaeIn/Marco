@@ -6,24 +6,24 @@
 상태 파일에 추가 기록한다.
 
 ```powershell
-python alma_cli.py --state .nai/alma-state.json --identity demo --turn "민수 구슬은 8개 있다."
-python alma_cli.py --state .nai/alma-state.json --identity demo --memory episodic
-python alma_cli.py --state .nai/alma-state.json --identity demo --recall procedural --recall-key 베풀
-python alma_cli.py --state .nai/alma-state.json --identity demo --turn "과거 경험: event:demo:..."
-python alma_cli.py --state .nai/alma-state.json --identity demo --turn "일반적으로 아는 것: 베풀"
-python alma_cli.py --state .nai/alma-state.json --identity demo --turn "하는 방법: 베풀"
-python alma_cli.py --state .nai/alma-state.json --identity demo --mental-holder 지연 --mental-kind belief
-python alma_cli.py --state .nai/alma-state.json --identity demo --turn "지연의 믿음은 뭐야?"
-python alma_cli.py --state .nai/alma-state.json --identity demo --search "민수" --search-kinds event,log
-python alma_cli.py --state .nai/alma-state.json --identity demo --backup-state .nai/alma-backup.json
+python -m alma.cli --state .nai/alma-state.json --identity demo --turn "민수 구슬은 8개 있다."
+python -m alma.cli --state .nai/alma-state.json --identity demo --memory episodic
+python -m alma.cli --state .nai/alma-state.json --identity demo --recall procedural --recall-key 베풀
+python -m alma.cli --state .nai/alma-state.json --identity demo --turn "과거 경험: event:demo:..."
+python -m alma.cli --state .nai/alma-state.json --identity demo --turn "일반적으로 아는 것: 베풀"
+python -m alma.cli --state .nai/alma-state.json --identity demo --turn "하는 방법: 베풀"
+python -m alma.cli --state .nai/alma-state.json --identity demo --mental-holder 지연 --mental-kind belief
+python -m alma.cli --state .nai/alma-state.json --identity demo --turn "지연의 믿음은 뭐야?"
+python -m alma.cli --state .nai/alma-state.json --identity demo --search "민수" --search-kinds event,log
+python -m alma.cli --state .nai/alma-state.json --identity demo --backup-state .nai/alma-backup.json
 python kgpack.py --pack .nai/knowledge.kgpack --root .
-python alma_cli.py --pack .nai/knowledge.kgpack --state .nai/packed-state.json --identity packed-demo --turn "민수 구슬은 8개 있다."
-python alma_cli.py --pack .nai/knowledge.kgpack --state .nai/packed-state.json --identity packed-demo --backup-state .nai/packed-backup.json
-python alma_cli.py --pack .nai/knowledge.kgpack --state .nai/packed-backup.json --identity packed-demo --turn "지금 민수 구슬은 몇 개야?"
-python alma_cli.py --state .nai/alma-state.json --identity demo --cycle-steps cycle.json --step-budget 4
-python alma_cli.py --state .nai/alma-environment.json --identity demo --environment bench/alma_local_environment.json --step-budget 1
+python -m alma.cli --pack .nai/knowledge.kgpack --state .nai/packed-state.json --identity packed-demo --turn "민수 구슬은 8개 있다."
+python -m alma.cli --pack .nai/knowledge.kgpack --state .nai/packed-state.json --identity packed-demo --backup-state .nai/packed-backup.json
+python -m alma.cli --pack .nai/knowledge.kgpack --state .nai/packed-backup.json --identity packed-demo --turn "지금 민수 구슬은 몇 개야?"
+python -m alma.cli --state .nai/alma-state.json --identity demo --cycle-steps cycle.json --step-budget 4
+python -m alma.cli --state .nai/alma-environment.json --identity demo --environment bench/alma_local_environment.json --step-budget 1
 # 앞 명령의 environment ID를 넣어 새 프로세스에서 같은 설정으로 재개한다.
-python alma_cli.py --state .nai/alma-environment.json --identity demo --environment bench/alma_local_environment.json --resume-environment environment:ID --step-budget 4
+python -m alma.cli --state .nai/alma-environment.json --identity demo --environment bench/alma_local_environment.json --resume-environment environment:ID --step-budget 4
 python -m pytest -q tests/test_alma_runtime.py
 ```
 

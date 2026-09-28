@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from alma_environment import run_local_environment
-from alma_runtime import AlmaRuntime
+from alma.environment import run_local_environment
+from alma.runtime import AlmaRuntime
 import kgpack
 from bench.alma_environment_reproduction import scenario
 
@@ -115,7 +115,7 @@ def run():
         check("environment_budget_pause", "paused_budget", paused["status"])
         recovery_started = time.perf_counter()
         resumed_process = subprocess.run(
-            [sys.executable, str(ROOT / "alma_cli.py"), "--state", str(state), "--identity", "unified-alma",
+            [sys.executable, str(ROOT / "alma/cli.py"), "--state", str(state), "--identity", "unified-alma",
              "--graph", str(KG), "--environment", str(environment), "--resume-environment", paused["id"],
              "--step-budget", "4"], cwd=ROOT, check=True, capture_output=True, encoding="utf-8")
         resumed = json.loads(resumed_process.stdout)
@@ -191,7 +191,7 @@ def run():
         backup = Path(folder) / "personal-backup.json"
         AlmaRuntime(state, "unified-alma").backup_state(backup)
         backup_process = subprocess.run(
-            [sys.executable, str(ROOT / "alma_cli.py"), "--state", str(backup), "--identity", "unified-alma",
+            [sys.executable, str(ROOT / "alma/cli.py"), "--state", str(backup), "--identity", "unified-alma",
              "--recall", "procedural", "--recall-key", "베풀"], cwd=ROOT, check=True,
             capture_output=True, encoding="utf-8")
         check("personal_backup_restores_procedural_memory_in_new_process", "answered",
@@ -199,7 +199,7 @@ def run():
         clean = Path(folder) / "packed-restart"; clean.mkdir()
         pack, packed_state, packed_backup = clean / "knowledge.kgpack", clean / "life.json", clean / "life-backup.json"
         kgpack.write_pack(pack, [KG] + kgpack.model_files(ROOT), root=ROOT, language="styles/한국어.json")
-        packed_base = [sys.executable, str(ROOT / "alma_cli.py"), "--pack", str(pack),
+        packed_base = [sys.executable, str(ROOT / "alma/cli.py"), "--pack", str(pack),
                        "--state", str(packed_state), "--identity", "packed-unified-alma"]
         for text in ("베풀다는 상대에게 구슬 2개를 주는 것이다.",
                      "민수 구슬은 8개 있다. 지연 구슬은 3개 있다.",

@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-from alma_runtime import AlmaRuntime, local_file_read_adapter
+from alma.runtime import AlmaRuntime, local_file_read_adapter
 import pytest
 from graph_inference import closure
 
@@ -656,7 +656,7 @@ def test_active_semantic_and_procedural_memory_ground_learned_action_selection(t
     code = """
 import json
 import sys
-from alma_runtime import AlmaRuntime
+from alma.runtime import AlmaRuntime
 
 runtime = AlmaRuntime(sys.argv[1], "agent-a")
 print(json.dumps({

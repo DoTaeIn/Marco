@@ -11,8 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from alma_environment import run_local_environment
-from alma_runtime import AlmaRuntime
+from alma.environment import run_local_environment
+from alma.runtime import AlmaRuntime
 
 
 KG = ROOT / "graphs" / "graph_일상추론.kg"
