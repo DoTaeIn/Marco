@@ -507,7 +507,7 @@ class RelationalParser:
                             if targets and form != targets[0] and parse_numeral(form, numerals) is None:
                                 table.setdefault(form, (targets[0], {"id": "declared-same-frame-v1", "stem": raised,
                                                                      "as": read_as or target_stem, "tense": tense,
-                                                                     "ending": ending}))
+                                                                     "ending": ending, "honorific": True}))
         for row in self.phrase_variants:
             source, target = row.get("from"), row.get("to", "")
             if isinstance(source, str) and source and isinstance(target, str):
@@ -545,8 +545,16 @@ class RelationalParser:
                 right = "" if not source[-1:].isalnum() else r"(?![\w])"
                 compiled.append((source.lower() if flags else source, target, note,
                                  _compiled(left + re.escape(source) + right, flags)))
-            self._variant_compiled = compiled
+            # The honorific forms are looked for only in a text with one of the declared honorific marks
+            # (활용.honorific.marks): hundreds of forms that most clauses cannot contain.
+            self._variant_compiled_all = compiled
+            self._variant_compiled = [row for row in compiled if not row[2].get("honorific")]
         return self._variant_compiled
+
+    def _variant_patterns_for(self, literal):
+        plain = self._variant_patterns()
+        marks = ((self.inflection_grammar or {}).get("honorific") or {}).get("marks", [])
+        return self._variant_compiled_all if any(mark in literal for mark in marks) else plain
 
     def _particle_variant_words(self, literal):
         """Each word ending in a declared particle variant, with the particle it reads as."""
@@ -571,7 +579,7 @@ class RelationalParser:
         return list(found)
 
     def _variant_literals_of(self, literal):
-        patterns = self._variant_patterns()
+        patterns = self._variant_patterns_for(literal)
         literal_in = literal
         literal, particle_notes = self._particle_variant_words(literal)
         # The passive is recognised by its participle, before a same-frame
