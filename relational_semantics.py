@@ -2082,14 +2082,16 @@ class RelationalParser:
         words = literal.split()
         particles = {p for group in self.slot_particles for p in group} | set(self.case_particles) | {""}
         honorifics = [h for h in (self.holder_forms or {}).get("name_titles") or [] if isinstance(h, str)]
-        pairs = []
-        for before, word in zip(words, words[1:]):
-            title = next((t for t in titles if word.startswith(t)), None)
-            if title is None or self._ends_in_particle(before):
-                continue
+        def is_title(word, title):
+            if not word.startswith(title):
+                return False
             rest = word[len(title):]
             rest = next((rest[len(h):] for h in honorifics if h and rest.startswith(h)), rest)
-            if rest in particles or any(rest.startswith(p) and rest[len(p):] in particles for p in particles if p):
+            return rest in particles or any(rest.startswith(p) and rest[len(p):] in particles for p in particles if p)
+        pairs = []
+        for before, word in zip(words, words[1:]):
+            title = next((t for t in titles if is_title(word, t)), None)
+            if title is not None and not self._ends_in_particle(before):
                 pairs.append((before, title))
         if not pairs:
             return False
@@ -2100,9 +2102,9 @@ class RelationalParser:
                 tokens = value.split() if isinstance(value, str) else []
                 for surname, title in pairs:
                     for i, token in enumerate(tokens):
-                        if token == surname and tokens[i + 1:i + 2] != [title]:
+                        if token == surname and not (i + 1 < len(tokens) and is_title(tokens[i + 1], title)):
                             return True
-                        if token == title and (i == 0 or tokens[i - 1] != surname):
+                        if is_title(token, title) and (i == 0 or tokens[i - 1] != surname):
                             return True
         return False
 
