@@ -6,7 +6,7 @@ from pathlib import Path
 import zipfile
 from unittest.mock import patch
 
-import document_kg
+import marco.knowledge.ingest.documents as document_kg
 import engine
 import pytest
 
@@ -62,7 +62,7 @@ class DocumentKnowledgeGraphTest(unittest.TestCase):
                 archive.writestr("ppt/slides/_rels/slide1.xml.rels", rels)
                 archive.writestr("ppt/media/image1.png", b"not-a-real-image")
             report = {"location": "", "facts": [], "warnings": []}
-            with patch("document_kg.document_visual.analyze_image", side_effect=lambda _, location: {**report, "location": location}):
+            with patch("marco.knowledge.ingest.documents.document_visual.analyze_image", side_effect=lambda _, location: {**report, "location": location}):
                 reports, warnings = document_kg._pptx_visuals(path)
         self.assertEqual(warnings, [])
         self.assertEqual([item["location"] for item in reports], ["slide.1.figure.1"])

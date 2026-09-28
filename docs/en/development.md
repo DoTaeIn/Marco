@@ -10,7 +10,7 @@ supporting path.
 - `encoder.py`: sentence vectorization and shared path helpers.
 - `engine.py`: graph loading, matching, reasoning, sessions, and evaluation.
 - `explain.py`: evidence-based explanation and document procedures.
-- `build.py`: source documents to knowledge-graph authoring tool.
+- `marco/knowledge/ingest/text.py`: source documents to knowledge-graph authoring tool.
 - `experiments/codegen.py`: algorithm-description to code generation tool.
 - `graphs/`, `cases/`, `legal/`, and `data/`: domain knowledge and source data.
 
@@ -18,7 +18,7 @@ supporting path.
 
 ```bash
 KG_ENCODER=문자 python encoder.py --check
-KG_ENCODER=문자 python build.py --check
+KG_ENCODER=문자 python -m marco.knowledge.ingest.text --check
 KG_ENCODER=문자 python -m experiments.codegen --check
 python engine.py --regress
 ```

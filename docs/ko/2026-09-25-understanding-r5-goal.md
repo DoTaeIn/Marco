@@ -103,13 +103,13 @@ and W4: W5 owns the reply-return sites and the `meaning` blocks in `engine.py`,
 correction, and the ledger emission sites of G5.0(b). Requests to `docs/requests/G5-<n>.md`.
 
 Must not touch: `marco/language/`, `marco/trace/` beyond calling it, `mco/`, `alma_*`,
-the gate scorers beyond `--dataset`, any frozen area. `build.py` must not read
+the gate scorers beyond `--dataset`, any frozen area. `marco/knowledge/ingest/text.py` must not read
 `data/benchmarks/dialogues_v1/` or `reasoning_v1/`, not even for its overlap
 check: drop them from its `OTHER_SETS`; the owner runs the overlap check.
 
 ## Working conditions
 
 Commit by name, owner as author, no co-author lines, no assistant or model name in
-commits or product files (the phrasing model's id is data in `build.py` and the
+commits or product files (the phrasing model's id is data in `marco/knowledge/ingest/text.py` and the
 report). `python`, not `python3`; `KG_ENCODER=문자`. Commit after every batch. The
 phrasing model runs only while building the sets. Do not push. Report tersely.

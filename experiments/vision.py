@@ -24,6 +24,9 @@ k-means 로 묶어 사전을 만드는 것이다. 그런데 그러면 사전 크
 비트를 늘리면 천장이 열리고, 자료가 포화하면 비트를 늘려도 안 는다.
 그 차이를 보는 것이 이 파일의 전부다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import glob, json, os, re, sys, warnings
 import numpy as np
 
@@ -31,7 +34,7 @@ import numpy as np
 # 도는 동안 표를 밀어내서 정작 볼 숫자가 안 보인다.
 warnings.filterwarnings("ignore", category=UserWarning, module="PIL")
 
-_here = os.path.dirname(os.path.abspath(__file__))
+_here = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 _MAX_BITS = 32          # 코드는 늘 32비트로 만들고, 앞자리만 잘라 쓴다
 _seed = 20260901
 

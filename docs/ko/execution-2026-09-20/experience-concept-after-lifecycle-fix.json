@@ -71,7 +71,7 @@
       " M tests/test_reasoning_persistence.py",
       " M tests/test_response_composer.py",
       " M views/kgpack_ui.py",
-      " M web_learn.py",
+      " M marco/knowledge/ingest/web.py",
       "?? alma/cli.py",
       "?? alma/environment.py",
       "?? alma/runtime.py",

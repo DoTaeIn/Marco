@@ -81,7 +81,7 @@ def evaluate(state: dict, knowledge_path=None, *, model=None) -> dict:
                 return {"status": "answered", "operator": kind,
                         "verification": verification, **outcome}
             if kind in ("arithmetic", "linear_equation") and "expression_graph" in args:
-                import expression_graph
+                import marco.language.arithmetic as expression_graph
                 # Rebuild from the exact evidence instead of trusting supplied nodes.
                 evidence = relation.get("evidence", {}).get("text", "")
                 graph = expression_graph.parse(evidence) if model is None else model.parse_expression(evidence)

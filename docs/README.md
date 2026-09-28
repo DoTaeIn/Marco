@@ -237,7 +237,7 @@ Prompts handed whole to another AI, which then writes graphs.
 | [일시작발화-보강-프롬프트.md](ko/일시작발화-보강-프롬프트.md) | Prompt to add task-opening utterances to graphs |
 | [시작발화-충돌-고치기-프롬프트.md](ko/시작발화-충돌-고치기-프롬프트.md) | Prompt to fix two collisions the opening utterances caused |
 
-### Data read by `build.py`
+### Data read by `marco/knowledge/ingest/text.py`
 
 | Document | What |
 | --- | --- |

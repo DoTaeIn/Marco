@@ -1,6 +1,6 @@
 # 말로 표현한 식의 연산 그래프 연결
 
-`verbal_expression.py`는 `data/semantic/verbal_expressions.json`에 선언된
+`marco/language/arithmetic_spoken.py`는 `data/semantic/verbal_expressions.json`에 선언된
 문법을 재귀적으로 적용해 숫자·미지수·연산 트리를 만든다. 그 트리를 기존
 `expression_graph.solve`에 전달하여 분수와 일차방정식을 계산한다.
 

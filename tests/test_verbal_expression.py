@@ -3,7 +3,7 @@ from unittest.mock import patch
 import pytest
 
 import engine
-import expression_graph
+import marco.language.arithmetic as expression_graph
 from tests.test_reasoning_persistence import create_app
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

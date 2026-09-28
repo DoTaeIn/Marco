@@ -40,7 +40,7 @@ def build_graph(source: str | os.PathLike[str], output: str | os.PathLike[str], 
     생성은 기존 ``build.py`` 한 곳에 맡긴다. 이 함수는 입력을 모으고 결과를
     저장할 뿐이므로, 게임용 KG 저작 형식과 문서형 자동 생성 형식이 섞이지 않는다.
     """
-    from build import build
+    from marco.knowledge.ingest.text import build
 
     root = Path(source)
     if not root.is_dir():

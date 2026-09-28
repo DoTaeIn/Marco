@@ -4,7 +4,7 @@
 **GPU를 쓰지 않는다.** 질문 하나에 CPU 0.2초.
 
 ```bash
-python build.py 내폴더                    # 폴더 -> 지식그래프.json
+python -m marco.knowledge.ingest.text 내폴더                    # 폴더 -> 지식그래프.json
 python explain.py 내폴더/지식그래프.json         # 대화
 ```
 
@@ -33,9 +33,9 @@ python explain.py 내폴더/지식그래프.json         # 대화
 ## 2. 그래프를 짓는다
 
 ```bash
-python build.py 내폴더
-python build.py 내폴더 --min 3        # 3개 대목 이상 나온 개념만
-python build.py 내폴더 --out 내.json
+python -m marco.knowledge.ingest.text 내폴더
+python -m marco.knowledge.ingest.text 내폴더 --min 3        # 3개 대목 이상 나온 개념만
+python -m marco.knowledge.ingest.text 내폴더 --out 내.json
 ```
 
 `kiwipiepy` 로 복합명사를 뽑는다(`정당`+`방위` 가 아니라 `정당방위`).
@@ -111,7 +111,7 @@ CPU만 쓰고 문장당 0.33ms.
 
 ```bash
 python law_fetch.py 대한민국헌법 형법 민법 근로기준법
-python build.py 법지식
+python -m marco.knowledge.ingest.text 법지식
 ```
 위키문헌에서 원문을 받는다. **판본에 조문이 빠져 있을 수 있다** —
 형법의 경우 75개 조문이 없었다. 완전한 원문은 법제처 Open API(무료, 키 필요)가 낫다.

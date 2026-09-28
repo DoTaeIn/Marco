@@ -74,7 +74,7 @@ scorer against them. Earlier dev sets are seen: regression only.
 ## Definition of done — all eight, measured
 
 G4.1 **Scenario generator + phrasing pipeline** as above, committed under
-     `data/benchmarks/dialogues_dev4/` with `build.py`, the prompts, the checker,
+     `data/benchmarks/dialogues_dev4/` with `marco/knowledge/ingest/text.py`, the prompts, the checker,
      and the seed. At least **160 dialogues, 80 per language**, each class in
      the list above present in at least 10 dialogues per language (a script
      counts by scenario tags). Build and check halves by scenario, disjoint in
@@ -126,14 +126,14 @@ and `views/kgpack_ui.py`; you own parsing, repair, matching and correction
 logic. Requests to `docs/requests/G4-<n>.md`.
 
 Must not touch: `marco/language/`, `mco/`, `alma_*`, the gate scorers, any
-frozen area. The phrasing model is used only by `build.py`, never imported by
+frozen area. The phrasing model is used only by `marco/knowledge/ingest/text.py`, never imported by
 product code.
 
 ## Working conditions
 
 Commit by name, owner as author, no co-author lines, no assistant or model
 name in commits or product files (the phrasing model's id belongs in
-`build.py` and the report as data). `python`, not `python3`. Keep the phrasing
+`marco/knowledge/ingest/text.py` and the report as data). `python`, not `python3`. Keep the phrasing
 model under 6 GB resident and run it only while building the set. Do not push.
 Report tersely: G4.1–G4.8 with numbers, class coverage table, both cause tables
 before and after, build and check per batch, the rule table, declaration-to-code

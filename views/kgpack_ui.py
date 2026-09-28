@@ -33,15 +33,15 @@ import encoder  # noqa: E402
 import self_authoring  # noqa: E402
 import affect_state  # noqa: E402
 import conversation_store  # noqa: E402
-import document_kg  # noqa: E402
+import marco.knowledge.ingest.documents as document_kg  # noqa: E402
 import goal_runtime  # noqa: E402
 import input_understanding  # noqa: E402
 import kgpack  # noqa: E402
-import local_definitions  # noqa: E402
+import marco.knowledge.definitions as local_definitions  # noqa: E402
 import response_composer  # noqa: E402
 import semantic_parser  # noqa: E402
 import state_engine  # noqa: E402
-import web_learn  # noqa: E402
+import marco.knowledge.ingest.web as web_learn  # noqa: E402
 from encoder import _vec, split_fragments  # noqa: E402
 
 

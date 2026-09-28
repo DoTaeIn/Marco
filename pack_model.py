@@ -203,7 +203,7 @@ class PackModel:
         return deepcopy(built, {id(built._inflection_trie): built._inflection_trie})
 
     def parse_expression(self, text):
-        from expression_graph import parse
+        from marco.language.arithmetic import parse
         return parse(text, grammar=self._language["verbal_expressions"],
                      numerals=self._relational.get("numerals", {}))
 

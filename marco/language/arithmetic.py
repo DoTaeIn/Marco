@@ -9,7 +9,7 @@ import re
 
 
 def parse(text, *, grammar=None, numerals=None):
-    from verbal_expression import parse as parse_verbal
+    from marco.language.arithmetic_spoken import parse as parse_verbal
     verbal = parse_verbal(text, grammar=grammar, numerals=numerals)
     if verbal is not None:
         return verbal

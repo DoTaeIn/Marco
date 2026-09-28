@@ -28,8 +28,7 @@ import re
 import subprocess
 import sys
 
-import act
-
+import marco.host.act as act
 graph = "graphs/graph_개발_디버깅.kg"
 
 

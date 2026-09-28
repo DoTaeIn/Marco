@@ -26,7 +26,7 @@ G1 내부에서 의미 계약을 고정한 뒤에는 G2의 자료·후보 모델
 | 전체 시험 기록 | 기존 보고에 761 passed / 8 skipped / exit 0 / 1315.10초 | 당시 회귀 결과이지 모든 완료 조건 충족의 증거는 아님. 이후 변경된 코드에 자동 적용하지 않음 |
 | 영어 자료 준비 | 새로 실행한 `english-pack-preparation/check.py` exit 0. ID 277, 평가 문장 111, 학습 문장 70, 문자열 겹침 0 | G1의 입력 자료로 재사용. 19개 규칙과 일부 미작성 항목이 있는 초안이며 실행 영어팩이 아님 |
 | 기존 지식 연결 | 영어 준비 자료는 904개 KG 중 8개 팩의 22개 노드에 연결. 전체 개념 노드 집계 3685 | 모든 지식의 다국어 이해로 확대해 말하지 않는다. H11 범위·미연결 항목을 명시 |
-| 문서 처리 | `document_kg.py`의 문장 분리·주장 유형·원문 위치·graph export 존재 | 읽기/출처 수집 재사용. 현재 문장별 주장 노드 생성은 Entity/Event/Rule 의미 컴파일의 완성을 뜻하지 않음 |
+| 문서 처리 | `marco/knowledge/ingest/documents.py`의 문장 분리·주장 유형·원문 위치·graph export 존재 | 읽기/출처 수집 재사용. 현재 문장별 주장 노드 생성은 Entity/Event/Rule 의미 컴파일의 완성을 뜻하지 않음 |
 | 작업·도구 실행 | `goal_runtime.py`, `alma/runtime.py`에 승인·등록 도구·schema·journal·중단 재개·관찰 loop 존재 | 새 Registry/Task 엔진을 처음부터 만들지 않고 하나의 실행 계약으로 연결 |
 | 학습·수정 | `experience_concepts`, `semantic_feedback`, `rule_learning`, graph asset 후보/승인/rollback 경로 존재 | G2/G6/G9가 후보·변경 이력을 재사용. 기존 KG 학습을 G9까지 중단할 이유 없음 |
 | 코드 표현 | `experiments/codegen.py`에 알고리즘 표현→언어별 코드 출력·실행 기반 존재 | G8에서 재사용 검토. 이것만으로 임의의 새 도구를 자율 작성한다고 주장하지 않음 |

@@ -86,7 +86,7 @@ Desktop/Objection/          ← 여기 하나만 열면 된다
   encoder.py             신경망은 여기 한 곳뿐. 문장 -> 벡터
   engine.py              논증 엔진. 판정 A/B1/B2/C, 반격, 승패. 도메인 지식 0줄
   explain.py             설명 엔진. 판정하지 않는다. 발췌를 조립한다
-  build.py               문서 폴더 -> 지식그래프.json
+  marco/knowledge/ingest/text.py               문서 폴더 -> 지식그래프.json
   experiments/codegen.py             언어중립 알고리즘 -> 언어별 소스. 실행이 채점한다
   graphs/                .kg 도메인들 (법정·연구·의료·코드리뷰·대출 …) — 코드 수정 없이 교체된다
   legal/                 공통층 (형법 21조)
@@ -799,8 +799,8 @@ LLM 은 답하기 전에 토큰을 뽑아 초안·반례를 만들고 그것을 
 
 ```bash
 python collectors/wiki.py --그림 --아무거나 1500
-python vision.py --갈림     # 비트를 얼마로 잡나
-python vision.py --힙스     # 어휘가 포화하나
+python -m experiments.vision --갈림     # 비트를 얼마로 잡나
+python -m experiments.vision --힙스     # 어휘가 포화하나
 ```
 
 ### 어디서 자르느냐가 관계보다 크다 — RAG 로 재봤다 (2026-09-01)
@@ -863,8 +863,8 @@ WL 은 버렸다. 이웃 라벨을 통째로 접으니 차수 5, 영역 148개�
 구해야 한다. 지금 자로는 관계를 아무리 잘 만들어도 숫자가 안 움직인다.
 
 ```bash
-python vision.py --관계     # 관계를 넣으면 분리도가 오르나
-python vision.py --흔들기   # 구조만 무너뜨렸을 때 관계가 알아채나
+python -m experiments.vision --관계     # 관계를 넣으면 분리도가 오르나
+python -m experiments.vision --흔들기   # 구조만 무너뜨렸을 때 관계가 알아채나
 ```
 
 ### 물건을 알아본다 — COIL-100 에서 94.1% (2026-09-01)
@@ -933,8 +933,8 @@ ALOI, 배경이 어수선한 INSTRE 다. 그리고 이것은 **물건 하나를 
 알아보는 것**이지 '의자' 라는 범주를 아는 것이 아니다.
 
 ```bash
-python vision.py --각도      # 몇 도까지 같은 물건으로 알아보나
-python vision.py --맞히기    # 시점 일부로 익히고 나머지로 맞힌다
+python -m experiments.vision --각도      # 몇 도까지 같은 물건으로 알아보나
+python -m experiments.vision --맞히기    # 시점 일부로 익히고 나머지로 맞힌다
 ```
 
 ### 어수선함이 벽이다 — COIL 을 배경 위에 올려봤다 (2026-09-01)
@@ -994,7 +994,7 @@ INSTRE 는 토렌트로만 배포돼서 못 받았고(공식 호스트가 죽었
 무엇 때문에 졌는지 또 못 가린다.
 
 ```bash
-python vision.py --어수선   # 실제 사진 배경 위에서도 찾아내나
+python -m experiments.vision --어수선   # 실제 사진 배경 위에서도 찾아내나
 ```
 
 ### 유도 부분그래프가 곧 국소화다 — 창을 없애니 올랐다 (2026-09-01)
@@ -1072,8 +1072,8 @@ python vision.py --어수선   # 실제 사진 배경 위에서도 찾아내나
 보이고, 그러면 멀쩡한 방향을 접게 된다.**
 
 ```bash
-python vision.py --덩이            # 씨앗 덩이 국소화
-python vision.py --표적스캔        # 128px 창 방식 (견줌용)
+python -m experiments.vision --덩이            # 씨앗 덩이 국소화
+python -m experiments.vision --표적스캔        # 128px 창 방식 (견줌용)
 ```
 
 ### 목표를 아는 판과 모르는 판은 다른 문제다 (2026-09-01)
@@ -1161,7 +1161,7 @@ CSR 행렬의 `getcol(c).indices` 가 행 번호가 아니라 열 번호(전부 
 남겨 두었으니 안 도는 자료에서 다시 재면 된다.
 
 ```bash
-python vision.py --덩이              # 열린 판(기본)
-python vision.py --덩이 --조건부      # 목표를 준다
-python vision.py --덩이 --씨앗 1|2|3  # 씨앗 차수
+python -m experiments.vision --덩이              # 열린 판(기본)
+python -m experiments.vision --덩이 --조건부      # 목표를 준다
+python -m experiments.vision --덩이 --씨앗 1|2|3  # 씨앗 차수
 ```

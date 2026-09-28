@@ -3521,7 +3521,7 @@ def _local_definitions(question):
     global _definition_lookup
     if _definition_lookup is None:
         try:
-            import local_definitions
+            import marco.knowledge.definitions as local_definitions
             _definition_lookup = local_definitions.DefinitionLookup(
                 os.path.join(_here, "data", "위키", "정의문.jsonl"))
         except Exception:

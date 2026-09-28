@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 
-import document_kg
+import marco.knowledge.ingest.documents as document_kg
 import document_visual
 import pytest
 
