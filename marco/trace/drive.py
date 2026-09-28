@@ -130,7 +130,7 @@ def record(dialogues, ledger=None, *, code_root=ROOT, timing=None, engine_sites=
         return dialogue_gate.run(dialogues, code_root)
     os.environ.setdefault("KG_ENCODER", "문자")
     from views.kgpack_ui import AppState
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     from marco.language.realizer import default_realizer
     by_session = {"dialoguegate_" + re.sub(r"[^A-Za-z0-9_-]", "_", d["id"]): d for d in dialogues}
     # A dialogue played again into the same ledger is another conversation: <id>#2, <id>#3, ...

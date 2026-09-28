@@ -15,7 +15,7 @@ import re
 import pytest
 
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 KG = "graphs/graph_일상추론.kg"
 _MODELS = {}
@@ -224,7 +224,7 @@ def test_names_things_and_amounts_of_the_halves_are_disjoint():
 
 def test_the_giver_moves_the_receiver_is_not_known_and_nothing_is_counted_twice():
     """The state rows themselves: the receiver's row has no before or after, a count said later replaces it."""
-    from graph_inference import current_facts
+    from marco.reasoning.inference import current_facts
     updates = {"count_add": {"target": "count", "factor": 1}, "count_remove": {"target": "count", "factor": -1}}
     ev = {"text": "x"}
     facts = [{"triple": ["A pens", "count", "7"], "evidence": ev},

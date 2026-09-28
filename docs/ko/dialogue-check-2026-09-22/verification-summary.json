@@ -2,7 +2,7 @@
   "date": "2026-09-22",
   "scope": "Small fixed development diagnostics via AppState, not general conversation accuracy. External research stubbed. Runs in parallel; timing not used for performance claims.",
   "file_sha256_after_run": {
-    "reasoning_context.py": "22b3d0778ebe7889ac208288b61bf263a35fabc6cdd39333092ff1c18477c2f0",
+    "marco/reasoning/context.py": "22b3d0778ebe7889ac208288b61bf263a35fabc6cdd39333092ff1c18477c2f0",
     "relational_semantics.py": "ef57ec6f72452314e8491b5cd6bbcaf3298e8456cc37d275a10e852045f79b17",
     "marco/language/representation.py": "c6fdacd266788b90d0a7da1ae81c6ab0b62034ec6cc69027bacf40923e74eea3",
     "views/kgpack_ui.py": "fbbf5cf33602012c62d58e3eae7fbff699b377d5d38b2257ba11100787e142fb",

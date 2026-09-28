@@ -133,7 +133,7 @@ def classify(turn, result, index, holders):
 
 def play(dialogue):
     """[(turn, outcome, reading)] for the statement and correction turns of one dialogue."""
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     name = LANGUAGES[dialogue["language"]]
     other = "english" if name == "한국어" else "한국어"
     context = ReasoningContext(model=_model(name), companions=[_model(other)])

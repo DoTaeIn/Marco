@@ -5,7 +5,7 @@ from unittest.mock import patch
 import engine
 import kgpack
 from relational_semantics import RelationalParser
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 from views.kgpack_ui import AppState
 import pytest
 

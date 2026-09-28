@@ -255,7 +255,7 @@ def execute(program, roles, *, prior_facts=(), quantities=None,
     special = any(step.get("op") != "emit" for step in steps)
     emitted, bindings = (list(bound["facts"]), {}) if not special else ([], {})
     if special:
-        from graph_inference import current_facts
+        from marco.reasoning.inference import current_facts
         from relational_semantics import asserted, substitute
 
         values = {**bound["values"], **dict(provided or {})}

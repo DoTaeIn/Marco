@@ -50,7 +50,7 @@ and record that too. The seven split files stay at the root untouched: `engine.p
 ## Also in scope: non-Python files that belong with what moves
 
 `raw_data.txt` and `algorithms/` go with `experiments/universal_agent.py` and `experiments/codegen.py`
-into `experiments/`; `document_vision.swift` goes with `document_visual.py` into
+into `experiments/`; `document_vision.swift` goes with `marco/perception/visual.py` into
 `marco/perception/`; `graphify-out/` (a generated co-occurrence graph that
 `explain.py` reads if present, `explain.py:1943`) moves under `data/` with that
 path updated; the encoder's `.vec_*.npz` caches at the root move to

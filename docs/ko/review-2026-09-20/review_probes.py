@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT))
 os.environ.setdefault("KG_ENCODER", "문자")
 
 from alma.runtime import AlmaRuntime
-from graph_inference import closure
+from marco.reasoning.inference import closure
 from marco.learning.chunking import evaluate, propose
 
 

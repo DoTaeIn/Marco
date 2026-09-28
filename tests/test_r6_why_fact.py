@@ -11,7 +11,7 @@ import json
 import pytest
 
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 _MODELS = {}
 

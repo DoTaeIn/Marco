@@ -124,7 +124,7 @@ def test_legacy_shortcut_cannot_bypass_annotated_stem_class():
 
 @pytest.mark.parametrize("punctuation", ["?", " ?", "？", " ？"])
 def test_question_does_not_write_observation_even_when_form_is_known(punctuation):
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     text = "돌은 23개 있었어" + punctuation
     parser = RelationalParser()
     assert parser.parse(text, partial=True) is None

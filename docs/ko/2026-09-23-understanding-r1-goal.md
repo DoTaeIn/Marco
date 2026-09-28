@@ -62,12 +62,12 @@ G1.6 **Hand-off for the frozen run.** The report ends with the commit hash to
 ## Owns
 
 `marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
-`marco/language/hangul.py`, `engine.py`, `explain.py`, `reasoning_context.py`, `state_engine.py`,
+`marco/language/hangul.py`, `engine.py`, `explain.py`, `marco/reasoning/context.py`, `marco/reasoning/state.py`,
 `styles/*.json`, `data/benchmarks/dialogues_dev/`, `tests/` files for those
 modules, and the one flag in `bench/dialogue_gate.py`.
 
 Must not touch: `marco/language/` (W1 owns it; the `realize()` call in
-`reasoning_context.py` stays where it is), `mco/`, `alma_*`, any frozen area.
+`marco/reasoning/context.py` stays where it is), `mco/`, `alma_*`, any frozen area.
 A change needed in `marco/language/` goes to `docs/requests/G1-<n>.md`.
 
 ## Working conditions

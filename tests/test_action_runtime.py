@@ -1,7 +1,7 @@
 """The learned-action executor is a shared semantic path, not a verb table."""
 
-from action_runtime import SCHEMA, execute
-from reasoning_context import ReasoningContext
+from marco.reasoning.actions import SCHEMA, execute
+from marco.reasoning.context import ReasoningContext
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

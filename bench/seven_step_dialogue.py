@@ -52,7 +52,7 @@ def _numbers(text):
 
 
 def _state(context):
-    from graph_inference import current_facts
+    from marco.reasoning.inference import current_facts
     parser = context._parser()
     facts, _d, _p, _r = context._cached_replay(parser, context.observations, context.fills)
     state, _changes = current_facts(facts, parser.data.get("mutable_predicates", []),
@@ -62,7 +62,7 @@ def _state(context):
 
 def run(language, models=None):
     from pack_model import development_model
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     script = SCRIPTS[language]
     other = "english" if language == "한국어" else "한국어"
     models = models or {}

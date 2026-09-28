@@ -8,7 +8,7 @@ The MARCO core package. Written 2026-09-23 against commit `78bd062`; the
 Give the MARCO modules one importable home. Today it holds two subpackages:
 the language seam with Hermeneia, the language realizer (`marco.language`), and
 Hypomnema, the provenance ledger (`marco.trace`). Every other part of MARCO
-still lives in the root modules (`engine.py`, `reasoning_context.py`, ...).
+still lives in the root modules (`engine.py`, `marco/reasoning/context.py`, ...).
 Goal S4 (`docs/ko/2026-09-24-file-moves-goal.md`) moves the whole-file root
 modules into this package between understanding rounds 4 and 5, on the owner's
 go; `python tools/doc_facts.py layout` prints which files move where. The
@@ -45,6 +45,6 @@ splits of the seven large root files stay frozen until MARCO 1 ships
 | `marco.trace` | subpackage | `tests/trace/` (four files), per name in [marco.trace.md](marco.trace.md) |
 
 A runtime copied out of the source tree must include this package, because
-`reasoning_context.py` imports `marco.language`. Two tests build such a copy and
+`marco/reasoning/context.py` imports `marco.language`. Two tests build such a copy and
 run a pack in it: `tests/test_pack_model.py` (the isolated-runtime tests that
 copy `marco/` at lines 490 and 543).

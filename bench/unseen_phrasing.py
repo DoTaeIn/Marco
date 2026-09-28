@@ -22,7 +22,7 @@ def _has_value(text, expected):
 
 def run(path=None):
     from pack_model import development_model
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     data = json.loads(Path(path or ROOT / "data/benchmarks/unseen_phrasing_v1.json").read_text("utf-8"))
     rows = []
     for case in data["cases"]:

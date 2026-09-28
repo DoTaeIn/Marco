@@ -10,7 +10,7 @@ import subprocess
 import sys
 
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 ROOT = Path(__file__).resolve().parents[1]
 ORDERS = {

@@ -68,7 +68,7 @@ W4.6 **Nothing regresses.** Composition on dev, dev2, dev3 and the fixed sets
 (the `--say` option only), `tests/language/`, `tests/trace/test_trace_explain.py`,
 `marco/language/measurements/`, `docs/requests/W4-*.md`.
 
-Must not touch: `engine.py`, `reasoning_context.py`, `state_engine.py`,
+Must not touch: `engine.py`, `marco/reasoning/context.py`, `marco/reasoning/state.py`,
 `marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
 `explain.py`, `pack_model.py`, `styles/`, `views/`, `bench/`, `mco/`, `alma_*`,
 the rest of `marco/trace/`, any frozen area, any frozen benchmark.

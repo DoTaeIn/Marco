@@ -3,7 +3,7 @@ import random
 
 import pytest
 
-from graph_inference import bind, closure
+from marco.reasoning.inference import bind, closure
 
 
 def reference(facts, rules):

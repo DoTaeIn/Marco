@@ -16,9 +16,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from marco.language.representation import SemanticParser
-import state_engine
-
-
+import marco.reasoning.state as state_engine
 def run(path=ROOT / "data/benchmarks/semantic_reasoning.json", parser=None):
     data = json.loads(Path(path).read_text(encoding="utf-8"))
     parser = parser or SemanticParser()

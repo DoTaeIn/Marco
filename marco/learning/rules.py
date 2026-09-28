@@ -6,7 +6,7 @@ This learns a hypothesis; a finite validation gate is not proof of universal tru
 import hashlib
 import json
 
-from graph_inference import closure, current_facts
+from marco.reasoning.inference import closure, current_facts
 
 
 def validate_example(example):

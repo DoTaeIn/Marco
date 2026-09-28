@@ -91,7 +91,7 @@ os.environ.setdefault("KG_ENCODER", "문자")
 import engine                                    # noqa: E402
 import purpose_graph                                  # noqa: E402
 import bench.routing_benchmark as bench                 # noqa: E402
-from progress import Bar                             # noqa: E402
+from marco.progress import Bar                             # noqa: E402
 
 cand_dir = os.path.join(here, "graphs", "후보")
 admitted_log = os.path.join(cand_dir, ".들인것.json")

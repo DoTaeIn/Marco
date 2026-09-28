@@ -36,7 +36,7 @@ Palinorrhesis" needs a literature review and does not follow from the name.
 
 ## 2. Naming rules
 
-1. **Concept before implementation.** Apodeixis does not mean `graph_inference.py`;
+1. **Concept before implementation.** Apodeixis does not mean `marco/reasoning/inference.py`;
    it means the process by which explicit premises and evidence become a
    justified conclusion.
 2. **Names survive refactoring.** `engine.py` may become `marco/reasoning/`;

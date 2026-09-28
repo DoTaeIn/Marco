@@ -46,7 +46,7 @@ sys.path.insert(0, here)
 os.environ.setdefault("KG_ENCODER", "문자")
 
 import engine                                    # noqa: E402
-from progress import Bar                             # noqa: E402
+from marco.progress import Bar                             # noqa: E402
 
 frozen_dir = os.path.join(here, "data", "benchmarks", "고정물음.json")
 outside_dir = os.path.join(here, "data", "benchmarks", "라우팅_밖.json")

@@ -8,7 +8,7 @@ import json
 import re
 import uuid
 
-from graph_inference import current_facts
+from marco.reasoning.inference import current_facts
 from relational_semantics import RelationalParser
 from marco.language import realize
 
@@ -667,7 +667,7 @@ class ReasoningContext:
         return ("채움", ask, (name, 바라는))
 
     def _permitted(self, knowledge_path):
-        from state_engine import _knowledge
+        from marco.reasoning.state import _knowledge
         return (self.model.permits("relational_graph") if self.model is not None
                 else "relational_graph" in _knowledge(knowledge_path)["axioms"])
 
@@ -837,7 +837,7 @@ class ReasoningContext:
                 return None
             received, overridden = role_fills.get(event_id, {}), event_overrides(event_id, stem)
             supplied, supplied_facts = value_fills.get(event_id, {}), fact_fills.get(event_id, [])
-            from action_runtime import event_record
+            from marco.reasoning.actions import event_record
             envelope = event_record(event_id, rule["프로그램"], raw, sequence=index,
                                     evidence=raw.get("evidence"), fills=received,
                                     overrides=overridden, state_fills=supplied_facts)
@@ -1049,7 +1049,7 @@ class ReasoningContext:
                     or any(old.get("action") != self._lookup(parser, raw, set(), forms)
                            for old, raw in zip(originals, raws))):
                 return None
-            from action_runtime import event_record
+            from marco.reasoning.actions import event_record
             replacement_events = [event_record(
                 old["id"], old["program"], raw, sequence=at, evidence=raw.get("evidence"),
                 fills=old.get("fills") or {}, overrides=old.get("overrides") or {},
@@ -1614,7 +1614,7 @@ class ReasoningContext:
         # The normal answer path retains the exact parent triple.  Its
         # provenance ledger additionally gives the rule binding and durable
         # premise id, so an explanation never re-selects a lookalike fact.
-        from graph_inference import closure_with_provenance
+        from marco.reasoning.inference import closure_with_provenance
         provenance = closure_with_provenance(facts, parser.data.get("rules", []))
         bundle = next((row for row in provenance["proof_bundles"].get(tuple(conclusion), [])
                        if row.get("rule") == rule
@@ -1729,7 +1729,7 @@ class ReasoningContext:
 
     def _inference_ledger(self):
         """Serialisable proof bundles for the same inputs a normal answer sees."""
-        from graph_inference import closure_with_provenance
+        from marco.reasoning.inference import closure_with_provenance
         parser = self._parser()
         identified = self._common_inference_facts(parser)
         result = closure_with_provenance(identified, parser.data.get("rules", []))
@@ -1976,7 +1976,7 @@ class ReasoningContext:
         빈 자리를 채우고 어긋나지 않으며 남는 자리가 적은 자름이 옳은 자름이다.
         낱말만 봐서는 못 가르는 것을 개체 증거로 가르는 자리다.
         """
-        from action_runtime import execute
+        from marco.reasoning.actions import execute
         from marco.language.frames import particle_key
         임자 = particle_key(parser.doer_particle, parser.slot_particles)
         best = None
@@ -2180,7 +2180,7 @@ class ReasoningContext:
         if rule["verb"] in 쓴동사 and rule["verb"] not in 뜻표:
             return None
         참조 = {stem: ((배운것 or {}).get("때") or {}).get(stem) for stem in 쓴동사}
-        from action_runtime import compile_program
+        from marco.reasoning.actions import compile_program
         compiled = {**rule, "유도": 유도, "쓴동사": 쓴동사, "참조": 참조}
         program = compile_program(compiled)
         domain = ReasoningContext._declared_event_domain(parser, program)
@@ -3602,7 +3602,7 @@ class ReasoningContext:
                     continue        # 뜻을 모르거나, 안 한 일이다
                 받은값, 덮을값 = 채움.get(이름표, {}), 덮을것(이름표, stem, index)
                 보완값, 보완사실 = 조회값.get(이름표, {}), 조회사실.get(이름표, [])
-                from action_runtime import event_record
+                from marco.reasoning.actions import event_record
                 # The evidence attached to each emitted fact is an immutable
                 # action envelope.  It makes a replayed fact distinguishable
                 # from a direct assertion and preserves definition version,
@@ -5269,7 +5269,7 @@ class ReasoningContext:
                                             if ask.get("가정사건") == event_key), {})
                     supplied_facts = next((ask.get("가정조회사실", []) for ask in self.asked
                                            if ask.get("가정사건") == event_key), [])
-                    from action_runtime import event_record
+                    from marco.reasoning.actions import event_record
                     hypothetical_event = {**event, "modality": "hypothetical"}
                     record = event_record(event_key, rule["프로그램"], hypothetical_event,
                         sequence=len(self.observations), evidence=event["evidence"], fills=supplied)

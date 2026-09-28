@@ -14,7 +14,7 @@ import tracemalloc
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from graph_inference import closure
+from marco.reasoning.inference import closure
 
 
 def run():

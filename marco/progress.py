@@ -24,6 +24,9 @@ tqdm 을 안 쓴다. 이 프로젝트는 KG_ENCODER=문자 로 돌면 numpy 말�
 터미널이 아니면(파이프·로그 파일) 조용히 끈다. 진행 막대가 로그에 캐리지
 리턴으로 도배되면 읽을 수 없게 된다.
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 import os
 import shutil
 import sys

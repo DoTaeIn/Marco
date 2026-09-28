@@ -18,7 +18,7 @@ import pytest
 from marco.language.realizer import Realizer, follow_up, last_report
 from marco.language.realizer.packs import Language, meaning_declarations
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 ROOT = Path(__file__).resolve().parents[2]
 OTHER = {"english": "한국어", "한국어": "english"}

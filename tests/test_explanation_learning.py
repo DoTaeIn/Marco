@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from relational_semantics import RelationalParser
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
@@ -45,7 +45,7 @@ class FrameTest(unittest.TestCase):
 
         엮는 방법도 이제는 안 적혀 있다. 몸통을 보통 문장으로 읽어 꺼낸다.
         """
-        from reasoning_context import ReasoningContext
+        from marco.reasoning.context import ReasoningContext
         rule = self.parser.parse("베풀다는 상대에게 구슬 2개를 주는 것이다",
                                  partial=True)["정의"][0]
         usable = ReasoningContext._rule(self.parser, rule)

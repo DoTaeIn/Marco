@@ -148,12 +148,12 @@ G6.8 **Hand-off:** the commit hash and the tables. The owner scores the frozen s
 ## Owns
 
 Same as G5: `marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
-`marco/language/hangul.py`, `engine.py`, `explain.py`, `reasoning_context.py`, `state_engine.py`,
+`marco/language/hangul.py`, `engine.py`, `explain.py`, `marco/reasoning/context.py`, `marco/reasoning/state.py`,
 `pack_model.py`, `styles/*.json`, `data/benchmarks/dialogues_dev4/`, `dev5/`, `dev6/`,
 `tests/test_understanding_r6.py`, `tests/` files for those modules, the emission
 sites in `marco/trace/drive.py` and `from_turn.py`, the `--dataset` handling in
 `bench/dialogue_gate.py`. W6 owns the reply-return sites and the `meaning` blocks
-in `engine.py`, `reasoning_context.py`, `views/kgpack_ui.py`, and all of
+in `engine.py`, `marco/reasoning/context.py`, `views/kgpack_ui.py`, and all of
 `marco/language/`. Requests to `docs/requests/G6-<n>.md`.
 
 Must not touch: `marco/language/`, `mco/`, `alma_*`, the gate scorers beyond

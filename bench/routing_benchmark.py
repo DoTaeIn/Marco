@@ -22,7 +22,7 @@ import os
 import sys
 
 import engine
-from progress import Bar
+from marco.progress import Bar
 
 outside_path = "data/benchmarks/라우팅_밖.json"
 

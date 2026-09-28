@@ -107,7 +107,7 @@
 다음 goal 이 정해야 한다. 임의로 고르지 않았다.
 
 **D1. 역할 키를 무엇으로 할 것인가.**
-현재 사건 역할은 한국어 조사를 키로 쓴다 — `reasoning_context.py:1455` 가
+현재 사건 역할은 한국어 조사를 키로 쓴다 — `marco/reasoning/context.py:1455` 가
 `roles.get("은")`, `roles.get("에게")` 로 직접 읽고, `:1969` 는 `event["자리"]["은"]` 을
 행위자로 쓴다. 한편 `action_runtime` 의 프로그램에는 이미
 `signature.open_roles = {"giver": "은", "taker": "에게"}` 라는 **역할 이름 층이 있다**

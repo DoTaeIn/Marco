@@ -1,6 +1,6 @@
-from graph_inference import closure, current_facts
+from marco.reasoning.inference import closure, current_facts
 from marco.language.representation import SemanticParser
-from state_engine import evaluate
+from marco.reasoning.state import evaluate
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

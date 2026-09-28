@@ -1,7 +1,7 @@
 """상태 전이는 KG에 선언된 공리와 검증된 JSON이 함께 있어야만 답한다."""
 from pathlib import Path
 
-import state_engine
+import marco.reasoning.state as state_engine
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

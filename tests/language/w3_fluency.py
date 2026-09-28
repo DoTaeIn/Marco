@@ -94,7 +94,7 @@ def new_kinds(language):
     """The round-3 and round-4 kinds, one reply each, every one composed."""
     from marco.language.realizer import Realizer, last_report
     from pack_model import development_model
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     rows = []
     for lines, keep in DIALOGUES[language]:
         context = ReasoningContext(model=development_model(language), companions=[development_model(OTHER[language])])

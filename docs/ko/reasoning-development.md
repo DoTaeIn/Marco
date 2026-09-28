@@ -35,7 +35,7 @@
 
 - `relational_semantics.py`는 주석된 개체 슬롯과 관계 예시에서 문장 틀을 유도한다.
   언어별 사례는 `data/semantic/relations.json`에 있으며 기존 언어 교체 계층은 수정하지 않았다.
-- `graph_inference.py`는 변수 결합과 여러 전제의 조인으로 새 사실을 유도한다.
+- `marco/reasoning/inference.py`는 변수 결합과 여러 전제의 조인으로 새 사실을 유도한다.
   비교의 추이성, 분류의 상속, 분류에 속한 개체의 행위 적용은 데이터의 규칙이다.
   중간 사실은 입력 근거나 규칙 ID·부모 사실을 기록한다.
 - 엔진과 UI의 상태 추론 경로에 연결했다. 실제 UI 테스트에서도 연구 호출 없이
@@ -131,7 +131,7 @@ python -m marco.learning.feedback rule corrected-proofs.json --model /private/tm
 
 ## 대화별 상태 문맥
 
-`reasoning_context.py`를 `engine.대화`와 UI의 대화/세션별 경로에 연결했다.
+`marco/reasoning/context.py`를 `engine.대화`와 UI의 대화/세션별 경로에 연결했다.
 완전히 해석된 사용자 관찰 문장만 원문으로 보관하고 매번 재해석·재계산한다.
 따라서 질문을 반복할 때 증감 사건이 다시 누적되지 않으며, 모델을 교체하면 이전
 문장의 해석도 새 모델로 확인한다. 답변 문장은 사실로 저장하지 않는다.

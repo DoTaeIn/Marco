@@ -229,7 +229,7 @@ _xml_value = {k: re.compile(r'%s"\s+val="([^"]+)"' % k)
 def read_dict(folder="data/사전"):
     """국립국어원 XML -> 명사 항목 목록. [{말, 번, 뜻}, ...]"""
     import glob, os
-    from progress import Bar
+    from marco.progress import Bar
     emitted = []
     for f in Bar(sorted(glob.glob(os.path.join(folder, "krdict_*.xml"))), "사전 읽기"):
         with open(f, encoding="utf-8") as fh:

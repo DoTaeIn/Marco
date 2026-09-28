@@ -13,8 +13,8 @@ realizer's report.
 import contextlib
 import copy
 
-import reasoning_context
-from reasoning_context import ReasoningContext
+import marco.reasoning.context as reasoning_context
+from marco.reasoning.context import ReasoningContext
 
 
 def _premise(parser, queries, facts):

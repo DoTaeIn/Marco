@@ -10,7 +10,7 @@ import re
 
 import pytest
 
-import reasoning_context
+import marco.reasoning.context as reasoning_context
 from w1_harness import w1_1_fields
 
 from bench.seven_step_dialogue import SCRIPTS, run

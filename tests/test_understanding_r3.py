@@ -10,7 +10,7 @@ import re
 import pytest
 
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 ROOT = Path(__file__).resolve().parents[1]
 _MODELS = {}
@@ -473,7 +473,7 @@ def test_no_development_sentence_is_in_a_file_this_round_changed():
     for folder in ("dialogues_dev", "dialogues_dev2", "dialogues_dev3"):
         sentences += gate.dialogue_sentences(gate.load(ROOT / "data/benchmarks" / folder))
     owned = ["marco/language/frames.py", "language_components.py", "relational_semantics.py", "marco/language/hangul.py", "engine.py",
-             "explain.py", "reasoning_context.py", "state_engine.py", "pack_model.py",
+             "explain.py", "marco/reasoning/context.py", "marco/reasoning/state.py", "pack_model.py",
              "tests/test_understanding_r3.py"] + sorted(
         p.relative_to(ROOT).as_posix() for p in (ROOT / "styles").glob("*.json"))
     found = 0
@@ -508,7 +508,7 @@ def test_a_correction_keeps_the_event_it_corrects_and_only_its_amount():
 
 
 def test_a_correction_whose_rewrite_would_change_the_facts_is_not_applied():
-    import reasoning_context as rc
+    import marco.reasoning.context as rc
     current = context("한국어")
     for line in ["보람은 자두가 여덟 개, 다온은 세 개 있어.", "자두 한 개를 보람이 다온에게 줬어."]:
         current.turn(line)

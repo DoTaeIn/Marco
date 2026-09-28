@@ -30,9 +30,7 @@ from dataclasses import asdict, dataclass
 from functools import lru_cache
 from xml.etree import ElementTree
 
-import document_visual
-
-
+import marco.perception.visual as document_visual
 class DocumentKGError(RuntimeError):
     pass
 

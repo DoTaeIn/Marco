@@ -15,7 +15,7 @@ out of scope and gets written down as a Phase 1 task instead.
 
 - Two sessions edit `engine.py`, `explain.py`, `language_components.py`,
   `pack_model.py`, `relational_semantics.py`, `alma/runtime.py`,
-  `marco/learning/concepts.py`, `marco/learning/chunking.py`, `reasoning_context.py`.
+  `marco/learning/concepts.py`, `marco/learning/chunking.py`, `marco/reasoning/context.py`.
   Moving those now causes silent merge loss.
 - The realization goal (next) must build straight into `marco/language/`.
   That folder does not exist and its contents are undecided. This goal decides it.
@@ -44,12 +44,12 @@ A3. **`engine.py` responsibilities listed with line ranges.** Each responsibilit
 
 A4. **The four `nai` artifacts get names and homes.** Today the project name
     is used for four unrelated things:
-    - `nai.py` — CLI entry point, tracked
+    - `marco/runtime/conversation.py` — CLI entry point, tracked
     - `NAI.kgpack` — built model file, ignored
     - `.nai/` — runtime conversation store written by `conversation_store.py`, ignored
     - `.nai-tools/` — downloaded vision binary and YOLO config, ignored
     Decide one target path for each and say which code paths read them
-    (`views/kgpack_ui.py:249`, `document_visual.py:27`). Do not move them.
+    (`views/kgpack_ui.py:249`, `marco/perception/visual.py:27`). Do not move them.
 
 A5. **`mco/` placed.** The public API package on branch `mco-package` gets a
     row in the target layout: does it stay a top-level package, and which

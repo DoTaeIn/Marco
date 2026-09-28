@@ -48,7 +48,7 @@ W3.6 No regressions: `tests/language/`, seam, composition-gate, reasoning-gate
 
 `marco/language/**`, `tests/language/`, `tests/test_language_seam.py`,
 `tests/test_composition_gate.py`, `marco/language/measurements/`, and the
-carve-out sites in `engine.py`, `reasoning_context.py`, `views/kgpack_ui.py`:
+carve-out sites in `engine.py`, `marco/reasoning/context.py`, `views/kgpack_ui.py`:
 reply-return sites and result-building `meaning` blocks only. Do not edit
 `styles/*.json`; request G4 for template strings.
 

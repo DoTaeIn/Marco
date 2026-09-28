@@ -3442,7 +3442,7 @@ def _state_reasoning(question):
         if _state_parser is None:
             import marco.language.representation as semantic_parser
             _state_parser = semantic_parser.SemanticParser()
-        import state_engine
+        import marco.reasoning.state as state_engine
         state = _state_parser.parse(question)
         result = state_engine.evaluate(state, knowledge_path)
     except Exception:
@@ -3810,7 +3810,7 @@ class Dialogue:
     없는 질문이 20.0%에서 40.7%로 새어 남는 장사가 아니다."""
 
     def __init__(self, joined=0.10):
-        from reasoning_context import ReasoningContext
+        from marco.reasoning.context import ReasoningContext
         self.state_context = ReasoningContext()
         self.graph = None
         self.sess = None

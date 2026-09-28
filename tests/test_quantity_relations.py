@@ -1,7 +1,7 @@
 import pytest
 
 from marco.language.representation import SemanticParser
-from state_engine import evaluate
+from marco.reasoning.state import evaluate
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
 
@@ -34,7 +34,7 @@ def test_connected_clauses_keep_one_quantity_subject_without_a_chain_template():
 
 
 def test_separate_turns_reuse_the_same_elided_quantity_subject():
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
 
     context = ReasoningContext()
     assert context.turn("공을 14개 가지고 있었어", "graphs/graph_일상추론.kg")["status"] == "observed"

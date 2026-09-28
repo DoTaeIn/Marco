@@ -17,9 +17,9 @@ from tempfile import TemporaryDirectory
 import time
 import uuid
 
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 from marco.learning.chunking import applicable as shortcut_applicable, evaluate as evaluate_shortcut, invalidate as invalidate_shortcut, propose as propose_shortcut
-from graph_inference import closure
+from marco.reasoning.inference import closure
 
 
 SCHEMA = "alma-runtime-v1"

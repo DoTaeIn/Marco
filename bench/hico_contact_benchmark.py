@@ -15,9 +15,7 @@ from pathlib import Path
 
 import pandas as pd
 
-import document_visual
-
-
+import marco.perception.visual as document_visual
 DEFAULT = Path("data/benchmarks/hico_det/data/test-00000-of-00004.parquet")
 
 

@@ -40,7 +40,7 @@ import kgpack  # noqa: E402
 import marco.knowledge.definitions as local_definitions  # noqa: E402
 import marco.language.realizer.composer as response_composer  # noqa: E402
 import marco.language.representation as semantic_parser  # noqa: E402
-import state_engine  # noqa: E402
+import marco.reasoning.state as state_engine  # noqa: E402
 import marco.knowledge.ingest.web as web_learn  # noqa: E402
 from encoder import _vec, split_fragments  # noqa: E402
 
@@ -719,7 +719,7 @@ class AppState:
             # 요청을 못 읽은 변화로 남겨 뒤의 안전한 계획도 막는다.
             if (self.model.permits("relational_graph")
                     and request_kind not in {"request.summary", "request.explain", "request.plan", "request.compare"}):
-                from reasoning_context import ReasoningContext
+                from marco.reasoning.context import ReasoningContext
                 if context_id not in self.reasoning_contexts:
                     context = ReasoningContext(model=self.model, companions=self.companions)
                     saved = self.conversations.reasoning_state(str(conversation_id)) if conversation_id else None
@@ -770,7 +770,7 @@ class AppState:
                 # the event branch above, so hydrate it here instead of
                 # silently dropping learned definitions and execution grounds.
                 if context_id not in self.reasoning_contexts and conversation_id:
-                    from reasoning_context import ReasoningContext
+                    from marco.reasoning.context import ReasoningContext
                     saved = self.conversations.reasoning_state(str(conversation_id))
                     if saved is not None:
                         restored = ReasoningContext(model=self.model, companions=self.companions)

@@ -116,7 +116,7 @@ L1.8 **Nothing regresses, hand-off.** Full parallel suite at main's count with
 `docs/architecture/trace-ledger.md`, `docs/requests/L1-*.md`, one `.gitignore`
 line for `logs/`.
 
-Must not touch: `engine.py`, `reasoning_context.py`, `state_engine.py`,
+Must not touch: `engine.py`, `marco/reasoning/context.py`, `marco/reasoning/state.py`,
 `marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
 `explain.py`, `pack_model.py`, `styles/`, `views/`, `marco/language/`, `bench/`,
 `mco/`, `alma_*`, any frozen area, any frozen benchmark. If the envelope lacks
