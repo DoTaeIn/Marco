@@ -150,7 +150,7 @@ def watching(code_root=ROOT):
     """
     gate._import_code(code_root)
     from views.kgpack_ui import AppState
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     import marco.language.realizer as realizer
     pending, results = {}, []
     original_turn, original_context_turn, original_observe = AppState.turn, ReasoningContext.turn, gate.observe

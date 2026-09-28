@@ -25,7 +25,7 @@ if str(ROOT) not in sys.path:
 
 import kgpack
 from conversation_store import ConversationStore
-from graph_inference import current_facts
+from marco.reasoning.inference import current_facts
 from views.kgpack_ui import AppState
 
 

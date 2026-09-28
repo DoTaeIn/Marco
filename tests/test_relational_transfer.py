@@ -1,10 +1,10 @@
 import copy
 import pytest
 
-from graph_inference import closure, proof
+from marco.reasoning.inference import closure, proof
 from relational_semantics import RelationalParser
 from marco.language.representation import SemanticParser
-from state_engine import evaluate
+from marco.reasoning.state import evaluate
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
 
@@ -143,7 +143,7 @@ def test_actual_dialogue_keeps_cause_and_binds_it_only_to_the_asked_effect(tmp_p
 
 def test_saved_dialogue_rebinds_the_causal_event_after_restart():
     from pathlib import Path
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
 
     context = ReasoningContext()
     context.turn("준호는 우산이 없어서 도서관에서 기다렸다.", Path("graphs/graph_일상추론.kg"))

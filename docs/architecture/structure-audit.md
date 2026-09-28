@@ -245,7 +245,7 @@ A6 layout. "+ split" rows name the primary target; the line ranges are in
 | File | Lines | What it does | Target | Conf | Reason / split |
 | --- | --- | --- | --- | --- | --- |
 | `marco/host/act.py` | 343 | Runs graph-chosen actions: matches an observation/error to an evidence node, walks -증명->/-충족-> to a registered tool, observe–recover–advance loop, trace sidecar | `marco/host/act.py` | sure | Executes host actions, so it sits with the permission boundary |
-| `action_runtime.py` | 453 | JSON action-program contract: compile an induced definition, bind roles, execute emit/lookup/select/compute/when/call into one event's effects | `marco/reasoning/actions.py` | sure |  |
+| `marco/reasoning/actions.py` | 453 | JSON action-program contract: compile an induced definition, bind roles, execute emit/lookup/select/compute/when/call into one event's effects | `marco/reasoning/actions.py` | sure |  |
 | `marco/language/realizer/affect.py` | 65 | Session-only affect expression mode from the user's own affect words (pack-declared); `decorate` prefixes a verified answer; never changes facts | `marco/language/realizer/affect.py` | unsure | Expression-only today (Expression Selector input). Moves to `cognition/` if affect ever feeds decisions |
 | `alias_diag.py` | 188 | Diagnostic CLI: nodes that absorb other nodes' phrasings, nodes short of aliases | `tools/alias_diag.py` | sure |  |
 | `alma/cli.py` | 123 | ALMA command line over `AlmaRuntime` (turns, memory, recall, mental, cycles, environment, backup) | `alma/cli.py` | sure |  |
@@ -261,8 +261,8 @@ A6 layout. "+ split" rows name the primary target; the line ranges are in
 | `marco/knowledge/ingest/documents.py` | 506 | PDF/PPTX → conservative claim graph with page positions; pack-declared sentence rules; visual observations as review items | `marco/knowledge/ingest/documents.py` | sure |  |
 | `marco/perception/objects.py` | 44 | Subprocess script: YOLO boxes → JSON | `marco/perception/objects.py` | sure |  |
 | `marco/perception/pose.py` | 58 | Subprocess script: YOLO pose keypoints → JSON | `marco/perception/pose.py` | sure |  |
-| `document_visual.py` | 643 | Image → verifiable observations: OCR merge (Vision binary + Tesseract), chart/table structure, objects, pose, contacts, spatial relations, optional VLM hypothesis | `marco/perception/visual.py` | sure |  |
-| `document_vlm.py` | 81 | Local VLM adapter; output kept as hypothesis only | `marco/perception/vlm.py` | sure |  |
+| `marco/perception/visual.py` | 643 | Image → verifiable observations: OCR merge (Vision binary + Tesseract), chart/table structure, objects, pose, contacts, spatial relations, optional VLM hypothesis | `marco/perception/visual.py` | sure |  |
+| `marco/perception/vlm.py` | 81 | Local VLM adapter; output kept as hypothesis only | `marco/perception/vlm.py` | sure |  |
 | `encoder.py` | 567 | `EncoderRuntime` (pack-selected), character n-gram/jamo vectors, neural model loader, embed helpers; surface ops: `view_lang`, `strip_english_shell`, `strip_fillers`, `split_fragments` | `marco/language/encoder.py` + split | sure |  |
 | `engine.py` | 6072 | Argument engine: graph format, matching, judgement, sessions, router, answer entry, realization, authoring suggestions, diagnostics, selfcheck, CLI — 20 parts, see A3 | `marco/runtime/engine.py` + 19 more (A3) | sure | Split per A3 |
 | `marco/learning/concepts.py` | 401 | `ExperienceConceptStore`: bounded concept candidates abstracted from saved action events, applied only as derived classification with supporting events | `marco/learning/concepts.py` | sure |  |
@@ -272,7 +272,7 @@ A6 layout. "+ split" rows name the primary target; the line ranges are in
 | `marco/language/frames.py` | 607 | Reads definition bodies by aligning to known examples; particle-marked chunks; induce/apply meaning frames; `read_event`; question detection | `marco/language/frames.py` | sure |  |
 | `goal_runtime.py` | 210 | `GoalRuntime`: goal text → approvable plan (work, learning, read-only web research), approval hashing, execution only through registered tools (no shell) | `marco/cognition/goals.py` + split | unsure | Planning is cognition; 147–210 (`_approve_once`, `_run`) is the host permission boundary → `marco/host/permissions.py` (W4 seam). Split in Phase 3 |
 | `graph_dialogue.py` | 259 | `GraphDialogueBackend`: the pack-declared dialogue backend (`styles/한국어.json:2993` `graph_dialogue:backend`); asks the KG for dialogue words, computes request endings by inflection | `marco/runtime/graph_dialogue.py` | sure | Imports `engine`, so it sits in runtime. Pack string or a shim must follow the move |
-| `graph_inference.py` | 336 | Finite positive Horn-rule closure, `current_facts` projection, replayable proof bundles | `marco/reasoning/inference.py` | sure |  |
+| `marco/reasoning/inference.py` | 336 | Finite positive Horn-rule closure, `current_facts` projection, replayable proof bundles | `marco/reasoning/inference.py` | sure |  |
 | `marco/language/hangul.py` | 586 | Hangul syllable arithmetic, jamo, particle pick/attach/strip/fix, pack-declared `inflect`, clause spans, word spans, yes/no word lists | `marco/language/hangul.py` | sure | §4.19 said `language/grammar.py`; that name is reserved for the Grammar Realizer |
 | `marco/language/understanding.py` | 140 | Structures a user utterance: segments, command/URL safety, session context, goals, via pack + `DialogueBackend` | `marco/language/understanding.py` | sure |  |
 | `bench/intelligence_check.py` | 151 | Per-ability test: out-of-domain refusal, traps, paraphrase vs control, sense, multi-turn | `bench/intelligence_check.py` | sure |  |
@@ -280,16 +280,16 @@ A6 layout. "+ split" rows name the primary target; the line ranges are in
 | `kgpack.py` | 308 | `.kgpack` ZIP with manifest, SHA-256 per file, default inputs, manager graph; write/read/unpack/selfcheck | `marco/storage/kgpack.py` | sure |  |
 | `language_components.py` | 502 | Language pack: path choice (`NAI_LANGUAGE`), validation of every declared section, `decode_language_pack`; `DialogueBackend`, `TemplateBackend`, `resolve_backend` | `marco/language/pack.py` + split | sure | Split: 24–403 → `pack.py`, rest → `backends.py` |
 | `marco/knowledge/definitions.py` | 179 | Read-only sqlite index over local wiki definitions for exact "X가 뭐야" questions | `marco/knowledge/definitions.py` | sure |  |
-| `nai.py` | 168 | `Conversation`/`Reply`: one chat contract over `.kg` (engine) and `.json` (explain) graphs; `--build` CLI | `marco/runtime/conversation.py` | sure | See A4 |
+| `marco/runtime/conversation.py` | 168 | `Conversation`/`Reply`: one chat contract over `.kg` (engine) and `.json` (explain) graphs; `--build` CLI | `marco/runtime/conversation.py` | sure | See A4 |
 | `marco/language/numerals.py` | 35 | Composes numbers from the pack's numeral vocabulary | `marco/language/numerals.py` | sure |  |
 | `marco/language/realizer/contracts.py` | 20 | Applies declared output constraints to a verified numeric answer | `marco/language/realizer/contracts.py` | sure |  |
 | `pack_model.py` | 221 | `PackModel`: selected model's assets (language, axioms, relational model, encoder), component loader, parser/expression/format factories; `development_model()` | `marco/storage/model.py` + split | sure | Split: 202–221 `development_model` → `runtime/model.py`; its 3 callers are the 6-module cycle |
 | `marco/language/passages.py` | 97 | Passage-kind classifier learned from human labels (char n-grams, CV threshold) | `marco/language/passages.py` | sure |  |
 | `marco/language/passage_components.py` | 38 | `PassageBackend` protocol, `StatementFallback`, pack-chosen `resolve_backend` | `marco/language/passages.py` | sure |  |
-| `progress.py` | 144 | Dependency-free progress bar | `marco/progress.py` | sure | Layer 0; imported by 6 root files |
+| `marco/progress.py` | 144 | Dependency-free progress bar | `marco/progress.py` | sure | Layer 0; imported by 6 root files |
 | `marco/learning/chunking.py` | 104 | Proposes/evaluates/invalidates shortcut rules for repeated Horn paths, keeping source proofs | `marco/learning/chunking.py` | sure |  |
 | `purpose_graph.py` | 288 | Definition sentence → purpose-constrains-means `.kg` text; concurrent-role skeleton | `marco/knowledge/ingest/purpose.py` + split | sure | Split: 223–288 (selfcheck + CLI, uses `engine`) → `tools/purpose_graph.py` |
-| `reasoning_context.py` | 2971 | `ReasoningContext`: per-conversation evidence ledger replayed per turn; definitions/programs; asks and completions; pointer resolution; incremental/correction replay; concept-relation reasoning; snapshot/restore; `turn()` | `marco/reasoning/context.py` | sure | Target certain; later split: ledger/snapshot → memory, asks/pointers → cognition |
+| `marco/reasoning/context.py` | 2971 | `ReasoningContext`: per-conversation evidence ledger replayed per turn; definitions/programs; asks and completions; pointer resolution; incremental/correction replay; concept-relation reasoning; snapshot/restore; `turn()` | `marco/reasoning/context.py` | sure | Target certain; later split: ledger/snapshot → memory, asks/pointers → cognition |
 | `relational_semantics.py` | 1170 | `RelationalParser`: compile pack examples into slot templates, `parse` sentences into facts/events, `learn`/`save` templates, `answer` by closure, `diagnose` | `marco/language/parser.py` + split | sure | Split: 1–42 → `language/facts.py`, 405–478 → `learning/templates.py`, 479–532 + 1077–1170 → `reasoning/semantics.py`, rest → `language/parser.py` |
 | `marco/language/realizer/composer.py` | 257 | Selects verified evidence sentences; summary/explanation/plan along declared preconditions, goal steps, causal chain; comparison only on certified shared attributes | `marco/language/realizer/discourse.py` | sure | Seed of the Discourse Planner |
 | `bench/routing_benchmark.py` | 180 | Held-out routing benchmark (last alias removed from the index) | `bench/routing_benchmark.py` | sure |  |
@@ -298,8 +298,8 @@ A6 layout. "+ split" rows name the primary target; the line ranges are in
 | `self_learning.py` | 360 | Wrong answers → unknown words → wiki fetch → rebuild → re-grade; `import_module("위키")` never resolves | `tools/self_learning.py` | sure | 0 importers; CLI loop |
 | `marco/learning/feedback.py` | 58 | CLI: diagnose a question; apply supervised rule corrections to a model file | `marco/learning/feedback.py` | sure |  |
 | `marco/language/representation.py` | 294 | Candidate meaning JSON → validated state JSON (spans, types, relations); token-free `StructuralBackend` | `marco/language/representation.py` | sure |  |
-| `situation_reasoner.py` | 13 | 13-line compatibility name forwarding to `semantic_parser`/`state_engine`. 0 importers | `marco/reasoning/state.py` | sure | Delete in Phase 5 |
-| `state_engine.py` | 164 | Pure state transition/calculation over validated state JSON using KG axioms | `marco/reasoning/state.py` | sure |  |
+| `marco/reasoning/situation.py` | 13 | 13-line compatibility name forwarding to `semantic_parser`/`state_engine`. 0 importers | `marco/reasoning/state.py` | sure | Delete in Phase 5 |
+| `marco/reasoning/state.py` | 164 | Pure state transition/calculation over validated state JSON using KG axioms | `marco/reasoning/state.py` | sure |  |
 | `experiments/universal_agent.py` | 119 | Demo tool set for `marco/host/act.py`: data pipeline raising real errors | `experiments/universal_agent.py` | sure |  |
 | `marco/language/arithmetic_spoken.py` | 87 | Declared phrase grammar → bounded arithmetic graph; full match only | `marco/language/arithmetic.py` | sure |  |
 | `experiments/vision.py` | 1725 | Image-vocabulary experiments: gradient descriptors, LSH words, Heaps' law, SLIC region graphs, COIL-100 angle/clutter tests. 0 importers | `experiments/vision.py` | sure |  |
@@ -360,16 +360,16 @@ Notes:
 
 | Artifact | Is | Code that reads / writes it | Target |
 | --- | --- | --- | --- |
-| `nai.py` (tracked) | CLI + `Conversation`/`Reply` over `.kg` and `.json` graphs | imported by `tests/test_nai.py`; imports `engine` (nai.py:71), `explain` (:77), `build` (:43) | `marco/runtime/conversation.py`; CLI becomes `python -m marco` (`marco/__main__.py`). `nai.py` stays as a shim until Phase 5 |
+| `marco/runtime/conversation.py` (tracked) | CLI + `Conversation`/`Reply` over `.kg` and `.json` graphs | imported by `tests/test_nai.py`; imports `engine` (marco/runtime/conversation.py:71), `explain` (:77), `build` (:43) | `marco/runtime/conversation.py`; CLI becomes `python -m marco` (`marco/__main__.py`). `marco/runtime/conversation.py` stays as a shim until Phase 5 |
 | `NAI.kgpack` (ignored) | built model pack, 1.5 MB here | no code hardcodes the name. Written by `python kgpack.py --pack NAI.kgpack` (usage text kgpack.py:7–9); read via `--pack` (usage text views/kgpack_ui.py:4) | `dist/MARCO.kgpack`; add `dist/` to `.gitignore`. Only usage strings and docs change |
 | `.nai/` (ignored) | runtime store: `conversations.json`; README's ALMA examples put state files here | `views/kgpack_ui.py:249` `ConversationStore(repo_root / ".nai" / "conversations.json")`; docstring `conversation_store.py:1`; ALMA paths come from the caller (`--state`) | `.marco/state/` |
-| `.nai-tools/` (ignored) | machine-built vision binary, YOLO config | `document_visual.py:27` `VISION_BINARY = ROOT / ".nai-tools" / "document_vision"`; `:468`, `:484` `YOLO_CONFIG_DIR` | `.marco/tools/` |
+| `.nai-tools/` (ignored) | machine-built vision binary, YOLO config | `marco/perception/visual.py:27` `VISION_BINARY = ROOT / ".nai-tools" / "document_vision"`; `:468`, `:484` `YOLO_CONFIG_DIR` | `.marco/tools/` |
 
 One ignored directory, `.marco/`, then holds all per-machine state. Fifth use of the
 old name, found while reading: the `NAI_*` environment prefix —
 `NAI_LANGUAGE` (language_components.py:25), `NAI_RELATIONAL_MODEL`
 (relational_semantics.py:45), `NAI_PDFTOTEXT` (marco/knowledge/ingest/documents.py:80),
-`NAI_DOCUMENT_VLM` (document_visual.py:436), `NAI_DOCUMENT_VLM_ALL` (:599),
+`NAI_DOCUMENT_VLM` (marco/perception/visual.py:436), `NAI_DOCUMENT_VLM_ALL` (:599),
 `NAI_PASSAGE_LABELS` (marco/language/passages.py:44). Target: `MARCO_*`, with the
 `NAI_*` name read as fallback until Phase 5.
 
@@ -407,9 +407,9 @@ same layer must not import each other in a cycle. Checked by `--targets`.
 MARCO/
 ├ marco/                  core; imports nothing from alma/ polo/ mco/ views/ bench/ tools/ experiments/
 │ ├ __init__.py           version only
-│ ├ __main__.py           `python -m marco` → runtime/cli.py (replaces nai.py)
+│ ├ __main__.py           `python -m marco` → runtime/cli.py (replaces marco/runtime/conversation.py)
 │ ├ _paths.py        L0   repo and data roots (engine.py:36–41; 22 root files use __file__ today)
-│ ├ progress.py      L0   progress bar
+│ ├ marco/progress.py      L0   progress bar
 │ ├ language/        L1   text ↔ structure: packs, Hangul arithmetic, encoder, parsing, realization.
 │ │                       Forbidden: graphs, judgement, file I/O beyond reading packs
 │ ├ perception/      L1   image → verified observations (OCR, chart/table, objects, pose, VLM hypothesis).
@@ -419,7 +419,7 @@ MARCO/
 │ ├ knowledge/       L3   graph format + structure queries, matching, definitions, Mermaid, ingest/.
 │ │                       Forbidden: verdicts, routing policy, sentence generation
 │ ├ memory/          L4   episodic/semantic/procedural stores, consolidation. Not created before
-│ │                       Phase 3 (§4.17): sources are reasoning_context.py:1107–1238,1550–1729
+│ │                       Phase 3 (§4.17): sources are marco/reasoning/context.py:1107–1238,1550–1729
 │ │                       and AlmaRuntime memory methods
 │ ├ reasoning/       L5   judge, Horn inference, context replay, state, action programs, answer semantics.
 │ │                       Forbidden: learning writes, sessions, host actions
@@ -511,7 +511,7 @@ target-level edges: 338  upward: 9 (top-level 4)
   marco.learning.authoring (L6) -> bench.yardstick (L12) [lazy]  e.g. marco/learning/authoring.py:261 self_authoring -> yardstick
   marco.learning.authoring (L6) -> marco.runtime.diagnostics (L9) [top]  e.g. marco/learning/authoring.py:88 self_authoring -> engine.lint
   marco.learning.authoring (L6) -> marco.runtime.router (L9) [top]  e.g. marco/learning/authoring.py:88 self_authoring -> engine.load_graph
-  marco.reasoning.context (L5) -> marco.learning.concepts (L6) [lazy]  e.g. reasoning_context.py:60 reasoning_context -> experience_concepts
+  marco.reasoning.context (L5) -> marco.learning.concepts (L6) [lazy]  e.g. marco/reasoning/context.py:60 reasoning_context -> experience_concepts
 package-level cycles after move: SCCs 1 sizes [9] elementary 53
   SCC: alma bench marco.cognition marco.knowledge marco.language marco.learning marco.reasoning marco.runtime marco.storage
 root .py files left after Phase 5: 1 (conftest)
@@ -522,7 +522,7 @@ The 8 upward edges inside `marco` are the Phase 3 work list:
 | Edge | Fix |
 | --- | --- |
 | `relational_semantics.py:51`, `marco/language/realizer/contracts.py:10`, `marco/language/arithmetic_spoken.py:14` → `pack_model.development_model` | callers pass the model; the source-tree fallback lives only in `runtime/model.py` and entry points. This is the 6-module cycle |
-| `reasoning_context.py:60` → `experience_concepts` | inject the concept store into `ReasoningContext` |
+| `marco/reasoning/context.py:60` → `experience_concepts` | inject the concept store into `ReasoningContext` |
 | `marco/learning/authoring.py:88` → `engine.load_graph`, `engine.lint` | inject `route`/`lint` callables from runtime |
 | `marco/learning/authoring.py:90` → `routing_benchmark`, `:261` → `yardstick` | move the index-without-alias builder into `runtime/router.py`; yardstick reads authoring records, not the reverse |
 
@@ -539,9 +539,9 @@ merged, and the ALMA goal's final commit an ancestor of `main`
 
 | File | Owner |
 | --- | --- |
-| `alma/cli.py`, `alma/runtime.py`, `encoder.py`, `graph_inference.py`, `kgpack.py`, `language_components.py`, `reasoning_context.py`, `relational_semantics.py`, `marco/knowledge/ingest/web.py`, `views/kgpack_ui.py`, `styles/한국어.json` | both goals |
-| `action_runtime.py`, `alma/environment.py`, `marco/learning/concepts.py`, `marco/learning/chunking.py`, `marco/learning/feedback.py`, `marco/language/representation.py` | goal 1 ALMA (Windows clone; edited in `f02d803`) |
-| `conftest.py`, `engine.py`, `explain.py`, `goal_runtime.py`, `marco/language/hangul.py`, `pack_model.py`, `state_engine.py`, `styles/english.json`, `data/benchmarks/unseen_phrasing_v1.json` | goal 2 repair + English (`f985857`, not on `main`) |
+| `alma/cli.py`, `alma/runtime.py`, `encoder.py`, `marco/reasoning/inference.py`, `kgpack.py`, `language_components.py`, `marco/reasoning/context.py`, `relational_semantics.py`, `marco/knowledge/ingest/web.py`, `views/kgpack_ui.py`, `styles/한국어.json` | both goals |
+| `marco/reasoning/actions.py`, `alma/environment.py`, `marco/learning/concepts.py`, `marco/learning/chunking.py`, `marco/learning/feedback.py`, `marco/language/representation.py` | goal 1 ALMA (Windows clone; edited in `f02d803`) |
+| `conftest.py`, `engine.py`, `explain.py`, `goal_runtime.py`, `marco/language/hangul.py`, `pack_model.py`, `marco/reasoning/state.py`, `styles/english.json`, `data/benchmarks/unseen_phrasing_v1.json` | goal 2 repair + English (`f985857`, not on `main`) |
 | 17 `bench/*.py` and 67 `tests/*.py` in `git diff --name-only main repair-and-english` | goal 2 (ALMA shares the `alma_*` ones) |
 | `mco/`, `pyproject.toml`, `tests/test_mco_package.py`, `docs/mco/`, the uncommitted `README.md` hunk | unregistered `mco` session (branch `mco-package`) |
 
@@ -567,7 +567,7 @@ with the same failing ids. `K` = cases in the compatibility test added in Phase 
 | 2 Clean moves | the 51 unsplit rows of A1 in batches of ≤ 10, not on A7 until A7's gate holds; each moved file's `__file__` paths switch to `marco._paths` in the same commit | one per moved file (template below); plus `tests/test_compat_imports.py`: old name imports and `is` the new module | per batch: passed = A0′ + K; failed ids = A0′; root `.py` = 61; `--targets` upward ≤ 9, never a new one; runtime SCCs ≤ 2 |
 | 3 Splits | `engine` (20 parts), `relational_semantics` (4), `language_components` (2), `encoder` (2), `pack_model` (2), `goal_runtime` (2), `purpose_graph` (2); `explain` per its A1 row; fix the 8 edges of A6 | the old file becomes the shim (engine.py keeps every name its 40 importers take) | passed = A0′ + K; `--targets` upward inside `marco` = 0; package SCCs = 0; `engine.py --check` same outcome as A0 (exit 1, same assertion) unless fixed in its own commit first; `bench/routing_benchmark.py --답` stdout sha1 = A0's (`d1937d7e…`) |
 | 4 Imports | every internal import package-qualified; `NAI_*` → `MARCO_*` with fallback; pack string `graph_dialogue:backend` (styles/한국어.json:2993) → `marco.runtime.graph_dialogue:backend`; `mco/backends/marco.py:54–55` (W2) | unchanged | passed = A0′ + K; edges into a shim from outside `tests/test_compat_imports.py` = 0 (tool: edges whose target is a root shim); upward = 0; package SCCs = 0 |
-| 5 Remove shims | delete the 59 shims (51 + 7 split sources + `explain`) and `situation_reasoner.py` (0 importers); keep `conftest.py`; `tests/test_compat_imports.py` goes | — | root `.py` = 1; passed = A0′; failed ids = A0′; README commands updated and each run once |
+| 5 Remove shims | delete the 59 shims (51 + 7 split sources + `explain`) and `marco/reasoning/situation.py` (0 importers); keep `conftest.py`; `tests/test_compat_imports.py` goes | — | root `.py` = 1; passed = A0′; failed ids = A0′; README commands updated and each run once |
 
 Shim template. It keeps module identity, so a test that patches a module attribute
 (`tests/test_experience_concept_reproduction.py:38` patches `action_runtime.execute`)

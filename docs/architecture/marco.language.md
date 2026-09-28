@@ -29,7 +29,7 @@ ones waits for MARCO 1.
 - Parsing. `relational_semantics.py`, `marco/language/frames.py`,
   `marco/language/understanding.py` and `marco/language/representation.py` are root modules.
 - Language packs. `styles/한국어.json` and `styles/english.json` are read by
-  `pack_model.py`, `language_components.py` and `reasoning_context.py`.
+  `pack_model.py`, `language_components.py` and `marco/reasoning/context.py`.
 - Korean particles and inflection (`marco/language/hangul.py`), which the realizer's grammar
   layer calls.
 - The graph engine's authored answer lines (`engine.py`). They pass through
@@ -45,6 +45,6 @@ ones waits for MARCO 1.
 | --- | --- | --- |
 | `realize` | `realize(meaning, intent, language) -> str` | `tests/test_language_seam.py::test_realize_is_exported_with_the_declared_signature` asserts `__all__`, the three parameter names and the `str` return annotation |
 
-Its callers are `ReasoningContext.turn` (`reasoning_context.py`), `engine.answer`
+Its callers are `ReasoningContext.turn` (`marco/reasoning/context.py`), `engine.answer`
 (`engine.py`) and `AppState` (`views/kgpack_ui.py`). What the function does:
 [marco.language.realizer.md](marco.language.realizer.md).

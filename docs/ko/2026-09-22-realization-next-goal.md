@@ -10,11 +10,11 @@
 > speed) reports, run only `tests/language/` and `tests/test_language_seam.py`;
 > the full parallel suite once, at the end.
 > Seam facts from S2-min: `marco/language/__init__.py: realize()` is called once
-> per dialogue turn from `reasoning_context.py`; answers the engine composes from
+> per dialogue turn from `marco/reasoning/context.py`; answers the engine composes from
 > graph routing still bypass it (second seam needed, request it). Owns
 > `marco/language/**`, `tests/test_language_seam.py`, `tests/language/`; expression
 > tables live in `marco/language/realizer/*.json`, never in `styles/*.json`.
-> Changes to `engine.py` or `reasoning_context.py` go to `docs/requests/W1-<n>.md`.
+> Changes to `engine.py` or `marco/reasoning/context.py` go to `docs/requests/W1-<n>.md`.
 
 
 Written 2026-09-22. Runs **after** `2026-09-22-repair-and-english-goal.md`. This is

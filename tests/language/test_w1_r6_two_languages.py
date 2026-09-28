@@ -11,7 +11,7 @@ import re
 
 import pytest
 
-import reasoning_context
+import marco.reasoning.context as reasoning_context
 import relational_semantics
 from w1_harness import play
 

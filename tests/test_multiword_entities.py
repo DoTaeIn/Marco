@@ -4,7 +4,7 @@ import pytest
 
 import engine
 from relational_semantics import RelationalParser
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
 

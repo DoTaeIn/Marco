@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 from tests.test_reasoning_persistence import create_app
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

@@ -10,7 +10,7 @@ import re
 import pytest
 
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -126,7 +126,7 @@ def test_no_development_sentence_is_in_a_file_this_round_changed():
     dialogues = gate.load(ROOT / "data/benchmarks/dialogues_dev")
     sentences = gate.dialogue_sentences(dialogues)
     owned = ["marco/language/frames.py", "language_components.py", "relational_semantics.py", "marco/language/hangul.py",
-             "engine.py", "explain.py", "reasoning_context.py", "state_engine.py", "bench/dialogue_gate.py",
+             "engine.py", "explain.py", "marco/reasoning/context.py", "marco/reasoning/state.py", "bench/dialogue_gate.py",
              "tests/test_understanding_r1.py"] + sorted(
         p.relative_to(ROOT).as_posix() for p in (ROOT / "styles").glob("*.json"))
     found = []

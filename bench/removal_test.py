@@ -81,7 +81,7 @@ CASES = [
 
 
 def _play(model, turns):
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     context = ReasoningContext(model=model)
     results = []
     for text in turns:

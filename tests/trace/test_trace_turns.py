@@ -173,7 +173,7 @@ def test_verification_holds_and_outputs_are_linked(recorded, code):
 
 
 def test_the_adapter_reads_the_gate_and_engine_tables_it_mirrors():
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     assert from_turn.GATE_OBSERVED == dialogue_gate.OBSERVED
     assert from_turn.GATE_HELD == dialogue_gate.HELD
     assert from_turn.GATE_CHAT == dialogue_gate.CHAT

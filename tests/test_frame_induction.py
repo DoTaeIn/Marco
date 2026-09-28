@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT))
 
 from marco.language.frames import induce, read_event, split_particle
 from relational_semantics import RelationalParser
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

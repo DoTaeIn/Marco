@@ -27,7 +27,7 @@ Written 2026-09-24. Own checkout, branch `realizer-r2`. Runs alongside G3
 W2.1 **Every spoken reply goes through `realize()` with a meaning.** Find every
      site that returns a hold, clarify or refusal reply without calling the
      realizer (start with `views/kgpack_ui.py`, the manager and routing paths in
-     `engine.py`, and `reasoning_context.py`). Give each a language-free
+     `engine.py`, and `marco/reasoning/context.py`). Give each a language-free
      meaning (`act`, `reason`, the user's words or ids it needs) following
      `marco/language/realizer/meaning.json`, and route it through the seam.
      Measure with `bench/composition_gate.py` on the 7-step, the 20 phrasings,
@@ -65,7 +65,7 @@ W2.7 **Nothing regresses.** `tests/language/` (all R tests), the seam test,
 
 `marco/language/**`, `tests/language/`, `tests/test_language_seam.py`,
 `tests/test_composition_gate.py`, `marco/language/measurements/`. Carve-out in
-`engine.py`, `reasoning_context.py`, `views/kgpack_ui.py`: only the reply-return
+`engine.py`, `marco/reasoning/context.py`, `views/kgpack_ui.py`: only the reply-return
 sites that produce a hold, clarify or refusal without `realize()`, and the
 result-building `meaning` blocks. Nothing else in those files; G3 owns their
 parsing, repair, matching and correction logic. Do not edit `styles/*.json`;

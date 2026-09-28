@@ -21,7 +21,7 @@ from marco.language.realizer import default_realizer, last_report
 from marco.language.realizer.grammar import Grammar
 from marco.language.realizer.packs import HERE, Language
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 ROOT = Path(__file__).resolve().parents[2]
 OTHER = {"english": "한국어", "한국어": "english"}

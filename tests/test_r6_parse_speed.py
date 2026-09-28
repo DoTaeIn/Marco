@@ -70,7 +70,7 @@ def test_compiled_patterns_are_shared_by_text_and_flags_not_by_parser():
 def test_two_conversations_on_one_model_do_not_share_what_one_learns():
     from marco.learning.expressions import propose
     from pack_model import _built_parsers, development_model
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     from tests.test_expression_learning import payload
     model = development_model("한국어")
     first, second = ReasoningContext(model=model), ReasoningContext(model=model)

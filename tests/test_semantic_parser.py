@@ -1,6 +1,6 @@
 """비토큰 구조 파서는 원문에 드러난 관계만 인증 후보로 낸다."""
 import marco.language.representation as semantic_parser
-import state_engine
+import marco.reasoning.state as state_engine
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

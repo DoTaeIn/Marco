@@ -46,7 +46,7 @@ before and after B, both halves.
 G5.0 **Housekeeping in your own files.** (a) Request W4-1: a live "왜?" / "why?"
      after an answer uses the trace graph's chain through `marco.trace.explain.say_why`
      when recording is on, the engine's own explanation otherwise; test. (b) Request
-     L1-1, the minimum: at the sites the request lists in `reasoning_context.py` and
+     L1-1, the minimum: at the sites the request lists in `marco/reasoning/context.py` and
      `engine.py`, emit `routing_selected` with the candidates and their scores, `rule_applied`
      with bindings, `evidence_rejected`, and on every hold the gap class from the
      adaptive note's taxonomy (routing, lexical, concept, relation, parser, evidence,
@@ -94,12 +94,12 @@ G5.8 **Hand-off:** the commit hash and the tables. The owner scores the frozen s
 ## Owns
 
 Same as G4: `marco/language/frames.py`, `language_components.py`, `relational_semantics.py`,
-`marco/language/hangul.py`, `engine.py`, `explain.py`, `reasoning_context.py`, `state_engine.py`,
+`marco/language/hangul.py`, `engine.py`, `explain.py`, `marco/reasoning/context.py`, `marco/reasoning/state.py`,
 `pack_model.py`, `styles/*.json`, `data/benchmarks/dialogues_dev4/` and `dialogues_dev5/`,
 `tests/test_understanding_r5.py`, `tests/` files for those modules, the `--dataset`
 handling in `bench/dialogue_gate.py`. The carve-out with W5 is the same as with W3
 and W4: W5 owns the reply-return sites and the `meaning` blocks in `engine.py`,
-`reasoning_context.py` and `views/kgpack_ui.py`; you own parsing, repair, matching,
+`marco/reasoning/context.py` and `views/kgpack_ui.py`; you own parsing, repair, matching,
 correction, and the ledger emission sites of G5.0(b). Requests to `docs/requests/G5-<n>.md`.
 
 Must not touch: `marco/language/`, `marco/trace/` beyond calling it, `mco/`, `alma_*`,

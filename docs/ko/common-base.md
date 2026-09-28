@@ -34,13 +34,13 @@ print(reply.text, reply.intent, reply.topic, reply.path)
 
 ```bash
 # 문서 폴더 -> 설명형 지식 그래프
-python nai.py --build data/법지식 --out data/법지식/지식그래프.json
+python -m marco.runtime.conversation --build data/법지식 --out data/법지식/지식그래프.json
 
 # 한 번 묻기: 답뿐 아니라 의도·주제·경로를 JSON으로 받는다
-python nai.py graphs/graph_의료.kg --ask "진단에 어떤 근거가 필요해?"
+python -m marco.runtime.conversation graphs/graph_의료.kg --ask "진단에 어떤 근거가 필요해?"
 
 # 여러 턴 대화
-python nai.py data/법지식/지식그래프.json --chat
+python -m marco.runtime.conversation data/법지식/지식그래프.json --chat
 ```
 
 게임 그래프는 사람이 `.kg`로 저작한다. 문서 그래프는 `--build`가 `.txt`와 `.md`에서

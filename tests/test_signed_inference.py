@@ -1,4 +1,4 @@
-from graph_inference import closure, current_facts
+from marco.reasoning.inference import closure, current_facts
 from relational_semantics import RelationalParser
 import pytest
 

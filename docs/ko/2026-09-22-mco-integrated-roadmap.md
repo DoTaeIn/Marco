@@ -30,10 +30,10 @@
 | [kgpack.py](../../kgpack.py) | ZIP 기반 패키지, manifest와 자산 해시 검증 | MCO 자체 바이너리·부분 로딩과 다르다. 전체 자산 읽기 경로를 그대로 가져오면 부분 로딩 목표를 만족하지 못함 |
 | [kgbin.py](../../kgbin.py) | 자체 바이너리 routing index, 정렬된 배열·mmap·양자화·원본 해시 | 모델 전체의 포맷은 아님. 테이블/스키마/버전 검증을 확장하고 실제 메모리·정확성 재측정 |
 | [views/kgpack_ui.py](../../views/kgpack_ui.py) | pack별 overlay 경로와 기존 그래프/대화 상태 연결 | base/학습/persona/session의 일관된 읽기·철회·색인 계약 필요 |
-| [alma/runtime.py](../../alma_runtime.py), [reasoning_context.py](../../reasoning_context.py) | 상태 저장·identity·사건·근거·교정·capability journal | 저장 분리 후에도 같은 identity와 proof를 유지하고 원자적 snapshot/복원을 연결 |
+| [alma/runtime.py](../../alma_runtime.py), [marco/reasoning/context.py](../../reasoning_context.py) | 상태 저장·identity·사건·근거·교정·capability journal | 저장 분리 후에도 같은 identity와 proof를 유지하고 원자적 snapshot/복원을 연결 |
 | [marco/knowledge/ingest/documents.py](../../document_kg.py) | 문서 읽기·주장·원문 위치 | Entity/Event/Rule 의미 컴파일과 검토·승인 후 추론 사용을 G2에서 완성 |
 | [goal_runtime.py](../../goal_runtime.py), [experiments/codegen.py](../../codegen.py) | 등록 도구 실행과 제한된 코드 표현/출력 | 범용 planner나 임의 코드 자기 제작의 완성을 의미하지 않음. G4/G8에서 재사용 |
-| [document_visual.py](../../document_visual.py), [document_vlm.py](../../document_vlm.py) | 기존 OCR/시각 adapter와 선택적 생성형 VLM 경로 | V1의 탐지/추적/의미 사건 경로와 분리. 기존 VLM 존재가 언어 모델 사용 허가를 뜻하지 않음 |
+| [marco/perception/visual.py](../../document_visual.py), [marco/perception/vlm.py](../../document_vlm.py) | 기존 OCR/시각 adapter와 선택적 생성형 VLM 경로 | V1의 탐지/추적/의미 사건 경로와 분리. 기존 VLM 존재가 언어 모델 사용 허가를 뜻하지 않음 |
 
 `kgbin.py`의 과거 측정 기록에도 파일·시작 비용 감소와 peak RAM 감소가 일치하지 않는 사례가 있다. 이번 기획에서 새 성능 수치를 측정한 것은 아니다. **mmap 사용 여부와 실제 RAM 절약을 따로 검증한다.**
 
@@ -245,7 +245,7 @@ Knowledge Compiler와 MCO compiler는 다른 기능이다. **G2는 자연어를 
 
 - tier 0 변화/밝기 → tier 1 detector/tracker → tier 2 crop 분류/identity → 필요 시 tier 3 추가 시각 분석 순서로 호출한다. 첫 목표는 영상 속 소수 객체의 이동과 존재·가림을 구분하는 좁은 환경이다.
 - `detect_object`, `track_object`, `classify_crop`, `compare_identity`, `read_text`, `estimate_pose`의 입출력/품질/비용을 선언한다. 첫 prototype에서는 필요한 소수 capability만 구현하고 나머지는 미지원으로 표시한다.
-- 숫자 배열·시각 특징·visual token이라는 자료 표현 자체가 언어 모델은 아니다. 비언어 detector/tracker/분류·OCR는 별도 감각 경로로 검토할 수 있지만 **생성형 VLM·텍스트 인코더를 몰래 도입하지 않는다.** 후보 도구의 내부 의존성도 검사한다. 기존 `document_vlm.py`는 이 원칙을 충족한 SOMA 구현으로 세지 않는다.
+- 숫자 배열·시각 특징·visual token이라는 자료 표현 자체가 언어 모델은 아니다. 비언어 detector/tracker/분류·OCR는 별도 감각 경로로 검토할 수 있지만 **생성형 VLM·텍스트 인코더를 몰래 도입하지 않는다.** 후보 도구의 내부 의존성도 검사한다. 기존 `marco/perception/vlm.py`는 이 원칙을 충족한 SOMA 구현으로 세지 않는다.
 - 현재 scene/track은 working memory에 두고 의미 있는 변화만 Event Graph로 보낸다. 관찰 ID, 시각·구간·camera/source, 객체 식별의 불확실성, model/version, 필요 시 crop/source image 참조를 남긴다.
 - 안 보임을 곧바로 사라짐/이동으로 단정하지 않는다. track ID와 세계의 entity ID를 구별하고 재등장·가림·오탐·중복 frame·정정의 근거를 유지한다. 시각에 잡힌 내용이 승인되지 않은 영구 지식으로 자동 승격되지 않는다.
 - 원본 frame/features는 retention 정책으로 폐기할 수 있다. 폐기 후 원본 재검증이 불가능한 근거는 보존 상태를 표시한다. source reference만 남긴 것을 원본이 영구 보존된 것으로 보고하지 않는다.

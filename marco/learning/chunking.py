@@ -6,7 +6,7 @@ import hashlib
 import json
 import time
 
-from graph_inference import closure
+from marco.reasoning.inference import closure
 
 
 SCHEMA = "alma-proof-shortcut-v1"

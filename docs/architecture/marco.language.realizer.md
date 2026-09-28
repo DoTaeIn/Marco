@@ -44,7 +44,7 @@ none passed through (gate condition 5,
 ## Does not own
 
 - **Reasoning and state.** What the meaning says is decided before the call, by
-  `reasoning_context.py`, `state_engine.py`, `graph_inference.py` (Apodeixis,
+  `marco/reasoning/context.py`, `marco/reasoning/state.py`, `marco/reasoning/inference.py` (Apodeixis,
   evidence-bounded reasoning). The realizer adds no fact.
 - **Parsing the user.** Noesis, semantic apprehension of text, is
   `relational_semantics.py`, `marco/language/frames.py`, `marco/language/understanding.py`;
@@ -78,7 +78,7 @@ none passed through (gate condition 5,
 | `intent` | the turn's status (`answered`, `unresolved`, ...) or the graph verdict |
 | `language` | the pack path, a loaded pack model, or `None` for the declared default (English) |
 
-Callers today: `ReasoningContext.turn` (`reasoning_context.py`, the state
+Callers today: `ReasoningContext.turn` (`marco/reasoning/context.py`, the state
 dialogue), `engine.answer` through `_spoken` (`engine.py`, the graph route),
 and `AppState` for the UI's own holds (`views/kgpack_ui.py`).
 

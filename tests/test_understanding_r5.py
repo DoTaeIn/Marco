@@ -11,9 +11,9 @@ import re
 import pytest
 
 import engine
-import reasoning_context as rc
+import marco.reasoning.context as rc
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 from marco.trace.from_turn import record_turn
 from marco.trace.ledger import Ledger, read
 
@@ -147,7 +147,7 @@ def test_a_recording_that_fails_never_changes_the_turn(tmp_path):
 def _reason_literals():
     """Every hold, ask or refuse reason reasoning_context.py can give: the literals in its meaning blocks, the
     replies it asks with, the reasons it maps failed measurements to, and the replay's failure names."""
-    source = (ROOT / "reasoning_context.py").read_text(encoding="utf-8")
+    source = (ROOT / "marco/reasoning/context.py").read_text(encoding="utf-8")
     found = set(re.findall(r'"act": "(?:hold|ask|refuse)", "reason": "([a-z_]+)"', source))
     found |= set(re.findall(r'말하기\("([a-z_]+)"', source))
     found |= set(re.findall(r'"reason": "([a-z_]+)"(?: if| else)', source))
@@ -607,7 +607,7 @@ def test_no_development_sentence_is_in_a_file_this_round_changed():
     sentences = []
     for folder in ("dialogues_dev", "dialogues_dev2", "dialogues_dev3", "dialogues_dev4", "dialogues_dev5"):
         sentences += gate.dialogue_sentences(gate.load(ROOT / "data/benchmarks" / folder))
-    owned = ["relational_semantics.py", "reasoning_context.py", "language_components.py", "engine.py",
+    owned = ["relational_semantics.py", "marco/reasoning/context.py", "language_components.py", "engine.py",
              "tests/test_understanding_r5.py", "styles/english.json", "styles/한국어.json"]
     found = 0
     for name in owned:

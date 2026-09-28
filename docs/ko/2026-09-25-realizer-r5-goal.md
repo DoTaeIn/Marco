@@ -43,7 +43,7 @@ W5.6 Nothing regresses: composition on dev, dev2, dev3, dev4 and the fixed sets
 `marco/language/` (all), `tests/language/`, `marco/language/measurements/`,
 `marco/trace/from_turn.py` (W5.3 only), `docs/requests/W5-*.md`, and the carve-out
 sites: the reply-return sites and the `meaning` blocks in `engine.py`,
-`reasoning_context.py`, `views/kgpack_ui.py`. Must not touch parsing, repair,
+`marco/reasoning/context.py`, `views/kgpack_ui.py`. Must not touch parsing, repair,
 matching or correction logic, `styles/*.json`, `bench/`, `mco/`, `alma_*`, any
 frozen area, any frozen benchmark.
 

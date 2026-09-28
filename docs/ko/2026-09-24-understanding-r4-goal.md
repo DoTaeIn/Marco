@@ -117,11 +117,11 @@ G4.8 **Hand-off:** the commit hash. The owner scores the frozen sets.
 
 Same as G3: `marco/language/frames.py`, `language_components.py`,
 `relational_semantics.py`, `marco/language/hangul.py`, `engine.py`, `explain.py`,
-`reasoning_context.py`, `state_engine.py`, `pack_model.py`, `styles/*.json`,
+`marco/reasoning/context.py`, `marco/reasoning/state.py`, `pack_model.py`, `styles/*.json`,
 `data/benchmarks/dialogues_dev4/`, `tests/test_understanding_r4.py`, `tests/`
 files for those modules, the `--dataset` handling in `bench/dialogue_gate.py`.
 The carve-out with W3 is the same as with W2: W3 owns the reply-return sites
-and the result-building `meaning` blocks in `engine.py`, `reasoning_context.py`
+and the result-building `meaning` blocks in `engine.py`, `marco/reasoning/context.py`
 and `views/kgpack_ui.py`; you own parsing, repair, matching and correction
 logic. Requests to `docs/requests/G4-<n>.md`.
 

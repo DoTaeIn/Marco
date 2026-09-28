@@ -11,7 +11,7 @@ import re
 import pytest
 
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 ROOT = Path(__file__).resolve().parents[1]
 DEV4 = ROOT / "data/benchmarks/dialogues_dev4"
@@ -42,7 +42,7 @@ def asserted_numbers(text):
 
 
 def state_after(language, lines):
-    from graph_inference import current_facts
+    from marco.reasoning.inference import current_facts
     current = context(language)
     for line in lines:
         current.turn(line)
@@ -331,7 +331,7 @@ def test_no_development_sentence_is_in_a_file_this_round_changed():
     sentences = []
     for folder in ("dialogues_dev", "dialogues_dev2", "dialogues_dev3", "dialogues_dev4"):
         sentences += gate.dialogue_sentences(gate.load(ROOT / "data/benchmarks" / folder))
-    owned = ["relational_semantics.py", "reasoning_context.py", "language_components.py",
+    owned = ["relational_semantics.py", "marco/reasoning/context.py", "language_components.py",
              "tests/test_understanding_r4.py", "styles/english.json", "styles/한국어.json"]
     found = 0
     for name in owned:

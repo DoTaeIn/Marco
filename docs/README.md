@@ -76,7 +76,7 @@ that code closes it.
 | [F2-1.md](requests/F2-1.md) | "More" and "total" answers composed from one holder's count (all 24 wrongs of the reasoning baseline) |
 | [F2-2.md](requests/F2-2.md) | Reasoning kinds no pack can express, and declared forms not recorded |
 | [G1-1.md](requests/G1-1.md) | The seam test pinned pre-G1 answers for five unseen phrasings |
-| [G1-2.md](requests/G1-2.md) | Result-building sites G1 touched in `reasoning_context.py` |
+| [G1-2.md](requests/G1-2.md) | Result-building sites G1 touched in `marco/reasoning/context.py` |
 | [G2-1.md](requests/G2-1.md) | An answer must name whose count it is |
 | [G3-1.md](requests/G3-1.md) | The realizer's own repair tag still said 수선 |
 | [G3-2.md](requests/G3-2.md) | A count of one said in the plural, or held, for irregular nouns |

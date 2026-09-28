@@ -632,7 +632,7 @@ proof paths · explanation.
 
 Likely current mappings:
 
-    reasoning_context.py     → marco/reasoning/context.py
+    marco/reasoning/context.py     → marco/reasoning/context.py
     relational_semantics.py  → marco/reasoning/semantics.py
     explain.py               → marco/reasoning/explanation.py
 
@@ -758,7 +758,7 @@ The repository currently has many imports using root-level files. Do not break
 everything at once. During migration, old modules may temporarily become compatibility
 wrappers:
 
-    # reasoning_context.py
+    # marco/reasoning/context.py
 
     from marco.reasoning.context import *
 
@@ -980,7 +980,7 @@ Starting hypothesis only. Inspect each file before moving it.
     engine.py              → runtime/engine.py
                              + possible extraction into router/session/reasoning
     encoder.py             → language or runtime routing layer (decide after audit)
-    reasoning_context.py   → reasoning/context.py
+    marco/reasoning/context.py   → reasoning/context.py
     relational_semantics.py→ reasoning/semantics.py
     explain.py             → reasoning/explanation.py
     marco/language/hangul.py              → language/grammar.py
@@ -1042,7 +1042,7 @@ Why postponed:
 
 - It moves exactly the files the two running sessions edit: ALMA
   (`alma/runtime.py`, `marco/learning/concepts.py`, `marco/learning/chunking.py`,
-  `reasoning_context.py`) and repair + English (`engine.py`, `explain.py`,
+  `marco/reasoning/context.py`) and repair + English (`engine.py`, `explain.py`,
   `language_components.py`, `pack_model.py`, `relational_semantics.py`, ~52 test files).
   A move here plus an edit in another clone produces conflicts, and "take theirs"
   silently loses work.

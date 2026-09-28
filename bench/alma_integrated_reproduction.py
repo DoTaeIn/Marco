@@ -18,7 +18,7 @@ except ImportError:
     resource = None
 
 from alma.runtime import AlmaRuntime
-from graph_inference import closure
+from marco.reasoning.inference import closure
 
 
 KG = ROOT / "graphs" / "graph_일상추론.kg"

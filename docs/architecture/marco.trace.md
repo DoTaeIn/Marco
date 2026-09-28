@@ -46,7 +46,7 @@ gitignored ledger folder `logs/`.
 ## Does not own
 
 - **No engine file.** Events are built from what a turn already returns;
-  nothing in `engine.py`, `reasoning_context.py`, `views/`, `marco/language/`
+  nothing in `engine.py`, `marco/reasoning/context.py`, `views/`, `marco/language/`
   or `bench/` emits them. Emission from inside the engine, at the twenty sites
   request L1-1 lists, is understanding round 5.
 - **Saying "why" in words.** Composing an explanation from the why chain is

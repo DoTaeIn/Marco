@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

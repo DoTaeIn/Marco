@@ -37,7 +37,7 @@ Also `tests/trace/` (four files, 96 tests), `docs/requests/L1-1.md`,
 ## Does not own
 
 No engine file. The events come from what a turn already returns; nothing in
-`engine.py`, `reasoning_context.py`, `views/`, `marco/language/` or `bench/`
+`engine.py`, `marco/reasoning/context.py`, `views/`, `marco/language/` or `bench/`
 was edited. Emitting at the engine sites themselves is round 5 (request L1-1).
 Saying "why" in words is the realizer's (request L1-2).
 

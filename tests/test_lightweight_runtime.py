@@ -28,7 +28,7 @@ def test_a_local_answer_opens_no_socket(monkeypatch):
             raise OSError("이 시험에서는 망을 쓰지 않는다")
 
     monkeypatch.setattr(socket, "socket", Blocked)
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     context = ReasoningContext()
     for text in ("민수 구슬은 8개 있다.", "민수 구슬 2개를 꺼냈다.", "지금 민수 구슬은 몇 개야?"):
         result = context.turn(text, KG)
@@ -41,7 +41,7 @@ def test_a_component_is_imported_only_when_the_pack_chooses_it():
     program = (
         "import sys, json\n"
         "from pack_model import PackModel, descriptor\n"
-        "import passage_components as pc\n"
+        "import marco.language.passage_components as pc\n"
         "def pack(choice=None):\n"
         "    lang = json.load(open('styles/한국어.json', encoding='utf-8'))\n"
         "    if choice: lang['부품'] = {pc.KIND: choice}\n"
@@ -49,9 +49,9 @@ def test_a_component_is_imported_only_when_the_pack_chooses_it():
         "         'axioms/core.json': open('axioms/core.json','rb').read()}\n"
         "    return PackModel({'version':3,'model':descriptor(a)}, a)\n"
         "pc.resolve_backend(model=pack())\n"
-        "before = 'passage_classifier' in sys.modules\n"
-        "pack('passage_classifier:LabelLearnedClassifier').component(pc.KIND)\n"
-        "after = 'passage_classifier' in sys.modules\n"
+        "before = 'marco.language.passages' in sys.modules\n"
+        "pack('marco.language.passages:LabelLearnedClassifier').component(pc.KIND)\n"
+        "after = 'marco.language.passages' in sys.modules\n"
         "print(before, after)\n"
     )
     out = subprocess.run([sys.executable, "-c", program], cwd=ROOT, capture_output=True,
@@ -65,7 +65,7 @@ def test_the_default_path_pulls_in_no_third_party_package():
     program = (
         "import sys\n"
         "base = set(sys.modules)\n"
-        "from reasoning_context import ReasoningContext\n"
+        "from marco.reasoning.context import ReasoningContext\n"
         "c = ReasoningContext()\n"
         "c.turn('민수 구슬은 8개 있다.', 'graphs/graph_일상추론.kg')\n"
         "c.turn('지금 민수 구슬은 몇 개야?', 'graphs/graph_일상추론.kg')\n"

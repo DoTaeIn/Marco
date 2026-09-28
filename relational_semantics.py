@@ -1754,7 +1754,7 @@ class RelationalParser:
         one kind of thing. Fewer than two members, or a member with no count,
         gives no answer.
         """
-        from graph_inference import leading_word_referent
+        from marco.reasoning.inference import leading_word_referent
         spec = request["total"]
         item = spec.get("item")
         counts = {subject: value for subject, predicate, value in known
@@ -1792,7 +1792,7 @@ class RelationalParser:
 
     def _compared(self, request, known, changes, proof):
         """The two named holders' counts of the item: ``(a, count), (b, count), transitions``."""
-        from graph_inference import leading_word_referent
+        from marco.reasoning.inference import leading_word_referent
         item = request.get("item")
         counts = {subject: value for subject, predicate, value in known
                   if predicate == "count" and isinstance(subject, str)}
@@ -2494,7 +2494,7 @@ class RelationalParser:
 
     def _closure(self, facts):
         """Use an optional exact-input closure snapshot without caching answers."""
-        from graph_inference import closure
+        from marco.reasoning.inference import closure
         rules = self._inference_rules(facts)
         selector = getattr(self, "closure_selector", None)
         known = selector(facts, rules) if selector is not None else None
@@ -2519,7 +2519,7 @@ class RelationalParser:
             return {"stage": "state_or_inference_precondition", "reason": str(exc),
                     "input": text, "answer": None, "facts": parsed["facts"], "query": parsed["query"]}
         if result is None:
-            from graph_inference import bind, current_facts, proof
+            from marco.reasoning.inference import bind, current_facts, proof
             facts, _ = current_facts(parsed["facts"], self.data.get("mutable_predicates", []),
                                      self.data.get("numeric_updates", {}))
             known = self._closure(facts)
@@ -3824,7 +3824,7 @@ class RelationalParser:
                 if usable else None)
 
     def answer(self, parsed):
-        from graph_inference import bind, current_facts, proof
+        from marco.reasoning.inference import bind, current_facts, proof
         # 이유는 주어만 맞춰 답하지 않는다. 결과 사건 표지까지 같은 기록에서
         # 맞춰야 하며, 후보가 둘이면 하나를 고르지 않는다. 이 경로는 `cause`와
         # `reason_query`라는 팩 선언을 쓰므로 특정 원인·동사·문장에 의존하지 않는다.
@@ -3913,7 +3913,7 @@ class RelationalParser:
         if self.ellipsis.get("part_reference") == "leading_words":
             # `지연은 몇 개야` 의 `지연` 이 그대로는 상태 대상이 아니면, 그 앞말로
             # 시작하는 대상이 하나일 때만 그것을 묻는 것으로 읽는다.
-            from graph_inference import leading_word_referent
+            from marco.reasoning.inference import leading_word_referent
             present = {(fact[0], fact[1]) for fact in known}
             queries = []
             for query in parsed["query"]:

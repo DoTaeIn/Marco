@@ -12,7 +12,7 @@ import re
 import pytest
 
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -170,8 +170,8 @@ def test_a_question_in_the_other_language_uses_the_same_events():
 # The dialogue path must carry no language: no Hangul sentence, word list or
 # pattern in these modules. What may remain are internal state tags and pack
 # schema keys — single tokens without spaces or punctuation.
-DIALOGUE_MODULES = ["reasoning_context.py", "relational_semantics.py", "marco/language/frames.py",
-                    "graph_inference.py", "marco/language/numerals.py", "pack_model.py", "action_runtime.py",
+DIALOGUE_MODULES = ["marco/reasoning/context.py", "relational_semantics.py", "marco/language/frames.py",
+                    "marco/reasoning/inference.py", "marco/language/numerals.py", "pack_model.py", "marco/reasoning/actions.py",
                     "marco/learning/concepts.py", "language_components.py"]
 
 

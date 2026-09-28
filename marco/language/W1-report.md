@@ -26,7 +26,7 @@ Left blocked or open by the previous goal:
 - Every dialogue answer is a template: answers from the question example's
   `render` (`["$n", "개입니다."]`), holds and records from `context_replies`.
 - `realize()` is a stub (returns `meaning["answer"]`). One call site:
-  `reasoning_context.py:2731`. Answers composed by `engine.py` from graph
+  `marco/reasoning/context.py:2731`. Answers composed by `engine.py` from graph
   routing do not pass through it.
 - The turn result carries no act and no meaning for holds, explanations,
   corrections or records: `_missing_premise` returns a string,
@@ -119,7 +119,7 @@ Not claimed. 25 replies for the owner to judge: `marco/language/measurements/flu
 
 ### Engine sites changed under the carve-out (separate commits)
 
-- **W1-1** 72160d8 + **W1-1 item 5 / W1-3 part 1** 5330d3f, `reasoning_context.py` (+99/−10 total), lines at HEAD:
+- **W1-1** 72160d8 + **W1-1 item 5 / W1-3 part 1** 5330d3f, `marco/reasoning/context.py` (+99/−10 total), lines at HEAD:
   9 `import uuid`; 104 conversation id; 1594 snapshot `conversation`; 1654 restore; 2081 companion
   which/no referent; 2098–2104 companion missing premise; 2107–2109 companion answer meaning;
   2142–2171 `_explain_last`; 2182–2216 `_answer_other_than`; 2270 and 2323 `_correct_by_reference`;

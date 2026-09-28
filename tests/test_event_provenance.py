@@ -1,7 +1,7 @@
 """Regression cases for the durable event/proof ledger."""
 
-from graph_inference import closure_with_provenance
-from reasoning_context import ReasoningContext
+from marco.reasoning.inference import closure_with_provenance
+from marco.reasoning.context import ReasoningContext
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

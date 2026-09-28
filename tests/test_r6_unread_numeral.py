@@ -4,7 +4,7 @@ The count may be a numeral with a particle on it (``하나를``). Found with dia
 the repository: the statement was left unread, and the holder's old count was still said as known.
 """
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 KG = "graphs/graph_일상추론.kg"
 

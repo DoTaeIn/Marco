@@ -3,7 +3,7 @@ failed on dialogues written outside the repository."""
 import pytest
 
 from pack_model import development_model
-from reasoning_context import ReasoningContext
+from marco.reasoning.context import ReasoningContext
 
 KG = "graphs/graph_일상추론.kg"
 

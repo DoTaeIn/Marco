@@ -6,7 +6,7 @@ import sys
 
 from alma.runtime import AlmaRuntime, local_file_read_adapter
 import pytest
-from graph_inference import closure
+from marco.reasoning.inference import closure
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default
 

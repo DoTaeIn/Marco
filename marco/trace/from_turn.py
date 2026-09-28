@@ -588,7 +588,7 @@ def _gap(reason, given=None):
     if given:
         return given
     try:
-        from reasoning_context import gap_class
+        from marco.reasoning.context import gap_class
     except ImportError:
         return None
     gap, declared = gap_class(reason)

@@ -27,7 +27,7 @@ CASES = [
 
 def run(models=None):
     from pack_model import development_model
-    from reasoning_context import ReasoningContext
+    from marco.reasoning.context import ReasoningContext
     from bench.seven_step_dialogue import _state
     models = models or {}
     rows = []

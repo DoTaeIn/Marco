@@ -7,7 +7,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 import marco.knowledge.ingest.documents as document_kg
-import document_visual
+import marco.perception.visual as document_visual
 import pytest
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack, do not rely on the default

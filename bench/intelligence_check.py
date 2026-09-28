@@ -20,7 +20,7 @@ import sys, os, json, collections
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)))
 os.environ.setdefault("KG_ENCODER", "문자")
 import engine
-from progress import Bar
+from marco.progress import Bar
 
 result = collections.OrderedDict()
 

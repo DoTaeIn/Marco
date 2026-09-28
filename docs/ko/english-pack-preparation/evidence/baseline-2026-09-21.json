@@ -14,9 +14,9 @@
     "graphs/graph_장보기_기초.kg": "63f86ecf477ad83a",
     "graphs/graph_정산_나눠내기.kg": "c9d90d0df85876ba",
     "graphs/graph_en_bill_split.kg": "80b99c53f243a89c",
-    "reasoning_context.py": "9adcec77b962e53f",
+    "marco/reasoning/context.py": "9adcec77b962e53f",
     "relational_semantics.py": "99a5fd99f133b37e",
-    "action_runtime.py": "c916e46d8a75b936"
+    "marco/reasoning/actions.py": "c916e46d8a75b936"
   },
   "entry_point": "reasoning_context.ReasoningContext.turn(text, 'graphs/graph_일상추론.kg')",
   "results": {
