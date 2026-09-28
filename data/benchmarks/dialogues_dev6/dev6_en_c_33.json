@@ -1,0 +1,311 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_33",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_039",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "3_partitive",
+   "6_holder_forms",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Piper has twenty thumbtacks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Piper",
+      "item": "thumbtacks",
+      "quantity": 20
+     }
+    ],
+    "state": [
+     {
+      "entity": "Piper",
+      "item": "thumbtacks",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Boris has five thumbtacks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Boris",
+      "item": "thumbtacks",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Boris",
+      "item": "thumbtacks",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The patio has 16 thumbtacks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "patio",
+      "item": "thumbtacks",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "patio",
+      "item": "thumbtacks",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Boris left 3 thumbtacks at the patio.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Boris",
+      "to": "patio",
+      "item": "thumbtacks",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Boris",
+      "item": "thumbtacks",
+      "quantity": 2
+     },
+     {
+      "entity": "patio",
+      "item": "thumbtacks",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Piper used four of them for a birthday party.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Piper",
+      "item": "thumbtacks",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Piper",
+      "item": "thumbtacks",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many thumbtacks does Boris have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Boris",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "thumbtacks"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Why is that number two?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact",
+    "1_count_words"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "explain",
+    "entity": "Boris",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "thumbtacks"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many thumbtacks does Piper have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Piper",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "thumbtacks"
+   }
+  }
+ ]
+}

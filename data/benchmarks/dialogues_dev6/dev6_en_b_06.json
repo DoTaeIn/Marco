@@ -1,0 +1,349 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_06",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_008",
+  "half": "build",
+  "focus": [
+   "10_topic_switch",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Alan has eleven harmonicas.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Alan",
+      "item": "harmonicas",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "harmonicas",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Alan has eighteen screwdrivers.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Alan",
+      "item": "screwdrivers",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "screwdrivers",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Blake has twenty-one harmonicas.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Blake",
+      "item": "harmonicas",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "Blake",
+      "item": "harmonicas",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "The chapel has thirteen harmonicas.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "chapel",
+      "item": "harmonicas",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "chapel",
+      "item": "harmonicas",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Alan's aunt, Zara, also has some harmonicas.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Zara",
+      "item": "harmonicas",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Zara",
+      "item": "harmonicas",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "Blake handed 4 harmonicas over to Alan.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Blake",
+      "to": "Alan",
+      "item": "harmonicas",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Blake",
+      "item": "harmonicas",
+      "quantity": 17
+     },
+     {
+      "entity": "Alan",
+      "item": "harmonicas",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "How many harmonicas does Alan have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Alan",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      6
+     ]
+    },
+    "item": "harmonicas"
+   }
+  },
+  {
+   "n": 8,
+   "say": "And screwdrivers?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Alan",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      6
+     ]
+    },
+    "item": "screwdrivers"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many harmonicas does Zara have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "hold",
+    "entity": "Zara",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "item": "harmonicas"
+   }
+  }
+ ]
+}

@@ -1,0 +1,244 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_44",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_052",
+  "half": "check",
+  "focus": [
+   "10_topic_switch",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Vince has eighteen avocados.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Vince",
+      "item": "avocados",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "Vince",
+      "item": "avocados",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The marina has twenty-four avocados.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "marina",
+      "item": "avocados",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "marina",
+      "item": "avocados",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The mill has 13 avocados.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "mill",
+      "item": "avocados",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "mill",
+      "item": "avocados",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Vince left 2 avocados at the marina.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "2_en_transfer_forms",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Vince",
+      "to": "marina",
+      "item": "avocados",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Vince",
+      "item": "avocados",
+      "quantity": 16
+     },
+     {
+      "entity": "marina",
+      "item": "avocados",
+      "quantity": 26
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many avocados does the marina have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "marina",
+    "quantity": 26,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "avocados"
+   }
+  },
+  {
+   "n": 6,
+   "say": "And in the mill?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "mill",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "avocados"
+   }
+  }
+ ]
+}

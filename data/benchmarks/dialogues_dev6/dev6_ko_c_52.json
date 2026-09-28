@@ -1,0 +1,274 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_52",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "hapsyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_060",
+  "half": "check",
+  "focus": [
+   "11_repair_with_question",
+   "3_partitive",
+   "7_leftover_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "3_partitive",
+   "5_ko_transfer_verbs",
+   "7_leftover_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "다솜은 코코넛이 열여덟 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "다솜",
+      "item": "코코넛",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "다솜",
+      "item": "코코넛",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "복 교수님은 코코넛이 스물한 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "복 교수",
+      "item": "코코넛",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "복 교수",
+      "item": "코코넛",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "기 팀장님은 코코넛이 열일곱 개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "기 팀장",
+      "item": "코코넛",
+      "quantity": 17
+     }
+    ],
+    "state": [
+     {
+      "entity": "기 팀장",
+      "item": "코코넛",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "기 팀장님이 그중 한 개를 다솜에게 보냈습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "기 팀장",
+      "to": "다솜",
+      "item": "코코넛",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "기 팀장",
+      "item": "코코넛",
+      "quantity": 16
+     },
+     {
+      "entity": "다솜",
+      "item": "코코넛",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "기 팀장님에게 남은 코코넛은 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "7_leftover_questions"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "기 팀장",
+    "quantity": 16,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "item": "코코넛"
+   }
+  },
+  {
+   "n": 6,
+   "say": "다솜입니다.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "다솜",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "코코넛"
+   }
+  },
+  {
+   "n": 7,
+   "say": "다솜은 코코넛이 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "다솜",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "코코넛"
+   }
+  }
+ ]
+}

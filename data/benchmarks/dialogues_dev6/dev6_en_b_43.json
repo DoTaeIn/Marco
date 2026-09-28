@@ -1,0 +1,312 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_43",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "ambiguous_referent",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_046",
+  "half": "build",
+  "focus": [
+   "11_repair_with_question",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "11_repair_with_question",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "3_partitive",
+   "8_time_adverb_questions"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Jonah has twenty-four dictionaries.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Jonah",
+      "item": "dictionaries",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "Jonah",
+      "item": "dictionaries",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Pablo has twelve dictionaries.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Pablo",
+      "item": "dictionaries",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Pablo",
+      "item": "dictionaries",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Jonah's mentor, Alan, has seventeen dictionaries.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Alan",
+      "item": "dictionaries",
+      "quantity": 17
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "dictionaries",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Pablo sent Jonah three dictionaries.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Pablo",
+      "to": "Jonah",
+      "item": "dictionaries",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Pablo",
+      "item": "dictionaries",
+      "quantity": 9
+     },
+     {
+      "entity": "Jonah",
+      "item": "dictionaries",
+      "quantity": 27
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Alan used four of them for the spring fair.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "3_partitive"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "Alan",
+      "item": "dictionaries",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Alan",
+      "item": "dictionaries",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many dictionaries does Pablo have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "8_time_adverb_questions"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "Pablo",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    },
+    "item": "dictionaries"
+   }
+  },
+  {
+   "n": 7,
+   "say": "Jonah, I mean.",
+   "label": "answerable",
+   "tags": [
+    "ambiguous_referent",
+    "transfer"
+   ],
+   "classes": [
+    "11_repair_with_question"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "Jonah",
+    "quantity": 27,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "dictionaries"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many dictionaries does Jonah have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Jonah",
+    "quantity": 27,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      4
+     ]
+    },
+    "item": "dictionaries"
+   }
+  }
+ ]
+}

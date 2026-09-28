@@ -1,0 +1,352 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_24",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_026",
+  "half": "check",
+  "focus": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "1_count_words",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "영주는 팬케이크가 24장 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "영주",
+      "item": "팬케이크",
+      "quantity": 24
+     }
+    ],
+    "state": [
+     {
+      "entity": "영주",
+      "item": "팬케이크",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "영주는 라임이 14개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "영주",
+      "item": "라임",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "영주",
+      "item": "라임",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "인영은 팬케이크가 11장 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "인영",
+      "item": "팬케이크",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "인영",
+      "item": "팬케이크",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "여 대표님에게는 아홉 장 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "여 대표",
+      "item": "팬케이크",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "여 대표",
+      "item": "팬케이크",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "영주가 정아에게 팬케이크를 2장 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "영주",
+      "to": "정아",
+      "item": "팬케이크",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "영주",
+      "item": "팬케이크",
+      "quantity": 22
+     },
+     {
+      "entity": "정아",
+      "item": "팬케이크",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "인영이 영주에게 팬케이크를 두 장 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "인영",
+      "to": "영주",
+      "item": "팬케이크",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "인영",
+      "item": "팬케이크",
+      "quantity": 9
+     },
+     {
+      "entity": "영주",
+      "item": "팬케이크",
+      "quantity": 24
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "영주는 팬케이크가 몇 장이에요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "영주",
+    "quantity": 24,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      5,
+      6
+     ]
+    },
+    "item": "팬케이크"
+   }
+  },
+  {
+   "n": 8,
+   "say": "라임은요?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "영주",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      5,
+      6
+     ]
+    },
+    "item": "라임"
+   }
+  },
+  {
+   "n": 9,
+   "say": "정아는 팬케이크가 몇 장이에요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "hold",
+    "entity": "정아",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "item": "팬케이크"
+   }
+  }
+ ]
+}

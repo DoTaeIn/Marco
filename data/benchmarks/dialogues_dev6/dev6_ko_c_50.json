@@ -1,0 +1,285 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_ko_c_50",
+ "language": "ko",
+ "domain": "everyday",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "haeyo",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_ko_c_058",
+  "half": "check",
+  "focus": [
+   "13_why_with_fact",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-ko"
+  },
+  "classes": [
+   "13_why_with_fact",
+   "1_count_words",
+   "5_ko_transfer_verbs",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "주 소장님은 스케치북이 17권 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "주 소장",
+      "item": "스케치북",
+      "quantity": 17
+     }
+    ],
+    "state": [
+     {
+      "entity": "주 소장",
+      "item": "스케치북",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "세희는 스케치북이 아홉 권 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "세희",
+      "item": "스케치북",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "세희",
+      "item": "스케치북",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "세희가 주 소장님에게 스케치북을 네 권 나눠 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세희",
+      "to": "주 소장",
+      "item": "스케치북",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "세희",
+      "item": "스케치북",
+      "quantity": 5
+     },
+     {
+      "entity": "주 소장",
+      "item": "스케치북",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "그리고 주 소장님에게 스케치북을 네 권 줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "1_count_words",
+    "5_ko_transfer_verbs"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "세희",
+      "to": "주 소장",
+      "item": "스케치북",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "세희",
+      "item": "스케치북",
+      "quantity": 1
+     },
+     {
+      "entity": "주 소장",
+      "item": "스케치북",
+      "quantity": 25
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "세희의 스케치북은 모두 몇 권이에요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "answer",
+    "entity": "세희",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "스케치북"
+   }
+  },
+  {
+   "n": 6,
+   "say": "방금 그 답이 어떻게 나온 거예요?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "classes": [
+    "13_why_with_fact"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "explain",
+    "entity": "세희",
+    "quantity": 1,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "스케치북"
+   }
+  },
+  {
+   "n": 7,
+   "say": "주 소장님이랑 세희의 스케치북을 합치면 몇 권이에요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "주 소장",
+     "세희"
+    ],
+    "quantity": 26,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    "item": "스케치북"
+   }
+  }
+ ]
+}

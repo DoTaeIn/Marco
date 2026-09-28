@@ -1,0 +1,349 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_c_04",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_c_004",
+  "half": "check",
+  "focus": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "6_holder_forms"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "check-en"
+  },
+  "classes": [
+   "10_topic_switch",
+   "15_unstated_receiver",
+   "2_en_transfer_forms",
+   "6_holder_forms"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Luna has 9 compasses.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Luna",
+      "item": "compasses",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "Luna",
+      "item": "compasses",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The bowling alley has 20 compasses.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "bowling alley",
+      "item": "compasses",
+      "quantity": 20
+     }
+    ],
+    "state": [
+     {
+      "entity": "bowling alley",
+      "item": "compasses",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "The veranda has 22 compasses.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "veranda",
+      "item": "compasses",
+      "quantity": 22
+     }
+    ],
+    "state": [
+     {
+      "entity": "veranda",
+      "item": "compasses",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Luna's friend, Derek, also has some compasses.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Derek",
+      "item": "compasses",
+      "quantity": null
+     }
+    ],
+    "state": [
+     {
+      "entity": "Derek",
+      "item": "compasses",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "Luna sent Brooke 3 compasses.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Luna",
+      "to": "Brooke",
+      "item": "compasses",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Luna",
+      "item": "compasses",
+      "quantity": 6
+     },
+     {
+      "entity": "Brooke",
+      "item": "compasses",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many compasses does the bowling alley have?",
+   "label": "answerable",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": "bowling alley",
+    "quantity": 20,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "item": "compasses"
+   }
+  },
+  {
+   "n": 7,
+   "say": "And in the veranda?",
+   "label": "answerable",
+   "tags": [
+    "follow_up",
+    "ownership"
+   ],
+   "classes": [
+    "10_topic_switch"
+   ],
+   "scenario_turn": 7,
+   "expect": {
+    "act": "answer",
+    "entity": "veranda",
+    "quantity": 22,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "item": "compasses"
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many compasses does Luna have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [],
+   "scenario_turn": 8,
+   "expect": {
+    "act": "answer",
+    "entity": "Luna",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "item": "compasses"
+   }
+  },
+  {
+   "n": 9,
+   "say": "How many compasses does Brooke have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 9,
+   "expect": {
+    "act": "hold",
+    "entity": "Brooke",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      9
+     ]
+    },
+    "item": "compasses"
+   }
+  },
+  {
+   "n": 10,
+   "say": "How many compasses does Derek have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "6_holder_forms"
+   ],
+   "scenario_turn": 10,
+   "expect": {
+    "act": "hold",
+    "entity": "Derek",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      10
+     ]
+    },
+    "item": "compasses"
+   }
+  }
+ ]
+}

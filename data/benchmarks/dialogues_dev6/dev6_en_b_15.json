@@ -1,0 +1,241 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "dev6_en_b_15",
+ "language": "en",
+ "domain": "everyday",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "free",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "none",
+  "roles": "scenario",
+  "initial_values": {},
+  "scenario": "s6_en_b_018",
+  "half": "build",
+  "focus": [
+   "15_unstated_receiver",
+   "4_fragment_count",
+   "9_other_predicates"
+  ],
+  "phraser": {
+   "source": "outside-writer",
+   "date": "2026-09-28",
+   "session": "build-en"
+  },
+  "classes": [
+   "15_unstated_receiver",
+   "1_count_words",
+   "2_en_transfer_forms",
+   "4_fragment_count",
+   "9_other_predicates"
+  ]
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My aunt, Frida, has some bundles of letters. Seventeen, to be exact.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words",
+    "4_fragment_count"
+   ],
+   "scenario_turn": 1,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Frida",
+      "item": "bundles of letters",
+      "quantity": 17
+     }
+    ],
+    "state": [
+     {
+      "entity": "Frida",
+      "item": "bundles of letters",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My stepbrother, Kenji, has six bundles of letters.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "classes": [
+    "1_count_words"
+   ],
+   "scenario_turn": 2,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Kenji",
+      "item": "bundles of letters",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "Kenji",
+      "item": "bundles of letters",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Kenji sent Jonah one bundle of letters.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "15_unstated_receiver",
+    "1_count_words",
+    "2_en_transfer_forms"
+   ],
+   "scenario_turn": 3,
+   "expect": {
+    "act": "record",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Kenji",
+      "to": "Jonah",
+      "item": "bundles of letters",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "Kenji",
+      "item": "bundles of letters",
+      "quantity": 5
+     },
+     {
+      "entity": "Jonah",
+      "item": "bundles of letters",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many bundles does Kenji have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 4,
+   "expect": {
+    "act": "answer",
+    "entity": "Kenji",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "item": "bundles of letters"
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many bundles of letters does Jonah have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "classes": [
+    "15_unstated_receiver"
+   ],
+   "scenario_turn": 5,
+   "expect": {
+    "act": "hold",
+    "entity": "Jonah",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      5
+     ]
+    },
+    "item": "bundles of letters"
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many bundles of letters do Frida and Kenji have combined?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "classes": [
+    "9_other_predicates"
+   ],
+   "scenario_turn": 6,
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Frida",
+     "Kenji"
+    ],
+    "quantity": 22,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    },
+    "item": "bundles of letters"
+   }
+  }
+ ]
+}
