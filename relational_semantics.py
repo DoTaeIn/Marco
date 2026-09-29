@@ -2868,13 +2868,15 @@ class RelationalParser:
         lefts = [w.lower() for w in spec.get("left_verbs", [])]
         cut = next((i for i in range(n, len(low)) if low[i] in auxiliaries | copulas
                     or self._frame_phrase(low, i, lefts)), None)
-        if cut is None or cut == n:
+        if cut is None or (cut == n and low[cut] not in auxiliaries):
             return None
-        item = self._frame_holder(spec, tokens[n:cut])
-        if item is None or item == (self.holder_forms.get("self") or {}).get("reads_as") \
+        # no thing said (How many do the two of them have?): read only for a group or several holders, the thing
+        # left to the conversation
+        item = self._frame_holder(spec, tokens[n:cut]) if cut > n else None
+        if (cut > n and item is None) or item == (self.holder_forms.get("self") or {}).get("reads_as") \
                 or any(self._protected_kind(w) for w in tokens[n:cut]):
             return None
-        render = ["$n", " ", item, "."]
+        render = ["$n", " ", item, "."] if item else ["$n", "."]
         if low[cut] in auxiliaries:
             predicates = {w.lower() for w in spec.get("predicates", [])}
             k = next((i for i in range(len(low) - 1, cut, -1) if low[i] in predicates), None)
@@ -2897,6 +2899,8 @@ class RelationalParser:
                 return {"query": [{"total": {"members": holders, "item": item}, "render": render}]}
             if len(holders) >= 2:
                 return {"query": [{"total": {"members": holders, "item": item}, "render": render}]}
+            if item is None:
+                return None
             return {"query": [{"triple": ["%s %s" % (holders[0], item), "count", "?n"], "render": render}]}
         # how many THING are (there) (modifiers) in PLACE / are left with HOLDER / remain with HOLDER
         at = cut + (1 if low[cut] in copulas else 0)
@@ -2970,6 +2974,16 @@ class RelationalParser:
             if kind_at >= len(low):
                 return None
             kind = "more" if low[kind_at] in comp.get("more", []) else "fewer" if low[kind_at] in comp.get("fewer", [])                 else None
+            if kind is not None and "," not in low[kind_at:] and any(
+                    self._frame_phrase(low, 0, [w]) == n for w in comp.get("pair_who", [])):
+                # which of the two has more (X)?: the two holders are the conversation's
+                body = kind_at + 1
+                stop = next((j for j in range(body, len(low) + 1) if self._frame_modifiers(low, j, len(low), modifiers)[0]),
+                            len(low))
+                item = self._frame_holder(spec, tokens[body:stop]) if stop > body else None
+                if stop > body and item is None:
+                    return None
+                return {"query": [{kind: {"pair": True, **({"item": item} if item else {})}}]}
             if kind is None or "," not in low[kind_at:]:
                 return None
             comma = kind_at + low[kind_at:].index(",")
@@ -3407,6 +3421,10 @@ class RelationalParser:
         before = [w for w in words[:who] if w not in spec.get("time_words", [])]
         request = {"item": " ".join(item) or None}
         kind = "fewer" if (order or self._comparison_forms()[words[-1]]) == "less" else "more"
+        if (before and getattr(self, "effort", 3) >= 1 and before[-1] in spec.get("between", {}).get("among", [])
+                and " ".join(before[:-1]) in (self.count_question or {}).get("pair_words", [])):
+            # 둘 중 누가 더 많아?: the two holders are the conversation's
+            return {"query": [{kind: {"pair": True, **({"item": request["item"]} if request.get("item") else {})}}]}
         if before:
             among = spec.get("between", {}).get("among", [])
             joiners = sorted(spec.get("between", {}).get("joiners", []), key=len, reverse=True)

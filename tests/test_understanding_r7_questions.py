@@ -376,3 +376,30 @@ def test_a_korean_count_under_a_noun_never_counted_is_left_as_asked():
     rows = _play("한국어", ["{x}은 {p}이 6개 있어.", "{y}는 {p}이 3개 있어.", "{x} 사과는 몇 개야?"], 3,
                  **dict(KO_WORDS, x="민석", y="수아"))
     assert rows[-1]["status"] != "answered"
+
+
+# ---------------------------------------------------------------------------
+# "the two": a total or a comparison whose holders are given as a number (effort 2; 0 is main)
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("language,frames,expected", [
+    ("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "How many {p} does {a} have?", "How many {p} does {b} have?",
+                 "How many do the two of them have in total?"], "10"),
+    ("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "How many {p} does {a} have?", "How many {p} does {b} have?",
+                 "Which of the two has more?"], "Nora"),
+    ("한국어", ["{a}는 {p}이 6개 있어.", "{b}는 {p}이 4개 있어.", "{a}는 {p}이 몇 개야?", "{b}는 {p}이 몇 개야?",
+               "둘 중 누가 더 많아?"], "노라"),
+    ("한국어", ["{a}는 {p}이 6개 있어.", "{b}는 {p}이 4개 있어.", "{a}는 {p}이 몇 개야?", "{b}는 {p}이 몇 개야?",
+               "둘이 합쳐서 몇 개야?"], "10"),
+])
+def test_the_two_are_the_two_holders_just_asked_about(language, frames, expected):
+    words = EN_WORDS if language == "english" else KO_WORDS
+    rows = _play(language, frames, 3, **words)
+    assert rows[-1]["status"] == "answered" and expected in rows[-1]["answer"]
+    if frames[-1] != "둘이 합쳐서 몇 개야?":        # (main already sums the two when one thing is counted)
+        assert _play(language, frames, 0, **words)[-1].get("status") != "answered"
+
+
+def test_the_two_among_three_holders_of_the_thing_with_one_asked_about_is_not_answered():
+    rows = _play("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "Kim has 2 {p}.", "How many {p} does {a} have?",
+                             "How many do the two of them have in total?", "Which of the two has more?"], 3, **EN_WORDS)
+    assert rows[-1]["status"] != "answered" and rows[-2]["status"] != "answered"

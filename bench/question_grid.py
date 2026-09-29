@@ -519,6 +519,18 @@ def cells(code):
                     {"op": "count", "mod": "none", "form": "relation", "follow": "which_person"},
                     state + thing_state + [said, replies[0]], {"kind": "value", "holder": None, "item": "pen",
                                                               "value": 3}))
+    # "the two": after a question about each of two holders, a total or a comparison over the two of them
+    both_asked = [question("count", "none", "name")[0], question("count", "none", "other")[0]]
+    pair_forms = ([("total", "How many do the two of them have in total?", 10),
+                   ("more", "Which of the two has more?", "name"), ("fewer", "Which of the two has fewer?", "other")]
+                  if code == "en" else
+                  [("total", "둘이 합쳐서 몇 개야?", 10), ("more", "둘 중 누가 더 많아?", "name"),
+                   ("fewer", "두 사람 중 누가 더 적게 가지고 있어?", "other")])
+    for op, said, want in pair_forms:
+        expect = ({"kind": "value", "holder": ["name", "other"], "item": "pen", "value": want} if op == "total" else
+                  {"kind": "winner", "winner": want, "loser": "other" if want == "name" else "name", "item": "pen"})
+        out.append(("%s|none|name|the_two:%s" % (op, said), {"op": op, "mod": "none", "form": "name", "follow": "the_two"},
+                    state + both_asked + [said], expect))
     # corrections: a transfer, then a correction of it (its amount, or its direction), then the receiver's count
     words = {"en": {"a": EN["holders"]["name"]["subj"], "b": EN["holders"]["other"]["subj"], "n": "three", "o": "two",
                     "t": EN["items"]["pen"]},
