@@ -2681,6 +2681,10 @@ class ReasoningContext:
                         # a thing both packs declare a concept for, and not the same one, is another thing
                         things = [t for t in things if not (concept and (parser.senses.get(t) or parser.senses.get(
                             t.lower())) and (parser.senses.get(t) or parser.senses.get(t.lower())) != concept)]
+                        # only a word in another writing system may name it: written in the same letters it would
+                        # have matched by spelling, so it is another thing (USBx is not USB)
+                        script = (lambda w: "hangul" if re.search("[가-힣]", w) else "latin")
+                        things = [t for t in things if script(t) != script(asked)]
                         winner, deciding, ranking = self._rank_candidates(
                             [{"label": thing, "fit": {"state": 1}} for thing in things], kind="cross_language_thing")
                         if winner is not None:
@@ -3575,6 +3579,9 @@ class ReasoningContext:
             if token["kind"] in ("asker", "counter"):
                 continue
             word, stem = token["text"], token["stem"]
+            if parser._protected_kind(word) or parser._protected_kind(stem):
+                # a scope word, a numeral or a negation the reader did not place: the round-2 guard holds it
+                return None
             if fold(word) in declared or fold(stem) in declared:
                 continue
             key = self._holder_of(parser, word, keys)
