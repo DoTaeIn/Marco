@@ -403,3 +403,11 @@ def test_the_two_among_three_holders_of_the_thing_with_one_asked_about_is_not_an
     rows = _play("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "Kim has 2 {p}.", "How many {p} does {a} have?",
                              "How many do the two of them have in total?", "Which of the two has more?"], 3, **EN_WORDS)
     assert rows[-1]["status"] != "answered" and rows[-2]["status"] != "answered"
+
+
+def test_that_one_with_the_thing_named_is_a_pointer_not_a_holder_that():
+    # the declared words for "the thing" (one, stuff) are no modifiers of the question frame
+    rows = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "{a} gave {b} a quill.",
+                             "So how many {p} does that one have?"], 3, **EN_WORDS)
+    assert rows[-1]["meaning"]["reason"] == "which_referent"
+    assert "Nora" in rows[-1]["answer"] and "Ivo" in rows[-1]["answer"]
