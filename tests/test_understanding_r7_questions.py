@@ -440,3 +440,10 @@ def test_a_counter_inside_the_things_name_is_no_scope_word(thing, total):
     frames = ["보늬는 %s가 3개 있어." % thing, "하람은 %s가 2개 있어." % thing, "보늬 %s는 %s 몇 개야?" % (thing, total)]
     rows = _play("한국어", frames, 3)
     assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
+
+
+def test_a_follow_up_named_only_by_an_unread_statement_takes_the_role_its_particle_gave_it():
+    frames = ["보늬는 자두가 3개 있어.", "다온은 트럭에 자두를 한가득 싣고 달려왔어.", "보늬는 자두가 몇 개야?", "다온은?"]
+    rows = _play("한국어", frames, 3)
+    # 다온은 in the unread statement: a holder; the follow-up waits on that statement instead of asking which slot
+    assert rows[-1]["meaning"]["reason"] == "unread_event" and frames[1] in rows[-1]["answer"]
