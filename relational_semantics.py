@@ -2922,6 +2922,48 @@ class RelationalParser:
         comp = spec.get("comparison") or {}
         if not comp:
             return None
+        more_words = [w.lower() for w in comp.get("more", [])]
+        fewer_words = [w.lower() for w in comp.get("fewer", [])]
+        # Between A and B, who has more X? / A or B, who has more X?: the two holders said first
+        for w in range(1, len(low)):
+            n = max([self._frame_phrase(low, w, [x]) for x in comp.get("who", [])] + [0])
+            if not n or low[w - 1] != "," or w + n + 1 >= len(low) or low[w + n] not in comp.get("verbs", []):
+                continue
+            head = tokens[:w - 1]
+            if head and head[0].lower() in [x.lower() for x in comp.get("prefixes", [])]:
+                head = head[1:]
+            alternative = comp.get("alternative", "or")
+            head = ["and" if t.lower() == alternative else t for t in head]
+            holders = self._frame_holders(spec, head)
+            kind = "more" if low[w + n + 1] in more_words else "fewer" if low[w + n + 1] in fewer_words else None
+            if not isinstance(holders, list) or len(holders) != 2 or kind is None:
+                return None
+            body = w + n + 2
+            stop = next((j for j in range(body, len(low) + 1) if self._frame_modifiers(low, j, len(low), modifiers)[0]),
+                        len(low))
+            item = self._frame_holder(spec, tokens[body:stop]) if stop > body else None
+            if stop > body and item is None:
+                return None
+            return {"query": [{kind: {"a": holders[0], "b": holders[1], **({"item": item} if item else {})}}]}
+        # Does A have more X than B?
+        than = [x.lower() for x in comp.get("than", [])]
+        asks = [x.lower() for x in (comp.get("same") or {}).get("asks", [])]
+        if low and low[0] in asks and any(t in than for t in low):
+            predicates = {w.lower() for w in spec.get("predicates", [])}
+            k = next((i for i in range(1, len(low)) if low[i] in predicates), None)
+            t = next(i for i, x in enumerate(low) if x in than)
+            if k is None or k + 1 >= t or t + 1 >= len(low):
+                return None
+            kind = "more" if low[k + 1] in more_words else "fewer" if low[k + 1] in fewer_words else None
+            a = self._frame_holder(spec, tokens[1:k])
+            item = self._frame_holder(spec, tokens[k + 2:t]) if t > k + 2 else None
+            stop = next((j for j in range(t + 1, len(low) + 1) if self._frame_modifiers(low, j, len(low), modifiers)[0]),
+                        len(low))
+            b = self._frame_holder(spec, tokens[t + 1:stop])
+            if kind is None or a is None or b is None or (t > k + 2 and item is None) \
+                    or any(self._protected_kind(x) for x in tokens[1:]):
+                return None
+            return {"query": [{kind: {"a": a, "b": b, **({"item": item} if item else {})}}]}
         n = max([self._frame_phrase(low, 0, [w]) for w in comp.get("who", [])] + [0])
         if n and n < len(low) and low[n] in [v.lower() for v in comp.get("verbs", [])]:
             kind_at = n + 1
@@ -3321,6 +3363,21 @@ class RelationalParser:
             particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)), None)
             return word[:-len(particle)] if particle else word
         words = self._particle_variant_words(literal)[0].replace(",", " ").split()
+        than = next((w for w in words for t in spec.get("than", []) if w.endswith(t) and len(w) > len(t)), None)
+        if (than is not None and getattr(self, "effort", 3) >= 1 and words[-1] in self._comparison_forms()
+                and any(w in spec.get("more", []) for w in words)):
+            # A가 B보다 X이 더 많아?: two holders compared by the word of comparison (보다), G7-Q, effort 1
+            at = words.index(than)
+            marker = next(t for t in spec.get("than", []) if than.endswith(t))
+            more_at = next(i for i, w in enumerate(words) if w in spec.get("more", []))
+            if at != 1 or more_at < at or len(words) - 1 != more_at + 1:
+                return None
+            item = [bare(w) for w in words[at + 1:more_at] if w not in spec.get("time_words", [])]
+            if len(item) > 1 or any(self._protected_kind(w) for w in words):
+                return None
+            kind = "fewer" if self._comparison_forms()[words[-1]] == "less" else "more"
+            return {"query": [{kind: {"a": bare(words[0]), "b": than[:-len(marker)],
+                                      **({"item": item[0]} if item else {})}}]}
         tails = sorted(spec.get("choice_tails", []), key=len, reverse=True)
         if len(words) == 2 and not any(w in spec.get("who", []) for w in words):
             names = []

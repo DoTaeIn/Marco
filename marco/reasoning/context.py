@@ -3500,7 +3500,10 @@ class ReasoningContext:
         said_items = {t for t in all_things if t in typed or any(w.startswith(t) and len(w) - len(t) <= 2
                                                                 for w in typed)}
         recent = [i for i in range(len(self.observations) - 1, -1, -1)
-                  if any(p in counted for _s, p, _v in rows_of(self.observations[i]))][:int(spec.get("reach", 3))]
+                  if any(p in counted for _s, p, _v in rows_of(self.observations[i]))]
+        # an old amount said names its event wherever it is; otherwise only the last events are in reach
+        stated_old = len(amounts) >= 2
+        recent = recent if stated_old else recent[:int(spec.get("reach", 3))]
         candidates = []
         for distance, index in enumerate(recent):
             source = self.observations[index]
@@ -3580,9 +3583,10 @@ class ReasoningContext:
             elif not replays(index, fits[0]):
                 self._candidate_dropped(2, "correction_frame", label, "replay_refused")
             else:
+                # with the old amount said, two events that carried it are a tie (asked), never the later one
                 candidates.append({"label": label, "index": index, "old": old, "new": new, "slot": "amount",
                                    "fit": {"state": 1, "reasoning": int(len(amounts) - len(news) == 1),
-                                           "grammar": 1, "context": context}})
+                                           "grammar": 1, "context": 0 if stated_old else context}})
         winner, deciding, ranking = self._rank_candidates(candidates, kind="correction_frame")
         replies = parser.data["context_replies"]
         if winner is None and deciding == "tie":
@@ -3737,6 +3741,66 @@ class ReasoningContext:
         if winner is None:
             return self._grounded_reading(parser, holders[0], None)
         return self._grounded_reading(parser, winner["label"], winner["thing"])
+
+    def _ground_lookup(self, parser, query, facts):
+        """A count question read under a key the state does not count (G7-Q, effort 2): the state's keys it
+        may name are the candidates -- the same holder with the thing in the other number the pack declares
+        (pen / pens), a holder whose key ends in the words asked (the shed for the red shed, 과장님 for 김 과장),
+        a holder a statement named with the relation word asked right before it (my uncle for My uncle Tom).
+        Exactly one candidate is asked instead; two or none leave the question as it was read."""
+        from relational_semantics import declared_plural
+        rows = [q for q in query if isinstance(q, dict)]
+        if not self._effort_allows(2) or len(rows) != 1 or not isinstance(rows[0].get("triple"), list):
+            return query
+        triple = rows[0]["triple"]
+        if len(triple) != 3 or triple[1] != "count" or not isinstance(triple[0], str) or triple[0].startswith(("?", "$")):
+            return query
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        counted = {str(r["triple"][0]) for r in facts if isinstance(r.get("triple"), list) and r["triple"][1] == "count"
+                   and isinstance(r["triple"][0], str)}
+        if triple[0] in counted:
+            return query
+        keys = list(dict.fromkeys(self._holder_keys(parser)))
+        declared = getattr(parser, "noun_number", None) or {}
+        titles = [fold(t) for t in (parser.holder_forms or {}).get("name_titles", [])]
+
+        def same_thing(a, b):
+            a, b = fold(a), fold(b)
+            return a == b or (bool(a) and fold(declared_plural(a, declared) or "") == b) or \
+                (bool(b) and fold(declared_plural(b, declared) or "") == a)
+
+        def holder_of(subject):
+            return next((k for k in sorted(keys, key=lambda k: -len(k.split())) if subject == k
+                         or subject.startswith(k + " ")), None)
+        words = triple[0].split()
+        tails = "|".join(re.escape(p) for p in self._frame_particles(parser)) or "(?!)"
+        found = {}
+        for k in range(1, len(words)):
+            asked_holder, asked_thing = " ".join(words[:k]), " ".join(words[k:])
+            bare = asked_holder
+            for title in titles:
+                if fold(bare).endswith(title) and len(bare) > len(title):
+                    bare = bare[:-len(title)]
+            for subject in counted:
+                holder = holder_of(subject)
+                if holder is None or not same_thing(asked_thing, subject[len(holder):].strip()):
+                    continue
+                if fold(holder) == fold(bare):
+                    why = "number"
+                elif fold(holder).endswith(" " + fold(bare)):
+                    why = "part"
+                elif any(re.search(r"(?<![\w])%s\s+%s(?:%s)?(?![\w])" % (re.escape(bare), re.escape(holder), tails),
+                                   source, re.IGNORECASE if parser.data.get("ignore_case") else 0)
+                         for source in self.observations):
+                    why = "relation"
+                else:
+                    continue
+                found[subject] = why
+        winner, _deciding, _ranking = self._rank_candidates(
+            [{"label": subject, "fit": {"state": 1}} for subject in sorted(found)], kind="lookup")
+        if winner is None:
+            return query
+        return [dict(rows[0], triple=[winner["label"], "count", "?n"])]
 
     def _grounded_reading(self, parser, subject, item):
         """A count question on ``subject`` as the reader would have read it, for the turn to go on with."""
@@ -4285,6 +4349,10 @@ class ReasoningContext:
             if fold(said).endswith(fold(tail)) and len(said) > len(tail):
                 said = said[:-len(tail)].strip(" ,")
                 break
+        # the words the pack declares as saying nothing in a follow-up (please, maybe; 좀, 혹시) come off anywhere
+        ignorable = {fold(w) for w in extra.get("ignorable", [])}
+        words = [w for w in said.split() if fold(w.strip(",.!?")) not in ignorable]
+        said = " ".join(words).strip(" ,")
         words = said.split()
         place = False
         if words and fold(words[0]) in {fold(m) for m in extra.get("place_markers", [])}:
@@ -4364,6 +4432,23 @@ class ReasoningContext:
                 continue
             candidates.append({"label": label, "slot": slot, "rewritten": rewritten,
                                "fit": {"state": int(in_state), "grammar": 1, "context": int(bool(known)), "cost": 0}})
+        if not candidates and len(core) == 1 and slots and slots[0][0] == "holder" and self._effort_allows(2):
+            # one name the conversation never counted, said as a follow-up (Zed? / 제드는?): the last question
+            # asked of it, held naming what is missing, never left unread
+            word = core[0]
+            name_like = (bool(re.fullmatch((parser.holder_forms or {}).get("name") or "(?!)", word))
+                         and not re.fullmatch((parser.holder_forms or {}).get("name") or "(?!)", word.lower()))
+            marked = last != words[-1] or text.strip().rstrip("?.!？。 ") != said
+            if (name_like or (marked and not parser.data.get("ignore_case"))) and not parser._protected_kind(word) \
+                    and fold(word) not in self._declared_words(parser):
+                span = self._frame_span(parser, tokens, slots[0][1], "holder")
+                if span is not None:
+                    begin, end, particle = span
+                    new = word + ((parser._particle_form(word, particle) if particle in parser.particle_mates
+                                   else particle) if particle else "")
+                    closing = tokens[end - 1][len(tokens[end - 1].rstrip(",.?!")):]
+                    candidates.append({"label": "holder=%s" % word, "slot": "holder", "fit": {"state": 0},
+                                       "rewritten": " ".join(tokens[:begin] + [new + closing] + tokens[end:])})
         winner, deciding, ranking = self._rank_candidates(candidates, kind="partial_frame")
         if winner is None and deciding == "tie":
             replies = parser.data.get("context_replies", {})
@@ -6351,6 +6436,9 @@ class ReasoningContext:
                 return {**result, "status": "unresolved",
                         "meaning": {"act": "hold", "reason": "unread_event", "said": said},
                         "answer": replies["unread_event"].format(**{"말": said})}
+            if 풀린물음 and not (self.unread or self.unread_guard):
+                # a count asked under a key the state does not have may name a key it has (G7-Q, effort 2)
+                풀린물음 = self._ground_lookup(parser, 풀린물음, 답사실)
             outcome = parser.answer({"facts": 답사실, "query": 풀린물음}) if 풀린물음 else None
             if outcome is None and 풀린물음:
                 빠진전제 = self._missing_premise(parser, 풀린물음, 답사실)
