@@ -71,6 +71,20 @@ never reorders them. Where an older roadmap disagrees on order, this file wins.
   readings: a bound on the search and an order on its survivors. Owner's limit
   (2026-09-29): effort level 3 is turn-local deliberation only. No persistent
   learning, no permanent repair, no external research, no OpenProblem promotion.
+- **Experiments, not rounds (owner, 2026-09-29).** An understanding round is one
+  hypothesis tested, not a schedule. The loop is fixed: cause found → patch →
+  regression → merge → frozen score → next cause. Failures are grouped by
+  structural cause; one cause is fixed and the whole exam is scored again at
+  once. A patch whose regression passes is merged and scored the same day
+  without waiting for a hand-off. No round count and no date is estimated ahead.
+  At 90% or better the next step is gate verification; below it, the remaining
+  failures are grouped again and only the one to three largest structural causes
+  go into the next experiment. Graph grounding is built only as far as the gate
+  needs: identity, referent and frame grounding. Documents describe the work and
+  never hold it up. Work time and wait time are logged apart in
+  `docs/ko/2026-09-29-experiment-log.md`. This replaces "scored once per round"
+  in the exam rule: the plan manager scores after every merge, and still only
+  the plan manager; development chats never open or run the frozen sets.
 - **Placements decided by the owner (2026-09-29), top-level order unchanged:** the
   real MCO format under MARCO 1 release, before M2; the Observation Graph Contract
   at the end of M2, before M3; M3 owns capability declaration, discovery, binding
