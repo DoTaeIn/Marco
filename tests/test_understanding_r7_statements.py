@@ -361,3 +361,12 @@ def test_below_effort_3_the_use_up_is_not_read(n, effort):
 def test_a_use_up_that_does_not_fit_is_held(n):
     language, dialogue = ADJUNCT_HELD[n]
     assert play(language, 3, dialogue) == []
+
+
+def test_a_use_up_is_never_read_without_its_negation():
+    # the words a repair may not change are never left out: 안 먹었어 is not 먹었어, didn't use is not used
+    assert play("한국어", 3, [("누리는 단추가 다섯 개 있어.", "rec"), ("누리가 단추 두 개를 안 먹었어.", "hold"),
+                            ("누리는 단추가 몇 개 있어?", "hold")]) == []
+    # without its purpose phrase the English one is the negated statement main reads: nothing moves
+    assert play("english", 3, [("Nora has 9 pens.", "rec"), ("Nora didn't use three of them for a party.", "rec"),
+                               ("How many pens does Nora have?", 9)]) == []
