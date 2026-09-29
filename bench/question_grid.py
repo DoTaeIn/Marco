@@ -429,7 +429,8 @@ def cells(code):
             if code == "en":
                 said = "What about %s?" % ("me" if target == "me" else h["obj"])
                 before = {"after_held": ["How many %s does Zed have?" % lang["items"]["pen"]],
-                          "after_clarify": ["How many %s does she have?" % lang["items"]["pen"], "Nora, I mean."],
+                          "after_clarify": ["How many %s does she have?" % lang["items"]["pen"],
+                                            "%s, I mean." % lang["holders"]["name"]["obj"]],
                           "after_why": [question("count", "none", "name")[0],
                                         question("why", "none", "name")[0]]}[kind]
             else:
@@ -437,7 +438,8 @@ def cells(code):
                 said = "%s?" % _p(short, "은/는")
                 before = {"after_held": ["%s %s 몇 개야?" % (_p("제드", "은/는"), _p(lang["items"]["pen"], "이/가"))],
                           "after_clarify": ["%s %s 몇 개야?" % (_p(lang["pointer"], "은/는"),
-                                                             _p(lang["items"]["pen"], "이/가")), "노라 말이야."],
+                                                             _p(lang["items"]["pen"], "이/가")),
+                                            "%s 말이야." % lang["holders"]["name"]["name"]],
                           "after_why": [question("count", "none", "name")[0],
                                         question("why", "none", "name")[0]]}[kind]
             expect_q = question("where" if h.get("place") else "count", "none", target)
