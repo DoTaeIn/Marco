@@ -180,6 +180,39 @@ class ReasoningContext:
             dropped = self._trace_candidates = []
         dropped.append({"level": level, "kind": kind, "candidate": candidate, "why": why})
 
+    # The declared order candidates are ranked by (amendment A4; G5 design note §11 made lexicographic):
+    # each check's fit, higher first; the repair cost, lower first. No weights: a later check decides only
+    # when every earlier one is equal.
+    RANK_ORDER = ("state", "reasoning", "grammar", "context", "cost")
+
+    def _rank_candidates(self, candidates, kind="reading"):
+        """``candidates``: the survivors of the checks, each ``{"label": str, "fit": {check: value}, ...}`` with
+        a fit per check of ``RANK_ORDER`` (a number or a bool, higher is better; ``cost`` lower is better; a
+        check left out is 0). Returns ``(winner or None, deciding check, ranking)``: the top candidate when it
+        beats the runner-up on one check, the first in the declared order where they differ; ``"only"`` for a
+        single survivor; ``(None, "tie", ranking)`` when the top two are equal on every check (ask);
+        ``(None, None, [])`` for none (hold). The ranking and the deciding check go to the trace."""
+        def key(candidate):
+            fit = candidate.get("fit") or {}
+            return tuple(-float(fit.get(check) or 0) if check != "cost" else float(fit.get(check) or 0)
+                         for check in self.RANK_ORDER)
+        ranking = sorted(candidates or [], key=key)
+        if not ranking:
+            winner, deciding = None, None
+        elif len(ranking) == 1:
+            winner, deciding = ranking[0], "only"
+        else:
+            top, runner = key(ranking[0]), key(ranking[1])
+            deciding = next((check for check, a, b in zip(self.RANK_ORDER, top, runner) if a != b), "tie")
+            winner = ranking[0] if deciding != "tie" else None
+        rankings = getattr(self, "_trace_rankings", None)
+        if rankings is None:
+            rankings = self._trace_rankings = []
+        rankings.append({"kind": kind, "effort": self.effort, "decided_by": deciding,
+                         "winner": (winner or {}).get("label"),
+                         "ranking": [{"label": c.get("label"), "fit": dict(c.get("fit") or {})} for c in ranking]})
+        return winner, deciding, ranking
+
     def __init__(self, max_turns=128, *, model=None, companions=(), language=None, effort=None):
         self.effort = self._declared_effort(effort)
         self.observations = []
@@ -3865,7 +3898,7 @@ class ReasoningContext:
     def turn(self, text, knowledge_path=None):
         """One turn. Its sentence comes from ``marco.language.realize``."""
         self._trace_buffer, self._trace_readings, self._readings_dropped = [], None, []
-        self._trace_candidates = []
+        self._trace_candidates, self._trace_rankings = [], []
         observed_before = len(self.observations)
         result, path = None, "reply"
         try:
@@ -4339,7 +4372,8 @@ class ReasoningContext:
                     "sha256": _sha(text)},
             payload={"selected": selected, "candidates": readings or [[selected, None]], "status": status,
                      "act": act, "observations": len(self.observations), "effort": self.effort,
-                     "candidates_dropped": list(getattr(self, "_trace_candidates", None) or [])})["event_id"]
+                     "candidates_dropped": list(getattr(self, "_trace_candidates", None) or []),
+                     "rankings": list(getattr(self, "_trace_rankings", None) or [])})["event_id"]
         parents = []
         for kind, payload in list(getattr(self, "_trace_buffer", None) or []):
             status_of = "failed" if kind in ("rule_blocked", "hypothesis_rejected") else "success"
