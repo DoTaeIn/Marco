@@ -207,3 +207,19 @@ development fit the exam turn by turn. The score of the frozen 52 is from now on
 a development score; the fresh exam placed under the release is the one that
 says whether the understanding is general. The plan manager's scripts also showed
 the plan manager that one sentence when the overlap was listed.
+
+## Experiment 15, and the audit the owner asked for
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 15 | (chat's own finding) a correction at effort 2 and above could change the statement that carried the NEW amount, backwards; (exam trace) corrections whose corrected statement was kept unread; a counter inside the thing's name taken for a scope word | 2c6d286 with a9d0895, merged cca6ca4 | chat 20 min; plan manager 12 min | chat 15 min on runs; reported 21:25, merged 21:33 after the effort runs, scored 21:38 | chat's full suite 2,352 passed, 1 known failure (gate files left out); gate files and reading tests at merge: 560 passed | **92/108 (85.2%)**, +4, English 48 of 54, Korean 44 of 54, 0 wrong among the answerable, 0 violations; **one correction is scored wrong (`new_event_added`)**: a statement kept unread was said again with the corrected amount and recorded as a new event (`experiment-15.json`). Not pushed; sent back to the chat |
+
+**Audit at e60c039 (owner's question: hard-coded? graph-based? MARCO's identity?).**
+The exam at each effort level: 63, 66, 87, 88 of 108, with no wrong turn at any
+level; composition 340 of 340. Level 0 is main before round 7, so 21 of the 25
+turns gained come from the candidate search of level 2, not from rules. The
+Python added in round 7 (1,906 lines; declarations 313) holds no word list; one
+default word ("or") is written in code. No import of a model was added. What is
+not as designed: the conversation's state is a list of the sentences said,
+replayed into facts keyed by words; the grounding matches the words of those keys
+and consults no graph; there is no canonical identity for a holder or a thing.
