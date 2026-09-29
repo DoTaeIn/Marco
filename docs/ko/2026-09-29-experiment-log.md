@@ -115,3 +115,9 @@ which-person turn. The two transfers still refused are the two cases the patch
 excludes on purpose (the amount "one" before a word without a plural form; a
 plural word that is not the thing): taking out a thing that was said would
 answer about another thing.
+
+## Experiment 6: the one wrong record
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 6 | (exam) a transfer recorded with a stale count: the safety check that holds a holder behind an unread statement asked for every word of the holder's key, and an unread use-up that leaves the thing to a pronoun has no thing word | 6a4bff0, merged 18b9f53 | chat 10 min; plan manager 5 min | chat 8 min on runs; reported 17:18, merged 17:19, scored 17:22 | chat's full suite 2,284 passed, 1 known failure (gate files left out), 6 min; gate files and both round-7 test files run at merge: passed | gate 67/108 unchanged; **wrong records 1 → 0: no wrong turn is left on the exam**; statements 142 right, 8 held (`experiment-06.json`) |
