@@ -4984,9 +4984,30 @@
    "is the one i mean",
    "is who i'm asking about",
    "is who i was asking about"
-  ]
+  ],
+  "follow_up": {
+    "heads": [
+     "and how about",
+     "how about",
+     "what about"
+    ],
+    "tails": [
+     "then",
+     "too"
+    ],
+    "place_markers": [
+     "in",
+     "at",
+     "on",
+     "inside"
+    ],
+    "articles": [
+     "the"
+    ],
+    "place_cases": []
+   }
  },
- "_이름답": "A reply that only names a person. After a question held for its pointer, the name answers which one; otherwise it asks the last answered question about that person. These words may stand before the name; anything else means it is not such a reply. Heads are the discourse connectives that open a follow-up (and, so, then, but, also), the elliptical question openers (what about, how about, what of) and the reformulations (I mean, I meant, and the identifying it is / it's: It's Haru); several may stand one after another (and how about ...). A head may be followed by a comma (Sorry, I meant Haru). Tails are the reformulations said after the name (Haru, I mean; Haru is who I meant; Haru is the one I meant), and the apologies and interjections that open a self-repair (sorry, oh, no, wait, actually) are heads. The name may carry a title or a relation; it is read as the pack reads a holder.",
+ "_이름답": "A reply that only names a person. After a question held for its pointer, the name answers which one; otherwise it asks the last answered question about that person. These words may stand before the name; anything else means it is not such a reply. Heads are the discourse connectives that open a follow-up (and, so, then, but, also), the elliptical question openers (what about, how about, what of) and the reformulations (I mean, I meant, and the identifying it is / it's: It's Haru); several may stand one after another (and how about ...). A head may be followed by a comma (Sorry, I meant Haru). Tails are the reformulations said after the name (Haru, I mean; Haru is who I meant; Haru is the one I meant), and the apologies and interjections that open a self-repair (sorry, oh, no, wait, actually) are heads. The name may carry a title or a relation; it is read as the pack reads a holder. follow_up (G7-Q): a follow-up that names only one slot of the last question read (its holder, its thing, a place) is tried in each slot of that question's frame and checked against the state; these are the words around the named ones: more heads and tails, the words that mark a place (in, at), and the articles left out of a thing's name.",
  "대조정정": {
   "markers": [
    ", not "
@@ -5084,6 +5105,137 @@
   "nor"
  ],
  "_이름밖": "Words that are never part of a holder's or a thing's name in a reading: the English prepositions (all of them but 'of', which a partitive keeps: boxes of crayons; with 'than', so 'Ada has 2 more figs than Bo' is not read as a count of 'figs than Bo') and the adverbial particles away, back. A name that holds one swallowed a phrase the example does not have ('figs to Bo', 'figs at first'), so that reading is not taken. The coordinating conjunctions and, or, nor join two names and are part of neither (G5: 'my wife and Eliana' is two holders, not the relation 'wife and' before a name).",
+ "수량물음": {
+  "frame": {
+   "askers": [
+    "how many"
+   ],
+   "auxiliaries": [
+    "does",
+    "do",
+    "has",
+    "have"
+   ],
+   "predicates": [
+    "have",
+    "has",
+    "hold",
+    "holds",
+    "own",
+    "owns",
+    "keep",
+    "keeps",
+    "got",
+    "carry",
+    "carries"
+   ],
+   "copulas": [
+    "are",
+    "is"
+   ],
+   "there": [
+    "there"
+   ],
+   "place_markers": [
+    "in",
+    "at",
+    "on",
+    "inside"
+   ],
+   "holder_markers": [
+    "with",
+    "for"
+   ],
+   "left_verbs": [
+    "left",
+    "remaining",
+    "remain",
+    "left over"
+   ],
+   "joiners": [
+    "and"
+   ],
+   "articles": [
+    "the"
+   ],
+   "self": [
+    "I",
+    "me"
+   ],
+   "group": {
+    "the two of them": "two",
+    "both of them": "two",
+    "the two": "two",
+    "they": "all"
+   },
+   "modifiers": {
+    "time": [
+     "now",
+     "right now",
+     "at the moment",
+     "currently",
+     "at present",
+     "still",
+     "so far",
+     "by now",
+     "today"
+    ],
+    "total": [
+     "in all",
+     "altogether",
+     "in total",
+     "combined",
+     "between them",
+     "between us",
+     "all together",
+     "together",
+     "total",
+     "all told"
+    ],
+    "left": [
+     "left",
+     "remaining",
+     "left over"
+    ]
+   },
+   "comparison": {
+    "who": [
+     "who",
+     "which of us",
+     "which of them",
+     "which one",
+     "which of the two"
+    ],
+    "verbs": [
+     "has",
+     "have",
+     "holds",
+     "owns",
+     "keeps"
+    ],
+    "more": [
+     "more"
+    ],
+    "fewer": [
+     "fewer",
+     "less"
+    ],
+    "alternative": "or",
+    "same": {
+     "asks": [
+      "do",
+      "does"
+     ],
+     "phrases": [
+      "the same number of",
+      "the same amount of",
+      "as many"
+     ]
+    }
+   }
+  }
+ },
+ "_수량물음": "A question read as a frame plus slots (G7-Q): how many THING, an auxiliary, the holders (joined by and; I and me are the speaker; a group word names two or all), a predicate of having, then only words of the declared modifier classes (time, total, left), in any order; or how many THING are (there) (modifiers) in PLACE, or are left/remaining with or for HOLDER. A modifier never changes the operator: one holder is a count, two or more a total. Comparison: who (which of us ...) has more/fewer THING (modifiers), A or B; do A and B have the same number of THING. A word outside these lists means the frame does not read. Read from effort 1 on.",
  "수량이유물음": {
   "facts": [
    {
