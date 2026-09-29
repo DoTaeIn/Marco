@@ -92,3 +92,32 @@ None goes to `_check_readings` and then to the unread store, with
 `RelationalParser.parse(partial=True)` returning None instead of what it did
 recognise. Experiment 3's patch was reached on the 5 statements and returned None
 on each: it fixed a symptom the exam does not have.
+
+## Experiment 4: the regressions of experiment 2
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 4 | the question patch read a scope word over one holder as a modifier, declared a probe word, put a dev4 sentence in the grid, let a follow-up name nothing of the conversation, and its pin test depended on other tests' writes | 675c1f5, merged a18c617 | chat 40 min; plan manager 10 min | chat 12 min on runs; reported about 14:57, merged 14:58, exam scored 15:01; **the suite took 52 min instead of 6** and the composition and reasoning gates an hour, because two chats and the plan manager ran tests on one machine (load average 10 to 15) | suite 2,270 passed, the 3 known failures; gate test files 35 passed | **67/108** (−2: two Korean turns back to held, the cost of the restored safety hold), 0 wrong, 0 violations; composition 340/340; reasoning 110/113, 0 wrong (`experiment-04.json` in both folders) |
+
+Owner's decision after the diagnosis (2026-09-29): the statements chat adds the
+wrong-thing candidate; the questions chat returns the recognised structure as a
+partial candidate instead of None.
+
+## Experiment 5: the wrong-thing candidate (with the Korean holding that names no thing)
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 5 | (exam, diagnosed) a statement read completely with a word in the thing slot that is not the thing; the state refuses it and no other candidate is built | 52f3609 with daa4c8a, merged 89cd4b0 | chat 35 min; plan manager 8 min | chat 85 min, of which its full suite 63 min at load average about 60; reported 17:00, merged 17:01, scored 17:03 | suite 2,312 passed, the 3 known failures, 344 s run alone | gate **67/108** unchanged, 0 wrong, 0 violations; **statements recorded 138 → 142 of 150**; refused as invalid 5 → 2; ambiguous 8 → 7 of 12 (`experiment-05.json`) |
+
+The four statements are recorded and the questions after them stay held: the
+question reader returns nothing for them, or they wait on a correction or a
+which-person turn. The two transfers still refused are the two cases the patch
+excludes on purpose (the amount "one" before a word without a plural form; a
+plural word that is not the thing): taking out a thing that was said would
+answer about another thing.
+
+## Experiment 6: the one wrong record
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 6 | (exam) a transfer recorded with a stale count: the safety check that holds a holder behind an unread statement asked for every word of the holder's key, and an unread use-up that leaves the thing to a pronoun has no thing word | 6a4bff0, merged 18b9f53 | chat 10 min; plan manager 5 min | chat 8 min on runs; reported 17:18, merged 17:19, scored 17:22 | chat's full suite 2,284 passed, 1 known failure (gate files left out), 6 min; gate files and both round-7 test files run at merge: passed | gate 67/108 unchanged; **wrong records 1 → 0: no wrong turn is left on the exam**; statements 142 right, 8 held (`experiment-06.json`) |

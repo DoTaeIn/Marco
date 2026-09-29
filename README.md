@@ -5,7 +5,7 @@ every sentence it says from a proven meaning, and holds when nothing grounds an
 answer. No language model runs anywhere in it.**
 
 **Status: MARCO 1 · Preview.** MARCO 1 is not released. Five of its six gate
-conditions hold; the sixth, accuracy on unseen dialogues, stands at 69 of 108
+conditions hold; the sixth, accuracy on unseen dialogues, stands at 67 of 108
 with 98 needed ([Status](#status)).
 
 ```
@@ -45,44 +45,46 @@ The [freeze decision](docs/ko/2026-09-22-freeze-decision.md) fixed the gate
 before implementation. The frozen exams are 52 unseen dialogues and 114
 reasoning problems; development never opens them, and only the owner's plan
 manager scores them. Numbers below are read from the report files named beside
-them, run on 2026-09-29 with code `095b434`.
+them, run on 2026-09-29 with code `a18c617`.
 
 | # | Gate condition | State | Report |
 | --- | --- | --- | --- |
 | 1 | The fixed seven-step dialogue passes in Korean and English | **met** | `tests/test_repair_and_english.py` |
-| 2 | 90% or better on the answerable turns of 50+ unseen dialogues; a hold is not a correct answer | **not met: 69 of 108 (63.9%)**, 98 needed. 39 held, 0 wrong. Korean 35 of 54, English 34 of 54 | [experiment-02.json](docs/ko/dialogue-gate-2026-09-22/experiment-02.json) |
+| 2 | 90% or better on the answerable turns of 50+ unseen dialogues; a hold is not a correct answer | **not met: 67 of 108 (62.0%)**, 98 needed. 41 held, 0 wrong. Korean 33 of 54, English 34 of 54 | [experiment-04.json](docs/ko/dialogue-gate-2026-09-22/experiment-04.json) |
 | 3 | No confident answer without evidence, no use of withdrawn evidence | **met**: 0 and 0 | same file |
 | 4 | Sample count, composition and the full failure list are published | **met**: 52 dialogues (26 Korean, 26 English), 340 turns, 108 answerable; every failure is in the file | same file |
-| 5 | Every spoken reply composed from a meaning, never picked | **met**: 340 of 340 composed, 0 passed through; 170 of 170 in each language | [composition-experiment-02.json](docs/ko/dialogue-gate-2026-09-22/composition-experiment-02.json) |
-| 6 | 95% or better on 100+ structured reasoning problems, 0 wrong, at most 10% unparsed | **met**: 110 of 113 parsed problems (97.3%), 0 wrong questions, 1 of 114 unparsed | [reasoning experiment-02.json](docs/ko/reasoning-gate-2026-09-24/experiment-02.json) |
+| 5 | Every spoken reply composed from a meaning, never picked | **met**: 340 of 340 composed, 0 passed through; 170 of 170 in each language | [composition-experiment-04.json](docs/ko/dialogue-gate-2026-09-22/composition-experiment-04.json) |
+| 6 | 95% or better on 100+ structured reasoning problems, 0 wrong, at most 10% unparsed | **met**: 110 of 113 parsed problems (97.3%), 0 wrong questions, 1 of 114 unparsed | [reasoning experiment-04.json](docs/ko/reasoning-gate-2026-09-24/experiment-04.json) |
 
 The other turns of the dialogue exam, reported apart as the gate requires:
 
 | Turns | Right | Held | Wrong |
 | --- | --- | --- | --- |
 | Statement, to be recorded | 138 of 150 | 11 | 1 |
-| Missing premise, to be held naming what is missing | 3 of 20 | 17 | 0 |
-| Ambiguous referent, every candidate named | 7 of 12 | 5 | 0 |
+| Missing premise, to be held naming what is missing | 5 of 20 | 15 | 0 |
+| Ambiguous referent, every candidate named | 8 of 12 | 4 | 0 |
 | Unsupported request, declined | 6 of 6 | 0 | 0 |
 | Correction, the same event revised | 12 of 18 | 6 | 0 |
 | Why, every evidence turn cited | 18 of 26 | 8 | 0 |
 
 Gate condition 2 over time, all with 0 or 1 wrong answers:
 
-| Run | Baseline | Round 1 | 2 | 3 | 4 | 5 | 6 | Experiment 2 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Correct of 108 | 3 | 19 | 21 | 21 | 40 | 45 | 63 | 69 |
+| Run | Baseline | Round 1 | 2 | 3 | 4 | 5 | 6 | Experiment 2 | Experiment 4 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Correct of 108 | 3 | 19 | 21 | 21 | 40 | 45 | 63 | 69 | 67 |
+
+Experiment 4 restored a safety hold of round 2 that experiment 2 had broken (a
+scope word over one holder is held, not answered); two turns went back to held.
 
 Work now runs as small experiments: find the largest structural cause of the
 held turns, patch it, run the regression, merge, score the exam again. Each one
 is a row in the [experiment log](docs/ko/2026-09-29-experiment-log.md).
-`python tools/doc_facts.py frozen --run experiment-02` prints these numbers
+`python tools/doc_facts.py frozen --run experiment-04` prints these numbers
 from the report files without running an exam.
 
-**Tests** at `095b434`: 2,248 passed, 10 failed, 2 expected failures (457 s, 8 workers). Three failures are
-machine-dependent and known (two `test_response_composer` tests, the macOS memory
-assertion of the ALMA reproduction). Seven came in with the latest merge and are
-being fixed; among them a safety test of round 2 (a scope word over one holder must be held).
+**Tests** at `a18c617`: 2,270 passed, 3 failed, 2 expected failures. The three
+failures are machine-dependent and known: two `test_response_composer` tests and
+the macOS memory assertion of the ALMA reproduction.
 
 ## Compared with a language model
 
@@ -189,7 +191,7 @@ graphs/*.kg  legal/*.kg  axioms/  styles/  cases/  data/     knowledge and data
 docs/                      architecture, en, ko (design records and goals), releases, requests
 ```
 
-`python tools/doc_facts.py counts` at `095b434`: 905 graph files, 6,988 nodes,
+`python tools/doc_facts.py counts` at `a18c617`: 905 graph files, 6,988 nodes,
 8 root `.py` files, 89 package files, 119 test files.
 
 ## Roadmap
@@ -243,9 +245,11 @@ sensor for language. Source: §24 of the
 
 ## Limits
 
-- **The MARCO 1 gate is not passed.** 39 of the exam's 108 answerable turns are
-  held. The largest causes today are statements that do not name their thing,
-  correction turns the reader does not read, and questions in the other language.
+- **The MARCO 1 gate is not passed.** 41 of the exam's 108 answerable turns are
+  held. The conversation's state is right; the break is between the reader and
+  the grounding: a sentence the reader cannot read whole is dropped instead of
+  being completed from the conversation
+  ([diagnosis](docs/ko/2026-09-29-experiment-log.md)).
 - **One domain.** The state dialogue covers who holds how many of what. No gate
   measures anything outside it.
 - **Narrow knowledge.** The graphs and the declared packs are the whole world,
