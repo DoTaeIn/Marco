@@ -4125,6 +4125,52 @@ class ReasoningContext:
             return None
         return self._name_reply(parser, found[0][1], knowledge_path)
 
+    def _ground_pair(self, parser, query, facts):
+        """A total or a comparison over "the two" (How many do the two of them have? / Which of the two has more?
+        / 둘 중 누가 더 많아?), at effort 2: the thing left unsaid is the one the question before asked; the two
+        holders are the two the last questions named, else the two holders of that thing. Exactly two holders
+        counting the thing, or the question is left as it was read."""
+        rows = [q for q in query if isinstance(q, dict)]
+        if not self._effort_allows(2) or len(rows) != 1:
+            return query
+        row = rows[0]
+        kind = next((k for k in ("total", "more", "fewer", "same") if isinstance(row.get(k), dict)), None)
+        if kind is None:
+            return query
+        spec = dict(row[kind])
+        pair = kind != "total" and spec.get("pair")
+        if not pair and not (kind == "total" and spec.get("members") in ("two", "all") and not spec.get("item")):
+            return query
+        recent = list(reversed(getattr(self, "_recent_before_turn", None) or []))
+        # the thing: the question's own, else the one the latest question with a thing asked
+        item = spec.get("item") or next((frame.get("item") for frame in recent if frame.get("item")), None)
+        counted = {str(r["triple"][0]) for r in facts if isinstance(r.get("triple"), list) and r["triple"][1] == "count"
+                   and isinstance(r["triple"][0], str)}
+        if not item:
+            return query
+        holders_of = [subject[:-len(item)].strip() for subject in sorted(counted) if subject.endswith(" " + item)]
+        named = []
+        for frame in recent:
+            for name in frame.get("holders") or []:
+                if name not in named and "%s %s" % (name, item) in counted:
+                    named.append(name)
+        if kind == "total":
+            spec["item"] = item
+            if spec.get("members") == "two":
+                if len(named) >= 2 and len(holders_of) != 2:
+                    spec["members"] = list(reversed(named[:2]))
+                elif len(holders_of) != 2:
+                    return query
+            return [dict(row, **{kind: spec}, render=self._count_render(parser, item))]
+        pair_of = named[:2] if len(named) >= 2 else (holders_of if len(holders_of) == 2 else [])
+        winner, _deciding, _ranking = self._rank_candidates(
+            [{"label": " / ".join(pair_of), "fit": {"state": 1}}] if len(pair_of) == 2 else [], kind="pair")
+        if winner is None:
+            return query
+        spec.pop("pair", None)
+        spec.update(a=pair_of[1] if named else pair_of[0], b=pair_of[0] if named else pair_of[1], item=item)
+        return [dict(row, **{kind: spec})]
+
     def _grounded_reading(self, parser, subject, item):
         """A count question on ``subject`` as the reader would have read it, for the turn to go on with."""
         return {"facts": [], "query": [{"triple": [subject, "count", "?n"],
@@ -4607,6 +4653,8 @@ class ReasoningContext:
             holders = [m for m in members if isinstance(m, str)] if isinstance(members, list) else []
             item = spec.get("item") if isinstance(spec.get("item"), str) else None
         self.last_frame = {"text": text.strip(), "holders": holders, "item": item}
+        # the last few frames, for a question over "the two" of them
+        self.recent_frames = (list(getattr(self, "recent_frames", None) or []) + [dict(self.last_frame)])[-4:]
 
     @staticmethod
     def _frame_particles(parser, extra=()):
@@ -5187,6 +5235,7 @@ class ReasoningContext:
         self._trace_candidates, self._trace_rankings = [], []
         # the last question's frame as it stood before this turn (the turn's own question replaces it)
         self._frame_before_turn = self.last_frame
+        self._recent_before_turn = list(getattr(self, "recent_frames", None) or [])
         observed_before = len(self.observations)
         result, path = None, "reply"
         try:
@@ -6797,6 +6846,9 @@ class ReasoningContext:
                 return {**result, "status": "unresolved",
                         "meaning": {"act": "hold", "reason": "unread_event", "said": said},
                         "answer": replies["unread_event"].format(**{"말": said})}
+            if 풀린물음 and not (self.unread or self.unread_guard):
+                # a total or a comparison over "the two" takes its holders and thing from the conversation
+                풀린물음 = self._ground_pair(parser, 풀린물음, 답사실)
             if 풀린물음 and not (self.unread or self.unread_guard):
                 # a count asked under a key the state does not have may name a key it has (G7-Q, effort 2); words
                 # that describe several holders are asked back with every candidate
