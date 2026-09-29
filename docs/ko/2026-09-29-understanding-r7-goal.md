@@ -164,6 +164,15 @@ median milliseconds per turn per level. Done when accuracy rises from level 0
 to level 3 on every check half with 0 wrong at every level. A class fixed only
 at level 0 (by a rule) shows no curve and is reported as coverage, not inference.
 
+**A4. Rank, answer on a clear win (owner, 2026-09-29).** Effort sets how many
+candidates are generated. Survivors are ranked by a declared order, not by
+numeric weights: state fit, then reasoning fit, then grammar fit, then context
+fit, then lowest repair cost (the G5 design note §11, made lexicographic). The
+top candidate is answered only when it beats the runner-up on one of those
+checks; a true tie asks, no survivor holds. The trace records the ranking and
+the check that decided it, so "why" can say why this reading won. This replaces
+"several → ask" in A1.
+
 Self-repair that persists (roadmap R-A) stays frozen until the gate.
 
 ## Both
