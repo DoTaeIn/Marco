@@ -193,3 +193,17 @@ at the lookup (3); one held as a protected repair.
 The regressed which-person turn ends again at the lookup (`_ground_lookup` then
 hold/not_stated) and the reply after it is not read; sent back to the chat as the
 first thing to fix.
+
+## Experiment 14: holders given as a number, and the regression of experiment 13
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 14 | (exam trace) a total and a comparison whose holders are given as a number are not read; and the words that stand for the thing had been declared as modifiers, so a pointer lost its second word | 71a801c with ff539a2, merged 4e78fa0 | chat 15 min; plan manager 15 min | chat 15 min on runs; reported 20:52, merged 20:53, scored 20:59 | chat's full suite 2,345 passed, 1 known failure (gate files left out). **Gate test F1.3 failed at merge**: one sentence of the chat's grid and test was word for word a sentence of the frozen set. Reworded by the plan manager (3387cad); gate files then 35 passed | **88/108 (81.5%)**, +2; Korean 42 of 54, English 46 of 54; which-person 12 of 12 again; 0 wrong, 0 violations (`experiment-14.json`) |
+
+**What the overlap means.** The chat never saw the exam. It wrote that sentence
+from the token kinds of a failing turn, and the kinds were enough to arrive at the
+exam's own words. The traces make the patches hit, and they also let the
+development fit the exam turn by turn. The score of the frozen 52 is from now on
+a development score; the fresh exam placed under the release is the one that
+says whether the understanding is general. The plan manager's scripts also showed
+the plan manager that one sentence when the overlap was listed.
