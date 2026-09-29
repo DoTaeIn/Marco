@@ -134,3 +134,15 @@ fact); held behind an unread turn 17 (behind a statement the reader returns
 nothing for 4, behind a correction 4, behind the two transfers the wrong-thing
 candidate excludes on purpose 4, behind a lookup failure 3, other 2); lookup
 failure 2; identity 1; a tie held where the exam expects one answer 1.
+
+## Experiment 8: the short follow-up, the comparison, the near key
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 8 | (exam) the grounding builds no candidate for a very short turn that names a holder or thing of the state beside a word that says nothing, for a comparison of two named holders, and for a count asked under a key the state lacks | bbc4cda with 4c128c4, merged 1683212 | chat 75 min; plan manager 5 min | chat 20 min on runs; reported 18:13, merged 18:14, scored 18:17 | chat's full suite 2,303 passed, 1 known failure (gate files left out); gate files and the round-2, round-6 and round-7 reading tests at merge: 381 passed. One pin of round 6 changed: a held question is now answered with the expected value | **81/108 (75.0%)**, +5, 0 wrong on the whole exam, 0 violations; English 44 of 54, Korean 37 of 54 (`experiment-08.json`) |
+
+Exam profile at 1683212, the 27 held answerable turns: 19 wait behind a root turn
+(two English transfers the wrong-thing candidate excludes 4; three which-person
+turns held as not stated or without a referent 5; two corrections the reader
+returns nothing for 4; three Korean statements 5; the English use-up with a
+pronoun 1); question not read 5; lookup 2; tie 1.

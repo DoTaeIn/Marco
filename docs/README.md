@@ -296,6 +296,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [experiment-05.json](ko/dialogue-gate-2026-09-22/experiment-05.json) | Experiment 5, `89cd4b0`: 67 of 108, statements recorded 142 of 150 |
 | [experiment-06.json](ko/dialogue-gate-2026-09-22/experiment-06.json) | Experiment 6, `18b9f53`: 67 of 108, no wrong turn on the exam |
 | [experiment-07.json](ko/dialogue-gate-2026-09-22/experiment-07.json) | Experiment 7, `46427c5`: 76 of 108, 0 wrong, 0 violations |
+| [experiment-08.json](ko/dialogue-gate-2026-09-22/experiment-08.json) | Experiment 8, `1683212`: 81 of 108, 0 wrong, 0 violations |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
