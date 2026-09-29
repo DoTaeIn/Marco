@@ -5020,9 +5020,34 @@
    "my mistake",
    "I meant",
    "I mean"
-  ]
+  ],
+  "frame": {
+    "cues": [
+     "no",
+     "not",
+     "actually",
+     "sorry",
+     "wait",
+     "oops",
+     "correction",
+     "i meant",
+     "i mean",
+     "my mistake",
+     "wrong",
+     "other way around",
+     "other way round"
+    ],
+    "swap_words": [
+     "the other way around",
+     "the other way round",
+     "the reverse",
+     "backwards"
+    ],
+    "new_before": [", not "],
+    "reach": 3
+   }
  },
- "_대조정정": "A correction said as a contrast of two amounts: 'Actually it was one, not two.' The amount before the marker is the new one, the one after it the old one. The one earlier statement that carried the old amount is corrected in place; no new event is added. Several such statements are asked back. restate_heads: a correction said by restating the event with its new amount after a head that says the earlier statement was wrong (Sorry, I misspoke: Haru gave Moru 1). The heads are phrases that say one's own statement was wrong, and the editing term 'I mean(t)' of self-repair (Levelt 1983); the event is named by any form of a verb of its frame.",
+ "_대조정정": "A correction said as a contrast of two amounts: 'Actually it was one, not two.' The amount before the marker is the new one, the one after it the old one. The one earlier statement that carried the old amount is corrected in place; no new event is added. Several such statements are asked back. restate_heads: a correction said by restating the event with its new amount after a head that says the earlier statement was wrong (Sorry, I misspoke: Haru gave Moru 1). The heads are phrases that say one's own statement was wrong, and the editing term 'I mean(t)' of self-repair (Levelt 1983); the event is named by any form of a verb of its frame. frame (G7-Q): a correction no marker above reads is a partial frame over the last events (reach): the turn carries one of these words (cues), and each of the last events is tried with its amount changed to the one said, or, when the turn names both holders of a transfer, with the giver and the receiver swapped (the swap words say the order was reversed); each is checked by replay and ranked (effort 2).",
  "수동태": {
   "auxiliaries": [
    "was",

@@ -170,3 +170,62 @@ def test_effort_three_leaves_packs_graphs_and_declarations_untouched_and_calls_n
     rows = answers["r7_a5_pin"]
     assert len(rows) == len(turns) and not any(r.get("error") for r in rows)
     assert all(r.get("research_calls") == 0 for r in rows)
+
+
+# ---------------------------------------------------------------------------
+# partial readings grounded against the state (effort 2 and above; 0 is main)
+# ---------------------------------------------------------------------------
+def _play(language, frames, effort, companion=None, **words):
+    from pack_model import development_model
+    from marco.reasoning.context import ReasoningContext
+    context = ReasoningContext(model=development_model(language), effort=effort,
+                               companions=[development_model(companion)] if companion else [])
+    return [context.turn(frame.format(**words)) or {} for frame in frames]
+
+
+EN_WORDS = dict(a="Nora", b="Ivo", p="quills", c="bowls")
+KO_WORDS = dict(a="노라", b="이보", p="깃펜")
+EN_START = ["{a} has 6 {p}.", "{b} has 4 {p}.", "{a} gave {b} two {p}."]
+KO_START = ["{a}는 {p}이 6개 있어.", "{b}는 {p}이 4개 있어.", "{a}가 {b}에게 {p}을 두 개 줬어."]
+
+
+@pytest.mark.parametrize("language,start,correction,words,value", [
+    ("english", EN_START, "No, three.", EN_WORDS, "7"),
+    ("english", EN_START, "Not two, three.", EN_WORDS, "7"),
+    ("english", EN_START, "No, {b} gave them to {a}.", EN_WORDS, "2"),
+    ("한국어", KO_START, "아니, 세 개.", KO_WORDS, "7"),
+    ("한국어", KO_START, "아니, {b}가 {a}한테 준 거야.", KO_WORDS, "2"),
+])
+def test_a_correction_with_open_slots_is_grounded_on_the_last_event(language, start, correction, words, value):
+    ask = "How many {p} does {b} have?" if language == "english" else "{b}는 {p}이 몇 개 있어?"
+    rows = _play(language, start + [correction, ask], 3, **words)
+    assert rows[3]["meaning"]["act"] in ("correct", "revise") and rows[3]["status"] == "observed"
+    assert rows[4]["status"] == "answered" and value in rows[4]["answer"]
+    main = _play(language, start + [correction, ask], 0, **words)
+    assert main[3] == {} and main[4]["status"] != "answered"
+
+
+def test_a_question_in_the_other_language_takes_the_one_thing_its_holder_counts():
+    rows = _play("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "{b} has 2 {c}.", "노라는 깃펜이 몇 개 있어?",
+                             "이보는 깃펜이 몇 개 있어?"], 3, companion="한국어", **EN_WORDS)
+    assert rows[3]["status"] == "answered" and "6" in rows[3]["answer"]
+    # Ivo counts two things and no declared word says which: never answered
+    assert rows[4]["status"] != "answered"
+    main = _play("english", ["{a} has 6 {p}.", "노라는 깃펜이 몇 개 있어?"], 0, companion="한국어", **EN_WORDS)
+    assert main[1]["status"] != "answered"
+
+
+def test_an_unread_question_is_read_by_its_words_grounded_in_the_state():
+    rows = _play("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "{a}, how many {p} now?",
+                             "Zed has how many {p} now?"], 3, **EN_WORDS)
+    assert rows[2]["status"] == "answered" and "6" in rows[2]["answer"]
+    # a holder the conversation never counted: held naming it, not left unread
+    assert rows[3]["status"] != "answered" and rows[3]["meaning"]["reason"] == "not_stated" and "Zed" in rows[3]["answer"]
+    main = _play("english", ["{a} has 6 {p}.", "{a}, how many {p} now?"], 0, **EN_WORDS)
+    assert main[1] == {}
+
+
+def test_a_word_nobody_declared_still_leaves_a_question_unread():
+    rows = _play("english", ["{a} has 6 {p}.", "How many {p} did {a} lose?", "How many {p} does {a} have, please?"], 3,
+                 **EN_WORDS)
+    assert rows[1] == {} and rows[2] == {}

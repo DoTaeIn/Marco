@@ -3562,8 +3562,71 @@ class RelationalParser:
             queue += [(excluded | {key}, tier + 1) for key in used if key not in excluded]
         return out
 
+    def open_reading(self, text):
+        """What a sentence no reading covers whole still says, part by part, with the slots left open (G7-Q,
+        partial readings): each word with its span and its kind as the pack declares it -- a number (a numeral,
+        digits, a numeral with a counter), the question word, a correction or contrast word (대조정정 and its
+        frame's cues), a negation, a verb form of a declared verb, a name by the pack's name form -- and the
+        word with its particle taken off. Nothing is guessed: which holder, thing or event a word is, is left
+        to the conversation, which grounds the open slots against its state."""
+        from marco.language.numerals import parse_numeral
+        fold = (lambda v: v.lower()) if self.data.get("ignore_case") else (lambda v: v)
+        numerals = self.data.get("numerals", {})
+        units = sorted((self.counters or {}).get("units", []), key=len, reverse=True)
+        askers = [fold(a) for a in (self.counters or {}).get("askers", [])]
+        askers += [fold(a) for a in ((self.count_question or {}).get("frame") or {}).get("askers", [])]
+        contrast = dict(self.language_pack.get("contrast_correction") or {})
+        cues = [fold(c) for c in (contrast.get("frame") or {}).get("cues", [])]
+        particles = sorted(set(self.case_particles) | {p for group in self.slot_particles for p in group}
+                           | set((self.count_question or {}).get("delimiters", []))
+                           | {row["from"] for row in self.particle_variants if row.get("from")}, key=len, reverse=True)
+        name_form = (self.holder_forms or {}).get("name")
+        verbs = self._declared_verb_words()
+        marks = "".join(self.clause_grammar.get("question_marks", []))
+        spans = [(m.group(), m.start(), m.end()) for m in re.finditer(r"[^\s,.!?？。…]+", text)]
+        low = [fold(w) for w, _s, _e in spans]
+        tokens, at = [], 0
+        while at < len(spans):
+            word, start, end = spans[at]
+            asker = next((a for a in sorted(askers, key=len, reverse=True)
+                          if low[at:at + len(a.split())] == a.split()), None)
+            if asker:
+                width = len(asker.split())
+                tokens.append({"text": " ".join(w for w, _s, _e in spans[at:at + width]), "stem": asker,
+                               "span": [start, spans[at + width - 1][2]], "kind": "asker"})
+                at += width
+                continue
+            stem = next((word[:-len(p)] for p in particles if word.endswith(p) and len(word) > len(p)), word)
+            row = {"text": word, "stem": stem, "span": [start, end], "kind": "word"}
+            value = parse_numeral(fold(word), numerals) if not word.isdigit() else int(word)
+            for unit in units if value is None else []:
+                head = word[:word.find(unit)] if word.find(unit) > 0 else ""
+                if head and (head.isdigit() or parse_numeral(head, numerals) is not None):
+                    value = int(head) if head.isdigit() else parse_numeral(head, numerals)
+                    break
+            counter = any(word == u or (word.startswith(u) and word[len(u):] in
+                                        (self.count_question or {}).get("copula", []) + particles) for u in units)
+            if value is not None:
+                row.update(kind="number", value=str(value))
+            elif counter:
+                row["kind"] = "counter"
+            elif self._protected_kind(word) == "negation" or fold(word) in cues:
+                row["kind"] = "marker"
+            elif fold(word) in verbs or fold(stem) in verbs:
+                row["kind"] = "verb"
+            elif name_form and re.fullmatch(name_form, word) and not re.fullmatch(name_form, word.lower()):
+                row["kind"] = "name"        # (a name form that tells names apart by their letters' case)
+            tokens.append(row)
+            at += 1
+        question = text.rstrip().endswith(tuple(marks)) or any(t["kind"] == "asker" for t in tokens)
+        markers = [t for t in tokens if t["kind"] == "marker"]
+        opened = (["holder", "thing"] if question else []) + (["event"] if markers else [])
+        return {"text": text.strip(), "tokens": tokens, "question": question,
+                "numbers": [t for t in tokens if t["kind"] == "number"], "markers": markers,
+                "verb": next((t for t in tokens if t["kind"] == "verb"), None), "open": opened}
+
     def parse(self, text, *, partial=False, events=False, verbs=None, repair=False, _diagnostics=None,
-              _exclude=(), _used=None):
+              _exclude=(), _used=None, open_slots=False):
         """``events`` 를 켜면 아무 사례도 못 읽은 구절을 **사건 꼴**로도 본다.
 
         조사가 자리를 짚고 남은 한 낱말이 움직임인 꼴이다. 뜻은 여기서 안
@@ -3821,7 +3884,8 @@ class RelationalParser:
             last_read = ((read_as or evidence["text"], asserted(only[0][1]))
                          if len(only) == 1 and asserted(only[0][1]) else None)
         if unrecognized:
-            return None
+            # asked for, what was recognised comes back as a partial reading with open slots (G7-Q)
+            return {"partial": self.open_reading(text)} if open_slots else None
 
         def entities(meaning):
             if "define" in meaning or "invoke" in meaning:

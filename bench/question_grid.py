@@ -13,8 +13,10 @@ cell is asked in a dialogue of its own, over that state:
   ``holder`` (What about Bo? / 보라는?), ``item`` (And cups? / 컵은?), ``place`` (And in
   the shed? / 헛간에는?), ``repair`` (a bare name after an answer: Bo, I mean. / 보라요.),
   ``ask`` (a bare name after the engine asked which: the pointer question first); and a holder follow-up
-  after what came before it: a held question, a clarify exchange, a why (``after_held``, ``after_clarify``,
-  ``after_why``: the follow-up asks the count).
+  after what came before it: a held question, a clarify exchange, a why, a restart of the conversation
+  (``after_held``, ``after_clarify``, ``after_why``, ``after_restart``: the follow-up asks the count). And corrections of a transfer said just before (or two
+  turns before): its amount only (No, three.), or its direction (the giver and receiver swapped), scored by
+  the receiver's count asked after it.
 
 Every turn is played through the dialogue gate's own player (``bench.dialogue_gate.run``,
 the UI turn handler) and scored against the value the state gives: correct, hold (not
@@ -40,7 +42,8 @@ if str(ROOT) not in sys.path:
 OPERATORS = ("count", "total", "more", "fewer", "same", "left", "where", "why")
 FOLLOW_UPS = ("holder", "item", "place", "repair", "ask")
 # a holder follow-up after what came before it: a held question, a clarify exchange, a why
-CONTEXTS = ("after_held", "after_clarify", "after_why")
+CONTEXTS = ("after_held", "after_clarify", "after_why", "after_restart")
+RESTART = "\x00restart\x00"      # a turn said after the conversation was reopened
 
 
 # ---------------------------------------------------------------------------
@@ -95,7 +98,7 @@ KO = {
     "forms": ("name", "title_name", "name_title", "relation", "me", "place"),
     "pointer": "걔",
 }
-COUNTS = {"name": (6, 11), "other": (4, 9), "title_name": (5, 12), "name_title": (3, 14), "relation": (13, 2),
+COUNTS = {"name": (6, 11), "other": (4, 9), "title_name": (5, 12), "name_title": (3, 14), "relation": (13, 18),
           "me": (7, 15), "place": (8, 16), "place2": (10, 17)}
 
 
@@ -432,7 +435,8 @@ def cells(code):
                           "after_clarify": ["How many %s does she have?" % lang["items"]["pen"],
                                             "%s, I mean." % lang["holders"]["name"]["obj"]],
                           "after_why": [question("count", "none", "name")[0],
-                                        question("why", "none", "name")[0]]}[kind]
+                                        question("why", "none", "name")[0]],
+                          "after_restart": [question("count", "none", "name")[0]]}[kind]
             else:
                 short = h.get("short") or h["name"]
                 said = "%s?" % _p(short, "은/는")
@@ -441,14 +445,52 @@ def cells(code):
                                                              _p(lang["items"]["pen"], "이/가")),
                                             "%s 말이야." % lang["holders"]["name"]["name"]],
                           "after_why": [question("count", "none", "name")[0],
-                                        question("why", "none", "name")[0]]}[kind]
+                                        question("why", "none", "name")[0]],
+                          "after_restart": [question("count", "none", "name")[0]]}[kind]
+            if kind == "after_restart":
+                said = RESTART + said
             expect_q = question("where" if h.get("place") else "count", "none", target)
             if expect_q is None:
                 continue
-            out.append(("count|none|%s|%s:%s" % (form, kind, said), {"op": "count", "mod": "none", "form": form,
+            out.append(("count|none|%s|%s:%s" % (form, kind, said.replace(RESTART, "")), {"op": "count", "mod": "none",
+                                                                                      "form": form,
                                                                      "follow": kind},
                         state + before + [said], expect_q[1]))
+    # corrections: a transfer, then a correction of it (its amount, or its direction), then the receiver's count
+    words = {"en": {"a": EN["holders"]["name"]["subj"], "b": EN["holders"]["other"]["subj"], "n": "three", "o": "two",
+                    "t": EN["items"]["pen"]},
+             "ko": {"a": KO["holders"]["name"]["name"], "b": KO["holders"]["other"]["name"], "n": "세", "o": "두",
+                    "t": KO["items"]["pen"]}}[code]
+    event = ("{a} gave {b} {o} {t}." if code == "en" else "{a}가 {b}에게 {t}을 {o} 개 줬어.").format(**words)
+    other = lang["items"]["cup"]
+    between = ("%s has 9 %s." % (words["b"], other) if code == "en"
+               else "%s %s 9개 있어." % (_p(words["b"], "은/는"), _p(other, "이/가")))
+    ask = question("count", "none", "other")[0]
+    base_other = COUNTS["other"][0]
+    for kind, said_list in CORRECTIONS[code].items():
+        for said in said_list:
+            before = [event] + ([between] if kind == "two_back" else [])
+            value = base_other + (3 if kind in ("amount", "two_back") else -2)
+            said = said.format(**words)
+            out.append(("correct|none|%s|%s" % (kind, said), {"op": "correct", "mod": "none", "form": kind,
+                                                            "follow": "correction"},
+                        state + before + [said, ask], {"kind": "value", "holder": "other", "item": "pen",
+                                                       "value": value}))
     return out, len(state)
+
+
+# the corrections the grid says after the transfer: the amount (two to three) or the direction. Written as
+# frames, filled at run time ({a} the giver, {b} the receiver, {n} the new amount, {o} the old one, {t} the thing).
+CORRECTIONS = {
+    "en": {"amount": ["No, {n}.", "Not {o}, {n}.", "Actually, it was {n}.", "Sorry, {n}.", "Wait, it was {n}, not {o}."],
+           "two_back": ["Actually, it was {n} {t}, not {o}.", "Actually, {a} gave {b} {n}, not {o}."],
+           "direction": ["No, {b} gave them to {a}.", "Sorry, {b} gave {a} {o} {t}, not {a} to {b}.",
+                         "No, the other way around, {b} gave them to {a}."]},
+    "ko": {"amount": ["아니, {n} 개.", "{o} 개가 아니라 {n} 개야.", "아니, {n} 개였어.", "잘못 말했어, {n} 개야."],
+           "two_back": ["아니, {t}은 {n} 개였어.", "아까 준 건 {o} 개가 아니라 {n} 개야."],
+           "direction": ["아니, {b}이 {a}한테 준 거야.", "{a}가 준 게 아니라 {b}이 {a}한테 준 거야.",
+                         "반대로, {b}이 {a}에게 줬어."]},
+}
 
 
 def dialogues(code):
@@ -457,7 +499,9 @@ def dialogues(code):
     for index, (cell, key, turns, expect) in enumerate(rows):
         out.append({"id": "grid_%s_%04d" % (code, index), "language": code, "cell": cell, "key": key,
                     "expect": expect, "n_state": n_state,
-                    "turns": [{"n": i + 1, "say": say} for i, say in enumerate(turns)]})
+                    "turns": [{"n": i + 1, "say": say[len(RESTART):], "restart_before": True}
+                              if say.startswith(RESTART) else {"n": i + 1, "say": say}
+                              for i, say in enumerate(turns)]})
     return out
 
 
