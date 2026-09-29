@@ -220,3 +220,65 @@ def test_the_location_question_is_still_a_location_question():
         current.turn(line, KG)
     result = current.turn("그 사람은 어디 있어?", KG)
     assert result["status"] == "answered" and "부엌" in str(result["answer"])
+
+
+# Experiment 4: a statement read completely whose thing slot holds a word that is no thing of this
+# conversation, refused by the state (the giver has no count under "<giver> <word>"). From effort 2 the reading
+# without the word is a candidate, its thing from the conversation; the reading as said is one too. The slot is
+# found by position, so any word can stand there, including ones no pack declares (blorp, zeb zeb, quix, 뿌뿌).
+# A word that could be a counted noun (a plural after an amount above one, or any word in a language without
+# number marking, or after an amount of one) stays the thing unless it is a word of a counted thing or a
+# declared counter: taking out a thing that was said would answer about another.
+PENS = [("Nora has 7 pens.", "rec"), ("Eli has 2 pens.", "rec"), ("Dr. Lambert has nine pens.", "rec"),
+        ("Ms. Daniels has three pens.", "rec")]
+WRONG_THING = [
+    ("english", PENS + [("Nora gave Eli three blorp.", "rec"), ("How many pens does Nora have?", 4),
+                        ("How many pens does Eli have?", 5)]),
+    ("english", PENS + [("Nora handed Eli two zeb zeb.", "rec"), ("How many pens does Nora have?", 5)]),
+    ("english", PENS + [("Nora gave three zeb zeb to Eli.", "rec"), ("How many pens does Eli have?", 5)]),
+    ("english", PENS + [("Dr. Lambert gave three quix to Ms. Daniels.", "rec"),
+                        ("How many pens does Dr. Lambert have?", 6), ("How many pens does Ms. Daniels have?", 6)]),
+    ("english", PENS + [("Dr. Lambert lent Ms. Daniels four vorn.", "rec"),
+                        ("How many pens does Dr. Lambert have?", 5)]),
+    # a counter of the counted thing, the giver counting two things: the thing of the statement before wins
+    ("english", [("Nora has 5 bundles of herbs.", "rec"), ("Nora has 3 cups.", "rec"),
+                 ("Eli has 2 bundles of herbs.", "rec"), ("Nora gave Eli three bundles.", "rec"),
+                 ("How many bundles of herbs does Nora have?", 2), ("How many bundles of herbs does Eli have?", 5),
+                 ("How many cups does Nora have?", 3)]),
+    ("한국어", [("가람은 서류가 일곱 묶음 있어.", "rec"), ("나래는 서류가 두 묶음 있어.", "rec"),
+              ("가람이 나래에게 묶음 세 개를 줬어.", "rec"), ("가람은 서류가 몇 묶음 있어?", 4)]),
+]
+WRONG_THING_HELD = [
+    # a plural noun after three: a thing said, never counted for Nora; not read as her pens
+    ("english", PENS + [("Nora gave Eli three apples.", "hold"), ("How many pens does Nora have?", "hold")]),
+    # after one, any word agrees as a noun: held
+    ("english", PENS + [("Nora gave Eli one blorp.", "hold")]),
+    # Korean marks no number: an unknown word in the thing slot stays the thing
+    ("한국어", [("가람은 서류가 일곱 묶음 있어.", "rec"), ("나래는 서류가 두 묶음 있어.", "rec"),
+              ("가람이 나래에게 뿌뿌 세 개를 줬어.", "hold")]),
+    # the reading without the word does not fit either: the giver cannot cover it
+    ("english", PENS + [("Nora gave Eli nine blorp.", "hold"), ("How many pens does Nora have?", "hold")]),
+]
+
+
+@pytest.mark.parametrize("n", range(len(WRONG_THING)))
+@pytest.mark.parametrize("effort", [2, 3])
+def test_a_word_in_the_thing_slot_that_is_no_thing_is_read_without(n, effort):
+    language, dialogue = WRONG_THING[n]
+    assert play(language, effort, dialogue) == []
+
+
+@pytest.mark.parametrize("n", range(len(WRONG_THING)))
+@pytest.mark.parametrize("effort", [0, 1])
+def test_below_effort_2_the_word_stays_the_thing_and_is_refused(n, effort):
+    language, dialogue = WRONG_THING[n]
+    at = next(i for i, (_line, expected) in enumerate(dialogue) if i >= 2 and _line.count(" ") >= 4
+              and expected == "rec" and ("gave" in _line or "handed" in _line or "lent" in _line or "줬어" in _line))
+    assert play(language, effort, dialogue[:at] + [(dialogue[at][0], "hold")]) == []
+
+
+@pytest.mark.parametrize("n", range(len(WRONG_THING_HELD)))
+@pytest.mark.parametrize("effort", [0, 3])
+def test_a_word_that_could_be_the_thing_is_held(n, effort):
+    language, dialogue = WRONG_THING_HELD[n]
+    assert play(language, effort, dialogue) == []
