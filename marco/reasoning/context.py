@@ -3950,6 +3950,135 @@ class ReasoningContext:
                 "answer": replies["which_referent"].format(**{
                     "말": said, "목록": ", ".join("'%s'" % name for name in which["candidates"])})}
 
+    def _which_person(self, parser, text, knowledge_path):
+        """A count question that names no holder and no thing, the person pointed at or described instead
+        (How many does her brother have now? / How many does the other one have? / 그 친구는 지금 몇 권이야?), at
+        effort 2: the thing is the conversation's (the last question's, else the one thing it counts), the
+        candidates are the holders of that thing, narrowed to those a statement said with the describing words
+        right before them (My brother Tom). One described holder answers; two or more are asked back naming
+        every one, the question kept for the reply; one holder nobody described leaves the question as it was.
+        A name alone is not a description (How many does Zed have? is a question about Zed)."""
+        if not self._effort_allows(2) or not self.observations:
+            return None
+        reading = parser.open_reading(text)
+        tokens = reading["tokens"]
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        # "the one", "the other one" point at someone; they are no amount
+        ones = [fold(p) for p in ((parser.language_pack.get("contrast_correction") or {}).get("frame") or {})
+                .get("pronoun_ones", [])]
+        flat = " %s " % " ".join(fold(w) for w in re.split(r"[\s,.?!]+", text) if w)
+        pronoun_one = any(" %s " % p in flat for p in ones)
+        determiners = {fold(w) for w in (parser.holder_forms or {}).get("determiners", [])} | {
+            fold(p.split()[0]) for p in ones if len(p.split()) > 1}
+        spoken = [fold(w) for w in re.split(r"[\s,.?!]+", text) if w]
+        # "one" with a determiner one or two words before it (the tall one) points at someone too
+        pronoun_one = pronoun_one or any(w == fold("one") and set(spoken[max(0, i - 2):i]) & determiners
+                                         for i, w in enumerate(spoken))
+        numbers = [t for t in reading["numbers"] if not (pronoun_one and t["value"] == "1")]
+        if not reading["question"] or numbers or reading["markers"] \
+                or not any(t["kind"] == "asker" for t in tokens):
+            return None
+        if any(parser._protected_kind(t["text"]) in ("scope", "negation") for t in tokens):
+            return None
+        keys = list(dict.fromkeys(self._holder_keys(parser)))
+        facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        stated = {str(r["triple"][0]) for r in facts if isinstance(r.get("triple"), list)
+                  and isinstance(r["triple"][0], str) and r["triple"][1] == "count"}
+
+        def holder(subject):
+            return next((k for k in sorted(keys, key=lambda k: -len(k.split())) if subject == k
+                         or subject.startswith(k + " ")), None)
+        things = {subject[len(holder(subject) or ""):].strip() for subject in stated} - {""}
+        declared = self._declared_words(parser)
+        forms = parser.holder_forms or {}
+        cues = {fold(w) for w in list(forms.get("determiners", [])) + list(forms.get("possessives", []))
+                + list(forms.get("relation_nouns", [])) + list(forms.get("job_titles", []))}
+        # the words of the pack's pointers (that of that person, this of this one) point too
+        cues |= {fold(w) for pointer in parser.pointers or [] for w in pointer.split()}
+        pointers = sorted(parser.pointers or [], key=len, reverse=True)
+        describing, pointed = [], False
+        low = fold(text)
+        for pointer in pointers:
+            if re.search(r"(?<![\w])%s(?![\w])" % re.escape(fold(pointer)), low) or \
+                    any(fold(t["text"]) == fold(pointer) or fold(t["stem"]) == fold(pointer) for t in tokens):
+                pointed = True
+                break
+        for t in tokens:
+            if t["kind"] in ("asker", "counter"):
+                continue
+            word, stem = fold(t["text"]), fold(t["stem"])
+            if self._holder_of(parser, t["text"], keys) is not None or any(fold(x) in (word, stem) for x in things):
+                return None             # a holder or a thing named: the readers' question, not this one
+            if word in declared or stem in declared or (t["kind"] == "number" and pronoun_one):
+                continue
+            describing.append(t["stem"])
+        cued = pointed or any(fold(w) in cues for w in re.split(r"[\s,.?!]+", text) if w)
+        if not cued or len(describing) > 3:
+            return None
+        thing = (getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item")
+        if thing not in things:
+            thing = next(iter(things)) if len(things) == 1 else None
+        if thing is None:
+            return None
+        of_thing = sorted(subject for subject in stated if subject.endswith(" " + thing) and holder(subject))
+        tails = "|".join(re.escape(p) for p in self._frame_particles(parser)) or "(?!)"
+        described = [subject for subject in of_thing if describing and any(
+            re.search(r"(?<![\w])%s\s+(?:\S+\s+)?%s(?:%s)?(?![\w])" % (re.escape(word), re.escape(holder(subject)), tails),
+                      source, re.IGNORECASE if parser.data.get("ignore_case") else 0)
+            for word in describing for source in self.observations)]
+        candidates = described or of_thing
+        if len(candidates) == 1 and not described:
+            return None
+        if len(candidates) == 1:
+            return self._grounded_reading(parser, candidates[0], thing)
+        # the words that point or describe, as the question said them, are what the reply replaces
+        words = text.strip().rstrip("?.!？ ").split()
+        particles = self._frame_particles(parser)
+
+        def stem_of(word):
+            word = fold(word.strip(","))
+            return next((word[:-len(p)] for p in particles if word.endswith(p) and len(word) > len(p)), word)
+        span = [i for i, w in enumerate(words) if stem_of(w) in cues or fold(w.strip(",")) in cues or any(
+            fold(w).startswith(fold(p)) for p in pointers) or any(fold(w).startswith(fold(d)) for d in describing)]
+        if span:
+            # the holder's words run from the first pointing word to the word that carries the holder's particle,
+            # or to the verb of having
+            having = {fold(w) for w in ((parser.count_question or {}).get("frame") or {}).get("predicates", [])}
+            end = span[0]
+            for i in range(span[0], len(words)):
+                if fold(words[i]) in having:
+                    break
+                end = i
+                if stem_of(words[i]) != fold(words[i].strip(",")):
+                    break
+            span = [span[0], end]
+        said = " ".join(words[span[0]:span[-1] + 1]) if span else " ".join(describing)
+        tail = next((p for p in self._frame_particles(parser) if said.endswith(p) and len(said) > len(p)), "")
+        said = said[:-len(tail)] if tail else said
+        return self._ask_which(parser, text, {"word": said, "candidates": candidates},
+                               {"operator": "relational_graph", "transitions": [],
+                                "verification": self._verification(knowledge_path, [{
+                                    "ok": False, "reason": "which_person"}])})
+
+    def _named_reply(self, parser, text, knowledge_path):
+        """After an ask of which holder, a reply that names exactly one candidate with at most two other words
+        that say nothing the pack protects (Tom, I think. / 수아 말이에요 아마.): read as that name (effort 2)."""
+        if not self._effort_allows(2) or not self.pending_pointer:
+            return None
+        keys = list(dict.fromkeys(self._holder_keys(parser)))
+        candidates = {c for c in self.pending_pointer.get("candidates") or []}
+        words = [w for w in re.split(r"[\s,.!?]+", text) if w]
+        found = []
+        for at, word in enumerate(words):
+            key = self._holder_of(parser, word, keys)
+            if key is not None and any(c == key or c.startswith(key + " ") for c in candidates):
+                found.append((at, word, key))
+        if len({key for _a, _w, key in found}) != 1 or len(words) - 1 > 2:
+            return None
+        if any(parser._protected_kind(w) for w in words):
+            return None
+        return self._name_reply(parser, found[0][1], knowledge_path)
+
     def _grounded_reading(self, parser, subject, item):
         """A count question on ``subject`` as the reader would have read it, for the turn to go on with."""
         return {"facts": [], "query": [{"triple": [subject, "count", "?n"],
@@ -5010,6 +5139,8 @@ class ReasoningContext:
         """One turn. Its sentence comes from ``marco.language.realize``."""
         self._trace_buffer, self._trace_readings, self._readings_dropped = [], None, []
         self._trace_candidates, self._trace_rankings = [], []
+        # the last question's frame as it stood before this turn (the turn's own question replaces it)
+        self._frame_before_turn = self.last_frame
         observed_before = len(self.observations)
         result, path = None, "reply"
         try:
@@ -5835,6 +5966,9 @@ class ReasoningContext:
             # unknown event ("I mean Haru", "가람이 말이야").
             frame = self.last_frame
             named = self._name_reply(self._parser(), text, knowledge_path)
+            if named is None:
+                # after an ask of which holder, one candidate named with a word or two besides (effort 2)
+                named = self._named_reply(self._parser(), text, knowledge_path)
             if named is not None and named.get("status") != "answered" and self._effort_allows(2):
                 # the name put in the wrong words of the last question (a title after a surname: 전 팀장님) is
                 # one candidate; the last question's frame gives the others (effort 2)
@@ -6134,6 +6268,9 @@ class ReasoningContext:
             # a question the reader left unread is grounded against the conversation before it is kept as
             # unread (G7-Q partial readings, effort 2): its open slots from the state, a clear winner only
             grounded = self._ground_question(parser, text, knowledge_path)
+            if grounded is None and not self._in_name_reply:
+                # an unread question that points at or describes a holder and names no holder and no thing
+                grounded = self._which_person(parser, text, knowledge_path)
             if grounded is not None and "query" not in grounded:
                 return grounded
             current = grounded
@@ -6465,6 +6602,13 @@ class ReasoningContext:
             if other is not None:
                 return self._answer_other_than(parser, other, facts, knowledge_path)
             풀린물음, 가리킴 = self._resolve_pointers(parser, current["query"], facts)
+            if 가리킴 is not None and not 가리킴["후보"] and self._effort_allows(2) and not self._in_name_reply:
+                # a pointer that finds no holder: the holders of the conversation's thing, as a description
+                which = self._which_person(parser, text, knowledge_path)
+                if which is not None and "query" not in which:
+                    return which
+                if which is not None:
+                    풀린물음, 가리킴 = which["query"], None
             if 가리킴 is not None:
                 self.held_question = text
                 if 가리킴["후보"]:
@@ -6614,6 +6758,16 @@ class ReasoningContext:
                 if which is not None:
                     return self._ask_which(parser, text, which, result)
             outcome = parser.answer({"facts": 답사실, "query": 풀린물음}) if 풀린물음 else None
+            if (outcome is None and 풀린물음 and self._effort_allows(2) and not self._in_name_reply
+                    and not (self.unread or self.unread_guard)):
+                # a holder the state does not count, said as a description (the tall one, her brother): the
+                # holders of the conversation's thing
+                which = self._which_person(parser, text, knowledge_path)
+                if which is not None and "query" not in which:
+                    return which
+                if which is not None:
+                    풀린물음 = which["query"]
+                    outcome = parser.answer({"facts": 답사실, "query": 풀린물음})
             if outcome is None and 풀린물음:
                 빠진전제 = self._missing_premise(parser, 풀린물음, 답사실)
                 if 빠진전제 is None:
