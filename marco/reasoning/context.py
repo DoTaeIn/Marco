@@ -258,6 +258,9 @@ class ReasoningContext:
         self.last_question = None
         self.pending_pointer = None
         self._in_name_reply = False
+        # The frame of the last question read, answered or held: its words and the slots they fill
+        # (holder, item), for a follow-up that names one slot only (G7-Q.1, effort 2).
+        self.last_frame = None
         # 최근에 명시된 역할값. 지시어를 단순히 "마지막 낱말"에 붙이지 않고,
         # 다음 사건이 요구한 **같은 역할**에만 이어 붙인다. 원문 사건에는
         # 해석 전 값과 근거가 남고, 이 표는 다음 입력의 문맥 후보일 뿐이다.
@@ -744,6 +747,8 @@ class ReasoningContext:
         if self._parser_instance is None:
             self._parser_instance = (RelationalParser(language=self.language) if self.model is None
                                      else self.model.parser())
+            # the reader's own candidates (a declared question frame) are read from effort 1 on
+            self._parser_instance.effort = self.effort
         return self._parser_instance
 
     def _verbs_for(self, parser, sources):
@@ -2428,6 +2433,7 @@ class ReasoningContext:
             key = id(model)
             if key not in self._companion_parsers:
                 self._companion_parsers[key] = model.parser()
+                self._companion_parsers[key].effort = self.effort
             other = self._companion_parsers[key]
             read = self._read_source(other, text, events=True)
             if not read or not read.get("query") or read.get("facts") or read.get("사건") or read.get("정의"):
@@ -3517,6 +3523,189 @@ class ReasoningContext:
                       "meaning": {**meaning, "name_reply": {"said": text.strip(), "name": name}}}
         return result
 
+    def _record_frame(self, parser, text, query):
+        """Keep the frame of a question just read (answered or held): its text, and the holder and item slots
+        its query fills. A count names one holder and its item; a total or a comparison its holders and the
+        item. A follow-up that names one slot only is read against it (``_partial_frame``)."""
+        row = next((q for q in query or [] if isinstance(q, dict)), None)
+        if row is None:
+            return
+        triple = row.get("triple")
+        if isinstance(triple, list) and len(triple) == 3 and triple[1] == "count" and isinstance(triple[0], str) \
+                and triple[0].strip() and not triple[0].startswith(("?", "$")):
+            keys = sorted(self._holder_keys(parser), key=lambda k: -len(k.split()))
+            holder = next((k for k in keys if triple[0].startswith(k + " ") or triple[0] == k), triple[0].split()[0])
+            holders, item = [holder], triple[0][len(holder):].strip() or None
+        else:
+            kind = next((k for k in ("total", "more", "fewer", "same") if isinstance(row.get(k), dict)), None)
+            if kind is None:
+                return
+            spec = row[kind]
+            members = spec.get("members") if kind == "total" else [spec.get("a"), spec.get("b")]
+            holders = [m for m in members if isinstance(m, str)] if isinstance(members, list) else []
+            item = spec.get("item") if isinstance(spec.get("item"), str) else None
+        self.last_frame = {"text": text.strip(), "holders": holders, "item": item}
+
+    @staticmethod
+    def _frame_particles(parser, extra=()):
+        return sorted({p for group in parser.slot_particles for p in group} | set(parser.case_particles)
+                      | set((parser.count_question or {}).get("delimiters", []))
+                      | {row["from"] for row in parser.particle_variants if row.get("from")} | set(extra),
+                      key=len, reverse=True)
+
+    def _frame_span(self, parser, tokens, value, slot):
+        """(begin, end, particle) of the words that say ``value`` in a question's tokens, or None. A holder's
+        span takes in the words the pack says may stand before a holder (a title, a possessive, an article)."""
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        words = [fold(w) for w in str(value).split()]
+        if not words:
+            return None
+        extra = (parser.language_pack.get("name_reply") or {}).get("follow_up") or {}
+        particles = self._frame_particles(parser, extra.get("place_cases", [])) + [""]
+        titles = [""] + list((parser.holder_forms or {}).get("name_titles", [])) if slot == "holder" else [""]
+        bare = [fold(t.strip(",.?!")) for t in tokens]
+        for start in range(len(bare) - len(words) + 1):
+            if bare[start:start + len(words) - 1] != words[:-1]:
+                continue
+            last = bare[start + len(words) - 1]
+            # the last word as typed: the value, a title the pack puts after a name (님, 씨), a particle
+            found = next(((title, p) for title in titles for p in particles if last == words[-1] + fold(title) + fold(p)),
+                         None)
+            if found is None:
+                continue
+            particle = found[1]
+            begin = start
+            if slot == "holder":
+                forms = parser.holder_forms or {}
+                before = {fold(w) for w in list(forms.get("prefix_titles", [])) + list(forms.get("possessives", []))
+                          + list(forms.get("determiners", []))}
+                while begin > 0 and bare[begin - 1] in before:
+                    begin -= 1
+            return begin, start + len(words), particle
+        return None
+
+    def _partial_frame(self, parser, text, knowledge_path):
+        """A follow-up that names one slot of the last question's frame (``And cups?``, ``And in the shed?``,
+        ``Hector, I mean.``, ``연습실은 어떻습니까?``, ``드라이버는?``), at effort 2: the named words are tried in
+        each slot of the frame (its holder, its item); each candidate is the last question with those words in
+        that slot, checked against the conversation: it must read as a question, and every holder and item it
+        asks about must be in the state (or named by a statement not read yet, which then holds it). The
+        survivors are ranked (state, grammar, context); a clear win is asked, a tie asks which, none leaves the
+        turn unread. The words around the named ones are the pack's (이름답 heads and tails, and
+        이름답.follow_up: more tails, the markers and cases of a place, articles)."""
+        if not self._effort_allows(2) or self._in_name_reply or not self.last_frame:
+            return None
+        spec = parser.language_pack.get("name_reply") or {}
+        extra = spec.get("follow_up") or {}
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        said = text.strip().rstrip(".?!？。 ")
+        stripped = True
+        while stripped:
+            stripped = False
+            for head in sorted(list(spec.get("heads", [])) + list(extra.get("heads", [])), key=len, reverse=True):
+                if fold(said) == fold(head) or fold(said).startswith((fold(head) + " ", fold(head) + ",")):
+                    said, stripped = said[len(head):].strip(" ,"), True
+                    break
+        for tail in sorted(list(extra.get("tails", [])) + list(spec.get("tails", [])), key=len, reverse=True):
+            if fold(said).endswith(fold(tail)) and len(said) > len(tail):
+                said = said[:-len(tail)].strip(" ,")
+                break
+        words = said.split()
+        place = False
+        if words and fold(words[0]) in {fold(m) for m in extra.get("place_markers", [])}:
+            words, place = words[1:], True
+        if not words or len(words) > 4:
+            return None
+        # the named words' own particle comes off (드라이버는, 헛간에는: a place's case says it is a place)
+        last = words[-1]
+        for particle in self._frame_particles(parser, extra.get("place_cases", [])):
+            if last.endswith(particle) and len(last) > len(particle):
+                place = place or particle in extra.get("place_cases", [])
+                words = words[:-1] + [last[:-len(particle)]]
+                break
+        articles = {fold(a) for a in extra.get("articles", [])}
+        core = words[1:] if len(words) > 1 and fold(words[0]) in articles else words
+        named, plain = " ".join(core), " ".join(words)
+        frame = self.last_frame
+        tokens = frame["text"].rstrip().split()
+        facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        stated = {str(row["triple"][0]) for row in facts if isinstance(row.get("triple"), list)
+                  and isinstance(row["triple"][0], str) and row["triple"][1] in ("count", "count_unknown")}
+        unread = " ".join(entry["text"] for entry in self.unread_guard + self.unread)
+        keys = self._holder_keys(parser)
+        items = {subject[len(k):].strip() for subject in stated for k in keys if subject.startswith(k + " ")}
+        slots = [("holder", frame["holders"][0])] if len(frame["holders"]) == 1 else []
+        slots += [("item", frame["item"])] if frame.get("item") else []
+        candidates, tried = [], set()
+        for slot, value in slots:
+            label = "%s=%s" % (slot, named)
+            span = self._frame_span(parser, tokens, value, slot)
+            if span is None:
+                self._candidate_dropped(2, "partial_frame", label, "slot_not_in_question")
+                continue
+            begin, end, particle = span
+            new = plain if slot == "holder" else named
+            if particle:
+                head, _sp, tail = new.rpartition(" ")
+                tail += parser._particle_form(tail, particle) if particle in parser.particle_mates else particle
+                new = (head + " " + tail) if head else tail
+            closing = tokens[end - 1][len(tokens[end - 1].rstrip(",.?!")):]
+            rewritten = " ".join(tokens[:begin] + [new + closing] + tokens[end:])
+            if rewritten in tried or fold(rewritten) == fold(frame["text"]):
+                continue
+            tried.add(rewritten)
+            try:
+                query = (parser.parse(rewritten, partial=True) or {}).get("query") or []
+            except Exception:    # noqa: BLE001 -- a candidate that cannot be read is dropped, never raised
+                query = []
+            asked = []
+            for row in query:
+                if not isinstance(row, dict):
+                    continue
+                triple = row.get("triple")
+                if isinstance(triple, list) and len(triple) == 3 and isinstance(triple[0], str):
+                    asked.append(triple[0])
+                for kind in ("total", "more", "fewer", "same"):
+                    if isinstance(row.get(kind), dict):
+                        members = row[kind].get("members") if kind == "total" else [row[kind].get("a"),
+                                                                                  row[kind].get("b")]
+                        thing = row[kind].get("item")
+                        asked += ["%s %s" % (m, thing) if thing else str(m) for m in members or []
+                                  if isinstance(m, str)]
+            if not asked:
+                self._candidate_dropped(2, "partial_frame", label, "not_a_question")
+                continue
+            in_state = all(key in stated for key in asked)
+            if not in_state and fold(named) not in fold(unread):
+                self._candidate_dropped(2, "partial_frame", label, "not_in_state")
+                continue
+            known = (any(fold(named) == fold(k) or fold(k).endswith(" " + fold(named)) for k in keys) or place
+                     if slot == "holder" else any(fold(named) == fold(i) for i in items))
+            candidates.append({"label": label, "slot": slot, "rewritten": rewritten,
+                               "fit": {"state": int(in_state), "grammar": 1, "context": int(bool(known)), "cost": 0}})
+        winner, deciding, ranking = self._rank_candidates(candidates, kind="partial_frame")
+        if winner is None and deciding == "tie":
+            replies = parser.data.get("context_replies", {})
+            return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                    "meaning": {"act": "ask", "reason": "which_referent", "word": named,
+                                "candidates": [c["rewritten"] for c in ranking[:2]]},
+                    "answer": replies.get("which_referent", "").format(**{
+                        "말": named, "목록": ", ".join("'%s'" % c["rewritten"] for c in ranking[:2])}),
+                    "verification": self._verification(knowledge_path, [{"ok": False, "reason": "partial_frame_tie"}])}
+        if winner is None:
+            return None
+        self._in_name_reply = True
+        try:
+            result = self._turn_reply(winner["rewritten"], knowledge_path)
+        finally:
+            self._in_name_reply = False
+        if result is not None:
+            meaning = dict(result["meaning"]) if isinstance(result.get("meaning"), dict) else {}
+            result = {**result, "partial_frame": {"said": text.strip(), "read_as": winner["rewritten"],
+                                                  "slot": winner["slot"], "decided_by": deciding},
+                      "meaning": {**meaning, "partial_frame": {"said": text.strip(), "slot": winner["slot"]}}}
+        return result
+
     @staticmethod
     def _read_source(parser, source, **kw):
         """원문으로 읽고, 안 되면 **선언된 말머리 군말을 뗀 꼴**로도 읽어 본다.
@@ -4068,13 +4257,17 @@ class ReasoningContext:
         """A referent repair followed by the question in the same turn (``I mean Nora. How many pens does Nora
         have?``, ``다솜 말입니다. 몇 장입니까?``): the first sentence is read as the name reply it is; then the
         question, answered on its own when it can be, else the repaired question stands as the answer."""
-        if not self._permitted(knowledge_path) or self._live() or not (self.pending_pointer or self.last_question):
+        if not self._permitted(knowledge_path) or self._live() or not (
+                self.pending_pointer or self.last_question or (self.last_frame and self._effort_allows(2))):
             return None
         parser = self._parser()
         segments = self._segments(text, parser)
         if len(segments) < 2 or segments[0][1] or not segments[-1][1]:
             return None
         named = self._name_reply(parser, segments[0][0], knowledge_path)
+        if named is None:
+            # the repair as one slot of the last question's frame (effort 2)
+            named = self._partial_frame(parser, segments[0][0], knowledge_path)
         if named is None:
             return None
         asked = self._turn_reply(" ".join(piece for piece, _q in segments[1:]), knowledge_path)
@@ -4100,6 +4293,11 @@ class ReasoningContext:
         self._trace_path = "follow_up" if result is not None and not parts else "reply"
         if result is None:
             result = self._turn_reply(text, knowledge_path)
+            if result is None and self._permitted(knowledge_path) and not self._live():
+                # a turn not read may name one slot of the last question (effort 2)
+                result = self._partial_frame(self._parser(), text, knowledge_path)
+                if result is not None:
+                    self._trace_path = "follow_up"
             # What the last reply's readings changed, for "what did you change?".
             self._last_repairs = [deepcopy(report) for report in (result or {}).get("repair") or []
                                   if report.get("status") == "repaired"]
@@ -4716,7 +4914,16 @@ class ReasoningContext:
             # A reply that is only a known person's name, said while a question
             # waits for it, is read before anything else can mistake it for an
             # unknown event ("I mean Haru", "가람이 말이야").
+            frame = self.last_frame
             named = self._name_reply(self._parser(), text, knowledge_path)
+            if named is not None and named.get("status") != "answered" and self._effort_allows(2):
+                # the name put in the wrong words of the last question (a title after a surname: 전 팀장님) is
+                # one candidate; the last question's frame gives the others (effort 2)
+                held_frame, self.last_frame = self.last_frame, frame
+                framed = self._partial_frame(self._parser(), text, knowledge_path)
+                if framed is not None and framed.get("status") == "answered":
+                    return framed
+                self.last_frame = held_frame
             if named is not None:
                 return named
         if self._permitted(knowledge_path) and not self._live():
@@ -5213,6 +5420,7 @@ class ReasoningContext:
             asked_people = self._named_people(parser, current["query"])
             if asked_people:
                 self.salient = asked_people
+            self._record_frame(parser, text, current["query"])
             unread = self._blocked_by(current["query"], parser, facts)
             if unread is not None:
                 unread, 까닭 = unread

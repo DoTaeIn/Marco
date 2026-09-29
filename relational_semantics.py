@@ -2542,6 +2542,8 @@ class RelationalParser:
             holder_note = None          # an article dropped before a numeral names no holder
         for said in ([held] if holder_note is not None else []) + [literal]:
             chained = self._quantity_chain_meaning(said)
+            if chained is not None and getattr(self, "effort", 3) >= 1 and self._chain_swallowed(chained, said):
+                chained = None
             if chained is not None and json.dumps(chained, sort_keys=True, ensure_ascii=False) not in exclude:
                 return {json.dumps(chained, sort_keys=True, ensure_ascii=False): chained}
             counted = (self._count_question_meaning(said) or self._why_count_meaning(said)
@@ -2551,6 +2553,11 @@ class RelationalParser:
             compared = self._comparison_meaning(said) or self._same_meaning(said)
             if compared is not None and json.dumps(compared, sort_keys=True, ensure_ascii=False) not in exclude:
                 return {json.dumps(compared, sort_keys=True, ensure_ascii=False): compared}
+            # A question read as the pack's question frame, before any example reads it with a modifier inside a
+            # name (G7-Q, effort 1).
+            framed = self._question_frame_meaning(said) if getattr(self, "effort", 3) >= 1 else None
+            if framed is not None and json.dumps(framed, sort_keys=True, ensure_ascii=False) not in exclude:
+                return {json.dumps(framed, sort_keys=True, ensure_ascii=False): framed}
         meanings, best_rank = {}, None
         for candidate, normalization in self._clause_candidates(literal):
             if holder_note is not None and not any(
@@ -2746,6 +2753,205 @@ class RelationalParser:
                             matched.setdefault(key, index)
                         meanings[key] = grounded
         return meanings
+
+    def _chain_swallowed(self, chained, said):
+        """Whether a count question the chain reader read (``지금 X는 몇 개야``) holds in its name words the count
+        reader leaves out (a joiner of two holders, a declared modifier such as 남은): the count question's own
+        reading is then the one (G7-Q, effort 1)."""
+        counted = self._count_question_meaning(said)
+        rows = [q for q in (chained or {}).get("query") or [] if isinstance(q, dict)]
+        if counted is None or len(rows) != 1 or not isinstance(rows[0].get("triple"), list):
+            return False
+        subject = rows[0]["triple"][0]
+        if not isinstance(subject, str):
+            return False
+        row = counted["query"][0]
+        if isinstance(row.get("triple"), list):
+            words = str(row["triple"][0]).split()
+        elif isinstance(row.get("total"), dict) and isinstance(row["total"].get("members"), list):
+            words = [w for m in row["total"]["members"] for w in str(m).split()] + str(row["total"].get("item") or "").split()
+        else:
+            return False
+        typed = subject.split()
+        if len(typed) > len(words):
+            return all(any(t.startswith(w) for t in typed) for w in words)
+        return typed != words and len(typed) == len(words) and all(t.startswith(w) for t, w in zip(typed, words))
+
+    def _frame_phrase(self, low, at, phrases):
+        """The length in words of the longest declared phrase that starts at ``low[at]`` (0 for none)."""
+        best = 0
+        for phrase in phrases:
+            words = phrase.lower().split()
+            if words and low[at:at + len(words)] == words and len(words) > best:
+                best = len(words)
+        return best
+
+    def _frame_modifiers(self, low, start, end, modifiers):
+        """Whether ``low[start:end]`` is modifier phrases only (the declared classes), and which classes."""
+        kinds, at = set(), start
+        while at < end:
+            if low[at] == ",":
+                at += 1
+                continue
+            step = 0
+            for kind, phrases in modifiers.items():
+                n = self._frame_phrase(low[:end], at, phrases)
+                if n > step:
+                    step, found = n, kind
+            if not step:
+                return False, kinds
+            kinds.add(found)
+            at += step
+        return True, kinds
+
+    def _frame_holder(self, spec, words):
+        """One holder as the frame reads it: an article left out, the speaker as the pack's self form."""
+        words = [w for w in words if w != ","]
+        if words and words[0].lower() in [a.lower() for a in spec.get("articles", [])]:
+            words = words[1:]
+        if not words or len(words) > 4:
+            return None
+        if len(words) == 1 and words[0] in spec.get("self", []):
+            return (self.holder_forms.get("self") or {}).get("reads_as") or words[0]
+        return " ".join(words)
+
+    def _frame_holders(self, spec, words):
+        """The holders of a frame: joined by the declared joiners (and commas), or a group word."""
+        low = " ".join(w.lower() for w in words if w != ",")
+        group = {k.lower(): v for k, v in (spec.get("group") or {}).items()}
+        if low in group:
+            return group[low]
+        joiners = {j.lower() for j in spec.get("joiners", [])}
+        members, current = [], []
+        for word in words:
+            if word.lower() in joiners or word == ",":
+                if current:
+                    members.append(current)
+                current = []
+            else:
+                current.append(word)
+        if current:
+            members.append(current)
+        out = [self._frame_holder(spec, m) for m in members]
+        return out if out and all(out) else None
+
+    def _question_frame_meaning(self, literal):
+        """``How many pens do Nora and Bo have combined?`` -> total(Nora, Bo, pens): a question read as a frame
+        plus slots (G7-Q), from the pack's declaration (수량물음.frame): the asker, the thing, an auxiliary, the
+        holders, a predicate of having, and after it only words of the declared modifier classes; or the thing,
+        a copula, and a place or a holder after its marker; or a comparison of two holders. A modifier never
+        changes the operator: one holder is a count, two or more a total. Any other word: not read."""
+        spec = (self.count_question or {}).get("frame") or {}
+        if not spec:
+            return None
+        text = literal.strip().rstrip("?.!？ ").replace(",", " , ")
+        tokens = text.split()
+        low = [t.lower() for t in tokens]
+        modifiers = spec.get("modifiers") or {}
+        compared = self._frame_comparison(spec, tokens, low, modifiers)
+        if compared is not None:
+            return compared
+        n = next((self._frame_phrase(low, 0, [a]) for a in spec.get("askers", []) if self._frame_phrase(low, 0, [a])), 0)
+        if not n:
+            return None
+        auxiliaries = {w.lower() for w in spec.get("auxiliaries", [])}
+        copulas = {w.lower() for w in spec.get("copulas", [])}
+        lefts = [w.lower() for w in spec.get("left_verbs", [])]
+        cut = next((i for i in range(n, len(low)) if low[i] in auxiliaries | copulas
+                    or self._frame_phrase(low, i, lefts)), None)
+        if cut is None or cut == n:
+            return None
+        item = self._frame_holder(spec, tokens[n:cut])
+        if item is None or item == (self.holder_forms.get("self") or {}).get("reads_as"):
+            return None
+        render = ["$n", " ", item, "."]
+        if low[cut] in auxiliaries:
+            predicates = {w.lower() for w in spec.get("predicates", [])}
+            k = next((i for i in range(len(low) - 1, cut, -1) if low[i] in predicates), None)
+            if k is None:
+                return None
+            ok, _kinds = self._frame_modifiers(low, k + 1, len(low), modifiers)
+            if not ok:
+                return None
+            # a modifier may stand before the predicate too (does Nora still have)
+            end = k
+            while end > cut + 1:
+                back = next((j for j in range(cut + 1, end) if self._frame_modifiers(low, j, end, modifiers)[0]), None)
+                if back is None:
+                    break
+                end = back
+            holders = self._frame_holders(spec, tokens[cut + 1:end])
+            if holders is None:
+                return None
+            if isinstance(holders, str):
+                return {"query": [{"total": {"members": holders, "item": item}, "render": render}]}
+            if len(holders) >= 2:
+                return {"query": [{"total": {"members": holders, "item": item}, "render": render}]}
+            return {"query": [{"triple": ["%s %s" % (holders[0], item), "count", "?n"], "render": render}]}
+        # how many THING are (there) (modifiers) in PLACE / are left with HOLDER / remain with HOLDER
+        at = cut + (1 if low[cut] in copulas else 0)
+        at += 1 if at < len(low) and low[at] in [w.lower() for w in spec.get("there", [])] else 0
+        markers = [w.lower() for w in spec.get("place_markers", [])] + [w.lower() for w in spec.get("holder_markers", [])]
+        mark = next((i for i in range(at, len(low)) if low[i] in markers), None)
+        if mark is None:
+            return None
+        ok, _kinds = self._frame_modifiers(low, at, mark, dict(modifiers, verbs=spec.get("left_verbs", [])))
+        if not ok:
+            return None
+        tail = mark + 1
+        while tail < len(low) and not self._frame_modifiers(low, tail, len(low), modifiers)[0]:
+            tail += 1
+        holder = self._frame_holder(spec, tokens[mark + 1:tail])
+        if holder is None:
+            return None
+        return {"query": [{"triple": ["%s %s" % (holder, item), "count", "?n"], "render": render}]}
+
+    def _frame_comparison(self, spec, tokens, low, modifiers):
+        """``Who has more pens left, Nora or Bo?``, ``Which of us has fewer pens, me or Bo?``, ``Do Nora and Bo
+        have the same number of pens now?``: two holders compared, the declared comparison frame."""
+        comp = spec.get("comparison") or {}
+        if not comp:
+            return None
+        n = max([self._frame_phrase(low, 0, [w]) for w in comp.get("who", [])] + [0])
+        if n and n < len(low) and low[n] in [v.lower() for v in comp.get("verbs", [])]:
+            kind_at = n + 1
+            if kind_at >= len(low):
+                return None
+            kind = "more" if low[kind_at] in comp.get("more", []) else "fewer" if low[kind_at] in comp.get("fewer", [])                 else None
+            if kind is None or "," not in low[kind_at:]:
+                return None
+            comma = kind_at + low[kind_at:].index(",")
+            body = kind_at + 1
+            stop = next((j for j in range(body, comma) if self._frame_modifiers(low, j, comma, modifiers)[0]), comma)
+            item = self._frame_holder(spec, tokens[body:stop]) if stop > body else None
+            rest = low[comma + 1:]
+            alternative = comp.get("alternative", "or")
+            if rest.count(alternative) != 1:
+                return None
+            split = comma + 1 + rest.index(alternative)
+            a = self._frame_holder(spec, tokens[comma + 1:split])
+            b = self._frame_holder(spec, tokens[split + 1:])
+            if a is None or b is None:
+                return None
+            return {"query": [{kind: {"a": a, "b": b, **({"item": item} if item else {})}}]}
+        same = comp.get("same") or {}
+        if low and low[0] in [w.lower() for w in same.get("asks", [])]:
+            predicates = {w.lower() for w in spec.get("predicates", [])}
+            k = next((i for i in range(1, len(low)) if low[i] in predicates), None)
+            if k is None:
+                return None
+            m = max([self._frame_phrase(low, k + 1, [p]) for p in same.get("phrases", [])] + [0])
+            if not m:
+                return None
+            start = k + 1 + m
+            stop = next((j for j in range(start, len(low) + 1) if self._frame_modifiers(low, j, len(low), modifiers)[0]),
+                        len(low))
+            item = self._frame_holder(spec, tokens[start:stop]) if stop > start else None
+            holders = self._frame_holders(spec, tokens[1:k])
+            if not isinstance(holders, list) or len(holders) != 2:
+                return None
+            return {"query": [{"same": {"a": holders[0], "b": holders[1], **({"item": item} if item else {})}}]}
+        return None
 
     def _grounded(self, meaning, slots, normalization, example):
         """An example's meaning with its slots filled: the reading a clause gives."""
@@ -2990,12 +3196,18 @@ class RelationalParser:
             return None
         drop = set(spec.get("time_words", [])) | set(spec.get("modifiers", []))
         heads = set(spec.get("head_words", []))
+        more_totals = set()
+        if getattr(self, "effort", 3) >= 1:
+            # the modifier words declared for the question frame (G7-Q, effort 1)
+            more = spec.get("frame_modifiers") or {}
+            drop |= set(more.get("time", []))
+            more_totals = set(more.get("total", []))
         name, total, marked, raw = [], False, [], []
         shortest = int((self.possessor or {}).get("min_length", 1))
         for index, word in enumerate(words[:at]):
             if (index == 0 and word in heads) or word in drop:
                 continue
-            if word in spec.get("total_words", []):
+            if word in spec.get("total_words", []) or word in more_totals:
                 total = True
                 continue
             particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)), None)
@@ -3059,6 +3271,8 @@ class RelationalParser:
                 second = second[:-len(tail)] if tail else second
                 return {"query": [{"total": {"members": [first[:-len(joiner)], second], "item": rest},
                                    "render": list(spec["render"])}]}
+        if total and not group and getattr(self, "effort", 3) >= 1 and len(name) >= 2:
+            total = False       # a total word over one holder and its thing asks that holder's count (G7-Q)
         if total or group:
             if not (total and group):
                 return None
@@ -3072,7 +3286,13 @@ class RelationalParser:
         endings = [c + d for c in cases for d in [""] + list(spec.get("delimiters", []))]
         owners = [i for i, word in enumerate(raw) if any(word.endswith(e) and len(word) > len(e) for e in endings)]
         if len(owners) == 1 and owners[0] > 0:
-            name = [name[owners[0]]] + name[:owners[0]] + name[owners[0] + 1:]
+            # the unmarked words right before the owner word are its own (기 대표에게: a surname and a title,
+            # G7-Q, effort 1); a marked word before it is another phrase (사과는 라온한테)
+            first = owners[0]
+            if getattr(self, "effort", 3) >= 1:
+                while first > 0 and not marked[first - 1]:
+                    first -= 1
+            name = name[first:owners[0] + 1] + name[:first] + name[owners[0] + 1:]
         return {"query": [{"triple": [" ".join(name), "count", "?n"], "render": list(spec["render"])}]}
 
     def _comparison_meaning(self, literal):
@@ -3119,6 +3339,16 @@ class RelationalParser:
         if before:
             among = spec.get("between", {}).get("among", [])
             joiners = sorted(spec.get("between", {}).get("joiners", []), key=len, reverse=True)
+            if len(before) != 3 and getattr(self, "effort", 3) >= 1 and len(before) >= 3 and before[-1] in among:
+                # holders of several words (기 대표님과 민석 중에: G7-Q, effort 1): the first runs to the word
+                # that carries the joiner, the second from there to the word of choice
+                k = next((i for i, w in enumerate(before[:-1]) if any(w.endswith(j) and len(w) > len(j)
+                                                                      for j in joiners)), None)
+                if k is None or k + 1 >= len(before) - 1:
+                    return None
+                joiner = next(j for j in joiners if before[k].endswith(j) and len(before[k]) > len(j))
+                request.update(a=" ".join(before[:k] + [before[k][:-len(joiner)]]), b=" ".join(before[k + 1:-1]))
+                return {"query": [{kind: request}]}
             if len(before) != 3 or before[-1] not in among:
                 return None
             joiner = next((j for j in joiners if before[0].endswith(j) and len(before[0]) > len(j)), None)
@@ -3167,6 +3397,13 @@ class RelationalParser:
         body = [w for w in words[:-1] if w not in spec.get("intensifiers", [])
                 and w not in (self.comparison or {}).get("time_words", [])]
         joiner = next((j for j in joiners if body and body[0].endswith(j) and len(body[0]) > len(j)), None)
+        if joiner is None and getattr(self, "effort", 3) >= 1 and len(body) >= 3:
+            # a first holder of several words (기 대표님과 민석은: G7-Q, effort 1)
+            k = next((i for i, w in enumerate(body[:2]) if any(w.endswith(j) and len(w) > len(j) for j in joiners)),
+                     None)
+            if k is not None:
+                joiner = next(j for j in joiners if body[k].endswith(j) and len(body[k]) > len(j))
+                body = [" ".join(body[:k + 1])] + body[k + 1:]
         if joiner is None or len(body) < 2:
             return None
         second = body[1]

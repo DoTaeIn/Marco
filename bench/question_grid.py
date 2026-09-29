@@ -12,7 +12,9 @@ cell is asked in a dialogue of its own, over that state:
 * **follow-up cells**: a base question, then a partial question that names one slot only:
   ``holder`` (What about Bo? / 보라는?), ``item`` (And cups? / 컵은?), ``place`` (And in
   the shed? / 헛간에는?), ``repair`` (a bare name after an answer: Bo, I mean. / 보라요.),
-  ``ask`` (a bare name after the engine asked which: the pointer question first).
+  ``ask`` (a bare name after the engine asked which: the pointer question first); and a holder follow-up
+  after what came before it: a held question, a clarify exchange, a why (``after_held``, ``after_clarify``,
+  ``after_why``: the follow-up asks the count).
 
 Every turn is played through the dialogue gate's own player (``bench.dialogue_gate.run``,
 the UI turn handler) and scored against the value the state gives: correct, hold (not
@@ -37,6 +39,8 @@ if str(ROOT) not in sys.path:
 
 OPERATORS = ("count", "total", "more", "fewer", "same", "left", "where", "why")
 FOLLOW_UPS = ("holder", "item", "place", "repair", "ask")
+# a holder follow-up after what came before it: a held question, a clarify exchange, a why
+CONTEXTS = ("after_held", "after_clarify", "after_why")
 
 
 # ---------------------------------------------------------------------------
@@ -418,6 +422,30 @@ def cells(code):
                     out.append(("%s|none|%s|%s:%s" % (op, form, kind, said),
                                 {"op": op, "mod": "none", "form": form, "follow": kind},
                                 state + [first, said], expect_q[1]))
+    for kind in CONTEXTS:
+        for form in lang["forms"]:
+            target = "other" if form == "name" else form
+            h = lang["holders"][target]
+            if code == "en":
+                said = "What about %s?" % ("me" if target == "me" else h["obj"])
+                before = {"after_held": ["How many %s does Zed have?" % lang["items"]["pen"]],
+                          "after_clarify": ["How many %s does she have?" % lang["items"]["pen"], "Nora, I mean."],
+                          "after_why": [question("count", "none", "name")[0],
+                                        question("why", "none", "name")[0]]}[kind]
+            else:
+                short = h.get("short") or h["name"]
+                said = "%s?" % _p(short, "은/는")
+                before = {"after_held": ["%s %s 몇 개야?" % (_p("제드", "은/는"), _p(lang["items"]["pen"], "이/가"))],
+                          "after_clarify": ["%s %s 몇 개야?" % (_p(lang["pointer"], "은/는"),
+                                                             _p(lang["items"]["pen"], "이/가")), "노라 말이야."],
+                          "after_why": [question("count", "none", "name")[0],
+                                        question("why", "none", "name")[0]]}[kind]
+            expect_q = question("where" if h.get("place") else "count", "none", target)
+            if expect_q is None:
+                continue
+            out.append(("count|none|%s|%s:%s" % (form, kind, said), {"op": "count", "mod": "none", "form": form,
+                                                                     "follow": kind},
+                        state + before + [said], expect_q[1]))
     return out, len(state)
 
 
