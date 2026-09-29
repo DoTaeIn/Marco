@@ -521,7 +521,7 @@ def cells(code):
                                                               "value": 3}))
     # "the two": after a question about each of two holders, a total or a comparison over the two of them
     both_asked = [question("count", "none", "name")[0], question("count", "none", "other")[0]]
-    pair_forms = ([("total", "How many do the two of them have in total?", 10),
+    pair_forms = ([("total", "How many do the two of them have altogether?", 10),
                    ("more", "Which of the two has more?", "name"), ("fewer", "Which of the two has fewer?", "other")]
                   if code == "en" else
                   [("total", "둘이 합쳐서 몇 개야?", 10), ("more", "둘 중 누가 더 많아?", "name"),

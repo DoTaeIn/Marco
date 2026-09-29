@@ -383,7 +383,7 @@ def test_a_korean_count_under_a_noun_never_counted_is_left_as_asked():
 # ---------------------------------------------------------------------------
 @pytest.mark.parametrize("language,frames,expected", [
     ("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "How many {p} does {a} have?", "How many {p} does {b} have?",
-                 "How many do the two of them have in total?"], "10"),
+                 "How many do the two of them have altogether?"], "10"),
     ("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "How many {p} does {a} have?", "How many {p} does {b} have?",
                  "Which of the two has more?"], "Nora"),
     ("한국어", ["{a}는 {p}이 6개 있어.", "{b}는 {p}이 4개 있어.", "{a}는 {p}이 몇 개야?", "{b}는 {p}이 몇 개야?",
@@ -401,7 +401,7 @@ def test_the_two_are_the_two_holders_just_asked_about(language, frames, expected
 
 def test_the_two_among_three_holders_of_the_thing_with_one_asked_about_is_not_answered():
     rows = _play("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "Kim has 2 {p}.", "How many {p} does {a} have?",
-                             "How many do the two of them have in total?", "Which of the two has more?"], 3, **EN_WORDS)
+                             "How many do the two of them have altogether?", "Which of the two has more?"], 3, **EN_WORDS)
     assert rows[-1]["status"] != "answered" and rows[-2]["status"] != "answered"
 
 
