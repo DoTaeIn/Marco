@@ -284,7 +284,9 @@ CHECK = [(name, i) for name in CASES for i in range(len(CASES[name]["check"]))]
 # ("A4", 4), a holding said with 이/가 있다 and no count, was held when the example that read it was taken out (it
 # also took the location question of the fixed seven-step dialogue, 그 사람은 어디 있어?). It is read again without
 # that example: the statement is kept for its unknown word, and the amount said next goes into it (reading 2).
-HELD_BUILD = {("A6", 3), ("A6", 4)}
+# (A6, 4) is answered since UR7 experiment 8: the count asked of 보라 takes the one state key that ends in it
+# (the statement kept its fronted 행사에서 inside the key)
+HELD_BUILD = {("A6", 3)}
 
 
 @pytest.mark.parametrize("name,index", BUILD)
