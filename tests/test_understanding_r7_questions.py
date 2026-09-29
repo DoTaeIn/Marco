@@ -226,6 +226,50 @@ def test_an_unread_question_is_read_by_its_words_grounded_in_the_state():
 
 
 def test_a_word_nobody_declared_still_leaves_a_question_unread():
-    rows = _play("english", ["{a} has 6 {p}.", "How many {p} did {a} lose?", "How many {p} does {a} have, please?"], 3,
-                 **EN_WORDS)
-    assert rows[1] == {} and rows[2] == {}
+    rows = _play("english", ["{a} has 6 {p}.", "How many {p} did {a} lose?", "How many {p} does {a} have hidden?"],
+                 3, **EN_WORDS)
+    assert all(row.get("status") != "answered" for row in rows[1:])
+
+
+# ---------------------------------------------------------------------------
+# short follow-ups, comparisons of two named holders, lookups under a near key (effort 2; 0 is main)
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("follow_up,expected", [("What about {b}, please?", "4"), ("Maybe {b}?", "4")])
+def test_a_follow_up_with_a_word_that_says_nothing_is_read(follow_up, expected):
+    rows = _play("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "How many {p} does {a} have?", follow_up], 3, **EN_WORDS)
+    assert rows[-1]["status"] == "answered" and expected in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("language,frames", [
+    ("english", ["{a} has 6 {p}.", "How many {p} does {a} have?", "{z}?"]),
+    ("한국어", ["{a}는 {p}이 6개 있어.", "{a}는 {p}이 몇 개야?", "{z}는?"]),
+])
+def test_a_follow_up_naming_a_holder_never_counted_is_held_naming_it(language, frames):
+    words = dict(EN_WORDS if language == "english" else KO_WORDS, z="Zed" if language == "english" else "제드")
+    rows = _play(language, frames, 3, **words)
+    assert rows[-1]["status"] != "answered" and words["z"] in rows[-1]["answer"]
+    assert _play(language, frames, 0, **words)[-1] == {}
+
+
+@pytest.mark.parametrize("language,frames,winner", [
+    ("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "Between {a} and {b}, who has more {p}?"], "Nora"),
+    ("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "{a} or {b}, who has fewer {p}?"], "Ivo"),
+    ("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "Does {b} have more {p} than {a}?"], "Nora"),
+    ("한국어", ["{a}는 {p}이 6개 있어.", "{b}는 {p}이 4개 있어.", "{b}가 {a}보다 {p}이 더 많아?"], "노라"),
+])
+def test_two_named_holders_compared_around_the_question_word(language, frames, winner):
+    rows = _play(language, frames, 3, **(EN_WORDS if language == "english" else KO_WORDS))
+    assert rows[-1]["status"] == "answered" and winner in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("frames,expected", [
+    (["{a} has 6 {p}.", "How many quill does {a} have?"], "6"),
+    (["The red shed has 2 {p}.", "The blue shed has 5 {c}.", "How many {p} does the shed have?"], "2"),
+    (["My uncle {b} has 3 {p}.", "How many {p} does my uncle have?"], "3"),
+])
+def test_a_count_asked_under_a_near_key_takes_the_one_key_it_names(frames, expected):
+    rows = _play("english", frames, 3, **EN_WORDS)
+    assert rows[-1]["status"] == "answered" and expected in rows[-1]["answer"]
+    two = _play("english", ["The red shed has 2 {p}.", "The blue shed has 5 {p}.", "How many {p} does the shed have?"],
+                3, **EN_WORDS)
+    assert two[-1]["status"] != "answered"
