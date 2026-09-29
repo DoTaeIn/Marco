@@ -2728,6 +2728,17 @@ class ReasoningContext:
                 장소 = {place for item in facts for place in item.get("places") or [] if isinstance(place, str)}
                 후보 = [(차례, 이름) for 차례, 이름 in 후보
                       if not any(이름 == place or 이름.startswith(place + " ") for place in 장소)]
+            if not 후보 and self._effort_allows(2) and len(나머지.split()) >= 2:
+                # 그 친구 공책: a pointer with a word that describes the holder (a relation, a title) and the thing;
+                # the holders that word was said with in a statement, else every holder of the thing (G7-Q)
+                *describe, thing = 나머지.split()
+                of_thing = [(차례, 이름) for 이름, 차례 in 차례표.items() if 이름.endswith(" " + thing)]
+                described = [(차례, 이름) for 차례, 이름 in of_thing if any(
+                    re.search(r"(?<![\w])%s\s+%s" % (re.escape(" ".join(describe)), re.escape(이름[:-len(thing)].strip())),
+                              source) for source in self.observations)]
+                후보 = described or of_thing
+                if 후보:
+                    말 = "%s %s" % (말, " ".join(describe))     # the reply that names one replaces both words
             이름들 = [이름 for _차례, 이름 in sorted(후보, reverse=True)]
             고른것 = self._salient_choice(이름들)
             if 고른것 is None and len(이름들) == 1 and self._alone(이름들[0]):
@@ -3833,15 +3844,15 @@ class ReasoningContext:
         from relational_semantics import declared_plural
         rows = [q for q in query if isinstance(q, dict)]
         if not self._effort_allows(2) or len(rows) != 1 or not isinstance(rows[0].get("triple"), list):
-            return query
+            return query, None
         triple = rows[0]["triple"]
         if len(triple) != 3 or triple[1] != "count" or not isinstance(triple[0], str) or triple[0].startswith(("?", "$")):
-            return query
+            return query, None
         fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
         counted = {str(r["triple"][0]) for r in facts if isinstance(r.get("triple"), list) and r["triple"][1] == "count"
                    and isinstance(r["triple"][0], str)}
         if triple[0] in counted:
-            return query
+            return query, None
         keys = list(dict.fromkeys(self._holder_keys(parser)))
         declared = getattr(parser, "noun_number", None) or {}
         titles = [fold(t) for t in (parser.holder_forms or {}).get("name_titles", [])]
@@ -3877,14 +3888,40 @@ class ReasoningContext:
                                    source, re.IGNORECASE if parser.data.get("ignore_case") else 0)
                          for source in self.observations):
                     why = "relation"
+                elif any(re.search(r"(?<![\w])%s,\s+(?:\w+\s+){0,2}%s(?![\w])|(?<![\w])%s,\s+(?:\w+\s+){0,2}%s(?![\w])"
+                                   % (re.escape(bare), re.escape(holder), re.escape(holder), re.escape(bare)),
+                                   source, re.IGNORECASE if parser.data.get("ignore_case") else 0)
+                         for source in self.observations):
+                    why = "apposition"      # the nurse, Mia, ... / Mia, the nurse, ...
                 else:
                     continue
-                found[subject] = why
-        winner, _deciding, _ranking = self._rank_candidates(
+                found[subject] = (why, asked_holder)
+        winner, deciding, ranking = self._rank_candidates(
             [{"label": subject, "fit": {"state": 1}} for subject in sorted(found)], kind="lookup")
+        if winner is None and deciding == "tie":
+            # the words asked describe several holders the state counts: which one is asked back, naming every one
+            return query, {"word": found[ranking[0]["label"]][1], "candidates": [c["label"] for c in ranking]}
         if winner is None:
-            return query
-        return [dict(rows[0], triple=[winner["label"], "count", "?n"])]
+            return query, None
+        return [dict(rows[0], triple=[winner["label"], "count", "?n"])], None
+
+    def _ask_which(self, parser, text, which, result):
+        """Ask which of several holders a question's words mean (which_referent), keeping the question so the
+        reply that names one fills it (the pointer is the holder's words as the question said them)."""
+        tokens = text.strip().split()
+        span = self._frame_span(parser, tokens, which["word"], "holder")
+        said = " ".join(tokens[span[0]:span[1]]) if span else which["word"]
+        if span and span[2]:
+            said = said[:-len(span[2])] if said.endswith(span[2]) else said
+        said = said.strip(",.?!")
+        self.held_question = text
+        self.pending_pointer = {"question": text.strip(), "pointer": said, "candidates": list(which["candidates"])}
+        replies = parser.data["context_replies"]
+        return {**result, "status": "unresolved",
+                "meaning": {"act": "ask", "reason": "which_referent", "word": said,
+                            "candidates": list(which["candidates"])},
+                "answer": replies["which_referent"].format(**{
+                    "말": said, "목록": ", ".join("'%s'" % name for name in which["candidates"])})}
 
     def _grounded_reading(self, parser, subject, item):
         """A count question on ``subject`` as the reader would have read it, for the turn to go on with."""
@@ -5144,8 +5181,13 @@ class ReasoningContext:
         if result is None:
             result = self._turn_reply(text, knowledge_path)
             if result is None and self._permitted(knowledge_path) and not self._live():
-                # a turn not read may name one slot of the last question (effort 2)
+                # a turn not read may name one slot of the last question (effort 2); kept as unread just now, it
+                # is not unread when it reads so
+                kept = [entry for entry in self.unread if entry["text"].strip() == str(text).strip()]
+                self.unread = [entry for entry in self.unread if entry not in kept]
                 result = self._partial_frame(self._parser(), text, knowledge_path)
+                if result is None:
+                    self.unread += kept
                 if result is not None:
                     self._trace_path = "follow_up"
             # What the last reply's readings changed, for "what did you change?".
@@ -6532,8 +6574,11 @@ class ReasoningContext:
                         "meaning": {"act": "hold", "reason": "unread_event", "said": said},
                         "answer": replies["unread_event"].format(**{"말": said})}
             if 풀린물음 and not (self.unread or self.unread_guard):
-                # a count asked under a key the state does not have may name a key it has (G7-Q, effort 2)
-                풀린물음 = self._ground_lookup(parser, 풀린물음, 답사실)
+                # a count asked under a key the state does not have may name a key it has (G7-Q, effort 2); words
+                # that describe several holders are asked back with every candidate
+                풀린물음, which = self._ground_lookup(parser, 풀린물음, 답사실)
+                if which is not None:
+                    return self._ask_which(parser, text, which, result)
             outcome = parser.answer({"facts": 답사실, "query": 풀린물음}) if 풀린물음 else None
             if outcome is None and 풀린물음:
                 빠진전제 = self._missing_premise(parser, 풀린물음, 답사실)

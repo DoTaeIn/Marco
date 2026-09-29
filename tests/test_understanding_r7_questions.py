@@ -273,3 +273,25 @@ def test_a_count_asked_under_a_near_key_takes_the_one_key_it_names(frames, expec
     two = _play("english", ["The red shed has 2 {p}.", "The blue shed has 5 {p}.", "How many {p} does the shed have?"],
                 3, **EN_WORDS)
     assert two[-1]["status"] != "answered"
+
+
+# ---------------------------------------------------------------------------
+# which person: words that describe several holders are asked back naming every one (effort 2; 0 is main)
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("language,frames,names,value", [
+    ("english", ["My cousin {x} has 5 {p}.", "My cousin {y} has 3 {p}.", "How many {p} does my cousin have?", "{x}."],
+     ("Lena", "Omar"), "5"),
+    ("english", ["The nurse, {x}, has 5 {p}.", "The nurse, {y}, has 3 {p}.", "How many {p} does the nurse have?", "{y}."],
+     ("Lena", "Omar"), "3"),
+    ("한국어", ["제 친구 {x}은 {p}이 5개 있어.", "제 친구 {y}는 {p}이 3개 있어.", "그 친구는 {p}이 몇 개야?", "{x}이요."],
+     ("미경", "수아"), "5"),
+    ("한국어", ["김 과장님은 {p}이 5개 있어.", "이 과장님은 {p}이 3개 있어.", "과장님은 {p}이 몇 개야?", "김 과장님이요."],
+     ("김 과장", "이 과장"), "5"),
+])
+def test_words_that_describe_several_holders_are_asked_back_and_the_reply_is_answered(language, frames, names, value):
+    words = dict(EN_WORDS if language == "english" else KO_WORDS, x=names[0], y=names[1])
+    rows = _play(language, frames, 3, **words)
+    asked, reply = rows[-2], rows[-1]
+    assert asked["status"] != "answered" and asked["meaning"]["reason"] == "which_referent"
+    assert all(name in asked["answer"] for name in names)
+    assert reply["status"] == "answered" and value in reply["answer"]
