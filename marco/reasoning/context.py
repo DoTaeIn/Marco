@@ -4015,7 +4015,7 @@ class ReasoningContext:
         cued = pointed or any(fold(w) in cues for w in re.split(r"[\s,.?!]+", text) if w)
         if not cued or len(describing) > 3:
             return None
-        thing = (self.last_frame or {}).get("item")
+        thing = (getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item")
         if thing not in things:
             thing = next(iter(things)) if len(things) == 1 else None
         if thing is None:
@@ -5139,6 +5139,8 @@ class ReasoningContext:
         """One turn. Its sentence comes from ``marco.language.realize``."""
         self._trace_buffer, self._trace_readings, self._readings_dropped = [], None, []
         self._trace_candidates, self._trace_rankings = [], []
+        # the last question's frame as it stood before this turn (the turn's own question replaces it)
+        self._frame_before_turn = self.last_frame
         observed_before = len(self.observations)
         result, path = None, "reply"
         try:
