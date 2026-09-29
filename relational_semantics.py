@@ -3339,7 +3339,8 @@ class RelationalParser:
                                    "render": list(spec["render"])}]}
         if (total and not group and getattr(self, "effort", 3) >= 1 and len(name) >= 2
                 and (words[at - 1] in spec.get("total_words", []) or words[at - 1] in more_totals)
-                and not any(self._protected_kind(w) for w in raw)):
+                and not any(self._protected_kind(w) in ("scope", "negation") for w in raw)):
+            # (a counter inside the thing's name, 과자 봉지, is no scope word: the count of 과자 봉지)
             # a total word right before the question word, over one holder and its thing, asks that holder's
             # count (G7-Q); anywhere else it is a scope word out of place and the repair guard holds it
             total = False

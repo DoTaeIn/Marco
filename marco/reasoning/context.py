@@ -3563,6 +3563,26 @@ class ReasoningContext:
             counted_words = re.sub(r"(?i)(?<=\s)%s(?=\s)" % re.escape(phrase), " ", counted_words)
         words = [w for w in counted_words.split() if w]
         amounts = [str(v) for v in (self._amount_of(parser, w) for w in words) if v is not None]
+        # the amount a negation marks is the old one (not five; 다섯 개가 아니라): read from the words as said
+        spoken = words
+        negated = None
+        for at, word in enumerate(spoken):
+            value = self._amount_of(parser, word)
+            if value is None:
+                continue
+            after = spoken[at + 1:at + 3]
+            before = spoken[max(0, at - 1):at]
+            # where the negation stands is the pack's: after the amount where the new side comes after the
+            # contrast (다섯 개가 아니라 두 개), before it where the new side comes first (two, not five)
+            if spec.get("new_after"):
+                marks_it = any(parser._protected_kind(w) == "negation" or any(
+                    fold(w).startswith(fold(c)) for c in spec.get("new_after", [])) for w in after)
+            else:
+                marks_it = any(parser._protected_kind(w) == "negation" and fold(w) not in
+                               {fold(c) for c in spec.get("discourse_no", [])} for w in before)
+            if marks_it:
+                negated = str(value)
+                break
         words = [w for w in re.split(r"[\s,.!?]+", said) if w]
         every_named = [k for k in (self._holder_of(parser, w, keys) for w in words) if k is not None]
         # the side of a contrast that says the new version (… 아니라 NEW; NEW, not …) names the holders in order
@@ -3675,6 +3695,10 @@ class ReasoningContext:
             if not amounts or len(values) != 1 or any(k not in involved for k in named):
                 continue
             old = next(iter(values))
+            if negated is not None and negated != old:
+                # the negated amount is the old one; an event that does not carry it is not the one corrected
+                self._candidate_dropped(2, "correction_frame", "amount:%d" % index, "negated_amount_not_carried")
+                continue
             news = [v for v in amounts if v != old]
             if len(set(news)) != 1 or len(amounts) - len(news) > 1:
                 continue
@@ -3707,6 +3731,51 @@ class ReasoningContext:
                 candidates.append({"label": label, "index": index, "old": old, "new": new, "slot": "amount",
                                    "fit": {"state": 1, "reasoning": int(len(amounts) - len(news) == 1),
                                            "grammar": 1, "context": 0 if stated_old else context}})
+        if not candidates and amounts:
+            # the statement corrected was kept unread (its numbers did not add up, or it was not read): it is said
+            # again with the new amount, and taken if it now reads and replays
+            for entry in reversed((self.unread_guard + self.unread)[-3:]):
+                source = entry["text"]
+                tokens = source.split()
+                spots = [i for i, w in enumerate(tokens) if self._amount_of(parser, w.strip(",.!?")) is not None]
+                carried = [str(self._amount_of(parser, tokens[i].strip(",.!?"))) for i in spots]
+                if negated is not None:
+                    old = negated
+                elif len(set(amounts)) == 2:
+                    olds = [a for a in dict.fromkeys(amounts) if a in carried]
+                    old = olds[0] if len(olds) == 1 else None
+                else:
+                    last_said = entry.get("at") == len(self.observations)
+                    old = carried[0] if last_said and len(carried) == 1 else None
+                news = [a for a in dict.fromkeys(amounts) if a != old]
+                label = "unread:%s" % source[:40]
+                if old is None or carried.count(old) != 1 or len(news) != 1:
+                    self._candidate_dropped(2, "correction_frame", label, "amount_not_carried_once")
+                    continue
+                spot = spots[carried.index(old)]
+                word = tokens[spot]
+                digits = re.match(r"\d+", word)
+                new_word = (news[0] + word[digits.end():]) if digits else news[0] + word[len(word.rstrip(",.!?")):]
+                if not digits and not word.rstrip(",.!?").isalpha():
+                    # a numeral written with its counter (다섯 개가 / 5개를): the counter stays
+                    unit = next((u for u in sorted((parser.counters or {}).get("units", []), key=len, reverse=True)
+                                 if u in word and word.index(u) > 0), None)
+                    new_word = (news[0] + word[word.index(unit):]) if unit else new_word
+                rewritten = " ".join(tokens[:spot] + [new_word] + tokens[spot + 1:])
+                try:
+                    reread = parser.parse(rewritten, partial=True, events=True, verbs=verbs_known, repair=True) or {}
+                except Exception:    # noqa: BLE001
+                    reread = {}
+                if not reread.get("facts"):
+                    self._candidate_dropped(2, "correction_frame", label, "still_not_read")
+                    continue
+                if not replays(len(self.observations), rewritten):
+                    self._candidate_dropped(2, "correction_frame", label, "replay_refused")
+                    continue
+                candidates.append({"label": label, "slot": "unread_amount", "entry": entry, "rewritten": rewritten,
+                                   "old": old, "new": news[0],
+                                   "fit": {"state": 1, "reasoning": int(negated is not None or len(set(amounts)) == 2),
+                                           "grammar": 1, "context": 0}})
         winner, deciding, ranking = self._rank_candidates(candidates, kind="correction_frame")
         replies = parser.data["context_replies"]
         if winner is None and deciding == "tie":
@@ -3719,6 +3788,18 @@ class ReasoningContext:
                     "verification": self._verification(knowledge_path, [{"ok": False, "reason": "correction_tie"}])}
         if winner is None:
             return None
+        if winner["slot"] == "unread_amount":
+            entry = winner["entry"]
+            kept_unread, kept_guard = list(self.unread), list(self.unread_guard)
+            self.unread = [e for e in self.unread if e is not entry]
+            self.unread_guard = [e for e in self.unread_guard if e is not entry]
+            result = self._turn(winner["rewritten"], knowledge_path)
+            if result is None or result.get("status") != "observed":
+                self.unread, self.unread_guard = kept_unread, kept_guard
+                return None
+            meaning = dict(result.get("meaning") or {})
+            return {**result, "meaning": {**meaning, "correction": {"said": said, "of": entry["text"],
+                                                                    "old": winner["old"], "new": winner["new"]}}}
         if winner["slot"] == "amount":
             return self._correct_by_reference(parser, {"verb": None, "old": winner["old"], "new": winner["new"],
                                                        "evidence": {"text": said, "contrast": "frame"}},

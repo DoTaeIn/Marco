@@ -5075,6 +5075,7 @@
     "new_before": [", not "],
     "pronoun_ones": ["the one", "that one", "this one", "which one", "no one", "the other one", "anyone", "someone"],
     "taker_verbs": ["got", "received", "took", "borrowed", "gets", "receives", "takes"],
+    "discourse_no": ["no", "nope", "nah"],
     "reach": 3
    }
  },

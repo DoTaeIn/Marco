@@ -411,3 +411,33 @@ def test_that_one_with_the_thing_named_is_a_pointer_not_a_holder_that():
                              "So how many {p} does that one have?"], 3, **EN_WORDS)
     assert rows[-1]["meaning"]["reason"] == "which_referent"
     assert "Nora" in rows[-1]["answer"] and "Ivo" in rows[-1]["answer"]
+
+
+# ---------------------------------------------------------------------------
+# a correction of a transfer whose numbers did not add up (kept unread): said again with the new amount
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("language,correction", [
+    ("english", "Not five, two."), ("english", "No, 2, not 5."), ("english", "No, two."),
+    ("한국어", "아니, 다섯 개가 아니라 두 개야."),
+])
+def test_a_refused_transfer_is_corrected_by_its_new_amount_and_no_count_statement_is_touched(language, correction):
+    if language == "english":
+        frames = ["Wren has 3 figs.", "Tobin has 2 figs.", "Wren gave Tobin 5 figs.", correction,
+                  "How many figs does Tobin have?", "How many figs does Wren have?"]
+    else:
+        frames = ["보늬는 자두가 3개 있어.", "하람은 자두가 2개 있어.", "보늬가 하람에게 자두를 5개 줬어.", correction,
+                  "하람은 자두가 몇 개야?", "보늬는 자두가 몇 개야?"]
+    rows = _play(language, frames, 3)
+    assert rows[3]["status"] == "observed"
+    assert "4" in rows[4]["answer"] and rows[4]["status"] == "answered"
+    assert "1" in rows[5]["answer"] and rows[5]["status"] == "answered"
+    # effort 0 (main) never reads the negated amount as the new one
+    main = _play(language, frames, 0)
+    assert main[4]["status"] != "answered" or "4" in main[4]["answer"]
+
+
+@pytest.mark.parametrize("thing,total", [("과자 봉지", "모두"), ("우유 병", "전부"), ("연필 자루", "총")])
+def test_a_counter_inside_the_things_name_is_no_scope_word(thing, total):
+    frames = ["보늬는 %s가 3개 있어." % thing, "하람은 %s가 2개 있어." % thing, "보늬 %s는 %s 몇 개야?" % (thing, total)]
+    rows = _play("한국어", frames, 3)
+    assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
