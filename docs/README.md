@@ -301,6 +301,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [experiment-10.json](ko/dialogue-gate-2026-09-22/experiment-10.json) | Experiment 10, `5e9289a`: 82 of 108, no turn changed |
 | [experiment-11.json](ko/dialogue-gate-2026-09-22/experiment-11.json) | Experiment 11, `030d04c`: 82 of 108, no turn changed |
 | [experiment-12.json](ko/dialogue-gate-2026-09-22/experiment-12.json) | Experiment 12, `fc113ea`: 85 of 108, which-person turns 12 of 12 |
+| [experiment-13.json](ko/dialogue-gate-2026-09-22/experiment-13.json) | Experiment 13, `5712ebf`: 86 of 108, Korean 41 of 54 |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
