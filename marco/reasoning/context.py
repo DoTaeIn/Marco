@@ -495,6 +495,129 @@ class ReasoningContext:
                     return (other.get("evidence") or {}).get("text") or other["triple"][0]
         return None
 
+    @staticmethod
+    def _other_keys(parser, facts, subject, turn):
+        """G7-S (round 7, S3): the keys an earlier count of ``subject``'s holder and thing may stand under
+        because the reader kept a case particle of the pack (조사, case_particles) in the name: the thing left unsaid and the
+        case kept on the holder (기 대표에게 for 기 대표 핸드백), or a place phrase kept between the holder and
+        the thing (경아 승합차에 형광펜 for 경아 형광펜). ``[(key, kind)]``, counted before ``turn``, in the order
+        said. Which of them, if any, is the holder's is for the state to decide."""
+        particles = sorted({p for p in (parser.language_pack or {}).get("case_particles") or [] if isinstance(p, str) and p},
+                           key=len, reverse=True)
+        words = subject.split()
+        if not particles or len(words) < 2:
+            return []
+        holder, thing = words[:-1], words[-1]
+        things = {}
+        for f in facts:
+            if isinstance(f["triple"][0], str) and len(str(f["triple"][0]).split()) > 1:
+                things.setdefault(str(f["triple"][0]).split()[-1], set()).add(f["triple"][0])
+
+        def cased(word):
+            return next((word[:-len(p)] for p in particles if word.endswith(p) and len(word) > len(p)), None)
+        numeric = ReasoningContext._numeric_targets(parser)
+        out = []
+        for fact in facts:
+            key = fact["triple"][0]
+            if (fact["triple"][1] not in numeric or not isinstance(key, str) or key == subject
+                    or (fact.get("evidence") or {}).get("turn", turn) >= turn or key in [k for k, _ in out]):
+                continue
+            k = key.split()
+            if len(k) == len(holder) and k[:-1] == holder[:-1] and cased(k[-1]) == holder[-1] \
+                    and not (things.get(k[-1], set()) - {key}):
+                out.append((key, "case_in_name"))
+            elif len(k) > len(words) and k[:len(holder)] == holder and k[-1] == thing and cased(k[-2]):
+                out.append((key, "place_in_name"))
+        return out
+
+    def _rekeyed_fit(self, parser, text, verbs, turns, old, new):
+        """The conversation replayed with ``text`` and with the statements at ``turns`` read with ``old``
+        keyed as ``new``: ``(fit, readings)`` when no constraint breaks and every change this statement makes
+        to ``new`` starts from a count; else the reason it does not fit. Nothing is kept."""
+        table = parser.__dict__.setdefault("chosen_readings", {})
+        sources = [self.observations[i].strip() for i in turns if isinstance(i, int) and 0 <= i < len(self.observations)]
+        readings = {}
+        for source in sources:
+            reading = deepcopy(self._read_source(parser, source, events=True, verbs=verbs))
+            if not reading or not any(isinstance(f.get("triple"), list) and f["triple"][0] == old
+                                      for f in reading.get("facts", [])):
+                return "not_in_reading"
+            for fact in reading["facts"]:
+                if isinstance(fact.get("triple"), list) and fact["triple"][0] == old:
+                    fact["triple"][0] = new
+            readings[source] = reading
+        saved = {source: table.get(source) for source in readings}
+        updates = parser.data.get("numeric_updates") or {}
+        try:
+            table.update(readings)
+            facts, _d, _p, _r = self._replay(parser, self.observations + [text], self.fills,
+                                             deepcopy(self.event_ids) if self.event_ids is not None else None)
+            facts = self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", []))
+            _state, changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+        except ValueError as exc:
+            return str(exc).split(":")[0]
+        finally:
+            for source, before in saved.items():
+                if before is None:
+                    table.pop(source, None)
+                else:
+                    table[source] = before
+        index = len(self.observations)
+        mine = [row for row in changes if row.get("subject") == new
+                and (row.get("evidence") or {}).get("turn") == index]
+        if not mine or any(row.get("before") is None for row in mine):
+            return "no_count_before"
+        return {"state": 1, "cost": 1}, readings
+
+    def _read_other_keys(self, parser, text, current, verbs):
+        """G7-S, effort 2 (a referent candidate from the conversation; amendment A1): a statement that moves
+        an amount from or to a holder with no count under its key, where an earlier statement counted the same
+        holder and thing under another key (``_other_keys``), is tried with that earlier statement keyed the
+        way this one names it. A candidate survives when the replay breaks no constraint and the holder has a
+        count before this statement (``_rekeyed_fit``); the survivors are ranked (``_rank_candidates``), and
+        a clear winner becomes the earlier statement's reading (``chosen_readings``), so every later replay
+        reads it so. Givers first: a receiver's candidate is checked with the giver's already kept. A tie or
+        no survivor changes nothing, and the statement goes on as before."""
+        updates = parser.data.get("numeric_updates") or {}
+        rows = [f["triple"] for f in current.get("facts", []) if isinstance(f.get("triple"), list)
+                and isinstance(f["triple"][0], str) and f["triple"][1] in updates]
+        rows.sort(key=lambda t: float((updates[t[1]] or {}).get("factor", 1) or 1) > 0)
+        if not rows or not self.observations:
+            return None
+        try:
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+            state, _c = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+        except ValueError:
+            return None
+        counted = {row["triple"][0] for row in state}
+        kept = []
+        for subject in dict.fromkeys(t[0] for t in rows):
+            if subject in counted:
+                continue
+            survivors = []
+            for key, kind in self._other_keys(parser, facts, subject, len(self.observations)):
+                turns = sorted({(f.get("evidence") or {}).get("turn") for f in facts if f["triple"][0] == key}
+                               - {None})
+                label = "%s -> %s" % (key, subject)
+                fit = self._rekeyed_fit(parser, text, verbs, turns, key, subject)
+                if isinstance(fit, str):
+                    self._candidate_dropped(2, kind, label, fit)
+                    continue
+                survivors.append({"label": label, "fit": fit[0], "readings": fit[1], "kind": kind,
+                                  "from": key, "to": subject})
+            if not survivors:
+                continue
+            winner, deciding, _ranking = self._rank_candidates(survivors, kind="other_key")
+            if winner is None:
+                continue
+            parser.__dict__.setdefault("chosen_readings", {}).update(winner["readings"])
+            self._replay_cache = None
+            self.__dict__.setdefault("_trace_buffer", []).append(("hypothesis_verified", {"checks": [{
+                "ok": True, "reason": "other_key", "kind": winner["kind"], "from": winner["from"],
+                "to": winner["to"], "decided_by": deciding, "effort": self.effort}]}))
+            kept.append(winner["label"])
+        return kept or None
+
 
     @staticmethod
     def _못잰까닭(까닭):
@@ -5275,6 +5398,11 @@ class ReasoningContext:
             checked = self._check_readings(parser, text, verbs, knowledge_path, first_failure="thing_as_holder")
             if checked is not None:
                 return checked
+        if (keeps and self._effort_allows(2) and self._is_statement(current) and not current.get("query")
+                and completion is None and 상태보완 is None and 관계보완 is None and not 새덮기
+                and not getattr(self, "_rereading", False)):
+            # G7-S: a holder this statement moves, counted before under another key (effort 2)
+            self._read_other_keys(parser, text, current, verbs)
         try:
             facts, defined, unsettled, 읽힘 = self._cached_replay(
                 parser, pending, self.fills + 새채움)

@@ -43,6 +43,56 @@ English, and creates its sentences instead of picking them.
 
 No storage format, test count, or refactor progress counts toward this gate.
 
+## Owner-fixed timeline (2026-09-29)
+
+`docs/ko/2026-09-29-marco-fixed-timeline.md` fixes the order of the phases:
+M1 (MARCO 1 language gate) → MARCO 1 release → M2 self-improving → M3 capability →
+M4 goal / prompt → A1 → A2 → S1 → P1 → N1. A new idea is placed under a phase; it
+never reorders them. Where an older roadmap disagrees on order, this file wins.
+
+- **One track until gate 2 passes (owner, 2026-09-29).** Only understanding rounds
+  run. No realizer, docs, trace, refactor or storage round starts before the gate;
+  a request from an understanding round to another area is answered inside that
+  round or waits.
+- **Names.** Understanding rounds are UR<n>. UR7 is the round written as G7
+  (chats G7-Q and G7-S, requests `G7-<n>.md`); its names stay until it merges. The
+  next round is UR8. In the fixed timeline M1 to M4 are MARCO phases; the storage
+  milestones this file calls "MCO binary M1–M4" are not those.
+- **Merging (owner, 2026-09-29).** The plan manager merges a round's branch into
+  `main` when its regression list passes on a re-run, scores the frozen sets the
+  same day, and writes the next round from the cause counts. Pushing stays the
+  owner's.
+- **Placed under MARCO 1 release: a fresh exam.** The frozen 52 were never shown
+  as sentences, but seven rounds were written from their failing classes. Before
+  the release, 50 or more new dialogues written outside the development chats
+  (`data/benchmarks/dialogues_v2/`, frozen on arrival) are scored once. The gate
+  number stays the frozen 52; the fresh score is published beside it.
+- **Effort and ranking (UR7 amendments A2, A4)** are sub-items of M1's candidate
+  readings: a bound on the search and an order on its survivors. Owner's limit
+  (2026-09-29): effort level 3 is turn-local deliberation only. No persistent
+  learning, no permanent repair, no external research, no OpenProblem promotion.
+- **Experiments, not rounds (owner, 2026-09-29).** An understanding round is one
+  hypothesis tested, not a schedule. The loop is fixed: cause found → patch →
+  regression → merge → frozen score → next cause. Failures are grouped by
+  structural cause; one cause is fixed and the whole exam is scored again at
+  once. A patch whose regression passes is merged and scored the same day
+  without waiting for a hand-off. No round count and no date is estimated ahead.
+  At 90% or better the next step is gate verification; below it, the remaining
+  failures are grouped again and only the one to three largest structural causes
+  go into the next experiment. Graph grounding is built only as far as the gate
+  needs: identity, referent and frame grounding. Documents describe the work and
+  never hold it up. Work time and wait time are logged apart in
+  `docs/ko/2026-09-29-experiment-log.md`. This replaces "scored once per round"
+  in the exam rule: the plan manager scores after every merge, and still only
+  the plan manager; development chats never open or run the frozen sets.
+- **Placements decided by the owner (2026-09-29), top-level order unchanged:** the
+  real MCO format under MARCO 1 release, before M2; the Observation Graph Contract
+  at the end of M2, before M3; M3 owns capability declaration, discovery, binding
+  and the permission contract, P1 owns side-effectful execution and enforcement,
+  and today's bounded read-only research stays as it is. Gate condition 4
+  (sample count and full failure list published) stands; the fixed timeline's
+  first version had dropped it by accident.
+
 ## The queue (replaces plan file §2 items 3–5) — updated 2026-09-23
 
 | # | Goal | File | State |
