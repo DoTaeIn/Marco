@@ -187,14 +187,22 @@ class ReasoningContext:
 
     def _rank_candidates(self, candidates, kind="reading"):
         """``candidates``: the survivors of the checks, each ``{"label": str, "fit": {check: value}, ...}`` with
-        a fit per check of ``RANK_ORDER`` (a number or a bool, higher is better; ``cost`` lower is better; a
-        check left out is 0). Returns ``(winner or None, deciding check, ranking)``: the top candidate when it
+        a fit per check of ``RANK_ORDER`` (a bool or a count of declared checks passed, higher is better;
+        ``cost`` a count of repair steps, lower is better; a check left out is 0; anything else raises). Returns ``(winner or None, deciding check, ranking)``: the top candidate when it
         beats the runner-up on one check, the first in the declared order where they differ; ``"only"`` for a
         single survivor; ``(None, "tie", ranking)`` when the top two are equal on every check (ask);
         ``(None, None, [])`` for none (hold). The ranking and the deciding check go to the trace."""
+        for candidate in candidates or []:
+            for check, value in (candidate.get("fit") or {}).items():
+                # a fit is a bool or a count of declared checks passed, a cost a count of repair steps: never a
+                # hand-set fraction, which would be a tuned weight again
+                if check not in self.RANK_ORDER or not isinstance(value, int) or (check == "cost" and value < 0):
+                    raise ValueError("fit %s=%r of %r is not a declared check's count" % (
+                        check, value, candidate.get("label")))
+
         def key(candidate):
             fit = candidate.get("fit") or {}
-            return tuple(-float(fit.get(check) or 0) if check != "cost" else float(fit.get(check) or 0)
+            return tuple(-int(fit.get(check) or 0) if check != "cost" else int(fit.get(check) or 0)
                          for check in self.RANK_ORDER)
         ranking = sorted(candidates or [], key=key)
         if not ranking:
