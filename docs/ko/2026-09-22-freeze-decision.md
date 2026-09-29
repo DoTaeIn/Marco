@@ -43,6 +43,35 @@ English, and creates its sentences instead of picking them.
 
 No storage format, test count, or refactor progress counts toward this gate.
 
+## Owner-fixed timeline (2026-09-29)
+
+`docs/ko/2026-09-29-marco-fixed-timeline.md` fixes the order of the phases:
+M1 (MARCO 1 language gate) → MARCO 1 release → M2 self-improving → M3 capability →
+M4 goal / prompt → A1 → A2 → S1 → P1 → N1. A new idea is placed under a phase; it
+never reorders them. Where an older roadmap disagrees on order, this file wins.
+
+- **One track until gate 2 passes (owner, 2026-09-29).** Only understanding rounds
+  run. No realizer, docs, trace, refactor or storage round starts before the gate;
+  a request from an understanding round to another area is answered inside that
+  round or waits.
+- **Names.** Understanding rounds are UR<n>. UR7 is the round written as G7
+  (chats G7-Q and G7-S, requests `G7-<n>.md`); its names stay until it merges. The
+  next round is UR8. In the fixed timeline M1 to M4 are MARCO phases; the storage
+  milestones this file calls "MCO binary M1–M4" are not those.
+- **Merging (owner, 2026-09-29).** The plan manager merges a round's branch into
+  `main` when its regression list passes on a re-run, scores the frozen sets the
+  same day, and writes the next round from the cause counts. Pushing stays the
+  owner's.
+- **Placed under MARCO 1 release: a fresh exam.** The frozen 52 were never shown
+  as sentences, but seven rounds were written from their failing classes. Before
+  the release, 50 or more new dialogues written outside the development chats
+  (`data/benchmarks/dialogues_v2/`, frozen on arrival) are scored once. The gate
+  number stays the frozen 52; the fresh score is published beside it.
+- **Effort and ranking (UR7 amendments A2, A4)** are sub-items of M1's candidate
+  readings: a bound on the search and an order on its survivors. Nothing is kept
+  after the turn, so this is not M2's self-repair, and it runs on the CPU, so it is
+  not N1.
+
 ## The queue (replaces plan file §2 items 3–5) — updated 2026-09-23
 
 | # | Goal | File | State |
