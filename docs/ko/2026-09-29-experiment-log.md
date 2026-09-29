@@ -223,3 +223,9 @@ default word ("or") is written in code. No import of a model was added. What is
 not as designed: the conversation's state is a list of the sentences said,
 replayed into facts keyed by words; the grounding matches the words of those keys
 and consults no graph; there is no canonical identity for a holder or a thing.
+
+## Experiment 16: the wrong correction becomes a hold
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 16 | experiment 15 re-said a statement kept unread with the corrected amount and recorded it as a new event | 97cb1b0, merged 55849b6 | chat 15 min; plan manager 8 min | chat 10 min on runs; reported 21:59, merged 22:00, scored 22:05 | chat's full suite 2,352 passed, 1 known failure (gate files left out); gate files and reading tests at merge: 560 passed | **90/108 (83.3%)**: the correction is held, not wrong, and the two English questions that rested on it are held again; Korean 44 of 54, English 46 of 54; **0 wrong on the whole exam**, 0 violations (`experiment-16.json`) |
