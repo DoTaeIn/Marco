@@ -623,12 +623,22 @@ class ReasoningContext:
         moves or states an amount of a thing it does not name (Nora gave Eli three., 가람이 나래에게 세 개를 줬어.)
         names holders whose keys carry no thing. When the conversation cannot take the thing from one key of
         the holder alone (the holder counts two things, or none), each thing a named holder counts, and the
-        thing of the statement just before, is a candidate: every thingless holder of the statement takes it
-        (a transfer moves one thing). Each is checked against the conversation (``_reading_failure``); the
-        survivors are ranked (``_rank_candidates``): state, every holder that loses some has a count before;
-        context, the thing is that of the statement just before, and a receiver already counts it. A clear
-        winner is kept as the statement's reading for this conversation and the turn is played with it; a tie
-        or none returns None and the statement goes on as before."""
+        thing of the statement just before, is a candidate (``_unsaid_thing_candidates``); the survivors are
+        ranked (``_rank_candidates``) and a clear winner is kept (``_keep_reading``); a tie or none returns None
+        and the statement goes on as before."""
+        survivors = self._unsaid_thing_candidates(parser, text, current, verbs)
+        if not survivors:
+            return None
+        winner, _deciding, _ranking = self._rank_candidates(survivors, kind="unsaid_thing")
+        return self._keep_reading(parser, text, winner, knowledge_path, "unsaid_thing")
+
+    def _unsaid_thing_candidates(self, parser, text, current, verbs, cost=0, label=""):
+        """The candidates of ``_read_unsaid_thing`` for the reading ``current`` of ``text``, each checked
+        against the conversation (``_reading_failure``): every thingless holder of the statement takes one
+        thing, each thing a named holder counts and the thing of the statement just before. Fit: state, every
+        holder that loses some has a count before; context, the thing is that of the statement just before,
+        and a receiver already counts it; cost, ``cost`` plus the thing put in. None when no holder of the
+        reading lacks its thing (or one key of the holder already gives it); [] when none survives."""
         updates = parser.data.get("numeric_updates") or {}
         numeric = self._numeric_targets(parser)
         rows = [f["triple"] for f in current.get("facts", []) if isinstance(f.get("triple"), list)
@@ -647,7 +657,8 @@ class ReasoningContext:
             return None
 
         def holds(holder):
-            return [key.split()[-1] for key in keys if key.startswith(holder + " ")]
+            # the thing part of each key of the holder, every word of it (bundles of herbs)
+            return [key[len(holder) + 1:] for key in keys if key.startswith(holder + " ")]
         # a key is a holder and a thing; a subject of one word, one that is the holder of a counted key, or one
         # the reader read from an example that leaves the thing out (elided: resolve), names no thing
         elided = {f["triple"][0] for f in current.get("facts", []) if isinstance(f.get("triple"), list)
@@ -657,14 +668,17 @@ class ReasoningContext:
         if not thingless or all(len(holds(s)) == 1 for s in thingless):
             return None             # every holder has one thing: the key's leading words already find it
         previous = self._read_source(parser, self.observations[-1], events=True, verbs=verbs) or {}
-        before = [f["triple"][0].split()[-1] for f in previous.get("facts", []) if isinstance(f.get("triple"), list)
+        before = [f["triple"][0] for f in previous.get("facts", []) if isinstance(f.get("triple"), list)
                   and isinstance(f["triple"][0], str) and len(f["triple"][0].split()) > 1]
-        before_thing = before[0] if before else None
+        named = [thing for s in thingless for thing in holds(s)]
+        # the thing of the statement just before: the thing part its key ends with, or its last word
+        before_thing = next((t for t in sorted(set(named), key=len, reverse=True)
+                             if before and before[0].endswith(" " + t)), before[0].split()[-1] if before else None)
 
         def removing(row):
             return row[1] in updates and float((updates[row[1]] or {}).get("factor", 1) or 1) < 0
         takers = [t[0] for t in rows if t[1] in updates and not removing(t) and t[0] in thingless]
-        candidates = [thing for s in thingless for thing in holds(s)] + ([before_thing] if before_thing else [])
+        candidates = named + ([before_thing] if before_thing else [])
         survivors = []
         for thing in dict.fromkeys(candidates):
             parsed = deepcopy(current)
@@ -673,17 +687,102 @@ class ReasoningContext:
                     fact["triple"][0] = fact["triple"][0] + " " + thing
             failure, changes = self._reading_failure(parser, text, parsed)
             if failure is not None:
-                self._candidate_dropped(2, "unsaid_thing", thing, failure[1])
+                self._candidate_dropped(2, "unsaid_thing", label + thing, failure[1])
                 continue
             known = all(row.get("before") is not None for row in changes if (row.get("delta") or 0) < 0)
-            survivors.append({"label": thing, "parsed": parsed,
+            survivors.append({"label": label + thing, "parsed": parsed,
                               "fit": {"state": int(known),
                                       "context": int(thing == before_thing)
                                       + int(bool(takers) and all(thing in holds(s) for s in takers)),
-                                      "cost": 1}})
+                                      "cost": cost + 1}})
+        return survivors
+
+    def _read_wrong_thing(self, parser, text, current, verbs, knowledge_path):
+        """G7-S experiment 4, effort 2 (amendment A1): a statement read completely whose reading the state
+        refuses, with a word in its thing slot that is no thing this conversation counts (Nora gave Eli three
+        blorp., Dr. Lambert gave three quix to Ms. Daniels.): the word may be the thing, or not. Candidates:
+        the reading as it is (the word is a new thing), and the reading with the word taken out of every
+        holder's key, whose thing then comes from the conversation (``_unsaid_thing_candidates``: each thing a
+        named holder counts, the thing of the statement before) or from the holder's one key (the leading
+        words). The thing slot is found by position (the words every moved holder's key ends with, or those
+        after the holder's name), never by a word list: any word may stand there. Each candidate is checked
+        against the conversation (``_reading_failure``), ranked (``_rank_candidates``: state, every holder that
+        loses some has a count before; context; cost, the word taken out and the thing put in), and a clear
+        winner is kept for this conversation (``_keep_reading``); a tie or none returns None."""
+        updates = parser.data.get("numeric_updates") or {}
+        numeric = self._numeric_targets(parser)
+        facts_now = [f for f in current.get("facts", []) if isinstance(f.get("triple"), list)
+                     and isinstance(f["triple"][0], str) and f["triple"][1] in updates]
+        if not facts_now or not self.observations or current.get("query"):
+            return None
+        try:
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+            state, _c = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+        except ValueError:
+            return None
+        keys = [row["triple"][0] for row in state if isinstance(row["triple"][0], str)
+                and row["triple"][1] in numeric | {"count_unknown"} and len(row["triple"][0].split()) > 1]
+        things = {key.split()[-1] for key in keys}
+        holders = {" ".join(key.split()[:-1]) for key in keys}
+        subjects = list(dict.fromkeys(f["triple"][0] for f in facts_now))
+        split = [s.split() for s in subjects]
+        if len(split) > 1:
+            # the words every moved holder's key ends with
+            size = 0
+            while all(len(words) > size + 1 for words in split) and len({tuple(w[-size - 1:]) for w in split}) == 1:
+                size += 1
+        else:
+            # the words after the longest holder name the conversation knows
+            size = next((len(split[0]) - n for n in range(len(split[0]) - 1, 0, -1)
+                         if " ".join(split[0][:n]) in holders), 0)
+        word = split[0][-size:] if size else []
+        if not word or word[-1] in things or any(s in keys for s in subjects):
+            return None
+        # A word of a thing this conversation counts, or a declared counter (three bundles for bundles of
+        # herbs), may be no thing of its own. Any other word may be taken out only when it cannot be a counted
+        # noun: after an amount other than one it is no plural the pack's number rules (명사수) could make.
+        # A language without them, or an amount of one, cannot tell, and the word stays the thing: a thing
+        # never counted before is said, and taking it out would answer about another (three apples).
+        counted_words = {w for key in keys for w in key.split()[1:]} | set(
+            ((parser.language_pack or {}).get("counters") or {}).get("units") or [])
+        if not all(w in counted_words for w in word):
+            number = getattr(parser, "noun_number", None) or {}
+            amounts = {str(f["triple"][2]) for f in facts_now}
+            last = word[-1].lower()
+            if not number.get("plural") or amounts == {str(number.get("count_slot_value", 1))} \
+                    or last.endswith("s") or last in {str(v).lower() for v in (number.get("irregular") or {}).values()}:
+                return None
+        part = (getattr(parser, "ellipsis", None) or {}).get("part_reference")
+        stripped = deepcopy(current)
+        for fact in stripped.get("facts", []):
+            if isinstance(fact.get("triple"), list) and fact["triple"][0] in subjects:
+                fact["triple"][0] = " ".join(fact["triple"][0].split()[:-size])
+                if part:
+                    fact["resolve"] = part
+        label = "without '%s' " % " ".join(word)
+        survivors = self._unsaid_thing_candidates(parser, text, stripped, verbs, cost=1, label=label)
+        if survivors is None:
+            failure, changes = self._reading_failure(parser, text, stripped)
+            if failure is not None:
+                self._candidate_dropped(2, "wrong_thing", label.strip(), failure[1])
+                survivors = []
+            else:
+                known = all(row.get("before") is not None for row in changes if (row.get("delta") or 0) < 0)
+                survivors = [{"label": label.strip(), "parsed": stripped, "fit": {"state": int(known), "cost": 1}}]
+        failure, changes = self._reading_failure(parser, text, current)
+        if failure is not None:
+            self._candidate_dropped(2, "wrong_thing", "as said", failure[1])
+        else:
+            known = all(row.get("before") is not None for row in changes if (row.get("delta") or 0) < 0)
+            survivors.append({"label": "as said", "parsed": current, "fit": {"state": int(known), "cost": 0}})
         if not survivors:
             return None
-        winner, _deciding, _ranking = self._rank_candidates(survivors, kind="unsaid_thing")
+        winner, _deciding, _ranking = self._rank_candidates(survivors, kind="wrong_thing")
+        return self._keep_reading(parser, text, winner, knowledge_path, "wrong_thing")
+
+    def _keep_reading(self, parser, text, winner, knowledge_path, reason):
+        """A ranked winner kept as the statement's reading for this conversation (``chosen_readings``), the turn
+        played with it; None, and nothing kept, when there is no winner or the turn is then not recorded."""
         if winner is None:
             return None
         said = str(text).strip()
@@ -699,8 +798,9 @@ class ReasoningContext:
             self._replay_cache = None
             return None
         result.setdefault("verification", {}).setdefault("checks", []).append({
-            "ok": True, "reason": "unsaid_thing", "thing": winner["label"], "effort": self.effort})
+            "ok": True, "reason": reason, "reading": winner["label"], "effort": self.effort})
         return result
+
 
 
     @staticmethod
@@ -5895,6 +5995,11 @@ class ReasoningContext:
             said, reason = text.strip(), str(exc)
             if (reason in self.UNPLACED | self.CONTRADICTION and keeps and not current.get("query")
                     and not getattr(self, "_rereading", False)):
+                if reason == "missing_initial_quantity" and self._effort_allows(2) and completion is None:
+                    # G7-S experiment 4: the word in the thing slot may not be the thing
+                    wrong = self._read_wrong_thing(parser, text, current, verbs, knowledge_path)
+                    if wrong is not None:
+                        return wrong
                 # G5.4 B: the reader's first reading does not fit the state; its other readings are checked
                 checked = self._check_readings(parser, text, verbs, knowledge_path, first_failure=reason)
                 if checked is not None:
