@@ -174,7 +174,14 @@ checks; a true tie asks, no survivor holds. The trace records the ranking and
 the check that decided it, so "why" can say why this reading won. This replaces
 "several → ask" in A1.
 
-Self-repair that persists (roadmap R-A) stays frozen until the gate.
+**A5. Level 3 is turn-local deliberation (owner, 2026-09-29).** No persistent
+learning, no permanent repair, no external research, no OpenProblem promotion:
+whatever a repair step tried is gone when the turn ends, except its record in
+the trace. A test pins it: after a level-3 turn, the packs, the graphs and the
+declarations are byte-identical, and research was not called.
+
+Self-repair that persists (roadmap R-A, the fixed timeline's M2) stays frozen
+until the gate.
 
 ## Both
 
