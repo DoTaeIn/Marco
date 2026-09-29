@@ -342,3 +342,11 @@ def test_a_description_said_with_one_holder_answers_for_it():
     rows = _play("english", ["My brother {x} has 5 {p}.", "His friend {y} has 3 {p}.", "How many does her brother have now?"],
                  3, **dict(EN_WORDS, x="Lena", y="Omar"))
     assert rows[-1]["status"] == "answered" and "5" in rows[-1]["answer"]
+
+
+def test_the_reply_to_a_which_person_ask_keeps_the_thing_asked_about():
+    frames = ["{x}은 {p}이 3개 있어.", "{y}는 {p}이 5개 있어.", "{y}는 컵이 2개 있어.", "{x}과 {y}는 {p}이 몇 개야?",
+              "그 분은 이제 몇 개예요?", "{y} 씨요."]
+    rows = _play("한국어", frames, 3, **dict(KO_WORDS, x="미경", y="수아"))
+    assert rows[-2]["meaning"]["reason"] == "which_referent"
+    assert rows[-1]["status"] == "answered" and "5" in rows[-1]["answer"]
