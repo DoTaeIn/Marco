@@ -5258,6 +5258,7 @@
    "comparison": {
     "prefixes": ["between", "among", "of"],
    "than": ["than"],
+   "pair_who": ["which of the two", "which of them", "who of the two", "which one of the two", "which of those two"],
    "who": [
      "who",
      "which of us",
