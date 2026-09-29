@@ -6053,11 +6053,7 @@ class ReasoningContext:
         if asked is not None and asked[1] == len(self.observations):
             self.bind_hints = [hint for hint in getattr(self, "bind_hints", []) if hint[0] != asked[1]] + [asked[::-1]]
         verbs = self._verbs_for(parser, self.observations + [text])
-        # a question that points at or describes a holder and names no holder and no thing (effort 2)
-        which = self._which_person(parser, text, knowledge_path) if not self._in_name_reply else None
-        if which is not None and "query" not in which:
-            return which
-        current = which if which is not None else self._read_source(parser, text, events=True, verbs=verbs)
+        current = self._read_source(parser, text, events=True, verbs=verbs)
         if current is not None and current.get("facts") and all(f.get("unnamed") for f in current["facts"]) \
                 and not any(current.get(key) for key in ("query", "사건", "정의", "원인", "조건")):
             # An amount said with no holder at all (18 of them, 3명이야) is the count not known yet that
@@ -6270,6 +6266,9 @@ class ReasoningContext:
             # a question the reader left unread is grounded against the conversation before it is kept as
             # unread (G7-Q partial readings, effort 2): its open slots from the state, a clear winner only
             grounded = self._ground_question(parser, text, knowledge_path)
+            if grounded is None and not self._in_name_reply:
+                # an unread question that points at or describes a holder and names no holder and no thing
+                grounded = self._which_person(parser, text, knowledge_path)
             if grounded is not None and "query" not in grounded:
                 return grounded
             current = grounded
@@ -6601,6 +6600,13 @@ class ReasoningContext:
             if other is not None:
                 return self._answer_other_than(parser, other, facts, knowledge_path)
             풀린물음, 가리킴 = self._resolve_pointers(parser, current["query"], facts)
+            if 가리킴 is not None and not 가리킴["후보"] and self._effort_allows(2) and not self._in_name_reply:
+                # a pointer that finds no holder: the holders of the conversation's thing, as a description
+                which = self._which_person(parser, text, knowledge_path)
+                if which is not None and "query" not in which:
+                    return which
+                if which is not None:
+                    풀린물음, 가리킴 = which["query"], None
             if 가리킴 is not None:
                 self.held_question = text
                 if 가리킴["후보"]:
@@ -6750,6 +6756,16 @@ class ReasoningContext:
                 if which is not None:
                     return self._ask_which(parser, text, which, result)
             outcome = parser.answer({"facts": 답사실, "query": 풀린물음}) if 풀린물음 else None
+            if (outcome is None and 풀린물음 and self._effort_allows(2) and not self._in_name_reply
+                    and not (self.unread or self.unread_guard)):
+                # a holder the state does not count, said as a description (the tall one, her brother): the
+                # holders of the conversation's thing
+                which = self._which_person(parser, text, knowledge_path)
+                if which is not None and "query" not in which:
+                    return which
+                if which is not None:
+                    풀린물음 = which["query"]
+                    outcome = parser.answer({"facts": 답사실, "query": 풀린물음})
             if outcome is None and 풀린물음:
                 빠진전제 = self._missing_premise(parser, 풀린물음, 답사실)
                 if 빠진전제 is None:
