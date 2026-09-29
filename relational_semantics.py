@@ -641,6 +641,7 @@ class RelationalParser:
                 if note is None:
                     continue
                 notes.append(note)
+            unmoved, unmoved_notes = current, list(notes)
             for structural in (self._front_object, self._scramble, self._swap_roles):
                 changed, note = structural(current)
                 if note is not None:
@@ -648,6 +649,11 @@ class RelationalParser:
                     notes.append(note)
             if notes and current and current != literal_in and all(current != seen for seen, _n in out):
                 out.append((current, notes))
+            # A word order put back is one more candidate after the words as said, never in place of them: a
+            # declared particle variant (한테는 -> 에게는) may read in the order it was said (G7-S experiment 3)
+            if unmoved_notes and unmoved != current and unmoved != literal_in \
+                    and all(unmoved != seen for seen, _n in out):
+                out.append((unmoved, unmoved_notes))
         return out
 
     def _is_definition(self, literal):

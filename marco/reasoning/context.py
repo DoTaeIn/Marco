@@ -648,10 +648,12 @@ class ReasoningContext:
 
         def holds(holder):
             return [key.split()[-1] for key in keys if key.startswith(holder + " ")]
-        # a key is a holder and a thing; a subject of one word, or one that is the holder of a counted key,
-        # names no thing
+        # a key is a holder and a thing; a subject of one word, one that is the holder of a counted key, or one
+        # the reader read from an example that leaves the thing out (elided: resolve), names no thing
+        elided = {f["triple"][0] for f in current.get("facts", []) if isinstance(f.get("triple"), list)
+                  and f.get("resolve")}
         thingless = [s for s in dict.fromkeys(t[0] for t in rows)
-                     if s not in keys and (len(s.split()) == 1 or holds(s))]
+                     if s not in keys and (len(s.split()) == 1 or holds(s) or s in elided)]
         if not thingless or all(len(holds(s)) == 1 for s in thingless):
             return None             # every holder has one thing: the key's leading words already find it
         previous = self._read_source(parser, self.observations[-1], events=True, verbs=verbs) or {}

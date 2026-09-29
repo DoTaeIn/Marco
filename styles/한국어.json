@@ -2642,6 +2642,31 @@
     }
    },
    {
+    "text": "하루에게는 18개가 있다",
+    "inflection": {
+     "stem": "있",
+     "kind": "existential",
+     "tense": "present",
+     "ending": "plain",
+     "tenses": [
+      "present",
+      "past"
+     ]
+    },
+    "slots": {
+     "owner": "하루",
+     "n": "18"
+    },
+    "meaning": {
+     "triple": [
+      "$owner",
+      "count",
+      "$n"
+     ],
+     "elided": true
+    }
+   },
+   {
     "text": "하루가 모래에게 구슬의 절반을 줬다",
     "inflection": {
      "stem": "주",

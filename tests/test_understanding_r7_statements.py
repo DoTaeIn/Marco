@@ -187,3 +187,36 @@ def test_an_unsaid_thing_is_refused_below_effort_2(n, effort):
 def test_an_unsaid_thing_is_chosen_by_state_or_held(n):
     language, dialogue = UNSAID_HELD[n]
     assert play(language, 3, dialogue) == []
+
+
+# Experiment 3: a Korean holding said with the thing left out and the count with its subject particle
+# (X에게는 N개가 있어, X한테는 N개가 있습니다): one declared form (하루에게는 18개가 있다, elided) reads it as the
+# holder's count of a thing not said; the thing comes from the conversation (experiment 2's candidates) from
+# effort 2. The seven-step location question (그 사람은 어디 있어?) still reads as a location question.
+UNSAID_HOLDING = [
+    [("용호한테 살구가 14개 있습니다.", "rec"), ("천 차장님에게는 열 개가 있습니다.", "rec"),
+     ("우 차장님한테는 여덟 개가 있습니다.", "rec"), ("천 차장님이 감 소장님한테 살구 다섯 개를 주었습니다.", "rec"),
+     ("천 차장님은 살구가 몇 개 있습니까?", 5), ("우 차장님은 살구가 몇 개 있습니까?", 8)],
+    [("누리는 단추가 아홉 개 있어.", "rec"), ("누리 동생 다올에게는 세 개가 있어.", "rec"),
+     ("다올은 단추가 몇 개 있어?", 3), ("누리가 다올에게 단추를 두 개 줬어.", "rec"), ("다올은 단추가 몇 개 있어?", 5)],
+]
+
+
+@pytest.mark.parametrize("n", range(len(UNSAID_HOLDING)))
+@pytest.mark.parametrize("effort", [2, 3])
+def test_a_holding_with_the_thing_left_out_is_read(n, effort):
+    assert play("한국어", effort, UNSAID_HOLDING[n]) == []
+
+
+def test_a_holding_with_the_thing_left_out_at_effort_0_answers_nothing_wrong():
+    assert play("한국어", 0, [("용호한테 살구가 14개 있습니다.", "rec"), ("천 차장님에게는 열 개가 있습니다.", "rec"),
+                            ("천 차장님이 감 소장님한테 살구 다섯 개를 주었습니다.", "hold"),
+                            ("천 차장님은 살구가 몇 개 있습니까?", "hold")]) == []
+
+
+def test_the_location_question_is_still_a_location_question():
+    current = context("한국어", 3)
+    for line in ("민수는 사과가 두 개 있어.", "민수는 부엌에 있어."):
+        current.turn(line, KG)
+    result = current.turn("그 사람은 어디 있어?", KG)
+    assert result["status"] == "answered" and "부엌" in str(result["answer"])
