@@ -3766,8 +3766,10 @@ class ReasoningContext:
 
         def same_thing(a, b):
             a, b = fold(a), fold(b)
-            return a == b or (bool(a) and fold(declared_plural(a, declared) or "") == b) or \
-                (bool(b) and fold(declared_plural(b, declared) or "") == a)
+            if not a or not b:
+                return False            # a key with no thing names no thing
+            plural_a, plural_b = fold(declared_plural(a, declared) or ""), fold(declared_plural(b, declared) or "")
+            return a == b or (bool(plural_a) and plural_a == b) or (bool(plural_b) and plural_b == a)
 
         def holder_of(subject):
             return next((k for k in sorted(keys, key=lambda k: -len(k.split())) if subject == k
