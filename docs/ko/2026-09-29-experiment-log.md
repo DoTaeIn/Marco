@@ -102,3 +102,16 @@ on each: it fixed a symptom the exam does not have.
 Owner's decision after the diagnosis (2026-09-29): the statements chat adds the
 wrong-thing candidate; the questions chat returns the recognised structure as a
 partial candidate instead of None.
+
+## Experiment 5: the wrong-thing candidate (with the Korean holding that names no thing)
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 5 | (exam, diagnosed) a statement read completely with a word in the thing slot that is not the thing; the state refuses it and no other candidate is built | 52f3609 with daa4c8a, merged 89cd4b0 | chat 35 min; plan manager 8 min | chat 85 min, of which its full suite 63 min at load average about 60; reported 17:00, merged 17:01, scored 17:03 | suite 2,312 passed, the 3 known failures, 344 s run alone | gate **67/108** unchanged, 0 wrong, 0 violations; **statements recorded 138 → 142 of 150**; refused as invalid 5 → 2; ambiguous 8 → 7 of 12 (`experiment-05.json`) |
+
+The four statements are recorded and the questions after them stay held: the
+question reader returns nothing for them, or they wait on a correction or a
+which-person turn. The two transfers still refused are the two cases the patch
+excludes on purpose (the amount "one" before a word without a plural form; a
+plural word that is not the thing): taking out a thing that was said would
+answer about another thing.
