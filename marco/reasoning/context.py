@@ -797,7 +797,8 @@ class ReasoningContext:
         그중 4개로 전시 작품을 만들었습니다., 한수가 그중 하나를 바자회 준비에 썼습니다.) reads as nothing, as an event
         of a verb not known, or only through a repair that misplaces a word. The purpose or product phrase may
         be any words. Candidates: the statement as read, and the statement read without one to three
-        contiguous words that are no number and no word of a holder or thing this conversation counts; a
+        contiguous words that are no number, no word a repair may not change (a negation, a scope word, a
+        counter) and no word of a holder or thing this conversation counts; a
         candidate must read as a use-up only (every amount it moves goes away) by a holder the conversation
         counts, and takes a thing it leaves out from the conversation (``_unsaid_thing_candidates``) or from the
         holder's one key. Each is checked against the conversation (``_reading_failure``), ranked
@@ -823,8 +824,11 @@ class ReasoningContext:
             tail, words = words[-1][-1], words[:-1] + [words[-1][:-1]]
 
         def protected(word):
+            # never a word the reader's repairs may not change either (a negation, a scope word, a numeral, a
+            # counter: 안 먹었어 is not 먹었어), nor a word of a holder or thing of the conversation
             bare = word.strip(",").lower()
             return (any(char.isdigit() for char in bare) or parse_numeral(bare, numerals) is not None
+                    or parser._protected_kind(word) is not None
                     or any(bare.startswith(k) for k in known if len(k) > 1))
 
         def removing(row):
