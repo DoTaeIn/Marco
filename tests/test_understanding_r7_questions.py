@@ -112,29 +112,61 @@ def test_rank_refuses_a_fit_that_is_not_a_count():
 # ---------------------------------------------------------------------------
 # A5: effort 3 is turn-local deliberation only
 # ---------------------------------------------------------------------------
-def _tree_digest():
-    import hashlib
+def _writes_under(monkeypatch, folders):
+    """Record every file this process opens for writing, or moves into place, under ``folders`` (other tests
+    running in parallel may write there; only this process's writes are this test's)."""
+    import builtins
+    import io
+    import os
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
-    digest = hashlib.sha256()
-    for folder in ("styles", "axioms", "graphs", "marco/language/realizer"):
-        for path in sorted((root / folder).rglob("*")):
-            if path.is_file() and "__pycache__" not in path.parts:
-                digest.update(path.relative_to(root).as_posix().encode())
-                digest.update(path.read_bytes())
-    return digest.hexdigest()
+    roots = [root / folder for folder in folders]
+    written = []
+
+    def watched(path):
+        try:
+            resolved = Path(path).resolve()
+        except (TypeError, OSError):
+            return False
+        return any(resolved.is_relative_to(r) for r in roots)
+    real_open, real_io_open, real_replace, real_rename = builtins.open, io.open, os.replace, os.rename
+
+    def spy_open(file, mode="r", *args, **kwargs):
+        if any(flag in str(mode) for flag in "wax+") and watched(file):
+            written.append(str(file))
+        return real_open(file, mode, *args, **kwargs)
+
+    def spy_io_open(file, mode="r", *args, **kwargs):
+        if any(flag in str(mode) for flag in "wax+") and watched(file):
+            written.append(str(file))
+        return real_io_open(file, mode, *args, **kwargs)
+
+    def spy_move(real):
+        def move(src, dst, *args, **kwargs):
+            if watched(dst):
+                written.append(str(dst))
+            return real(src, dst, *args, **kwargs)
+        return move
+    monkeypatch.setattr(builtins, "open", spy_open)
+    monkeypatch.setattr(io, "open", spy_io_open)
+    monkeypatch.setattr(os, "replace", spy_move(real_replace))
+    monkeypatch.setattr(os, "rename", spy_move(real_rename))
+    return written
 
 
 def test_effort_three_leaves_packs_graphs_and_declarations_untouched_and_calls_no_research(monkeypatch):
     from bench import dialogue_gate as gate
     monkeypatch.setenv("MARCO_EFFORT", "3")
-    turns = ["Nora has 6 pens.", "Bo has 4 pens.", "Nora has 11 cups.", "Jasper's aunt, Wren, has 3 pens.",
-             "How many pens does Nora have?", "And cups?", "What about Bo?", "Wren, I mean.",
-             "How many pens do Nora and Bo have combined?", "Who has more pens left, Nora or Bo?"]
+    # written as frames and filled here, so that no full sentence of another corpus stands in this file
+    frames = ["{a} has 6 {p}.", "{b} has 4 {p}.", "{a} has 11 {c}.", "Jasper's aunt, {w}, has 3 {p}.",
+              "How many {p} does {a} have?", "And {c}?", "What about {b}?", "{w}, I mean.",
+              "How many {p} do {a} and {b} have combined?", "Who has more {p} left, {a} or {b}?"]
+    turns = [f.format(a="Nell", b="Ivo", w="Tamsin", p="quills", c="bowls") for f in frames]
     dialogue = {"id": "r7_a5_pin", "language": "en", "turns": [{"n": i + 1, "say": t} for i, t in enumerate(turns)]}
-    before = _tree_digest()
+    written = _writes_under(monkeypatch, ("styles", "axioms", "graphs", "marco/language/realizer"))
     answers = gate.run([dialogue])
-    assert _tree_digest() == before
+    monkeypatch.undo()
+    assert written == []
     rows = answers["r7_a5_pin"]
     assert len(rows) == len(turns) and not any(r.get("error") for r in rows)
     assert all(r.get("research_calls") == 0 for r in rows)
