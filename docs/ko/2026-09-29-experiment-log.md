@@ -52,3 +52,43 @@ the thing.
 Next: the seven regressions (questions chat, first); the slot after the number
 as candidates (statements chat); correction turns the reader does not read
 (questions chat, after the regressions).
+
+## Diagnosis of the grounding path (owner's request, 2026-09-29, main dc4d103)
+
+No code changed. Every exam turn was played with the reader's output, the
+conversation's state just before the turn, the candidate steps run and the hold
+reason recorded; structure and counts only.
+
+**The conversation's state (the overlay) works.** Of 210 gold facts a turn needed
+where every earlier statement had been read, 205 were in the state with the right
+value; the other 5 had the holder counted, not with that thing. 0 uses of
+withdrawn evidence. The state is a list of the sentences said, replayed into facts
+keyed by words (holder words + thing); there is no canonical identity. 25 matching
+keys keep 1 to 3 extra words and 7 facts have several keys, and that is the root
+of only 2 failures.
+
+**The break is the reader → grounding bridge.** 84 exam turns are not right:
+
+| Class | Turns | Of the 39 held answerable |
+| --- | --- | --- |
+| reader_did_not_emit_partial_candidate (the reader returns nothing; no candidate is built; the state is never asked) | 36 | 11 |
+| grounding_candidate_not_built (a complete reading with a wrong word in the thing slot; the state refuses it; no other candidate) | 5 | 0 |
+| overlay_lookup_failure | 7 | 2 |
+| identity_resolution_failure | 2 | 1 |
+| other: a tie held where the exam expects one answer | 2 | 2 |
+| overlay_write_failure | 0 | 0 |
+| state_validation_rejected_correct_candidate | 0 | 0 |
+| cascade, held behind one of the above | 32 | 23 |
+
+The 23 cascaded answerable turns wait on: a statement with no candidate built 9,
+a statement the reader returned nothing for 4, a correction the reader returned
+nothing for 6, a lookup failure 2, an identity failure 1, unexplained 1. So the
+bridge accounts for 30 of the 39, lookup 4, identity 2, ties 2, unexplained 1.
+In all 11 unread answerable questions the state already held every needed fact.
+
+Smallest code paths: `marco/reasoning/context.py` `_read_unsaid_thing` (the test
+that skips a subject that already carries a thing), and `_turn` where a reading of
+None goes to `_check_readings` and then to the unread store, with
+`RelationalParser.parse(partial=True)` returning None instead of what it did
+recognise. Experiment 3's patch was reached on the 5 statements and returned None
+on each: it fixed a symptom the exam does not have.
