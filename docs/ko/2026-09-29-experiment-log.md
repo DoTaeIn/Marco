@@ -229,3 +229,20 @@ and consults no graph; there is no canonical identity for a holder or a thing.
 | # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
 | --- | --- | --- | --- | --- | --- | --- |
 | 16 | experiment 15 re-said a statement kept unread with the corrected amount and recorded it as a new event | 97cb1b0, merged 55849b6 | chat 15 min; plan manager 8 min | chat 10 min on runs; reported 21:59, merged 22:00, scored 22:05 | chat's full suite 2,352 passed, 1 known failure (gate files left out); gate files and reading tests at merge: 560 passed | **90/108 (83.3%)**: the correction is held, not wrong, and the two English questions that rested on it are held again; Korean 44 of 54, English 46 of 54; **0 wrong on the whole exam**, 0 violations (`experiment-16.json`) |
+
+## Experiment 17, and the size of an identity change
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 17 | a one-word follow-up named only by a statement kept unread ties between holder and thing | 62ac620, merged 5166f31 | chat 10 min; plan manager 8 min | chat 10 min on runs; reported 22:19, merged 22:20, scored 22:25 | chat's full suite 2,353 passed, 1 known failure (gate files left out); gate files and reading tests at merge: 561 passed | **90/108, no turn changed**: the exam's tie turn is still asked (`experiment-17.json`) |
+
+**Where a holder or a thing is compared by the words of a key** (the questions
+chat's read-only count at 62ac620, a lower bound): 119 lines in 44 functions of
+`marco/reasoning/context.py`, and 9 more places in `relational_semantics.py` and
+`marco/reasoning/inference.py`, where the keys are made by joining name words and
+resolved by their leading word. By kind: splitting a key into holder and thing
+(`_holder_keys` and every helper built on it); matching a said word to a key;
+pointers and salience by leading word or ending; corrections and re-keying;
+the statement-side candidates. About a third of the places were written in round
+7. The first two kinds would become one lookup by identity; the pointer and
+correction kinds carry behaviour pinned by the tests of rounds 2 and 3.
