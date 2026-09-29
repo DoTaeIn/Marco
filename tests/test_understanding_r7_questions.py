@@ -72,3 +72,30 @@ def test_seven_step_replies_at_effort_are_mains(monkeypatch, language, effort):
     report = run(language)
     assert report["passed"] == report["total"] == 7
     assert [reply["answer"] for reply in report["replies"]] == SEVEN_STEP_MAIN[language]
+
+
+# ---------------------------------------------------------------------------
+# ranking: the declared order, a clear win answers, a tie asks, none holds (amendment A4)
+# ---------------------------------------------------------------------------
+def test_rank_candidates_decides_by_the_first_check_that_differs():
+    from marco.reasoning.context import ReasoningContext
+    context = ReasoningContext(effort=3)
+    a = {"label": "a", "fit": {"state": 1, "reasoning": 0, "grammar": 5, "cost": 3}}
+    b = {"label": "b", "fit": {"state": 1, "reasoning": 1, "grammar": 0, "cost": 9}}
+    winner, deciding, ranking = context._rank_candidates([a, b])
+    assert winner is b and deciding == "reasoning" and [c["label"] for c in ranking] == ["b", "a"]
+    cheap = {"label": "c", "fit": {"state": 1, "reasoning": 1, "grammar": 0, "cost": 1}}
+    assert context._rank_candidates([b, cheap])[:2] == (cheap, "cost")
+    assert context._rank_candidates([b, dict(b, label="b2")])[:2] == (None, "tie")
+    assert context._rank_candidates([a])[:2] == (a, "only")
+    assert context._rank_candidates([]) == (None, None, [])
+    assert [r["decided_by"] for r in context._trace_rankings] == ["reasoning", "cost", "tie", "only", None]
+    assert context._trace_rankings[0]["effort"] == 3 and context._trace_rankings[0]["winner"] == "b"
+
+
+def test_rank_treats_a_missing_check_as_zero_and_bools_as_fits():
+    from marco.reasoning.context import ReasoningContext
+    context = ReasoningContext()
+    fits = {"label": "fits", "fit": {"state": True}}
+    bare = {"label": "bare", "fit": {}}
+    assert context._rank_candidates([bare, fits])[:2] == (fits, "state")
