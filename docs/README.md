@@ -292,6 +292,8 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [experiment-01.json](ko/dialogue-gate-2026-09-22/experiment-01.json) | Experiment 1, `2ccd19c`: 63 of 108, no turn changed |
 | [experiment-02.json](ko/dialogue-gate-2026-09-22/experiment-02.json) | Experiment 2, `095b434`: 69 of 108, 0 wrong, 0 violations |
 | [experiment-03.json](ko/dialogue-gate-2026-09-22/experiment-03.json) | Experiment 3, `dc4d103`: 69 of 108, gate unchanged |
+| [experiment-04.json](ko/dialogue-gate-2026-09-22/experiment-04.json) | Experiment 4, `a18c617`: 67 of 108, 0 wrong, 0 violations, after the regression fixes |
+| [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
 ### Frozen reasoning gate (`ko/reasoning-gate-2026-09-24/`)
@@ -309,6 +311,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [after-w5.json](ko/reasoning-gate-2026-09-24/after-w5.json) | After realizer round 5: unchanged, 0 wrong |
 | [round5.json](ko/reasoning-gate-2026-09-24/round5.json) | Round 5: 108 of 111 problems, 148 of 151 questions, 0 wrong |
 | [experiment-02.json](ko/reasoning-gate-2026-09-24/experiment-02.json) | Reasoning at experiment 2, `095b434` |
+| [experiment-04.json](ko/reasoning-gate-2026-09-24/experiment-04.json) | Reasoning at experiment 4, `a18c617`: 110 of 113 problems, 0 wrong |
 
 ### Model comparison (`ko/model-comparison-2026-09-24/`)
 

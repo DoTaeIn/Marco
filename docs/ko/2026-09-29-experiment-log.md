@@ -92,3 +92,13 @@ None goes to `_check_readings` and then to the unread store, with
 `RelationalParser.parse(partial=True)` returning None instead of what it did
 recognise. Experiment 3's patch was reached on the 5 statements and returned None
 on each: it fixed a symptom the exam does not have.
+
+## Experiment 4: the regressions of experiment 2
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 4 | the question patch read a scope word over one holder as a modifier, declared a probe word, put a dev4 sentence in the grid, let a follow-up name nothing of the conversation, and its pin test depended on other tests' writes | 675c1f5, merged a18c617 | chat 40 min; plan manager 10 min | chat 12 min on runs; reported about 14:57, merged 14:58, exam scored 15:01; **the suite took 52 min instead of 6** and the composition and reasoning gates an hour, because two chats and the plan manager ran tests on one machine (load average 10 to 15) | suite 2,270 passed, the 3 known failures; gate test files 35 passed | **67/108** (−2: two Korean turns back to held, the cost of the restored safety hold), 0 wrong, 0 violations; composition 340/340; reasoning 110/113, 0 wrong (`experiment-04.json` in both folders) |
+
+Owner's decision after the diagnosis (2026-09-29): the statements chat adds the
+wrong-thing candidate; the questions chat returns the recognised structure as a
+partial candidate instead of None.
