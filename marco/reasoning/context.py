@@ -3413,8 +3413,9 @@ class ReasoningContext:
             # the declared contrast found no event carrying its old amount: the correction frame may (the one,
             # a direction said the other way round)
             framed = self._correction_frame(parser, text, knowledge_path)
-            if framed is not None and framed.get("status") == "observed":
-                return framed
+            if framed is not None and (framed.get("status") == "observed"
+                                       or (framed.get("meaning") or {}).get("reason") == "unread_event"):
+                return framed           # corrected, or held naming the unread statement it corrects
         if not candidates:
             return reply("reference_no_event", 말=said)
 
@@ -3789,17 +3790,17 @@ class ReasoningContext:
         if winner is None:
             return None
         if winner["slot"] == "unread_amount":
+            # the statement corrected was never recorded: recording it now would add an event at this turn, which a
+            # correction never does; the correction is held naming the statement it waits on (the statement as it
+            # would read corrected is kept with it, for the trace)
             entry = winner["entry"]
-            kept_unread, kept_guard = list(self.unread), list(self.unread_guard)
-            self.unread = [e for e in self.unread if e is not entry]
-            self.unread_guard = [e for e in self.unread_guard if e is not entry]
-            result = self._turn(winner["rewritten"], knowledge_path)
-            if result is None or result.get("status") != "observed":
-                self.unread, self.unread_guard = kept_unread, kept_guard
-                return None
-            meaning = dict(result.get("meaning") or {})
-            return {**result, "meaning": {**meaning, "correction": {"said": said, "of": entry["text"],
-                                                                    "old": winner["old"], "new": winner["new"]}}}
+            entry.setdefault("corrections", []).append({"said": said, "old": winner["old"], "new": winner["new"],
+                                                         "reads_as": winner["rewritten"]})
+            return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
+                    "answer": replies["unread_event"].format(**{"말": entry["text"]}),
+                    "meaning": {"act": "hold", "reason": "unread_event", "said": entry["text"]},
+                    "verification": self._verification(knowledge_path, [{
+                        "ok": False, "reason": "correction_of_unread_statement"}])}
         if winner["slot"] == "amount":
             return self._correct_by_reference(parser, {"verb": None, "old": winner["old"], "new": winner["new"],
                                                        "evidence": {"text": said, "contrast": "frame"}},
