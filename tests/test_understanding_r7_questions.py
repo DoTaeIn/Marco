@@ -316,3 +316,29 @@ def test_a_direction_swap_two_turns_after_its_transfer_is_corrected(language, co
     assert rows[5]["status"] == "answered" and "2" in rows[5]["answer"]
     main = _play(language, start + [correction, ask], 0, **words)
     assert main[5]["status"] != "answered"
+
+
+@pytest.mark.parametrize("language,frames,names,value", [
+    ("english", ["{x} has 5 {p}.", "{y} has 3 {p}.", "How many does the tall one have now?", "{y}, I guess."],
+     ("Lena", "Omar"), "3"),
+    ("english", ["My brother {x} has 5 {p}.", "His friend {y} has 3 {p}.", "How many does that guy have now?",
+                 "{y}, the friend."], ("Lena", "Omar"), "3"),
+    ("한국어", ["제 친구 {x}은 {p}이 3개 있어.", "제 동생 {y}는 {p}이 5개 있어.", "그 분은 이제 몇 개예요?", "{y} 씨요."],
+     ("미경", "수아"), "5"),
+    ("한국어", ["제 친구 {x}은 {p}이 3개 있어.", "제 동생 {y}는 {p}이 5개 있어.", "그 사람은 지금 몇 개야?",
+               "{y} 말이에요 아마."], ("미경", "수아"), "5"),
+])
+def test_a_pointer_or_description_with_no_thing_asks_among_the_holders_of_the_conversations_thing(
+        language, frames, names, value):
+    words = dict(EN_WORDS if language == "english" else KO_WORDS, x=names[0], y=names[1])
+    rows = _play(language, frames, 3, **words)
+    asked, reply = rows[-2], rows[-1]
+    assert asked["status"] != "answered" and asked["meaning"]["reason"] == "which_referent"
+    assert all(name in asked["answer"] for name in names)
+    assert reply["status"] == "answered" and value in reply["answer"]
+
+
+def test_a_description_said_with_one_holder_answers_for_it():
+    rows = _play("english", ["My brother {x} has 5 {p}.", "His friend {y} has 3 {p}.", "How many does her brother have now?"],
+                 3, **dict(EN_WORDS, x="Lena", y="Omar"))
+    assert rows[-1]["status"] == "answered" and "5" in rows[-1]["answer"]

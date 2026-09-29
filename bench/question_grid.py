@@ -500,6 +500,23 @@ def cells(code):
     out.append(("count|none|relation|which_person:reply", {"op": "count", "mod": "none", "form": "relation",
                                                             "follow": "which_person"},
                 state + statements + [asked, reply], {"kind": "value", "holder": None, "item": "pen", "value": 5}))
+    # which person, no thing and no name: a pointer or a description over two holders of the thing just asked
+    kite = "kites" if code == "en" else "연"
+    thing_state = (["%s has 5 %s." % (x, kite), "%s has 3 %s." % (y, kite), "How many %s does %s have?" % (kite, x)]
+                   if code == "en" else
+                   ["%s %s 5개 있어." % (_p(x, "은/는"), _p(kite, "이/가")), "%s %s 3개 있어." % (_p(y, "은/는"), _p(kite, "이/가")),
+                    "%s %s 몇 개야?" % (_p(x, "은/는"), _p(kite, "이/가"))])
+    pointing = (["How many does the tall one have now?", "How many does that person have now?"] if code == "en"
+                else ["그 분은 이제 몇 개예요?", "그 사람은 지금 몇 개야?"])
+    replies = (["%s, I guess." % y] if code == "en" else ["%s 씨요." % y])
+    for said in pointing:
+        out.append(("count|none|relation|which_person:%s" % said, {"op": "count", "mod": "none", "form": "relation",
+                                                                    "follow": "which_person"},
+                    state + thing_state + [said], {"kind": "ask_named", "names": [x, y]}))
+        out.append(("count|none|relation|which_person:%s/%s" % (said, replies[0]),
+                    {"op": "count", "mod": "none", "form": "relation", "follow": "which_person"},
+                    state + thing_state + [said, replies[0]], {"kind": "value", "holder": None, "item": "pen",
+                                                              "value": 3}))
     # corrections: a transfer, then a correction of it (its amount, or its direction), then the receiver's count
     words = {"en": {"a": EN["holders"]["name"]["subj"], "b": EN["holders"]["other"]["subj"], "n": "three", "o": "two",
                     "t": EN["items"]["pen"]},
