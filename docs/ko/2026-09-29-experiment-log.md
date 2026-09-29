@@ -160,3 +160,14 @@ three describe the person in other words. The held ones are held as `not_stated`
 (English, a description without a pronoun) or `no_referent` (a pronoun). The turn
 after is the person's reply, a candidate's name alone or with one or two words,
 and it is held when the question before it was held.
+
+## Experiment 11
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 11 | (guessed from the token kinds of the exam's corrections) "the one" read as the amount 1; a correction of two sentences refused; the swap of giver and receiver | 90d6e61, merged 030d04c | chat 30 min; plan manager 8 min | chat 15 min on runs; reported 18:57, merged 18:58, scored 19:03 | chat's full suite on the merged tree 2,328 passed, 1 known failure (gate files left out); gate files and reading tests at merge: 406 passed | **82/108, no turn changed its bucket** (`experiment-11.json`) |
+
+Two patches in a row were built from invented sentences and changed no exam turn.
+From experiment 12 on the chats get, for each failing exam turn, the trace of the
+steps that ran and what each returned, with the token kinds of the partial
+reading: the place where the exam turn gives up, not a guess at its words.
