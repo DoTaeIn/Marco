@@ -207,7 +207,7 @@ def test_template_count_stays_constant_and_empty_component_lacks_new_forms():
     # places first, leaving things said count first.
     # 106 -> 109 (round 5, batch 6): a place count said thing and amount first (구슬이 18개가 상자에), a count
     # not known of a place with 에, the thing as topic without its amount.
-    assert len(parser.templates) == len(parser.data["examples"]) == 116
+    assert len(parser.templates) == len(parser.data["examples"]) == 117   # round 7 (G7-S experiment 3): the holding with the counted noun left out
     pack = copy.deepcopy(load_reasoning_language())
     pack["inflection"] = {}
     old = RelationalParser(language_pack=pack)
