@@ -304,6 +304,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [experiment-13.json](ko/dialogue-gate-2026-09-22/experiment-13.json) | Experiment 13, `5712ebf`: 86 of 108, Korean 41 of 54 |
 | [experiment-14.json](ko/dialogue-gate-2026-09-22/experiment-14.json) | Experiment 14, `4e78fa0`: 88 of 108, 0 wrong, 0 violations |
 | [experiment-15.json](ko/dialogue-gate-2026-09-22/experiment-15.json) | Experiment 15, `cca6ca4`: 92 of 108, one correction scored wrong (not pushed until fixed) |
+| [experiment-16.json](ko/dialogue-gate-2026-09-22/experiment-16.json) | Experiment 16, `55849b6`: 90 of 108, 0 wrong on the whole exam |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
