@@ -5,6 +5,7 @@ never become facts. Model changes reparse source text before using old evidence.
 """
 from copy import deepcopy
 import json
+import os
 import re
 import uuid
 
@@ -153,7 +154,34 @@ class ReasoningContext:
     CONTRADICTION = {"invalid_quantity_result", "invalid_quantity_delta",
                      "invalid_initial_quantity"}
 
-    def __init__(self, max_turns=128, *, model=None, companions=(), language=None):
+    # How far the candidate search goes when a turn does not read or a state check refuses it (goal G7,
+    # amendment A2): 0 the first reading only; 1 the readings the reader gives; 2 plus slot and referent
+    # candidates from the conversation; 3 plus one repair step and a retry. The checks are the same at every
+    # level. Set per context, else by the environment (MARCO_EFFORT), else the highest.
+    EFFORT_LEVELS = (0, 1, 2, 3)
+
+    @staticmethod
+    def _declared_effort(effort=None):
+        if effort is None:
+            effort = os.environ.get("MARCO_EFFORT", "").strip() or ReasoningContext.EFFORT_LEVELS[-1]
+        effort = int(effort)
+        if effort not in ReasoningContext.EFFORT_LEVELS:
+            raise ValueError("effort must be one of %s" % (ReasoningContext.EFFORT_LEVELS,))
+        return effort
+
+    def _effort_allows(self, level):
+        """Whether this context's effort budget reaches ``level``."""
+        return self.effort >= level
+
+    def _candidate_dropped(self, level, kind, candidate, why):
+        """A candidate the search tried and dropped (``why``), for the trace of this turn."""
+        dropped = getattr(self, "_trace_candidates", None)
+        if dropped is None:
+            dropped = self._trace_candidates = []
+        dropped.append({"level": level, "kind": kind, "candidate": candidate, "why": why})
+
+    def __init__(self, max_turns=128, *, model=None, companions=(), language=None, effort=None):
+        self.effort = self._declared_effort(effort)
         self.observations = []
         self.corrections = []
         # Allocation is independent of parsed role values: correcting a role
@@ -3837,6 +3865,7 @@ class ReasoningContext:
     def turn(self, text, knowledge_path=None):
         """One turn. Its sentence comes from ``marco.language.realize``."""
         self._trace_buffer, self._trace_readings, self._readings_dropped = [], None, []
+        self._trace_candidates = []
         observed_before = len(self.observations)
         result, path = None, "reply"
         try:
@@ -4309,7 +4338,8 @@ class ReasoningContext:
             source={"type": "engine_site", "site": "ReasoningContext.turn", "conversation": self.conversation_id,
                     "sha256": _sha(text)},
             payload={"selected": selected, "candidates": readings or [[selected, None]], "status": status,
-                     "act": act, "observations": len(self.observations)})["event_id"]
+                     "act": act, "observations": len(self.observations), "effort": self.effort,
+                     "candidates_dropped": list(getattr(self, "_trace_candidates", None) or [])})["event_id"]
         parents = []
         for kind, payload in list(getattr(self, "_trace_buffer", None) or []):
             status_of = "failed" if kind in ("rule_blocked", "hypothesis_rejected") else "success"
