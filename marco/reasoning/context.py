@@ -469,6 +469,9 @@ class ReasoningContext:
         from relational_semantics import declared_plural
         numeric = self._numeric_targets(parser)
         number = getattr(parser, "noun_number", None) or {}
+        things = {str(fact["triple"][0]).split()[-1].lower() for fact in facts
+                  if isinstance(fact["triple"][0], str) and len(str(fact["triple"][0]).split()) > 1
+                  and fact["triple"][1] in numeric}
         for change in changes:
             subject = change.get("subject")
             if not isinstance(subject, str) or change.get("predicate") not in numeric:
@@ -479,9 +482,17 @@ class ReasoningContext:
             turn = (change.get("evidence") or {}).get("turn", -1)
             for entry in self.unread_guard + self.unread:
                 said = entry["text"].lower()
-                plurals = {(declared_plural(token, number) or "").lower() for token in re.findall(r"\w+", said)}
+                tokens = re.findall(r"\w+", said)
+                plurals = {(declared_plural(token, number) or "").lower() for token in tokens}
+                named = lambda word: word in said or word in plurals
+                # G7-S: an unread statement that names the holder and counts something, but names no thing
+                # the conversation counts (the thing left to a pronoun: used three of them), may have moved
+                # this holder's count too; what the transfer makes it is not said as known (it was said as
+                # the stale count: a wrong record)
+                unnamed_thing = len(words) > 1 and all(named(word) for word in words[:-1]) and not any(
+                    named(thing) or thing in tokens for thing in things)
                 if (pinned < entry["at"] <= turn and self._counts_something(entry["text"], parser)
-                        and all(word in said or word in plurals for word in words)):
+                        and (all(named(word) for word in words) or unnamed_thing)):
                     return entry["text"]
             # A holder whose count was never said under this key, but an earlier statement counted a key with
             # every word of it (민혁 트럭에 자두 for 민혁 자두, a place phrase kept in the name): that statement may be
