@@ -282,3 +282,35 @@ def test_below_effort_2_the_word_stays_the_thing_and_is_refused(n, effort):
 def test_a_word_that_could_be_the_thing_is_held(n, effort):
     language, dialogue = WRONG_THING_HELD[n]
     assert play(language, effort, dialogue) == []
+
+
+# Experiment 6: the one wrong record. A transfer said after an unread statement by the same holder that names
+# no thing (the thing left to a pronoun: used three of them) was recorded from the count before it, as if the
+# unread statement had moved nothing (Nora has 7 pens, for 4). It is kept and held now, at every effort; an
+# unread statement of another holder or of another thing holds nothing here.
+UNREAD_PRONOUN = [
+    ("english", [("Nora has 9 pens.", "rec"), ("Eli has 2 pens.", "rec"), ("Nora used three of them for a party.", "hold"),
+                 ("Then Nora gave two pens to Eli.", "hold"), ("How many pens does Nora have?", "hold")]),
+    ("english", [("Dr. Lambert has 9 pens.", "rec"), ("Eli has 2 pens.", "rec"),
+                 ("Dr. Lambert used two of them for a craft class.", "hold"),
+                 ("Dr. Lambert gave three pens to Eli.", "hold")]),
+    ("한국어", [("한수는 연필이 9개 있어.", "rec"), ("은호는 연필이 2개 있어.", "rec"),
+              ("한수가 그중 하나를 바자회 준비에 썼습니다.", "hold"), ("한수가 은호에게 연필을 두 개 줬어.", "hold")]),
+]
+UNREAD_OTHER = [
+    ("english", [("Nora has 9 pens.", "rec"), ("Eli has 2 pens.", "rec"), ("Omar used three of them for a party.", "hold"),
+                 ("Then Nora gave two pens to Eli.", "rec")]),
+]
+
+
+@pytest.mark.parametrize("n", range(len(UNREAD_PRONOUN)))
+@pytest.mark.parametrize("effort", [0, 3])
+def test_a_transfer_after_an_unread_statement_of_its_giver_is_held(n, effort):
+    language, dialogue = UNREAD_PRONOUN[n]
+    assert play(language, effort, dialogue) == []
+
+
+@pytest.mark.parametrize("n", range(len(UNREAD_OTHER)))
+def test_an_unread_statement_of_another_holder_holds_no_transfer(n):
+    language, dialogue = UNREAD_OTHER[n]
+    assert play(language, 3, dialogue) == []
