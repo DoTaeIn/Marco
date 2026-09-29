@@ -456,6 +456,35 @@ def cells(code):
                                                                                       "form": form,
                                                                      "follow": kind},
                         state + before + [said], expect_q[1]))
+    # short follow-ups with a word that says nothing, a name never counted (held naming it), and comparisons
+    # of two holders said around the question word
+    a, b = ((EN["holders"]["name"]["subj"], EN["holders"]["other"]["subj"]) if code == "en"
+            else (KO["holders"]["name"]["name"], KO["holders"]["other"]["name"]))
+    pen = lang["items"]["pen"]
+    first = question("count", "none", "name")[0]
+    stranger = "Zed" if code == "en" else "제드"
+    shorts = ({"polite": ["What about %s, please?" % b, "Maybe %s?" % b],
+               "unknown_name": ["%s?" % stranger, "And %s?" % stranger]} if code == "en" else
+              {"polite": ["혹시 %s요?" % _p(b, "은/는"), "%s 좀?" % _p(b, "은/는")],
+               "unknown_name": ["%s?" % _p(stranger, "은/는"), "그럼 %s?" % _p(stranger, "은/는")]})
+    for kind, turns in shorts.items():
+        for said in turns:
+            expect = (question("count", "none", "other")[1] if kind == "polite"
+                      else {"kind": "held_named", "name": stranger})
+            out.append(("count|none|name|%s:%s" % (kind, said), {"op": "count", "mod": "none", "form": "name",
+                                                                "follow": kind}, state + [first, said], expect))
+    compare = ([("more", "Between %s and %s, who has more %s?" % (a, b, pen)),
+                ("more", "%s or %s, who has more %s?" % (a, b, pen)),
+                ("more", "Does %s have more %s than %s?" % (a, pen, b)),
+                ("fewer", "Does %s have fewer %s than %s?" % (b, pen, a))] if code == "en" else
+               [("more", "%s %s보다 %s 더 많아?" % (_p(a, "이/가"), b, _p(pen, "이/가"))),
+                ("fewer", "%s %s보다 %s 더 적어?" % (_p(b, "이/가"), a, _p(pen, "이/가")))])
+    for op, said in compare:
+        winner = "name" if op == "more" else "other"
+        out.append(("%s|none|name|compare:%s" % (op, said), {"op": op, "mod": "none", "form": "name",
+                                                            "follow": "compare"}, state + [said],
+                    {"kind": "winner", "winner": winner, "loser": "other" if winner == "name" else "name",
+                     "item": "pen"}))
     # corrections: a transfer, then a correction of it (its amount, or its direction), then the receiver's count
     words = {"en": {"a": EN["holders"]["name"]["subj"], "b": EN["holders"]["other"]["subj"], "n": "three", "o": "two",
                     "t": EN["items"]["pen"]},
@@ -522,6 +551,11 @@ def score_cell(d, observations):
         return "blocked", "state_not_recorded"
     obs = observations[-1]
     st = gate.status(obs)
+    if expect["kind"] == "held_named":
+        # a question about a holder never counted: correct when held naming it
+        if st == "answered":
+            return "wrong", "answered"
+        return ("correct", "held_named") if expect["name"] in (obs.get("answer") or "") else ("hold", "vague_hold")
     if st != "answered":
         return "hold", st
     text = gate.asserted(obs.get("answer") or "")
@@ -551,6 +585,8 @@ def score_cell(d, observations):
         if negative != expect["same"]:
             return "correct", "verdict"
         return "wrong", "verdict"
+    if kind == "held_named":
+        return ("wrong", "answered") if st == "answered" else ("hold", "held")
     if kind == "why":
         # the explanation says the holder's count and cites the holder's own statement
         lang, state_of = _lang(code)[0], _lang(code)[1]
