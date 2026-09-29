@@ -342,3 +342,37 @@ def test_a_description_said_with_one_holder_answers_for_it():
     rows = _play("english", ["My brother {x} has 5 {p}.", "His friend {y} has 3 {p}.", "How many does her brother have now?"],
                  3, **dict(EN_WORDS, x="Lena", y="Omar"))
     assert rows[-1]["status"] == "answered" and "5" in rows[-1]["answer"]
+
+
+def test_the_reply_to_a_which_person_ask_keeps_the_thing_asked_about():
+    frames = ["{x}은 {p}이 3개 있어.", "{y}는 {p}이 5개 있어.", "{y}는 컵이 2개 있어.", "{x}과 {y}는 {p}이 몇 개야?",
+              "그 분은 이제 몇 개예요?", "{y} 씨요."]
+    rows = _play("한국어", frames, 3, **dict(KO_WORDS, x="미경", y="수아"))
+    assert rows[-2]["meaning"]["reason"] == "which_referent"
+    assert rows[-1]["status"] == "answered" and "5" in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("frames,subject,expected", [
+    (["{x}은 {p}이 6개 있어.", "{x} 삼촌 태오는 {p}이 3개 있어."], "{x}", "6"),          # H, beside H H H T
+    (["{x}은 {p}이 6개 있어.", "{y}는 {p}이 3개 있어."], "{x} 거", "6"),                 # H + a word for "the thing"
+    (["{x}은 {p}이 6개 있어.", "{y}는 {p}이 3개 있어."], "{x} 씨", "6"),                 # H + a title
+    (["탐이 {p}을 6개 가지고 있어.", "{y}는 {p}이 3개 있어."], "탐은", "6"),              # a particle left on the name
+])
+def test_a_korean_count_asked_under_a_near_key_takes_the_holders_one_thing(frames, subject, expected):
+    from pack_model import development_model
+    from marco.reasoning.context import ReasoningContext
+    words = dict(KO_WORDS, x="민석", y="수아")
+    context = ReasoningContext(model=development_model("한국어"), effort=3)
+    for frame in frames:
+        context.turn(frame.format(**words))
+    parser = context._parser()
+    facts, _d, _p, _r = context._cached_replay(parser, context.observations, context.fills)
+    query = [{"triple": [subject.format(**words), "count", "?n"], "render": ["$n", "개입니다."]}]
+    grounded, _ask = context._ground_lookup(parser, query, facts)
+    assert parser.answer({"facts": facts, "query": grounded})["answer"].startswith(expected)
+
+
+def test_a_korean_count_under_a_noun_never_counted_is_left_as_asked():
+    rows = _play("한국어", ["{x}은 {p}이 6개 있어.", "{y}는 {p}이 3개 있어.", "{x} 사과는 몇 개야?"], 3,
+                 **dict(KO_WORDS, x="민석", y="수아"))
+    assert rows[-1]["status"] != "answered"
