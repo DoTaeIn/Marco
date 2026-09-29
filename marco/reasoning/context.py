@@ -3338,7 +3338,7 @@ class ReasoningContext:
         swap_word = any(" %s " % fold(w) in flat for w in spec.get("swap_words", []))
         words = [w for w in re.split(r"[\s,.!?]+", said) if w]
         amounts = [str(v) for v in (self._amount_of(parser, w) for w in words) if v is not None]
-        keys = self._holder_keys(parser)
+        keys = list(dict.fromkeys(self._holder_keys(parser)))  # (a key listed twice is one)
         # the side of a contrast that says the new version (… 아니라 NEW; NEW, not …) names the holders in order
         side = said
         for cue in spec.get("new_after", []):
@@ -3438,8 +3438,8 @@ class ReasoningContext:
             news = [v for v in amounts if v != old]
             if len(set(news)) != 1 or len(amounts) - len(news) > 1:
                 continue
-            if len(amounts) == len(news) and distance > 0:
-                # an amount said with no old one corrects only the event said just before
+            if len(amounts) == len(news) and distance > 0 and not said_items:
+                # an amount said with no old one and no thing corrects only the event said just before
                 self._candidate_dropped(2, "correction_frame", "amount:%d" % index, "not_the_last_event")
                 continue
             new = news[0]
@@ -3564,7 +3564,7 @@ class ReasoningContext:
         facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
         stated = {str(r["triple"][0]) for r in facts if isinstance(r.get("triple"), list)
                   and isinstance(r["triple"][0], str) and r["triple"][1] in ("count", "count_unknown")}
-        keys = self._holder_keys(parser)
+        keys = list(dict.fromkeys(self._holder_keys(parser)))  # (a key listed twice is one)
 
         def holder(subject):
             return next((k for k in sorted(keys, key=lambda k: -len(k.split())) if subject == k
@@ -4187,7 +4187,7 @@ class ReasoningContext:
         stated = {str(row["triple"][0]) for row in facts if isinstance(row.get("triple"), list)
                   and isinstance(row["triple"][0], str) and row["triple"][1] in ("count", "count_unknown")}
         unread = " ".join(entry["text"] for entry in self.unread_guard + self.unread)
-        keys = self._holder_keys(parser)
+        keys = list(dict.fromkeys(self._holder_keys(parser)))  # (a key listed twice is one)
         items = {subject[len(k):].strip() for subject in stated for k in keys if subject.startswith(k + " ")}
         slots = [("holder", frame["holders"][0])] if len(frame["holders"]) == 1 else []
         slots += [("item", frame["item"])] if frame.get("item") else []
