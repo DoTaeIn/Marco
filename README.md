@@ -5,7 +5,7 @@ every sentence it says from a proven meaning, and holds when nothing grounds an
 answer. No language model runs anywhere in it.**
 
 **Status: MARCO 1 · Preview.** MARCO 1 is not released. Five of its six gate
-conditions hold; the sixth, accuracy on unseen dialogues, stands at 82 of 108
+conditions hold; the sixth, accuracy on unseen dialogues, stands at 85 of 108
 with 98 needed ([Status](#status)).
 
 ```
@@ -69,14 +69,14 @@ The other turns of the dialogue exam, reported apart as the gate requires:
 
 Gate condition 2 over time, all with 0 or 1 wrong answers:
 
-| Run | Baseline | Round 1 | 2 | 3 | 4 | 5 | 6 | Experiment 2 | Experiment 4 | Experiment 7 | Experiment 8 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Correct of 108 | 3 | 19 | 21 | 21 | 40 | 45 | 63 | 69 | 67 | 76 | 81 |
+| Run | Baseline | Round 1 | 2 | 3 | 4 | 5 | 6 | Experiment 2 | Experiment 4 | Experiment 7 | Experiment 8 | Experiment 12 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Correct of 108 | 3 | 19 | 21 | 21 | 40 | 45 | 63 | 69 | 67 | 76 | 81 | 85 |
 
 Experiment 4 restored a safety hold of round 2 that experiment 2 had broken (a
 scope word over one holder is held, not answered); two turns went back to held. The gate table above is the run at `a18c617`;
-the latest run, experiment 10 at `5e9289a`, is 82 of 108 with no wrong turn on the
-whole exam ([experiment-10.json](docs/ko/dialogue-gate-2026-09-22/experiment-10.json)).
+the latest run, experiment 12 at `fc113ea`, is 85 of 108 with no wrong turn on the
+whole exam ([experiment-12.json](docs/ko/dialogue-gate-2026-09-22/experiment-12.json)).
 
 Work now runs as small experiments: find the largest structural cause of the
 held turns, patch it, run the regression, merge, score the exam again. Each one

@@ -171,3 +171,15 @@ Two patches in a row were built from invented sentences and changed no exam turn
 From experiment 12 on the chats get, for each failing exam turn, the trace of the
 steps that ran and what each returned, with the token kinds of the partial
 reading: the place where the exam turn gives up, not a guess at its words.
+
+## Experiment 12: which-person turns, from the exam's own trace
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 12 | (exam trace) the five held which-person turns are read as a query and end at the pointer resolution (no referent) or at the lookup (not stated); the ask naming the candidates was never reached | 1cf66d0, 8f8c32b, 8b97d42, merged fc113ea | chat 20 min; plan manager 8 min | chat 25 min on runs; reported 19:50, merged 19:51, scored 19:55 | chat's full suite on the merged tree 2,333 passed, 1 known failure (gate files left out); gate files and reading tests at merge: 522 passed | **85/108 (78.7%)**, +3; which-person turns 7 → 12 of 12; Korean 39 of 54, English 46 of 54; 0 wrong, 0 violations (`experiment-12.json`). The chat named the turns it expected to move: the five which-person turns and the replies after them. All five moved, and three replies |
+
+Exam profile at fc113ea, the 23 held answerable turns: 13 read and held behind an
+earlier unread turn (six unrecorded statements and four held corrections are the
+roots); 10 fail on their own: a total of two holders and a comparison, neither
+read (2); very short Korean turns not read or tied (4); read as a query and held
+at the lookup (3); one held as a protected repair.
