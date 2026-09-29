@@ -791,6 +791,88 @@ class ReasoningContext:
         winner, _deciding, _ranking = self._rank_candidates(survivors, kind="wrong_thing")
         return self._keep_reading(parser, text, winner, knowledge_path, "wrong_thing")
 
+    def _read_without_adjunct(self, parser, text, current, verbs, knowledge_path):
+        """G7-S experiment 7, effort 3 (one repair step: a phrase that fills no slot; amendment A1): a use-up
+        that names its holder and says what the things went to (Nora used three of them for a party., 병훈이
+        그중 4개로 전시 작품을 만들었습니다., 한수가 그중 하나를 바자회 준비에 썼습니다.) reads as nothing, as an event
+        of a verb not known, or only through a repair that misplaces a word. The purpose or product phrase may
+        be any words. Candidates: the statement as read, and the statement read without one to three
+        contiguous words that are no number, no word a repair may not change (a negation, a scope word, a
+        counter) and no word of a holder or thing this conversation counts; a
+        candidate must read as a use-up only (every amount it moves goes away) by a holder the conversation
+        counts, and takes a thing it leaves out from the conversation (``_unsaid_thing_candidates``) or from the
+        holder's one key. Each is checked against the conversation (``_reading_failure``), ranked
+        (``_rank_candidates``: state, the holder's count covers the amount; cost, the words left out and a
+        repair's own cost), and a clear winner is kept for this conversation (``_keep_reading``)."""
+        from marco.language.numerals import parse_numeral
+        updates = parser.data.get("numeric_updates") or {}
+        numeric = self._numeric_targets(parser)
+        try:
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+            state, _c = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+        except ValueError:
+            return None
+        keys = [row["triple"][0] for row in state if isinstance(row["triple"][0], str)
+                and row["triple"][1] in numeric | {"count_unknown"} and len(row["triple"][0].split()) > 1]
+        if not keys:
+            return None
+        known = {w.lower() for key in keys for w in key.split()}
+        numerals = parser.data.get("numerals") or {}
+        words = str(text).strip().split()
+        tail = ""
+        if words and words[-1][-1:] in ".!?" and len(words[-1]) > 1:
+            tail, words = words[-1][-1], words[:-1] + [words[-1][:-1]]
+
+        def protected(word):
+            # never a word the reader's repairs may not change either (a negation, a scope word, a numeral, a
+            # counter: 안 먹었어 is not 먹었어), nor a word of a holder or thing of the conversation
+            bare = word.strip(",").lower()
+            return (any(char.isdigit() for char in bare) or parse_numeral(bare, numerals) is not None
+                    or parser._protected_kind(word) is not None
+                    or any(bare.startswith(k) for k in known if len(k) > 1))
+
+        def removing(row):
+            return row[1] in updates and float((updates[row[1]] or {}).get("factor", 1) or 1) < 0
+        survivors, seen = [], set()
+
+        def offer(parsed, cost, label):
+            rows = [f["triple"] for f in parsed.get("facts", []) if isinstance(f.get("triple"), list)]
+            moved = [t for t in rows if t[1] in updates]
+            if parsed.get("query") or not moved or not all(removing(t) and isinstance(t[0], str) for t in moved) \
+                    or not all(any(k == t[0] or k.startswith(t[0] + " ") for k in keys) for t in moved):
+                return
+            found = self._unsaid_thing_candidates(parser, text, parsed, verbs, cost=cost, label=label)
+            if found is None:
+                failure, changes = self._reading_failure(parser, text, parsed)
+                if failure is not None:
+                    self._candidate_dropped(3, "adjunct", label.strip(), failure[1])
+                    return
+                known_before = all(row.get("before") is not None for row in changes if (row.get("delta") or 0) < 0)
+                found = [{"label": label.strip(), "parsed": parsed, "fit": {"state": int(known_before), "cost": cost}}]
+            for candidate in found:
+                mark = json.dumps(sorted(json.dumps(f["triple"], ensure_ascii=False)
+                                         for f in candidate["parsed"].get("facts", [])), ensure_ascii=False)
+                if mark not in seen:
+                    seen.add(mark)
+                    survivors.append(candidate)
+        if current is not None and current.get("facts"):
+            offer(current, sum(int(r.get("cost") or 0) for r in current.get("수선") or []
+                               if r.get("status") == "repaired"), "as said ")
+        for size in (1, 2, 3, 4):
+            for start in range(1, len(words) - size + 1):
+                span = words[start:start + size]
+                if len(words) - size < 2 or any(protected(word) for word in span):
+                    continue
+                said = " ".join(words[:start] + words[start + size:]) + tail
+                parsed = parser.parse(said, partial=True, events=True, repair=True, verbs=verbs)
+                if parsed and parsed.get("facts") and not any(
+                        r.get("status") == "repaired" for r in parsed.get("수선") or []):
+                    offer(parsed, size, "without '%s' " % " ".join(span))
+        if not survivors:
+            return None
+        winner, _deciding, _ranking = self._rank_candidates(survivors, kind="adjunct")
+        return self._keep_reading(parser, text, winner, knowledge_path, "adjunct")
+
     def _keep_reading(self, parser, text, winner, knowledge_path, reason):
         """A ranked winner kept as the statement's reading for this conversation (``chosen_readings``), the turn
         played with it; None, and nothing kept, when there is no winner or the turn is then not recorded."""
@@ -5822,6 +5904,17 @@ class ReasoningContext:
             if not any(f["triple"][1] == "count_unknown" and f["triple"][0] not in counted for f in facts):
                 current = None
         self._turn_repairs = list((current or {}).get("수선", []))
+        if (self._effort_allows(3) and self.observations and not getattr(self, "_rereading", False)
+                and not any(str(text).rstrip().endswith(mark)
+                            for mark in parser.clause_grammar.get("question_marks", []))
+                and (current is None
+                     or (not current.get("facts") and current.get("사건") and not current.get("query")
+                         and all(self._lookup(parser, event, set(), verbs) is None for event in current["사건"]))
+                     or any(r.get("status") == "repaired" for r in self._turn_repairs))):
+            # G7-S experiment 7: a use-up whose purpose or product phrase fills no slot (effort 3)
+            adjunct = self._read_without_adjunct(parser, text, current, verbs, knowledge_path)
+            if adjunct is not None:
+                return adjunct
         if current is None or not any(current.get(key) for key in (
                 "query", "사건정정", "정의", "원인", "이유물음", "조건")):
             # "Actually it was one, not two" / "두 개가 아니라 한 개야":
