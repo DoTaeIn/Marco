@@ -293,6 +293,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [experiment-02.json](ko/dialogue-gate-2026-09-22/experiment-02.json) | Experiment 2, `095b434`: 69 of 108, 0 wrong, 0 violations |
 | [experiment-03.json](ko/dialogue-gate-2026-09-22/experiment-03.json) | Experiment 3, `dc4d103`: 69 of 108, gate unchanged |
 | [experiment-04.json](ko/dialogue-gate-2026-09-22/experiment-04.json) | Experiment 4, `a18c617`: 67 of 108, 0 wrong, 0 violations, after the regression fixes |
+| [experiment-05.json](ko/dialogue-gate-2026-09-22/experiment-05.json) | Experiment 5, `89cd4b0`: 67 of 108, statements recorded 142 of 150 |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
