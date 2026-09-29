@@ -4883,6 +4883,12 @@ class ReasoningContext:
                 # the named words are no holder, thing or place of this conversation: not a follow-up
                 self._candidate_dropped(2, "partial_frame", label, "not_named_before")
                 continue
+            if waits and not in_state:
+                # named only by a statement kept unread: the particle that statement put on it says its role
+                # (다온은 / 다온에게: a holder; 다온을: a thing); 이/가 say neither
+                roles = extra.get("unread_roles") or {}
+                said_with = re.findall(r"(?<![\w])%s(\w*)" % re.escape(named), unread)
+                known = known or any(tail in roles.get(slot, []) for tail in said_with)
             candidates.append({"label": label, "slot": slot, "rewritten": rewritten,
                                "fit": {"state": int(in_state), "grammar": 1, "context": int(bool(known)), "cost": 0}})
         if not candidates and len(core) == 1 and slots and slots[0][0] == "holder" and self._effort_allows(2):
