@@ -158,8 +158,9 @@ lower-bound count or a split holder, and a retry). The budget changes the search
 never the checks: at every level a wrong answer is a failure. The trace records
 the level, the candidates tried and why each was dropped.
 
-**A3. The effort curve is a target of its own.** Score dev v4, v5 and v6 check
-halves at effort 0, 1, 2, 3 after every batch. Report answerable, wrong and
+**A3. The effort curve is a target of its own.** After every batch, score only
+the dev v6 check half at effort 0 and 3 (owner, 2026-09-29: about 8 minutes, not
+45). At hand-off, score dev v4, v5 and v6 check halves at effort 0, 1, 2, 3. Report answerable, wrong and
 median milliseconds per turn per level. Done when accuracy rises from level 0
 to level 3 on every check half with 0 wrong at every level. A class fixed only
 at level 0 (by a rule) shows no curve and is reported as coverage, not inference.
