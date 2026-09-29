@@ -434,3 +434,10 @@ def test_a_refused_transfer_is_corrected_by_its_new_amount_and_no_count_statemen
     # effort 0 (main) never reads the negated amount as the new one
     main = _play(language, frames, 0)
     assert main[4]["status"] != "answered" or "4" in main[4]["answer"]
+
+
+@pytest.mark.parametrize("thing,total", [("과자 봉지", "모두"), ("우유 병", "전부"), ("연필 자루", "총")])
+def test_a_counter_inside_the_things_name_is_no_scope_word(thing, total):
+    frames = ["보늬는 %s가 3개 있어." % thing, "하람은 %s가 2개 있어." % thing, "보늬 %s는 %s 몇 개야?" % (thing, total)]
+    rows = _play("한국어", frames, 3)
+    assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
