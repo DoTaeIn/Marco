@@ -485,6 +485,21 @@ def cells(code):
                                                             "follow": "compare"}, state + [said],
                     {"kind": "winner", "winner": winner, "loser": "other" if winner == "name" else "name",
                      "item": "pen"}))
+    # which person: two holders said with the same relation or title; the question asks back naming both,
+    # and the reply that names one is answered
+    x, y = ("Lena", "Omar") if code == "en" else ("미경", "수아")
+    pair = ((["My cousin %s has 5 %s." % (x, pen), "My cousin %s has 3 %s." % (y, pen)],
+             "How many %s does my cousin have?" % pen, "%s." % x) if code == "en" else
+            (["제 친구 %s %s 5개 있어." % (_p(x, "은/는"), _p(pen, "이/가")),
+              "제 친구 %s %s 3개 있어." % (_p(y, "은/는"), _p(pen, "이/가"))],
+             "제 친구는 %s 몇 개 있어?" % _p(pen, "이/가"), "%s요." % x))
+    statements, asked, reply = pair
+    out.append(("count|none|relation|which_person:ask", {"op": "count", "mod": "none", "form": "relation",
+                                                          "follow": "which_person"},
+                state + statements + [asked], {"kind": "ask_named", "names": [x, y]}))
+    out.append(("count|none|relation|which_person:reply", {"op": "count", "mod": "none", "form": "relation",
+                                                            "follow": "which_person"},
+                state + statements + [asked, reply], {"kind": "value", "holder": None, "item": "pen", "value": 5}))
     # corrections: a transfer, then a correction of it (its amount, or its direction), then the receiver's count
     words = {"en": {"a": EN["holders"]["name"]["subj"], "b": EN["holders"]["other"]["subj"], "n": "three", "o": "two",
                     "t": EN["items"]["pen"]},
@@ -551,6 +566,11 @@ def score_cell(d, observations):
         return "blocked", "state_not_recorded"
     obs = observations[-1]
     st = gate.status(obs)
+    if expect["kind"] == "ask_named":
+        if st == "answered":
+            return "wrong", "answered"
+        said = obs.get("answer") or ""
+        return ("correct", "asked_which") if all(n in said for n in expect["names"]) else ("hold", "vague_ask")
     if expect["kind"] == "held_named":
         # a question about a holder never counted: correct when held naming it
         if st == "answered":
