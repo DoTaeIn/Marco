@@ -121,3 +121,16 @@ answer about another thing.
 | # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
 | --- | --- | --- | --- | --- | --- | --- |
 | 6 | (exam) a transfer recorded with a stale count: the safety check that holds a holder behind an unread statement asked for every word of the holder's key, and an unread use-up that leaves the thing to a pronoun has no thing word | 6a4bff0, merged 18b9f53 | chat 10 min; plan manager 5 min | chat 8 min on runs; reported 17:18, merged 17:19, scored 17:22 | chat's full suite 2,284 passed, 1 known failure (gate files left out), 6 min; gate files and both round-7 test files run at merge: passed | gate 67/108 unchanged; **wrong records 1 → 0: no wrong turn is left on the exam**; statements 142 right, 8 held (`experiment-06.json`) |
+
+## Experiment 7: the partial reading as a candidate
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 7 | (exam, diagnosed) the reader returns nothing for a sentence it cannot read whole, so no candidate is built and the conversation's state is never asked | d93ab7e with 92f3d72 and f814f38, merged 46427c5 | chat 75 min; plan manager 6 min | chat 45 min (machine load 25 to 52 from other runs); reported 17:35, merged 17:36, scored 17:39 | chat's full suite 2,292 passed, 1 known failure (gate files left out); gate files, round-2 and round-7 tests at merge: 258 passed | **76/108 (70.4%)**, +9, 0 wrong on the whole exam, 0 violations; English 41 of 54, Korean 35 of 54; corrections 12 → 14 of 18; why 18 → 19 of 26 (`experiment-07.json`) |
+
+Exam profile at 46427c5, the 32 held answerable turns: the reader returns nothing
+and the grounding builds no candidate 11 (in 10 the state holds every needed
+fact); held behind an unread turn 17 (behind a statement the reader returns
+nothing for 4, behind a correction 4, behind the two transfers the wrong-thing
+candidate excludes on purpose 4, behind a lookup failure 3, other 2); lookup
+failure 2; identity 1; a tie held where the exam expects one answer 1.
