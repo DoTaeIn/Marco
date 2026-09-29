@@ -304,7 +304,7 @@ UNREAD_OTHER = [
 
 
 @pytest.mark.parametrize("n", range(len(UNREAD_PRONOUN)))
-@pytest.mark.parametrize("effort", [0, 3])
+@pytest.mark.parametrize("effort", [0, 2])      # at effort 3 the use-up is read (experiment 7, ADJUNCT)
 def test_a_transfer_after_an_unread_statement_of_its_giver_is_held(n, effort):
     language, dialogue = UNREAD_PRONOUN[n]
     assert play(language, effort, dialogue) == []
@@ -313,4 +313,51 @@ def test_a_transfer_after_an_unread_statement_of_its_giver_is_held(n, effort):
 @pytest.mark.parametrize("n", range(len(UNREAD_OTHER)))
 def test_an_unread_statement_of_another_holder_holds_no_transfer(n):
     language, dialogue = UNREAD_OTHER[n]
+    assert play(language, 2, dialogue) == []
+
+
+# Experiment 7: a use-up that names its holder and says what the things went to, in words that fill no slot
+# (for a party, 전시 작품을 만들었다, 바자회 준비에 썼다). At effort 3 the statement read without one to three such
+# words is a candidate (never a number or a word of a holder or thing of the conversation), a use-up by a
+# counted holder, its thing from the conversation; any words may stand there (for a quink).
+ADJUNCT = [
+    ("english", [("Nora has 9 pens.", "rec"), ("Eli has 2 pens.", "rec"), ("Nora used three of them for a party.", "rec"),
+                 ("Then Nora gave two pens to Eli.", "rec"), ("How many pens does Nora have?", 4),
+                 ("How many pens does Eli have?", 4)]),
+    ("english", [("Nora has 9 pens.", "rec"), ("Nora used four of them for a quink.", "rec"),
+                 ("How many pens does Nora have?", 5)]),
+    ("english", [("Nora has 9 pens.", "rec"), ("Nora has 4 cups.", "rec"),
+                 ("Nora used two of them for the bake sale.", "rec"), ("How many cups does Nora have?", 2),
+                 ("How many pens does Nora have?", 9)]),
+    ("한국어", [("병훈은 서류가방이 24개 있습니다.", "rec"), ("병훈이 그중 4개로 전시 작품을 만들었습니다.", "rec"),
+              ("병훈은 서류가방이 몇 개 있습니까?", 20)]),
+    ("한국어", [("한수는 서류가방이 20개 있습니다.", "rec"), ("한수는 교과서가 3권 있습니다.", "rec"),
+              ("한수가 시혁에게 서류가방을 두 개 보냈습니다.", "rec"), ("한수가 그중 하나를 바자회 준비에 썼습니다.", "rec"),
+              ("한수는 서류가방이 몇 개 있습니까?", 17), ("한수는 교과서가 몇 권 있습니까?", 3)]),
+]
+ADJUNCT_HELD = [
+    # the holder's count does not cover it: held
+    ("english", [("Nora has 2 pens.", "rec"), ("Nora used three of them for a party.", "hold")]),
+    # a holder the conversation never counted: held
+    ("english", [("Nora has 9 pens.", "rec"), ("Omar used three of them for a party.", "hold")]),
+]
+
+
+@pytest.mark.parametrize("n", range(len(ADJUNCT)))
+def test_a_use_up_with_a_phrase_that_fills_no_slot_is_read_at_effort_3(n):
+    language, dialogue = ADJUNCT[n]
+    assert play(language, 3, dialogue) == []
+
+
+@pytest.mark.parametrize("n", [0, 1, 3, 4])
+@pytest.mark.parametrize("effort", [0, 2])
+def test_below_effort_3_the_use_up_is_not_read(n, effort):
+    language, dialogue = ADJUNCT[n]
+    at = next(i for i, (line, _e) in enumerate(dialogue) if "used" in line or "만들었" in line or "썼" in line)
+    assert play(language, effort, dialogue[:at] + [(dialogue[at][0], "hold")]) == []
+
+
+@pytest.mark.parametrize("n", range(len(ADJUNCT_HELD)))
+def test_a_use_up_that_does_not_fit_is_held(n):
+    language, dialogue = ADJUNCT_HELD[n]
     assert play(language, 3, dialogue) == []
