@@ -3883,11 +3883,17 @@ class ReasoningContext:
                 self._candidate_dropped(2, "partial_frame", label, "not_a_question")
                 continue
             in_state = all(key in stated for key in asked)
-            if not in_state and fold(named) not in fold(unread):
+            waits = fold(named) in fold(unread)
+            if not in_state and not waits:
                 self._candidate_dropped(2, "partial_frame", label, "not_in_state")
                 continue
             known = (any(fold(named) == fold(k) or fold(k).endswith(" " + fold(named)) for k in keys) or place
+                     or self._holder_of(parser, plain, keys) is not None
                      if slot == "holder" else any(fold(named) == fold(i) for i in items))
+            if not known and not waits:
+                # the named words are no holder, thing or place of this conversation: not a follow-up
+                self._candidate_dropped(2, "partial_frame", label, "not_named_before")
+                continue
             candidates.append({"label": label, "slot": slot, "rewritten": rewritten,
                                "fit": {"state": int(in_state), "grammar": 1, "context": int(bool(known)), "cost": 0}})
         winner, deciding, ranking = self._rank_candidates(candidates, kind="partial_frame")

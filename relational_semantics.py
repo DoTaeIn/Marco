@@ -2839,6 +2839,9 @@ class RelationalParser:
         if current:
             members.append(current)
         out = [self._frame_holder(spec, m) for m in members]
+        # a protected word (a scope word such as each, a numeral, a negation) is never part of a holder
+        if any(self._protected_kind(w) for m in members for w in m):
+            return None
         return out if out and all(out) else None
 
     def _question_frame_meaning(self, literal):
@@ -2868,7 +2871,8 @@ class RelationalParser:
         if cut is None or cut == n:
             return None
         item = self._frame_holder(spec, tokens[n:cut])
-        if item is None or item == (self.holder_forms.get("self") or {}).get("reads_as"):
+        if item is None or item == (self.holder_forms.get("self") or {}).get("reads_as") \
+                or any(self._protected_kind(w) for w in tokens[n:cut]):
             return None
         render = ["$n", " ", item, "."]
         if low[cut] in auxiliaries:
@@ -3277,8 +3281,12 @@ class RelationalParser:
                 second = second[:-len(tail)] if tail else second
                 return {"query": [{"total": {"members": [first[:-len(joiner)], second], "item": rest},
                                    "render": list(spec["render"])}]}
-        if total and not group and getattr(self, "effort", 3) >= 1 and len(name) >= 2:
-            total = False       # a total word over one holder and its thing asks that holder's count (G7-Q)
+        if (total and not group and getattr(self, "effort", 3) >= 1 and len(name) >= 2
+                and (words[at - 1] in spec.get("total_words", []) or words[at - 1] in more_totals)
+                and not any(self._protected_kind(w) for w in raw)):
+            # a total word right before the question word, over one holder and its thing, asks that holder's
+            # count (G7-Q); anywhere else it is a scope word out of place and the repair guard holds it
+            total = False
         if total or group:
             if not (total and group):
                 return None

@@ -5235,7 +5235,7 @@
    }
   }
  },
- "_수량물음": "A question read as a frame plus slots (G7-Q): how many THING, an auxiliary, the holders (joined by and; I and me are the speaker; a group word names two or all), a predicate of having, then only words of the declared modifier classes (time, total, left), in any order; or how many THING are (there) (modifiers) in PLACE, or are left/remaining with or for HOLDER. A modifier never changes the operator: one holder is a count, two or more a total. Comparison: who (which of us ...) has more/fewer THING (modifiers), A or B; do A and B have the same number of THING. A word outside these lists means the frame does not read. Read from effort 1 on.",
+ "_수량물음": "A question read as a frame plus slots (G7-Q): how many THING, an auxiliary, the holders (joined by and; I and me name the one talking; a group word names two or all), a predicate of having, then only words of the declared modifier classes (time, total, left), in any order; or how many THING are (there) (modifiers) in PLACE, or are left/remaining with or for HOLDER. A modifier never changes the operator: one holder is a count, two or more a total. Comparison: who (which of us ...) has more/fewer THING (modifiers), A or B; do A and B have the same number of THING. A word outside these lists means the frame does not read. Read from effort 1 on.",
  "수량이유물음": {
   "facts": [
    {

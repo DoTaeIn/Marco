@@ -4,7 +4,7 @@
 > re-measurable with the commands below. Since then `s2-minimal` created
 > `marco/` and `marco/language/` (the `realize` seam) and the root has the same
 > 61 `.py` files. Numbers for the current commit are in the root
-> [README](../../README.md#measured-at-78bd062); package documents are listed in
+> [measurements](../en/measurements.md); package documents are listed in
 > [docs/README.md](../README.md).
 
 Goal: `docs/ko/2026-09-22-structure-audit-goal.md`. Written 2026-09-22.
