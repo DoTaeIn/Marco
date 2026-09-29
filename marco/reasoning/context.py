@@ -3880,6 +3880,11 @@ class ReasoningContext:
                    and isinstance(r["triple"][0], str)}
         if triple[0] in counted:
             return query, None
+        try:
+            if parser.answer({"facts": facts, "query": query}) is not None:
+                return query, None      # the question as read has its answer (a leading-word referent, …)
+        except Exception:    # noqa: BLE001
+            pass
         keys = list(dict.fromkeys(self._holder_keys(parser)))
         declared = getattr(parser, "noun_number", None) or {}
         titles = [fold(t) for t in (parser.holder_forms or {}).get("name_titles", [])]
@@ -3897,19 +3902,50 @@ class ReasoningContext:
         words = triple[0].split()
         tails = "|".join(re.escape(p) for p in self._frame_particles(parser)) or "(?!)"
         found = {}
-        if holder_of(triple[0]) == triple[0]:
+        particles = self._frame_particles(parser)
+
+        def own_things(name):
+            # the keys whose whole holder part is this holder (H T, not H H H T)
+            return sorted(subject for subject in counted if holder_of(subject) == name)
+        alone = triple[0]
+        if len(alone.split()) == 1 and holder_of(alone) != alone:
+            # a holder word with its particle still on it (a one-syllable name before 은/는)
+            bare_word = next((alone[:-len(p)] for p in particles if alone.endswith(p) and len(alone) > len(p)
+                              and holder_of(alone[:-len(p)]) == alone[:-len(p)]), None)
+            alone = bare_word or alone
+        if holder_of(alone) == alone:
             # a holder asked with no thing: the one thing it counts, else the thing the question before asked
-            own = sorted(subject for subject in counted if subject.startswith(triple[0] + " "))
+            own = own_things(alone)
             before = ((getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item") or "")
-            pick = own if len(own) == 1 else [subject for subject in own if before and subject == triple[0] + " " + before]
+            pick = own if len(own) == 1 else [subject for subject in own if before and subject == alone + " " + before]
             if len(pick) == 1:
                 return [dict(rows[0], triple=[pick[0], "count", "?n"])], None
+        if len(words) == 2 and holder_of(words[0]) == words[0]:
+            # a holder and one word that is no thing of the state: a word the pack declares (a title, a relation,
+            # a word for "the thing(s)"), or a part of the holder's one thing, names that thing; any other noun
+            # may be a thing never mentioned, and is left as asked
+            own = own_things(words[0])
+            said = words[1]
+            said = next((said[:-len(p)] for p in particles if said.endswith(p) and len(said) > len(p)), said)
+            forms = parser.holder_forms or {}
+            known = self._declared_words(parser) | {fold(w) for w in list(forms.get("job_titles", []))
+                                                   + list(forms.get("name_titles", [])) + list(forms.get("role_titles", []))
+                                                   + list(forms.get("relation_nouns", []))}
+            if len(own) == 1:
+                thing = own[0][len(words[0]):].strip()
+                if not any(fold(said) == fold(subject[len(holder_of(subject) or ""):].strip()) for subject in counted) \
+                        and (fold(said) in known or fold(words[1]) in known
+                             or (len(said) > 1 and (fold(thing).endswith(fold(said)) or fold(said).endswith(fold(thing))))):
+                    return [dict(rows[0], triple=[own[0], "count", "?n"])], None
         for k in range(1, len(words)):
             asked_holder, asked_thing = " ".join(words[:k]), " ".join(words[k:])
             bare = asked_holder
             for title in titles:
                 if fold(bare).endswith(title) and len(bare) > len(title):
                     bare = bare[:-len(title)]
+            # (a particle left on the holder word: 탐은 연필)
+            bare = next((bare[:-len(p)] for p in particles if bare.endswith(p) and len(bare) > len(p)
+                         and holder_of(bare[:-len(p)]) == bare[:-len(p)]), bare)
             for subject in counted:
                 holder = holder_of(subject)
                 if holder is None or not same_thing(asked_thing, subject[len(holder):].strip()):
