@@ -5224,8 +5224,8 @@
     "the two": "two",
     "they": "all"
    },
-   "modifiers": {
-    "things": ["one", "ones", "stuff", "things", "lot"],
+   "things": ["one", "ones", "stuff", "things", "lot"],
+  "modifiers": {
     "time": [
      "now",
      "right now",
