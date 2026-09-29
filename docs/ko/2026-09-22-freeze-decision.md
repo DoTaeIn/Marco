@@ -68,9 +68,16 @@ never reorders them. Where an older roadmap disagrees on order, this file wins.
   (`data/benchmarks/dialogues_v2/`, frozen on arrival) are scored once. The gate
   number stays the frozen 52; the fresh score is published beside it.
 - **Effort and ranking (UR7 amendments A2, A4)** are sub-items of M1's candidate
-  readings: a bound on the search and an order on its survivors. Nothing is kept
-  after the turn, so this is not M2's self-repair, and it runs on the CPU, so it is
-  not N1.
+  readings: a bound on the search and an order on its survivors. Owner's limit
+  (2026-09-29): effort level 3 is turn-local deliberation only. No persistent
+  learning, no permanent repair, no external research, no OpenProblem promotion.
+- **Placements decided by the owner (2026-09-29), top-level order unchanged:** the
+  real MCO format under MARCO 1 release, before M2; the Observation Graph Contract
+  at the end of M2, before M3; M3 owns capability declaration, discovery, binding
+  and the permission contract, P1 owns side-effectful execution and enforcement,
+  and today's bounded read-only research stays as it is. Gate condition 4
+  (sample count and full failure list published) stands; the fixed timeline's
+  first version had dropped it by accident.
 
 ## The queue (replaces plan file §2 items 3–5) — updated 2026-09-23
 

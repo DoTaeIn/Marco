@@ -41,11 +41,16 @@ MARCO 1 gate:
 ```text
 1. Fixed 7-step dialogue        PASS
 2. 90% unseen dialogue         FAIL — 58.3%
-3. No unsupported answer       PASS
-4. No withdrawn evidence       PASS
+3. No unsupported answer,
+   no withdrawn evidence       PASS
+4. Sample count and full
+   failure list published      PASS
 5. Composed replies            PASS
 6. Reasoning gate              PASS
 ```
+
+Condition 4 was left out of the first version of this file by accident and is
+restored (owner, 2026-09-29). The numbering is the freeze decision's.
 
 따라서 MARCO 1 전 최우선 목표는:
 
@@ -232,7 +237,12 @@ M1 종료 조건:
 0 wrong
 0 unsupported confident answers
 0 withdrawn-evidence violations
+sample count + full failure list published
 ```
+
+Effort (UR7) stays in M1 only as **turn-local deliberation**: level 3 may try one
+repair step and retry inside the turn. No persistent learning, no permanent
+repair, no external research, no OpenProblem promotion; those are M2.
 
 ---
 
@@ -248,7 +258,13 @@ versioning
 MCO public API check
 documentation
 release artifact
+fresh exam: 50+ new dialogues, scored once, published beside the gate number
+real MCO format: native container, overlay, snapshot (before M2)
 ```
+
+The real MCO format sits here, under the release and before M2 (owner,
+2026-09-29). It is not a top-level phase. The older documents call its
+milestones "MCO M1–M4"; those are not the MARCO phases M1–M4 of this file.
 
 핵심:
 
@@ -288,7 +304,11 @@ M2.3 Partial Self-Repair
 M2.4 Retry Loop
 M2.5 External Knowledge Gap Research
 M2.6 Validation / Promotion
+M2.7 Observation Graph Contract (end of M2, before M3)
 ```
+
+The Observation Graph Contract is the last item of M2 (owner, 2026-09-29), not a
+phase of its own: A1, A2 and S1 write into it, so it is fixed before M3 starts.
 
 Failure classes 예:
 
@@ -328,6 +348,11 @@ Skill Compiler
 ↓
 External Tool Binding
 ```
+
+Boundary with P1 (owner, 2026-09-29): M3 owns capability declaration, discovery,
+binding and the **permission contract**. POLO / P1 owns the actual side-effectful
+execution and the enforcement of that contract. The bounded read-only research
+that exists today stays as it is.
 
 정의:
 
