@@ -132,6 +132,40 @@ holder's count allows.
 questions held behind an unread statement 93 → 25 or fewer; records 381/434 →
 94% or better; 0 recorded wrongly, 0 wrong, 0 violations.
 
+## Amendment (owner, 2026-09-29): inference, not coverage
+
+The owner's aim is inference: a system that thinks a problem through, where
+more effort gives a better answer. The exam alone does not show that; six
+rounds of rules for single forms raised the dev scores much faster than the
+exam score. From now on, in both chats:
+
+**A1. Candidates, not rules.** A turn that does not read, or reads but is refused
+by a state check, is handled by generating candidate readings or repairs and
+validating each against the conversation's state and constraints (the G5.4
+machinery, extended): the omitted giver is each earlier holder as a candidate;
+a transfer from a holder whose count was never stated is recorded with that
+count as an unknown with a lower bound, not refused; a follow-up's missing
+slots are candidates from the previous frames. One survivor → answer; several →
+ask; none → hold with its gap class. A declaration is added only for a word the
+pack lacks (a verb, a modifier, a counter), never a sentence-shaped entry for
+one form. Each commit says which it is.
+
+**A2. Effort budget.** One declared setting, `effort` 0 to 3, bounds how far
+the candidate search goes (0: first reading only, as main behaves now; 1:
+readings the reader gives; 2: plus slot and referent candidates from the
+conversation; 3: plus one repair step, such as an elided argument, a
+lower-bound count or a split holder, and a retry). The budget changes the search,
+never the checks: at every level a wrong answer is a failure. The trace records
+the level, the candidates tried and why each was dropped.
+
+**A3. The effort curve is a target of its own.** Score dev v4, v5 and v6 check
+halves at effort 0, 1, 2, 3 after every batch. Report answerable, wrong and
+median milliseconds per turn per level. Done when accuracy rises from level 0
+to level 3 on every check half with 0 wrong at every level. A class fixed only
+at level 0 (by a rule) shows no curve and is reported as coverage, not inference.
+
+Self-repair that persists (roadmap R-A) stays frozen until the gate.
+
 ## Both
 
 **Together, after both merge:** dev v6 check half answerable 109/234 → 70% or
