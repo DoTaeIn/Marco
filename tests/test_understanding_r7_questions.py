@@ -99,3 +99,11 @@ def test_rank_treats_a_missing_check_as_zero_and_bools_as_fits():
     fits = {"label": "fits", "fit": {"state": True}}
     bare = {"label": "bare", "fit": {}}
     assert context._rank_candidates([bare, fits])[:2] == (fits, "state")
+
+
+def test_rank_refuses_a_fit_that_is_not_a_count():
+    from marco.reasoning.context import ReasoningContext
+    context = ReasoningContext()
+    for fit in ({"state": 0.7}, {"grammar": "1"}, {"cost": -1}, {"weight": 1}):
+        with pytest.raises(ValueError):
+            context._rank_candidates([{"label": "x", "fit": fit}, {"label": "y", "fit": {}}])
