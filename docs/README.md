@@ -142,6 +142,7 @@ queue.
 | [2026-09-25-understanding-r5-goal.md](ko/2026-09-25-understanding-r5-goal.md) | G5: understanding round 5, the blocking classes plus readings as candidates |
 | [2026-09-25-realizer-r5-goal.md](ko/2026-09-25-realizer-r5-goal.md) | W5: realizer round 5, the round-4 requests, trace fields, fluency sample 5 |
 | [2026-09-25-understanding-r6-goal.md](ko/2026-09-25-understanding-r6-goal.md) | G6: understanding round 6, the exam's own classes read from the ledger, why with a restated fact |
+| [2026-09-29-marco-fixed-timeline.md](ko/2026-09-29-marco-fixed-timeline.md) | Owner-fixed timeline: M1 language gate → release → M2 → M3 → M4 → A1 → A2 → S1 → P1 → N1; new ideas are placed under a phase, never reorder them |
 | [2026-09-29-understanding-r7-goal.md](ko/2026-09-29-understanding-r7-goal.md) | G7: understanding round 7, questions as a frame plus slots (G7-Q) and the statements that cascade (G7-S) |
 | [2026-09-25-realizer-r6-goal.md](ko/2026-09-25-realizer-r6-goal.md) | W6: realizer round 6, the round-5 requests, why with a named holder, the release stamp |
 | [2026-09-24-understanding-r4-goal.md](ko/2026-09-24-understanding-r4-goal.md) | G4: understanding round 4, natural language instead of templates |
