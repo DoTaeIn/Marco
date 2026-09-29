@@ -107,3 +107,34 @@ def test_rank_refuses_a_fit_that_is_not_a_count():
     for fit in ({"state": 0.7}, {"grammar": "1"}, {"cost": -1}, {"weight": 1}):
         with pytest.raises(ValueError):
             context._rank_candidates([{"label": "x", "fit": fit}, {"label": "y", "fit": {}}])
+
+
+# ---------------------------------------------------------------------------
+# A5: effort 3 is turn-local deliberation only
+# ---------------------------------------------------------------------------
+def _tree_digest():
+    import hashlib
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    digest = hashlib.sha256()
+    for folder in ("styles", "axioms", "graphs", "marco/language/realizer"):
+        for path in sorted((root / folder).rglob("*")):
+            if path.is_file() and "__pycache__" not in path.parts:
+                digest.update(path.relative_to(root).as_posix().encode())
+                digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+def test_effort_three_leaves_packs_graphs_and_declarations_untouched_and_calls_no_research(monkeypatch):
+    from bench import dialogue_gate as gate
+    monkeypatch.setenv("MARCO_EFFORT", "3")
+    turns = ["Nora has 6 pens.", "Bo has 4 pens.", "Nora has 11 cups.", "Jasper's aunt, Wren, has 3 pens.",
+             "How many pens does Nora have?", "And cups?", "What about Bo?", "Wren, I mean.",
+             "How many pens do Nora and Bo have combined?", "Who has more pens left, Nora or Bo?"]
+    dialogue = {"id": "r7_a5_pin", "language": "en", "turns": [{"n": i + 1, "say": t} for i, t in enumerate(turns)]}
+    before = _tree_digest()
+    answers = gate.run([dialogue])
+    assert _tree_digest() == before
+    rows = answers["r7_a5_pin"]
+    assert len(rows) == len(turns) and not any(r.get("error") for r in rows)
+    assert all(r.get("research_calls") == 0 for r in rows)
