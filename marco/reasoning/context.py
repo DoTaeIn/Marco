@@ -3409,6 +3409,12 @@ class ReasoningContext:
                     "meaning": {"act": "hold", "reason": key, "said": said, "by": by, **(fields or {})},
                     "verification": self._verification(knowledge_path, [{
                         "ok": False, "reason": "event_reference_" + key}])}
+        if not candidates and only is None and self._effort_allows(2):
+            # the declared contrast found no event carrying its old amount: the correction frame may (the one,
+            # a direction said the other way round)
+            framed = self._correction_frame(parser, text, knowledge_path)
+            if framed is not None and framed.get("status") == "observed":
+                return framed
         if not candidates:
             return reply("reference_no_event", 말=said)
 
@@ -3536,19 +3542,29 @@ class ReasoningContext:
         flat = " %s " % " ".join(re.split(r"[\s,.!?]+", fold(said))).strip()
         if not any(" %s " % fold(cue) in flat for cue in spec.get("cues", [])):
             return None
-        # one sentence that states nothing else (an unread statement with a correction word is not a correction)
-        if len(self._segments(said, parser)) != 1:
-            return None
-        try:
-            partial = parser.parse(said, partial=True, events=True) or {}
-        except Exception:    # noqa: BLE001
-            partial = {}
-        if partial.get("facts") or partial.get("query"):
-            return None
-        swap_word = any(" %s " % fold(w) in flat for w in spec.get("swap_words", []))
-        words = [w for w in re.split(r"[\s,.!?]+", said) if w]
-        amounts = [str(v) for v in (self._amount_of(parser, w) for w in words) if v is not None]
+        # every sentence of it states nothing else (an unread statement with a correction word is not a
+        # correction); a sentence that reads as the transfer said the other way round is the correction itself
         keys = list(dict.fromkeys(self._holder_keys(parser)))  # (a key listed twice is one)
+        verbs_known = self._verbs_for(parser, self.observations)
+        restated = []
+        for piece, asking in self._segments(said, parser):
+            try:
+                partial = parser.parse(piece, partial=True, events=True, verbs=verbs_known) or {}
+            except Exception:    # noqa: BLE001
+                partial = {}
+            if asking or partial.get("query"):
+                return None
+            if partial.get("facts"):
+                restated.append(partial["facts"])
+        swap_word = any(" %s " % fold(w) in flat for w in spec.get("swap_words", []))
+        # "the one", "that one" name someone, not the amount one
+        counted_words = " %s " % " ".join(re.split(r"[\s,.!?]+", said))
+        for phrase in sorted(spec.get("pronoun_ones", []), key=len, reverse=True):
+            counted_words = re.sub(r"(?i)(?<=\s)%s(?=\s)" % re.escape(phrase), " ", counted_words)
+        words = [w for w in counted_words.split() if w]
+        amounts = [str(v) for v in (self._amount_of(parser, w) for w in words) if v is not None]
+        words = [w for w in re.split(r"[\s,.!?]+", said) if w]
+        every_named = [k for k in (self._holder_of(parser, w, keys) for w in words) if k is not None]
         # the side of a contrast that says the new version (… 아니라 NEW; NEW, not …) names the holders in order
         side = said
         for cue in spec.get("new_after", []):
@@ -3557,7 +3573,7 @@ class ReasoningContext:
         for cue in spec.get("new_before", []):
             if fold(cue) in fold(side):
                 side = side[:fold(side).index(fold(cue))]
-        words = [w for w in re.split(r"[\s,.!?]+", side) if w] or words
+        words = [w for w in re.split(r"[\s,.!?]+", side) if w and w.lower() not in ("",)] or words
         named = []
         for width in (3, 2, 1):
             for at in range(len(words) - width + 1):
@@ -3566,6 +3582,8 @@ class ReasoningContext:
                         a <= at < a + w for _k, a, w in [(k, a, len(k.split())) for k, a in named]):
                     named.append((key, at))
         named = [key for key, _at in sorted(named, key=lambda row: row[1])]
+        # a verb said from the taker's side (got … from, 받았어) names the receiver first
+        takers_first = any(fold(w).startswith(tuple(fold(v) for v in spec.get("taker_verbs", []))) for w in words)
         updates = parser.data.get("numeric_updates", {})
         counted = set(updates) | {s.get("target") for s in updates.values() if isinstance(s, dict)}
         adds = {n for n, s in updates.items() if isinstance(s, dict) and s.get("factor", 0) > 0}
@@ -3611,8 +3629,17 @@ class ReasoningContext:
                 continue
             context = len(recent) - distance
             # the giver and the receiver swapped: both named, in the other order or with a word that says so
-            if len(givers) == 1 and len(takers) == 1 and len(named) >= 2 and set(named[:2]) == {givers[0], takers[0]} \
-                    and (named[0] == takers[0] or swap_word) and len(set(amounts) - values) == 0:
+            pair = list(dict.fromkeys(named + every_named))[:2]
+            first = named[0] if named else None
+            reversed_said = any(
+                {holder(str(f["triple"][0])) for f in facts_ if f["triple"][1] in removes} == {takers[0]}
+                and {holder(str(f["triple"][0])) for f in facts_ if f["triple"][1] in adds} == {givers[0]}
+                for facts_ in restated) if len(givers) == 1 and len(takers) == 1 else False
+            if restated and not reversed_said:
+                continue
+            if len(givers) == 1 and len(takers) == 1 and set(pair) == {givers[0], takers[0]} \
+                    and (swap_word or reversed_said or (first == takers[0] and not takers_first)
+                         or (first == givers[0] and takers_first)) and len(set(amounts) - values) == 0:
                 tokens = source.split()
                 a = self._frame_span(parser, tokens, givers[0], "holder")
                 b = self._frame_span(parser, tokens, takers[0], "holder")
@@ -5926,6 +5953,13 @@ class ReasoningContext:
             if contrast is not None:
                 self._turn_repairs = []
                 return self._correct_by_reference(parser, contrast, text, knowledge_path)
+            if self._effort_allows(2) and (current is None or not current.get("facts")):
+                # a correction the frame of the last events reads (checked by replay) comes before the declared
+                # receiver contrast, which reads 노라가 아니라 민석이 … as a new receiver
+                framed = self._correction_frame(parser, text, knowledge_path)
+                if framed is not None and framed.get("status") == "observed":
+                    self._turn_repairs = []
+                    return framed
             recipient = self._recipient_contrast(parser, text)
             if recipient is not None:
                 self._turn_repairs = []

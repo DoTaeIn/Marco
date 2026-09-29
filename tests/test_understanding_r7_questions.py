@@ -295,3 +295,24 @@ def test_words_that_describe_several_holders_are_asked_back_and_the_reply_is_ans
     assert asked["status"] != "answered" and asked["meaning"]["reason"] == "which_referent"
     assert all(name in asked["answer"] for name in names)
     assert reply["status"] == "answered" and value in reply["answer"]
+
+
+# ---------------------------------------------------------------------------
+# a direction swap said two turns after its transfer (effort 2; 0 is main)
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("language,correction", [
+    ("english", "{a} was the one who got two {p} from {b}, not the one giving."),
+    ("english", "No, it was {b} who gave {a} the two {p}, not the other way."),
+    ("한국어", "아니, 그게 아니야. {a}가 준 게 아니라 {b}가 {p}을 준 거야."),
+    ("한국어", "아니, {a}가 아니라 {b}가 {p}을 {a}에게 줬어."),
+    ("한국어", "아니, {a}가 {b}한테서 {p}을 받은 거야."),
+])
+def test_a_direction_swap_two_turns_after_its_transfer_is_corrected(language, correction):
+    start = (EN_START + ["{b} has 3 {c}."]) if language == "english" else (KO_START + ["{b}는 컵이 3개 있어."])
+    ask = "How many {p} does {b} have?" if language == "english" else "{b}는 {p}이 몇 개 있어?"
+    words = EN_WORDS if language == "english" else KO_WORDS
+    rows = _play(language, start + [correction, ask], 3, **words)
+    assert rows[4]["status"] == "observed" and rows[4]["meaning"]["act"] == "revise"
+    assert rows[5]["status"] == "answered" and "2" in rows[5]["answer"]
+    main = _play(language, start + [correction, ask], 0, **words)
+    assert main[5]["status"] != "answered"
