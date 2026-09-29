@@ -3897,6 +3897,13 @@ class ReasoningContext:
         words = triple[0].split()
         tails = "|".join(re.escape(p) for p in self._frame_particles(parser)) or "(?!)"
         found = {}
+        if holder_of(triple[0]) == triple[0]:
+            # a holder asked with no thing: the one thing it counts, else the thing the question before asked
+            own = sorted(subject for subject in counted if subject.startswith(triple[0] + " "))
+            before = ((getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item") or "")
+            pick = own if len(own) == 1 else [subject for subject in own if before and subject == triple[0] + " " + before]
+            if len(pick) == 1:
+                return [dict(rows[0], triple=[pick[0], "count", "?n"])], None
         for k in range(1, len(words)):
             asked_holder, asked_thing = " ".join(words[:k]), " ".join(words[k:])
             bare = asked_holder
@@ -3943,6 +3950,9 @@ class ReasoningContext:
         said = said.strip(",.?!")
         self.held_question = text
         self.pending_pointer = {"question": text.strip(), "pointer": said, "candidates": list(which["candidates"])}
+        if which.get("item"):
+            # the thing the ask is about, for the reply's question that names only the holder
+            self.last_frame = {"text": text.strip(), "holders": [said], "item": which["item"]}
         replies = parser.data["context_replies"]
         return {**result, "status": "unresolved",
                 "meaning": {"act": "ask", "reason": "which_referent", "word": said,
@@ -4055,7 +4065,7 @@ class ReasoningContext:
         said = " ".join(words[span[0]:span[-1] + 1]) if span else " ".join(describing)
         tail = next((p for p in self._frame_particles(parser) if said.endswith(p) and len(said) > len(p)), "")
         said = said[:-len(tail)] if tail else said
-        return self._ask_which(parser, text, {"word": said, "candidates": candidates},
+        return self._ask_which(parser, text, {"word": said, "candidates": candidates, "item": thing},
                                {"operator": "relational_graph", "transitions": [],
                                 "verification": self._verification(knowledge_path, [{
                                     "ok": False, "reason": "which_person"}])})
