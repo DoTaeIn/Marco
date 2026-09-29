@@ -30,3 +30,25 @@ Exam profile at 2ccd19c, the 45 held answerable turns:
 Experiment 2 (statements chat): the unnamed thing as a candidate from the
 conversation. Experiment 3 (questions chat): the question frame kept when the
 question is read, so a follow-up inherits it whatever became of the question.
+
+## Experiments 2 and 3
+
+| # | Structural cause | Patch (commit) | Work | Wait | Regression | Frozen exam | Note |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 2 | (exam) a short follow-up inherits a question frame only right after an answered count question; the question reader accepts forms one by one | c47a132, merged 095b434 | chat 35 min; plan manager 12 min | chat 15 min on runs; reported 14:19, merged 14:19, scored 14:22 | **7 new failures** (suite 2,248 passed, 10 failed): round-2 safety test of a scope word over one holder ×3, a probe word declared, a grid sentence shared with dev4, a learning-flow test, the chat's own effort-3 pin inside the parallel run. Merged before the suite had run: from now on the chat runs the full suite before it reports | **69/108** (+6), 0 wrong, 0 violations; questions unread 22 → 8; held behind something unread 15 → 22; one missing-premise turn right → held (`experiment-02.json`); composition 340/340; reasoning 110/113, 0 wrong | grid en 115/299 → 293/314, ko 173/357 → 343/375; dev v6 check 109 → 151/234 |
+| 3 | (exam) a statement that does not name its thing | 4845db8, merged dc4d103 | chat 11 min; plan manager 6 min | chat 12 min on runs; reported 14:28, merged 14:41 (13 min behind the suite re-run), scored 14:43 | same 10 as experiment 2, none new | **69/108, gate unchanged**; missing premise 3 → 5 of 20, ambiguous 7 → 8 of 12 (`experiment-03.json`) | the patch covers "nothing after the number"; the exam's form has a word after the number |
+
+Exam profile at dc4d103, the 39 held answerable turns: held behind something
+unread 22 (13 behind the 12 unrecorded statements, 6 behind a correction turn
+that is not read, 3 other); question not read 8; cross-language 4;
+which_referent 2, unresolved 2, not_stated 1.
+
+Masked shapes of the unrecorded English transfers (names, things and numbers as
+placeholders, every other word as `w`): `GIVER w RECEIVER NUMWORD w .` (2),
+`GIVER w NUMWORD w w RECEIVER .` (1), and the same with a title written with a
+period before each name (2). The slot after the number holds a word that is not
+the thing.
+
+Next: the seven regressions (questions chat, first); the slot after the number
+as candidates (statements chat); correction turns the reader does not read
+(questions chat, after the regressions).

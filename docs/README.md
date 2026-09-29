@@ -38,6 +38,11 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | Document | What |
 | --- | --- |
 | [README.md](en/README.md) | Index of the English documents |
+| [capabilities.md](en/capabilities.md) | Every capability with the test or self-check that asserts it (moved from the root README) |
+| [graph-engine.md](en/graph-engine.md) | The graph engine: how it answers, why it does not invent, the `.kg` format, alias learning, the encoder |
+| [how-marco-speaks.md](en/how-marco-speaks.md) | Hermeneia and Palinorrhesis: one reply traced through the realizer |
+| [measurements.md](en/measurements.md) | Counts, tests, routing, runtime, the model comparison and the component table as measured at `5f321a3` |
+| [alma-research-loop.md](en/alma-research-loop.md) | The ALMA 0.1 research loop and its tests |
 | [pipelines.md](en/pipelines.md) | The names of MARCO: ten pipelines and six structural concepts, what each does and where it stands today |
 | [development.md](en/development.md) | Development guide: how the graph-grounded engine maps a statement to evidence and a conclusion |
 | [graph-authoring.md](en/graph-authoring.md) | Graph authoring guide: claims, evidence and the relations that reach a conclusion |
@@ -99,6 +104,12 @@ that code closes it.
 | [W5-4.md](requests/W5-4.md) | The runtime release stamp in the trace ledger has no owner yet |
 | [G5-1.md](requests/G5-1.md) | The recorder wiring into the engine's turn and the gap class in the ledger; done inside G5 |
 | [G5-2.md](requests/G5-2.md) | What round 5 left: two realizer items and nine reading items for round 6 |
+| [G6-2.md](requests/G6-2.md) | A held count that was never said, though something was received |
+| [G6-3.md](requests/G6-3.md) | Why with a restated fact: the fields the reader gives, two plans without words |
+| [G6-4.md](requests/G6-4.md) | Three holds the reader gives whose words say something else |
+| [W6-1.md](requests/W6-1.md) | The meaning fields round 6's plans read |
+| [G7-2.md](requests/G7-2.md) | Where the effort setting is declared and how to read it |
+| [G7-3.md](requests/G7-3.md) | The shared ranking of candidates, its fields and its commits |
 
 ## Korean design records (`docs/ko/`)
 
@@ -142,6 +153,9 @@ queue.
 | [2026-09-25-understanding-r5-goal.md](ko/2026-09-25-understanding-r5-goal.md) | G5: understanding round 5, the blocking classes plus readings as candidates |
 | [2026-09-25-realizer-r5-goal.md](ko/2026-09-25-realizer-r5-goal.md) | W5: realizer round 5, the round-4 requests, trace fields, fluency sample 5 |
 | [2026-09-25-understanding-r6-goal.md](ko/2026-09-25-understanding-r6-goal.md) | G6: understanding round 6, the exam's own classes read from the ledger, why with a restated fact |
+| [2026-09-25-profile-and-mrl-decision.md](ko/2026-09-25-profile-and-mrl-decision.md) | Where the time of a turn goes, and the decision not to build the MRL systems language |
+| [dev6-phrasing.md](ko/dev6-phrasing.md) | Instructions for the outside writer of development set v6 |
+| [2026-09-29-understanding-r7-statements.md](ko/2026-09-29-understanding-r7-statements.md) | Round 7, statements: the cause table of the refused Korean transfers |
 | [2026-09-29-experiment-log.md](ko/2026-09-29-experiment-log.md) | Understanding experiments, one row each: cause, patch, work and wait time, regression, frozen score |
 | [2026-09-29-marco-fixed-timeline.md](ko/2026-09-29-marco-fixed-timeline.md) | Owner-fixed timeline: M1 language gate → release → M2 → M3 → M4 → A1 → A2 → S1 → P1 → N1; new ideas are placed under a phase, never reorder them |
 | [2026-09-29-understanding-r7-goal.md](ko/2026-09-29-understanding-r7-goal.md) | G7: understanding round 7, questions as a frame plus slots (G7-Q) and the statements that cascade (G7-S) |
@@ -274,6 +288,11 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [composition-after-w5.json](ko/dialogue-gate-2026-09-22/composition-after-w5.json) | Composition after realizer round 5: 340 of 340 |
 | [round5.json](ko/dialogue-gate-2026-09-22/round5.json) | Round 5, `ca64770`: 45 of 108, 0 wrong, 0 violations, records 120 of 150 |
 | [composition-round5.json](ko/dialogue-gate-2026-09-22/composition-round5.json) | Composition at round 5: 340 of 340 |
+| [round6.json](ko/dialogue-gate-2026-09-22/round6.json) | Round 6, `735b7a4`: 63 of 108, 0 wrong, 0 violations, records 138 of 150 |
+| [experiment-01.json](ko/dialogue-gate-2026-09-22/experiment-01.json) | Experiment 1, `2ccd19c`: 63 of 108, no turn changed |
+| [experiment-02.json](ko/dialogue-gate-2026-09-22/experiment-02.json) | Experiment 2, `095b434`: 69 of 108, 0 wrong, 0 violations |
+| [experiment-03.json](ko/dialogue-gate-2026-09-22/experiment-03.json) | Experiment 3, `dc4d103`: 69 of 108, gate unchanged |
+| [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
 ### Frozen reasoning gate (`ko/reasoning-gate-2026-09-24/`)
 
@@ -289,6 +308,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [round4.json](ko/reasoning-gate-2026-09-24/round4.json) | Round 4: 108 of 111 problems, 148 of 151 questions, 0 wrong |
 | [after-w5.json](ko/reasoning-gate-2026-09-24/after-w5.json) | After realizer round 5: unchanged, 0 wrong |
 | [round5.json](ko/reasoning-gate-2026-09-24/round5.json) | Round 5: 108 of 111 problems, 148 of 151 questions, 0 wrong |
+| [experiment-02.json](ko/reasoning-gate-2026-09-24/experiment-02.json) | Reasoning at experiment 2, `095b434` |
 
 ### Model comparison (`ko/model-comparison-2026-09-24/`)
 
