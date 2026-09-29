@@ -146,3 +146,17 @@ Exam profile at 1683212, the 27 held answerable turns: 19 wait behind a root tur
 turns held as not stated or without a referent 5; two corrections the reader
 returns nothing for 4; three Korean statements 5; the English use-up with a
 pronoun 1); question not read 5; lookup 2; tie 1.
+
+## Experiments 9 and 10
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 9 | (exam, then diagnosed on invented sentences) a use-up is not read when a trailing phrase says what the things went to; the pronoun was not the blocker | b659a5f with 6797663, merged 564a97e | chat 35 min; plan manager 12 min | chat 33 min on runs; reported 18:27, merged 18:28, scored 18:34 | full suite on the merged tree 2,354 passed, the 3 known failures, 397 s; the chat's own suite had caught a dropped negation before its report | **82/108** (+1), statements 142 → 144 of 150, why 19 → 20 of 26, 0 wrong, 0 violations (`experiment-09.json`); dev v6 check 149 → 177/234 |
+| 10 | (invented reproduction of the exam's which-person turns) a question whose holder words describe several holders is held instead of asked, and the reply after it is held behind itself | adc07f2, merged 5e9289a | chat 15 min; plan manager 8 min | chat 15 min on runs; reported 18:38, merged 18:41 after the suite of experiment 9, scored 18:46 | chat's full suite on the merged tree 2,323 passed, 1 known failure (gate files left out); gate files and reading tests at merge: 401 passed | **82/108, no turn changed its bucket**: the invented forms are not the exam's (`experiment-10.json`) |
+
+The exam's which-person turns by masked shape: 12 turns, two candidates each, 5
+held. None names a candidate; ten do not name the thing; nine have a pronoun and
+three describe the person in other words. The held ones are held as `not_stated`
+(English, a description without a pronoun) or `no_referent` (a pronoun). The turn
+after is the person's reply, a candidate's name alone or with one or two words,
+and it is held when the question before it was held.

@@ -5,7 +5,7 @@ every sentence it says from a proven meaning, and holds when nothing grounds an
 answer. No language model runs anywhere in it.**
 
 **Status: MARCO 1 · Preview.** MARCO 1 is not released. Five of its six gate
-conditions hold; the sixth, accuracy on unseen dialogues, stands at 81 of 108
+conditions hold; the sixth, accuracy on unseen dialogues, stands at 82 of 108
 with 98 needed ([Status](#status)).
 
 ```
@@ -75,8 +75,8 @@ Gate condition 2 over time, all with 0 or 1 wrong answers:
 
 Experiment 4 restored a safety hold of round 2 that experiment 2 had broken (a
 scope word over one holder is held, not answered); two turns went back to held. The gate table above is the run at `a18c617`;
-the latest run, experiment 8 at `1683212`, is 81 of 108 with no wrong turn on the
-whole exam ([experiment-08.json](docs/ko/dialogue-gate-2026-09-22/experiment-08.json)).
+the latest run, experiment 10 at `5e9289a`, is 82 of 108 with no wrong turn on the
+whole exam ([experiment-10.json](docs/ko/dialogue-gate-2026-09-22/experiment-10.json)).
 
 Work now runs as small experiments: find the largest structural cause of the
 held turns, patch it, run the regression, merge, score the exam again. Each one
