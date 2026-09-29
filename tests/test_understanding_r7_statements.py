@@ -127,3 +127,63 @@ def test_the_choice_and_its_ranking_are_in_the_trace():
     assert result["status"] == "observed"
     assert [r["winner"] for r in current._trace_rankings] == ["보람 트럭에 사과 -> 보람 사과"]
     assert current._trace_rankings[0]["decided_by"] == "only"
+
+
+# Experiment 2: a statement that names no thing (Nora gave Eli three., 가람이 나래에게 세 개를 줬어.) when its
+# holder counts two things. At effort 2 and above each thing a named holder counts, and the thing of the
+# statement just before, is a candidate; the one that fits and agrees with the conversation wins. Below
+# effort 2 the statement is refused as on main.
+UNSAID_THING = [
+    ("english",
+     [("Nora has 7 pens.", "rec"), ("Nora has 3 cups.", "rec"), ("Eli has 2 pens.", "rec"),
+      ("Nora gave Eli three.", "rec"), ("How many pens does Nora have?", 4), ("How many cups does Nora have?", 3),
+      ("How many pens does Eli have?", 5), ("Nora gave Eli two cups.", "rec"), ("Nora lost one.", "rec"),
+      ("How many pens does Nora have?", 4)],
+     [("Nora has 7 pens.", "rec"), ("Nora has 3 cups.", "rec"), ("Eli has 2 pens.", "rec"),
+      ("Nora gave Eli three.", "hold"), ("How many pens does Eli have?", "hold")]),
+    ("english",
+     [("Mr. Keller has twelve spoons.", "rec"), ("Mr. Keller has four bowls.", "rec"), ("Ada has one spoon.", "rec"),
+      ("Mr. Keller handed Ada five.", "rec"), ("How many spoons does Mr. Keller have?", 7),
+      ("How many spoons does Ada have?", 6)],
+     [("Mr. Keller has twelve spoons.", "rec"), ("Mr. Keller has four bowls.", "rec"), ("Ada has one spoon.", "rec"),
+      ("Mr. Keller handed Ada five.", "hold")]),
+    ("한국어",
+     [("가람은 연필이 7개 있어.", "rec"), ("가람은 컵이 3개 있어.", "rec"), ("나래는 연필이 2개 있어.", "rec"),
+      ("가람이 나래에게 세 개를 줬어.", "rec"), ("가람은 연필이 몇 개 있어?", 4), ("나래는 연필이 몇 개 있어?", 5),
+      ("가람은 두 개를 썼어.", "rec"), ("가람은 연필이 몇 개 있어?", 2), ("가람은 컵이 몇 개 있어?", 3)],
+     [("가람은 연필이 7개 있어.", "rec"), ("가람은 컵이 3개 있어.", "rec"), ("나래는 연필이 2개 있어.", "rec"),
+      ("가람이 나래에게 세 개를 줬어.", "hold"), ("나래는 연필이 몇 개 있어?", "hold")]),
+]
+
+UNSAID_HELD = [
+    # only one of the two things covers the amount, and it is the other thing the conversation talked about
+    # last: state decides, the one that covers it
+    ("english", [("Nora has 7 pens.", "rec"), ("Nora has 2 cups.", "rec"), ("Nora gave Eli five.", "rec"),
+                 ("How many pens does Nora have?", 2), ("How many cups does Nora have?", 2)]),
+    # neither covers it: held, and so is the count it may have moved
+    ("english", [("Nora has 3 pens.", "rec"), ("Nora has 2 cups.", "rec"), ("Nora gave Eli five.", "hold"),
+                 ("How many pens does Nora have?", "hold")]),
+    # both cover it and nothing in the conversation prefers one: a tie, held, and so is the count it may have moved
+    ("한국어", [("가람은 연필이 7개 있어.", "rec"), ("가람은 컵이 6개 있어.", "rec"), ("나래는 접시가 2개 있어.", "rec"),
+              ("가람이 나래에게 세 개를 줬어.", "hold"), ("가람은 연필이 몇 개 있어?", "hold")]),
+]
+
+
+@pytest.mark.parametrize("n", range(len(UNSAID_THING)))
+@pytest.mark.parametrize("effort", [2, 3])
+def test_an_unsaid_thing_is_read_at_effort_2_and_above(n, effort):
+    language, dialogue, _below = UNSAID_THING[n]
+    assert play(language, effort, dialogue) == []
+
+
+@pytest.mark.parametrize("n", range(len(UNSAID_THING)))
+@pytest.mark.parametrize("effort", [0, 1])
+def test_an_unsaid_thing_is_refused_below_effort_2(n, effort):
+    language, _dialogue, below = UNSAID_THING[n]
+    assert play(language, effort, below) == []
+
+
+@pytest.mark.parametrize("n", range(len(UNSAID_HELD)))
+def test_an_unsaid_thing_is_chosen_by_state_or_held(n):
+    language, dialogue = UNSAID_HELD[n]
+    assert play(language, 3, dialogue) == []

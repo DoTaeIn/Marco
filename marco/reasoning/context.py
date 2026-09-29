@@ -618,6 +618,88 @@ class ReasoningContext:
             kept.append(winner["label"])
         return kept or None
 
+    def _read_unsaid_thing(self, parser, text, current, verbs, knowledge_path):
+        """G7-S experiment 2, effort 2 (a slot candidate from the conversation; amendment A1): a statement that
+        moves or states an amount of a thing it does not name (Nora gave Eli three., 가람이 나래에게 세 개를 줬어.)
+        names holders whose keys carry no thing. When the conversation cannot take the thing from one key of
+        the holder alone (the holder counts two things, or none), each thing a named holder counts, and the
+        thing of the statement just before, is a candidate: every thingless holder of the statement takes it
+        (a transfer moves one thing). Each is checked against the conversation (``_reading_failure``); the
+        survivors are ranked (``_rank_candidates``): state, every holder that loses some has a count before;
+        context, the thing is that of the statement just before, and a receiver already counts it. A clear
+        winner is kept as the statement's reading for this conversation and the turn is played with it; a tie
+        or none returns None and the statement goes on as before."""
+        updates = parser.data.get("numeric_updates") or {}
+        numeric = self._numeric_targets(parser)
+        rows = [f["triple"] for f in current.get("facts", []) if isinstance(f.get("triple"), list)
+                and isinstance(f["triple"][0], str) and (f["triple"][1] in updates or f["triple"][1] in numeric)]
+        if not rows or not self.observations:
+            return None
+        try:
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+            state, _c = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+        except ValueError:
+            return None
+        keys = [row["triple"][0] for row in state if isinstance(row["triple"][0], str)
+                and row["triple"][1] in numeric | {"count_unknown"} and len(row["triple"][0].split()) > 1]
+        things = {key.split()[-1] for key in keys}
+        if not things:
+            return None
+
+        def holds(holder):
+            return [key.split()[-1] for key in keys if key.startswith(holder + " ")]
+        # a key is a holder and a thing; a subject of one word, or one that is the holder of a counted key,
+        # names no thing
+        thingless = [s for s in dict.fromkeys(t[0] for t in rows)
+                     if s not in keys and (len(s.split()) == 1 or holds(s))]
+        if not thingless or all(len(holds(s)) == 1 for s in thingless):
+            return None             # every holder has one thing: the key's leading words already find it
+        previous = self._read_source(parser, self.observations[-1], events=True, verbs=verbs) or {}
+        before = [f["triple"][0].split()[-1] for f in previous.get("facts", []) if isinstance(f.get("triple"), list)
+                  and isinstance(f["triple"][0], str) and len(f["triple"][0].split()) > 1]
+        before_thing = before[0] if before else None
+
+        def removing(row):
+            return row[1] in updates and float((updates[row[1]] or {}).get("factor", 1) or 1) < 0
+        takers = [t[0] for t in rows if t[1] in updates and not removing(t) and t[0] in thingless]
+        candidates = [thing for s in thingless for thing in holds(s)] + ([before_thing] if before_thing else [])
+        survivors = []
+        for thing in dict.fromkeys(candidates):
+            parsed = deepcopy(current)
+            for fact in parsed.get("facts", []):
+                if isinstance(fact.get("triple"), list) and fact["triple"][0] in thingless:
+                    fact["triple"][0] = fact["triple"][0] + " " + thing
+            failure, changes = self._reading_failure(parser, text, parsed)
+            if failure is not None:
+                self._candidate_dropped(2, "unsaid_thing", thing, failure[1])
+                continue
+            known = all(row.get("before") is not None for row in changes if (row.get("delta") or 0) < 0)
+            survivors.append({"label": thing, "parsed": parsed,
+                              "fit": {"state": int(known),
+                                      "context": int(thing == before_thing)
+                                      + int(bool(takers) and all(thing in holds(s) for s in takers)),
+                                      "cost": 1}})
+        if not survivors:
+            return None
+        winner, _deciding, _ranking = self._rank_candidates(survivors, kind="unsaid_thing")
+        if winner is None:
+            return None
+        said = str(text).strip()
+        parser.__dict__.setdefault("chosen_readings", {})[said] = winner["parsed"]
+        self._replay_cache = None
+        self._rereading = True
+        try:
+            result = self._turn(text, knowledge_path)
+        finally:
+            self._rereading = False
+        if result is None or result.get("status") != "observed":
+            parser.chosen_readings.pop(said, None)
+            self._replay_cache = None
+            return None
+        result.setdefault("verification", {}).setdefault("checks", []).append({
+            "ok": True, "reason": "unsaid_thing", "thing": winner["label"], "effort": self.effort})
+        return result
+
 
     @staticmethod
     def _못잰까닭(까닭):
@@ -5409,6 +5491,10 @@ class ReasoningContext:
                 and not getattr(self, "_rereading", False)):
             # G7-S: a holder this statement moves, counted before under another key (effort 2)
             self._read_other_keys(parser, text, current, verbs)
+            # G7-S experiment 2: a statement that names no thing, its holders counting two things or none
+            unsaid = self._read_unsaid_thing(parser, text, current, verbs, knowledge_path)
+            if unsaid is not None:
+                return unsaid
         try:
             facts, defined, unsettled, 읽힘 = self._cached_replay(
                 parser, pending, self.fills + 새채움)
