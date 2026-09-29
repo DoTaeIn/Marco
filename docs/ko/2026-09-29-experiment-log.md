@@ -183,3 +183,13 @@ earlier unread turn (six unrecorded statements and four held corrections are the
 roots); 10 fail on their own: a total of two holders and a comparison, neither
 read (2); very short Korean turns not read or tied (4); read as a query and held
 at the lookup (3); one held as a protected repair.
+
+## Experiment 13: the Korean lookup, from masked keys
+
+| # | Cause | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- | --- |
+| 13 | (exam, masked keys) four Korean questions are read and held at the lookup while the state holds the fact: the holder asked alone, the holder with 는 left on, the holder before a word that is no thing of the state | fe8886b with 572f92d, merged 5712ebf | chat 25 min; plan manager 9 min | chat 20 min on runs; reported 20:19, merged 20:20, scored 20:26 | chat's full suite 2,339 passed, 1 known failure (gate files left out); gate files and reading tests at merge: 547 passed | **86/108 (79.6%)**, net +1: Korean 39 → 41 of 54, **English 46 → 45**; one English which-person turn and the reply after it went from right to held (which-person 12 → 11 of 12); 0 wrong, 0 violations (`experiment-13.json`). The chat expected turns 1, 4 and 10 of its list to move and 2, 3 only if their word is declared: two moved |
+
+The regressed which-person turn ends again at the lookup (`_ground_lookup` then
+hold/not_stated) and the reply after it is not read; sent back to the chat as the
+first thing to fix.
