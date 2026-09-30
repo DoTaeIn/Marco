@@ -306,3 +306,9 @@ hold reason). Eleven dialogues:
 | ko | S S S Q Y(not read) Q(not read) | a why, then a one-word question after a restart |
 | ko | S S Q C(not read) Q Y Q | a correction with two markers |
 | ko | S S S W Q(unresolved) U Q(unresolved) | the reply to a which-person ask |
+
+## On nodes: the reply to a which-person ask
+
+| Cause (exam chain) | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- |
+| `S S S W Q(not read)`: the reply is a name with a word or two, then the question again, naming the holder and no thing; and the thing of the ask had been said with one of its words only | 657994b (a thing said with some of its words is its node), 2c1e7ff (the reply's first sentence is tried as a named reply), merged e0f087b | chat about 45 min; plan manager 8 min | reported 16:55, merged 16:57, scored 17:03 | chat's full suite 2,385 passed, 1 known failure (gate files left out), no re-pin; gate files, graph, corrections and reading tests at merge: 489 passed | **93/108 (86.1%)**, +3, English 49 of 54, Korean 44 of 54, 0 wrong, 0 violations (`graph-step-3q2.json`). Expected by the chat: the two English replies; they moved, and the question behind one of them |
