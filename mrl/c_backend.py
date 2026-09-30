@@ -233,7 +233,8 @@ def _emit_c(ir, functions):
             collect_heuristic(row["body"])
         for graph, heuristic in dict.fromkeys(wrappers):
             index = graph_ids[graph] - 1
-            lines.append(f"static int32_t mrl_heuristic_{index}_{fn_names[heuristic]}(MrlNode a, MrlNode b) {{ return {fn_names[heuristic]}(mrl_payload_{index}[a.id], mrl_payload_{index}[b.id]); }}")
+            node_struct = struct_ids[ir["graphs"][index]["node_type"]]
+            lines.append(f"static int32_t mrl_heuristic_{index}_{fn_names[heuristic]}(MrlNode a, MrlNode b) {{ return {fn_names[heuristic]}(*((MrlStruct{node_struct} *)mrl_graph_node_payload(&mrl_graph_{index}, a)), *((MrlStruct{node_struct} *)mrl_graph_node_payload(&mrl_graph_{index}, b))); }}")
     lines.append("")
     for function in ir["functions"]:
         counter, values = [0], {param["name"]: f"mrl_p_{index}" for index, param in enumerate(function["params"])}
@@ -416,7 +417,7 @@ def _v3_type(value, where, structs, void=False):
         return value
     if structs.get("$version") in {4, 5, 6, 7} and value == "horn_result":
         return value
-    if structs.get("$version") in {5, 6, 7} and value in {"horn_plan", "horn_snapshot"} or structs.get("$version") == 7 and value in {"horn_triple", "candidate", "candidates", "constraint", "constraints", "interpretation"}:
+    if structs.get("$version") in {5, 6, 7} and value in {"horn_plan", "horn_snapshot"} or structs.get("$version") == 7 and value in {"horn_triple", "horn_rule", "candidate", "candidates", "constraint", "constraints", "interpretation"}:
         return value
     _fail(where, "invalid type")
 
@@ -448,13 +449,13 @@ def _v3_expr(node, functions, values, info, where):
                        "horn_evaluate": ("plan", "operation", "limit", "proof_limit", "search_limit", "target"),
                        "horn_version": ("plan",)})
     if info.get("$version") == 7:
-        fields.update({"horn_correct": ("plan", "fact"), "horn_exists": ("plan", "triple"), "horn_count": ("plan", "triple"), "horn_select": ("plan", "triple"), "horn_explain": ("plan", "triple"), "horn_changes": ("plan",), "horn_save": ("plan", "path"), "horn_restore": ("plan", "path"), "horn_commit": ("plan", "path"), "horn_load": ("plan", "path"), "horn_call": (), "horn_triple": ("terms",), "candidate_construct": ("id", "meaning"), "candidates_construct": ("items",), "constraint_construct": ("required", "forbidden", "consistent"), "constraints_construct": ("items",), "interpret": ("candidates", "constraints", "budget"), "horn_history": ()})
+        fields.update({"horn_correct": ("plan", "fact"), "horn_exists": ("plan", "triple"), "horn_count": ("plan", "triple"), "horn_select": ("plan", "triple"), "horn_explain": ("plan", "triple"), "horn_changes": ("plan",), "horn_save": ("plan", "path"), "horn_restore": ("plan", "path"), "horn_commit": ("plan", "path"), "horn_load": ("plan", "path"), "horn_call": (), "horn_triple": (), "horn_rule_construct": (), "horn_rule_history": (), "indexed_call": (), "candidate_construct": ("id", "meaning"), "candidates_construct": ("items",), "constraint_construct": ("required", "forbidden", "consistent"), "constraints_construct": ("items",), "interpret": ("candidates", "constraints", "budget"), "horn_history": ()})
     if kind not in fields:
         _fail(where, "unknown expression kind")
     if kind in {"candidate_construct", "constraint_construct", "interpret"}:
         base = ("kind", "type") + fields[kind]
         if set(node) not in (set(base), set(base) | {"eval_order"}): _fail(where, "unexpected schema")
-    elif kind not in {"horn_call", "horn_history"}: _object(node, where, ("kind", "type") + fields[kind])
+    elif kind not in {"horn_call", "horn_history", "horn_rule_history", "horn_triple", "horn_rule_construct", "indexed_call"}: _object(node, where, ("kind", "type") + fields[kind])
     typ = _v3_type(node["type"], where + ".type", info, void=True)
     if kind == "io_call":
         from .language_io import validate_io
@@ -498,7 +499,13 @@ def _v3_expr(node, functions, values, info, where):
         if wanted is None or typ != wanted[0] or len(node["indexes"]) != wanted[1] or any(_v3_expr(value, functions, values, info, where + ".indexes") != "si32" for value in node["indexes"]): _fail(where, "invalid Horn accessor")
         return typ
     if kind == "horn_triple":
-        if typ != "horn_triple" or not isinstance(node["terms"], list) or len(node["terms"]) != 3 or any(_v3_expr(term, functions, values, info, where + ".terms") != "s" for term in node["terms"]): _fail(where, "invalid Horn triple")
+        if set(node) not in ({"kind", "type", "terms"}, {"kind", "type", "terms", "eval_order"}) or typ != "horn_triple" or not isinstance(node["terms"], list) or len(node["terms"]) != 3 or any(_v3_expr(term, functions, values, info, where + ".terms") != "s" for term in node["terms"]) or "eval_order" in node and (not isinstance(node["eval_order"], list) or any(type(i) is not int for i in node["eval_order"]) or sorted(node["eval_order"]) != [0, 1, 2]): _fail(where, "invalid Horn triple")
+        return typ
+    if kind == "horn_rule_construct":
+        required = {"kind", "type", "id", "version", "body", "head", "eval_order"}
+        if set(node) != required or typ != "horn_rule" or _v3_expr(node["id"], functions, values, info, where + ".id") != "s" or node["version"] is not None and _v3_expr(node["version"], functions, values, info, where + ".version") not in {"s", "si32"} or _v3_expr(node["head"], functions, values, info, where + ".head") != "horn_triple" or not isinstance(node["body"], list) or not 1 <= len(node["body"]) <= 8 or any(_v3_expr(item, functions, values, info, where + ".body") != "horn_triple" for item in node["body"]): _fail(where, "invalid Horn rule")
+        expected = {"id", "head", *("body:" + str(i) for i in range(len(node["body"]))) } | ({"version"} if node["version"] is not None else set())
+        if not isinstance(node["eval_order"], list) or len(node["eval_order"]) != len(expected) or any(not isinstance(token, str) for token in node["eval_order"]) or set(node["eval_order"]) != expected: _fail(where, "invalid Horn rule evaluation order")
         return typ
     if kind == "candidate_construct":
         if typ != "candidate" or _v3_expr(node["id"], functions, values, info, where + ".id") != "s" or _v3_expr(node["meaning"], functions, values, info, where + ".meaning") != "horn_snapshot": _fail(where, "invalid Candidate")
@@ -515,6 +522,32 @@ def _v3_expr(node, functions, values, info, where):
     if kind == "interpret":
         if typ != "interpretation" or _v3_expr(node["candidates"], functions, values, info, where + ".candidates") != "candidates" or _v3_expr(node["constraints"], functions, values, info, where + ".constraints") != "constraints" or _v3_expr(node["budget"], functions, values, info, where + ".budget") != "si32": _fail(where, "invalid interpret")
         if "eval_order" in node and (not isinstance(node["eval_order"], list) or len(node["eval_order"]) != len(set(node["eval_order"])) or set(node["eval_order"]) - {"candidates", "constraints", "budget"}): _fail(where, "invalid interpret evaluation order")
+        return typ
+    if kind == "horn_rule_history":
+        if isinstance(node.get("operation"), str) and node["operation"] in {"add_rule", "replace_rule", "remove_rule"}:
+            if set(node) != {"kind", "type", "operation", "plan", "id", "rule", "eval_order"} or typ != "b" or _v3_expr(node["plan"], functions, values, info, where + ".plan") != "horn_plan": _fail(where, "invalid Horn rule history")
+            if node["plan"].get("kind") != "name" or not values.get(node["plan"].get("name"), (None, False))[1]: _fail(where, "Horn rule mutation needs mutable plan")
+            operation = node["operation"]
+            if operation == "add_rule" and (node["id"] is not None or _v3_expr(node["rule"], functions, values, info, where + ".rule") != "horn_rule"): _fail(where, "invalid Horn rule history")
+            if operation == "replace_rule" and (_v3_expr(node["id"], functions, values, info, where + ".id") != "s" or _v3_expr(node["rule"], functions, values, info, where + ".rule") != "horn_rule"): _fail(where, "invalid Horn rule history")
+            if operation == "remove_rule" and (_v3_expr(node["id"], functions, values, info, where + ".id") != "s" or node["rule"] is not None): _fail(where, "invalid Horn rule history")
+            expected = {"plan"} | ({"id"} if node["id"] is not None else set()) | ({"rule"} if node["rule"] is not None else set())
+            if not isinstance(node["eval_order"], list) or len(node["eval_order"]) != len(expected) or any(not isinstance(token, str) for token in node["eval_order"]) or set(node["eval_order"]) != expected: _fail(where, "invalid Horn rule evaluation order")
+            return typ
+        _fail(where, "invalid Horn rule history")
+    if kind == "indexed_call":
+        required = {"kind", "type", "operation", "plan", "path", "triple", "id", "fact", "eval_order"}
+        op = node.get("operation")
+        expected_type = "result:si32:s" if op == "save" else "result:b:s"
+        if set(node) != required or not isinstance(op, str) or op not in {"save", "exists", "add", "correct", "remove"} or typ != expected_type or _v3_expr(node["path"], functions, values, info, where + ".path") != "s": _fail(where, "invalid indexed call")
+        if op == "save" and (_v3_expr(node["plan"], functions, values, info, where + ".plan") != "horn_plan" or any(node[key] is not None for key in ("triple", "id", "fact"))): _fail(where, "invalid indexed save")
+        if op == "exists" and (node["plan"] is not None or _v3_expr(node["triple"], functions, values, info, where + ".triple") != "horn_triple" or node["id"] is not None or node["fact"] is not None): _fail(where, "invalid indexed exists")
+        if op == "remove" and (node["plan"] is not None or _v3_expr(node["id"], functions, values, info, where + ".id") != "s" or node["triple"] is not None or node["fact"] is not None): _fail(where, "invalid indexed remove")
+        if op in {"add", "correct"}:
+            fact = node["fact"]
+            if node["plan"] is not None or node["triple"] is not None or node["id"] is not None or not isinstance(fact, dict) or set(fact) != {"id", "subject", "predicate", "object", "polarity"} or any(_v3_expr(fact[key], functions, values, info, where + ".fact." + key) != ("b" if key == "polarity" else "s") for key in fact): _fail(where, "invalid indexed fact")
+        present = {"path"} | ({"plan"} if node["plan"] is not None else set()) | ({"triple"} if node["triple"] is not None else set()) | ({"id"} if node["id"] is not None else set()) | ({"fact:" + key for key in node["fact"]} if node["fact"] is not None else set())
+        if not isinstance(node["eval_order"], list) or len(node["eval_order"]) != len(present) or any(not isinstance(token, str) for token in node["eval_order"]) or set(node["eval_order"]) != present: _fail(where, "invalid indexed evaluation order")
         return typ
     if kind == "horn_history":
         if set(node) not in ({"kind", "type", "operation", "plan", "id"}, {"kind", "type", "operation", "plan", "id", "fact"}) or node["operation"] not in {"withdraw", "replace", "supersede", "superseded_by", "history_fact"} or _v3_expr(node["plan"], functions, values, info, where + ".plan") != "horn_plan" or _v3_expr(node["id"], functions, values, info, where + ".id") != "s": _fail(where, "invalid Horn history")
@@ -564,10 +597,10 @@ def _v3_expr(node, functions, values, info, where):
     if kind == "field":
         value = _v3_expr(node["value"], functions, values, info, where + ".value")
         name = _name(node["name"], where + ".name")
-        if info.get("$version") in {4, 5, 6} and isinstance(value, str) and value.startswith("path:"):
+        if info.get("$version") in {4, 5, 6, 7} and isinstance(value, str) and value.startswith("path:"):
             if name == "cost" and typ == "si32": return typ
             _fail(where, "invalid path field")
-        if info.get("$version") in {4, 5, 6} and isinstance(value, str) and value.startswith("paths:"):
+        if info.get("$version") in {4, 5, 6, 7} and isinstance(value, str) and value.startswith("paths:"):
             if (name, typ) in {("complete", "b"), ("reason", "s")}: return typ
             _fail(where, "invalid paths field")
         if info.get("$version") in {4, 5, 6} and value == "horn_result":
@@ -896,7 +929,7 @@ def _validate_v4_purity(ir):
         if isinstance(value, dict):
             kind = value.get("kind")
             if kind == "call": names.add(value["name"])
-            if kind in {"print", "graph_add_node", "graph_add_edge", "graph_remove", "graph_find", "graph_find_all", "horn_query", "horn_plan", "horn_add", "horn_correct", "horn_remove", "horn_evaluate", "horn_version", "horn_load", "horn_save", "horn_restore", "horn_commit", "list_push", "map_set", "map_remove"}: return True
+            if kind in {"print", "graph_add_node", "graph_add_edge", "graph_remove", "graph_find", "graph_find_all", "horn_query", "horn_plan", "horn_add", "horn_correct", "horn_remove", "horn_evaluate", "horn_version", "horn_load", "horn_save", "horn_restore", "horn_commit", "horn_rule_history", "indexed_call", "list_push", "map_set", "map_remove"}: return True
             return any(scan(child, names) for child in value.values())
         if isinstance(value, list): return any(scan(child, names) for child in value)
         return False
@@ -948,6 +981,17 @@ def _validate_v6(ir):
 
 def _validate_v7(ir):
     functions, info = _validate_v3(ir, 7)
+    # Rule constructor strings are borrowed until the mutation deep-copies them.
+    # Keep that internal payload from escaping into arbitrary raw-IR values.
+    def rule_payloads(value, allowed=False):
+        if isinstance(value, dict):
+            if value.get("return_type") == "horn_rule" or value.get("type") == "horn_rule" and (value.get("kind") != "horn_rule_construct" or not allowed):
+                _fail("program", "Rule values are only supported inside rule mutations")
+            for key, child in value.items():
+                rule_payloads(child, value.get("kind") == "horn_rule_history" and key == "rule")
+        elif isinstance(value, list):
+            for child in value: rule_payloads(child)
+    rule_payloads(ir)
     def controls(rows, depth=0):
         for row in rows:
             if row["kind"] in {"break", "continue"} and not depth: _fail("program", "loop control outside loop")
@@ -1003,6 +1047,7 @@ def _emit_v3(ir, functions, info):
         if typ == "horn_plan": return "MrlHornPlan *" if ir["version"] in {6, 7} else "MrlHornPlan"
         if typ == "horn_snapshot": return "MrlHornSnapshot *" if ir["version"] in {6, 7} else "MrlHornSnapshot"
         if typ == "horn_triple": return "MrlHornTriple"
+        if typ == "horn_rule": return "MrlHornPlanRule"
         if typ == "candidate": return "MrlCandidate *"
         if typ == "candidates": return "MrlCandidates *"
         if typ == "constraint": return "MrlConstraint *"
@@ -1186,15 +1231,16 @@ def _emit_v3(ir, functions, info):
         lines.append("")
     for row in ir["graphs"]:
         i = graph_ids[row["name"]] - 1
-        lines.extend([f"static MrlGraph mrl_graph_{i};", f"static MrlStruct{struct_ids[row['node_type']]} mrl_payload_{i}[MRL_MAX_NODES];"])
-        if ir["version"] in {4, 5, 6} and row["edge_type"] is not None:
-            lines.extend([f"static MrlStruct{struct_ids[row['edge_type']]} mrl_edge_payload_{i}[MRL_MAX_EDGES];", f"static int32_t mrl_edge_cost_{i}[MRL_MAX_EDGES];"])
+        lines.append(f"static MrlGraph mrl_graph_{i};")
     lines.append("static void mrl_init_graphs(void) {")
     for row in ir["graphs"]:
         i = graph_ids[row["name"]] - 1; members = ir["relations"][relation_ids[row["relation"]]]["members"]
         data = ", ".join("{" + ", ".join(str(({"positive": 0, "negative": 1, "neutral": 2}[m["polarity"]], {"none": 0, "optional": 1, "required": 2}[m["evidence"]], {"forward": 0, "reverse": 1, "both": 2, "block": 3}[m["traverse"]])[x]) for x in range(3)) + "}" for m in members) or "{0, 0, 0}"
         lines.append(f"    static const MrlRelationMeta mrl_meta_{i}[] = {{{data}}};")
         lines.append(f"    mrl_graph_init(&mrl_graph_{i}, {i + 1}, {relation_ids[row['relation']]}, mrl_meta_{i}, {len(members)});")
+        node_size = f"sizeof(MrlStruct{struct_ids[row['node_type']]})"
+        edge_size = f"sizeof(MrlStruct{struct_ids[row['edge_type']]})" if row.get("edge_type") is not None else "0"
+        lines.append(f"    mrl_graph_set_payload_sizes(&mrl_graph_{i}, {node_size}, {edge_size});")
     lines.extend(["}", ""])
     def signature(function):
         params = ", ".join(f"{ctype(param['type'])} mrl_p_{i}" for i, param in enumerate(function["params"]))
@@ -1216,7 +1262,8 @@ def _emit_v3(ir, functions, info):
                     index = graph_ids[graph] - 1; marker = (graph, heuristic)
                     if marker not in wrappers:
                         wrappers.add(marker)
-                        lines.append(f"static int32_t mrl_heuristic_{index}_{fn_names[heuristic]}(MrlNode a, MrlNode b) {{ return {fn_names[heuristic]}(mrl_payload_{index}[a.id], mrl_payload_{index}[b.id]); }}")
+                        node_struct = struct_ids[ir["graphs"][index]["node_type"]]
+                        lines.append(f"static int32_t mrl_heuristic_{index}_{fn_names[heuristic]}(MrlNode a, MrlNode b) {{ return {fn_names[heuristic]}(*((MrlStruct{node_struct} *)mrl_graph_node_payload(&mrl_graph_{index}, a)), *((MrlStruct{node_struct} *)mrl_graph_node_payload(&mrl_graph_{index}, b))); }}")
                 for child in value.values(): collect_v4(child)
             elif isinstance(value, list):
                 for child in value: collect_v4(child)
@@ -1225,27 +1272,34 @@ def _emit_v3(ir, functions, info):
             from .horn_bridge import emit_support
             lines.append(emit_support(horn_queries, horn_plans))
     elif ir["version"] in {6, 7}:
-        wrappers = set()
+        wrappers = set(); indexed_calls = []
         def collect_v6(value):
             if isinstance(value, dict):
+                if value.get("kind") == "indexed_call": indexed_calls.append(value)
                 if value.get("kind") == "horn_plan": horn_plans.append(value["plan"])
                 if value.get("kind") == "horn_query": horn_queries.append(value)
                 if value.get("kind") in {"graph_find", "graph_find_all"} and value.get("heuristic") is not None:
                     graph, heuristic = value["graph"], value["heuristic"]; marker = (graph, heuristic)
                     if marker not in wrappers:
                         wrappers.add(marker); index = graph_ids[graph] - 1
-                        lines.append(f"static int32_t mrl_heuristic_{index}_{fn_names[heuristic]}(MrlNode a, MrlNode b) {{ return {fn_names[heuristic]}(mrl_payload_{index}[a.id], mrl_payload_{index}[b.id]); }}")
+                        node_struct = struct_ids[ir["graphs"][index]["node_type"]]
+                        lines.append(f"static int32_t mrl_heuristic_{index}_{fn_names[heuristic]}(MrlNode a, MrlNode b) {{ return {fn_names[heuristic]}(*((MrlStruct{node_struct} *)mrl_graph_node_payload(&mrl_graph_{index}, a)), *((MrlStruct{node_struct} *)mrl_graph_node_payload(&mrl_graph_{index}, b))); }}")
                 for child in value.values(): collect_v6(child)
             elif isinstance(value, list):
                 for child in value: collect_v6(child)
         collect_v6(ir["functions"])
         from .horn_bridge import emit_v6_support, emit_v7_support
         lines.append((emit_v7_support if ir["version"] == 7 else emit_v6_support)(horn_plans, horn_queries))
+        if ir["version"] == 7 and indexed_calls:
+            indexed_runtime = (Path(__file__).with_name("runtime") / "knowledge_indexed.h").read_text(encoding="utf-8")
+            lines.append("\n".join(line for line in indexed_runtime.splitlines() if not line.startswith('#include "')))
     for function in ir["functions"]:
         counter, values = [0], {param["name"]: f"mrl_p_{i}" for i, param in enumerate(function["params"])}
         value_types = {f"mrl_p_{i}": param["type"] for i, param in enumerate(function["params"])}
         owned = {}
         temps = []
+        pathset_temps = []
+        rule_version_allocs = {}
         loop_frames = []
         pathsets, next_pathset = {}, [0]
         def collect_pathsets(statements):
@@ -1264,9 +1318,16 @@ def _emit_v3(ir, functions, info):
         def fresh(prefix):
             name = f"mrl_{prefix}_{counter[0]}"; counter[0] += 1; return name
         def add(text, indent): lines.append("    " * indent + text)
-        def managed(typ): return ir["version"] in {6, 7} and managed_type(typ)
-        def copy_value(typ, value): return copy_expr(typ, value)
-        def release_value(typ, value, indent): add(release_stmt(typ, value), indent)
+        def path_managed(typ): return isinstance(typ, str) and typ.startswith(("path:", "result:path:"))
+        def managed(typ): return path_managed(typ) or ir["version"] in {6, 7} and managed_type(typ)
+        def copy_value(typ, value):
+            if isinstance(typ, str) and typ.startswith("path:"): return f"mrl_path_copy({value})"
+            if isinstance(typ, str) and typ.startswith("result:path:"): return f"mrl_search_result_copy({value})"
+            return copy_expr(typ, value)
+        def release_value(typ, value, indent):
+            if isinstance(typ, str) and typ.startswith("path:"): add(f"mrl_path_release(&{value});", indent)
+            elif isinstance(typ, str) and typ.startswith("result:path:"): add(f"mrl_search_result_release(&{value});", indent)
+            else: add(release_stmt(typ, value), indent)
         def own_temp(typ, value):
             if managed(typ): temps.append((value, typ))
             return value
@@ -1274,6 +1335,10 @@ def _emit_v3(ir, functions, info):
             for index in range(len(temps) - 1, -1, -1):
                 if temps[index][0] == value: temps.pop(index); return True
             return False
+        def take_pathset_temp(value):
+            for index in range(len(pathset_temps) - 1, -1, -1):
+                if pathset_temps[index][0] == value: return pathset_temps.pop(index)[1]
+            return None
         def release_temps(indent, start=0):
             while len(temps) > start:
                 value, typ = temps.pop(); release_value(typ, value, indent)
@@ -1378,8 +1443,27 @@ def _emit_v3(ir, functions, info):
                     initializers.append(f".f{field_names.index(field['name'])} = {value}")
                 add(f"{ctype(typ)} {name} = {{{', '.join(initializers) or '0'}}};", indent); return own_temp(typ, name)
             if kind == "horn_triple":
-                terms = [expr(term, indent, scope) for term in node["terms"]]; name = fresh("t")
+                terms = [None, None, None]
+                for item in node.get("eval_order", [0, 1, 2]): terms[item] = expr(node["terms"][item], indent, scope)
+                name = fresh("t")
                 add(f"MrlHornTriple {name} = {{{', '.join(terms)}}};", indent); return name
+            if kind == "horn_rule_construct":
+                values, body = {}, [None] * len(node["body"])
+                for token in node["eval_order"]:
+                    if token.startswith("body:"): body[int(token[5:])] = expr(node["body"][int(token[5:])], indent, scope)
+                    else: values[token] = expr(node[token], indent, scope)
+                version = "\"null\"" if node["version"] is None else values["version"]; allocated_version = None
+                if node["version"] is not None and node["version"]["type"] == "s":
+                    allocated_version = fresh("rule_version_json")
+                    add(f"char *{allocated_version} = mrl_horn_rule_version_json_string({version}); if (!{allocated_version}) mrl_runtime_fail(\"MRL rule version allocation\");", indent)
+                    version = allocated_version
+                elif node["version"] is not None:
+                    buffer = fresh("rule_version"); add(f"char {buffer}[32]; snprintf({buffer}, sizeof({buffer}), \"%\" PRId32, {version});", indent); version = buffer
+                body_rows = ", ".join("{" + ", ".join(f"{value}[{i}]" for i in range(3)) + "}" for value in body)
+                head = values["head"]; name = fresh("t")
+                add(f"MrlHornPlanRule {name} = {{{values['id']}, {version}, {len(body)}, {{{body_rows}}}, {{{head}[0], {head}[1], {head}[2]}}}};", indent)
+                if allocated_version: rule_version_allocs[name] = allocated_version
+                return name
             if kind == "candidate_construct":
                 values = {key: expr(node[key], indent, scope) for key in node.get("eval_order", ["id", "meaning"])}
                 ident, meaning, name = values["id"], values["meaning"], fresh("t")
@@ -1442,26 +1526,30 @@ def _emit_v3(ir, functions, info):
                 value, name = expr(node["value"], indent, scope), fresh("t"); index = graph_ids[node["graph"]] - 1
                 payload_type = node["value"]["type"]
                 if managed(payload_type) and not take_temp(value): value = copy_value(payload_type, value)
-                add(f"MrlNode {name} = mrl_graph_add_node(&mrl_graph_{index});", indent); add(f"mrl_payload_{index}[{name}.id] = {value};", indent); return name
+                node_struct = struct_ids[ir["graphs"][index]["node_type"]]
+                add(f"MrlNode {name} = mrl_graph_add_node(&mrl_graph_{index});", indent); add(f"*((MrlStruct{node_struct} *)mrl_graph_node_payload(&mrl_graph_{index}, {name})) = {value};", indent); return name
             if kind == "graph_add_edge":
                 source, target, relation = expr(node["source"], indent, scope), expr(node["target"], indent, scope), expr(node["relation"], indent, scope)
-                payload = expr(node["payload"], indent, scope) if ir["version"] in {4, 5, 6} and node["payload"] is not None else None
+                payload = expr(node["payload"], indent, scope) if ir["version"] in {4, 5, 6, 7} and node["payload"] is not None else None
                 evidence = "(MrlEvidence){0}" if node["evidence"] is None else expr(node["evidence"], indent, scope); index = graph_ids[node["graph"]] - 1
                 edge = fresh("edge")
-                add(f"uint16_t {edge} = mrl_graph_add_edge(&mrl_graph_{index}, {source}, {target}, {relation}, {evidence});", indent)
+                add(f"uint32_t {edge} = mrl_graph_add_edge(&mrl_graph_{index}, {source}, {target}, {relation}, {evidence});", indent)
                 if payload is not None:
                     field = node.get("_cost_field")
                     payload_type = node["payload"]["type"]
                     if managed(payload_type) and not take_temp(payload): payload = copy_value(payload_type, payload)
-                    add(f"mrl_edge_payload_{index}[{edge}] = {payload};", indent)
+                    edge_struct = struct_ids[ir["graphs"][index]["edge_type"]]
+                    add(f"*((MrlStruct{edge_struct} *)mrl_graph_edge_payload(&mrl_graph_{index}, {edge})) = {payload};", indent)
                 return None
             if kind == "graph_remove":
                 value = expr(node["value"], indent, scope); index = graph_ids[node['graph']] - 1
                 node_type = "struct:" + ir["graphs"][index]["node_type"]
-                if managed(node_type): add(release_stmt(node_type, f"mrl_payload_{index}[{value}.id]"), indent)
+                node_struct = struct_ids[ir["graphs"][index]["node_type"]]
+                if managed(node_type): add(release_stmt(node_type, f"*((MrlStruct{node_struct} *)mrl_graph_node_payload(&mrl_graph_{index}, {value}))"), indent)
                 edge_type = ir["graphs"][index].get("edge_type")
                 if edge_type and managed("struct:" + edge_type):
-                    add(f"for (uint16_t mrl_edge_i = 0; mrl_edge_i < MRL_MAX_EDGES; ++mrl_edge_i) if (mrl_graph_{index}.edges[mrl_edge_i].live && (mrl_graph_{index}.edges[mrl_edge_i].source == {value}.id || mrl_graph_{index}.edges[mrl_edge_i].target == {value}.id)) {{ {release_stmt('struct:' + edge_type, f'mrl_edge_payload_{index}[mrl_edge_i]')} }}", indent)
+                    edge_struct = struct_ids[edge_type]
+                    add(f"for (uint32_t mrl_edge_i = 0; mrl_edge_i < mrl_graph_{index}.edge_capacity; ++mrl_edge_i) if (mrl_graph_{index}.edges[mrl_edge_i].live && (mrl_graph_{index}.edges[mrl_edge_i].source == {value}.id || mrl_graph_{index}.edges[mrl_edge_i].target == {value}.id)) {{ {release_stmt('struct:' + edge_type, f'*((MrlStruct{edge_struct} *)mrl_graph_edge_payload(&mrl_graph_{index}, mrl_edge_i))')} }}", indent)
                 add(f"mrl_graph_remove(&mrl_graph_{index}, {value});", indent); return None
             if kind in {"graph_find", "graph_find_all"}:
                 index = graph_ids[node["graph"]] - 1
@@ -1472,21 +1560,23 @@ def _emit_v3(ir, functions, info):
                 source, target, name = expr(node["source"], indent, scope), expr(node["target"], indent, scope), fresh("t")
                 directed = "true" if ir["graphs"][index]["directed"] else "false"
                 if ir["version"] == 3 or node["method"] == "bfs" and kind == "graph_find":
-                    add(f"MrlSearchResult {name} = mrl_graph_find(&mrl_graph_{index}, {directed}, {source}, {target}, {allowed}, {len(ids)}, {node['max_depth']}, {node['max_expansions']});", indent); return name
+                    add(f"MrlSearchResult {name} = mrl_graph_find(&mrl_graph_{index}, {directed}, {source}, {target}, {allowed}, {len(ids)}, {node['max_depth']}, {node['max_expansions']});", indent); return own_temp(typ, name)
                 method = {"bfs": "MRL_SEARCH_BFS", "dfs": "MRL_SEARCH_DFS", "dijkstra": "MRL_SEARCH_DIJKSTRA", "astar": "MRL_SEARCH_ASTAR"}[node["method"]]
                 cost = "NULL"; heuristic = "NULL"
                 if node["cost"] is not None:
                     field_index = [field[0] for field in info[ir["graphs"][index]["edge_type"]]].index(node["cost"])
-                    add(f"for (uint16_t mrl_cost_i = 0; mrl_cost_i < MRL_MAX_EDGES; ++mrl_cost_i) mrl_edge_cost_{index}[mrl_cost_i] = mrl_edge_payload_{index}[mrl_cost_i].f{field_index};", indent)
-                    cost = f"mrl_edge_cost_{index}"
+                    edge_struct = struct_ids[ir["graphs"][index]["edge_type"]]
+                    add(f"for (uint32_t mrl_cost_i = 0; mrl_cost_i < mrl_graph_{index}.edge_capacity; ++mrl_cost_i) if (mrl_graph_{index}.edges[mrl_cost_i].live) mrl_graph_{index}.edge_costs[mrl_cost_i] = ((MrlStruct{edge_struct} *)mrl_graph_edge_payload(&mrl_graph_{index}, mrl_cost_i))->f{field_index};", indent)
+                    cost = f"mrl_graph_{index}.edge_costs"
                 if node["heuristic"] is not None: heuristic = f"mrl_heuristic_{index}_{fn_names[node['heuristic']]}"
                 if kind == "graph_find":
                     add(f"MrlSearchResult {name} = mrl_graph_find_method(&mrl_graph_{index}, {directed}, {source}, {target}, {allowed}, {len(ids)}, {node['max_depth']}, {node['max_expansions']}, {method}, {cost}, {heuristic});", indent)
                 else:
                     slot = fresh("pathset")
-                    add(f"static MrlPathSet {slot};", indent)
+                    add(f"MrlPathSet {slot} = {{0}};", indent)
                     add(f"MrlPathsResult {name} = mrl_graph_find_all(&mrl_graph_{index}, {directed}, {source}, {target}, {allowed}, {len(ids)}, {node['max_depth']}, {node['max_expansions']}, {node['max_paths']}, {method}, {cost}, {heuristic}, &{slot});", indent)
-                return name
+                    pathset_temps.append((name, slot))
+                return own_temp(typ, name)
             if kind == "index":
                 value, index_value, name = expr(node["value"], indent, scope), expr(node["index"], indent, scope), fresh("t")
                 if node["value"]["type"].startswith("arr:"):
@@ -1497,7 +1587,7 @@ def _emit_v3(ir, functions, info):
                     item = f"*((const {ctype(typ)} *)mrl_list_at_const({value}, {index_value}))"
                     add(f"{ctype(typ)} {name} = {copy_value(typ, item) if managed(typ) else item};", indent); return own_temp(typ, name)
                 add(f"if ({index_value} < 0 || {index_value} >= {value}->length) mrl_runtime_fail(\"MRL path index\");", indent)
-                add(f"MrlPath {name} = {value}->paths[{index_value}];", indent); return name
+                add(f"MrlPath {name} = mrl_path_copy({value}->paths[{index_value}]);", indent); return own_temp(typ, name)
             if kind == "array":
                 values = [expr(item, indent, scope) for item in node["items"]]; name = fresh("t"); item = _item_type(typ)
                 if typ.startswith("arr:"):
@@ -1586,6 +1676,28 @@ def _emit_v3(ir, functions, info):
                     add(f"const char *{binding_name}, *{binding_value}; mrl_horn_snapshot_binding({snapshot}, {', '.join(indexes)}, &{binding_name}, &{binding_value});", indent); add(f"const char *{name} = mrl_string_copy({binding_name if op.endswith('name') else binding_value});", indent); return own_temp(typ, name)
                 else: add(f"{ctype(typ)} {name} = mrl_horn_snapshot_{op}({snapshot}, {indexes[0]});", indent)
                 return name
+            if kind == "horn_rule_history":
+                values = {}
+                for token in node["eval_order"]: values[token] = expr(node[token], indent, scope)
+                name, plan = fresh("t"), values["plan"]
+                if node["operation"] == "add_rule": add(f"bool {name} = mrl_horn_plan_add_rule(&{plan}, &{values['rule']});", indent)
+                elif node["operation"] == "replace_rule": add(f"bool {name} = mrl_horn_plan_replace_rule(&{plan}, {values['id']}, &{values['rule']});", indent)
+                else: add(f"bool {name} = mrl_horn_plan_remove_rule(&{plan}, {values['id']});", indent)
+                if values.get("rule") in rule_version_allocs: add(f"free((void *){rule_version_allocs.pop(values['rule'])});", indent)
+                return name
+            if kind == "indexed_call":
+                values = {}
+                for token in node["eval_order"]:
+                    if token.startswith("fact:"): values[token] = expr(node["fact"][token[5:]], indent, scope)
+                    else: values[token] = expr(node[token], indent, scope)
+                name, op = fresh("t"), node["operation"]
+                if op == "save": call = f"mrl_indexed_save({values['plan']}->store, {values['path']})"
+                elif op == "exists": call = f"mrl_indexed_exists({values['path']}, {values['triple']}[0], {values['triple']}[1], {values['triple']}[2])"
+                elif op == "remove": call = f"mrl_indexed_remove({values['path']}, {values['id']})"
+                else: call = f"mrl_indexed_{op}({values['path']}, {values['fact:id']}, {values['fact:subject']}, {values['fact:predicate']}, {values['fact:object']}, {values['fact:polarity']})"
+                add(f"MrlIndexedResult mrl_indexed_{name} = {call};", indent)
+                add(f"{ctype(typ)} {name} = mrl_indexed_{name}.ok ? ({ctype(typ)}){{.ok=true,.value=mrl_indexed_{name}.value,.value_owned=false}} : ({ctype(typ)}){{.ok=false,.error=mrl_string_copy(mrl_indexed_{name}.error),.value_owned=false}};", indent)
+                return own_temp(typ, name)
             if kind == "horn_history":
                 plan, ident, name = expr(node["plan"], indent, scope), expr(node["id"], indent, scope), fresh("t")
                 if node["operation"] == "withdraw": add(f"bool {name} = mrl_horn_plan_withdraw(&{plan}, {ident});", indent); return name
@@ -1655,7 +1767,9 @@ def _emit_v3(ir, functions, info):
                     value, name = expr(statement["value"], indent, scope), fresh("v"); scope[statement["name"]] = name
                     if statement["type"].startswith("result:paths:"):
                         slot = take_pathset(name)
+                        source_slot = take_pathset_temp(value)
                         add(f"MrlPathsResult {name} = {value};", indent); add(f"if ({name}.ok) {{ mrl_pathset_copy({slot}, {name}.paths); {name}.paths = {slot}; }}", indent)
+                        if source_slot: add(f"mrl_pathset_release(&{source_slot});", indent)
                     elif statement["type"].startswith("paths:"):
                         slot = take_pathset(name)
                         add(f"MrlPathSet *{name} = {value};", indent); add(f"mrl_pathset_copy({slot}, {name}); {name} = {slot};", indent)
@@ -1671,6 +1785,8 @@ def _emit_v3(ir, functions, info):
                     value = expr(statement["value"], indent, scope); target = scope[statement["name"]]
                     if statement["value"]["type"].startswith("result:paths:"):
                         slot = f"&mrl_pathsets[{pathsets[target]}]"; add(f"{target} = {value};", indent); add(f"if ({target}.ok) {{ mrl_pathset_copy({slot}, {target}.paths); {target}.paths = {slot}; }}", indent)
+                        source_slot = take_pathset_temp(value)
+                        if source_slot: add(f"mrl_pathset_release(&{source_slot});", indent)
                     elif statement["value"]["type"].startswith("paths:"):
                         slot = f"&mrl_pathsets[{pathsets[target]}]"; add(f"{target} = {value};", indent); add(f"mrl_pathset_copy({slot}, {target}); {target} = {slot};", indent)
                     else:
@@ -1707,7 +1823,7 @@ def _emit_v3(ir, functions, info):
                     if statement["value"] is None:
                         release_temps(indent)
                         for slot, slot_type in reversed(list(owned.items())): release_value(slot_type, slot, indent)
-                        add("free(mrl_pathsets); return;", indent)
+                        add(f"for (uint32_t mrl_pathset_i = 0; mrl_pathset_i < {pathset_count}; ++mrl_pathset_i) mrl_pathset_release(&mrl_pathsets[mrl_pathset_i]);", indent); add("free(mrl_pathsets); return;", indent)
                     else:
                         value, name = expr(statement["value"], indent, scope), fresh("return")
                         typ = statement["value"]["type"]
@@ -1716,7 +1832,7 @@ def _emit_v3(ir, functions, info):
                         add(f"{ctype(typ)} {name} = {value};", indent)
                         release_temps(indent)
                         for slot, slot_type in reversed(list(owned.items())): release_value(slot_type, slot, indent)
-                        add(f"free(mrl_pathsets); return {name};", indent)
+                        add(f"for (uint32_t mrl_pathset_i = 0; mrl_pathset_i < {pathset_count}; ++mrl_pathset_i) mrl_pathset_release(&mrl_pathsets[mrl_pathset_i]);", indent); add(f"free(mrl_pathsets); return {name};", indent)
                 elif kind == "expr": expr(statement["value"], indent, scope); release_temps(indent)
                 elif kind in {"break", "continue"}:
                     release_temps(indent)
@@ -1791,6 +1907,7 @@ def _emit_v3(ir, functions, info):
                         add(f"{prefix} ({value} == {info['$enums'][statement['value']['type'][5:]].index(arm['member'])}) {{", indent); block(arm["body"], indent + 1, scope.copy()); add("}", indent)
                 else:
                     value = expr(statement["value"], indent, scope); ok, err = fresh("v"), fresh("v")
+                    source_slot = take_pathset_temp(value) if statement["value"]["type"].startswith("result:paths:") else None
                     typ = statement["value"]["type"]
                     stabilized = managed(typ)
                     if stabilized:
@@ -1813,6 +1930,7 @@ def _emit_v3(ir, functions, info):
                     if ok_type.startswith("MrlPathSet"):
                         slot = take_pathset(ok); add(f"mrl_pathset_copy({slot}, {ok}); {ok} = {slot};", indent + 1)
                     nested = scope.copy(); nested[statement["ok_name"]] = ok; block(statement["ok"], indent + 1, nested); add("} else {", indent); add(f"MrlSearchError {err} = {value}.error;", indent + 1); nested = scope.copy(); nested[statement["err_name"]] = err; block(statement["err"], indent + 1, nested); add("}", indent)
+                    if source_slot: add(f"mrl_pathset_release(&{source_slot});", indent)
                     if stabilized: release_value(typ, value, indent); owned.pop(value)
             for slot, slot_type in reversed(list(owned.items())):
                 if slot not in saved_owned: release_value(slot_type, slot, indent)
@@ -1831,6 +1949,7 @@ def _emit_v3(ir, functions, info):
         block(function["body"], 1, values)
         if function["return_type"] is None:
             for slot, slot_type in reversed(list(owned.items())): release_value(slot_type, slot, 1)
+            lines.append(f"    for (uint32_t mrl_pathset_i = 0; mrl_pathset_i < {pathset_count}; ++mrl_pathset_i) mrl_pathset_release(&mrl_pathsets[mrl_pathset_i]);")
             lines.append("    free(mrl_pathsets);")
         lines.extend(["}", ""])
     lines.append("int main(int argc, char **argv) {" if has_io else "int main(void) {")
@@ -1842,10 +1961,14 @@ def _emit_v3(ir, functions, info):
         for index, graph in enumerate(ir["graphs"]):
             node_type = "struct:" + graph["node_type"]
             if managed_type(node_type):
-                lines.append(f"    for (uint16_t mrl_node_i = 0; mrl_node_i < MRL_MAX_NODES; ++mrl_node_i) if (mrl_graph_{index}.nodes[mrl_node_i]) {{ {release_stmt(node_type, f'mrl_payload_{index}[mrl_node_i]')} }}")
+                node_struct = struct_ids[graph["node_type"]]
+                lines.append(f"    for (uint32_t mrl_node_i = 0; mrl_node_i < mrl_graph_{index}.node_capacity; ++mrl_node_i) if (mrl_graph_{index}.nodes[mrl_node_i]) {{ {release_stmt(node_type, f'*((MrlStruct{node_struct} *)(mrl_graph_{index}.node_payloads + (size_t)mrl_node_i * mrl_graph_{index}.node_payload_size))')} }}")
             if graph.get("edge_type") and managed_type("struct:" + graph["edge_type"]):
                 edge_type = "struct:" + graph["edge_type"]
-                lines.append(f"    for (uint16_t mrl_edge_i = 0; mrl_edge_i < MRL_MAX_EDGES; ++mrl_edge_i) if (mrl_graph_{index}.edges[mrl_edge_i].live) {{ {release_stmt(edge_type, f'mrl_edge_payload_{index}[mrl_edge_i]')} }}")
+                edge_struct = struct_ids[graph["edge_type"]]
+                lines.append(f"    for (uint32_t mrl_edge_i = 0; mrl_edge_i < mrl_graph_{index}.edge_capacity; ++mrl_edge_i) if (mrl_graph_{index}.edges[mrl_edge_i].live) {{ {release_stmt(edge_type, f'*((MrlStruct{edge_struct} *)(mrl_graph_{index}.edge_payloads + (size_t)mrl_edge_i * mrl_graph_{index}.edge_payload_size))')} }}")
+    for index, graph in enumerate(ir["graphs"]):
+        lines.append(f"    mrl_graph_destroy(&mrl_graph_{index});")
     if has_io: lines.append("    mrl_io_cleanup_argv();")
     lines.extend(["    return 0;", "}", ""])
     return "\n".join(lines)

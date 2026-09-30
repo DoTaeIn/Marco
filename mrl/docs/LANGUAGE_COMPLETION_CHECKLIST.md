@@ -1,8 +1,10 @@
 # Language completion acceptance
 
-The requested language slice is implemented. The final full-suite result and
-source/protected-file hashes are recorded in `LANGUAGE_VERIFICATION.json`;
-`LANGUAGE_TEST_LOG.txt` records every test. Run it with `python -B -m mrl test`.
+The earlier language slice is recorded in `LANGUAGE_VERIFICATION.json` and
+`LANGUAGE_TEST_LOG.txt`. The graph growth, runtime rule editing, and indexed
+startup extension has its own current full-suite result and source/protected
+hashes in `SCALABILITY_VERIFICATION.json` and `SCALABILITY_TEST_LOG.txt`.
+Run the suite with `python -B -m mrl test`.
 
 | Area | Runnable evidence |
 | --- | --- |
@@ -16,6 +18,9 @@ source/protected-file hashes are recorded in `LANGUAGE_VERIFICATION.json`;
 | UTF-8 argv/file APIs | `test_language_io.py`, `test_language_io_helpers.py`, Unicode app E2E |
 | Explicit unsafe C scalar/pointer boundary | `test_language_ffi.py`, `test_language_frontend_completion.py`, source FFI E2E |
 | Retained answers and incremental growth | `test_language_growth_acceptance.py`, `test_growth_runtime.py` |
+| Graph storage beyond 64 nodes / 256 edges and owned recursive search results | `test_dynamic_graph.py`, `test_scalability_acceptance.py` |
+| Rule add/replace/remove, old proof versions, and durable rule changes | `test_scalability_acceptance.py`, `test_language_domain.py` |
+| Selective indexed startup, durable fact edits, and stale-writer rejection | `test_indexed_storage.py`, `test_scalability_acceptance.py` |
 
 The source-only [application](../examples/language_app/README.md) imports a
 module, reads Unicode data from a caller-relative path, derives a fact, prints

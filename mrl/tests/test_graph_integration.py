@@ -140,7 +140,7 @@ class SourceGraphIntegrationTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.splitlines(), ["InvalidNode", "NoPath", "1"])
 
-    def test_unicode_evidence_struct_values_and_checked_capacity(self):
+    def test_unicode_evidence_struct_values_and_graph_growth(self):
         literal = json.dumps("가🙂z", ensure_ascii=False)
         source = ("struct Concept { name: s } relation Logic { Required { polarity: positive "
                   "evidence: required traverse: forward } } graph knowledge { node: Concept relation: Logic } "
@@ -152,10 +152,14 @@ class SourceGraphIntegrationTests(unittest.TestCase):
         result = self.run_source(source)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.splitlines(), ["3", "가🙂z", "1"])
-        overflow = declarations() + 'fn main() { for (i in 0..65) { n = knowledge.add(Concept(name = "n")) } }'
-        failed = self.run_source(overflow)
-        self.assertNotEqual(failed.returncode, 0)
-        self.assertIn("capacity", failed.stderr.lower())
+        growth = declarations() + '''fn main() {
+            last = knowledge.add(Concept(name="first"))
+            for (i in 0..65) { last := knowledge.add(Concept(name="n")) }
+            found = knowledge.find(last,last) {}
+            match(found) { Ok(path) { print(path.len) } Err(error) { print(error) } }
+        }'''
+        grown = self.run_source(growth)
+        self.assertEqual((grown.returncode,grown.stdout,grown.stderr),(0,"0\n",""))
 
 
 class SourceGraphAdmissionTests(unittest.TestCase):

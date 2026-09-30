@@ -983,7 +983,7 @@ def _v3lower(program: _V3Program) -> dict:
     calls, impure = {}, {}
     for fn in functions:
         values = list(walk(fn["body"])); calls[fn["name"]] = {value["name"] for value in values if value.get("kind") == "call"}
-        impure[fn["name"]] = any(value.get("kind") in {"print", "horn_query", "horn_plan", "horn_add", "horn_correct", "horn_remove", "horn_evaluate", "horn_load", "horn_save", "horn_restore", "horn_commit", "list_push", "map_set", "map_remove"} or value.get("kind", "").startswith("graph_") for value in values)
+        impure[fn["name"]] = any(value.get("kind") in {"print", "horn_query", "horn_plan", "horn_add", "horn_correct", "horn_remove", "horn_evaluate", "horn_load", "horn_save", "horn_restore", "horn_commit", "horn_rule_history", "indexed_call", "list_push", "map_set", "map_remove"} or value.get("kind", "").startswith("graph_") for value in values)
     def pure(name, seen=()):
         return name in seen or (not impure[name] and all(pure(callee, (*seen, name)) for callee in calls[name]))
     for name, token in heuristics:

@@ -32,8 +32,9 @@ Build caches, generated binaries, and local backups are ignored by Git.
 - Relative module imports with aliases and original source diagnostics.
 - UTF-8 `read_text`/`write_text`, `argc`/`argv`, and a minimal `extern fn` boundary
   for numeric/boolean scalars and pointers inside explicit `unsafe` blocks.
-- Graph mutation and bounded BFS/DFS/Dijkstra/A* searches, plus growing Horn
-  knowledge, indexed queries, retained snapshots, and checkpoint/journal restart.
+- Growing graph storage and bounded BFS/DFS/Dijkstra/A* searches, plus growing
+  Horn knowledge, runtime rule edits, retained snapshots, and checkpoint/journal
+  restart. Optional persistent fact indexes support selective startup queries.
 - Typed epistemic and interpretation states, candidate constraints, bounded
   provenance, withdraw/replace/supersede history, and historical fact access.
 
@@ -43,10 +44,15 @@ and verifies both current and historical knowledge in a fresh process.
 
 ## Verification and contracts
 
-- [231 passing tests](docs/LANGUAGE_VERIFICATION.json) and [test log](docs/LANGUAGE_TEST_LOG.txt)
+- [245 passing tests and scalability verification](docs/SCALABILITY_VERIFICATION.json) and
+  [test log](docs/SCALABILITY_TEST_LOG.txt)
+- [Earlier 231-test language slice](docs/LANGUAGE_VERIFICATION.json)
 - [Completion checklist](docs/LANGUAGE_COMPLETION_CHECKLIST.md)
 - [Tooling and modules](docs/LANGUAGE_TOOLING.md)
 - [Managed values](docs/LANGUAGE_VALUES.md) and [FFI](docs/LANGUAGE_FFI.md)
+- [Growing graphs](docs/DYNAMIC_GRAPH.md), [runtime rules](docs/LANGUAGE_DOMAIN.md),
+  and [indexed knowledge](docs/INDEXED_KNOWLEDGE.md)
+- [Selective startup and update measurements](docs/SCALABILITY_REPORT.md)
 - [Startup measurements](docs/STARTUP_REPORT.md) and
   [knowledge growth measurements](docs/GROWTH_REPORT.md)
 - [Design handoff guide](docs/MRL_BRANCH_HANDOFF_GUIDE.md)
@@ -58,13 +64,18 @@ are preserved separately from this language work.
 
 ## Boundaries
 
-Graph storage is bounded at 64 nodes and 256 edges. Inference, proof enumeration,
-file input, and collections have explicit limits; incomplete results retain
-status information. Retained snapshots can copy touched storage on mutation.
-Initialization, input parsing, and arbitrary inference can still scale with the
-amount of knowledge. No universal Python speedup or constant-time growth is
-claimed.
+Graph node and edge arrays grow on demand with 32-bit slot IDs and memory
+limits. Path enumeration and search still have explicit budgets. Inference,
+proof enumeration, file input, and collections also retain explicit limits and
+incomplete-result status. Retained snapshots can copy touched storage on
+mutation; runtime rule edits rebuild inference.
+
+Indexed storage currently uses Windows winsqlite3 and answers exact asserted
+fact queries without restoring the whole Horn plan. It does not infer derived
+facts. Initial export, eager plan restore, rule edits, and arbitrary inference
+can still scale with knowledge size. No universal Python speedup or constant-time
+growth is claimed.
 
 Unsafe pointers require correct caller-managed lifetime and matching C ABI.
-Callbacks, foreign managed aggregates, runtime rule editing, a package registry,
-and self-hosting are outside the current implementation.
+Callbacks, foreign managed aggregates, a package registry, and self-hosting
+are outside the current implementation.
