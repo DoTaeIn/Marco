@@ -394,3 +394,38 @@ def test_a_list_of_two_things_names_one_holder_and_records_both():
     bonui = graph.id_of("holder", "보늬")
     assert [node["name"] for node in graph.of_kind("holder")] == ["보늬"]
     assert graph.value(bonui, graph.id_of("thing", "연필")) == 3 and graph.value(bonui, graph.id_of("thing", "컵")) == 2
+
+
+# Identity graph, step 3 (statements): one thing, said three ways (two modifiers and a two-word name, one modifier
+# and the last word, the modifier alone in a transfer), is one thing node; a mention whose words are all words of
+# exactly one thing node, in order, is its alias (form short). Two things told apart by a modifier stay two; a
+# bare head that fits both is its own node, never one of them.
+def _things(language, lines, effort=3):
+    current = context(language, effort)
+    for line in lines:
+        current.turn(line, KG)
+    graph = current.conversation_graph()
+    counts = {(graph.nodes[h]["name"], graph.nodes[t]["name"] if t else None): edge["value"]
+              for (h, t), edge in graph.counts.items()}
+    return graph, counts
+
+
+def test_one_thing_said_three_ways_is_one_node():
+    graph, counts = _things("english", ["Ada has five striped cotton beach towels.", "Bo has three striped towels.",
+                                        "Ada gave two striped to Bo."])
+    assert [n["name"] for n in graph.of_kind("thing")] == ["striped cotton beach towels"]
+    assert counts == {("Ada", "striped cotton beach towels"): 3, ("Bo", "striped cotton beach towels"): 5}
+    towels = graph.id_of("thing", "striped cotton beach towels")
+    assert graph.id_of("thing", "striped towels") == towels
+    assert ("striped towels", "short") in {(a["text"], a["form"]) for a in graph.aliases if a["node"] == towels}
+
+
+def test_two_things_told_apart_by_a_modifier_stay_two_and_a_bare_head_is_its_own():
+    graph, counts = _things("english", ["Ada has four red pens.", "Bo has two blue pens.", "Cy has three pens."])
+    assert sorted(n["name"] for n in graph.of_kind("thing")) == ["blue pens", "pens", "red pens"]
+    assert counts[("Cy", "pens")] == 3 and counts[("Ada", "red pens")] == 4 and counts[("Bo", "blue pens")] == 2
+
+
+def test_a_short_mention_said_first_is_the_node_of_the_longer():
+    graph, _counts = _things("english", ["Bo has three striped towels.", "Ada has five striped cotton beach towels."])
+    assert [n["name"] for n in graph.of_kind("thing")] == ["striped towels"]

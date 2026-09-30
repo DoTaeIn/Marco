@@ -12,7 +12,7 @@ record the aliases a statement cannot give (a pointer resolved, a which-person a
 from copy import deepcopy
 
 KINDS = ("holder", "thing", "place")
-FORMS = ("key", "said", "title", "relation", "possessive", "number", "pointer", "particle", "reply")
+FORMS = ("key", "said", "title", "relation", "possessive", "number", "pointer", "particle", "reply", "short")
 PREFIX = {"holder": "h", "thing": "t", "place": "p"}
 
 
@@ -40,6 +40,15 @@ class ConversationGraph:
             self.nodes[node_id] = {"id": node_id, "kind": kind, "name": name}
         self.alias(node_id, name, "key", turn)
         return node_id
+
+    def join(self, kind, name, node_id, form="short", turn=None):
+        """``name`` of that kind is another way to say the node ``node_id`` (a thing said with fewer of its words:
+        striped towels for striped cotton beach towels): the name finds the node, and is its alias."""
+        if node_id not in self.nodes or self.nodes[node_id]["kind"] != kind or not isinstance(name, str):
+            return None
+        self._ids.setdefault((kind, name), node_id)
+        self.alias(node_id, name, form, turn)
+        return self._ids[(kind, name)]
 
     def alias(self, node_id, text, form, turn=None):
         if node_id not in self.nodes or form not in FORMS or not isinstance(text, str) or not text.strip():
