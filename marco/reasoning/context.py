@@ -4141,6 +4141,7 @@ class ReasoningContext:
         cues |= {fold(w) for pointer in parser.pointers or [] for w in pointer.split()}
         pointers = sorted(parser.pointers or [], key=len, reverse=True)
         describing, pointed = [], False
+        said_things = set()
         low = fold(text)
         for pointer in pointers:
             if re.search(r"(?<![\w])%s(?![\w])" % re.escape(fold(pointer)), low) or \
@@ -4151,17 +4152,23 @@ class ReasoningContext:
             if t["kind"] in ("asker", "counter"):
                 continue
             word, stem = fold(t["text"]), fold(t["stem"])
-            if self._graph_nodes(parser, graph, t["text"], t["stem"], ("holder", "place"), forms=("key", "title")) or \
-                    set(self._graph_nodes(parser, graph, t["text"], t["stem"], ("thing",))) & things:
-                return None             # a holder or a thing named: the readers' question, not this one
+            if self._graph_nodes(parser, graph, t["text"], t["stem"], ("holder", "place"), forms=("key", "title")):
+                return None             # a holder named: the readers' question, not this one
+            named_thing = set(self._graph_nodes(parser, graph, t["text"], t["stem"], ("thing",))) & things
+            if named_thing:
+                # the thing named, the person only described: the thing is that node (one, or not this question)
+                said_things |= named_thing
+                continue
             if word in declared or stem in declared or (t["kind"] == "number" and pronoun_one):
                 continue
             describing.append(t["stem"])
         cued = pointed or any(fold(w) in cues for w in re.split(r"[\s,.?!]+", text) if w)
         if not cued or len(describing) > 3:
             return None
+        if len(said_things) > 1:
+            return None
         before = (getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item")
-        thing = graph.id_of("thing", before) if before else None
+        thing = next(iter(said_things)) if said_things else (graph.id_of("thing", before) if before else None)
         if thing not in things:
             thing = next(iter(things)) if len(things) == 1 else None
         if thing is None:
