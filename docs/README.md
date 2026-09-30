@@ -112,6 +112,7 @@ that code closes it.
 | [G7-2.md](requests/G7-2.md) | Where the effort setting is declared and how to read it |
 | [G7-3.md](requests/G7-3.md) | The shared ranking of candidates, its fields and its commits |
 | [G7-4.md](requests/G7-4.md) | The conversation graph's interface for the statement side: calls, fields, what the reader must name |
+| [G7-5.md](requests/G7-5.md) | A Korean holding whose thing has modifiers puts them into the holder's node: for the statement side |
 
 ## Korean design records (`docs/ko/`)
 
@@ -327,6 +328,10 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [graph-step-3s2.json](ko/dialogue-gate-2026-09-22/graph-step-3s2.json) | Identity graph step 3, statements 2, `80369f7`: 90 of 108, the baseline's turns exactly |
 | [graph-step-3q.json](ko/dialogue-gate-2026-09-22/graph-step-3q.json) | Identity graph step 3, question side, `4f3a3a3`: 90 of 108, no turn changed |
 | [graph-step-3s3.json](ko/dialogue-gate-2026-09-22/graph-step-3s3.json) | Identity graph step 3, statements 3, `77144e1`: 90 of 108, statements recorded 146 of 150 |
+| [graph-step-3q2.json](ko/dialogue-gate-2026-09-22/graph-step-3q2.json) | On nodes, the reply to a which-person ask, `e0f087b`: 93 of 108, 0 wrong |
+| [graph-step-3s4q3.json](ko/dialogue-gate-2026-09-22/graph-step-3s4q3.json) | On nodes, `c3eb7a7`: 94 of 108, 0 wrong |
+| [graph-step-3s5.json](ko/dialogue-gate-2026-09-22/graph-step-3s5.json) | On nodes, `c1c0be6`: 94 of 108, no turn changed |
+| [graph-safety-pointer.json](ko/dialogue-gate-2026-09-22/graph-safety-pointer.json) | The pointer safety fix, `65fcb7f`: 94 of 108, no turn changed |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 

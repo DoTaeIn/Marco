@@ -443,10 +443,21 @@ class ReasoningContext:
                                or entry.get("관계") in asked_predicates) or (
                         asks_number and self._counts_something(said, parser)
                         and not any(other and other in said for other in known)) or (
-                        asks_number and self._moves_someone_unnamed(said, parser))
+                        asks_number and self._moves_someone_unnamed(said, parser)) or (
+                        asks_number and self._points_at_someone(said, parser))
                 if (entry.get("범용") or touches) and entry["at"] > pinned[name]:
                     return said, entry.get("까닭")
         return None
+
+    def _points_at_someone(self, said, parser):
+        """An unread statement that names its holder by a pointer the pack declares (Then they vanished. / 그는
+        다 잃어버렸어.): the pointer may be any holder, so it may have changed any holder's count."""
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        particles = self._frame_particles(parser)
+        words = [fold(w) for w in re.split(r"[\s,.!?？。]+", said) if w]
+        stems = [next((w[:-len(p)] for p in particles if w.endswith(p) and len(w) > len(p)), w) for w in words]
+        flat = " %s " % " ".join(words)
+        return any(" %s " % fold(p) in flat or (" " not in p and fold(p) in stems) for p in parser.pointers or [])
 
     def _moves_someone_unnamed(self, said, parser):
         """An unread statement whose reading moves an amount from or to a holder it leaves unsaid (``그중
@@ -3348,6 +3359,76 @@ class ReasoningContext:
                     "evidence": {"text": text.strip(), "contrast": marker}}
         return None
 
+    def _changes_nothing(self, parser, piece):
+        """An unread piece that could not have changed a count, so it is kept as no event that holds later
+        questions (effort 2): it names no holder of the state, by name, alias or pointer; it says no amount,
+        counter, scope or negation; the reader finds no verb in it; and it opens with a capitalised word that is
+        no holder and no word the pack declares anywhere (Order a few more quills.). A piece that opens with a
+        word the pack knows (The quills were stolen. / Someone took them.) is kept as before."""
+        if not self._effort_allows(2) or not self.observations:
+            return False
+        reading = parser.open_reading(piece)
+        tokens = reading["tokens"]
+        if not tokens or reading["question"] or tokens[0]["kind"] != "name" or any(
+                t["kind"] in ("number", "counter", "marker", "verb", "asker") for t in tokens):
+            return False
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        if any(parser._protected_kind(t["text"]) or parser._protected_kind(t["stem"]) for t in tokens):
+            return False
+        words = self._pack_words(parser)
+        if fold(tokens[0]["text"]) in words or fold(tokens[0]["stem"]) in words:
+            return False
+        if re.match(r"\s*%s\s*," % re.escape(tokens[0]["text"]), piece):
+            return False            # a word set off before the clause (Mysteriously, …): no verb that opens it
+        # a word the pack's regular past or participle ending could make may be a verb nobody declared
+        # (Rats chewed the quills.): the piece may have changed a count
+        endings = set()
+        for rules in ((parser.inflection_grammar or {}).get("endings") or {}).values():
+            for rule in rules:
+                if (rule.get("when") or {}).get("tense") == "present":
+                    continue
+                for step in rule.get("steps", []):
+                    for op in (step, step.get("else") or {}):
+                        if op.get("op") == "append" and op.get("text"):
+                            endings.add(op["text"])
+        if any(fold(t["text"]).endswith(fold(e)) and len(t["text"]) > len(e) + 1
+               for t in tokens[1:] for e in endings):
+            return False
+        low = " %s " % " ".join(fold(t["text"]) for t in tokens)
+        if any(" %s " % fold(pointer) in low for pointer in parser.pointers or []):
+            return False
+        graph = self.conversation_graph()
+        keys = list(dict.fromkeys(self._holder_keys(parser)))
+        for t in tokens:
+            if self._graph_nodes(parser, graph, t["text"], t["stem"], ("holder", "place")) or \
+                    self._holder_of(parser, t["text"], keys) is not None:
+                return False
+        return True
+
+    @staticmethod
+    def _pack_words(parser):
+        """Every word the language pack and the reader's data say anywhere, folded (cached on the parser)."""
+        cached = getattr(parser, "_pack_word_cache", None)
+        if cached is not None:
+            return cached
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        found = set()
+
+        def walk(value):
+            if isinstance(value, str):
+                found.update(fold(w) for w in re.findall(r"[^\W\d_]+(?:'[^\W\d_]+)?", value))
+            elif isinstance(value, dict):
+                for key, inner in value.items():
+                    walk(key)
+                    walk(inner)
+            elif isinstance(value, list):
+                for inner in value:
+                    walk(inner)
+        walk(parser.language_pack)
+        walk(parser.data)
+        parser._pack_word_cache = found
+        return found
+
     @staticmethod
     def _is_request(parser, piece):
         """The utterance is in a request form the pack declares (요청)."""
@@ -4337,9 +4418,13 @@ class ReasoningContext:
         asked = {(graph.of_key(c) or (graph.id_of("holder", c) or graph.id_of("place", c),))[0]
                  for c in self.pending_pointer.get("candidates") or []} - {None}
         words = [w for w in re.split(r"[\s,.!?]+", text) if w]
+        # a word with a tail the name reply declares (이보요): the name is the word before it
+        tails = sorted((t.strip() for t in (parser.language_pack.get("name_reply") or {}).get("tails", [])
+                        if t.strip() and " " not in t.strip()), key=len, reverse=True)
         found = []
         for at, word in enumerate(words):
-            nodes = [n for n in self._graph_nodes(parser, graph, word, None, ("holder", "place"), forms=("key", "title"))
+            bare = next((word[:-len(t)] for t in tails if word.endswith(t) and len(word) > len(t)), None)
+            nodes = [n for n in self._graph_nodes(parser, graph, word, bare, ("holder", "place"), forms=("key", "title"))
                      if n in asked]
             if len(nodes) == 1:
                 found.append((at, word, nodes[0]))
@@ -4591,6 +4676,16 @@ class ReasoningContext:
             found = graph.find(text, kinds=kinds, fold=fold, forms=forms)
             if found:
                 return found
+        if "thing" in kinds and (not forms or "key" in forms):
+            # a thing said with some of its words, in order (striped, towels, for striped cotton towels): the one
+            # thing node they are words of (step 3); a word the pack declares for questions names none
+            declared = self._declared_words(parser)
+            for text in [word] + ([stem] if stem and stem != word else []):
+                if not text or all(fold(w) in declared for w in text.split()):
+                    continue
+                found = graph.part_of(text, kinds=("thing",), fold=fold)
+                if len(found) == 1:
+                    return found
         if any(kind in kinds for kind in ("holder", "place")):
             keys = list(dict.fromkeys(self._holder_keys(parser)))
             key = self._holder_of(parser, word, keys)
@@ -5898,6 +5993,9 @@ class ReasoningContext:
             return None
         named = self._name_reply(parser, segments[0][0], knowledge_path)
         if named is None:
+            # the name of one asked candidate with at most two other words (Ivo, I think.), effort 2
+            named = self._named_reply(parser, segments[0][0], knowledge_path)
+        if named is None:
             # the repair as one slot of the last question's frame (effort 2)
             named = self._partial_frame(parser, segments[0][0], knowledge_path)
         if named is None:
@@ -6882,6 +6980,9 @@ class ReasoningContext:
                     continue
                 # A request asks for an action; it reports no event.
                 if self._is_request(parser, piece):
+                    continue
+                # A piece that could not have changed a count (no holder, no amount, no verb) is no event (effort 2).
+                if self._changes_nothing(parser, piece):
                     continue
                 # An unread piece that says an earlier statement was wrong (a declared contrast,
                 # "..., not ...") may retract any statement: every value is held until a later

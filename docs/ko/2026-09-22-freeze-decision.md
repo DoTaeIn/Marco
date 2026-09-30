@@ -91,6 +91,12 @@ never reorders them. Where an older roadmap disagrees on order, this file wins.
   candidates grounded to nodes → state, corrections and lookup by id →
   re-verification of every existing pass → frozen exam → gate.
   `docs/ko/2026-09-30-conversation-identity-graph.md`.
+- **The fresh exam is written (2026-09-30).** Frozen dialogue set v2: branch
+  `fresh-exam-v2`, commit `f4f52f3`, 52 dialogues (26 Korean, 26 English), 340
+  turns, 108 answerable, the label counts of v1 exactly, 0 validator problems, 0
+  sentences shared with the repository. Written by a chat that saw neither v1 nor
+  any trace. It stays on its branch, unmerged and unread, until the release; no
+  development chat checks that branch out, and the plan manager scores it once.
 - **Placements decided by the owner (2026-09-29), top-level order unchanged:** the
   real MCO format under MARCO 1 release, before M2; the Observation Graph Contract
   at the end of M2, before M3; M3 owns capability declaration, discovery, binding

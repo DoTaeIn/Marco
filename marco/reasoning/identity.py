@@ -99,6 +99,27 @@ class ConversationGraph:
                 found.append(node["id"])
         return found
 
+    def part_of(self, text, kinds=("thing",), fold=None):
+        """The nodes of which ``text`` says some of the words, in order (striped, or towels, for striped cotton
+        towels): every word of it is a word of one of the node's key, short or number aliases, in the same order."""
+        fold = fold or (lambda v: v)
+        words = [fold(w) for w in text.split()] if isinstance(text, str) else []
+
+        def within(short, long):
+            at = 0
+            for word in long:
+                if at < len(short) and word == short[at]:
+                    at += 1
+            return at == len(short)
+        found = []
+        for row in self.aliases:
+            node = self.nodes.get(row["node"])
+            if not words or node is None or node["kind"] not in kinds or row["form"] not in ("key", "short", "number"):
+                continue
+            if node["id"] not in found and within(words, [fold(w) for w in row["text"].split()]):
+                found.append(node["id"])
+        return found
+
     def holders_of(self, thing):
         return [holder for (holder, t) in self.counts if t == thing]
 

@@ -112,3 +112,13 @@ def test_the_key_of_a_holder_and_thing_is_the_one_the_replay_counts_under():
     assert graph.key(h1, thing) == "Nora speckled linen bowls"
     assert graph.key(h2, thing) == "Ivo speckled bowls"
     assert graph.of_key(graph.key(h2, thing)) == (h2, thing)
+
+
+def test_some_of_a_things_words_in_order_are_a_part_of_it_and_two_that_fit_are_not_one():
+    from marco.reasoning.identity import ConversationGraph
+    graph = ConversationGraph()
+    bowls = graph.node("thing", "speckled linen bowls", 0)
+    red, blue = graph.node("thing", "red quills", 1), graph.node("thing", "blue quills", 1)
+    assert graph.part_of("bowls") == [bowls] and graph.part_of("speckled bowls") == [bowls]
+    assert graph.part_of("bowls speckled") == [] and graph.part_of("linen quills") == []
+    assert sorted(graph.part_of("quills")) == sorted([red, blue])
