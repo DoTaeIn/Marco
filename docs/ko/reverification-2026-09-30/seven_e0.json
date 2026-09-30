@@ -1,0 +1,274 @@
+[
+ {
+  "language": "english",
+  "passed": 7,
+  "total": 7,
+  "steps": [
+   {
+    "step": 1,
+    "ok": true,
+    "detail": {
+     "state": {
+      "Minsu apples": "5",
+      "Jiyeon apples": "2"
+     }
+    }
+   },
+   {
+    "step": 2,
+    "ok": true,
+    "detail": {
+     "state": {
+      "Minsu apples": "3",
+      "Jiyeon apples": "4"
+     },
+     "effects": [
+      [
+       "Minsu apples",
+       -2
+      ],
+      [
+       "Jiyeon apples",
+       2
+      ]
+     ]
+    }
+   },
+   {
+    "step": 3,
+    "ok": true,
+    "detail": {
+     "count": "4 apples.",
+     "where": "This conversation never stated the location of Jiyeon. So I did not answer."
+    }
+   },
+   {
+    "step": 4,
+    "ok": true,
+    "detail": {
+     "state": {
+      "Minsu apples": "4",
+      "Jiyeon apples": "3"
+     },
+     "observations": 2,
+     "corrections": 1
+    }
+   },
+   {
+    "step": 5,
+    "ok": true,
+    "detail": {
+     "answer": "Now Minsu has 4 apples and Jiyeon has 3. This is because of the correction \"Actually, the one given was one, not two.\". I changed the amount in the same event \"Minsu gave Jiyeon two.\" from 2 to 1. No new event was added. The giver loses that many. The receiver gains that many. It rests on \"Minsu has five apples, and Jiyeon has two.\", \"Minsu gave Jiyeon 1.\", \"Minsu gave Jiyeon two.\" and \"Actually, the one given was one, not two.\"."
+    }
+   },
+   {
+    "step": 6,
+    "ok": true,
+    "detail": {
+     "answer": "I do not know who 'that one' refers to. Which of 'Jiyeon' and 'Minsu' do you mean?"
+    }
+   },
+   {
+    "step": 7,
+    "ok": true,
+    "detail": {
+     "other": "3개입니다.",
+     "restart_same": "3 apples.",
+     "restart_other": "3개입니다.",
+     "evidence_sources": [
+      "Minsu gave Jiyeon 1.",
+      "Minsu has five apples, and Jiyeon has two."
+     ]
+    }
+   }
+  ],
+  "replies": [
+   {
+    "input": "Minsu has five apples, and Jiyeon has two.",
+    "status": "observed",
+    "answer": "Recorded. Jiyeon has 2 apples."
+   },
+   {
+    "input": "Minsu gave Jiyeon two.",
+    "status": "observed",
+    "answer": "Recorded. Minsu gave Jiyeon 2 apples. Now Minsu has 3 apples and Jiyeon has 4."
+   },
+   {
+    "input": "How many does Jiyeon have now?",
+    "status": "answered",
+    "answer": "4 apples."
+   },
+   {
+    "input": "Where is that person?",
+    "status": "unresolved",
+    "answer": "This conversation never stated the location of Jiyeon. So I did not answer."
+   },
+   {
+    "input": "Actually, the one given was one, not two.",
+    "status": "observed",
+    "answer": "I changed the amount in the same event \"Minsu gave Jiyeon two.\" from 2 to 1. No new event was added. Now Minsu has 4 apples and Jiyeon has 3."
+   },
+   {
+    "input": "Why did that happen?",
+    "status": "answered",
+    "answer": "Now Minsu has 4 apples and Jiyeon has 3. This is because of the correction \"Actually, the one given was one, not two.\". I changed the amount in the same event \"Minsu gave Jiyeon two.\" from 2 to 1. No new event was added. The giver loses that many. The receiver gains that many. It rests on \"Minsu has five apples, and Jiyeon has two.\", \"Minsu gave Jiyeon 1.\", \"Minsu gave Jiyeon two.\" and \"Actually, the one given was one, not two.\"."
+   },
+   {
+    "input": "What about the other person, not that one?",
+    "status": "unresolved",
+    "answer": "I do not know who 'that one' refers to. Which of 'Jiyeon' and 'Minsu' do you mean?"
+   },
+   {
+    "input": "지연은 지금 몇 개야?",
+    "status": "answered",
+    "answer": "3개입니다."
+   },
+   {
+    "input": "How many apples does Jiyeon have now?",
+    "status": "answered",
+    "answer": "3 apples."
+   },
+   {
+    "input": "지연은 지금 몇 개야?",
+    "status": "answered",
+    "answer": "3개입니다."
+   }
+  ]
+ },
+ {
+  "language": "한국어",
+  "passed": 7,
+  "total": 7,
+  "steps": [
+   {
+    "step": 1,
+    "ok": true,
+    "detail": {
+     "state": {
+      "민수 사과": "5",
+      "지연 사과": "2"
+     }
+    }
+   },
+   {
+    "step": 2,
+    "ok": true,
+    "detail": {
+     "state": {
+      "민수 사과": "3",
+      "지연 사과": "4"
+     },
+     "effects": [
+      [
+       "민수 사과",
+       -2
+      ],
+      [
+       "지연 사과",
+       2
+      ]
+     ]
+    }
+   },
+   {
+    "step": 3,
+    "ok": true,
+    "detail": {
+     "count": "4개입니다.",
+     "where": "이 대화에서 지연의 위치는 나온 적이 없습니다. 그래서 답하지 않았습니다."
+    }
+   },
+   {
+    "step": 4,
+    "ok": true,
+    "detail": {
+     "state": {
+      "민수 사과": "4",
+      "지연 사과": "3"
+     },
+     "observations": 2,
+     "corrections": 1
+    }
+   },
+   {
+    "step": 5,
+    "ok": true,
+    "detail": {
+     "answer": "이제 민수 사과는 4개, 지연은 3개입니다. 정정 \"아까 준 건 두 개가 아니라 한 개야.\" 때문입니다. 같은 사건 \"민수가 지연에게 두 개 줬어.\"의 수량을 2개에서 1개로 고쳤습니다. 새 사건은 더하지 않았습니다. 주는 쪽에서 그만큼 뺍니다. 받는 쪽에 그만큼 더합니다. 근거는 \"민수는 사과 다섯 개, 지연은 두 개가 있어.\", \"민수가 지연에게 한 개 줬어.\", \"민수가 지연에게 두 개 줬어.\", \"아까 준 건 두 개가 아니라 한 개야.\"입니다. 이 가운데 수정으로 읽은 말: \"민수는 사과 다섯 개\" → \"민수 사과는 다섯 개\"; \"지연은 두 개가 있어\" → \"지연은 두 개 있어\"; \"민수가 지연에게 한 개 줬어\" → \"민수가 지연에게 한 개를 줬어\"."
+    }
+   },
+   {
+    "step": 6,
+    "ok": true,
+    "detail": {
+     "answer": "'그 사람'이 누구를 가리키는지 알지 못합니다. '민수', '지연' 가운데 누구인가요?"
+    }
+   },
+   {
+    "step": 7,
+    "ok": true,
+    "detail": {
+     "other": "3 apples.",
+     "restart_same": "3개입니다.",
+     "restart_other": "3 apples.",
+     "evidence_sources": [
+      "민수가 지연에게 한 개 줬어.",
+      "민수는 사과 다섯 개, 지연은 두 개가 있어."
+     ]
+    }
+   }
+  ],
+  "replies": [
+   {
+    "input": "민수는 사과 다섯 개, 지연은 두 개가 있어.",
+    "status": "observed",
+    "answer": "반영했습니다. 민수 사과는 5개, 지연은 2개입니다."
+   },
+   {
+    "input": "민수가 지연에게 두 개 줬어.",
+    "status": "observed",
+    "answer": "반영했습니다. 민수가 지연에게 사과 2개를 줬습니다. 이제 민수 사과는 3개, 지연은 4개입니다."
+   },
+   {
+    "input": "지연은 지금 몇 개야?",
+    "status": "answered",
+    "answer": "4개입니다."
+   },
+   {
+    "input": "그 사람은 어디 있어?",
+    "status": "unresolved",
+    "answer": "이 대화에서 지연의 위치는 나온 적이 없습니다. 그래서 답하지 않았습니다."
+   },
+   {
+    "input": "아까 준 건 두 개가 아니라 한 개야.",
+    "status": "observed",
+    "answer": "같은 사건 \"민수가 지연에게 두 개 줬어.\"의 수량을 2개에서 1개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 민수 사과는 4개, 지연은 3개입니다."
+   },
+   {
+    "input": "왜 그렇게 됐어?",
+    "status": "answered",
+    "answer": "이제 민수 사과는 4개, 지연은 3개입니다. 정정 \"아까 준 건 두 개가 아니라 한 개야.\" 때문입니다. 같은 사건 \"민수가 지연에게 두 개 줬어.\"의 수량을 2개에서 1개로 고쳤습니다. 새 사건은 더하지 않았습니다. 주는 쪽에서 그만큼 뺍니다. 받는 쪽에 그만큼 더합니다. 근거는 \"민수는 사과 다섯 개, 지연은 두 개가 있어.\", \"민수가 지연에게 한 개 줬어.\", \"민수가 지연에게 두 개 줬어.\", \"아까 준 건 두 개가 아니라 한 개야.\"입니다. 이 가운데 수정으로 읽은 말: \"민수는 사과 다섯 개\" → \"민수 사과는 다섯 개\"; \"지연은 두 개가 있어\" → \"지연은 두 개 있어\"; \"민수가 지연에게 한 개 줬어\" → \"민수가 지연에게 한 개를 줬어\"."
+   },
+   {
+    "input": "그 사람 말고 다른 사람은?",
+    "status": "unresolved",
+    "answer": "'그 사람'이 누구를 가리키는지 알지 못합니다. '민수', '지연' 가운데 누구인가요?"
+   },
+   {
+    "input": "How many apples does Jiyeon have now?",
+    "status": "answered",
+    "answer": "3 apples."
+   },
+   {
+    "input": "지연은 지금 몇 개야?",
+    "status": "answered",
+    "answer": "3개입니다."
+   },
+   {
+    "input": "How many apples does Jiyeon have now?",
+    "status": "answered",
+    "answer": "3 apples."
+   }
+  ]
+ }
+]
