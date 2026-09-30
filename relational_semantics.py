@@ -2064,20 +2064,55 @@ class RelationalParser:
         return " ".join((words[:at] or before[:len(holder)]) + verb + [words[at]]
                         + (words[at + 1:] or before[then + 1:]))
 
+    def _cased_parts(self, key):
+        """The holder of a key in which the holder kept a case particle of the pack (조사) that agrees with the word
+        before it (G7-S): as the key's last word, the holder's case with the thing unsaid (기 대표님에게는 열 개 있어
+        -> 기 대표에게: holder 기 대표, no thing); inside the key, a place between the holder and the thing (경아는
+        승합차에 형광펜을 싣고 있어 -> 경아 승합차에 형광펜: holder 경아, place 승합차, thing 형광펜). ``key`` names the
+        key the parts are of. None otherwise, and in a pack without case particles."""
+        # only a case particle outside the slot groups (은/는/이/가, 을/를 ...: the reader takes those off, and a
+        # noun may end in one: 목걸이, 오이): 에게, 한테, 에 ...
+        slots = {p for group in (self.slot_particles or ()) for p in group}
+        particles = sorted((p for p in (getattr(self, "case_particles", ()) or ())
+                            if isinstance(p, str) and p and p not in slots), key=len, reverse=True)
+        words = key.split()
+        if not particles or len(words) < 2:
+            return None
+
+        def cased(word):
+            return next((word[:-len(p)] for p in particles if word.endswith(p) and len(word) > len(p)
+                         and self._particle_form(word[:-len(p)], p) == p), None)
+        last = cased(words[-1])
+        if last is not None:
+            return {"holder": " ".join(words[:-1] + [last]), "thing": None, "key": key}
+        for at in range(1, len(words) - 1):
+            place = cased(words[at])
+            if place is not None:
+                return {"holder": " ".join(words[:at]), "place": place, "thing": " ".join(words[at + 1:]), "key": key}
+        return None
+
     @staticmethod
     def _typed_parts(key, text):
-        """The holder and the thing of a key one slot gave (보늬 연필 from 보늬는 연필이 세 개), as the words were
-        typed: the thing is the key's last word, typed as it is or with something after it, and the word right
-        before it is the holder's last word typed with something after it (a particle or a title: 보늬는,
-        과장님은). None when the typed words do not show it."""
+        """The holder and the thing of a key one slot gave (보늬 연필 from 보늬는 연필이 세 개; 미경 줄무늬 면 수건 from
+        미경은 줄무늬 면 수건이), as the words were typed: the key's words are found in the typed words in order; the
+        holder ends at the first word typed with something after it (a particle or a title: 보늬는, 과장님은) or
+        followed by a typed word that is not the key's next word (우진 씨는; Nora has); what stands between it and
+        the end is the thing, every word of it (줄무늬 면 수건: G7-5). None when the typed words do not show it."""
         words = key.split()
         if len(words) < 2:
             return None
         typed = [w.strip(".,!?") for w in str(text).split()]
-        for i in range(1, len(typed)):
-            if typed[i].startswith(words[-1]) and typed[i - 1].startswith(words[-2]) \
-                    and len(typed[i - 1]) > len(words[-2]):
-                return {"holder": " ".join(words[:-1]), "thing": words[-1]}
+        at, found = 0, []
+        for word in words:
+            j = next((j for j in range(at, len(typed)) if typed[j].startswith(word)), None)
+            if j is None:
+                return None
+            found.append(j)
+            at = j + 1
+        for i in range(len(words) - 1):
+            j = found[i]
+            if len(typed[j]) > len(words[i]) or found[i + 1] != j + 1:
+                return {"holder": " ".join(words[:i + 1]), "thing": " ".join(words[i + 1:])}
         return None
 
     def _counted_subjects(self, evidence_text, rows):
@@ -4130,9 +4165,9 @@ class RelationalParser:
                     fact = {"triple": triple, "evidence": evidence}
                     part = parts_of[position] if position < len(parts_of) else None
                     if part is None and isinstance(said_key, str) and not meaning.get("places"):
-                        part = self._typed_parts(said_key, evidence["text"])
+                        part = self._cased_parts(said_key) or self._typed_parts(said_key, evidence["text"])
                     if part and isinstance(said_key, str) and triple[0] == said_key \
-                            and " ".join(w for w in (part["holder"], part["thing"]) if w) == said_key:
+                            and part.get("key", " ".join(w for w in (part["holder"], part["thing"]) if w)) == said_key:
                         fact["parts"] = dict(part)
                     if event_verb:
                         # 어순으로 역할을 짚는 언어는 동사 꼬리가 문장 끝에 없다.
