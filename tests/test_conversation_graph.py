@@ -100,3 +100,15 @@ def test_a_list_of_two_things_of_one_holder_is_one_holder_node():
     # step 3: the reader names each fact's holder and thing (a bare word before an object-marked count is a thing)
     context = _context("한국어", ["보늬는 연필 세 개, 컵 두 개를 가지고 있어."])
     assert [node["name"] for node in context.conversation_graph().of_kind("holder")] == ["보늬"]
+
+
+def test_the_key_of_a_holder_and_thing_is_the_one_the_replay_counts_under():
+    from marco.reasoning.identity import ConversationGraph
+    graph = ConversationGraph()
+    h1, h2 = graph.node("holder", "Nora", 0), graph.node("holder", "Ivo", 1)
+    thing = graph.node("thing", "speckled linen bowls", 0)
+    graph.keyed("Nora speckled linen bowls", h1, thing)
+    graph.keyed("Ivo speckled bowls", h2, thing)
+    assert graph.key(h1, thing) == "Nora speckled linen bowls"
+    assert graph.key(h2, thing) == "Ivo speckled bowls"
+    assert graph.of_key(graph.key(h2, thing)) == (h2, thing)

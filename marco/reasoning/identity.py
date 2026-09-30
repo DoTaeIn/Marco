@@ -114,11 +114,15 @@ class ConversationGraph:
         return [row["text"] for row in self.aliases if row["node"] == node_id]
 
     def key(self, holder, thing):
-        """The string key the replay counts under (the one place strings remain until step 3)."""
+        """The string key the replay counts under (the one place strings remain until step 3): the key a statement
+        counted this holder and thing under (Omar striped towels, when the thing's node is striped cotton towels),
+        the one said last if several; else the node names."""
         h, t = self.nodes.get(holder), self.nodes.get(thing) if thing else None
         if h is None:
             return None
-        return h["name"] if t is None else "%s %s" % (h["name"], t["name"])
+        named = h["name"] if t is None else "%s %s" % (h["name"], t["name"])
+        said = [key for key, pair in self._keys.items() if pair == (holder, thing)]
+        return named if not said or named in said else said[-1]
 
     # --- the snapshot ---------------------------------------------------------------------------------------
     def to_dict(self):
