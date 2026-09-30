@@ -3676,18 +3676,30 @@ class ReasoningContext:
 
         def shape(sentence):
             read = self._read_source(parser, sentence, events=True, verbs=verbs) or {}
-            return sorted((str(f["triple"][0]), str(f["triple"][1]), str(f["triple"][2])) for f in read.get("facts", []))
+            return self._node_rows(parser, read.get("facts", []))
         # The corrected statement must read as the same facts with the amount
         # changed and nothing else: a rewrite that drops, adds or reshapes an
         # event is not the correction the user asked for (G3.4).
         expected = sorted((s, p, str(request["new"]) if v == str(request["old"]) else v) for s, p, v in shape(source))
+        chosen = getattr(parser, "chosen_readings", None) or {}
         for attempt in [replacement] + ([agreed] if agreed and agreed != replacement else []):
             if shape(attempt) != expected:
                 continue
+            carried = attempt.strip() not in chosen and source.strip() in chosen
+            if carried:
+                # the statement was read by a reading kept for it (its thing through the thing node): the corrected
+                # statement is read the same way, with only the amount changed (step 3)
+                reading = deepcopy(chosen[source.strip()])
+                for fact in reading.get("facts", []):
+                    if str(fact["triple"][2]) == str(request["old"]) and fact["triple"][1] in updates:
+                        fact["triple"][2] = type(fact["triple"][2])(request["new"])
+                chosen[attempt.strip()] = reading
             try:
                 corrected = self.correct(index, attempt, knowledge_path)
                 break
             except ValueError:
+                if carried:
+                    chosen.pop(attempt.strip(), None)
                 continue
         if corrected is None:
             return reply("reference_value_unclear", {"event": source.strip(), "old": request["old"]},
@@ -3710,6 +3722,27 @@ class ReasoningContext:
                 "answer": replies["reference_corrected"].format(**{
                     "사건": source.strip(), "전": request["old"], "후": request["new"],
                     "목록": parser.render_changes(changes)})}
+
+    def _node_rows(self, parser, facts):
+        """A reading's facts as (key, predicate, value) rows, each key the one the replay counts its holder node and
+        thing node under (step 3): a statement read again after a correction says the same event whatever words
+        it keeps for the thing (Ivo bags, for Ivo bags of flour). A key that names no holder and thing node of
+        this conversation is kept as said."""
+        graph = self.conversation_graph()
+        keys = sorted(dict.fromkeys(self._holder_keys(parser)), key=lambda k: -len(k.split()))
+        rows = []
+        for fact in facts:
+            subject, predicate, value = (str(part) for part in fact["triple"])
+            pair = graph.of_key(subject)
+            if pair is None:
+                holder = next((k for k in keys if subject == k or subject.startswith(k + " ")), None)
+                node = holder and (graph.id_of("holder", holder) or graph.id_of("place", holder))
+                rest = subject[len(holder):].strip() if holder else ""
+                things = self._graph_nodes(parser, graph, rest, None, ("thing",)) if rest else []
+                if node and (not rest or len(things) == 1):
+                    pair = (node, things[0] if rest else None)
+            rows.append((graph.key(*pair) if pair else subject, predicate, value))
+        return sorted(rows)
 
     def _correction_frame(self, parser, text, knowledge_path):
         """A correction no declared form reads (``No, three.``, ``Not two, three.``, ``Actually, it was three.``,
@@ -3799,7 +3832,7 @@ class ReasoningContext:
 
         def rows_of(sentence):
             read = self._read_source(parser, sentence, events=True, verbs=verbs) or {}
-            return sorted((str(f["triple"][0]), str(f["triple"][1]), str(f["triple"][2])) for f in read.get("facts", []))
+            return self._node_rows(parser, read.get("facts", []))
 
         def holder(subject):
             return next((k for k in sorted(keys, key=lambda k: -len(k.split())) if subject == k
