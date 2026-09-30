@@ -447,3 +447,10 @@ def test_a_follow_up_named_only_by_an_unread_statement_takes_the_role_its_partic
     rows = _play("한국어", frames, 3)
     # 다온은 in the unread statement: a holder; the follow-up waits on that statement instead of asking which slot
     assert rows[-1]["meaning"]["reason"] == "unread_event" and frames[1] in rows[-1]["answer"]
+
+
+def test_a_question_naming_the_thing_and_describing_the_person_asks_among_that_things_holders():
+    rows = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "{a} gave {b} a quill.",
+                             "How many {p} does the other one have now?"], 3, **EN_WORDS)
+    assert rows[-1]["meaning"]["reason"] == "which_referent"
+    assert "Nora" in rows[-1]["answer"] and "Ivo" in rows[-1]["answer"]
