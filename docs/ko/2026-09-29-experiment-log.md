@@ -282,3 +282,27 @@ modifier and the last word; the modifier alone).
 | Step | Patch (commit) | Work | Wait | Regression | Frozen exam |
 | --- | --- | --- | --- | --- | --- |
 | 3 (questions): lookup, pointers, which-person and corrections by node; declared holders take the node's name; a named thing with a described person asks among that thing's holders; `graph.key` gives the replay's key for a node pair | 1a3a353, 805f756, f2b0a95, 9c40ab0, merged 4f3a3a3 | chat about 120 min over the afternoon; plan manager 10 min | waited on the thing-identity fix from 13:30 to 15:50; reported 16:12, merged 16:13, scored 16:19 | chat's full suite 2,373 passed, 1 known failure (gate files left out), no re-pin; gate files, graph, corrections and reading tests at merge: 477 passed | **90/108, 0 bucket changes**, 3 reply texts changed, 0 wrong, 0 violations (`graph-step-3q.json`). The held reply the chat expected to move did not: it is a two-sentence turn (the name, then the question again) |
+
+## Identity graph, step 3, statements 3: the thing node a mention means
+
+| Step | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- |
+| 3 (statements 3): a mention of a thing in its other number, or by some of its words in order, is read as the thing node its holder counts: a candidate (`_read_thing_alias`, effort 2) checked by replay, ranked, a tie held | c0a1a79, merged 77144e1 | chat about 40 min; plan manager 8 min | reported 16:31, merged 16:33, scored 16:39 | chat: dev v3–v6 check halves at effort 0 and 3 at the baseline, 0 bucket and 0 reply changes; seven-step verbatim; full suite 2,370 passed, 1 known failure. At merge: gate files, graph, corrections and reading tests 482 passed | gate **90/108** unchanged; **statements recorded 144 → 146 of 150**: the two English transfers the string-key wrong-thing candidate had to exclude are read through the node (the thing they name is a mention of the node their giver counts); 0 wrong, 0 violations (`graph-step-3s3.json`) |
+
+The 18 held answerable turns at 77144e1, as chains (S statement, Q question, W
+which-person, C correction, M missing premise, Y why, U unsupported; `ok` or the
+hold reason). Eleven dialogues:
+
+| Lang | Chain | Root |
+| --- | --- | --- |
+| en | S S S W Q(not read) M | the reply to a which-person ask, two sentences |
+| en | S S W Q U Q(unread_event) | a declined request is kept as an unread event and holds the next question |
+| en | S S S C(not read) Q Q Y | a correction of three tokens: marker, number, number |
+| en | S S S W C(reference_value_unclear) Q Q | a correction whose statement is now recorded |
+| en | S S S W Q(not read) U Q | the reply to a which-person ask |
+| ko | S S Q M(not read) S(no_reading) Q U | a transfer with no thing |
+| ko | S(not read) S S(unread_event) Q Q(tie) Q | a holding that lists two things |
+| ko | S S S(unknown_word) W C(reference_no_event) Q Q | a transfer, amount one, the verb not known in its frame |
+| ko | S S S Q Y(not read) Q(not read) | a why, then a one-word question after a restart |
+| ko | S S Q C(not read) Q Y Q | a correction with two markers |
+| ko | S S S W Q(unresolved) U Q(unresolved) | the reply to a which-person ask |
