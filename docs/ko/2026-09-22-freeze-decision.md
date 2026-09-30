@@ -85,6 +85,12 @@ never reorders them. Where an older roadmap disagrees on order, this file wins.
   `docs/ko/2026-09-29-experiment-log.md`. This replaces "scored once per round"
   in the exam rule: the plan manager scores after every merge, and still only
   the plan manager; development chats never open or run the frozen sets.
+- **Nodes, not strings (owner, 2026-09-30).** The frozen exam at 90 of 108 is the
+  frozen baseline (tag `ur7-baseline-90`). No further patch on the string-key
+  route. The rest of M1 goes: minimal conversation identity graph → reader partial
+  candidates grounded to nodes → state, corrections and lookup by id →
+  re-verification of every existing pass → frozen exam → gate.
+  `docs/ko/2026-09-30-conversation-identity-graph.md`.
 - **Placements decided by the owner (2026-09-29), top-level order unchanged:** the
   real MCO format under MARCO 1 release, before M2; the Observation Graph Contract
   at the end of M2, before M3; M3 owns capability declaration, discovery, binding
