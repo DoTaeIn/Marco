@@ -4460,6 +4460,16 @@ class ReasoningContext:
             found = graph.find(text, kinds=kinds, fold=fold, forms=forms)
             if found:
                 return found
+        if "thing" in kinds and (not forms or "key" in forms):
+            # a thing said with some of its words, in order (striped, towels, for striped cotton towels): the one
+            # thing node they are words of (step 3); a word the pack declares for questions names none
+            declared = self._declared_words(parser)
+            for text in [word] + ([stem] if stem and stem != word else []):
+                if not text or all(fold(w) in declared for w in text.split()):
+                    continue
+                found = graph.part_of(text, kinds=("thing",), fold=fold)
+                if len(found) == 1:
+                    return found
         if any(kind in kinds for kind in ("holder", "place")):
             keys = list(dict.fromkeys(self._holder_keys(parser)))
             key = self._holder_of(parser, word, keys)
