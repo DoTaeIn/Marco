@@ -252,3 +252,9 @@ correction kinds carry behaviour pinned by the tests of rounds 2 and 3.
 | Step | Patch (commit) | Work | Wait | Regression | Frozen exam |
 | --- | --- | --- | --- | --- | --- |
 | 1, the conversation graph: nodes for holders, things and places, alias edges with their turn, count edges with origin (said / computed) and evidence turns, frames as node ids; snapshot v10; the trace names the nodes read; nothing reads the graph yet | bff284a, merged 762e2dc | chat 70 min; plan manager 8 min | chat 20 min on runs; reported 12:40, merged 12:42, scored 12:47 | chat's full suite 2,359 passed, 1 known failure, 3 expected failures (gate files left out; the new strict xfail is the two-things-one-holder case); gate files, graph, corrections, round-7 and seven-step tests at merge: 130 passed, 1 xfailed | **90/108, 0 turns changed, 0 reply texts changed**, 0 wrong, 0 violations (`graph-step-1.json`) |
+
+## Identity graph, step 2
+
+| Step | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- |
+| 2, the reader's partial candidates grounded to nodes: `_ground_question`, `_which_person`, `_ground_pair`, `_named_reply`, `_partial_frame`, `_record_frame` take nodes and count edges; their local holder helpers are gone; one helper `_graph_nodes` | 606223c, merged d210739 | chat 30 min; plan manager 8 min | chat 25 min on runs; reported 13:09, merged 13:11, scored 13:16 | chat's full suite 2,359 passed, 1 known failure, 3 expected failures (gate files left out); gate files, graph, round-2, round-3, round-7 and seven-step tests at merge: 455 passed, 1 xfailed; no re-pin | **90/108, 0 turns changed, 0 reply texts changed**, 0 wrong, 0 violations (`graph-step-2.json`); 1.0 → 1.2 ms per turn at effort 3 |
