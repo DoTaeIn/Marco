@@ -506,57 +506,15 @@ class ReasoningContext:
                     return (other.get("evidence") or {}).get("text") or other["triple"][0]
         return None
 
-    @staticmethod
-    def _other_keys(parser, facts, subject, turn):
-        """G7-S (round 7, S3): the keys an earlier count of ``subject``'s holder and thing may stand under
-        because the reader kept a case particle of the pack (조사, case_particles) in the name: the thing left unsaid and the
-        case kept on the holder (기 대표에게 for 기 대표 핸드백), or a place phrase kept between the holder and
-        the thing (경아 승합차에 형광펜 for 경아 형광펜). ``[(key, kind)]``, counted before ``turn``, in the order
-        said. Which of them, if any, is the holder's is for the state to decide."""
-        particles = sorted({p for p in (parser.language_pack or {}).get("case_particles") or [] if isinstance(p, str) and p},
-                           key=len, reverse=True)
-        words = subject.split()
-        if not particles or len(words) < 2:
-            return []
-        holder, thing = words[:-1], words[-1]
-        things = {}
-        for f in facts:
-            if isinstance(f["triple"][0], str) and len(str(f["triple"][0]).split()) > 1:
-                things.setdefault(str(f["triple"][0]).split()[-1], set()).add(f["triple"][0])
-
-        def cased(word):
-            return next((word[:-len(p)] for p in particles if word.endswith(p) and len(word) > len(p)), None)
-        numeric = ReasoningContext._numeric_targets(parser)
-        out = []
-        for fact in facts:
-            key = fact["triple"][0]
-            if (fact["triple"][1] not in numeric or not isinstance(key, str) or key == subject
-                    or (fact.get("evidence") or {}).get("turn", turn) >= turn or key in [k for k, _ in out]):
-                continue
-            k = key.split()
-            if len(k) == len(holder) and k[:-1] == holder[:-1] and cased(k[-1]) == holder[-1] \
-                    and not (things.get(k[-1], set()) - {key}):
-                out.append((key, "case_in_name"))
-            elif len(k) > len(words) and k[:len(holder)] == holder and k[-1] == thing and cased(k[-2]):
-                out.append((key, "place_in_name"))
-        return out
-
-    def _rekeyed_fit(self, parser, text, verbs, turns, old, new):
+    def _rekeyed_fit(self, parser, text, verbs, turns, old, new, parts=None):
         """The conversation replayed with ``text`` and with the statements at ``turns`` read with ``old``
-        keyed as ``new``: ``(fit, readings)`` when no constraint breaks and every change this statement makes
-        to ``new`` starts from a count; else the reason it does not fit. Nothing is kept."""
+        keyed as ``new`` (their facts naming ``parts``, the holder and thing of ``new``): ``(fit, readings)`` when
+        no constraint breaks and every change this statement makes to ``new`` starts from a count; else the
+        reason it does not fit. Nothing is kept."""
         table = parser.__dict__.setdefault("chosen_readings", {})
-        sources = [self.observations[i].strip() for i in turns if isinstance(i, int) and 0 <= i < len(self.observations)]
-        readings = {}
-        for source in sources:
-            reading = deepcopy(self._read_source(parser, source, events=True, verbs=verbs))
-            if not reading or not any(isinstance(f.get("triple"), list) and f["triple"][0] == old
-                                      for f in reading.get("facts", [])):
-                return "not_in_reading"
-            for fact in reading["facts"]:
-                if isinstance(fact.get("triple"), list) and fact["triple"][0] == old:
-                    fact["triple"][0] = new
-            readings[source] = reading
+        readings = self._rekeyed_readings(parser, verbs, turns, old, new, parts)
+        if readings is None:
+            return "not_in_reading"
         saved = {source: table.get(source) for source in readings}
         updates = parser.data.get("numeric_updates") or {}
         try:
@@ -580,19 +538,44 @@ class ReasoningContext:
             return "no_count_before"
         return {"state": 1, "cost": 1}, readings
 
+    def _rekeyed_readings(self, parser, verbs, turns, old, new, parts=None):
+        """The readings of the statements at ``turns`` with ``old`` keyed as ``new`` ({source: reading}), their facts
+        naming ``parts`` (the holder and thing of ``new``) when given, or None when one of them does not read
+        ``old``."""
+        readings = {}
+        for i in turns:
+            if not (isinstance(i, int) and 0 <= i < len(self.observations)):
+                continue
+            source = self.observations[i].strip()
+            reading = deepcopy(self._read_source(parser, source, events=True, verbs=verbs))
+            if not reading or not any(isinstance(f.get("triple"), list) and f["triple"][0] == old
+                                      for f in reading.get("facts", [])):
+                return None
+            for fact in reading["facts"]:
+                if isinstance(fact.get("triple"), list) and fact["triple"][0] == old:
+                    fact["triple"][0] = new
+                    if parts:
+                        fact["parts"] = dict(parts)
+                    else:
+                        fact.pop("parts", None)
+            readings[source] = reading
+        return readings or None
+
     def _read_other_keys(self, parser, text, current, verbs):
-        """G7-S, effort 2 (a referent candidate from the conversation; amendment A1): a statement that moves
-        an amount from or to a holder with no count under its key, where an earlier statement counted the same
-        holder and thing under another key (``_other_keys``), is tried with that earlier statement keyed the
-        way this one names it. A candidate survives when the replay breaks no constraint and the holder has a
-        count before this statement (``_rekeyed_fit``); the survivors are ranked (``_rank_candidates``), and
-        a clear winner becomes the earlier statement's reading (``chosen_readings``), so every later replay
-        reads it so. Givers first: a receiver's candidate is checked with the giver's already kept. A tie or
-        no survivor changes nothing, and the statement goes on as before."""
+        """G7-S, effort 2 (a referent candidate from the conversation's graph; amendment A1): a statement that
+        moves an amount from or to a holder with no count under the key it names, where the conversation's graph
+        counts that holder node under another key, for the same thing node or for a thing not said (기 대표님에게는
+        열 개 있어: 기 대표, thing not said; 경아는 승합차에 형광펜을 싣고 있어: 경아's 형광펜 kept with its place), is
+        tried with that earlier statement keyed the way this one names it, when that is the node's own key (its
+        holder's and its thing's names; a thing said by other words is ``_read_thing_alias``'s). A candidate survives when the replay
+        breaks no constraint and the holder has a count before this statement (``_rekeyed_fit``); the survivors
+        are ranked (``_rank_candidates``), and a clear winner becomes the earlier statement's reading for this
+        conversation (``chosen_readings``). Givers first: a receiver's candidate is checked with the giver's
+        already kept. A tie or no survivor changes nothing, and the statement goes on as before."""
         updates = parser.data.get("numeric_updates") or {}
-        rows = [f["triple"] for f in current.get("facts", []) if isinstance(f.get("triple"), list)
+        rows = [f for f in current.get("facts", []) if isinstance(f.get("triple"), list)
                 and isinstance(f["triple"][0], str) and f["triple"][1] in updates]
-        rows.sort(key=lambda t: float((updates[t[1]] or {}).get("factor", 1) or 1) > 0)
+        rows.sort(key=lambda f: float((updates[f["triple"][1]] or {}).get("factor", 1) or 1) > 0)
         if not rows or not self.observations:
             return None
         try:
@@ -600,17 +583,32 @@ class ReasoningContext:
             state, _c = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
         except ValueError:
             return None
+        graph = self.conversation_graph()
         counted = {row["triple"][0] for row in state}
         kept = []
-        for subject in dict.fromkeys(t[0] for t in rows):
-            if subject in counted:
+        for fact in rows:
+            subject = fact["triple"][0]
+            parts = fact.get("parts") if isinstance(fact.get("parts"), dict) else None
+            if subject in counted or not parts or not parts.get("thing") \
+                    or " ".join((parts["holder"], parts["thing"])) != subject:
                 continue
+            holders = graph.find(parts["holder"], kinds=("holder",))
+            if len(holders) != 1:
+                continue
+            thing = graph.id_of("thing", parts["thing"])
+            if thing is not None and graph.key(holders[0], thing) != subject:
+                # the statement names the thing by other words than its node: it is read with the node's key
+                # (``_read_thing_alias``), the earlier statements keep theirs
+                continue
+            others = [(key, "same_thing") for key in (graph.keys_of(holders[0], thing) if thing else []) if key != subject]
+            others += [(key, "thing_not_said") for key in graph.keys_of(holders[0], None) if key != subject]
             survivors = []
-            for key, kind in self._other_keys(parser, facts, subject, len(self.observations)):
+            for key, kind in others:
                 turns = sorted({(f.get("evidence") or {}).get("turn") for f in facts if f["triple"][0] == key}
                                - {None})
                 label = "%s -> %s" % (key, subject)
-                fit = self._rekeyed_fit(parser, text, verbs, turns, key, subject)
+                fit = self._rekeyed_fit(parser, text, verbs, turns, key, subject,
+                                        {"holder": parts["holder"], "thing": parts["thing"]})
                 if isinstance(fit, str):
                     self._candidate_dropped(2, kind, label, fit)
                     continue
@@ -627,6 +625,7 @@ class ReasoningContext:
                 "ok": True, "reason": "other_key", "kind": winner["kind"], "from": winner["from"],
                 "to": winner["to"], "decided_by": deciding, "effort": self.effort}]}))
             kept.append(winner["label"])
+            counted.add(subject)
         return kept or None
 
     def _read_unsaid_thing(self, parser, text, current, verbs, knowledge_path):
@@ -755,11 +754,19 @@ class ReasoningContext:
         for thing in things:
             parsed = deepcopy(current)
             rename = {}
+            several = False
             for subject, (holder_name, holder, _m) in named.items():
                 keys = graph.keys_of(holder, thing) if holder is not None else []
+                if len(keys) > 1:
+                    # the holder counts the thing under two keys (in the truck, in the cart): which is not said
+                    several = True
+                    break
                 key = keys[0] if keys else "%s %s" % (holder_name, graph.nodes[thing]["name"])
                 # the holder and thing the key names, so the graph keeps the nodes (no string is split)
                 rename[subject] = (key, {"holder": holder_name, "thing": key[len(holder_name) + 1:]})
+            if several:
+                self._candidate_dropped(2, "thing_alias", graph.nodes[thing]["name"], "several_keys")
+                continue
             for fact in parsed.get("facts", []):
                 if isinstance(fact.get("triple"), list) and fact["triple"][0] in rename:
                     fact["triple"][0], fact["parts"] = rename[fact["triple"][0]][0], dict(rename[fact["triple"][0]][1])
@@ -4421,7 +4428,8 @@ class ReasoningContext:
                 continue
             turn = (row.get("evidence") or {}).get("turn")
             parts = row.get("parts") if isinstance(row.get("parts"), dict) else None
-            if parts and " ".join(w for w in (parts.get("holder"), parts.get("thing")) if w) == subject:
+            if parts and parts.get("holder") and parts.get(
+                    "key", " ".join(w for w in (parts.get("holder"), parts.get("thing")) if w)) == subject:
                 # the reader named the holder and the thing (G7-S, step 3): no string is split
                 holder, thing = parts["holder"], parts.get("thing") or None
                 kind = "place" if holder in places else "holder"
