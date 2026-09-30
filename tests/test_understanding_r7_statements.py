@@ -467,3 +467,12 @@ def test_a_modified_thing_stays_with_the_thing(line):
     assert [n["name"] for n in graph.of_kind("holder")] == ["미경"]
     assert [n["name"] for n in graph.of_kind("thing")] == ["줄무늬 면 수건"]
     assert counts == {("미경", "줄무늬 면 수건"): 5}
+
+
+# _read_unsaid_thing on nodes: a holder counted with its thing not said (기 대표님에게는 열 개 있어) and a transfer
+# that names no thing from it: the thing node from the conversation, and that count keyed to it, one candidate.
+@pytest.mark.parametrize("effort", [2, 3])
+def test_a_transfer_with_no_thing_from_a_holder_counted_with_no_thing(effort):
+    assert play("한국어", effort, [("세훈은 핸드백이 열한 개 있어.", "rec"), ("기 대표님에게는 열 개 있어.", "rec"),
+                                  ("기 대표님이 세훈에게 세 개를 줬어.", "rec"), ("기 대표님은 핸드백이 몇 개 있어?", 7),
+                                  ("세훈은 핸드백이 몇 개 있어?", 14)]) == []
