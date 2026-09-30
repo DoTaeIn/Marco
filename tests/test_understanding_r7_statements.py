@@ -456,3 +456,14 @@ def test_below_effort_2_a_thing_said_by_its_head_is_refused(effort):
 def test_a_head_that_fits_two_things_of_the_holder_holds():
     assert play("english", 3, [("Ada has four red towels.", "rec"), ("Ada has two blue towels.", "rec"),
                                ("Bo has one red towel.", "rec"), ("Ada gave Bo one towel.", "hold")]) == []
+
+
+# G7-5: a Korean holding with a modified thing names the holder by its name alone; what stands between the
+# topic-marked name and the counted noun belongs to the thing (미경, 줄무늬 면 수건; not 미경 줄무늬 면, 수건).
+@pytest.mark.parametrize("line", ["제 친구 미경은 줄무늬 면 수건이 5개 있어.", "미경한테 줄무늬 면 수건이 5개 있어.",
+                                  "미경은 줄무늬 면 수건을 5개 가지고 있어."])
+def test_a_modified_thing_stays_with_the_thing(line):
+    graph, counts = _things("한국어", [line], 0)
+    assert [n["name"] for n in graph.of_kind("holder")] == ["미경"]
+    assert [n["name"] for n in graph.of_kind("thing")] == ["줄무늬 면 수건"]
+    assert counts == {("미경", "줄무늬 면 수건"): 5}
