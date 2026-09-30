@@ -4274,6 +4274,30 @@ class ReasoningContext:
                 "정의": [], "사건": [], "가정사건": [], "조건": [], "가정": [], "원인": [], "이유물음": [],
                 "수선": [], "사건정정": [], "grounded": True}
 
+    @staticmethod
+    def _thing_node(graph, thing, turn):
+        """The node of a thing mention (G7-S, step 3): its own, when the conversation said it so before; else the
+        one existing thing whose words and the mention's are one within the other, in order (striped towels and
+        striped cotton beach towels: one thing, the mention an alias of form ``short``), when exactly one fits.
+        Two that fit (pens, between red pens and blue pens) or none: a node of its own; a mention with a word
+        the node lacks is another thing (red pens, blue pens)."""
+        known = graph.id_of("thing", thing)
+        if known is not None:
+            return graph.node("thing", thing, turn)
+
+        def within(short, long):
+            at = 0
+            for word in long:
+                if at < len(short) and word == short[at]:
+                    at += 1
+            return at == len(short)
+        words = thing.split()
+        fits = [n["id"] for n in graph.of_kind("thing")
+                if within(words, n["name"].split()) or within(n["name"].split(), words)]
+        if len(fits) == 1:
+            return graph.join("thing", thing, fits[0], "short", turn)
+        return graph.node("thing", thing, turn)
+
     def conversation_graph(self):
         """The conversation identity graph (``marco.reasoning.identity``), built from the replayed facts: a node
         per holder, thing and place, their aliases with the turn each came from (the key, the words said right
@@ -4320,7 +4344,7 @@ class ReasoningContext:
             else:
                 kind, holder, thing = split(subject)
             h = graph.node(kind, holder, turn)
-            t = graph.node("thing", thing, turn) if thing else None
+            t = self._thing_node(graph, thing, turn) if thing else None
             graph.keyed(subject, h, t)
             last_of[subject] = triple[1]
             turns_of.setdefault(subject, []).append(turn)
