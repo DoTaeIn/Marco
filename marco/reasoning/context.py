@@ -596,7 +596,8 @@ class ReasoningContext:
             if len(holders) != 1:
                 continue
             thing = graph.id_of("thing", parts["thing"])
-            if thing is not None and graph.key(holders[0], thing) != subject:
+            own = "%s %s" % (graph.nodes[holders[0]]["name"], graph.nodes[thing]["name"]) if thing is not None else None
+            if thing is not None and own != subject:
                 # the statement names the thing by other words than its node: it is read with the node's key
                 # (``_read_thing_alias``), the earlier statements keep theirs
                 continue
