@@ -1063,8 +1063,25 @@ class RelationalParser:
                            and not w.isdigit() and parse_numeral(w.lower(), self.data.get("numerals", {})) is None
                            and not self._ends_in_particle(w)
                            for w in words.split())
-            new = _compiled(pattern).sub(lambda m: m.group(3) if is_owner(m.group(1)) and is_relation(m.group(2))
-                         else m.group(0), text)
+            # A match whose owner word carries a particle moves on by one word, not past the whole match: in 민혁이
+            # 가윤 사위 태오에게, 민혁이 is no owner, and 가윤 사위 태오 must still be read as 태오 (one holder, G7-S).
+            compiled, new, at = _compiled(pattern), text, 0
+            while at <= len(new):
+                m = compiled.search(new, at)
+                if m is None:
+                    break
+                if is_owner(m.group(1)) and is_relation(m.group(2)):
+                    new = new[:m.start()] + m.group(3) + new[m.end():]
+                    at = m.start() + len(m.group(3))
+                elif self._ends_in_particle(m.group(1)):
+                    # the owner word carries a particle (민혁이): it ends a clause role, the next word may begin one
+                    space = new.find(" ", m.start())
+                    if space < 0:
+                        break
+                    at = space + 1
+                else:
+                    # a bare word that is no owner (곽 of 곽 기사님 짝꿍 우진) begins a longer name: past the match
+                    at = m.end()
             if new != text:
                 text, applied = new, applied + ["relation_name"]
         determiners = spec.get("determiners") or []
@@ -1943,11 +1960,13 @@ class RelationalParser:
             if subject in leading:
                 carried = before[:len(before) - len(words)]
                 rewritten.append([" ".join(carried + words)] + list(row[1:]))
+                parts = {"holder": " ".join(carried), "thing": subject}
             else:
                 carried = before[len(words):]
                 rewritten.append([" ".join(words + carried)] + list(row[1:]))
+                parts = {"holder": subject, "thing": " ".join(carried)}
             inherited.append({"subject": subject, "inherited": " ".join(carried),
-                              "from": match[0]})
+                              "from": match[0], "index": len(rewritten) - 1, "parts": parts})
         return rewritten, inherited
 
     def _relative_clauses(self, text):
@@ -2045,6 +2064,22 @@ class RelationalParser:
         return " ".join((words[:at] or before[:len(holder)]) + verb + [words[at]]
                         + (words[at + 1:] or before[then + 1:]))
 
+    @staticmethod
+    def _typed_parts(key, text):
+        """The holder and the thing of a key one slot gave (보늬 연필 from 보늬는 연필이 세 개), as the words were
+        typed: the thing is the key's last word, typed as it is or with something after it, and the word right
+        before it is the holder's last word typed with something after it (a particle or a title: 보늬는,
+        과장님은). None when the typed words do not show it."""
+        words = key.split()
+        if len(words) < 2:
+            return None
+        typed = [w.strip(".,!?") for w in str(text).split()]
+        for i in range(1, len(typed)):
+            if typed[i].startswith(words[-1]) and typed[i - 1].startswith(words[-2]) \
+                    and len(typed[i - 1]) > len(words[-2]):
+                return {"holder": " ".join(words[:-1]), "thing": words[-1]}
+        return None
+
     def _counted_subjects(self, evidence_text, rows):
         """The subjects this clause marks as the thing counted, not its holder: a
         one-word subject typed with a particle of 생략.topic_continuity.item_particles
@@ -2062,7 +2097,16 @@ class RelationalParser:
             if any(word == subject + particle or word == subject + self._particle_form(subject, particle)
                    for word in typed for particle in particles):
                 out.add(subject)
+            elif subject in typed and self._object_marked_after(typed, typed.index(subject)):
+                # a bare word before a count the clause marks as its object (컵 두 개를 가지고 있어): the thing
+                # held, not a holder, which the clause would mark as its subject or topic (G7-S)
+                out.add(subject)
         return out
+
+    def _object_marked_after(self, typed, at):
+        """Whether a word after ``typed[at]`` carries the object particle (the slot group with 을)."""
+        group = next((g for g in self.slot_particles if "을" in g or "를" in g), ())
+        return any(any(w.endswith(p) and len(w) > len(p) for p in group) for w in typed[at + 1:])
 
     @staticmethod
     def _names_hold(meaning, outside, leading=()):
@@ -4004,7 +4048,7 @@ class RelationalParser:
                                         json.dumps(o, sort_keys=True, ensure_ascii=False) for o in options)]}
                                    for options, evidence in clauses if len(options) > 1)
                 return None
-        previous_rows, previous_end = [], None
+        previous_rows, previous_end, previous_parts = [], None, {}
         choices = []
         for options, evidence in clauses:
             meaning = options[0]
@@ -4015,6 +4059,12 @@ class RelationalParser:
             if normalization:
                 evidence = {**evidence, "normalization": normalization}
             stated = asserted(meaning)
+            # The holder and the thing of each row, as the example's slots named them ([holder, thing]): the
+            # conversation's graph takes its nodes from these, never from splitting the joined key (G7-S)
+            raw = [meaning["triple"]] if "triple" in meaning else list(meaning.get("triples") or [])
+            parts_of = [{"holder": row[0][0], "thing": row[0][1]}
+                        if isinstance(row, list) and row and isinstance(row[0], list) and len(row[0]) == 2
+                        and all(isinstance(w, str) and w.strip() for w in row[0]) else None for row in raw]
             # 조건 맺음으로 읽힌 절은 **일어난 일이 아니다.** 사실로 적으면
             # `5개보다 많으면` 이 "많다" 는 단정이 되고, 뒤의 일도 그냥 일어난
             # 일이 된다. 어느 맺음이 조건인지는 문법이 선언한다 — 낱말이 아니다.
@@ -4051,16 +4101,22 @@ class RelationalParser:
                     return None
                 if inherited:
                     evidence = {**evidence, "ellipsis": inherited}
+                    for row in inherited:
+                        if row["index"] < len(parts_of):
+                            parts_of[row["index"]] = row["parts"]
             if stated and in_turn and self.ellipsis.get("omitted_subject") == "same_relation":
                 # 그리고 은호에게 네 장을 주었다: a clause whose example leaves its subject out takes the subject of
                 # the clause before it in the turn with the same relation (the giver who gave just before)
                 carried = []
-                for row in stated:
+                for index, row in enumerate(stated):
                     prior = next((p for p in previous_rows if row[0] is None and p[1] == row[1]
                                   and isinstance(p[0], str)), None)
                     carried.append([prior[0]] + list(row[1:]) if prior else row)
+                    if prior and index < len(parts_of):
+                        parts_of[index] = previous_parts.get(prior[0])
                 stated = carried
             previous_rows, previous_end = (stated or []), evidence["end"]
+            previous_parts = {row[0]: part for row, part in zip(stated or [], parts_of) if part and isinstance(row[0], str)}
             if stated:
                 role_bindings = meaning.get("role_bindings", [])
                 example_index = matched_examples.get(evidence["text"], {}).get(key)
@@ -4069,8 +4125,15 @@ class RelationalParser:
                 event_verb = (self.data["examples"][example_index].get("event_verb")
                               if example_index is not None else None)
                 for position, triple in enumerate(stated):
+                    said_key = triple[0]
                     triple = [self.canonical_name(triple[0])] + list(triple[1:])
                     fact = {"triple": triple, "evidence": evidence}
+                    part = parts_of[position] if position < len(parts_of) else None
+                    if part is None and isinstance(said_key, str) and not meaning.get("places"):
+                        part = self._typed_parts(said_key, evidence["text"])
+                    if part and isinstance(said_key, str) and triple[0] == said_key \
+                            and " ".join(w for w in (part["holder"], part["thing"]) if w) == said_key:
+                        fact["parts"] = dict(part)
                     if event_verb:
                         # 어순으로 역할을 짚는 언어는 동사 꼬리가 문장 끝에 없다.
                         # 예문이 그 사건의 동사 어간을 선언하면 사실에 남긴다.

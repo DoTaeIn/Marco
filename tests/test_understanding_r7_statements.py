@@ -370,3 +370,27 @@ def test_a_use_up_is_never_read_without_its_negation():
     # without its purpose phrase the English one is the negated statement main reads: nothing moves
     assert play("english", 3, [("Nora has 9 pens.", "rec"), ("Nora didn't use three of them for a party.", "rec"),
                                ("How many pens does Nora have?", 9)]) == []
+
+
+# Identity graph, step 3 (statements): the reader names each fact's holder and thing, and the graph takes its
+# nodes from them. A receiver said with a relation before its name (가윤 사위 태오에게) is the holder its name
+# already is: one node, and the transfer moves its count (it recorded a new holder and answered 23 for 24).
+def test_a_relation_named_receiver_is_one_node():
+    current = context("한국어", 0)
+    for line in ("가윤은 자두가 16개 있어.", "가윤 사위 태오는 자두가 23개 있어.", "가윤 삼촌 민혁은 자두가 7개 있어.",
+                 "민혁이 가윤 사위 태오에게 자두 한 개 줬어."):
+        current.turn(line, KG)
+    graph = current.conversation_graph()
+    assert sorted(node["name"] for node in graph.of_kind("holder")) == ["가윤", "민혁", "태오"]
+    taeo, plum = graph.id_of("holder", "태오"), graph.id_of("thing", "자두")
+    assert graph.value(taeo, plum) == 24
+    assert "24" in current.turn("태오는 자두가 몇 개 있어?", KG)["answer"]
+
+
+def test_a_list_of_two_things_names_one_holder_and_records_both():
+    current = context("한국어", 0)
+    current.turn("보늬는 연필 세 개, 컵 두 개를 가지고 있어.", KG)
+    graph = current.conversation_graph()
+    bonui = graph.id_of("holder", "보늬")
+    assert [node["name"] for node in graph.of_kind("holder")] == ["보늬"]
+    assert graph.value(bonui, graph.id_of("thing", "연필")) == 3 and graph.value(bonui, graph.id_of("thing", "컵")) == 2
