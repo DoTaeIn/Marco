@@ -1,0 +1,28 @@
+{
+  "delivery": "seventh",
+  "completed_at_utc": "2026-09-27T18:38:54.801604+00:00",
+  "command": "python -B -m unittest discover -s mrl/tests",
+  "python": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+  "tests_run": 110,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "successful": true,
+  "elapsed_seconds": 35.22178739999799,
+  "code_unchanged_during_tests": true,
+  "sha256": {
+    "mrl/frontend.py": "b18eaa4b6150c6954edc960b822fe73384ff48c70527cf82d2199f0d12910c6b",
+    "mrl/c_backend.py": "1a349d07aad0f2a3bc0823da17f49f0ba9e01101550f1cc146b4321d69bf3663",
+    "mrl/horn_bridge.py": "e67a8a00e6d79ed925c4faac3623a786c8f610c91cf8b64735217eb1851f7511",
+    "mrl/tests/test_search_frontend.py": "03b0ee55870381d6b7640baf2829d2f9afe3334c96acf80608df9c867512bbd4",
+    "mrl/tests/test_mutable_horn_source.py": "a1ec91b33a3e0d779025b4e3c14fce2899bdca9659bb986c4c255516f47a84fb",
+    "mrl/examples/knowledge_updates.mrl": "623f24d76344a382f76373c617867a88471004a44bb7649c6e196a532ae85326",
+    "mrl/oracle.py": "badf72d194a3aae3a1771b073c2a72d522e6804cf48798fbc67bd919472f8b1f",
+    "mrl/runtime/native_graph.c": "47576d21e194e0e41a1d0c6e603da0423710933a3443a2cfe0f698cf1247e2c9",
+    "mrl/native_graph.py": "6630c4164a1b431dcaa1007dd6757b02dac5c87e9763c89c7817890a13e8bf83",
+    "graph_inference.py": "d7b383a720e7d21b21b266db31b8d5578d53681883882fef8c560049741f8daf",
+    "engine.py": "0b1d3ed3d228abbc28736dcc8de6f57ce9c0c6e17f3e326a5398d19aa9bb0dbb",
+    "semantic_parser.py": "6ee34bcbd3e58975fcf9a0613a91d80942d3e49118886ca0536740f8acc68804"
+  },
+  "scope": "isolated MRL worktree only; no new speed claim; full recomputation"
+}

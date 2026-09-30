@@ -1,0 +1,1355 @@
+{
+  "metadata": {
+    "baseline_sha": "d5d91a21397fc5ac0d3ce0923d8756c867c85eca",
+    "graph_inference_sha256": "9fb6ae1c58d2e057156ab5e6fe3413c9e2848562ea815555ecbd77f1b3ffcd07",
+    "oracle_sha256": "badf72d194a3aae3a1771b073c2a72d522e6804cf48798fbc67bd919472f8b1f"
+  },
+  "cases": [
+    {
+      "id": "closure_chain_proof",
+      "operation": "closure",
+      "facts": [
+        {
+          "triple": [
+            "a",
+            "p",
+            "b"
+          ],
+          "evidence": {
+            "fact_id": "seed"
+          }
+        }
+      ],
+      "rules": [
+        {
+          "id": "p_to_q",
+          "body": [
+            [
+              "?x",
+              "p",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "q",
+            "?y"
+          ]
+        },
+        {
+          "id": "q_to_r",
+          "body": [
+            [
+              "?x",
+              "q",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "r",
+            "?y"
+          ]
+        }
+      ],
+      "target": [
+        "a",
+        "r",
+        "b"
+      ],
+      "expected": {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {
+                  "fact_id": "seed"
+                }
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "p_to_q",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "a",
+                "r",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "r",
+                  "b"
+                ],
+                "rule": "q_to_r",
+                "parents": [
+                  [
+                    "a",
+                    "q",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "proof": [
+          {
+            "fact": [
+              "a",
+              "p",
+              "b"
+            ],
+            "evidence": {
+              "fact_id": "seed"
+            }
+          },
+          {
+            "fact": [
+              "a",
+              "q",
+              "b"
+            ],
+            "rule": "p_to_q",
+            "parents": [
+              [
+                "a",
+                "p",
+                "b"
+              ]
+            ]
+          },
+          {
+            "fact": [
+              "a",
+              "r",
+              "b"
+            ],
+            "rule": "q_to_r",
+            "parents": [
+              [
+                "a",
+                "q",
+                "b"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "closure_deterministic_alternative",
+      "operation": "closure",
+      "facts": [
+        {
+          "triple": [
+            "a",
+            "p",
+            "b"
+          ],
+          "evidence": "first"
+        },
+        {
+          "triple": [
+            "a",
+            "q",
+            "b"
+          ],
+          "evidence": "second"
+        }
+      ],
+      "rules": [
+        {
+          "id": "via_p",
+          "body": [
+            [
+              "?x",
+              "p",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "reachable",
+            "?y"
+          ]
+        },
+        {
+          "id": "via_q",
+          "body": [
+            [
+              "?x",
+              "q",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "reachable",
+            "?y"
+          ]
+        }
+      ],
+      "target": [
+        "a",
+        "reachable",
+        "b"
+      ],
+      "expected": {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": "first"
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "evidence": "second"
+              }
+            },
+            {
+              "key": [
+                "a",
+                "reachable",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "reachable",
+                  "b"
+                ],
+                "rule": "via_p",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "proof": [
+          {
+            "fact": [
+              "a",
+              "p",
+              "b"
+            ],
+            "evidence": "first"
+          },
+          {
+            "fact": [
+              "a",
+              "reachable",
+              "b"
+            ],
+            "rule": "via_p",
+            "parents": [
+              [
+                "a",
+                "p",
+                "b"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "closure_graph_limit_error",
+      "operation": "closure",
+      "facts": [
+        {
+          "triple": [
+            "a",
+            "p",
+            "b"
+          ],
+          "evidence": {}
+        },
+        {
+          "triple": [
+            "c",
+            "p",
+            "d"
+          ],
+          "evidence": {}
+        }
+      ],
+      "rules": [],
+      "options": {
+        "limit": 1
+      },
+      "expected": {
+        "error": "graph_limit"
+      }
+    },
+    {
+      "id": "provenance_alternatives_bindings_and_version",
+      "operation": "closure_with_provenance",
+      "facts": [
+        {
+          "id": "fact:p",
+          "triple": [
+            "a",
+            "p",
+            "b"
+          ],
+          "evidence": {
+            "source": "p"
+          }
+        },
+        {
+          "id": "fact:q",
+          "triple": [
+            "a",
+            "q",
+            "b"
+          ],
+          "evidence": {
+            "source": "q"
+          }
+        }
+      ],
+      "rules": [
+        {
+          "id": "via_p",
+          "version": "v1",
+          "body": [
+            [
+              "?x",
+              "p",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "reachable",
+            "?y"
+          ]
+        },
+        {
+          "id": "via_q",
+          "rule_version": 2,
+          "body": [
+            [
+              "?x",
+              "q",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "reachable",
+            "?y"
+          ]
+        }
+      ],
+      "expected": {
+        "facts": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {
+                  "source": "p"
+                }
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "evidence": {
+                  "source": "q"
+                }
+              }
+            },
+            {
+              "key": [
+                "a",
+                "reachable",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "reachable",
+                  "b"
+                ],
+                "rule": "via_p",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "proof_bundles": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "support:fact:p",
+                  "kind": "asserted",
+                  "conclusion": [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "fact:p"
+                  ],
+                  "rule": null,
+                  "rule_version": null,
+                  "bindings": {},
+                  "valid": true
+                }
+              ]
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "support:fact:q",
+                  "kind": "asserted",
+                  "conclusion": [
+                    "a",
+                    "q",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "fact:q"
+                  ],
+                  "rule": null,
+                  "rule_version": null,
+                  "bindings": {},
+                  "valid": true
+                }
+              ]
+            },
+            {
+              "key": [
+                "a",
+                "reachable",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "derive:via_p:v1:[[\"a\",\"reachable\",\"b\"],[[\"?x\",\"a\"],[\"?y\",\"b\"]],[\"support:fact:p\"]]",
+                  "kind": "derived",
+                  "conclusion": [
+                    "a",
+                    "reachable",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "support:fact:p"
+                  ],
+                  "rule": "via_p",
+                  "rule_version": "v1",
+                  "bindings": {
+                    "?x": "a",
+                    "?y": "b"
+                  },
+                  "valid": true
+                },
+                {
+                  "id": "derive:via_q:2:[[\"a\",\"reachable\",\"b\"],[[\"?x\",\"a\"],[\"?y\",\"b\"]],[\"support:fact:q\"]]",
+                  "kind": "derived",
+                  "conclusion": [
+                    "a",
+                    "reachable",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "support:fact:q"
+                  ],
+                  "rule": "via_q",
+                  "rule_version": 2,
+                  "bindings": {
+                    "?x": "a",
+                    "?y": "b"
+                  },
+                  "valid": true
+                }
+              ]
+            }
+          ]
+        },
+        "complete": true,
+        "reason": null,
+        "searches": 4
+      }
+    },
+    {
+      "id": "provenance_cycle_without_ground_proof",
+      "operation": "closure_with_provenance",
+      "facts": [],
+      "rules": [
+        {
+          "id": "p_to_q",
+          "body": [
+            [
+              "?x",
+              "p",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "q",
+            "?y"
+          ]
+        },
+        {
+          "id": "q_to_p",
+          "body": [
+            [
+              "?x",
+              "q",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "p",
+            "?y"
+          ]
+        }
+      ],
+      "expected": {
+        "facts": {},
+        "proof_bundles": {},
+        "complete": true,
+        "reason": null,
+        "searches": 0
+      }
+    },
+    {
+      "id": "provenance_initial_graph_limit",
+      "operation": "closure_with_provenance",
+      "facts": [
+        {
+          "id": "fact:a",
+          "triple": [
+            "a",
+            "p",
+            "b"
+          ],
+          "evidence": {}
+        },
+        {
+          "id": "fact:c",
+          "triple": [
+            "c",
+            "p",
+            "d"
+          ],
+          "evidence": {}
+        }
+      ],
+      "rules": [],
+      "options": {
+        "limit": 1
+      },
+      "expected": {
+        "facts": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "c",
+                "p",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "c",
+                  "p",
+                  "d"
+                ],
+                "evidence": {}
+              }
+            }
+          ]
+        },
+        "proof_bundles": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "support:fact:a",
+                  "kind": "asserted",
+                  "conclusion": [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "fact:a"
+                  ],
+                  "rule": null,
+                  "rule_version": null,
+                  "bindings": {},
+                  "valid": true
+                }
+              ]
+            },
+            {
+              "key": [
+                "c",
+                "p",
+                "d"
+              ],
+              "value": [
+                {
+                  "id": "support:fact:c",
+                  "kind": "asserted",
+                  "conclusion": [
+                    "c",
+                    "p",
+                    "d"
+                  ],
+                  "premise_fact_ids": [
+                    "fact:c"
+                  ],
+                  "rule": null,
+                  "rule_version": null,
+                  "bindings": {},
+                  "valid": true
+                }
+              ]
+            }
+          ]
+        },
+        "complete": false,
+        "reason": "graph_limit",
+        "searches": 0
+      }
+    },
+    {
+      "id": "provenance_derived_graph_limit",
+      "operation": "closure_with_provenance",
+      "facts": [
+        {
+          "id": "fact:seed",
+          "triple": [
+            "a",
+            "p",
+            "b"
+          ],
+          "evidence": {}
+        }
+      ],
+      "rules": [
+        {
+          "id": "p_to_q",
+          "body": [
+            [
+              "?x",
+              "p",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "q",
+            "?y"
+          ]
+        }
+      ],
+      "options": {
+        "limit": 1
+      },
+      "expected": {
+        "facts": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            }
+          ]
+        },
+        "proof_bundles": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "support:fact:seed",
+                  "kind": "asserted",
+                  "conclusion": [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "fact:seed"
+                  ],
+                  "rule": null,
+                  "rule_version": null,
+                  "bindings": {},
+                  "valid": true
+                }
+              ]
+            }
+          ]
+        },
+        "complete": false,
+        "reason": "proof_or_search_limit",
+        "searches": 1
+      }
+    },
+    {
+      "id": "provenance_proof_limit",
+      "operation": "closure_with_provenance",
+      "facts": [
+        {
+          "id": "fact:p",
+          "triple": [
+            "a",
+            "p",
+            "b"
+          ],
+          "evidence": {}
+        },
+        {
+          "id": "fact:q",
+          "triple": [
+            "a",
+            "q",
+            "b"
+          ],
+          "evidence": {}
+        }
+      ],
+      "rules": [
+        {
+          "id": "via_p",
+          "body": [
+            [
+              "?x",
+              "p",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "reachable",
+            "?y"
+          ]
+        },
+        {
+          "id": "via_q",
+          "body": [
+            [
+              "?x",
+              "q",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "reachable",
+            "?y"
+          ]
+        }
+      ],
+      "options": {
+        "proof_limit": 1
+      },
+      "expected": {
+        "facts": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "reachable",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "reachable",
+                  "b"
+                ],
+                "rule": "via_p",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "proof_bundles": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "support:fact:p",
+                  "kind": "asserted",
+                  "conclusion": [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "fact:p"
+                  ],
+                  "rule": null,
+                  "rule_version": null,
+                  "bindings": {},
+                  "valid": true
+                }
+              ]
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "support:fact:q",
+                  "kind": "asserted",
+                  "conclusion": [
+                    "a",
+                    "q",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "fact:q"
+                  ],
+                  "rule": null,
+                  "rule_version": null,
+                  "bindings": {},
+                  "valid": true
+                }
+              ]
+            },
+            {
+              "key": [
+                "a",
+                "reachable",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "derive:via_p:None:[[\"a\",\"reachable\",\"b\"],[[\"?x\",\"a\"],[\"?y\",\"b\"]],[\"support:fact:p\"]]",
+                  "kind": "derived",
+                  "conclusion": [
+                    "a",
+                    "reachable",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "support:fact:p"
+                  ],
+                  "rule": "via_p",
+                  "rule_version": null,
+                  "bindings": {
+                    "?x": "a",
+                    "?y": "b"
+                  },
+                  "valid": true
+                }
+              ]
+            }
+          ]
+        },
+        "complete": false,
+        "reason": "proof_or_search_limit",
+        "searches": 2
+      }
+    },
+    {
+      "id": "provenance_seeded_cycle_proof_limit",
+      "operation": "closure_with_provenance",
+      "facts": [
+        {
+          "id": "fact:seed",
+          "triple": [
+            "a",
+            "p",
+            "b"
+          ],
+          "evidence": {}
+        }
+      ],
+      "rules": [
+        {
+          "id": "p_to_q",
+          "body": [
+            [
+              "?x",
+              "p",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "q",
+            "?y"
+          ]
+        },
+        {
+          "id": "q_to_p",
+          "body": [
+            [
+              "?x",
+              "q",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "p",
+            "?y"
+          ]
+        }
+      ],
+      "options": {
+        "proof_limit": 2
+      },
+      "expected": {
+        "facts": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "p_to_q",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "proof_bundles": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "support:fact:seed",
+                  "kind": "asserted",
+                  "conclusion": [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "fact:seed"
+                  ],
+                  "rule": null,
+                  "rule_version": null,
+                  "bindings": {},
+                  "valid": true
+                },
+                {
+                  "id": "derive:q_to_p:None:[[\"a\",\"p\",\"b\"],[[\"?x\",\"a\"],[\"?y\",\"b\"]],[\"derive:p_to_q:None:[[\\\"a\\\",\\\"q\\\",\\\"b\\\"],[[\\\"?x\\\",\\\"a\\\"],[\\\"?y\\\",\\\"b\\\"]],[\\\"support:fact:seed\\\"]]\"]]",
+                  "kind": "derived",
+                  "conclusion": [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "derive:p_to_q:None:[[\"a\",\"q\",\"b\"],[[\"?x\",\"a\"],[\"?y\",\"b\"]],[\"support:fact:seed\"]]"
+                  ],
+                  "rule": "q_to_p",
+                  "rule_version": null,
+                  "bindings": {
+                    "?x": "a",
+                    "?y": "b"
+                  },
+                  "valid": true
+                }
+              ]
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "derive:p_to_q:None:[[\"a\",\"q\",\"b\"],[[\"?x\",\"a\"],[\"?y\",\"b\"]],[\"support:fact:seed\"]]",
+                  "kind": "derived",
+                  "conclusion": [
+                    "a",
+                    "q",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "support:fact:seed"
+                  ],
+                  "rule": "p_to_q",
+                  "rule_version": null,
+                  "bindings": {
+                    "?x": "a",
+                    "?y": "b"
+                  },
+                  "valid": true
+                },
+                {
+                  "id": "derive:p_to_q:None:[[\"a\",\"q\",\"b\"],[[\"?x\",\"a\"],[\"?y\",\"b\"]],[\"derive:q_to_p:None:[[\\\"a\\\",\\\"p\\\",\\\"b\\\"],[[\\\"?x\\\",\\\"a\\\"],[\\\"?y\\\",\\\"b\\\"]],[\\\"derive:p_to_q:None:[[\\\\\\\"a\\\\\\\",\\\\\\\"q\\\\\\\",\\\\\\\"b\\\\\\\"],[[\\\\\\\"?x\\\\\\\",\\\\\\\"a\\\\\\\"],[\\\\\\\"?y\\\\\\\",\\\\\\\"b\\\\\\\"]],[\\\\\\\"support:fact:seed\\\\\\\"]]\\\"]]\"]]",
+                  "kind": "derived",
+                  "conclusion": [
+                    "a",
+                    "q",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "derive:q_to_p:None:[[\"a\",\"p\",\"b\"],[[\"?x\",\"a\"],[\"?y\",\"b\"]],[\"derive:p_to_q:None:[[\\\"a\\\",\\\"q\\\",\\\"b\\\"],[[\\\"?x\\\",\\\"a\\\"],[\\\"?y\\\",\\\"b\\\"]],[\\\"support:fact:seed\\\"]]\"]]"
+                  ],
+                  "rule": "p_to_q",
+                  "rule_version": null,
+                  "bindings": {
+                    "?x": "a",
+                    "?y": "b"
+                  },
+                  "valid": true
+                }
+              ]
+            }
+          ]
+        },
+        "complete": false,
+        "reason": "proof_or_search_limit",
+        "searches": 5
+      }
+    },
+    {
+      "id": "provenance_search_limit",
+      "operation": "closure_with_provenance",
+      "facts": [
+        {
+          "id": "fact:seed",
+          "triple": [
+            "a",
+            "p",
+            "b"
+          ],
+          "evidence": {}
+        }
+      ],
+      "rules": [
+        {
+          "id": "p_to_q",
+          "body": [
+            [
+              "?x",
+              "p",
+              "?y"
+            ]
+          ],
+          "head": [
+            "?x",
+            "q",
+            "?y"
+          ]
+        }
+      ],
+      "options": {
+        "search_limit": 1
+      },
+      "expected": {
+        "facts": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "p_to_q",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "proof_bundles": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "support:fact:seed",
+                  "kind": "asserted",
+                  "conclusion": [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "fact:seed"
+                  ],
+                  "rule": null,
+                  "rule_version": null,
+                  "bindings": {},
+                  "valid": true
+                }
+              ]
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": [
+                {
+                  "id": "derive:p_to_q:None:[[\"a\",\"q\",\"b\"],[[\"?x\",\"a\"],[\"?y\",\"b\"]],[\"support:fact:seed\"]]",
+                  "kind": "derived",
+                  "conclusion": [
+                    "a",
+                    "q",
+                    "b"
+                  ],
+                  "premise_fact_ids": [
+                    "support:fact:seed"
+                  ],
+                  "rule": "p_to_q",
+                  "rule_version": null,
+                  "bindings": {
+                    "?x": "a",
+                    "?y": "b"
+                  },
+                  "valid": true
+                }
+              ]
+            }
+          ]
+        },
+        "complete": false,
+        "reason": "proof_or_search_limit",
+        "searches": 2
+      }
+    }
+  ]
+}
+

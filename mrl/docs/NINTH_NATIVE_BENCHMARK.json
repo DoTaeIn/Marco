@@ -1,0 +1,335 @@
+{
+  "workload": "C11 direct-header native pipeline: intern predicate symbols, append store rows and engine assertions, retain a store snapshot, append/remove/correct, then exact indexed query. It does not exercise source parsing, JSON ingestion, persistence/restart, or cold startup.",
+  "samples": 5,
+  "source_sha256": {
+    "runtime/knowledge_store.h": "8dbbff2b5ea800e90f22305243bfcf5392eecd1363cda52f414c0748f603b5d4",
+    "runtime/knowledge_engine.h": "96fdc56eeed82275fa57bc2400e6b9fd13929418a964fbed8acd1c308e3b7fa6",
+    "oracle.py": "badf72d194a3aae3a1771b073c2a72d522e6804cf48798fbc67bd919472f8b1f"
+  },
+  "sizes": {
+    "10000": {
+      "native": {
+        "admission_ns": {
+          "p50_ns": 6609700,
+          "p95_ns": 6971100,
+          "samples_ns": [
+            6414300,
+            6607800,
+            6609700,
+            6815100,
+            6971100
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "first_close_ns": {
+          "p50_ns": 104200,
+          "p95_ns": 110800,
+          "samples_ns": [
+            96800,
+            101500,
+            104200,
+            108600,
+            110800
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "append_ns": {
+          "p50_ns": 6600,
+          "p95_ns": 7600,
+          "samples_ns": [
+            5900,
+            6300,
+            6600,
+            6700,
+            7600
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "remove_ns": {
+          "p50_ns": 46600,
+          "p95_ns": 54500,
+          "samples_ns": [
+            39900,
+            41900,
+            46600,
+            48400,
+            54500
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "correct_ns": {
+          "p50_ns": 34800,
+          "p95_ns": 41000,
+          "samples_ns": [
+            34500,
+            34600,
+            34800,
+            37900,
+            41000
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "query_ns": {
+          "p50_ns": 0,
+          "p95_ns": 100,
+          "samples_ns": [
+            0,
+            0,
+            0,
+            0,
+            100
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "internal_peak_bytes": 7787759,
+        "os_peak_rss_bytes": 19099648,
+        "final_engine_rows": 10002,
+        "final_engine_live": 10000
+      },
+      "snapshot": "one store snapshot retained across append/remove/correct; engine has no snapshot API",
+      "python_oracle": {
+        "admission_ns": {
+          "p50_ns": 36930900,
+          "p95_ns": 44344100,
+          "samples_ns": [
+            28209000,
+            34642100,
+            36930900,
+            42706300,
+            44344100
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "append_ns": {
+          "p50_ns": 33629000,
+          "p95_ns": 34208200,
+          "samples_ns": [
+            31084900,
+            31522500,
+            33629000,
+            34023300,
+            34208200
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "remove_ns": {
+          "p50_ns": 38496800,
+          "p95_ns": 41075900,
+          "samples_ns": [
+            32918300,
+            33745000,
+            38496800,
+            40457600,
+            41075900
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "correct_ns": {
+          "p50_ns": 38680200,
+          "p95_ns": 42226100,
+          "samples_ns": [
+            34990600,
+            35547200,
+            38680200,
+            41954200,
+            42226100
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        }
+      }
+    },
+    "100000": {
+      "native": {
+        "admission_ns": {
+          "p50_ns": 64257200,
+          "p95_ns": 64624000,
+          "samples_ns": [
+            62988500,
+            63858500,
+            64257200,
+            64569000,
+            64624000
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "first_close_ns": {
+          "p50_ns": 935100,
+          "p95_ns": 1019600,
+          "samples_ns": [
+            900100,
+            931700,
+            935100,
+            935500,
+            1019600
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "append_ns": {
+          "p50_ns": 23100,
+          "p95_ns": 35600,
+          "samples_ns": [
+            22700,
+            23000,
+            23100,
+            24100,
+            35600
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "remove_ns": {
+          "p50_ns": 937100,
+          "p95_ns": 983700,
+          "samples_ns": [
+            863300,
+            924100,
+            937100,
+            938200,
+            983700
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "correct_ns": {
+          "p50_ns": 849300,
+          "p95_ns": 926700,
+          "samples_ns": [
+            785300,
+            832000,
+            849300,
+            852400,
+            926700
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "query_ns": {
+          "p50_ns": 200,
+          "p95_ns": 300,
+          "samples_ns": [
+            0,
+            100,
+            200,
+            200,
+            300
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "internal_peak_bytes": 63315023,
+        "os_peak_rss_bytes": 77299712,
+        "final_engine_rows": 100002,
+        "final_engine_live": 100000
+      },
+      "snapshot": "one store snapshot retained across append/remove/correct; engine has no snapshot API",
+      "python_oracle": {
+        "status": "excluded",
+        "reason": "oracle has no native store/snapshot/indexed-query equivalent and size exceeds --python-max"
+      }
+    },
+    "1000000": {
+      "native": {
+        "admission_ns": {
+          "p50_ns": 643823500,
+          "p95_ns": 653344900,
+          "samples_ns": [
+            639730300,
+            641980100,
+            643823500,
+            645090300,
+            653344900
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "first_close_ns": {
+          "p50_ns": 8343400,
+          "p95_ns": 8405400,
+          "samples_ns": [
+            8193200,
+            8258000,
+            8343400,
+            8362700,
+            8405400
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "append_ns": {
+          "p50_ns": 127800,
+          "p95_ns": 143400,
+          "samples_ns": [
+            125100,
+            125400,
+            127800,
+            140200,
+            143400
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "remove_ns": {
+          "p50_ns": 10004300,
+          "p95_ns": 10073400,
+          "samples_ns": [
+            9964400,
+            9986000,
+            10004300,
+            10069300,
+            10073400
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "correct_ns": {
+          "p50_ns": 10170700,
+          "p95_ns": 10359600,
+          "samples_ns": [
+            10095900,
+            10107400,
+            10170700,
+            10199100,
+            10359600
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "query_ns": {
+          "p50_ns": 600,
+          "p95_ns": 600,
+          "samples_ns": [
+            400,
+            500,
+            600,
+            600,
+            600
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank"
+        },
+        "internal_peak_bytes": 521421263,
+        "os_peak_rss_bytes": 551460864,
+        "final_engine_rows": 1000002,
+        "final_engine_live": 1000000
+      },
+      "snapshot": "one store snapshot retained across append/remove/correct; engine has no snapshot API",
+      "python_oracle": {
+        "status": "excluded",
+        "reason": "oracle has no native store/snapshot/indexed-query equivalent and size exceeds --python-max"
+      }
+    }
+  },
+  "boundaries": "Native timing excludes C compilation, source/JSON parsing, persistence/restart, cold process startup, and JSON formatting. Python comparison uses unchanged mrl.oracle closure with no rules; it excludes store persistence, snapshots, and targeted query because the oracle has no equivalent API."
+}

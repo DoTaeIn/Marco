@@ -1,0 +1,157 @@
+{
+  "python": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "compiler": [
+    "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+    "cc",
+    "-target",
+    "x86_64-windows-gnu",
+    "-std=c11"
+  ],
+  "method": "native ABI includes validation/marshal/decode; subprocess includes process launch",
+  "batches": 5,
+  "repeats": 200,
+  "workloads": {
+    "closure_chain": {
+      "parity": true,
+      "python_median_ns": 56389.0,
+      "native_median_ns": 45364.0,
+      "native_over_python": 0.8044831438755786,
+      "python_batches_ns": [
+        56389.0,
+        55580.5,
+        54208.5,
+        66009.0,
+        59268.5
+      ],
+      "native_batches_ns": [
+        42084.5,
+        40476.0,
+        46897.5,
+        45364.0,
+        45664.5
+      ],
+      "subprocess_median_ns": 161041000.0,
+      "subprocess_batches_ns": [
+        245967400.0,
+        81156400.0,
+        144139800.0,
+        284372600.0,
+        161041000.0
+      ],
+      "facts": 1,
+      "rules": 4,
+      "complete": true,
+      "known_facts": 5,
+      "proof_rows": 0
+    },
+    "closure_fanout": {
+      "parity": true,
+      "python_median_ns": 253131.0,
+      "native_median_ns": 411233.5,
+      "native_over_python": 1.6245876640948758,
+      "python_batches_ns": [
+        253131.0,
+        708409.0,
+        422344.0,
+        250842.0,
+        222274.0
+      ],
+      "native_batches_ns": [
+        467734.5,
+        445292.5,
+        411233.5,
+        355496.0,
+        305185.5
+      ],
+      "subprocess_median_ns": 71489200.0,
+      "subprocess_batches_ns": [
+        71489200.0,
+        68346100.0,
+        72778800.0,
+        70188600.0,
+        73137600.0
+      ],
+      "facts": 32,
+      "rules": 1,
+      "complete": true,
+      "known_facts": 64,
+      "proof_rows": 0
+    },
+    "provenance_chain": {
+      "parity": true,
+      "python_median_ns": 165909.0,
+      "native_median_ns": 100388.0,
+      "native_over_python": 0.6050786877143495,
+      "python_batches_ns": [
+        134197.0,
+        177290.5,
+        132439.5,
+        165909.0,
+        186007.0
+      ],
+      "native_batches_ns": [
+        88898.0,
+        100388.0,
+        93132.5,
+        106907.5,
+        113296.0
+      ],
+      "subprocess_median_ns": 89699700.0,
+      "subprocess_batches_ns": [
+        87557100.0,
+        92166900.0,
+        91529400.0,
+        88825100.0,
+        89699700.0
+      ],
+      "facts": 1,
+      "rules": 4,
+      "complete": true,
+      "known_facts": 5,
+      "proof_rows": 5
+    },
+    "provenance_alternatives": {
+      "parity": true,
+      "python_median_ns": 132513.0,
+      "native_median_ns": 119417.5,
+      "native_over_python": 0.9011757337015991,
+      "python_batches_ns": [
+        141837.5,
+        152675.0,
+        123170.0,
+        132513.0,
+        129213.0
+      ],
+      "native_batches_ns": [
+        119417.5,
+        139827.5,
+        120130.5,
+        117662.0,
+        115394.5
+      ],
+      "subprocess_median_ns": 78935100.0,
+      "subprocess_batches_ns": [
+        91120800.0,
+        82255800.0,
+        74908600.0,
+        75387400.0,
+        78935100.0
+      ],
+      "facts": 2,
+      "rules": 3,
+      "complete": true,
+      "known_facts": 4,
+      "proof_rows": 6
+    }
+  },
+  "first_native_call_ns": 544691100,
+  "subprocess_build_ns": 573358000,
+  "sha256": {
+    "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\native_graph.py": "694c3eceb40aa27d050007e86396aff350ccd5b24b1fad5c4158d72fa1fe063b",
+    "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\oracle.py": "badf72d194a3aae3a1771b073c2a72d522e6804cf48798fbc67bd919472f8b1f",
+    "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\runtime\\native_graph.c": "47db9eb78f5b7b148e28037da4f59497a9cb105447adf3d5db8e9cf1fb0f314a",
+    "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\toolchain.py": "268e9fb314eae4e954c17fc266be77b6187022908b07440d031e50e44b56ecaf",
+    "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\graph_inference.py": "d7b383a720e7d21b21b266db31b8d5578d53681883882fef8c560049741f8daf"
+  }
+}

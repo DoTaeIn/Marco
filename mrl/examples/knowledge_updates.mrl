@@ -1,0 +1,27 @@
+fn main() {
+    ledger = Horn(
+        facts = Facts(
+            Fact(id = "seed", subject = "apple", predicate = "is", object = "fruit")
+        ),
+        rules = Rules(
+            Rule(id = "classify", version = 1,
+                 body = Triple(subject = "?item", predicate = "is", object = "fruit"),
+                 head = Triple(subject = "?item", predicate = "is", object = "food"))
+        )
+    )
+    before = closure_with_provenance(ledger, limit = 64, proof_limit = 8, search_limit = 256)
+    added = ledger.add(Fact(id = "second", subject = "pear", predicate = "is", object = "fruit"))
+    after = closure_with_provenance(ledger, limit = 64, proof_limit = 8, search_limit = 256)
+    blocked = ledger.add(Fact(id = "deny", subject = "apple", predicate = "is", object = "food", polarity = false))
+    denied = closure_with_provenance(ledger, limit = 64, proof_limit = 8, search_limit = 256)
+    restored = ledger.remove("deny")
+    again = closure_with_provenance(ledger, limit = 64, proof_limit = 8, search_limit = 256)
+    print(added)
+    print(blocked)
+    print(restored)
+    print(ledger.version)
+    print(before)
+    print(after)
+    print(denied)
+    print(again)
+}

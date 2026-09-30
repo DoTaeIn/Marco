@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-28",
+  "baseline_sha": "d5d91a21397fc5ac0d3ce0923d8756c867c85eca",
+  "branch": "codex/mrl-runtime-language",
+  "environment": {
+    "python": "3.10.6",
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "compiler": [
+    "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+    "cc",
+    "-target",
+    "x86_64-windows-gnu",
+    "-std=c11"
+  ],
+  "compiler_archive_sha256": "68659eb5f1e4eb1437a722f1dd889c5a322c9954607f5edcf337bc3684a75a7e",
+  "tests": {
+    "command": "python -B -m unittest discover -s mrl/tests -v",
+    "passed": 27,
+    "skipped": 0,
+    "seconds": 13.949
+  },
+  "native_golden_cases": 10,
+  "examples": {
+    "primitive": {
+      "stdout": "42",
+      "binary_bytes": 780288,
+      "generated_c_bytes": 1279,
+      "build_ms": 427.526,
+      "process_launch_and_run_ms_median": 68.158
+    },
+    "control_flow": {
+      "stdout": "10",
+      "binary_bytes": 781824,
+      "generated_c_bytes": 2260,
+      "build_ms": 448.68,
+      "process_launch_and_run_ms_median": 70.227
+    }
+  },
+  "native_graph_binary_bytes": 838656,
+  "timing_method": "Portable Zig 0.16.0 default flags, warm compiler cache. Seven fresh executable launches; median includes process startup and subprocess overhead. No graph speedup or Python/native runtime comparison inferred.",
+  "peak_ram": null,
+  "graph_performance_benefit": "not measured",
+  "end_to_end_mrl_graph_equivalence": "pending: graph frontend/IR not connected",
+  "scope_gate": "Review measurable benefit before expanding beyond the single-premise graph slice."
+}

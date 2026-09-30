@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.exe
+*.obj
+*.o
+primitive.c
+.tools/
+.build/
+*.langbak
+*.pdb
+docs/STARTUP_BASELINE.zip

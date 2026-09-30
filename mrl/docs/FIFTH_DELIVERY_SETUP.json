@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "unit": "ms",
+  "workload": {
+    "operation": "closure",
+    "facts": [
+      {
+        "id": "seed",
+        "triple": [
+          "a",
+          "p",
+          "a"
+        ],
+        "evidence": {}
+      }
+    ],
+    "rules": [
+      {
+        "id": "repeat",
+        "body": [
+          [
+            "?node",
+            "p",
+            "?node"
+          ]
+        ],
+        "head": [
+          "?node",
+          "q",
+          "?node"
+        ]
+      }
+    ]
+  },
+  "method": "PreparedGraph construction; ordered batches, full validation and plan emission retained",
+  "source_hashes": {
+    "graph_plan.py": "459a4205a402cfe18cff3c295bc0e6552d537ede0b82a1103e12808fa3b14843",
+    "native_graph.py": "003285ebe7c35ce8493bcaa574a862129c82e0d79f526fcfdff4a05af9487f54",
+    "native_graph.c": "be835ab7dcc5b8eeb78add61d9f3968893ff6a3ecba87b8ad2cca6082350b5f1",
+    "toolchain.py": "880989c71e94b721ffea738bc407bc7133528ab64400453189af60158b7ee103"
+  },
+  "environment": {
+    "python": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "compiler": [
+      "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+      "cc",
+      "-target",
+      "x86_64-windows-gnu",
+      "-std=c11"
+    ]
+  },
+  "cache_states": [
+    {
+      "name": "process_initial_persistent_libraries",
+      "samples": {
+        "generic": 221.2424,
+        "specialized": 29.2948
+      },
+      "reset": "clear generic loader, ctypes loader and plan cache before the ordered generic then specialized samples"
+    },
+    {
+      "name": "generic_persistent_library_lookup",
+      "samples": [
+        23.4243,
+        27.5762,
+        26.6315,
+        26.9961,
+        24.204,
+        25.7597,
+        25.7219
+      ],
+      "reset": "clear _load_library before each sample; persistent DLL and ctypes handle retained"
+    },
+    {
+      "name": "specialized_plan_cache_miss",
+      "samples": [
+        29.0426,
+        26.0795,
+        29.4549,
+        26.3504,
+        27.0829,
+        27.6192,
+        26.3424
+      ],
+      "reset": "clear _compiled_plan before each sample; persistent DLL and ctypes handle retained"
+    },
+    {
+      "name": "process_warm_ordered_batches",
+      "repeats_per_batch": 50,
+      "orders": [
+        "generic,specialized",
+        "specialized,generic",
+        "generic,specialized",
+        "specialized,generic",
+        "generic,specialized",
+        "specialized,generic",
+        "generic,specialized"
+      ],
+      "samples": {
+        "generic": [
+          0.020798000000000004,
+          0.031467999999999996,
+          0.023469999999999994,
+          0.019695999999999995,
+          0.019147999999999995,
+          0.019613999999999993,
+          0.018729999999999997
+        ],
+        "specialized": [
+          0.09949400000000001,
+          0.12909799999999996,
+          0.10835999999999997,
+          0.09190200000000001,
+          0.097782,
+          0.08792400000000004,
+          0.092018
+        ]
+      }
+    }
+  ],
+  "median_ms": {
+    "generic_persistent_library_lookup": 25.7597,
+    "specialized_plan_cache_miss": 27.0829,
+    "generic_process_warm": 0.019695999999999995,
+    "specialized_process_warm": 0.097782
+  }
+}

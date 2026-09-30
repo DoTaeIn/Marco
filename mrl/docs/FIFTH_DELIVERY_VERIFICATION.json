@@ -1,0 +1,44 @@
+{
+  "verified_at_utc": "2026-09-27T16:56:19.244418+00:00",
+  "tests": {
+    "command": "python -B -m unittest discover -s mrl/tests -v",
+    "count": 68,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 16.989
+  },
+  "graph_smoke": {
+    "source": "mrl\\examples\\graph_smoke.mrl",
+    "source_lines": 32,
+    "generated_c_lines": 168,
+    "c_build_ms_single_sample_warm_toolchain": 504.076,
+    "executable_bytes": 189952,
+    "returncode": 0,
+    "stdout": "1\n",
+    "stderr": ""
+  },
+  "environment": {
+    "python": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "compiler": [
+      "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+      "cc",
+      "-target",
+      "x86_64-windows-gnu",
+      "-std=c11"
+    ]
+  },
+  "sha256": {
+    "frontend.py": "8165a794d30935d2c8df4bfc3a202f7baafcd3b824927024f8dbb552027f651b",
+    "c_backend.py": "4ef7f2370ff71c7750d49095f9646bb8c8b8faffe25c3e2e62a175486df30a1a",
+    "runtime/graph_runtime.h": "0057c0db7cdea2d8c41db89fc02fb3fef06419a9bd96998314a1946166ce417e",
+    "graph_plan.py": "459a4205a402cfe18cff3c295bc0e6552d537ede0b82a1103e12808fa3b14843",
+    "benchmark_setup.py": "039ec66e9f5c172deba8249b7654cbb1bc377b42de7877f77a317119a012a7c9",
+    "examples/graph_smoke.mrl": "7ababefb6efcf33c8e072808f009fc9d3683dea7c27a4db2d3d644a01f276375",
+    "tests/test_graph_integration.py": "6bd66ef2b13238277a4732db21153f1d971003d0a773e4f4b7b127fe7324651d",
+    "tests/test_graph_frontend.py": "ae0d28a5e4337c3eaf7538a6a1ea9b25613361ccb2092ee1381da09d8822533a",
+    "tests/test_graph_backend.py": "2d68e7e0471ec56981f31dd15b9bef84f3e497c70ea6e6abae8e443efc1c9fe4",
+    "tests/test_plan_cache.py": "55620dbc562350547ddda35d823bf69fd85a2e6c76f0a55e11de3c775470ea07"
+  }
+}

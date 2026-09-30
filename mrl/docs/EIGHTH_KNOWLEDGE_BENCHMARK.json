@@ -1,0 +1,383 @@
+{
+  "schema": 2,
+  "scope": "resident native closure kernel; positive appended facts, one nonrecursive rule; includes ctypes call and complete wire result, excludes source compilation/file parsing/string interning/process startup",
+  "samples_per_size": 15,
+  "timing": "perf_counter_ns, alternating evaluation order",
+  "build_ns": 1641513100,
+  "load_ns": 19985900,
+  "identity": {
+    "schema": 2,
+    "toolchain_hash": "2f433070fd82b8357d0d21e758355d05d04529cbeecf3fd6303bce05789f197f",
+    "build_config": {
+      "release": "-O2",
+      "debug": "-O0"
+    },
+    "source_hash": "d297816451638fbf4af0552862fa9e4c05a2706c69d8c225d2e38137d1cb90d3",
+    "optimization": "release",
+    "compiler": {
+      "command": [
+        "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+        "cc",
+        "-target",
+        "x86_64-windows-gnu",
+        "-std=c11"
+      ],
+      "uses_cmd": false,
+      "executable": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+      "fingerprint": [
+        177108480,
+        1776102116000000000
+      ]
+    },
+    "platform": "win32-sys.getwindowsversion(major=10, minor=0, build=26200, platform=2, service_pack='')",
+    "machine": "win-amd64",
+    "source_name": "bench.c",
+    "extras": {},
+    "cache_key": "09606c8e87b3c8601c37a5d9769a3273f91f8d2a8dbd0db7c4c2b2d5a48ae794"
+  },
+  "source_sha256": {
+    "runtime\\native_graph.c": "47576d21e194e0e41a1d0c6e603da0423710933a3443a2cfe0f698cf1247e2c9",
+    "runtime\\horn_incremental.h": "ebf60460912f7046ee339b4b81f27769859d406607da69f113092a0202bc104c"
+  },
+  "rows": [
+    {
+      "initial_inputs": 64,
+      "append_batch": 1,
+      "final_inputs": 79,
+      "capacity": 158,
+      "cold_full_ns": 15000,
+      "cold_incremental_ns": 9300,
+      "changed_full": {
+        "median_ns": 4700,
+        "p95_ns": 6500,
+        "raw_ns": [
+          6500,
+          5200,
+          5000,
+          5400,
+          4700,
+          4400,
+          4400,
+          4400,
+          4300,
+          4300,
+          4700,
+          4800,
+          5100,
+          4700,
+          4700
+        ]
+      },
+      "changed_incremental": {
+        "median_ns": 2000,
+        "p95_ns": 4600,
+        "raw_ns": [
+          4600,
+          3000,
+          1900,
+          2700,
+          2300,
+          1800,
+          1700,
+          1700,
+          2000,
+          2000,
+          2200,
+          2400,
+          1800,
+          1800,
+          1800
+        ]
+      },
+      "work": [
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 64
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 65
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 66
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 67
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 68
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 69
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 70
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 71
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 72
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 73
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 74
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 75
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 76
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 77
+        },
+        {
+          "new_rule_evaluations": 1,
+          "reused_consequences": 78
+        }
+      ],
+      "full_wire_equal_every_query": true
+    },
+    {
+      "initial_inputs": 512,
+      "append_batch": 8,
+      "final_inputs": 632,
+      "capacity": 1264,
+      "cold_full_ns": 126900,
+      "cold_incremental_ns": 18900,
+      "changed_full": {
+        "median_ns": 36700,
+        "p95_ns": 103100,
+        "raw_ns": [
+          103100,
+          35500,
+          34400,
+          34200,
+          36700,
+          35300,
+          36100,
+          36700,
+          36600,
+          37600,
+          37500,
+          37800,
+          39900,
+          39200,
+          40000
+        ]
+      },
+      "changed_incremental": {
+        "median_ns": 8500,
+        "p95_ns": 10000,
+        "raw_ns": [
+          10000,
+          8300,
+          8200,
+          7100,
+          9100,
+          7200,
+          8200,
+          8000,
+          9000,
+          8300,
+          8900,
+          8500,
+          8500,
+          8500,
+          9600
+        ]
+      },
+      "work": [
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 512
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 520
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 528
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 536
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 544
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 552
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 560
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 568
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 576
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 584
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 592
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 600
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 608
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 616
+        },
+        {
+          "new_rule_evaluations": 8,
+          "reused_consequences": 624
+        }
+      ],
+      "full_wire_equal_every_query": true
+    },
+    {
+      "initial_inputs": 4096,
+      "append_batch": 64,
+      "final_inputs": 5056,
+      "capacity": 10112,
+      "cold_full_ns": 1050300,
+      "cold_incremental_ns": 274100,
+      "changed_full": {
+        "median_ns": 971000,
+        "p95_ns": 1049800,
+        "raw_ns": [
+          965200,
+          971000,
+          955400,
+          934000,
+          993400,
+          902700,
+          974500,
+          960900,
+          1049800,
+          929300,
+          1039800,
+          939700,
+          1016900,
+          1029200,
+          1013900
+        ]
+      },
+      "changed_incremental": {
+        "median_ns": 195700,
+        "p95_ns": 235300,
+        "raw_ns": [
+          197100,
+          204800,
+          196600,
+          64100,
+          233800,
+          62500,
+          195700,
+          69300,
+          195100,
+          70500,
+          235300,
+          94700,
+          208500,
+          72000,
+          209300
+        ]
+      },
+      "work": [
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4096
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4160
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4224
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4288
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4352
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4416
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4480
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4544
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4608
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4672
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4736
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4800
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4864
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4928
+        },
+        {
+          "new_rule_evaluations": 64,
+          "reused_consequences": 4992
+        }
+      ],
+      "full_wire_equal_every_query": true
+    }
+  ]
+}

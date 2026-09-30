@@ -1,0 +1,15 @@
+fn score(a: list<f32>, b: list<f32>) -> f32 {
+  return sum(a) + dot(a, b) + norm(a) + cosine(a, b)
+}
+
+fn main() -> si {
+  dec fixed: arr<si32,3> = [7, 8, 9]
+  dec xs: list<f32> = [3.0f, 4.0f]
+  alias = xs
+  alias.push(0.0f)
+  print(fixed.len)
+  print(fixed[1])
+  print(xs.len)
+  print(score(xs, [4.0f, 3.0f, 0.0f]))
+  return fixed[0]
+}

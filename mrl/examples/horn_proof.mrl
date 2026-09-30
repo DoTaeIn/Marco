@@ -1,0 +1,21 @@
+fn main() {
+    reasoning = closure_with_provenance(
+        Horn(
+            facts = Facts(
+                Fact(id = "seed", subject = "apple", predicate = "is", object = "fruit",
+                     evidence = Evidence(source = "apple is fruit", start = 0, end = 5, text = "apple"))
+            ),
+            rules = Rules(
+                Rule(id = "classify", version = 1,
+                     body = Triple(subject = "?item", predicate = "is", object = "fruit"),
+                     head = Triple(subject = "?item", predicate = "is", object = "food"))
+            )
+        ),
+        limit = 64, proof_limit = 32, search_limit = 1000
+    )
+    print(reasoning.complete)
+    print(reasoning.fact_count)
+    print(reasoning.proof_count)
+    print(reasoning.reason)
+    print(reasoning)
+}

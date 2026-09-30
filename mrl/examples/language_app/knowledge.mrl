@@ -1,0 +1,6 @@
+fn make_plan() -> Horn {
+ return Horn(memory_budget=4000000, capacity=64, facts=Facts(),
+  rules=Rules(Rule(id="contains_to_known", version=1,
+   body=All(Triple("?who", "contains", "?what")),
+   head=Triple("?who", "known", "?what"))))
+}

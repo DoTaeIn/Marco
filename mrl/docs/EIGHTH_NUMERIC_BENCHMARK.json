@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "workload": "construct two changed list<f32> values, then sum+dot+norm and return the result",
+  "numeric_reference": "Python uses f64 accumulation; each full result is accepted within 0.02 of native f32",
+  "length": 4096,
+  "samples": 15,
+  "build": {"native_executable_ns": 831905800, "native_shared_ns": 745563200, "shared_load_ns": 13256900, "source_hash": "dd8e9c945d58a0eb8b829ffa6c7b26a0b6227f127d21ec0e9c4e434492f7fe36", "toolchain": "zig cc -target x86_64-windows-gnu -std=c11 -O2", "platform": "Windows 10 build 26200, win-amd64"},
+  "whole_process": {"native": {"median_ns": 204277000, "p95_ns": 340756800}, "python": {"median_ns": 248476500, "p95_ns": 288143100}, "raw_ns": {"native": [256012300,212296600,187161400,231360900,233647400,208317400,201819100,201401900,187968300,204277000,196865300,340756800,186107600,168200900,305520500], "python": [240378700,229714200,248476500,280589100,229236700,258602100,235496600,225503900,286426900,243018800,277248500,257840800,239043500,288143100,256808000]}},
+  "resident_compute": {"native_ctypes": {"median_ns": 25400, "p95_ns": 41000}, "python": {"median_ns": 599800, "p95_ns": 664800}, "raw_ns": {"native_ctypes": [41000,26700,25600,25100,25200,25400,25200,26400,25100,25400,26300,24900,24600,25900,24400], "python": [664800,578900,581800,592900,612600,614100,607700,607100,613600,596700,572600,574700,599800,617300,599500]}},
+  "native_list_storage_bytes": 32848
+}
