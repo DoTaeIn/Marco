@@ -443,10 +443,21 @@ class ReasoningContext:
                                or entry.get("관계") in asked_predicates) or (
                         asks_number and self._counts_something(said, parser)
                         and not any(other and other in said for other in known)) or (
-                        asks_number and self._moves_someone_unnamed(said, parser))
+                        asks_number and self._moves_someone_unnamed(said, parser)) or (
+                        asks_number and self._points_at_someone(said, parser))
                 if (entry.get("범용") or touches) and entry["at"] > pinned[name]:
                     return said, entry.get("까닭")
         return None
+
+    def _points_at_someone(self, said, parser):
+        """An unread statement that names its holder by a pointer the pack declares (Then they vanished. / 그는
+        다 잃어버렸어.): the pointer may be any holder, so it may have changed any holder's count."""
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        particles = self._frame_particles(parser)
+        words = [fold(w) for w in re.split(r"[\s,.!?？。]+", said) if w]
+        stems = [next((w[:-len(p)] for p in particles if w.endswith(p) and len(w) > len(p)), w) for w in words]
+        flat = " %s " % " ".join(words)
+        return any(" %s " % fold(p) in flat or (" " not in p and fold(p) in stems) for p in parser.pointers or [])
 
     def _moves_someone_unnamed(self, said, parser):
         """An unread statement whose reading moves an amount from or to a holder it leaves unsaid (``그중
