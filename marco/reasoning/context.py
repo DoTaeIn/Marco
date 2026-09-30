@@ -3689,11 +3689,8 @@ class ReasoningContext:
             if carried:
                 # the statement was read by a reading kept for it (its thing through the thing node): the corrected
                 # statement is read the same way, with only the amount changed (step 3)
-                reading = deepcopy(chosen[source.strip()])
-                for fact in reading.get("facts", []):
-                    if str(fact["triple"][2]) == str(request["old"]) and fact["triple"][1] in updates:
-                        fact["triple"][2] = type(fact["triple"][2])(request["new"])
-                chosen[attempt.strip()] = reading
+                chosen[attempt.strip()] = self._reading_rewritten(
+                    chosen[source.strip()], source, attempt, request["old"], request["new"], updates)
             try:
                 corrected = self.correct(index, attempt, knowledge_path)
                 break
@@ -3743,6 +3740,48 @@ class ReasoningContext:
                     pair = (node, things[0] if rest else None)
             rows.append((graph.key(*pair) if pair else subject, predicate, value))
         return sorted(rows)
+
+    @staticmethod
+    def _reading_rewritten(reading, source, attempt, old, new, updates):
+        """A kept reading of ``source`` as the reading of its rewrite ``attempt`` (one amount changed): the amount
+        is the new one, and every piece of evidence is the rewrite's own words over the same span, never the
+        withdrawn wording of the statement it replaces."""
+        reading = deepcopy(reading)
+        source, attempt = str(source), str(attempt)
+        at = next((i for i, (x, y) in enumerate(zip(source, attempt)) if x != y), min(len(source), len(attempt)))
+        delta = len(attempt) - len(source)
+        # the word the rewrite changed, as typed in each (3 -> 4), for the evidence's normalised wording too
+        pairs = [(x, y) for x, y in zip(source.split(), attempt.split()) if x != y]
+        was, now = (pairs[0][0].strip(",.!?"), pairs[0][1].strip(",.!?")) if len(pairs) == 1 else (None, None)
+
+        def moved(evidence):
+            if not isinstance(evidence, dict):
+                return evidence
+            evidence = dict(evidence)
+            start, end = evidence.get("start"), evidence.get("end")
+            if isinstance(start, int) and isinstance(end, int):
+                start, end = (start + delta if start > at else start), (end + delta if end > at else end)
+                evidence.update(start=start, end=end, text=attempt[start:end])
+            elif evidence.get("text") == source.strip():
+                evidence["text"] = attempt.strip()
+            if evidence.get("source") == source:
+                evidence["source"] = attempt
+            norm = evidence.get("normalization")
+            if was and isinstance(norm, dict) and isinstance(norm.get("canonical"), str):
+                evidence["normalization"] = dict(norm, canonical=re.sub(
+                    r"(?<!\w)%s(?!\w)" % re.escape(was), now, norm["canonical"], count=1))
+            return evidence
+        for key, rows in reading.items():
+            if not isinstance(rows, list):
+                continue
+            for row in rows:
+                if not isinstance(row, dict):
+                    continue
+                if key == "facts" and str(row["triple"][2]) == str(old) and row["triple"][1] in updates:
+                    row["triple"][2] = type(row["triple"][2])(new)
+                if "evidence" in row:
+                    row["evidence"] = moved(row["evidence"])
+        return reading
 
     def _correction_frame(self, parser, text, knowledge_path):
         """A correction no declared form reads (``No, three.``, ``Not two, three.``, ``Actually, it was three.``,

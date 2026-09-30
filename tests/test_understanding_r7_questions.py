@@ -543,9 +543,17 @@ def test_a_correction_of_an_event_that_said_the_thing_with_fewer_words_corrects_
     rows = _play("english", frames + [correction, question], 3, **EN_WORDS)
     assert rows[-2]["status"] == "observed" and rows[-2]["meaning"]["act"] == "correct"
     assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
+    # the answer rests on the correction, never on the withdrawn wording (the gate's retracted-evidence rule)
+    from bench.dialogue_gate import _norm
+    withdrawn = _norm(frames[-1].format(**EN_WORDS))
+    quoted = [x for row in rows[-1].get("transitions") or [] for x in (
+        (row.get("evidence") or {}).get("text"), (row.get("evidence") or {}).get("source"),
+        ((row.get("evidence") or {}).get("normalization") or {}).get("canonical")) if x]
+    assert quoted and not [x for x in quoted if _norm(x) and _norm(x) in withdrawn]
 
 
 def test_two_amounts_with_no_word_that_marks_the_old_one_ask_which_event_and_correct_nothing():
     rows = _play("english", HERBS + ["No 2, 3.", "How many bundles of herbs does {b} have?"], 3, **EN_WORDS)
     assert rows[-2]["meaning"]["reason"] == "reference_which_event"
     assert rows[-1]["status"] == "answered" and "5" in rows[-1]["answer"]
+
