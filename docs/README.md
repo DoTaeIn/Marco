@@ -322,6 +322,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [experiment-17.json](ko/dialogue-gate-2026-09-22/experiment-17.json) | Experiment 17, `5166f31`: 90 of 108, no turn changed |
 | [graph-step-1.json](ko/dialogue-gate-2026-09-22/graph-step-1.json) | Identity graph step 1, `762e2dc`: 90 of 108, nothing changed |
 | [graph-step-2.json](ko/dialogue-gate-2026-09-22/graph-step-2.json) | Identity graph step 2, `d210739`: 90 of 108, nothing changed |
+| [graph-step-3s1.json](ko/dialogue-gate-2026-09-22/graph-step-3s1.json) | Identity graph step 3, statements 1, `056ae3e`: 91 of 108, one which-person turn lost |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 

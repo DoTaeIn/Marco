@@ -258,3 +258,9 @@ correction kinds carry behaviour pinned by the tests of rounds 2 and 3.
 | Step | Patch (commit) | Work | Wait | Regression | Frozen exam |
 | --- | --- | --- | --- | --- | --- |
 | 2, the reader's partial candidates grounded to nodes: `_ground_question`, `_which_person`, `_ground_pair`, `_named_reply`, `_partial_frame`, `_record_frame` take nodes and count edges; their local holder helpers are gone; one helper `_graph_nodes` | 606223c, merged d210739 | chat 30 min; plan manager 8 min | chat 25 min on runs; reported 13:09, merged 13:11, scored 13:16 | chat's full suite 2,359 passed, 1 known failure, 3 expected failures (gate files left out); gate files, graph, round-2, round-3, round-7 and seven-step tests at merge: 455 passed, 1 xfailed; no re-pin | **90/108, 0 turns changed, 0 reply texts changed**, 0 wrong, 0 violations (`graph-step-2.json`); 1.0 → 1.2 ms per turn at effort 3 |
+
+## Identity graph, step 3, statements 1
+
+| Step | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- |
+| 3 (statements 1): the reader names each fact's holder and thing (`fact["parts"]`), the graph splits no string; a receiver named with a relation word is one node (a wrong answer on main gone, 24 not 23); a list of two things of one holder is one holder (the strict xfail passes) | 55d7c08, merged 056ae3e | chat about 60 min; plan manager 10 min | reported 13:15, merged 13:17, scored 13:22 | chat: dev v3–v6 check halves at effort 0 and 3 all at the baseline with 0 bucket and 0 reply changes, seven-step verbatim, full suite 2,362 passed, 1 known failure; at merge: gate files, graph and reading tests 458 passed | **91/108**: one English question right that was held; **one English which-person turn held that was right** (`graph-step-3s1.json`); 0 wrong, 0 violations. A lost pass: to be restored before the next step is merged |
