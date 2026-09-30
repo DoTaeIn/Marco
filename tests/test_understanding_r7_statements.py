@@ -429,3 +429,30 @@ def test_two_things_told_apart_by_a_modifier_stay_two_and_a_bare_head_is_its_own
 def test_a_short_mention_said_first_is_the_node_of_the_longer():
     graph, _counts = _things("english", ["Bo has three striped towels.", "Ada has five striped cotton beach towels."])
     assert [n["name"] for n in graph.of_kind("thing")] == ["striped towels"]
+
+
+# Identity graph, step 3: a thing said with fewer of its words or in its other number (one striped towel, one towel,
+# for striped cotton beach towels) is the holder's thing node; from effort 2 the statement is read with the key the
+# conversation counts that node by, checked by replay; two thing nodes that fit (red towels, blue towels) tie: held.
+TOWELS = [("Ada has five striped cotton beach towels.", "rec"), ("Bo has three striped towels.", "rec")]
+
+
+@pytest.mark.parametrize("effort", [2, 3])
+def test_a_thing_said_in_its_other_number_or_by_its_head_is_its_node(effort):
+    assert play("english", effort, TOWELS + [("Ada gave two striped to Bo.", "rec"),
+                                            ("Ada gave Bo one striped towel.", "rec"), ("Ada gave Bo one towel.", "rec"),
+                                            ("How many striped cotton beach towels does Ada have?", 1),
+                                            ("How many striped towels does Bo have?", 7)]) == []
+    graph, _counts = _things("english", [line for line, _e in TOWELS] + ["Ada gave Bo one towel."], effort)
+    assert sorted(n["name"] for n in graph.of_kind("holder")) == ["Ada", "Bo"]
+    assert [n["name"] for n in graph.of_kind("thing")] == ["striped cotton beach towels"]
+
+
+@pytest.mark.parametrize("effort", [0, 1])
+def test_below_effort_2_a_thing_said_by_its_head_is_refused(effort):
+    assert play("english", effort, TOWELS + [("Ada gave Bo one towel.", "hold")]) == []
+
+
+def test_a_head_that_fits_two_things_of_the_holder_holds():
+    assert play("english", 3, [("Ada has four red towels.", "rec"), ("Ada has two blue towels.", "rec"),
+                               ("Bo has one red towel.", "rec"), ("Ada gave Bo one towel.", "hold")]) == []
