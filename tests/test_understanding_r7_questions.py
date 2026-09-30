@@ -507,3 +507,22 @@ def test_an_unread_turn_that_could_not_have_changed_a_count_holds_no_question_af
         assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
     at_main = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", said, "How many {p} does {b} have?"], 0, **EN_WORDS)
     assert at_main[-1]["status"] != "answered"
+
+
+@pytest.mark.parametrize("language,frames", [
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "How many {p} does {b} have?", "Then they vanished.",
+                 "How many {p} does {b} have?"]),
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "Later she misplaced them.", "How many {p} does {a} have?"]),
+    ("한국어", ["{a}는 {p}이 5개 있어.", "{b}는 {p}이 3개 있어.", "그는 그걸 다 잃어버렸어.", "{b}는 {p}이 몇 개야?"]),
+])
+@pytest.mark.parametrize("effort", [0, 3])
+def test_an_unread_turn_that_names_its_holder_by_a_pointer_holds_every_count_after_it(language, frames, effort):
+    # the pointer may be any holder: the count asked after it is not said as known
+    rows = _play(language, frames, effort, **(EN_WORDS if language == "english" else KO_WORDS))
+    assert rows[-1]["status"] != "answered"
+
+
+def test_a_statement_after_the_pointer_turn_pins_the_count_again():
+    rows = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "Then they vanished.", "{b} has 2 {p}.",
+                             "How many {p} does {b} have?"], 3, **EN_WORDS)
+    assert rows[-1]["status"] == "answered" and "2" in rows[-1]["answer"]
