@@ -707,6 +707,13 @@ class ReasoningContext:
         takers = [f["triple"][0] for f in rows if f["triple"][1] in updates and not removing(f["triple"])
                   and f["triple"][0] in thingless]
         candidates = [t for node in nodes.values() for t in things_of(node)] + ([before_thing] if before_thing else [])
+        if not any(f["triple"][1] in updates for f in rows):
+            # a holding that names no thing moves nothing that could tell the thing: it takes the conversation's
+            # thing only when the conversation counts one; with two or more it stays not said, for a later
+            # statement to tell (주 원장님에게는 14개 있어 after 반지 and 라임)
+            candidates = [n["id"] for n in graph.of_kind("thing")]
+            if len(candidates) != 1:
+                return None
         survivors = []
         table = parser.__dict__.setdefault("chosen_readings", {})
         for thing in dict.fromkeys(candidates):
