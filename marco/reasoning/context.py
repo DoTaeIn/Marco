@@ -4323,7 +4323,13 @@ class ReasoningContext:
             if not isinstance(subject, str) or not subject.strip() or triple[1] not in counted:
                 continue
             turn = (row.get("evidence") or {}).get("turn")
-            kind, holder, thing = split(subject)
+            parts = row.get("parts") if isinstance(row.get("parts"), dict) else None
+            if parts and " ".join(w for w in (parts.get("holder"), parts.get("thing")) if w) == subject:
+                # the reader named the holder and the thing (G7-S, step 3): no string is split
+                holder, thing = parts["holder"], parts.get("thing") or None
+                kind = "place" if holder in places else "holder"
+            else:
+                kind, holder, thing = split(subject)
             h = graph.node(kind, holder, turn)
             t = graph.node("thing", thing, turn) if thing else None
             graph.keyed(subject, h, t)
