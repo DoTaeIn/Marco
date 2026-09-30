@@ -466,3 +466,63 @@ def test_a_name_reply_answers_the_holder_who_said_the_thing_with_fewer_words(que
                  3, **words)
     assert rows[-2]["meaning"]["reason"] == "which_referent"
     assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("question", ["How many {p} does my cousin have?", "How many {s} does my cousin have?"])
+def test_a_thing_asked_with_some_of_its_words_is_that_thing_and_no_part_of_the_person_asked(question):
+    words = dict(EN_WORDS, s="speckled", m="linen", p="bowls")
+    rows = _play("english", ["My cousin {a} has 5 {s} {m} {p}.", "My cousin {b} has 3 {s} {p}.", question, "{b}."],
+                 3, **words)
+    assert rows[-2]["meaning"]["reason"] == "which_referent" and rows[-2]["meaning"]["word"] == "my cousin"
+    assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("language,frames,value", [
+    ("english", ["My cousin {a} has 5 {p}.", "My cousin {b} has 3 {p}.", "How many {p} does my cousin have?",
+                 "I think {b}. How many does {b} have?"], "3"),
+    ("english", ["My cousin {a} has 5 {p}.", "My cousin {b} has 3 {p}.", "How many {p} does my cousin have?",
+                 "{a}, I think. How many does {a} have?"], "5"),
+    ("한국어", ["제 친구 {a}는 {p}이 5개 있어.", "제 친구 {b}는 {p}이 3개 있어.", "그 친구는 {p}이 몇 개야?",
+               "아마 {b}요. {b}는 몇 개야?"], "3"),
+    ("한국어", ["제 친구 {a}는 {p}이 5개 있어.", "제 친구 {b}는 {p}이 3개 있어.", "그 친구는 {p}이 몇 개야?",
+               "아마 {a}요."], "5"),
+])
+def test_a_name_with_a_few_words_then_the_question_again_answers_the_which_person_ask(language, frames, value):
+    rows = _play(language, frames, 3, **(EN_WORDS if language == "english" else KO_WORDS))
+    assert rows[-2]["meaning"]["reason"] == "which_referent"
+    assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("said,held", [
+    ("Remind me about the {p}.", False), ("Grab some spare {p}.", False),
+    ("Rats chewed the {p}.", True), ("Mysteriously, the {p} vanished.", True), ("The {p} were stolen.", True),
+    ("Someone misplaced the {p}.", True), ("Thieves took two {p}.", True), ("{a} misplaced the {p}.", True),
+])
+def test_an_unread_turn_that_could_not_have_changed_a_count_holds_no_question_after_it(said, held):
+    # no holder, no amount, no verb, opened by a word nobody declared: a request or a remark, no event (effort 2)
+    rows = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", said, "How many {p} does {b} have?"], 3, **EN_WORDS)
+    if held:
+        assert rows[-1]["status"] != "answered" and rows[-1]["meaning"]["reason"] == "unread_event"
+    else:
+        assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
+    at_main = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", said, "How many {p} does {b} have?"], 0, **EN_WORDS)
+    assert at_main[-1]["status"] != "answered"
+
+
+@pytest.mark.parametrize("language,frames", [
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "How many {p} does {b} have?", "Then they vanished.",
+                 "How many {p} does {b} have?"]),
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "Later she misplaced them.", "How many {p} does {a} have?"]),
+    ("한국어", ["{a}는 {p}이 5개 있어.", "{b}는 {p}이 3개 있어.", "그는 그걸 다 잃어버렸어.", "{b}는 {p}이 몇 개야?"]),
+])
+@pytest.mark.parametrize("effort", [0, 3])
+def test_an_unread_turn_that_names_its_holder_by_a_pointer_holds_every_count_after_it(language, frames, effort):
+    # the pointer may be any holder: the count asked after it is not said as known
+    rows = _play(language, frames, effort, **(EN_WORDS if language == "english" else KO_WORDS))
+    assert rows[-1]["status"] != "answered"
+
+
+def test_a_statement_after_the_pointer_turn_pins_the_count_again():
+    rows = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "Then they vanished.", "{b} has 2 {p}.",
+                             "How many {p} does {b} have?"], 3, **EN_WORDS)
+    assert rows[-1]["status"] == "answered" and "2" in rows[-1]["answer"]
