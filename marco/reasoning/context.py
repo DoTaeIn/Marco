@@ -4291,9 +4291,13 @@ class ReasoningContext:
         asked = {(graph.of_key(c) or (graph.id_of("holder", c) or graph.id_of("place", c),))[0]
                  for c in self.pending_pointer.get("candidates") or []} - {None}
         words = [w for w in re.split(r"[\s,.!?]+", text) if w]
+        # a word with a tail the name reply declares (이보요): the name is the word before it
+        tails = sorted((t.strip() for t in (parser.language_pack.get("name_reply") or {}).get("tails", [])
+                        if t.strip() and " " not in t.strip()), key=len, reverse=True)
         found = []
         for at, word in enumerate(words):
-            nodes = [n for n in self._graph_nodes(parser, graph, word, None, ("holder", "place"), forms=("key", "title"))
+            bare = next((word[:-len(t)] for t in tails if word.endswith(t) and len(word) > len(t)), None)
+            nodes = [n for n in self._graph_nodes(parser, graph, word, bare, ("holder", "place"), forms=("key", "title"))
                      if n in asked]
             if len(nodes) == 1:
                 found.append((at, word, nodes[0]))
@@ -4544,6 +4548,16 @@ class ReasoningContext:
             found = graph.find(text, kinds=kinds, fold=fold, forms=forms)
             if found:
                 return found
+        if "thing" in kinds and (not forms or "key" in forms):
+            # a thing said with some of its words, in order (striped, towels, for striped cotton towels): the one
+            # thing node they are words of (step 3); a word the pack declares for questions names none
+            declared = self._declared_words(parser)
+            for text in [word] + ([stem] if stem and stem != word else []):
+                if not text or all(fold(w) in declared for w in text.split()):
+                    continue
+                found = graph.part_of(text, kinds=("thing",), fold=fold)
+                if len(found) == 1:
+                    return found
         if any(kind in kinds for kind in ("holder", "place")):
             keys = list(dict.fromkeys(self._holder_keys(parser)))
             key = self._holder_of(parser, word, keys)
@@ -5850,6 +5864,9 @@ class ReasoningContext:
         if len(segments) < 2 or segments[0][1] or not segments[-1][1]:
             return None
         named = self._name_reply(parser, segments[0][0], knowledge_path)
+        if named is None:
+            # the name of one asked candidate with at most two other words (Ivo, I think.), effort 2
+            named = self._named_reply(parser, segments[0][0], knowledge_path)
         if named is None:
             # the repair as one slot of the last question's frame (effort 2)
             named = self._partial_frame(parser, segments[0][0], knowledge_path)
