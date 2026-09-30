@@ -491,3 +491,19 @@ def test_a_name_with_a_few_words_then_the_question_again_answers_the_which_perso
     rows = _play(language, frames, 3, **(EN_WORDS if language == "english" else KO_WORDS))
     assert rows[-2]["meaning"]["reason"] == "which_referent"
     assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("said,held", [
+    ("Remind me about the {p}.", False), ("Grab some spare {p}.", False),
+    ("Rats chewed the {p}.", True), ("Mysteriously, the {p} vanished.", True), ("The {p} were stolen.", True),
+    ("Someone misplaced the {p}.", True), ("Thieves took two {p}.", True), ("{a} misplaced the {p}.", True),
+])
+def test_an_unread_turn_that_could_not_have_changed_a_count_holds_no_question_after_it(said, held):
+    # no holder, no amount, no verb, opened by a word nobody declared: a request or a remark, no event (effort 2)
+    rows = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", said, "How many {p} does {b} have?"], 3, **EN_WORDS)
+    if held:
+        assert rows[-1]["status"] != "answered" and rows[-1]["meaning"]["reason"] == "unread_event"
+    else:
+        assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
+    at_main = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", said, "How many {p} does {b} have?"], 0, **EN_WORDS)
+    assert at_main[-1]["status"] != "answered"
