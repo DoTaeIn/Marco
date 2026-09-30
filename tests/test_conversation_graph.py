@@ -96,8 +96,7 @@ def test_the_trace_lists_the_nodes_a_turn_read():
                                                 graph.id_of("thing", "figs")}
 
 
-@pytest.mark.xfail(reason="step 3 moves the holder/thing split to the reader; today the key of '… 세 개, 컵 두 개를 …' "
-                          "makes 컵 a holder", strict=True)
 def test_a_list_of_two_things_of_one_holder_is_one_holder_node():
+    # step 3: the reader names each fact's holder and thing (a bare word before an object-marked count is a thing)
     context = _context("한국어", ["보늬는 연필 세 개, 컵 두 개를 가지고 있어."])
     assert [node["name"] for node in context.conversation_graph().of_kind("holder")] == ["보늬"]
