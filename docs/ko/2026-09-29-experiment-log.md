@@ -264,3 +264,15 @@ correction kinds carry behaviour pinned by the tests of rounds 2 and 3.
 | Step | Patch (commit) | Work | Wait | Regression | Frozen exam |
 | --- | --- | --- | --- | --- | --- |
 | 3 (statements 1): the reader names each fact's holder and thing (`fact["parts"]`), the graph splits no string; a receiver named with a relation word is one node (a wrong answer on main gone, 24 not 23); a list of two things of one holder is one holder (the strict xfail passes) | 55d7c08, merged 056ae3e | chat about 60 min; plan manager 10 min | reported 13:15, merged 13:17, scored 13:22 | chat: dev v3–v6 check halves at effort 0 and 3 all at the baseline with 0 bucket and 0 reply changes, seven-step verbatim, full suite 2,362 passed, 1 known failure; at merge: gate files, graph and reading tests 458 passed | **91/108**: one English question right that was held; **one English which-person turn held that was right** (`graph-step-3s1.json`); 0 wrong, 0 violations. A lost pass: to be restored before the next step is merged |
+
+## Identity graph, step 3, statements 2: thing identity
+
+| Step | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- |
+| 3 (statements 2): one thing, one node: a mention whose words are all words of one existing thing node, in order, is its alias (form `short`) when exactly one fits; two that fit stay apart; a word the node lacks is another thing | a9a88ae, merged 80369f7 | chat about 90 min; plan manager 25 min (masked graph dumps at two commits) | reported 15:40, merged 15:44, scored 15:49 | chat: dev v3–v6 check halves at effort 0 and 3 at the baseline, 0 bucket and 0 reply changes; seven-step verbatim; full suite 2,365 passed, 1 known failure. At merge: gate files, graph and reading tests 461 passed | **90/108**: the which-person turn is back (12 of 12); the reply after it is held again, as it was at the baseline. Against step 2: 0 bucket changes; 0 wrong, 0 violations (`graph-step-3s2.json`) |
+
+What the masked dump showed: before the reader named holder and thing, the string
+split made four holder nodes for two people and, by accident, one thing node; with
+the parts the holders were right and the thing was two nodes. The thing of that
+conversation is mentioned three ways (two modifiers and a two-word name; one
+modifier and the last word; the modifier alone).
