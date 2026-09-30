@@ -2070,8 +2070,11 @@ class RelationalParser:
         -> 기 대표에게: holder 기 대표, no thing); inside the key, a place between the holder and the thing (경아는
         승합차에 형광펜을 싣고 있어 -> 경아 승합차에 형광펜: holder 경아, place 승합차, thing 형광펜). ``key`` names the
         key the parts are of. None otherwise, and in a pack without case particles."""
-        particles = sorted((p for p in (getattr(self, "case_particles", ()) or ()) if isinstance(p, str) and p),
-                           key=len, reverse=True)
+        # only a case particle outside the slot groups (은/는/이/가, 을/를 ...: the reader takes those off, and a
+        # noun may end in one: 목걸이, 오이): 에게, 한테, 에 ...
+        slots = {p for group in (self.slot_particles or ()) for p in group}
+        particles = sorted((p for p in (getattr(self, "case_particles", ()) or ())
+                            if isinstance(p, str) and p and p not in slots), key=len, reverse=True)
         words = key.split()
         if not particles or len(words) < 2:
             return None
