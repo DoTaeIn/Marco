@@ -61,6 +61,10 @@ class ConversationGraph:
         """The string key the replay counts under, for this holder and thing (the one place strings remain)."""
         self._keys[key] = (holder, thing)
 
+    def keys_of(self, holder, thing):
+        """The replay keys counted for this holder and thing (several when one thing was said several ways)."""
+        return [key for key, pair in self._keys.items() if pair == (holder, thing)]
+
     def of_key(self, key):
         """(holder id, thing id) of a replay key, or None."""
         return self._keys.get(key)

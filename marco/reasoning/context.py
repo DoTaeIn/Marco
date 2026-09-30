@@ -708,6 +708,73 @@ class ReasoningContext:
                                       "cost": cost + 1}})
         return survivors
 
+    def _read_thing_alias(self, parser, text, current, verbs, knowledge_path):
+        """G7-S, identity graph step 3, effort 2 (a referent candidate from the conversation's graph): a statement
+        refused because a holder has no count under the key it names (Ada gave Bo one towel., one striped towel,
+        for the thing the conversation counts as striped cotton beach towels) names the holder's thing with fewer
+        of its words, or in its other number. Candidates are nodes: each thing node the named holder counts
+        whose name holds every word of the mention in order (singular or plural, ``_same_in_number``); every holder of
+        the statement then counts that thing node, under the key the conversation counts it by. Each is checked
+        against the conversation (``_reading_failure``), ranked (``_rank_candidates``), and a clear winner is
+        kept for this conversation (``_keep_reading``); two things that fit (towels, between red towels and blue
+        towels) tie and hold."""
+        updates = parser.data.get("numeric_updates") or {}
+        rows = [f for f in current.get("facts", []) if isinstance(f.get("triple"), list)
+                and isinstance(f["triple"][0], str) and f["triple"][1] in updates]
+        if not rows or not self.observations:
+            return None
+        graph = self.conversation_graph()
+        same = self._same_in_number(parser)
+        named = {}
+        for fact in rows:
+            subject = fact["triple"][0]
+            if graph.of_key(subject) is not None:
+                continue
+            parts = fact.get("parts") if isinstance(fact.get("parts"), dict) else None
+            if parts and parts.get("thing") and " ".join((parts["holder"], parts["thing"])) == subject:
+                holder_name, mention = parts["holder"], parts["thing"]
+            else:
+                holder_name = next((n["name"] for n in sorted(graph.of_kind("holder") + graph.of_kind("place"),
+                                                              key=lambda n: -len(n["name"]))
+                                    if subject.startswith(n["name"] + " ")), None)
+                mention = subject[len(holder_name) + 1:] if holder_name else None
+            nodes = graph.find(holder_name, kinds=("holder", "place")) if holder_name else []
+            if not mention or len(nodes) > 1:
+                return None
+            named[subject] = (holder_name, nodes[0] if nodes else None, mention)
+        if not named:
+            return None
+        givers = [node for _name, node, _m in named.values() if node is not None]
+        things = []
+        for holder in givers:
+            for thing in graph.things_of(holder):
+                name = graph.nodes[thing]["name"]
+                if all(self._within(m.split(), name.split(), same) for _n, _h, m in named.values()) and thing not in things:
+                    things.append(thing)
+        survivors = []
+        for thing in things:
+            parsed = deepcopy(current)
+            rename = {}
+            for subject, (holder_name, holder, _m) in named.items():
+                keys = graph.keys_of(holder, thing) if holder is not None else []
+                key = keys[0] if keys else "%s %s" % (holder_name, graph.nodes[thing]["name"])
+                # the holder and thing the key names, so the graph keeps the nodes (no string is split)
+                rename[subject] = (key, {"holder": holder_name, "thing": key[len(holder_name) + 1:]})
+            for fact in parsed.get("facts", []):
+                if isinstance(fact.get("triple"), list) and fact["triple"][0] in rename:
+                    fact["triple"][0], fact["parts"] = rename[fact["triple"][0]][0], dict(rename[fact["triple"][0]][1])
+            label = ", ".join("%s -> %s" % (old, new[0]) for old, new in rename.items())
+            failure, changes = self._reading_failure(parser, text, parsed)
+            if failure is not None:
+                self._candidate_dropped(2, "thing_alias", label, failure[1])
+                continue
+            known = all(row.get("before") is not None for row in changes if (row.get("delta") or 0) < 0)
+            survivors.append({"label": label, "parsed": parsed, "fit": {"state": int(known), "cost": 1}})
+        if not survivors:
+            return None
+        winner, _deciding, _ranking = self._rank_candidates(survivors, kind="thing_alias")
+        return self._keep_reading(parser, text, winner, knowledge_path, "thing_alias")
+
     def _read_wrong_thing(self, parser, text, current, verbs, knowledge_path):
         """G7-S experiment 4, effort 2 (amendment A1): a statement read completely whose reading the state
         refuses, with a word in its thing slot that is no thing this conversation counts (Nora gave Eli three
@@ -4293,7 +4360,29 @@ class ReasoningContext:
                 "수선": [], "사건정정": [], "grounded": True}
 
     @staticmethod
-    def _thing_node(graph, thing, turn):
+    def _same_in_number(parser):
+        """Two words are one when they are, or one is the other's plural by the pack's number rules (명사수): towel,
+        towels."""
+        from relational_semantics import declared_plural
+        number = getattr(parser, "noun_number", None) or {}
+
+        def same(a, b):
+            a, b = a.lower(), b.lower()
+            return a == b or (declared_plural(a, number) or "").lower() == b or (declared_plural(b, number) or "").lower() == a
+        return same
+
+    @staticmethod
+    def _within(short, long, same=None):
+        """Every word of ``short`` in ``long``, in order (``same`` says when two words are one)."""
+        same = same or (lambda a, b: a == b)
+        at = 0
+        for word in long:
+            if at < len(short) and same(word, short[at]):
+                at += 1
+        return at == len(short)
+
+    @staticmethod
+    def _thing_node(graph, thing, turn, same=None):
         """The node of a thing mention (G7-S, step 3): its own, when the conversation said it so before; else the
         one existing thing whose words and the mention's are one within the other, in order (striped towels and
         striped cotton beach towels: one thing, the mention an alias of form ``short``), when exactly one fits.
@@ -4303,15 +4392,10 @@ class ReasoningContext:
         if known is not None:
             return graph.node("thing", thing, turn)
 
-        def within(short, long):
-            at = 0
-            for word in long:
-                if at < len(short) and word == short[at]:
-                    at += 1
-            return at == len(short)
+        within = ReasoningContext._within
         words = thing.split()
         fits = [n["id"] for n in graph.of_kind("thing")
-                if within(words, n["name"].split()) or within(n["name"].split(), words)]
+                if within(words, n["name"].split(), same) or within(n["name"].split(), words, same)]
         if len(fits) == 1:
             return graph.join("thing", thing, fits[0], "short", turn)
         return graph.node("thing", thing, turn)
@@ -4362,7 +4446,7 @@ class ReasoningContext:
             else:
                 kind, holder, thing = split(subject)
             h = graph.node(kind, holder, turn)
-            t = self._thing_node(graph, thing, turn) if thing else None
+            t = self._thing_node(graph, thing, turn, self._same_in_number(parser)) if thing else None
             graph.keyed(subject, h, t)
             last_of[subject] = triple[1]
             turns_of.setdefault(subject, []).append(turn)
@@ -7270,6 +7354,10 @@ class ReasoningContext:
             if (reason in self.UNPLACED | self.CONTRADICTION and keeps and not current.get("query")
                     and not getattr(self, "_rereading", False)):
                 if reason == "missing_initial_quantity" and self._effort_allows(2) and completion is None:
+                    # identity graph: the thing said with fewer of its words, or in its other number
+                    alias = self._read_thing_alias(parser, text, current, verbs, knowledge_path)
+                    if alias is not None:
+                        return alias
                     # G7-S experiment 4: the word in the thing slot may not be the thing
                     wrong = self._read_wrong_thing(parser, text, current, verbs, knowledge_path)
                     if wrong is not None:
