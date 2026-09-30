@@ -466,3 +466,12 @@ def test_a_name_reply_answers_the_holder_who_said_the_thing_with_fewer_words(que
                  3, **words)
     assert rows[-2]["meaning"]["reason"] == "which_referent"
     assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("question", ["How many {p} does my cousin have?", "How many {s} does my cousin have?"])
+def test_a_thing_asked_with_some_of_its_words_is_that_thing_and_no_part_of_the_person_asked(question):
+    words = dict(EN_WORDS, s="speckled", m="linen", p="bowls")
+    rows = _play("english", ["My cousin {a} has 5 {s} {m} {p}.", "My cousin {b} has 3 {s} {p}.", question, "{b}."],
+                 3, **words)
+    assert rows[-2]["meaning"]["reason"] == "which_referent" and rows[-2]["meaning"]["word"] == "my cousin"
+    assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
