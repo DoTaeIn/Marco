@@ -276,3 +276,9 @@ split made four holder nodes for two people and, by accident, one thing node; wi
 the parts the holders were right and the thing was two nodes. The thing of that
 conversation is mentioned three ways (two modifiers and a two-word name; one
 modifier and the last word; the modifier alone).
+
+## Identity graph, step 3, question side
+
+| Step | Patch (commit) | Work | Wait | Regression | Frozen exam |
+| --- | --- | --- | --- | --- | --- |
+| 3 (questions): lookup, pointers, which-person and corrections by node; declared holders take the node's name; a named thing with a described person asks among that thing's holders; `graph.key` gives the replay's key for a node pair | 1a3a353, 805f756, f2b0a95, 9c40ab0, merged 4f3a3a3 | chat about 120 min over the afternoon; plan manager 10 min | waited on the thing-identity fix from 13:30 to 15:50; reported 16:12, merged 16:13, scored 16:19 | chat's full suite 2,373 passed, 1 known failure (gate files left out), no re-pin; gate files, graph, corrections and reading tests at merge: 477 passed | **90/108, 0 bucket changes**, 3 reply texts changed, 0 wrong, 0 violations (`graph-step-3q.json`). The held reply the chat expected to move did not: it is a two-sentence turn (the name, then the question again) |
