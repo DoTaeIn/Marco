@@ -3894,15 +3894,7 @@ class ReasoningContext:
             return None
         fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
         declared = self._declared_words(parser)
-        facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
-        stated = {str(r["triple"][0]) for r in facts if isinstance(r.get("triple"), list)
-                  and isinstance(r["triple"][0], str) and r["triple"][1] in ("count", "count_unknown")}
-        keys = list(dict.fromkeys(self._holder_keys(parser)))  # (a key listed twice is one)
-
-        def holder(subject):
-            return next((k for k in sorted(keys, key=lambda k: -len(k.split())) if subject == k
-                         or subject.startswith(k + " ")), subject.split()[0])
-        things = {subject[len(holder(subject)):].strip() for subject in stated} - {""}
+        graph = self.conversation_graph()
         holders, named_things, unknown = [], [], []
         for token in reading["tokens"]:
             if token["kind"] in ("asker", "counter"):
@@ -3913,12 +3905,16 @@ class ReasoningContext:
                 return None
             if fold(word) in declared or fold(stem) in declared:
                 continue
-            key = self._holder_of(parser, word, keys)
-            thing = next((t for t in things if fold(t) in (fold(word), fold(stem))), None)
-            if key is not None and key not in holders:
-                holders.append(key)
-            elif thing is not None and thing not in named_things:
-                named_things.append(thing)
+            holder_nodes = self._graph_nodes(parser, graph, word, stem, ("holder", "place"))
+            thing_nodes = self._graph_nodes(parser, graph, word, stem, ("thing",))
+            if len(holder_nodes) > 1 or len(thing_nodes) > 1:
+                return None             # one word naming two nodes: not read here
+            if holder_nodes and graph.things_of(holder_nodes[0]):
+                if holder_nodes[0] not in holders:
+                    holders.append(holder_nodes[0])
+            elif thing_nodes and graph.holders_of(thing_nodes[0]):
+                if thing_nodes[0] not in named_things:
+                    named_things.append(thing_nodes[0])
             elif token["kind"] == "name" or (word != stem and stem):
                 unknown.append(parser.canonical_name(stem))
             else:
@@ -3930,28 +3926,33 @@ class ReasoningContext:
             # a holder the conversation never counted: asked as such, held naming it and the thing
             name = unknown[0]
             if named_things:
-                return self._grounded_reading(parser, "%s %s" % (name, named_things[0]), named_things[0])
+                return self._grounded_reading(parser, "%s %s" % (name, graph.nodes[named_things[0]]["name"]),
+                                              graph.nodes[named_things[0]]["name"])
             return self._grounded_reading(parser, name, None)
         if not holders:
             return None
+        holder = holders[0]
         if named_things:
-            return self._grounded_reading(parser, "%s %s" % (holders[0], named_things[0]), named_things[0])
-        # the thing left open: each thing this holder counts is a candidate
-        asked_before = fold((self.last_frame or {}).get("item") or "")
-        candidates = [{"label": subject, "thing": subject[len(holders[0]):].strip(),
-                       "fit": {"state": 1, "context": int(fold(subject[len(holders[0]):].strip()) == asked_before)}}
-                      for subject in sorted(stated) if subject.startswith(holders[0] + " ")]
+            return self._grounded_reading(parser, graph.key(holder, named_things[0]),
+                                          graph.nodes[named_things[0]]["name"])
+        # the thing left open: each thing this holder counts is a candidate (the last question's thing first)
+        before = (getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item")
+        before_node = graph.id_of("thing", before) if before else None
+        candidates = [{"label": graph.key(holder, thing), "thing": graph.nodes[thing]["name"],
+                       "fit": {"state": 1, "context": int(thing == before_node)}}
+                      for thing in sorted(graph.things_of(holder), key=lambda t: graph.key(holder, t))]
         winner, deciding, ranking = self._rank_candidates(candidates, kind="partial_question")
         if winner is None and deciding == "tie":
             replies = parser.data.get("context_replies", {})
             names = [c["label"] for c in ranking]
+            word = graph.nodes[holder]["name"]
             return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
-                    "meaning": {"act": "ask", "reason": "which_referent", "word": holders[0], "candidates": names},
+                    "meaning": {"act": "ask", "reason": "which_referent", "word": word, "candidates": names},
                     "answer": replies.get("which_referent", "").format(**{
-                        "말": holders[0], "목록": ", ".join("'%s'" % n for n in names)}),
+                        "말": word, "목록": ", ".join("'%s'" % n for n in names)}),
                     "verification": self._verification(knowledge_path, [{"ok": False, "reason": "partial_tie"}])}
         if winner is None:
-            return self._grounded_reading(parser, holders[0], None)
+            return self._grounded_reading(parser, graph.nodes[holder]["name"], None)
         return self._grounded_reading(parser, winner["label"], winner["thing"])
 
     def _ground_lookup(self, parser, query, facts):
@@ -4118,15 +4119,9 @@ class ReasoningContext:
             return None
         if any(parser._protected_kind(t["text"]) in ("scope", "negation") for t in tokens):
             return None
-        keys = list(dict.fromkeys(self._holder_keys(parser)))
-        facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
-        stated = {str(r["triple"][0]) for r in facts if isinstance(r.get("triple"), list)
-                  and isinstance(r["triple"][0], str) and r["triple"][1] == "count"}
-
-        def holder(subject):
-            return next((k for k in sorted(keys, key=lambda k: -len(k.split())) if subject == k
-                         or subject.startswith(k + " ")), None)
-        things = {subject[len(holder(subject) or ""):].strip() for subject in stated} - {""}
+        graph = self.conversation_graph()
+        # the things counted with a value, and their holders, are nodes of the conversation (step 2)
+        things = {thing for (_h, thing), edge in graph.counts.items() if thing and edge["value"] is not None}
         declared = self._declared_words(parser)
         forms = parser.holder_forms or {}
         cues = {fold(w) for w in list(forms.get("determiners", [])) + list(forms.get("possessives", []))
@@ -4145,7 +4140,8 @@ class ReasoningContext:
             if t["kind"] in ("asker", "counter"):
                 continue
             word, stem = fold(t["text"]), fold(t["stem"])
-            if self._holder_of(parser, t["text"], keys) is not None or any(fold(x) in (word, stem) for x in things):
+            if self._graph_nodes(parser, graph, t["text"], t["stem"], ("holder", "place"), forms=("key", "title")) or \
+                    set(self._graph_nodes(parser, graph, t["text"], t["stem"], ("thing",))) & things:
                 return None             # a holder or a thing named: the readers' question, not this one
             if word in declared or stem in declared or (t["kind"] == "number" and pronoun_one):
                 continue
@@ -4153,17 +4149,19 @@ class ReasoningContext:
         cued = pointed or any(fold(w) in cues for w in re.split(r"[\s,.?!]+", text) if w)
         if not cued or len(describing) > 3:
             return None
-        thing = (getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item")
+        before = (getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item")
+        thing = graph.id_of("thing", before) if before else None
         if thing not in things:
             thing = next(iter(things)) if len(things) == 1 else None
         if thing is None:
             return None
-        of_thing = sorted(subject for subject in stated if subject.endswith(" " + thing) and holder(subject))
-        tails = "|".join(re.escape(p) for p in self._frame_particles(parser)) or "(?!)"
-        described = [subject for subject in of_thing if describing and any(
-            re.search(r"(?<![\w])%s\s+(?:\S+\s+)?%s(?:%s)?(?![\w])" % (re.escape(word), re.escape(holder(subject)), tails),
-                      source, re.IGNORECASE if parser.data.get("ignore_case") else 0)
-            for word in describing for source in self.observations)]
+        holders = [h for h in graph.holders_of(thing) if graph.value(h, thing) is not None]
+        # a description narrows them to the holders a statement named with those words (a relation, a title)
+        said_as = {node for word in describing for node in graph.find(
+            word, kinds=("holder", "place"), fold=fold, forms=("relation", "title", "possessive"))}
+        of_thing = sorted(graph.key(h, thing) for h in holders)
+        described = sorted(graph.key(h, thing) for h in holders if h in said_as)
+        thing = graph.nodes[thing]["name"]
         candidates = described or of_thing
         if len(candidates) == 1 and not described:
             return None
@@ -4203,15 +4201,18 @@ class ReasoningContext:
         that say nothing the pack protects (Tom, I think. / 수아 말이에요 아마.): read as that name (effort 2)."""
         if not self._effort_allows(2) or not self.pending_pointer:
             return None
-        keys = list(dict.fromkeys(self._holder_keys(parser)))
-        candidates = {c for c in self.pending_pointer.get("candidates") or []}
+        graph = self.conversation_graph()
+        # the asked candidates as holder nodes, and the reply's words as nodes (step 2)
+        asked = {(graph.of_key(c) or (graph.id_of("holder", c) or graph.id_of("place", c),))[0]
+                 for c in self.pending_pointer.get("candidates") or []} - {None}
         words = [w for w in re.split(r"[\s,.!?]+", text) if w]
         found = []
         for at, word in enumerate(words):
-            key = self._holder_of(parser, word, keys)
-            if key is not None and any(c == key or c.startswith(key + " ") for c in candidates):
-                found.append((at, word, key))
-        if len({key for _a, _w, key in found}) != 1 or len(words) - 1 > 2:
+            nodes = [n for n in self._graph_nodes(parser, graph, word, None, ("holder", "place"), forms=("key", "title"))
+                     if n in asked]
+            if len(nodes) == 1:
+                found.append((at, word, nodes[0]))
+        if len({node for _a, _w, node in found}) != 1 or len(words) - 1 > 2:
             return None
         if any(parser._protected_kind(w) for w in words):
             return None
@@ -4236,15 +4237,18 @@ class ReasoningContext:
         recent = list(reversed(getattr(self, "_recent_before_turn", None) or []))
         # the thing: the question's own, else the one the latest question with a thing asked
         item = spec.get("item") or next((frame.get("item") for frame in recent if frame.get("item")), None)
-        counted = {str(r["triple"][0]) for r in facts if isinstance(r.get("triple"), list) and r["triple"][1] == "count"
-                   and isinstance(r["triple"][0], str)}
-        if not item:
+        graph = self.conversation_graph()
+        thing = graph.id_of("thing", item) if item else None
+        if thing is None:
             return query
-        holders_of = [subject[:-len(item)].strip() for subject in sorted(counted) if subject.endswith(" " + item)]
+        # the holders of the thing, and the ones the last questions named, as nodes (step 2)
+        counting = [h for h in graph.holders_of(thing) if graph.value(h, thing) is not None]
+        holders_of = sorted(graph.nodes[h]["name"] for h in counting)
         named = []
         for frame in recent:
             for name in frame.get("holders") or []:
-                if name not in named and "%s %s" % (name, item) in counted:
+                node = graph.id_of("holder", name) or graph.id_of("place", name)
+                if node in counting and name not in named:
                     named.append(name)
         if kind == "total":
             spec["item"] = item
@@ -4390,6 +4394,22 @@ class ReasoningContext:
                                                                    "turn": len(self.observations)}]
         carried.update({key: value for key, value in graph.carried().items() if key in ("ids", "next")})
         self._graph_carried = carried
+
+    def _graph_nodes(self, parser, graph, word, stem=None, kinds=("holder", "place"), forms=None):
+        """The nodes a word names (G7-Q step 2): an alias of theirs (the key, a title, a relation, the other number)
+        as typed or without its particle; for a holder, else the key the pack's holder forms read it as."""
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        for text in [word] + ([stem] if stem and stem != word else []):
+            found = graph.find(text, kinds=kinds, fold=fold, forms=forms)
+            if found:
+                return found
+        if any(kind in kinds for kind in ("holder", "place")):
+            keys = list(dict.fromkeys(self._holder_keys(parser)))
+            key = self._holder_of(parser, word, keys)
+            node = key and (graph.id_of("holder", key) or graph.id_of("place", key))
+            if node and graph.nodes[node]["kind"] in kinds:
+                return [node]
+        return []
 
     def _graph_frame(self, holders, item):
         """Record the frame of a question just read, as node ids, in the graph's carried part."""
@@ -4892,9 +4912,16 @@ class ReasoningContext:
         triple = row.get("triple")
         if isinstance(triple, list) and len(triple) == 3 and triple[1] == "count" and isinstance(triple[0], str) \
                 and triple[0].strip() and not triple[0].startswith(("?", "$")):
-            keys = sorted(self._holder_keys(parser), key=lambda k: -len(k.split()))
-            holder = next((k for k in keys if triple[0].startswith(k + " ") or triple[0] == k), triple[0].split()[0])
-            holders, item = [holder], triple[0][len(holder):].strip() or None
+            known = self.conversation_graph().of_key(triple[0]) if self._effort_allows(2) else None
+            if known is not None:
+                # the frame's slots are the graph's nodes for that key (step 2)
+                graph = self.conversation_graph()
+                holders = [graph.nodes[known[0]]["name"]]
+                item = graph.nodes[known[1]]["name"] if known[1] else None
+            else:
+                keys = sorted(self._holder_keys(parser), key=lambda k: -len(k.split()))
+                holder = next((k for k in keys if triple[0].startswith(k + " ") or triple[0] == k), triple[0].split()[0])
+                holders, item = [holder], triple[0][len(holder):].strip() or None
         else:
             kind = next((k for k in ("total", "more", "fewer", "same") if isinstance(row.get(k), dict)), None)
             if kind is None:
@@ -4994,12 +5021,8 @@ class ReasoningContext:
         named, plain = " ".join(core), " ".join(words)
         frame = self.last_frame
         tokens = frame["text"].rstrip().split()
-        facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
-        stated = {str(row["triple"][0]) for row in facts if isinstance(row.get("triple"), list)
-                  and isinstance(row["triple"][0], str) and row["triple"][1] in ("count", "count_unknown")}
+        graph = self.conversation_graph()
         unread = " ".join(entry["text"] for entry in self.unread_guard + self.unread)
-        keys = list(dict.fromkeys(self._holder_keys(parser)))  # (a key listed twice is one)
-        items = {subject[len(k):].strip() for subject in stated for k in keys if subject.startswith(k + " ")}
         slots = [("holder", frame["holders"][0])] if len(frame["holders"]) == 1 else []
         slots += [("item", frame["item"])] if frame.get("item") else []
         candidates, tried = [], set()
@@ -5041,14 +5064,19 @@ class ReasoningContext:
             if not asked:
                 self._candidate_dropped(2, "partial_frame", label, "not_a_question")
                 continue
-            in_state = all(key in stated for key in asked)
+            # every holder and thing the candidate asks about is a count edge of the graph (step 2)
+            in_state = all(graph.of_key(key) in graph.counts for key in asked)
             waits = fold(named) in fold(unread)
             if not in_state and not waits:
                 self._candidate_dropped(2, "partial_frame", label, "not_in_state")
                 continue
-            known = (any(fold(named) == fold(k) or fold(k).endswith(" " + fold(named)) for k in keys) or place
-                     or self._holder_of(parser, plain, keys) is not None
-                     if slot == "holder" else any(fold(named) == fold(i) for i in items))
+            if slot == "holder":
+                known = bool(place or self._graph_nodes(parser, graph, plain, named, ("holder", "place"),
+                                                         forms=("key", "title"))
+                             or any(fold(node["name"]).endswith(" " + fold(named))
+                                    for node in graph.nodes.values() if node["kind"] in ("holder", "place")))
+            else:
+                known = bool(self._graph_nodes(parser, graph, named, None, ("thing",)))
             if not known and not waits:
                 # the named words are no holder, thing or place of this conversation: not a follow-up
                 self._candidate_dropped(2, "partial_frame", label, "not_named_before")
