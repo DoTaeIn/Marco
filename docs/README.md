@@ -169,6 +169,7 @@ queue.
 | [dev6_check_e3.report.json](ko/reverification-2026-09-30/dev6_check_e3.report.json) | Dev dev6 check half at effort 3, the baseline the graph must meet |
 | [seven_e0.json](ko/reverification-2026-09-30/seven_e0.json) | Seven-step replies at effort 0, both languages, for turn-by-turn comparison |
 | [seven_e3.json](ko/reverification-2026-09-30/seven_e3.json) | Seven-step replies at effort 3, both languages, for turn-by-turn comparison |
+| [2026-09-30-fresh-exam-goal.md](ko/2026-09-30-fresh-exam-goal.md) | Goal X2: the fresh exam, frozen dialogue set v2, written by a chat that has seen neither v1 nor the traces |
 | [2026-09-30-conversation-identity-graph.md](ko/2026-09-30-conversation-identity-graph.md) | Owner's decision: the rest of M1 on a minimal conversation identity graph, not string keys; the order and who does what |
 | [2026-09-29-experiment-log.md](ko/2026-09-29-experiment-log.md) | Understanding experiments, one row each: cause, patch, work and wait time, regression, frozen score |
 | [2026-09-29-marco-fixed-timeline.md](ko/2026-09-29-marco-fixed-timeline.md) | Owner-fixed timeline: M1 language gate → release → M2 → M3 → M4 → A1 → A2 → S1 → P1 → N1; new ideas are placed under a phase, never reorder them |
