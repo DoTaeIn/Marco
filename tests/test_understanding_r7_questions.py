@@ -447,3 +447,22 @@ def test_a_follow_up_named_only_by_an_unread_statement_takes_the_role_its_partic
     rows = _play("한국어", frames, 3)
     # 다온은 in the unread statement: a holder; the follow-up waits on that statement instead of asking which slot
     assert rows[-1]["meaning"]["reason"] == "unread_event" and frames[1] in rows[-1]["answer"]
+
+
+def test_a_question_naming_the_thing_and_describing_the_person_asks_among_that_things_holders():
+    rows = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "{a} gave {b} a quill.",
+                             "How many {p} does the other one have now?"], 3, **EN_WORDS)
+    assert rows[-1]["meaning"]["reason"] == "which_referent"
+    assert "Nora" in rows[-1]["answer"] and "Ivo" in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("question", ["How many {s} {p} does the other one have now?", "How many {p} does my cousin have?",
+                                      "How many {s} {m} {p} does my cousin have?"])
+@pytest.mark.parametrize("reply,value", [("{b}.", "3"), ("{a}.", "5")])
+def test_a_name_reply_answers_the_holder_who_said_the_thing_with_fewer_words(question, reply, value):
+    # one thing node (step 3, statements 2); b counts it under the key b's statement said, which the lookup must use
+    words = dict(EN_WORDS, s="speckled", m="linen", p="bowls")
+    rows = _play("english", ["My cousin {a} has 5 {s} {m} {p}.", "My cousin {b} has 3 {s} {p}.", question, reply],
+                 3, **words)
+    assert rows[-2]["meaning"]["reason"] == "which_referent"
+    assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
