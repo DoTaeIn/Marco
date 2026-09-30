@@ -466,3 +466,28 @@ def test_a_name_reply_answers_the_holder_who_said_the_thing_with_fewer_words(que
                  3, **words)
     assert rows[-2]["meaning"]["reason"] == "which_referent"
     assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("question", ["How many {p} does my cousin have?", "How many {s} does my cousin have?"])
+def test_a_thing_asked_with_some_of_its_words_is_that_thing_and_no_part_of_the_person_asked(question):
+    words = dict(EN_WORDS, s="speckled", m="linen", p="bowls")
+    rows = _play("english", ["My cousin {a} has 5 {s} {m} {p}.", "My cousin {b} has 3 {s} {p}.", question, "{b}."],
+                 3, **words)
+    assert rows[-2]["meaning"]["reason"] == "which_referent" and rows[-2]["meaning"]["word"] == "my cousin"
+    assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("language,frames,value", [
+    ("english", ["My cousin {a} has 5 {p}.", "My cousin {b} has 3 {p}.", "How many {p} does my cousin have?",
+                 "I think {b}. How many does {b} have?"], "3"),
+    ("english", ["My cousin {a} has 5 {p}.", "My cousin {b} has 3 {p}.", "How many {p} does my cousin have?",
+                 "{a}, I think. How many does {a} have?"], "5"),
+    ("한국어", ["제 친구 {a}는 {p}이 5개 있어.", "제 친구 {b}는 {p}이 3개 있어.", "그 친구는 {p}이 몇 개야?",
+               "아마 {b}요. {b}는 몇 개야?"], "3"),
+    ("한국어", ["제 친구 {a}는 {p}이 5개 있어.", "제 친구 {b}는 {p}이 3개 있어.", "그 친구는 {p}이 몇 개야?",
+               "아마 {a}요."], "5"),
+])
+def test_a_name_with_a_few_words_then_the_question_again_answers_the_which_person_ask(language, frames, value):
+    rows = _play(language, frames, 3, **(EN_WORDS if language == "english" else KO_WORDS))
+    assert rows[-2]["meaning"]["reason"] == "which_referent"
+    assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
