@@ -1,0 +1,1847 @@
+[
+  {
+    "name": "join_chain",
+    "facts": [
+      {
+        "id": "parent-ab",
+        "triple": [
+          "a",
+          "parent",
+          "b"
+        ],
+        "evidence": {}
+      },
+      {
+        "id": "parent-bc",
+        "triple": [
+          "b",
+          "parent",
+          "c"
+        ],
+        "evidence": {}
+      }
+    ],
+    "rules": [
+      {
+        "id": "base",
+        "body": [
+          [
+            "?x",
+            "parent",
+            "?y"
+          ]
+        ],
+        "head": [
+          "?x",
+          "ancestor",
+          "?y"
+        ]
+      },
+      {
+        "id": "chain",
+        "body": [
+          [
+            "?x",
+            "ancestor",
+            "?y"
+          ],
+          [
+            "?y",
+            "parent",
+            "?z"
+          ]
+        ],
+        "head": [
+          "?x",
+          "ancestor",
+          "?z"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "add": {
+          "id": "parent-cd",
+          "triple": [
+            "c",
+            "parent",
+            "d"
+          ],
+          "evidence": {}
+        }
+      },
+      {
+        "remove": "parent-bc"
+      },
+      {
+        "add": {
+          "id": "direct-ac",
+          "triple": [
+            "a",
+            "ancestor",
+            "c"
+          ],
+          "evidence": {}
+        }
+      }
+    ],
+    "expected": [
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "parent",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "parent",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "b",
+                "parent",
+                "c"
+              ],
+              "value": {
+                "fact": [
+                  "b",
+                  "parent",
+                  "c"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "ancestor",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "ancestor",
+                  "b"
+                ],
+                "rule": "base",
+                "parents": [
+                  [
+                    "a",
+                    "parent",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "b",
+                "ancestor",
+                "c"
+              ],
+              "value": {
+                "fact": [
+                  "b",
+                  "ancestor",
+                  "c"
+                ],
+                "rule": "base",
+                "parents": [
+                  [
+                    "b",
+                    "parent",
+                    "c"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "a",
+                "ancestor",
+                "c"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "ancestor",
+                  "c"
+                ],
+                "rule": "chain",
+                "parents": [
+                  [
+                    "a",
+                    "ancestor",
+                    "b"
+                  ],
+                  [
+                    "b",
+                    "parent",
+                    "c"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "parent",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "parent",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "b",
+                "parent",
+                "c"
+              ],
+              "value": {
+                "fact": [
+                  "b",
+                  "parent",
+                  "c"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "c",
+                "parent",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "c",
+                  "parent",
+                  "d"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "ancestor",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "ancestor",
+                  "b"
+                ],
+                "rule": "base",
+                "parents": [
+                  [
+                    "a",
+                    "parent",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "b",
+                "ancestor",
+                "c"
+              ],
+              "value": {
+                "fact": [
+                  "b",
+                  "ancestor",
+                  "c"
+                ],
+                "rule": "base",
+                "parents": [
+                  [
+                    "b",
+                    "parent",
+                    "c"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "c",
+                "ancestor",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "c",
+                  "ancestor",
+                  "d"
+                ],
+                "rule": "base",
+                "parents": [
+                  [
+                    "c",
+                    "parent",
+                    "d"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "a",
+                "ancestor",
+                "c"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "ancestor",
+                  "c"
+                ],
+                "rule": "chain",
+                "parents": [
+                  [
+                    "a",
+                    "ancestor",
+                    "b"
+                  ],
+                  [
+                    "b",
+                    "parent",
+                    "c"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "b",
+                "ancestor",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "b",
+                  "ancestor",
+                  "d"
+                ],
+                "rule": "chain",
+                "parents": [
+                  [
+                    "b",
+                    "ancestor",
+                    "c"
+                  ],
+                  [
+                    "c",
+                    "parent",
+                    "d"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "a",
+                "ancestor",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "ancestor",
+                  "d"
+                ],
+                "rule": "chain",
+                "parents": [
+                  [
+                    "a",
+                    "ancestor",
+                    "c"
+                  ],
+                  [
+                    "c",
+                    "parent",
+                    "d"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "parent",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "parent",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "c",
+                "parent",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "c",
+                  "parent",
+                  "d"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "ancestor",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "ancestor",
+                  "b"
+                ],
+                "rule": "base",
+                "parents": [
+                  [
+                    "a",
+                    "parent",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "c",
+                "ancestor",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "c",
+                  "ancestor",
+                  "d"
+                ],
+                "rule": "base",
+                "parents": [
+                  [
+                    "c",
+                    "parent",
+                    "d"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "parent",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "parent",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "c",
+                "parent",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "c",
+                  "parent",
+                  "d"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "ancestor",
+                "c"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "ancestor",
+                  "c"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "ancestor",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "ancestor",
+                  "b"
+                ],
+                "rule": "base",
+                "parents": [
+                  [
+                    "a",
+                    "parent",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "c",
+                "ancestor",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "c",
+                  "ancestor",
+                  "d"
+                ],
+                "rule": "base",
+                "parents": [
+                  [
+                    "c",
+                    "parent",
+                    "d"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "a",
+                "ancestor",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "ancestor",
+                  "d"
+                ],
+                "rule": "chain",
+                "parents": [
+                  [
+                    "a",
+                    "ancestor",
+                    "c"
+                  ],
+                  [
+                    "c",
+                    "parent",
+                    "d"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "cycle_loses_basis",
+    "facts": [
+      {
+        "id": "basis",
+        "triple": [
+          "a",
+          "p",
+          "b"
+        ],
+        "evidence": {}
+      }
+    ],
+    "rules": [
+      {
+        "id": "pq",
+        "body": [
+          [
+            "?x",
+            "p",
+            "?y"
+          ]
+        ],
+        "head": [
+          "?x",
+          "q",
+          "?y"
+        ]
+      },
+      {
+        "id": "qp",
+        "body": [
+          [
+            "?x",
+            "q",
+            "?y"
+          ]
+        ],
+        "head": [
+          "?x",
+          "p",
+          "?y"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "remove": "basis"
+      },
+      {
+        "add": {
+          "id": "restored",
+          "triple": [
+            "a",
+            "q",
+            "b"
+          ],
+          "evidence": {}
+        }
+      }
+    ],
+    "expected": [
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "pq",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {}
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "rule": "qp",
+                "parents": [
+                  [
+                    "a",
+                    "q",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "alternative_support",
+    "facts": [
+      {
+        "id": "one",
+        "triple": [
+          "a",
+          "p",
+          "b"
+        ],
+        "evidence": {}
+      },
+      {
+        "id": "two",
+        "triple": [
+          "a",
+          "p",
+          "b"
+        ],
+        "evidence": {}
+      },
+      {
+        "id": "independent",
+        "triple": [
+          "a",
+          "r",
+          "b"
+        ],
+        "evidence": {}
+      }
+    ],
+    "rules": [
+      {
+        "id": "pq",
+        "body": [
+          [
+            "?x",
+            "p",
+            "?y"
+          ]
+        ],
+        "head": [
+          "?x",
+          "q",
+          "?y"
+        ]
+      },
+      {
+        "id": "rq",
+        "body": [
+          [
+            "?x",
+            "r",
+            "?y"
+          ]
+        ],
+        "head": [
+          "?x",
+          "q",
+          "?y"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "remove": "one"
+      },
+      {
+        "remove": "two"
+      },
+      {
+        "remove": "independent"
+      }
+    ],
+    "expected": [
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "r",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "r",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "pq",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "r",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "r",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "pq",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "r",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "r",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "rq",
+                "parents": [
+                  [
+                    "a",
+                    "r",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {}
+      }
+    ]
+  },
+  {
+    "name": "assert_existing_derived",
+    "facts": [
+      {
+        "id": "basis",
+        "triple": [
+          "a",
+          "p",
+          "b"
+        ],
+        "evidence": {}
+      }
+    ],
+    "rules": [
+      {
+        "id": "pq",
+        "body": [
+          [
+            "?x",
+            "p",
+            "?y"
+          ]
+        ],
+        "head": [
+          "?x",
+          "q",
+          "?y"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "add": {
+          "id": "direct",
+          "triple": [
+            "a",
+            "q",
+            "b"
+          ],
+          "evidence": {}
+        }
+      },
+      {
+        "remove": "basis"
+      },
+      {
+        "remove": "direct"
+      }
+    ],
+    "expected": [
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "pq",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {}
+      }
+    ]
+  },
+  {
+    "name": "correction",
+    "facts": [
+      {
+        "id": "basis",
+        "triple": [
+          "a",
+          "p",
+          "b"
+        ],
+        "evidence": {}
+      },
+      {
+        "id": "unrelated",
+        "triple": [
+          "z",
+          "u",
+          "v"
+        ],
+        "evidence": {}
+      }
+    ],
+    "rules": [
+      {
+        "id": "pq",
+        "body": [
+          [
+            "?x",
+            "p",
+            "?y"
+          ]
+        ],
+        "head": [
+          "?x",
+          "q",
+          "?y"
+        ]
+      },
+      {
+        "id": "uv",
+        "body": [
+          [
+            "?x",
+            "u",
+            "?y"
+          ]
+        ],
+        "head": [
+          "?x",
+          "v",
+          "?y"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "replace": {
+          "id": "basis",
+          "triple": [
+            "a",
+            "p",
+            "c"
+          ],
+          "evidence": {}
+        }
+      },
+      {
+        "replace": {
+          "id": "basis",
+          "triple": [
+            "a",
+            "r",
+            "d"
+          ],
+          "evidence": {}
+        }
+      }
+    ],
+    "expected": [
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "z",
+                "u",
+                "v"
+              ],
+              "value": {
+                "fact": [
+                  "z",
+                  "u",
+                  "v"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "pq",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "z",
+                "v",
+                "v"
+              ],
+              "value": {
+                "fact": [
+                  "z",
+                  "v",
+                  "v"
+                ],
+                "rule": "uv",
+                "parents": [
+                  [
+                    "z",
+                    "u",
+                    "v"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "c"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "c"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "z",
+                "u",
+                "v"
+              ],
+              "value": {
+                "fact": [
+                  "z",
+                  "u",
+                  "v"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "c"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "c"
+                ],
+                "rule": "pq",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "c"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "z",
+                "v",
+                "v"
+              ],
+              "value": {
+                "fact": [
+                  "z",
+                  "v",
+                  "v"
+                ],
+                "rule": "uv",
+                "parents": [
+                  [
+                    "z",
+                    "u",
+                    "v"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "r",
+                "d"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "r",
+                  "d"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "z",
+                "u",
+                "v"
+              ],
+              "value": {
+                "fact": [
+                  "z",
+                  "u",
+                  "v"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "z",
+                "v",
+                "v"
+              ],
+              "value": {
+                "fact": [
+                  "z",
+                  "v",
+                  "v"
+                ],
+                "rule": "uv",
+                "parents": [
+                  [
+                    "z",
+                    "u",
+                    "v"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "self_join_and_repeated_variable",
+    "facts": [
+      {
+        "id": "one",
+        "triple": [
+          "a",
+          "p",
+          "a"
+        ],
+        "evidence": {}
+      },
+      {
+        "id": "two",
+        "triple": [
+          "a",
+          "p",
+          "b"
+        ],
+        "evidence": {}
+      }
+    ],
+    "rules": [
+      {
+        "id": "self",
+        "body": [
+          [
+            "?x",
+            "p",
+            "?x"
+          ]
+        ],
+        "head": [
+          "?x",
+          "self",
+          "?x"
+        ]
+      },
+      {
+        "id": "join",
+        "body": [
+          [
+            "?x",
+            "p",
+            "?y"
+          ],
+          [
+            "?x",
+            "p",
+            "?z"
+          ]
+        ],
+        "head": [
+          "?y",
+          "pair",
+          "?z"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "remove": "one"
+      }
+    ],
+    "expected": [
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "a"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "a"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "self",
+                "a"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "self",
+                  "a"
+                ],
+                "rule": "self",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "a"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "a",
+                "pair",
+                "a"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "pair",
+                  "a"
+                ],
+                "rule": "join",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "a"
+                  ],
+                  [
+                    "a",
+                    "p",
+                    "a"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "a",
+                "pair",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "pair",
+                  "b"
+                ],
+                "rule": "join",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "a"
+                  ],
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "b",
+                "pair",
+                "a"
+              ],
+              "value": {
+                "fact": [
+                  "b",
+                  "pair",
+                  "a"
+                ],
+                "rule": "join",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  [
+                    "a",
+                    "p",
+                    "a"
+                  ]
+                ]
+              }
+            },
+            {
+              "key": [
+                "b",
+                "pair",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "b",
+                  "pair",
+                  "b"
+                ],
+                "rule": "join",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "b",
+                "pair",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "b",
+                  "pair",
+                  "b"
+                ],
+                "rule": "join",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ],
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "denied_and_planned",
+    "facts": [
+      {
+        "id": "yes",
+        "triple": [
+          "a",
+          "p",
+          "b"
+        ],
+        "evidence": {}
+      },
+      {
+        "id": "deny",
+        "triple": [
+          "a",
+          "q",
+          "b"
+        ],
+        "evidence": {},
+        "polarity": false
+      },
+      {
+        "id": "plan",
+        "triple": [
+          "z",
+          "p",
+          "b"
+        ],
+        "evidence": {},
+        "modality": "planned"
+      }
+    ],
+    "rules": [
+      {
+        "id": "pq",
+        "body": [
+          [
+            "?x",
+            "p",
+            "?y"
+          ]
+        ],
+        "head": [
+          "?x",
+          "q",
+          "?y"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "remove": "deny"
+      }
+    ],
+    "expected": [
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            }
+          ]
+        }
+      },
+      {
+        "known": {
+          "$tuple_map": [
+            {
+              "key": [
+                "a",
+                "p",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "p",
+                  "b"
+                ],
+                "evidence": {}
+              }
+            },
+            {
+              "key": [
+                "a",
+                "q",
+                "b"
+              ],
+              "value": {
+                "fact": [
+                  "a",
+                  "q",
+                  "b"
+                ],
+                "rule": "pq",
+                "parents": [
+                  [
+                    "a",
+                    "p",
+                    "b"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

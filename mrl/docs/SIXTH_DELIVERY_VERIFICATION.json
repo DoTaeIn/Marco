@@ -1,0 +1,84 @@
+{
+  "verified_at_utc": "2026-09-27T17:27:10.834160+00:00",
+  "tests": {
+    "command": "python -B -m unittest discover -s mrl/tests -v",
+    "count": 91,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "discovery_and_test_seconds": 33.154
+  },
+  "examples": {
+    "primitive": {
+      "source_lines": 8,
+      "c_lines": 32,
+      "executable_bytes": 188416,
+      "warm_build_ms_single_sample": 307.008,
+      "returncode": 0,
+      "stdout": "42\n",
+      "stderr": ""
+    },
+    "control_flow": {
+      "source_lines": 24,
+      "c_lines": 64,
+      "executable_bytes": 188416,
+      "warm_build_ms_single_sample": 335.96,
+      "returncode": 0,
+      "stdout": "10\n",
+      "stderr": ""
+    },
+    "graph_smoke": {
+      "source_lines": 32,
+      "c_lines": 140,
+      "executable_bytes": 189952,
+      "warm_build_ms_single_sample": 550.657,
+      "returncode": 0,
+      "stdout": "1\n",
+      "stderr": ""
+    },
+    "search_paths": {
+      "source_lines": 38,
+      "c_lines": 268,
+      "executable_bytes": 195584,
+      "warm_build_ms_single_sample": 611.207,
+      "returncode": 0,
+      "stdout": "bfs\n1\n1\ndfs\n2\n2\ndijkstra\n2\n4\nastar\n2\n4\nall\n3\ntrue\nComplete\n2\n4\n1\n7\n1\n9\n",
+      "stderr": ""
+    },
+    "horn_proof": {
+      "source_lines": 21,
+      "c_lines": 379,
+      "executable_bytes": 473088,
+      "warm_build_ms_single_sample": 775.992,
+      "returncode": 0,
+      "stdout": "true\n2\n2\nComplete\n{\"facts\":{\"$tuple_map\":[{\"key\":[\"apple\",\"is\",\"fruit\"],\"value\":{\"fact\":[\"apple\",\"is\",\"fruit\"],\"evidence\":{\"source\":\"apple is fruit\",\"start\":0,\"end\":5,\"text\":\"apple\"}}},{\"key\":[\"apple\",\"is\",\"food\"],\"value\":{\"fact\":[\"apple\",\"is\",\"food\"],\"rule\":\"classify\",\"parents\":[[\"apple\",\"is\",\"fruit\"]]}}]},\"proof_bundles\":{\"$tuple_map\":[{\"key\":[\"apple\",\"is\",\"fruit\"],\"value\":[{\"id\":\"support:seed\",\"kind\":\"asserted\",\"conclusion\":[\"apple\",\"is\",\"fruit\"],\"premise_fact_ids\":[\"seed\"],\"rule\":null,\"rule_version\":null,\"bindings\":{},\"valid\":true}]},{\"key\":[\"apple\",\"is\",\"food\"],\"value\":[{\"id\":\"derive:classify:1:[[\\\"apple\\\",\\\"is\\\",\\\"food\\\"],[[\\\"?item\\\",\\\"apple\\\"]],[\\\"support:seed\\\"]]\",\"kind\":\"derived\",\"conclusion\":[\"apple\",\"is\",\"food\"],\"premise_fact_ids\":[\"support:seed\"],\"rule\":\"classify\",\"rule_version\":1,\"bindings\":{\"?item\":\"apple\"},\"valid\":true}]}]},\"complete\":true,\"reason\":null,\"searches\":2}\n",
+      "stderr": ""
+    }
+  },
+  "environment": {
+    "python": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "compiler": [
+      "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+      "cc",
+      "-target",
+      "x86_64-windows-gnu",
+      "-std=c11"
+    ]
+  },
+  "sha256": {
+    "frontend.py": "4e3c7d6fde28ff379b7cc968bd928bb383b03ff0e129ee38503a57f778246dab",
+    "c_backend.py": "83567df2855617b73e3e28d6b7e88bdb0bb76d29d4113bfeb87356f5fd55bd0f",
+    "runtime/graph_runtime.h": "dde97abce3ed10b00a6db57e80bae304c7861cb642a2561230ae6df54b8a9195",
+    "runtime/native_graph.c": "be835ab7dcc5b8eeb78add61d9f3968893ff6a3ecba87b8ad2cca6082350b5f1",
+    "horn_bridge.py": "cee53818976fff945689a6efaf411d1a5007b273fda9577fe602b48bbb4baa86",
+    "benchmark_search.py": "e27a5382b8be87e3b410954da24172e79f8e62f32c0d46959720570d26fa3343",
+    "tests/test_source_extensions.py": "d60e3a8094b20da58c7deff23238190e8513723b9983248ee680f748f95c2abb",
+    "tests/test_search_frontend.py": "ced261a5727265aeed3963a1a9af356b0a9cbbe4ef09fd20adf331079fe26c74",
+    "tests/test_search_backend.py": "f6de9075f25506c95e7794e04e1855cc14a67a73485b27ecedf5955f11aa31e4",
+    "tests/test_search_reference.py": "706ca97fb0e3d36a7625f6135d04124584d6432688d0d86c8bfc0753fcc5926c",
+    "tests/test_horn_bridge.py": "5cc1113c1c1786fad3c67c3fdaeb9a4eef2c9a00b6ac3d081bf40a84c90bd285",
+    "examples/search_paths.mrl": "9fc62838c0afbbc06ba9f0ff30290d8871c13dea128c3682148076980b7c06a6",
+    "examples/horn_proof.mrl": "5179d94075eb9af8842c891f10940e745fc00f43eb2b9ef45c6694d945648606"
+  }
+}

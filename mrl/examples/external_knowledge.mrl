@@ -1,0 +1,21 @@
+fn changed(plan: Horn) -> Horn {
+    plan.add(Fact(id = "new", subject = "marco", predicate = "learns", object = "graphs"))
+    return plan
+}
+
+fn main() {
+    plan = Horn(capacity = 256, facts = Facts(), rules = Rules(
+        Rule(id = "knowledge", body = Triple(subject = "?who", predicate = "learns", object = "?what"),
+             head = Triple(subject = "?who", predicate = "knows", object = "?what"))))
+    match (plan.load("mrl/examples/knowledge_facts.jsonl")) {
+        Ok(count) { print(count) }
+        Err(message) { print(message) return }
+    }
+    before = closure(plan, limit = 256)
+    next = changed(plan)
+    after = closure(next, limit = 256)
+    print(plan.version)
+    print(next.version)
+    print(before)
+    print(after)
+}

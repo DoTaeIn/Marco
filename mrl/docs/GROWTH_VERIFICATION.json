@@ -1,0 +1,22 @@
+{
+  "tests_run": 101,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 38.59000869999909,
+  "source_sha256": {
+    "mrl/runtime/native_graph.c": "47576d21e194e0e41a1d0c6e603da0423710933a3443a2cfe0f698cf1247e2c9",
+    "mrl/native_graph.py": "6630c4164a1b431dcaa1007dd6757b02dac5c87e9763c89c7817890a13e8bf83",
+    "mrl/toolchain.py": "2f433070fd82b8357d0d21e758355d05d04529cbeecf3fd6303bce05789f197f",
+    "mrl/benchmark_growth.py": "2350dd7cac10968fbcb299d810059f1279dc2d0a4dc0baebb9455a7eedb6e8a9",
+    "mrl/tests/test_growth_runtime.py": "e44b521af283885d271755efe4b55ddd935446d253cc7d20ec012bce456aade0",
+    "mrl/tests/test_toolchain_startup.py": "7d98fb9501040c166a25fe14e2df129c9bd5d9d8889eab3573dd399b0768a280",
+    "mrl/oracle.py": "badf72d194a3aae3a1771b073c2a72d522e6804cf48798fbc67bd919472f8b1f",
+    "graph_inference.py": "d7b383a720e7d21b21b266db31b8d5578d53681883882fef8c560049741f8daf"
+  },
+  "post_test_benchmark_note": "Only the benchmark CLI default output filename changed after the test run; the final benchmark itself ran successfully and its reports record the current harness hash. Runtime and test sources are unchanged.",
+  "final_benchmark_reports": {
+    "GROWTH_AFTER.json": "cf56059034d2209a6fde6b835d3980eccca14d96216b11c2d7f0b300e3209c94",
+    "GROWTH_SCALE.json": "96d12a4cc16d11bca942045c905d0039769f6b8451c60c9b6f6dc00e572b0602"
+  }
+}

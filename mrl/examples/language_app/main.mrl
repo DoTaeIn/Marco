@@ -1,0 +1,63 @@
+import "knowledge.mrl" as knowledge
+
+fn execute(mode: s, input_path: s, checkpoint: s) -> si {
+ plan: Horn = knowledge.make_plan()
+ if (mode == "write") {
+  match(read_text(input_path)) {
+   Err(error) { print(error) return 5 }
+   Ok(subject) {
+    if (not plan.add(Fact(id="input", subject=subject, predicate="contains", object="payload"))) { return 6 }
+    selected = plan.select(subject=subject, predicate="known", limit=4, proof_limit=4, search_limit=1000)
+    if (not selected.complete or selected.fact_count != 1) { return 7 }
+    print(selected.subject(0))
+    if (selected.proof_count(0) < 1) { return 8 }
+    print(selected.proof_rule(0, 0))
+    print(selected.proof_premise_id(0, 0, 0))
+    match(plan.save(checkpoint)) {
+     Err(error) { print(error) return 9 }
+     Ok(rows) {
+      if (not plan.supersede("input", Fact(id="input-v2", subject=subject, predicate="contains", object="superseded", evidence=Evidence(source="replacement", start=0, end=11, text="replacement")))) { return 10 }
+      match(plan.commit(checkpoint)) {
+       Err(error) { print(error) return 11 }
+       Ok(delta) { print("write-ok") return 0 }
+      }
+     }
+    }
+   }
+  }
+ } else {
+  if (mode != "restore") { return 12 }
+  match(plan.restore(checkpoint)) {
+   Err(error) { print(error) return 13 }
+   Ok(rows) {
+    history = plan.history_fact("input")
+    if (history.fact_count != 1) { return 14 }
+    old_subject = history.subject(0)
+    if (history.object(0) != "payload" or not history.fact_polarity(0)) { return 15 }
+    if (not plan.exists(Triple(old_subject, "known", "superseded"))) { return 16 }
+    if (plan.superseded_by("input") != "input-v2") { return 17 }
+    print(old_subject)
+    print(history.object(0))
+    print("restore-ok")
+    return 0
+   }
+  }
+ }
+}
+
+fn main() -> si {
+ match(argv(1)) {
+  Err(error) { print(error) return 2 }
+  Ok(mode) {
+   match(argv(2)) {
+    Err(error) { print(error) return 3 }
+    Ok(input_path) {
+     match(argv(3)) {
+      Err(error) { print(error) return 4 }
+      Ok(checkpoint) { return execute(mode, input_path, checkpoint) }
+     }
+    }
+   }
+  }
+ }
+}

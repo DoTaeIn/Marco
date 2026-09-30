@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "unit": "us_per_query",
+  "repeats": 20000,
+  "batches": 7,
+  "workload": {
+    "nodes": 3,
+    "edges": [
+      [
+        0,
+        2,
+        9
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        1,
+        2,
+        2
+      ],
+      [
+        0,
+        2,
+        7
+      ],
+      [
+        1,
+        0,
+        0
+      ]
+    ],
+    "source": 0,
+    "target": 2,
+    "method": "dijkstra",
+    "expected_length": 2,
+    "expected_cost": 4,
+    "checksum": 120000
+  },
+  "method": "Alternating batches; native_execution measures generated program inside the executable (graph construction and checksum output amortized), native_process also includes process startup; Python uses prebuilt adjacency, heap search/path tuples and consumes length/cost; compile excluded; no Horn memoization. Windows QueryPerformanceCounter; other platforms C11 timespec_get.",
+  "orders": [
+    [
+      "native_process",
+      "python_loop"
+    ],
+    [
+      "python_loop",
+      "native_process"
+    ],
+    [
+      "native_process",
+      "python_loop"
+    ],
+    [
+      "python_loop",
+      "native_process"
+    ],
+    [
+      "native_process",
+      "python_loop"
+    ],
+    [
+      "python_loop",
+      "native_process"
+    ],
+    [
+      "native_process",
+      "python_loop"
+    ]
+  ],
+  "samples": {
+    "native_process": [
+      5.747694999999999,
+      4.63485,
+      4.85907,
+      4.748115,
+      4.89045,
+      4.807825,
+      4.691635
+    ],
+    "native_execution": [
+      0.42792499998540734,
+      0.38446500002464745,
+      0.3773350000301434,
+      0.38161000002219225,
+      0.3701250000631262,
+      0.36760499997399165,
+      0.37355499998739106
+    ],
+    "python_loop": [
+      0.7983399999999999,
+      0.895705,
+      0.847825,
+      0.8426799999999999,
+      0.734375,
+      0.8237200000000001,
+      0.6852600000000001
+    ]
+  },
+  "median_us": {
+    "native_process": 4.807825,
+    "native_execution": 0.3773350000301434,
+    "python_loop": 0.8237200000000001
+  },
+  "python_over_native_ratio": 2.1829938911953497,
+  "build_ms_single_sample": 959.1182,
+  "executable_bytes": 193024,
+  "environment": {
+    "python": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "compiler": [
+      "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+      "cc",
+      "-target",
+      "x86_64-windows-gnu",
+      "-std=c11"
+    ]
+  },
+  "sha256": {
+    "benchmark_search.py": "e27a5382b8be87e3b410954da24172e79f8e62f32c0d46959720570d26fa3343",
+    "frontend.py": "4e3c7d6fde28ff379b7cc968bd928bb383b03ff0e129ee38503a57f778246dab",
+    "c_backend.py": "83567df2855617b73e3e28d6b7e88bdb0bb76d29d4113bfeb87356f5fd55bd0f",
+    "runtime\\graph_runtime.h": "dde97abce3ed10b00a6db57e80bae304c7861cb642a2561230ae6df54b8a9195",
+    ".build\\search_benchmark.mrl": "496df0f22131d130d5d534f3dbbac895f47144aaa1dbc4cabca8daa74eb1040d"
+  }
+}

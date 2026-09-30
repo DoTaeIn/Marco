@@ -1,0 +1,8 @@
+# Primitive MRL bootstrap example #
+fn add(a: si, b: si) -> si {
+    return a + b
+}
+
+fn main() -> si {
+    return add(20, 22)
+}

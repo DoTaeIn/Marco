@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-27",
+  "baseline_sha": "d5d91a21397fc5ac0d3ce0923d8756c867c85eca",
+  "branch": "codex/mrl-runtime-language",
+  "environment": {
+    "python": "3.10.6",
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "test_result": {
+    "total": 11,
+    "passed": 10,
+    "skipped": 1,
+    "command": "python -B -m unittest discover -s mrl/tests -v"
+  },
+  "golden_cases": 10,
+  "golden_structural_comparison": "pass against pinned Python oracle only",
+  "mrl_graph_semantic_equivalence": "pending: graph runtime not implemented",
+  "mrl_graph_proof_equivalence": "pending",
+  "source_loc": {
+    "primitive_mrl": 6,
+    "illustrative_python": 4,
+    "python_reference": "def add(a, b):\n    return a + b\n\ndef main():\n    return add(20, 22)\n",
+    "definition": "nonblank, non-comment physical lines; MRL braces counted; excludes executable wrapper"
+  },
+  "generated_c_loc": 27,
+  "generated_c_bytes": 1247,
+  "compiler_pipeline_ms_median": 0.10162900000068475,
+  "compiler_timing_method": "warm in-process source -> AST -> typed IR -> C emission; 7 batches of 100; not native runtime",
+  "native_toolchain_available": false,
+  "native_build": "unverified: VS cl exists but Windows SDK headers absent; no clang/gcc on PATH",
+  "binary_size": null,
+  "static_ram": null,
+  "peak_ram": null,
+  "startup": null,
+  "native_latency": null,
+  "determinism": "primitive IR/C repeat equality and frozen oracle outputs pass; MRL graph pending",
+  "compile_time_invariant_catches": [
+    "si32 literal range",
+    "undefined names/functions",
+    "redeclared names/parameters/functions",
+    "constant reassignment",
+    "argument count/type",
+    "assignment/return type",
+    "missing/unreachable return discipline",
+    "unsupported bootstrap syntax",
+    "invalid IR schema/type"
+  ],
+  "scope_decision": "Do not claim M1-M7 complete or a graph runtime benefit. Next gate is native primitive execution, then bounded graph slice; demonstrate equivalence and benefit before broader kernel expansion."
+}

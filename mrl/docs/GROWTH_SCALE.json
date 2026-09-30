@@ -1,0 +1,2341 @@
+{
+  "version": 1,
+  "baseline_snapshot": false,
+  "sizes": [
+    64,
+    256,
+    1024
+  ],
+  "samples": 5,
+  "warm_samples": 25,
+  "append_samples": 25,
+  "capacity": 8192,
+  "derived_facts_per_seed": 3,
+  "method": "full structural parity is checked before and outside every timed region; p95 uses nearest-rank individual requests",
+  "linkage": {
+    "native_graph": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\native_graph.py",
+    "native_source": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\runtime\\native_graph.c",
+    "toolchain": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\toolchain.py",
+    "toolchain_cache": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools",
+    "oracle": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\oracle.py",
+    "graph_inference": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\graph_inference.py",
+    "source_sha256": {
+      "__init__.py": "8b29a99577c9ca17b1afb70e80003e665a43837416d4d4cec1ef3b9905b09d98",
+      "native_graph.py": "6630c4164a1b431dcaa1007dd6757b02dac5c87e9763c89c7817890a13e8bf83",
+      "toolchain.py": "2f433070fd82b8357d0d21e758355d05d04529cbeecf3fd6303bce05789f197f",
+      "graph_plan.py": "459a4205a402cfe18cff3c295bc0e6552d537ede0b82a1103e12808fa3b14843",
+      "runtime/native_graph.c": "47576d21e194e0e41a1d0c6e603da0423710933a3443a2cfe0f698cf1247e2c9",
+      "oracle.py": "badf72d194a3aae3a1771b073c2a72d522e6804cf48798fbc67bd919472f8b1f",
+      "graph_inference.py": "d7b383a720e7d21b21b266db31b8d5578d53681883882fef8c560049741f8daf",
+      "benchmark_growth.py": "fd8e90a64eedc3340a032acc8c2d304e0704e00b5dd653c3d2d7626af6f4f234"
+    }
+  },
+  "operations": {
+    "closure": {
+      "64": {
+        "seed_count": 64,
+        "expected_derived_facts": 192,
+        "expected_total_facts": 256,
+        "fresh_process": {
+          "parity": true,
+          "result_fact_count": 256,
+          "complete": true,
+          "controller_subprocess_wall_scope": "whole child process wall time including interpreter bootstrap, JSON serialization, and IPC",
+          "first_response_scope": "inside-worker time after Python bootstrap; includes runtime import and evaluation, excludes result JSON serialization",
+          "process_state": "warm disk DLL / OS cache; not an OS-cold claim",
+          "peak_memory_scope": "fresh process lifetime: runtime imports plus evaluated output, captured before result JSON serialization",
+          "path_order_by_pair": [
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ]
+          ],
+          "python_oracle": {
+            "controller_subprocess_wall": {
+              "p50_ns": 296675000,
+              "p95_ns": 327464700,
+              "samples_ns": [
+                296675000,
+                268095300,
+                269794300,
+                306699900,
+                327464700
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                21946368,
+                21979136,
+                21909504,
+                22028288,
+                21839872
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 13162500,
+              "p95_ns": 19369500,
+              "samples_ns": [
+                12981100,
+                10391300,
+                13162500,
+                19369500,
+                17304000
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                21946368,
+                21979136,
+                21909504,
+                22028288,
+                21839872
+              ]
+            },
+            "operation": {
+              "p50_ns": 1905700,
+              "p95_ns": 2079200,
+              "samples_ns": [
+                2079200,
+                2042400,
+                1863600,
+                1752500,
+                1905700
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                21946368,
+                21979136,
+                21909504,
+                22028288,
+                21839872
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 15201500,
+              "p95_ns": 21289300,
+              "samples_ns": [
+                15201500,
+                12624900,
+                15169700,
+                21289300,
+                19352400
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                21946368,
+                21979136,
+                21909504,
+                22028288,
+                21839872
+              ]
+            }
+          },
+          "native_resident": {
+            "controller_subprocess_wall": {
+              "p50_ns": 301389500,
+              "p95_ns": 373353500,
+              "samples_ns": [
+                280370500,
+                308449900,
+                301389500,
+                268108500,
+                373353500
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23216128,
+                23207936,
+                23302144,
+                23244800,
+                23113728
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 11529600,
+              "p95_ns": 22349800,
+              "samples_ns": [
+                9888200,
+                10842100,
+                17881900,
+                11529600,
+                22349800
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23216128,
+                23207936,
+                23302144,
+                23244800,
+                23113728
+              ]
+            },
+            "operation": {
+              "p50_ns": 4582600,
+              "p95_ns": 10522200,
+              "samples_ns": [
+                6118300,
+                3901600,
+                4582600,
+                3473900,
+                10522200
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23216128,
+                23207936,
+                23302144,
+                23244800,
+                23113728
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 16126400,
+              "p95_ns": 33140000,
+              "samples_ns": [
+                16126400,
+                14918200,
+                22560500,
+                15092100,
+                33140000
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23216128,
+                23207936,
+                23302144,
+                23244800,
+                23113728
+              ]
+            }
+          }
+        },
+        "first_answer": {
+          "p50_ns": 1799700,
+          "p95_ns": 4374700,
+          "samples_ns": [
+            1695400,
+            4348000,
+            1775200,
+            1799700,
+            4374700
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank per-request sample",
+          "parity": true,
+          "result_fact_count": 256,
+          "complete": true,
+          "returned": {
+            "sha256": "1defb140898e287c41c732288d1c4156a044acf364834906a992d4ce284014b0",
+            "bytes": 35390
+          }
+        },
+        "warm_repeated_evaluate": {
+          "parity": true,
+          "result_fact_count": 256,
+          "complete": true,
+          "native_resident": {
+            "p50_ns": 1607900,
+            "p95_ns": 3420200,
+            "samples_ns": [
+              988200,
+              1205500,
+              1975800,
+              3420200,
+              1685000,
+              1691400,
+              1801400,
+              1480600,
+              1198500,
+              4745000,
+              1153600,
+              1189400,
+              1390900,
+              2082700,
+              1636200,
+              1370500,
+              2930300,
+              1607800,
+              1858300,
+              2438700,
+              1053500,
+              1607900,
+              1482000,
+              1437000,
+              2695000
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_oracle": {
+            "p50_ns": 3304700,
+            "p95_ns": 5630600,
+            "samples_ns": [
+              3607500,
+              3094500,
+              3106600,
+              2609400,
+              4016700,
+              3132100,
+              3304700,
+              4168500,
+              5000900,
+              1991700,
+              3014600,
+              4367700,
+              3005100,
+              2574000,
+              2345600,
+              5486600,
+              2863500,
+              4055300,
+              3108300,
+              3768900,
+              9704300,
+              4190200,
+              4484600,
+              2371300,
+              5630600
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "returned": {
+            "sha256": "1defb140898e287c41c732288d1c4156a044acf364834906a992d4ce284014b0",
+            "bytes": 35390
+          },
+          "result_cache": "none; every sample evaluates the full input"
+        },
+        "append_evaluate": {
+          "parity": true,
+          "base_seed_count": 63,
+          "final_seed_count": 64,
+          "sequence_repetitions": 25,
+          "delta_rows": 1,
+          "native_append_evaluate": {
+            "p50_ns": 2387300,
+            "p95_ns": 5371200,
+            "samples_ns": [
+              1596800,
+              1546400,
+              5371200,
+              3880200,
+              1615500,
+              3324300,
+              3258200,
+              2002000,
+              1581000,
+              3950300,
+              6330600,
+              2387300,
+              1559300,
+              1756200,
+              1865000,
+              2578800,
+              2734700,
+              1681000,
+              2855400,
+              1654700,
+              3339900,
+              1754000,
+              2602700,
+              2585300,
+              1586600
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_append_evaluate": {
+            "p50_ns": 3978500,
+            "p95_ns": 5564900,
+            "samples_ns": [
+              4065400,
+              4619800,
+              2875000,
+              4536600,
+              4857300,
+              4618600,
+              4012900,
+              4873900,
+              15331900,
+              5398600,
+              4327300,
+              4687100,
+              1980300,
+              2440800,
+              2346700,
+              2409000,
+              2514800,
+              1964200,
+              5564900,
+              1824000,
+              3978500,
+              2309500,
+              2605300,
+              3744300,
+              3704400
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "result_fact_count": 256,
+          "complete": true,
+          "latest_answer": {
+            "sha256": "1defb140898e287c41c732288d1c4156a044acf364834906a992d4ce284014b0",
+            "bytes": 35390
+          },
+          "result_cache": "none; every sample appends a new final input"
+        }
+      },
+      "256": {
+        "seed_count": 256,
+        "expected_derived_facts": 768,
+        "expected_total_facts": 1024,
+        "fresh_process": {
+          "parity": true,
+          "result_fact_count": 1024,
+          "complete": true,
+          "controller_subprocess_wall_scope": "whole child process wall time including interpreter bootstrap, JSON serialization, and IPC",
+          "first_response_scope": "inside-worker time after Python bootstrap; includes runtime import and evaluation, excludes result JSON serialization",
+          "process_state": "warm disk DLL / OS cache; not an OS-cold claim",
+          "peak_memory_scope": "fresh process lifetime: runtime imports plus evaluated output, captured before result JSON serialization",
+          "path_order_by_pair": [
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ]
+          ],
+          "python_oracle": {
+            "controller_subprocess_wall": {
+              "p50_ns": 401362200,
+              "p95_ns": 454973700,
+              "samples_ns": [
+                422055300,
+                454973700,
+                366788400,
+                342083500,
+                401362200
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23322624,
+                23285760,
+                23216128,
+                23318528,
+                23334912
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 16624800,
+              "p95_ns": 17371700,
+              "samples_ns": [
+                14221600,
+                16624800,
+                15227500,
+                17371700,
+                17303700
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23322624,
+                23285760,
+                23216128,
+                23318528,
+                23334912
+              ]
+            },
+            "operation": {
+              "p50_ns": 9094300,
+              "p95_ns": 12755300,
+              "samples_ns": [
+                10694000,
+                8893800,
+                12755300,
+                9094300,
+                8472100
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23322624,
+                23285760,
+                23216128,
+                23318528,
+                23334912
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 25962400,
+              "p95_ns": 28161000,
+              "samples_ns": [
+                25133500,
+                25844100,
+                28161000,
+                26856900,
+                25962400
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23322624,
+                23285760,
+                23216128,
+                23318528,
+                23334912
+              ]
+            }
+          },
+          "native_resident": {
+            "controller_subprocess_wall": {
+              "p50_ns": 320198000,
+              "p95_ns": 385380300,
+              "samples_ns": [
+                385380300,
+                377992200,
+                315620300,
+                292854800,
+                320198000
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23683072,
+                23666688,
+                23511040,
+                23429120,
+                23445504
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 13686100,
+              "p95_ns": 15495900,
+              "samples_ns": [
+                15495900,
+                14756600,
+                12492900,
+                12207400,
+                13686100
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23683072,
+                23666688,
+                23511040,
+                23429120,
+                23445504
+              ]
+            },
+            "operation": {
+              "p50_ns": 8119400,
+              "p95_ns": 9498900,
+              "samples_ns": [
+                9498900,
+                7134200,
+                7933700,
+                8119400,
+                9166800
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23683072,
+                23666688,
+                23511040,
+                23429120,
+                23445504
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 22038400,
+              "p95_ns": 25140200,
+              "samples_ns": [
+                25140200,
+                22038400,
+                20565600,
+                20465900,
+                23005800
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                23683072,
+                23666688,
+                23511040,
+                23429120,
+                23445504
+              ]
+            }
+          }
+        },
+        "first_answer": {
+          "p50_ns": 6224400,
+          "p95_ns": 6627500,
+          "samples_ns": [
+            6224400,
+            5116300,
+            6627500,
+            6352500,
+            5979100
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank per-request sample",
+          "parity": true,
+          "result_fact_count": 1024,
+          "complete": true,
+          "returned": {
+            "sha256": "4ece8e3530461894d9bab27d4c824923ffab8181230e6917bc984bd594400f57",
+            "bytes": 145574
+          }
+        },
+        "warm_repeated_evaluate": {
+          "parity": true,
+          "result_fact_count": 1024,
+          "complete": true,
+          "native_resident": {
+            "p50_ns": 5491200,
+            "p95_ns": 12736400,
+            "samples_ns": [
+              3789400,
+              4219300,
+              4181900,
+              5005500,
+              5208100,
+              4905300,
+              5598800,
+              4616200,
+              2582300,
+              3855100,
+              5491200,
+              2892800,
+              5844800,
+              5556200,
+              7397500,
+              5790900,
+              5524100,
+              7926500,
+              6783100,
+              15872200,
+              9244000,
+              10050300,
+              4161400,
+              12736400,
+              5083300
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_oracle": {
+            "p50_ns": 13541400,
+            "p95_ns": 19279000,
+            "samples_ns": [
+              9927700,
+              16354900,
+              12068600,
+              11017500,
+              10095500,
+              12482200,
+              12654000,
+              16357100,
+              12409900,
+              11585500,
+              13362300,
+              12922600,
+              19279000,
+              13667200,
+              14168900,
+              13309800,
+              14251500,
+              14728800,
+              29020700,
+              18628300,
+              15882600,
+              9040000,
+              13541400,
+              13944900,
+              13563100
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "returned": {
+            "sha256": "4ece8e3530461894d9bab27d4c824923ffab8181230e6917bc984bd594400f57",
+            "bytes": 145574
+          },
+          "result_cache": "none; every sample evaluates the full input"
+        },
+        "append_evaluate": {
+          "parity": true,
+          "base_seed_count": 255,
+          "final_seed_count": 256,
+          "sequence_repetitions": 25,
+          "delta_rows": 1,
+          "native_append_evaluate": {
+            "p50_ns": 6666700,
+            "p95_ns": 8488700,
+            "samples_ns": [
+              5268500,
+              8488700,
+              7336700,
+              7180100,
+              7724100,
+              6403000,
+              6666700,
+              6917400,
+              5195100,
+              8458700,
+              16316100,
+              5146700,
+              6297600,
+              7588200,
+              7142000,
+              8469200,
+              6190900,
+              5617600,
+              4981100,
+              6447500,
+              5750100,
+              6022000,
+              7788900,
+              7776700,
+              6473100
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_append_evaluate": {
+            "p50_ns": 14569400,
+            "p95_ns": 30119900,
+            "samples_ns": [
+              12936700,
+              15977400,
+              13165300,
+              21602600,
+              30530900,
+              11792900,
+              18468800,
+              16013600,
+              19257800,
+              14345900,
+              13726100,
+              14032900,
+              14812500,
+              16273700,
+              13075700,
+              30119900,
+              12716600,
+              12145900,
+              12318300,
+              11523400,
+              13231500,
+              21168200,
+              20159500,
+              14569400,
+              21343200
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "result_fact_count": 1024,
+          "complete": true,
+          "latest_answer": {
+            "sha256": "4ece8e3530461894d9bab27d4c824923ffab8181230e6917bc984bd594400f57",
+            "bytes": 145574
+          },
+          "result_cache": "none; every sample appends a new final input"
+        }
+      },
+      "1024": {
+        "seed_count": 1024,
+        "expected_derived_facts": 3072,
+        "expected_total_facts": 4096,
+        "fresh_process": {
+          "parity": true,
+          "result_fact_count": 4096,
+          "complete": true,
+          "controller_subprocess_wall_scope": "whole child process wall time including interpreter bootstrap, JSON serialization, and IPC",
+          "first_response_scope": "inside-worker time after Python bootstrap; includes runtime import and evaluation, excludes result JSON serialization",
+          "process_state": "warm disk DLL / OS cache; not an OS-cold claim",
+          "peak_memory_scope": "fresh process lifetime: runtime imports plus evaluated output, captured before result JSON serialization",
+          "path_order_by_pair": [
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ]
+          ],
+          "python_oracle": {
+            "controller_subprocess_wall": {
+              "p50_ns": 352345500,
+              "p95_ns": 468328900,
+              "samples_ns": [
+                468328900,
+                365802600,
+                352345500,
+                331939100,
+                340400200
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                28528640,
+                28549120,
+                28573696,
+                28528640,
+                28377088
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 13227300,
+              "p95_ns": 18706700,
+              "samples_ns": [
+                18706700,
+                15357400,
+                13227300,
+                12963300,
+                13058100
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                28528640,
+                28549120,
+                28573696,
+                28528640,
+                28377088
+              ]
+            },
+            "operation": {
+              "p50_ns": 34137400,
+              "p95_ns": 43724500,
+              "samples_ns": [
+                43724500,
+                35358800,
+                34137400,
+                34086100,
+                32775500
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                28528640,
+                28549120,
+                28573696,
+                28528640,
+                28377088
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 47726400,
+              "p95_ns": 62596500,
+              "samples_ns": [
+                62596500,
+                51021400,
+                47537600,
+                47726400,
+                46000300
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                28528640,
+                28549120,
+                28573696,
+                28528640,
+                28377088
+              ]
+            }
+          },
+          "native_resident": {
+            "controller_subprocess_wall": {
+              "p50_ns": 327467100,
+              "p95_ns": 381232500,
+              "samples_ns": [
+                381232500,
+                361177200,
+                327467100,
+                312058000,
+                303277400
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                27828224,
+                27656192,
+                27688960,
+                27586560,
+                27926528
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 11071500,
+              "p95_ns": 13262500,
+              "samples_ns": [
+                13262500,
+                12339500,
+                10965300,
+                11071500,
+                10320600
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                27828224,
+                27656192,
+                27688960,
+                27586560,
+                27926528
+              ]
+            },
+            "operation": {
+              "p50_ns": 23102200,
+              "p95_ns": 28235700,
+              "samples_ns": [
+                26448300,
+                28235700,
+                22262800,
+                23102200,
+                20793600
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                27828224,
+                27656192,
+                27688960,
+                27586560,
+                27926528
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 34413900,
+              "p95_ns": 40724000,
+              "samples_ns": [
+                39866300,
+                40724000,
+                33388300,
+                34413900,
+                31278800
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                27828224,
+                27656192,
+                27688960,
+                27586560,
+                27926528
+              ]
+            }
+          }
+        },
+        "first_answer": {
+          "p50_ns": 26141200,
+          "p95_ns": 41806400,
+          "samples_ns": [
+            23362200,
+            26141200,
+            41806400,
+            25546400,
+            26931900
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank per-request sample",
+          "parity": true,
+          "result_fact_count": 4096,
+          "complete": true,
+          "returned": {
+            "sha256": "d226c23c1c63099f595d57024e115ae63151f01c0b80d8527d8cba685f769101",
+            "bytes": 590006
+          }
+        },
+        "warm_repeated_evaluate": {
+          "parity": true,
+          "result_fact_count": 4096,
+          "complete": true,
+          "native_resident": {
+            "p50_ns": 23395800,
+            "p95_ns": 54612000,
+            "samples_ns": [
+              16522700,
+              36076000,
+              20075700,
+              20823500,
+              45421400,
+              19527600,
+              24839900,
+              45058100,
+              20054200,
+              17990900,
+              44871500,
+              21394300,
+              22038700,
+              54612000,
+              24348500,
+              16806500,
+              41998700,
+              19968300,
+              23395800,
+              47686500,
+              21180900,
+              25395800,
+              67150000,
+              17493800,
+              31529400
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_oracle": {
+            "p50_ns": 74649700,
+            "p95_ns": 103260600,
+            "samples_ns": [
+              70100300,
+              55073400,
+              74649700,
+              54522000,
+              66509300,
+              103260600,
+              78828000,
+              52668000,
+              78369400,
+              54481900,
+              62452500,
+              90918100,
+              97999000,
+              66268100,
+              82492400,
+              65998000,
+              62423600,
+              79657500,
+              96043000,
+              58878700,
+              101192700,
+              70322700,
+              86221800,
+              99291200,
+              114378800
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "returned": {
+            "sha256": "d226c23c1c63099f595d57024e115ae63151f01c0b80d8527d8cba685f769101",
+            "bytes": 590006
+          },
+          "result_cache": "none; every sample evaluates the full input"
+        },
+        "append_evaluate": {
+          "parity": true,
+          "base_seed_count": 1023,
+          "final_seed_count": 1024,
+          "sequence_repetitions": 25,
+          "delta_rows": 1,
+          "native_append_evaluate": {
+            "p50_ns": 28270600,
+            "p95_ns": 65180700,
+            "samples_ns": [
+              20021900,
+              25363800,
+              27356000,
+              47523200,
+              47910800,
+              24556600,
+              28270600,
+              24171900,
+              32259900,
+              23821900,
+              35490500,
+              21418700,
+              23724100,
+              26009200,
+              25819200,
+              26319700,
+              29672600,
+              24442500,
+              65180700,
+              47083900,
+              54448700,
+              49047100,
+              67426900,
+              62885200,
+              54061900
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_append_evaluate": {
+            "p50_ns": 85740300,
+            "p95_ns": 167573500,
+            "samples_ns": [
+              76481900,
+              100898700,
+              116697800,
+              206796500,
+              127260700,
+              167573500,
+              103606000,
+              148489200,
+              122879000,
+              93735600,
+              100763800,
+              58653500,
+              59614300,
+              85740300,
+              68281300,
+              57981300,
+              59641900,
+              65336700,
+              98731500,
+              101516600,
+              63183800,
+              65800700,
+              71005500,
+              69323300,
+              55733300
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "result_fact_count": 4096,
+          "complete": true,
+          "latest_answer": {
+            "sha256": "d226c23c1c63099f595d57024e115ae63151f01c0b80d8527d8cba685f769101",
+            "bytes": 590006
+          },
+          "result_cache": "none; every sample appends a new final input"
+        }
+      },
+      "denial_update": {
+        "parity": true,
+        "native_append_evaluate_ns": 361400,
+        "first_answer": {
+          "sha256": "3963ad4467f7cf29bb920f0282bec23b457ad50841070102923059829592dc5a",
+          "bytes": 560
+        },
+        "latest_answer": {
+          "sha256": "25ec27a107e956384aa701bf322ddb740c5eb3b50dbec7b04bebf853387904cb",
+          "bytes": 125
+        },
+        "delta_rows": 1
+      }
+    },
+    "closure_with_provenance": {
+      "64": {
+        "seed_count": 64,
+        "expected_derived_facts": 192,
+        "expected_total_facts": 256,
+        "fresh_process": {
+          "parity": true,
+          "result_fact_count": 256,
+          "complete": true,
+          "controller_subprocess_wall_scope": "whole child process wall time including interpreter bootstrap, JSON serialization, and IPC",
+          "first_response_scope": "inside-worker time after Python bootstrap; includes runtime import and evaluation, excludes result JSON serialization",
+          "process_state": "warm disk DLL / OS cache; not an OS-cold claim",
+          "peak_memory_scope": "fresh process lifetime: runtime imports plus evaluated output, captured before result JSON serialization",
+          "path_order_by_pair": [
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ]
+          ],
+          "python_oracle": {
+            "controller_subprocess_wall": {
+              "p50_ns": 299853400,
+              "p95_ns": 325074500,
+              "samples_ns": [
+                325074500,
+                320962600,
+                292974600,
+                299853400,
+                288816600
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                22671360,
+                22609920,
+                22585344,
+                22630400,
+                22642688
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 13265200,
+              "p95_ns": 14599800,
+              "samples_ns": [
+                13764800,
+                14599800,
+                13265200,
+                12964000,
+                12191000
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                22671360,
+                22609920,
+                22585344,
+                22630400,
+                22642688
+              ]
+            },
+            "operation": {
+              "p50_ns": 7153500,
+              "p95_ns": 7409600,
+              "samples_ns": [
+                6583900,
+                7153500,
+                7125000,
+                7409600,
+                7218000
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                22671360,
+                22609920,
+                22585344,
+                22630400,
+                22642688
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 20508200,
+              "p95_ns": 21891900,
+              "samples_ns": [
+                20506600,
+                21891900,
+                20602300,
+                20508200,
+                19831800
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                22671360,
+                22609920,
+                22585344,
+                22630400,
+                22642688
+              ]
+            }
+          },
+          "native_resident": {
+            "controller_subprocess_wall": {
+              "p50_ns": 322075800,
+              "p95_ns": 365422100,
+              "samples_ns": [
+                345121200,
+                365422100,
+                293652100,
+                280627400,
+                322075800
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                25640960,
+                25747456,
+                25735168,
+                25735168,
+                25616384
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 14310000,
+              "p95_ns": 18433800,
+              "samples_ns": [
+                18433800,
+                14310000,
+                10199700,
+                10622100,
+                15030200
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                25640960,
+                25747456,
+                25735168,
+                25735168,
+                25616384
+              ]
+            },
+            "operation": {
+              "p50_ns": 8675300,
+              "p95_ns": 12516800,
+              "samples_ns": [
+                12516800,
+                8386600,
+                10672400,
+                8021600,
+                8675300
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                25640960,
+                25747456,
+                25735168,
+                25735168,
+                25616384
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 22829400,
+              "p95_ns": 31100400,
+              "samples_ns": [
+                31100400,
+                22829400,
+                21069300,
+                18771400,
+                23869600
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                25640960,
+                25747456,
+                25735168,
+                25735168,
+                25616384
+              ]
+            }
+          }
+        },
+        "first_answer": {
+          "p50_ns": 7037100,
+          "p95_ns": 7963800,
+          "samples_ns": [
+            6340800,
+            7260200,
+            7037100,
+            7963800,
+            6380700
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank per-request sample",
+          "parity": true,
+          "result_fact_count": 256,
+          "complete": true,
+          "returned": {
+            "sha256": "dd85f3f7a244eb318ecb0f04e492d48f82fa16d4585918e5494d108e200d9079",
+            "bytes": 189752
+          }
+        },
+        "warm_repeated_evaluate": {
+          "parity": true,
+          "result_fact_count": 256,
+          "complete": true,
+          "native_resident": {
+            "p50_ns": 6547100,
+            "p95_ns": 10392600,
+            "samples_ns": [
+              2439000,
+              3904900,
+              6015800,
+              8473500,
+              5862000,
+              5573200,
+              10392600,
+              10152700,
+              6296100,
+              5685000,
+              6765000,
+              10243600,
+              16056400,
+              4354600,
+              9109000,
+              8198100,
+              6558700,
+              8760200,
+              6547100,
+              5752300,
+              8234700,
+              5865500,
+              5976000,
+              5759800,
+              6793500
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_oracle": {
+            "p50_ns": 17006200,
+            "p95_ns": 30922200,
+            "samples_ns": [
+              27139300,
+              15488900,
+              11827100,
+              16067900,
+              16296200,
+              17006200,
+              30037500,
+              31595800,
+              30922200,
+              24897100,
+              14201800,
+              20125100,
+              15127300,
+              13736900,
+              15980000,
+              18551200,
+              15202900,
+              20726700,
+              17988100,
+              15723600,
+              19849800,
+              16381200,
+              23545000,
+              14784200,
+              17247500
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "returned": {
+            "sha256": "dd85f3f7a244eb318ecb0f04e492d48f82fa16d4585918e5494d108e200d9079",
+            "bytes": 189752
+          },
+          "result_cache": "none; every sample evaluates the full input"
+        },
+        "append_evaluate": {
+          "parity": true,
+          "base_seed_count": 63,
+          "final_seed_count": 64,
+          "sequence_repetitions": 25,
+          "delta_rows": 1,
+          "native_append_evaluate": {
+            "p50_ns": 5219600,
+            "p95_ns": 12025700,
+            "samples_ns": [
+              5703300,
+              5737900,
+              4351000,
+              5371300,
+              4257000,
+              6342000,
+              4485800,
+              4785200,
+              5138000,
+              4280100,
+              4467000,
+              12025700,
+              7191400,
+              7208100,
+              5875200,
+              6116700,
+              4919900,
+              5219600,
+              4564200,
+              4789200,
+              4818100,
+              3885800,
+              6074500,
+              12603400,
+              6449000
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_append_evaluate": {
+            "p50_ns": 11288800,
+            "p95_ns": 13192000,
+            "samples_ns": [
+              12587300,
+              12898900,
+              12006500,
+              11314700,
+              11726400,
+              8810600,
+              11797400,
+              10639100,
+              10449600,
+              11796500,
+              8989500,
+              13192000,
+              11339600,
+              10487500,
+              10875700,
+              10592200,
+              11222000,
+              11288800,
+              10054600,
+              12285200,
+              8729600,
+              12103400,
+              13230100,
+              9454000,
+              9589000
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "result_fact_count": 256,
+          "complete": true,
+          "latest_answer": {
+            "sha256": "dd85f3f7a244eb318ecb0f04e492d48f82fa16d4585918e5494d108e200d9079",
+            "bytes": 189752
+          },
+          "result_cache": "none; every sample appends a new final input"
+        }
+      },
+      "256": {
+        "seed_count": 256,
+        "expected_derived_facts": 768,
+        "expected_total_facts": 1024,
+        "fresh_process": {
+          "parity": true,
+          "result_fact_count": 1024,
+          "complete": true,
+          "controller_subprocess_wall_scope": "whole child process wall time including interpreter bootstrap, JSON serialization, and IPC",
+          "first_response_scope": "inside-worker time after Python bootstrap; includes runtime import and evaluation, excludes result JSON serialization",
+          "process_state": "warm disk DLL / OS cache; not an OS-cold claim",
+          "peak_memory_scope": "fresh process lifetime: runtime imports plus evaluated output, captured before result JSON serialization",
+          "path_order_by_pair": [
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ]
+          ],
+          "python_oracle": {
+            "controller_subprocess_wall": {
+              "p50_ns": 379793200,
+              "p95_ns": 405345000,
+              "samples_ns": [
+                335908900,
+                340091200,
+                405345000,
+                393008500,
+                379793200
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                25776128,
+                25776128,
+                25763840,
+                25862144,
+                25821184
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 14754500,
+              "p95_ns": 20740600,
+              "samples_ns": [
+                14250200,
+                11647000,
+                14754500,
+                20740600,
+                18526500
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                25776128,
+                25776128,
+                25763840,
+                25862144,
+                25821184
+              ]
+            },
+            "operation": {
+              "p50_ns": 31583200,
+              "p95_ns": 31676100,
+              "samples_ns": [
+                27112500,
+                31583200,
+                31611900,
+                31676100,
+                29502000
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                25776128,
+                25776128,
+                25763840,
+                25862144,
+                25821184
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 46592100,
+              "p95_ns": 52611700,
+              "samples_ns": [
+                41519500,
+                43396400,
+                46592100,
+                52611700,
+                48235600
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                25776128,
+                25776128,
+                25763840,
+                25862144,
+                25821184
+              ]
+            }
+          },
+          "native_resident": {
+            "controller_subprocess_wall": {
+              "p50_ns": 341784600,
+              "p95_ns": 367296300,
+              "samples_ns": [
+                354921700,
+                367296300,
+                330897000,
+                341784600,
+                304886700
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                27471872,
+                27529216,
+                27504640,
+                27770880,
+                27631616
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 10748200,
+              "p95_ns": 18051500,
+              "samples_ns": [
+                10624100,
+                13845600,
+                10748200,
+                18051500,
+                10702000
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                27471872,
+                27529216,
+                27504640,
+                27770880,
+                27631616
+              ]
+            },
+            "operation": {
+              "p50_ns": 19159200,
+              "p95_ns": 21223800,
+              "samples_ns": [
+                19357900,
+                18701000,
+                19159200,
+                21223800,
+                17912100
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                27471872,
+                27529216,
+                27504640,
+                27770880,
+                27631616
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 30115200,
+              "p95_ns": 39481500,
+              "samples_ns": [
+                30115200,
+                32689000,
+                30083800,
+                39481500,
+                28757700
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                27471872,
+                27529216,
+                27504640,
+                27770880,
+                27631616
+              ]
+            }
+          }
+        },
+        "first_answer": {
+          "p50_ns": 19551300,
+          "p95_ns": 33803400,
+          "samples_ns": [
+            19551300,
+            33803400,
+            19344700,
+            20657300,
+            18327200
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank per-request sample",
+          "parity": true,
+          "result_fact_count": 1024,
+          "complete": true,
+          "returned": {
+            "sha256": "08b3de9eb39b08860f78d39babc8da5c3bb7bf107a0a1c43154b602ae072e221",
+            "bytes": 775065
+          }
+        },
+        "warm_repeated_evaluate": {
+          "parity": true,
+          "result_fact_count": 1024,
+          "complete": true,
+          "native_resident": {
+            "p50_ns": 17458900,
+            "p95_ns": 37010800,
+            "samples_ns": [
+              37010800,
+              17175100,
+              16457500,
+              16986300,
+              17149300,
+              18263600,
+              17458900,
+              25147500,
+              15777300,
+              17596000,
+              16846000,
+              18927300,
+              19918900,
+              16117500,
+              16926100,
+              19264100,
+              17549200,
+              18817700,
+              38149400,
+              19277400,
+              17090600,
+              17365000,
+              17391100,
+              15901100,
+              18120800
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_oracle": {
+            "p50_ns": 46934000,
+            "p95_ns": 61602300,
+            "samples_ns": [
+              61602300,
+              45052200,
+              57584400,
+              41728000,
+              42545900,
+              49116600,
+              44446800,
+              41053700,
+              41687700,
+              46934000,
+              52111000,
+              46038800,
+              61538200,
+              43746100,
+              43821200,
+              56358200,
+              44465700,
+              50174000,
+              58348200,
+              48633800,
+              63607200,
+              47584900,
+              46655000,
+              49054300,
+              45282500
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "returned": {
+            "sha256": "08b3de9eb39b08860f78d39babc8da5c3bb7bf107a0a1c43154b602ae072e221",
+            "bytes": 775065
+          },
+          "result_cache": "none; every sample evaluates the full input"
+        },
+        "append_evaluate": {
+          "parity": true,
+          "base_seed_count": 255,
+          "final_seed_count": 256,
+          "sequence_repetitions": 25,
+          "delta_rows": 1,
+          "native_append_evaluate": {
+            "p50_ns": 17887900,
+            "p95_ns": 29713100,
+            "samples_ns": [
+              15855300,
+              16733900,
+              16946000,
+              15782400,
+              19360200,
+              17037500,
+              18237800,
+              23002700,
+              29713100,
+              19927500,
+              17943500,
+              17887900,
+              17070900,
+              31739800,
+              16365000,
+              16396000,
+              16930200,
+              17550300,
+              28855000,
+              17923900,
+              16857500,
+              20676600,
+              16385800,
+              28041700,
+              19344600
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_append_evaluate": {
+            "p50_ns": 45088500,
+            "p95_ns": 54541200,
+            "samples_ns": [
+              48143500,
+              39268100,
+              54622900,
+              43725500,
+              45088500,
+              54541200,
+              45286700,
+              47805300,
+              46271200,
+              41818900,
+              54490700,
+              41987400,
+              41470900,
+              45625100,
+              42101500,
+              51188100,
+              41012300,
+              43281600,
+              41858800,
+              42079900,
+              52413600,
+              42007000,
+              47053600,
+              46240200,
+              40905500
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "result_fact_count": 1024,
+          "complete": true,
+          "latest_answer": {
+            "sha256": "08b3de9eb39b08860f78d39babc8da5c3bb7bf107a0a1c43154b602ae072e221",
+            "bytes": 775065
+          },
+          "result_cache": "none; every sample appends a new final input"
+        }
+      },
+      "1024": {
+        "seed_count": 1024,
+        "expected_derived_facts": 3072,
+        "expected_total_facts": 4096,
+        "fresh_process": {
+          "parity": true,
+          "result_fact_count": 4096,
+          "complete": true,
+          "controller_subprocess_wall_scope": "whole child process wall time including interpreter bootstrap, JSON serialization, and IPC",
+          "first_response_scope": "inside-worker time after Python bootstrap; includes runtime import and evaluation, excludes result JSON serialization",
+          "process_state": "warm disk DLL / OS cache; not an OS-cold claim",
+          "peak_memory_scope": "fresh process lifetime: runtime imports plus evaluated output, captured before result JSON serialization",
+          "path_order_by_pair": [
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ],
+            [
+              "native_resident",
+              "python_oracle"
+            ],
+            [
+              "python_oracle",
+              "native_resident"
+            ]
+          ],
+          "python_oracle": {
+            "controller_subprocess_wall": {
+              "p50_ns": 623945800,
+              "p95_ns": 646728900,
+              "samples_ns": [
+                526532600,
+                623945800,
+                638162800,
+                646728900,
+                549155200
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                38031360,
+                38006784,
+                37990400,
+                38010880,
+                38019072
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 17621400,
+              "p95_ns": 20488800,
+              "samples_ns": [
+                17621400,
+                20488800,
+                16884900,
+                18640100,
+                16228700
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                38031360,
+                38006784,
+                37990400,
+                38010880,
+                38019072
+              ]
+            },
+            "operation": {
+              "p50_ns": 175393400,
+              "p95_ns": 209120300,
+              "samples_ns": [
+                175393400,
+                161870800,
+                159368800,
+                209120300,
+                175764800
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                38031360,
+                38006784,
+                37990400,
+                38010880,
+                38019072
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 192179800,
+              "p95_ns": 228446200,
+              "samples_ns": [
+                193238400,
+                182579600,
+                176940200,
+                228446200,
+                192179800
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                38031360,
+                38006784,
+                37990400,
+                38010880,
+                38019072
+              ]
+            }
+          },
+          "native_resident": {
+            "controller_subprocess_wall": {
+              "p50_ns": 429883700,
+              "p95_ns": 575948200,
+              "samples_ns": [
+                400861300,
+                414442800,
+                568143600,
+                575948200,
+                429883700
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                37294080,
+                37158912,
+                37842944,
+                37195776,
+                37253120
+              ]
+            },
+            "runtime_import": {
+              "p50_ns": 14821000,
+              "p95_ns": 22845200,
+              "samples_ns": [
+                11807800,
+                10634300,
+                17944000,
+                22845200,
+                14821000
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                37294080,
+                37158912,
+                37842944,
+                37195776,
+                37253120
+              ]
+            },
+            "operation": {
+              "p50_ns": 73202900,
+              "p95_ns": 124849200,
+              "samples_ns": [
+                56850900,
+                60146600,
+                103584500,
+                124849200,
+                73202900
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                37294080,
+                37158912,
+                37842944,
+                37195776,
+                37253120
+              ]
+            },
+            "first_response_before_json": {
+              "p50_ns": 88237900,
+              "p95_ns": 147956800,
+              "samples_ns": [
+                68828400,
+                71149400,
+                121721100,
+                147956800,
+                88237900
+              ],
+              "sample_count": 5,
+              "p95_method": "nearest-rank per-request sample",
+              "peak_working_set_bytes": [
+                37294080,
+                37158912,
+                37842944,
+                37195776,
+                37253120
+              ]
+            }
+          }
+        },
+        "first_answer": {
+          "p50_ns": 111591200,
+          "p95_ns": 133323300,
+          "samples_ns": [
+            111591200,
+            96112700,
+            123200000,
+            133323300,
+            89941100
+          ],
+          "sample_count": 5,
+          "p95_method": "nearest-rank per-request sample",
+          "parity": true,
+          "result_fact_count": 4096,
+          "complete": true,
+          "returned": {
+            "sha256": "bf5666e47033d114e3ab6d9983a6042a344c77e4d4c265a5c017c7f99c9456b2",
+            "bytes": 3131097
+          }
+        },
+        "warm_repeated_evaluate": {
+          "parity": true,
+          "result_fact_count": 4096,
+          "complete": true,
+          "native_resident": {
+            "p50_ns": 88238000,
+            "p95_ns": 123272700,
+            "samples_ns": [
+              120855900,
+              119396600,
+              75211300,
+              108861000,
+              122974800,
+              67988400,
+              116537800,
+              112736900,
+              71876400,
+              81621700,
+              123272700,
+              90576500,
+              54382700,
+              110572700,
+              134473200,
+              56086700,
+              93920800,
+              78761600,
+              88238000,
+              54932700,
+              87989000,
+              94700700,
+              69056000,
+              54374000,
+              86335700
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_oracle": {
+            "p50_ns": 232922700,
+            "p95_ns": 293557900,
+            "samples_ns": [
+              284331400,
+              294285400,
+              243898600,
+              233634500,
+              265352500,
+              243076200,
+              232922700,
+              236497700,
+              281451100,
+              237260700,
+              229628800,
+              181739900,
+              192670100,
+              264678600,
+              293557900,
+              223506000,
+              186343300,
+              170492300,
+              202387100,
+              192184500,
+              202748600,
+              193055700,
+              248858200,
+              218476900,
+              177796800
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "returned": {
+            "sha256": "bf5666e47033d114e3ab6d9983a6042a344c77e4d4c265a5c017c7f99c9456b2",
+            "bytes": 3131097
+          },
+          "result_cache": "none; every sample evaluates the full input"
+        },
+        "append_evaluate": {
+          "parity": true,
+          "base_seed_count": 1023,
+          "final_seed_count": 1024,
+          "sequence_repetitions": 25,
+          "delta_rows": 1,
+          "native_append_evaluate": {
+            "p50_ns": 99519600,
+            "p95_ns": 174327200,
+            "samples_ns": [
+              58328900,
+              77784500,
+              54749800,
+              61496800,
+              99305100,
+              113428400,
+              99374100,
+              180028600,
+              174327200,
+              83861900,
+              92325800,
+              79217000,
+              107831900,
+              106431700,
+              113950800,
+              106146400,
+              103070200,
+              89818900,
+              64307300,
+              142009100,
+              140914300,
+              99519600,
+              126240600,
+              136346600,
+              65233100
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "python_append_evaluate": {
+            "p50_ns": 234858900,
+            "p95_ns": 343356300,
+            "samples_ns": [
+              172612600,
+              187651800,
+              234858900,
+              180250500,
+              202061100,
+              195534700,
+              281262800,
+              313800400,
+              343356300,
+              485697200,
+              305944900,
+              193200300,
+              209134400,
+              216585200,
+              212489700,
+              205724300,
+              224126600,
+              279264800,
+              229492800,
+              277419700,
+              258801700,
+              249502000,
+              299764500,
+              265099100,
+              273136200
+            ],
+            "sample_count": 25,
+            "p95_method": "nearest-rank per-request sample"
+          },
+          "result_fact_count": 4096,
+          "complete": true,
+          "latest_answer": {
+            "sha256": "bf5666e47033d114e3ab6d9983a6042a344c77e4d4c265a5c017c7f99c9456b2",
+            "bytes": 3131097
+          },
+          "result_cache": "none; every sample appends a new final input"
+        }
+      },
+      "denial_update": {
+        "parity": true,
+        "native_append_evaluate_ns": 213400,
+        "first_answer": {
+          "sha256": "5b82f4f571f9f6790dd0616f58af9677223b821e46d43de38339e773bc1f774a",
+          "bytes": 2991
+        },
+        "latest_answer": {
+          "sha256": "3b24181ee857eb087a418d9180d336ef32dd7da6764cc4368e47058ab2f15497",
+          "bytes": 423
+        },
+        "delta_rows": 1
+      }
+    }
+  },
+  "capacity_refusal": {
+    "attempted_input_facts": 8193,
+    "accepted": false,
+    "exception": "native_capacity",
+    "status": "expected_native_capacity_refusal",
+    "state_unchanged": true
+  },
+  "explicit_compile_ns": 1297633100,
+  "explicit_compile_note": "separate compiler invocation; compiler cache may already be warm",
+  "metadata": {
+    "python": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "compiler": [
+      "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+      "cc",
+      "-target",
+      "x86_64-windows-gnu",
+      "-std=c11"
+    ]
+  }
+}

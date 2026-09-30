@@ -1,0 +1,38 @@
+struct Place { name: s position: si }
+struct Road { distance: si }
+relation Travel { Link { polarity: positive evidence: optional traverse: forward } }
+graph roads { node: Place relation: Travel edge: Road }
+
+fn estimate(node: Place, goal: Place) -> si { return goal.position - node.position }
+
+fn main() {
+    start = roads.add(Place(name = "start", position = 0))
+    via = roads.add(Place(name = "via", position = 2))
+    goal = roads.add(Place(name = "goal", position = 4))
+    roads.add(start, goal, Travel.Link, Road(distance = 9))
+    roads.add(start, via, Travel.Link, Road(distance = 2))
+    roads.add(via, goal, Travel.Link, Road(distance = 2))
+    roads.add(start, goal, Travel.Link, Road(distance = 7))
+
+    print("bfs")
+    first = roads.find(start, goal) { method: bfs }
+    match (first) { Ok(path) { print(path.len) print(path.cost) } Err(error) { print(error) } }
+    print("dfs")
+    deep = roads.find(start, goal) { method: dfs }
+    match (deep) { Ok(path) { print(path.len) print(path.cost) } Err(error) { print(error) } }
+    print("dijkstra")
+    cheapest = roads.find(start, goal) { method: dijkstra cost: edge.distance }
+    match (cheapest) { Ok(path) { print(path.len) print(path.cost) } Err(error) { print(error) } }
+    print("astar")
+    guided = roads.find(start, goal) { method: astar cost: edge.distance heuristic: estimate(node, goal) }
+    match (guided) { Ok(path) { print(path.len) print(path.cost) } Err(error) { print(error) } }
+    print("all")
+    alternatives = roads.find_all(start, goal) { method: dijkstra cost: edge.distance max_paths: 16 }
+    match (alternatives) {
+        Ok(paths) {
+            print(paths.len) print(paths.complete) print(paths.reason)
+            for (i in 0..paths.len) { print(paths[i].len) print(paths[i].cost) }
+        }
+        Err(error) { print(error) }
+    }
+}

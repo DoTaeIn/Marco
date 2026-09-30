@@ -1,0 +1,29 @@
+fn main() -> si {
+  plan: Horn = Horn(
+    memory_budget=4000000,
+    capacity=32,
+    facts=Facts(Fact(id="ab", subject="a", predicate="parent", object="b"), Fact(id="bc", subject="b", predicate="parent", object="c")),
+    rules=Rules(
+      Rule(id="base", body=All(Triple("?x", "parent", "?y")), head=Triple("?x", "ancestor", "?y")),
+      Rule(id="step", body=All(Triple("?x", "ancestor", "?y"), Triple("?y", "parent", "?z")), head=Triple("?x", "ancestor", "?z"))
+    )
+  )
+  plan.correct(Fact(id="ab", subject="a", predicate="parent", object="b"))
+  plan.remove("ab")
+  plan.add(Fact(id="ab", subject="a", predicate="parent", object="b"))
+  old = plan.select(Triple("a", "ancestor", "c"))
+  explanation = plan.explain(Triple("a", "ancestor", "c"))
+  changes = plan.changes()
+  saved = plan.save("growing-knowledge.mrlk")
+  match (saved) { Ok(bytes) {
+    plan.add(Fact(id="cd", subject="c", predicate="parent", object="d"))
+    committed = plan.commit("growing-knowledge.mrlk")
+    match (committed) { Ok(delta) {
+      restored = plan.restore("growing-knowledge.mrlk")
+      match (restored) { Ok(rows) {
+        if (plan.exists(Triple("a", "ancestor", "d"))) { return old.fact_count + plan.count(Triple("a", "ancestor", "d")) }
+        else { return 0 }
+      } Err(error) { return 3 } }
+    } Err(error) { return 2 } }
+  } Err(error) { return 1 } }
+}

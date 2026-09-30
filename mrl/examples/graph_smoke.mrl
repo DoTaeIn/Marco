@@ -1,0 +1,32 @@
+struct Concept {
+    name: s
+}
+
+relation Logic {
+    Supports {
+        polarity: positive
+        evidence: optional
+        traverse: forward
+    }
+}
+
+graph knowledge {
+    node: Concept
+    relation: Logic
+}
+
+fn main() {
+    apple = knowledge.add(Concept(name = "apple"))
+    fruit = knowledge.add(Concept(name = "fruit"))
+    knowledge.add(apple, fruit, Logic.Supports)
+
+    result = knowledge.find(apple, fruit) {
+        relation in [Logic.Supports]
+        depth <= 8
+        method: bfs
+    }
+    match (result) {
+        Ok(path) { print(path.len) }
+        Err(error) { print(error) }
+    }
+}

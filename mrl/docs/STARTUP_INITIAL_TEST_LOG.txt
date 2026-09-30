@@ -1,0 +1,228 @@
+test_cli_requires_mrl_and_never_overwrites_source (test_backend.BackendTests) ... ok
+test_emits_checked_arithmetic_and_int_min (test_backend.BackendTests) ... ok
+test_native_smoke_and_overflow_when_compiler_exists (test_backend.BackendTests) ... ok
+test_rejects_bad_ir_and_immutable_assignment (test_backend.BackendTests) ... ok
+test_rejects_malformed_boundary_values (test_backend.BackendTests) ... ok
+test_v2_rejects_bad_scopes_conditions_and_unvalidated_else (test_backend.BackendTests) ... ok
+test_append_fact_uses_the_first_rule_pattern (test_benchmark_v4.BenchmarkV4Tests) ... ok
+test_fanout_append_budget_rejection_has_a_headroom_comparison_base (test_benchmark_v4.BenchmarkV4Tests) ... ok
+test_path_batches_rotate_and_reverse (test_benchmark_v4.BenchmarkV4Tests) ... ok
+test_real_cases_are_attributed_to_existing_matching_tests (test_benchmark_v4.BenchmarkV4Tests) ... ok
+test_checked_failure_paths (test_eighth_source.ValueRuntimeTests) ... test_jsonl_trust_boundary_matrix (test_eighth_source.ValueRuntimeTests) ... ok
+test_jsonl_utf8_windows_filename (test_eighth_source.ValueRuntimeTests) ... ok
+test_list_aliasing_bounds_and_f32_kernels (test_eighth_source.ValueRuntimeTests) ... ok
+test_push_from_self_survives_growth_and_repeated_references (test_eighth_source.ValueRuntimeTests) ... ok
+test_source_arrays_lists_and_f32_kernels (test_eighth_source.ValueRuntimeTests) ... ok
+test_strict_jsonl_parser (test_eighth_source.ValueRuntimeTests) ... ok
+test_ast_then_checked_ir_with_forward_call_and_precedence (test_frontend.FrontendTests) ... ok
+test_boolean_comparison_void_call_and_signed_minimum (test_frontend.FrontendTests) ... ok
+test_control_flow_failures_are_located (test_frontend.FrontendTests) ... ok
+test_control_flow_scopes_and_definite_returns (test_frontend.FrontendTests) ... ok
+test_empty_and_descending_ranges_preserve_once_evaluated_bounds (test_frontend.FrontendTests) ... ok
+test_semantic_failures_are_located (test_frontend.FrontendTests) ... ok
+test_emitted_graph_program_runs_with_utf8_literals (test_graph_backend.GraphBackendTests) ... ok
+test_rejects_hostile_evidence_and_cross_graph_handle (test_graph_backend.GraphBackendTests) ... ok
+test_runtime_path_tie_uses_insertion_order_and_retains_evidence (test_graph_backend.GraphBackendTests) ... ok
+test_v3_validator_never_skips_or_crashes_on_hostile_shapes (test_graph_backend.GraphBackendTests) ... ok
+test_backend_graph_declaration_limits_fail_in_frontend (test_graph_frontend.GraphFrontendTests) ... ok
+test_constructor_ir_preserves_source_evaluation_order_and_match_binders_do_not_shadow (test_graph_frontend.GraphFrontendTests) ... ok
+test_graph_source_lowers_to_frozen_v3_shapes (test_graph_frontend.GraphFrontendTests) ... ok
+test_literal_evidence_and_string_boundaries_are_checked (test_graph_frontend.GraphFrontendTests) ... ok
+test_omitted_relation_filter_means_all_members_but_empty_is_none (test_graph_frontend.GraphFrontendTests) ... ok
+test_path_and_string_len_are_not_general_equality_values (test_graph_frontend.GraphFrontendTests) ... ok
+test_required_evidence_and_cross_graph_handles_are_checked (test_graph_frontend.GraphFrontendTests) ... ok
+test_ownership_evidence_and_unsupported_strings_are_located_errors (test_graph_integration.SourceGraphAdmissionTests) ... ok
+test_bfs_modes_filters_and_budgets_match_independent_reference (test_graph_integration.SourceGraphIntegrationTests) ... ok
+test_extended_control_flow_and_named_fields_preserve_evaluation_order (test_graph_integration.SourceGraphIntegrationTests) ... ok
+test_guide_graph_smoke_through_public_cli (test_graph_integration.SourceGraphIntegrationTests) ... ok
+test_stale_handle_does_not_revive_after_slot_reuse (test_graph_integration.SourceGraphIntegrationTests) ... ok
+test_unicode_evidence_struct_values_and_checked_capacity (test_graph_integration.SourceGraphIntegrationTests) ... ok
+test_cache_hit_and_invalidation_are_content_checked (test_graph_plan.GraphPlanTests) ... ok
+test_compiled_plan_accepts_only_its_exact_rule_layout (test_graph_plan.GraphPlanTests) ... ok
+test_concurrent_cache_builds_publish_only_complete_libraries (test_graph_plan.GraphPlanTests) ... ok
+test_make_plan_rejects_unsafe_adapter_input (test_graph_plan.GraphPlanTests) ... ok
+test_plan_uses_adapter_interning_and_specializes_repeated_slots (test_graph_plan.GraphPlanTests) ... ok
+test_plan_version_is_strict_and_rule_capacity_is_checked (test_graph_plan.GraphPlanTests) ... ok
+test_rejects_unsafe_and_malformed_plans (test_graph_plan.GraphPlanTests) ... ok
+test_all_variable_body_still_uses_the_snapshot_bound (test_growth_runtime.GrowingResidentGraphTests) ... ok
+test_asserted_proofs_still_exceed_a_small_proof_limit (test_growth_runtime.GrowingResidentGraphTests) ... ok
+test_capacity_requires_an_explicit_supported_integer (test_growth_runtime.GrowingResidentGraphTests) ... ok
+test_corrupted_resident_budget_is_rejected_and_restorable (test_growth_runtime.GrowingResidentGraphTests) ... ok
+test_default_capacity_remains_the_legacy_limit (test_growth_runtime.GrowingResidentGraphTests) ... ok
+test_denial_append_recomputes_derived_intermediate (test_growth_runtime.GrowingResidentGraphTests) ... ok
+test_explicit_capacity_preserves_large_growth_and_failed_append (test_growth_runtime.GrowingResidentGraphTests) ... ok
+test_large_provenance_support_set_is_not_truncated_by_proof_limit (test_growth_runtime.GrowingResidentGraphTests) ... ok
+test_admission_rejects_hostile_ir_values (test_horn_bridge.HornBridgeTests) ... ok
+test_c_json_escapes_nested_proof_ids_without_changing_structure (test_horn_bridge.HornBridgeTests) ... ok
+test_empty_and_denial_only_queries_keep_oracle_empty_dicts (test_horn_bridge.HornBridgeTests) ... ok
+test_missing_target_and_native_failures_have_checked_source_reasons (test_horn_bridge.HornBridgeTests) ... ok
+test_native_c_matches_adapter_and_oracle_for_supports_denial_and_bindings (test_horn_bridge.HornBridgeTests) ... ok
+test_native_c_preserves_provenance_limit_state (test_horn_bridge.HornBridgeTests) ... ok
+test_append_duplicates_rules_and_fallbacks_preserve_native_output (test_horn_incremental.IncrementalTests) ... ok
+test_cache_accepts_rederived_parent_in_later_tuple_slot (test_knowledge_cache.KnowledgeCacheTests) ... ok
+test_large_roundtrip_mutation_stale_and_corrupt_cache (test_knowledge_cache.KnowledgeCacheTests) ... ok
+test_chain_join_and_cycle_retract (test_knowledge_engine.KnowledgeEngineTests) ... ok
+test_indexed_join_skips_unrelated_facts (test_knowledge_engine.KnowledgeEngineTests) ... ok
+test_positive_fixture_edit_sequences (test_knowledge_engine.KnowledgeEngineTests) ... ok
+test_proof_parents_duplicate_assertions_queries_and_limits (test_knowledge_engine.KnowledgeEngineTests) ... ok
+test_seeded_positive_edits_match_frozen_oracle (test_knowledge_engine.KnowledgeEngineTests)
+Seeded cases keep the oracle comparison reproducible without changing it. ... ok
+test_shared_allocator_refuses_growth_and_releases_every_block (test_knowledge_engine.KnowledgeEngineTests) ... ok
+test_checkpoint_delta_replay_torn_and_crc (test_knowledge_journal.KnowledgeJournalTests) ... ok
+test_checkpoint_and_journal_recovery (test_knowledge_persist.KnowledgePersistTests) ... ok
+test_indexes_changes_cow_and_shared_allocation_accounting (test_knowledge_store.StoreTests) ... ok
+test_pages_snapshot_and_budget (test_knowledge_store.StoreTests) ... ok
+test_symbol_pool (test_knowledge_store.StoreTests) ... ok
+test_cycle_and_invalid_import_are_readable (test_module_diagnostics.ModuleDiagnosticTests) ... ok
+test_diamond_import_emits_shared_module_once (test_module_diagnostics.ModuleDiagnosticTests) ... ok
+test_imported_source_diagnostic_keeps_original_file_and_line (test_module_diagnostics.ModuleDiagnosticTests) ... ok
+test_dynamic_invalid_facts_and_default_capacity_fail_at_runtime (test_mutable_horn_source.MutableHornSourceTests) ... ok
+test_fact_arguments_evaluate_in_written_order (test_mutable_horn_source.MutableHornSourceTests) ... ok
+test_plan_updates_snapshots_proofs_and_callsite_isolation (test_mutable_horn_source.MutableHornSourceTests) ... ok
+test_runnable_knowledge_updates_example (test_mutable_horn_source.MutableHornSourceTests) ... ok
+test_snapshot_summary_target_and_loop_results_are_values (test_mutable_horn_source.MutableHornSourceTests) ... ok
+test_v5_admission_rejects_mutation_of_constant_plan_and_bad_ir (test_mutable_horn_source.MutableHornSourceTests) ... ok
+test_v5_keeps_weighted_search_and_rejects_forged_nodes (test_mutable_horn_source.MutableHornSourceTests) ... ok
+test_abi_matches_cli_for_success_and_malformed_wire (test_native_abi.NativeAbiTests) ... ok
+test_capacity_and_null_pointer_rules (test_native_abi.NativeAbiTests) ... ok
+test_output_capacity_never_overwrites_guard_bytes (test_native_abi.NativeAbiTests) ... ok
+test_repeated_and_concurrent_calls_are_independent (test_native_abi.NativeAbiTests) ... ok
+test_admitted_cases_match_the_frozen_oracle (test_native_boundaries.NativeWireBoundaryTests) ... ok
+test_malformed_wire_is_rejected_without_a_crash (test_native_boundaries.NativeWireBoundaryTests) ... ok
+test_native_capacity_is_distinct_from_malformed_input (test_native_boundaries.NativeWireBoundaryTests) ... ok
+test_self_loop_uses_snapshot_proof_options_and_full_search_count (test_native_boundaries.NativeWireBoundaryTests) ... ok
+test_windows_ctrl_z_in_a_26_fact_header_is_binary_data (test_native_boundaries.NativeWireBoundaryTests) ... ok
+test_duplicate_semantic_ids_are_rejected_before_dispatch (test_native_graph.NativeGraphGoldenTests) ... ok
+test_frozen_fixture_inputs_match_native_output (test_native_graph.NativeGraphGoldenTests) ... ok
+test_invalid_operation_and_options_are_rejected_before_dispatch (test_native_graph.NativeGraphGoldenTests) ... ok
+test_nonactual_and_negated_facts_do_not_infer (test_native_graph.NativeGraphGoldenTests) ... ok
+test_self_loop_snapshots_parent_proofs_before_appending (test_native_graph.NativeGraphGoldenTests) ... ok
+test_unsafe_rule_is_rejected (test_native_graph.NativeGraphGoldenTests) ... ok
+test_recompute_and_transactional_append (test_native_resident_abi.NativeResidentAbiTests) ... ok
+test_snapshot_buckets_keep_constant_match_order_and_missing_keys_safe (test_native_resident_abi.NativeResidentAbiTests) ... ok
+test_state_is_rejected_by_a_different_compiled_library (test_native_resident_abi.NativeResidentAbiTests) ... ok
+test_cases_match_the_structured_oracle_snapshot (test_oracle.GraphInferenceGoldenTests) ... ok
+test_fixture_is_pinned_to_the_baseline_and_oracle (test_oracle.GraphInferenceGoldenTests) ... ok
+test_control_flow_semantics_survive_c_lowering (test_pipeline.NativeControlFlowTest) ... ok
+test_typed_program_emits_checked_c (test_pipeline.PipelineTest) ... ok
+test_reuses_validated_plan_and_invalidates_source_plan_and_mode (test_plan_cache.PlanSetupCacheTests) ... ok
+test_delta_updates_preserve_symbol_ids_supports_and_denials (test_prepared_graph.PreparedGraphTests) ... ok
+test_failed_append_does_not_modify_native_or_python_state (test_prepared_graph.PreparedGraphTests) ... ok
+test_frozen_cases_match_both_resident_paths (test_prepared_graph.PreparedGraphTests) ... ok
+test_inputs_and_results_are_independent_and_calls_can_overlap (test_prepared_graph.PreparedGraphTests) ... ok
+test_mixed_constant_buckets_and_limits_match_oracle (test_prepared_graph.PreparedGraphTests) ... ok
+test_parallel_weighted_paths_and_limit (test_search_backend.SearchBackendTests) ... ok
+test_v4_bfs_keeps_frozen_node_global_budget_behavior (test_search_backend.SearchBackendTests) ... ok
+test_v4_rejects_non_string_method_without_typeerror (test_search_backend.SearchBackendTests) ... ok
+test_weighted_tie_uses_relation_order_not_edge_slot (test_search_backend.SearchBackendTests) ... ok
+test_astar_heuristic_rejects_horn_persistence (test_search_frontend.SearchFrontendTests) ... ok
+test_horn_only_void_main_and_void_access_are_checked (test_search_frontend.SearchFrontendTests) ... ok
+test_horn_plan_mutation_requires_mutable_string_plan_fields (test_search_frontend.SearchFrontendTests) ... ok
+test_mutable_horn_plan_lowers_to_ordered_v5_operations (test_search_frontend.SearchFrontendTests) ... ok
+test_search_constraints_are_checked_at_source_boundary (test_search_frontend.SearchFrontendTests) ... ok
+test_typed_search_lowers_to_v4_shapes (test_search_frontend.SearchFrontendTests) ... ok
+test_v6_horn_handles_and_numeric_collection_annotations (test_search_frontend.SearchFrontendTests) ... ok
+test_directed_metadata_parallel_and_weighted_paths (test_search_reference.SearchReferenceTests) ... ok
+test_undirected_ignores_forward_reverse_but_not_block (test_search_reference.SearchReferenceTests) ... ok
+test_find_all_marks_partial_results_and_handles_zero_budgets (test_source_extensions.SourceExtensionTests) ... ok
+test_match_path_bindings_are_value_snapshots (test_source_extensions.SourceExtensionTests) ... ok
+test_path_results_are_local_to_recursive_function_invocations (test_source_extensions.SourceExtensionTests) ... ok
+test_runnable_weighted_search_example (test_source_extensions.SourceExtensionTests) ... ok
+test_saved_path_results_survive_later_query_at_same_callsite (test_source_extensions.SourceExtensionTests) ... ok
+test_search_and_horn_share_one_native_translation_unit (test_source_extensions.SourceExtensionTests) ... ok
+test_source_horn_json_matches_structural_oracle (test_source_extensions.SourceExtensionTests) ... ok
+test_weighted_depth_bound_preserves_costlier_shallow_state (test_source_extensions.SourceExtensionTests) ... ok
+test_cache_identity_survives_rule_startup_and_journal_restore (test_startup_identity.StartupIdentityTests) ... ok
+test_chunked_unicode_jsonl_and_rejection_boundaries (test_startup_jsonl.StartupJsonlTests) ... ok
+test_crc_matches_zlib_for_bytes_tails_splits_and_unaligned_input (test_startup_persist.StartupPersistTests) ... ok
+test_old_checkpoint_bytes_open_and_bad_rows_are_refused (test_startup_persist.StartupPersistTests) ... ok
+test_reserve_preserves_shared_ids_and_oom_state (test_startup_symbols.StartupSymbolTests) ... ok
+test_identity_needs_no_subprocess_and_keeps_abi_in_cache_key (test_toolchain_startup.ToolchainStartupTests) ... ok
+test_provisioned_compiler_does_not_scan_path (test_toolchain_startup.ToolchainStartupTests) ... ok
+test_asserted_supports_exceed_query_proof_budget (test_v6_knowledge.V6KnowledgeTests) ... ok
+test_atomic_load_and_selected_capacity (test_v6_knowledge.V6KnowledgeTests) ... FAIL
+test_full_selected_16384_capacity (test_v6_knowledge.V6KnowledgeTests) ... ok
+test_large_load_function_values_and_provenance (test_v6_knowledge.V6KnowledgeTests) ... ok
+test_snapshot_loops_and_delta_release_storage (test_v6_knowledge.V6KnowledgeTests) ... ok
+test_file_relative_module_import (test_v6_language.V6LanguageTests) ... ok
+test_horn_load_ok_and_error_are_values (test_v6_language.V6LanguageTests) ... ERROR
+test_kernel_operator_schema_is_checked (test_v6_language.V6LanguageTests) ... ok
+test_result_f32_and_static_horn_execute_together (test_v6_language.V6LanguageTests) ... ok
+test_type_only_v6_signatures_select_v6 (test_v6_language.V6LanguageTests) ... ok
+test_v6_hostile_ir_is_rejected (test_v6_language.V6LanguageTests) ... ok
+test_weighted_graph_remains_runnable_in_v6 (test_v6_language.V6LanguageTests) ... ok
+test_managed_list_temps_are_released (test_v6_ownership.V6OwnershipTests) ... ok
+test_map_set_get_replace_remove_len_alias_return (test_v7_language.V7LanguageTests) ... ok
+test_mutable_array_write_is_checked (test_v7_language.V7LanguageTests) ... ok
+test_denial_fixture_snapshots_scalars_proofs_and_cleanup (test_v7_runtime.V7RuntimeTests) ... ok
+test_jsonl_load_is_atomic_and_checkpoint_rejects_other_rules (test_v7_runtime.V7RuntimeTests) ... ok
+test_ir7_methods_are_independently_checked (test_v9_horn_language.V9HornLanguageTests) ... ok
+test_ir7_rejects_static_closure_and_mixed_legacy_constructor (test_v9_horn_language.V9HornLanguageTests) ... ok
+test_raw_restore_and_commit_require_a_mutable_plan (test_v9_horn_language.V9HornLanguageTests) ... ok
+test_source_methods_chain_and_persistence (test_v9_horn_language.V9HornLanguageTests) ... ok
+test_v7_rejects_hostile_rules_and_raw_mutations (test_v9_horn_language.V9HornLanguageTests) ... ok
+test_v7_rejects_nonliteral_budget_and_unsafe_method_inputs (test_v9_horn_language.V9HornLanguageTests) ... ok
+test_v7_selective_queries_large_capacity_and_unicode_evidence (test_v9_horn_language.V9HornLanguageTests) ... ok
+test_ir7_keeps_managed_values_and_horn_branch_ownership (test_v9_managed_values.V9ManagedValuesTests) ... ok
+test_nested_results_records_and_map_string_release (test_v9_managed_values.V9ManagedValuesTests) ... ok
+test_save_commit_restore_cache_and_journal_recovery (test_v9_restart.V9RestartTests) ... ok
+
+======================================================================
+ERROR: test_checked_failure_paths (test_eighth_source.ValueRuntimeTests) (name='length')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\tests\test_eighth_source.py", line 67, in test_checked_failure_paths
+    result = self.run_c("int main(void) { " + body + " return 0; }")
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\tests\test_eighth_source.py", line 36, in run_c
+    build_c(source, executable, optimization="debug")
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\toolchain.py", line 38, in build_c
+    def build_c(source,output,*,optimization="release"): _build(source,output,False,optimization)
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\toolchain.py", line 37, in _build
+    subprocess.run(args,cwd=source.parent,env=_env(),timeout=_TIMEOUT,check=True,capture_output=True)
+  File "C:\Users\hirob\AppData\Local\Programs\Python\Python310\lib\subprocess.py", line 524, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe', 'cc', '-target', 'x86_64-windows-gnu', '-std=c11', '-O0', 'C:\\Users\\hirob\\AppData\\Local\\Temp\\tmp6qbvbygf\\value.c', '-o', 'C:\\Users\\hirob\\AppData\\Local\\Temp\\tmp6qbvbygf\\value.exe']' returned non-zero exit status 1.
+
+======================================================================
+ERROR: test_horn_load_ok_and_error_are_values (test_v6_language.V6LanguageTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\tests\test_v6_language.py", line 43, in test_horn_load_ok_and_error_are_values
+    self.assertEqual(run('fn main() -> si { h = Horn(facts = Facts(), rules = Rules()) match (h.load("missing.jsonl")) { Ok(n) { return 9 } Err(e) { print(e) return 1 } } }')[-1], "1")
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\tests\test_v6_language.py", line 17, in run
+    build_c(c, exe)
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\toolchain.py", line 38, in build_c
+    def build_c(source,output,*,optimization="release"): _build(source,output,False,optimization)
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\toolchain.py", line 37, in _build
+    subprocess.run(args,cwd=source.parent,env=_env(),timeout=_TIMEOUT,check=True,capture_output=True)
+  File "C:\Users\hirob\AppData\Local\Programs\Python\Python310\lib\subprocess.py", line 524, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe', 'cc', '-target', 'x86_64-windows-gnu', '-std=c11', '-O2', 'C:\\Users\\hirob\\AppData\\Local\\Temp\\mrl-v6-h71adfro\\x.c', '-o', 'C:\\Users\\hirob\\AppData\\Local\\Temp\\mrl-v6-h71adfro\\x.exe']' returned non-zero exit status 1.
+
+======================================================================
+FAIL: test_atomic_load_and_selected_capacity (test_v6_knowledge.V6KnowledgeTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\tests\test_v6_knowledge.py", line 43, in execute
+    try:toolchain.build_c(c,exe)
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\toolchain.py", line 38, in build_c
+    def build_c(source,output,*,optimization="release"): _build(source,output,False,optimization)
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\toolchain.py", line 37, in _build
+    subprocess.run(args,cwd=source.parent,env=_env(),timeout=_TIMEOUT,check=True,capture_output=True)
+  File "C:\Users\hirob\AppData\Local\Programs\Python\Python310\lib\subprocess.py", line 524, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe', 'cc', '-target', 'x86_64-windows-gnu', '-std=c11', '-O2', 'C:\\Users\\hirob\\AppData\\Local\\Temp\\mrl-v6-knowledge-20g5ydnf\\source.c', '-o', 'C:\\Users\\hirob\\AppData\\Local\\Temp\\mrl-v6-knowledge-20g5ydnf\\source.exe']' returned non-zero exit status 1.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\tests\test_v6_knowledge.py", line 76, in test_atomic_load_and_selected_capacity
+    result=execute('fn main(){p=Horn(capacity=128,facts=Facts('+entries+'),rules=Rules()) p.add(Fact(id="overflow",subject="s",predicate="p",object="o"))}')
+  File "C:\Users\hirob\.codex\worktrees\mrl-runtime\Marco\mrl\tests\test_v6_knowledge.py", line 44, in execute
+    except subprocess.CalledProcessError as error:raise AssertionError(error.stderr.decode(errors="replace")) from error
+AssertionError
+
+----------------------------------------------------------------------
+Ran 168 tests in 197.965s
+
+FAILED (failures=1, errors=2)

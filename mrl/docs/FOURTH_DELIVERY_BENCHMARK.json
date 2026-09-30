@@ -1,0 +1,1590 @@
+{
+  "version": 4,
+  "batches": 7,
+  "repeats": 200,
+  "method": "full structural outputs are parity-gated before timing; batch-tail is not per-request p95",
+  "production_coverage": false,
+  "metadata": {
+    "python": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "compiler": {
+      "command": [
+        "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+        "cc",
+        "-target",
+        "x86_64-windows-gnu",
+        "-std=c11"
+      ],
+      "uses_cmd": false,
+      "executable": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+      "fingerprint": [
+        177108480,
+        1776102116000000000
+      ]
+    },
+    "release_build_identity": {
+      "schema": 1,
+      "toolchain_hash": "880989c71e94b721ffea738bc407bc7133528ab64400453189af60158b7ee103",
+      "build_config": {
+        "release": "-O2",
+        "debug": "-O0"
+      },
+      "source_hash": "be835ab7dcc5b8eeb78add61d9f3968893ff6a3ecba87b8ad2cca6082350b5f1",
+      "optimization": "release",
+      "compiler": {
+        "command": [
+          "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+          "cc",
+          "-target",
+          "x86_64-windows-gnu",
+          "-std=c11"
+        ],
+        "uses_cmd": false,
+        "executable": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\zig-x86_64-windows-0.16.0\\zig.exe",
+        "fingerprint": [
+          177108480,
+          1776102116000000000
+        ]
+      },
+      "platform": "Windows-10-10.0.26200-SP0",
+      "machine": "AMD64",
+      "source_name": "native_graph.c",
+      "extras": {},
+      "cache_key": "c32afc50df74ae5c06fe7406ed74e3004680c5c70bdea0bb16eadac4d0e6001d"
+    },
+    "source_hashes": {
+      "mrl\\benchmark_v4.py": "dde7c1d5bbacc01b22257747c7b13019783db4084fb23eb7743b71608e220500",
+      "mrl\\native_graph.py": "003285ebe7c35ce8493bcaa574a862129c82e0d79f526fcfdff4a05af9487f54",
+      "mrl\\oracle.py": "badf72d194a3aae3a1771b073c2a72d522e6804cf48798fbc67bd919472f8b1f",
+      "mrl\\toolchain.py": "880989c71e94b721ffea738bc407bc7133528ab64400453189af60158b7ee103",
+      "mrl\\graph_plan.py": "7ba13fdab0eb1e7ec419fbe19692a12a124a25223f46579923eaab57b0c60abe",
+      "mrl\\runtime\\native_graph.c": "be835ab7dcc5b8eeb78add61d9f3968893ff6a3ecba87b8ad2cca6082350b5f1",
+      "graph_inference.py": "d7b383a720e7d21b21b266db31b8d5578d53681883882fef8c560049741f8daf"
+    },
+    "real_case_attribution": {
+      "real_event_alternatives": {
+        "source": "tests/test_event_provenance.py:test_independent_proof_bundles_survive_one_support_becoming_invalid",
+        "source_sha256": "5ef732416086b5007d870e3974f7b80bdf2079fe5edc099eda72816f45479a9d",
+        "input_validation": "named test exists; copied facts and rules equal the source AST"
+      },
+      "real_signed_block": {
+        "source": "tests/test_signed_inference.py:test_denied_intermediate_cannot_support_downstream_conclusion",
+        "source_sha256": "6d2dabe40760a1e8bdd484392d9552f1ddcd06642f22db2b97ac1e0689640ec4",
+        "input_validation": "named test exists; copied facts and rules equal the source AST"
+      }
+    }
+  },
+  "startup": {
+    "explicit_release_build_ns": 587406200,
+    "explicit_release_build_note": "compiler invocation; its own compiler cache may already be warm",
+    "fresh_process_release_cache_hit": {
+      "startup_ns": 338670400,
+      "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\c32afc50df74ae5c06fe7406ed74e3004680c5c70bdea0bb16eadac4d0e6001d\\native-7239d55b0852474aa34bbf99004da539.dll",
+      "compiler_launched": false
+    }
+  },
+  "cases": {
+    "closure_chain": {
+      "parity": true,
+      "complete": true,
+      "result_bytes": 557,
+      "result_fact_count": 5,
+      "construction": {
+        "resident_generic": {
+          "elapsed_ns": 133600,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\c32afc50df74ae5c06fe7406ed74e3004680c5c70bdea0bb16eadac4d0e6001d\\native-7239d55b0852474aa34bbf99004da539.dll",
+          "library_cache_state": "reused"
+        },
+        "resident_specialized": {
+          "elapsed_ns": 26171600,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\5177bdb7046c4e5deb98300cba4f93b06d24ad43ede91543f2e36022ccdb38eb\\native-8c1084ae1ace4dddb80fcd20422437d2.dll",
+          "library_cache_state": "reused"
+        }
+      },
+      "timings": {
+        "oracle": {
+          "median_ns": 55161.5,
+          "batch_tail_ns": 57760.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            56512.0,
+            55176.5,
+            54014.0,
+            54790.0,
+            54845.0,
+            55161.5,
+            57760.0
+          ],
+          "ratio_to_oracle": 1.0
+        },
+        "stateless_debug": {
+          "median_ns": 37592.5,
+          "batch_tail_ns": 39956.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            38358.0,
+            36699.0,
+            39956.5,
+            37592.5,
+            37553.5,
+            39497.0,
+            37420.0
+          ],
+          "ratio_to_oracle": 0.6814988714955177
+        },
+        "stateless_release": {
+          "median_ns": 32340.5,
+          "batch_tail_ns": 33440.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            33440.5,
+            32266.0,
+            31813.5,
+            32340.5,
+            32732.5,
+            32832.5,
+            31877.5
+          ],
+          "ratio_to_oracle": 0.5862875375035124
+        },
+        "resident_generic": {
+          "median_ns": 9854.0,
+          "batch_tail_ns": 11691.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            9854.0,
+            9621.0,
+            11691.0,
+            9538.5,
+            10562.0,
+            10129.0,
+            9832.5
+          ],
+          "ratio_to_oracle": 0.17863908704440598
+        },
+        "resident_specialized": {
+          "median_ns": 9892.5,
+          "batch_tail_ns": 10167.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            9892.5,
+            10154.5,
+            9939.0,
+            9799.5,
+            9506.5,
+            10167.5,
+            9811.0
+          ],
+          "ratio_to_oracle": 0.17933703760775177
+        }
+      },
+      "path_order_by_batch": [
+        [
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized"
+        ],
+        [
+          "oracle",
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "stateless_debug",
+          "oracle",
+          "resident_specialized",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug",
+          "oracle"
+        ],
+        [
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle"
+        ]
+      ],
+      "append_evaluate": {
+        "parity": true,
+        "delta": [
+          {
+            "id": "benchmark:append",
+            "triple": [
+              "benchmark-subject",
+              "p0",
+              "benchmark-object"
+            ],
+            "evidence": {}
+          }
+        ],
+        "timings": {
+          "oracle": {
+            "median_ns": 94025.0,
+            "batch_tail_ns": 121660.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              84538.0,
+              93719.5,
+              96325.0,
+              108050.0,
+              88929.0,
+              94025.0,
+              121660.0
+            ],
+            "ratio_to_oracle": 1.0
+          },
+          "resident_generic": {
+            "median_ns": 47627.0,
+            "batch_tail_ns": 57666.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              41136.5,
+              47627.0,
+              54144.5,
+              38268.0,
+              53804.0,
+              47097.5,
+              57666.0
+            ],
+            "ratio_to_oracle": 0.5065354958787557
+          },
+          "resident_specialized": {
+            "median_ns": 46196.5,
+            "batch_tail_ns": 58040.5,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              46196.5,
+              53040.0,
+              43639.5,
+              42303.5,
+              39190.0,
+              51111.0,
+              58040.5
+            ],
+            "ratio_to_oracle": 0.49132145705929275
+          }
+        },
+        "path_order_by_batch": [
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_specialized",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "oracle",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "resident_generic",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "resident_specialized",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "oracle",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ]
+        ],
+        "base_adjustment": null
+      },
+      "append_capacity_rejection": null
+    },
+    "closure_fanout": {
+      "parity": true,
+      "complete": true,
+      "result_bytes": 6217,
+      "result_fact_count": 64,
+      "construction": {
+        "resident_generic": {
+          "elapsed_ns": 239600,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\c32afc50df74ae5c06fe7406ed74e3004680c5c70bdea0bb16eadac4d0e6001d\\native-7239d55b0852474aa34bbf99004da539.dll",
+          "library_cache_state": "reused"
+        },
+        "resident_specialized": {
+          "elapsed_ns": 39064200,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\71e707a81e262425940d66814917536f46d5f2a9f0b7570b987ee5ddbd814ae4\\native-a47f4f0aecf04e0599a7074525df6aaf.dll",
+          "library_cache_state": "reused"
+        }
+      },
+      "timings": {
+        "oracle": {
+          "median_ns": 251501.5,
+          "batch_tail_ns": 281708.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            249749.0,
+            281708.5,
+            255879.0,
+            250925.5,
+            280144.5,
+            230945.0,
+            251501.5
+          ],
+          "ratio_to_oracle": 1.0
+        },
+        "stateless_debug": {
+          "median_ns": 209400.5,
+          "batch_tail_ns": 217708.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            209400.5,
+            217708.0,
+            215076.0,
+            212237.0,
+            204507.0,
+            203293.5,
+            190526.5
+          ],
+          "ratio_to_oracle": 0.8326013960155307
+        },
+        "stateless_release": {
+          "median_ns": 180619.5,
+          "batch_tail_ns": 190259.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            186805.5,
+            174560.5,
+            155781.0,
+            187059.0,
+            154306.5,
+            190259.5,
+            180619.5
+          ],
+          "ratio_to_oracle": 0.7181647027950131
+        },
+        "resident_generic": {
+          "median_ns": 118062.0,
+          "batch_tail_ns": 135415.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            118062.0,
+            105545.0,
+            131658.0,
+            126826.5,
+            105841.0,
+            135415.5,
+            101173.5
+          ],
+          "ratio_to_oracle": 0.4694286117577828
+        },
+        "resident_specialized": {
+          "median_ns": 110249.5,
+          "batch_tail_ns": 125384.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            125384.0,
+            110249.5,
+            114027.0,
+            110495.5,
+            99136.0,
+            104000.0,
+            97206.0
+          ],
+          "ratio_to_oracle": 0.43836517873650854
+        }
+      },
+      "path_order_by_batch": [
+        [
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized"
+        ],
+        [
+          "oracle",
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "stateless_debug",
+          "oracle",
+          "resident_specialized",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug",
+          "oracle"
+        ],
+        [
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle"
+        ]
+      ],
+      "append_evaluate": {
+        "parity": true,
+        "delta": [
+          {
+            "id": "benchmark:append",
+            "triple": [
+              "benchmark-subject",
+              "p",
+              "benchmark-object"
+            ],
+            "evidence": {}
+          }
+        ],
+        "timings": {
+          "oracle": {
+            "median_ns": 253257.0,
+            "batch_tail_ns": 309595.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              265291.0,
+              253257.0,
+              221658.0,
+              309595.0,
+              272469.5,
+              241349.0,
+              238478.5
+            ],
+            "ratio_to_oracle": 1.0
+          },
+          "resident_generic": {
+            "median_ns": 152785.5,
+            "batch_tail_ns": 187262.5,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              187262.5,
+              176024.5,
+              148793.5,
+              152785.5,
+              146999.5,
+              167477.5,
+              145173.0
+            ],
+            "ratio_to_oracle": 0.6032824364183419
+          },
+          "resident_specialized": {
+            "median_ns": 155896.0,
+            "batch_tail_ns": 195200.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              175168.0,
+              187638.5,
+              140124.5,
+              137504.0,
+              155896.0,
+              135017.0,
+              195200.0
+            ],
+            "ratio_to_oracle": 0.6155644266496089
+          }
+        },
+        "path_order_by_batch": [
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_specialized",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "oracle",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "resident_generic",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "resident_specialized",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "oracle",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ]
+        ],
+        "base_adjustment": "1 asserted fan-out seed omitted so append stays within the declared graph-limit budget"
+      },
+      "append_capacity_rejection": {
+        "parity": true,
+        "expected_rejection": true,
+        "rejection_kind": "graph_limit_budget",
+        "oracle": {
+          "error": "graph_limit"
+        },
+        "delta": [
+          {
+            "id": "benchmark:append",
+            "triple": [
+              "benchmark-subject",
+              "p",
+              "benchmark-object"
+            ],
+            "evidence": {}
+          }
+        ],
+        "native_observed": {
+          "resident_generic": {
+            "error": "graph_limit"
+          },
+          "resident_specialized": {
+            "error": "graph_limit"
+          }
+        }
+      }
+    },
+    "provenance_chain": {
+      "parity": true,
+      "complete": true,
+      "result_bytes": 3719,
+      "result_fact_count": 5,
+      "construction": {
+        "resident_generic": {
+          "elapsed_ns": 217300,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\c32afc50df74ae5c06fe7406ed74e3004680c5c70bdea0bb16eadac4d0e6001d\\native-7239d55b0852474aa34bbf99004da539.dll",
+          "library_cache_state": "reused"
+        },
+        "resident_specialized": {
+          "elapsed_ns": 25464000,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\5177bdb7046c4e5deb98300cba4f93b06d24ad43ede91543f2e36022ccdb38eb\\native-8c1084ae1ace4dddb80fcd20422437d2.dll",
+          "library_cache_state": "reused"
+        }
+      },
+      "timings": {
+        "oracle": {
+          "median_ns": 142457.0,
+          "batch_tail_ns": 147560.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            142457.0,
+            145811.0,
+            147211.0,
+            147560.0,
+            139973.5,
+            137874.0,
+            135431.5
+          ],
+          "ratio_to_oracle": 1.0
+        },
+        "stateless_debug": {
+          "median_ns": 79262.0,
+          "batch_tail_ns": 91857.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            76243.5,
+            79262.0,
+            81728.0,
+            79632.0,
+            77412.5,
+            78417.0,
+            91857.5
+          ],
+          "ratio_to_oracle": 0.5563924552672035
+        },
+        "stateless_release": {
+          "median_ns": 72475.0,
+          "batch_tail_ns": 84266.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            69389.0,
+            76460.0,
+            72475.0,
+            70729.0,
+            84266.5,
+            77910.0,
+            71730.5
+          ],
+          "ratio_to_oracle": 0.5087500087745775
+        },
+        "resident_generic": {
+          "median_ns": 42697.0,
+          "batch_tail_ns": 57438.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            39643.0,
+            42697.0,
+            42611.0,
+            43511.0,
+            44843.0,
+            38083.5,
+            57438.5
+          ],
+          "ratio_to_oracle": 0.29971851155085394
+        },
+        "resident_specialized": {
+          "median_ns": 43343.5,
+          "batch_tail_ns": 45073.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            45025.5,
+            45073.5,
+            40129.5,
+            41846.5,
+            43745.5,
+            40202.0,
+            43343.5
+          ],
+          "ratio_to_oracle": 0.3042567230813509
+        }
+      },
+      "path_order_by_batch": [
+        [
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized"
+        ],
+        [
+          "oracle",
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "stateless_debug",
+          "oracle",
+          "resident_specialized",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug",
+          "oracle"
+        ],
+        [
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle"
+        ]
+      ],
+      "append_evaluate": {
+        "parity": true,
+        "delta": [
+          {
+            "id": "benchmark:append",
+            "triple": [
+              "benchmark-subject",
+              "p0",
+              "benchmark-object"
+            ],
+            "evidence": {}
+          }
+        ],
+        "timings": {
+          "oracle": {
+            "median_ns": 275375.0,
+            "batch_tail_ns": 336954.5,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              316953.5,
+              269357.5,
+              275662.5,
+              336954.5,
+              245657.0,
+              264249.5,
+              275375.0
+            ],
+            "ratio_to_oracle": 1.0
+          },
+          "resident_generic": {
+            "median_ns": 109380.5,
+            "batch_tail_ns": 139173.5,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              139173.5,
+              109641.5,
+              108585.5,
+              109380.5,
+              98529.5,
+              111262.0,
+              96971.0
+            ],
+            "ratio_to_oracle": 0.3972056286881525
+          },
+          "resident_specialized": {
+            "median_ns": 98885.5,
+            "batch_tail_ns": 144296.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              98608.0,
+              119373.5,
+              144296.0,
+              105746.5,
+              98141.5,
+              98885.5,
+              98268.0
+            ],
+            "ratio_to_oracle": 0.35909396277802996
+          }
+        },
+        "path_order_by_batch": [
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_specialized",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "oracle",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "resident_generic",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "resident_specialized",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "oracle",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ]
+        ],
+        "base_adjustment": null
+      },
+      "append_capacity_rejection": null
+    },
+    "provenance_alternatives": {
+      "parity": true,
+      "complete": true,
+      "result_bytes": 2494,
+      "result_fact_count": 4,
+      "construction": {
+        "resident_generic": {
+          "elapsed_ns": 217700,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\c32afc50df74ae5c06fe7406ed74e3004680c5c70bdea0bb16eadac4d0e6001d\\native-7239d55b0852474aa34bbf99004da539.dll",
+          "library_cache_state": "reused"
+        },
+        "resident_specialized": {
+          "elapsed_ns": 38532900,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\5b69ea4ada7f04b0575442fbda4edab19cb354b064f44536e7a56a77ab8d0907\\native-07aa5e8c2153487f9c9537267bf67c9c.dll",
+          "library_cache_state": "reused"
+        }
+      },
+      "timings": {
+        "oracle": {
+          "median_ns": 131695.5,
+          "batch_tail_ns": 142356.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            126453.5,
+            133340.5,
+            130775.0,
+            141251.5,
+            142356.0,
+            131695.5,
+            126829.0
+          ],
+          "ratio_to_oracle": 1.0
+        },
+        "stateless_debug": {
+          "median_ns": 90929.5,
+          "batch_tail_ns": 102060.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            88697.5,
+            90312.0,
+            102060.5,
+            97069.0,
+            90929.5,
+            79585.0,
+            91001.0
+          ],
+          "ratio_to_oracle": 0.6904525970894981
+        },
+        "stateless_release": {
+          "median_ns": 86766.5,
+          "batch_tail_ns": 98707.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            86766.5,
+            98166.0,
+            91975.5,
+            72916.0,
+            98707.0,
+            86721.5,
+            74175.0
+          ],
+          "ratio_to_oracle": 0.6588417979353889
+        },
+        "resident_generic": {
+          "median_ns": 52172.0,
+          "batch_tail_ns": 56606.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            52504.5,
+            42641.0,
+            55441.5,
+            52172.0,
+            51210.0,
+            56606.0,
+            39584.0
+          ],
+          "ratio_to_oracle": 0.39615628476295695
+        },
+        "resident_specialized": {
+          "median_ns": 54239.5,
+          "batch_tail_ns": 58117.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            54239.5,
+            47940.0,
+            55791.5,
+            50085.5,
+            55501.5,
+            58117.0,
+            47083.5
+          ],
+          "ratio_to_oracle": 0.4118553785057196
+        }
+      },
+      "path_order_by_batch": [
+        [
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized"
+        ],
+        [
+          "oracle",
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "stateless_debug",
+          "oracle",
+          "resident_specialized",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug",
+          "oracle"
+        ],
+        [
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle"
+        ]
+      ],
+      "append_evaluate": {
+        "parity": true,
+        "delta": [
+          {
+            "id": "benchmark:append",
+            "triple": [
+              "benchmark-subject",
+              "p",
+              "benchmark-object"
+            ],
+            "evidence": {}
+          }
+        ],
+        "timings": {
+          "oracle": {
+            "median_ns": 174913.0,
+            "batch_tail_ns": 223096.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              174913.0,
+              137904.0,
+              168007.0,
+              188111.0,
+              165104.0,
+              190818.5,
+              223096.0
+            ],
+            "ratio_to_oracle": 1.0
+          },
+          "resident_generic": {
+            "median_ns": 109141.5,
+            "batch_tail_ns": 118043.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              85617.5,
+              115177.0,
+              118043.0,
+              109141.5,
+              115307.0,
+              84834.0,
+              101167.5
+            ],
+            "ratio_to_oracle": 0.6239759194571015
+          },
+          "resident_specialized": {
+            "median_ns": 97007.5,
+            "batch_tail_ns": 112671.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              80705.5,
+              100081.5,
+              112671.0,
+              110593.0,
+              97007.5,
+              82560.5,
+              80415.5
+            ],
+            "ratio_to_oracle": 0.5546042889893833
+          }
+        },
+        "path_order_by_batch": [
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_specialized",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "oracle",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "resident_generic",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "resident_specialized",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "oracle",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ]
+        ],
+        "base_adjustment": null
+      },
+      "append_capacity_rejection": null
+    },
+    "real_event_alternatives": {
+      "parity": true,
+      "complete": true,
+      "result_bytes": 1459,
+      "result_fact_count": 3,
+      "construction": {
+        "resident_generic": {
+          "elapsed_ns": 224600,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\c32afc50df74ae5c06fe7406ed74e3004680c5c70bdea0bb16eadac4d0e6001d\\native-7239d55b0852474aa34bbf99004da539.dll",
+          "library_cache_state": "reused"
+        },
+        "resident_specialized": {
+          "elapsed_ns": 41579100,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\3d7a2e7df392b0e1b9e186afa0019fa1169e51bb81909a6a7d705ed66bb477c6\\native-37c438e6a19b4db8bfd67422e16df2b6.dll",
+          "library_cache_state": "reused"
+        }
+      },
+      "timings": {
+        "oracle": {
+          "median_ns": 55438.0,
+          "batch_tail_ns": 77434.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            77434.5,
+            58363.5,
+            53639.0,
+            55438.0,
+            60998.5,
+            54729.0,
+            53690.5
+          ],
+          "ratio_to_oracle": 1.0
+        },
+        "stateless_debug": {
+          "median_ns": 58471.0,
+          "batch_tail_ns": 70891.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            70891.0,
+            57636.0,
+            58471.0,
+            55804.0,
+            67595.0,
+            59098.5,
+            56388.5
+          ],
+          "ratio_to_oracle": 1.0547097658645694
+        },
+        "stateless_release": {
+          "median_ns": 52381.5,
+          "batch_tail_ns": 67393.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            67393.5,
+            52381.5,
+            51204.0,
+            50552.5,
+            65492.0,
+            53636.0,
+            50690.5
+          ],
+          "ratio_to_oracle": 0.9448663371694506
+        },
+        "resident_generic": {
+          "median_ns": 27956.5,
+          "batch_tail_ns": 36848.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            35332.0,
+            27852.5,
+            26326.0,
+            27956.5,
+            36612.0,
+            36848.0,
+            26534.0
+          ],
+          "ratio_to_oracle": 0.5042840650817129
+        },
+        "resident_specialized": {
+          "median_ns": 27568.5,
+          "batch_tail_ns": 37000.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            36816.0,
+            27568.5,
+            31291.5,
+            27351.5,
+            26820.0,
+            37000.5,
+            26376.0
+          ],
+          "ratio_to_oracle": 0.4972852556008514
+        }
+      },
+      "path_order_by_batch": [
+        [
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized"
+        ],
+        [
+          "oracle",
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "stateless_debug",
+          "oracle",
+          "resident_specialized",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug",
+          "oracle"
+        ],
+        [
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle"
+        ]
+      ],
+      "append_evaluate": {
+        "parity": true,
+        "delta": [
+          {
+            "id": "benchmark:append",
+            "triple": [
+              "benchmark-subject",
+              "p",
+              "benchmark-object"
+            ],
+            "evidence": {}
+          }
+        ],
+        "timings": {
+          "oracle": {
+            "median_ns": 92049.5,
+            "batch_tail_ns": 100037.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              78760.0,
+              100037.0,
+              81348.0,
+              93467.5,
+              92049.5,
+              83526.0,
+              98717.5
+            ],
+            "ratio_to_oracle": 1.0
+          },
+          "resident_generic": {
+            "median_ns": 78135.0,
+            "batch_tail_ns": 89667.5,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              61110.5,
+              65457.0,
+              83431.5,
+              80898.0,
+              78135.0,
+              71935.0,
+              89667.5
+            ],
+            "ratio_to_oracle": 0.8488367671741834
+          },
+          "resident_specialized": {
+            "median_ns": 67746.5,
+            "batch_tail_ns": 84828.5,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              59885.5,
+              66062.0,
+              67746.5,
+              76745.0,
+              62930.5,
+              84828.5,
+              74482.5
+            ],
+            "ratio_to_oracle": 0.735979011292837
+          }
+        },
+        "path_order_by_batch": [
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_specialized",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "oracle",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "resident_generic",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "resident_specialized",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "oracle",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ]
+        ],
+        "base_adjustment": null
+      },
+      "append_capacity_rejection": null
+    },
+    "real_signed_block": {
+      "parity": true,
+      "complete": true,
+      "result_bytes": 432,
+      "result_fact_count": 4,
+      "construction": {
+        "resident_generic": {
+          "elapsed_ns": 138900,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\c32afc50df74ae5c06fe7406ed74e3004680c5c70bdea0bb16eadac4d0e6001d\\native-7239d55b0852474aa34bbf99004da539.dll",
+          "library_cache_state": "reused"
+        },
+        "resident_specialized": {
+          "elapsed_ns": 32183600,
+          "library": "C:\\Users\\hirob\\.codex\\worktrees\\mrl-runtime\\Marco\\mrl\\.tools\\native\\b91df80d4a0e3b2ced91c8132288d6ce7242cbd79f0458ccd8fa664e4335473a\\native-867052da1e7941b3b507677d331c0790.dll",
+          "library_cache_state": "reused"
+        }
+      },
+      "timings": {
+        "oracle": {
+          "median_ns": 39329.0,
+          "batch_tail_ns": 52269.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            35355.0,
+            31096.5,
+            37478.5,
+            52269.0,
+            44902.5,
+            39329.0,
+            43167.5
+          ],
+          "ratio_to_oracle": 1.0
+        },
+        "stateless_debug": {
+          "median_ns": 37404.0,
+          "batch_tail_ns": 44795.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            36786.0,
+            37404.0,
+            37931.5,
+            35762.0,
+            44795.0,
+            34012.0,
+            41047.0
+          ],
+          "ratio_to_oracle": 0.951053929670218
+        },
+        "stateless_release": {
+          "median_ns": 33064.0,
+          "batch_tail_ns": 40539.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            30656.5,
+            34195.0,
+            30084.0,
+            33064.0,
+            31550.5,
+            33488.5,
+            40539.0
+          ],
+          "ratio_to_oracle": 0.8407027892903456
+        },
+        "resident_generic": {
+          "median_ns": 10024.0,
+          "batch_tail_ns": 14066.0,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            10024.0,
+            9691.5,
+            14066.0,
+            10141.0,
+            12390.0,
+            9771.5,
+            9566.0
+          ],
+          "ratio_to_oracle": 0.25487553713544714
+        },
+        "resident_specialized": {
+          "median_ns": 9698.5,
+          "batch_tail_ns": 14219.5,
+          "batch_tail_method": "maximum mean of recorded batches",
+          "raw_batch_ns": [
+            9698.5,
+            11276.5,
+            9580.0,
+            14219.5,
+            11558.5,
+            9525.5,
+            9594.5
+          ],
+          "ratio_to_oracle": 0.2465992016069567
+        }
+      },
+      "path_order_by_batch": [
+        [
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized"
+        ],
+        [
+          "oracle",
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle",
+          "stateless_debug"
+        ],
+        [
+          "stateless_release",
+          "stateless_debug",
+          "oracle",
+          "resident_specialized",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "oracle",
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic"
+        ],
+        [
+          "resident_specialized",
+          "resident_generic",
+          "stateless_release",
+          "stateless_debug",
+          "oracle"
+        ],
+        [
+          "stateless_debug",
+          "stateless_release",
+          "resident_generic",
+          "resident_specialized",
+          "oracle"
+        ]
+      ],
+      "append_evaluate": {
+        "parity": true,
+        "delta": [
+          {
+            "id": "benchmark:append",
+            "triple": [
+              "benchmark-subject",
+              "p",
+              "benchmark-subject"
+            ],
+            "evidence": {}
+          }
+        ],
+        "timings": {
+          "oracle": {
+            "median_ns": 65955.0,
+            "batch_tail_ns": 84634.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              68504.0,
+              84634.0,
+              53095.0,
+              65955.0,
+              62272.5,
+              61179.5,
+              66987.5
+            ],
+            "ratio_to_oracle": 1.0
+          },
+          "resident_generic": {
+            "median_ns": 46795.0,
+            "batch_tail_ns": 54127.0,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              41957.5,
+              46795.0,
+              53104.0,
+              46365.0,
+              49400.5,
+              38308.0,
+              54127.0
+            ],
+            "ratio_to_oracle": 0.7094989007656736
+          },
+          "resident_specialized": {
+            "median_ns": 48770.0,
+            "batch_tail_ns": 51210.5,
+            "batch_tail_method": "maximum mean of recorded batches",
+            "raw_batch_ns": [
+              48097.5,
+              40942.0,
+              45926.0,
+              51210.5,
+              48901.0,
+              48770.0,
+              49085.5
+            ],
+            "ratio_to_oracle": 0.7394435600030324
+          }
+        },
+        "path_order_by_batch": [
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_specialized",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "oracle",
+            "resident_generic"
+          ],
+          [
+            "resident_specialized",
+            "resident_generic",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "resident_specialized",
+            "oracle"
+          ],
+          [
+            "resident_generic",
+            "oracle",
+            "resident_specialized"
+          ],
+          [
+            "oracle",
+            "resident_generic",
+            "resident_specialized"
+          ]
+        ],
+        "base_adjustment": null
+      },
+      "append_capacity_rejection": null
+    }
+  }
+}
