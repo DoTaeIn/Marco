@@ -6134,6 +6134,10 @@ class ReasoningContext:
             if not isinstance(typed, str) or not isinstance(subject, str):
                 continue
             key = " ".join(subject.split()[:-1])        # the holder part of "<holder> <thing>"
+            if self._effort_allows(2):
+                # the holder node's name: a thing of two words (과자 봉지) is no part of the holder (step 3)
+                person = self._person_of(subject)
+                key = person if person != subject else key
             if not key:
                 continue
             by_form = (evidence.get("normalization") or {}).get("rule") == "declared-holder-forms-v1"
