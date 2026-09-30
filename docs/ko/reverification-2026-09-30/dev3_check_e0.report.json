@@ -1,0 +1,4453 @@
+{
+ "schema": "marco1-dialogue-gate-v1-report",
+ "meta": {
+  "dataset_sha256": "b5d0c99113fd744c616987380edf87323800cc10d4dc760af83e8cfe1d0c181c",
+  "frozen_sha256": null,
+  "encoder": "문자",
+  "entry": "views.kgpack_ui.AppState.turn",
+  "research": "stubbed; calls counted",
+  "python": "3.13.9",
+  "code_commit": "2e79631401fd047679facd445761064a44a851d6",
+  "code_dirty": false,
+  "seconds": 77.1,
+  "split": "check"
+ },
+ "dataset": {
+  "dialogues": 44,
+  "turns": 230,
+  "by_language": {
+   "ko": 22,
+   "en": 22
+  },
+  "labels": {
+   "answerable": 106,
+   "hold": 92,
+   "unsupported": 6,
+   "ambiguous": 6,
+   "correction": 10,
+   "why": 10
+  }
+ },
+ "gate": {
+  "correct": 98,
+  "hold": 8,
+  "wrong": 0,
+  "execution_error": 0,
+  "unverifiable": 0,
+  "n": 106,
+  "accuracy": 0.9245,
+  "threshold": 0.9,
+  "needed": 96,
+  "passed": true,
+  "denominator": "every turn labelled answerable across 44 dialogues (106 turns); hold, wrong, execution_error and unverifiable all count against"
+ },
+ "by_language": {
+  "ko": {
+   "correct": 47,
+   "hold": 6,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 53,
+   "accuracy": 0.8868
+  },
+  "en": {
+   "correct": 51,
+   "hold": 2,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 53,
+   "accuracy": 0.9623
+  }
+ },
+ "by_category": {
+  "ownership": {
+   "correct": 20,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 20,
+   "accuracy": 1.0
+  },
+  "transfer": {
+   "correct": 78,
+   "hold": 8,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 86,
+   "accuracy": 0.907
+  },
+  "follow_up": {
+   "correct": 15,
+   "hold": 3,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 18,
+   "accuracy": 0.8333
+  },
+  "missing_premise": {
+   "correct": 0,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 0,
+   "accuracy": null
+  },
+  "correction": {
+   "correct": 15,
+   "hold": 1,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 16,
+   "accuracy": 0.9375
+  },
+  "why": {
+   "correct": 0,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 0,
+   "accuracy": null
+  },
+  "ambiguous_referent": {
+   "correct": 6,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 6,
+   "accuracy": 1.0
+  },
+  "restart": {
+   "correct": 3,
+   "hold": 1,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 4,
+   "accuracy": 0.75
+  },
+  "cross_language": {
+   "correct": 4,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 4,
+   "accuracy": 1.0
+  }
+ },
+ "other_labels": {
+  "record": {
+   "correct": 79,
+   "hold": 3,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 82,
+   "accuracy": 0.9634
+  },
+  "hold": {
+   "correct": 10,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 10,
+   "accuracy": 1.0
+  },
+  "ambiguous": {
+   "correct": 6,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 6,
+   "accuracy": 1.0
+  },
+  "unsupported": {
+   "correct": 6,
+   "hold": 0,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 6,
+   "accuracy": 1.0
+  },
+  "correction": {
+   "correct": 9,
+   "hold": 1,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 10,
+   "accuracy": 0.9
+  },
+  "why": {
+   "correct": 6,
+   "hold": 4,
+   "wrong": 0,
+   "execution_error": 0,
+   "unverifiable": 0,
+   "n": 10,
+   "accuracy": 0.6
+  }
+ },
+ "violations": {
+  "confident_without_evidence": {
+   "count": 0,
+   "turns": []
+  },
+  "retracted_evidence_used": {
+   "count": 0,
+   "turns": []
+  }
+ },
+ "dialogues_fully_passed": 39,
+ "failures": [
+  {
+   "dialogue": "dev3_en_c_06",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many toothbrushes does Bruce have now?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Remind Bruce about this tomorrow.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_07",
+   "language": "en",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Sorry, I misspoke: Nicolas passed Jos six.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find a single position for 1 in \"One acorn was passed to Jos by Nicolas.\". So I did not correct anything.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_07",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "How many acorns has Jos got?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Sorry, I misspoke: Nicolas passed Jos six.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_07",
+   "language": "en",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does Jos have that many acorns?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Sorry, I misspoke: Nicolas passed Jos six.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_02",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "승희가 용주한테 불판 2개를 보내고 용주가 희원한테 3개를 보냈어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"보냈어\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_02",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "희원은 지금 불판 몇 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"승희가 용주한테 불판 2개를 보내고 용주가 희원한테 3개를 보냈어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_02",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그럼 용주는?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_02",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "희원은 왜 불판이 그만큼 있는 거야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"승희가 용주한테 불판 2개를 보내고 용주가 희원한테 3개를 보냈어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_10",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "재철이 용주한테 오토바이 세 대를 주고 용주가 경철한테 세 대를 줬어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"줬어\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_10",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "경철은 지금 오토바이 몇 대야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"재철이 용주한테 오토바이 세 대를 주고 용주가 경철한테 세 대를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_10",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그럼 용주는?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_10",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "경철은 왜 오토바이가 그만큼 있는 거야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"재철이 용주한테 오토바이 세 대를 주고 용주가 경철한테 세 대를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_18",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지현이 승현에게 계피 세 개를 빌려주고 승현이 지은에게 두 개를 빌려주었습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"빌려주었습니다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_18",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지은은 계피가 몇 개 있습니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"지현이 승현에게 계피 세 개를 빌려주고 승현이 지은에게 두 개를 빌려주었습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_18",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그러면 승현은요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_18",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "지은은 왜 계피가 그만큼 있는 겁니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"지현이 승현에게 계피 세 개를 빌려주고 승현이 지은에게 두 개를 빌려주었습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  }
+ ],
+ "rows": [
+  {
+   "dialogue": "dev3_en_c_01",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "Nicolas owns 7 needles, and Piotr, who has 8, handed Nicolas 2.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Piotr gave Nicolas 2 needles. Now Piotr has 6 needles and Nicolas has 9.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_01",
+   "language": "en",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many needles does Piotr have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6 needles.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_01",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many needles does Nicolas have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "9 needles.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_01",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Who has more needles now, Piotr or Nicolas?",
+   "bucket": "correct",
+   "reason": "entity",
+   "violation": null,
+   "status": "answered",
+   "answer": "Nicolas has more needles.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_02",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Pierette owns 12 hooks, Audrey owns 7, and Mongo owns 4.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Audrey has 7 hooks and Mongo has 4.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_02",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Pierette sent Audrey 1 hook, and Audrey sent Mongo 3.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Pierette has 11 hooks, Audrey has 5 and Mongo has 7.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_02",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many does Mongo have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7 hooks.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_02",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And Audrey?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5 hooks.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_02",
+   "language": "en",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does Mongo have that many hooks?",
+   "bucket": "correct",
+   "reason": "cites_all",
+   "violation": null,
+   "status": "answered",
+   "answer": "Mongo has 7 hooks. The giver loses that many. The receiver gains that many. It rests on \"Pierette owns 12 hooks, Audrey owns 7, and Mongo owns 4.\" and \"Pierette sent Audrey 1 hook, and Audrey sent Mongo 3.\".",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_03",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Jianyun's got four tigers, and Julius's got nine.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Julius has 9 tigers.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_03",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Jianyun lost three tigers.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Jianyun has 1 tiger.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_03",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Jianyun got one tiger from Julius.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Julius has 8 tigers and Jianyun has 2.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_03",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many tigers does Jianyun have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "2 tigers.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_03",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many tigers do Jianyun and Julius have altogether?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "Jianyun and Julius have 10 tigers together.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_04",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "Annard is holding five soaps and Gabriel is holding four, and Annard handed Gabriel two.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Annard gave Gabriel 2 soaps. Now Annard has 3 soaps and Gabriel has 6.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_04",
+   "language": "en",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many soaps does Annard have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "3 soaps.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_04",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Annard received one soap from Gabriel.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Gabriel has 5 soaps and Annard has 4.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_04",
+   "language": "en",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Actually, Gabriel handed Annard three soaps, not one.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "I changed the amount in the same event \"Annard received one soap from Gabriel.\" from 1 to 3. No new event was added. Now Gabriel has 3 soaps and Annard has 6.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_04",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many soaps does Annard have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6 soaps.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_04",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "What about Gabriel?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "3 soaps.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_05",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Helge has 10 pianos, and Noemi has 8.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Noemi has 8 pianos.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_05",
+   "language": "en",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many pianos do Helge and Noemi have in total?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "Helge and Noemi have 18 pianos together.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_05",
+   "language": "en",
+   "n": 3,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "How many pianos does that person have now?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "I do not know who 'that person' refers to. Which of 'Noemi pianos' and 'Helge pianos' do you mean?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_05",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "ownership"
+   ],
+   "say": "And how about Helge?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "10 pianos.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_05",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "How many does Noemi have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "8 pianos.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_06",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Edwin has 6 toothbrushes, Bruce has 7.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Bruce has 7 toothbrushes.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_06",
+   "language": "en",
+   "n": 2,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "Remind Bruce about this tomorrow.",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_06",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "Where does Edwin keep the toothbrushes?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "This conversation never stated the location of Edwin's toothbrushes. So I did not answer.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_06",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "1 toothbrush was lent to Bruce by Edwin.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Edwin has 5 toothbrushes and Bruce has 8.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_06",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many toothbrushes does Bruce have now?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Remind Bruce about this tomorrow.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_06",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many toothbrushes does Edwin have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5 toothbrushes.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_07",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Jos had seven acorns and Nicolas had eleven.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Nicolas has 11 acorns.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_07",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "One acorn was passed to Jos by Nicolas.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Nicolas has 10 acorns and Jos has 8.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_07",
+   "language": "en",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Sorry, I misspoke: Nicolas passed Jos six.",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find a single position for 1 in \"One acorn was passed to Jos by Nicolas.\". So I did not correct anything.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_07",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "How many acorns has Jos got?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Sorry, I misspoke: Nicolas passed Jos six.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_07",
+   "language": "en",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does Jos have that many acorns?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not read \"Sorry, I misspoke: Nicolas passed Jos six.\" yet. So I did not fix the current value. Please say it another way.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_08",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Vicki has eleven cushions.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_08",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "How many cushions has Pontus got?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "This conversation never mentioned Pontus's cushions. So I did not answer.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_08",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Pontus has nine cushions. Noemi has seven.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Noemi has 7 cushions.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_08",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "How many cushions has Noemi got?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7 cushions.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_08",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many cushions do Pontus and Noemi have in total?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "Pontus and Noemi have 16 cushions together.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_08",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "cross_language",
+    "ownership"
+   ],
+   "say": "Vicki는 지금 몇 개 있어?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_09",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "Kyung's got 11 rabbits, and Jos, who has 8, lent Kyung 1.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Jos gave Kyung 1 rabbit. Now Jos has 7 rabbits and Kyung has 12.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_09",
+   "language": "en",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many rabbits does Jos have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7 rabbits.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_09",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many rabbits does Kyung have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12 rabbits.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_09",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Who has more rabbits now, Jos or Kyung?",
+   "bucket": "correct",
+   "reason": "entity",
+   "violation": null,
+   "status": "answered",
+   "answer": "Kyung has more rabbits.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_10",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Roxie's got seven neckties, Nicolas's got eleven, and Andre's got nine.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Nicolas has 11 neckties and Andre has 9.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_10",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Roxie gave Nicolas one necktie, and Nicolas gave Andre two.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Roxie has 6 neckties, Nicolas has 10 and Andre has 11.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_10",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many does Andre have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "11 neckties.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_10",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "And Nicolas?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "10 neckties.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_10",
+   "language": "en",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does Andre have that many neckties?",
+   "bucket": "correct",
+   "reason": "cites_all",
+   "violation": null,
+   "status": "answered",
+   "answer": "Andre has 11 neckties. The giver loses that many. The receiver gains that many. It rests on \"Roxie's got seven neckties, Nicolas's got eleven, and Andre's got nine.\" and \"Roxie gave Nicolas one necktie, and Nicolas gave Andre two.\".",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_11",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Mongo has twelve scallops and Pierette has four.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Pierette has 4 scallops.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_11",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mongo lost two scallops.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Mongo has 10 scallops.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_11",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mongo got two scallops from Pierette.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Pierette has 2 scallops and Mongo has 12.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_11",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many scallops has Mongo got?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12 scallops.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_11",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many scallops do Mongo and Pierette have together?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "Mongo and Pierette have 14 scallops together.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_12",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "Rodger had 5 blackboards and Kyung had 8, and Rodger handed Kyung 3.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Rodger gave Kyung 3 blackboards. Now Rodger has 2 blackboards and Kyung has 11.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_12",
+   "language": "en",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many blackboards does Rodger have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "2 blackboards.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_12",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Kyung handed Rodger 3 blackboards.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Kyung has 8 blackboards and Rodger has 5.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_12",
+   "language": "en",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Actually, Kyung handed Rodger 5 blackboards, not 3.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "I changed the amount in the same event \"Kyung handed Rodger 3 blackboards.\" from 3 to 5. No new event was added. Now Kyung has 6 blackboards and Rodger has 7.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_12",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many blackboards does Rodger have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7 blackboards.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_12",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "What about Kyung?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6 blackboards.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_13",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Sehyo is holding 5 hens and Leung 9.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_13",
+   "language": "en",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many hens do Sehyo and Leung have together?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "Sehyo and Leung have 14 hens together.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_13",
+   "language": "en",
+   "n": 3,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "How many hens does that person have now?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "I do not know who 'that person' refers to. Which of 'Sehyo hens' and 'Leung hens' do you mean?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_13",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "ownership"
+   ],
+   "say": "And Sehyo?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5 hens.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_13",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "How many hens does Leung have left?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "9 hens.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_14",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Sedovic owns ten macaronis, and Rodger owns four.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Rodger has 4 macaronis.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_14",
+   "language": "en",
+   "n": 2,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "Could you text Rodger for me?",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_14",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "Where does Sedovic keep the macaronis?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "This conversation never stated the location of Sedovic's macaronis. So I did not answer.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_14",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Sedovic sent Rodger one macaroni.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Sedovic has 9 macaronis and Rodger has 5.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_14",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many macaronis does Rodger have left?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5 macaronis.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_14",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many macaronis does Sedovic have left?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "9 macaronis.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_15",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Craig is holding seven dandelions. Edward is holding five.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Edward has 5 dandelions.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_15",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Craig got three dandelions from Edward.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Edward has 2 dandelions and Craig has 10.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_15",
+   "language": "en",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Sorry, I misspoke: Edward gave Craig two.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "I changed the amount in the same event \"Craig got three dandelions from Edward.\" from 3 to 2. No new event was added. Now Edward has 3 dandelions and Craig has 9.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_15",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "How many dandelions does Craig have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "9 dandelions.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_15",
+   "language": "en",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "Why does Craig have that many dandelions now?",
+   "bucket": "correct",
+   "reason": "cites_all",
+   "violation": null,
+   "status": "answered",
+   "answer": "Craig has 9 dandelions. The giver loses that many. The receiver gains that many. It rests on \"Craig is holding seven dandelions. Edward is holding five.\", \"Craig got two dandelions from Edward.\", \"Craig got three dandelions from Edward.\" and \"Sorry, I misspoke: Edward gave Craig two.\".",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_16",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Dwight had 10 rusts.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_16",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "How many rusts does Lukas have?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "This conversation never mentioned Lukas's rusts. So I did not answer.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_16",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Lukas had 8 rusts, Roberta had 4.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Roberta has 4 rusts.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_16",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "How many rusts does Roberta have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "4 rusts.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_16",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many rusts do Lukas and Roberta have in total?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "Lukas and Roberta have 12 rusts together.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_16",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "cross_language",
+    "ownership"
+   ],
+   "say": "Dwight은 지금 몇 개 있어?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_17",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "Jon had 4 scarves, and Sundar, who has 8, passed Jon 1.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Sundar gave Jon 1 scarf. Now Sundar has 7 scarves and Jon has 5.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_17",
+   "language": "en",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many does Sundar have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7 scarves.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_17",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many does Jon have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5 scarves.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_17",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Who has more scarves now, Sundar or Jon?",
+   "bucket": "correct",
+   "reason": "entity",
+   "violation": null,
+   "status": "answered",
+   "answer": "Sundar has more scarves.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_18",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Nicolas's got four bookshelfs, Leung's got twelve, and Sanand's got seven.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Leung has 12 bookshelfs and Sanand has 7.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_18",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Nicolas passed Leung three bookshelfs, and Leung passed Sanand three.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Nicolas has 1 bookshelf, Leung has 12 and Sanand has 10.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_18",
+   "language": "en",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many bookshelfs does Sanand have left?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "10 bookshelfs.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_18",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "What about Leung?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12 bookshelfs.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_18",
+   "language": "en",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "How come Sanand has that many bookshelfs?",
+   "bucket": "correct",
+   "reason": "cites_all",
+   "violation": null,
+   "status": "answered",
+   "answer": "Sanand has 10 bookshelfs. The giver loses that many. The receiver gains that many. It rests on \"Nicolas's got four bookshelfs, Leung's got twelve, and Sanand's got seven.\" and \"Nicolas passed Leung three bookshelfs, and Leung passed Sanand three.\".",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_19",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Mongo has five masks and Doug eight.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_19",
+   "language": "en",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mongo lost three masks.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Mongo has 2 masks.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_19",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Mongo got two masks from Doug.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Doug has 6 masks and Mongo has 4.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_19",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many masks does Mongo have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "4 masks.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_19",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many masks do Mongo and Doug have in total?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "Mongo and Doug have 10 masks together.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_20",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "Piotr is holding eight cages and Doug is holding twelve, and Piotr gave Doug three.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Piotr gave Doug 3 cages. Now Piotr has 5 cages and Doug has 15.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_20",
+   "language": "en",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many cages does Piotr have left?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5 cages.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_20",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Doug gave one cage to Piotr.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Doug has 14 cages and Piotr has 6.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_20",
+   "language": "en",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "Actually, Doug gave Piotr fourteen cages, not one.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "I changed the amount in the same event \"Doug gave one cage to Piotr.\" from 1 to 14. No new event was added. Now Doug has 1 cage and Piotr has 19.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_20",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "How many cages does Piotr have left?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "19 cages.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_20",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "What about Doug?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "1 cage.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_21",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Masanao owns 8 hooks and Piotr owns 9 hooks.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_21",
+   "language": "en",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many hooks do Masanao and Piotr have altogether?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "Masanao and Piotr have 17 hooks together.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_21",
+   "language": "en",
+   "n": 3,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "How many hooks does that person have now?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "I do not know who 'that person' refers to. Which of 'Piotr hooks' and 'Masanao hooks' do you mean?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_21",
+   "language": "en",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "ownership"
+   ],
+   "say": "What about Masanao?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "8 hooks.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_21",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "How many hooks has Piotr got?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "9 hooks.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_22",
+   "language": "en",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "Hein had 9 parrots. Kyung had 4.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Kyung has 4 parrots.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_22",
+   "language": "en",
+   "n": 2,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "Could you text Kyung for me?",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "I could not find what this statement is about. Please say what to use or what you want to know more plainly.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_22",
+   "language": "en",
+   "n": 3,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "Where does Hein keep the parrots?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "This conversation never stated the location of Hein's parrots. So I did not answer.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_22",
+   "language": "en",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "Kyung got 2 parrots from Hein.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "Recorded. Now Hein has 7 parrots and Kyung has 6.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_22",
+   "language": "en",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many parrots does Kyung have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6 parrots.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_en_c_22",
+   "language": "en",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "How many parrots does Hein have?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7 parrots.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_01",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "병권은 나비가 열한 개 있고, 나비를 네 개 가진 승민이 병권에게 두 개를 주었습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 승민이 병권에게 나비 2개를 줬습니다. 이제 승민 나비는 2개, 병권은 13개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_01",
+   "language": "ko",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "승민은 몇 개입니까?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "2개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_01",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "병권은 몇 개입니까?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "13개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_01",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "승민과 병권 중 누가 나비가 더 많습니까?",
+   "bucket": "correct",
+   "reason": "entity",
+   "violation": null,
+   "status": "answered",
+   "answer": "나비는 병권이 더 많습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_02",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "승희는 불판이 6개, 용주는 11개, 희원은 8개 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 용주 불판은 11개, 희원은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_02",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "승희가 용주한테 불판 2개를 보내고 용주가 희원한테 3개를 보냈어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"보냈어\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_02",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "희원은 지금 불판 몇 개야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"승희가 용주한테 불판 2개를 보내고 용주가 희원한테 3개를 보냈어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_02",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그럼 용주는?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_02",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "희원은 왜 불판이 그만큼 있는 거야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"승희가 용주한테 불판 2개를 보내고 용주가 희원한테 3개를 보냈어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_03",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "형진은 갈고리가 열두 개 있으며 태진은 아홉 개 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 태진 갈고리는 9개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_03",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "형진이 갈고리 한 개를 잃어버렸어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 형진 갈고리는 11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_03",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "형진이 태진한테서 갈고리 두 개를 받았어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 태진 갈고리는 7개, 형진은 13개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_03",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "형진은 갈고리를 몇 개 가지고 있어요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "13개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_03",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "형진과 태진은 갈고리가 모두 몇 개예요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "형진과 태진은 합쳐서 갈고리 20개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_04",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "지현은 거울이 네 개, 성민은 열두 개 있었는데 지현이 성민에게 거울 한 개를 주었다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 지현 거울은 3개, 성민은 13개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_04",
+   "language": "ko",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지현에게 거울이 몇 개 남았니?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "3개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_04",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지현에게 성민이 거울 두 개를 주었다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 성민 거울은 11개, 지현은 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_04",
+   "language": "ko",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아, 거울 2개가 아니라 1개였다.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"지현에게 성민이 거울 두 개를 주었다.\"의 수량을 2개에서 1개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 성민 거울은 12개, 지현은 4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_04",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "지현에게 거울이 몇 개 남았니?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_04",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그러면 성민은?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_05",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "재욱은 반지가 네 개 있다. 그리고 지민은 여덟 개 있다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 지민 반지는 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_05",
+   "language": "ko",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "재욱과 지민은 반지가 모두 몇 개지?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "재욱과 지민은 합쳐서 반지 12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_05",
+   "language": "ko",
+   "n": 3,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그 사람은 지금 반지 몇 개 있니?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "'그 사람'이 누구를 가리키는지 알지 못합니다. '지민 반지', '재욱 반지' 가운데 누구인가요?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_05",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "ownership"
+   ],
+   "say": "그러면 재욱은?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_05",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "지민에게 반지가 몇 개 남았니?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_06",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "태진이의 깔개는 4개고, 지은이의 깔개는 5개야.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_06",
+   "language": "ko",
+   "n": 2,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "지은이한테 전화 좀 걸어 줘.",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_06",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "태진이의 깔개는 어디에 있어?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 태진 깔개의 위치는 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_06",
+   "language": "ko",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "깔개 2개를 태진이가 지은이한테 넘겨줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 태진 깔개는 2개, 지은은 7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_06",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지은이는 깔개를 몇 개 가지고 있어?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_06",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "태진이는 깔개를 몇 개 가지고 있어?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "2개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_07",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "현민이는 꼬치가 4개 있고 경훈이는 11개 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 경훈 꼬치는 11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_07",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "경훈이가 현민이한테 꼬치 3개를 빌려줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 경훈 꼬치는 8개, 현민은 7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_07",
+   "language": "ko",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "잘못 말했어, 6개를 빌려줬어.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"경훈이가 현민이한테 꼬치 3개를 빌려줬어.\"의 수량을 3개에서 6개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 경훈 꼬치는 5개, 현민은 10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_07",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "현민이는 몇 개야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_07",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "현민이는 왜 꼬치가 그만큼 있는 거야?",
+   "bucket": "correct",
+   "reason": "cites_all",
+   "violation": null,
+   "status": "answered",
+   "answer": "현민 꼬치는 10개입니다. 주는 쪽에서 그만큼 뺍니다. 받는 쪽에 그만큼 더합니다. 근거는 \"현민이는 꼬치가 4개 있고 경훈이는 11개 있어.\", \"경훈이가 현민이한테 꼬치 6개를 빌려줬어.\", \"경훈이가 현민이한테 꼬치 3개를 빌려줬어.\", \"잘못 말했어, 6개를 빌려줬어.\"입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_08",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "병주는 빗자루가 5개 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_08",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "동윤이는 빗자루가 몇 개 있어?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 동윤 빗자루에 대한 말은 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_08",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "동윤이는 빗자루가 8개 있으며 태규는 4개 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 태규 빗자루는 4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_08",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "태규는 빗자루가 몇 개 있어?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_08",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "동윤이와 태규는 빗자루가 모두 몇 개야?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "태규와 동윤은 합쳐서 빗자루 12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_08",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "cross_language",
+    "ownership"
+   ],
+   "say": "How many does Byeongju have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "5 빗자루.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_09",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "지은은 다리미가 여덟 개 있고, 다리미를 여섯 개 가진 태진이 지은에게 세 개를 건넸다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 태진이 지은에게 다리미 3개를 줬습니다. 이제 태진 다리미는 3개, 지은은 11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_09",
+   "language": "ko",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "태진은 지금 다리미 몇 개지?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "3개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_09",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지은은 지금 다리미 몇 개지?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_09",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "태진과 지은 중 누가 다리미가 더 많니?",
+   "bucket": "correct",
+   "reason": "entity",
+   "violation": null,
+   "status": "answered",
+   "answer": "다리미는 지은이 더 많습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_10",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "재철은 오토바이가 여섯 대, 용주는 아홉 대, 경철은 열 대 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 용주 오토바이는 9개, 경철은 10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_10",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "재철이 용주한테 오토바이 세 대를 주고 용주가 경철한테 세 대를 줬어.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"줬어\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_10",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "경철은 지금 오토바이 몇 대야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"재철이 용주한테 오토바이 세 대를 주고 용주가 경철한테 세 대를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_10",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그럼 용주는?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_10",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "경철은 왜 오토바이가 그만큼 있는 거야?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"재철이 용주한테 오토바이 세 대를 주고 용주가 경철한테 세 대를 줬어.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_11",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "재철은 청바지를 8개 가지고 있고 태진은 10개 가지고 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 태진 청바지는 10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_11",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "재철이 청바지 3개를 잃어버렸습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 재철 청바지는 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_11",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "재철이 태진에게서 청바지 2개를 받았습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 태진 청바지는 8개, 재철은 7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_11",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "재철은 지금 청바지 몇 개입니까?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_11",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "재철과 태진은 청바지가 모두 몇 개입니까?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "재철과 태진은 합쳐서 청바지 15개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_12",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "지환은 녹이 10개, 영근은 8개 있었는데 지환이 영근한테 녹 3개를 빌려줬어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 지환 녹은 7개, 영근은 11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_12",
+   "language": "ko",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지환한테 녹이 몇 개 남았어요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_12",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지환이 영근한테서 녹 1개를 받았어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 영근 녹은 10개, 지환은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_12",
+   "language": "ko",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아, 녹 1개가 아니라 9개였어요.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"지환이 영근한테서 녹 1개를 받았어요.\"의 수량을 1개에서 9개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 영근 녹은 2개, 지환은 16개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_12",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "지환한테 녹이 몇 개 남았어요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "16개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_12",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그럼 영근은요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "2개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_13",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "은주는 린스가 6개, 진욱은 10개 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 진욱 린스는 10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_13",
+   "language": "ko",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "은주와 진욱은 린스가 모두 몇 개예요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "은주와 진욱은 합쳐서 린스 16개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_13",
+   "language": "ko",
+   "n": 3,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그 사람은 지금 린스 몇 개 있어요?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "'그 사람'이 누구를 가리키는지 알지 못합니다. '진욱 린스', '은주 린스' 가운데 누구인가요?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_13",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "ownership"
+   ],
+   "say": "그럼 은주는요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_13",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "진욱은 몇 개예요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_14",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "용주는 꽃병이 5개, 준하는 8개 있어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 준하 꽃병은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_14",
+   "language": "ko",
+   "n": 2,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "준하한테 전화 좀 걸어 줘.",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_14",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "용주의 꽃병은 어디에 있어?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 용주 꽃병의 위치는 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_14",
+   "language": "ko",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "용주가 준하한테 꽃병 3개를 줬어.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 용주 꽃병은 2개, 준하는 11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_14",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "준하는 꽃병을 몇 개 가지고 있어?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_14",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "용주는 꽃병을 몇 개 가지고 있어?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "2개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_15",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "동윤의 스피커는 네 개고, 현진의 스피커는 다섯 개다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_15",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "스피커 한 개를 현진이 동윤에게 건넸다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 현진 스피커는 4개, 동윤은 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_15",
+   "language": "ko",
+   "n": 3,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "잘못 말했다, 4개를 건넸다.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"스피커 한 개를 현진이 동윤에게 건넸다.\"의 수량을 1개에서 4개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 현진 스피커는 1개, 동윤은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_15",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "restart",
+    "transfer"
+   ],
+   "say": "동윤은 지금 스피커 몇 개지?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_15",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "동윤은 왜 스피커가 그만큼 있는 거지?",
+   "bucket": "correct",
+   "reason": "cites_all",
+   "violation": null,
+   "status": "answered",
+   "answer": "동윤 스피커는 8개입니다. 주는 쪽에서 그만큼 뺍니다. 받는 쪽에 그만큼 더합니다. 근거는 \"동윤의 스피커는 네 개고, 현진의 스피커는 다섯 개다.\", \"스피커 4 개를 현진이 동윤에게 건넸다.\", \"스피커 한 개를 현진이 동윤에게 건넸다.\", \"잘못 말했다, 4개를 건넸다.\"입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_16",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "승민은 연어가 열두 개 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_16",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "성민은 연어가 몇 개 있습니까?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 성민 연어에 대한 말은 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_16",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "성민은 연어가 아홉 개 있습니다. 그리고 원진은 여섯 개 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 원진 연어는 6개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_16",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "원진은 연어가 몇 개 있습니까?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "6개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_16",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "성민과 원진은 연어가 모두 몇 개입니까?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "성민과 원진은 합쳐서 연어 15개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_16",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "cross_language",
+    "ownership"
+   ],
+   "say": "How many does Seungmin have now?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12 연어.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_17",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "진욱은 반지가 8개 있고, 반지를 5개 가진 지환이 진욱한테 2개를 줬어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 지환이 진욱에게 반지 2개를 줬습니다. 이제 지환 반지는 3개, 진욱은 10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_17",
+   "language": "ko",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지환한테 반지가 몇 개 남았어요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "3개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_17",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "진욱한테 반지가 몇 개 남았어요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_17",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지환과 진욱 중 누가 반지가 더 많아요?",
+   "bucket": "correct",
+   "reason": "entity",
+   "violation": null,
+   "status": "answered",
+   "answer": "반지는 진욱이 더 많습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_18",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "지현은 계피가 다섯 개, 승현은 열두 개, 지은은 네 개 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 승현 계피는 12개, 지은은 4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_18",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지현이 승현에게 계피 세 개를 빌려주고 승현이 지은에게 두 개를 빌려주었습니다.",
+   "bucket": "hold",
+   "reason": "not_recorded:held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"빌려주었습니다\"의 뜻을 아직 알지 못합니다. 뜻을 알려 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_18",
+   "language": "ko",
+   "n": 3,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "지은은 계피가 몇 개 있습니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"지현이 승현에게 계피 세 개를 빌려주고 승현이 지은에게 두 개를 빌려주었습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_18",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그러면 승현은요?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_18",
+   "language": "ko",
+   "n": 5,
+   "label": "why",
+   "act": "explain",
+   "tags": [
+    "why"
+   ],
+   "say": "지은은 왜 계피가 그만큼 있는 겁니까?",
+   "bucket": "hold",
+   "reason": "held",
+   "violation": null,
+   "status": "held",
+   "answer": "\"지현이 승현에게 계피 세 개를 빌려주고 승현이 지은에게 두 개를 빌려주었습니다.\"를 아직 읽지 못했습니다. 그래서 지금 값을 정하지 않았습니다. 다른 말로 다시 말해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_19",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "승원은 꽃다발이 일곱 개 있고 형진은 다섯 개 있습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 형진 꽃다발은 5개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_19",
+   "language": "ko",
+   "n": 2,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "승원이 꽃다발 한 개를 잃어버렸습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 승원 꽃다발은 6개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_19",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "승원이 형진에게서 꽃다발 두 개를 받았습니다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 형진 꽃다발은 3개, 승원은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_19",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "승원은 꽃다발이 몇 개 있습니까?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_19",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "승원과 형진은 꽃다발이 모두 몇 개입니까?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "승원과 형진은 합쳐서 꽃다발 11개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_20",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership",
+    "transfer"
+   ],
+   "say": "재철은 띠가 12개, 승희는 10개 있었는데 재철이 승희에게 띠 3개를 건넸다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 재철 띠는 9개, 승희는 13개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_20",
+   "language": "ko",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "재철은 몇 개지?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "9개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_20",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "띠 3개를 승희가 재철에게 건넸다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 승희 띠는 10개, 재철은 12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_20",
+   "language": "ko",
+   "n": 4,
+   "label": "correction",
+   "act": "revise",
+   "tags": [
+    "correction"
+   ],
+   "say": "아, 띠 3개가 아니라 6개였다.",
+   "bucket": "correct",
+   "reason": "revised",
+   "violation": null,
+   "status": "observed",
+   "answer": "같은 사건 \"띠 3개를 승희가 재철에게 건넸다.\"의 수량을 3개에서 6개로 고쳤습니다. 새 사건은 더하지 않았습니다. 이제 승희 띠는 7개, 재철은 15개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_20",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "transfer"
+   ],
+   "say": "재철은 몇 개지?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "15개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_20",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "correction",
+    "follow_up",
+    "transfer"
+   ],
+   "say": "그러면 승희는?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "7개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_21",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "동윤은 다지기가 4개 있고 승원은 12개 있어요.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 승원 다지기는 12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_21",
+   "language": "ko",
+   "n": 2,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "동윤과 승원은 다지기가 모두 몇 개예요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "동윤과 승원은 합쳐서 다지기 16개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_21",
+   "language": "ko",
+   "n": 3,
+   "label": "ambiguous",
+   "act": "clarify",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "say": "그 사람은 지금 다지기 몇 개 있어요?",
+   "bucket": "correct",
+   "reason": "asked_which",
+   "violation": null,
+   "status": "held",
+   "answer": "'그 사람'이 누구를 가리키는지 알지 못합니다. '승원 다지기', '동윤 다지기' 가운데 누구인가요?",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_21",
+   "language": "ko",
+   "n": 4,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ambiguous_referent",
+    "follow_up",
+    "ownership"
+   ],
+   "say": "그럼 동윤은요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "4개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_21",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "ownership"
+   ],
+   "say": "승원은 다지기가 몇 개 있어요?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "12개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_22",
+   "language": "ko",
+   "n": 1,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "ownership"
+   ],
+   "say": "동윤은 분필이 열한 개 있고 현민은 여덟 개 있다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 현민 분필은 8개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_22",
+   "language": "ko",
+   "n": 2,
+   "label": "unsupported",
+   "act": "decline",
+   "tags": [],
+   "say": "현민에게 전화 좀 걸어 줘.",
+   "bucket": "correct",
+   "reason": "declined",
+   "violation": null,
+   "status": "held",
+   "answer": "이 문장이 무엇에 대한 말인지 찾지 못했습니다. 더 쉽게 다시 말씀해 주세요.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_22",
+   "language": "ko",
+   "n": 3,
+   "label": "hold",
+   "act": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "say": "동윤의 분필은 어디에 있니?",
+   "bucket": "correct",
+   "reason": "held_and_named",
+   "violation": null,
+   "status": "held",
+   "answer": "이 대화에서 동윤 분필의 위치는 나온 적이 없습니다. 그래서 답하지 않았습니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_22",
+   "language": "ko",
+   "n": 4,
+   "label": "hold",
+   "act": "record",
+   "tags": [
+    "transfer"
+   ],
+   "say": "동윤이 현민에게 분필 두 개를 넘겨주었다.",
+   "bucket": "correct",
+   "reason": "recorded",
+   "violation": null,
+   "status": "observed",
+   "answer": "반영했습니다. 이제 동윤 분필은 9개, 현민은 10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_22",
+   "language": "ko",
+   "n": 5,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "현민은 분필을 몇 개 가지고 있니?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "10개입니다.",
+   "research_calls": 0
+  },
+  {
+   "dialogue": "dev3_ko_c_22",
+   "language": "ko",
+   "n": 6,
+   "label": "answerable",
+   "act": "answer",
+   "tags": [
+    "transfer"
+   ],
+   "say": "동윤은 분필을 몇 개 가지고 있니?",
+   "bucket": "correct",
+   "reason": "value",
+   "violation": null,
+   "status": "answered",
+   "answer": "9개입니다.",
+   "research_calls": 0
+  }
+ ]
+}
