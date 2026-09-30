@@ -2710,12 +2710,12 @@ class ReasoningContext:
         speaker = parser.speaker_placeholder
         for item in facts:
             이름 = str(item["triple"][0])
-            if speaker and 이름.split()[:1] == [speaker]:
+            if speaker and self._person_of(이름) == speaker:
                 continue
             차례표[이름] = max(차례표.get(이름, -1), item["evidence"].get("turn", -1))
             if parser.ellipsis.get("part_reference") == "leading_words" and len(이름.split()) > 1:
-                # 앞말만으로 대상을 가리키는 언어라면 그 앞말도 가리킬 수 있는 것이다.
-                앞말 = 이름.split()[0]
+                # 앞말만으로 대상을 가리키는 언어라면 그 앞말도 가리킬 수 있는 것이다 (the holder as one identity, step 3).
+                앞말 = self._person_of(이름)
                 차례표[앞말] = max(차례표.get(앞말, -1), item["evidence"].get("turn", -1))
         풀림 = []
         for asked in query:
@@ -2758,6 +2758,25 @@ class ReasoningContext:
             풀림.append({**asked, "triple": [고른것] + triple[1:]})
         return 풀림, None
 
+    def _person_of(self, key):
+        """The holder a key names, as one identity (step 3): the holder node's name at effort 2 and above (a holder
+        of several words, 김 과장, red shed, is one person), the key's leading word below (main's behaviour)."""
+        key = str(key or "")
+        if not key.split():
+            return key
+        if not self._effort_allows(2) or not self._permitted(None):
+            return key.split()[0]
+        try:
+            graph = self.conversation_graph()
+        except Exception:    # noqa: BLE001
+            return key.split()[0]
+        known = graph.of_key(key)
+        if known is not None:
+            return graph.nodes[known[0]]["name"]
+        named = [n["name"] for n in graph.nodes.values() if n["kind"] in ("holder", "place")
+                 and (key == n["name"] or key.startswith(n["name"] + " "))]
+        return max(named, key=len) if named else key.split()[0]
+
     def _salient_person(self):
         """The one person the discourse fixes for a pointer, or None (G3.0 a).
 
@@ -2775,7 +2794,7 @@ class ReasoningContext:
 
     def _alone(self, name):
         """No other person the discourse names could be meant instead of ``name``."""
-        return set(self.salient) <= {name.split()[0]}
+        return set(self.salient) <= {self._person_of(name)}
 
     def _salient_choice(self, names):
         """The candidate among ``names`` that is the salient person, or None."""
@@ -2802,8 +2821,9 @@ class ReasoningContext:
             words = value.split()
             if any(words[i:i + len(p.split())] == p.split() for p in pointers for i in range(len(words))):
                 return
-            if words[0] not in out:
-                out.append(words[0])
+            person = self._person_of(value)
+            if person not in out:
+                out.append(person)
         for row in rows or []:
             if not isinstance(row, dict):
                 continue
@@ -3113,7 +3133,7 @@ class ReasoningContext:
         else:
             answer = replies["explain_answer"].format(**{**values, "물음": last["question"],
                                                         "답": last["answer"]})
-        people = sorted({str(row.get("subject", "")).split()[0] for row in changes if row.get("subject")})
+        people = sorted({self._person_of(row.get("subject", "")) for row in changes if row.get("subject")})
         self.last_mentioned = people
         self.last_subject = people[0] if len(people) == 1 else None
         if people:
@@ -3160,7 +3180,7 @@ class ReasoningContext:
                     "answer": replies[key].format(**values),
                     "meaning": {"act": "ask", "reason": key, "word": request["excluded"], **(fields or {})},
                     "verification": self._verification(knowledge_path, [{"ok": False, "reason": key}])}
-        people = sorted({str(item["triple"][0]).split()[0] for item in facts
+        people = sorted({self._person_of(item["triple"][0]) for item in facts
                          if isinstance(item.get("triple", [None])[0], str)
                          and len(str(item["triple"][0]).split()) > 1})
         if excluded in pointers:
@@ -3524,7 +3544,7 @@ class ReasoningContext:
         self.last_explanation = {"kind": "correction", "correction": deepcopy(record),
                                  "transitions": deepcopy(corrected["transitions"])}
         # 고친 사건에 둘 이상이 걸리면 뒤의 지시어가 누구를 가리키는지 정해지지 않는다.
-        touched = sorted({str(row.get("subject", "")).split()[0] for row in changes if row.get("subject")})
+        touched = sorted({self._person_of(row.get("subject", "")) for row in changes if row.get("subject")})
         self.last_subject = touched[0] if len(touched) == 1 else None
         self.last_mentioned = touched
         self.salient += [person for person in touched if person not in self.salient]
@@ -3826,7 +3846,7 @@ class ReasoningContext:
                    and (row.get("evidence") or {}).get("turn", index) == index]
         self.last_explanation = {"kind": "correction", "correction": deepcopy(record),
                                  "transitions": deepcopy(corrected["transitions"])}
-        touched = sorted({str(row.get("subject", "")).split()[0] for row in changes if row.get("subject")})
+        touched = sorted({self._person_of(row.get("subject", "")) for row in changes if row.get("subject")})
         self.last_subject = None
         self.last_mentioned = touched
         self.salient += [person for person in touched if person not in self.salient]
@@ -3956,12 +3976,13 @@ class ReasoningContext:
         return self._grounded_reading(parser, winner["label"], winner["thing"])
 
     def _ground_lookup(self, parser, query, facts):
-        """A count question read under a key the state does not count (G7-Q, effort 2): the state's keys it
-        may name are the candidates -- the same holder with the thing in the other number the pack declares
-        (pen / pens), a holder whose key ends in the words asked (the shed for the red shed, 과장님 for 김 과장),
-        a holder a statement named with the relation word asked right before it (my uncle for My uncle Tom).
-        Exactly one candidate is asked instead; two or none leave the question as it was read."""
-        from relational_semantics import declared_plural
+        """A count question read under a key the state does not count (G7-Q, effort 2; step 3 by node): the count
+        edges it may name are the candidates -- the same holder and the thing by its other declared number (pen /
+        pens), a holder whose name ends in the words asked (the shed for the red shed, 과장님 for 김 과장), a holder a
+        statement named with the relation word asked (my uncle for My uncle Tom; the nurse for The nurse, Mia,), a
+        holder asked alone or with its particle left on (its one thing, else the thing the question before asked),
+        a holder and one declared word or a part of its one thing's name. Exactly one candidate is asked instead;
+        two ask which, naming every one; none leaves the question as it was read."""
         rows = [q for q in query if isinstance(q, dict)]
         if not self._effort_allows(2) or len(rows) != 1 or not isinstance(rows[0].get("triple"), list):
             return query, None
@@ -3969,96 +3990,86 @@ class ReasoningContext:
         if len(triple) != 3 or triple[1] != "count" or not isinstance(triple[0], str) or triple[0].startswith(("?", "$")):
             return query, None
         fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
-        counted = {str(r["triple"][0]) for r in facts if isinstance(r.get("triple"), list) and r["triple"][1] == "count"
-                   and isinstance(r["triple"][0], str)}
-        if triple[0] in counted:
+        graph = self.conversation_graph()
+        if graph.of_key(triple[0]) in graph.counts and graph.value(*graph.of_key(triple[0])) is not None:
             return query, None
         try:
             if parser.answer({"facts": facts, "query": query}) is not None:
                 return query, None      # the question as read has its answer (a leading-word referent, …)
         except Exception:    # noqa: BLE001
             pass
-        keys = list(dict.fromkeys(self._holder_keys(parser)))
-        declared = getattr(parser, "noun_number", None) or {}
+        particles = self._frame_particles(parser)
         titles = [fold(t) for t in (parser.holder_forms or {}).get("name_titles", [])]
 
-        def same_thing(a, b):
-            a, b = fold(a), fold(b)
-            if not a or not b:
-                return False            # a key with no thing names no thing
-            plural_a, plural_b = fold(declared_plural(a, declared) or ""), fold(declared_plural(b, declared) or "")
-            return a == b or (bool(plural_a) and plural_a == b) or (bool(plural_b) and plural_b == a)
+        def bare_of(text):
+            for title in titles:
+                if fold(text).endswith(title) and len(text) > len(title):
+                    text = text[:-len(title)]
+            return text
 
-        def holder_of(subject):
-            return next((k for k in sorted(keys, key=lambda k: -len(k.split())) if subject == k
-                         or subject.startswith(k + " ")), None)
+        def holders_named(text):
+            nodes = self._graph_nodes(parser, graph, text, bare_of(text), ("holder", "place"), forms=("key", "title"))
+            if not nodes and len(text.split()) == 1:
+                # a holder word with its particle still on it (a one-syllable name before 은/는)
+                stem = next((text[:-len(p)] for p in particles if text.endswith(p) and len(text) > len(p)), None)
+                nodes = self._graph_nodes(parser, graph, stem, None, ("holder", "place"), forms=("key", "title")) \
+                    if stem else []
+            return nodes
+
+        def counted(holder):
+            return [t for t in graph.things_of(holder) if graph.value(holder, t) is not None]
         words = triple[0].split()
-        tails = "|".join(re.escape(p) for p in self._frame_particles(parser)) or "(?!)"
-        found = {}
-        particles = self._frame_particles(parser)
-
-        def own_things(name):
-            # the keys whose whole holder part is this holder (H T, not H H H T)
-            return sorted(subject for subject in counted if holder_of(subject) == name)
-        alone = triple[0]
-        if len(alone.split()) == 1 and holder_of(alone) != alone:
-            # a holder word with its particle still on it (a one-syllable name before 은/는)
-            bare_word = next((alone[:-len(p)] for p in particles if alone.endswith(p) and len(alone) > len(p)
-                              and holder_of(alone[:-len(p)]) == alone[:-len(p)]), None)
-            alone = bare_word or alone
-        if holder_of(alone) == alone:
+        alone = holders_named(triple[0])
+        if len(alone) == 1:
             # a holder asked with no thing: the one thing it counts, else the thing the question before asked
-            own = own_things(alone)
-            before = ((getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item") or "")
-            pick = own if len(own) == 1 else [subject for subject in own if before and subject == alone + " " + before]
+            own = counted(alone[0])
+            before = (getattr(self, "_frame_before_turn", None) or self.last_frame or {}).get("item")
+            before_node = graph.id_of("thing", before) if before else None
+            pick = own if len(own) == 1 else [t for t in own if t == before_node]
             if len(pick) == 1:
-                return [dict(rows[0], triple=[pick[0], "count", "?n"])], None
-        if len(words) == 2 and holder_of(words[0]) == words[0]:
-            # a holder and one word that is no thing of the state: a word the pack declares (a title, a relation,
-            # a word for "the thing(s)"), or a part of the holder's one thing, names that thing; any other noun
-            # may be a thing never mentioned, and is left as asked
-            own = own_things(words[0])
-            said = words[1]
-            said = next((said[:-len(p)] for p in particles if said.endswith(p) and len(said) > len(p)), said)
-            forms = parser.holder_forms or {}
-            known = self._declared_words(parser) | {fold(w) for w in list(forms.get("job_titles", []))
-                                                   + list(forms.get("name_titles", [])) + list(forms.get("role_titles", []))
-                                                   + list(forms.get("relation_nouns", []))}
-            if len(own) == 1:
-                thing = own[0][len(words[0]):].strip()
-                if not any(fold(said) == fold(subject[len(holder_of(subject) or ""):].strip()) for subject in counted) \
-                        and (fold(said) in known or fold(words[1]) in known
-                             or (len(said) > 1 and (fold(thing).endswith(fold(said)) or fold(said).endswith(fold(thing))))):
-                    return [dict(rows[0], triple=[own[0], "count", "?n"])], None
+                return [dict(rows[0], triple=[graph.key(alone[0], pick[0]), "count", "?n"])], None
+        if len(words) == 2:
+            first = holders_named(words[0])
+            if len(first) == 1:
+                # a holder and one word that is no thing of the state: a word the pack declares (a title, a relation,
+                # a word for "the thing(s)"), or a part of the holder's one thing, names that thing; any other noun
+                # may be a thing never mentioned, and is left as asked
+                own = counted(first[0])
+                said = next((words[1][:-len(p)] for p in particles if words[1].endswith(p) and len(words[1]) > len(p)),
+                            words[1])
+                forms = parser.holder_forms or {}
+                known = self._declared_words(parser) | {fold(w) for w in list(forms.get("job_titles", []))
+                                                       + list(forms.get("name_titles", [])) + list(forms.get("role_titles", []))
+                                                       + list(forms.get("relation_nouns", []))}
+                is_thing = bool(self._graph_nodes(parser, graph, said, None, ("thing",)))
+                if len(own) == 1 and not is_thing:
+                    thing = graph.nodes[own[0]]["name"]
+                    if fold(said) in known or fold(words[1]) in known or (
+                            len(said) > 1 and (fold(thing).endswith(fold(said)) or fold(said).endswith(fold(thing)))):
+                        return [dict(rows[0], triple=[graph.key(first[0], own[0]), "count", "?n"])], None
+        found = {}
         for k in range(1, len(words)):
             asked_holder, asked_thing = " ".join(words[:k]), " ".join(words[k:])
-            bare = asked_holder
-            for title in titles:
-                if fold(bare).endswith(title) and len(bare) > len(title):
-                    bare = bare[:-len(title)]
-            # (a particle left on the holder word: 탐은 연필)
-            bare = next((bare[:-len(p)] for p in particles if bare.endswith(p) and len(bare) > len(p)
-                         and holder_of(bare[:-len(p)]) == bare[:-len(p)]), bare)
-            for subject in counted:
-                holder = holder_of(subject)
-                if holder is None or not same_thing(asked_thing, subject[len(holder):].strip()):
-                    continue
-                if fold(holder) == fold(bare):
-                    why = "number"
-                elif fold(holder).endswith(" " + fold(bare)):
-                    why = "part"
-                elif any(re.search(r"(?<![\w])%s\s+%s(?:%s)?(?![\w])" % (re.escape(bare), re.escape(holder), tails),
-                                   source, re.IGNORECASE if parser.data.get("ignore_case") else 0)
-                         for source in self.observations):
-                    why = "relation"
-                elif any(re.search(r"(?<![\w])%s,\s+(?:\w+\s+){0,2}%s(?![\w])|(?<![\w])%s,\s+(?:\w+\s+){0,2}%s(?![\w])"
-                                   % (re.escape(bare), re.escape(holder), re.escape(holder), re.escape(bare)),
-                                   source, re.IGNORECASE if parser.data.get("ignore_case") else 0)
-                         for source in self.observations):
-                    why = "apposition"      # the nurse, Mia, ... / Mia, the nurse, ...
-                else:
-                    continue
-                found[subject] = (why, asked_holder)
+            things = self._graph_nodes(parser, graph, asked_thing, None, ("thing",), forms=("key", "number"))
+            if not things:
+                continue
+            bare = bare_of(asked_holder)
+            named = set(holders_named(asked_holder))
+            described = set(graph.find(bare, kinds=("holder", "place"), fold=fold, forms=("relation", "possessive")))
+            for thing in things:
+                for holder in graph.holders_of(thing):
+                    if graph.value(holder, thing) is None:
+                        continue
+                    name = graph.nodes[holder]["name"]
+                    if holder in named:
+                        why = "number"
+                    elif fold(name).endswith(" " + fold(bare)):
+                        why = "part"
+                    elif holder in described:
+                        why = "relation"
+                    else:
+                        continue
+                    found[graph.key(holder, thing)] = (why, asked_holder)
         winner, deciding, ranking = self._rank_candidates(
             [{"label": subject, "fit": {"state": 1}} for subject in sorted(found)], kind="lookup")
         if winner is None and deciding == "tie":
@@ -4367,6 +4378,15 @@ class ReasoningContext:
         behind = (found.group(1) or "")
         if behind:
             out.append(("title", holder + behind))
+        # an apposition around the name: "The nurse, Mia, …" / "Mia, the nurse, …"
+        before_comma = re.search(r"(\w+)\s+(\w+),\s*$", text[:found.start()])
+        if before_comma and fold(before_comma.group(1)) in possessives:
+            out.append(("relation", before_comma.group(2)))
+            out.append(("possessive", "%s %s" % (before_comma.group(1), before_comma.group(2))))
+        after_comma = re.match(r"\s*,\s*(\w+)\s+(\w+)\s*,", text[found.end():])
+        if after_comma and fold(after_comma.group(1)) in possessives:
+            out.append(("relation", after_comma.group(2)))
+            out.append(("possessive", "%s %s" % (after_comma.group(1), after_comma.group(2))))
         ahead = text[:found.start()].split()[-2:]
         if ahead and fold(ahead[-1]) in titles:
             out.append(("title", "%s %s" % (ahead[-1], holder)))
@@ -4470,6 +4490,18 @@ class ReasoningContext:
         surface = surface.strip(" ,.!?")
         if not surface:
             return None
+        if self._effort_allows(2) and self._permitted(None):
+            # the graph's aliases first (step 3): the key, a title, a possessive phrase, a which-person reply
+            try:
+                graph = self.conversation_graph()
+                fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+                nodes = graph.find(surface, kinds=("holder", "place"), fold=fold,
+                                   forms=("key", "title", "possessive", "reply"))
+                names = {graph.nodes[n]["name"] for n in nodes}
+                if len(names) == 1 and next(iter(names)) in keys:
+                    return next(iter(names))
+            except Exception:    # noqa: BLE001
+                pass
         tried = [surface, parser.canonical_name(surface)]
         tried += [literal for literal, _notes in parser._variant_literals(surface)]
         particles = sorted({p for group in parser.slot_particles for p in group} | set(parser.case_particles)
@@ -4627,7 +4659,7 @@ class ReasoningContext:
                    and (row.get("evidence") or {}).get("turn", index) == index]
         self.last_explanation = {"kind": "correction", "correction": deepcopy(record),
                                  "transitions": deepcopy(corrected["transitions"])}
-        touched = sorted({str(row.get("subject", "")).split()[0] for row in changes if row.get("subject")})
+        touched = sorted({self._person_of(row.get("subject", "")) for row in changes if row.get("subject")})
         self.last_subject = None
         self.last_mentioned = touched
         self.salient += [person for person in touched if person not in self.salient]
@@ -4784,8 +4816,8 @@ class ReasoningContext:
             # asked back, never resolved to whichever fact came last.
             people = []
             for subject in subjects:
-                if subject.split()[0] not in people:
-                    people.append(subject.split()[0])
+                if self._person_of(subject) not in people:
+                    people.append(self._person_of(subject))
             self.last_subject = subjects[-1] if len(people) == 1 else None
             self.last_mentioned = people
             # A statement adds whom it names to the people a pointer may mean.
@@ -4798,8 +4830,8 @@ class ReasoningContext:
                 actor = (event.get("자리") or {}).get("은")
                 if isinstance(actor, str) and actor:
                     self.last_subject = actor
-                    if actor.split()[0] not in self.salient:
-                        self.salient.append(actor.split()[0])
+                    if self._person_of(actor) not in self.salient:
+                        self.salient.append(self._person_of(actor))
 
     def _name_reply(self, parser, text, knowledge_path):
         """A reply that only names a person: ``And Moru?``, ``모래는?``, ``I mean Haru``.
@@ -4862,6 +4894,12 @@ class ReasoningContext:
         else:
             question = self.last_question["text"]
             old = " ".join(self.last_question["subject"].split()[:len(name.split())])
+            if self._effort_allows(2):
+                # the name replaces the holder of the last question, as one identity (step 3)
+                holder = self._person_of(self.last_question["subject"])
+                if re.search(r"(?<!\w)" + re.escape(holder) + r"(?![A-Za-z])", question,
+                             re.IGNORECASE if parser.data.get("ignore_case") else 0):
+                    old = holder
         # The replaced words start a word; Latin letters may not continue them
         # (so "Moru" is not found in "Morula"), a particle may.
         pattern = re.compile(r"(?<!\w)" + re.escape(old) + r"(?![A-Za-z])",
@@ -5738,7 +5776,7 @@ class ReasoningContext:
                 # anyone the conversation named, and two or more are asked back (G3.0 a).
                 parser = self._parser()
                 facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
-                self.salient = sorted({str(row["triple"][0]).split()[0] for row in facts
+                self.salient = sorted({self._person_of(row["triple"][0]) for row in facts
                                        if isinstance(row["triple"][0], str) and str(row["triple"][0]).strip()})
         if result is not None and "answer" in result:
             if isinstance(result.get("meaning"), dict):
@@ -7004,7 +7042,7 @@ class ReasoningContext:
                             "말": 가리킴["말"],
                             "목록": ", ".join("'%s'" % 이름 for 이름 in 가리킴["후보"])})}
             # A pointer read as one person fixes that person now.
-            resolved = [str(new["triple"][0]).split()[0] for old, new in zip(current["query"] or [], 풀린물음 or [])
+            resolved = [self._person_of(new["triple"][0]) for old, new in zip(current["query"] or [], 풀린물음 or [])
                         if isinstance(new, dict) and isinstance(new.get("triple"), list) and new["triple"]
                         and isinstance(new["triple"][0], str) and new["triple"][0].strip()
                         and new["triple"][0] != (old.get("triple") or [None])[0]]
