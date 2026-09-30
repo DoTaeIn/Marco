@@ -23,6 +23,7 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | [marco.language.md](architecture/marco.language.md) | `marco.language`, the language seam: `realize` |
 | [marco.language.realizer.md](architecture/marco.language.realizer.md) | `marco.language.realizer`: Hermeneia, the language realization pipeline, and the semantic check of Palinorrhesis |
 | [marco.trace.md](architecture/marco.trace.md) | `marco.trace`: Hypomnema, the provenance ledger |
+| [conversation-graph.md](architecture/conversation-graph.md) | The conversation identity graph: nodes, alias and count edges, lookups, snapshot, and which string-key places each step replaces |
 | [mco.md](architecture/mco.md) | `mco`, the public API and CLI (0.1.0 on PyPI) |
 | [mco.backends.md](architecture/mco.backends.md) | `mco.backends`, the runtime extension API |
 
@@ -110,6 +111,7 @@ that code closes it.
 | [W6-1.md](requests/W6-1.md) | The meaning fields round 6's plans read |
 | [G7-2.md](requests/G7-2.md) | Where the effort setting is declared and how to read it |
 | [G7-3.md](requests/G7-3.md) | The shared ranking of candidates, its fields and its commits |
+| [G7-4.md](requests/G7-4.md) | The conversation graph's interface for the statement side: calls, fields, what the reader must name |
 
 ## Korean design records (`docs/ko/`)
 
