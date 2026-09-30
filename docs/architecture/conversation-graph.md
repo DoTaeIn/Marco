@@ -14,8 +14,14 @@ facts of `ReasoningContext._cached_replay`), kept on the context, carried in the
 | --- | --- | --- |
 | node | `id` (`h1`, `t1`, `p1`: stable in order of first mention), `kind` (`holder`, `thing`, `place`), `name` (the key word(s) the reader gave) | each count fact's key, split into holder and thing (a place from the fact's `places`; otherwise the holder is the longest holder key the key starts with, as `_holder_keys` splits today) |
 | alias edge | `node`, `text` (as said), `form` (`key`, `said`, `title`, `relation`, `possessive`, `number` (pen/pens), `pointer`, `particle`), `turn` | the key; the words said right before the key in the statement (`Dr.`, `my cousin`, `김 … 과장님`, `제 친구`); the other declared number of a thing; pointers resolved by a question (`that one` → h2 at turn 5) |
-| count edge | `holder`, `thing`, `value` (int, or `null` for a count not known), `turns` (the evidence turns it rests on), `withdrawn` (turns corrected away) | the current state after replay (`current_facts`), its evidence |
+| count edge | `holder`, `thing`, `value` (int, or `null` for a count not known), `origin` (`said`: a statement gave the value; `computed`: replay derived it from a transfer or a use-up), `turns` (the evidence turns it rests on) | the current state after replay (`current_facts`), its evidence; observed and inferred kept apart (principle 6), and "why" reads `origin` |
 | frame | `turn`, `holders` (node ids), `thing` (node id), `op` | each question read (today's `last_frame`, `recent_frames`) |
+
+**The split is not the graph's identity rule.** In step 1 a fact's key is split into holder and thing by the longest
+holder key it starts with, because the replayed facts carry no split. Step 3 moves the split to the reader: the reader
+names the holder node and the thing node of each fact, and the graph never splits a string. Until then a key split
+wrongly today stays wrong in the graph (`보늬는 연필 세 개, 컵 두 개를 …` makes `컵` a holder); a strict expected
+failure in `tests/test_conversation_graph.py` keeps it in view.
 
 Lookups, all by node: `find(text, kind=None)` → nodes whose alias matches (folded; a declared particle, title or
 suffix taken off first); `holders_of(thing)`, `things_of(holder)`; `count(holder, thing)`; `key(holder, thing)` →
