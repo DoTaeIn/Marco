@@ -1,0 +1,203 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-09-lp",
+ "language": "ko",
+ "domain": "자취방",
+ "categories": [
+  "cross_language",
+  "follow_up",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SOV",
+  "register": "반말",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "도현": 22,
+   "민재": 4
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "우리 형 도현이는 LP판을 22장 모았어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "도현",
+    "item": "LP판",
+    "quantity": 22,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "도현",
+      "item": "LP판",
+      "quantity": 22
+     }
+    ],
+    "state": [
+     {
+      "entity": "도현",
+      "item": "LP판",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "형 룸메이트 민재는 4장 가지고 있고.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "민재",
+    "item": "LP판",
+    "quantity": 4,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "민재",
+      "item": "LP판",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "민재",
+      "item": "LP판",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "지난 주말에 도현이 형이 민재한테 일곱 장을 팔았어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "도현",
+    "item": "LP판",
+    "quantity": 7,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "도현",
+      "to": "민재",
+      "item": "LP판",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "도현",
+      "item": "LP판",
+      "quantity": 15
+     },
+     {
+      "entity": "민재",
+      "item": "LP판",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "도현이 형한테 LP판 몇 장 남았어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "도현",
+    "item": "LP판",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "And how many records does 민재 have now?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "cross_language"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "민재",
+    "item": "LP판",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   },
+   "lang": "en"
+  },
+  {
+   "n": 6,
+   "say": "열한 장이 어디서 나온 거야?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "민재",
+    "item": "LP판",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

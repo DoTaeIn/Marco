@@ -1,0 +1,182 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-22-sonsugeon",
+ "language": "ko",
+ "domain": "가족",
+ "categories": [
+  "ambiguous_referent",
+  "cross_language",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "SOV",
+  "register": "반말",
+  "split": "two_facts_one_sentence",
+  "correction_position": null,
+  "roles": "first_mentioned_receives",
+  "initial_values": {
+   "친할머니": 5,
+   "외할머니": 14
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "친할머니는 손수건이 다섯 장이고 외할머니는 열네 장이야.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "친할머니",
+    "item": "손수건",
+    "quantity": 5,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "친할머니",
+      "item": "손수건",
+      "quantity": 5
+     },
+     {
+      "type": "has",
+      "holder": "외할머니",
+      "item": "손수건",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "친할머니",
+      "item": "손수건",
+      "quantity": 5
+     },
+     {
+      "entity": "외할머니",
+      "item": "손수건",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "외할머니가 친할머니 생신에 세 장을 보내셨어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "외할머니",
+    "item": "손수건",
+    "quantity": 3,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "외할머니",
+      "to": "친할머니",
+      "item": "손수건",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "외할머니",
+      "item": "손수건",
+      "quantity": 11
+     },
+     {
+      "entity": "친할머니",
+      "item": "손수건",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "할머니 손수건이 몇 장이지?",
+   "label": "ambiguous",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "clarify",
+    "entity": null,
+    "item": "손수건",
+    "quantity": null,
+    "relation": "count",
+    "candidates": [
+     "친할머니",
+     "외할머니"
+    ],
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 4,
+   "say": "외할머니를 물어본 거야.",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "외할머니",
+    "item": "손수건",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many handkerchiefs does 친할머니 have?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "cross_language"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "친할머니",
+    "item": "손수건",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   },
+   "lang": "en"
+  }
+ ]
+}

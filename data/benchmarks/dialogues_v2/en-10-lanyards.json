@@ -1,0 +1,176 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-10-lanyards",
+ "language": "en",
+ "domain": "conference registration",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "SVO",
+  "register": "neutral",
+  "split": "two_facts_one_sentence",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "Gideon": 9,
+   "Priyanka": 22
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Priyanka handed 3 lanyards to Gideon at the registration desk.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Priyanka",
+    "item": "lanyards",
+    "quantity": 3,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Priyanka",
+      "to": "Gideon",
+      "item": "lanyards",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Priyanka",
+      "item": "lanyards",
+      "quantity": null
+     },
+     {
+      "entity": "Gideon",
+      "item": "lanyards",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "How many lanyards does that give Gideon?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "Gideon",
+    "item": "lanyards",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 3,
+   "say": "I just recounted: Gideon is holding 9 lanyards and Priyanka 22.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Gideon",
+    "item": "lanyards",
+    "quantity": 9,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Gideon",
+      "item": "lanyards",
+      "quantity": 9
+     },
+     {
+      "type": "has",
+      "holder": "Priyanka",
+      "item": "lanyards",
+      "quantity": 22
+     }
+    ],
+    "state": [
+     {
+      "entity": "Gideon",
+      "item": "lanyards",
+      "quantity": 9
+     },
+     {
+      "entity": "Priyanka",
+      "item": "lanyards",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Right, so what's Gideon's count?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Gideon",
+    "item": "lanyards",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "And between the two of them?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Gideon",
+     "Priyanka"
+    ],
+    "item": "lanyards",
+    "quantity": 31,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

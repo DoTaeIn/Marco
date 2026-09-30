@@ -1,0 +1,159 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-03-chamgoseo",
+ "language": "ko",
+ "domain": "대학 연구실",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "SOV",
+  "register": "해요체",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "박 교수": 13
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "박 교수님 연구실에 참고서가 13권 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "박 교수",
+    "item": "참고서",
+    "quantity": 13,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "박 교수",
+      "item": "참고서",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "박 교수",
+      "item": "참고서",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "교수님이 그중 다섯 권을 조교 다은 씨한테 넘기셨어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "박 교수",
+    "item": "참고서",
+    "quantity": 5,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "박 교수",
+      "to": "다은",
+      "item": "참고서",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "박 교수",
+      "item": "참고서",
+      "quantity": 8
+     },
+     {
+      "entity": "다은",
+      "item": "참고서",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "박 교수님한테 지금 몇 권 남아 있죠?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "박 교수",
+    "item": "참고서",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 4,
+   "say": "다은 씨는 전부 몇 권 갖고 있어요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "다은",
+    "item": "참고서",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "그럼 최 교수님은 몇 권이에요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "최 교수",
+    "item": "참고서",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  }
+ ]
+}

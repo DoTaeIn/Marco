@@ -1,0 +1,346 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-25-jeopsi",
+ "language": "ko",
+ "domain": "출장 뷔페",
+ "categories": [
+  "ambiguous_referent",
+  "correction",
+  "follow_up",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "locative",
+  "register": "반말",
+  "split": "one_fact_per_turn",
+  "correction_position": "after_question",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "설 셰프": 20,
+   "봉 셰프": 12
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "설 셰프 트럭에 접시가 20장 실려 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "설 셰프",
+    "item": "접시",
+    "quantity": 20,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "설 셰프",
+      "item": "접시",
+      "quantity": 20
+     }
+    ],
+    "state": [
+     {
+      "entity": "설 셰프",
+      "item": "접시",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "봉 셰프 트럭에는 12장이 있고.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "봉 셰프",
+    "item": "접시",
+    "quantity": 12,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "봉 셰프",
+      "item": "접시",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "봉 셰프",
+      "item": "접시",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "설 셰프 직원들이 접시 다섯 장을 봉 셰프 트럭에 옮겨 실었어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "설 셰프",
+    "item": "접시",
+    "quantity": 5,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "설 셰프",
+      "to": "봉 셰프",
+      "item": "접시",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "설 셰프",
+      "item": "접시",
+      "quantity": 15
+     },
+     {
+      "entity": "봉 셰프",
+      "item": "접시",
+      "quantity": 17
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "셰프 트럭에 접시 몇 장 있어?",
+   "label": "ambiguous",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "clarify",
+    "entity": null,
+    "item": "접시",
+    "quantity": null,
+    "relation": "count",
+    "candidates": [
+     "설 셰프",
+     "봉 셰프"
+    ],
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "봉 셰프 트럭 말한 거야.",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "봉 셰프",
+    "item": "접시",
+    "quantity": 17,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "그다음에 봉 셰프가 예식장에 여섯 장을 두고 왔어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "봉 셰프",
+    "item": "접시",
+    "quantity": 6,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      6
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "봉 셰프",
+      "to": "예식장",
+      "item": "접시",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "봉 셰프",
+      "item": "접시",
+      "quantity": 11
+     },
+     {
+      "entity": "예식장",
+      "item": "접시",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "설 셰프 트럭에는 몇 장이야?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "설 셰프",
+    "item": "접시",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 8,
+   "say": "하나 고칠게, 봉 셰프 트럭에 옮겨 실은 건 다섯 장이 아니고 세 장이야.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "설 셰프",
+    "item": "접시",
+    "quantity": 3,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3,
+      8
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "설 셰프",
+      "to": "봉 셰프",
+      "item": "접시",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "설 셰프",
+      "to": "봉 셰프",
+      "item": "접시",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "설 셰프",
+      "item": "접시",
+      "quantity": 17
+     },
+     {
+      "entity": "봉 셰프",
+      "item": "접시",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "say": "지금 봉 셰프 트럭에는 몇 장 있지?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "봉 셰프",
+    "item": "접시",
+    "quantity": 9,
+    "relation": "count",
+    "retracted_quantity": 11,
+    "reexecuted_quantity": 14,
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6,
+      8
+     ]
+    }
+   }
+  },
+  {
+   "n": 10,
+   "say": "어째서 아홉 장이야?",
+   "label": "why",
+   "tags": [
+    "why",
+    "correction"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "봉 셰프",
+    "item": "접시",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    }
+   }
+  }
+ ]
+}

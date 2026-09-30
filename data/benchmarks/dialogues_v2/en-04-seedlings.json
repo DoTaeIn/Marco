@@ -1,0 +1,203 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-04-seedlings",
+ "language": "en",
+ "domain": "garden",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "SVO",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "Rosalind": 8,
+   "Beatrix": 15
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "My aunt Rosalind is raising eight tomato seedlings on her porch.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Rosalind",
+    "item": "tomato seedlings",
+    "quantity": 8,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Rosalind",
+      "item": "tomato seedlings",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rosalind",
+      "item": "tomato seedlings",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Beatrix next door has fifteen going.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Beatrix",
+    "item": "tomato seedlings",
+    "quantity": 15,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Beatrix",
+      "item": "tomato seedlings",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "Beatrix",
+      "item": "tomato seedlings",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Yesterday Rosalind gave Beatrix three of hers.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Rosalind",
+    "item": "tomato seedlings",
+    "quantity": 3,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Rosalind",
+      "to": "Beatrix",
+      "item": "tomato seedlings",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Rosalind",
+      "item": "tomato seedlings",
+      "quantity": 5
+     },
+     {
+      "entity": "Beatrix",
+      "item": "tomato seedlings",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many seedlings does she have at this point?",
+   "label": "ambiguous",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "clarify",
+    "entity": null,
+    "item": "tomato seedlings",
+    "quantity": null,
+    "relation": "count",
+    "candidates": [
+     "Rosalind",
+     "Beatrix"
+    ],
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "Beatrix, I mean.",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Beatrix",
+    "item": "tomato seedlings",
+    "quantity": 18,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "And how many are still on Rosalind's porch?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Rosalind",
+    "item": "tomato seedlings",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

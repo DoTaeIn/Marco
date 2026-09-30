@@ -1,0 +1,213 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-06-calculators",
+ "language": "en",
+ "domain": "school",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SVO",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "Ms. Abernathy": 20,
+   "Mr. Truong": 7
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Ms. Abernathy keeps 20 graphing calculators in the math office.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Ms. Abernathy",
+    "item": "graphing calculators",
+    "quantity": 20,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Ms. Abernathy",
+      "item": "graphing calculators",
+      "quantity": 20
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ms. Abernathy",
+      "item": "graphing calculators",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "There are 7 in Mr. Truong's classroom.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Mr. Truong",
+    "item": "graphing calculators",
+    "quantity": 7,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Mr. Truong",
+      "item": "graphing calculators",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Mr. Truong",
+      "item": "graphing calculators",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "She lent him five for yesterday's exam.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Ms. Abernathy",
+    "item": "graphing calculators",
+    "quantity": 5,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Ms. Abernathy",
+      "to": "Mr. Truong",
+      "item": "graphing calculators",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Ms. Abernathy",
+      "item": "graphing calculators",
+      "quantity": 15
+     },
+     {
+      "entity": "Mr. Truong",
+      "item": "graphing calculators",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many calculators are in Mr. Truong's classroom as of today?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Mr. Truong",
+    "item": "graphing calculators",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "What's that based on?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "Mr. Truong",
+    "item": "graphing calculators",
+    "quantity": 12,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "Could you put in a purchase order for ten more?",
+   "label": "unsupported",
+   "tags": [],
+   "expect": {
+    "act": "decline",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 7,
+   "say": "Okay, then how many does Ms. Abernathy still have in the office?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Ms. Abernathy",
+    "item": "graphing calculators",
+    "quantity": 15,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

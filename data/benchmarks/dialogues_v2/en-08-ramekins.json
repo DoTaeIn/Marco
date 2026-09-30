@@ -1,0 +1,255 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-08-ramekins",
+ "language": "en",
+ "domain": "restaurant kitchen",
+ "categories": [
+  "correction",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "locative",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "after_why",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "prep station": 16,
+   "pastry station": 10
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "On the prep station there are sixteen ramekins.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "prep station",
+    "item": "ramekins",
+    "quantity": 16,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "prep station",
+      "item": "ramekins",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "prep station",
+      "item": "ramekins",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Pastry station, ten.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "pastry station",
+    "item": "ramekins",
+    "quantity": 10,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "pastry station",
+      "item": "ramekins",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "pastry station",
+      "item": "ramekins",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Chef moved four ramekins from the prep station to the pastry station before service.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "prep station",
+    "item": "ramekins",
+    "quantity": 4,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "prep station",
+      "to": "pastry station",
+      "item": "ramekins",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "prep station",
+      "item": "ramekins",
+      "quantity": 12
+     },
+     {
+      "entity": "pastry station",
+      "item": "ramekins",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many ramekins are at the pastry station?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "pastry station",
+    "item": "ramekins",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "Walk me through that.",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "pastry station",
+    "item": "ramekins",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "I had that backwards: the four went from the pastry station to the prep station.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "pastry station",
+    "item": "ramekins",
+    "quantity": 4,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "prep station",
+      "to": "pastry station",
+      "item": "ramekins",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "pastry station",
+      "to": "prep station",
+      "item": "ramekins",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "prep station",
+      "item": "ramekins",
+      "quantity": 20
+     },
+     {
+      "entity": "pastry station",
+      "item": "ramekins",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "So what is the pastry station left with?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "pastry station",
+    "item": "ramekins",
+    "quantity": 6,
+    "relation": "count",
+    "retracted_quantity": 14,
+    "reexecuted_quantity": 10,
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    }
+   }
+  }
+ ]
+}

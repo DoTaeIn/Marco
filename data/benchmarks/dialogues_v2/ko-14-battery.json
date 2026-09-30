@@ -1,0 +1,252 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-14-battery",
+ "language": "ko",
+ "domain": "촬영 현장",
+ "categories": [
+  "correction",
+  "follow_up",
+  "ownership",
+  "restart",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "locative",
+  "register": "반말",
+  "split": "one_fact_per_turn",
+  "correction_position": "after_question",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "촬영팀": 12,
+   "조명팀": 5
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "촬영팀 차에 배터리가 12개 실려 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "촬영팀",
+    "item": "배터리",
+    "quantity": 12,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "촬영팀",
+      "item": "배터리",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "촬영팀",
+      "item": "배터리",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "조명팀 차에는 다섯 개뿐이야.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "조명팀",
+    "item": "배터리",
+    "quantity": 5,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "조명팀",
+      "item": "배터리",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "조명팀",
+      "item": "배터리",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "점심 먹고 촬영팀 차에서 조명팀 차로 네 개를 옮겼어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "촬영팀",
+    "item": "배터리",
+    "quantity": 4,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "촬영팀",
+      "to": "조명팀",
+      "item": "배터리",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "촬영팀",
+      "item": "배터리",
+      "quantity": 8
+     },
+     {
+      "entity": "조명팀",
+      "item": "배터리",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "조명팀 차에 배터리 몇 개 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "조명팀",
+    "item": "배터리",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "처음 말한 거 고칠게, 촬영팀 차에 실린 건 12개가 아니라 16개였어.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "촬영팀",
+    "item": "배터리",
+    "quantity": 16,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1,
+      5
+     ]
+    },
+    "target_turn": 1,
+    "replaces": [
+     {
+      "type": "has",
+      "holder": "촬영팀",
+      "item": "배터리",
+      "quantity": 12
+     }
+    ],
+    "with": [
+     {
+      "type": "has",
+      "holder": "촬영팀",
+      "item": "배터리",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "촬영팀",
+      "item": "배터리",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "다시 켰어, 촬영팀 차에는 배터리가 몇 개야?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction",
+    "restart"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "촬영팀",
+    "item": "배터리",
+    "quantity": 12,
+    "relation": "count",
+    "retracted_quantity": 8,
+    "reexecuted_quantity": 16,
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      5
+     ]
+    }
+   },
+   "restart_before": true
+  },
+  {
+   "n": 7,
+   "say": "조명팀 차 쪽은 몇 개야?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "조명팀",
+    "item": "배터리",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,164 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-05-saengsu",
+ "language": "ko",
+ "domain": "물류 창고",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "restart",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "passive",
+  "register": "한다체",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "김포 창고": 20
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "김포 창고에 생수가 20상자 쌓여 있다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "김포 창고",
+    "item": "생수",
+    "quantity": 20,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "김포 창고",
+      "item": "생수",
+      "quantity": 20
+     }
+    ],
+    "state": [
+     {
+      "entity": "김포 창고",
+      "item": "생수",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "월요일에 김포 창고에서 일곱 상자가 대전 물류센터로 실려 갔다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "김포 창고",
+    "item": "생수",
+    "quantity": 7,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "김포 창고",
+      "to": "대전 물류센터",
+      "item": "생수",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "김포 창고",
+      "item": "생수",
+      "quantity": 13
+     },
+     {
+      "entity": "대전 물류센터",
+      "item": "생수",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "김포 창고의 생수는 몇 상자인가?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "김포 창고",
+    "item": "생수",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 4,
+   "say": "자리에 돌아왔는데, 김포 창고에 몇 상자 남았다고 했지?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "restart"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "김포 창고",
+    "item": "생수",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   },
+   "restart_before": true
+  },
+  {
+   "n": 5,
+   "say": "대전 물류센터에는 모두 몇 상자 있나?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "대전 물류센터",
+    "item": "생수",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,237 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-26-mask",
+ "language": "ko",
+ "domain": "약국",
+ "categories": [
+  "cross_language",
+  "missing_premise",
+  "ownership",
+  "restart",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "locative",
+  "register": "해요체",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_receives",
+  "initial_values": {
+   "진열대": 6,
+   "재고실": 21
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "조제실 앞 진열대에 마스크가 6상자 놓여 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "진열대",
+    "item": "마스크",
+    "quantity": 6,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "진열대",
+      "item": "마스크",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "진열대",
+      "item": "마스크",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "뒤쪽 재고실에는 21상자가 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "재고실",
+    "item": "마스크",
+    "quantity": 21,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "재고실",
+      "item": "마스크",
+      "quantity": 21
+     }
+    ],
+    "state": [
+     {
+      "entity": "재고실",
+      "item": "마스크",
+      "quantity": 21
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "재고실에서 일곱 상자를 꺼내 진열대를 채웠어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "재고실",
+    "item": "마스크",
+    "quantity": 7,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "재고실",
+      "to": "진열대",
+      "item": "마스크",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "재고실",
+      "item": "마스크",
+      "quantity": 14
+     },
+     {
+      "entity": "진열대",
+      "item": "마스크",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "진열대에 마스크가 몇 상자 있죠?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "진열대",
+    "item": "마스크",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "배송 차량에는 몇 상자 실려 있어요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "배송 차량",
+    "item": "마스크",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "이번 달 말까지 재고가 버틸까요?",
+   "label": "unsupported",
+   "tags": [],
+   "expect": {
+    "act": "decline",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 7,
+   "say": "다시 접속했어요, 재고실은 지금 몇 상자예요?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "restart"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "재고실",
+    "item": "마스크",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   },
+   "restart_before": true
+  },
+  {
+   "n": 8,
+   "say": "How many boxes are on the 진열대 now?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "cross_language"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "진열대",
+    "item": "마스크",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   },
+   "lang": "en"
+  }
+ ]
+}

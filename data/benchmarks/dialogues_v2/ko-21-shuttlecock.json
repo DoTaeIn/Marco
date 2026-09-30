@@ -1,0 +1,320 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-21-shuttlecock",
+ "language": "ko",
+ "domain": "배드민턴 동호회",
+ "categories": [
+  "correction",
+  "follow_up",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "dative_existential",
+  "register": "반말",
+  "split": "one_fact_per_turn",
+  "correction_position": "after_question",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "재석": 9,
+   "하은": 12
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "동호회 총무 재석 형한테 셔틀콕이 아홉 통 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "재석",
+    "item": "셔틀콕",
+    "quantity": 9,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "재석",
+      "item": "셔틀콕",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "재석",
+      "item": "셔틀콕",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "막내 하은이는 열두 통을 챙겨 왔고.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "하은",
+    "item": "셔틀콕",
+    "quantity": 12,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "하은",
+      "item": "셔틀콕",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "하은",
+      "item": "셔틀콕",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "경기 전에 재석 형이 하은이한테 네 통을 넘겼어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "재석",
+    "item": "셔틀콕",
+    "quantity": 4,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "재석",
+      "to": "하은",
+      "item": "셔틀콕",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "재석",
+      "item": "셔틀콕",
+      "quantity": 5
+     },
+     {
+      "entity": "하은",
+      "item": "셔틀콕",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "그러고 나서 재석 형이 한 통을 다 써 버렸어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "재석",
+    "item": "셔틀콕",
+    "quantity": 1,
+    "relation": "use",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "재석",
+      "item": "셔틀콕",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "재석",
+      "item": "셔틀콕",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "재석 형한테 셔틀콕 몇 통 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "재석",
+    "item": "셔틀콕",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "잠깐, 넘긴 방향이 반대였어, 하은이가 재석 형한테 네 통을 준 거야.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "하은",
+    "item": "셔틀콕",
+    "quantity": 4,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3,
+      6
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "재석",
+      "to": "하은",
+      "item": "셔틀콕",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "하은",
+      "to": "재석",
+      "item": "셔틀콕",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "재석",
+      "item": "셔틀콕",
+      "quantity": 12
+     },
+     {
+      "entity": "하은",
+      "item": "셔틀콕",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "그럼 재석 형은 몇 통이야?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "재석",
+    "item": "셔틀콕",
+    "quantity": 12,
+    "relation": "count",
+    "retracted_quantity": 4,
+    "reexecuted_quantity": 8,
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4,
+      6
+     ]
+    }
+   }
+  },
+  {
+   "n": 8,
+   "say": "하은이는 몇 통이고?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "하은",
+    "item": "셔틀콕",
+    "quantity": 8,
+    "relation": "count",
+    "retracted_quantity": 16,
+    "reexecuted_quantity": 12,
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      6
+     ]
+    }
+   }
+  },
+  {
+   "n": 9,
+   "say": "여덟 통이 되는 까닭이 뭐야?",
+   "label": "why",
+   "tags": [
+    "why",
+    "correction"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "하은",
+    "item": "셔틀콕",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}
