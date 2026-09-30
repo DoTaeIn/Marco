@@ -2093,18 +2093,26 @@ class RelationalParser:
 
     @staticmethod
     def _typed_parts(key, text):
-        """The holder and the thing of a key one slot gave (보늬 연필 from 보늬는 연필이 세 개), as the words were
-        typed: the thing is the key's last word, typed as it is or with something after it, and the word right
-        before it is the holder's last word typed with something after it (a particle or a title: 보늬는,
-        과장님은). None when the typed words do not show it."""
+        """The holder and the thing of a key one slot gave (보늬 연필 from 보늬는 연필이 세 개; 미경 줄무늬 면 수건 from
+        미경은 줄무늬 면 수건이), as the words were typed: the key's words are found in the typed words in order; the
+        holder ends at the first word typed with something after it (a particle or a title: 보늬는, 과장님은) or
+        followed by a typed word that is not the key's next word (우진 씨는; Nora has); what stands between it and
+        the end is the thing, every word of it (줄무늬 면 수건: G7-5). None when the typed words do not show it."""
         words = key.split()
         if len(words) < 2:
             return None
         typed = [w.strip(".,!?") for w in str(text).split()]
-        for i in range(1, len(typed)):
-            if typed[i].startswith(words[-1]) and typed[i - 1].startswith(words[-2]) \
-                    and len(typed[i - 1]) > len(words[-2]):
-                return {"holder": " ".join(words[:-1]), "thing": words[-1]}
+        at, found = 0, []
+        for word in words:
+            j = next((j for j in range(at, len(typed)) if typed[j].startswith(word)), None)
+            if j is None:
+                return None
+            found.append(j)
+            at = j + 1
+        for i in range(len(words) - 1):
+            j = found[i]
+            if len(typed[j]) > len(words[i]) or found[i + 1] != j + 1:
+                return {"holder": " ".join(words[:i + 1]), "thing": " ".join(words[i + 1:])}
         return None
 
     def _counted_subjects(self, evidence_text, rows):
