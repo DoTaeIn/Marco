@@ -329,6 +329,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [graph-step-3q.json](ko/dialogue-gate-2026-09-22/graph-step-3q.json) | Identity graph step 3, question side, `4f3a3a3`: 90 of 108, no turn changed |
 | [graph-step-3s3.json](ko/dialogue-gate-2026-09-22/graph-step-3s3.json) | Identity graph step 3, statements 3, `77144e1`: 90 of 108, statements recorded 146 of 150 |
 | [graph-step-3q2.json](ko/dialogue-gate-2026-09-22/graph-step-3q2.json) | On nodes, the reply to a which-person ask, `e0f087b`: 93 of 108, 0 wrong |
+| [graph-step-3s4q3.json](ko/dialogue-gate-2026-09-22/graph-step-3s4q3.json) | On nodes, `c3eb7a7`: 94 of 108, 0 wrong |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
