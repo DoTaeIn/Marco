@@ -156,6 +156,7 @@ queue.
 | [2026-09-25-profile-and-mrl-decision.md](ko/2026-09-25-profile-and-mrl-decision.md) | Where the time of a turn goes, and the decision not to build the MRL systems language |
 | [dev6-phrasing.md](ko/dev6-phrasing.md) | Instructions for the outside writer of development set v6 |
 | [2026-09-29-understanding-r7-statements.md](ko/2026-09-29-understanding-r7-statements.md) | Round 7, statements: the cause table of the refused Korean transfers |
+| [2026-09-30-conversation-identity-graph.md](ko/2026-09-30-conversation-identity-graph.md) | Owner's decision: the rest of M1 on a minimal conversation identity graph, not string keys; the order and who does what |
 | [2026-09-29-experiment-log.md](ko/2026-09-29-experiment-log.md) | Understanding experiments, one row each: cause, patch, work and wait time, regression, frozen score |
 | [2026-09-29-marco-fixed-timeline.md](ko/2026-09-29-marco-fixed-timeline.md) | Owner-fixed timeline: M1 language gate → release → M2 → M3 → M4 → A1 → A2 → S1 → P1 → N1; new ideas are placed under a phase, never reorder them |
 | [2026-09-29-understanding-r7-goal.md](ko/2026-09-29-understanding-r7-goal.md) | G7: understanding round 7, questions as a frame plus slots (G7-Q) and the statements that cascade (G7-S) |
