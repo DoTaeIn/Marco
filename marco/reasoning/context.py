@@ -2261,7 +2261,9 @@ class ReasoningContext:
                   "pending": deepcopy(pending), "read": sorted(read)}
         events = self._event_ledger()
         concepts = self.concepts.sync(events)
-        return {"schema": "reasoning-context-v9", "observations": list(self.observations),
+        return {"schema": "reasoning-context-v10", "observations": list(self.observations),
+                # the conversation identity graph (M1): nodes, aliases with their turns, count edges, frames
+                "graph": self.conversation_graph().to_dict(),
                 "corrections": deepcopy(self.corrections), "unread": deepcopy(self.unread),
                 "unread_guard": deepcopy(self.unread_guard),
                 "asked": deepcopy(self.asked), "held_question": self.held_question,
@@ -2382,6 +2384,13 @@ class ReasoningContext:
         # An older snapshot has no salient set: the last subject stands in for it.
         self.salient = list(salient) if salient is not None else (
             [마지막.split()[0]] if isinstance(마지막, str) and 마지막.strip() else [])
+        graph = snapshot.get("graph")
+        if graph is not None and not isinstance(graph, dict):
+            raise ValueError("invalid_reasoning_context_snapshot")
+        if graph:
+            from marco.reasoning.identity import ConversationGraph
+            self._graph_carried = ConversationGraph.from_dict(graph).carried()
+        self._graph_cache = None
         frame = snapshot.get("last_frame")
         if frame is not None and not (isinstance(frame, dict) and isinstance(frame.get("text"), str)
                                       and isinstance(frame.get("holders"), list)
@@ -2745,6 +2754,7 @@ class ReasoningContext:
                 고른것 = 이름들[0]
             if 고른것 is None:
                 return query, {"말": 말, "후보": 이름들}
+            self._graph_alias(고른것, 말, "pointer")
             풀림.append({**asked, "triple": [고른것] + triple[1:]})
         return 풀림, None
 
@@ -4260,6 +4270,164 @@ class ReasoningContext:
                 "정의": [], "사건": [], "가정사건": [], "조건": [], "가정": [], "원인": [], "이유물음": [],
                 "수선": [], "사건정정": [], "grounded": True}
 
+    def conversation_graph(self):
+        """The conversation identity graph (``marco.reasoning.identity``), built from the replayed facts: a node
+        per holder, thing and place, their aliases with the turn each came from (the key, the words said right
+        before it in its statement, the thing's other declared number), a count edge per holder and thing with its
+        value, whether a statement said it or replay computed it, and the turns it rests on. The node ids, and the
+        aliases and frames no statement can give, are carried from turn to turn and in the snapshot."""
+        from marco.reasoning.identity import ConversationGraph
+        from marco.reasoning.inference import current_facts
+        from relational_semantics import declared_plural
+        parser = self._parser()
+        facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        carried = getattr(self, "_graph_carried", None) or {}
+        cache_key = (tuple(self.observations), json.dumps(self.fills, sort_keys=True, ensure_ascii=False, default=str),
+                     json.dumps(carried, sort_keys=True, ensure_ascii=False, default=str))
+        cached = getattr(self, "_graph_cache", None)
+        if cached is not None and cached[0] == cache_key:
+            return cached[1]
+        graph = ConversationGraph.from_dict({key: carried[key] for key in ("ids", "next") if key in carried})
+        updates = parser.data.get("numeric_updates", {})
+        counted = set(updates) | {spec.get("target") for spec in updates.values() if isinstance(spec, dict)}
+        counted |= {"count", "count_unknown"}
+        keys = sorted(dict.fromkeys(self._holder_keys(parser)), key=lambda k: -len(k.split()))
+        places = {place for row in facts for place in row.get("places") or [] if isinstance(place, str)}
+
+        def split(subject):
+            place = next((p for p in sorted(places, key=len, reverse=True) if subject == p or subject.startswith(p + " ")),
+                         None)
+            holder = place or next((k for k in keys if subject == k or subject.startswith(k + " ")), subject.split()[0])
+            thing = subject[len(holder):].strip() or None
+            return ("place" if place else "holder"), holder, thing
+        last_of = {}
+        turns_of = {}
+        for row in facts:
+            triple = row.get("triple") or [None, None]
+            subject = triple[0]
+            if not isinstance(subject, str) or not subject.strip() or triple[1] not in counted:
+                continue
+            turn = (row.get("evidence") or {}).get("turn")
+            kind, holder, thing = split(subject)
+            h = graph.node(kind, holder, turn)
+            t = graph.node("thing", thing, turn) if thing else None
+            graph.keyed(subject, h, t)
+            last_of[subject] = triple[1]
+            turns_of.setdefault(subject, []).append(turn)
+            text = (row.get("evidence") or {}).get("text") or ""
+            for form, said in self._said_around_key(parser, text, holder):
+                graph.alias(h, said, form, turn)
+            if t is not None:
+                # the thing's other declared number: its plural, or the singular whose plural it is
+                number = getattr(parser, "noun_number", None) or {}
+                other = declared_plural(thing, number)
+                if not other or other == thing or other == thing + thing[-1:]:
+                    irregular = {plural: one for one, plural in (number.get("irregular") or {}).items()}
+                    other = irregular.get(thing) or next((thing[:-n] for n in (1, 2, 3) if len(thing) > n
+                                                          and declared_plural(thing[:-n], number) == thing), None)
+                if other and other != thing:
+                    graph.alias(t, other, "number", turn)
+        state, _changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+        for row in state:
+            triple = row.get("triple") or [None, None, None]
+            subject = triple[0]
+            if not isinstance(subject, str) or triple[1] not in ("count", "count_unknown") or graph.of_key(subject) is None:
+                continue
+            h, t = graph.of_key(subject)
+            value = int(triple[2]) if triple[1] == "count" and str(triple[2]).lstrip("-").isdigit() else None
+            origin = "said" if last_of.get(subject) in ("count", "count_unknown") else "computed"
+            graph.count(h, t, value, origin, [x for x in turns_of.get(subject, []) if isinstance(x, int)])
+        for row in carried.get("aliases") or []:
+            graph.alias(row.get("node"), row.get("text"), row.get("form"), row.get("turn"))
+        graph.frames = [dict(f) for f in carried.get("frames") or []]
+        self._graph_cache = (cache_key, graph)
+        return graph
+
+    def _said_around_key(self, parser, text, holder):
+        """The ways a statement named a holder around its key, as alias edges: a title before it (Dr. Kim) or
+        after it (김 과장님, 준호 씨), a possessive before it (my cousin Lena, 제 친구 미경) and the relation word
+        between (cousin, 친구). Only the words the pack declares for holders; a particle after the key is allowed."""
+        forms = parser.holder_forms or {}
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        titles = {fold(w) for w in forms.get("prefix_titles") or []}
+        after_titles = sorted(forms.get("name_titles") or [], key=len, reverse=True)
+        possessives = {fold(w) for w in list(forms.get("possessives") or []) + list(forms.get("determiners") or [])}
+        relations = {fold(w) for w in forms.get("relation_nouns") or []} | {fold(w) for w in forms.get("job_titles") or []}
+        tails = "|".join(re.escape(p) for p in self._frame_particles(parser)) or "(?!)"
+        found = re.search(r"(?<![\w'])%s(\s?(?:%s))?(?:%s)?(?![\w'])" % (
+            re.escape(holder), "|".join(map(re.escape, after_titles)) or "(?!)", tails), text,
+            re.IGNORECASE if parser.data.get("ignore_case") else 0)
+        if not found:
+            return []
+        out = []
+        behind = (found.group(1) or "")
+        if behind:
+            out.append(("title", holder + behind))
+        ahead = text[:found.start()].split()[-2:]
+        if ahead and fold(ahead[-1]) in titles:
+            out.append(("title", "%s %s" % (ahead[-1], holder)))
+        elif len(ahead) == 2 and fold(ahead[0]) in possessives and ahead[1].isalpha():
+            out.append(("possessive", "%s %s %s" % (ahead[0], ahead[1], holder)))
+            out.append(("relation", ahead[1]))
+            out.append(("possessive", "%s %s" % (ahead[0], ahead[1])))
+        elif ahead and fold(ahead[-1]) in relations:
+            out.append(("relation", ahead[-1]))
+        return out
+
+    def _graph_alias(self, subject, text, form):
+        """A way of naming a holder no statement gave (a pointer resolved, a which-person reply), kept with its
+        turn in the graph's carried part."""
+        try:
+            graph = self.conversation_graph()
+        except Exception:    # noqa: BLE001
+            return
+        node = (graph.of_key(subject) or (None,))[0] or next(iter(graph.find(subject, kinds=("holder", "place"),
+                                                                              forms=("key",))), None)
+        if node is None or not isinstance(text, str) or not text.strip():
+            return
+        carried = dict(getattr(self, "_graph_carried", None) or graph.carried())
+        carried["aliases"] = list(carried.get("aliases") or []) + [{"node": node, "text": text.strip(), "form": form,
+                                                                   "turn": len(self.observations)}]
+        carried.update({key: value for key, value in graph.carried().items() if key in ("ids", "next")})
+        self._graph_carried = carried
+
+    def _graph_frame(self, holders, item):
+        """Record the frame of a question just read, as node ids, in the graph's carried part."""
+        try:
+            graph = self.conversation_graph()
+        except Exception:    # noqa: BLE001 -- the graph is a record of the conversation, never a cause of the turn
+            return
+        ids = [graph.find(name, kinds=("holder", "place"), forms=("key",)) for name in holders]
+        thing = graph.find(item, kinds=("thing",), forms=("key",)) if item else []
+        carried = dict(getattr(self, "_graph_carried", None) or graph.carried())
+        frames = list(carried.get("frames") or []) + [{"turn": len(self.observations), "holders": [i[0] for i in ids if i],
+                                                      "thing": thing[0] if thing else None}]
+        carried["frames"] = frames[-8:]
+        carried.update({key: value for key, value in graph.carried().items() if key in ("ids", "next")})
+        self._graph_carried = carried
+
+    def _nodes_read(self, result):
+        """The node ids a turn's answer rests on, for the trace."""
+        meaning = (result or {}).get("meaning") if isinstance((result or {}).get("meaning"), dict) else {}
+        subjects = []
+        query = meaning.get("query")
+        if isinstance(query, list) and query and isinstance(query[0], str):
+            subjects.append(query[0])
+        subjects += [s for s in meaning.get("subjects") or [] if isinstance(s, str)]
+        subjects += [meaning[k] for k in ("winner", "than") if isinstance(meaning.get(k), str)]
+        if not subjects:
+            return []
+        try:
+            graph = self.conversation_graph()
+        except Exception:    # noqa: BLE001
+            return []
+        out = []
+        for subject in subjects:
+            for node in graph.of_key(subject) or ():
+                if node and node not in out:
+                    out.append(node)
+        return out
+
     def _holder_keys(self, parser):
         """The holders this conversation's facts name, by their leading word (the key a
         holder form reads as: Morales for Dr. Morales, I for me, 나 for 저)."""
@@ -4670,6 +4838,7 @@ class ReasoningContext:
             if not any(candidate == name or candidate.startswith(name + " ")
                        for candidate in self.pending_pointer["candidates"]):
                 return None
+            self._graph_alias(name, old, "reply")
         else:
             question = self.last_question["text"]
             old = " ".join(self.last_question["subject"].split()[:len(name.split())])
@@ -4735,6 +4904,7 @@ class ReasoningContext:
             holders = [m for m in members if isinstance(m, str)] if isinstance(members, list) else []
             item = spec.get("item") if isinstance(spec.get("item"), str) else None
         self.last_frame = {"text": text.strip(), "holders": holders, "item": item}
+        self._graph_frame(holders, item)
         # the last few frames, for a question over "the two" of them
         self.recent_frames = (list(getattr(self, "recent_frames", None) or []) + [dict(self.last_frame)])[-4:]
 
@@ -5811,6 +5981,7 @@ class ReasoningContext:
                     "sha256": _sha(text)},
             payload={"selected": selected, "candidates": readings or [[selected, None]], "status": status,
                      "act": act, "observations": len(self.observations), "effort": self.effort,
+                     "nodes_read": self._nodes_read(result),
                      "candidates_dropped": list(getattr(self, "_trace_candidates", None) or []),
                      "rankings": list(getattr(self, "_trace_rankings", None) or [])})["event_id"]
         parents = []
