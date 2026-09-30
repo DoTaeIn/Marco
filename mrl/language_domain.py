@@ -1,11 +1,32 @@
 """Checked expression calls for the dynamic Horn domain surface."""
 
 
+def _dynamic_triple(raw, expression, env, error):
+    if not (raw[0] == "call" and raw[2][0] == "name" and raw[2][2] == "Triple"):
+        error(raw[1], "Rule body and head require Triple(...)")
+    if len(raw[3]) != 3: error(raw[1], "Triple requires three strings")
+    names = ("subject", "predicate", "object")
+    values, order = [None] * 3, []
+    positional = all(field is None for field, _ in raw[3])
+    for index, (field, value) in enumerate(raw[3]):
+        if not positional:
+            if field is None or field.text not in names:
+                error(field or raw[1], "Triple requires subject, predicate, object")
+            index = names.index(field.text)
+        if values[index] is not None: error(field or raw[1], "duplicate Triple field")
+        lowered = expression(value, env)
+        if lowered["type"] != "s": error(value[1], "Triple terms must be strings")
+        values[index] = lowered
+        order.append(index)
+    return {"kind": "horn_triple", "type": "horn_triple", "terms": values, "eval_order": order}
+
 def lower_dynamic_call(node, expression, env, error):
     """Lower plan queries and typed snapshot access from the primitive AST."""
     if not (isinstance(node, tuple) and len(node) == 4 and node[0] == "call"):
         return None
     callee = node[2]
+    indexed = _lower_indexed_call(node, expression, env, error)
+    if indexed is not None: return indexed
     if callee[0] == "name" and callee[2] in {"Candidate", "Candidates", "Constraint", "Constraints", "interpret"}:
         name = callee[2]
 
@@ -80,6 +101,50 @@ def lower_dynamic_call(node, expression, env, error):
                 error(field or node[1], "invalid Horn call arguments")
             out[field.text] = value
         return out
+
+    if receiver_type == "horn_plan" and method in {"add_rule", "replace_rule", "remove_rule"}:
+        args = node[3]
+        wanted = 2 if method == "replace_rule" else 1
+        if len(args) != wanted or any(field is not None for field, _ in args):
+            error(node[1], "%s requires %d positional arguments" % (method, wanted))
+        if not env[receiver[2]][1]: error(receiver[1], "%s requires a mutable Horn plan" % method)
+
+        def triple(raw): return _dynamic_triple(raw, expression, env, error)
+
+        def rule(raw):
+            if not (raw[0] == "call" and raw[2][0] == "name" and raw[2][2] == "Rule"):
+                error(raw[1], "%s requires Rule(...)" % method)
+            fields, order = {}, []
+            for field, value in raw[3]:
+                if field is None or field.text not in {"id", "version", "body", "head"} or field.text in fields:
+                    error(field or raw[1], "invalid Rule field")
+                key = field.text
+                if key == "body":
+                    if value[0] == "call" and value[2][0] == "name" and value[2][2] == "All":
+                        premises = value[3]
+                        if not 1 <= len(premises) <= 8 or any(name is not None for name, _ in premises):
+                            error(value[1], "Rule All requires 1 to 8 positional Triple premises")
+                        fields[key] = [triple(premise) for _, premise in premises]
+                    else:
+                        fields[key] = [triple(value)]
+                    order.extend("body:%d" % index for index in range(len(fields[key])))
+                else:
+                    fields[key] = triple(value) if key == "head" else expression(value, env)
+                    if key == "id" and fields[key]["type"] != "s": error(value[1], "Rule id must be s")
+                    if key == "version" and fields[key]["type"] not in {"s", "si32"}:
+                        error(value[1], "Rule version must be s or si32")
+                    order.append(key)
+            if not {"id", "body", "head"} <= fields.keys(): error(raw[1], "Rule requires id, body, head")
+            return {"kind": "horn_rule_construct", "type": "horn_rule", "version": None, **fields, "eval_order": order}
+
+        identifier = None
+        if method != "add_rule":
+            identifier = expression(args[0][1], env)
+            if identifier["type"] != "s": error(args[0][1][1], "rule ID must be s")
+        payload = None if method == "remove_rule" else rule(args[-1][1])
+        return {"kind": "horn_rule_history", "type": "b", "operation": method,
+                "plan": expression(receiver, env), "id": identifier, "rule": payload,
+                "eval_order": ["plan"] + (["id"] if identifier is not None else []) + (["rule"] if payload is not None else [])}
 
     if receiver_type == "horn_plan" and method in {"select", "count", "exists", "status"}:
         # Preserve IR7's established lowering for literal queries.
@@ -192,3 +257,52 @@ def lower_dynamic_call(node, expression, env, error):
         return {"kind": "horn_call", "type": typ, "operation": method,
                 "snapshot": expression(receiver, env), "indexes": indexes}
     return None
+
+
+def _lower_indexed_call(node, expression, env, error):
+    callee = node[2]
+    plan = None
+    if callee[0] == "field" and callee[3].text == "save_indexed":
+        receiver = callee[2]
+        if receiver[0] != "name" or env.get(receiver[2], (None,))[0] != "horn_plan": return None
+        operation = "save"
+        plan = expression(receiver, env)
+    elif callee[0] == "name" and callee[2] in {"indexed_exists", "indexed_add", "indexed_correct", "indexed_remove"}:
+        operation = callee[2][8:]
+    else: return None
+    args = node[3]
+    count = 1 if operation == "save" else 2
+    if len(args) != count or any(field is not None for field, _ in args):
+        error(node[1], "indexed %s requires %d positional arguments" % (operation, count))
+    path = expression(args[0][1], env)
+    if path["type"] != "s": error(args[0][1][1], "indexed path must be s")
+    order = (["plan"] if plan is not None else []) + ["path"]
+    triple, identifier, fact = None, None, None
+    if operation == "exists":
+        triple = _dynamic_triple(args[1][1], expression, env, error)
+        order.append("triple")
+    elif operation == "remove":
+        identifier = expression(args[1][1], env)
+        if identifier["type"] != "s": error(args[1][1][1], "indexed fact ID must be s")
+        order.append("id")
+    elif operation in {"add", "correct"}:
+        raw = args[1][1]
+        if not (raw[0] == "call" and raw[2][0] == "name" and raw[2][2] == "Fact"):
+            error(raw[1], "indexed %s requires Fact(...)" % operation)
+        fact = {}
+        for field, value in raw[3]:
+            if field is None or field.text not in {"id", "subject", "predicate", "object", "polarity"} or field.text in fact:
+                error(field or raw[1], "indexed Fact accepts id, subject, predicate, object, and optional polarity")
+            key = field.text
+            fact[key] = expression(value, env)
+            if fact[key]["type"] != ("b" if key == "polarity" else "s"):
+                error(value[1], "indexed Fact %s has the wrong type" % key)
+            order.append("fact:" + key)
+        if not {"id", "subject", "predicate", "object"} <= fact.keys():
+            error(raw[1], "indexed Fact requires id, subject, predicate, object")
+        if "polarity" not in fact:
+            fact["polarity"] = {"kind": "literal", "type": "b", "value": True}
+            order.append("fact:polarity")
+    return {"kind": "indexed_call", "type": "result:si32:s" if operation == "save" else "result:b:s",
+            "operation": operation, "plan": plan, "path": path, "triple": triple,
+            "id": identifier, "fact": fact, "eval_order": order}

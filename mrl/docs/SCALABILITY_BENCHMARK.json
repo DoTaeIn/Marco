@@ -1,0 +1,739 @@
+{
+  "baseline_commit": "2a7d4f9e29695dae4757d2024ca6c4b9902afa5b",
+  "samples": 3,
+  "platform": "Windows-10-10.0.26200-SP0",
+  "boundary": "Fresh native process to flushed READY after verified exact asserted lookup; append READY follows durable commit.",
+  "scope": "No Horn rules; same fact IDs/triples. Indexed native find and eager Horn exists. Source indexed API has separate end-to-end acceptance.",
+  "cache": "OS cache not flushed; process restarts, not cold-disk measurements.",
+  "excluded": [
+    "compilation",
+    "input generation",
+    "initial indexed export",
+    "initial eager checkpoint/cache export"
+  ],
+  "updates": "Cumulative rounds: each appends 1% of initial N plus one correction, one durable transaction/commit per round. update_commit_ms excludes open/restore; process_to_ready_ms includes it.",
+  "metrics": "Indexed bytes are materialized fact records, not disk I/O; VM/fullscan stats cover find statements. Baseline peak_tracked_bytes excludes untracked allocations.",
+  "p95": "nearest rank; 3 samples gives max, not a tail-latency estimate",
+  "source_sha256": {
+    "knowledge_store.h": "32470dd6d7884ba28e2907db308241812bc015815659cdbe58cc487d936518cc",
+    "knowledge_indexed.h": "b8e5c62aa63ec0c39091ad2b5a61d03d54452fb919117ddd3753a162d8d55d17"
+  },
+  "sizes": {
+    "10000": {
+      "delta_per_round": 100,
+      "initial": {
+        "indexed": [
+          {
+            "update_commit_ms": 0.0,
+            "rows_read": 1,
+            "logical_payload_bytes": 52,
+            "vm_steps": 39,
+            "fullscan_steps": 0,
+            "process_to_ready_ms": 76.61829999960901,
+            "process_wall_ms": 79.59269999992102
+          },
+          {
+            "update_commit_ms": 0.0,
+            "rows_read": 1,
+            "logical_payload_bytes": 52,
+            "vm_steps": 39,
+            "fullscan_steps": 0,
+            "process_to_ready_ms": 73.81619999978284,
+            "process_wall_ms": 76.43109999935405
+          },
+          {
+            "update_commit_ms": 0.0,
+            "rows_read": 1,
+            "logical_payload_bytes": 52,
+            "vm_steps": 39,
+            "fullscan_steps": 0,
+            "process_to_ready_ms": 72.77430000067397,
+            "process_wall_ms": 75.52209999994375
+          }
+        ],
+        "baseline": [
+          {
+            "update_commit_ms": 0.0,
+            "peak_tracked_bytes": 9456340,
+            "process_to_ready_ms": 101.60519999953976,
+            "process_wall_ms": 104.58119999930204
+          },
+          {
+            "update_commit_ms": 0.0,
+            "peak_tracked_bytes": 9456340,
+            "process_to_ready_ms": 78.97179999963555,
+            "process_wall_ms": 81.98059999995166
+          },
+          {
+            "update_commit_ms": 0.0,
+            "peak_tracked_bytes": 9456340,
+            "process_to_ready_ms": 79.56339999964257,
+            "process_wall_ms": 82.47819999996864
+          }
+        ]
+      },
+      "growth_rounds": [
+        {
+          "round": 1,
+          "total_facts": 10100,
+          "indexed": {
+            "append": {
+              "update_commit_ms": 3.5254,
+              "rows_read": 0,
+              "logical_payload_bytes": 0,
+              "vm_steps": 0,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 76.78269999996701,
+              "process_wall_ms": 80.50819999971282
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "rows_read": 3,
+              "logical_payload_bytes": 156,
+              "vm_steps": 134,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 90.63700000024255,
+              "process_wall_ms": 94.61250000003929
+            }
+          },
+          "baseline": {
+            "append": {
+              "update_commit_ms": 0.9602,
+              "peak_tracked_bytes": 9456340,
+              "process_to_ready_ms": 83.19519999986369,
+              "process_wall_ms": 86.25909999955184
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "peak_tracked_bytes": 9456340,
+              "process_to_ready_ms": 85.97509999981412,
+              "process_wall_ms": 89.13250000023254
+            }
+          }
+        },
+        {
+          "round": 2,
+          "total_facts": 10200,
+          "baseline": {
+            "append": {
+              "update_commit_ms": 0.8314,
+              "peak_tracked_bytes": 9456340,
+              "process_to_ready_ms": 80.16390000011597,
+              "process_wall_ms": 83.28739999979007
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "peak_tracked_bytes": 9456340,
+              "process_to_ready_ms": 84.32549999997718,
+              "process_wall_ms": 87.54880000014964
+            }
+          },
+          "indexed": {
+            "append": {
+              "update_commit_ms": 3.1971,
+              "rows_read": 0,
+              "logical_payload_bytes": 0,
+              "vm_steps": 0,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 76.92689999930735,
+              "process_wall_ms": 80.7716999997865
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "rows_read": 3,
+              "logical_payload_bytes": 156,
+              "vm_steps": 151,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 77.53109999976004,
+              "process_wall_ms": 80.41200000025128
+            }
+          }
+        },
+        {
+          "round": 3,
+          "total_facts": 10300,
+          "indexed": {
+            "append": {
+              "update_commit_ms": 2.9064,
+              "rows_read": 0,
+              "logical_payload_bytes": 0,
+              "vm_steps": 0,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 81.04699999967124,
+              "process_wall_ms": 84.98959999997169
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "rows_read": 3,
+              "logical_payload_bytes": 156,
+              "vm_steps": 151,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 72.70559999960824,
+              "process_wall_ms": 75.56969999950525
+            }
+          },
+          "baseline": {
+            "append": {
+              "update_commit_ms": 0.7652,
+              "peak_tracked_bytes": 9458524,
+              "process_to_ready_ms": 80.6828000004316,
+              "process_wall_ms": 83.74280000043655
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "peak_tracked_bytes": 9467012,
+              "process_to_ready_ms": 82.25510000011127,
+              "process_wall_ms": 85.45020000019576
+            }
+          }
+        }
+      ],
+      "summary": {
+        "indexed": {
+          "initial_first_answer": {
+            "samples_ms": [
+              76.61829999960901,
+              73.81619999978284,
+              72.77430000067397
+            ],
+            "median_ms": 73.81619999978284,
+            "p95_ms": 76.61829999960901
+          },
+          "growing_reopen_verified": {
+            "samples_ms": [
+              90.63700000024255,
+              77.53109999976004,
+              72.70559999960824
+            ],
+            "median_ms": 77.53109999976004,
+            "p95_ms": 90.63700000024255
+          },
+          "update_commit": {
+            "samples_ms": [
+              3.5254,
+              3.1971,
+              2.9064
+            ],
+            "median_ms": 3.1971,
+            "p95_ms": 3.5254
+          }
+        },
+        "baseline": {
+          "initial_first_answer": {
+            "samples_ms": [
+              101.60519999953976,
+              78.97179999963555,
+              79.56339999964257
+            ],
+            "median_ms": 79.56339999964257,
+            "p95_ms": 101.60519999953976
+          },
+          "growing_reopen_verified": {
+            "samples_ms": [
+              85.97509999981412,
+              84.32549999997718,
+              82.25510000011127
+            ],
+            "median_ms": 84.32549999997718,
+            "p95_ms": 85.97509999981412
+          },
+          "update_commit": {
+            "samples_ms": [
+              0.9602,
+              0.8314,
+              0.7652
+            ],
+            "median_ms": 0.8314,
+            "p95_ms": 0.9602
+          }
+        }
+      }
+    },
+    "100000": {
+      "delta_per_round": 1000,
+      "initial": {
+        "indexed": [
+          {
+            "update_commit_ms": 0.0,
+            "rows_read": 1,
+            "logical_payload_bytes": 52,
+            "vm_steps": 39,
+            "fullscan_steps": 0,
+            "process_to_ready_ms": 74.37620000018796,
+            "process_wall_ms": 77.36399999976129
+          },
+          {
+            "update_commit_ms": 0.0,
+            "rows_read": 1,
+            "logical_payload_bytes": 52,
+            "vm_steps": 39,
+            "fullscan_steps": 0,
+            "process_to_ready_ms": 76.95459999922605,
+            "process_wall_ms": 79.94159999998374
+          },
+          {
+            "update_commit_ms": 0.0,
+            "rows_read": 1,
+            "logical_payload_bytes": 52,
+            "vm_steps": 39,
+            "fullscan_steps": 0,
+            "process_to_ready_ms": 76.16529999995691,
+            "process_wall_ms": 79.19570000012754
+          }
+        ],
+        "baseline": [
+          {
+            "update_commit_ms": 0.0,
+            "peak_tracked_bytes": 81366391,
+            "process_to_ready_ms": 162.33590000047116,
+            "process_wall_ms": 168.90710000006948
+          },
+          {
+            "update_commit_ms": 0.0,
+            "peak_tracked_bytes": 81366391,
+            "process_to_ready_ms": 150.28629999960685,
+            "process_wall_ms": 157.06169999975828
+          },
+          {
+            "update_commit_ms": 0.0,
+            "peak_tracked_bytes": 81366391,
+            "process_to_ready_ms": 145.1491999996506,
+            "process_wall_ms": 151.72789999996894
+          }
+        ]
+      },
+      "growth_rounds": [
+        {
+          "round": 1,
+          "total_facts": 101000,
+          "indexed": {
+            "append": {
+              "update_commit_ms": 13.2737,
+              "rows_read": 0,
+              "logical_payload_bytes": 0,
+              "vm_steps": 0,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 85.99039999990055,
+              "process_wall_ms": 90.98080000057962
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "rows_read": 3,
+              "logical_payload_bytes": 156,
+              "vm_steps": 134,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 76.75879999987956,
+              "process_wall_ms": 79.825300000266
+            }
+          },
+          "baseline": {
+            "append": {
+              "update_commit_ms": 1.6199,
+              "peak_tracked_bytes": 81366391,
+              "process_to_ready_ms": 145.74900000025082,
+              "process_wall_ms": 152.3482000002332
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "peak_tracked_bytes": 81366391,
+              "process_to_ready_ms": 167.598299999554,
+              "process_wall_ms": 181.68530000002647
+            }
+          }
+        },
+        {
+          "round": 2,
+          "total_facts": 102000,
+          "baseline": {
+            "append": {
+              "update_commit_ms": 1.5748,
+              "peak_tracked_bytes": 81366391,
+              "process_to_ready_ms": 182.79769999935525,
+              "process_wall_ms": 253.45959999958723
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "peak_tracked_bytes": 81366391,
+              "process_to_ready_ms": 180.6959999994433,
+              "process_wall_ms": 190.1849999994738
+            }
+          },
+          "indexed": {
+            "append": {
+              "update_commit_ms": 13.4315,
+              "rows_read": 0,
+              "logical_payload_bytes": 0,
+              "vm_steps": 0,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 102.69859999971231,
+              "process_wall_ms": 109.40169999958016
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "rows_read": 3,
+              "logical_payload_bytes": 156,
+              "vm_steps": 151,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 83.5999000000811,
+              "process_wall_ms": 86.91020000060234
+            }
+          }
+        },
+        {
+          "round": 3,
+          "total_facts": 103000,
+          "indexed": {
+            "append": {
+              "update_commit_ms": 13.5344,
+              "rows_read": 0,
+              "logical_payload_bytes": 0,
+              "vm_steps": 0,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 93.35019999980432,
+              "process_wall_ms": 98.28680000009626
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "rows_read": 3,
+              "logical_payload_bytes": 156,
+              "vm_steps": 151,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 77.18079999995098,
+              "process_wall_ms": 80.13229999960458
+            }
+          },
+          "baseline": {
+            "append": {
+              "update_commit_ms": 1.6435,
+              "peak_tracked_bytes": 81391538,
+              "process_to_ready_ms": 152.79710000049818,
+              "process_wall_ms": 159.4628000002558
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "peak_tracked_bytes": 81457370,
+              "process_to_ready_ms": 154.12480000031792,
+              "process_wall_ms": 231.51450000023033
+            }
+          }
+        }
+      ],
+      "summary": {
+        "indexed": {
+          "initial_first_answer": {
+            "samples_ms": [
+              74.37620000018796,
+              76.95459999922605,
+              76.16529999995691
+            ],
+            "median_ms": 76.16529999995691,
+            "p95_ms": 76.95459999922605
+          },
+          "growing_reopen_verified": {
+            "samples_ms": [
+              76.75879999987956,
+              83.5999000000811,
+              77.18079999995098
+            ],
+            "median_ms": 77.18079999995098,
+            "p95_ms": 83.5999000000811
+          },
+          "update_commit": {
+            "samples_ms": [
+              13.2737,
+              13.4315,
+              13.5344
+            ],
+            "median_ms": 13.4315,
+            "p95_ms": 13.5344
+          }
+        },
+        "baseline": {
+          "initial_first_answer": {
+            "samples_ms": [
+              162.33590000047116,
+              150.28629999960685,
+              145.1491999996506
+            ],
+            "median_ms": 150.28629999960685,
+            "p95_ms": 162.33590000047116
+          },
+          "growing_reopen_verified": {
+            "samples_ms": [
+              167.598299999554,
+              180.6959999994433,
+              154.12480000031792
+            ],
+            "median_ms": 167.598299999554,
+            "p95_ms": 180.6959999994433
+          },
+          "update_commit": {
+            "samples_ms": [
+              1.6199,
+              1.5748,
+              1.6435
+            ],
+            "median_ms": 1.6199,
+            "p95_ms": 1.6435
+          }
+        }
+      }
+    },
+    "1000000": {
+      "delta_per_round": 10000,
+      "initial": {
+        "indexed": [
+          {
+            "update_commit_ms": 0.0,
+            "rows_read": 1,
+            "logical_payload_bytes": 52,
+            "vm_steps": 39,
+            "fullscan_steps": 0,
+            "process_to_ready_ms": 76.33749999968131,
+            "process_wall_ms": 79.0844000002835
+          },
+          {
+            "update_commit_ms": 0.0,
+            "rows_read": 1,
+            "logical_payload_bytes": 52,
+            "vm_steps": 39,
+            "fullscan_steps": 0,
+            "process_to_ready_ms": 77.53959999990911,
+            "process_wall_ms": 80.4257999998299
+          },
+          {
+            "update_commit_ms": 0.0,
+            "rows_read": 1,
+            "logical_payload_bytes": 52,
+            "vm_steps": 39,
+            "fullscan_steps": 0,
+            "process_to_ready_ms": 73.31389999944804,
+            "process_wall_ms": 76.10329999988608
+          }
+        ],
+        "baseline": [
+          {
+            "update_commit_ms": 0.0,
+            "peak_tracked_bytes": 689505034,
+            "process_to_ready_ms": 1093.5040000003937,
+            "process_wall_ms": 1128.2136000008904
+          },
+          {
+            "update_commit_ms": 0.0,
+            "peak_tracked_bytes": 689505034,
+            "process_to_ready_ms": 1096.4220000005298,
+            "process_wall_ms": 1130.9492000000319
+          },
+          {
+            "update_commit_ms": 0.0,
+            "peak_tracked_bytes": 689505034,
+            "process_to_ready_ms": 1145.1642000001812,
+            "process_wall_ms": 1178.6909000002197
+          }
+        ]
+      },
+      "growth_rounds": [
+        {
+          "round": 1,
+          "total_facts": 1010000,
+          "indexed": {
+            "append": {
+              "update_commit_ms": 108.7986,
+              "rows_read": 0,
+              "logical_payload_bytes": 0,
+              "vm_steps": 0,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 195.3354000006584,
+              "process_wall_ms": 204.5852000001105
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "rows_read": 3,
+              "logical_payload_bytes": 156,
+              "vm_steps": 134,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 86.01569999973435,
+              "process_wall_ms": 89.11489999991318
+            }
+          },
+          "baseline": {
+            "append": {
+              "update_commit_ms": 11.0564,
+              "peak_tracked_bytes": 689505034,
+              "process_to_ready_ms": 1169.758100000763,
+              "process_wall_ms": 1408.0863000008321
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "peak_tracked_bytes": 689505034,
+              "process_to_ready_ms": 1274.1697999999815,
+              "process_wall_ms": 1312.696799999685
+            }
+          }
+        },
+        {
+          "round": 2,
+          "total_facts": 1020000,
+          "baseline": {
+            "append": {
+              "update_commit_ms": 11.1593,
+              "peak_tracked_bytes": 689505034,
+              "process_to_ready_ms": 1269.7593000002598,
+              "process_wall_ms": 1343.0458000002545
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "peak_tracked_bytes": 689505034,
+              "process_to_ready_ms": 1259.2702000001736,
+              "process_wall_ms": 1296.5459000006376
+            }
+          },
+          "indexed": {
+            "append": {
+              "update_commit_ms": 112.4132,
+              "rows_read": 0,
+              "logical_payload_bytes": 0,
+              "vm_steps": 0,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 196.10629999988305,
+              "process_wall_ms": 208.91609999944194
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "rows_read": 3,
+              "logical_payload_bytes": 156,
+              "vm_steps": 151,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 78.78069999969739,
+              "process_wall_ms": 81.65069999995467
+            }
+          }
+        },
+        {
+          "round": 3,
+          "total_facts": 1030000,
+          "indexed": {
+            "append": {
+              "update_commit_ms": 109.3621,
+              "rows_read": 0,
+              "logical_payload_bytes": 0,
+              "vm_steps": 0,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 186.79400000019086,
+              "process_wall_ms": 199.55620000018826
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "rows_read": 3,
+              "logical_payload_bytes": 156,
+              "vm_steps": 151,
+              "fullscan_steps": 0,
+              "process_to_ready_ms": 81.56629999939469,
+              "process_wall_ms": 84.23919999950158
+            }
+          },
+          "baseline": {
+            "append": {
+              "update_commit_ms": 12.0254,
+              "peak_tracked_bytes": 689767012,
+              "process_to_ready_ms": 1199.7281999992992,
+              "process_wall_ms": 1236.9887999993807
+            },
+            "reopen": {
+              "update_commit_ms": 0.0,
+              "peak_tracked_bytes": 690291596,
+              "process_to_ready_ms": 1177.6320999997552,
+              "process_wall_ms": 1215.5653999998322
+            }
+          }
+        }
+      ],
+      "summary": {
+        "indexed": {
+          "initial_first_answer": {
+            "samples_ms": [
+              76.33749999968131,
+              77.53959999990911,
+              73.31389999944804
+            ],
+            "median_ms": 76.33749999968131,
+            "p95_ms": 77.53959999990911
+          },
+          "growing_reopen_verified": {
+            "samples_ms": [
+              86.01569999973435,
+              78.78069999969739,
+              81.56629999939469
+            ],
+            "median_ms": 81.56629999939469,
+            "p95_ms": 86.01569999973435
+          },
+          "update_commit": {
+            "samples_ms": [
+              108.7986,
+              112.4132,
+              109.3621
+            ],
+            "median_ms": 109.3621,
+            "p95_ms": 112.4132
+          }
+        },
+        "baseline": {
+          "initial_first_answer": {
+            "samples_ms": [
+              1093.5040000003937,
+              1096.4220000005298,
+              1145.1642000001812
+            ],
+            "median_ms": 1096.4220000005298,
+            "p95_ms": 1145.1642000001812
+          },
+          "growing_reopen_verified": {
+            "samples_ms": [
+              1274.1697999999815,
+              1259.2702000001736,
+              1177.6320999997552
+            ],
+            "median_ms": 1259.2702000001736,
+            "p95_ms": 1274.1697999999815
+          },
+          "update_commit": {
+            "samples_ms": [
+              11.0564,
+              11.1593,
+              12.0254
+            ],
+            "median_ms": 11.1593,
+            "p95_ms": 12.0254
+          }
+        }
+      }
+    }
+  },
+  "baseline_source_sha256": {
+    "knowledge_store.h": "b9252ff76af661a7b9326e0cb4cc329723239407a63726f058376cae4fa00fa0",
+    "knowledge_engine.h": "e95955dafb3340e99f29c8554fbe50a3cee073ab1602f472c7c8d515b11193a3",
+    "horn_jsonl.h": "31ba415088a60c03f9c5b889538ebfcf71768f04047ccdf74dbdc3d8a3d8a5a1",
+    "knowledge_persist.h": "7dd97d400214d36f48bd19c73049430f95c520fb5730259aaf14a23e99fd2afb",
+    "knowledge_cache.h": "c4518086c3ca92c725783c572ab056590a6f1bb0571a5c95ed94eae98fe383a4",
+    "knowledge_journal.h": "53d522145cb56ce0c60fe74bc95da40d638ff1c1950fccf79e66f71f5f1f8de8",
+    "horn_runtime_v7.h": "488edd410a92667b6f52590deebfccc1b2ba6879b5a5a5418c3ac265818140da"
+  },
+  "generated_source_sha256": {
+    "indexed": "c75c88eaddbb2f59cd1c1533c48e25305107a9c5e6e0d2b2692b078d5cc457f4",
+    "baseline": "0d65608f1fa726f336f90cb6e5459f41c4bc1d969d120f649279ad361362d7cb"
+  },
+  "source_stable": true,
+  "post_measurement_whitespace_only": {
+    "mrl/benchmark_scalable_startup.py": {
+      "before_sha256": "aab2cc7df38a10c99ccacb83302270faa833475ca038b3e80a13110747498b18",
+      "after_sha256": "ec00fd3202e03be272f30dda852ba7c5f25e0700155a07e837f8dfa08d1a4cbc",
+      "change": "Remove blank lines at EOF only; executable statements unchanged."
+    },
+    "mrl/runtime/knowledge_indexed.h": {
+      "before_sha256": "b8e5c62aa63ec0c39091ad2b5a61d03d54452fb919117ddd3753a162d8d55d17",
+      "after_sha256": "159668ee898e49b5cb968dc36eee152dc0b2e7e09360a08a4a596e6e04cfae5f",
+      "change": "Remove blank lines at EOF only; executable statements unchanged."
+    }
+  }
+}
