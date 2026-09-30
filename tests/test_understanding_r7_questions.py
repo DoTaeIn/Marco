@@ -526,3 +526,26 @@ def test_a_statement_after_the_pointer_turn_pins_the_count_again():
     rows = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", "Then they vanished.", "{b} has 2 {p}.",
                              "How many {p} does {b} have?"], 3, **EN_WORDS)
     assert rows[-1]["status"] == "answered" and "2" in rows[-1]["answer"]
+
+
+HERBS = ["{a} has 5 bundles of herbs.", "{b} has 3 bundles of herbs.", "{a} gave {b} 2 bundles."]
+INKS = ["Dr. {a} has 5 green inks.", "Mr. {b} has 2.", "Dr. {a} gave 3 inks to Mr. {b}."]
+
+
+@pytest.mark.parametrize("frames,correction,question,value", [
+    (HERBS, "Not 2, 3.", "How many bundles of herbs does {b} have?", "6"),
+    (HERBS, "Not two, three.", "How many bundles of herbs does {a} have?", "2"),
+    (INKS, "No, 4 inks were given, not 3.", "How many inks does {b} have?", "6"),
+    (INKS, "Let me fix that: 4 inks were given, not 3.", "How many green inks does {a} have?", "1"),
+])
+def test_a_correction_of_an_event_that_said_the_thing_with_fewer_words_corrects_it(frames, correction, question, value):
+    # the event's thing was read through the thing node; its rewrite is the same event by node, read the same way
+    rows = _play("english", frames + [correction, question], 3, **EN_WORDS)
+    assert rows[-2]["status"] == "observed" and rows[-2]["meaning"]["act"] == "correct"
+    assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
+
+
+def test_two_amounts_with_no_word_that_marks_the_old_one_ask_which_event_and_correct_nothing():
+    rows = _play("english", HERBS + ["No 2, 3.", "How many bundles of herbs does {b} have?"], 3, **EN_WORDS)
+    assert rows[-2]["meaning"]["reason"] == "reference_which_event"
+    assert rows[-1]["status"] == "answered" and "5" in rows[-1]["answer"]
