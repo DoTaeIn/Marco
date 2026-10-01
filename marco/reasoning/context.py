@@ -580,7 +580,7 @@ class ReasoningContext:
             table.update(readings)
             facts, _d, _p, _r = self._replay(parser, self.observations + [text], self.fills,
                                              deepcopy(self.event_ids) if self.event_ids is not None else None)
-            facts = self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", []))
+            facts = self._unit_keys(parser, self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", [])))
             _state, changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
         except ValueError as exc:
             return str(exc).split(":")[0]
@@ -1880,6 +1880,8 @@ class ReasoningContext:
         # Every replay path binds a count said without its holder the same way (a pass over the
         # facts in order; one already bound is not bound again).
         result = (self._bind_unnamed_counts(parser, [], result[0], getattr(self, "bind_hints", [])),) + tuple(result[1:])
+        # ... and keeps one thing counted in two units as two counts (``_unit_keys``)
+        result = (self._unit_keys(parser, result[0]),) + tuple(result[1:])
         self._replay_cache = (key, deepcopy(result), reusable)
         if self._last_replay_scope in {"semantic_append", "semantic_resume", "semantic_correction",
                                        "semantic_definition"}:
@@ -4643,12 +4645,145 @@ class ReasoningContext:
         return at == len(short)
 
     @staticmethod
+    def _unit_said(parser, text, after_asker=False):
+        """The declared counter (수량단위.units) a clause says its amount in: the unit right after its first number
+        (43묶음, 세 개를), written on to the number or as the next word; with ``after_asker`` the unit a question
+        asks in (몇 묶음). None in a pack that declares no counters, or when no unit is said."""
+        from marco.language.numerals import parse_numeral
+        counters = (parser.language_pack or {}).get("counters") or {}
+        units = sorted(counters.get("units") or [], key=len, reverse=True)
+        if not units:
+            return None
+        askers = counters.get("askers") or []
+        numerals = parser.data.get("numerals") or {}
+        words = [w.strip(".,!?") for w in str(text).split()]
+
+        def unit_of(word):
+            return next((u for u in units if word.startswith(u)), None)
+        for i, word in enumerate(words):
+            if after_asker:
+                asker = next((a for a in askers if word.startswith(a)), None)
+                if asker is None:
+                    continue
+                rest = word[len(asker):]
+            else:
+                digits = len(word) - len(word.lstrip("0123456789"))
+                if digits:
+                    rest = word[digits:]
+                elif parse_numeral(word, numerals) is not None:
+                    rest = ""
+                else:
+                    continue
+            if rest:
+                return unit_of(rest)
+            return unit_of(words[i + 1]) if i + 1 < len(words) else None
+        return None
+
+    @staticmethod
+    def _unit_keys(parser, facts):
+        """One thing counted in two units is two counts (G7-S): 노라는 깃펜이 43묶음 있어. 노라는 깃펜이 8개 있어. says
+        43 bundles and 8 pieces, not 8 in place of 43. A count is not said in a unit until a second count of the
+        same holder and thing is said in another declared unit; from then every count of that key is kept by its
+        unit: the pack's first unit (개) under the key itself, another unit under the key with the unit after it
+        (노라 깃펜 묶음: the thing 깃펜 묶음, its container), and a change said in one of those units goes to that
+        count, with the other holders of the same statement (a transfer moves one thing). Nothing is converted
+        between units. The pass runs over the facts in order on every replay path, and gives the same keys when
+        run again (each fact keeps the key it was read with, ``unit_key``)."""
+        counters = (parser.language_pack or {}).get("counters") or {}
+        units = counters.get("units") or []
+        if not units:
+            return facts
+        default = units[0]
+        updates = parser.data.get("numeric_updates") or {}
+        targets = ReasoningContext._numeric_targets(parser)
+
+        def base(fact):
+            return fact.get("unit_key") or fact["triple"][0]
+
+        def unit(fact):
+            if "unit" not in fact:
+                fact["unit"] = ReasoningContext._unit_said(parser, (fact.get("evidence") or {}).get("text") or "")
+            return fact["unit"]
+        counted = [f for f in facts if isinstance(f.get("triple"), list) and isinstance(f["triple"][0], str)
+                   and (f["triple"][1] in targets or f["triple"][1] in updates)]
+        said = {}
+        for fact in counted:
+            if fact["triple"][1] in targets and unit(fact):
+                seen = said.setdefault(base(fact), [])
+                if unit(fact) not in seen:
+                    seen.append(unit(fact))
+        split = {key: seen for key, seen in said.items() if len(seen) > 1}
+        if not split and not any("unit_key" in f for f in counted):
+            return facts
+        moved = {}                  # (turn, unit, thing) of a change that went to a unit's count
+        for fact in counted:
+            key, u = base(fact), unit(fact)
+            fact["unit_key"] = key
+            target = key if key not in split or not u or u == default or u not in split[key] and \
+                fact["triple"][1] not in targets else "%s %s" % (key, u)
+            if target != key and fact["triple"][1] in updates:
+                moved[((fact.get("evidence") or {}).get("turn"), u, key.split()[-1])] = True
+            fact["triple"][0] = target
+        for fact in counted:
+            key, u = fact["unit_key"], fact["unit"]
+            if fact["triple"][0] == key and fact["triple"][1] in updates and u and u != default \
+                    and moved.get(((fact.get("evidence") or {}).get("turn"), u, key.split()[-1])):
+                fact["triple"][0] = "%s %s" % (key, u)      # the other holder of the same transfer
+        for fact in counted:
+            key = fact["unit_key"]
+            parts = fact.get("parts") if isinstance(fact.get("parts"), dict) else None
+            if fact["triple"][0] != key:
+                if parts and parts.get("holder") and key.startswith(parts["holder"] + " "):
+                    fact["parts"] = {"holder": parts["holder"], "thing": fact["triple"][0][len(parts["holder"]) + 1:]}
+                else:
+                    fact.pop("parts", None)
+            elif parts and parts.get("thing") and key.startswith(parts.get("holder", "") + " ") \
+                    and "key" not in parts:
+                fact["parts"] = {"holder": parts["holder"], "thing": key[len(parts["holder"]) + 1:]}
+        return facts
+
+    def _asked_in_unit(self, parser, text, query, facts):
+        """``(query, None)``, or ``(query, hold)`` for a count question about a holder and thing the conversation
+        counts in two units (``_unit_keys``). A question that asks in one of those units (몇 묶음) reads that
+        unit's count; a question that names no unit, another unit, or a sum or comparison over such a count is
+        held, ``hold`` naming the subject and the units with their keys: one unit's count is never said for
+        another, and nothing is converted."""
+        counted = {}
+        for fact in facts:
+            base = fact.get("unit_key")
+            if base and isinstance(fact.get("triple"), list) and isinstance(fact["triple"][0], str):
+                counted.setdefault(base, {})[fact.get("unit")] = fact["triple"][0]
+        split = {base: by_unit for base, by_unit in counted.items() if len(set(by_unit.values())) > 1}
+        if not split:
+            return query, None
+        numeric = self._numeric_targets(parser)
+        asked = self._unit_said(parser, text, after_asker=True)
+        out = []
+        for row in query:
+            triple = row.get("triple") if isinstance(row, dict) else None
+            named = [name for name in ([triple[0]] if isinstance(triple, list) else []) + [
+                str(h) for kind in ("total", "more", "fewer", "same") for h in (row.get(kind) or [])
+                if isinstance(row, dict) and isinstance(row.get(kind), (list, tuple))] if isinstance(name, str)]
+            hit = next((name for name in named if name in split), None)
+            if hit is None:
+                out.append(row)
+                continue
+            by_unit = split[hit]
+            if isinstance(triple, list) and triple[0] == hit and triple[1] in numeric and asked in by_unit \
+                    and not any(row.get(kind) for kind in ("total", "more", "fewer", "same")):
+                out.append({**row, "triple": [by_unit[asked]] + list(triple[1:])})
+                continue
+            return query, {"subject": hit, "units": [{"unit": u, "key": k} for u, k in by_unit.items() if u]}
+        return out, None
+
+    @staticmethod
     def _container_parts(parser, words):
         """``(head, content)`` of a thing name of container structure, or None. The head is the container or
         measure, the content what it holds: in a pack that declares a partitive word (명사수.partitive: of), the
         words before it and after it (packs of quills: packs, quills); in a pack whose counters are nouns
-        (수량단위.units), a last word that is one of them after the content (깃펜 묶음: 묶음, 깃펜). The classes are
-        the pack's; nothing here names a word."""
+        (수량단위.units), a last word that is one of them after the content (깃펜 묶음: 묶음, 깃펜); in a pack that
+        declares measure words (명사수.measure), a first word that is one before the content (dozen quills: dozen,
+        quills). The classes are the pack's; nothing here names a word."""
         partitive = {str(w).lower() for w in ((getattr(parser, "noun_number", None) or {}).get("partitive") or [])}
         at = next((i for i, w in enumerate(words) if w.lower() in partitive and 0 < i < len(words) - 1), None)
         if at is not None:
@@ -4656,6 +4791,9 @@ class ReasoningContext:
         units = set(((parser.language_pack or {}).get("counters") or {}).get("units") or [])
         if len(words) > 1 and words[-1] in units:
             return words[-1:], words[:-1]
+        measure = {str(w).lower() for w in ((getattr(parser, "noun_number", None) or {}).get("measure") or [])}
+        if len(words) > 1 and words[0].lower() in measure:
+            return words[:1], words[1:]             # dozen quills: the measure, then what it measures
         return None
 
     @staticmethod
@@ -6280,7 +6418,7 @@ class ReasoningContext:
         try:
             facts, _d, _p, _r = self._replay(parser, self.observations + [text], self.fills,
                                              deepcopy(self.event_ids) if self.event_ids is not None else None)
-            facts = self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", []))
+            facts = self._unit_keys(parser, self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", [])))
             _state, changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
         except ValueError as exc:
             reason = str(exc).split(":")[0]
@@ -7610,6 +7748,14 @@ class ReasoningContext:
             if 풀린물음 and not (self.unread or self.unread_guard):
                 # a total or a comparison over "the two" takes its holders and thing from the conversation
                 풀린물음 = self._ground_pair(parser, 풀린물음, 답사실)
+            if 풀린물음:
+                # G7-S: a thing counted in two units is asked in one of them, or held (never one count for the other)
+                풀린물음, units = self._asked_in_unit(parser, text, 풀린물음, 답사실)
+                if units is not None:
+                    self.held_question = text
+                    return {**result, "status": "unresolved",
+                            "meaning": {"act": "hold", "reason": "unresolved", **units},
+                            "answer": replies["unresolved"]}
             if 풀린물음 and not (self.unread or self.unread_guard):
                 # a count asked under a key the state does not have may name a key it has (G7-Q, effort 2); words
                 # that describe several holders are asked back with every candidate
