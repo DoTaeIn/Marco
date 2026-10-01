@@ -326,7 +326,8 @@ def _cached_reasoning_language(path, stamp, size):
             "noun_number": dict(pack.get("명사수", {})) if isinstance(pack.get("명사수"), dict) else {},
             "counters": ({"units": list(pack["수량단위"].get("단위", [])),
                           "askers": list(pack["수량단위"].get("물음말", [])),
-                          "attach": list(pack["수량단위"].get("붙는조사", []))}
+                          "attach": list(pack["수량단위"].get("붙는조사", [])),
+                          "containers": list(pack["수량단위"].get("담는단위", []))}
                          if isinstance(pack.get("수량단위"), dict) else {}),
             "same_frame": [dict(row) for row in pack.get("같은틀", []) if isinstance(row, dict)],
             "phrase_variants": [dict(row) for row in pack.get("말바꿈", []) if isinstance(row, dict)],
@@ -573,7 +574,8 @@ def decode_language_pack(pack: dict, source: str = "") -> dict[str, Any]:
             "noun_number": dict(pack.get("명사수", {})) if isinstance(pack.get("명사수"), dict) else {},
             "counters": ({"units": list(pack["수량단위"].get("단위", [])),
                           "askers": list(pack["수량단위"].get("물음말", [])),
-                          "attach": list(pack["수량단위"].get("붙는조사", []))}
+                          "attach": list(pack["수량단위"].get("붙는조사", [])),
+                          "containers": list(pack["수량단위"].get("담는단위", []))}
                          if isinstance(pack.get("수량단위"), dict) else {}),
             "same_frame": [dict(row) for row in pack.get("같은틀", []) if isinstance(row, dict)],
             "phrase_variants": [dict(row) for row in pack.get("말바꿈", []) if isinstance(row, dict)],

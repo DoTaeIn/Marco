@@ -245,8 +245,6 @@ WRONG_THING = [
                  ("Eli has 2 bundles of herbs.", "rec"), ("Nora gave Eli three bundles.", "rec"),
                  ("How many bundles of herbs does Nora have?", 2), ("How many bundles of herbs does Eli have?", 5),
                  ("How many cups does Nora have?", 3)]),
-    ("한국어", [("가람은 서류가 일곱 묶음 있어.", "rec"), ("나래는 서류가 두 묶음 있어.", "rec"),
-              ("가람이 나래에게 묶음 세 개를 줬어.", "rec"), ("가람은 서류가 몇 묶음 있어?", 4)]),
 ]
 WRONG_THING_HELD = [
     # a plural noun after three: a thing said, never counted for Nora; not read as her pens
@@ -256,6 +254,10 @@ WRONG_THING_HELD = [
     # Korean marks no number: an unknown word in the thing slot stays the thing
     ("한국어", [("가람은 서류가 일곱 묶음 있어.", "rec"), ("나래는 서류가 두 묶음 있어.", "rec"),
               ("가람이 나래에게 뿌뿌 세 개를 줬어.", "hold")]),
+    # a counter word in the thing slot, said with another unit (묶음 세 개: 개) than the count (일곱 묶음): since the
+    # unit-kind hold, the change does not move a count said in 묶음 (it was read as three bundles before)
+    ("한국어", [("가람은 서류가 일곱 묶음 있어.", "rec"), ("나래는 서류가 두 묶음 있어.", "rec"),
+              ("가람이 나래에게 묶음 세 개를 줬어.", "hold")]),
     # the reading without the word does not fit either: the giver cannot cover it
     ("english", PENS + [("Nora gave Eli nine blorp.", "hold"), ("How many pens does Nora have?", "hold")]),
 ]
@@ -608,3 +610,116 @@ def test_a_snapshot_without_readings_restores_and_a_bad_one_is_refused():
     assert outcome(restored.turn("How many pens does Nora have?", KG) or {}, 7)
     with pytest.raises(ValueError):
         context("english", 3).restore(dict(snapshot, readings=["Nora has 7 pens."]))
+
+
+# A change is not charged to the one counted holder when the statement has a phrase in the subject or giver place
+# that the reading passed over. With only 가람 counted, 기 대표님이 세훈에게 세 개를 줬어 took 가람's count to 4 and
+# answered 4, through the reading that takes 기 대표 세훈 for the receiver and leaves the giver unsaid: the sentence
+# names 기 대표 in the subject place, and 가람 is not in it. Such a reading is no reading, at every effort: the
+# statement is held and the count it may have moved is held after it. A change with no subject phrase at all is
+# ordinary subject drop and takes the one counted holder, as before; so does a transfer that says only its receiver.
+SUBJECT_PASSED_OVER = [
+    "기 대표님이 세훈에게 세 개를 줬어.",        # a nominative phrase
+    "기 대표님께서 세훈에게 세 개를 줬어.",      # the honorific nominative
+    "동생은 세훈에게 세 개를 줬어.",            # a topic phrase
+    "기 대표님 세훈에게 세 개를 줬어.",         # a titled word before the receiver, no particle
+]
+SUBJECT_DROPPED = [
+    "세 개를 잃어버렸어.",                    # no subject phrase at all
+    "오늘은 세 개를 잃어버렸어.",              # a topic particle on a word outside names
+    "세훈에게 세 개를 줬어.",                  # only the receiver
+    "우 팀장님에게 세 개를 줬어.",              # only the receiver, titled
+]
+
+
+@pytest.mark.parametrize("line", SUBJECT_PASSED_OVER)
+@pytest.mark.parametrize("effort", [0, 3])
+def test_a_change_is_not_charged_to_the_only_holder_past_a_subject_the_statement_names(line, effort):
+    current = context("한국어", effort)
+    current.turn("가람은 연필이 일곱 개 있어.", KG)
+    assert outcome(current.turn(line, KG) or {}, "hold")
+    asked = current.turn("가람은 연필이 몇 개 있어?", KG) or {}
+    assert asked.get("status") != "answered" and "4" not in str(asked.get("answer"))
+    graph = current.conversation_graph()
+    assert graph.value(graph.id_of("holder", "가람"), graph.id_of("thing", "연필")) == 7
+
+
+@pytest.mark.parametrize("line", SUBJECT_DROPPED)
+@pytest.mark.parametrize("effort", [0, 3])
+def test_a_change_with_no_subject_phrase_takes_the_one_counted_holder(line, effort):
+    assert play("한국어", effort, [("가람은 연필이 일곱 개 있어.", "rec"), (line, "rec"), ("가람은 연필이 몇 개 있어?", 4)]) == []
+
+
+def test_a_clause_that_continues_the_clause_before_keeps_its_giver():
+    assert play("한국어", 3, [("가람은 연필이 일곱 개 있어.", "rec"),
+                            ("가람이 세훈에게 두 개 줬어. 그리고 나래에게 세 개를 주었다.", "rec"),
+                            ("가람은 연필이 몇 개 있어?", 2)]) == []
+
+
+def test_a_change_in_a_conversation_whose_one_count_has_no_holder_goes_to_that_count():
+    # no person is charged: the count is the thing's own (the older tests of test_slot_particles and
+    # test_quantity_relations pin the same)
+    assert play("한국어", 0, [("구슬은 18개 있다.", "rec"), ("다섯 개를 꺼냈다.", "rec"), ("지금 구슬은 몇 개야?", 13)]) == []
+
+
+
+# A change said in a unit of another kind does not move the count. The pack declares the units that hold or group
+# several pieces (수량단위.담는단위); a count said in one of them is not moved by a change said in a unit of one
+# piece, nor the reverse, nor between two different units that hold several: 서류가 5묶음, then 2개를 줬어 was 3
+# (bundles less pieces). The statement is held, its meaning naming the two units, at every effort. Units of one
+# piece on one count (다섯 자루, 두 개) stay one count; the declaration adds no reading.
+@pytest.mark.parametrize("effort", [0, 3])
+@pytest.mark.parametrize("before,change,units", [
+    (["우 팀장님은 서류가 5묶음 있어."], "우 팀장님이 수향에게 서류를 2개 줬어.", ["묶음", "개"]),
+    (["우 팀장님은 서류가 5묶음 있어."], "우 팀장님이 수향에게 서류를 한 상자 줬어.", ["묶음", "상자"]),
+    (["노라는 연필이 5개 있어.", "수아는 연필이 두 묶음 있어."], "노라가 수아에게 연필을 두 개 줬어.", ["묶음", "개"]),
+    (["노라는 연필이 5개 있어."], "노라는 연필 한 묶음을 썼어.", ["개", "묶음"]),
+])
+def test_a_change_in_a_unit_of_another_kind_is_held(effort, before, change, units):
+    current = context("한국어", effort)
+    for line in before:
+        assert (current.turn(line, KG) or {}).get("status") == "observed"
+    result = current.turn(change, KG) or {}
+    assert result.get("status") == "unresolved" and (result.get("meaning") or {}).get("units") == units
+    asked = current.turn(before[0].split("는 ")[0].split("은 ")[0] + "은 몇 개 있어?", KG) or {}
+    assert asked.get("status") != "answered"
+
+
+def test_a_change_in_the_same_unit_or_between_units_of_one_piece_moves_the_count():
+    assert play("한국어", 3, [("우 팀장님은 서류가 5묶음 있어.", "rec"), ("우 팀장님이 수향에게 서류를 두 묶음 줬어.", "rec")]) == []
+    graph, counts = _things("한국어", ["우 팀장님은 서류가 5묶음 있어.", "우 팀장님이 수향에게 서류를 두 묶음 줬어."])
+    assert counts[("우 팀장", "서류")] == 3
+    assert play("한국어", 3, [("노라는 연필이 다섯 자루 있어.", "rec"), ("수아는 연필이 2개 있어.", "rec"),
+                            ("노라가 수아에게 연필을 두 개 줬어.", "rec"), ("노라가 수아에게 연필을 한 자루 줬어.", "rec"),
+                            ("노라는 연필이 몇 자루 있어?", 2), ("수아는 연필이 몇 개 있어?", 5)]) == []
+
+
+# A said count of none is none in every unit (밧줄이 한 개도 없어 is no bundles either): it carries no unit, so the
+# unit-kind hold compares units only when both sides are counts that are not none, each with a said unit. The first
+# change after a said none moves the count and sets its unit, and a later change in a unit of another kind is held
+# against that.
+ZERO_THEN_UNIT = [
+    ["하린은 밧줄이 한 개도 없어.", "도윤은 밧줄이 여섯 묶음 있어."],
+    ["하린은 밧줄이 하나도 없어.", "도윤은 밧줄이 여섯 묶음 있어."],
+]
+
+
+@pytest.mark.parametrize("effort", [0, 3])
+@pytest.mark.parametrize("before", ZERO_THEN_UNIT)
+def test_a_said_count_of_none_takes_the_unit_of_the_first_change(effort, before):
+    said = [(line, "rec") for line in before]
+    assert play("한국어", effort, said + [("도윤이 하린에게 밧줄 다섯 묶음을 줬어.", "rec"),
+                                       ("하린은 밧줄이 몇 개 있어?", 5), ("도윤은 밧줄이 몇 개 있어?", 1)]) == []
+    # the count is now said in 묶음: a change in 개 is held against it, and the count after it
+    current = context("한국어", effort)
+    for line in before + ["도윤이 하린에게 밧줄 다섯 묶음을 줬어."]:
+        assert (current.turn(line, KG) or {}).get("status") == "observed"
+    result = current.turn("하린이 밧줄 두 개를 잃어버렸어.", KG) or {}
+    assert result.get("status") == "unresolved" and (result.get("meaning") or {}).get("units") == ["묶음", "개"]
+    assert (current.turn("하린은 밧줄이 몇 개 있어?", KG) or {}).get("status") != "answered"
+
+
+def test_a_said_count_of_none_then_changes_in_one_unit_move_the_count():
+    assert play("한국어", 3, [("하린은 밧줄이 한 개도 없어.", "rec"), ("도윤은 밧줄이 여섯 묶음 있어.", "rec"),
+                            ("도윤이 하린에게 밧줄 다섯 묶음을 줬어.", "rec"), ("하린이 밧줄 두 묶음을 잃어버렸어.", "rec"),
+                            ("하린은 밧줄이 몇 개 있어?", 3)]) == []

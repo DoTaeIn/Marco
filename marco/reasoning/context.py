@@ -43,7 +43,7 @@ GAP_CLASSES = {
                  "unknown_basis", "unknown_lookup", "ambiguous_lookup", "unmeasured_condition",
                  "condition_false", "missing_initial_quantity"),
     "conflict": ("contradiction", "conflicting_event", "conflict_scope_unclear", "indivisible_amount",
-                 "invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity"),
+                 "invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity", "unit_mismatch"),
 }
 GAP_OF = {reason: gap for gap, reasons in GAP_CLASSES.items() for reason in reasons}
 
@@ -76,8 +76,9 @@ READING_CONSTRAINTS = (
     ("holder_exists", "a holder that loses some has a count said before, or at least that many received; "
                       "a receiver with none said keeps a count not known",
      ("missing_initial_quantity",)),
-    ("count_can_move", "no count falls below zero or contradicts one said before",
-     ("invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity")),
+    ("count_can_move", "no count falls below zero or contradicts one said before; a change said in a unit that "
+                       "holds several pieces does not move a count said in a unit of one piece, nor the reverse",
+     ("invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity", "unit_mismatch")),
     ("within_limits", "the replay stays within the graph's limits", ("graph_limit", "join_limit")),
 )
 CONSTRAINT_OF = {failure: name for name, _doc, failures in READING_CONSTRAINTS for failure in failures}
@@ -146,7 +147,7 @@ class ReasoningContext:
     # 말을 어디에 놓을지 몰라서 터진 자리들.
     UNPLACED = {"unrecognized_observation", "missing_initial_quantity",
                 "ambiguous_quantity_subject", "ambiguous_state_subject",
-                "ambiguous_property_scope",
+                "ambiguous_property_scope", "unit_mismatch",
                 "graph_limit", "join_limit"}
     # 읽기는 읽었는데 **앞서 들은 것과 맞지 않는** 자리들. 3개에서 8개를 꺼낼 수는
     # 없다 — 그러나 그것이 "안 일어난 일" 이라는 뜻은 아니다. 처음 수량이 틀렸거나
@@ -4726,6 +4727,127 @@ class ReasoningContext:
                 fact["parts"] = {"holder": parts["holder"], "thing": key[len(parts["holder"]) + 1:]}
         return facts
 
+    @staticmethod
+    def _unit_kinds_differ(parser, facts, turn):
+        """``{"subject", "units": [said, changed]}`` when a change of the statement at ``turn`` is said in a unit of
+        another kind than the unit its count was said in, else None. The pack declares the units that hold or
+        group several pieces (수량단위.담는단위: 묶음, 상자, 병 ...); every other unit counts one piece (개, 자루, 권
+        ...). A count said in one kind is not moved by a change said in the other (서류가 5묶음, then 2개를 줬어 was 3,
+        bundles less pieces), nor between two different units that hold several (상자, 묶음). Units of one piece
+        (다섯 자루, 두 개) are one count as before, and a count or a change said in no unit is not judged. A said
+        count of none is said in no unit (한 개도 없어 is none in bundles too): the first change after it moves the
+        count and sets its unit, and a later change in a unit of another kind is held against that. The
+        declaration adds no reading; it only holds."""
+        counters = (parser.language_pack or {}).get("counters") or {}
+        holding = set(counters.get("containers") or [])
+        if not holding:
+            return None
+        updates = parser.data.get("numeric_updates") or {}
+        targets = ReasoningContext._numeric_targets(parser)
+        said = {}
+        ZERO = object()
+
+        def unit(fact):
+            return fact.get("unit") or ReasoningContext._unit_said(parser, (fact.get("evidence") or {}).get("text") or "")
+        def none(value):
+            try:
+                return float(value) == 0
+            except (TypeError, ValueError):
+                return False
+        for fact in facts:
+            triple = fact.get("triple")
+            if not isinstance(triple, list) or not isinstance(triple[0], str):
+                continue
+            if triple[1] in targets:
+                # a said count of none is none in every unit (한 개도 없어): it carries no unit, and the first
+                # change after it sets the unit
+                said[triple[0]] = ZERO if none(triple[2]) else unit(fact)
+            elif triple[1] in updates:
+                key = triple[0] if triple[0] in said else next(
+                    iter([k for k in said if k.startswith(triple[0] + " ")][:1] if len(
+                        [k for k in said if k.startswith(triple[0] + " ")]) == 1 else []), None)
+                before, now = said.get(key), unit(fact)
+                if before is ZERO:
+                    said[key] = now
+                elif (fact.get("evidence") or {}).get("turn") == turn and before and now and before != now \
+                        and (before in holding or now in holding):
+                    return {"subject": key, "units": [before, now]}
+        return None
+
+    def _holder_unsaid(self, parser, text, parsed):
+        """A reading that changes a count whose holder it does not say, where the statement has a phrase in the
+        subject or giver place that the reading did not take for that holder (``_subject_passed_over``): the
+        reading of 기 대표님이 세훈에게 세 개를 줬어 that takes 기 대표 세훈 for the receiver. The replay would give the
+        change to the conversation's one counted holder, a person the statement passes over for the one it names
+        (가람 연필 7 -> 4, and the reply said 가람 gave them). Such a reading is no reading of a new statement, at any
+        effort: the statement is held. Not held: a change with no subject phrase at all (세 개를 잃어버렸어, 세훈에게
+        세 개를 줬어: the subject is dropped, and the one counted holder is the reading a listener makes); a clause
+        that continues the clause before it in one turn (그리고 나래에게 세 개를 주었다: its holder comes from the
+        reader); and a change in a conversation whose one count has no holder at all (구슬은 18개 있다. 다섯 개를
+        꺼냈다.: the count is the thing's own, and no person is charged). A language that marks no subject with a
+        particle does not drop its subject: there every such reading is held."""
+        updates = parser.data.get("numeric_updates") or {}
+        if not any(isinstance(f.get("triple"), list) and f["triple"][0] is None and f["triple"][1] in updates
+                   for f in (parsed or {}).get("facts", [])):
+            return False
+        try:
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        except ValueError:
+            return True
+        numeric = self._numeric_targets(parser)
+        counted = {}
+        for fact in facts:
+            triple = fact.get("triple") or [None, None]
+            if isinstance(triple[0], str) and triple[1] in numeric | {"count_unknown"}:
+                parts = fact.get("parts") if isinstance(fact.get("parts"), dict) else {}
+                counted[triple[0]] = bool(parts.get("holder") and parts.get("thing")) or len(triple[0].split()) > 1
+        # the one count the change would go to: its own thing (no holder), or a holder's
+        if len(counted) == 1 and not next(iter(counted.values())):
+            return False
+        return self._subject_passed_over(parser, text, parsed, {w for key in counted for w in key.split()})
+
+    @staticmethod
+    def _subject_passed_over(parser, text, parsed, known):
+        """Whether ``text`` has a phrase in the subject or giver place that the reading ``parsed`` did not take
+        for a holder of its own: a word with a subject particle (the pack's slot group of the doer particle, and
+        the forms read as one of them: 이 가 은 는 께서) that is no numeral or counter, no word outside names (오늘은),
+        no word of a counted key (``known``: the thing, a known holder) and not the last word of a holder the
+        reading names (세훈이 in a reading that names 세훈); or a titled word (대표님, 팀장) that the reading took into
+        the name of the receiver before the receiver's own word (기 대표님 세훈에게 read as the receiver 기 대표 세훈).
+        A word before the receiver that has no title (김 세훈에게) is the receiver's name as the reader reads it."""
+        doer = getattr(parser, "doer_particle", "") or ""
+        subject = next((set(group) for group in parser.slot_particles if doer in group), set())
+        if not subject:
+            return True
+        subject |= {row["from"] for row in parser.particle_variants if row.get("from") and row.get("to") in subject}
+        forms = parser.holder_forms or {}
+        particles = sorted({p for group in parser.slot_particles for p in group} | set(parser.case_particles)
+                           | {row["from"] for row in parser.particle_variants if row.get("from")}
+                           | set(forms.get("delimiters") or []), key=len, reverse=True)
+        name_titles = sorted(forms.get("name_titles") or [], key=len, reverse=True)
+        job_titles = set(forms.get("job_titles") or [])
+
+        def untitled(word):
+            return next((word[:-len(t)] for t in name_titles if word.endswith(t) and len(word) > len(t)), word)
+        keys = [f["triple"][0].split() for f in (parsed or {}).get("facts", [])
+                if isinstance(f.get("triple"), list) and isinstance(f["triple"][0], str) and f["triple"][0]]
+        named = {key[-1] for key in keys}
+        inside = {w for key in keys for w in key[:-1]}
+        words = [w.strip(".,!?\"'") for w in str(text).split()]
+        for word in [w for w in words if w][:-1]:
+            particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)
+                             and parser._particle_form(word[:-len(p)], p) == p), None)
+            stem = word[:-len(particle)] if particle else word
+            bare = untitled(stem)
+            if particle in subject:
+                if parser._protected_kind(word) or stem.lower() in parser.outside_names or bare in known \
+                        or stem in known or bare in named or stem in named:
+                    continue
+                return True
+            if particle is None and bare in inside and (bare != stem or stem in job_titles):
+                return True
+        return False
+
     def _asked_in_unit(self, parser, text, query, facts):
         """``(query, None)``, or ``(query, hold)`` for a count question about a holder and thing the conversation
         counts in two units (``_unit_keys``). A question that asks in the pack's first unit (몇 개), the unit the
@@ -6388,6 +6510,8 @@ class ReasoningContext:
         it; and the state rows the reading would record (``current_facts``' changes of this statement)."""
         if not self._is_statement(parsed):
             return ("statement", "not_a_statement"), []
+        if self._holder_unsaid(parser, text, parsed):
+            return ("one_subject", "ambiguous_quantity_subject"), []
         rows = [f["triple"] for f in parsed.get("facts", []) if isinstance(f.get("triple"), list)]
         updates = parser.data.get("numeric_updates") or {}
         removed = {str(t[0]).split()[0] for t in rows if isinstance(t[0], str) and t[1] in updates
@@ -6408,6 +6532,8 @@ class ReasoningContext:
                                              deepcopy(self.event_ids) if self.event_ids is not None else None)
             facts = self._unit_keys(parser, self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", [])))
             _state, changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+            if self._unit_kinds_differ(parser, facts, index) is not None:
+                raise ValueError("unit_mismatch")
         except ValueError as exc:
             reason = str(exc).split(":")[0]
             return (CONSTRAINT_OF.get(reason, "readable"), reason), []
@@ -7360,6 +7486,11 @@ class ReasoningContext:
             if unsaid is not None:
                 return unsaid
         try:
+            if keeps and completion is None and not current.get("query") and self._holder_unsaid(parser, text, current):
+                # a change whose holder the reading does not say, in a statement with a subject phrase the reading
+                # passed over, is not charged to the one holder that has a count (``_holder_unsaid``): the
+                # statement is held, and remembered as unread
+                raise ValueError("ambiguous_quantity_subject")
             facts, defined, unsettled, 읽힘 = self._cached_replay(
                 parser, pending, self.fills + 새채움)
             # A valid completion remains evidence even when replay exposes a
@@ -7381,6 +7512,10 @@ class ReasoningContext:
             # Validate a new observation even if no question has been asked yet.
             _, changes = current_facts(facts, parser.data.get("mutable_predicates", []),
                                        parser.data.get("numeric_updates", {}))
+            self._unit_conflict = self._unit_kinds_differ(parser, facts, len(pending) - 1) if keeps else None
+            if self._unit_conflict is not None:
+                # a change said in a unit of another kind than its count's: not moved, the statement is held
+                raise ValueError("unit_mismatch")
             if keeps and self._pointer_unknown(parser, [row for row in changes if (row.get("evidence") or {})
                                                         .get("turn") == len(pending) - 1]):
                 # A pointer as a new holder is no holder: fail as a holder without a count, so the
@@ -7820,7 +7955,9 @@ class ReasoningContext:
                       if reason in self.CONTRADICTION else replies["invalid"])
             return {**result, "status": "unresolved", "answer": answer,
                     "meaning": {"act": "hold", "reason": "contradiction" if reason in self.CONTRADICTION
-                                else "invalid", "said": said}}
+                                else "invalid", "said": said,
+                                **(dict(self._unit_conflict) if reason == "unit_mismatch"
+                                   and getattr(self, "_unit_conflict", None) else {})}}
         self._refresh_role_asks(unsettled)
         self.observations = pending
         if keeps:
