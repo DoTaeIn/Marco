@@ -1,9 +1,11 @@
 # MCO Format 1
 
-The native binary `.mco` file. Version 1.0, first slice, written 2026-10-01.
-The reference reader and writer are [mco/native/](../../mco/native/); the
-fixtures and damaged variants are in
-[tests/test_mco_native_format.py](../../tests/test_mco_native_format.py).
+The native binary `.mco` file. Version 1.1, written 2026-10-01: version 1.0
+(the first slice) plus the graph and rule tables of sections 6.8 to 6.12. The
+reference reader and writer are [mco/native/](../../mco/native/); the fixtures
+and damaged variants are in
+[tests/test_mco_native_format.py](../../tests/test_mco_native_format.py) and
+[tests/test_mco_native_tables.py](../../tests/test_mco_native_tables.py).
 
 This document is meant to be enough to write a second reader that accepts and
 refuses exactly the same files. Where this slice stores something as an opaque
@@ -15,7 +17,7 @@ overlay that a later slice adds on top of an immutable base is called the
 **Persistent Overlay Infrastructure**; it is storage, and this document does not
 describe it as learning.
 
-## 1. What this slice is and is not
+## 1. What this version is and is not
 
 A Format 1 file holds what a MARCO `.kgpack` holds today: graph text, learned
 and collected records, language packs, axioms, an optional relational model,
@@ -23,29 +25,40 @@ the definitions asset, and the pack's graph directory (the "manager" graph the
 router reads). It holds it in a chunked binary container with a fixed header,
 a table of contents, per-chunk SHA-256 checksums and a manifest.
 
-**Real tables in this slice:** the string table (`STRS`), the member directory
+**Real tables in 1.0:** the string table (`STRS`), the member directory
 (`MEMB`) and the graph directory (`GDIR`). Their layouts are fixed below.
 
-**Carried members in this slice:** every graph, record file, language pack,
-axiom file, relational model and asset is stored as an opaque typed chunk whose
-bytes are exactly the bytes of the pack member (`GRPH`, `LERN`, `COLL`, `LANG`,
-`AXIM`, `RELM`, `DEFN`, `ASET`). These are **carried members, not tables**. The
-runtime of this slice rebuilds the MARCO pack from them and MARCO parses the
-`.kg` text when the model is opened, as it does for a `.kgpack`. The next slice
-replaces graph text with node, edge and rule tables (reserved types `NODE`,
-`EDGE`, `RULE`, `INDX`, section 8). Until then a Format 1 file is not faster to
-open than a compat container, and it does not load a graph lazily.
+**Real tables added in 1.1:** every graph as rows of a node table (`NODE`) and
+an edge table (`EDGE`), one pair of chunks per graph, found through a per-graph
+directory (`INDX`), and the model's rules as a rule table (`RULE`). Every row is
+keyed by its stable identifier (6.7) and sorted by it; where the engine depends
+on source order, the row has an explicit ordinal field. For every graph in the
+repository's `graphs/` (904 on 2026-10-01) the graph rebuilt from the tables
+equals what MARCO's `read_kg` returns for the source file (6.12).
 
-Not in this slice: overlays, snapshots, consolidation, partial-loading
-measurements, node/edge/rule tables, a routing index. Section 8 reserves the
-names and fields they will use; the manifest's `supports` says overlay and
-snapshot are not supported, and `mco inspect` says so too. The identifier scheme
-those features need (section 6.7) and the base identity they bind to (section
-6.6) are fixed now.
+**Carried members:** every graph, record file, language pack, axiom file,
+relational model and asset is still stored as a typed chunk whose bytes are
+exactly the bytes of the pack member (`GRPH`, `LERN`, `COLL`, `LANG`, `AXIM`,
+`RELM`, `DEFN`, `ASET`). A graph's `GRPH` chunk is its **source text**: in 1.1
+it is kept beside the tables, optional to a reader that reads graphs from the
+tables (section 6), and the runtime of this version still uses it. That
+runtime rebuilds the MARCO pack from the members and MARCO parses the `.kg`
+text when the model is opened, as it does for a `.kgpack`. **The tables are
+not yet used by the running path**, so a 1.1 file is not faster to open than a
+compat container, and nothing is loaded lazily. Connecting the tables to the
+engine is the next step.
+
+Not in this version: overlays, snapshots, consolidation, a routing index, a
+runtime that reads the tables, a file without the source text. Section 8
+reserves the names and fields they will use; the manifest's `supports` says
+overlay and snapshot are not supported, and `mco inspect` says so too. The
+identifier scheme those features need (section 6.7) and the base identity they
+bind to (section 6.6) are fixed.
 
 ## 2. Conventions
 
 - All integers are unsigned and **little-endian**: `u8`, `u16`, `u32`, `u64`.
+  `f64` is an IEEE 754 binary64, little-endian.
 - A `u64` value greater than 2^63 − 1 is invalid wherever it appears (offsets,
   lengths, sizes). Readers compute `offset + length` with that bound, so it
   cannot overflow a signed 64-bit integer.
@@ -94,9 +107,9 @@ checks that padding bytes are zero.
 | --- | --- | --- | --- |
 | 0 | 8 | `magic` | `89 4D 43 4F 0D 0A 1A 0A` (`\x89MCO\r\n\x1a\n`). Anything else: malformed. A file shorter than 8 bytes: malformed (truncated). |
 | 8 | 2 | `major` | `1`. `0`: malformed. Greater than 1: unsupported, and the reader reads nothing past this field. |
-| 10 | 2 | `minor` | `0` in this version. Any minor is accepted by a 1.x reader: a minor version may only add optional chunks, optional manifest keys and optional flag bits. |
+| 10 | 2 | `minor` | `1` in this version (`0` in files of the first slice). Any minor is accepted by a 1.x reader: a minor version may only add optional chunks, optional manifest keys and optional flag bits. 1.1 adds the optional chunks `INDX`, `RULE`, `NODE`, `EDGE` and the optional manifest key `tables`, so a 1.0 reader reads a 1.1 file and runs it from its members. |
 | 12 | 4 | `header_size` | `96`. Anything else: malformed. |
-| 16 | 4 | `flags` | Bits 0–15 are required flags, bits 16–31 optional flags. None is defined in 1.0; writers write 0. A set required bit the reader does not know: unsupported. Unknown optional bits are ignored. |
+| 16 | 4 | `flags` | Bits 0–15 are required flags, bits 16–31 optional flags. None is defined in 1.0 or 1.1; writers write 0. A set required bit the reader does not know: unsupported. Unknown optional bits are ignored. |
 | 20 | 4 | `toc_count` | Number of TOC entries, 0 ≤ `toc_count` ≤ 65 536. More: malformed (absurd count), refused before the TOC is read. |
 | 24 | 8 | `toc_offset` | Multiple of 8, ≥ 96. |
 | 32 | 8 | `toc_size` | Must equal `toc_count × 64`. |
@@ -153,11 +166,13 @@ The reader never allocates more than `raw_length` bytes for a chunk's output.
   opened.
 
 **Duplicate types.** `MANI`, `STRS`, `MEMB` and `GDIR` appear exactly once
-(missing or repeated: malformed). The member types (`GRPH`, `LERN`, `COLL`,
-`LANG`, `AXIM`, `RELM`, `DEFN`, `ASET`) repeat, one chunk per member. A type
-the reader does not understand may repeat.
+(missing or repeated: malformed). `INDX` and `RULE` appear at most once, and
+together (repeated, or one without the other: malformed). The member types
+(`GRPH`, `LERN`, `COLL`, `LANG`, `AXIM`, `RELM`, `DEFN`, `ASET`) repeat, one
+chunk per member; `NODE` and `EDGE` repeat, one of each per tabled graph. A
+type the reader does not understand may repeat.
 
-## 6. Chunk set of version 1.0
+## 6. Chunk set of version 1.1
 
 | Type | Ver | Req | Compression | Content | Kind |
 | --- | --- | --- | --- | --- | --- |
@@ -165,7 +180,11 @@ the reader does not understand may repeat.
 | `STRS` | 1 | yes | 0 | string table (6.2) | **table** |
 | `MEMB` | 1 | yes | 0 | member directory (6.3) | **table** |
 | `GDIR` | 1 | yes | 0 | graph directory: the pack's manager graph (6.4) | **table** |
-| `GRPH` | 1 | yes | 1 or 0 | one `.kg` graph, MARCO graph text | carried member |
+| `INDX` | 1 | no | 0 | per-graph table directory (6.8) | **table** (1.1) |
+| `NODE` | 1 | no | 0 | one graph's record, nodes and examples (6.9) | **table** (1.1) |
+| `EDGE` | 1 | no | 0 | one graph's edges (6.10) | **table** (1.1) |
+| `RULE` | 1 | no | 0 | the model's rules (6.11) | **table** (1.1) |
+| `GRPH` | 1 | no if tabled, else yes | 1 or 0 | one `.kg` graph, MARCO graph text: the graph's **source text** | carried member |
 | `LERN` | 1 | yes | 1 or 0 | one `*.학습.jsonl` learned-record file | carried member |
 | `COLL` | 1 | yes | 1 or 0 | one `*.수집.jsonl` collected-evidence file | carried member |
 | `LANG` | 1 | yes | 1 or 0 | one `styles/*.json` language pack | carried member |
@@ -175,9 +194,20 @@ the reader does not understand may repeat.
 | `ASET` | 1 | yes | 1 or 0 | any other pack member | carried member |
 
 The writer orders chunks `MANI`, `STRS`, `MEMB`, `GDIR`, then one member chunk
-per `MEMB` row in row order. Readers do not depend on that order. Writers use
-compression 1 for member chunks only when it makes the chunk smaller, otherwise
-0; readers accept either for any type.
+per `MEMB` row in row order, then `INDX`, `RULE`, then a `NODE` and an `EDGE`
+chunk per tabled graph in `INDX` row order. Readers do not depend on that order.
+Writers use compression 1 for member chunks only when it makes the chunk
+smaller, otherwise 0, and compression 0 for every table, so that a later reader
+can map a table without decompressing it; readers accept either for any type.
+
+The table chunks are optional (required bit clear): a 1.0 reader skips them.
+A `GRPH` chunk whose graph the tables hold (`INDX` status 1) is written
+optional too: a reader that reads the graph from the tables may skip it. A
+`GRPH` chunk whose graph stays source text only (`INDX` status 2) is required.
+`MEMB` still lists every graph member with its chunk, so in 1.1 the writer
+always writes every `GRPH` chunk; a file without source text is not defined
+yet. A writer may leave out all four table types (it then writes a file a 1.0
+reader would write, with minor 1).
 
 A member chunk's type is chosen from its pack path, first match wins: suffix
 `.kg` → `GRPH`; suffix `.학습.jsonl` → `LERN`; suffix `.수집.jsonl` → `COLL`;
@@ -185,9 +215,10 @@ A member chunk's type is chosen from its pack path, first match wins: suffix
 exactly `data/위키/정의문.jsonl` → `DEFN`; anything else → `ASET`. The type is
 informative: the runtime finds members through `MEMB`, by path.
 
-There are no schema or index chunks in 1.0 because a `.kgpack` holds none: the
+There is no schema or routing-index chunk because a `.kgpack` holds none: the
 axiom schema name (`nai-axioms-v1`) lives inside the `AXIM` member, and MARCO
-builds its routing index when the model is opened.
+builds its routing index when the model is opened. (`INDX` is the directory of
+the graph tables, not a routing index.)
 
 ### 6.1 `MANI` — manifest
 
@@ -213,10 +244,11 @@ they do not know.
 | `language` | string or null | the selected language pack path |
 | `languages` | list of strings | every language pack path in the file |
 | `counts` | object | `members`, `graphs`, `manager_nodes`, `strings` |
+| `tables` | object, 1.1, optional | present exactly when the file has `INDX`: `graphs` (`INDX` rows), `tabled` (status 1), `source_only` (sorted member paths of status-2 rows), `nodes`, `edges`, `examples` (sums over tabled rows), `rules` (`RULE` rows). A value that disagrees with `INDX` and `RULE` is malformed; a 1.0 reader ignores the key |
 | `base` | null | reserved (section 8) |
 | `change_sequence` | null | reserved (section 8) |
 | `snapshot` | null | reserved (section 8) |
-| `supports` | `{"overlay": false, "snapshot": false}` | stated plainly: this file can be neither the base of an overlay nor a snapshot in 1.0. Both are `false` in every 1.0 file; a 1.0 reader refuses `true` (unsupported) |
+| `supports` | `{"overlay": false, "snapshot": false}` | stated plainly: this file can be neither the base of an overlay nor a snapshot in 1.0. Both are `false` in every 1.0 and 1.1 file; a 1.x reader refuses `true` (unsupported) |
 
 **Runtime features.** Version 1.0 defines two, and the writer lists both:
 
@@ -246,6 +278,11 @@ u8  data[offsets[count]]
 ascending by their UTF-8 bytes; the empty string is allowed. A *string id* is
 the index `i`. `0xFFFFFFFF` is the null string id; no field of 1.0 is nullable,
 so a 1.0 reader rejects it.
+
+In 1.1 the table holds the strings of the graph and rule tables too (node
+names, examples, relation names, 대사 lines, graph ids, reasons, rule ids), each
+once. Fields of 1.1 tables that say so are nullable: `0xFFFFFFFF` there means
+"no string"; everywhere else it is rejected.
 
 A string id is a **storage reference**, not an identifier (section 6.7): it
 is local to the file, changes between builds, and nothing outside the file may
@@ -328,7 +365,7 @@ A runtime that needs MARCO's pack form rebuilds it from these chunks:
   `MANI.semantic_schema.version`.
 
 The writer checks that this rebuild equals the source pack's manifest before it
-writes, and refuses a pack holding anything Format 1.0 does not represent. The
+writes, and refuses a pack holding anything Format 1 does not represent. The
 reference reader rebuilds the pack as a deterministic ZIP identical, byte for
 byte, to one MARCO's `write_pack` produces for the same members.
 
@@ -370,6 +407,9 @@ Normalization Form C; every identifier is a UTF-8 string.
 | rule (`rule_id`) | the rule's existing `id` string in its axiom file, unchanged (unique within a model) |
 | model content | `content_sha256` (6.6), with `build_id` |
 
+A part that contains the byte `0x1F` has no edge id (the reference function
+raises `ValueError`); a graph with such an edge stays source text only (6.8).
+
 Example: `edge_id("graphs/a.kg", "총액", "이어짐", "몫을안다")` is `"e:"` + the
 first 32 hex digits of SHA-256 over `graphs/a.kg␟총액␟이어짐␟몫을안다` (`␟` = byte
 `0x1F`).
@@ -380,9 +420,212 @@ MARCO, and a test checks the two are identical and agree.
 
 Reordering the lines of a graph, or the order members are given to the writer,
 changes no identifier. In 1.0 only member, graph and model identifiers appear in
-tables (`MEMB`, `GDIR`, `MANI`); node, edge and rule identifiers are fixed here
-for the `NODE`, `EDGE` and `RULE` tables of the next slice and for the Persistent
-Overlay Infrastructure.
+tables (`MEMB`, `GDIR`, `MANI`). In 1.1 graph ids key `INDX`, node ids order
+`NODE` rows, edge ids are stored in and order `EDGE` rows, and rule ids key
+`RULE` rows; the Persistent Overlay Infrastructure names the same things with
+the same ids.
+
+### 6.8 `INDX` — graph table directory (table, 1.1)
+
+One row per graph member of `MEMB`, so that one graph's tables are found and
+read without reading any other graph's.
+
+```
+u32 count
+u32 reserved            0
+row[count], 36 bytes each:
+  u32 graph             string id: graph_id (6.7)
+  u32 member            string id: the MEMB path of the graph's source text
+  u8  status            1 tables, 2 source text only
+  u8  reserved[3]       0
+  u32 reason            string id, nullable: why the graph is source text only
+  u32 node_chunk        TOC index of its NODE chunk (a locator), nullable
+  u32 edge_chunk        TOC index of its EDGE chunk (a locator), nullable
+  u32 nodes             NODE row count
+  u32 edges             EDGE row count
+  u32 examples          example count of its NODE chunk
+```
+
+`raw_length = 8 + 36 × count`. Rules (each violation is malformed):
+
+- rows are sorted ascending by `graph` (UTF-8 bytes), graph ids are unique,
+  and `graph = graph_id(member)`;
+- the `member` values are exactly the paths of the `MEMB` rows whose
+  `pack_kind` is graph;
+- status 1: `reason` is null, `node_chunk` and `edge_chunk` index a `NODE` and
+  an `EDGE` chunk this reader understands, each referenced by no other row;
+  the counts equal those of the two chunks;
+- status 2: `reason` is not null, both chunks are null, the counts are 0;
+- every `NODE` and `EDGE` chunk is referenced by a row.
+
+**Status 2, source text only.** The writer gives a graph status 2, keeps its
+`GRPH` chunk required and writes no `NODE`/`EDGE` for it when the tables
+cannot hold exactly what `read_kg` returns. The cases, each with its reason
+string: the text does not parse (`read_kg` raises too); one node name in two
+layers (`[개념]`/`[공리]`, `[사례]`, `[무관]` are one dictionary each, and a
+node row has one layer); two different names with one `node_id` (equal after
+NFC); one edge twice, in one list or in both `엣지` and `개념엣지` (one
+`edge_id`); an edge part holding the byte `0x1F` (no `edge_id`). None of the
+904 graphs in `graphs/` is in any of these cases on 2026-10-01. `mco inspect`
+lists every status-2 graph with its reason, and the manifest's
+`tables.source_only` lists their paths.
+
+### 6.9 `NODE` — one graph's record, nodes and examples (table, 1.1)
+
+```
+graph record, 64 bytes:
+  u32 graph             string id: graph_id; equals the INDX row's
+  u32 role              역할          string id
+  u32 goal              목표          string id
+  u32 name_kind         이름말        string id
+  u32 indexed           색인          string id
+  u32 language          언어          string id
+  f64 a_min             임계값.A_MIN
+  f64 ok_min            임계값.OK_MIN
+  u32 flags             bit 0: 근거관계 present; bit 1: 맡음 present;
+                        bit 2: 맡음 precedes 근거관계 (only with bits 0 and 1);
+                        other bits 0
+  u32 node_count
+  u32 slot_count
+  u32 example_count
+  u32 list_count        entries of the string-list pool
+  u32 line_count        대사 pairs
+lists, 48 bytes: (u32 first, u32 count) into the string-list pool for
+  전진관계, 부정관계, 근거관계, 포함, 공리, 맡음, in this order; contiguous
+  (first of list k = sum of counts before it), counts summing to list_count;
+  an absent list (flag clear) has count 0
+node[node_count], 24 bytes each:
+  u32 name              string id: the name exactly as read_kg returns it
+  u8  layer             0 none, 1 공통층 ([개념] and [공리]), 2 사례층, 3 무관층
+  u8  reserved          0
+  u16 slots             number of slot records of this node
+  u32 ordinal           position of the name in its layer's dictionary; 0 for layer 0
+  u32 first_example     index into examples
+  u32 examples          number of examples
+  u32 first_slot        index into slot records
+slot[slot_count], 24 bytes each:
+  u8  slot              1 수치조건, 2 값받이, 3 값옮김, 4 값셈, 5 물음, 6 되물음, 7 출처
+  u8  bound             수치조건: 1 최소, 2 최대; other slots 0
+  u16 reserved          0
+  u32 ordinal           position of the name in that slot's dictionary
+  u32 a                 string id: 수치조건 단위; 값받이 unit; 물음, 되물음, 출처 text;
+                        값옮김/값셈 first element
+  u32 b                 string id: 값옮김/값셈 second element; null otherwise
+  f64 value             수치조건 bound; 0 otherwise
+u32 examples[example_count]       string ids
+u32 pool[list_count]              string ids
+(u32 key, u32 value)[line_count]  대사 pairs, string ids
+```
+
+`raw_length = 112 + 24 × node_count + 24 × slot_count + 4 × (example_count +
+list_count + 2 × line_count)`. Rules (each violation is malformed):
+
+- **node rows are sorted by `node_id`** (within one graph: by the UTF-8 bytes of
+  NFC(name)) and node ids are unique. A node is every name that is a key of a
+  layer dictionary or of a slot dictionary; a name that is only a slot key
+  (for example a `[물음]` line for a name no layer declares) has layer 0, no
+  examples and at least one slot;
+- `first_example` and `first_slot` of each row equal the sums of the earlier
+  rows' counts, and the sums equal `example_count` and `slot_count`; a node in
+  a layer has at least one example (as `read_kg` requires);
+- a node's slot records are in ascending `slot` order, one per slot;
+- within each layer, and within each slot, the ordinals of the rows are
+  0 … n−1, each once;
+- every string id is valid; nullable ones are only the `b` of slots other than
+  3 and 4, which must be null.
+
+**Ordinals.** `read_kg` returns dictionaries and lists whose order MARCO's
+engine iterates (candidate order, tie order, the first relation of a list), so
+the order is stored, never implied by row position: a node's `ordinal` is its
+position in its layer dictionary (a name declared twice keeps its first
+position and its last examples, as in a Python dictionary), a slot record's
+`ordinal` its position in that slot's dictionary. List and pair order (the six
+string lists, `대사`) is the order of the value itself, as `read_kg` returns it;
+these are values, not rows, and are not identified by position. The order of
+examples inside a node is the order of the value too.
+
+What `read_kg` returns that is **not** a node, slot, list or line: `역할`,
+`목표`, `이름말`, `색인`, `언어`, `임계값` (the graph record) and the order of
+the optional top-level keys (flag bit 2). Its result is the dictionary
+rebuilt in 6.12.
+
+### 6.10 `EDGE` — one graph's edges (table, 1.1)
+
+```
+u32 graph               string id: graph_id; equals the INDX row's
+u32 count
+row[count], 36 bytes each:
+  u8  edge_id[16]       the 32 hex digits of edge_id (6.7) as 16 bytes
+  u32 src, u32 rel, u32 dst   string ids, exactly as read_kg returns them
+  u8  list              1 엣지 ([논증]), 2 개념엣지 ([개념망])
+  u8  reserved[3]       0
+  u32 ordinal           position of the edge in its list
+```
+
+`raw_length = 8 + 36 × count`. **Rows are sorted by `edge_id`** (16 bytes,
+ascending) and edge ids are unique; `list` is 1 or 2; within each list the
+ordinals are 0 … n−1, each once. A full verification recomputes every
+`edge_id` from `graph_id`, `src`, `rel`, `dst` and compares (mismatch:
+malformed).
+
+### 6.11 `RULE` — the model's rules (table, 1.1)
+
+```
+u32 count
+u32 reserved            0
+row[count], 20 bytes each:
+  u32 rule              string id: rule_id (6.7), the rule's own "id"
+  u32 source            string id: the axiom member path it comes from
+  u32 ordinal           position in the model's rule list
+  u32 offset            into the payload area
+  u32 length
+u8 payload[...]         the rows' payloads, back to back
+```
+
+The model's rule list is what MARCO's `PackModel` collects: the axiom files
+named by the manifest's `model.axioms`, in that order, and each file's
+`rules` in file order (no model: no rules). Rows are sorted by rule id (UTF-8
+bytes), ids unique; ordinals are 0 … n−1 each once; payloads are contiguous in
+row order from offset 0 and fill the area exactly. **A payload is the
+canonical JSON** (6.1's rules: keys sorted, `,`/`:` separators, UTF-8, no
+`NaN`) of the rule object; its `id` equals the row's rule id. Canonical JSON
+bytes are the payload of this version, not a structured layout; a rule object
+read back is equal to the source rule as a value, with its keys in sorted
+order. The other contents of an axiom file (`operators`, `mutable_predicates`,
+`numeric_updates`, `comparisons`, `schema`) are not in a table yet; they stay
+in the carried `AXIM` member.
+
+### 6.12 Reading a graph from the tables
+
+For one graph id a reader takes the `INDX` row, reads that row's `NODE` and
+`EDGE` chunks only, and builds the dictionary `read_kg` returns:
+
+1. keys in this order: `역할`, `목표`, `임계값` (`{"A_MIN", "OK_MIN"}`, floats),
+   `이름말`, `색인`, `언어`, `전진관계`, `부정관계`, `대사`, `공통층`, `사례층`,
+   `무관층`, `수치조건`, `값받이`, `값옮김`, `값셈`, `물음`, `되물음`, `엣지`,
+   `개념엣지`, `포함`, `공리`; then `근거관계` and `맡음` when their flags are
+   set, `맡음` first when bit 2 is set; then `출처` when any slot 7 exists;
+2. each layer: `{name: [examples]}` in ordinal order; each slot dictionary
+   `{name: value}` in ordinal order, where a 수치조건 value is `{"단위": unit,
+   "최소" | "최대": float}`, a 값옮김 or 값셈 value a 2-tuple of strings, and the
+   others strings;
+3. `엣지` and `개념엣지`: lists of `[src, rel, dst]` in ordinal order; the six
+   string lists and `대사` as stored.
+
+**Equivalence.** For each of the 904 graphs in `graphs/` on 2026-10-01 the
+result equals `read_kg(path)`, compared with key order, list order and value
+types (`tests/test_mco_native_tables.py`). One thing `read_kg` does is
+outside the graph: it ends by merging hypernym edges from `data/개념망.json` of
+the engine checkout into `개념엣지`. That file is neither the graph nor a pack
+member (it does not exist in the repository on 2026-10-01, so the merge adds
+nothing), and the tables hold only the graph file's own content; the
+comparison runs with that merge off, and a runtime that wants it applies it
+after reading.
+
+The writer, which does not import MARCO, builds the tables with a
+standard-library port of `read_kg`'s parsing (`mco/native/kgtext.py`), and
+before writing reads every tabled graph and the rules back and refuses to
+write a file where one differs.
 
 ## 7. Verification levels
 
@@ -390,22 +633,28 @@ Overlay Infrastructure.
   rules, and the `MANI`, `STRS`, `MEMB`, `GDIR` chunks with their checksums and
   table rules. No member chunk is read. Reading one member afterwards reads
   exactly that chunk and checks its two checksums. This is what lets a reader
-  take one graph from a file without reading the whole file.
+  take one graph from a file without reading the whole file. Opening reads no
+  graph table: the first table access reads `INDX` and `RULE`
+  once and checks 6.8 and the manifest's `tables`; reading one graph then
+  reads its `NODE` and `EDGE` chunks, checks their checksums and the rules of
+  6.9 and 6.10, except the edge-id recomputation.
 - **Full**: everything in *open*, plus every chunk's checksum (including
-  skipped optional chunks), every member's raw SHA-256, `content_sha256`, and
-  zero padding.
+  skipped optional chunks), every member's raw SHA-256, `content_sha256`,
+  zero padding, and every graph and rule table read in full, with every
+  `edge_id` recomputed.
   `mco.load` and `mco.inspect` do a full verification unless called with
   `verify=False`.
 
 ## 8. Reserved for later slices
 
-Reserved now so that later slices do not need a new major version. A 1.0 reader
+Reserved now so that later slices do not need a new major version. A reader
 treats each reserved chunk type as unknown (optional: skipped; required:
-unsupported) and refuses a non-null reserved manifest key.
+unsupported) and refuses a non-null reserved manifest key. (`NODE`, `EDGE`,
+`RULE` and `INDX` were reserved in 1.0 and are defined in 1.1; a 1.0 reader
+still treats them as unknown and skips them, since 1.1 writes them optional.)
 
 | Name | Where | Intended use |
 | --- | --- | --- |
-| `NODE`, `EDGE`, `RULE`, `INDX` | chunk types | node, edge, rule tables and a routing index replacing the carried `GRPH`/`AXIM` text |
 | `OVLY`, `CHNG` | chunk types | Persistent Overlay Infrastructure: delta and change log |
 | `SNAP` | chunk type | snapshot reference data |
 | `PROV` | chunk type, **optional** | provenance of folded items: for each item a consolidation folds into a base, the id of the overlay change it came from. Reserved only; a 1.0 writer never writes it and a 1.0 reader skips it |
@@ -452,5 +701,8 @@ thing inside it by an identifier of 6.7. It never stores a storage reference.
 | unknown required runtime feature, non-null reserved manifest key | unsupported |
 | `supports` not `false` | unsupported |
 | table rule violated (sections 6.2–6.4), `counts` mismatch | malformed |
+| `INDX`/`RULE` repeated, one without the other, `NODE`/`EDGE` not in `INDX`, a 6.8–6.11 rule violated when the table is read, manifest `tables` mismatch | malformed |
+| stored `edge_id` not the id of its edge (full verification) | malformed |
+| reading a graph of status 2, or reading graph tables of a file without them | unsupported (the file itself is fine) |
 | member raw SHA-256 mismatch, `content_sha256` mismatch (full verification) | integrity failure |
 | nonzero padding (full verification) | malformed |
