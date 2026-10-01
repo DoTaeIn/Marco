@@ -147,6 +147,7 @@ are never raised as-is. They are wrapped, with the original chained as `__cause_
 mco compile . -o MARCO-1.mco --name MARCO-1              # whole source tree; English is the model's language
 mco compile . -o MARCO-1-ko.mco --language styles/한국어.json  # Korean as the model's language
 mco compile . -o bills.mco --graph "graphs/graph_정산_*.kg"  # a subset
+mco compile . -o MARCO-1-native.mco --format native     # MCO Format 1 (repository only, not in 0.1.0)
 mco inspect MARCO-1.mco                                  # add --json for machine output
 mco run MARCO-1.mco "12만원 나왔어" "3명이야"             # one conversation; -v adds evidence and trace
 mco run MARCO-1.mco                                      # interactive, reads stdin
@@ -158,16 +159,46 @@ Exit codes: `0` ok, `1` an `mco` error, `2` usage error, `3` benchmark below `--
 
 ## The `.mco` file in this release
 
-The native MCO Format 1 binary is not specified yet. This release writes a
-**compatibility container**: a deterministic ZIP holding `mco.json` (the MCO
-manifest, with name, build id, payload hash and backend) and `payload.kgpack` (an
-unmodified MARCO pack). `mco inspect` reports it as `format: mco-compat` and adds
-the note *not MCO Format 1*.
+Release 0.1.0 writes a **compatibility container**: a deterministic ZIP holding
+`mco.json` (the MCO manifest, with name, build id, payload hash and backend) and
+`payload.kgpack` (an unmodified MARCO pack). `mco inspect` reports it as
+`format: mco-compat` and adds the note *not MCO Format 1*. It is still the
+default output of `mco compile`.
 
-When the native format and its runtime ship, they will be a new backend behind
-the same API. The same `mco.load(...).run(...)` code will open both kinds of
-file. Native files are already recognised by their magic prefix, and loading one
-today raises `UnsupportedFormatError` instead of misreading it.
+## MCO Format 1 (in the repository, not released yet)
+
+Since 2026-10-01 the repository also reads and writes the native binary file,
+[MCO Format 1.0](https://github.com/DoTaeIn/Marco/blob/main/docs/mco/format-1.md):
+a fixed header, a checksummed table of contents, a manifest, and string,
+member and graph-directory tables. Ask for it with `format="native"`:
+
+```python
+mco.compile(".", "MARCO-1-native.mco", format="native")
+model = mco.load("MARCO-1-native.mco")      # same code as for a compat file
+mco.inspect("MARCO-1-native.mco").notes     # what this version cannot do
+```
+
+It runs on the `mco-native` backend, which reads the file with the standard
+library and answers through the same MARCO engine and session code as the
+compat backend: the same input gives the same answer, status and evidence from
+either file. The knowledge comes only from the `.mco` file; the engine code
+still comes from a MARCO checkout. `mco inspect` shows the format version, the
+manifest and every chunk with its stored and raw size.
+
+This first slice is storage and runtime infrastructure, and it is honest about
+its limits:
+
+- graphs, language packs and axioms are **carried members**: the pack files,
+  unchanged, in typed chunks. The engine parses the graph text when the model
+  opens, as it does for a `.kgpack`. Node, edge and rule tables come next;
+- no overlay (the later Persistent Overlay Infrastructure), no snapshot, no
+  consolidation; the manifest and `mco inspect` say so;
+- nothing is loaded lazily, and partial loading is not measured;
+- the native file is larger and opens a little slower than the compat file
+  today. For the whole source tree at commit `99890011`, on a busy machine,
+  three fresh processes each: 2,200,688 bytes against 1,587,372 (the string and
+  graph tables are stored uncompressed for direct access), open 0.78 s against
+  0.65 s, first answer 3.14 s against 3.13 s (medians).
 
 See [api.md](https://github.com/DoTaeIn/Marco/blob/main/docs/mco/api.md) for the
 stability contract and how to write a backend.
@@ -175,7 +206,8 @@ stability contract and how to write a backend.
 ## What 0.1.0 cannot do yet
 
 - Run a model without a MARCO checkout: the engine is not packaged.
-- Read or write the native MCO Format 1 file (above).
+- Read or write the native MCO Format 1 file: the repository can (above), the
+  0.1.0 package cannot.
 - Take structured facts in `reason()` with the MARCO backend (`UnsupportedInputError`).
 - Compose every reply: the state dialogue composes each reply from its meaning;
   an answer from the knowledge-graph route is the line the graph's author wrote,

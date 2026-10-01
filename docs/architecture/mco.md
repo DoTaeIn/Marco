@@ -7,9 +7,11 @@ the stability contract is [docs/mco/api.md](../mco/api.md).
 **Release state.** Version 0.1.0 is on PyPI since 2026-09-24
 ([release notes](../releases/2026-09-24-mco-0.1.0.md)): `pip install mco`. The
 [freeze decision](../ko/2026-09-22-freeze-decision.md) still parks the API: it
-is packaged as it is and not extended until MARCO 1 ships. The native `.mco`
-binary format is frozen and does not exist; `.mco` files written today are a
-compatibility container.
+is packaged as it is and not extended until MARCO 1 ships. Since 2026-10-01 the
+repository (not the 0.1.0 package) also reads and writes the native binary
+file, MCO Format 1.0 ([format-1.md](../mco/format-1.md)), through
+`compile(..., format="native")` and the `mco-native` backend; the compatibility
+container stays the default. The format is storage and runtime infrastructure.
 
 ## Purpose
 
@@ -28,6 +30,10 @@ engine and the file format change.
   error classes under `MCOError`.
 - The compatibility container: a deterministic ZIP holding `mco.json` (the
   manifest) and `payload.kgpack` ([mco/formats.py](../../mco/formats.py)).
+- MCO Format 1.0: the reader and writer in [mco/native/](../../mco/native/)
+  (standard library only), detected and written through `mco/formats.py`.
+  `mco/native/ids.py` is a byte-identical copy of `marco/storage/ids.py`, the
+  stable identifier encoding.
 - The `mco` console command ([mco/cli.py](../../mco/cli.py)), installed by
   `pyproject.toml` `[project.scripts]`.
 
@@ -36,7 +42,8 @@ engine and the file format change.
 - Answering. Every answer comes from the MARCO engine through the backend in
   [`mco.backends`](mco.backends.md).
 - The `.kgpack` format (`marco/storage/kgpack.py`) and the pack model (`pack_model.py`).
-- The native MCO Format 1 binary, overlays, snapshots, consolidation (frozen).
+- Overlays (the later Persistent Overlay Infrastructure), snapshots,
+  consolidation. Format 1.0 only reserves their names and fields.
 
 ## Depends on
 
@@ -54,7 +61,8 @@ engine and the file format change.
 | `inspect` reports format `mco-compat`, the backend, the graph count, and the note "not MCO Format 1" | `test_inspect_reports_model` |
 | `compile` is deterministic, byte for byte, and wraps a bare `.kgpack` | `test_compile_is_deterministic_and_wraps_packs` |
 | Missing, truncated, garbage, tampered and future-version files raise `ModelNotFoundError`, `ModelFormatError`, `IntegrityError` | `test_damaged_files_are_rejected` |
-| A native `.mco` is recognised by its magic prefix and `load` raises `UnsupportedFormatError` | `test_native_format_is_recognised_but_unsupported` |
+| A native file of a newer major version is described as not runnable and `load` raises `UnsupportedFormatError`; the native magic prefix in front of garbage raises `ModelFormatError` | `test_native_format_is_recognised_but_unsupported` |
+| Format 1.0: deterministic writer, round trip, one chunk read alone, one verdict per damaged variant, compile, run and inspect | `tests/test_mco_native_format.py` |
 | `run` keeps a conversation: "12만원 나왔어" then "3명이야" answers with 40000 and routes to `graph_정산_나눠내기.kg` | `test_multi_turn_run` |
 | An out-of-domain question returns status `unknown`, offline | `test_unknown_is_declined_offline` |
 | Sessions are isolated; `reset` and `close` work | `test_sessions_and_reset_are_isolated` |
