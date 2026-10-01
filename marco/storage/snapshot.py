@@ -390,6 +390,65 @@ class Snapshot:
                 "with_reasoning_state": sum(c.get("reasoning_state") is not None for c in records),
                 "excluded": [x.get("id") for x in self.body.get("excluded", []) if isinstance(x, dict)]}
 
+    # --- checks -------------------------------------------------------------------------
+
+    def check_base(self, base):
+        """Refuse (``SnapshotBaseMismatch``) unless ``base`` is the base this snapshot was taken on.
+
+        ``content_sha256`` must be equal; ``build_id`` must be equal when both sides record one.
+        """
+        current = base_record(**base)
+        recorded = self.body["base"]
+        if current["content_sha256"] != recorded["content_sha256"]:
+            raise SnapshotBaseMismatch("the snapshot was taken on base %s; this base is %s; refused"
+                                       % (recorded["content_sha256"], current["content_sha256"]))
+        if (current["build_id"] is not None and recorded["build_id"] is not None
+                and current["build_id"] != recorded["build_id"]):
+            raise SnapshotBaseMismatch("the snapshot was taken on build %s; this build is %s; refused"
+                                       % (recorded["build_id"], current["build_id"]))
+
+    def check_overlay(self, overlay=None):
+        """Compare the recorded overlay with the current one (a path, an open ``OverlayStore``,
+        or None for no overlay). Returns ``"same"`` (same head) or ``"advanced"`` (the current
+        overlay holds the recorded history and more changes after it, so saved replays must be
+        re-derived). Refuses with ``SnapshotOverlayMismatch`` when the overlay is missing, is
+        shorter than the recorded seq, or holds another change at that seq."""
+        recorded = self.body["overlay"]
+        if overlay is None:
+            if recorded["attached"]:
+                raise SnapshotOverlayMismatch("the snapshot was taken with an overlay at seq %d; "
+                                              "no overlay is attached; refused" % recorded["seq"])
+            return "same"
+        from marco.storage import overlay as overlay_store
+        store, opened = overlay, False
+        if not isinstance(overlay, overlay_store.OverlayStore):
+            try:
+                store = overlay_store.OverlayStore.open(overlay, base_sha256=self.body["base"]["content_sha256"])
+            except overlay_store.OverlayBaseMismatch as e:
+                raise SnapshotOverlayMismatch("the overlay is bound to another base: %s" % e) from None
+            except overlay_store.OverlayError as e:
+                raise SnapshotOverlayMismatch("the overlay cannot be read: %s" % e) from None
+            opened = True
+        try:
+            meta = store.meta()
+            if meta.get("base_sha256") != self.body["base"]["content_sha256"]:
+                raise SnapshotOverlayMismatch("the overlay is bound to base %s, not the snapshot's %s; refused"
+                                              % (meta.get("base_sha256"), self.body["base"]["content_sha256"]))
+            head, head_id = store.head()
+            seq = recorded["seq"] if recorded["attached"] else 0
+            if head < seq:
+                raise SnapshotOverlayMismatch("the overlay's head is seq %d, shorter than the recorded seq %d; "
+                                              "refused" % (head, seq))
+            if seq:
+                at = store.change(seq)["change_id"]
+                if at != recorded["change_id"]:
+                    raise SnapshotOverlayMismatch("the overlay holds change %s at seq %d; the snapshot recorded "
+                                                  "%s; refused" % (at, seq, recorded["change_id"]))
+            return "same" if head == seq else "advanced"
+        finally:
+            if opened:
+                store.close()
+
     def overlay_bytes(self):
         """The overlay copy, verified against its recorded size and sha256."""
         part = self.body["overlay"]
@@ -412,6 +471,22 @@ class Snapshot:
             raise SnapshotError("%s exists already; the overlay copy is written only to a new path" % path)
         atomic_write(path, data)
         return path
+
+    def restore_states(self, base, overlay=None):
+        """Check base and overlay, then return the conversations ready to restore.
+
+        Same base and same overlay seq: each reasoning state as saved (its replay is used).
+        Same base, overlay advanced past the recorded seq: each state without its ``replay``,
+        so the context re-derives it under the current overlay. Anything else is refused.
+        """
+        self.check_base(base)
+        status = self.check_overlay(overlay)
+        records = self.conversations
+        if status == "advanced":
+            for record in records:
+                if isinstance(record.get("reasoning_state"), dict):
+                    record["reasoning_state"].pop("replay", None)
+        return status, records
 
 
 def loads(data, *, where="<snapshot>"):
