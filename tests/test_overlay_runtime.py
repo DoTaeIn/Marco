@@ -6,6 +6,8 @@ tests/test_overlay_application.py.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 import shutil
 
@@ -106,16 +108,19 @@ QUESTIONS = ["손가락으로 흙을 눌러 봤더니 말랐어", "잎이 축 �
 
 def test_without_an_overlay_nothing_of_it_runs(model, monkeypatch):
     from views.kgpack_ui import AppState
+    import pack_model
 
     def never(*_a, **_k):
         raise AssertionError("an overlay code path ran without an overlay")
     monkeypatch.setattr(AppState, "_sync_graph_overlay", never)
     monkeypatch.setattr(AppState, "_overlay_origins", never)
     monkeypatch.setattr(AppState, "_saved_reasoning_state", never)
+    monkeypatch.setattr(pack_model.PackModel, "apply_rule_overlay", never)
     app = app_with(model, overlay=False)
     for text in QUESTIONS:
         answer(app, text)
     assert app.graph_overlay is None and app._graph_texts == {}
+    assert app.model.effective_key == app.model.fingerprint
     for name, body in files_of(app.overlay).items():
         if name.endswith(".kg"):
             assert body == model["data"][name]
@@ -128,7 +133,7 @@ def test_an_overlay_with_no_changes_writes_the_same_bytes_and_answers_the_same(m
     assert files_of(plain.overlay).keys() == files_of(attached.overlay).keys()
     assert {k: v for k, v in files_of(plain.overlay).items() if not k.startswith(".")} == \
         {k: v for k, v in files_of(attached.overlay).items() if not k.startswith(".")}
-    assert attached._graph_texts == {}
+    assert attached.model.effective_key == attached.model.fingerprint and attached._graph_texts == {}
     assert plain.overlay != attached.overlay      # an attached overlay gets its own working folder
 
 
@@ -201,3 +206,45 @@ def test_export_with_an_attached_overlay_is_refused(model, tmp_path):
     with pytest.raises(ValueError, match="overlay"):
         app.export_pack(tmp_path / "out.kgpack")
     assert not (tmp_path / "out.kgpack").exists()
+
+
+# --- rules (pack_model.py) --------------------------------------------------------------------
+
+def test_rule_overlay_keeps_the_fingerprint_and_keys_the_parser_cache(model):
+    import pack_model
+    import marco.storage.kgpack as kgpack
+    manifest, data = kgpack.read(model["pack"])
+    m = pack_model.PackModel(manifest, data)
+    fingerprint = m.fingerprint
+    base_parser = m.parser()
+    assert m.effective_key == fingerprint
+    assert "strict-height-transitivity" in [r["id"] for r in base_parser.data["rules"]]
+    m.apply_rule_overlay([("strict-height-transitivity", "disabled", None)], "1:chg_a")
+    assert m.fingerprint == fingerprint and m.effective_key != fingerprint
+    parser = m.parser()
+    assert "strict-height-transitivity" not in [r["id"] for r in parser.data["rules"]]
+    built = pack_model._built_parsers[m.effective_key]
+    m.parser()
+    assert pack_model._built_parsers[m.effective_key] is built          # an unchanged overlay reuses it
+    m.apply_rule_overlay([("strict-height-transitivity", "disabled", None)], "2:chg_b")
+    assert m.effective_key not in (fingerprint, hashlib.sha256(b"").hexdigest())
+    m.apply_rule_overlay(None, None)
+    assert m.effective_key == fingerprint and m.relational_data["rules"] == base_parser.data["rules"]
+    assert json.dumps(m.sources) and m.fingerprint == fingerprint
+
+
+def test_a_rule_change_is_read_at_the_next_turn_and_an_unchanged_overlay_reuses_the_parser(model):
+    import pack_model
+    app = app_with(model)
+    answer(app, "서우는 도아보다 키가 크다. 도아는 라온보다 키가 크다.")
+    assert answer(app, "서우와 라온 중 누가 더 커?")[0] == "서우입니다."
+    model["store"].commit([ov.disable_rule("strict-height-transitivity", revision=0)],
+                          check=checked(model["base"]), **WHO)
+    assert app.model.effective_key == app.model.fingerprint          # not before the next turn
+    assert answer(app, "서우와 라온 중 누가 더 커?")[0] != "서우입니다."
+    key = app.model.effective_key
+    assert key != app.model.fingerprint
+    built = pack_model._built_parsers[key]
+    assert answer(app, "서우와 라온 중 누가 더 커?")[0] != "서우입니다."
+    assert app.model.effective_key == key and pack_model._built_parsers[key] is built
+    assert all(c.effective_key != c.fingerprint for c in app.companions)
