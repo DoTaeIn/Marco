@@ -43,8 +43,15 @@ KINDS = ("node", "edge", "rule")
 OPS = {
     "ADD_NODE": "node",
     "ADD_EDGE": "edge",
+    "ADD_RULE": "rule",
+    "RETRACT_EDGE": "edge",
+    "DISABLE_RULE": "rule",
+    "RETRACT_NODE": "node",
+    "REPLACE_RULE": "rule",
 }
-INTERNAL_OPS = {}
+# Written only by the store itself: RESTORE is how undo puts a target back to its
+# state before the undone change, as a new change that keeps the history.
+INTERNAL_OPS = ("RESTORE",)
 
 
 class OverlayError(RuntimeError):
@@ -222,6 +229,44 @@ def add_edge(graph, src, rel, dst, *, revision, data=None):
                     {"src": src, "rel": rel, "dst": dst, "data": data}, revision)
 
 
+def add_rule(rule, body, *, revision, graph=None):
+    """ADD RULE ``rule`` (the existing rule id string) with ``body``, any JSON value the store does not read."""
+    return _request("ADD_RULE", "rule", ids.rule_id(rule), ids.graph_id(graph) if graph else None,
+                    {"body": body}, revision)
+
+
+def retract_edge(graph, src, rel, dst, *, revision):
+    """RETRACT EDGE: a tombstone that hides the edge, in the base or the overlay, from the next read."""
+    graph = ids.graph_id(graph)
+    return _request("RETRACT_EDGE", "edge", ids.edge_id(graph, src, rel, dst), graph,
+                    {"src": src, "rel": rel, "dst": dst}, revision)
+
+
+def disable_rule(rule, *, revision):
+    """DISABLE RULE: the rule, in the base or the overlay, is not used from the next read."""
+    return _request("DISABLE_RULE", "rule", ids.rule_id(rule), None, {}, revision)
+
+
+def retract_node(graph, name, *, revision, base_edges=()):
+    """RETRACT NODE: a tombstone for the node and, in the same change, one RETRACT EDGE per edge of it.
+
+    The overlay's own live edges of the node are found by the store. The base's edges
+    of the node are named by the caller as ``(src, rel, dst)`` triples, since this
+    store does not read the base; each must have the node as src or dst."""
+    graph = ids.graph_id(graph)
+    edges = [list(e) for e in base_edges]
+    for edge in edges:
+        if len(edge) != 3 or name not in (edge[0], edge[2]):
+            raise OverlayError("RETRACT_NODE %s: base edge %r is not (src, rel, dst) of this node" % (name, edge))
+    return _request("RETRACT_NODE", "node", ids.node_id(graph, name), graph,
+                    {"name": name, "base_edges": edges}, revision)
+
+
+def replace_rule(rule, body, *, revision):
+    """REPLACE RULE: from the next read the rule's body is ``body`` (the rule id stays)."""
+    return _request("REPLACE_RULE", "rule", ids.rule_id(rule), None, {"body": body}, revision)
+
+
 def _check_request(d):
     """A caller's delta request, checked: known op, ids that match their parts, JSON payload."""
     if not isinstance(d, dict):
@@ -241,6 +286,10 @@ def _check_request(d):
         expect = ids.rule_id(d["target_id"])
     if d.get("target_id") != expect:
         raise OverlayError("%s target_id %r does not match its parts (expected %r)" % (op, d.get("target_id"), expect))
+    if op == "RETRACT_NODE":
+        for edge in p.get("base_edges", ()):
+            if len(edge) != 3 or p["name"] not in (edge[0], edge[2]):
+                raise OverlayError("RETRACT_NODE %s: base edge %r is not (src, rel, dst) of this node" % (expect, edge))
     clean = _request(op, kind, expect, d.get("graph_id"), p, d.get("revision"))
     dumps(clean)
     return clean
@@ -276,7 +325,65 @@ def _transition(cur, d, row):
                                    % ids.node_id(d["graph_id"], end))
         return {"graph_id": d["graph_id"], "src": p["src"], "rel": p["rel"], "dst": p["dst"],
                 "state": "added", "data": p.get("data")}
+    if op == "RETRACT_NODE":
+        if state == "tombstoned":
+            _refuse(op, d["target_id"], state)
+        return {"graph_id": d["graph_id"], "name": p["name"], "state": "tombstoned", "data": _old(row, "data")}
+    if op == "RETRACT_EDGE":
+        if state == "tombstoned":
+            _refuse(op, d["target_id"], state)
+        return {"graph_id": d["graph_id"], "src": p["src"], "rel": p["rel"], "dst": p["dst"],
+                "state": "tombstoned", "data": _old(row, "data")}
+    if op == "ADD_RULE":
+        if state in ("added", "replaced"):
+            _refuse(op, d["target_id"], state)
+        return {"graph_id": d["graph_id"], "state": "added", "body": p["body"]}
+    if op == "REPLACE_RULE":
+        if state == "disabled":
+            raise OverlayError("REPLACE_RULE refused: %s is disabled; re-enable it by ADD_RULE or by undoing "
+                               "the change that disabled it" % d["target_id"])
+        graph = row["graph_id"] if row else d["graph_id"]
+        return {"graph_id": graph, "state": "added" if state == "added" else "replaced", "body": p["body"]}
+    if op == "DISABLE_RULE":
+        if state == "disabled":
+            _refuse(op, d["target_id"], state)
+        graph = row["graph_id"] if row else d["graph_id"]
+        return {"graph_id": graph, "state": "disabled", "body": _old(row, "body")}
+    if op == "RESTORE":
+        fields = p["fields"]
+        if set(fields) != set(_TABLE[kind][2]):
+            raise OverlayError("RESTORE of %s carries fields %s" % (d["target_id"], sorted(fields)))
+        return dict(fields)
     raise OverlayError("unknown delta op %r" % (op,))
+
+
+def _old(row, column):
+    return json.loads(row[column]) if row else None
+
+
+def _restores(cur, seq):
+    """The RESTORE deltas that put every target of change ``seq`` back to its state before it, last first."""
+    targets = []
+    for d in cur.execute("SELECT target_kind, target_id FROM deltas WHERE seq = ? ORDER BY ord DESC", (seq,)):
+        if (d["target_kind"], d["target_id"]) not in targets:
+            targets.append((d["target_kind"], d["target_id"]))
+    out = []
+    for kind, target_id in targets:
+        table, key, columns = _TABLE[kind]
+        row = _live(cur, kind, target_id)
+        if row is None or row["from_seq"] != seq:
+            later = row["from_seq"] if row else None
+            raise OverlayStaleRevision("undo of change %d refused: %s was changed again by change %s; "
+                                       "undo that one first" % (seq, target_id, later))
+        prior = cur.execute("SELECT * FROM %s WHERE %s = ? AND to_seq = ?" % (table, key), (target_id, seq)).fetchone()
+        if prior is not None:
+            fields = {c: json.loads(prior[c]) if c in _JSON_FIELDS else prior[c] for c in columns}
+        else:
+            fields = {c: None if c in _JSON_FIELDS else row[c] for c in columns}
+            fields["state"] = "none"
+        out.append(_request("RESTORE", kind, target_id, row["graph_id"], {"undoes": seq, "fields": fields},
+                            row["revision"]))
+    return out
 
 
 def _apply_delta(cur, seq, d):
@@ -304,8 +411,32 @@ def _apply_delta(cur, seq, d):
 
 
 def _expand(cur, request):
-    """The recorded deltas of one request."""
-    yield request
+    """The recorded deltas of one request.
+
+    RETRACT NODE becomes one RETRACT EDGE per live edge of the node (the overlay's
+    own edges, then the base edges the caller named), each naming the edge's current
+    revision, then the node's own tombstone. Each is applied before the next is
+    made, so the revisions are those of the moment."""
+    if request["op"] != "RETRACT_NODE":
+        yield request
+        return
+    graph, name = request["graph_id"], request["payload"]["name"]
+    node = request["target_id"]
+    own = cur.execute("SELECT edge_id, src, rel, dst FROM cur_edges WHERE to_seq IS NULL AND state = 'added' "
+                      "AND graph_id = ? AND (src = ? OR dst = ?) ORDER BY edge_id", (graph, name, name)).fetchall()
+    edges = [(r["src"], r["rel"], r["dst"]) for r in own] + [tuple(e) for e in request["payload"]["base_edges"]]
+    seen = set()
+    for src, rel, dst in edges:
+        edge = ids.edge_id(graph, src, rel, dst)
+        if edge in seen:
+            continue
+        seen.add(edge)
+        row = _live(cur, "edge", edge)
+        if row and row["state"] == "tombstoned":
+            continue
+        yield _request("RETRACT_EDGE", "edge", edge, graph,
+                       {"src": src, "rel": rel, "dst": dst, "cascade_of": node}, row["revision"] if row else 0)
+    yield _request("RETRACT_NODE", "node", node, graph, {"name": name}, request["revision"])
 
 
 # --- the writer lock --------------------------------------------------------------------
@@ -474,7 +605,36 @@ class OverlayStore:
         return self._write(lambda cur: self._record(cur, requests, actor, source, reason, evidence,
                                                     approval, validation, change_id))
 
-    def _record(self, cur, requests, actor, source, reason, evidence, approval, validation, change_id):
+    def undo(self, change, *, actor, source, reason, approved_by, evidence=None, validation=None, change_id=None):
+        """Undo change ``change`` (its seq or change_id) by a new, compensating change.
+
+        Every target the undone change touched is put back to its state just before
+        that change, by one RESTORE delta each. Both changes stay in the history.
+        Refused if a later change touched any of those targets (undo that one first).
+        Returns ``(seq, change_id)`` of the compensating change."""
+        approval = {"by": _text(approved_by, "approved_by"), "at": _now()}
+
+        def work(cur):
+            undone = self._change_row(cur, change)
+            request = [{"op": "UNDO", "undoes": undone["change_id"]}]
+            return self._record(cur, request, actor, source, reason, evidence, approval, validation, change_id,
+                                deltas=lambda: _restores(cur, undone["seq"]))
+        return self._write(work)
+
+    @staticmethod
+    def _change_row(cur, ref):
+        if isinstance(ref, int) and not isinstance(ref, bool):
+            row = cur.execute("SELECT * FROM changes WHERE seq = ?", (ref,)).fetchone()
+        elif isinstance(ref, str):
+            row = cur.execute("SELECT * FROM changes WHERE change_id = ?", (ref,)).fetchone()
+        else:
+            row = None
+        if row is None:
+            raise OverlayError("no change %r in this overlay" % (ref,))
+        return dict(row)
+
+    def _record(self, cur, requests, actor, source, reason, evidence, approval, validation, change_id,
+                deltas=None):
         digest = hashlib.sha256(dumps(requests).encode("utf-8")).hexdigest()
         if change_id is not None:
             seen = cur.execute("SELECT seq, request_digest FROM changes WHERE change_id = ?",
@@ -492,8 +652,9 @@ class OverlayStore:
                     (seq, change_id, _now(), _text(actor, "actor"), _text(source, "source"),
                      _text(reason, "reason"), dumps(evidence), head, dumps(approval), dumps(validation), digest))
         ord_ = 0
-        for request in requests:
-            for d in _expand(cur, request):
+        expanded = (deltas(),) if deltas is not None else (_expand(cur, r) for r in requests)
+        for group in expanded:
+            for d in group:
                 _apply_delta(cur, seq, d)
                 cur.execute("INSERT INTO deltas (seq, ord, op, target_kind, target_id, graph_id, payload, revision) "
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
