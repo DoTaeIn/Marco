@@ -165,7 +165,8 @@ N1 — NERO Acceleration
 ## 상태
 
 ```text
-ACTIVE
+PASSED — gate declared by the owner, 2026-10-01
+RELEASE FREEZE until the MARCO 1 tag
 ```
 
 ## 목표
@@ -178,8 +179,13 @@ Wrong answers = 0
 ## 현재
 
 ```text
-63 / 108 = 58.3%
+98 / 108 = 90.7%, 0 wrong, 0 violations (2026-10-01)
 ```
+
+Release freeze (owner, 2026-10-01): no more work aimed at the exam score or at held turns. Before the
+release a reasoning change is allowed only for a demonstrated safety or correctness bug that can produce
+a wrong or unsupported state or answer. New language coverage, broader text reading and further
+understanding improvements are M2.
 
 ## 주요 작업
 
@@ -310,6 +316,11 @@ M2.4 Retry Loop
 M2.5 External Knowledge Gap Research
 M2.6 Validation / Promotion
 M2.7 Observation Graph Contract (end of M2, before M3)
+
+Placed in M2 by the owner (2026-10-01), order inside M2 not yet fixed:
+Real-text reading: language coverage beyond MARCO 1's forms (SVAMP: 20 of 151 in-domain statements read)
+Effort 4: multi-hop graph grounding
+Effort 5: bounded multi-hypothesis search
 ```
 
 The Observation Graph Contract is the last item of M2 (owner, 2026-09-29), not a
@@ -671,7 +682,7 @@ NERO
 ## NOW
 
 ```text
-M1 — MARCO 1 Language Gate
+MARCO 1 RELEASE (M1 gate passed 2026-10-01)
 ```
 
 ## NEXT

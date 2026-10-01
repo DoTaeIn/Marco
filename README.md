@@ -4,9 +4,10 @@
 every sentence it says from a proven meaning, and holds when nothing grounds an
 answer. No language model runs anywhere in it.**
 
-**Status: MARCO 1 · Preview.** MARCO 1 is not released. All six gate conditions
-measure as met on 2026-10-01 (accuracy on unseen dialogues: 98 of 108 with 98
-needed, no wrong turn); the owner has not yet declared the gate ([Status](#status)).
+**Status: MARCO 1 · release freeze.** The owner declared the MARCO 1 gate passed on
+2026-10-01: all six conditions are met, with 98 of 108 answerable turns right on the unseen
+dialogue exam and no wrong turn. MARCO 1 is not released yet; only safety fixes and release work
+go in before the tag ([Status](#status)).
 
 ```
 > Minsu has five apples, and Jiyeon has two.
@@ -205,12 +206,12 @@ placed under a phase; it never reorders them.
 
 | | Phase |
 | --- | --- |
-| **Now** | M1, the MARCO 1 language gate: the six conditions measure as met; the owner's declaration is open |
-| **Then** | MARCO 1 release: README and benchmark update, a fresh 50-dialogue exam, the real MCO format |
-| **Next** | M2, self-improving MARCO: diagnose, repair, retry, research, validate |
+| **Done** | M1, the MARCO 1 language gate: declared passed on 2026-10-01 |
+| **Now** | MARCO 1 release, in release freeze: safety fixes only, README and benchmark update, a fresh 50-dialogue exam scored once, the MCO format (merged) |
+| **Next** | M2, self-improving MARCO: diagnose, repair, retry, research, validate; reading real text; effort levels 4 (multi-hop graph grounding) and 5 (bounded multi-hypothesis search) |
 | **Later** | M3 capability system · M4 goal and prompt compilation · A1, A2 ALMA · S1 SOMA perception · P1 POLO action · N1 NERO acceleration |
 
-Frozen until the gate passes: self-repair that persists, web and document
+Frozen until MARCO 1 is released: self-repair that persists, web and document
 learning, capability expansion, ALMA, SOMA, POLO, NERO, and the split of the
 seven large files.
 
