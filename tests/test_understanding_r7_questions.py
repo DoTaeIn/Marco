@@ -565,8 +565,9 @@ def test_a_correction_of_an_event_that_said_the_thing_with_fewer_words_corrects_
 
 def test_two_amounts_with_no_word_that_marks_the_old_one_ask_which_event_and_correct_nothing():
     rows = _play("english", HERBS + ["No 2, 3.", "How many bundles of herbs does {b} have?"], 3, **EN_WORDS)
-    assert rows[-2]["meaning"]["reason"] == "reference_which_event"
-    assert rows[-1]["status"] == "answered" and "5" in rows[-1]["answer"]
+    assert rows[-2]["meaning"]["reason"] == "reference_which_event" and rows[-2]["status"] != "observed"
+    # nothing is corrected, and the count either event would change is not said as known while the ask is open
+    assert rows[-1]["status"] != "answered" and "No 2, 3." in rows[-1]["answer"]
 
 
 
@@ -643,3 +644,19 @@ def test_a_sentence_read_only_as_the_shape_of_an_event_in_an_unread_turn_holds_t
     assert rows[4]["status"] == "answered" and "6" in rows[4]["answer"]
     # said again, the count is known
     assert rows[6]["status"] == "answered" and "5" in rows[6]["answer"]
+
+
+@pytest.mark.parametrize("language,frames", [
+    ("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "{c} has 9 {p}.", "{a} gave {b} 2 {p}.", "No 2, 4.",
+                 "How many {p} does {b} have?", "How many {p} does {a} have?", "How many {p} does {c} have?"]),
+    ("한국어", ["{a}는 {p}이 6개 있어.", "{b}는 {p}이 4개 있어.", "{c}는 {p}이 9개 있어.", "{a}가 {b}에게 {p} 2개를 줬어.",
+               "아니 2개, 4개.", "{b}는 {p}이 몇 개야?", "{a}는 {p}이 몇 개야?", "{c}는 {p}이 몇 개야?"]),
+])
+def test_a_correction_asked_back_for_its_event_holds_the_counts_its_candidates_touch(language, frames):
+    # the correction is said and not applied: either event it may mean changes these counts
+    words = dict(EN_WORDS, c="Tam") if language == "english" else dict(KO_WORDS, c="타미")
+    rows = _play(language, frames, 3, **words)
+    assert rows[4]["meaning"]["reason"] == "reference_which_event"
+    for held in (rows[5], rows[6]):
+        assert held["status"] != "answered" and frames[4] in held["answer"]
+    assert rows[7]["status"] == "answered" and "9" in rows[7]["answer"]
