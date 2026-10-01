@@ -68,6 +68,7 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | --- | --- |
 | [2026-09-24-marco-1-preview-1.md](releases/2026-09-24-marco-1-preview-1.md) | MARCO 1 · Preview 1: the `MARCO-1-preview.mco` file on the GitHub pre-release, its measured numbers at round 2 |
 | [2026-09-24-mco-0.1.0.md](releases/2026-09-24-mco-0.1.0.md) | `mco` 0.1.0 on PyPI: what the package is, what it needs, what it cannot do yet, the license |
+| [2026-10-01-mco-0.2.0.md](releases/2026-10-01-mco-0.2.0.md) | `mco` 0.2.0, draft: the native format, overlays and snapshots, and the API version 1 check against 0.1.0 (nothing removed, nothing changed in meaning) |
 
 ## Archive (`docs/archive/`)
 
