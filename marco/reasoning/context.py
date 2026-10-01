@@ -429,8 +429,23 @@ class ReasoningContext:
                   for name in named or {None}}
         # W5-3 (b): the statement named is the earliest unread one that blocks the question, in the
         # conversation's order; looping over the names first made it follow the set's hash order.
+        graph = self.conversation_graph() if asks_number else None
         for entry in self.unread_guard + self.unread:
             said = entry["text"]
+            if graph is not None and entry.get("대상") is None:
+                # an unread statement that mentions a thing node shakes every count of that thing; a holder asked
+                # about is held while a count of theirs it shook (the thing asked, or another thing they hold:
+                # 23 quills in each pack) has not been said again since
+                mentioned = self._things_mentioned(parser, graph, said)
+                for name in pinned:
+                    pair = graph.of_key(name) if name else None
+                    if pair is None or not mentioned:
+                        continue
+                    for key, thing in graph.keys_of_holder(pair[0]):
+                        last = max([fact["evidence"].get("turn", -1) for fact in facts
+                                    if fact["triple"][0] == key and fact["triple"][1] in numeric] or [-1])
+                        if thing in mentioned and entry["at"] > last:
+                            return said, entry.get("까닭")
             for name in pinned:
                 # 이름이 여러 낱말이면 낱말째로 본다. 물음은 `민수 구슬` 인데
                 # 못 읽은 말은 `민수가 지연에게 베풀었다` 라 통째로는 안 걸린다.
@@ -448,6 +463,39 @@ class ReasoningContext:
                 if (entry.get("범용") or touches) and entry["at"] > pinned[name]:
                     return said, entry.get("까닭")
         return None
+
+    def _things_mentioned(self, parser, graph, said):
+        """The thing nodes an unread statement mentions: a word of it (its particle off, or in the plural the pack
+        declares for it) is one of the node's names, or the first or the last word of one (pack, for packs of
+        quills; never a word in the middle)."""
+        from relational_semantics import declared_plural
+        cache = self.__dict__.setdefault("_things_mentioned_cache", {})
+        stamp = (said, len(graph.aliases))
+        if stamp in cache:
+            return cache[stamp]
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        particles = self._frame_particles(parser)
+        number = getattr(parser, "noun_number", None) or {}
+        words = set()
+        for word in re.split(r"[\s,.!?？。]+", said):
+            if not word:
+                continue
+            stem = next((word[:-len(p)] for p in particles if word.endswith(p) and len(word) > len(p)), word)
+            for form in (word, stem):
+                words.add(fold(form))
+                plural = declared_plural(form, number)
+                if plural:
+                    words.add(fold(plural))
+        found = set()
+        for row in graph.aliases:
+            node = graph.nodes.get(row["node"])
+            if node is None or node["kind"] != "thing" or row["form"] not in ("key", "short", "number"):
+                continue
+            parts = [fold(w) for w in row["text"].split()]
+            if parts and (fold(row["text"]) in words or parts[0] in words or parts[-1] in words):
+                found.add(node["id"])
+        cache[stamp] = found
+        return found
 
     def _points_at_someone(self, said, parser):
         """An unread statement that names its holder by a pointer the pack declares (Then they vanished. / 그는
