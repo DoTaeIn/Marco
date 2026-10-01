@@ -20,13 +20,15 @@ from typing import Any, Optional, Union
 import zipfile
 
 from ..errors import CompileError, IntegrityError, ModelFormatError, UnsupportedFormatError
+from . import tables as T
 from .container import MAJOR, MINOR, Chunk, ChunkEntry, Container, encode, write_file
 from .ids import edge_id, graph_id, node_id, rule_id
+from .kgtext import KgTextError, parse_kg
 
 __all__ = [
-    "FEATURES", "MEMBER_TYPES", "TABLE_TYPES", "RESERVED_TYPES", "KNOWN_CHUNKS", "SEMANTIC_SCHEMA",
-    "Member", "NativeModel", "build_chunks", "write_model", "member_type", "content_identity",
-    "canonical_json", "graph_id", "node_id", "edge_id", "rule_id", "kgpack_zip",
+    "FEATURES", "MEMBER_TYPES", "TABLE_TYPES", "GRAPH_TABLE_TYPES", "RESERVED_TYPES", "KNOWN_CHUNKS",
+    "SEMANTIC_SCHEMA", "Member", "NativeModel", "build_chunks", "write_model", "member_type",
+    "content_identity", "canonical_json", "graph_id", "node_id", "edge_id", "rule_id", "kgpack_zip",
 ]
 
 PathLike = Union[str, "os.PathLike[str]"]
@@ -36,9 +38,14 @@ FEATURES = ("marco.kg-text/1", "marco.pack-model/1")
 SEMANTIC_SCHEMA = "marco-kgpack"
 TABLE_TYPES = ("MANI", "STRS", "MEMB", "GDIR")
 MEMBER_TYPES = ("GRPH", "LERN", "COLL", "LANG", "AXIM", "RELM", "DEFN", "ASET")
-#: Reserved for later slices (section 8); a 1.0 reader treats them as unknown.
-RESERVED_TYPES = ("NODE", "EDGE", "RULE", "INDX", "OVLY", "CHNG", "SNAP", "PROV")
-KNOWN_CHUNKS = {kind: 1 for kind in TABLE_TYPES + MEMBER_TYPES}
+#: Format 1.1 graph and rule tables (6.8-6.11). Optional chunks: a 1.0 reader skips them.
+GRAPH_TABLE_TYPES = ("INDX", "RULE", "NODE", "EDGE")
+#: Reserved for later slices (section 8); this reader treats them as unknown.
+RESERVED_TYPES = ("OVLY", "CHNG", "SNAP", "PROV")
+KNOWN_CHUNKS = {kind: 1 for kind in TABLE_TYPES + MEMBER_TYPES + GRAPH_TABLE_TYPES}
+#: What each chunk type is, as ``mco inspect`` labels it.
+ROLES = {"MANI": "metadata", "STRS": "table", "MEMB": "table", "GDIR": "table", "INDX": "table",
+         "RULE": "table", "NODE": "table", "EDGE": "table", "GRPH": "source text"}
 _RESERVED_KEYS = ("base", "change_sequence", "snapshot")
 _NULL = 0xFFFFFFFF
 _HEX64 = re.compile(r"[0-9a-f]{64}")
@@ -104,13 +111,38 @@ def _encode_strings(values: set[str]) -> tuple[bytes, dict[str, int]]:
     return data, {v: i for i, v in enumerate(ordered)}
 
 
+def _graph_tables(paths: list[str], members: Mapping[str, bytes]) -> dict[str, tuple[Optional[dict], Optional[str]]]:
+    """Each graph member -> (parsed graph, None) when the tables can hold it
+    exactly, or (None, reason) when it stays source text only."""
+    out: dict[str, tuple[Optional[dict], Optional[str]]] = {}
+    seen: dict[str, str] = {}
+    for path in paths:
+        if not path.endswith(".kg"):
+            continue
+        gid = graph_id(path)
+        if gid in seen:
+            raise CompileError(f"graph members {seen[gid]!r} and {path!r} have the same graph id")
+        seen[gid] = path
+        try:
+            g = parse_kg(members[path], path)
+        except KgTextError as exc:
+            out[path] = (None, "the graph text does not parse: " + str(exc).splitlines()[0])
+            continue
+        reason = T.unrepresentable(path, g)
+        out[path] = (None, reason) if reason else (g, None)
+    return out
+
+
 def build_chunks(pack_manifest: Mapping[str, Any], members: Mapping[str, bytes], *, source_sha256: str,
                  source_bytes: int, name: Optional[str] = None, build_id: Optional[str] = None,
-                 generator: str = "") -> list[Chunk]:
+                 generator: str = "", tables: bool = True) -> list[Chunk]:
     """The chunks of a Format 1 file for a MARCO pack (manifest + members).
 
-    Raises :class:`CompileError` when the pack holds something Format 1.0
-    cannot represent; the caller then gets no file rather than a lossy one.
+    With ``tables`` (the default) the file also holds the node, edge, graph
+    index and rule tables of Format 1.1 (6.8-6.11); every graph's source text
+    stays as a ``GRPH`` member chunk. Raises :class:`CompileError` when the
+    pack holds something Format 1 cannot represent; the caller then gets no
+    file rather than a lossy one.
     """
     paths = sorted(members, key=lambda p: p.encode("utf-8"))
     for path in paths:
@@ -127,6 +159,16 @@ def build_chunks(pack_manifest: Mapping[str, Any], members: Mapping[str, bytes],
         strings |= {str(e) for e in node.get("examples", [])}
     for edge in manager["edges"]:
         strings |= {str(x) for x in edge}
+    graphs = _graph_tables(paths, members) if tables else {}
+    rules: list[tuple[str, dict]] = []
+    if tables:
+        try:
+            rules = T.pack_rules(pack_manifest, members)
+        except (KeyError, ValueError) as exc:
+            raise CompileError(f"the pack's axiom rules cannot be read: {exc}") from exc
+        for path, (g, reason) in graphs.items():
+            strings |= {graph_id(path)} | (T.graph_strings(g) if g is not None else {reason})
+        strings |= {T.rule_id(rule) for _, rule in rules} | {source for source, _ in rules}
     strs, sid = _encode_strings(strings)
 
     member_chunks: list[Chunk] = []
@@ -135,7 +177,9 @@ def build_chunks(pack_manifest: Mapping[str, Any], members: Mapping[str, bytes],
         body = members[path]
         rows += _MEMB_ROW.pack(sid[path], len(TABLE_TYPES) + row, 1 if path.endswith(".kg") else 0,
                                b"\x00" * 7, len(body), hashlib.sha256(body).digest())
-        member_chunks.append(Chunk(member_type(path), body))
+        # A graph the tables hold exactly keeps its text as an optional source-text chunk.
+        tabled = graphs.get(path, (None, None))[0] is not None
+        member_chunks.append(Chunk(member_type(path), body, required=not tabled))
 
     nodes, examples, edges = bytearray(), bytearray(), bytearray()
     count = 0
@@ -156,6 +200,30 @@ def build_chunks(pack_manifest: Mapping[str, Any], members: Mapping[str, bytes],
                            sid[str(manager.get("goal"))], len(manager["nodes"]), len(manager["edges"]),
                            count, 0) + bytes(nodes) + bytes(examples) + bytes(edges)
 
+    table_chunks: list[Chunk] = []
+    table_counts = None
+    if tables:
+        first = len(TABLE_TYPES) + len(paths) + 2              # after the members, INDX and RULE
+        index_rows, pairs = [], []
+        for path in sorted(graphs, key=lambda p: graph_id(p).encode("utf-8")):
+            g, reason = graphs[path]
+            gid = graph_id(path)
+            if g is None:
+                index_rows.append(T.IndexRow(gid, path, T.SOURCE_ONLY, reason, None, None, 0, 0, 0))
+                continue
+            node = T.encode_node(path, g, sid)
+            edge = T.encode_edge(path, g, sid)
+            at = first + len(pairs)
+            nodes = len(T.node_names(g))
+            index_rows.append(T.IndexRow(gid, path, T.TABLES, None, at, at + 1, nodes,
+                                         len(g["엣지"]) + len(g["개념엣지"]),
+                                         sum(len(x) for layer in T.LAYER_KEYS for x in g[layer].values())))
+            pairs += [Chunk("NODE", node, required=False, compression=0),
+                      Chunk("EDGE", edge, required=False, compression=0)]
+        table_chunks = [Chunk("INDX", T.encode_index(index_rows, sid), required=False, compression=0),
+                        Chunk("RULE", T.encode_rules(rules, sid), required=False, compression=0)] + pairs
+        table_counts = _table_counts(index_rows, len(rules))
+
     model = pack_manifest.get("model")
     languages = [p for p in paths if member_type(p) == "LANG"]
     content = hashlib.sha256(canonical_json(pack_manifest) + b"\n").hexdigest()
@@ -173,18 +241,38 @@ def build_chunks(pack_manifest: Mapping[str, Any], members: Mapping[str, bytes],
         "base": None, "change_sequence": None, "snapshot": None,
         "supports": {"overlay": False, "snapshot": False},
     }
+    if table_counts is not None:
+        manifest["tables"] = table_counts
     chunks = [Chunk("MANI", canonical_json(manifest), compression=0), Chunk("STRS", strs, compression=0),
-              Chunk("MEMB", bytes(rows), compression=0), Chunk("GDIR", gdir, compression=0)] + member_chunks
-    # Self-check: what a reader rebuilds must be the pack we were given.
+              Chunk("MEMB", bytes(rows), compression=0), Chunk("GDIR", gdir, compression=0)] \
+        + member_chunks + table_chunks
+    # Self-check: what a reader rebuilds must be the pack we were given, and
+    # every tabled graph and rule must read back exactly as parsed.
     try:
         rebuilt = NativeModel(Container.from_bytes(encode(chunks), name="<new file>", known=KNOWN_CHUNKS))
         same = rebuilt.pack_manifest() == pack_manifest
+        if tables:
+            for path, (g, _reason) in graphs.items():
+                if g is not None and not T.ordered_equal(rebuilt.graph(graph_id(path)), g):
+                    raise CompileError(f"graph {path} does not read back from the tables identically")
+            # Rule objects compare as values: canonical JSON stores their keys sorted (6.11).
+            if rebuilt.rules() != [rule for _, rule in rules]:
+                raise CompileError("the rules do not read back from the rule table identically")
     except ModelFormatError as exc:
-        raise CompileError(f"the pack cannot be stored in Format 1.0: {exc}") from exc
+        raise CompileError(f"the pack cannot be stored in Format 1: {exc}") from exc
     if not same:
-        raise CompileError("the pack holds data Format 1.0 does not represent "
+        raise CompileError("the pack holds data Format 1 does not represent "
                            "(its manifest does not rebuild identically)")
     return chunks
+
+
+def _table_counts(rows: list[T.IndexRow], rules: int) -> dict[str, Any]:
+    """The manifest's ``tables`` object (6.1), from the ``INDX`` rows and the rule count."""
+    tabled = [r for r in rows if r.status == T.TABLES]
+    return {"graphs": len(rows), "tabled": len(tabled),
+            "source_only": sorted(r.member for r in rows if r.status == T.SOURCE_ONLY),
+            "nodes": sum(r.nodes for r in tabled), "edges": sum(r.edges for r in tabled),
+            "examples": sum(r.examples for r in tabled), "rules": rules}
 
 
 def write_model(output: PathLike, pack_manifest: Mapping[str, Any], members: Mapping[str, bytes],
@@ -251,15 +339,21 @@ class _Strings:
             if blob[offsets[i]:offsets[i + 1]] >= blob[offsets[i + 1]:offsets[i + 2]]:
                 raise fail("STRS: strings are not unique and sorted")
         self._blob, self._offsets, self._fail = blob, offsets, fail
+        self._decoded: dict[int, str] = {}
         self.count = count
 
     def __len__(self) -> int:
         return self.count
 
     def get(self, index: int, where: str) -> str:
+        try:
+            return self._decoded[index]
+        except KeyError:
+            pass
         if not 0 <= index < self.count:
             raise self._fail(f"{where}: string id {index} out of range ({self.count} strings)")
-        return self._blob[self._offsets[index]:self._offsets[index + 1]].decode("utf-8")
+        text = self._decoded[index] = self._blob[self._offsets[index]:self._offsets[index + 1]].decode("utf-8")
+        return text
 
 
 @dataclass(frozen=True)
@@ -503,15 +597,149 @@ class NativeModel:
         return hashlib.sha256(canonical_json(self.pack_manifest()) + b"\n").hexdigest()
 
     def verify_all(self) -> None:
-        """Full verification (section 7)."""
+        """Full verification (section 7), including every graph and rule table."""
         self.container.verify_all()
         if self.content_sha256() != self.manifest["content_sha256"]:
             raise self._fail("content_sha256 does not match the members", IntegrityError)
+        if self.has_tables:
+            for row in self._index():
+                if row.status == T.TABLES:
+                    nodes, edges = self._graph_chunks(row)
+                    T.build_graph(nodes, edges, self.strings.get, self._fail, f"tables of {row.graph}")
+                    T.check_edge_ids(row, edges, self.strings.get, self._fail)
+            self.rule_rows()
+
+    # -- graph and rule tables (Format 1.1, sections 6.8-6.11) ------------------------------------
+    # Plain-data reader for the next step; the running path does not use it yet.
+
+    def _optional(self, kind: str) -> Optional[ChunkEntry]:
+        found = [e for e in self.container.of_type(kind) if self.container.understands(e)]
+        if len(found) > 1:
+            raise self._fail(f"{kind} must appear at most once, found {len(found)}")
+        return found[0] if found else None
+
+    @property
+    def has_tables(self) -> bool:
+        """Whether the file holds graph tables (an ``INDX`` chunk). 1.0 files do not."""
+        return self._optional("INDX") is not None
+
+    def _index(self) -> list[T.IndexRow]:
+        """The ``INDX`` rows, read and checked once (6.8)."""
+        cached = getattr(self, "_index_rows", None)
+        if cached is not None:
+            return cached
+        entry = self._optional("INDX")
+        typed = [e for e in self.container.entries if e.type in ("NODE", "EDGE")]
+        if entry is None:
+            if typed or self.manifest.get("tables") is not None:
+                raise self._fail("NODE/EDGE chunks or a manifest 'tables' object without an INDX chunk")
+            raise UnsupportedFormatError(f"{self.name}: this file has no graph tables (Format 1.0)")
+        rows = T.decode_index(self.container.read(entry), self.strings.get, self._fail)
+        graphs = sorted(m.path for m in self.members if m.graph)
+        if sorted(r.member for r in rows) != graphs:
+            raise self._fail("INDX rows are not exactly the graph members of MEMB")
+        used: set[int] = set()
+        entries = self.container.entries
+        for row in rows:
+            if row.status != T.TABLES:
+                continue
+            for index, kind in ((row.node_chunk, "NODE"), (row.edge_chunk, "EDGE")):
+                if not 0 <= index < len(entries) or entries[index].type != kind or index in used \
+                        or not self.container.understands(entries[index]):
+                    raise self._fail(f"INDX row {row.graph}: chunk {index} is not an unused {kind} chunk")
+                used.add(index)
+        orphans = [e.index for e in typed if e.index not in used]
+        if orphans:
+            raise self._fail(f"NODE/EDGE chunk(s) {orphans} are not in INDX")
+        rule = self._optional("RULE")
+        if rule is None:
+            raise self._fail("an INDX chunk without a RULE chunk")
+        rule_count = struct.unpack_from("<I", self.container.read(rule))[0] if rule.raw_length >= 4 else -1
+        if self.manifest.get("tables") != _table_counts(rows, rule_count):
+            raise self._fail(f"manifest tables {self.manifest.get('tables')} disagree with INDX/RULE")
+        self._index_rows = rows
+        self._index_keys = [r.graph.encode("utf-8") for r in rows]
+        return rows
+
+    def _row(self, graph: str) -> T.IndexRow:
+        rows = self._index()
+        key = graph_id(graph).encode("utf-8")
+        at = bisect_left(self._index_keys, key)
+        if at == len(rows) or self._index_keys[at] != key:
+            raise KeyError(graph)
+        return rows[at]
+
+    def _graph_chunks(self, row: T.IndexRow) -> tuple[T.NodeTable, T.EdgeTable]:
+        entries = self.container.entries
+        nodes = T.decode_node(self.container.read(entries[row.node_chunk]), row, self.strings.get, self._fail)
+        edges = T.decode_edge(self.container.read(entries[row.edge_chunk]), row, self.strings.get, self._fail)
+        return nodes, edges
+
+    def _tabled(self, graph: str) -> T.IndexRow:
+        row = self._row(graph)
+        if row.status != T.TABLES:
+            raise UnsupportedFormatError(f"{self.name}: graph {row.graph} is carried as source text only "
+                                         f"({row.reason})")
+        return row
+
+    def table_index(self) -> list[dict[str, Any]]:
+        """Every graph's ``INDX`` row as plain data, sorted by graph id. Reads only ``INDX``."""
+        return [r.to_dict() for r in self._index()]
+
+    def graph(self, graph: str) -> dict[str, Any]:
+        """One graph, in exactly the shape MARCO's ``read_kg`` returns for its
+        source text (without the shared hypernym merge of ``data/개념망.json``).
+        Reads only that graph's ``NODE`` and ``EDGE`` chunks (and ``INDX``
+        once). ``KeyError`` for an unknown graph id; ``UnsupportedFormatError``
+        for a graph carried as source text only."""
+        row = self._tabled(graph)
+        nodes, edges = self._graph_chunks(row)
+        return T.build_graph(nodes, edges, self.strings.get, self._fail, f"tables of {row.graph}")
+
+    def graph_rows(self, graph: str) -> dict[str, Any]:
+        """One graph's rows with their stable ids (node_id, edge_id) and ordinal
+        fields, as plain data in stored order."""
+        row = self._tabled(graph)
+        nodes, edges = self._graph_chunks(row)
+        return T.graph_rows(row, nodes, edges, self.strings.get)
+
+    def node_edges(self, graph: str, name: str) -> list[dict[str, Any]]:
+        """The edges of one graph that touch node ``name`` (as source or
+        destination), both lists (``엣지`` and ``개념엣지``), as plain rows with
+        their ``edge_id``, in stored (edge id) order. Reads only that graph's
+        ``EDGE`` chunk (and ``INDX`` once). ``name`` is matched as stored, the
+        name ``read_kg`` returns; an unknown name gives an empty list."""
+        row = self._tabled(graph)
+        entries = self.container.entries
+        edges = T.decode_edge(self.container.read(entries[row.edge_chunk]), row, self.strings.get, self._fail)
+        return T.edges_touching(edges, name, self.strings.get)
+
+    def rule_rows(self) -> list[dict[str, Any]]:
+        """The ``RULE`` rows, sorted by rule id: ``rule_id``, ``source``, ``ordinal``, ``rule``."""
+        self._index()
+        entry = self._optional("RULE")
+        return T.decode_rules(self.container.read(entry), self.strings.get, self._fail)
+
+    def rules(self) -> list[dict[str, Any]]:
+        """The model's rules in the order MARCO collects them (ordinal order)."""
+        return [r["rule"] for r in sorted(self.rule_rows(), key=lambda r: r["ordinal"])]
+
+    def tables_summary(self) -> Optional[dict[str, Any]]:
+        """Graph, node, edge, example and rule counts from ``INDX`` and the
+        manifest (checked against each other), or ``None`` for a 1.0 file."""
+        if not self.has_tables:
+            return None
+        rows = self._index()
+        return dict(self.manifest["tables"],
+                    source_only_reasons={r.member: r.reason for r in rows if r.status == T.SOURCE_ONLY})
 
     def summary(self) -> dict[str, Any]:
-        """What ``mco inspect`` shows: header, chunks with sizes, members. Reads nothing more."""
+        """What ``mco inspect`` shows: header, chunks with sizes and roles,
+        members, table counts. Reads ``INDX`` and ``RULE`` but no graph table."""
         return {"format": {"major": self.major, "minor": self.minor, "flags": self.container.flags,
                            "file_size": self.container.size},
-                "chunks": [dict(e.to_dict(), understood=self.container.understands(e))
+                "chunks": [dict(e.to_dict(), understood=self.container.understands(e),
+                                role=ROLES.get(e.type, "carried member" if e.type in MEMBER_TYPES else "unknown"))
                            for e in self.container.entries],
-                "members": [m.to_dict() for m in self.members]}
+                "members": [m.to_dict() for m in self.members],
+                "tables": self.tables_summary()}
