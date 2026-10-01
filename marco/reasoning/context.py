@@ -4010,7 +4010,9 @@ class ReasoningContext:
                 for facts_ in restated) if len(givers) == 1 and len(takers) == 1 else False
             if restated and not reversed_said:
                 continue
-            if len(givers) == 1 and len(takers) == 1 and set(pair) == {givers[0], takers[0]} \
+            # "the other way round" with no holder and no amount said: the event's own two are the pair (effort 2)
+            unnamed = swap_word and not every_named and not amounts
+            if len(givers) == 1 and len(takers) == 1 and (set(pair) == {givers[0], takers[0]} or unnamed) \
                     and (swap_word or reversed_said or (first == takers[0] and not takers_first)
                          or (first == givers[0] and takers_first)) and len(set(amounts) - values) == 0:
                 tokens = source.split()

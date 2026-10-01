@@ -11,6 +11,9 @@
                                       --resume SNAPSHOT if given), then write its snapshot
     mco benchmark MODEL CASES         run a case file and report accuracy/latency
     mco backends                      list backends and whether they are usable
+    mco overlay ACTION MODEL OVERLAY  create, change (commit, propose, approve, reject,
+                                      undo) and read (status, history, candidates) an
+                                      overlay store; every change names its approver
 
 Exit status: 0 success, 1 an mco error (message on stderr), 2 usage error,
 3 benchmark finished with failing cases (``--fail-under``).
@@ -52,6 +55,8 @@ def _load_options(args: argparse.Namespace) -> dict[str, Any]:
         options["marco_root"] = args.marco_root
     if getattr(args, "overlay_dir", None):
         options["overlay_dir"] = args.overlay_dir
+    if getattr(args, "overlay", None):
+        options["overlay"] = args.overlay
     return options
 
 
@@ -130,7 +135,8 @@ def _cmd_inspect(args: argparse.Namespace, out: TextIO) -> int:
         else:
             _print_snapshot(snapshot, out)
         return 0
-    info = inspect(args.model, verify=not args.no_verify)
+    extra = {"overlay": args.overlay, "marco_root": args.marco_root} if args.overlay else {}
+    info = inspect(args.model, verify=not args.no_verify, **extra)
     if args.json:
         _dump(info.to_dict(include_manifest=args.manifest), out)
         return 0
@@ -206,6 +212,58 @@ def _cmd_benchmark(args: argparse.Namespace, out: TextIO) -> int:
     return 0
 
 
+def _deltas(args: argparse.Namespace) -> list[Any]:
+    from .errors import InvalidInputError
+    deltas: list[Any] = []
+    for text in args.delta or ():
+        try:
+            item = json.loads(text)
+        except json.JSONDecodeError as exc:
+            raise InvalidInputError(f"--delta is not JSON: {exc}") from exc
+        deltas += item if isinstance(item, list) else [item]
+    if args.deltas:
+        with open(args.deltas, encoding="utf-8") as handle:
+            item = json.load(handle)
+        deltas += item if isinstance(item, list) else [item]
+    if not deltas:
+        raise InvalidInputError("give at least one --delta JSON object or a --deltas file")
+    return deltas
+
+
+def _cmd_overlay(args: argparse.Namespace, out: TextIO) -> int:
+    from .overlay import create_overlay, open_overlay, overlay_status
+    common = {"marco_root": args.marco_root} if args.marco_root else {}
+    action = args.action
+    if action == "create":
+        _dump(create_overlay(args.model, args.overlay, **common), out)
+        return 0
+    if action == "status":
+        _dump(overlay_status(args.model, args.overlay, **common), out)
+        return 0
+    with open_overlay(args.model, args.overlay, **common) as overlay:
+        if action == "commit":
+            result: Any = overlay.commit(_deltas(args), approved_by=args.approved_by, reason=args.reason,
+                                         actor=args.actor, source="mco CLI")
+        elif action == "propose":
+            result = {"candidate_id": overlay.propose(_deltas(args), actor=args.actor, reason=args.reason,
+                                                      source="mco CLI")}
+        elif action == "approve":
+            result = overlay.approve(args.candidate, approved_by=args.approved_by)
+        elif action == "reject":
+            overlay.reject(args.candidate, rejected_by=args.rejected_by, reason=args.reason)
+            result = {"rejected": args.candidate}
+        elif action == "undo":
+            change = int(args.change) if args.change.isdigit() else args.change
+            result = overlay.undo(change, approved_by=args.approved_by, reason=args.reason, actor=args.actor,
+                                  source="mco CLI")
+        elif action == "history":
+            result = overlay.history(args.target)
+        else:
+            result = overlay.candidates(args.status)
+    _dump(result, out)
+    return 0
+
+
 def _cmd_backends(args: argparse.Namespace, out: TextIO) -> int:
     from .backends import available_backends
     status = available_backends()
@@ -226,6 +284,7 @@ def _parser() -> argparse.ArgumentParser:
         p.add_argument("--backend", help="force a backend (see 'mco backends')")
         p.add_argument("--marco-root", help="MARCO checkout to use (else $MCO_MARCO_ROOT)")
         p.add_argument("--overlay-dir", help="keep learned knowledge in this directory")
+        p.add_argument("--overlay", help="attach this overlay store (explicit or approved graph and rule changes)")
         p.add_argument("--allow-network", action="store_true", help="allow external research")
 
     p = sub.add_parser("run", help="send utterances to a model")
@@ -266,8 +325,53 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--json", action="store_true")
     p.add_argument("--manifest", action="store_true", help="with --json, include native manifests")
     p.add_argument("--no-verify", action="store_true", help="skip SHA-256 verification")
-    p.add_argument("--marco-root", help="MARCO checkout whose snapshot reader to use (snapshot files)")
+    p.add_argument("--marco-root", help="MARCO checkout whose snapshot or overlay reader to use")
+    p.add_argument("--overlay", help="also show this overlay store's base binding, head and active counts")
     p.set_defaults(func=_cmd_inspect)
+
+    p = sub.add_parser("overlay", help="create, change and read an overlay store beside a model")
+    actions = p.add_subparsers(dest="action", required=True, metavar="ACTION")
+
+    def overlay_parser(name: str, help: str) -> argparse.ArgumentParser:
+        q = actions.add_parser(name, help=help)
+        q.add_argument("model")
+        q.add_argument("overlay")
+        q.add_argument("--marco-root", help="MARCO checkout to use (else $MCO_MARCO_ROOT)")
+        q.set_defaults(func=_cmd_overlay)
+        return q
+
+    def delta_flags(q: argparse.ArgumentParser) -> None:
+        q.add_argument("--delta", action="append",
+                       help='one delta as JSON, e.g. {"op": "ADD_EDGE", "graph": "graphs/x.kg", "src": "a", '
+                            '"rel": "증명", "dst": "b"} (repeatable; a JSON list is several)')
+        q.add_argument("--deltas", help="a JSON file with one delta or a list of deltas")
+        q.add_argument("--reason", required=True)
+
+    overlay_parser("create", "create an empty overlay bound to the model's content and build")
+    overlay_parser("status", "show the base binding, head, active counts and pending candidates")
+    q = overlay_parser("commit", "record one change, approved by --approved-by")
+    delta_flags(q)
+    q.add_argument("--approved-by", required=True, help="who approves this change")
+    q.add_argument("--actor", help="who made it (default: the approver)")
+    q = overlay_parser("propose", "store a candidate change; it changes nothing until approved")
+    delta_flags(q)
+    q.add_argument("--actor", required=True, help="who proposes it")
+    q = overlay_parser("approve", "make a pending candidate a change")
+    q.add_argument("candidate")
+    q.add_argument("--approved-by", required=True)
+    q = overlay_parser("reject", "reject a pending candidate; it is kept and never applies")
+    q.add_argument("candidate")
+    q.add_argument("--rejected-by", required=True)
+    q.add_argument("--reason", required=True)
+    q = overlay_parser("undo", "undo a change (seq or change id) by a compensating change")
+    q.add_argument("change")
+    q.add_argument("--approved-by", required=True)
+    q.add_argument("--reason", required=True)
+    q.add_argument("--actor")
+    q = overlay_parser("history", "every delta on one node, edge or rule id")
+    q.add_argument("target")
+    q = overlay_parser("candidates", "list candidates")
+    q.add_argument("--status", choices=("pending", "approved", "rejected"))
 
     p = sub.add_parser("benchmark", help="run a case file against a model")
     p.add_argument("model")

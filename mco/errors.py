@@ -22,6 +22,8 @@ __all__ = [
     "SnapshotError",
     "SnapshotFormatError",
     "SnapshotMismatchError",
+    "OverlayError",
+    "OverlayBaseMismatchError",
 ]
 
 
@@ -80,3 +82,12 @@ class SnapshotFormatError(SnapshotError):
 
 class SnapshotMismatchError(SnapshotError):
     """The snapshot was taken on another base, or with an overlay history that differs."""
+
+
+class OverlayError(MCOError):
+    """An overlay refused an operation (a stale revision, a second writer, a change the model
+    cannot take, ...); nothing was written."""
+
+
+class OverlayBaseMismatchError(OverlayError):
+    """The overlay was made for another model (another content SHA-256 or build id)."""

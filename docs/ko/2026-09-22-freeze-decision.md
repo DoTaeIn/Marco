@@ -130,12 +130,14 @@ snapshot is in MARCO 1 because it is state and persistence infrastructure. The e
 (the sidecars beside each graph, the approval door, the pack export) stay as they are and are not moved
 onto the overlay before M2.
 
-| Slice | Content | State |
+| Slice | Content | State (2026-10-01) |
 | --- | --- | --- |
-| 1 | Format 1 specification, writer and reader, compile, run, inspect, stable ids, base identity | in work on branch `mco-format-1` |
-| 2 | Persistent Overlay Infrastructure: store bound to a base, atomic commit, deltas and tombstones, candidates kept apart until approved from outside, merged graph and rule view, `mco` surface | store in work on branch `mco-overlay`; the view waits for slice 1 |
-| 3 | Snapshot and restore: base and overlay sequence recorded and checked, conversation state | after the overlay store |
-| later | Consolidation into a new base, compaction, scaling curves, profiles | after the release |
+| 1 | Format 1 specification, writer and reader, compile, run, inspect, stable ids, base identity | merged `c6d4e70` |
+| 1, tables | Format 1.1: node, edge and rule tables, every graph equal to the engine's reading; not yet on the running path | merged `269997f` |
+| 2 | Persistent Overlay Infrastructure: store bound to a base, atomic commit, deltas and tombstones, candidates kept apart until approved from outside | merged `43f5d4d` |
+| 2, view | Merged graph and rule view with origins, application at the next turn with no recompile, `mco overlay` | merged `5987ed5` |
+| 3 | Snapshot and restore: base and overlay sequence recorded and checked, conversation state | merged `f844401`, overlay recorded since `5987ed5` |
+| later | Consolidation into a new base, compaction, scaling curves, profiles, the engine reading the tables directly | after the release |
 
 ## The queue (replaces plan file §2 items 3–5) — updated 2026-09-23
 

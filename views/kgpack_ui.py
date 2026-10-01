@@ -214,7 +214,10 @@ def merge_trace(items, route):
 
 
 class AppState:
-    def __init__(self, pack_path, overlay_root=None):
+    def __init__(self, pack_path, overlay_root=None, graph_overlay=None):
+        # graph_overlay: an attached overlay store (marco.storage.graph_view.OverlayAttachment) of
+        # explicit or approved changes, or None. With None, nothing of it runs (docs/architecture/overlay.md).
+        self.graph_overlay, self._graph_texts = None, {}
         self.pack_path = Path(pack_path).resolve()
         self.manifest, self.data = kgpack.read(self.pack_path)
         from pack_model import PackModel
@@ -231,6 +234,8 @@ class AppState:
         if not self.graphs:
             raise kgpack.KGPackError("pack 안에 그래프가 없습니다")
         pack_id = hashlib.sha256(self.pack_path.read_bytes()).hexdigest()[:16]
+        if graph_overlay is not None:   # its own working folder: its graph files differ from the pack's
+            pack_id += "-overlay-" + hashlib.sha256(str(Path(graph_overlay.path).resolve()).encode()).hexdigest()[:12]
         self.overlay = Path(overlay_root or "/private/tmp/nai-kgpack-overlay") / pack_id
         self.overlay.mkdir(parents=True, exist_ok=True)
         self.lock = threading.RLock()
@@ -264,6 +269,8 @@ class AppState:
         # 축소하는 경계이며, 테스트는 CallableBackend를 주입해 모델 품질과
         # 상태 계산을 독립적으로 검사한다.
         self.semantic_parser = semantic_parser.SemanticParser(model=self.model)
+        if graph_overlay is not None:
+            self._attach_graph_overlay(graph_overlay)
 
     def _materialize(self, name):
         """pack의 그래프와 그 ``포함:`` 의존성을 overlay에 함께 펼친다.
@@ -283,6 +290,8 @@ class AppState:
             target = self.overlay / current
             target.parent.mkdir(parents=True, exist_ok=True)
             body = self.data[current]
+            if current in self._graph_texts:        # a graph an attached overlay changes: the merged view's text
+                body = self._graph_texts[current]
             # 학습·수집 overlay는 팩을 연 뒤에 새 기록을 더할 수 있다. 다시
             # materialize할 때 그 기록을 초깃값으로 덮어쓰지 않는다.
             learned_overlay = current.endswith((".학습.jsonl", ".수집.jsonl"))
@@ -398,6 +407,130 @@ class AppState:
                         return evidence
         return evidence
 
+    # --- Persistent Overlay Infrastructure (docs/architecture/overlay.md) ---------------------
+    # Reached only with an overlay store attached. It applies changes that were committed or
+    # approved from outside through an explicit call; nothing here makes or approves a change.
+
+    def _attach_graph_overlay(self, attachment):
+        from marco.storage.graph_view import PackBase, pack_content_sha256
+        from marco.storage.overlay import OverlayBaseMismatch
+        content = pack_content_sha256(self.manifest)
+        if attachment.base_sha256 != content:
+            raise OverlayBaseMismatch("overlay %s is bound to base %s, not this pack (%s); refused"
+                                      % (attachment.path, attachment.base_sha256, content))
+        self.graph_overlay = attachment
+        self.graph_view = None
+        self._overlay_base = PackBase(self.manifest, self.data)
+        self._overlay_applied = (0, None)
+        self._base_manager_nodes = {n["path"]: n for n in self.manager.get("nodes", [])}
+        self._sync_graph_overlay()
+
+    def _include_closure(self, name):
+        """``name`` and every graph it includes (``포함:``), as ``_materialize`` follows them."""
+        out, pending = set(), [name]
+        while pending:
+            current = pending.pop()
+            if current in out or current not in self.data:
+                continue
+            out.add(current)
+            body = self._graph_texts.get(current, self.data[current])
+            for line in body.decode("utf-8").splitlines():
+                line = line.split("#", 1)[0].strip()
+                if line.startswith("포함:"):
+                    pending += [posixpath.normpath(posixpath.join(posixpath.dirname(current), raw.strip()))
+                                for raw in line.split(":", 1)[1].split(",") if raw.strip()]
+        return out
+
+    def _sync_graph_overlay(self):
+        """Apply the attached overlay at its head when the head moved since the last application.
+
+        Re-written: the working-folder file of every graph whose merged text changed (and the
+        pack's own bytes again for a graph no longer changed); the graph-selection entries of
+        those graphs; the rules (``PackModel.apply_rule_overlay``); the active graph if its
+        include closure changed. Every open reasoning context is re-derived from its own
+        snapshot without the saved replay. A conversation store bound to its base
+        (``conversations.binding``) records the head each saved state was derived under.
+        Returns whether anything was applied."""
+        head = self.graph_overlay.head()
+        if head == self._overlay_applied:
+            self._bind_overlay_head()
+            return False
+        view = self.graph_overlay.view(self._overlay_base, at=head[0])
+        texts = {self._overlay_base.member(g): view.text(g).encode("utf-8") for g in view.touched_graphs()}
+        rules = view.rule_changes()
+        changed = {n for n in set(texts) | set(self._graph_texts) if texts.get(n) != self._graph_texts.get(n)}
+        self._graph_texts, self.graph_view = texts, view
+        for name in sorted(changed):
+            if (self.overlay / name).exists():
+                self._materialize(name)
+        if changed:
+            nodes = []
+            for node in self.manager.get("nodes", []):
+                path = node.get("path")
+                if path in texts:
+                    node = dict(kgpack._graph_meta(path, texts[path]), **({"new": node["new"]} if "new" in node else {}))
+                elif path in changed:
+                    node = self._base_manager_nodes.get(path, node)
+                nodes.append(node)
+            self.manager = dict(self.manager, nodes=nodes)
+            self.manager_index = manager_index(self.manager)
+        key = "%d:%s" % head if rules else None
+        for model in [self.model] + list(self.companions):
+            model.apply_rule_overlay(rules or None, key)
+        if self.active_name and self.graph is not None and changed & self._include_closure(self.active_name):
+            self._activate(self.active_name, force=True)
+        if self.reasoning_contexts:
+            from marco.reasoning.context import ReasoningContext
+            for context_id, context in list(self.reasoning_contexts.items()):
+                saved = {k: v for k, v in context.snapshot().items() if k != "replay"}
+                fresh = ReasoningContext(model=self.model, companions=self.companions)
+                fresh.restore(saved)
+                self.reasoning_contexts[context_id] = fresh
+        self._overlay_applied = head
+        self._bind_overlay_head()
+        return True
+
+    def _bind_overlay_head(self):
+        binding = getattr(self.conversations, "binding", None)
+        if isinstance(binding, dict):
+            binding["overlay"] = {"seq": self._overlay_applied[0], "change_id": self._overlay_applied[1]}
+
+    def _saved_reasoning_state(self, saved):
+        """A saved reasoning state to restore. A store bound to its base has already compared the head
+        the state was saved under with the current one and dropped a stale replay. An unbound store
+        cannot tell, so with an attached overlay that has changes the saved replay is dropped and the
+        conversation is re-derived under the current view."""
+        if (saved is None or self.graph_overlay is None or not self._overlay_applied[0]
+                or isinstance(getattr(self.conversations, "binding", None), dict)):
+            return saved
+        return {k: v for k, v in saved.items() if k != "replay"}
+
+    def _overlay_origins(self, answer):
+        """Mark the trace's graph evidence that comes from the overlay with its change and approver.
+        Base items get no mark, so their evidence is as it was."""
+        trace = answer.get("trace") if isinstance(answer, dict) else None
+        view = getattr(self, "graph_view", None)
+        if not isinstance(trace, dict) or view is None or not view.seq:
+            return
+        edges, nodes = [], {}
+        items = [(trace, self.active_name, "")]
+        for sub in trace.get("subtraces") or []:
+            name = sub.get("graph") or ""
+            items.append((sub.get("trace") or {}, name, name.removeprefix("graphs/").removesuffix(".kg") + "::"))
+        for sub, name, prefix in items:
+            if not name or name not in self.data:
+                continue
+            for edge in sub.get("path") or []:
+                origin = view.edge_origin(name, *edge) if len(edge) == 3 else None
+                if origin and origin["kind"] == "overlay":
+                    edges.append([prefix + edge[0], edge[1], prefix + edge[2], origin])
+            evidence = (sub.get("evidence") or {}).get("name") if isinstance(sub.get("evidence"), dict) else None
+            for node in [evidence, sub.get("winner")] + list(sub.get("activated") or []):
+                origin = view.node_origin(name, node) if isinstance(node, str) else None
+                if origin and origin["kind"] == "overlay":
+                    nodes[prefix + node] = origin
+        trace["origins"] = {"overlay_seq": view.seq, "overlay_change": view.change_id, "edges": edges, "nodes": nodes}
+
     def export_pack(self, output_path):
         """현재 팩과 승인된 overlay 학습을 새 읽기 전용 팩으로 묶는다.
 
@@ -406,6 +539,9 @@ class AppState:
         않는다.
         """
         output = Path(output_path).expanduser().resolve()
+        if self.graph_overlay is not None:
+            raise ValueError("an attached overlay is not exported into a pack: consolidation into a new base "
+                             "is not part of the overlay infrastructure (docs/architecture/overlay.md)")
         if output.exists():
             raise ValueError("내보낼 팩 파일이 이미 있습니다: %s" % output)
         with self.lock:
@@ -683,12 +819,16 @@ class AppState:
         if approval_mode not in ("risk", "all_steps"):
             raise ValueError("알 수 없는 승인 모드입니다")
         with self.lock, self.model.encoder.activate():
+            if self.graph_overlay is not None:
+                self._sync_graph_overlay()
             if conversation_id:
                 self.conversations.get_chat(str(conversation_id))
             context_id = "chat_" + str(conversation_id) if conversation_id else session_id
             prior_context_snapshot = None
             def finish(payload):
                 answer = payload.get("answer")
+                if self.graph_overlay is not None:
+                    self._overlay_origins(answer)
                 output = ((answer.get("answer_markdown") or answer.get("answer") or "") if isinstance(answer, dict)
                           else (payload.get("web_answer") or "계획을 만들었습니다. 승인 전에는 실행하지 않습니다."))
                 if conversation_id:
@@ -723,6 +863,8 @@ class AppState:
                 if context_id not in self.reasoning_contexts:
                     context = ReasoningContext(model=self.model, companions=self.companions)
                     saved = self.conversations.reasoning_state(str(conversation_id)) if conversation_id else None
+                    if self.graph_overlay is not None:
+                        saved = self._saved_reasoning_state(saved)
                     if saved is not None:
                         context.restore(saved)
                     self.reasoning_contexts[context_id] = context
@@ -772,6 +914,8 @@ class AppState:
                 if context_id not in self.reasoning_contexts and conversation_id:
                     from marco.reasoning.context import ReasoningContext
                     saved = self.conversations.reasoning_state(str(conversation_id))
+                    if self.graph_overlay is not None:
+                        saved = self._saved_reasoning_state(saved)
                     if saved is not None:
                         restored = ReasoningContext(model=self.model, companions=self.companions)
                         restored.restore(saved)
@@ -1173,6 +1317,8 @@ class AppState:
         if not question:
             raise ValueError("질문이 비어 있습니다")
         with self.lock, self.model.encoder.activate():
+            if self.graph_overlay is not None:
+                self._sync_graph_overlay()
             if self.routing:
                 self.combined_shape = None
                 segments, candidate_scores = [], {}

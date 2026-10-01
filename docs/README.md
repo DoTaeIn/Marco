@@ -31,7 +31,7 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | --- | --- |
 | [naming.md](architecture/naming.md) | Canonical naming, revision 2: ten pipeline names, four reserved, six structural names, and the rules for using them (the owner's) |
 | [trace-ledger.md](architecture/trace-ledger.md) | The trace ledger in detail: the event table, the ledger rules, cost per turn, replay, the round-3 failure statistics (goal L1) |
-| [overlay.md](architecture/overlay.md) | The overlay store of the Persistent Overlay Infrastructure: schema, stable ids, one writer, tombstones, candidates, crash behaviour, cost, what is not supported |
+| [overlay.md](architecture/overlay.md) | The Persistent Overlay Infrastructure: the store (schema, stable ids, one writer, tombstones, candidates, crash behaviour), the merged base-plus-overlay view, the graph text writer, application at run time, evidence origins, every refusal, the `mco` surface, cost, what is not supported |
 | [snapshot.md](architecture/snapshot.md) | Conversation snapshots: the file, base and overlay binding, what is excluded, every refusal, the conversation store's envelope, crash behaviour, cost, what is not supported |
 | [structure-audit.md](architecture/structure-audit.md) | Structure audit of commit `6195040`: root files by subsystem, import graph, `engine.py` parts, target layout, phase plan |
 | [target-map.json](architecture/target-map.json) | Target package for every root module, with layers and split ranges; read by `tools/import_graph.py` and `tools/doc_facts.py layout` |
@@ -174,6 +174,7 @@ queue.
 | [seven_e0.json](ko/reverification-2026-09-30/seven_e0.json) | Seven-step replies at effort 0, both languages, for turn-by-turn comparison |
 | [seven_e3.json](ko/reverification-2026-09-30/seven_e3.json) | Seven-step replies at effort 3, both languages, for turn-by-turn comparison |
 | [2026-09-30-fresh-exam-goal.md](ko/2026-09-30-fresh-exam-goal.md) | Goal X2: the fresh exam, frozen dialogue set v2, written by a chat that has seen neither v1 nor the traces |
+| [2026-10-01-svamp-accuracy.md](ko/2026-10-01-svamp-accuracy.md) | Outside accuracy check on 726 SVAMP word problems: 1 of 70 in-domain answered, 20 of 151 in-domain statements read, one wrong answer found and fixed |
 | [2026-09-30-conversation-identity-graph.md](ko/2026-09-30-conversation-identity-graph.md) | Owner's decision: the rest of M1 on a minimal conversation identity graph, not string keys; the order and who does what |
 | [2026-09-29-experiment-log.md](ko/2026-09-29-experiment-log.md) | Understanding experiments, one row each: cause, patch, work and wait time, regression, frozen score |
 | [2026-09-29-marco-fixed-timeline.md](ko/2026-09-29-marco-fixed-timeline.md) | Owner-fixed timeline: M1 language gate → release → M2 → M3 → M4 → A1 → A2 → S1 → P1 → N1; new ideas are placed under a phase, never reorder them |
@@ -337,6 +338,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [graph-safety-pointer.json](ko/dialogue-gate-2026-09-22/graph-safety-pointer.json) | The pointer safety fix, `65fcb7f`: 94 of 108, no turn changed |
 | [graph-corrections-evidence.json](ko/dialogue-gate-2026-09-22/graph-corrections-evidence.json) | Corrections on nodes, the answer cites the correction turn, `13d8965`: 98 of 108, 0 wrong |
 | [graph-step-3s6.json](ko/dialogue-gate-2026-09-22/graph-step-3s6.json) | Identity graph step 3, statements 6, `c128040`: 98 of 108, no turn changed |
+| [graph-safety-unread-thing.json](ko/dialogue-gate-2026-09-22/graph-safety-unread-thing.json) | Safety fix for an unread turn that names a thing, with the overlay view merged, `5987ed5`: 98 of 108, no turn changed |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-graph-step-3s6.json](ko/dialogue-gate-2026-09-22/composition-graph-step-3s6.json) | Composition on the identity graph, `650efc9`: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
