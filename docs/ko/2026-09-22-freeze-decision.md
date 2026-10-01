@@ -164,6 +164,31 @@ architecture, not a target for further capability expansion.
   self-learning.
 - After the release, M2 begins.
 
+## Path to the tag (owner, 2026-10-01, evening)
+
+Four wrong answers were found on invented sentences after the declaration (an unread sentence dropped as
+changing nothing; an unread correction whose second sentence names a holder; a count answered while a
+which-event question is open; a readable first sentence lost when the turn's second sentence is not read).
+With the first three fixed the exam scores 97 of 108, 0 wrong, 0 violations: one English answer after a
+request went back to a hold, because MARCO did not recognise the request as one and the old rule had
+guessed that the unread sentence changed nothing.
+
+The owner's decision: keep the fixes, and allow the minimal positive request recognition needed to meet the
+gate honestly, as the completion of that safety fix and not as language expansion. After it no capability or
+coverage is added to MARCO 1. The remaining release blockers, and nothing else:
+
+1. merge and verify the known wrong-answer safety fixes;
+2. complete the two-unit count safety fix;
+3. add the minimal request recognition;
+4. re-run the final release checks;
+5. score the fresh exam once and publish the result as measured;
+6. the `d5d91a2` history rewrite;
+7. the release tag.
+
+The frozen gate must finish at 98 of 108 or better with 0 wrong and 0 evidence violations. If the minimal
+request recognition does not recover it, work stops and the reason is reported before any other language
+feature is added. No exam-score chasing after this.
+
 ## The queue (replaces plan file §2 items 3–5) — updated 2026-09-23
 
 | # | Goal | File | State |
