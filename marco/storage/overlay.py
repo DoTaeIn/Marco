@@ -836,6 +836,72 @@ class OverlayStore:
                           "AND (t.to_seq IS NULL OR t.to_seq > ?)" % (table, key), (target_id, at, at))
         return _item(kind, rows[0]) if rows else None
 
+    def _items(self, kind, state, at):
+        at = self._pin(at)
+        table, key, _ = _TABLE[kind]
+        rows = self._read("SELECT t.*, c.change_id, c.actor, c.source, c.approval, c.created_at "
+                          "FROM %s t JOIN changes c ON c.seq = t.from_seq WHERE t.state = ? AND t.from_seq <= ? "
+                          "AND (t.to_seq IS NULL OR t.to_seq > ?) ORDER BY t.%s" % (table, key), (state, at, at))
+        return [_item(kind, r) for r in rows]
+
+    def added_nodes(self, at=None):
+        """Nodes the overlay adds, at ``at`` (head if None): dicts with id, graph_id, name, data, revision, origin."""
+        return self._items("node", "added", at)
+
+    def added_edges(self, at=None):
+        """Edges the overlay adds: dicts with id, graph_id, src, rel, dst, data, revision, origin."""
+        return self._items("edge", "added", at)
+
+    def added_rules(self, at=None):
+        """Rules the overlay adds: dicts with id, graph_id, body, revision, origin."""
+        return self._items("rule", "added", at)
+
+    def tombstoned_nodes(self, at=None):
+        """Nodes hidden by a tombstone, whether the base or the overlay has them."""
+        return self._items("node", "tombstoned", at)
+
+    def tombstoned_edges(self, at=None):
+        """Edges hidden by a tombstone, whether the base or the overlay has them."""
+        return self._items("edge", "tombstoned", at)
+
+    def tombstoned_ids(self, at=None):
+        """``{"nodes": [node_id, ...], "edges": [edge_id, ...]}`` hidden at ``at``."""
+        at = self._pin(at)
+        return {"nodes": [i["id"] for i in self.tombstoned_nodes(at)],
+                "edges": [i["id"] for i in self.tombstoned_edges(at)]}
+
+    def disabled_rules(self, at=None):
+        """Rules not used from ``at``: dicts with id, graph_id, body (the last body the overlay knew, or None)."""
+        return self._items("rule", "disabled", at)
+
+    def replaced_rules(self, at=None):
+        """Rules whose body the overlay replaces: dicts with id, graph_id, body (the new body), revision, origin."""
+        return self._items("rule", "replaced", at)
+
+    def history(self, target_id):
+        """Every delta that touched ``target_id``, oldest first, each with its change's provenance."""
+        rows = self._read("SELECT d.*, c.change_id, c.created_at, c.actor, c.source, c.reason, c.evidence, "
+                          "c.approval, c.validation FROM deltas d JOIN changes c ON c.seq = d.seq "
+                          "WHERE d.target_id = ? ORDER BY d.seq, d.ord", (target_id,))
+        out = []
+        for r in rows:
+            entry = dict(r)
+            for name in ("payload", "evidence", "approval", "validation"):
+                entry[name] = json.loads(entry[name])
+            out.append(entry)
+        return out
+
+    def change(self, ref):
+        """One change (by seq or change_id) with its provenance and its deltas in order."""
+        if self._db is None:
+            raise OverlayError("this overlay handle is closed")
+        row = self._change_row(self._db, ref)
+        for name in ("evidence", "approval", "validation"):
+            row[name] = json.loads(row[name])
+        row["deltas"] = [dict(d, payload=json.loads(d["payload"])) for d in
+                         (dict(x) for x in self._read("SELECT * FROM deltas WHERE seq = ? ORDER BY ord", (row["seq"],)))]
+        return row
+
     def counts(self, at=None):
         """Active overlay items at ``at`` (head if None), by kind and state. Candidates are not counted."""
         at = self._pin(at)
