@@ -19,6 +19,7 @@ class Capability:
     STRUCTURED_FACTS = "structured_facts"  #: ``Model.reason`` with subject/predicate/value facts
     APPROVAL_PLANS = "approval_plans"  #: may return ``Status.PENDING_APPROVAL``
     NETWORK = "network"                #: may consult external sources when enabled
+    SNAPSHOT = "snapshot"              #: ``Session.snapshot`` and ``Model.resume`` (conversation snapshots)
 
 
 @dataclass(frozen=True)
