@@ -201,9 +201,9 @@ its limits:
   opens, as it does for a `.kgpack`. Connecting the tables is the next step.
   Language packs and axiom files are carried members: the pack files,
   unchanged, in typed chunks;
-- no overlay (the later Persistent Overlay Infrastructure), no
-  consolidation; the manifest and `mco inspect` say so. Conversation snapshots
-  work on it (below); the file itself carries none;
+- no overlay inside the file and no consolidation; the manifest and `mco
+  inspect` say so. An overlay store beside the file can be attached, and
+  conversation snapshots work on it (below); the file itself carries neither;
 - nothing is loaded lazily, and partial loading is not measured;
 - the native file is larger and opens a little slower than the compat file
   today. For the whole source tree at commit `99890011`, on a busy machine,
@@ -249,6 +249,48 @@ follow-up to an unfinished graph dialogue (the bill split waiting for the
 number of people) is asked again after a resume. It is storage, not learning:
 nothing in it changes what the model knows. Details:
 [snapshot.md](https://github.com/DoTaeIn/Marco/blob/main/docs/architecture/snapshot.md).
+
+## Overlays (in the repository, not released yet)
+
+An overlay is one file beside a model holding graph and rule changes that someone
+stated or approved, each naming its approver. A model loaded with it uses a change
+from the next turn on, in the same process: no recompile, no export, and the model
+file is never written. It is storage, not learning: nothing in `mco` makes or
+approves a change by itself.
+
+```python
+import mco
+from mco import overlay as ov
+
+mco.create_overlay("MARCO-1-ko.mco", "MARCO-1-ko.overlay")
+with mco.load("MARCO-1-ko.mco", overlay="MARCO-1-ko.overlay") as model, \
+        mco.open_overlay("MARCO-1-ko.mco", "MARCO-1-ko.overlay") as o:
+    o.commit([ov.add_edge("graphs/graph_화분.kg", "잎시듦", "증명", "흙이말랐다")],
+             approved_by="owner", reason="checked in the greenhouse")
+    result = model.run("잎이 축 처졌어")      # answered through the new edge
+    result.evidence.of_kind("graph_path")[0].detail["origin"]["change_id"]   # the change it came from
+    o.undo(o.head()["change_id"], approved_by="owner", reason="taken back")
+```
+
+(`graphs/graph_화분.kg` stands for a graph of your model; the graph and node names
+here are those of the test model in `tests/test_overlay_runtime.py`.)
+
+```bash
+mco overlay create MARCO-1-ko.mco MARCO-1-ko.overlay
+mco overlay commit MARCO-1-ko.mco MARCO-1-ko.overlay --approved-by owner --reason "seen" \
+    --delta '{"op": "DISABLE_RULE", "rule_id": "strict-height-transitivity"}'
+mco inspect MARCO-1-ko.mco --overlay MARCO-1-ko.overlay   # binding, head, active counts; runs nothing
+mco run MARCO-1-ko.mco --overlay MARCO-1-ko.overlay "서우와 라온 중 누가 더 커?"
+```
+
+Candidates wait for an explicit approval (`propose`, `approve`, `reject`); `undo`
+takes a change back by a new one; `history` lists every change to a node, edge or
+rule. An overlay made for another model is refused (`OverlayBaseMismatchError`), and
+a change the model cannot take (a graph it does not have, an edge to an unknown
+node, ...) is refused before it is written (`OverlayError`). Whole new graphs,
+several writers, compaction and consolidation into a new model are not supported.
+Details: [overlay.md](https://github.com/DoTaeIn/Marco/blob/main/docs/architecture/overlay.md)
+and [api.md](https://github.com/DoTaeIn/Marco/blob/main/docs/mco/api.md).
 
 ## What 0.1.0 cannot do yet
 
