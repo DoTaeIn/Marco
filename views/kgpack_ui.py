@@ -448,9 +448,12 @@ class AppState:
         pack's own bytes again for a graph no longer changed); the graph-selection entries of
         those graphs; the rules (``PackModel.apply_rule_overlay``); the active graph if its
         include closure changed. Every open reasoning context is re-derived from its own
-        snapshot without the saved replay. Returns whether anything was applied."""
+        snapshot without the saved replay. A conversation store bound to its base
+        (``conversations.binding``) records the head each saved state was derived under.
+        Returns whether anything was applied."""
         head = self.graph_overlay.head()
         if head == self._overlay_applied:
+            self._bind_overlay_head()
             return False
         view = self.graph_overlay.view(self._overlay_base, at=head[0])
         texts = {self._overlay_base.member(g): view.text(g).encode("utf-8") for g in view.touched_graphs()}
@@ -484,12 +487,21 @@ class AppState:
                 fresh.restore(saved)
                 self.reasoning_contexts[context_id] = fresh
         self._overlay_applied = head
+        self._bind_overlay_head()
         return True
 
+    def _bind_overlay_head(self):
+        binding = getattr(self.conversations, "binding", None)
+        if isinstance(binding, dict):
+            binding["overlay"] = {"seq": self._overlay_applied[0], "change_id": self._overlay_applied[1]}
+
     def _saved_reasoning_state(self, saved):
-        """A saved reasoning state to restore: as saved, except that with an attached overlay that has
-        changes its saved replay is dropped, so the conversation is re-derived under the current view."""
-        if saved is None or self.graph_overlay is None or not self._overlay_applied[0]:
+        """A saved reasoning state to restore. A store bound to its base has already compared the head
+        the state was saved under with the current one and dropped a stale replay. An unbound store
+        cannot tell, so with an attached overlay that has changes the saved replay is dropped and the
+        conversation is re-derived under the current view."""
+        if (saved is None or self.graph_overlay is None or not self._overlay_applied[0]
+                or isinstance(getattr(self.conversations, "binding", None), dict)):
             return saved
         return {k: v for k, v in saved.items() if k != "replay"}
 

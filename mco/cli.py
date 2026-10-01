@@ -5,6 +5,10 @@
     mco compile SOURCE -o OUTPUT      build an .mco from a source tree or .kgpack
                                       (--format native writes MCO Format 1)
     mco inspect MODEL                 describe a model without running it
+    mco inspect SNAPSHOT              describe a conversation snapshot without running it
+    mco snapshot MODEL -o OUTPUT [TEXT ...]
+                                      run the utterances in one conversation (continuing
+                                      --resume SNAPSHOT if given), then write its snapshot
     mco benchmark MODEL CASES         run a case file and report accuracy/latency
     mco backends                      list backends and whether they are usable
     mco overlay ACTION MODEL OVERLAY  create, change (commit, propose, approve, reject,
@@ -58,7 +62,7 @@ def _load_options(args: argparse.Namespace) -> dict[str, Any]:
 
 def _cmd_run(args: argparse.Namespace, out: TextIO) -> int:
     from .model import load
-    with load(args.model, backend=args.backend, **_load_options(args)) as model:
+    with load(args.model, backend=args.backend, snapshot=args.resume, **_load_options(args)) as model:
         texts: Sequence[str] = args.text
         interactive = not texts
         if interactive:
@@ -106,8 +110,31 @@ def _cmd_compile(args: argparse.Namespace, out: TextIO) -> int:
     return 0
 
 
+def _print_snapshot(info: Any, out: TextIO) -> None:
+    base, overlay = info.base, info.overlay
+    rows = [("path", info.path), ("format", f"marco-snapshot v{info.version}"),
+            ("size", f"{info.size_bytes} bytes"), ("sha256", info.sha256),
+            ("base", base.get("content_sha256")), ("build", base.get("build_id")),
+            ("base format", f"{base.get('format')} {base.get('format_version')}"),
+            ("overlay", f"seq {overlay['seq']} ({overlay.get('change_id')})" if overlay else "none attached"),
+            ("runtime", info.runtime), ("requires", ", ".join(info.requires) or "-"),
+            ("schemas", ", ".join(info.schemas) or "-"), ("conversations", info.conversations),
+            ("turns", info.turns), ("excluded", ", ".join(info.excluded) or "-")]
+    width = max(len(k) for k, _ in rows)
+    for key, value in rows:
+        out.write(f"{key:<{width}}  {value if value is not None else '-'}\n")
+
+
 def _cmd_inspect(args: argparse.Namespace, out: TextIO) -> int:
     from .compiler import inspect
+    from .snapshot import inspect_snapshot, is_snapshot
+    if is_snapshot(args.model):
+        snapshot = inspect_snapshot(args.model, marco_root=args.marco_root)
+        if args.json:
+            _dump(snapshot.to_dict(), out)
+        else:
+            _print_snapshot(snapshot, out)
+        return 0
     extra = {"overlay": args.overlay, "marco_root": args.marco_root} if args.overlay else {}
     info = inspect(args.model, verify=not args.no_verify, **extra)
     if args.json:
@@ -146,6 +173,22 @@ def _cmd_inspect(args: argparse.Namespace, out: TextIO) -> int:
             out.write(f"  {c['index']:>4}  {c['type']}  {c['version']:>3}  {'yes' if c['required'] else 'no':<3}"
                       f"  {c['compression']:<4}  {c['length']:>10}  {c['raw_length']:>10}"
                       f"  {c.get('role', '-')}\n")
+    return 0
+
+
+def _cmd_snapshot(args: argparse.Namespace, out: TextIO) -> int:
+    from .model import load
+    with load(args.model, backend=args.backend, snapshot=args.resume, **_load_options(args)) as model:
+        results = [model.run(text) for text in args.text]
+        session = model._default_session()
+        info = session.snapshot(args.output)
+    if args.json:
+        _dump({"results": [r.to_dict() for r in results], "snapshot": info.to_dict()}, out)
+    else:
+        for result in results:
+            _print_result(result, out, False)
+        out.write(f"{info.path}: {info.conversations} conversation, {info.turns} turn(s), "
+                  f"{info.size_bytes} bytes, sha256 {info.sha256[:16]}\n")
     return 0
 
 
@@ -250,8 +293,18 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--json", action="store_true", help="print results as JSON")
     p.add_argument("--raw", action="store_true", help="with --json, include the backend payload")
     p.add_argument("-v", "--verbose", action="store_true", help="also print evidence and trace")
+    p.add_argument("--resume", metavar="SNAPSHOT", help="continue the conversation saved in this snapshot")
     runtime_flags(p)
     p.set_defaults(func=_cmd_run)
+
+    p = sub.add_parser("snapshot", help="run utterances in one conversation, then write its snapshot")
+    p.add_argument("model")
+    p.add_argument("text", nargs="*", help="utterances, in order, in one conversation")
+    p.add_argument("-o", "--output", required=True, help="the snapshot file to write")
+    p.add_argument("--resume", metavar="SNAPSHOT", help="continue the conversation saved in this snapshot")
+    p.add_argument("--json", action="store_true")
+    runtime_flags(p)
+    p.set_defaults(func=_cmd_snapshot)
 
     p = sub.add_parser("compile", help="compile a source tree or .kgpack into .mco")
     p.add_argument("source")
@@ -267,13 +320,13 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=_cmd_compile)
 
-    p = sub.add_parser("inspect", help="describe a model without running it")
-    p.add_argument("model")
+    p = sub.add_parser("inspect", help="describe a model or a snapshot without running it")
+    p.add_argument("model", help="a model file, or a snapshot file written by 'mco snapshot'")
     p.add_argument("--json", action="store_true")
     p.add_argument("--manifest", action="store_true", help="with --json, include native manifests")
     p.add_argument("--no-verify", action="store_true", help="skip SHA-256 verification")
+    p.add_argument("--marco-root", help="MARCO checkout whose snapshot or overlay reader to use")
     p.add_argument("--overlay", help="also show this overlay store's base binding, head and active counts")
-    p.add_argument("--marco-root", help="MARCO checkout to read the overlay with (else $MCO_MARCO_ROOT)")
     p.set_defaults(func=_cmd_inspect)
 
     p = sub.add_parser("overlay", help="create, change and read an overlay store beside a model")

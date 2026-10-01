@@ -220,3 +220,27 @@ def test_without_changes_the_answers_and_evidence_are_those_without_an_overlay(s
         o.undo(change["change_id"], **WHO)
     assert run(overlay=setup["overlay"]) == plain                  # changes that were all undone
     assert all("origin" not in dict(e.detail) for row in plain for e in row[2])
+
+
+def test_a_conversation_snapshot_records_the_overlay_and_resumes_only_with_it(setup, tmp_path):
+    with mco.open_overlay(setup["model"], setup["overlay"]) as o:
+        o.commit([ov.add_edge(G, "잎시듦", "증명", "흙이말랐다")], **WHO)
+    snap = tmp_path / "talk.snapshot"
+    with mco.load(setup["model"], overlay=setup["overlay"]) as model:
+        session = model.session()
+        session.run(HEIGHTS)
+        answered = session.run(LEAVES)
+        info = session.snapshot(snap)
+    assert info.overlay["seq"] == 1
+    with mco.load(setup["model"], overlay=setup["overlay"]) as model:
+        resumed = model.resume(snap)
+        assert resumed.run(LEAVES).answer == answered.answer
+        assert resumed.run(WHO_TALLER).answer == "서우입니다."
+    with mco.load(setup["model"]) as model:                 # the overlay is not attached: refused
+        with pytest.raises(mco.SnapshotMismatchError):
+            model.resume(snap)
+    with mco.open_overlay(setup["model"], setup["overlay"]) as o:
+        o.commit([ov.disable_rule("strict-height-transitivity")], **WHO)
+    with mco.load(setup["model"], overlay=setup["overlay"]) as model:   # the overlay moved on: re-derived
+        resumed = model.resume(snap)
+        assert resumed.run(WHO_TALLER).answer != "서우입니다."

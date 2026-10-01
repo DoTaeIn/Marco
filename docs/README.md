@@ -32,6 +32,7 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | [naming.md](architecture/naming.md) | Canonical naming, revision 2: ten pipeline names, four reserved, six structural names, and the rules for using them (the owner's) |
 | [trace-ledger.md](architecture/trace-ledger.md) | The trace ledger in detail: the event table, the ledger rules, cost per turn, replay, the round-3 failure statistics (goal L1) |
 | [overlay.md](architecture/overlay.md) | The overlay store of the Persistent Overlay Infrastructure: schema, stable ids, one writer, tombstones, candidates, crash behaviour, cost, what is not supported |
+| [snapshot.md](architecture/snapshot.md) | Conversation snapshots: the file, base and overlay binding, what is excluded, every refusal, the conversation store's envelope, crash behaviour, cost, what is not supported |
 | [structure-audit.md](architecture/structure-audit.md) | Structure audit of commit `6195040`: root files by subsystem, import graph, `engine.py` parts, target layout, phase plan |
 | [target-map.json](architecture/target-map.json) | Target package for every root module, with layers and split ranges; read by `tools/import_graph.py` and `tools/doc_facts.py layout` |
 
