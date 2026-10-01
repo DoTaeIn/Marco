@@ -25,7 +25,7 @@ __all__ = [
 ]
 
 MAGIC = b"\x89MCO\r\n\x1a\n"
-MAJOR, MINOR = 1, 0
+MAJOR, MINOR = 1, 1                # this writer writes 1.1; any 1.x minor is read
 #: magic, major, minor, header_size, flags, toc_count, toc_offset, toc_size,
 #: file_size, toc_entry_size, reserved, header_sha256, reserved
 HEADER = struct.Struct("<8sHHIIIQQQII32s8s")
