@@ -7079,9 +7079,11 @@ class ReasoningContext:
                 if asking:
                     continue
                 read = parser.parse(piece, partial=True, events=True, verbs=verbs, repair=True, _diagnostics=notes)
-                # a piece read with a fact or a question is no unread event; one read only as the shape of an
-                # event (이보는 상대방한테 받았다가 돌려줬어) states something this turn did not apply: it is kept
-                if read is not None and (read.get("facts") or read.get("query")):
+                # nothing of this turn was applied. A piece read as a question states nothing; any other piece
+                # states something the turn did not apply, whether it reads on its own (Nora gave Ivo 2 quills.,
+                # said with a sentence nobody reads), only as the shape of an event (이보는 상대방한테 받았다가
+                # 돌려줬어) or not at all: it is kept, and what it names is not said as known
+                if read is not None and read.get("query") and not read.get("facts"):
                     continue
                 # 묻는 말은 못 읽은 사건이 아니다. 아무 상태도 안 바꾼다.
                 if any(note.get("reason") == "question_is_not_an_observation"

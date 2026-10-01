@@ -660,3 +660,37 @@ def test_a_correction_asked_back_for_its_event_holds_the_counts_its_candidates_t
     for held in (rows[5], rows[6]):
         assert held["status"] != "answered" and frames[4] in held["answer"]
     assert rows[7]["status"] == "answered" and "9" in rows[7]["answer"]
+
+
+@pytest.mark.parametrize("effort", [0, 3])
+@pytest.mark.parametrize("said,lost", [
+    ("{a} gave {b} 2 {p}. Zorp flimmed the {c}.", "{a} gave {b} 2 {p}."),
+    ("Zorp flimmed the {c}. {b} has 7 {p}.", "{b} has 7 {p}."),
+])
+def test_a_readable_statement_in_a_turn_nothing_applied_holds_the_count_it_would_have_changed(said, lost, effort):
+    frames = ["{a} has 6 {p}.", "{b} has 4 {p}.", said, "How many {p} does {b} have?"]
+    rows = _play("english", frames, effort, **EN_WORDS)
+    assert rows[2].get("status") not in ("observed", "answered")
+    # the statement was not applied: its count is not said as the one before it, and the hold names it
+    assert rows[3]["status"] != "answered" and lost.format(**EN_WORDS) in rows[3]["answer"]
+
+
+def test_the_lost_statement_said_again_on_its_own_is_recorded_and_the_count_is_known():
+    frames = ["{a} has 6 {p}.", "{b} has 4 {p}.", "{a} gave {b} 2 {p}. Zorp flimmed the {c}.", "{a} gave {b} 2 {p}.",
+              "How many {p} does {b} have?"]
+    rows = _play("english", frames, 3, **EN_WORDS)
+    assert rows[3]["status"] == "observed"
+    assert rows[4]["status"] == "answered" and "6" in rows[4]["answer"]
+
+
+def test_a_turn_whose_sentences_are_all_read_is_recorded_as_before():
+    frames = ["{a} has 6 {p}.", "{b} has 4 {p}.", "{a} gave {b} 2 {p}. Then {b} lost 1 quill.", "How many {p} does {b} have?"]
+    rows = _play("english", frames, 3, **EN_WORDS)
+    assert rows[2]["status"] == "observed" and rows[3]["status"] == "answered" and "5" in rows[3]["answer"]
+
+
+def test_a_korean_turn_with_a_sentence_nobody_reads_holds_the_count_its_other_sentence_names():
+    frames = ["{a}는 {p}이 6개 있어.", "{b}는 {p}이 4개 있어.", "{a}가 {b}에게 {p} 2개를 줬어. 조르프가 그릇을 플림했어.",
+              "{b}는 {p}이 몇 개야?"]
+    rows = _play("한국어", frames, 3, **KO_WORDS)
+    assert rows[2].get("status") != "observed" and rows[3]["status"] != "answered"
