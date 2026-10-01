@@ -214,6 +214,8 @@ UNREPRESENTABLE = {
     "duplicate edge": ("역할: r\n목표: g\n[개념]\ng: \"x\"\nn: \"y\"\n[논증]\nn -증명-> g\nn -증명-> g\n",
                        "appears twice"),
     "text that does not parse": ("역할: r\n[개념]\nno colon here\n", "does not parse"),
+    "edge part holding the separator byte 0x1F": ("역할: r\n목표: g\n[개념]\ng: \"x\"\na\x1fb: \"y\"\n[논증]\n"
+                                                  "a\x1fb -증명-> g\n", "has no edge_id"),
     "NFC-equal names": ("역할: r\n목표: g\n[개념]\ng: \"x\"\n가: \"a\"\n가: \"b\"\n", "same node_id"),
 }
 
