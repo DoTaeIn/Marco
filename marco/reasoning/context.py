@@ -3423,8 +3423,30 @@ class ReasoningContext:
         folded = said.lower() if parser.data.get("ignore_case") else said
         heads = [h.lower() if parser.data.get("ignore_case") else h for h in spec.get("heads", [])]
         tails = [t.lower() if parser.data.get("ignore_case") else t for t in spec.get("tails", [])]
-        return (any(folded == h or folded.startswith(h + " ") for h in heads)
-                or any(folded.endswith(t) for t in tails))
+        if any(folded == h or folded.startswith(h + " ") for h in heads) or any(folded.endswith(t) for t in tails):
+            return True
+        # a bare imperative (요청.imperative): a declared request verb in its base form opens the sentence, with no
+        # subject before it, and a declared object opener follows it (Order a new box of quills.). A later verb
+        # form the reader knows, or a word the pack's regular past ending makes, makes it a statement instead
+        # (Order the general imposed held the city.), and it is kept as any unread statement is
+        bare = spec.get("imperative") or {}
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        words = [w.strip(",") for w in said.split()]
+        if len(words) < 3 or fold(words[0]) not in {fold(v) for v in bare.get("verbs", [])} \
+                or fold(words[1]) not in {fold(o) for o in bare.get("objects", [])}:
+            return False
+        endings = set()
+        for rules in ((parser.inflection_grammar or {}).get("endings") or {}).values():
+            for rule in rules:
+                if (rule.get("when") or {}).get("tense") == "present":
+                    continue
+                for step in rule.get("steps", []):
+                    for op in (step, step.get("else") or {}):
+                        if op.get("op") == "append" and op.get("text"):
+                            endings.add(fold(op["text"]))
+        later = parser.open_reading(" ".join(words[1:]))["tokens"]
+        return not any(t["kind"] in ("verb", "marker") or any(
+            fold(t["text"]).endswith(e) and len(t["text"]) > len(e) + 1 for e in endings) for t in later)
 
     @staticmethod
     def _amount_of(parser, word):
