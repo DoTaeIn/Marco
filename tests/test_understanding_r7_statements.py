@@ -485,3 +485,43 @@ def test_g7_5_a_name_reply_finds_the_holder_of_a_modified_thing():
     graph, _counts = _things("한국어", ["제 친구 미경은 줄무늬 면 수건이 5개 있어.", "제 친구 수아는 줄무늬 수건이 3개 있어."])
     assert sorted(n["name"] for n in graph.of_kind("holder")) == ["미경", "수아"]
     assert [n["name"] for n in graph.of_kind("thing")] == ["줄무늬 면 수건"]
+
+
+# A container and its content are two things. A thing name of container structure has a head (the container: the
+# words before the pack's partitive word, packs of quills; a last declared counter noun, 깃펜 묶음) and a content
+# (quills, 깃펜). A shorter mention is the same thing only when it has a word of the head (bags, for bags of flour;
+# 묶음); the content said alone is another thing node, in either order of mention.
+@pytest.mark.parametrize("language,lines,things,counts", [
+    ("english", ["Nora has 43 packs of quills.", "Nora has 8 extra quills."], ["packs of quills", "quills"],
+     {("Nora", "packs of quills"): 43, ("Nora", "quills"): 8}),
+    ("english", ["Nora has 8 quills.", "Nora has 43 packs of quills."], ["packs of quills", "quills"],
+     {("Nora", "packs of quills"): 43, ("Nora", "quills"): 8}),
+    ("english", ["Omar has 6 boxes of pens.", "Omar has 20 pens."], ["boxes of pens", "pens"],
+     {("Omar", "boxes of pens"): 6, ("Omar", "pens"): 20}),
+    ("한국어", ["노라는 깃펜 묶음이 43개 있어.", "노라는 깃펜이 8개 있어."], ["깃펜", "깃펜 묶음"],
+     {("노라", "깃펜 묶음"): 43, ("노라", "깃펜"): 8}),
+    ("한국어", ["노라는 깃펜이 8자루 있어.", "노라는 깃펜 상자가 5개 있어."], ["깃펜", "깃펜 상자"],
+     {("노라", "깃펜 상자"): 5, ("노라", "깃펜"): 8}),
+])
+def test_a_container_and_its_content_are_two_things(language, lines, things, counts):
+    graph, found = _things(language, lines)
+    assert sorted(n["name"] for n in graph.of_kind("thing")) == sorted(things)
+    assert found == counts
+
+
+def test_the_head_of_a_container_said_alone_is_still_the_container():
+    graph, counts = _things("english", ["Nora has 5 bags of flour.", "Eli has 2 bags.", "Nora gave Eli one bag of flour."])
+    assert [n["name"] for n in graph.of_kind("thing")] == ["bags of flour"]
+    assert counts == {("Nora", "bags of flour"): 4, ("Eli", "bags of flour"): 3}
+    graph, counts = _things("english", ["Nora has 5 bags of flour.", "Nora gave Eli two bags."])
+    assert [n["name"] for n in graph.of_kind("thing")] == ["bags of flour"] and counts[("Nora", "bags of flour")] == 3
+    graph, counts = _things("한국어", ["노라는 깃펜 상자가 5개 있어.", "수아는 상자가 2개 있어."])
+    assert [n["name"] for n in graph.of_kind("thing")] == ["깃펜 상자"]
+    assert counts == {("노라", "깃펜 상자"): 5, ("수아", "깃펜 상자"): 2}
+
+
+def test_a_transfer_of_the_content_is_not_read_as_the_container():
+    # quills said alone after packs of quills: the giver has no count of quills, and the packs are not moved
+    assert play("english", 3, [("Nora has 43 packs of quills.", "rec"), ("Eli has 2 packs of quills.", "rec"),
+                               ("Nora gave Eli five quills.", "hold"),
+                               ("How many packs of quills does Eli have?", "hold")]) == []
