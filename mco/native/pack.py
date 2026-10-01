@@ -423,6 +423,10 @@ class NativeModel:
 
     def _load(self) -> None:
         chunks = {kind: self._single(kind) for kind in TABLE_TYPES}
+        graph_tables = {kind: [e for e in self.container.of_type(kind) if self.container.understands(e)]
+                        for kind in GRAPH_TABLE_TYPES}
+        if any(graph_tables.values()) and (len(graph_tables["INDX"]), len(graph_tables["RULE"])) != (1, 1):
+            raise self._fail("graph tables need exactly one INDX and one RULE chunk")
         self.manifest = self._read_manifest(self.container.read(chunks["MANI"]))
         self.strings = _Strings(self.container.read(chunks["STRS"]), self._fail)
         self.members = self._read_members(self.container.read(chunks["MEMB"]))

@@ -290,6 +290,8 @@ TABLE_DAMAGE = {
     "manifest table counts wrong": (lambda c: _manifest(c, tables=dict(json.loads(c[0].data)["tables"], nodes=99)),
                                     "ModelFormatError"),
     "NODE checksum": (None, "IntegrityError"),
+    "RULE without INDX": (lambda c: [x for x in c if x.type not in ("INDX", "NODE", "EDGE")], "ModelFormatError"),
+    "INDX without RULE": (lambda c: [x for x in c if x.type != "RULE"], "ModelFormatError"),
 }
 
 
