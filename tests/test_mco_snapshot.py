@@ -414,3 +414,147 @@ def test_store_imports_a_snapshot_chat_under_its_binding(tmp_path):
     assert store.reasoning_state("chat-1") == record["reasoning_state"]
     with pytest.raises(ValueError):
         store.import_chat(record)
+
+
+# --- the mco surface: Session.snapshot, mco.load(snapshot=...), mco snapshot, mco inspect ----------
+
+SPECS = {
+    "ko": {"graphs": ["graphs/graph_정산_나눠내기.kg", "graphs/graph_일상추론.kg"], "language": "styles/한국어.json"},
+    "en": {"graphs": ["graphs/graph_en_bill_split.kg", "graphs/graph_일상추론.kg"], "language": "styles/english.json"},
+}
+DIALOGUES = {
+    "ko": (["돌은 23개 있다.", "돌 8개를 꺼냈다."],
+           ["지금 돌은 몇 개야?", "돌 2개를 넣었다.", "지금 돌은 몇 개야?"], ["15개입니다.", None, "17개입니다."]),
+    "en": (["Minsu has five apples.", "Minsu ate two apples."],
+           ["How many apples does Minsu have?", "Minsu bought four apples.", "How many apples does Minsu have?"],
+           ["3 apples.", None, "7 apples."]),
+}
+
+
+@pytest.fixture(scope="module")
+def models(tmp_path_factory):
+    import mco
+    out = tmp_path_factory.mktemp("snapshot-models")
+    paths = {}
+    for lang, spec in SPECS.items():
+        paths[lang] = out / f"{lang}.mco"
+        mco.compile(ROOT, paths[lang], name=f"S-{lang}", format="native", **spec)
+    paths["ko-compat"] = out / "ko-compat.mco"
+    mco.compile(ROOT, paths["ko-compat"], name="S-ko", format="compat", **SPECS["ko"])
+    return paths
+
+
+def _dump(result):
+    return {"answer": result.answer, "status": result.status.value,
+            "evidence": [e.to_dict() for e in result.evidence]}
+
+
+def _resume_elsewhere(model, snap, questions, language):
+    """Load ``model`` with ``snap`` in a fresh interpreter and ask ``questions`` there."""
+    import subprocess
+    import sys
+    code = ("import json, sys, mco\n"
+            "with mco.load(sys.argv[1], snapshot=sys.argv[2]) as m:\n"
+            "    out = [m.run(q) for q in json.loads(sys.argv[3])]\n"
+            "print(json.dumps([{'answer': r.answer, 'status': r.status.value,\n"
+            "                   'evidence': [e.to_dict() for e in r.evidence]} for r in out], ensure_ascii=False))\n")
+    env = dict(os.environ, PYTHONPATH=str(ROOT), NAI_LANGUAGE=language, KG_ENCODER="문자")
+    done = subprocess.run([sys.executable, "-c", code, str(model), str(snap), json.dumps(questions, ensure_ascii=False)],
+                          cwd=ROOT, env=env, capture_output=True, text=True, timeout=600)
+    assert done.returncode == 0, done.stderr[-3000:]
+    return json.loads(done.stdout)
+
+
+@pytest.mark.parametrize("lang", [pytest.param("ko", marks=pytest.mark.language("한국어")),
+                                  pytest.param("en", marks=pytest.mark.language("english"))])
+def test_session_snapshot_resumes_in_a_new_process_and_answers_as_without_the_restart(models, tmp_path, lang):
+    import mco
+    turns, questions, answers = DIALOGUES[lang]
+    with mco.load(models[lang]) as model:
+        session = model.session()
+        for text in turns:
+            session.run(text)
+        info = session.snapshot(tmp_path / "a.snap")
+        again = session.snapshot(tmp_path / "b.snap")
+        assert (tmp_path / "a.snap").read_bytes() == (tmp_path / "b.snap").read_bytes()   # same state, same bytes
+        assert info.sha256 == again.sha256 and info.conversations == 1 and info.turns == len(turns)
+        assert info.base["content_sha256"] == model.info.manifest["mco"]["content_sha256"]
+        assert info.base["build_id"] == model.info.build_id and info.overlay is None
+        assert "reasoning-context-v10" in info.schemas
+        assert model.info.supports(mco.Capability.SNAPSHOT)
+        expected = [_dump(session.run(q)) for q in questions]          # the same process, no restart
+    assert [e["answer"] for e in expected][0::2] == [a for a in answers if a]
+    assert expected[0]["evidence"], expected[0]
+    assert _resume_elsewhere(models[lang], tmp_path / "a.snap", questions,
+                             "한국어" if lang == "ko" else "english") == expected
+
+
+def test_resume_in_process_and_its_refusals(models, tmp_path):
+    import mco
+    turns, questions, answers = DIALOGUES["ko"]
+    with mco.load(models["ko"]) as model:
+        session = model.session()
+        for text in turns:
+            session.run(text)
+        session.snapshot(tmp_path / "ko.snap")
+        resumed = model.resume(tmp_path / "ko.snap")
+        assert resumed.run(questions[0]).answer == answers[0]
+        # The session that wrote it goes on independently.
+        session.run("돌 10개를 꺼냈다.")
+        assert resumed.run(questions[0]).answer == answers[0]
+    # The same content in the compat container is the same base.
+    with mco.load(models["ko-compat"], snapshot=tmp_path / "ko.snap") as compat:
+        assert compat.run(questions[0]).answer == answers[0]
+    # Another base: refused, whether through load or resume.
+    with pytest.raises(mco.SnapshotMismatchError):
+        mco.load(models["en"], snapshot=tmp_path / "ko.snap")
+    # A damaged or truncated file: refused.
+    data = (tmp_path / "ko.snap").read_bytes()
+    (tmp_path / "cut.snap").write_bytes(data[:-5])
+    with mco.load(models["ko"]) as model:
+        with pytest.raises(mco.SnapshotFormatError):
+            model.resume(tmp_path / "cut.snap")
+        with pytest.raises(mco.SnapshotError):
+            model.resume(tmp_path / "absent.snap")
+        # A fresh session's snapshot holds one empty conversation.
+        empty = model.session().snapshot(tmp_path / "empty.snap")
+        assert (empty.conversations, empty.turns) == (1, 0)
+
+
+def test_cli_snapshot_inspect_and_resume(models, tmp_path):
+    import io
+    import subprocess
+    import sys
+    import mco
+    from mco.cli import main
+    turns, questions, answers = DIALOGUES["ko"]
+    target = tmp_path / "cli.snap"
+    out = io.StringIO()
+    assert main(["snapshot", str(models["ko"]), *turns, "-o", str(target), "--json"], stdout=out) == 0
+    written = json.loads(out.getvalue())
+    assert len(written["results"]) == 2 and written["snapshot"]["turns"] == 2
+    out = io.StringIO()
+    assert main(["inspect", str(target), "--json"], stdout=out) == 0
+    described = json.loads(out.getvalue())
+    content = mco.inspect(models["ko"]).to_dict(include_manifest=True)["manifest"]["mco"]["content_sha256"]
+    assert described["base"]["content_sha256"] == content and described["overlay"] is None
+    assert described["conversations"] == 1 and "reasoning-context-v10" in described["schemas"]
+    out = io.StringIO()
+    assert main(["inspect", str(target)], stdout=out) == 0
+    text = out.getvalue()
+    assert "marco-snapshot v1" in text and content in text and "none attached" in text and "conversations" in text
+    out = io.StringIO()
+    assert main(["run", str(models["ko"]), "--resume", str(target), questions[0]], stdout=out) == 0
+    assert out.getvalue().startswith(answers[0])
+    # Continue the snapshot and write a new one.
+    assert main(["snapshot", str(models["ko"]), "--resume", str(target), "돌 2개를 넣었다.",
+                 "-o", str(tmp_path / "next.snap")], stdout=io.StringIO()) == 0
+    assert mco.inspect_snapshot(tmp_path / "next.snap").turns == 3
+    # Inspecting runs nothing: no engine module is imported.
+    code = ("import sys, mco; info = mco.inspect_snapshot(sys.argv[1]); "
+            "leaked = [m for m in ('engine', 'pack_model', 'views.kgpack_ui', 'marco.reasoning.context') "
+            "if m in sys.modules]; print(info.conversations, leaked)")
+    env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
+    done = subprocess.run([sys.executable, "-c", code, str(target)], cwd=ROOT, env=env,
+                          capture_output=True, text=True, check=True)
+    assert done.stdout.strip() == "1 []"

@@ -13,8 +13,9 @@ engine *code* still comes from a MARCO checkout, found exactly as the
 
 What this first slice does not do: graphs, language packs and axioms are
 carried pack members, not tables, so MARCO parses the graph text when the model
-is opened, as it does for a ``.kgpack``; nothing is loaded lazily. Overlays and
-snapshots are not supported.
+is opened, as it does for a ``.kgpack``; nothing is loaded lazily. Overlays are
+not supported. Conversation snapshots are (``Session.snapshot``): they bind to the
+file's ``content_sha256`` and build id; the file itself carries no snapshot.
 """
 from __future__ import annotations
 
@@ -31,7 +32,9 @@ __all__ = ["NativeMcoBackend"]
 
 #: Plain statements ``mco inspect`` shows for every Format 1 file of this version.
 LIMITS = ("overlay: not supported in this version",
-          "snapshot: not supported in this version")
+          "snapshot: conversation snapshots are supported (Session.snapshot, mco snapshot) and bind to "
+          "this file's content_sha256 and build id; the file itself carries no snapshot "
+          "(manifest supports.snapshot stays false in Format 1.0)")
 
 
 class NativeMcoBackend(Backend):
