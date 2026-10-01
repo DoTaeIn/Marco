@@ -36,7 +36,10 @@ The same dialogue runs in Korean through the Korean pack: *반영했습니다. �
 | Says why, from the record of how the answer was derived | the exam's why turns; `marco.trace` |
 | Composes every reply from a meaning; a sentence that does not parse back to its meaning is never spoken | gate condition 5 |
 | Solves structured reasoning problems | gate condition 6 |
-| Answers from 905 authored knowledge graphs through a router, the older path | [the graph engine](docs/en/graph-engine.md) |
+| Answers from 904 authored knowledge graphs through a router, the older path | [the graph engine](docs/en/graph-engine.md) |
+| Stores a model as one binary file, MCO Format 1.1, with stable ids and node, edge and rule tables | `tests/test_mco_native_format.py`, `tests/test_mco_native_tables.py`; [format-1.md](docs/mco/format-1.md) |
+| Applies graph and rule changes that someone states or approves from outside at the next turn, with no recompile and the model file unchanged | `tests/test_overlay_runtime.py`, `tests/test_mco_overlay.py`; [overlay.md](docs/architecture/overlay.md) |
+| Saves a conversation to a file and continues it in another process | `tests/test_mco_snapshot.py`; [snapshot.md](docs/architecture/snapshot.md) |
 
 Every claim with its test is in [Capabilities, each with its proof](docs/en/capabilities.md).
 
@@ -45,7 +48,9 @@ Every claim with its test is in [Capabilities, each with its proof](docs/en/capa
 The [freeze decision](docs/ko/2026-09-22-freeze-decision.md) fixed the gate
 before implementation. The frozen exams are 52 unseen dialogues and 114
 reasoning problems; development never opens them, and only the owner's plan
-manager scores them. Numbers below are read from the report files named beside
+manager scores them. The structural failure classes the plan manager read from
+the dialogue exam (structure and counts, never sentences) guided the
+experiments, so a fresh 50-dialogue exam is scored once at the release. Numbers below are read from the report files named beside
 them, run on 2026-10-01 with code `650efc9` (the dialogue exam at `c128040`, the same code).
 
 | # | Gate condition | State | Report |
@@ -106,7 +111,8 @@ the table above and was not re-scored with the text scorer.
 
 The 7B model understands more unseen phrasings and pays for it with wrong and
 invented answers. MARCO understands fewer, is not wrong on what it understood,
-and runs without a GPU. Closing the first column is the MARCO 1 gate.
+and runs without a GPU. The first column is the MARCO 1 gate; MARCO's current
+score on it is in the gate table above.
 
 ## How it works
 
@@ -166,7 +172,9 @@ python -m marco.trace --help                      # record, why, pretty, stats, 
 ```
 
 The `mco` package (0.1.0) is on PyPI as the public API and CLI; running a
-model also needs a MARCO checkout. Guide: [docs/mco/README.md](docs/mco/README.md).
+model also needs a MARCO checkout. The native file (`mco compile --format native`),
+overlays and snapshots are in the repository, not in the 0.1.0 package.
+Guide: [docs/mco/README.md](docs/mco/README.md).
 Preview model and notes: [MARCO 1 · Preview 1](docs/releases/2026-09-24-marco-1-preview-1.md),
 [mco 0.1.0](docs/releases/2026-09-24-mco-0.1.0.md).
 
@@ -185,9 +193,10 @@ marco/reasoning/           context, inference, state, actions
 marco/knowledge/           definitions, ingest (text, documents, dictionary, web)
 marco/learning/            concepts, rules, chunking, expressions
 marco/perception/          document vision
-marco/storage/             kgpack, kgbin, conversations
+marco/storage/             kgpack, kgbin, conversations, graph ids and text, overlay store and view, snapshots
 marco/runtime/  marco/host/  marco/trace/
 mco/                       the public API and CLI
+mco/native/                MCO Format 1: reader, writer, node, edge and rule tables
 alma/                      the ALMA 0.1 research loop (frozen)
 views/  bench/  tools/  tests/  collectors/  experiments/
 
@@ -195,8 +204,11 @@ graphs/*.kg  legal/*.kg  axioms/  styles/  cases/  data/     knowledge and data
 docs/                      architecture, en, ko (design records and goals), releases, requests
 ```
 
-`python tools/doc_facts.py counts` at `a18c617`: 905 graph files, 6,988 nodes,
-8 root `.py` files, 89 package files, 119 test files.
+`python tools/doc_facts.py counts` at `c8ad9a5`: 904 graph files, 6,982 nodes,
+6,263 argument edges and 60 authored concept-network edges, 8 root `.py` files,
+103 package `.py` files, 108 test files in `tests/` (129 with subfolders). A
+working checkout may hold one more graph, `graphs/graph_목적_자가검사.kg`, which
+`purpose_graph.py` writes and git ignores.
 
 ## Roadmap
 
@@ -226,9 +238,14 @@ seven large files.
 | [docs/en/how-marco-speaks.md](docs/en/how-marco-speaks.md) | The realizer, one reply traced through it |
 | [docs/en/measurements.md](docs/en/measurements.md) | Counts, routing, runtime and the component table, as measured at `5f321a3` |
 | [docs/architecture/](docs/architecture/marco.md) | One document per package, the naming reference, the structure audit |
+| [docs/mco/README.md](docs/mco/README.md), [api.md](docs/mco/api.md), [format-1.md](docs/mco/format-1.md) | The `mco` user guide, its stability contract, the MCO Format 1 specification |
+| [docs/architecture/overlay.md](docs/architecture/overlay.md), [snapshot.md](docs/architecture/snapshot.md) | The Persistent Overlay Infrastructure; conversation snapshots |
+| [docs/releases/2026-10-01-marco-1.md](docs/releases/2026-10-01-marco-1.md) | MARCO 1 release notes, a draft completed at the tag |
 | [docs/ko/2026-09-22-freeze-decision.md](docs/ko/2026-09-22-freeze-decision.md) | What is frozen, the gate, the queue |
 | [docs/ko/2026-09-29-marco-fixed-timeline.md](docs/ko/2026-09-29-marco-fixed-timeline.md) | The fixed order of the phases |
 | [docs/ko/2026-09-29-experiment-log.md](docs/ko/2026-09-29-experiment-log.md) | Each experiment: cause, patch, time, exam score |
+| [docs/ko/2026-09-30-reverification-baseline.md](docs/ko/2026-09-30-reverification-baseline.md) | The development sets at effort 0 and 3 before and after the identity graph; the exam's effort curve |
+| [docs/ko/2026-10-01-svamp-accuracy.md](docs/ko/2026-10-01-svamp-accuracy.md) | The outside check on 726 SVAMP word problems |
 | [docs/ko/dialogue-gate-2026-09-22/README.md](docs/ko/dialogue-gate-2026-09-22/README.md) | The frozen dialogue exam, its scorer and its recorded runs |
 | [docs/ko/reasoning-gate-2026-09-24/README.md](docs/ko/reasoning-gate-2026-09-24/README.md) | The frozen reasoning set and the composition gate |
 | [docs/en/alma-research-loop.md](docs/en/alma-research-loop.md) | The ALMA 0.1 research loop |
@@ -249,20 +266,56 @@ sensor for language. Source: §24 of the
 
 ## Limits
 
-- **The MARCO 1 gate is not passed.** 41 of the exam's 108 answerable turns are
-  held. The conversation's state is right; the break is between the reader and
-  the grounding: a sentence the reader cannot read whole is dropped instead of
-  being completed from the conversation
-  ([diagnosis](docs/ko/2026-09-29-experiment-log.md)).
-- **One domain.** The state dialogue covers who holds how many of what. No gate
-  measures anything outside it.
-- **Narrow knowledge.** The graphs and the declared packs are the whole world,
-  and they grow at the pace of their authors.
-- **Graph answers are authored, and in the graph's language.** All graphs are
-  Korean except `graphs/graph_en_bill_split.kg`.
-- **No structural learning.** The graph engine learns aliases, not nodes or edges.
-- **Older measurements.** Routing, runtime and the model comparison were last
-  measured on 2026-09-24 ([measurements](docs/en/measurements.md)).
+The owner's list for MARCO 1
+([freeze decision](docs/ko/2026-09-22-freeze-decision.md), "Gate declared, release freeze"):
+
+- **Narrow language and domain coverage.** The state dialogue covers who holds
+  how many of what: holdings, gains, uses and transfers, and questions of counts,
+  totals and comparisons, in the English and Korean sentence forms it was built
+  on. No gate measures anything outside it. On the frozen exam 10 of 108
+  answerable turns are still held (all ten Korean), and they stay held: the
+  freeze ends coverage work aimed at the exam.
+- **Text written by other people is mostly not read.** On SVAMP, 726 word
+  problems written for another purpose, 70 are in MARCO's domain; MARCO answers
+  1 of the 70 correctly and holds 69, and reads 20 of their 151 statements. It
+  gave one confident wrong answer, on an out-of-domain problem; the cause is
+  fixed (`6db2c16`) and that problem is now held. The full run has not been
+  repeated since the fix. The in-domain labels were written by a language model
+  outside MARCO, used only for labelling, and checked against the dataset's
+  answers ([SVAMP check](docs/ko/2026-10-01-svamp-accuracy.md)). Reading real
+  text is M2.
+- **No autonomous learning.** MARCO 1 does not change its own knowledge: it
+  makes no rule, adds no node, edge or graph from a dialogue, and promotes no
+  self-repair and no web or document reading. The graph engine stores an alias
+  for an existing node only after a person says yes
+  ([graph engine](docs/en/graph-engine.md#learning)).
+- **No effort level 4 or 5.** Effort goes from 0 to 3. Multi-hop graph grounding
+  (4) and bounded multi-hypothesis search (5) are M2.
+- **Persistent overlays are infrastructure, not self-learning.** An overlay
+  applies graph and rule changes that a person states or approves through an
+  explicit API or CLI call naming the approver. Nothing in MARCO proposes or
+  approves a change by itself ([overlay](docs/architecture/overlay.md)).
+
+Smaller limits, each documented where it is built:
+
+- The engine does not read the node, edge and rule tables of a Format 1.1 file on
+  the running path: it parses the graph source text kept in the file when the
+  model opens ([mco guide](docs/mco/README.md)).
+- An unfinished knowledge-graph dialogue (the bill split waiting for the number of
+  people) does not survive a snapshot resume; the question is asked again
+  ([snapshot](docs/architecture/snapshot.md)).
+- Overlay rule changes reach only the base rule table, not the rules a pack's
+  relational model adds after the axioms ([overlay](docs/architecture/overlay.md)).
+- Not run on Windows: the release checks, the native format, overlays and
+  snapshots were run on macOS only.
+- The frozen dialogue exam is no longer fully unseen by the development process:
+  its failure classes were read by structure and counts, never its sentences
+  ([experiment log](docs/ko/2026-09-29-experiment-log.md)). A fresh exam is
+  scored once at the release for that reason.
+- Graph answers are the lines the graphs' authors wrote, in the graph's language:
+  every graph is Korean except `graphs/graph_en_bill_split.kg`.
+- Routing, runtime and the model comparison were last measured on 2026-09-24
+  ([measurements](docs/en/measurements.md)).
 
 ## License
 
