@@ -116,6 +116,7 @@ that code closes it.
 | [G7-3.md](requests/G7-3.md) | The shared ranking of candidates, its fields and its commits |
 | [G7-4.md](requests/G7-4.md) | The conversation graph's interface for the statement side: calls, fields, what the reader must name |
 | [G7-5.md](requests/G7-5.md) | A Korean holding whose thing has modifiers puts them into the holder's node: for the statement side |
+| [G7-6.md](requests/G7-6.md) | For M2, the realizer: a hold over one thing counted in two units should name the units, and a reply should use the counter the question asked in |
 
 ## Korean design records (`docs/ko/`)
 
