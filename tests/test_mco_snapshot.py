@@ -10,7 +10,7 @@ import threading
 import pytest
 
 from marco.reasoning.context import ReasoningContext
-from marco.storage import overlay, snapshot
+from marco.storage import conversations, overlay, snapshot
 from marco.storage.overlay import OverlayStore
 
 pytestmark = pytest.mark.language("한국어")  # Korean input: select the Korean pack
@@ -324,3 +324,93 @@ def test_damaged_truncated_or_unknown_snapshots_are_refused(tmp_path):
     with pytest.raises(snapshot.SnapshotDamaged):
         snapshot.read(target).extract_overlay(tmp_path / "copy.overlay")
     assert not (tmp_path / "copy.overlay").exists()
+
+
+# --- the conversation store's envelope -----------------------------------------------------------
+
+def _bound(path, seq=None, change_id=None, content=BASE["content_sha256"], build="build-1"):
+    return conversations.ConversationStore(path, conversations.binding(content, build, seq, change_id))
+
+
+def _saved_chat(store, context):
+    chat = store.create_chat()["id"]
+    store.append_turn(chat, HISTORY[-1], "기억했습니다.", "answer", reasoning_state=context.snapshot())
+    return chat
+
+
+def test_store_records_the_binding_and_restores_as_today_when_it_matches(tmp_path):
+    path = tmp_path / "conversations.json"
+    context = _context()
+    chat = _saved_chat(_bound(path, 3, "chg_3"), context)
+    saved = json.loads(path.read_text(encoding="utf-8"))["chats"][0]
+    assert saved["reasoning_binding"] == {"base": {"content_sha256": BASE["content_sha256"], "build_id": "build-1"},
+                                          "overlay": {"seq": 3, "change_id": "chg_3"}}
+    state = _bound(path, 3, "chg_3").reasoning_state(chat)
+    assert state == json.loads(json.dumps(context.snapshot(), ensure_ascii=False)) and "replay" in state
+
+
+def test_store_drops_the_replay_when_the_overlay_moved(tmp_path):
+    path = tmp_path / "conversations.json"
+    chat = _saved_chat(_bound(path), _context())
+    for store in (_bound(path, 1, "chg_1"), conversations.ConversationStore(path, conversations.binding(
+            BASE["content_sha256"], None, 1, "chg_1"))):
+        state = store.reasoning_state(chat)
+        assert "replay" not in state and state["observations"] == list(HISTORY)
+        restored = ReasoningContext()
+        restored.restore(state)
+        assert restored.turn("지금 지연 구슬은 몇 개야?", KG)["answer"] == "5개입니다."
+
+
+def test_store_refuses_a_state_saved_on_another_base_and_keeps_the_turns(tmp_path):
+    path = tmp_path / "conversations.json"
+    chat = _saved_chat(_bound(path), _context())
+    for other in (_bound(path, content="cd" * 32), _bound(path, build="build-2")):
+        with pytest.raises(conversations.ConversationBaseMismatch, match="refused, the turns stay readable"):
+            other.reasoning_state(chat)
+        assert [t["user"] for t in other.get_chat(chat)["turns"]] == [HISTORY[-1]]
+        assert other.overview()["general_chats"][0]["id"] == chat
+
+
+def test_store_without_an_envelope_loads_as_before(tmp_path):
+    path = tmp_path / "conversations.json"
+    context = _context()
+    chat = _saved_chat(conversations.ConversationStore(path), context)   # an unbound store: no envelope
+    assert "reasoning_binding" not in json.loads(path.read_text(encoding="utf-8"))["chats"][0]
+    expected = json.loads(json.dumps(context.snapshot(), ensure_ascii=False))
+    assert _bound(path, 5, "chg_5").reasoning_state(chat) == expected
+    # A bound file read by an unbound store (the UI today) also loads as before.
+    bound = tmp_path / "bound.json"
+    chat = _saved_chat(_bound(bound), context)
+    assert conversations.ConversationStore(bound).reasoning_state(chat) == expected
+    # A newer state saved by an unbound store does not keep the older binding.
+    store = conversations.ConversationStore(bound)
+    store.append_turn(chat, "지금 지연 구슬은 몇 개야?", "5개입니다.", "answer", reasoning_state=context.snapshot())
+    assert store.reasoning_binding(chat) is None
+
+
+def test_store_writes_through_a_unique_synced_temp_file(tmp_path, monkeypatch):
+    path = tmp_path / "conversations.json"
+    store = conversations.ConversationStore(path)
+    replaced, synced = [], []
+    real_replace, real_fsync = os.replace, os.fsync
+    monkeypatch.setattr(os, "replace", lambda a, b: (replaced.append((str(a), str(b))), real_replace(a, b))[1])
+    monkeypatch.setattr(os, "fsync", lambda fd: (synced.append(fd), real_fsync(fd))[1])
+    store.create_chat()
+    store.create_chat()
+    assert len(replaced) == 2 and len(synced) >= 2
+    temps = [a for a, _ in replaced]
+    assert len(set(temps)) == 2 and all(str(os.getpid()) in t for t in temps)
+    assert str(path.with_suffix(".tmp")) not in temps and all(b == str(path) for _, b in replaced)
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["conversations.json"]
+
+
+def test_store_imports_a_snapshot_chat_under_its_binding(tmp_path):
+    context = _context()
+    record = snapshot.loads(snapshot.build(base=BASE, conversations=[_record(context)])).conversation()
+    store = _bound(tmp_path / "conversations.json")
+    chat = store.import_chat(record)
+    assert chat["id"] == "chat-1" and [t["user"] for t in chat["turns"]] == list(HISTORY)
+    assert store.reasoning_binding("chat-1") == store.binding
+    assert store.reasoning_state("chat-1") == record["reasoning_state"]
+    with pytest.raises(ValueError):
+        store.import_chat(record)
