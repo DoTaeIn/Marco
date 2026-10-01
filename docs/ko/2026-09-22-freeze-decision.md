@@ -139,6 +139,31 @@ onto the overlay before M2.
 | 3 | Snapshot and restore: base and overlay sequence recorded and checked, conversation state | merged `f844401`, overlay recorded since `5987ed5` |
 | later | Consolidation into a new base, compaction, scaling curves, profiles, the engine reading the tables directly | after the release |
 
+## Gate declared, release freeze (owner, 2026-10-01)
+
+Gate 2 is declared passed at 98 of 108, 0 wrong, 0 violations; all six conditions are measured as met
+(`python tools/doc_facts.py frozen --run graph-step-3s6`). MARCO 1 is a completed first-generation
+architecture, not a target for further capability expansion.
+
+- No more exam-targeted coverage work. The remaining held turns stay held.
+- Before the release, a reasoning change is allowed only for a demonstrated safety or correctness bug that
+  can produce a wrong or unsupported state or answer. Allowed and in work: one thing counted in two units
+  (the second count replaced the first). Stopped: the Korean restated swap, whose only purpose was a held
+  exam turn; parked for M2.
+- Snapshot and persistence work continues inside the approved MCO scope; the test-cache race continues as
+  test infrastructure.
+- Real-text reading moves to M2. The SVAMP result is published as a known limitation of MARCO 1
+  ([2026-10-01-svamp-accuracy.md](2026-10-01-svamp-accuracy.md)).
+- Efforts 4 (multi-hop graph grounding) and 5 (bounded multi-hypothesis search) move to M2.
+- The history rewrite that removes the attribution line of `d5d91a2` is done before the release tag,
+  changing no code and no measured behaviour; the release head is verified after it and that history is
+  tagged.
+- The release checks are re-run once after the last allowed change, before the tag.
+- MARCO 1 is published with its limits stated: narrow language and domain coverage, the SVAMP real-text
+  reading result, no autonomous learning, no effort 4 or 5, persistent overlays as infrastructure and not
+  self-learning.
+- After the release, M2 begins.
+
 ## The queue (replaces plan file §2 items 3–5) — updated 2026-09-23
 
 | # | Goal | File | State |
