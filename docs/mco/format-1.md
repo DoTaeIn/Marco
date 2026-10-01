@@ -32,7 +32,10 @@ open than a compat container, and it does not load a graph lazily.
 
 Not in this slice: overlays, snapshots, consolidation, partial-loading
 measurements, node/edge/rule tables, a routing index. Section 8 reserves the
-names and fields they will use.
+names and fields they will use; the manifest's `supports` says overlay and
+snapshot are not supported, and `mco inspect` says so too. The identifier scheme
+those features need (section 6.7) and the base identity they bind to (section
+6.6) are fixed now.
 
 ## 2. Conventions
 
@@ -194,6 +197,7 @@ they do not know.
 | `format_version` | `[major, minor]` | must equal the header's |
 | `name` | string or null | model name |
 | `build_id` | string | model/build id. The writer's default is `"sha256-"` + the first 12 hex digits of the source pack's SHA-256, the same id the compat container gives the same pack |
+| `content_sha256` | hex string | the **base identity**: SHA-256 of the model's content, defined exactly in 6.6. Together with `build_id` it is what a later overlay or snapshot binds to |
 | `generator` | string | the writing program, e.g. `"mco 0.1.0"` |
 | `semantic_schema` | `{"id": "marco-kgpack", "version": 3}` | what the members mean: MARCO pack format version 3 semantics |
 | `requires` | list of strings | runtime features the file needs (below) |
@@ -206,6 +210,7 @@ they do not know.
 | `base` | null | reserved (section 8) |
 | `change_sequence` | null | reserved (section 8) |
 | `snapshot` | null | reserved (section 8) |
+| `supports` | `{"overlay": false, "snapshot": false}` | stated plainly: this file can be neither the base of an overlay nor a snapshot in 1.0. Both are `false` in every 1.0 file; a 1.0 reader refuses `true` (unsupported) |
 
 **Runtime features.** Version 1.0 defines two, and the writer lists both:
 
@@ -214,9 +219,12 @@ they do not know.
 - `marco.pack-model/1` — `model` follows MARCO's `nai-model` v1 declaration.
 
 A feature the reader does not know is unsupported. A non-null `base`,
-`change_sequence` or `snapshot` is unsupported in 1.0 (a reader that cannot
-apply an overlay must not run a file that needs one). A `counts` value that
-disagrees with the tables is malformed.
+`change_sequence` or `snapshot`, or a `supports` value other than `false`, is
+unsupported in 1.0 (a reader that cannot apply an overlay must not run a file
+that needs one). A `counts` value that disagrees with the tables is malformed.
+A `content_sha256` that is not 64 lowercase hex digits is malformed; one that
+does not match the content (6.6) is an integrity failure, found by full
+verification.
 
 ### 6.2 `STRS` — string table (table)
 
@@ -233,8 +241,9 @@ ascending by their UTF-8 bytes; the empty string is allowed. A *string id* is
 the index `i`. `0xFFFFFFFF` is the null string id; no field of 1.0 is nullable,
 so a 1.0 reader rejects it.
 
-String ids are local to the file. Nothing outside the file may refer to one
-(section 8).
+A string id is a **storage reference**, not an identifier (section 6.7): it
+is local to the file, changes between builds, and nothing outside the file may
+refer to one.
 
 ### 6.3 `MEMB` — member directory (table)
 
@@ -243,7 +252,7 @@ u32 count
 u32 reserved            0
 row[count], 56 bytes each:
   u32 path              string id of the member's pack path
-  u32 chunk             TOC index of the chunk holding the member's bytes
+  u32 chunk             TOC index of the chunk holding the member's bytes (a locator)
   u8  pack_kind         1 graph, 0 asset
   u8  reserved[7]       0
   u64 bytes             member size (the chunk's raw_length)
@@ -252,7 +261,8 @@ row[count], 56 bytes each:
 
 `raw_length = 8 + 56 × count`. Rules (each violation is malformed unless noted):
 
-- rows are sorted ascending by path (UTF-8 bytes), paths are unique;
+- rows are sorted ascending by path (UTF-8 bytes), paths are unique; the
+  path is the member's identifier (6.7);
 - a path is relative POSIX: not empty, not starting with `/`, no empty, `.` or
   `..` segment, and is not `manifest.json`;
 - `pack_kind` is 1 exactly when the path ends in `.kg`; at least one row is a
@@ -278,9 +288,8 @@ header, 32 bytes:
   u32 edge_count
   u32 example_count
   u32 reserved          0
-node[node_count], 24 bytes each:
-  u32 path              string id
-  u32 member            MEMB row index of this graph
+node[node_count], 20 bytes each:
+  u32 path              string id: the graph's graph_id (6.7)
   u32 role              string id
   u32 goal              string id
   u32 first_example     index into examples
@@ -290,11 +299,12 @@ edge[edge_count], 12 bytes each:
   u32 from, u32 relation, u32 to  string ids
 ```
 
-`raw_length = 32 + 24 × node_count + 4 × example_count + 12 × edge_count`.
+`raw_length = 32 + 20 × node_count + 4 × example_count + 12 × edge_count`.
 Node `i`'s `first_example` equals the sum of the `examples` counts of nodes
-`0 … i−1`, and the counts sum to `example_count`. `member` must name a `MEMB`
-row whose path equals the node's path and whose `pack_kind` is graph. Node paths
-are unique. Every string id must be `< count` of `STRS`.
+`0 … i−1`, and the counts sum to `example_count`. A node's path must be the
+path of a `MEMB` row whose `pack_kind` is graph; nodes are found by that path,
+never by row position. Node paths are unique. Every string id must be
+`< count` of `STRS`.
 
 ### 6.5 Rebuilding the pack
 
@@ -316,6 +326,46 @@ writes, and refuses a pack holding anything Format 1.0 does not represent. The
 reference reader rebuilds the pack as a deterministic ZIP identical, byte for
 byte, to one MARCO's `write_pack` produces for the same members.
 
+### 6.6 Content identity (`content_sha256`)
+
+`content_sha256` is the SHA-256 of the canonical JSON of the rebuilt pack
+manifest of 6.5 (keys sorted, separators `,` and `:`, non-ASCII written as
+itself, UTF-8) followed by one `\n` byte. These are exactly the bytes of the
+`manifest.json` member of the rebuilt pack, so the value equals the SHA-256 of
+that member.
+
+What it covers: that manifest lists, for every member, its path, kind, size and
+the SHA-256 of its raw bytes, plus the manager graph and the model declaration.
+So it covers every knowledge byte of the model, transitively. What it does not
+cover: anything about the container (header, TOC, compression, chunk order,
+padding) and the `MANI` chunk itself (name, generator, `build_id` and the
+`content_sha256` field). Re-encoding the same content, with other compression
+or a later table layout, keeps the same `content_sha256`; changing one byte of
+one member changes it.
+
+### 6.7 Identifiers
+
+Every identifier in the format is a stable key derived from content, never a
+position. Row indexes, string ids, TOC indexes and byte offsets are **storage
+references**: they locate bytes inside one file, they may differ between two
+builds of the same input, and they are never used to name a thing outside the
+file, in an overlay, in a snapshot, or in the `mco` API.
+
+| Thing | Identifier |
+| --- | --- |
+| member | its pack path, e.g. `styles/english.json` |
+| graph (`graph_id`) | the pack path of the graph, e.g. `graphs/graph_en_bill_split.kg` |
+| node (`node_id`) | `graph_id + "#" + node name`, where the node name is the name the graph declares the node under: the text before `:` in a `[개념]`, `[사례]`, `[무관]` or `[공리]` line, without the leading `*` and without a `{...}` value or condition |
+| edge (`edge_id`) | lowercase hex SHA-256 of the UTF-8 bytes of `graph_id`, `src`, `rel`, `dst` joined by one `0x00` byte each; one edge per destination of a `[논증]` or `[개념망]` line |
+| rule (`rule_id`) | the rule's existing `id` in its axiom file (unique within a model) |
+| model content | `content_sha256` (6.6), with `build_id` |
+
+Reordering the lines of a graph, or the order members are given to the writer,
+changes no identifier. In 1.0 only member, graph and model identifiers appear in
+tables (`MEMB`, `GDIR`, `MANI`); node, edge and rule identifiers are fixed here
+for the `NODE`, `EDGE` and `RULE` tables of the next slice and for overlays, and
+the reference implementation exposes the functions that compute them.
+
 ## 7. Verification levels
 
 - **Open** (always): header, TOC, layout arithmetic, required flags, chunk-set
@@ -324,7 +374,8 @@ byte, to one MARCO's `write_pack` produces for the same members.
   exactly that chunk and checks its two checksums. This is what lets a reader
   take one graph from a file without reading the whole file.
 - **Full**: everything in *open*, plus every chunk's checksum (including
-  skipped optional chunks), every member's raw SHA-256, and zero padding.
+  skipped optional chunks), every member's raw SHA-256, `content_sha256`, and
+  zero padding.
   `mco.load` and `mco.inspect` do a full verification unless called with
   `verify=False`.
 
@@ -339,15 +390,14 @@ unsupported) and refuses a non-null reserved manifest key.
 | `NODE`, `EDGE`, `RULE`, `INDX` | chunk types | node, edge, rule tables and a routing index replacing the carried `GRPH`/`AXIM` text |
 | `OVLY`, `CHNG` | chunk types | overlay delta and change log |
 | `SNAP` | chunk type | snapshot reference data |
-| `base` | manifest | `{"build_id", "sha256"}` of the immutable base file an overlay or snapshot applies to |
+| `PROV` | chunk type, **optional** | provenance of folded items: for each item a consolidation folds into a base, the id of the overlay change it came from. Reserved only; a 1.0 writer never writes it and a 1.0 reader skips it |
+| `base` | manifest | `{"build_id", "content_sha256"}` of the immutable base an overlay or snapshot applies to |
 | `change_sequence` | manifest | last overlay change sequence folded into this file |
 | `snapshot` | manifest | reference to the snapshot this file was consolidated from |
 
-**Identity across files.** String ids, row indexes and TOC indexes are local to
-one file and change between builds. A reference from another file (an overlay
-on this base, a snapshot) names the base by its whole-file SHA-256 and
-`build_id`, and the thing inside it by a stable key: a member path, or a graph
-path plus a node name. It never stores a table index.
+**Identity across files.** A reference from another file (an overlay on this
+base, a snapshot) names the base by `content_sha256` and `build_id`, and the
+thing inside it by an identifier of 6.7. It never stores a storage reference.
 
 ## 9. Safety
 
@@ -382,6 +432,7 @@ path plus a node name. It never stores a table index.
 | decompressed output larger or smaller than `raw_length`, bad zlib stream | malformed |
 | manifest not canonical-JSON-readable, wrong `format`, version mismatch | malformed |
 | unknown required runtime feature, non-null reserved manifest key | unsupported |
+| `supports` not `false` | unsupported |
 | table rule violated (sections 6.2–6.4), `counts` mismatch | malformed |
-| member raw SHA-256 mismatch | integrity failure |
+| member raw SHA-256 mismatch, `content_sha256` mismatch (full verification) | integrity failure |
 | nonzero padding (full verification) | malformed |
