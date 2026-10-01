@@ -4065,6 +4065,18 @@ class ReasoningContext:
         replies = parser.data["context_replies"]
         if winner is None and deciding == "tie":
             items = [self.observations[c["index"]].strip() for c in ranking[:2]]
+            # the correction is said and not applied: what the events it may mean count is not known until it
+            # is settled, so their holders are held as an unapplied correction (as _correct_by_reference's asks)
+            graph = self.conversation_graph()
+            touched = set()
+            for c in candidates:
+                for subject, _p, _v in rows_of(self.observations[c["index"]]) if "index" in c else []:
+                    pair = graph.of_key(subject)
+                    # the holder node's words (a question may name the holder bare), else the key's leading word
+                    touched.update(graph.nodes[pair[0]]["name"].split() if pair else subject.split()[:1])
+            touched = sorted(touched)
+            if touched:
+                self._remember_unread({"text": said, "at": len(self.observations), "대상": touched})
             return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
                     "answer": replies["reference_which_event"].format(
                         말=said, 목록=", ".join('"%s"' % item for item in items)),
