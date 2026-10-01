@@ -817,7 +817,8 @@ class ReasoningContext:
         refused because a holder has no count under the key it names (Ada gave Bo one towel., one striped towel,
         for the thing the conversation counts as striped cotton beach towels) names the holder's thing with fewer
         of its words, or in its other number. Candidates are nodes: each thing node the named holder counts
-        whose name holds every word of the mention in order (singular or plural, ``_same_in_number``); every holder of
+        whose name holds every word of the mention in order (singular or plural; a container's content alone is
+        another thing: ``_one_thing``); every holder of
         the statement then counts that thing node, under the key the conversation counts it by. Each is checked
         against the conversation (``_reading_failure``), ranked (``_rank_candidates``), and a clear winner is
         kept for this conversation (``_keep_reading``); two things that fit (towels, between red towels and blue
@@ -828,7 +829,7 @@ class ReasoningContext:
         if not rows or not self.observations:
             return None
         graph = self.conversation_graph()
-        same = self._same_in_number(parser)
+        fits = self._one_thing(parser)
         named = {}
         for fact in rows:
             subject = fact["triple"][0]
@@ -853,7 +854,7 @@ class ReasoningContext:
         for holder in givers:
             for thing in graph.things_of(holder):
                 name = graph.nodes[thing]["name"]
-                if all(self._within(m.split(), name.split(), same) for _n, _h, m in named.values()) and thing not in things:
+                if all(fits(m.split(), name.split()) for _n, _h, m in named.values()) and thing not in things:
                     things.append(thing)
         survivors = []
         for thing in things:
@@ -4642,20 +4643,53 @@ class ReasoningContext:
         return at == len(short)
 
     @staticmethod
-    def _thing_node(graph, thing, turn, same=None):
+    def _container_parts(parser, words):
+        """``(head, content)`` of a thing name of container structure, or None. The head is the container or
+        measure, the content what it holds: in a pack that declares a partitive word (명사수.partitive: of), the
+        words before it and after it (packs of quills: packs, quills); in a pack whose counters are nouns
+        (수량단위.units), a last word that is one of them after the content (깃펜 묶음: 묶음, 깃펜). The classes are
+        the pack's; nothing here names a word."""
+        partitive = {str(w).lower() for w in ((getattr(parser, "noun_number", None) or {}).get("partitive") or [])}
+        at = next((i for i, w in enumerate(words) if w.lower() in partitive and 0 < i < len(words) - 1), None)
+        if at is not None:
+            return words[:at], words[at + 1:]
+        units = set(((parser.language_pack or {}).get("counters") or {}).get("units") or [])
+        if len(words) > 1 and words[-1] in units:
+            return words[-1:], words[:-1]
+        return None
+
+    @staticmethod
+    def _one_thing(parser):
+        """``fits(short, long)``: a mention's words name the thing of a longer name when they stand within it in
+        order (singular or plural, ``_same_in_number``) and, when the longer name has container structure
+        (``_container_parts``), one of them is a word of its head: bags, for bags of flour; 묶음, for 깃펜 묶음. A
+        mention made of the content's words alone (quills, for packs of quills; 깃펜, for 깃펜 묶음) is the content,
+        another thing than its container."""
+        same = ReasoningContext._same_in_number(parser)
+
+        def fits(short, long):
+            if not ReasoningContext._within(short, long, same):
+                return False
+            parts = ReasoningContext._container_parts(parser, long)
+            return parts is None or len(short) == len(long) or any(same(a, b) for a in short for b in parts[0])
+        return fits
+
+    @staticmethod
+    def _thing_node(graph, thing, turn, fits=None):
         """The node of a thing mention (G7-S, step 3): its own, when the conversation said it so before; else the
         one existing thing whose words and the mention's are one within the other, in order (striped towels and
-        striped cotton beach towels: one thing, the mention an alias of form ``short``), when exactly one fits.
-        Two that fit (pens, between red pens and blue pens) or none: a node of its own; a mention with a word
-        the node lacks is another thing (red pens, blue pens)."""
+        striped cotton beach towels: one thing, the mention an alias of form ``short``), when exactly one fits
+        (``fits``: ``_one_thing``; a container and its content are two things). Two that fit (pens, between red
+        pens and blue pens) or none: a node of its own; a mention with a word the node lacks is another thing
+        (red pens, blue pens)."""
         known = graph.id_of("thing", thing)
         if known is not None:
             return graph.node("thing", thing, turn)
 
-        within = ReasoningContext._within
+        within = fits or ReasoningContext._within
         words = thing.split()
         fits = [n["id"] for n in graph.of_kind("thing")
-                if within(words, n["name"].split(), same) or within(n["name"].split(), words, same)]
+                if within(words, n["name"].split()) or within(n["name"].split(), words)]
         if len(fits) == 1:
             return graph.join("thing", thing, fits[0], "short", turn)
         return graph.node("thing", thing, turn)
@@ -4707,7 +4741,7 @@ class ReasoningContext:
             else:
                 kind, holder, thing = split(subject)
             h = graph.node(kind, holder, turn)
-            t = self._thing_node(graph, thing, turn, self._same_in_number(parser)) if thing else None
+            t = self._thing_node(graph, thing, turn, self._one_thing(parser)) if thing else None
             graph.keyed(subject, h, t)
             last_of[subject] = triple[1]
             turns_of.setdefault(subject, []).append(turn)
