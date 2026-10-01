@@ -20,6 +20,7 @@ from mco.backends import Backend, BackendModel, BackendSession, register_backend
 from mco.backends import _registered as registered_backends
 from mco.backends.marco import translate
 from mco.formats import NATIVE_MAGIC, detect
+from mco.native import MAGIC as NATIVE_FORMAT_MAGIC
 
 ROOT = Path(__file__).resolve().parents[1]
 GRAPHS = ["graphs/graph_정산_나눠내기.kg", "graphs/graph_일상추론.kg"]
@@ -186,12 +187,18 @@ def test_damaged_files_are_rejected(model_path: Path, tmp_path: Path) -> None:
 
 
 def test_native_format_is_recognised_but_unsupported(tmp_path: Path) -> None:
+    # A newer major version of the native format: recognised, described, refused.
     native = tmp_path / "MARCO-2.mco"
-    native.write_bytes(NATIVE_MAGIC + b"\x00" * 64)
+    native.write_bytes(NATIVE_FORMAT_MAGIC + (2).to_bytes(2, "little") + b"\x00" * 86)
     info = mco.inspect(native)
-    assert info.format == "mco-native" and not info.runnable and info.notes
+    assert info.format == "mco-native" and info.format_version == 2 and not info.runnable and info.notes
     with pytest.raises(mco.UnsupportedFormatError):
         mco.load(native)
+    # The native magic prefix in front of garbage is a damaged file, not a model.
+    garbage = tmp_path / "garbage.mco"
+    garbage.write_bytes(NATIVE_MAGIC + b"\x00" * 64)
+    with pytest.raises(mco.ModelFormatError):
+        mco.inspect(garbage)
 
 
 # --- running --------------------------------------------------------------------------
