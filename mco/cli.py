@@ -122,6 +122,11 @@ def _cmd_inspect(args: argparse.Namespace, out: TextIO) -> int:
         rows += [("content", manifest.get("content_sha256")), ("generator", manifest.get("generator")),
                  ("schema", f"{schema.get('id')} v{schema.get('version')}"),
                  ("requires", ", ".join(manifest.get("requires") or ()) or "-")]
+    tables = native.get("tables")
+    if tables:
+        rows += [("tables", f"{tables['graphs']} graphs ({tables['tabled']} in tables, "
+                            f"{len(tables['source_only'])} source text only), {tables['nodes']} nodes, "
+                            f"{tables['edges']} edges, {tables['rules']} rules")]
     width = max(len(k) for k, _ in rows)
     for key, value in rows:
         out.write(f"{key:<{width}}  {value if value is not None else '-'}\n")
@@ -130,10 +135,11 @@ def _cmd_inspect(args: argparse.Namespace, out: TextIO) -> int:
     chunks = native.get("chunks") or ()
     if chunks:
         out.write(f"chunks: {len(chunks)}\n")
-        out.write(f"  {'#':>4}  type  ver  req  {'comp':<4}  {'stored':>10}  {'raw':>10}\n")
+        out.write(f"  {'#':>4}  type  ver  req  {'comp':<4}  {'stored':>10}  {'raw':>10}  what\n")
         for c in chunks:
             out.write(f"  {c['index']:>4}  {c['type']}  {c['version']:>3}  {'yes' if c['required'] else 'no':<3}"
-                      f"  {c['compression']:<4}  {c['length']:>10}  {c['raw_length']:>10}\n")
+                      f"  {c['compression']:<4}  {c['length']:>10}  {c['raw_length']:>10}"
+                      f"  {c.get('role', '-')}\n")
     return 0
 
 

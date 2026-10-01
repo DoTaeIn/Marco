@@ -168,9 +168,10 @@ default output of `mco compile`.
 ## MCO Format 1 (in the repository, not released yet)
 
 Since 2026-10-01 the repository also reads and writes the native binary file,
-[MCO Format 1.0](https://github.com/DoTaeIn/Marco/blob/main/docs/mco/format-1.md):
-a fixed header, a checksummed table of contents, a manifest, and string,
-member and graph-directory tables. Ask for it with `format="native"`:
+[MCO Format 1.1](https://github.com/DoTaeIn/Marco/blob/main/docs/mco/format-1.md):
+a fixed header, a checksummed table of contents, a manifest, string, member and
+graph-directory tables, and (since 1.1) every graph as node and edge tables and
+the model's rules as a rule table. Ask for it with `format="native"`:
 
 ```python
 mco.compile(".", "MARCO-1-native.mco", format="native")
@@ -183,14 +184,20 @@ library and answers through the same MARCO engine and session code as the
 compat backend: the same input gives the same answer, status and evidence from
 either file. The knowledge comes only from the `.mco` file; the engine code
 still comes from a MARCO checkout. `mco inspect` shows the format version, the
-manifest and every chunk with its stored and raw size.
+manifest, the graph, node, edge and rule counts of the tables, and every chunk
+with its stored and raw size and what it is (table, source text, carried
+member).
 
 This first slice is storage and runtime infrastructure, and it is honest about
 its limits:
 
-- graphs, language packs and axioms are **carried members**: the pack files,
-  unchanged, in typed chunks. The engine parses the graph text when the model
-  opens, as it does for a `.kgpack`. Node, edge and rule tables come next;
+- every graph is in node and edge tables that read back exactly as MARCO's
+  `read_kg` reads the source file (904 of 904 graphs), and the rules are in a
+  rule table, but **the running path does not use the tables yet**: the graph
+  source text is kept in the file, and the engine parses it when the model
+  opens, as it does for a `.kgpack`. Connecting the tables is the next step.
+  Language packs and axiom files are carried members: the pack files,
+  unchanged, in typed chunks;
 - no overlay (the later Persistent Overlay Infrastructure), no snapshot, no
   consolidation; the manifest and `mco inspect` say so;
 - nothing is loaded lazily, and partial loading is not measured;
@@ -198,7 +205,10 @@ its limits:
   today. For the whole source tree at commit `99890011`, on a busy machine,
   three fresh processes each: 2,200,688 bytes against 1,587,372 (the string and
   graph tables are stored uncompressed for direct access), open 0.78 s against
-  0.65 s, first answer 3.14 s against 3.13 s (medians).
+  0.65 s, first answer 3.14 s against 3.13 s (medians). The 1.1 tables add
+  1,464,376 bytes for the whole tree (3,665,064 against 2,200,688 without
+  tables); without the graph source text the file would be 2,341,568 bytes
+  (computed; a file without source text is not defined yet).
 
 See [api.md](https://github.com/DoTaeIn/Marco/blob/main/docs/mco/api.md) for the
 stability contract and how to write a backend.

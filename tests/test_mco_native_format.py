@@ -280,7 +280,9 @@ REBUILT = {
     "reserved optional PROV chunk is skipped": (lambda c: c + [Chunk("PROV", b"{}", required=False)], "ok"),
     "empty optional chunk": (lambda c: c + [Chunk("ZZZZ", b"", required=False)], "ok"),
     "unknown required chunk": (lambda c: c + [Chunk("ZZZZ", b"x")], "UnsupportedFormatError"),
-    "reserved required NODE chunk": (lambda c: c + [Chunk("NODE", b"x")], "UnsupportedFormatError"),
+    "reserved required OVLY chunk": (lambda c: c + [Chunk("OVLY", b"x")], "UnsupportedFormatError"),
+    "NODE chunk not in INDX": (lambda c: c + [Chunk("NODE", b"x", required=False)], "ModelFormatError"),
+    "second INDX": (lambda c: c + [next(x for x in c if x.type == "INDX")], "ModelFormatError"),
     "newer required chunk version": (lambda c: c[:3] + [Chunk("GDIR", c[3].data, version=2)] + c[4:],
                                      "UnsupportedFormatError"),
     "duplicate MANI": (lambda c: c + [c[0]], "ModelFormatError"),
@@ -506,7 +508,7 @@ def test_inspect_native_shows_version_manifest_and_chunks(builds) -> None:
     assert "snapshot: not supported in this version" in info.notes
     assert any("carried as typed chunks, not tables" in n for n in info.notes)
     manifest = info.to_dict(include_manifest=True)["manifest"]
-    assert manifest["format"]["major"] == 1 and manifest["format"]["minor"] == 0
+    assert manifest["format"]["major"] == 1 and manifest["format"]["minor"] == 1
     assert manifest["mco"]["supports"] == {"overlay": False, "snapshot": False}
     chunks = manifest["chunks"]
     assert [c["type"] for c in chunks[:4]] == ["MANI", "STRS", "MEMB", "GDIR"]
@@ -533,7 +535,7 @@ def test_cli_inspect_native(builds) -> None:
     out = io.StringIO()
     assert main(["inspect", str(builds["ko", "native"])], stdout=out) == 0
     text = out.getvalue()
-    assert "mco-native v1.0" in text and "content" in text and "marco.kg-text/1" in text
+    assert "mco-native v1.1" in text and "content" in text and "marco.kg-text/1" in text
     assert "note: overlay: not supported in this version" in text and "note: snapshot: not supported" in text
     assert "chunks: " in text and "MANI" in text and "GRPH" in text and "GDIR" in text
     out = io.StringIO()
