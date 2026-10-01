@@ -127,3 +127,22 @@ Found while diagnosing, not on the exam's gate turns; each must hold or record r
   사위 태오에게 자두 한 개 줬어.` records the receiver as a new holder `가윤 사위 태오 자두` (count not known), and
   `태오는 자두가 몇 개 있어?` is answered 23; the right answer is 24, or a hold. One node for 태오, whatever words
   name it, is the case of step 1.
+
+## Re-run on the node-based conversation (2026-10-01, main `650efc9`)
+
+Step 4 of the identity-graph order, run by the plan manager with the command of section 1. Every set meets or
+beats the baseline; no new wrong turn in any label.
+
+| Set | Effort | Answerable | Baseline | Gate wrong | Violations | Wrong turns outside the gate label |
+| --- | --- | --- | --- | --- | --- | --- |
+| dev3 check | 3 | 98/106 | 98/106 | 0 | 0 | 0 |
+| dev3 check | 0 | 98/106 | 98/106 | 0 | 0 | 0 |
+| dev4 check | 3 | 269/323 | 269/323 | 0 | 0 | 3, the same three as the baseline |
+| dev4 check | 0 | 268/323 | 268/323 | 0 | 0 | 3, the same three |
+| dev5 check | 3 | 220/252 | 220/252 | 0 | 0 | 0 |
+| dev5 check | 0 | 220/252 | 220/252 | 0 | 0 | 0 |
+| dev6 check | 3 | 189/234 | 188/234 | 0 | 0 | 1, the same one as the baseline |
+| dev6 check | 0 | 109/234 | 109/234 | 0 | 0 | 1, the same one |
+
+Frozen exam at the same commit, effort 0 to 3: 63, 67, 97, 98 of 108, no wrong turn and no violation at any
+level (English 30, 33, 53, 54 of 54; Korean 33, 34, 44, 44 of 54).
