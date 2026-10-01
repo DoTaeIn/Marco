@@ -557,3 +557,33 @@ def test_two_amounts_with_no_word_that_marks_the_old_one_ask_which_event_and_cor
     assert rows[-2]["meaning"]["reason"] == "reference_which_event"
     assert rows[-1]["status"] == "answered" and "5" in rows[-1]["answer"]
 
+
+
+PACKS = ["{a} has 43 packs of {p}.", "There are 23 {p} in each pack.", "{a} has 8 extra {p}."]
+
+
+@pytest.mark.parametrize("effort", [0, 3])
+@pytest.mark.parametrize("frames,held", [
+    # the unread turn names the thing asked and a thing the holder holds: the later count does not settle it
+    (PACKS + ["How many {p} does {a} have?"], "There are 23 {p} in each pack."),
+    (["{a} has 43 packs.", "There are 23 {p} in each pack.", "{a} has 8 {p}.", "How many {p} does {a} have?"],
+     "There are 23 {p} in each pack."),
+    # the thing said in its other number
+    (["{a} has 8 {p}.", "{b} has 3 {c}.", "Every bowl was cracked overnight.", "How many {c} does {b} have?"],
+     "Every bowl was cracked overnight."),
+])
+def test_an_unread_turn_that_mentions_a_thing_the_holder_counts_holds_the_question_naming_it(frames, held, effort):
+    rows = _play("english", frames, effort, **EN_WORDS)
+    assert rows[-1]["status"] != "answered" and held.format(**EN_WORDS) in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("frames,value", [
+    # the unread turn names no node of the conversation, or no thing this holder counts: nothing new is held
+    (["{a} has 8 {p}.", "The weather was lovely all week.", "How many {p} does {a} have?"], "8"),
+    (["{a} has 8 {p}.", "{b} has 3 {c}.", "Every bowl was cracked overnight.", "How many {p} does {a} have?"], "8"),
+    # every count the unread turn shook is said again after it
+    (PACKS + ["{a} has 40 packs of {p}.", "{a} has 9 {p}.", "How many {p} does {a} have?"], "9"),
+])
+def test_an_unread_turn_holds_nothing_it_does_not_mention_and_a_restated_count_is_known_again(frames, value):
+    rows = _play("english", frames, 3, **EN_WORDS)
+    assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
