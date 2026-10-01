@@ -572,3 +572,39 @@ def test_a_measure_word_before_the_thing_heads_a_container():
     assert play("english", 3, [("Nora has 43 dozen quills.", "rec"), ("Nora has 8 quills.", "rec"),
                                ("How many quills does Nora have?", 8),
                                ("How many dozen quills does Nora have?", 43)]) == []
+
+
+# The readings a conversation kept for its statements (a candidate step's winner) are in its snapshot: a restored
+# conversation replays those statements the same way. Without them a statement after the restart that needs a
+# candidate step was refused, and the question after it held (the earlier statement was read fresh in the check).
+@pytest.mark.parametrize("language,before,after", [
+    ("english", ["Nora has 7 pens.", "Eli has 2 pens.", "Nora gave Eli three blorp."],
+     [("Nora gave Eli two zeb.", "rec"), ("How many pens does Nora have?", 2)]),
+    ("english", ["Ada has five striped cotton beach towels.", "Bo has three striped towels.", "Ada gave Bo one towel."],
+     [("Ada gave Bo one striped towel.", "rec"), ("How many striped towels does Bo have?", 5)]),
+    ("한국어", ["세훈은 핸드백이 열한 개 있어.", "기 대표님에게는 열 개 있어.", "기 대표님이 세훈에게 세 개를 줬어."],
+     [("기 대표님이 세훈에게 두 개를 줬어.", "rec"), ("기 대표님은 핸드백이 몇 개 있어?", 5)]),
+])
+def test_a_restored_conversation_keeps_the_readings_it_chose(language, before, after):
+    import json
+    current = context(language, 3)
+    for line in before:
+        current.turn(line, KG)
+    snapshot = json.loads(json.dumps(current.snapshot(), ensure_ascii=False))
+    assert snapshot["readings"]
+    restored = context(language, 3)
+    restored.restore(snapshot)
+    for line, expected in after:
+        assert outcome(restored.turn(line, KG) or {}, expected), line
+
+
+def test_a_snapshot_without_readings_restores_and_a_bad_one_is_refused():
+    current = context("english", 3)
+    current.turn("Nora has 7 pens.", KG)
+    snapshot = current.snapshot()
+    assert "readings" not in snapshot
+    restored = context("english", 3)
+    restored.restore(snapshot)
+    assert outcome(restored.turn("How many pens does Nora have?", KG) or {}, 7)
+    with pytest.raises(ValueError):
+        context("english", 3).restore(dict(snapshot, readings=["Nora has 7 pens."]))
