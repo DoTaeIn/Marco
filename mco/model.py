@@ -9,14 +9,16 @@ from typing import Any, Mapping, Optional, Sequence, Union
 
 from .backends import select_backend
 from .backends.base import BackendModel, BackendSession
-from .errors import BackendError, InvalidInputError, MCOError, ModelClosedError
+from .errors import BackendError, InvalidInputError, MCOError, ModelClosedError, SnapshotError
 from .formats import detect
 from .info import ModelInfo
 from .result import ReasoningInput, Result
+from .snapshot import SnapshotInfo
 
 __all__ = ["Model", "Session", "load"]
 
 ReasoningData = Union[ReasoningInput, Mapping[str, Any], Sequence[Any]]
+PathLike = Union[str, "os.PathLike[str]"]
 
 
 def _check_text(text: object) -> str:
@@ -57,6 +59,22 @@ class Session:
         with self._lock:
             self._check()
             self._inner.reset()
+
+    def snapshot(self, path: PathLike) -> SnapshotInfo:
+        """Write this conversation to a snapshot file at ``path`` and describe it.
+
+        The file holds the turns and the reasoning state, bound to the model's base
+        identity; :meth:`Model.resume` or ``mco.load(..., snapshot=path)`` continues it,
+        in this process or another. The same state gives the same bytes. Raises
+        :class:`~mco.SnapshotError` when the backend cannot write snapshots."""
+        with self._lock:
+            self._check()
+            try:
+                return self._inner.snapshot(Path(path))
+            except MCOError:
+                raise
+            except Exception as exc:
+                raise SnapshotError(f"{type(exc).__name__}: {exc}") from exc
 
     def close(self) -> None:
         with self._lock:
@@ -117,6 +135,25 @@ class Model:
         with self._lock:
             self._check()
             session = Session(self, self._inner.new_session())
+            self._sessions.append(session)
+            return session
+
+    def resume(self, snapshot: PathLike, *, conversation: Optional[str] = None) -> Session:
+        """A new session continuing the conversation saved in ``snapshot``.
+
+        Refused with :class:`~mco.SnapshotMismatchError` if the snapshot was taken on another
+        base (or with an overlay history that differs), and with
+        :class:`~mco.SnapshotFormatError` if the file is damaged, truncated or of an unknown
+        version or schema. ``conversation`` names one when the file holds several."""
+        with self._lock:
+            self._check()
+            try:
+                inner = self._inner.resume(Path(snapshot), conversation)
+            except MCOError:
+                raise
+            except Exception as exc:
+                raise SnapshotError(f"{type(exc).__name__}: {exc}") from exc
+            session = Session(self, inner)
             self._sessions.append(session)
             return session
 
@@ -187,14 +224,16 @@ class Model:
 
 
 def load(path: Union[str, "os.PathLike[str]"], *, backend: Optional[str] = None,
-         verify: bool = True, **options: Any) -> Model:
+         verify: bool = True, snapshot: Optional[PathLike] = None, **options: Any) -> Model:
     """Load a model file (``.mco`` or ``.kgpack``) and return a :class:`Model`.
 
     ``backend`` forces a specific backend; by default the backend recorded in
     the file (or the best one accepting its format) is used. ``verify``
-    checks every recorded size and SHA-256 before running. Remaining keyword
-    ``options`` are passed to the backend (for ``marco-kgpack``:
-    ``allow_network``, ``overlay_dir``, ``marco_root``).
+    checks every recorded size and SHA-256 before running. ``snapshot`` names a
+    snapshot file written by :meth:`Session.snapshot`: the model's default
+    conversation continues it (see :meth:`Model.resume` for the checks).
+    Remaining keyword ``options`` are passed to the backend (for
+    ``marco-kgpack``: ``allow_network``, ``overlay_dir``, ``marco_root``).
     """
     file = detect(Path(path), verify=verify)
     runtime = select_backend(file, backend)
@@ -205,4 +244,11 @@ def load(path: Union[str, "os.PathLike[str]"], *, backend: Optional[str] = None,
     except Exception as exc:  # never leak a backend's internal exception type
         raise BackendError(f"backend {runtime.name!r} failed to open {path}: "
                            f"{type(exc).__name__}: {exc}") from exc
-    return Model(inner)
+    model = Model(inner)
+    if snapshot is not None:
+        try:
+            model._default = model.resume(snapshot)
+        except BaseException:
+            model.close()
+            raise
+    return model

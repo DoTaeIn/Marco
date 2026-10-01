@@ -16,7 +16,9 @@ Format 1.1 files also hold node, edge, graph-index and rule tables
 running path does not use them yet: MARCO still parses the graph source text
 (``GRPH`` chunks) when the model is opened, as it does for a ``.kgpack``.
 Language packs, axiom files and records are carried pack members. Nothing is
-loaded lazily. Overlays and snapshots are not supported.
+loaded lazily. Overlays are not supported. Conversation snapshots are
+(``Session.snapshot``): they bind to the file's ``content_sha256`` and build
+id; the file itself carries no snapshot.
 """
 from __future__ import annotations
 
@@ -33,7 +35,9 @@ __all__ = ["NativeMcoBackend"]
 
 #: Plain statements ``mco inspect`` shows for every Format 1 file of this version.
 LIMITS = ("overlay: not supported in this version",
-          "snapshot: not supported in this version")
+          "snapshot: conversation snapshots are supported (Session.snapshot, mco snapshot) and bind to "
+          "this file's content_sha256 and build id; the file itself carries no snapshot "
+          "(manifest supports.snapshot stays false in Format 1.0)")
 
 
 class NativeMcoBackend(Backend):
