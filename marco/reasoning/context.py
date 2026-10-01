@@ -3438,76 +3438,6 @@ class ReasoningContext:
                     "evidence": {"text": text.strip(), "contrast": marker}}
         return None
 
-    def _changes_nothing(self, parser, piece):
-        """An unread piece that could not have changed a count, so it is kept as no event that holds later
-        questions (effort 2): it names no holder of the state, by name, alias or pointer; it says no amount,
-        counter, scope or negation; the reader finds no verb in it; and it opens with a capitalised word that is
-        no holder and no word the pack declares anywhere (Order a few more quills.). A piece that opens with a
-        word the pack knows (The quills were stolen. / Someone took them.) is kept as before."""
-        if not self._effort_allows(2) or not self.observations:
-            return False
-        reading = parser.open_reading(piece)
-        tokens = reading["tokens"]
-        if not tokens or reading["question"] or tokens[0]["kind"] != "name" or any(
-                t["kind"] in ("number", "counter", "marker", "verb", "asker") for t in tokens):
-            return False
-        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
-        if any(parser._protected_kind(t["text"]) or parser._protected_kind(t["stem"]) for t in tokens):
-            return False
-        words = self._pack_words(parser)
-        if fold(tokens[0]["text"]) in words or fold(tokens[0]["stem"]) in words:
-            return False
-        if re.match(r"\s*%s\s*," % re.escape(tokens[0]["text"]), piece):
-            return False            # a word set off before the clause (Mysteriously, …): no verb that opens it
-        # a word the pack's regular past or participle ending could make may be a verb nobody declared
-        # (Rats chewed the quills.): the piece may have changed a count
-        endings = set()
-        for rules in ((parser.inflection_grammar or {}).get("endings") or {}).values():
-            for rule in rules:
-                if (rule.get("when") or {}).get("tense") == "present":
-                    continue
-                for step in rule.get("steps", []):
-                    for op in (step, step.get("else") or {}):
-                        if op.get("op") == "append" and op.get("text"):
-                            endings.add(op["text"])
-        if any(fold(t["text"]).endswith(fold(e)) and len(t["text"]) > len(e) + 1
-               for t in tokens[1:] for e in endings):
-            return False
-        low = " %s " % " ".join(fold(t["text"]) for t in tokens)
-        if any(" %s " % fold(pointer) in low for pointer in parser.pointers or []):
-            return False
-        graph = self.conversation_graph()
-        keys = list(dict.fromkeys(self._holder_keys(parser)))
-        for t in tokens:
-            if self._graph_nodes(parser, graph, t["text"], t["stem"], ("holder", "place")) or \
-                    self._holder_of(parser, t["text"], keys) is not None:
-                return False
-        return True
-
-    @staticmethod
-    def _pack_words(parser):
-        """Every word the language pack and the reader's data say anywhere, folded (cached on the parser)."""
-        cached = getattr(parser, "_pack_word_cache", None)
-        if cached is not None:
-            return cached
-        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
-        found = set()
-
-        def walk(value):
-            if isinstance(value, str):
-                found.update(fold(w) for w in re.findall(r"[^\W\d_]+(?:'[^\W\d_]+)?", value))
-            elif isinstance(value, dict):
-                for key, inner in value.items():
-                    walk(key)
-                    walk(inner)
-            elif isinstance(value, list):
-                for inner in value:
-                    walk(inner)
-        walk(parser.language_pack)
-        walk(parser.data)
-        parser._pack_word_cache = found
-        return found
-
     @staticmethod
     def _is_request(parser, piece):
         """The utterance is in a request form the pack declares (요청)."""
@@ -3516,8 +3446,30 @@ class ReasoningContext:
         folded = said.lower() if parser.data.get("ignore_case") else said
         heads = [h.lower() if parser.data.get("ignore_case") else h for h in spec.get("heads", [])]
         tails = [t.lower() if parser.data.get("ignore_case") else t for t in spec.get("tails", [])]
-        return (any(folded == h or folded.startswith(h + " ") for h in heads)
-                or any(folded.endswith(t) for t in tails))
+        if any(folded == h or folded.startswith(h + " ") for h in heads) or any(folded.endswith(t) for t in tails):
+            return True
+        # a bare imperative (요청.imperative): a declared request verb in its base form opens the sentence, with no
+        # subject before it, and a declared object opener follows it (Order a new box of quills.). A later verb
+        # form the reader knows, or a word the pack's regular past ending makes, makes it a statement instead
+        # (Order the general imposed held the city.), and it is kept as any unread statement is
+        bare = spec.get("imperative") or {}
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        words = [w.strip(",") for w in said.split()]
+        if len(words) < 3 or fold(words[0]) not in {fold(v) for v in bare.get("verbs", [])} \
+                or fold(words[1]) not in {fold(o) for o in bare.get("objects", [])}:
+            return False
+        endings = set()
+        for rules in ((parser.inflection_grammar or {}).get("endings") or {}).values():
+            for rule in rules:
+                if (rule.get("when") or {}).get("tense") == "present":
+                    continue
+                for step in rule.get("steps", []):
+                    for op in (step, step.get("else") or {}):
+                        if op.get("op") == "append" and op.get("text"):
+                            endings.add(fold(op["text"]))
+        later = parser.open_reading(" ".join(words[1:]))["tokens"]
+        return not any(t["kind"] in ("verb", "marker") or any(
+            fold(t["text"]).endswith(e) and len(t["text"]) > len(e) + 1 for e in endings) for t in later)
 
     @staticmethod
     def _amount_of(parser, word):
@@ -4158,6 +4110,18 @@ class ReasoningContext:
         replies = parser.data["context_replies"]
         if winner is None and deciding == "tie":
             items = [self.observations[c["index"]].strip() for c in ranking[:2]]
+            # the correction is said and not applied: what the events it may mean count is not known until it
+            # is settled, so their holders are held as an unapplied correction (as _correct_by_reference's asks)
+            graph = self.conversation_graph()
+            touched = set()
+            for c in candidates:
+                for subject, _p, _v in rows_of(self.observations[c["index"]]) if "index" in c else []:
+                    pair = graph.of_key(subject)
+                    # the holder node's words (a question may name the holder bare), else the key's leading word
+                    touched.update(graph.nodes[pair[0]]["name"].split() if pair else subject.split()[:1])
+            touched = sorted(touched)
+            if touched:
+                self._remember_unread({"text": said, "at": len(self.observations), "대상": touched})
             return {"operator": "relational_graph", "status": "unresolved", "transitions": [],
                     "answer": replies["reference_which_event"].format(
                         말=said, 목록=", ".join('"%s"' % item for item in items)),
@@ -7362,8 +7326,14 @@ class ReasoningContext:
             # 판단은 **메시지 전체가 아니라 구간마다** 해야 한다.
             for piece, asking in self._segments(text, parser):
                 notes = []
-                if asking or parser.parse(piece, partial=True, events=True, verbs=verbs, repair=True,
-                                          _diagnostics=notes) is not None:
+                if asking:
+                    continue
+                read = parser.parse(piece, partial=True, events=True, verbs=verbs, repair=True, _diagnostics=notes)
+                # nothing of this turn was applied. A piece read as a question states nothing; any other piece
+                # states something the turn did not apply, whether it reads on its own (Nora gave Ivo 2 quills.,
+                # said with a sentence nobody reads), only as the shape of an event (이보는 상대방한테 받았다가
+                # 돌려줬어) or not at all: it is kept, and what it names is not said as known
+                if read is not None and read.get("query") and not read.get("facts"):
                     continue
                 # 묻는 말은 못 읽은 사건이 아니다. 아무 상태도 안 바꾼다.
                 if any(note.get("reason") == "question_is_not_an_observation"
@@ -7371,9 +7341,6 @@ class ReasoningContext:
                     continue
                 # A request asks for an action; it reports no event.
                 if self._is_request(parser, piece):
-                    continue
-                # A piece that could not have changed a count (no holder, no amount, no verb) is no event (effort 2).
-                if self._changes_nothing(parser, piece):
                     continue
                 # An unread piece that says an earlier statement was wrong (a declared contrast,
                 # "..., not ...") may retract any statement: every value is held until a later

@@ -20,12 +20,22 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | Document | Package |
 | --- | --- |
 | [marco.md](architecture/marco.md) | `marco`, the core package and its subpackages |
+| [marco.host.md](architecture/marco.host.md) | `marco.host`: `act.py`, running the actions a graph chose on the host and logging each run |
+| [marco.knowledge.md](architecture/marco.knowledge.md) | `marco.knowledge`: the local definition index |
+| [marco.knowledge.ingest.md](architecture/marco.knowledge.ingest.md) | `marco.knowledge.ingest`: reading text folders, a dictionary export, PDF and PPTX files and web pages into graph form |
 | [marco.language.md](architecture/marco.language.md) | `marco.language`, the language seam: `realize` |
 | [marco.language.realizer.md](architecture/marco.language.realizer.md) | `marco.language.realizer`: Hermeneia, the language realization pipeline, and the semantic check of Palinorrhesis |
+| [marco.learning.md](architecture/marco.learning.md) | `marco.learning`: proposed changes to what MARCO knows or how it reads, each admitted only after its module's check |
+| [marco.perception.md](architecture/marco.perception.md) | `marco.perception`: a document image turned into observations: OCR words, chart and table structure, objects, body keypoints, spatial relations |
+| [marco.reasoning.md](architecture/marco.reasoning.md) | `marco.reasoning`: the conversation's evidence ledger, Horn-rule inference, state evaluation, action programs and the conversation identity graph |
+| [marco.runtime.md](architecture/marco.runtime.md) | `marco.runtime`: the entry points that open a graph for conversation: `Conversation`, the explanation pipeline, the graph-dialogue backend |
+| [marco.storage.md](architecture/marco.storage.md) | `marco.storage`: `.kgpack` packs, the routing index file, the conversation store, stable ids, the overlay store and merged view, graph text, snapshots |
 | [marco.trace.md](architecture/marco.trace.md) | `marco.trace`: Hypomnema, the provenance ledger |
 | [conversation-graph.md](architecture/conversation-graph.md) | The conversation identity graph: nodes, alias and count edges, lookups, snapshot, and which string-key places each step replaces |
 | [mco.md](architecture/mco.md) | `mco`, the public API and CLI (0.1.0 on PyPI) |
 | [mco.backends.md](architecture/mco.backends.md) | `mco.backends`, the runtime extension API |
+| [mco.native.md](architecture/mco.native.md) | `mco.native`: the reader and writer of MCO Format 1 (1.1 with node, edge and rule tables); not yet read by the running path |
+| [alma.md](architecture/alma.md) | `alma`: ALMA 0.1, the one-agent research loop (not in MARCO 1) |
 
 | Document | What |
 | --- | --- |
@@ -68,6 +78,8 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | --- | --- |
 | [2026-09-24-marco-1-preview-1.md](releases/2026-09-24-marco-1-preview-1.md) | MARCO 1 · Preview 1: the `MARCO-1-preview.mco` file on the GitHub pre-release, its measured numbers at round 2 |
 | [2026-09-24-mco-0.1.0.md](releases/2026-09-24-mco-0.1.0.md) | `mco` 0.1.0 on PyPI: what the package is, what it needs, what it cannot do yet, the license |
+| [2026-10-01-marco-1.md](releases/2026-10-01-marco-1.md) | MARCO 1, draft completed at the tag: the six gate conditions and their reports, the effort curve, the SVAMP check, what changed since Preview 1, the limitations, how to run it, the known test failures |
+| [2026-10-01-mco-0.2.0.md](releases/2026-10-01-mco-0.2.0.md) | `mco` 0.2.0, draft: the native format, overlays and snapshots, and the API version 1 check against 0.1.0 (nothing removed, nothing changed in meaning) |
 
 ## Archive (`docs/archive/`)
 
@@ -116,6 +128,7 @@ that code closes it.
 | [G7-3.md](requests/G7-3.md) | The shared ranking of candidates, its fields and its commits |
 | [G7-4.md](requests/G7-4.md) | The conversation graph's interface for the statement side: calls, fields, what the reader must name |
 | [G7-5.md](requests/G7-5.md) | A Korean holding whose thing has modifiers puts them into the holder's node: for the statement side |
+| [G7-6.md](requests/G7-6.md) | For M2, the realizer: a hold over one thing counted in two units should name the units, and a reply should use the counter the question asked in |
 
 ## Korean design records (`docs/ko/`)
 
@@ -339,6 +352,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [graph-corrections-evidence.json](ko/dialogue-gate-2026-09-22/graph-corrections-evidence.json) | Corrections on nodes, the answer cites the correction turn, `13d8965`: 98 of 108, 0 wrong |
 | [graph-step-3s6.json](ko/dialogue-gate-2026-09-22/graph-step-3s6.json) | Identity graph step 3, statements 6, `c128040`: 98 of 108, no turn changed |
 | [graph-safety-unread-thing.json](ko/dialogue-gate-2026-09-22/graph-safety-unread-thing.json) | Safety fix for an unread turn that names a thing, with the overlay view merged, `5987ed5`: 98 of 108, no turn changed |
+| [release-safety-fixes.json](ko/dialogue-gate-2026-09-22/release-safety-fixes.json) | Release freeze, `7286944`: four wrong-answer fixes, the two-unit fix and the declared request: 98 of 108, no turn changed |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-graph-step-3s6.json](ko/dialogue-gate-2026-09-22/composition-graph-step-3s6.json) | Composition on the identity graph, `650efc9`: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |

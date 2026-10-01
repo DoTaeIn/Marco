@@ -5108,9 +5108,55 @@
   "tails": [
    "please",
    "for me"
-  ]
+  ],
+  "imperative": {
+   "verbs": [
+    "order",
+    "reorder",
+    "buy",
+    "purchase",
+    "book",
+    "schedule",
+    "reschedule",
+    "cancel",
+    "send",
+    "remind",
+    "notify",
+    "print",
+    "scan",
+    "download",
+    "upload",
+    "find",
+    "search",
+    "show",
+    "list",
+    "save",
+    "share",
+    "renew",
+    "check",
+    "draft",
+    "write",
+    "create",
+    "arrange",
+    "prepare",
+    "forward",
+    "submit",
+    "call"
+   ],
+   "objects": [
+    "a",
+    "an",
+    "the",
+    "some",
+    "more",
+    "another",
+    "any",
+    "me",
+    "us"
+   ]
+  }
  },
- "_요청": "Request mood. An utterance that opens with a request word or a modal request (please, kindly, let's, let us, can/could/would/will you) or closes with 'please' or 'for me' asks for an action; it reports no event, so if nothing reads it, it is not kept as an unread event that holds later questions.",
+ "_요청": "Request mood. An utterance that opens with a request word or a modal request (please, kindly, let's, let us, can/could/would/will you) or closes with 'please' or 'for me' asks for an action; it reports no event, so if nothing reads it, it is not kept as an unread event that holds later questions. imperative: a bare imperative is a request too -- a sentence whose first word is one of these verbs in its base form, with no subject before it, and whose second word opens its object (an article or determiner, or a first-person object). The verbs are errands asked of an assistant; those whose bare noun is an everyday subject of a statement are left out (mail, email, text, post, pay: Mail the courier brought ... is a statement). A quantity is no object opener (Order 66 destroyed ...), and a sentence with a later verb form the reader knows, or a word the regular past ending makes, is not taken as a request.",
  "이름밖": [
   "about",
   "above",
