@@ -11,6 +11,7 @@ import io
 import json
 from pathlib import Path
 import struct
+import zipfile
 import zlib
 
 import pytest
@@ -345,3 +346,58 @@ def test_detect_reports_refused_files_and_load_refuses_them(tiny: bytes, tmp_pat
     garbage.write_bytes(b"\x89MCO" + b"\x00" * 64)
     with pytest.raises(mco.ModelFormatError):
         detect(garbage)
+
+
+# --- MARCO: compile ------------------------------------------------------------------------------
+# A small model per language, built from this checkout's graphs; compat and native from one input.
+
+KO = {"graphs": ["graphs/graph_정산_나눠내기.kg", "graphs/graph_일상추론.kg"], "language": "styles/한국어.json"}
+EN = {"graphs": ["graphs/graph_en_bill_split.kg", "graphs/graph_일상추론.kg"], "language": "styles/english.json"}
+
+
+@pytest.fixture(scope="module")
+def builds(tmp_path_factory: pytest.TempPathFactory) -> dict[tuple[str, str], Path]:
+    out = tmp_path_factory.mktemp("native")
+    paths = {}
+    for lang, spec in (("ko", KO), ("en", EN)):
+        for fmt in ("compat", "native"):
+            path = out / f"{lang}-{fmt}.mco"
+            report = mco.compile(ROOT, path, name=f"T-{lang}", format=fmt, **spec)
+            assert report.info.format == f"mco-{fmt}"
+            paths[lang, fmt] = path
+    return paths
+
+
+def test_compile_native_is_deterministic_and_holds_the_same_pack(builds, tmp_path: Path) -> None:
+    again = tmp_path / "again.mco"
+    mco.compile(ROOT, again, name="T-ko", format="native", **KO)
+    assert again.read_bytes() == builds["ko", "native"].read_bytes()
+    native, compat = detect(builds["ko", "native"]), detect(builds["ko", "compat"])
+    assert (native.kind, native.version, compat.kind) == ("mco-native", 1, "mco-compat")
+    # The pack rebuilt from the chunks is byte for byte the pack MARCO wrote.
+    payload = compat.payload_bytes()
+    assert native.payload_bytes() == payload
+    assert native.manifest["build_id"] == compat.manifest["build_id"]
+    with zipfile.ZipFile(io.BytesIO(payload)) as zf:
+        assert native.manifest["content_sha256"] == hashlib.sha256(zf.read("manifest.json")).hexdigest()
+    # From the compat file or the bare pack: the same native bytes.
+    pack = tmp_path / "bare.kgpack"
+    pack.write_bytes(payload)
+    for source in (builds["ko", "compat"], pack):
+        out = tmp_path / f"from-{source.suffix[1:]}.mco"
+        mco.compile(source, out, name="T-ko", format="native")
+        assert out.read_bytes() == builds["ko", "native"].read_bytes()
+    assert mco.compile(pack, tmp_path / "default.mco").info.format == "mco-compat"   # 0.1.0 default kept
+    with pytest.raises(mco.CompileError):
+        mco.compile(builds["ko", "native"], tmp_path / "x.mco", format="native")
+    with pytest.raises(mco.CompileError):
+        mco.compile(pack, tmp_path / "x.mco", format="zip")
+
+
+def test_cli_compiles_native(tmp_path: Path) -> None:
+    from mco.cli import main
+    out = io.StringIO()
+    code = main(["compile", str(ROOT), "-o", str(tmp_path / "cli.mco"), "--graph", KO["graphs"][0],
+                 "--language", KO["language"], "--format", "native", "--json"], stdout=out)
+    info = json.loads(out.getvalue())["info"]
+    assert code == 0 and info["format"] == "mco-native" and info["format_version"] == 1

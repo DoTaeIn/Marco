@@ -10,10 +10,13 @@ from typing import Any, Optional, Sequence, Union
 from ._version import __version__
 from .backends import get_backend, select_backend
 from .errors import CompileError, MCOError, ModelNotFoundError
-from .formats import detect, write_compat
+from .formats import detect, write_compat, write_native
 from .info import ModelInfo
 
 __all__ = ["CompileReport", "compile", "inspect"]
+
+#: Output formats of :func:`compile`: the 0.1.0 compatibility container, or MCO Format 1.
+FORMATS = ("compat", "native")
 
 PathLike = Union[str, "os.PathLike[str]"]
 
@@ -40,7 +43,7 @@ class CompileReport:
 def compile(source: PathLike, output: PathLike, *, name: Optional[str] = None,
             build_id: Optional[str] = None, backend: str = "marco-kgpack",
             graphs: Optional[Sequence[str]] = None, language: Optional[str] = None,
-            **options: Any) -> CompileReport:
+            format: str = "compat", **options: Any) -> CompileReport:
     """Compile ``source`` into an ``.mco`` model file at ``output``.
 
     ``source`` is either an existing ``.kgpack`` (wrapped as-is, no runtime
@@ -49,16 +52,29 @@ def compile(source: PathLike, output: PathLike, *, name: Optional[str] = None,
     relative to ``source`` (for example ``["graphs/graph_정산_*.kg"]``);
     ``language`` picks the language asset when the tree declares several.
 
+    ``format`` picks the file written: ``"compat"`` (the default, the 0.1.0
+    compatibility container, see :mod:`mco.formats`) or ``"native"`` (MCO
+    Format 1, ``docs/mco/format-1.md``, run by the ``mco-native`` backend).
+
     The output is deterministic: the same inputs give byte-identical files.
-    This release writes the compat container (see :mod:`mco.formats`).
     """
     source, output = Path(source), Path(output)
     if not source.exists():
         raise ModelNotFoundError(f"compile source not found: {source}")
     if output.resolve() == source.resolve():
         raise CompileError("output must differ from source")
+    if format not in FORMATS:
+        raise CompileError(f"unknown output format {format!r}; choose one of {', '.join(FORMATS)}")
     compiler = get_backend(backend)
     generator = f"mco {__version__}"
+
+    def write(payload: bytes, name: Optional[str], recorded: Optional[str]) -> None:
+        if format == "native":
+            write_native(output, payload, name=name, build_id=build_id, generator=generator)
+        else:
+            write_compat(output, payload, name=name, build_id=build_id, backend=recorded or backend,
+                         generator=generator)
+
     try:
         if source.is_file():
             if graphs or language:
@@ -68,8 +84,7 @@ def compile(source: PathLike, output: PathLike, *, name: Optional[str] = None,
                 raise CompileError("native .mco files are already compiled")
             payload = file.payload_bytes()
             recorded = (file.manifest.get("runtime") or {}).get("backend") if file.manifest else None
-            write_compat(output, payload, name=name or (file.manifest or {}).get("name") or source.stem,
-                         build_id=build_id, backend=recorded or backend, generator=generator)
+            write(payload, name or (file.manifest or {}).get("name") or source.stem, recorded)
         else:
             if not compiler.accepts_source(source):
                 raise CompileError(f"backend {backend!r} does not recognise {source} as a source tree")
@@ -80,8 +95,7 @@ def compile(source: PathLike, output: PathLike, *, name: Optional[str] = None,
                 compile_options["language"] = language
             with tempfile.TemporaryDirectory(prefix="mco-compile-") as scratch:
                 payload = compiler.compile(source, Path(scratch) / "payload.kgpack", compile_options)
-            write_compat(output, payload, name=name or output.stem, build_id=build_id,
-                         backend=backend, generator=generator)
+            write(payload, name or output.stem, None)
     except MCOError:
         raise
     except Exception as exc:
