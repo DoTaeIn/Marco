@@ -187,6 +187,26 @@ class PackModel:
     def permits(self, operation):
         return operation in self._axioms["operators"]
 
+    @property
+    def effective_key(self):
+        """The parser cache key: the fingerprint, or with an overlay's rule changes applied, a digest
+        of the fingerprint and the overlay head (seq and change id) they were read at."""
+        return getattr(self, "_overlay_key", None) or self.fingerprint
+
+    def apply_rule_overlay(self, changes, key):
+        """Use the rules of an attached overlay (docs/architecture/overlay.md) from the next parser on.
+
+        ``changes`` is ``GraphView.rule_changes()`` (DISABLE / REPLACE / ADD), applied after the model
+        is loaded, to the loaded rules; ``key`` names the overlay head they were read at. ``None`` (or
+        no changes) puts the loaded rules back. ``fingerprint`` stays the base fingerprint."""
+        from marco.storage.graph_view import apply_rule_changes
+        base = self.__dict__.setdefault("_base_relational", self._relational)
+        if not changes:
+            self._relational, self._overlay_key = base, None
+            return
+        self._relational = {**base, "rules": apply_rule_changes(base.get("rules") or [], changes)}
+        self._overlay_key = hashlib.sha256(("%s\n%s" % (self.fingerprint, key)).encode()).hexdigest()
+
     def parser(self):
         """A parser of this model for one caller.
 
@@ -196,9 +216,9 @@ class PackModel:
         patterns and the first suffix trie; learning replaces a trie, it never changes one in place.
         """
         from relational_semantics import RelationalParser
-        built = _built_parsers.get(self.fingerprint)
+        built = _built_parsers.get(self.effective_key)
         if built is None:
-            built = _built_parsers[self.fingerprint] = RelationalParser(data=self._relational,
+            built = _built_parsers[self.effective_key] = RelationalParser(data=self._relational,
                                                                         language_pack=self._language)
         return deepcopy(built, {id(built._inflection_trie): built._inflection_trie})
 

@@ -446,7 +446,7 @@ class AppState:
 
         Re-written: the working-folder file of every graph whose merged text changed (and the
         pack's own bytes again for a graph no longer changed); the graph-selection entries of
-        those graphs; the active graph if its
+        those graphs; the rules (``PackModel.apply_rule_overlay``); the active graph if its
         include closure changed. Every open reasoning context is re-derived from its own
         snapshot without the saved replay. Returns whether anything was applied."""
         head = self.graph_overlay.head()
@@ -454,6 +454,7 @@ class AppState:
             return False
         view = self.graph_overlay.view(self._overlay_base, at=head[0])
         texts = {self._overlay_base.member(g): view.text(g).encode("utf-8") for g in view.touched_graphs()}
+        rules = view.rule_changes()
         changed = {n for n in set(texts) | set(self._graph_texts) if texts.get(n) != self._graph_texts.get(n)}
         self._graph_texts, self.graph_view = texts, view
         for name in sorted(changed):
@@ -470,6 +471,9 @@ class AppState:
                 nodes.append(node)
             self.manager = dict(self.manager, nodes=nodes)
             self.manager_index = manager_index(self.manager)
+        key = "%d:%s" % head if rules else None
+        for model in [self.model] + list(self.companions):
+            model.apply_rule_overlay(rules or None, key)
         if self.active_name and self.graph is not None and changed & self._include_closure(self.active_name):
             self._activate(self.active_name, force=True)
         if self.reasoning_contexts:
