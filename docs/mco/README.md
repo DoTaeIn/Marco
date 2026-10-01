@@ -90,6 +90,7 @@ From a MARCO checkout, for development: `pip install -e ".[marco]"`.
 | `model.reason(data)` | `Result` | A self-contained problem given as facts plus a question |
 | `model.reset()` | `None` | Forget the default conversation |
 | `model.info` / `mco.inspect(path)` | `ModelInfo` | Metadata. Nothing is executed |
+| `session.snapshot(path)` / `model.resume(path)` | `SnapshotInfo` / `Session` | Save a conversation to a file; continue it (repository only, not in 0.1.0) |
 | `mco.compile(source, output, ...)` | `CompileReport` | Build a `.mco` from a MARCO source tree or `.kgpack` |
 | `mco.benchmark(model_or_path, cases)` | `BenchmarkReport` | Accuracy and latency on fixed cases |
 
@@ -138,7 +139,9 @@ MARCO backend does not support them yet: it raises `UnsupportedInputError`, and
 Everything derives from `mco.MCOError`: `ModelNotFoundError`, `ModelFormatError`
 (and its subclasses `IntegrityError` and `UnsupportedFormatError`), `BackendError`
 (and `BackendUnavailableError`), `CompileError`, `InvalidInputError` (and
-`UnsupportedInputError`), and `ModelClosedError`. A backend's internal exceptions
+`UnsupportedInputError`), `ModelClosedError`, and `SnapshotError` (and its
+subclasses `SnapshotFormatError` and `SnapshotMismatchError`; repository only).
+A backend's internal exceptions
 are never raised as-is. They are wrapped, with the original chained as `__cause__`.
 
 ## CLI
@@ -191,8 +194,9 @@ its limits:
 - graphs, language packs and axioms are **carried members**: the pack files,
   unchanged, in typed chunks. The engine parses the graph text when the model
   opens, as it does for a `.kgpack`. Node, edge and rule tables come next;
-- no overlay (the later Persistent Overlay Infrastructure), no snapshot, no
-  consolidation; the manifest and `mco inspect` say so;
+- no overlay (the later Persistent Overlay Infrastructure), no
+  consolidation; the manifest and `mco inspect` say so. Conversation snapshots
+  work on it (below); the file itself carries none;
 - nothing is loaded lazily, and partial loading is not measured;
 - the native file is larger and opens a little slower than the compat file
   today. For the whole source tree at commit `99890011`, on a busy machine,
@@ -202,6 +206,39 @@ its limits:
 
 See [api.md](https://github.com/DoTaeIn/Marco/blob/main/docs/mco/api.md) for the
 stability contract and how to write a backend.
+
+## Conversation snapshots (in the repository, not released yet)
+
+A conversation can be written to one file and continued later, in another
+process:
+
+```python
+with mco.load("MARCO-1-ko.mco") as model:
+    session = model.session()
+    session.run("돌은 23개 있다.")            # "there are 23 stones"
+    session.run("돌 8개를 꺼냈다.")           # "8 were taken out"
+    session.snapshot("stones.snap")
+
+# later, anywhere
+with mco.load("MARCO-1-ko.mco", snapshot="stones.snap") as model:
+    model.run("지금 돌은 몇 개야?").answer     # '15개입니다.', with the same evidence
+```
+
+```bash
+mco snapshot MARCO-1-ko.mco "돌은 23개 있다." "돌 8개를 꺼냈다." -o stones.snap
+mco inspect stones.snap                       # base identity, overlay, schemas, counts; runs nothing
+mco run MARCO-1-ko.mco --resume stones.snap "지금 돌은 몇 개야?"
+```
+
+A snapshot is bound to the model's content (`content_sha256`) and build id;
+resuming it on another model raises `SnapshotMismatchError`, and a damaged or
+truncated file raises `SnapshotFormatError`. It holds the turns and the
+reasoning state in plain JSON; it excludes caches, pending plans, persona and
+affect state, and the open graph dialogue of the knowledge-graph route, so a
+follow-up to an unfinished graph dialogue (the bill split waiting for the
+number of people) is asked again after a resume. It is storage, not learning:
+nothing in it changes what the model knows. Details:
+[snapshot.md](https://github.com/DoTaeIn/Marco/blob/main/docs/architecture/snapshot.md).
 
 ## What 0.1.0 cannot do yet
 

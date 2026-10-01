@@ -120,7 +120,10 @@ unchanged, to be replaced by node, edge and rule tables in the next slice.
   major version (`1`), and `manifest` (not stable) holds `mco` (the file's
   manifest), `format` (major, minor, flags, size), `chunks` (type, version,
   required, compression, offset, stored and raw size, SHA-256) and `members`.
-  `notes` say that overlay and snapshot are not supported in this version.
+  `notes` say that overlays are not supported in this version, and that
+  conversation snapshots are (they bind to the file's `content_sha256` and
+  build id; the manifest's `supports.snapshot` stays `false`, since the file
+  itself carries no snapshot).
 * A native file this reader cannot run (a newer major version, an unknown
   required chunk or runtime feature, an overlay base) is still described by
   `inspect`, with `runnable=False` and the reason in `notes`; `load` raises
@@ -128,11 +131,54 @@ unchanged, to be replaced by node, edge and rule tables in the next slice.
   `IntegrityError`.
 
 What it cannot do yet: no overlay (the Persistent Overlay Infrastructure is a
-later slice), no snapshot, no consolidation; graphs are not loaded lazily (the
+later slice), no consolidation; graphs are not loaded lazily (the
 engine parses the carried graph text when the model opens, as with a
 `.kgpack`); no node, edge, rule or index tables; partial loading is not
 measured. The format is storage and runtime infrastructure: it changes how a
 model is stored and opened, not what the engine can answer.
+
+## Conversation snapshots
+
+Additions to API version 1 (in the repository, not in 0.1.0 on PyPI). Design note:
+[docs/architecture/snapshot.md](../architecture/snapshot.md).
+
+| Call | Returns | Purpose |
+|---|---|---|
+| `session.snapshot(path)` | `SnapshotInfo` | Write this conversation (turns and reasoning state) to one file, atomically |
+| `model.resume(path, *, conversation=None)` | `Session` | A new session continuing a snapshot's conversation |
+| `mco.load(model, snapshot=path)` | `Model` | The default conversation continues the snapshot |
+| `mco.inspect_snapshot(path)` | `SnapshotInfo` | Base identity, overlay sequence, schemas, conversation and turn counts; runs nothing |
+| `mco snapshot MODEL -o OUT [TEXT ...] [--resume SNAP]` | | CLI: run utterances in one conversation, then write its snapshot |
+| `mco run MODEL --resume SNAP [TEXT ...]` | | CLI: continue a snapshot |
+| `mco inspect SNAP [--json]` | | CLI: describe a snapshot file |
+
+A snapshot binds to the base it was taken on: `content_sha256` (a native file's
+manifest value; for a compat file or bare pack, the SHA-256 of the pack's
+`manifest.json`, the same number for the same pack) and the build id when both
+sides have one. The same state gives the same bytes. Resuming checks before it
+uses anything:
+
+* `SnapshotMismatchError`: another base, or an overlay history that differs from
+  the recorded one;
+* `SnapshotFormatError`: a damaged or truncated file, or an unknown snapshot
+  version, required feature or state schema;
+* `SnapshotError` (their base class, a `ValueError`): no such file, or a backend
+  that cannot write or resume snapshots.
+
+What a snapshot holds and excludes is listed inside every file
+(`SnapshotInfo.excluded`): caches, pending plans, persona and affect state, the
+input-understanding history (rebuilt from the turns at resume), the open graph
+dialogue of the knowledge-graph route, and learning sidecars. A follow-up to an
+unfinished graph dialogue does not carry over a resume; the state dialogue does.
+`SnapshotInfo` fields: `path`, `size_bytes`, `sha256`, `version`, `base`,
+`overlay` (`None` when no overlay is attached, as for every `mco` session in this
+version), `runtime`, `requires`, `schemas`, `conversations`, `turns`, `excluded`,
+`conversation_ids`.
+
+The backend contract gains two optional methods: `BackendSession.snapshot(path)`
+and `BackendModel.resume(path, conversation)`. Their defaults raise
+`SnapshotError`, so existing backends keep working unchanged; a backend that
+implements them advertises `Capability.SNAPSHOT`.
 
 ## Writing a backend
 
