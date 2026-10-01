@@ -16,25 +16,29 @@ Format 1.1 files also hold node, edge, graph-index and rule tables
 running path does not use them yet: MARCO still parses the graph source text
 (``GRPH`` chunks) when the model is opened, as it does for a ``.kgpack``.
 Language packs, axiom files and records are carried pack members. Nothing is
-loaded lazily. Overlays are not supported. Conversation snapshots are
-(``Session.snapshot``): they bind to the file's ``content_sha256`` and build
-id; the file itself carries no snapshot.
+loaded lazily. An overlay store beside the file can be attached
+(``mco.load(path, overlay=...)``, :mod:`mco.overlay`); the file itself holds no
+overlay. Conversation snapshots are supported (``Session.snapshot``): they bind
+to the file's ``content_sha256`` and build id; the file itself carries no
+snapshot.
 """
 from __future__ import annotations
 
 from collections.abc import Mapping
+from pathlib import Path
 from typing import Any
 
 from ..errors import BackendUnavailableError, InvalidInputError, UnsupportedFormatError
 from ..formats import ModelFile
 from ..info import ModelInfo
 from .base import Backend, BackendModel
-from .marco import CAPABILITIES, OPTIONS, MarcoModel, _find_root, _model_fingerprint
+from .marco import CAPABILITIES, OPTIONS, MarcoModel, MarcoOverlay, _find_root, _model_fingerprint
 
 __all__ = ["NativeMcoBackend"]
 
 #: Plain statements ``mco inspect`` shows for every Format 1 file of this version.
-LIMITS = ("overlay: not supported in this version",
+LIMITS = ("overlay: an overlay store beside the file can be attached (mco.load(..., overlay=PATH)); "
+          "the file itself holds no overlay (manifest supports.overlay stays false)",
           "snapshot: conversation snapshots are supported (Session.snapshot, mco snapshot) and bind to "
           "this file's content_sha256 and build id; the file itself carries no snapshot "
           "(manifest supports.snapshot stays false in Format 1.0)")
@@ -103,3 +107,10 @@ class NativeMcoBackend(Backend):
         if unknown:
             raise InvalidInputError(f"unknown option(s) for backend {self.name!r}: {sorted(unknown)}")
         return MarcoModel(self, file, dict(options))
+
+    def open_overlay(self, file: ModelFile, path: Path, *, create: bool, writer: bool,
+                     options: Mapping[str, Any]) -> MarcoOverlay:
+        """The overlay store of ``file`` at ``path`` (for :mod:`mco.overlay`)."""
+        if file.refusal:
+            raise UnsupportedFormatError(file.refusal)
+        return MarcoOverlay(file, path, create=create, writer=writer, marco_root=options.get("marco_root"))
