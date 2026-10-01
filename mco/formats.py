@@ -13,9 +13,12 @@ Three on-disk forms are recognised:
     A bare MARCO ``.kgpack`` (ZIP with ``manifest.json``), accepted directly.
 
 ``mco-native``
-    The future MCO binary format, identified by the reserved magic prefix
-    :data:`NATIVE_MAGIC`. It is detected so that loading it fails with a clear
-    :class:`~mco.errors.UnsupportedFormatError` instead of a parse error.
+    MCO Format 1 (``docs/mco/format-1.md``), read and written by
+    :mod:`mco.native`. Identified by the magic prefix :data:`NATIVE_MAGIC`. A
+    file this reader recognises but cannot run (a newer major version, an
+    unknown required chunk or runtime feature) is still detected, with the
+    reason in :attr:`ModelFile.refusal`, so ``inspect`` can describe it and
+    ``load`` refuses it with :class:`~mco.errors.UnsupportedFormatError`.
 
 Integrity checks here re-implement the kgpack size/SHA-256 rules on purpose, so
 ``mco.inspect`` works without the MARCO runtime installed.
@@ -31,7 +34,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any, Optional, Union
 import zipfile
 
-from .errors import IntegrityError, ModelFormatError, ModelNotFoundError
+from .errors import CompileError, IntegrityError, ModelFormatError, ModelNotFoundError, UnsupportedFormatError
 
 __all__ = [
     "NATIVE_MAGIC",
@@ -40,11 +43,12 @@ __all__ = [
     "ModelFile",
     "detect",
     "write_compat",
+    "write_native",
 ]
 
 PathLike = Union[str, "os.PathLike[str]"]
 
-#: Reserved (provisional) magic prefix of native MCO binaries.
+#: Magic prefix of native MCO files (the full Format 1 magic is ``mco.native.MAGIC``).
 NATIVE_MAGIC = b"\x89MCO"
 COMPAT_CONTAINER = "compat-zip"
 COMPAT_VERSION = 0
@@ -78,14 +82,23 @@ class ModelFile:
     manifest: dict[str, Any] = field(default_factory=dict)        # mco.json (compat only)
     pack_manifest: dict[str, Any] = field(default_factory=dict)   # kgpack manifest.json
     verified: bool = False
+    native: dict[str, Any] = field(default_factory=dict)          # Format 1 header, chunks, members
+    refusal: Optional[str] = None  # why this reader cannot run a recognised file
 
     def payload_bytes(self) -> bytes:
-        """The embedded ``.kgpack`` bytes (compat), or the file itself (kgpack)."""
+        """The embedded ``.kgpack`` bytes (compat), the file itself (kgpack), or
+        the pack rebuilt from a Format 1 file's chunks (native)."""
         if self.kind == "kgpack":
             return self.path.read_bytes()
         if self.kind == "mco-compat":
             with zipfile.ZipFile(self.path) as zf:
                 return zf.read(PAYLOAD_NAME)
+        if self.kind == "mco-native":
+            if self.refusal:
+                raise UnsupportedFormatError(self.refusal)
+            from .native.pack import NativeModel
+            with NativeModel.open(self.path) as model:
+                return model.kgpack_bytes()
         raise ModelFormatError(f"{self.kind} has no kgpack payload")
 
 
@@ -132,7 +145,7 @@ def detect(path: PathLike, *, verify: bool = True) -> ModelFile:
         head = handle.read(8)
     digest = _file_sha256(path)
     if head.startswith(NATIVE_MAGIC):
-        return ModelFile(path, "mco-native", None, size, digest)
+        return _detect_native(path, size, digest, verify)
     if not head.startswith(_ZIP_MAGIC):
         raise ModelFormatError(f"{path}: not an MCO model (unrecognised header)")
     try:
@@ -176,6 +189,21 @@ def _detect_compat(path: Path, zf: zipfile.ZipFile, names: list[str], size: int,
                      pack_manifest=pack_manifest, verified=verify)
 
 
+def _detect_native(path: Path, size: int, digest: str, verify: bool) -> ModelFile:
+    from .native.pack import NativeModel
+    try:
+        with NativeModel.open(path) as model:
+            if verify:
+                model.verify_all()
+            return ModelFile(path, "mco-native", model.major, size, digest, manifest=model.manifest,
+                             native=model.summary(), verified=verify)
+    except UnsupportedFormatError as exc:
+        with path.open("rb") as handle:
+            head = handle.read(12)
+        major = int.from_bytes(head[8:10], "little") if len(head) >= 10 else None
+        return ModelFile(path, "mco-native", major, size, digest, refusal=str(exc))
+
+
 def _zip_write(zf: zipfile.ZipFile, name: str, data: bytes) -> None:
     info = zipfile.ZipInfo(name, _FROZEN_TIME)
     info.compress_type = zipfile.ZIP_DEFLATED
@@ -217,3 +245,19 @@ def write_compat(output: PathLike, payload: bytes, *, name: Optional[str] = None
     finally:
         temporary.unlink(missing_ok=True)
     return manifest
+
+
+def write_native(output: PathLike, payload: bytes, *, name: Optional[str] = None,
+                 build_id: Optional[str] = None, generator: str = "") -> dict[str, Any]:
+    """Write the pack ``payload`` as an MCO Format 1 file. Returns its manifest.
+
+    The same payload and arguments always produce byte-identical output.
+    """
+    from .native.pack import write_model
+    pack_manifest = _read_pack_manifest(payload, verify=True, where="payload")
+    with zipfile.ZipFile(io.BytesIO(payload)) as zf:
+        members = {item["path"]: zf.read(item["path"]) for item in pack_manifest["files"]}
+    if not members:
+        raise CompileError("the pack has no members")
+    return write_model(output, pack_manifest, members, source_sha256=_sha256(payload),
+                       source_bytes=len(payload), name=name, build_id=build_id, generator=generator)

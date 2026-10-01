@@ -38,7 +38,7 @@ test = ["pytest>=7"]
 mco = "mco.cli:main"
 
 [tool.setuptools]
-packages = ["mco", "mco.backends"]
+packages = ["mco", "mco.backends", "mco.native"]
 
 [tool.setuptools.package-data]
 mco = ["py.typed"]
