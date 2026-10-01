@@ -624,20 +624,28 @@ class OverlayStore:
         return result
 
     def commit(self, deltas, *, actor, source, reason, approved_by, evidence=None, validation=None,
-               change_id=None):
+               change_id=None, check=None):
         """Record one change: all of ``deltas`` or nothing. Returns ``(seq, change_id)``.
 
         ``approved_by`` names who or what approved the change (the caller's identity);
         there is no default. Committing a ``change_id`` already present with the same
-        deltas is a no-op that returns the recorded ``(seq, change_id)``."""
+        deltas is a no-op that returns the recorded ``(seq, change_id)``. ``check``, if
+        given, is called with this store after the change is recorded and before it is
+        committed (reads see it); if it raises, nothing is written."""
         requests = [_check_request(d) for d in deltas]
         if not requests:
             raise OverlayError("a change has at least one delta")
         approval = {"by": _text(approved_by, "approved_by"), "at": _now()}
-        return self._write(lambda cur: self._record(cur, requests, actor, source, reason, evidence,
-                                                    approval, validation, change_id))
+        return self._write(lambda cur: self._checked(check, self._record(cur, requests, actor, source, reason,
+                                                                         evidence, approval, validation, change_id)))
 
-    def undo(self, change, *, actor, source, reason, approved_by, evidence=None, validation=None, change_id=None):
+    def _checked(self, check, result):
+        if check is not None:
+            check(self)
+        return result
+
+    def undo(self, change, *, actor, source, reason, approved_by, evidence=None, validation=None, change_id=None,
+             check=None):
         """Undo change ``change`` (its seq or change_id) by a new, compensating change.
 
         Every target the undone change touched is put back to its state just before
@@ -649,8 +657,9 @@ class OverlayStore:
         def work(cur):
             undone = self._change_row(cur, change)
             request = [{"op": "UNDO", "undoes": undone["change_id"]}]
-            return self._record(cur, request, actor, source, reason, evidence, approval, validation, change_id,
-                                deltas=lambda: _restores(cur, undone["seq"]))
+            return self._checked(check, self._record(cur, request, actor, source, reason, evidence, approval,
+                                                     validation, change_id,
+                                                     deltas=lambda: _restores(cur, undone["seq"])))
         return self._write(work)
 
     @staticmethod
@@ -697,10 +706,12 @@ class OverlayStore:
 
     # --- candidates: stored, not active, until approved from outside ---------------------
 
-    def propose(self, deltas, *, actor, source, reason, evidence=None, candidate_id=None):
+    def propose(self, deltas, *, actor, source, reason, evidence=None, candidate_id=None, check=None):
         """Store a candidate change. It is not active: it is in no current-state table and no count
         until ``approve`` is called for it. Returns the candidate id. Proposing a ``candidate_id``
-        already present with the same deltas is a no-op."""
+        already present with the same deltas is a no-op. ``check``, if given, is called with this
+        store while the deltas are applied provisionally (inside a savepoint that is always rolled
+        back); if it raises, the candidate is not stored."""
         requests = [_check_request(d) for d in deltas]
         if not requests:
             raise OverlayError("a candidate has at least one delta")
@@ -717,6 +728,15 @@ class OverlayStore:
                     return cid
             else:
                 cid = new_id(CANDIDATE_PREFIX)
+            if check is not None:
+                cur.execute("SAVEPOINT overlay_check")
+                try:
+                    self._record(cur, requests, actor, source, reason, evidence,
+                                 {"by": "provisional check", "at": _now()}, None, None)
+                    check(self)
+                finally:
+                    cur.execute("ROLLBACK TO overlay_check")
+                    cur.execute("RELEASE overlay_check")
             head = cur.execute("SELECT COALESCE(MAX(seq), 0) FROM changes").fetchone()[0]
             cur.execute("INSERT INTO candidates (candidate_id, created_at, actor, source, reason, evidence, request, "
                         "request_digest, proposed_at_seq, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')",
@@ -725,12 +745,12 @@ class OverlayStore:
             return cid
         return self._write(work)
 
-    def approve(self, candidate_id, *, approved_by, validation=None):
+    def approve(self, candidate_id, *, approved_by, validation=None, check=None):
         """Approve a pending candidate: in one transaction it becomes a change with its deltas, the
         approval naming ``approved_by`` (the caller's identity; there is no default). Returns
         ``(seq, change_id)``. Approving an approved candidate again is a no-op returning the same
         pair; a rejected candidate is refused; a stale revision is refused and the candidate stays
-        pending."""
+        pending, as it does when ``check`` (see ``commit``) raises."""
         approved_by = _text(approved_by, "approved_by")
 
         def work(cur):
@@ -746,6 +766,7 @@ class OverlayStore:
             approval = {"by": approved_by, "at": when, "candidate_id": candidate_id}
             seq, change_id = self._record(cur, requests, cand["actor"], cand["source"], cand["reason"],
                                           json.loads(cand["evidence"]), approval, validation, None)
+            self._checked(check, None)
             cur.execute("UPDATE candidates SET status = 'approved', decided_at = ?, decided_by = ?, change_seq = ? "
                         "WHERE candidate_id = ?", (when, approved_by, seq, candidate_id))
             return seq, change_id

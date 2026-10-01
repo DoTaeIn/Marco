@@ -26,9 +26,16 @@ without changing user code.
 
   What `mco-native` cannot do yet: graphs, language packs and axioms are
   carried pack members, not tables, so MARCO parses the graph text when the
-  model opens and nothing is loaded lazily; no overlay (the later Persistent
-  Overlay Infrastructure), no snapshot, no consolidation; partial loading is
-  not measured. It is storage and runtime infrastructure only.
+  model opens and nothing is loaded lazily; no overlay inside the file (an
+  overlay store beside it can be attached, below), no consolidation; partial
+  loading is not measured. It is storage and runtime infrastructure only.
+
+  Both backends attach an overlay store (`mco.load(..., overlay=PATH)`,
+  [overlay.md](overlay.md)): `MarcoModel` hands every application the same
+  `marco.storage.graph_view.OverlayAttachment`, and `open_overlay(file, path,
+  create=, writer=, options=)` returns the `MarcoOverlay` that `mco.overlay`
+  uses to write and read the store (`tests/test_mco_overlay.py`). `translate`
+  copies an overlay item's origin into `Evidence.detail["origin"]`.
 
 ## Does not own
 
