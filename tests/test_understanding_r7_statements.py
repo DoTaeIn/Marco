@@ -612,16 +612,29 @@ def test_a_snapshot_without_readings_restores_and_a_bad_one_is_refused():
         context("english", 3).restore(dict(snapshot, readings=["Nora has 7 pens."]))
 
 
-# A change whose holder the statement does not say is never charged to the one holder that has a count. With only
-# 가람 counted, 기 대표님이 세훈에게 세 개를 줬어 took 가람's count to 4 and answered 4 (가람 is not in the sentence);
-# 세훈에게 세 개를 줬어 and 세 개를 잃어버렸어 did the same. The statement is held at every effort and the count it
-# may have moved is held after it. A clause that continues the clause before it in one turn keeps its giver.
-UNSAID_HOLDER = ["기 대표님이 세훈에게 세 개를 줬어.", "세훈에게 세 개를 줬어.", "세 개를 잃어버렸어."]
+# A change is not charged to the one counted holder when the statement has a phrase in the subject or giver place
+# that the reading passed over. With only 가람 counted, 기 대표님이 세훈에게 세 개를 줬어 took 가람's count to 4 and
+# answered 4, through the reading that takes 기 대표 세훈 for the receiver and leaves the giver unsaid: the sentence
+# names 기 대표 in the subject place, and 가람 is not in it. Such a reading is no reading, at every effort: the
+# statement is held and the count it may have moved is held after it. A change with no subject phrase at all is
+# ordinary subject drop and takes the one counted holder, as before; so does a transfer that says only its receiver.
+SUBJECT_PASSED_OVER = [
+    "기 대표님이 세훈에게 세 개를 줬어.",        # a nominative phrase
+    "기 대표님께서 세훈에게 세 개를 줬어.",      # the honorific nominative
+    "동생은 세훈에게 세 개를 줬어.",            # a topic phrase
+    "기 대표님 세훈에게 세 개를 줬어.",         # a titled word before the receiver, no particle
+]
+SUBJECT_DROPPED = [
+    "세 개를 잃어버렸어.",                    # no subject phrase at all
+    "오늘은 세 개를 잃어버렸어.",              # a topic particle on a word outside names
+    "세훈에게 세 개를 줬어.",                  # only the receiver
+    "우 팀장님에게 세 개를 줬어.",              # only the receiver, titled
+]
 
 
-@pytest.mark.parametrize("line", UNSAID_HOLDER)
+@pytest.mark.parametrize("line", SUBJECT_PASSED_OVER)
 @pytest.mark.parametrize("effort", [0, 3])
-def test_a_change_with_no_holder_said_is_not_charged_to_the_only_holder(line, effort):
+def test_a_change_is_not_charged_to_the_only_holder_past_a_subject_the_statement_names(line, effort):
     current = context("한국어", effort)
     current.turn("가람은 연필이 일곱 개 있어.", KG)
     assert outcome(current.turn(line, KG) or {}, "hold")
@@ -629,6 +642,12 @@ def test_a_change_with_no_holder_said_is_not_charged_to_the_only_holder(line, ef
     assert asked.get("status") != "answered" and "4" not in str(asked.get("answer"))
     graph = current.conversation_graph()
     assert graph.value(graph.id_of("holder", "가람"), graph.id_of("thing", "연필")) == 7
+
+
+@pytest.mark.parametrize("line", SUBJECT_DROPPED)
+@pytest.mark.parametrize("effort", [0, 3])
+def test_a_change_with_no_subject_phrase_takes_the_one_counted_holder(line, effort):
+    assert play("한국어", effort, [("가람은 연필이 일곱 개 있어.", "rec"), (line, "rec"), ("가람은 연필이 몇 개 있어?", 4)]) == []
 
 
 def test_a_clause_that_continues_the_clause_before_keeps_its_giver():

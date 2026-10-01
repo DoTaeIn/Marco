@@ -4774,15 +4774,18 @@ class ReasoningContext:
                     return {"subject": key, "units": [before, now]}
         return None
 
-    def _holder_unsaid(self, parser, parsed):
-        """A reading that changes a count whose holder it does not say (the giver of 세훈에게 세 개를 줬어, the
-        loser of 세 개를 잃어버렸어; the reading of 기 대표님이 세훈에게 세 개를 줬어 that takes 기 대표 세훈 for the
-        receiver), when the conversation's one count has a holder: the replay would give the change to that
-        holder, a person the statement does not name (가람 연필 7 -> 4, and the reply said 가람 gave them). Such a
-        reading is no reading of a new statement, at any effort: the statement is held. Not unsaid: a clause
+    def _holder_unsaid(self, parser, text, parsed):
+        """A reading that changes a count whose holder it does not say, where the statement has a phrase in the
+        subject or giver place that the reading did not take for that holder (``_subject_passed_over``): the
+        reading of 기 대표님이 세훈에게 세 개를 줬어 that takes 기 대표 세훈 for the receiver. The replay would give the
+        change to the conversation's one counted holder, a person the statement passes over for the one it names
+        (가람 연필 7 -> 4, and the reply said 가람 gave them). Such a reading is no reading of a new statement, at any
+        effort: the statement is held. Not held: a change with no subject phrase at all (세 개를 잃어버렸어, 세훈에게
+        세 개를 줬어: the subject is dropped, and the one counted holder is the reading a listener makes); a clause
         that continues the clause before it in one turn (그리고 나래에게 세 개를 주었다: its holder comes from the
-        reader), and a change in a conversation whose one count has no holder at all (구슬은 18개 있다. 다섯 개를
-        꺼냈다.: the count is the thing's own, and no person is charged)."""
+        reader); and a change in a conversation whose one count has no holder at all (구슬은 18개 있다. 다섯 개를
+        꺼냈다.: the count is the thing's own, and no person is charged). A language that marks no subject with a
+        particle does not drop its subject: there every such reading is held."""
         updates = parser.data.get("numeric_updates") or {}
         if not any(isinstance(f.get("triple"), list) and f["triple"][0] is None and f["triple"][1] in updates
                    for f in (parsed or {}).get("facts", [])):
@@ -4799,7 +4802,51 @@ class ReasoningContext:
                 parts = fact.get("parts") if isinstance(fact.get("parts"), dict) else {}
                 counted[triple[0]] = bool(parts.get("holder") and parts.get("thing")) or len(triple[0].split()) > 1
         # the one count the change would go to: its own thing (no holder), or a holder's
-        return not (len(counted) == 1 and not next(iter(counted.values())))
+        if len(counted) == 1 and not next(iter(counted.values())):
+            return False
+        return self._subject_passed_over(parser, text, parsed, {w for key in counted for w in key.split()})
+
+    @staticmethod
+    def _subject_passed_over(parser, text, parsed, known):
+        """Whether ``text`` has a phrase in the subject or giver place that the reading ``parsed`` did not take
+        for a holder of its own: a word with a subject particle (the pack's slot group of the doer particle, and
+        the forms read as one of them: 이 가 은 는 께서) that is no numeral or counter, no word outside names (오늘은),
+        no word of a counted key (``known``: the thing, a known holder) and not the last word of a holder the
+        reading names (세훈이 in a reading that names 세훈); or a titled word (대표님, 팀장) that the reading took into
+        the name of the receiver before the receiver's own word (기 대표님 세훈에게 read as the receiver 기 대표 세훈).
+        A word before the receiver that has no title (김 세훈에게) is the receiver's name as the reader reads it."""
+        doer = getattr(parser, "doer_particle", "") or ""
+        subject = next((set(group) for group in parser.slot_particles if doer in group), set())
+        if not subject:
+            return True
+        subject |= {row["from"] for row in parser.particle_variants if row.get("from") and row.get("to") in subject}
+        forms = parser.holder_forms or {}
+        particles = sorted({p for group in parser.slot_particles for p in group} | set(parser.case_particles)
+                           | {row["from"] for row in parser.particle_variants if row.get("from")}
+                           | set(forms.get("delimiters") or []), key=len, reverse=True)
+        name_titles = sorted(forms.get("name_titles") or [], key=len, reverse=True)
+        job_titles = set(forms.get("job_titles") or [])
+
+        def untitled(word):
+            return next((word[:-len(t)] for t in name_titles if word.endswith(t) and len(word) > len(t)), word)
+        keys = [f["triple"][0].split() for f in (parsed or {}).get("facts", [])
+                if isinstance(f.get("triple"), list) and isinstance(f["triple"][0], str) and f["triple"][0]]
+        named = {key[-1] for key in keys}
+        inside = {w for key in keys for w in key[:-1]}
+        words = [w.strip(".,!?\"'") for w in str(text).split()]
+        for word in [w for w in words if w][:-1]:
+            particle = next((p for p in particles if word.endswith(p) and len(word) > len(p)
+                             and parser._particle_form(word[:-len(p)], p) == p), None)
+            stem = word[:-len(particle)] if particle else word
+            bare = untitled(stem)
+            if particle in subject:
+                if parser._protected_kind(word) or stem.lower() in parser.outside_names or bare in known \
+                        or stem in known or bare in named or stem in named:
+                    continue
+                return True
+            if particle is None and bare in inside and (bare != stem or stem in job_titles):
+                return True
+        return False
 
     def _asked_in_unit(self, parser, text, query, facts):
         """``(query, None)``, or ``(query, hold)`` for a count question about a holder and thing the conversation
@@ -6463,7 +6510,7 @@ class ReasoningContext:
         it; and the state rows the reading would record (``current_facts``' changes of this statement)."""
         if not self._is_statement(parsed):
             return ("statement", "not_a_statement"), []
-        if self._holder_unsaid(parser, parsed):
+        if self._holder_unsaid(parser, text, parsed):
             return ("one_subject", "ambiguous_quantity_subject"), []
         rows = [f["triple"] for f in parsed.get("facts", []) if isinstance(f.get("triple"), list)]
         updates = parser.data.get("numeric_updates") or {}
@@ -7439,9 +7486,10 @@ class ReasoningContext:
             if unsaid is not None:
                 return unsaid
         try:
-            if keeps and completion is None and not current.get("query") and self._holder_unsaid(parser, current):
-                # a change whose holder the statement does not say is not charged to the one holder that has a
-                # count (``_holder_unsaid``): the statement is held, and remembered as unread
+            if keeps and completion is None and not current.get("query") and self._holder_unsaid(parser, text, current):
+                # a change whose holder the reading does not say, in a statement with a subject phrase the reading
+                # passed over, is not charged to the one holder that has a count (``_holder_unsaid``): the
+                # statement is held, and remembered as unread
                 raise ValueError("ambiguous_quantity_subject")
             facts, defined, unsettled, 읽힘 = self._cached_replay(
                 parser, pending, self.fills + 새채움)
