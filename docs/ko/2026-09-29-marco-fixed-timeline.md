@@ -266,6 +266,11 @@ The real MCO format sits here, under the release and before M2 (owner,
 2026-09-29). It is not a top-level phase. The older documents call its
 milestones "MCO M1–M4"; those are not the MARCO phases M1–M4 of this file.
 
+Scope (owner, 2026-10-01): storage and runtime infrastructure only — binary format with stable ids,
+compile / run / inspect, persistent overlay applied only by explicit or outside approval, provenance, base
+hash and build id validation, conversation snapshot and restore. Consolidation comes after the release. It
+adds no learning: how MARCO discovers, validates and promotes changes is M2.
+
 핵심:
 
 > **Gate를 통과한 시점의 MARCO를 하나의 명확한 버전으로 남긴다.**
