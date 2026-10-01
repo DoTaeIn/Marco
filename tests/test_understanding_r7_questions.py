@@ -616,3 +616,33 @@ def test_a_question_with_a_swap_word_swaps_nothing():
     rows = _play("english", EN_START + ["Was it the other way round?", "How many {p} does {b} have?"], 3, **EN_WORDS)
     assert rows[-2].get("status") != "observed"
     assert rows[-1]["status"] == "answered" and "6" in rows[-1]["answer"]
+
+
+KO_GAVE = ["{a}는 {p} 6개가 있고, {b}는 4개가 있어.", "{a}가 {b}에게 {p} 2개를 줬어.", "{b}는 {p}이 몇 개야?"]
+
+
+@pytest.mark.parametrize("correction", [
+    "아니, 그렇게 된 게 아니야 사실은. {b}는 상대방한테 줬어.",
+    "아니, 그게 아니고 다른 얘기야. {b}는 그 사람한테 줬어.",
+])
+def test_the_transfer_said_again_with_the_receiver_as_giver_and_no_other_name_swaps_it(correction):
+    # no swap word: the event restated, one holder named with the giver's particle, the other slot a word that is no name
+    rows = _play("한국어", KO_GAVE + [correction, "{b}는 {p}이 몇 개야?", "{a}는 {p}이 몇 개야?"], 3, **KO_WORDS)
+    assert rows[-3]["status"] == "observed" and rows[-3]["meaning"]["act"] == "revise"
+    assert rows[-2]["status"] == "answered" and "2" in rows[-2]["answer"]
+    assert rows[-1]["status"] == "answered" and "8" in rows[-1]["answer"]
+    from bench.dialogue_gate import _norm
+    withdrawn = _norm(KO_GAVE[1].format(**KO_WORDS))
+    quoted = [x for row in rows[-2].get("transitions") or [] for x in (
+        (row.get("evidence") or {}).get("text"), (row.get("evidence") or {}).get("source"),
+        ((row.get("evidence") or {}).get("normalization") or {}).get("canonical")) if x]
+    assert quoted and not [x for x in quoted if _norm(x) and _norm(x) in withdrawn]
+
+
+@pytest.mark.parametrize("correction", [
+    "아니, 그렇게 된 게 아니야 사실은. {a}는 상대방한테 줬어.",      # the giver named as giver: the event as it was said
+    "아니, 그렇게 된 게 아니야 사실은. {b}는 상대방한테 받았어.",    # another verb: not this event said again
+])
+def test_the_transfer_said_again_the_same_way_or_with_another_verb_swaps_nothing(correction):
+    rows = _play("한국어", KO_GAVE + [correction], 3, **KO_WORDS)
+    assert rows[-1].get("status") != "observed"

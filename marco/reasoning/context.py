@@ -3876,6 +3876,35 @@ class ReasoningContext:
                     row["evidence"] = moved(row["evidence"])
         return reading
 
+    def _restated_the_other_way(self, parser, source, events, giver, taker, keys):
+        """Whether one of the restated events says the transfer of ``source`` with its giver and receiver swapped:
+        the same verb word, two slots, one holding the event's giver or receiver by name and the other a word that
+        names no holder; the named one stands with a particle of the group the source gave its giver (then they
+        gave) or its receiver (then they received). True only when the named holder is on the other side now."""
+        fold = (lambda v: v.lower()) if parser.data.get("ignore_case") else (lambda v: v)
+        tokens = source.split()
+        spans = {who: self._frame_span(parser, tokens, who, "holder") for who in (giver, taker)}
+        if not spans[giver] or not spans[taker]:
+            return False
+        said_verbs = {fold(word.strip(",.!?")) for word in tokens}
+
+        def same(one, other):
+            return bool(one) and bool(other) and (one == other or any(
+                one in group and other in group for group in parser.slot_particles))
+        for event in events:
+            slots = event.get("자리") or {}
+            if fold(str(event.get("verb") or "")) not in said_verbs or len(slots) != 2:
+                continue
+            held = [(particle, self._holder_of(parser, filler, keys)) for particle, filler in slots.items()]
+            named = [(particle, key) for particle, key in held if key in (giver, taker)]
+            if len(named) != 1 or sum(key is None for _particle, key in held) != 1:
+                continue
+            particle, who = named[0]
+            side = giver if same(particle, spans[giver][2]) else taker if same(particle, spans[taker][2]) else None
+            if side is not None and side != who:
+                return True
+        return False
+
     def _correction_frame(self, parser, text, knowledge_path):
         """A correction no declared form reads (``No, three.``, ``Not two, three.``, ``Actually, it was three.``,
         ``No, Bo gave them to Nora, the other way around.``, ``아니, 보라가 노라한테 준 거야.``), at effort 2: a
@@ -3898,7 +3927,7 @@ class ReasoningContext:
         # correction); a sentence that reads as the transfer said the other way round is the correction itself
         keys = list(dict.fromkeys(self._holder_keys(parser)))  # (a key listed twice is one)
         verbs_known = self._verbs_for(parser, self.observations)
-        restated = []
+        restated, restated_events = [], []
         for piece, asking in self._segments(said, parser):
             try:
                 partial = parser.parse(piece, partial=True, events=True, verbs=verbs_known) or {}
@@ -3908,6 +3937,10 @@ class ReasoningContext:
                 return None
             if partial.get("facts"):
                 restated.append(partial["facts"])
+            elif not any(parser._protected_kind(word.strip(",.!?")) == "negation" for word in piece.split()):
+                # the event said again with a slot left to a word that is no name (이보는 상대방한테 줬어); a sentence
+                # with a negation in it contrasts two fillers (라온이 아니라 솔비한테 줬어요) and is no plain restatement
+                restated_events += [event for event in partial.get("사건") or [] if isinstance(event, dict)]
         swap_word = any(" %s " % fold(w) in flat for w in spec.get("swap_words", []))
         # "the one", "that one" name someone, not the amount one
         counted_words = " %s " % " ".join(re.split(r"[\s,.!?]+", said))
@@ -4009,8 +4042,13 @@ class ReasoningContext:
                 for facts_ in restated) if len(givers) == 1 and len(takers) == 1 else False
             if restated and not reversed_said:
                 continue
+            # the transfer said again with one of its two holders named and the other slot left to a word that
+            # is no name: that slot takes the event's other holder, and the named one's particle says which side
+            # they are on now, by the particles this event gave its giver and its receiver
+            if not reversed_said and len(givers) == 1 and len(takers) == 1 and restated_events and not amounts:
+                reversed_said = self._restated_the_other_way(parser, source, restated_events, givers[0], takers[0], keys)
             # "the other way round" with no holder and no amount said: the event's own two are the pair (effort 2)
-            unnamed = swap_word and not every_named and not amounts
+            unnamed = (swap_word and not every_named and not amounts) or (reversed_said and bool(restated_events))
             if len(givers) == 1 and len(takers) == 1 and (set(pair) == {givers[0], takers[0]} or unnamed) \
                     and (swap_word or reversed_said or (first == takers[0] and not takers_first)
                          or (first == givers[0] and takers_first)) and len(set(amounts) - values) == 0:
