@@ -522,3 +522,62 @@ def test_a_stale_candidate_is_refused_at_approval(tmp_path):
     assert store.item("node", ids.node_id(G, "a"))["state"] == "added"
     store.reject(cid, rejected_by="reviewer-2", reason="stale")
     assert store.rebuild()["matched"]
+
+
+# --- the read API --------------------------------------------------------------------------
+
+def test_read_api_at_pinned_seqs(tmp_path):
+    store = _new(tmp_path)
+    one, one_id = store.commit([overlay.add_node(G, "a", revision=0, data={"k": "v"}), overlay.add_node(G, "b", revision=0),
+                                overlay.add_edge(G, "a", "is", "b", revision=0),
+                                overlay.add_rule("rule:new", {"r": 1}, revision=0)],
+                               actor="person-1", source="cli", reason="stated", approved_by="person-1",
+                               evidence={"turn": 3}, validation={"checked": "schema"})
+    two, two_id = store.commit([overlay.retract_edge(G, "base-x", "near", "base-y", revision=0),
+                                overlay.retract_node(G, "b", revision=1),
+                                overlay.disable_rule("rule:old", revision=0),
+                                overlay.replace_rule("rule:base", {"r": 2}, revision=0)], **WHO)
+    assert store.head() == (two, two_id)
+
+    assert [n["id"] for n in store.added_nodes(one)] == [ids.node_id(G, "a"), ids.node_id(G, "b")]
+    assert [n["id"] for n in store.added_nodes()] == [ids.node_id(G, "a")]
+    node = store.added_nodes()[0]
+    assert (node["graph_id"], node["name"], node["data"], node["revision"]) == (G, "a", {"k": "v"}, 1)
+    assert node["origin"]["change_id"] == one_id and node["origin"]["seq"] == one
+    assert node["origin"]["actor"] == "person-1" and node["origin"]["approval"]["by"] == "person-1"
+
+    edge = store.added_edges(one)[0]
+    assert (edge["id"], edge["src"], edge["rel"], edge["dst"]) == (ids.edge_id(G, "a", "is", "b"), "a", "is", "b")
+    assert store.added_edges() == []
+    assert [r["id"] for r in store.added_rules()] == ["rule:new"]
+
+    assert store.tombstoned_ids(one) == {"nodes": [], "edges": []}
+    hidden = store.tombstoned_ids()
+    assert hidden["nodes"] == [ids.node_id(G, "b")]
+    assert set(hidden["edges"]) == {ids.edge_id(G, "a", "is", "b"), ids.edge_id(G, "base-x", "near", "base-y")}
+    assert all(e["origin"]["change_id"] == two_id for e in store.tombstoned_edges())
+    assert [r["id"] for r in store.disabled_rules()] == ["rule:old"]
+    assert store.disabled_rules(one) == []
+    replaced = store.replaced_rules()
+    assert [(r["id"], r["body"]) for r in replaced] == [("rule:base", {"r": 2})]
+    assert store.counts(one) == dict(EMPTY, seq=one, nodes_added=2, edges_added=1, rules_added=1)
+    assert store.counts() == dict(EMPTY, seq=two, nodes_added=1, nodes_tombstoned=1, edges_tombstoned=2,
+                                  rules_added=1, rules_replaced=1, rules_disabled=1)
+
+    undo, undo_id = store.undo(two_id, actor="person-1", source="cli", reason="mistake", approved_by="person-1")
+    history = store.history(ids.edge_id(G, "a", "is", "b"))
+    assert [(h["seq"], h["op"], h["revision"]) for h in history] == [(one, "ADD_EDGE", 0), (two, "RETRACT_EDGE", 1),
+                                                                    (undo, "RESTORE", 2)]
+    assert history[0]["evidence"] == {"turn": 3} and history[0]["validation"] == {"checked": "schema"}
+    assert history[1]["payload"]["cascade_of"] == ids.node_id(G, "b")
+    assert history[2]["change_id"] == undo_id and history[2]["payload"]["undoes"] == two
+    change = store.change(two_id)
+    assert change["seq"] == two and change["parent_seq"] == one
+    assert [d["op"] for d in change["deltas"]] == ["RETRACT_EDGE", "RETRACT_EDGE", "RETRACT_NODE",
+                                                   "DISABLE_RULE", "REPLACE_RULE"]
+    assert store.change(two) == change
+    assert store.counts() == store.counts(one) | {"seq": undo}
+    with pytest.raises(OverlayError):
+        store.change(99)
+    with pytest.raises(OverlayError):
+        store.added_nodes(undo + 1)
