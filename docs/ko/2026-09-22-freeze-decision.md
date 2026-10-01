@@ -9,7 +9,7 @@ goal that touches a frozen area stops and reports; it does not "just add a bit".
 | Area | What is frozen | What remains allowed |
 | --- | --- | --- |
 | POLO | All of it. `polo/`, host permission boundary (P1), workflows (G4, G5) | Nothing |
-| MCO binary | The real `.mco` format, overlay, snapshot, consolidation (M1–M4) | `mco/` API shell stays as is: committed to branch `mco-package`, parked, not merged, not extended |
+| MCO binary | Consolidation, compaction, scaling measurements and device profiles. Unfrozen on 2026-10-01 as storage and runtime infrastructure only: the binary format, the persistent overlay, the snapshot (see "MCO scope for MARCO 1" below) | The scope below, and nothing in it that makes MARCO learn |
 | Autonomous planning | Re-planning, tool making, self-modification (G6–G9), general planner | Existing `goal_runtime` registered tools stay as they are |
 | ALMA advancement | Persona/social features (A1, A2), new ALMA modules, any ALMA goal after goal 1 | Goal 1 on the Windows machine finishes and merges. Existing ALMA tests keep passing |
 
@@ -104,6 +104,38 @@ never reorders them. Where an older roadmap disagrees on order, this file wins.
   and today's bounded read-only research stays as it is. Gate condition 4
   (sample count and full failure list published) stands; the fixed timeline's
   first version had dropped it by accident.
+
+## MCO scope for MARCO 1 (owner, 2026-10-01)
+
+The fixed timeline is authoritative for the MCO storage and runtime infrastructure only. It does not lift
+the freeze on MARCO's learning or reasoning behaviour. The top-level timeline does not change.
+
+In MARCO 1:
+
+- the real binary `.mco`, with stable non-positional ids;
+- compile, run, inspect;
+- a persistent overlay format, and the application of graph and rule changes that are explicit or approved
+  from outside;
+- provenance;
+- validation of the base hash and build id;
+- conversation snapshot and restore.
+
+Not in MARCO 1: autonomous persistent learning, learning verbs from conversation, promotion of a
+self-repair, automatic rule creation, automatic graph mutation from dialogue, promotion of web or document
+knowledge, and any reasoning or language change needed to learn persistently.
+
+The second slice is named **Persistent Overlay Infrastructure**, not learning. MARCO 1 can store and apply
+approved graph changes; M2 decides how MARCO itself discovers, validates and promotes such changes. The
+snapshot is in MARCO 1 because it is state and persistence infrastructure. The existing learning routes
+(the sidecars beside each graph, the approval door, the pack export) stay as they are and are not moved
+onto the overlay before M2.
+
+| Slice | Content | State |
+| --- | --- | --- |
+| 1 | Format 1 specification, writer and reader, compile, run, inspect, stable ids, base identity | in work on branch `mco-format-1` |
+| 2 | Persistent Overlay Infrastructure: store bound to a base, atomic commit, deltas and tombstones, candidates kept apart until approved from outside, merged graph and rule view, `mco` surface | store in work on branch `mco-overlay`; the view waits for slice 1 |
+| 3 | Snapshot and restore: base and overlay sequence recorded and checked, conversation state | after the overlay store |
+| later | Consolidation into a new base, compaction, scaling curves, profiles | after the release |
 
 ## The queue (replaces plan file §2 items 3–5) — updated 2026-09-23
 
