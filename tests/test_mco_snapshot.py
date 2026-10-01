@@ -161,3 +161,166 @@ def test_writer_refuses_what_it_cannot_record(tmp_path):
     other.close()
     with pytest.raises(snapshot.SnapshotBaseMismatch):          # an overlay of another base is not recorded
         snapshot.build(base=BASE, conversations=[], overlay=tmp_path / "base.overlay")
+
+
+# --- restoring, with checks ---------------------------------------------------------------------
+
+NEXT = ("지금 지연 구슬은 몇 개야?", "지연이 민수에게 베풀었다.", "지금 민수 구슬은 몇 개야?")
+
+
+def _outcomes(context, questions=NEXT):
+    """Answer, status and evidence (transitions, verification, meaning) as JSON data."""
+    out = []
+    for text in questions:
+        outcome = context.turn(text, KG)
+        out.append(json.loads(json.dumps(outcome, ensure_ascii=False, sort_keys=True)))
+    return out
+
+
+def _resign(path, change):
+    """Rewrite a snapshot's body with ``change`` and a correct header: damage only in meaning."""
+    header, _, body = path.read_bytes().partition(b"\n")
+    value = json.loads(body)
+    change(value)
+    data = snapshot.canonical(value)
+    path.write_bytes(b"MARCO-SNAPSHOT/1 %d %s\n" % (len(data), snapshot._sha(data).encode()) + data)
+
+
+def test_restore_in_another_process_answers_with_the_same_evidence(tmp_path):
+    import subprocess
+    import sys
+    import textwrap
+    context = _context()
+    target = tmp_path / "chat.snap"
+    snapshot.write(target, base=BASE, conversations=[_record(context)])
+    expected = _outcomes(context)
+    script = textwrap.dedent("""
+        import json, sys
+        from marco.reasoning.context import ReasoningContext
+        from marco.storage import snapshot
+        snap = snapshot.read(sys.argv[1])
+        status, records = snap.restore_states(json.loads(sys.argv[2]))
+        context = ReasoningContext()
+        context.restore(records[0]["reasoning_state"])
+        out = [context.turn(text, "graphs/graph_일상추론.kg") for text in json.loads(sys.argv[3])]
+        print(json.dumps({"status": status, "out": out}, ensure_ascii=False, sort_keys=True))
+    """)
+    env = dict(os.environ, PYTHONPATH=str(ROOT), NAI_LANGUAGE="한국어", KG_ENCODER="문자")
+    done = subprocess.run([sys.executable, "-c", script, str(target), json.dumps(BASE),
+                           json.dumps(NEXT, ensure_ascii=False)],
+                          cwd=ROOT, env=env, capture_output=True, text=True, timeout=300)
+    assert done.returncode == 0, done.stderr
+    result = json.loads(done.stdout)
+    assert result["status"] == "same"
+    assert result["out"] == expected
+    assert [o["answer"] for o in expected][::2] == ["5개입니다.", "8개입니다."]
+
+
+def test_restore_uses_the_saved_replay_when_nothing_changed(tmp_path, monkeypatch):
+    context = _context()
+    data = snapshot.build(base=BASE, conversations=[_record(context)])
+    status, records = snapshot.loads(data).restore_states(BASE)
+    assert status == "same" and "replay" in records[0]["reasoning_state"]
+    restored = ReasoningContext()
+    restored.restore(records[0]["reasoning_state"])
+    parser = restored._parser()
+    original = parser.parse
+
+    def parse_only_new(text, *args, **kwargs):
+        if text in HISTORY:
+            raise AssertionError("a restored history must use the saved replay record")
+        return original(text, *args, **kwargs)
+
+    monkeypatch.setattr(parser, "parse", parse_only_new)
+    assert restored.turn("지금 지연 구슬은 몇 개야?", KG)["answer"] == "5개입니다."
+
+
+def test_another_base_is_refused(tmp_path):
+    snap = snapshot.loads(snapshot.build(base=BASE, conversations=[_record(_context())]))
+    with pytest.raises(snapshot.SnapshotBaseMismatch):
+        snap.restore_states(dict(BASE, content_sha256="cd" * 32))
+    with pytest.raises(snapshot.SnapshotBaseMismatch):
+        snap.restore_states(dict(BASE, build_id="build-2"))
+    # A base without a build id is compared by content alone.
+    assert snap.restore_states(dict(BASE, build_id=None))[0] == "same"
+
+
+def test_another_overlay_history_is_refused(tmp_path):
+    store = _overlay(tmp_path, changes=2)
+    store.close()
+    snap = snapshot.loads(snapshot.build(base=BASE, conversations=[_record(_context())],
+                                         overlay=tmp_path / "base.overlay"))
+    assert snap.restore_states(BASE, tmp_path / "base.overlay")[0] == "same"
+    # Another overlay of the same base with as many changes: other change ids at the seq.
+    _overlay(tmp_path, name="other.overlay", changes=2).close()
+    with pytest.raises(snapshot.SnapshotOverlayMismatch):
+        snap.restore_states(BASE, tmp_path / "other.overlay")
+    # Shorter than the recorded seq.
+    _overlay(tmp_path, name="short.overlay", changes=1).close()
+    with pytest.raises(snapshot.SnapshotOverlayMismatch):
+        snap.restore_states(BASE, tmp_path / "short.overlay")
+    # Bound to another base, or missing.
+    _overlay(tmp_path, name="foreign.overlay", changes=2, base="cd" * 32).close()
+    with pytest.raises(snapshot.SnapshotOverlayMismatch):
+        snap.restore_states(BASE, tmp_path / "foreign.overlay")
+    with pytest.raises(snapshot.SnapshotOverlayMismatch):
+        snap.restore_states(BASE, None)
+    with pytest.raises(snapshot.SnapshotOverlayMismatch):
+        snap.restore_states(BASE, tmp_path / "absent.overlay")
+
+
+def test_an_overlay_that_moved_on_drops_the_saved_replay(tmp_path):
+    store = _overlay(tmp_path, changes=1)
+    snap = snapshot.loads(snapshot.build(base=BASE, conversations=[_record(_context())],
+                                         overlay=tmp_path / "base.overlay"))
+    store.commit([overlay.add_node("graphs/x.kg", "later", revision=0)], **WHO)
+    status, records = snap.restore_states(BASE, store)
+    store.close()
+    assert status == "advanced" and "replay" not in records[0]["reasoning_state"]
+    restored = ReasoningContext()
+    restored.restore(records[0]["reasoning_state"])          # re-derived from the observations
+    assert restored.turn("지금 지연 구슬은 몇 개야?", KG)["answer"] == "5개입니다."
+    # Without an overlay at the time of the snapshot, any later overlay of the base is "advanced".
+    plain = snapshot.loads(snapshot.build(base=BASE, conversations=[]))
+    assert plain.check_overlay(tmp_path / "base.overlay") == "advanced"
+
+
+def test_damaged_truncated_or_unknown_snapshots_are_refused(tmp_path):
+    target = tmp_path / "s.snap"
+    snapshot.write(target, base=BASE, conversations=[_record(_context())])
+    data = target.read_bytes()
+    damaged = {
+        "truncated": data[:-1],
+        "cut in the header": data[:10],
+        "empty": b"",
+        "extended": data + b" ",
+        "one byte flipped": data[:-40] + bytes([data[-40] ^ 1]) + data[-39:],
+        "not a snapshot": b"{}",
+    }
+    for name, value in damaged.items():
+        (tmp_path / "bad.snap").write_bytes(value)
+        with pytest.raises(snapshot.SnapshotDamaged):
+            snapshot.read(tmp_path / "bad.snap")
+    unknown = {
+        "state schema": lambda v: v["conversations"][0]["reasoning_state"].update(schema="reasoning-context-v99"),
+        "contract schema": lambda v: v["contract"]["schemas"].append("persona-v1"),
+        "feature": lambda v: v["contract"]["requires"].append("consolidation/1"),
+        "version": lambda v: v.update(version=2),
+    }
+    for change in unknown.values():
+        target.write_bytes(data)
+        _resign(target, change)
+        with pytest.raises(snapshot.SnapshotUnsupported):
+            snapshot.read(target)
+    target.write_bytes(data)
+    _resign(target, lambda v: v["base"].update(content_sha256="xyz"))
+    with pytest.raises(snapshot.SnapshotDamaged):
+        snapshot.read(target)
+    # The overlay copy is checked against its own size and digest before it is used.
+    store = _overlay(tmp_path, changes=1)
+    store.close()
+    snapshot.write(target, base=BASE, conversations=[], overlay=tmp_path / "base.overlay")
+    _resign(target, lambda v: v["overlay"]["copy"].update(sha256="0" * 64))
+    with pytest.raises(snapshot.SnapshotDamaged):
+        snapshot.read(target).extract_overlay(tmp_path / "copy.overlay")
+    assert not (tmp_path / "copy.overlay").exists()
