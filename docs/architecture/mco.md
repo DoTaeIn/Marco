@@ -74,6 +74,7 @@ engine and the file format change.
 | `benchmark` scores cases and reports latency; `load_cases` validates | `test_benchmark`, `test_benchmark_reads_repository_case_format` |
 | CLI `inspect`, `run`, `compile`, `backends`, `benchmark`; exit codes 0, 1, 2, 3 | `test_cli_inspect_run_compile`, `test_cli_benchmark_and_errors` |
 | `python -m mco` runs the CLI | `test_console_entry_point_runs_as_module` |
+| Conversation snapshots: `Session.snapshot`, `Model.resume`, `load(snapshot=)`, `mco snapshot`, `mco inspect` on a snapshot; another base and a damaged file are refused; a resumed conversation answers in a new process as without the restart ([snapshot.md](snapshot.md)) | `tests/test_mco_snapshot.py` |
 
 Two statements in [docs/mco/README.md](../mco/README.md) have no test at this
 commit: the four-step order in which the backend looks for a MARCO checkout

@@ -505,7 +505,7 @@ def test_inspect_native_shows_version_manifest_and_chunks(builds) -> None:
     assert (info.language, info.languages) == ("styles/한국어.json", ("styles/english.json", "styles/한국어.json"))
     assert (info.build_id, info.fingerprint) == (compat.build_id, compat.fingerprint)
     assert any(n.startswith("overlay: an overlay store beside the file can be attached") for n in info.notes)
-    assert "snapshot: not supported in this version" in info.notes
+    assert any(n.startswith("snapshot: conversation snapshots are supported") for n in info.notes)
     assert any("carried as typed chunks, not tables" in n for n in info.notes)
     manifest = info.to_dict(include_manifest=True)["manifest"]
     assert manifest["format"]["major"] == 1 and manifest["format"]["minor"] == 1
@@ -536,7 +536,8 @@ def test_cli_inspect_native(builds) -> None:
     assert main(["inspect", str(builds["ko", "native"])], stdout=out) == 0
     text = out.getvalue()
     assert "mco-native v1.1" in text and "content" in text and "marco.kg-text/1" in text
-    assert "note: overlay: an overlay store beside the file can be attached" in text and "note: snapshot: not supported" in text
+    assert "note: overlay: an overlay store beside the file can be attached" in text
+    assert "note: snapshot: conversation snapshots are supported" in text
     assert "chunks: " in text and "MANI" in text and "GRPH" in text and "GDIR" in text
     out = io.StringIO()
     assert main(["inspect", str(builds["ko", "native"]), "--json", "--manifest"], stdout=out) == 0

@@ -18,7 +18,9 @@ running path does not use them yet: MARCO still parses the graph source text
 Language packs, axiom files and records are carried pack members. Nothing is
 loaded lazily. An overlay store beside the file can be attached
 (``mco.load(path, overlay=...)``, :mod:`mco.overlay`); the file itself holds no
-overlay. Snapshots are not supported.
+overlay. Conversation snapshots are supported (``Session.snapshot``): they bind
+to the file's ``content_sha256`` and build id; the file itself carries no
+snapshot.
 """
 from __future__ import annotations
 
@@ -36,8 +38,10 @@ __all__ = ["NativeMcoBackend"]
 
 #: Plain statements ``mco inspect`` shows for every Format 1 file of this version.
 LIMITS = ("overlay: an overlay store beside the file can be attached (mco.load(..., overlay=PATH)); "
-          "the file itself holds no overlay",
-          "snapshot: not supported in this version")
+          "the file itself holds no overlay (manifest supports.overlay stays false)",
+          "snapshot: conversation snapshots are supported (Session.snapshot, mco snapshot) and bind to "
+          "this file's content_sha256 and build id; the file itself carries no snapshot "
+          "(manifest supports.snapshot stays false in Format 1.0)")
 
 
 class NativeMcoBackend(Backend):

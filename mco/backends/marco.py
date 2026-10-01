@@ -20,6 +20,9 @@ Runtime behaviour:
   ``allow_network=True`` to restore MARCO's research-and-plan behaviour.
 * Each session owns its own MARCO ``AppState``: MARCO keeps some dialogue state
   per application object, so sharing one would leak state between sessions.
+* Each session is one MARCO conversation (a conversation id in a store bound to the
+  model's base identity), so its turns and reasoning state can be written to a
+  snapshot and resumed in another process (``marco.storage.snapshot``).
 * An overlay store (``overlay=PATH``; ``docs/architecture/overlay.md``) holds
   explicit or approved graph and rule changes beside the model file. Every
   session reads it at the start of each turn. Its store lives in MARCO
@@ -40,15 +43,19 @@ import tempfile
 import threading
 from typing import Any, Optional
 import uuid
+import zipfile
 
-from ..errors import (BackendError, BackendUnavailableError, CompileError, InvalidInputError,
-                      ModelClosedError, OverlayBaseMismatchError, OverlayError)
+from .._version import __version__
+from ..errors import (BackendError, BackendUnavailableError, CompileError, IntegrityError, InvalidInputError,
+                      ModelClosedError, OverlayBaseMismatchError, OverlayError, SnapshotError, SnapshotFormatError,
+                      SnapshotMismatchError)
 from ..formats import ModelFile
 from ..info import Capability, ModelInfo
 from ..result import Evidence, EvidenceList, ReasoningInput, Result, Status, Trace, TraceStep
+from ..snapshot import SnapshotInfo
 from .base import Backend, BackendModel, BackendSession, fallback_status, run_reasoning
 
-__all__ = ["MarcoKgpackBackend", "MarcoModel", "OPTIONS", "CAPABILITIES"]
+__all__ = ["MarcoKgpackBackend", "MarcoModel", "OPTIONS", "CAPABILITIES", "read_snapshot"]
 
 #: Options accepted by :func:`mco.load` for this backend.
 OPTIONS = frozenset({"marco_root", "overlay_dir", "allow_network", "overlay"})
@@ -56,13 +63,15 @@ OPTIONS = frozenset({"marco_root", "overlay_dir", "allow_network", "overlay"})
 COMPILE_OPTIONS = frozenset({"marco_root", "graphs", "language"})
 
 _KGPACK = "marco.storage.kgpack"
+_SNAPSHOT = "marco.storage.snapshot"
+_STORE = "marco.storage.conversations"
 _REQUIRED_MODULES = (_KGPACK, "pack_model", "engine")
 _UI_MODULE = "views.kgpack_ui"
 _import_lock = threading.Lock()
 _POOL_SIZE = 4
 #: What a model run on the MARCO engine can do, whatever file it came from.
 CAPABILITIES = (Capability.TEXT_INPUT, Capability.MULTI_TURN, Capability.TEXT_FACTS,
-                Capability.APPROVAL_PLANS, Capability.NETWORK)
+                Capability.APPROVAL_PLANS, Capability.NETWORK, Capability.SNAPSHOT)
 
 
 # --- MARCO verdict labels -> stable Status -----------------------------------
@@ -258,6 +267,51 @@ class MarcoKgpackBackend(Backend):
         return output.read_bytes()
 
 
+# --- snapshots -----------------------------------------------------------------------------
+
+def _snapshot_error(module: Any, exc: Exception) -> SnapshotError:
+    """The public error for a MARCO snapshot or store refusal."""
+    if isinstance(exc, (module.SnapshotBaseMismatch, module.SnapshotOverlayMismatch)):
+        return SnapshotMismatchError(str(exc))
+    if isinstance(exc, (module.SnapshotDamaged, module.SnapshotUnsupported)):
+        return SnapshotFormatError(str(exc))
+    return SnapshotError(str(exc))
+
+
+def read_snapshot(path: Any, *, marco_root: Optional[str] = None) -> tuple[SnapshotInfo, Any]:
+    """Read and verify a snapshot file: its :class:`~mco.SnapshotInfo` and the MARCO reader's object.
+
+    Imports only ``marco.storage.snapshot`` (standard library); runs no model."""
+    module = _import(_SNAPSHOT, marco_root)
+    try:
+        snap = module.read(path)
+    except module.SnapshotError as exc:
+        raise _snapshot_error(module, exc) from exc
+    ids = tuple(c["id"] for c in snap.body["conversations"])
+    return SnapshotInfo._from_summary(snap.summary(), ids), snap
+
+
+def _base_identity(file: ModelFile, pack_path: Path) -> dict[str, Any]:
+    """The base a conversation binds to: the SHA-256 of the pack's ``manifest.json``.
+
+    For a native file that is its manifest's ``content_sha256`` (format-1.md 6.6); a compat
+    file or a bare pack of the same content gets the same value."""
+    with zipfile.ZipFile(pack_path) as zf:
+        content = hashlib.sha256(zf.read("manifest.json")).hexdigest()
+    manifest = file.manifest or {}
+    if file.kind == "mco-native":
+        if manifest.get("content_sha256") != content:
+            raise IntegrityError(f"{file.path}: the rebuilt pack does not match the manifest's content_sha256")
+        fmt = file.native.get("format") or {}
+        version = f"{fmt.get('major')}.{fmt.get('minor')}"
+        source = "MCO Format 1 manifest content_sha256"
+    else:
+        version = str(file.version)
+        source = "sha256 of the pack's manifest.json (equals the Format 1 content_sha256 of the same pack)"
+    return {"content_sha256": content, "build_id": manifest.get("build_id"), "format": file.kind,
+            "format_version": version, "identity_source": source}
+
+
 # --- opened model and sessions ------------------------------------------------------
 
 class MarcoModel(BackendModel):
@@ -272,7 +326,8 @@ class MarcoModel(BackendModel):
         self._backend = backend
         self._options = options
         self._ui = _import(_UI_MODULE, options.get("marco_root"))
-        self._store_module = _import("marco.storage.conversations", options.get("marco_root"))
+        self._store_module = _import(_STORE, options.get("marco_root"))
+        self._snapshot_module = _import(_SNAPSHOT, options.get("marco_root"))
         self.info = backend.describe(file)
         self._workdir = Path(tempfile.mkdtemp(prefix="mco-marco-"))
         self._lock = threading.RLock()
@@ -293,6 +348,12 @@ class MarcoModel(BackendModel):
             if options.get("overlay"):
                 self._graph_overlay = _attach(file, Path(options["overlay"]).expanduser(), options.get("marco_root"))
                 self.info = self.info.replace(notes=self.info.notes + (_attached_note(self._graph_overlay),))
+            # What a conversation binds to: the base identity and, with an overlay attached, the
+            # overlay head its saved state was derived under (each application keeps it current).
+            self._base = _base_identity(file, self._pack_path)
+            head = self._graph_overlay.head() if self._graph_overlay is not None else (None, None)
+            self._binding = self._store_module.binding(self._base["content_sha256"], self._base["build_id"], *head)
+            self._runtime = f"mco {__version__}; backend {backend.name}"
             # Opening one application validates the whole pack now, so a bad
             # model fails at load() rather than at the first run().
             self._pool.append(self._new_app())
@@ -306,15 +367,41 @@ class MarcoModel(BackendModel):
             app = self._ui.AppState(self._pack_path, overlay_root=self._overlay, **extra)
         except Exception as exc:
             raise BackendError(f"MARCO could not open {self.info.path}: {type(exc).__name__}: {exc}") from exc
-        store = self._workdir / f"conversations-{uuid.uuid4().hex}.json"
-        app.conversations = self._store_module.ConversationStore(store)
+        app.conversations = self._new_store()
         if not self._options.get("allow_network", False):
             app.goals.research = _offline_research
         return app
 
+    def _new_store(self) -> Any:
+        """A conversation store of its own for one session, bound to this model's base."""
+        path = self._workdir / f"conversations-{uuid.uuid4().hex}.json"
+        return self._store_module.ConversationStore(path, self._binding)
+
     def _check(self) -> None:
         if self._closed:
             raise ModelClosedError("model is closed")
+
+    def resume(self, path: Path, conversation: Optional[str] = None) -> "MarcoSession":
+        """A new session continuing a snapshot's conversation, after its checks."""
+        with self._lock:
+            self._check()
+        module = self._snapshot_module
+        _info, snap = read_snapshot(path, marco_root=self._options.get("marco_root"))
+        try:
+            # The attached overlay (or none) must hold the snapshot's recorded overlay history.
+            attached = self._graph_overlay.path if self._graph_overlay is not None else None
+            _status, records = snap.restore_states(self._base, attached)
+            wanted = snap.conversation(conversation)["id"]     # names one conversation, or the only one
+        except module.SnapshotError as exc:
+            raise _snapshot_error(module, exc) from exc
+        record = next(r for r in records if r["id"] == wanted)
+        session = self.new_session()
+        try:
+            session._adopt(record)
+        except BaseException:
+            session.close()
+            raise
+        return session
 
     def new_session(self) -> "MarcoSession":
         with self._lock:
@@ -364,31 +451,95 @@ class MarcoSession(BackendSession):
         self._app = app
         self.lock = threading.RLock()
         self._session_id = self._new_id()
+        # The MARCO conversation this session is; created at the first turn or snapshot.
+        self._chat_id: Optional[str] = None
         self._closed = False
 
     @staticmethod
     def _new_id() -> str:
         return "mco_" + uuid.uuid4().hex
 
+    def _check(self) -> None:
+        if self._closed or self._model._closed:
+            raise ModelClosedError("session is closed")
+
+    def _chat(self) -> str:
+        if self._chat_id is None:
+            self._chat_id = self._app.conversations.create_chat()["id"]
+        return self._chat_id
+
     def run(self, text: str) -> Result:
         with self.lock:
-            if self._closed or self._model._closed:
-                raise ModelClosedError("session is closed")
+            self._check()
             try:
-                payload = self._app.turn(text, self._session_id)
+                payload = self._app.turn(text, self._session_id, conversation_id=self._chat())
             except Exception as exc:
                 raise BackendError(f"MARCO failed on input {text!r}: {type(exc).__name__}: {exc}") from exc
             return translate(payload, text, self._model._backend.name)
+
+    def snapshot(self, path: Path) -> SnapshotInfo:
+        """Write this conversation (turns and reasoning state) to a snapshot file."""
+        with self.lock:
+            self._check()
+            module, app = self._model._snapshot_module, self._app
+            chat_id = self._chat()
+            with app.lock, app.model.encoder.activate():
+                if self._model._graph_overlay is not None:
+                    app._sync_graph_overlay()           # the state is taken under the overlay's head
+                chat = app.conversations.get_chat(chat_id)
+                context = app.reasoning_contexts.get("chat_" + chat_id)
+                try:
+                    state = (context.snapshot() if context is not None
+                             else app.conversations.reasoning_state(chat_id))
+                except self._model._store_module.ConversationBaseMismatch as exc:
+                    raise SnapshotMismatchError(str(exc)) from exc
+            record = {key: chat.get(key) for key in ("id", "title", "created_at", "updated_at")}
+            record.update(turns=chat["turns"], reasoning_state=state)
+            try:
+                attached = self._model._graph_overlay
+                module.write(path, base=self._model._base, conversations=[record],
+                             overlay=attached.path if attached is not None else None, runtime=self._model._runtime)
+            except module.SnapshotError as exc:
+                raise _snapshot_error(module, exc) from exc
+            return read_snapshot(path, marco_root=self._model._options.get("marco_root"))[0]
+
+    def _adopt(self, record: dict[str, Any]) -> None:
+        """Take over a conversation from a checked snapshot record.
+
+        The turns and reasoning state go into this session's store; the context is restored
+        from it at the next turn, exactly as MARCO restores a saved conversation. The
+        input-understanding history is not stored in a snapshot; it is regenerated here from
+        the turns' user texts, in order, as the original turns built it."""
+        with self.lock:
+            self._check()
+            app = self._app
+            with app.lock, app.model.encoder.activate():
+                store = app.conversations
+                app.conversations = self._model._new_store()
+                Path(store.path).unlink(missing_ok=True)
+                self._chat_id = app.conversations.import_chat(record)["id"]
+                understand = self._model._ui.input_understanding.understand
+                history = app.understanding_history.setdefault("chat_" + self._chat_id, [])
+                for turn in record.get("turns") or []:
+                    history.append(understand(turn["user"], history, language_pack=app.language_pack))
+                    del history[:-30]
 
     def reset(self) -> None:
         with self.lock:
             app, old = self._app, self._session_id
             app.reset()
+            keys = {old} | ({"chat_" + self._chat_id} if self._chat_id else set())
             for table in ("reasoning_contexts", "understanding_history", "affect_sessions"):
-                getattr(app, table, {}).pop(old, None)
+                for key in keys:
+                    getattr(app, table, {}).pop(key, None)
             pending = getattr(app.goals, "pending", {})
-            for key in [k for k in pending if isinstance(k, tuple) and k and k[0] == old]:
+            for key in [k for k in pending if isinstance(k, tuple) and k and k[0] in keys]:
                 pending.pop(key, None)
+            if self._chat_id is not None:
+                store = app.conversations
+                app.conversations = self._model._new_store()
+                Path(store.path).unlink(missing_ok=True)
+                self._chat_id = None
             self._session_id = self._new_id()
 
     def close(self) -> None:

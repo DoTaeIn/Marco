@@ -16,12 +16,13 @@ from .benchmark import BenchmarkCase, BenchmarkReport, CaseResult, benchmark, lo
 from .compiler import CompileReport, compile, inspect
 from .errors import (BackendError, BackendUnavailableError, CompileError, IntegrityError,
                      InvalidInputError, MCOError, ModelClosedError, ModelFormatError,
-                     ModelNotFoundError, OverlayBaseMismatchError, OverlayError, UnsupportedFormatError,
-                     UnsupportedInputError)
+                     ModelNotFoundError, OverlayBaseMismatchError, OverlayError, SnapshotError,
+                     SnapshotFormatError, SnapshotMismatchError, UnsupportedFormatError, UnsupportedInputError)
 from .info import Capability, ModelInfo
 from .model import Model, Session, load
 from .overlay import Overlay, create_overlay, open_overlay, overlay_status
 from .result import Evidence, EvidenceList, Fact, ReasoningInput, Result, Status, Trace, TraceStep
+from .snapshot import SnapshotInfo, inspect_snapshot
 
 __all__ = [
     "__version__",
@@ -30,6 +31,8 @@ __all__ = [
     "Model", "Session", "Result", "Status", "Evidence", "EvidenceList", "Trace", "TraceStep",
     "Fact", "ReasoningInput", "ModelInfo", "Capability", "CompileReport",
     "BenchmarkCase", "BenchmarkReport", "CaseResult", "load_cases",
+    # conversation snapshots
+    "inspect_snapshot", "SnapshotInfo",
     # overlay (Persistent Overlay Infrastructure)
     "create_overlay", "open_overlay", "overlay_status", "Overlay",
     # backends
@@ -37,5 +40,7 @@ __all__ = [
     # errors
     "MCOError", "ModelNotFoundError", "ModelFormatError", "IntegrityError", "UnsupportedFormatError",
     "BackendError", "BackendUnavailableError", "CompileError", "InvalidInputError",
-    "UnsupportedInputError", "ModelClosedError", "OverlayError", "OverlayBaseMismatchError",
+    "UnsupportedInputError", "ModelClosedError",
+    "SnapshotError", "SnapshotFormatError", "SnapshotMismatchError",
+    "OverlayError", "OverlayBaseMismatchError",
 ]
