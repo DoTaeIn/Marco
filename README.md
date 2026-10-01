@@ -9,6 +9,8 @@ answer. No language model runs anywhere in it.**
 dialogue exam and no wrong turn. MARCO 1 is not released yet; only safety fixes and release work
 go in before the tag ([Status](#status)).
 
+TODO(release): safety fixes and the final exam number.
+
 ```
 > Minsu has five apples, and Jiyeon has two.
   Recorded. Jiyeon has 2 apples.
@@ -61,6 +63,8 @@ them, run on 2026-10-01 with code `650efc9` (the dialogue exam at `c128040`, the
 | 4 | Sample count, composition and the full failure list are published | **met**: 52 dialogues (26 Korean, 26 English), 340 turns, 108 answerable; every failure is in the file | same file |
 | 5 | Every spoken reply composed from a meaning, never picked | **met**: 340 of 340 composed, 0 passed through; 170 of 170 in each language | [composition-graph-step-3s6.json](docs/ko/dialogue-gate-2026-09-22/composition-graph-step-3s6.json) |
 | 6 | 95% or better on 100+ structured reasoning problems, 0 wrong, at most 10% unparsed | **met**: 110 of 113 parsed problems (97.3%), 0 wrong questions, 1 of 114 unparsed | [reasoning graph-step-3s6.json](docs/ko/reasoning-gate-2026-09-24/graph-step-3s6.json) |
+
+TODO(release): safety fixes and the final exam number.
 
 The other turns of the dialogue exam, reported apart as the gate requires:
 
