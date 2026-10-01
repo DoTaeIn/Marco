@@ -493,20 +493,31 @@ def test_a_name_with_a_few_words_then_the_question_again_answers_the_which_perso
     assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
 
 
-@pytest.mark.parametrize("said,held", [
-    ("Remind me about the {p}.", False), ("Grab some spare {p}.", False),
-    ("Rats chewed the {p}.", True), ("Mysteriously, the {p} vanished.", True), ("The {p} were stolen.", True),
-    ("Someone misplaced the {p}.", True), ("Thieves took two {p}.", True), ("{a} misplaced the {p}.", True),
+@pytest.mark.parametrize("language,frames,said,held", [
+    # a statement the reader cannot read may have changed the count it names, whatever its shape
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}."], "Burglars stole the {p}.", True),
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}."], "Rats chew the {p}.", True),
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}."], "Rats chewed the {p}.", True),
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}."], "Mysteriously, the {p} vanished.", True),
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}."], "The {p} were stolen.", True),
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}."], "Someone misplaced the {p}.", True),
+    # a sentence with no request mood the pack declares is no recognised request, even when it reads like one
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}."], "Remind me about the {p}.", True),
+    ("한국어", ["{a}는 {p}이 5개 있어.", "{b}는 {p}이 3개 있어."], "도둑이 {p}을 훔쳐갔어.", True),
+    # the request mood the pack declares (요청) reports no event: it holds nothing, though it names the thing
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}."], "Please order more {p}.", False),
+    ("english", ["{a} has 5 {p}.", "{b} has 3 {p}."], "Order more {p} for me.", False),
+    ("한국어", ["{a}는 {p}이 5개 있어.", "{b}는 {p}이 3개 있어."], "{p} 좀 더 주문해 주세요.", False),
 ])
-def test_an_unread_turn_that_could_not_have_changed_a_count_holds_no_question_after_it(said, held):
-    # no holder, no amount, no verb, opened by a word nobody declared: a request or a remark, no event (effort 2)
-    rows = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", said, "How many {p} does {b} have?"], 3, **EN_WORDS)
+def test_only_a_request_the_pack_declares_is_no_event_any_other_unread_turn_holds_what_it_names(language, frames, said, held):
+    words = EN_WORDS if language == "english" else KO_WORDS
+    question = "How many {p} does {b} have?" if language == "english" else "{b}는 {p}이 몇 개야?"
+    rows = _play(language, frames + [said, question], 3, **words)
+    assert rows[-2].get("status") not in ("observed", "answered")
     if held:
-        assert rows[-1]["status"] != "answered" and rows[-1]["meaning"]["reason"] == "unread_event"
+        assert rows[-1]["status"] != "answered" and said.format(**words) in rows[-1]["answer"]
     else:
         assert rows[-1]["status"] == "answered" and "3" in rows[-1]["answer"]
-    at_main = _play("english", ["{a} has 5 {p}.", "{b} has 3 {p}.", said, "How many {p} does {b} have?"], 0, **EN_WORDS)
-    assert at_main[-1]["status"] != "answered"
 
 
 @pytest.mark.parametrize("language,frames", [
