@@ -525,3 +525,50 @@ def test_a_transfer_of_the_content_is_not_read_as_the_container():
     assert play("english", 3, [("Nora has 43 packs of quills.", "rec"), ("Eli has 2 packs of quills.", "rec"),
                                ("Nora gave Eli five quills.", "hold"),
                                ("How many packs of quills does Eli have?", "hold")]) == []
+
+
+# One thing counted in two units is two counts. 노라는 깃펜이 43묶음 있어. 노라는 깃펜이 8개 있어. said 8 in place of
+# 43, and both 몇 개 and 몇 묶음 answered 8. From the second unit on, each count is kept by its unit (the pack's
+# first unit under the key, another unit as the container thing: 깃펜 묶음); a question in the pack's first unit
+# reads that count, any other is held (the reply's counter word is the first unit's: request G7-6); a change said
+# in a unit moves that unit's count; nothing is converted.
+TWO_UNITS = [("노라는 깃펜이 43묶음 있어.", "rec"), ("노라는 깃펜이 8개 있어.", "rec")]
+
+
+@pytest.mark.parametrize("effort", [0, 3])
+def test_one_thing_in_two_units_is_two_counts(effort):
+    assert play("한국어", effort, TWO_UNITS + [("노라는 깃펜이 몇 개 있어?", 8), ("노라는 깃펜이 몇 묶음 있어?", "hold"),
+                                              ("노라는 깃펜이 몇 자루 있어?", "hold")]) == []
+    # the count kept in 묶음 is never said as pieces: the reply's counter word is the pack's first unit (G7-6)
+    current = context("한국어", effort)
+    for line, _e in TWO_UNITS:
+        current.turn(line, KG)
+    assert "43" not in str((current.turn("노라는 깃펜이 몇 묶음 있어?", KG) or {}).get("answer"))
+    graph, counts = _things("한국어", [line for line, _e in TWO_UNITS], effort)
+    assert sorted(n["name"] for n in graph.of_kind("thing")) == ["깃펜", "깃펜 묶음"]
+    assert counts == {("노라", "깃펜 묶음"): 43, ("노라", "깃펜"): 8}
+
+
+def test_a_change_said_in_a_unit_moves_that_units_count():
+    lines = TWO_UNITS + [("수아는 깃펜이 2개 있어.", "rec"), ("노라가 수아에게 깃펜을 두 묶음 줬어.", "rec")]
+    assert play("한국어", 3, lines + [("노라는 깃펜이 몇 묶음 있어?", "hold"), ("노라는 깃펜이 몇 개 있어?", 8),
+                                     ("수아는 깃펜이 몇 개 있어?", 2)]) == []
+    _graph, counts = _things("한국어", [line for line, _e in lines])
+    assert counts[("노라", "깃펜 묶음")] == 41 and counts[("노라", "깃펜")] == 8 and counts[("수아", "깃펜")] == 2
+
+
+def test_one_unit_said_in_two_counters_stays_one_count():
+    # a count said in one unit and a change in another counter (자루, 개) is the same count, as before
+    assert play("한국어", 3, [("노라는 연필이 다섯 자루 있어.", "rec"), ("수아는 연필이 2개 있어.", "rec"),
+                            ("노라가 수아에게 연필을 두 개 줬어.", "rec"), ("노라는 연필이 몇 자루 있어?", 3),
+                            ("수아는 연필이 몇 개 있어?", 4)]) == []
+
+
+def test_a_measure_word_before_the_thing_heads_a_container():
+    for lines in (["Nora has 43 dozen quills.", "Nora has 8 quills."], ["Nora has 8 quills.", "Nora has 43 dozen quills."]):
+        graph, counts = _things("english", lines)
+        assert sorted(n["name"] for n in graph.of_kind("thing")) == ["dozen quills", "quills"]
+        assert counts == {("Nora", "dozen quills"): 43, ("Nora", "quills"): 8}
+    assert play("english", 3, [("Nora has 43 dozen quills.", "rec"), ("Nora has 8 quills.", "rec"),
+                               ("How many quills does Nora have?", 8),
+                               ("How many dozen quills does Nora have?", 43)]) == []
