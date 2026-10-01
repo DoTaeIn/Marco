@@ -667,7 +667,7 @@ def test_a_change_in_a_conversation_whose_one_count_has_no_holder_goes_to_that_c
 # several pieces (수량단위.담는단위); a count said in one of them is not moved by a change said in a unit of one
 # piece, nor the reverse, nor between two different units that hold several: 서류가 5묶음, then 2개를 줬어 was 3
 # (bundles less pieces). The statement is held, its meaning naming the two units, at every effort. Units of one
-# piece on one count (다섯 자루, 두 개) stay one count; the declaration adds no reading.
+# piece on one count (다섯 자루 then 두 개 given) stay one count; the declaration adds no reading.
 @pytest.mark.parametrize("effort", [0, 3])
 @pytest.mark.parametrize("before,change,units", [
     (["우 팀장님은 서류가 5묶음 있어."], "우 팀장님이 수향에게 서류를 2개 줬어.", ["묶음", "개"]),
