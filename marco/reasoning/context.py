@@ -655,68 +655,113 @@ class ReasoningContext:
         return self._keep_reading(parser, text, winner, knowledge_path, "unsaid_thing")
 
     def _unsaid_thing_candidates(self, parser, text, current, verbs, cost=0, label=""):
-        """The candidates of ``_read_unsaid_thing`` for the reading ``current`` of ``text``, each checked
-        against the conversation (``_reading_failure``): every thingless holder of the statement takes one
-        thing, each thing a named holder counts and the thing of the statement just before. Fit: state, every
-        holder that loses some has a count before; context, the thing is that of the statement just before,
-        and a receiver already counts it; cost, ``cost`` plus the thing put in. None when no holder of the
-        reading lacks its thing (or one key of the holder already gives it); [] when none survives."""
+        """The candidates of ``_read_unsaid_thing`` for the reading ``current`` of ``text``, on the conversation's
+        graph: every holder the statement names without a thing takes one thing node, each thing node a named
+        holder node counts and the thing node of the statement just before. A holder counted only with its thing
+        not said (기 대표님에게는 열 개 있어) takes the candidate thing with that earlier count keyed to it (one
+        more step). Each is checked against the conversation (``_reading_failure``). Fit: state, every holder
+        that loses some has a count before; context, the thing is that of the statement just before, and a
+        receiver already counts it; cost, ``cost`` plus the thing put in (and the earlier count keyed). None when
+        no holder of the reading lacks its thing (or its one thing node already gives it); [] when none survives."""
         updates = parser.data.get("numeric_updates") or {}
         numeric = self._numeric_targets(parser)
-        rows = [f["triple"] for f in current.get("facts", []) if isinstance(f.get("triple"), list)
+        rows = [f for f in current.get("facts", []) if isinstance(f.get("triple"), list)
                 and isinstance(f["triple"][0], str) and (f["triple"][1] in updates or f["triple"][1] in numeric)]
         if not rows or not self.observations:
             return None
-        try:
-            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
-            state, _c = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
-        except ValueError:
-            return None
-        keys = [row["triple"][0] for row in state if isinstance(row["triple"][0], str)
-                and row["triple"][1] in numeric | {"count_unknown"} and len(row["triple"][0].split()) > 1]
-        things = {key.split()[-1] for key in keys}
-        if not things:
+        graph = self.conversation_graph()
+        if not graph.of_kind("thing"):
             return None
 
-        def holds(holder):
-            # the thing part of each key of the holder, every word of it (bundles of herbs)
-            return [key[len(holder) + 1:] for key in keys if key.startswith(holder + " ")]
-        # a key is a holder and a thing; a subject of one word, one that is the holder of a counted key, or one
-        # the reader read from an example that leaves the thing out (elided: resolve), names no thing
-        elided = {f["triple"][0] for f in current.get("facts", []) if isinstance(f.get("triple"), list)
-                  and f.get("resolve")}
-        thingless = [s for s in dict.fromkeys(t[0] for t in rows)
-                     if s not in keys and (len(s.split()) == 1 or holds(s) or s in elided)]
-        if not thingless or all(len(holds(s)) == 1 for s in thingless):
-            return None             # every holder has one thing: the key's leading words already find it
+        def node_of(name):
+            found = graph.find(name, kinds=("holder", "place"))
+            return found[0] if len(found) == 1 else None
+
+        def things_of(holder):
+            return [t for t in graph.things_of(holder)] if holder else []
+        # a holder named without a thing: its fact names no thing, or its key is a holder node's name and no key
+        thingless = {}
+        for fact in rows:
+            subject = fact["triple"][0]
+            parts = fact.get("parts") if isinstance(fact.get("parts"), dict) else None
+            if graph.of_key(subject) is not None:
+                continue
+            if parts and parts.get("holder") and not parts.get("thing") and parts.get("key", parts["holder"]) == subject:
+                thingless[subject] = parts["holder"]
+            elif fact.get("resolve") or len(subject.split()) == 1 or node_of(subject):
+                if not (parts and parts.get("thing")):
+                    thingless[subject] = subject
+        if not thingless:
+            return None
+        nodes = {subject: node_of(name) for subject, name in thingless.items()}
+        unsaid = {subject: graph.keys_of(node, None) if node else [] for subject, node in nodes.items()}
+        if all(len(things_of(node)) == 1 and not unsaid[subject] for subject, node in nodes.items()):
+            return None             # every holder has one thing node: the key's leading words already find it
         previous = self._read_source(parser, self.observations[-1], events=True, verbs=verbs) or {}
-        before = [f["triple"][0] for f in previous.get("facts", []) if isinstance(f.get("triple"), list)
-                  and isinstance(f["triple"][0], str) and len(f["triple"][0].split()) > 1]
-        named = [thing for s in thingless for thing in holds(s)]
-        # the thing of the statement just before: the thing part its key ends with, or its last word
-        before_thing = next((t for t in sorted(set(named), key=len, reverse=True)
-                             if before and before[0].endswith(" " + t)), before[0].split()[-1] if before else None)
+        before = [graph.of_key(f["triple"][0]) for f in previous.get("facts", []) if isinstance(f.get("triple"), list)
+                  and isinstance(f["triple"][0], str)]
+        before_thing = next((pair[1] for pair in before if pair and pair[1]), None)
 
         def removing(row):
             return row[1] in updates and float((updates[row[1]] or {}).get("factor", 1) or 1) < 0
-        takers = [t[0] for t in rows if t[1] in updates and not removing(t) and t[0] in thingless]
-        candidates = named + ([before_thing] if before_thing else [])
+        takers = [f["triple"][0] for f in rows if f["triple"][1] in updates and not removing(f["triple"])
+                  and f["triple"][0] in thingless]
+        candidates = [t for node in nodes.values() for t in things_of(node)] + ([before_thing] if before_thing else [])
+        if not any(f["triple"][1] in updates for f in rows):
+            # a holding that names no thing moves nothing that could tell the thing: it takes the conversation's
+            # thing only when the conversation counts one; with two or more it stays not said, for a later
+            # statement to tell (주 원장님에게는 14개 있어 after 반지 and 라임)
+            candidates = [n["id"] for n in graph.of_kind("thing")]
+            if len(candidates) != 1:
+                return None
         survivors = []
+        table = parser.__dict__.setdefault("chosen_readings", {})
         for thing in dict.fromkeys(candidates):
+            thing_name = graph.nodes[thing]["name"]
             parsed = deepcopy(current)
+            rekeyed, several = {}, False
             for fact in parsed.get("facts", []):
-                if isinstance(fact.get("triple"), list) and fact["triple"][0] in thingless:
-                    fact["triple"][0] = fact["triple"][0] + " " + thing
-            failure, changes = self._reading_failure(parser, text, parsed)
+                subject = fact["triple"][0] if isinstance(fact.get("triple"), list) else None
+                if subject not in thingless:
+                    continue
+                holder_name, node = thingless[subject], nodes[subject]
+                keys = graph.keys_of(node, thing) if node else []
+                if len(keys) > 1:
+                    several = True
+                key = keys[0] if keys else "%s %s" % (holder_name, thing_name)
+                fact["triple"][0], fact["parts"] = key, {"holder": holder_name, "thing": key[len(holder_name) + 1:]}
+                if not keys and unsaid.get(subject):
+                    # the holder was counted with its thing not said: that count is keyed to this thing
+                    for old in unsaid[subject]:
+                        turns = sorted({(row.get("evidence") or {}).get("turn") for row in
+                                        self._cached_replay(parser, self.observations, self.fills)[0]
+                                        if row["triple"][0] == old} - {None})
+                        readings = self._rekeyed_readings(parser, verbs, turns, old, key,
+                                                          {"holder": holder_name, "thing": thing_name})
+                        if readings:
+                            rekeyed.update(readings)
+            if several:
+                self._candidate_dropped(2, "unsaid_thing", label + thing_name, "several_keys")
+                continue
+            saved = {source: table.get(source) for source in rekeyed}
+            try:
+                table.update(rekeyed)
+                failure, changes = self._reading_failure(parser, text, parsed)
+            finally:
+                for source, before_reading in saved.items():
+                    if before_reading is None:
+                        table.pop(source, None)
+                    else:
+                        table[source] = before_reading
             if failure is not None:
-                self._candidate_dropped(2, "unsaid_thing", label + thing, failure[1])
+                self._candidate_dropped(2, "unsaid_thing", label + thing_name, failure[1])
                 continue
             known = all(row.get("before") is not None for row in changes if (row.get("delta") or 0) < 0)
-            survivors.append({"label": label + thing, "parsed": parsed,
+            survivors.append({"label": label + thing_name, "parsed": parsed, "readings": rekeyed,
                               "fit": {"state": int(known),
                                       "context": int(thing == before_thing)
-                                      + int(bool(takers) and all(thing in holds(s) for s in takers)),
-                                      "cost": cost + 1}})
+                                      + int(bool(takers) and all(thing in things_of(nodes.get(s)) for s in takers)),
+                                      "cost": cost + 1 + int(bool(rekeyed))}})
         return survivors
 
     def _read_thing_alias(self, parser, text, current, verbs, knowledge_path):
