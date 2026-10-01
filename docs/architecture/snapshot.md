@@ -65,9 +65,9 @@ describe it. An overlay bound to another base is not recorded (`SnapshotBaseMism
 `Snapshot.extract_overlay(path)` writes the copy to a new file after checking its size and
 SHA-256.
 
-The `mco` sessions of this version have no overlay attached: the engine does not read the
-Persistent Overlay Infrastructure store yet. Their snapshots say `{"attached": false}`, and
-resuming a snapshot that was taken with an overlay through `mco` is refused.
+An `mco` session opened with an overlay records that overlay's head in its snapshot, and resuming
+needs an overlay that holds the recorded history; a session opened without one records
+`{"attached": false}` (see [overlay.md](overlay.md)).
 
 ## What is excluded
 
