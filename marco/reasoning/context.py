@@ -4744,10 +4744,10 @@ class ReasoningContext:
 
     def _asked_in_unit(self, parser, text, query, facts):
         """``(query, None)``, or ``(query, hold)`` for a count question about a holder and thing the conversation
-        counts in two units (``_unit_keys``). A question that asks in one of those units (몇 묶음) reads that
-        unit's count; a question that names no unit, another unit, or a sum or comparison over such a count is
-        held, ``hold`` naming the subject and the units with their keys: one unit's count is never said for
-        another, and nothing is converted."""
+        counts in two units (``_unit_keys``). A question that asks in the pack's first unit (몇 개), the unit the
+        reply's counter word names, reads that unit's count; a question in another kept unit (몇 묶음), in no
+        unit, in a unit not counted, or a sum or comparison over such a count is held, ``hold`` naming the subject
+        and the units with their keys: one unit's count is never said for another, and nothing is converted."""
         counted = {}
         for fact in facts:
             base = fact.get("unit_key")
@@ -4758,6 +4758,7 @@ class ReasoningContext:
             return query, None
         numeric = self._numeric_targets(parser)
         asked = self._unit_said(parser, text, after_asker=True)
+        default = (((parser.language_pack or {}).get("counters") or {}).get("units") or [None])[0]
         out = []
         for row in query:
             triple = row.get("triple") if isinstance(row, dict) else None
@@ -4769,8 +4770,11 @@ class ReasoningContext:
                 out.append(row)
                 continue
             by_unit = split[hit]
-            if isinstance(triple, list) and triple[0] == hit and triple[1] in numeric and asked in by_unit \
-                    and not any(row.get(kind) for kind in ("total", "more", "fewer", "same")):
+            # only the pack's first unit is answered: the reply's counter word is that unit's (43개입니다 to 몇 묶음
+            # would say the bundles as pieces); a count asked in another kept unit is held until the reply can
+            # name the unit asked (request G7-6)
+            if isinstance(triple, list) and triple[0] == hit and triple[1] in numeric and asked == default \
+                    and asked in by_unit and not any(row.get(kind) for kind in ("total", "more", "fewer", "same")):
                 out.append({**row, "triple": [by_unit[asked]] + list(triple[1:])})
                 continue
             return query, {"subject": hit, "units": [{"unit": u, "key": k} for u, k in by_unit.items() if u]}
