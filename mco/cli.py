@@ -3,6 +3,7 @@
     mco run MODEL [TEXT ...]          one utterance per argument (one conversation);
                                       with no TEXT, read utterances from stdin
     mco compile SOURCE -o OUTPUT      build an .mco from a source tree or .kgpack
+                                      (--format native writes MCO Format 1)
     mco inspect MODEL                 describe a model without running it
     mco benchmark MODEL CASES         run a case file and report accuracy/latency
     mco backends                      list backends and whether they are usable
@@ -90,7 +91,7 @@ def _cmd_compile(args: argparse.Namespace, out: TextIO) -> int:
     options = {"marco_root": args.marco_root} if args.marco_root else {}
     report = compile(args.source, args.output, name=args.name, build_id=args.build_id,
                      backend=args.backend or "marco-kgpack", graphs=args.graph or None,
-                     language=args.language, **options)
+                     language=args.language, format=args.format, **options)
     if args.json:
         _dump(report.to_dict(), out)
     else:
@@ -180,6 +181,8 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--language", help="language asset path, e.g. styles/english.json")
     p.add_argument("--backend")
     p.add_argument("--marco-root")
+    p.add_argument("--format", choices=("compat", "native"), default="compat",
+                   help="compat: the 0.1.0 container (default); native: MCO Format 1")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=_cmd_compile)
 
