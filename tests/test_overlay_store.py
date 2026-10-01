@@ -425,3 +425,100 @@ def test_retract_then_readd_gives_the_same_edge_id(tmp_path):
     item = store.item("edge", edge)
     assert (item["id"], item["state"], item["revision"], item["data"]) == (edge, "added", 3, {"n": 2})
     assert store._read("SELECT COUNT(DISTINCT edge_id) FROM cur_edges")[0][0] == 1
+
+
+# --- candidates, kept apart ----------------------------------------------------------------
+
+PROPOSER = dict(actor="caller-7", source="api", reason="a caller proposed it", evidence={"doc": "p.3"})
+EMPTY = {"seq": 0, "nodes_added": 0, "nodes_tombstoned": 0, "edges_added": 0, "edges_tombstoned": 0,
+         "rules_added": 0, "rules_replaced": 0, "rules_disabled": 0}
+
+
+def _rows(store):
+    return sum(store._read("SELECT COUNT(*) FROM %s" % t)[0][0] for t in ("cur_nodes", "cur_edges", "cur_rules"))
+
+
+def test_a_pending_candidate_is_not_active_until_approved(tmp_path):
+    store = _new(tmp_path)
+    cid = store.propose([overlay.add_node(G, "a", revision=0), overlay.add_edge(G, "a", "is", "b", revision=0)],
+                        **PROPOSER)
+    assert _rows(store) == 0
+    assert store.counts() == EMPTY
+    assert store.head() == (0, None)
+    assert [c["candidate_id"] for c in store.candidates("pending")] == [cid]
+    with OverlayStore.open(store.path, base_sha256=BASE) as reader:
+        assert reader.item("node", ids.node_id(G, "a")) is None
+        seq, change_id = store.approve(cid, approved_by="reviewer-2")
+        node = reader.item("node", ids.node_id(G, "a"))
+        assert node["state"] == "added"
+        assert node["origin"]["actor"] == "caller-7"
+        assert node["origin"]["approval"]["by"] == "reviewer-2"
+        assert node["origin"]["approval"]["candidate_id"] == cid
+        assert reader.counts()["nodes_added"] == 1 and reader.counts()["edges_added"] == 1
+    decided = store.candidate(cid)
+    assert (decided["status"], decided["decided_by"], decided["change_seq"]) == ("approved", "reviewer-2", seq)
+    assert decided["evidence"] == {"doc": "p.3"}
+
+
+def test_approval_needs_an_approver_from_outside(tmp_path):
+    store = _new(tmp_path)
+    cid = store.propose([overlay.add_node(G, "a", revision=0)], **PROPOSER)
+    with pytest.raises(TypeError):
+        store.approve(cid)
+    for nobody in ("", "   ", None):
+        with pytest.raises(OverlayError):
+            store.approve(cid, approved_by=nobody)
+    with pytest.raises(TypeError):
+        store.commit([overlay.add_node(G, "a", revision=0)], actor="x", source="y", reason="z")
+    assert store.candidate(cid)["status"] == "pending"
+    assert store.counts() == EMPTY
+
+
+def test_a_rejected_candidate_never_becomes_active(tmp_path):
+    store = _new(tmp_path)
+    cid = store.propose([overlay.add_node(G, "a", revision=0)], **PROPOSER)
+    store.reject(cid, rejected_by="reviewer-2", reason="no source")
+    store.reject(cid, rejected_by="reviewer-2", reason="no source")
+    with pytest.raises(OverlayError):
+        store.approve(cid, approved_by="reviewer-3")
+    rejected = store.candidate(cid)
+    assert (rejected["status"], rejected["decision_reason"], rejected["change_seq"]) == ("rejected", "no source", None)
+    assert store.counts() == EMPTY and _rows(store) == 0 and store.head() == (0, None)
+    db = sqlite3.connect(store.path, timeout=5)
+    for sql in ("DELETE FROM candidates", "UPDATE candidates SET status = 'pending'",
+                "UPDATE candidates SET request = '[]'"):
+        with pytest.raises(sqlite3.DatabaseError):
+            db.execute(sql)
+        db.rollback()
+    db.close()
+    assert store.candidate(cid)["status"] == "rejected"
+
+
+def test_approving_twice_is_a_no_op(tmp_path):
+    store = _new(tmp_path)
+    cid = store.propose([overlay.add_node(G, "a", revision=0)], **PROPOSER)
+    first = store.approve(cid, approved_by="reviewer-2")
+    again = store.approve(cid, approved_by="reviewer-3")
+    assert first == again == store.head()
+    assert store.counts()["nodes_added"] == 1
+    assert store.candidate(cid)["decided_by"] == "reviewer-2"
+    with pytest.raises(OverlayError):
+        store.reject(cid, rejected_by="reviewer-3", reason="too late")
+    assert store.propose([overlay.add_node(G, "a", revision=0)], candidate_id=cid, **PROPOSER) == cid
+    with pytest.raises(OverlayConflict):
+        store.propose([overlay.add_node(G, "b", revision=0)], candidate_id=cid, **PROPOSER)
+
+
+def test_a_stale_candidate_is_refused_at_approval(tmp_path):
+    store = _new(tmp_path)
+    store.commit([overlay.add_node(G, "a", revision=0)], **WHO)
+    cid = store.propose([overlay.retract_node(G, "a", revision=1)], **PROPOSER)
+    store.commit([overlay.retract_node(G, "a", revision=1)], **WHO)
+    store.commit([overlay.add_node(G, "a", revision=2, data={"new": True})], **WHO)
+    with pytest.raises(overlay.OverlayStaleRevision):
+        store.approve(cid, approved_by="reviewer-2")
+    assert store.candidate(cid)["status"] == "pending"
+    assert store.head()[0] == 3
+    assert store.item("node", ids.node_id(G, "a"))["state"] == "added"
+    store.reject(cid, rejected_by="reviewer-2", reason="stale")
+    assert store.rebuild()["matched"]
