@@ -58,6 +58,7 @@ Purpose, Owns, Does not own, Depends on, Public interface.
 | --- | --- |
 | [README.md](mco/README.md) | User guide and PyPI page: install, the `marco` extra and `MCO_MARCO_ROOT`, the preview model, Python API, CLI, the `.mco` file, what 0.1.0 cannot do |
 | [api.md](mco/api.md) | Stability contract (API version 1), the compatibility container, how to write a backend |
+| [format-1.md](mco/format-1.md) | MCO Format 1, the binary container: header, table of contents, manifest, chunk set, stable ids, base identity, what a reader must refuse |
 
 ## Releases (`docs/releases/`)
 
