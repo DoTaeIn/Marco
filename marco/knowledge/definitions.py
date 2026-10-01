@@ -6,7 +6,9 @@
 from __future__ import annotations
 
 import json
+import os
 import re
+import secrets
 import sqlite3
 from pathlib import Path
 
@@ -45,45 +47,66 @@ class DefinitionLookup:
     def __init__(self, source: Path, cache: Path = Path("/private/tmp/nai-definition-index.sqlite")):
         self.source, self.cache = Path(source), Path(cache)
 
-    def _ensure(self) -> None:
-        if self.cache.exists() and self.cache.stat().st_mtime >= self.source.stat().st_mtime:
-            # 초기 색인은 정확 표제어만 저장했다. 공백을 달리 쓴 자연어도
-            # 찾을 수 있도록 compact 열이 있는 현재 스키마인지 확인한다.
-            db = sqlite3.connect(self.cache)
-            try:
-                columns = {row[1] for row in db.execute("PRAGMA table_info(definitions)")}
-                if {"term", "compact", "definition"}.issubset(columns):
-                    return
-            finally:
-                db.close()
-        self.cache.parent.mkdir(parents=True, exist_ok=True)
-        temporary = self.cache.with_suffix(".building")
+    def _current(self) -> bool:
+        """The visible cache is newer than the source and has the present schema."""
         try:
-            temporary.unlink()
+            if self.cache.stat().st_mtime < self.source.stat().st_mtime:
+                return False
         except FileNotFoundError:
-            pass
-        db = sqlite3.connect(temporary)
+            return False
+        # 초기 색인은 정확 표제어만 저장했다. 공백을 달리 쓴 자연어도
+        # 찾을 수 있도록 compact 열이 있는 현재 스키마인지 확인한다.
+        db = sqlite3.connect(self.cache)
         try:
-            db.execute("CREATE TABLE definitions (term TEXT PRIMARY KEY, compact TEXT NOT NULL, definition TEXT NOT NULL)")
-            db.execute("CREATE INDEX definitions_compact ON definitions(compact)")
-            batch = []
-            with self.source.open(encoding="utf-8") as handle:
-                for line in handle:
-                    try:
-                        item = json.loads(line)
-                    except json.JSONDecodeError:
-                        continue
-                    key, definition = _term(item.get("말")), str(item.get("정의") or "").strip()
-                    if len(key) >= 1 and definition:
-                        batch.append((key, key.replace(" ", ""), definition))
-                    if len(batch) >= 2000:
-                        db.executemany("INSERT OR REPLACE INTO definitions VALUES (?, ?, ?)", batch); batch.clear()
-                if batch:
-                    db.executemany("INSERT OR REPLACE INTO definitions VALUES (?, ?, ?)", batch)
-            db.commit()
+            columns = {row[1] for row in db.execute("PRAGMA table_info(definitions)")}
+            return {"term", "compact", "definition"}.issubset(columns)
         finally:
             db.close()
-        temporary.replace(self.cache)
+
+    def _ensure(self) -> None:
+        if self._current():
+            return
+        self.cache.parent.mkdir(parents=True, exist_ok=True)
+        # Several processes may start with no cache at once. Each builds into a file
+        # of its own and renames it into place, so the cache path only ever names a
+        # finished index and no process can delete the file another is writing.
+        temporary = self.cache.with_name(f"{self.cache.name}.{os.getpid()}.{secrets.token_hex(8)}.building")
+        try:
+            db = sqlite3.connect(temporary)
+            try:
+                db.execute("CREATE TABLE definitions (term TEXT PRIMARY KEY, compact TEXT NOT NULL, definition TEXT NOT NULL)")
+                db.execute("CREATE INDEX definitions_compact ON definitions(compact)")
+                batch = []
+                with self.source.open(encoding="utf-8") as handle:
+                    for line in handle:
+                        try:
+                            item = json.loads(line)
+                        except json.JSONDecodeError:
+                            continue
+                        key, definition = _term(item.get("말")), str(item.get("정의") or "").strip()
+                        if len(key) >= 1 and definition:
+                            batch.append((key, key.replace(" ", ""), definition))
+                        if len(batch) >= 2000:
+                            db.executemany("INSERT OR REPLACE INTO definitions VALUES (?, ?, ?)", batch); batch.clear()
+                    if batch:
+                        db.executemany("INSERT OR REPLACE INTO definitions VALUES (?, ?, ?)", batch)
+                db.commit()
+            finally:
+                db.close()
+            # Another process may have finished first; its index is as good as this one.
+            if self._current():
+                return
+            try:
+                os.replace(temporary, self.cache)
+            except OSError:
+                if not self._current():
+                    raise
+        finally:
+            for leftover in (temporary, temporary.with_name(temporary.name + "-journal")):
+                try:
+                    leftover.unlink()
+                except FileNotFoundError:
+                    pass
 
     @staticmethod
     def question_term(text: str) -> str | None:
