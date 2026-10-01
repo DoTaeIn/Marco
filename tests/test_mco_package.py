@@ -69,6 +69,29 @@ def test_public_modules_never_import_marco_names() -> None:
             assert f"import {name}" not in text and f"from {name} " not in text, (path, name)
 
 
+# --- stable surface ----------------------------------------------------------------
+
+# ``mco.__all__`` of the 0.1.0 release (tag ``mco-v0.1.0``), API version 1. A later
+# version may add names; it never removes one.
+NAMES_0_1_0 = (
+    "__version__",
+    "load", "compile", "inspect", "benchmark",
+    "Model", "Session", "Result", "Status", "Evidence", "EvidenceList", "Trace", "TraceStep",
+    "Fact", "ReasoningInput", "ModelInfo", "Capability", "CompileReport",
+    "BenchmarkCase", "BenchmarkReport", "CaseResult", "load_cases",
+    "available_backends", "register_backend",
+    "MCOError", "ModelNotFoundError", "ModelFormatError", "IntegrityError", "UnsupportedFormatError",
+    "BackendError", "BackendUnavailableError", "CompileError", "InvalidInputError",
+    "UnsupportedInputError", "ModelClosedError",
+)
+
+
+def test_public_names_keep_every_0_1_0_name() -> None:
+    assert len(NAMES_0_1_0) == 35
+    assert set(NAMES_0_1_0) <= set(mco.__all__)
+    assert all(hasattr(mco, name) for name in mco.__all__)
+
+
 # --- result types ------------------------------------------------------------------
 
 def test_result_contract() -> None:
