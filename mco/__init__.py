@@ -16,9 +16,11 @@ from .benchmark import BenchmarkCase, BenchmarkReport, CaseResult, benchmark, lo
 from .compiler import CompileReport, compile, inspect
 from .errors import (BackendError, BackendUnavailableError, CompileError, IntegrityError,
                      InvalidInputError, MCOError, ModelClosedError, ModelFormatError,
-                     ModelNotFoundError, UnsupportedFormatError, UnsupportedInputError)
+                     ModelNotFoundError, OverlayBaseMismatchError, OverlayError, UnsupportedFormatError,
+                     UnsupportedInputError)
 from .info import Capability, ModelInfo
 from .model import Model, Session, load
+from .overlay import Overlay, create_overlay, open_overlay, overlay_status
 from .result import Evidence, EvidenceList, Fact, ReasoningInput, Result, Status, Trace, TraceStep
 
 __all__ = [
@@ -28,10 +30,12 @@ __all__ = [
     "Model", "Session", "Result", "Status", "Evidence", "EvidenceList", "Trace", "TraceStep",
     "Fact", "ReasoningInput", "ModelInfo", "Capability", "CompileReport",
     "BenchmarkCase", "BenchmarkReport", "CaseResult", "load_cases",
+    # overlay (Persistent Overlay Infrastructure)
+    "create_overlay", "open_overlay", "overlay_status", "Overlay",
     # backends
     "available_backends", "register_backend",
     # errors
     "MCOError", "ModelNotFoundError", "ModelFormatError", "IntegrityError", "UnsupportedFormatError",
     "BackendError", "BackendUnavailableError", "CompileError", "InvalidInputError",
-    "UnsupportedInputError", "ModelClosedError",
+    "UnsupportedInputError", "ModelClosedError", "OverlayError", "OverlayBaseMismatchError",
 ]
