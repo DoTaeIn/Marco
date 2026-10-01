@@ -673,3 +673,34 @@ def test_a_change_in_the_same_unit_or_between_units_of_one_piece_moves_the_count
     assert play("한국어", 3, [("노라는 연필이 다섯 자루 있어.", "rec"), ("수아는 연필이 2개 있어.", "rec"),
                             ("노라가 수아에게 연필을 두 개 줬어.", "rec"), ("노라가 수아에게 연필을 한 자루 줬어.", "rec"),
                             ("노라는 연필이 몇 자루 있어?", 2), ("수아는 연필이 몇 개 있어?", 5)]) == []
+
+
+# A said count of none is none in every unit (밧줄이 한 개도 없어 is no bundles either): it carries no unit, so the
+# unit-kind hold compares units only when both sides are counts that are not none, each with a said unit. The first
+# change after a said none moves the count and sets its unit, and a later change in a unit of another kind is held
+# against that.
+ZERO_THEN_UNIT = [
+    ["하린은 밧줄이 한 개도 없어.", "도윤은 밧줄이 여섯 묶음 있어."],
+    ["하린은 밧줄이 하나도 없어.", "도윤은 밧줄이 여섯 묶음 있어."],
+]
+
+
+@pytest.mark.parametrize("effort", [0, 3])
+@pytest.mark.parametrize("before", ZERO_THEN_UNIT)
+def test_a_said_count_of_none_takes_the_unit_of_the_first_change(effort, before):
+    said = [(line, "rec") for line in before]
+    assert play("한국어", effort, said + [("도윤이 하린에게 밧줄 다섯 묶음을 줬어.", "rec"),
+                                       ("하린은 밧줄이 몇 개 있어?", 5), ("도윤은 밧줄이 몇 개 있어?", 1)]) == []
+    # the count is now said in 묶음: a change in 개 is held against it, and the count after it
+    current = context("한국어", effort)
+    for line in before + ["도윤이 하린에게 밧줄 다섯 묶음을 줬어."]:
+        assert (current.turn(line, KG) or {}).get("status") == "observed"
+    result = current.turn("하린이 밧줄 두 개를 잃어버렸어.", KG) or {}
+    assert result.get("status") == "unresolved" and (result.get("meaning") or {}).get("units") == ["묶음", "개"]
+    assert (current.turn("하린은 밧줄이 몇 개 있어?", KG) or {}).get("status") != "answered"
+
+
+def test_a_said_count_of_none_then_changes_in_one_unit_move_the_count():
+    assert play("한국어", 3, [("하린은 밧줄이 한 개도 없어.", "rec"), ("도윤은 밧줄이 여섯 묶음 있어.", "rec"),
+                            ("도윤이 하린에게 밧줄 다섯 묶음을 줬어.", "rec"), ("하린이 밧줄 두 묶음을 잃어버렸어.", "rec"),
+                            ("하린은 밧줄이 몇 개 있어?", 3)]) == []

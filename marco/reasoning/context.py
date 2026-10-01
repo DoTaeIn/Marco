@@ -4734,7 +4734,9 @@ class ReasoningContext:
         group several pieces (수량단위.담는단위: 묶음, 상자, 병 ...); every other unit counts one piece (개, 자루, 권
         ...). A count said in one kind is not moved by a change said in the other (서류가 5묶음, then 2개를 줬어 was 3,
         bundles less pieces), nor between two different units that hold several (상자, 묶음). Units of one piece
-        (다섯 자루, 두 개) are one count as before, and a count or a change said in no unit is not judged. The
+        (다섯 자루, 두 개) are one count as before, and a count or a change said in no unit is not judged. A said
+        count of none is said in no unit (한 개도 없어 is none in bundles too): the first change after it moves the
+        count and sets its unit, and a later change in a unit of another kind is held against that. The
         declaration adds no reading; it only holds."""
         counters = (parser.language_pack or {}).get("counters") or {}
         holding = set(counters.get("containers") or [])
@@ -4743,21 +4745,32 @@ class ReasoningContext:
         updates = parser.data.get("numeric_updates") or {}
         targets = ReasoningContext._numeric_targets(parser)
         said = {}
+        ZERO = object()
 
         def unit(fact):
             return fact.get("unit") or ReasoningContext._unit_said(parser, (fact.get("evidence") or {}).get("text") or "")
+        def none(value):
+            try:
+                return float(value) == 0
+            except (TypeError, ValueError):
+                return False
         for fact in facts:
             triple = fact.get("triple")
             if not isinstance(triple, list) or not isinstance(triple[0], str):
                 continue
             if triple[1] in targets:
-                said[triple[0]] = unit(fact)
-            elif triple[1] in updates and (fact.get("evidence") or {}).get("turn") == turn:
+                # a said count of none is none in every unit (한 개도 없어): it carries no unit, and the first
+                # change after it sets the unit
+                said[triple[0]] = ZERO if none(triple[2]) else unit(fact)
+            elif triple[1] in updates:
                 key = triple[0] if triple[0] in said else next(
                     iter([k for k in said if k.startswith(triple[0] + " ")][:1] if len(
                         [k for k in said if k.startswith(triple[0] + " ")]) == 1 else []), None)
                 before, now = said.get(key), unit(fact)
-                if before and now and before != now and (before in holding or now in holding):
+                if before is ZERO:
+                    said[key] = now
+                elif (fact.get("evidence") or {}).get("turn") == turn and before and now and before != now \
+                        and (before in holding or now in holding):
                     return {"subject": key, "units": [before, now]}
         return None
 
