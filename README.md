@@ -4,9 +4,9 @@
 every sentence it says from a proven meaning, and holds when nothing grounds an
 answer. No language model runs anywhere in it.**
 
-**Status: MARCO 1 · Preview.** MARCO 1 is not released. Five of its six gate
-conditions hold; the sixth, accuracy on unseen dialogues, stands at 98 of 108
-with 98 needed ([Status](#status)).
+**Status: MARCO 1 · Preview.** MARCO 1 is not released. All six gate conditions
+measure as met on 2026-10-01 (accuracy on unseen dialogues: 98 of 108 with 98
+needed, no wrong turn); the owner has not yet declared the gate ([Status](#status)).
 
 ```
 > Minsu has five apples, and Jiyeon has two.
@@ -45,46 +45,47 @@ The [freeze decision](docs/ko/2026-09-22-freeze-decision.md) fixed the gate
 before implementation. The frozen exams are 52 unseen dialogues and 114
 reasoning problems; development never opens them, and only the owner's plan
 manager scores them. Numbers below are read from the report files named beside
-them, run on 2026-09-29 with code `a18c617`.
+them, run on 2026-10-01 with code `650efc9` (the dialogue exam at `c128040`, the same code).
 
 | # | Gate condition | State | Report |
 | --- | --- | --- | --- |
 | 1 | The fixed seven-step dialogue passes in Korean and English | **met** | `tests/test_repair_and_english.py` |
-| 2 | 90% or better on the answerable turns of 50+ unseen dialogues; a hold is not a correct answer | **not met: 67 of 108 (62.0%)**, 98 needed. 41 held, 0 wrong. Korean 33 of 54, English 34 of 54 | [experiment-04.json](docs/ko/dialogue-gate-2026-09-22/experiment-04.json) |
+| 2 | 90% or better on the answerable turns of 50+ unseen dialogues; a hold is not a correct answer | **met: 98 of 108 (90.7%)**, 98 needed. 10 held, 0 wrong. Korean 44 of 54, English 54 of 54 | [graph-step-3s6.json](docs/ko/dialogue-gate-2026-09-22/graph-step-3s6.json) |
 | 3 | No confident answer without evidence, no use of withdrawn evidence | **met**: 0 and 0 | same file |
 | 4 | Sample count, composition and the full failure list are published | **met**: 52 dialogues (26 Korean, 26 English), 340 turns, 108 answerable; every failure is in the file | same file |
-| 5 | Every spoken reply composed from a meaning, never picked | **met**: 340 of 340 composed, 0 passed through; 170 of 170 in each language | [composition-experiment-04.json](docs/ko/dialogue-gate-2026-09-22/composition-experiment-04.json) |
-| 6 | 95% or better on 100+ structured reasoning problems, 0 wrong, at most 10% unparsed | **met**: 110 of 113 parsed problems (97.3%), 0 wrong questions, 1 of 114 unparsed | [reasoning experiment-04.json](docs/ko/reasoning-gate-2026-09-24/experiment-04.json) |
+| 5 | Every spoken reply composed from a meaning, never picked | **met**: 340 of 340 composed, 0 passed through; 170 of 170 in each language | [composition-graph-step-3s6.json](docs/ko/dialogue-gate-2026-09-22/composition-graph-step-3s6.json) |
+| 6 | 95% or better on 100+ structured reasoning problems, 0 wrong, at most 10% unparsed | **met**: 110 of 113 parsed problems (97.3%), 0 wrong questions, 1 of 114 unparsed | [reasoning graph-step-3s6.json](docs/ko/reasoning-gate-2026-09-24/graph-step-3s6.json) |
 
 The other turns of the dialogue exam, reported apart as the gate requires:
 
 | Turns | Right | Held | Wrong |
 | --- | --- | --- | --- |
-| Statement, to be recorded | 138 of 150 | 11 | 1 |
+| Statement, to be recorded | 146 of 150 | 4 | 0 |
 | Missing premise, to be held naming what is missing | 5 of 20 | 15 | 0 |
-| Ambiguous referent, every candidate named | 8 of 12 | 4 | 0 |
+| Ambiguous referent, every candidate named | 12 of 12 | 0 | 0 |
 | Unsupported request, declined | 6 of 6 | 0 | 0 |
-| Correction, the same event revised | 12 of 18 | 6 | 0 |
-| Why, every evidence turn cited | 18 of 26 | 8 | 0 |
+| Correction, the same event revised | 16 of 18 | 2 | 0 |
+| Why, every evidence turn cited | 20 of 26 | 6 | 0 |
 
 Gate condition 2 over time, all with 0 or 1 wrong answers:
 
-| Run | Baseline | Round 1 | 2 | 3 | 4 | 5 | 6 | Experiment 2 | Experiment 4 | Experiment 7 | Experiment 8 | Experiment 12 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Correct of 108 | 3 | 19 | 21 | 21 | 40 | 45 | 63 | 69 | 67 | 76 | 81 | 85 |
+| Run | Baseline | Round 1 | 2 | 3 | 4 | 5 | 6 | Experiment 2 | Experiment 4 | Experiment 7 | Experiment 8 | Experiment 12 | Baseline frozen 09-30 | Identity graph 10-01 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Correct of 108 | 3 | 19 | 21 | 21 | 40 | 45 | 63 | 69 | 67 | 76 | 81 | 85 | 90 | 98 |
 
 Experiment 4 restored a safety hold of round 2 that experiment 2 had broken (a
-scope word over one holder is held, not answered); two turns went back to held. The gate table above is the run at `a18c617`;
-the latest run, on the conversation identity graph at `c128040`, is 98 of 108 with no
-wrong turn on the whole exam ([graph-step-3s6.json](docs/ko/dialogue-gate-2026-09-22/graph-step-3s6.json)).
+scope word over one holder is held, not answered); two turns went back to held. The last eight correct turns came with the
+conversation identity graph: holders and things are nodes with stable ids, and statements, questions and
+corrections are grounded on those nodes. By effort level 0 to 3 the exam scores 63, 67, 97 and 98 of 108,
+with no wrong turn at any level.
 
 Work now runs as small experiments: find the largest structural cause of the
 held turns, patch it, run the regression, merge, score the exam again. Each one
 is a row in the [experiment log](docs/ko/2026-09-29-experiment-log.md).
-`python tools/doc_facts.py frozen --run experiment-04` prints these numbers
+`python tools/doc_facts.py frozen --run graph-step-3s6` prints these numbers
 from the report files without running an exam.
 
-**Tests** at `a18c617`: 2,270 passed, 3 failed, 2 expected failures. The three
+**Tests** at `c128040`: 2,446 passed, 3 failed, 2 expected failures. The three
 failures are machine-dependent and known: two `test_response_composer` tests and
 the macOS memory assertion of the ALMA reproduction.
 
@@ -204,7 +205,7 @@ placed under a phase; it never reorders them.
 
 | | Phase |
 | --- | --- |
-| **Now** | M1, the MARCO 1 language gate: gate condition 2 to 90% with 0 wrong |
+| **Now** | M1, the MARCO 1 language gate: the six conditions measure as met; the owner's declaration is open |
 | **Then** | MARCO 1 release: README and benchmark update, a fresh 50-dialogue exam, the real MCO format |
 | **Next** | M2, self-improving MARCO: diagnose, repair, retry, research, validate |
 | **Later** | M3 capability system · M4 goal and prompt compilation · A1, A2 ALMA · S1 SOMA perception · P1 POLO action · N1 NERO acceleration |
