@@ -7064,8 +7064,12 @@ class ReasoningContext:
             # 판단은 **메시지 전체가 아니라 구간마다** 해야 한다.
             for piece, asking in self._segments(text, parser):
                 notes = []
-                if asking or parser.parse(piece, partial=True, events=True, verbs=verbs, repair=True,
-                                          _diagnostics=notes) is not None:
+                if asking:
+                    continue
+                read = parser.parse(piece, partial=True, events=True, verbs=verbs, repair=True, _diagnostics=notes)
+                # a piece read with a fact or a question is no unread event; one read only as the shape of an
+                # event (이보는 상대방한테 받았다가 돌려줬어) states something this turn did not apply: it is kept
+                if read is not None and (read.get("facts") or read.get("query")):
                     continue
                 # 묻는 말은 못 읽은 사건이 아니다. 아무 상태도 안 바꾼다.
                 if any(note.get("reason") == "question_is_not_an_observation"
