@@ -26,9 +26,9 @@ class NativeMcoBackend(Backend):
         return False, _REASON
 
     def describe(self, file: ModelFile) -> ModelInfo:
-        return ModelInfo(path=str(file.path), format=file.kind, format_version=None,
+        return ModelInfo(path=str(file.path), format=file.kind, format_version=file.version,
                          size_bytes=file.size_bytes, sha256=file.sha256, backend=self.name,
-                         runnable=False, notes=(_REASON,))
+                         runnable=False, notes=tuple(n for n in (file.refusal, _REASON) if n))
 
     def open(self, file: ModelFile, options: Mapping[str, Any]) -> BackendModel:
         raise UnsupportedFormatError(f"{file.path}: {_REASON}")
