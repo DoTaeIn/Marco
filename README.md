@@ -85,7 +85,7 @@ is a row in the [experiment log](docs/ko/2026-09-29-experiment-log.md).
 `python tools/doc_facts.py frozen --run graph-step-3s6` prints these numbers
 from the report files without running an exam.
 
-**Tests** at `c128040`: 2,446 passed, 3 failed, 2 expected failures. The three
+**Tests** at `5987ed5`: 2,641 passed, 3 failed, 2 expected failures. The three
 failures are machine-dependent and known: two `test_response_composer` tests and
 the macOS memory assertion of the ALMA reproduction.
 
