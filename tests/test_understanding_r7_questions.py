@@ -587,3 +587,32 @@ def test_an_unread_turn_that_mentions_a_thing_the_holder_counts_holds_the_questi
 def test_an_unread_turn_holds_nothing_it_does_not_mention_and_a_restated_count_is_known_again(frames, value):
     rows = _play("english", frames, 3, **EN_WORDS)
     assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("language,frames,value", [
+    ("english", EN_START + ["No, the other way round.", "How many {p} does {b} have?"], "2"),
+    ("english", ["{a} has 6 {p}.", "{b} has 4 {p}.", "{c} has 3 {p}.", "{a} gave {b} two {p}.", "{c} gave {a} one quill.",
+                 "No, the other way round.", "How many {p} does {c} have?"], "4"),
+    ("한국어", ["{a}는 {p} 6개가 있고, {b}는 4개가 있어.", "{a}가 {b}에게 {p} 2개를 줬어.", "{b}는 {p}이 몇 개야?",
+               "아니, 반대야. 거꾸로 된 거야.", "{b}는 {p}이 몇 개야?"], "2"),
+])
+def test_the_other_way_round_with_no_name_swaps_the_last_transfer(language, frames, value):
+    # a swap word with no holder and no amount: the latest transfer's giver and receiver swapped (effort 2)
+    rows = _play(language, frames, 3, **(dict(EN_WORDS, c="Tam") if language == "english" else KO_WORDS))
+    assert rows[-2]["status"] == "observed" and rows[-2]["meaning"]["act"] == "revise"
+    assert rows[-1]["status"] == "answered" and value in rows[-1]["answer"]
+    # the answer rests on the rewritten transfer, never on the withdrawn wording (the gate's retracted-evidence rule)
+    from bench.dialogue_gate import _norm
+    words = dict(EN_WORDS, c="Tam") if language == "english" else KO_WORDS
+    transfers = [f.format(**words) for f in frames[:-2] if "gave" in f or "줬어" in f]
+    withdrawn = _norm(transfers[-1])
+    quoted = [x for row in rows[-1].get("transitions") or [] for x in (
+        (row.get("evidence") or {}).get("text"), (row.get("evidence") or {}).get("source"),
+        ((row.get("evidence") or {}).get("normalization") or {}).get("canonical")) if x]
+    assert quoted and not [x for x in quoted if _norm(x) and _norm(x) in withdrawn]
+
+
+def test_a_question_with_a_swap_word_swaps_nothing():
+    rows = _play("english", EN_START + ["Was it the other way round?", "How many {p} does {b} have?"], 3, **EN_WORDS)
+    assert rows[-2].get("status") != "observed"
+    assert rows[-1]["status"] == "answered" and "6" in rows[-1]["answer"]
