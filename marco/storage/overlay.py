@@ -37,6 +37,7 @@ from marco.trace.ledger import new_id
 OVERLAY_SCHEMA = 1
 APPLICATION_ID = 0x4D434F4F  # "MCOO"
 CHANGE_PREFIX = "chg_"
+CANDIDATE_PREFIX = "cand_"
 LOCK_SUFFIX = ".writer-lock"
 
 KINDS = ("node", "edge", "rule")
@@ -166,6 +167,33 @@ CREATE TABLE cur_rules (
     PRIMARY KEY (rule_id, from_seq)
 );
 CREATE UNIQUE INDEX cur_rules_live ON cur_rules(rule_id) WHERE to_seq IS NULL;
+
+CREATE TABLE candidates (
+    candidate_id TEXT PRIMARY KEY,
+    created_at TEXT NOT NULL,
+    actor TEXT NOT NULL,
+    source TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    evidence TEXT NOT NULL,
+    request TEXT NOT NULL,
+    request_digest TEXT NOT NULL,
+    proposed_at_seq INTEGER NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('pending', 'approved', 'rejected')),
+    decided_at TEXT,
+    decided_by TEXT,
+    decision_reason TEXT,
+    change_seq INTEGER REFERENCES changes(seq),
+    CHECK ((status = 'pending') = (decided_at IS NULL)),
+    CHECK ((status = 'approved') = (change_seq IS NOT NULL))
+);
+CREATE INDEX candidates_status ON candidates(status);
+CREATE TRIGGER candidates_no_delete BEFORE DELETE ON candidates
+BEGIN SELECT RAISE(ABORT, 'candidates are kept, rejected ones too: DELETE refused'); END;
+CREATE TRIGGER candidates_decided_once BEFORE UPDATE ON candidates WHEN OLD.status <> 'pending'
+BEGIN SELECT RAISE(ABORT, 'a decided candidate stays as decided'); END;
+CREATE TRIGGER candidates_request_fixed BEFORE UPDATE OF candidate_id, created_at, actor, source, reason,
+    evidence, request, request_digest, proposed_at_seq ON candidates
+BEGIN SELECT RAISE(ABORT, 'a candidate''s request is fixed when it is proposed'); END;
 """
 
 # Per kind: (table, key column, the state columns a delta sets).
@@ -180,6 +208,10 @@ _JSON_FIELDS = ("data", "body")
 def dumps(value):
     """Canonical JSON: sorted keys, no spaces, UTF-8 text kept as is."""
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
+
+
+def _digest(requests):
+    return hashlib.sha256(dumps(requests).encode("utf-8")).hexdigest()
 
 
 def _now():
@@ -635,7 +667,7 @@ class OverlayStore:
 
     def _record(self, cur, requests, actor, source, reason, evidence, approval, validation, change_id,
                 deltas=None):
-        digest = hashlib.sha256(dumps(requests).encode("utf-8")).hexdigest()
+        digest = _digest(requests)
         if change_id is not None:
             seen = cur.execute("SELECT seq, request_digest FROM changes WHERE change_id = ?",
                                (_text(change_id, "change_id"),)).fetchone()
@@ -662,6 +694,85 @@ class OverlayStore:
                              dumps(d["payload"]), d["revision"]))
                 ord_ += 1
         return seq, change_id
+
+    # --- candidates: stored, not active, until approved from outside ---------------------
+
+    def propose(self, deltas, *, actor, source, reason, evidence=None, candidate_id=None):
+        """Store a candidate change. It is not active: it is in no current-state table and no count
+        until ``approve`` is called for it. Returns the candidate id. Proposing a ``candidate_id``
+        already present with the same deltas is a no-op."""
+        requests = [_check_request(d) for d in deltas]
+        if not requests:
+            raise OverlayError("a candidate has at least one delta")
+        digest = _digest(requests)
+
+        def work(cur):
+            cid = candidate_id
+            if cid is not None:
+                seen = cur.execute("SELECT request_digest FROM candidates WHERE candidate_id = ?",
+                                   (_text(cid, "candidate_id"),)).fetchone()
+                if seen is not None:
+                    if seen["request_digest"] != digest:
+                        raise OverlayConflict("candidate %s is stored with different deltas" % cid)
+                    return cid
+            else:
+                cid = new_id(CANDIDATE_PREFIX)
+            head = cur.execute("SELECT COALESCE(MAX(seq), 0) FROM changes").fetchone()[0]
+            cur.execute("INSERT INTO candidates (candidate_id, created_at, actor, source, reason, evidence, request, "
+                        "request_digest, proposed_at_seq, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')",
+                        (cid, _now(), _text(actor, "actor"), _text(source, "source"), _text(reason, "reason"),
+                         dumps(evidence), dumps(requests), digest, head))
+            return cid
+        return self._write(work)
+
+    def approve(self, candidate_id, *, approved_by, validation=None):
+        """Approve a pending candidate: in one transaction it becomes a change with its deltas, the
+        approval naming ``approved_by`` (the caller's identity; there is no default). Returns
+        ``(seq, change_id)``. Approving an approved candidate again is a no-op returning the same
+        pair; a rejected candidate is refused; a stale revision is refused and the candidate stays
+        pending."""
+        approved_by = _text(approved_by, "approved_by")
+
+        def work(cur):
+            cand = self._candidate_row(cur, candidate_id)
+            if cand["status"] == "approved":
+                row = cur.execute("SELECT seq, change_id FROM changes WHERE seq = ?", (cand["change_seq"],)).fetchone()
+                return row["seq"], row["change_id"]
+            if cand["status"] == "rejected":
+                raise OverlayError("candidate %s was rejected by %s: %s"
+                                   % (candidate_id, cand["decided_by"], cand["decision_reason"]))
+            requests = [_check_request(d) for d in json.loads(cand["request"])]
+            when = _now()
+            approval = {"by": approved_by, "at": when, "candidate_id": candidate_id}
+            seq, change_id = self._record(cur, requests, cand["actor"], cand["source"], cand["reason"],
+                                          json.loads(cand["evidence"]), approval, validation, None)
+            cur.execute("UPDATE candidates SET status = 'approved', decided_at = ?, decided_by = ?, change_seq = ? "
+                        "WHERE candidate_id = ?", (when, approved_by, seq, candidate_id))
+            return seq, change_id
+        return self._write(work)
+
+    def reject(self, candidate_id, *, rejected_by, reason):
+        """Reject a pending candidate; it is kept with the reason and never becomes a change.
+        Rejecting it again is a no-op; rejecting an approved candidate is refused (undo its change)."""
+        rejected_by, reason = _text(rejected_by, "rejected_by"), _text(reason, "reason")
+
+        def work(cur):
+            cand = self._candidate_row(cur, candidate_id)
+            if cand["status"] == "rejected":
+                return
+            if cand["status"] == "approved":
+                raise OverlayError("candidate %s is approved as change %d; undo that change instead"
+                                   % (candidate_id, cand["change_seq"]))
+            cur.execute("UPDATE candidates SET status = 'rejected', decided_at = ?, decided_by = ?, "
+                        "decision_reason = ? WHERE candidate_id = ?", (_now(), rejected_by, reason, candidate_id))
+        self._write(work)
+
+    @staticmethod
+    def _candidate_row(cur, candidate_id):
+        row = cur.execute("SELECT * FROM candidates WHERE candidate_id = ?", (candidate_id,)).fetchone()
+        if row is None:
+            raise OverlayError("no candidate %r in this overlay" % (candidate_id,))
+        return dict(row)
 
     def rebuild(self):
         """Recompute the derived tables from ``changes`` and ``deltas`` alone, in one transaction.
@@ -724,6 +835,37 @@ class OverlayStore:
                           "FROM %s t JOIN changes c ON c.seq = t.from_seq WHERE t.%s = ? AND t.from_seq <= ? "
                           "AND (t.to_seq IS NULL OR t.to_seq > ?)" % (table, key), (target_id, at, at))
         return _item(kind, rows[0]) if rows else None
+
+    def counts(self, at=None):
+        """Active overlay items at ``at`` (head if None), by kind and state. Candidates are not counted."""
+        at = self._pin(at)
+        out = {"seq": at, "nodes_added": 0, "nodes_tombstoned": 0, "edges_added": 0, "edges_tombstoned": 0,
+               "rules_added": 0, "rules_replaced": 0, "rules_disabled": 0}
+        for kind, (table, _, _) in _TABLE.items():
+            for row in self._read("SELECT state, COUNT(*) AS n FROM %s WHERE from_seq <= ? "
+                                  "AND (to_seq IS NULL OR to_seq > ?) AND state <> 'none' GROUP BY state"
+                                  % table, (at, at)):
+                out["%ss_%s" % (kind, row["state"])] = row["n"]
+        return out
+
+    def candidates(self, status=None):
+        """Candidates, oldest first; ``status`` is 'pending', 'approved', 'rejected' or None for all."""
+        if status not in (None, "pending", "approved", "rejected"):
+            raise OverlayError("unknown candidate status %r" % (status,))
+        sql = "SELECT * FROM candidates" + (" WHERE status = ?" if status else "") + " ORDER BY created_at, candidate_id"
+        return [_candidate(r) for r in self._read(sql, (status,) if status else ())]
+
+    def candidate(self, candidate_id):
+        """One candidate as a dict, or None."""
+        rows = self._read("SELECT * FROM candidates WHERE candidate_id = ?", (candidate_id,))
+        return _candidate(rows[0]) if rows else None
+
+
+def _candidate(row):
+    out = dict(row)
+    out["evidence"] = json.loads(out["evidence"])
+    out["deltas"] = json.loads(out.pop("request"))
+    return out
 
 
 def _item(kind, row):
