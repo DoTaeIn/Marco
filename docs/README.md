@@ -332,6 +332,8 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [graph-step-3s4q3.json](ko/dialogue-gate-2026-09-22/graph-step-3s4q3.json) | On nodes, `c3eb7a7`: 94 of 108, 0 wrong |
 | [graph-step-3s5.json](ko/dialogue-gate-2026-09-22/graph-step-3s5.json) | On nodes, `c1c0be6`: 94 of 108, no turn changed |
 | [graph-safety-pointer.json](ko/dialogue-gate-2026-09-22/graph-safety-pointer.json) | The pointer safety fix, `65fcb7f`: 94 of 108, no turn changed |
+| [graph-corrections-evidence.json](ko/dialogue-gate-2026-09-22/graph-corrections-evidence.json) | Corrections on nodes, the answer cites the correction turn, `13d8965`: 98 of 108, 0 wrong |
+| [graph-step-3s6.json](ko/dialogue-gate-2026-09-22/graph-step-3s6.json) | Identity graph step 3, statements 6, `c128040`: 98 of 108, no turn changed |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
