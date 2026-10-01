@@ -401,3 +401,87 @@ def test_cli_compiles_native(tmp_path: Path) -> None:
                  "--language", KO["language"], "--format", "native", "--json"], stdout=out)
     info = json.loads(out.getvalue())["info"]
     assert code == 0 and info["format"] == "mco-native" and info["format_version"] == 1
+
+
+# --- MARCO: run ---------------------------------------------------------------------------------
+
+def _run(path: Path, turns: list[str]) -> list[tuple]:
+    with mco.load(path) as model:
+        out = []
+        for text in turns:
+            r = model.run(text)
+            out.append((r.answer, r.status, [e.to_dict() for e in r.evidence], r.backend))
+        return out
+
+
+def _same_results(builds, lang: str, conversations: list[list[str]]) -> list[list[tuple]]:
+    seen = []
+    for turns in conversations:
+        compat, native = _run(builds[lang, "compat"], turns), _run(builds[lang, "native"], turns)
+        assert [r[3] for r in compat] == ["marco-kgpack"] * len(turns)
+        assert [r[3] for r in native] == ["mco-native"] * len(turns)
+        assert [r[:3] for r in native] == [r[:3] for r in compat]          # answer, status, evidence
+        seen.append(native)
+    return seen
+
+
+@pytest.mark.language("한국어")
+def test_native_answers_as_compat_does_in_korean(builds) -> None:
+    split, stones = _same_results(builds, "ko", [["12만원 나왔어", "3명이야"],
+                                                 ["돌은 23개 있다.", "돌 8개를 꺼냈다.", "지금 돌은 몇 개야?"]])
+    assert split[-1][1] is mco.Status.ANSWERED and "40000" in split[-1][0] and split[-1][2]
+    assert stones[-1][:2] == ("15개입니다.", mco.Status.ANSWERED)
+
+
+@pytest.mark.language("english")
+def test_native_answers_as_compat_does_in_english(builds) -> None:
+    split, apples = _same_results(builds, "en", [["the bill was 120000 won", "3 people"],
+                                                 ["Minsu has five apples.", "How many apples does Minsu have?"]])
+    assert split[0][1] is mco.Status.NEEDS_INPUT and split[-1][1] is mco.Status.ANSWERED
+    assert "40000" in split[-1][0] and any(e["kind"] == "graph_path" for e in split[-1][2])
+    assert apples[-1][:2] == ("5 apples.", mco.Status.ANSWERED)
+
+
+@pytest.mark.language("english")
+def test_native_knowledge_comes_from_the_file(tmp_path: Path) -> None:
+    # A graph that exists only in the .mco: its source tree is deleted before the run,
+    # and the run is a separate process started outside the checkout.
+    tree = tmp_path / "tree"
+    for rel in EN["graphs"] + ["styles/english.json", "styles/한국어.json", "axioms/core.json"]:
+        (tree / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tree / rel).write_bytes((ROOT / rel).read_bytes())
+    graph = tree / EN["graphs"][0]
+    marker = "straight from the native file"
+    text = graph.read_text(encoding="utf-8")
+    assert "결론값: Then it is {값} each." in text
+    graph.write_text(text.replace("결론값: Then it is {값} each.", f"결론값: Then it is {{값}} each, {marker}."),
+                     encoding="utf-8")
+    model = tmp_path / "only-here.mco"
+    mco.compile(tree, model, format="native", **EN)
+    import shutil
+    import subprocess
+    import sys
+    shutil.rmtree(tree)
+    code = ("import sys, mco; m = mco.load(sys.argv[1]); m.run('the bill was 120000 won'); "
+            "r = m.run('3 people'); print(r.backend, r.status, r.answer)")
+    env = {k: v for k, v in __import__("os").environ.items() if k != "PYTHONPATH"}
+    env.update(MCO_MARCO_ROOT=str(ROOT), PYTHONPATH=str(ROOT), KG_ENCODER="문자", NAI_LANGUAGE="english")
+    out = subprocess.run([sys.executable, "-c", code, str(model)], cwd=tmp_path, env=env,
+                         capture_output=True, text=True, check=True).stdout.strip().splitlines()[-1]
+    assert out.startswith("mco-native answered ") and "40000" in out and marker in out
+
+
+def test_native_load_options_and_refusals(builds, tmp_path: Path) -> None:
+    with pytest.raises(mco.InvalidInputError):
+        mco.load(builds["ko", "native"], temperature=0.1)
+    with pytest.raises(mco.UnsupportedFormatError):
+        mco.load(builds["ko", "native"], backend="marco-kgpack")
+    damaged = tmp_path / "damaged.mco"
+    data = builds["ko", "native"].read_bytes()
+    damaged.write_bytes(_flip(data, _entry(data, _member_index(data))["offset"] + 3))
+    with pytest.raises(mco.IntegrityError):
+        mco.load(damaged)
+    newer = tmp_path / "newer.mco"
+    newer.write_bytes(_patch_header(data, reseal=False, major=2))
+    with pytest.raises(mco.UnsupportedFormatError):
+        mco.load(newer)

@@ -44,7 +44,7 @@ from ..info import Capability, ModelInfo
 from ..result import Evidence, EvidenceList, ReasoningInput, Result, Status, Trace, TraceStep
 from .base import Backend, BackendModel, BackendSession, fallback_status, run_reasoning
 
-__all__ = ["MarcoKgpackBackend", "OPTIONS"]
+__all__ = ["MarcoKgpackBackend", "MarcoModel", "OPTIONS", "CAPABILITIES"]
 
 #: Options accepted by :func:`mco.load` for this backend.
 OPTIONS = frozenset({"marco_root", "overlay_dir", "allow_network"})
@@ -56,6 +56,9 @@ _REQUIRED_MODULES = (_KGPACK, "pack_model", "engine")
 _UI_MODULE = "views.kgpack_ui"
 _import_lock = threading.Lock()
 _POOL_SIZE = 4
+#: What a model run on the MARCO engine can do, whatever file it came from.
+CAPABILITIES = (Capability.TEXT_INPUT, Capability.MULTI_TURN, Capability.TEXT_FACTS,
+                Capability.APPROVAL_PLANS, Capability.NETWORK)
 
 
 # --- MARCO verdict labels -> stable Status -----------------------------------
@@ -203,8 +206,7 @@ class MarcoKgpackBackend(Backend):
             graphs=sum(1 for f in files if f.get("kind") == "graph"),
             assets=sum(1 for f in files if f.get("kind") != "graph"),
             fingerprint=_model_fingerprint(pm), verified=file.verified, runnable=usable,
-            capabilities=(Capability.TEXT_INPUT, Capability.MULTI_TURN, Capability.TEXT_FACTS,
-                          Capability.APPROVAL_PLANS, Capability.NETWORK),
+            capabilities=CAPABILITIES,
             notes=tuple(notes),
             manifest={"mco": manifest, "kgpack": {k: v for k, v in pm.items() if k != "manager"}},
         )
@@ -250,7 +252,14 @@ class MarcoKgpackBackend(Backend):
 # --- opened model and sessions ------------------------------------------------------
 
 class MarcoModel(BackendModel):
-    def __init__(self, backend: MarcoKgpackBackend, file: ModelFile, options: dict[str, Any]) -> None:
+    """A model running on the MARCO engine.
+
+    Shared by ``marco-kgpack`` and ``mco-native``: ``backend`` describes the
+    file and names the results. A bare ``.kgpack`` is opened in place; any other
+    file kind hands over its pack through ``ModelFile.payload_bytes()``.
+    """
+
+    def __init__(self, backend: Backend, file: ModelFile, options: dict[str, Any]) -> None:
         self._backend = backend
         self._options = options
         self._ui = _import(_UI_MODULE, options.get("marco_root"))
@@ -264,11 +273,11 @@ class MarcoModel(BackendModel):
         # closed sessions hand their (reset) application back for reuse.
         self._pool: list[Any] = []
         try:
-            if file.kind == "mco-compat":
+            if file.kind == "kgpack":
+                self._pack_path = file.path.resolve()
+            else:
                 self._pack_path = self._workdir / "model.kgpack"
                 self._pack_path.write_bytes(file.payload_bytes())
-            else:
-                self._pack_path = file.path.resolve()
             overlay = options.get("overlay_dir")
             self._overlay = Path(overlay).expanduser() if overlay else self._workdir / "overlay"
             # Opening one application validates the whole pack now, so a bad
