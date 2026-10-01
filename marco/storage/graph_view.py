@@ -26,14 +26,16 @@ Standard library only.
 from __future__ import annotations
 
 from copy import deepcopy
+import hashlib
 import json
+import os
 import posixpath
 
 from marco.storage import graph_text, ids
 from marco.storage import overlay as ov
 
-__all__ = ["ViewError", "PackBase", "GraphView", "pack_rules", "apply_rule_changes", "node_data",
-           "NODE_LAYERS", "EDGE_LISTS"]
+__all__ = ["ViewError", "PackBase", "GraphView", "OverlayAttachment", "pack_rules", "pack_content_sha256",
+           "apply_rule_changes", "node_data", "NODE_LAYERS", "EDGE_LISTS"]
 
 #: ADD NODE ``data["layer"]``: the ``.kg`` section the node is written in, and its layer.
 NODE_LAYERS = {"개념": "공통층", "사례": "사례층", "무관": "무관층", "공리": "공통층"}
@@ -388,6 +390,8 @@ class GraphView:
 
     def _ever(self, target_id, op):
         """Whether the overlay had an ``op`` delta on ``target_id`` at or before this seq."""
+        if self.store is None:
+            raise ViewError("this view's overlay handle is closed; check() needs an open store")
         return any(row["op"] == op and row["seq"] <= self.seq for row in self.store.history(target_id))
 
     def _names_with_includes(self, gid):
@@ -414,6 +418,44 @@ class GraphView:
         edges = sorted({(r["src"], r["rel"], r["dst"]) for r in self.base.node_edges(gid, name)},
                        key=lambda e: ids.edge_id(gid, *e))
         return ov.retract_node(gid, name, revision=revision, base_edges=edges)
+
+
+def pack_content_sha256(manifest):
+    """The content identity of a MARCO pack: SHA-256 of its canonical manifest plus a newline
+    (the bytes of a pack's ``manifest.json``; the ``content_sha256`` of MCO Format 1)."""
+    text = json.dumps(manifest, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return hashlib.sha256((text + "\n").encode("utf-8")).hexdigest()
+
+
+class OverlayAttachment:
+    """An overlay store file attached to a running base, for reading only.
+
+    The binding is checked once when it is made (``OverlayBaseMismatch`` for another
+    base). Each read opens its own read-only handle and closes it, so the attachment
+    can be used from any thread; a writer elsewhere (the ``mco`` API) commits, and the
+    next read sees the change."""
+
+    def __init__(self, path, *, base_sha256, base_build_id=None):
+        self.path = os.fspath(path)
+        self.base_build_id = base_build_id
+        with ov.OverlayStore.open(self.path, base_sha256=base_sha256, base_build_id=base_build_id) as store:
+            self.base_sha256 = store.meta()["base_sha256"]
+            self.base_build_id = store.meta()["base_build_id"]
+
+    def _open(self):
+        return ov.OverlayStore.open(self.path, base_sha256=self.base_sha256, base_build_id=self.base_build_id)
+
+    def head(self):
+        """``(seq, change_id)`` of the overlay now."""
+        with self._open() as store:
+            return store.head()
+
+    def view(self, base, at=None):
+        """A :class:`GraphView` of ``base`` with this overlay pinned at ``at`` (the head if None)."""
+        with self._open() as store:
+            view = GraphView(base, store, at, base_build_id=self.base_build_id)
+        view.store = None          # read in full; the handle is closed
+        return view
 
 
 def _eid(gid, edge):
