@@ -16,10 +16,12 @@ from .benchmark import BenchmarkCase, BenchmarkReport, CaseResult, benchmark, lo
 from .compiler import CompileReport, compile, inspect
 from .errors import (BackendError, BackendUnavailableError, CompileError, IntegrityError,
                      InvalidInputError, MCOError, ModelClosedError, ModelFormatError,
-                     ModelNotFoundError, UnsupportedFormatError, UnsupportedInputError)
+                     ModelNotFoundError, SnapshotError, SnapshotFormatError, SnapshotMismatchError,
+                     UnsupportedFormatError, UnsupportedInputError)
 from .info import Capability, ModelInfo
 from .model import Model, Session, load
 from .result import Evidence, EvidenceList, Fact, ReasoningInput, Result, Status, Trace, TraceStep
+from .snapshot import SnapshotInfo, inspect_snapshot
 
 __all__ = [
     "__version__",
@@ -28,10 +30,13 @@ __all__ = [
     "Model", "Session", "Result", "Status", "Evidence", "EvidenceList", "Trace", "TraceStep",
     "Fact", "ReasoningInput", "ModelInfo", "Capability", "CompileReport",
     "BenchmarkCase", "BenchmarkReport", "CaseResult", "load_cases",
+    # conversation snapshots
+    "inspect_snapshot", "SnapshotInfo",
     # backends
     "available_backends", "register_backend",
     # errors
     "MCOError", "ModelNotFoundError", "ModelFormatError", "IntegrityError", "UnsupportedFormatError",
     "BackendError", "BackendUnavailableError", "CompileError", "InvalidInputError",
     "UnsupportedInputError", "ModelClosedError",
+    "SnapshotError", "SnapshotFormatError", "SnapshotMismatchError",
 ]

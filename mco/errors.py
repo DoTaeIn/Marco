@@ -19,6 +19,9 @@ __all__ = [
     "InvalidInputError",
     "UnsupportedInputError",
     "ModelClosedError",
+    "SnapshotError",
+    "SnapshotFormatError",
+    "SnapshotMismatchError",
 ]
 
 
@@ -64,3 +67,16 @@ class UnsupportedInputError(InvalidInputError):
 
 class ModelClosedError(MCOError):
     """The model or session was used after :meth:`close`."""
+
+
+class SnapshotError(MCOError, ValueError):
+    """A conversation snapshot cannot be written, read or resumed."""
+
+
+class SnapshotFormatError(SnapshotError):
+    """The snapshot file is damaged or truncated, or holds a version, feature or state schema
+    this runtime does not know."""
+
+
+class SnapshotMismatchError(SnapshotError):
+    """The snapshot was taken on another base, or with an overlay history that differs."""

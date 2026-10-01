@@ -13,7 +13,7 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any, ClassVar, Optional
 
-from ..errors import CompileError, UnsupportedInputError
+from ..errors import CompileError, SnapshotError, UnsupportedInputError
 from ..formats import ModelFile
 from ..info import Capability, ModelInfo
 from ..result import Evidence, EvidenceList, ReasoningInput, Result, Status, Trace, TraceStep
@@ -34,6 +34,12 @@ class BackendSession(ABC):
 
     def close(self) -> None:
         """Release resources. Must be idempotent."""
+
+    def snapshot(self, path: Path) -> Any:
+        """Write this conversation's snapshot to ``path``; return a :class:`~mco.SnapshotInfo`.
+
+        Optional: the default refuses with :class:`~mco.SnapshotError`."""
+        raise SnapshotError(f"{type(self).__name__} cannot write snapshots")
 
 
 class BackendModel(ABC):
@@ -58,6 +64,13 @@ class BackendModel(ABC):
             return run_reasoning(session, self.info, data)
         finally:
             session.close()
+
+    def resume(self, path: Path, conversation: Optional[str] = None) -> BackendSession:
+        """A session continuing the conversation saved in the snapshot at ``path``.
+
+        Optional: the default refuses with :class:`~mco.SnapshotError`. An implementation
+        refuses a snapshot of another base or overlay history, or a damaged one."""
+        raise SnapshotError(f"{type(self).__name__} cannot resume snapshots")
 
     def close(self) -> None:
         """Release resources. Must be idempotent."""
