@@ -471,6 +471,56 @@ def test_native_knowledge_comes_from_the_file(tmp_path: Path) -> None:
     assert out.startswith("mco-native answered ") and "40000" in out and marker in out
 
 
+# --- inspect --------------------------------------------------------------------------------------
+
+def test_inspect_native_shows_version_manifest_and_chunks(builds) -> None:
+    path = builds["ko", "native"]
+    info = mco.inspect(path)
+    compat = mco.inspect(builds["ko", "compat"])
+    assert (info.format, info.format_version, info.backend, info.name) == ("mco-native", 1, "mco-native", "T-ko")
+    assert info.verified and info.runnable and (info.graphs, info.assets) == (compat.graphs, compat.assets)
+    assert (info.language, info.languages) == ("styles/한국어.json", ("styles/english.json", "styles/한국어.json"))
+    assert (info.build_id, info.fingerprint) == (compat.build_id, compat.fingerprint)
+    assert "overlay: not supported in this version" in info.notes
+    assert "snapshot: not supported in this version" in info.notes
+    assert any("carried as typed chunks, not tables" in n for n in info.notes)
+    manifest = info.to_dict(include_manifest=True)["manifest"]
+    assert manifest["format"]["major"] == 1 and manifest["format"]["minor"] == 0
+    assert manifest["mco"]["supports"] == {"overlay": False, "snapshot": False}
+    chunks = manifest["chunks"]
+    assert [c["type"] for c in chunks[:4]] == ["MANI", "STRS", "MEMB", "GDIR"]
+    assert sum(c["type"] == "GRPH" for c in chunks) == 2
+    assert all(0 < c["length"] <= c["raw_length"] for c in chunks)    # zlib only where it is smaller
+    assert {m["path"] for m in manifest["members"]} >= set(KO["graphs"])
+
+
+def test_inspect_native_runs_nothing(builds) -> None:
+    import os
+    import subprocess
+    import sys
+    code = ("import sys, mco; info = mco.inspect(sys.argv[1]); "
+            "leaked = [m for m in ('engine', 'pack_model', 'views.kgpack_ui', 'marco.storage.kgpack') "
+            "if m in sys.modules]; print(info.format, info.graphs, len(info.manifest['chunks']), leaked)")
+    env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
+    out = subprocess.run([sys.executable, "-c", code, str(builds["en", "native"])], cwd=ROOT, env=env,
+                         capture_output=True, text=True, check=True).stdout.strip()
+    assert out.startswith("mco-native 2 ") and out.endswith(" []")
+
+
+def test_cli_inspect_native(builds) -> None:
+    from mco.cli import main
+    out = io.StringIO()
+    assert main(["inspect", str(builds["ko", "native"])], stdout=out) == 0
+    text = out.getvalue()
+    assert "mco-native v1.0" in text and "content" in text and "marco.kg-text/1" in text
+    assert "note: overlay: not supported in this version" in text and "note: snapshot: not supported" in text
+    assert "chunks: " in text and "MANI" in text and "GRPH" in text and "GDIR" in text
+    out = io.StringIO()
+    assert main(["inspect", str(builds["ko", "native"]), "--json", "--manifest"], stdout=out) == 0
+    data = json.loads(out.getvalue())
+    assert data["graphs"] == 2 and data["manifest"]["chunks"][0]["type"] == "MANI"
+
+
 def test_native_load_options_and_refusals(builds, tmp_path: Path) -> None:
     with pytest.raises(mco.InvalidInputError):
         mco.load(builds["ko", "native"], temperature=0.1)

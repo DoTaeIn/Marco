@@ -107,17 +107,33 @@ def _cmd_inspect(args: argparse.Namespace, out: TextIO) -> int:
     if args.json:
         _dump(info.to_dict(include_manifest=args.manifest), out)
         return 0
-    rows = [("path", info.path), ("name", info.name), ("format", f"{info.format} v{info.format_version}"),
+    native = info.manifest if info.format == "mco-native" else {}
+    fmt = native.get("format") or {}
+    version = f"v{fmt['major']}.{fmt['minor']}" if fmt else f"v{info.format_version}"
+    rows = [("path", info.path), ("name", info.name), ("format", f"{info.format} {version}"),
             ("build", info.build_id), ("backend", info.backend), ("runnable", info.runnable),
             ("verified", info.verified), ("size", f"{info.size_bytes} bytes"), ("sha256", info.sha256),
             ("language", info.language), ("languages", ", ".join(info.languages) or "-"),
             ("graphs", info.graphs), ("assets", info.assets), ("fingerprint", info.fingerprint),
             ("capabilities", ", ".join(info.capabilities) or "-")]
+    manifest = native.get("mco") or {}
+    if manifest:
+        schema = manifest.get("semantic_schema") or {}
+        rows += [("content", manifest.get("content_sha256")), ("generator", manifest.get("generator")),
+                 ("schema", f"{schema.get('id')} v{schema.get('version')}"),
+                 ("requires", ", ".join(manifest.get("requires") or ()) or "-")]
     width = max(len(k) for k, _ in rows)
     for key, value in rows:
         out.write(f"{key:<{width}}  {value if value is not None else '-'}\n")
     for note in info.notes:
         out.write(f"note: {note}\n")
+    chunks = native.get("chunks") or ()
+    if chunks:
+        out.write(f"chunks: {len(chunks)}\n")
+        out.write(f"  {'#':>4}  type  ver  req  {'comp':<4}  {'stored':>10}  {'raw':>10}\n")
+        for c in chunks:
+            out.write(f"  {c['index']:>4}  {c['type']}  {c['version']:>3}  {'yes' if c['required'] else 'no':<3}"
+                      f"  {c['compression']:<4}  {c['length']:>10}  {c['raw_length']:>10}\n")
     return 0
 
 
