@@ -245,8 +245,6 @@ WRONG_THING = [
                  ("Eli has 2 bundles of herbs.", "rec"), ("Nora gave Eli three bundles.", "rec"),
                  ("How many bundles of herbs does Nora have?", 2), ("How many bundles of herbs does Eli have?", 5),
                  ("How many cups does Nora have?", 3)]),
-    ("한국어", [("가람은 서류가 일곱 묶음 있어.", "rec"), ("나래는 서류가 두 묶음 있어.", "rec"),
-              ("가람이 나래에게 묶음 세 개를 줬어.", "rec"), ("가람은 서류가 몇 묶음 있어?", 4)]),
 ]
 WRONG_THING_HELD = [
     # a plural noun after three: a thing said, never counted for Nora; not read as her pens
@@ -256,6 +254,10 @@ WRONG_THING_HELD = [
     # Korean marks no number: an unknown word in the thing slot stays the thing
     ("한국어", [("가람은 서류가 일곱 묶음 있어.", "rec"), ("나래는 서류가 두 묶음 있어.", "rec"),
               ("가람이 나래에게 뿌뿌 세 개를 줬어.", "hold")]),
+    # a counter word in the thing slot, said with another unit (묶음 세 개: 개) than the count (일곱 묶음): since the
+    # unit-kind hold, the change does not move a count said in 묶음 (it was read as three bundles before)
+    ("한국어", [("가람은 서류가 일곱 묶음 있어.", "rec"), ("나래는 서류가 두 묶음 있어.", "rec"),
+              ("가람이 나래에게 묶음 세 개를 줬어.", "hold")]),
     # the reading without the word does not fit either: the giver cannot cover it
     ("english", PENS + [("Nora gave Eli nine blorp.", "hold"), ("How many pens does Nora have?", "hold")]),
 ]
@@ -640,3 +642,34 @@ def test_a_change_in_a_conversation_whose_one_count_has_no_holder_goes_to_that_c
     # test_quantity_relations pin the same)
     assert play("한국어", 0, [("구슬은 18개 있다.", "rec"), ("다섯 개를 꺼냈다.", "rec"), ("지금 구슬은 몇 개야?", 13)]) == []
 
+
+
+# A change said in a unit of another kind does not move the count. The pack declares the units that hold or group
+# several pieces (수량단위.담는단위); a count said in one of them is not moved by a change said in a unit of one
+# piece, nor the reverse, nor between two different units that hold several: 서류가 5묶음, then 2개를 줬어 was 3
+# (bundles less pieces). The statement is held, its meaning naming the two units, at every effort. Units of one
+# piece on one count (다섯 자루, 두 개) stay one count; the declaration adds no reading.
+@pytest.mark.parametrize("effort", [0, 3])
+@pytest.mark.parametrize("before,change,units", [
+    (["우 팀장님은 서류가 5묶음 있어."], "우 팀장님이 수향에게 서류를 2개 줬어.", ["묶음", "개"]),
+    (["우 팀장님은 서류가 5묶음 있어."], "우 팀장님이 수향에게 서류를 한 상자 줬어.", ["묶음", "상자"]),
+    (["노라는 연필이 5개 있어.", "수아는 연필이 두 묶음 있어."], "노라가 수아에게 연필을 두 개 줬어.", ["묶음", "개"]),
+    (["노라는 연필이 5개 있어."], "노라는 연필 한 묶음을 썼어.", ["개", "묶음"]),
+])
+def test_a_change_in_a_unit_of_another_kind_is_held(effort, before, change, units):
+    current = context("한국어", effort)
+    for line in before:
+        assert (current.turn(line, KG) or {}).get("status") == "observed"
+    result = current.turn(change, KG) or {}
+    assert result.get("status") == "unresolved" and (result.get("meaning") or {}).get("units") == units
+    asked = current.turn(before[0].split("는 ")[0].split("은 ")[0] + "은 몇 개 있어?", KG) or {}
+    assert asked.get("status") != "answered"
+
+
+def test_a_change_in_the_same_unit_or_between_units_of_one_piece_moves_the_count():
+    assert play("한국어", 3, [("우 팀장님은 서류가 5묶음 있어.", "rec"), ("우 팀장님이 수향에게 서류를 두 묶음 줬어.", "rec")]) == []
+    graph, counts = _things("한국어", ["우 팀장님은 서류가 5묶음 있어.", "우 팀장님이 수향에게 서류를 두 묶음 줬어."])
+    assert counts[("우 팀장", "서류")] == 3
+    assert play("한국어", 3, [("노라는 연필이 다섯 자루 있어.", "rec"), ("수아는 연필이 2개 있어.", "rec"),
+                            ("노라가 수아에게 연필을 두 개 줬어.", "rec"), ("노라가 수아에게 연필을 한 자루 줬어.", "rec"),
+                            ("노라는 연필이 몇 자루 있어?", 2), ("수아는 연필이 몇 개 있어?", 5)]) == []

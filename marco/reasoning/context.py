@@ -43,7 +43,7 @@ GAP_CLASSES = {
                  "unknown_basis", "unknown_lookup", "ambiguous_lookup", "unmeasured_condition",
                  "condition_false", "missing_initial_quantity"),
     "conflict": ("contradiction", "conflicting_event", "conflict_scope_unclear", "indivisible_amount",
-                 "invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity"),
+                 "invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity", "unit_mismatch"),
 }
 GAP_OF = {reason: gap for gap, reasons in GAP_CLASSES.items() for reason in reasons}
 
@@ -76,8 +76,9 @@ READING_CONSTRAINTS = (
     ("holder_exists", "a holder that loses some has a count said before, or at least that many received; "
                       "a receiver with none said keeps a count not known",
      ("missing_initial_quantity",)),
-    ("count_can_move", "no count falls below zero or contradicts one said before",
-     ("invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity")),
+    ("count_can_move", "no count falls below zero or contradicts one said before; a change said in a unit that "
+                       "holds several pieces does not move a count said in a unit of one piece, nor the reverse",
+     ("invalid_quantity_result", "invalid_quantity_delta", "invalid_initial_quantity", "unit_mismatch")),
     ("within_limits", "the replay stays within the graph's limits", ("graph_limit", "join_limit")),
 )
 CONSTRAINT_OF = {failure: name for name, _doc, failures in READING_CONSTRAINTS for failure in failures}
@@ -146,7 +147,7 @@ class ReasoningContext:
     # 말을 어디에 놓을지 몰라서 터진 자리들.
     UNPLACED = {"unrecognized_observation", "missing_initial_quantity",
                 "ambiguous_quantity_subject", "ambiguous_state_subject",
-                "ambiguous_property_scope",
+                "ambiguous_property_scope", "unit_mismatch",
                 "graph_limit", "join_limit"}
     # 읽기는 읽었는데 **앞서 들은 것과 맞지 않는** 자리들. 3개에서 8개를 꺼낼 수는
     # 없다 — 그러나 그것이 "안 일어난 일" 이라는 뜻은 아니다. 처음 수량이 틀렸거나
@@ -4762,6 +4763,40 @@ class ReasoningContext:
                 fact["parts"] = {"holder": parts["holder"], "thing": key[len(parts["holder"]) + 1:]}
         return facts
 
+    @staticmethod
+    def _unit_kinds_differ(parser, facts, turn):
+        """``{"subject", "units": [said, changed]}`` when a change of the statement at ``turn`` is said in a unit of
+        another kind than the unit its count was said in, else None. The pack declares the units that hold or
+        group several pieces (수량단위.담는단위: 묶음, 상자, 병 ...); every other unit counts one piece (개, 자루, 권
+        ...). A count said in one kind is not moved by a change said in the other (서류가 5묶음, then 2개를 줬어 was 3,
+        bundles less pieces), nor between two different units that hold several (상자, 묶음). Units of one piece
+        (다섯 자루, 두 개) are one count as before, and a count or a change said in no unit is not judged. The
+        declaration adds no reading; it only holds."""
+        counters = (parser.language_pack or {}).get("counters") or {}
+        holding = set(counters.get("containers") or [])
+        if not holding:
+            return None
+        updates = parser.data.get("numeric_updates") or {}
+        targets = ReasoningContext._numeric_targets(parser)
+        said = {}
+
+        def unit(fact):
+            return fact.get("unit") or ReasoningContext._unit_said(parser, (fact.get("evidence") or {}).get("text") or "")
+        for fact in facts:
+            triple = fact.get("triple")
+            if not isinstance(triple, list) or not isinstance(triple[0], str):
+                continue
+            if triple[1] in targets:
+                said[triple[0]] = unit(fact)
+            elif triple[1] in updates and (fact.get("evidence") or {}).get("turn") == turn:
+                key = triple[0] if triple[0] in said else next(
+                    iter([k for k in said if k.startswith(triple[0] + " ")][:1] if len(
+                        [k for k in said if k.startswith(triple[0] + " ")]) == 1 else []), None)
+                before, now = said.get(key), unit(fact)
+                if before and now and before != now and (before in holding or now in holding):
+                    return {"subject": key, "units": [before, now]}
+        return None
+
     def _holder_unsaid(self, parser, parsed):
         """A reading that changes a count whose holder it does not say (the giver of 세훈에게 세 개를 줬어, the
         loser of 세 개를 잃어버렸어; the reading of 기 대표님이 세훈에게 세 개를 줬어 that takes 기 대표 세훈 for the
@@ -6473,6 +6508,8 @@ class ReasoningContext:
                                              deepcopy(self.event_ids) if self.event_ids is not None else None)
             facts = self._unit_keys(parser, self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", [])))
             _state, changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
+            if self._unit_kinds_differ(parser, facts, index) is not None:
+                raise ValueError("unit_mismatch")
         except ValueError as exc:
             reason = str(exc).split(":")[0]
             return (CONSTRAINT_OF.get(reason, "readable"), reason), []
@@ -7447,6 +7484,10 @@ class ReasoningContext:
             # Validate a new observation even if no question has been asked yet.
             _, changes = current_facts(facts, parser.data.get("mutable_predicates", []),
                                        parser.data.get("numeric_updates", {}))
+            self._unit_conflict = self._unit_kinds_differ(parser, facts, len(pending) - 1) if keeps else None
+            if self._unit_conflict is not None:
+                # a change said in a unit of another kind than its count's: not moved, the statement is held
+                raise ValueError("unit_mismatch")
             if keeps and self._pointer_unknown(parser, [row for row in changes if (row.get("evidence") or {})
                                                         .get("turn") == len(pending) - 1]):
                 # A pointer as a new holder is no holder: fail as a holder without a count, so the
@@ -7886,7 +7927,9 @@ class ReasoningContext:
                       if reason in self.CONTRADICTION else replies["invalid"])
             return {**result, "status": "unresolved", "answer": answer,
                     "meaning": {"act": "hold", "reason": "contradiction" if reason in self.CONTRADICTION
-                                else "invalid", "said": said}}
+                                else "invalid", "said": said,
+                                **(dict(self._unit_conflict) if reason == "unit_mismatch"
+                                   and getattr(self, "_unit_conflict", None) else {})}}
         self._refresh_role_asks(unsettled)
         self.observations = pending
         if keeps:
