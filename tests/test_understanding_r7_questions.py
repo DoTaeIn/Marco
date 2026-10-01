@@ -627,3 +627,19 @@ def test_a_question_with_a_swap_word_swaps_nothing():
     rows = _play("english", EN_START + ["Was it the other way round?", "How many {p} does {b} have?"], 3, **EN_WORDS)
     assert rows[-2].get("status") != "observed"
     assert rows[-1]["status"] == "answered" and "6" in rows[-1]["answer"]
+
+
+@pytest.mark.parametrize("said", [
+    "아니, 그렇게 된 게 아니야 사실은. {b}는 상대방한테 받았다가 돌려줬어.",
+    "날씨가 참 좋았어. {b}는 상대방한테 건네받았어.",
+])
+def test_a_sentence_read_only_as_the_shape_of_an_event_in_an_unread_turn_holds_the_holder_it_names(said):
+    frames = ["{a}는 {p}이 6개 있어.", "{b}는 {p}이 4개 있어.", said, "{b}는 {p}이 몇 개야?", "{a}는 {p}이 몇 개야?",
+              "{b}는 {p}이 5개 있어.", "{b}는 {p}이 몇 개야?"]
+    rows = _play("한국어", frames, 3, **KO_WORDS)
+    assert rows[2].get("status") not in ("observed", "answered")
+    # the holder the event-shaped sentence names is held, naming that sentence; the other holder is not
+    assert rows[3]["status"] != "answered" and said.format(**KO_WORDS).split(". ")[-1] in rows[3]["answer"]
+    assert rows[4]["status"] == "answered" and "6" in rows[4]["answer"]
+    # said again, the count is known
+    assert rows[6]["status"] == "answered" and "5" in rows[6]["answer"]
