@@ -608,3 +608,35 @@ def test_a_snapshot_without_readings_restores_and_a_bad_one_is_refused():
     assert outcome(restored.turn("How many pens does Nora have?", KG) or {}, 7)
     with pytest.raises(ValueError):
         context("english", 3).restore(dict(snapshot, readings=["Nora has 7 pens."]))
+
+
+# A change whose holder the statement does not say is never charged to the one holder that has a count. With only
+# 가람 counted, 기 대표님이 세훈에게 세 개를 줬어 took 가람's count to 4 and answered 4 (가람 is not in the sentence);
+# 세훈에게 세 개를 줬어 and 세 개를 잃어버렸어 did the same. The statement is held at every effort and the count it
+# may have moved is held after it. A clause that continues the clause before it in one turn keeps its giver.
+UNSAID_HOLDER = ["기 대표님이 세훈에게 세 개를 줬어.", "세훈에게 세 개를 줬어.", "세 개를 잃어버렸어."]
+
+
+@pytest.mark.parametrize("line", UNSAID_HOLDER)
+@pytest.mark.parametrize("effort", [0, 3])
+def test_a_change_with_no_holder_said_is_not_charged_to_the_only_holder(line, effort):
+    current = context("한국어", effort)
+    current.turn("가람은 연필이 일곱 개 있어.", KG)
+    assert outcome(current.turn(line, KG) or {}, "hold")
+    asked = current.turn("가람은 연필이 몇 개 있어?", KG) or {}
+    assert asked.get("status") != "answered" and "4" not in str(asked.get("answer"))
+    graph = current.conversation_graph()
+    assert graph.value(graph.id_of("holder", "가람"), graph.id_of("thing", "연필")) == 7
+
+
+def test_a_clause_that_continues_the_clause_before_keeps_its_giver():
+    assert play("한국어", 3, [("가람은 연필이 일곱 개 있어.", "rec"),
+                            ("가람이 세훈에게 두 개 줬어. 그리고 나래에게 세 개를 주었다.", "rec"),
+                            ("가람은 연필이 몇 개 있어?", 2)]) == []
+
+
+def test_a_change_in_a_conversation_whose_one_count_has_no_holder_goes_to_that_count():
+    # no person is charged: the count is the thing's own (the older tests of test_slot_particles and
+    # test_quantity_relations pin the same)
+    assert play("한국어", 0, [("구슬은 18개 있다.", "rec"), ("다섯 개를 꺼냈다.", "rec"), ("지금 구슬은 몇 개야?", 13)]) == []
+

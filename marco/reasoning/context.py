@@ -4762,6 +4762,33 @@ class ReasoningContext:
                 fact["parts"] = {"holder": parts["holder"], "thing": key[len(parts["holder"]) + 1:]}
         return facts
 
+    def _holder_unsaid(self, parser, parsed):
+        """A reading that changes a count whose holder it does not say (the giver of 세훈에게 세 개를 줬어, the
+        loser of 세 개를 잃어버렸어; the reading of 기 대표님이 세훈에게 세 개를 줬어 that takes 기 대표 세훈 for the
+        receiver), when the conversation's one count has a holder: the replay would give the change to that
+        holder, a person the statement does not name (가람 연필 7 -> 4, and the reply said 가람 gave them). Such a
+        reading is no reading of a new statement, at any effort: the statement is held. Not unsaid: a clause
+        that continues the clause before it in one turn (그리고 나래에게 세 개를 주었다: its holder comes from the
+        reader), and a change in a conversation whose one count has no holder at all (구슬은 18개 있다. 다섯 개를
+        꺼냈다.: the count is the thing's own, and no person is charged)."""
+        updates = parser.data.get("numeric_updates") or {}
+        if not any(isinstance(f.get("triple"), list) and f["triple"][0] is None and f["triple"][1] in updates
+                   for f in (parsed or {}).get("facts", [])):
+            return False
+        try:
+            facts, _d, _p, _r = self._cached_replay(parser, self.observations, self.fills)
+        except ValueError:
+            return True
+        numeric = self._numeric_targets(parser)
+        counted = {}
+        for fact in facts:
+            triple = fact.get("triple") or [None, None]
+            if isinstance(triple[0], str) and triple[1] in numeric | {"count_unknown"}:
+                parts = fact.get("parts") if isinstance(fact.get("parts"), dict) else {}
+                counted[triple[0]] = bool(parts.get("holder") and parts.get("thing")) or len(triple[0].split()) > 1
+        # the one count the change would go to: its own thing (no holder), or a holder's
+        return not (len(counted) == 1 and not next(iter(counted.values())))
+
     def _asked_in_unit(self, parser, text, query, facts):
         """``(query, None)``, or ``(query, hold)`` for a count question about a holder and thing the conversation
         counts in two units (``_unit_keys``). A question that asks in the pack's first unit (몇 개), the unit the
@@ -6424,6 +6451,8 @@ class ReasoningContext:
         it; and the state rows the reading would record (``current_facts``' changes of this statement)."""
         if not self._is_statement(parsed):
             return ("statement", "not_a_statement"), []
+        if self._holder_unsaid(parser, parsed):
+            return ("one_subject", "ambiguous_quantity_subject"), []
         rows = [f["triple"] for f in parsed.get("facts", []) if isinstance(f.get("triple"), list)]
         updates = parser.data.get("numeric_updates") or {}
         removed = {str(t[0]).split()[0] for t in rows if isinstance(t[0], str) and t[1] in updates
@@ -7393,6 +7422,10 @@ class ReasoningContext:
             if unsaid is not None:
                 return unsaid
         try:
+            if keeps and completion is None and not current.get("query") and self._holder_unsaid(parser, current):
+                # a change whose holder the statement does not say is not charged to the one holder that has a
+                # count (``_holder_unsaid``): the statement is held, and remembered as unread
+                raise ValueError("ambiguous_quantity_subject")
             facts, defined, unsettled, 읽힘 = self._cached_replay(
                 parser, pending, self.fills + 새채움)
             # A valid completion remains evidence even when replay exposes a
