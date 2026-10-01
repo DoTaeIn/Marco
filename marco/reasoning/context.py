@@ -2443,9 +2443,15 @@ class ReasoningContext:
                   "pending": deepcopy(pending), "read": sorted(read)}
         events = self._event_ledger()
         concepts = self.concepts.sync(events)
+        said = {source.strip() for source in self.observations}
+        kept = {source: reading for source, reading in (getattr(parser, "chosen_readings", None) or {}).items()
+                if source in said}
         return {"schema": "reasoning-context-v10", "observations": list(self.observations),
                 # the conversation identity graph (M1): nodes, aliases with their turns, count edges, frames
                 "graph": self.conversation_graph().to_dict(),
+                # the readings this conversation kept for its statements (a candidate step's winner): a restored
+                # conversation reads those statements the same way when it replays them
+                **({"readings": deepcopy(kept)} if kept else {}),
                 "corrections": deepcopy(self.corrections), "unread": deepcopy(self.unread),
                 "unread_guard": deepcopy(self.unread_guard),
                 "asked": deepcopy(self.asked), "held_question": self.held_question,
@@ -2519,7 +2525,21 @@ class ReasoningContext:
                        or x["at"] < 0 or ("범용" in x and type(x["범용"]) is not bool)
                        for x in unread_guard)):
             raise ValueError("invalid_reasoning_context_snapshot")
+        readings = snapshot.get("readings")
+        if readings is not None and (not isinstance(readings, dict) or len(readings) > self.max_turns or any(
+                not isinstance(source, str) or not isinstance(reading, dict)
+                or not isinstance(reading.get("facts", []), list)
+                or any(not isinstance(row, dict) or not isinstance(row.get("triple"), list) or len(row["triple"]) != 3
+                       for row in reading.get("facts", []))
+                for source, reading in readings.items())):
+            raise ValueError("invalid_reasoning_context_snapshot")
         self.observations = list(snapshot["observations"])
+        # The readings the conversation kept for its statements, on this conversation's parser copy: only for
+        # statements the snapshot holds (an older snapshot has none, and reads its statements as the reader does).
+        said = {source.strip() for source in self.observations}
+        self._parser().__dict__["chosen_readings"] = {
+            source: deepcopy(reading) for source, reading in (readings or {}).items() if source in said}
+        self._replay_cache = None
         if isinstance(snapshot.get("conversation"), str) and snapshot["conversation"]:
             self.conversation_id = snapshot["conversation"]
         self.corrections = deepcopy(corrections)
