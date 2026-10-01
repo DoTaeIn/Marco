@@ -19,6 +19,8 @@ __all__ = [
     "InvalidInputError",
     "UnsupportedInputError",
     "ModelClosedError",
+    "OverlayError",
+    "OverlayBaseMismatchError",
 ]
 
 
@@ -64,3 +66,12 @@ class UnsupportedInputError(InvalidInputError):
 
 class ModelClosedError(MCOError):
     """The model or session was used after :meth:`close`."""
+
+
+class OverlayError(MCOError):
+    """An overlay refused an operation (a stale revision, a second writer, a change the model
+    cannot take, ...); nothing was written."""
+
+
+class OverlayBaseMismatchError(OverlayError):
+    """The overlay was made for another model (another content SHA-256 or build id)."""

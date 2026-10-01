@@ -12,6 +12,7 @@ from .backends import get_backend, select_backend
 from .errors import CompileError, MCOError, ModelNotFoundError
 from .formats import detect, write_compat, write_native
 from .info import ModelInfo
+from .result import _thaw
 
 __all__ = ["CompileReport", "compile", "inspect"]
 
@@ -103,11 +104,31 @@ def compile(source: PathLike, output: PathLike, *, name: Optional[str] = None,
     return CompileReport(output=str(output), info=inspect(output))
 
 
-def inspect(path: PathLike, *, verify: bool = True) -> ModelInfo:
+def inspect(path: PathLike, *, verify: bool = True, overlay: Optional[PathLike] = None,
+            marco_root: Optional[str] = None) -> ModelInfo:
     """Describe a model file without running it.
 
     Works without the MARCO runtime: ``ModelInfo.runnable`` then reports
-    ``False`` and ``notes`` says why.
+    ``False`` and ``notes`` says why. With ``overlay``, the overlay store beside
+    the model is read too (through the MARCO backend, which must be available):
+    its base binding, head and active counts are added to ``notes`` and to
+    ``manifest["overlay"]``; nothing is run.
     """
     file = detect(Path(path), verify=verify)
-    return select_backend(file).describe(file)
+    info = select_backend(file).describe(file)
+    if overlay is None:
+        return info
+    from .overlay import overlay_status
+    status = overlay_status(path, overlay, marco_root=marco_root, verify=False)
+    return info.replace(notes=info.notes + (overlay_note(status),),
+                        manifest={**_thaw(info.manifest), "overlay": status})
+
+
+def overlay_note(status: Any) -> str:
+    """One line describing an overlay's binding, head and active counts."""
+    base, head, c = status["base"], status["head"], status["counts"]
+    return (f"overlay {status['path']}: bound to content {base['content_sha256'][:16]} build {base['build_id']}; "
+            f"head seq {head['seq']}" + (f" ({head['change_id']})" if head["change_id"] else "")
+            + f"; active nodes +{c['nodes_added']} -{c['nodes_tombstoned']}, edges +{c['edges_added']} "
+              f"-{c['edges_tombstoned']}, rules +{c['rules_added']} ~{c['rules_replaced']} -{c['rules_disabled']}; "
+              f"{status['pending']} pending candidate(s)")

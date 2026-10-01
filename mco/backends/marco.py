@@ -20,6 +20,10 @@ Runtime behaviour:
   ``allow_network=True`` to restore MARCO's research-and-plan behaviour.
 * Each session owns its own MARCO ``AppState``: MARCO keeps some dialogue state
   per application object, so sharing one would leak state between sessions.
+* An overlay store (``overlay=PATH``; ``docs/architecture/overlay.md``) holds
+  explicit or approved graph and rule changes beside the model file. Every
+  session reads it at the start of each turn. Its store lives in MARCO
+  (``marco.storage.overlay``); :class:`MarcoOverlay` reaches it for ``mco.overlay``.
 """
 from __future__ import annotations
 
@@ -38,7 +42,7 @@ from typing import Any, Optional
 import uuid
 
 from ..errors import (BackendError, BackendUnavailableError, CompileError, InvalidInputError,
-                      ModelClosedError)
+                      ModelClosedError, OverlayBaseMismatchError, OverlayError)
 from ..formats import ModelFile
 from ..info import Capability, ModelInfo
 from ..result import Evidence, EvidenceList, ReasoningInput, Result, Status, Trace, TraceStep
@@ -47,7 +51,7 @@ from .base import Backend, BackendModel, BackendSession, fallback_status, run_re
 __all__ = ["MarcoKgpackBackend", "MarcoModel", "OPTIONS", "CAPABILITIES"]
 
 #: Options accepted by :func:`mco.load` for this backend.
-OPTIONS = frozenset({"marco_root", "overlay_dir", "allow_network"})
+OPTIONS = frozenset({"marco_root", "overlay_dir", "allow_network", "overlay"})
 #: Options accepted by :func:`mco.compile` for this backend.
 COMPILE_OPTIONS = frozenset({"marco_root", "graphs", "language"})
 
@@ -217,6 +221,11 @@ class MarcoKgpackBackend(Backend):
             raise InvalidInputError(f"unknown option(s) for backend {self.name!r}: {sorted(unknown)}")
         return MarcoModel(self, file, dict(options))
 
+    def open_overlay(self, file: ModelFile, path: Path, *, create: bool, writer: bool,
+                     options: Mapping[str, Any]) -> "MarcoOverlay":
+        """The overlay store of ``file`` at ``path`` (for :mod:`mco.overlay`)."""
+        return MarcoOverlay(file, path, create=create, writer=writer, marco_root=options.get("marco_root"))
+
     def accepts_source(self, source: Path) -> bool:
         return source.is_dir() and (source / "graphs").is_dir()
 
@@ -280,6 +289,10 @@ class MarcoModel(BackendModel):
                 self._pack_path.write_bytes(file.payload_bytes())
             overlay = options.get("overlay_dir")
             self._overlay = Path(overlay).expanduser() if overlay else self._workdir / "overlay"
+            self._graph_overlay = None
+            if options.get("overlay"):
+                self._graph_overlay = _attach(file, Path(options["overlay"]).expanduser(), options.get("marco_root"))
+                self.info = self.info.replace(notes=self.info.notes + (_attached_note(self._graph_overlay),))
             # Opening one application validates the whole pack now, so a bad
             # model fails at load() rather than at the first run().
             self._pool.append(self._new_app())
@@ -288,8 +301,9 @@ class MarcoModel(BackendModel):
             raise
 
     def _new_app(self) -> Any:
+        extra = {"graph_overlay": self._graph_overlay} if self._graph_overlay is not None else {}
         try:
-            app = self._ui.AppState(self._pack_path, overlay_root=self._overlay)
+            app = self._ui.AppState(self._pack_path, overlay_root=self._overlay, **extra)
         except Exception as exc:
             raise BackendError(f"MARCO could not open {self.info.path}: {type(exc).__name__}: {exc}") from exc
         store = self._workdir / f"conversations-{uuid.uuid4().hex}.json"
@@ -458,12 +472,21 @@ def translate(payload: Mapping[str, Any], text: str, backend: str) -> Result:
 
     evidence: list[Evidence] = []
     graph = route.get("selected") if route else None
+    # Graph items an attached overlay added carry their change (Persistent Overlay Infrastructure);
+    # base items carry nothing extra.
+    origins = _mapping(trace.get("origins"))
+    node_origin = _mapping(origins.get("nodes"))
+    edge_origin = {tuple(e[:3]): e[3] for e in origins.get("edges") or []
+                   if isinstance(e, (list, tuple)) and len(e) == 4}
     node = trace.get("evidence")
     if isinstance(node, Mapping) and node.get("name"):
-        evidence.append(Evidence("graph_node", str(node["name"]), source=graph, score=node.get("score")))
+        extra = {"detail": {"origin": node_origin[node["name"]]}} if node["name"] in node_origin else {}
+        evidence.append(Evidence("graph_node", str(node["name"]), source=graph, score=node.get("score"), **extra))
     for a, relation, b in (tuple(p) for p in trace.get("path", []) if isinstance(p, (list, tuple)) and len(p) == 3):
-        evidence.append(Evidence("graph_path", f"{a} -{relation}-> {b}", source=graph,
-                                 detail={"from": a, "relation": relation, "to": b}))
+        detail = {"from": a, "relation": relation, "to": b}
+        if (a, relation, b) in edge_origin:
+            detail["origin"] = edge_origin[(a, relation, b)]
+        evidence.append(Evidence("graph_path", f"{a} -{relation}-> {b}", source=graph, detail=detail))
     if isinstance(reasoning, Mapping):
         for item in reasoning.get("transitions") or []:
             if not isinstance(item, Mapping):
@@ -508,3 +531,186 @@ def _jsonable(value: Any) -> Any:
         return json.loads(json.dumps(value, ensure_ascii=False, default=str))
     except (TypeError, ValueError):
         return None
+
+
+# --- overlay (Persistent Overlay Infrastructure) -------------------------------------------
+
+def base_identity(file: ModelFile) -> tuple[str, str, str]:
+    """``(content_sha256, build_id, format_version)`` an overlay of ``file`` is bound to.
+
+    The content SHA-256 is the pack's content identity (its canonical manifest), the same
+    for a Format 1 file and the pack it holds; the build id is the file's, or for a bare
+    ``.kgpack`` ``sha256-`` plus the first 12 hex digits of the file's SHA-256."""
+    manifest = file.manifest or {}
+    if file.kind == "mco-native":
+        version = ".".join(str(x) for x in manifest.get("format_version") or ())
+        return manifest["content_sha256"], manifest["build_id"], "mco-" + version
+    text = json.dumps(file.pack_manifest, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    content = hashlib.sha256((text + "\n").encode("utf-8")).hexdigest()
+    if file.kind == "mco-compat":
+        return content, manifest.get("build_id") or "sha256-" + file.sha256[:12], f"compat-{file.version}"
+    return content, "sha256-" + file.sha256[:12], f"kgpack-{file.version}"
+
+
+def _overlay_error(exc: Exception) -> OverlayError:
+    cls = OverlayBaseMismatchError if type(exc).__name__ == "OverlayBaseMismatch" else OverlayError
+    return cls(str(exc))
+
+
+def _attach(file: ModelFile, path: Path, marco_root: Optional[str]) -> Any:
+    """The overlay at ``path`` attached to ``file`` for reading at every turn."""
+    graph_view = _import("marco.storage.graph_view", marco_root)
+    content, build, _version = base_identity(file)
+    try:
+        return graph_view.OverlayAttachment(path, base_sha256=content, base_build_id=build)
+    except graph_view.ov.OverlayError as exc:
+        raise _overlay_error(exc) from exc
+
+
+def _attached_note(attachment: Any) -> str:
+    seq, change = attachment.head()
+    return (f"overlay attached: {attachment.path} (bound to build {attachment.base_build_id}), head seq {seq}"
+            + (f" ({change})" if change else ""))
+
+
+def _pack_of(file: ModelFile) -> tuple[dict[str, Any], dict[str, bytes]]:
+    import io
+    import zipfile
+    with zipfile.ZipFile(io.BytesIO(file.payload_bytes())) as zf:
+        manifest = json.loads(zf.read("manifest.json"))
+        return manifest, {item["path"]: zf.read(item["path"]) for item in manifest["files"]}
+
+
+class MarcoOverlay:
+    """The overlay store of one model, opened through MARCO for :mod:`mco.overlay`.
+
+    Every write is checked against the model (``GraphView.check``) inside the store's
+    transaction; a change the model cannot take is refused and nothing is written.
+    Revisions a delta does not name are the target's current ones."""
+
+    def __init__(self, file: ModelFile, path: Path, *, create: bool, writer: bool,
+                 marco_root: Optional[str]) -> None:
+        self._ov = _import("marco.storage.overlay", marco_root)
+        self._gv = _import("marco.storage.graph_view", marco_root)
+        self.path = str(path)
+        self.content, self.build_id, version = base_identity(file)
+        self._file = file
+        self._base: Any = None
+        try:
+            if create:
+                self._store = self._ov.OverlayStore.create(path, base_sha256=self.content,
+                                                           base_build_id=self.build_id, format_version=version)
+            else:
+                self._store = self._ov.OverlayStore.open(path, base_sha256=self.content,
+                                                         base_build_id=self.build_id, writer=writer)
+        except self._ov.OverlayError as exc:
+            raise _overlay_error(exc) from exc
+
+    def _call(self, work: Any) -> Any:
+        try:
+            return work()
+        except self._ov.OverlayError as exc:
+            raise _overlay_error(exc) from exc
+        except (KeyError, TypeError, ValueError) as exc:
+            raise OverlayError(f"{type(exc).__name__}: {exc}") from exc
+
+    def base(self) -> Any:
+        if self._base is None:
+            manifest, members = _pack_of(self._file)
+            self._base = self._gv.PackBase(manifest, members)
+        return self._base
+
+    def _check(self, store: Any) -> None:
+        self._gv.GraphView(self.base(), store, base_build_id=self.build_id).check()
+
+    def _requests(self, deltas: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        ov, ids, store = self._ov, self._ov.ids, self._store
+        out: list[dict[str, Any]] = []
+        seen: dict[str, int] = {}
+
+        def revision(kind: str, target: str, given: Any) -> int:
+            if given is None:
+                item = store.item(kind, target)
+                given = seen.get(target, item["revision"] if item else 0)
+            seen[target] = given + 1
+            return given
+
+        for d in deltas:
+            op, given = d["op"], d.get("revision")
+            if op == "ADD_NODE":
+                data = {"layer": d.get("layer", "개념"), "examples": list(d.get("examples") or [])}
+                if d.get("source"):
+                    data["source"] = d["source"]
+                rev = revision("node", ids.node_id(d["graph"], d["name"]), given)
+                out.append(ov.add_node(d["graph"], d["name"], revision=rev, data=data))
+            elif op in ("ADD_EDGE", "RETRACT_EDGE"):
+                rev = revision("edge", ids.edge_id(d["graph"], d["src"], d["rel"], d["dst"]), given)
+                if op == "ADD_EDGE":
+                    data = {"list": d["list"]} if d.get("list") else None
+                    out.append(ov.add_edge(d["graph"], d["src"], d["rel"], d["dst"], revision=rev, data=data))
+                else:
+                    out.append(ov.retract_edge(d["graph"], d["src"], d["rel"], d["dst"], revision=rev))
+            elif op == "RETRACT_NODE":
+                rev = revision("node", ids.node_id(d["graph"], d["name"]), given)
+                out.append(self._gv.GraphView(self.base(), None).retract_node(d["graph"], d["name"], revision=rev))
+            elif op in ("ADD_RULE", "REPLACE_RULE"):
+                target = ids.rule_id(d["rule"])
+                build = ov.add_rule if op == "ADD_RULE" else ov.replace_rule
+                out.append(build(target, d["rule"], revision=revision("rule", target, given)))
+            elif op == "DISABLE_RULE":
+                target = ids.rule_id(d["rule_id"])
+                out.append(ov.disable_rule(target, revision=revision("rule", target, given)))
+            else:
+                raise OverlayError(f"unknown overlay operation {op!r}")
+        return out
+
+    def commit(self, deltas: list[dict[str, Any]], *, approved_by: str, reason: str, actor: str, source: str,
+               evidence: Any) -> dict[str, Any]:
+        def work() -> dict[str, Any]:
+            seq, change = self._store.commit(self._requests(deltas), actor=actor, source=source, reason=reason,
+                                             approved_by=approved_by, evidence=evidence, check=self._check)
+            return {"seq": seq, "change_id": change}
+        return self._call(work)
+
+    def propose(self, deltas: list[dict[str, Any]], *, actor: str, reason: str, source: str, evidence: Any) -> str:
+        return self._call(lambda: self._store.propose(self._requests(deltas), actor=actor, source=source,
+                                                      reason=reason, evidence=evidence, check=self._check))
+
+    def approve(self, candidate_id: str, *, approved_by: str) -> dict[str, Any]:
+        def work() -> dict[str, Any]:
+            seq, change = self._store.approve(candidate_id, approved_by=approved_by, check=self._check)
+            return {"seq": seq, "change_id": change}
+        return self._call(work)
+
+    def reject(self, candidate_id: str, *, rejected_by: str, reason: str) -> None:
+        self._call(lambda: self._store.reject(candidate_id, rejected_by=rejected_by, reason=reason))
+
+    def undo(self, change: Any, *, approved_by: str, reason: str, actor: str, source: str) -> dict[str, Any]:
+        def work() -> dict[str, Any]:
+            seq, cid = self._store.undo(change, actor=actor, source=source, reason=reason, approved_by=approved_by,
+                                        check=self._check)
+            return {"seq": seq, "change_id": cid}
+        return self._call(work)
+
+    def head(self) -> dict[str, Any]:
+        seq, change = self._call(self._store.head)
+        return {"seq": seq, "change_id": change}
+
+    def counts(self) -> dict[str, int]:
+        return self._call(self._store.counts)
+
+    def history(self, target: str) -> list[dict[str, Any]]:
+        return self._call(lambda: self._store.history(target))
+
+    def candidates(self, status: Optional[str]) -> list[dict[str, Any]]:
+        return self._call(lambda: self._store.candidates(status))
+
+    def status(self) -> dict[str, Any]:
+        meta = self._call(self._store.meta)
+        return {"path": self.path,
+                "base": {"content_sha256": meta["base_sha256"], "build_id": meta["base_build_id"],
+                         "format_version": meta["format_version"]},
+                "head": self.head(), "counts": self.counts(), "pending": len(self.candidates("pending"))}
+
+    def close(self) -> None:
+        self._store.close()
