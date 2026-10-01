@@ -467,3 +467,21 @@ def test_a_modified_thing_stays_with_the_thing(line):
     assert [n["name"] for n in graph.of_kind("holder")] == ["미경"]
     assert [n["name"] for n in graph.of_kind("thing")] == ["줄무늬 면 수건"]
     assert counts == {("미경", "줄무늬 면 수건"): 5}
+
+
+# _read_unsaid_thing on nodes: a holder counted with its thing not said (기 대표님에게는 열 개 있어) and a transfer
+# that names no thing from it: the thing node from the conversation, and that count keyed to it, one candidate.
+@pytest.mark.parametrize("effort", [2, 3])
+def test_a_transfer_with_no_thing_from_a_holder_counted_with_no_thing(effort):
+    assert play("한국어", effort, [("세훈은 핸드백이 열한 개 있어.", "rec"), ("기 대표님에게는 열 개 있어.", "rec"),
+                                  ("기 대표님이 세훈에게 세 개를 줬어.", "rec"), ("기 대표님은 핸드백이 몇 개 있어?", 7),
+                                  ("세훈은 핸드백이 몇 개 있어?", 14)]) == []
+
+
+def test_g7_5_a_name_reply_finds_the_holder_of_a_modified_thing():
+    # docs/requests/G7-5.md: the holder is the name, the words before the counted noun are the thing
+    assert play("한국어", 3, [("제 친구 미경은 줄무늬 면 수건이 5개 있어.", "rec"), ("제 친구 수아는 줄무늬 수건이 3개 있어.", "rec"),
+                            ("그 친구는 수건이 몇 개야?", "hold"), ("수아요.", 3)]) == []
+    graph, _counts = _things("한국어", ["제 친구 미경은 줄무늬 면 수건이 5개 있어.", "제 친구 수아는 줄무늬 수건이 3개 있어."])
+    assert sorted(n["name"] for n in graph.of_kind("holder")) == ["미경", "수아"]
+    assert [n["name"] for n in graph.of_kind("thing")] == ["줄무늬 면 수건"]
