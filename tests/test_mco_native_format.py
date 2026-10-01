@@ -200,11 +200,32 @@ def test_identifiers_are_stable_keys_not_positions(tmp_path: Path) -> None:
                         [n["path"] for n in model.manager()["nodes"]], model.manifest["content_sha256"]))
     assert ids[0] == ids[1]                                        # same input twice
     assert ids[2][:3] == ids[0][:3] and ids[2][3] != ids[0][3]      # reordered lines: same ids, new content
-    assert graph_id("graphs/a.kg") == "graphs/a.kg"
-    assert node_id("graphs/a.kg", "총액") == "graphs/a.kg#총액"
-    assert edge_id("graphs/a.kg", "총액", "이어짐", "몫을안다") == hashlib.sha256(
-        "graphs/a.kg\x00총액\x00이어짐\x00몫을안다".encode()).hexdigest()
-    assert rule_id({"id": "r.keep", "when": []}) == "r.keep"
+
+
+
+def test_identifier_encoding_is_exact_and_shared_with_marco() -> None:
+    import unicodedata
+    import marco.storage.ids as marco_ids
+    import mco.native.ids as mco_ids
+    # One encoding, two byte-identical copies (mco does not import MARCO).
+    assert Path(mco_ids.__file__).read_bytes() == Path(marco_ids.__file__).read_bytes()
+    nfd = unicodedata.normalize("NFD", "graphs/정산.kg")
+    assert nfd != "graphs/정산.kg"
+    assert graph_id("graphs/a.kg") == "graphs/a.kg" and graph_id(nfd) == "graphs/정산.kg"
+    assert graph_id("graphs\\a.kg") == "graphs/a.kg"
+    assert node_id("graphs/a.kg", unicodedata.normalize("NFD", "총액")) == "graphs/a.kg#총액"
+    assert edge_id("graphs/a.kg", "총액", "이어짐", "몫을안다") == "e:" + hashlib.sha256(
+        "graphs/a.kg\x1f총액\x1f이어짐\x1f몫을안다".encode()).hexdigest()[:32]
+    assert edge_id(nfd, "총액", "이어짐", "몫을안다") == edge_id("graphs/정산.kg", "총액", "이어짐", "몫을안다")
+    assert rule_id({"id": "r.keep", "when": []}) == rule_id("r.keep") == "r.keep"
+    samples = [("graphs/a.kg", "총액", "이어짐", "몫을안다"), (nfd, "x", "y", "z"), ("g/b.kg", "", "→", "é")]
+    for g, src, rel, dst in samples:
+        for module in (marco_ids, mco_ids):
+            assert module.graph_id(g) == graph_id(g)
+            assert module.node_id(g, src) == node_id(g, src)
+            assert module.edge_id(g, src, rel, dst) == edge_id(g, src, rel, dst)
+    with pytest.raises(ValueError):
+        rule_id({"when": []})
 
 
 # --- damaged files: one variant per rule, each with its verdict -------------------------------

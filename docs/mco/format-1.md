@@ -9,6 +9,12 @@ This document is meant to be enough to write a second reader that accepts and
 refuses exactly the same files. Where this slice stores something as an opaque
 copy of a MARCO pack member instead of a real table, the document says so.
 
+**Scope** (owner's decision, 2026-10-01). The format is storage and runtime
+infrastructure. It does not make the engine reason or understand better. The
+overlay that a later slice adds on top of an immutable base is called the
+**Persistent Overlay Infrastructure**; it is storage, and this document does not
+describe it as learning.
+
 ## 1. What this slice is and is not
 
 A Format 1 file holds what a MARCO `.kgpack` holds today: graph text, learned
@@ -351,20 +357,32 @@ references**: they locate bytes inside one file, they may differ between two
 builds of the same input, and they are never used to name a thing outside the
 file, in an overlay, in a snapshot, or in the `mco` API.
 
+The encoding is exact, so that this format and the Persistent Overlay
+Infrastructure produce the same bytes for the same thing. `NFC(x)` is Unicode
+Normalization Form C; every identifier is a UTF-8 string.
+
 | Thing | Identifier |
 | --- | --- |
 | member | its pack path, e.g. `styles/english.json` |
-| graph (`graph_id`) | the pack path of the graph, e.g. `graphs/graph_en_bill_split.kg` |
-| node (`node_id`) | `graph_id + "#" + node name`, where the node name is the name the graph declares the node under: the text before `:` in a `[개념]`, `[사례]`, `[무관]` or `[공리]` line, without the leading `*` and without a `{...}` value or condition |
-| edge (`edge_id`) | lowercase hex SHA-256 of the UTF-8 bytes of `graph_id`, `src`, `rel`, `dst` joined by one `0x00` byte each; one edge per destination of a `[논증]` or `[개념망]` line |
-| rule (`rule_id`) | the rule's existing `id` in its axiom file (unique within a model) |
+| graph (`graph_id`) | `NFC(pack path)` with every `\` replaced by `/`, e.g. `graphs/graph_en_bill_split.kg` |
+| node (`node_id`) | `graph_id + "#" + NFC(node name)`. The node name is the name the graph declares the node under: the text before `:` in a `[개념]`, `[사례]`, `[무관]` or `[공리]` line, without the leading `*` and without a `{...}` value or condition |
+| edge (`edge_id`) | `"e:"` + the first 32 lowercase hex digits of the SHA-256 of `graph_id`, `NFC(src)`, `NFC(rel)`, `NFC(dst)`, each as UTF-8, joined by the single byte `0x1F`. One edge per destination of a `[논증]` or `[개념망]` line |
+| rule (`rule_id`) | the rule's existing `id` string in its axiom file, unchanged (unique within a model) |
 | model content | `content_sha256` (6.6), with `build_id` |
+
+Example: `edge_id("graphs/a.kg", "총액", "이어짐", "몫을안다")` is `"e:"` + the
+first 32 hex digits of SHA-256 over `graphs/a.kg␟총액␟이어짐␟몫을안다` (`␟` = byte
+`0x1F`).
+
+The reference functions are in `marco/storage/ids.py`, standard library only;
+`mco/native/ids.py` is a byte-identical copy, because `mco` does not import
+MARCO, and a test checks the two are identical and agree.
 
 Reordering the lines of a graph, or the order members are given to the writer,
 changes no identifier. In 1.0 only member, graph and model identifiers appear in
 tables (`MEMB`, `GDIR`, `MANI`); node, edge and rule identifiers are fixed here
-for the `NODE`, `EDGE` and `RULE` tables of the next slice and for overlays, and
-the reference implementation exposes the functions that compute them.
+for the `NODE`, `EDGE` and `RULE` tables of the next slice and for the Persistent
+Overlay Infrastructure.
 
 ## 7. Verification levels
 
@@ -388,11 +406,11 @@ unsupported) and refuses a non-null reserved manifest key.
 | Name | Where | Intended use |
 | --- | --- | --- |
 | `NODE`, `EDGE`, `RULE`, `INDX` | chunk types | node, edge, rule tables and a routing index replacing the carried `GRPH`/`AXIM` text |
-| `OVLY`, `CHNG` | chunk types | overlay delta and change log |
+| `OVLY`, `CHNG` | chunk types | Persistent Overlay Infrastructure: delta and change log |
 | `SNAP` | chunk type | snapshot reference data |
 | `PROV` | chunk type, **optional** | provenance of folded items: for each item a consolidation folds into a base, the id of the overlay change it came from. Reserved only; a 1.0 writer never writes it and a 1.0 reader skips it |
 | `base` | manifest | `{"build_id", "content_sha256"}` of the immutable base an overlay or snapshot applies to |
-| `change_sequence` | manifest | last overlay change sequence folded into this file |
+| `change_sequence` | manifest | last Persistent Overlay Infrastructure change sequence folded into this file |
 | `snapshot` | manifest | reference to the snapshot this file was consolidated from |
 
 **Identity across files.** A reference from another file (an overlay on this
