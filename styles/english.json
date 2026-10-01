@@ -4178,6 +4178,9 @@
   "partitive": [
    "of"
   ],
+  "measure": [
+   "dozen"
+  ],
   "irregular": {
    "man": "men",
    "woman": "women",
@@ -4224,7 +4227,7 @@
    "torpedo": "torpedoes"
   }
  },
- "_명사수": "An item counted as one is written in the singular (one marble, 1 box) but names the same things as its plural (marbles). A fact about exactly one is keyed by the plural computed here, so 'Haru had one marble' and 'how many marbles does Haru have' meet. Only the last word of the item changes; the first matching row wins, and a word already ending in the plural s stays as it is. In a partitive or measure phrase (a jar of jam, a box of crayons) the number is marked on the measure noun before 'of' (jars of jam), so that word takes the plural. The irregular plurals are looked up before the rows, whole word only (a word like 'human' is not 'man'): the closed classes of English irregular plural nouns -- vowel mutation (man, woman, foot, tooth, goose, mouse, louse), the -en plurals (child, ox), the suppletive person/people, the zero plurals (sheep, deer, fish, moose, swine, bison, salmon, trout, cod, aircraft, series, species, offspring), the f/fe nouns that voice to -ves (knife, wife, life, leaf, loaf, wolf, calf, half, shelf, thief, scarf, elf, self, sheaf) and the consonant + o nouns that take -oes (potato, tomato, hero, echo, veto, torpedo).",
+ "_명사수": "An item counted as one is written in the singular (one marble, 1 box) but names the same things as its plural (marbles). A fact about exactly one is keyed by the plural computed here, so 'Haru had one marble' and 'how many marbles does Haru have' meet. Only the last word of the item changes; the first matching row wins, and a word already ending in the plural s stays as it is. In a partitive or measure phrase (a jar of jam, a box of crayons) the number is marked on the measure noun before 'of' (jars of jam), so that word takes the plural. The irregular plurals are looked up before the rows, whole word only (a word like 'human' is not 'man'): the closed classes of English irregular plural nouns -- vowel mutation (man, woman, foot, tooth, goose, mouse, louse), the -en plurals (child, ox), the suppletive person/people, the zero plurals (sheep, deer, fish, moose, swine, bison, salmon, trout, cod, aircraft, series, species, offspring), the f/fe nouns that voice to -ves (knife, wife, life, leaf, loaf, wolf, calf, half, shelf, thief, scarf, elf, self, sheaf) and the consonant + o nouns that take -oes (potato, tomato, hero, echo, veto, torpedo). A measure word that stands right before the item with no 'of' (measure: dozen, as in 43 dozen quills) heads a container structure the same way: the dozens and the quills are two counts, never one in place of the other, and nothing is converted between them.",
  "같은틀": [
   {
    "read_as": "gave",
