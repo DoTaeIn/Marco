@@ -335,6 +335,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [graph-corrections-evidence.json](ko/dialogue-gate-2026-09-22/graph-corrections-evidence.json) | Corrections on nodes, the answer cites the correction turn, `13d8965`: 98 of 108, 0 wrong |
 | [graph-step-3s6.json](ko/dialogue-gate-2026-09-22/graph-step-3s6.json) | Identity graph step 3, statements 6, `c128040`: 98 of 108, no turn changed |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
+| [composition-graph-step-3s6.json](ko/dialogue-gate-2026-09-22/composition-graph-step-3s6.json) | Composition on the identity graph, `650efc9`: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
 ### Frozen reasoning gate (`ko/reasoning-gate-2026-09-24/`)
@@ -353,6 +354,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [round5.json](ko/reasoning-gate-2026-09-24/round5.json) | Round 5: 108 of 111 problems, 148 of 151 questions, 0 wrong |
 | [experiment-02.json](ko/reasoning-gate-2026-09-24/experiment-02.json) | Reasoning at experiment 2, `095b434` |
 | [experiment-04.json](ko/reasoning-gate-2026-09-24/experiment-04.json) | Reasoning at experiment 4, `a18c617`: 110 of 113 problems, 0 wrong |
+| [graph-step-3s6.json](ko/reasoning-gate-2026-09-24/graph-step-3s6.json) | Reasoning on the identity graph, `650efc9`: 110 of 113 problems, 0 wrong |
 
 ### Model comparison (`ko/model-comparison-2026-09-24/`)
 
