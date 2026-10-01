@@ -339,6 +339,7 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [graph-corrections-evidence.json](ko/dialogue-gate-2026-09-22/graph-corrections-evidence.json) | Corrections on nodes, the answer cites the correction turn, `13d8965`: 98 of 108, 0 wrong |
 | [graph-step-3s6.json](ko/dialogue-gate-2026-09-22/graph-step-3s6.json) | Identity graph step 3, statements 6, `c128040`: 98 of 108, no turn changed |
 | [graph-safety-unread-thing.json](ko/dialogue-gate-2026-09-22/graph-safety-unread-thing.json) | Safety fix for an unread turn that names a thing, with the overlay view merged, `5987ed5`: 98 of 108, no turn changed |
+| [release-safety-fixes.json](ko/dialogue-gate-2026-09-22/release-safety-fixes.json) | Release freeze, `7286944`: four wrong-answer fixes, the two-unit fix and the declared request: 98 of 108, no turn changed |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
 | [composition-graph-step-3s6.json](ko/dialogue-gate-2026-09-22/composition-graph-step-3s6.json) | Composition on the identity graph, `650efc9`: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
