@@ -21,6 +21,7 @@ import zipfile
 
 from ..errors import CompileError, IntegrityError, ModelFormatError, UnsupportedFormatError
 from .container import MAJOR, MINOR, Chunk, ChunkEntry, Container, encode, write_file
+from .ids import edge_id, graph_id, node_id, rule_id
 
 __all__ = [
     "FEATURES", "MEMBER_TYPES", "TABLE_TYPES", "RESERVED_TYPES", "KNOWN_CHUNKS", "SEMANTIC_SCHEMA",
@@ -52,30 +53,7 @@ _GDIR_EDGE = struct.Struct("<3I")
 assert (_MEMB_ROW.size, _GDIR_HEAD.size, _GDIR_NODE.size, _GDIR_EDGE.size) == (56, 32, 20, 12)
 
 
-# --- identifiers (6.6, 6.7) -------------------------------------------------------------
-
-def graph_id(path: str) -> str:
-    """A graph's identifier: its pack path."""
-    return str(PurePosixPath(path))
-
-
-def node_id(graph: str, name: str) -> str:
-    """``graph_id#node name``."""
-    return f"{graph}#{name}"
-
-
-def edge_id(graph: str, src: str, rel: str, dst: str) -> str:
-    """Hex SHA-256 of graph_id, src, rel, dst joined by NUL bytes."""
-    return hashlib.sha256("\x00".join((graph, src, rel, dst)).encode("utf-8")).hexdigest()
-
-
-def rule_id(rule: Mapping[str, Any]) -> str:
-    """A rule's identifier: the ``id`` it already has in its axiom file."""
-    value = rule.get("id")
-    if not isinstance(value, str) or not value:
-        raise ValueError("a rule needs a non-empty string id")
-    return value
-
+# --- encoding helpers ---------------------------------------------------------------------
 
 def canonical_json(value: Any) -> bytes:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"),

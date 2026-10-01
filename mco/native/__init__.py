@@ -9,6 +9,9 @@ Two layers, standard library only, no MARCO import:
     The manifest, the string/member/graph-directory tables and the mapping to
     and from a MARCO pack. :class:`NativeModel` opens a file;
     :func:`write_model` writes one.
+:mod:`mco.native.ids`
+    The stable identifiers (graph, node, edge, rule), a byte-identical copy of
+    ``marco/storage/ids.py``.
 
 This package is internal to ``mco``: user code goes through ``mco.load``,
 ``mco.compile(..., format="native")`` and ``mco.inspect``.
@@ -16,8 +19,9 @@ This package is internal to ``mco``: user code goes through ``mco.load``,
 from __future__ import annotations
 
 from .container import MAGIC, MAJOR, MINOR, Chunk, ChunkEntry, Container, encode
+from .ids import edge_id, graph_id, node_id, rule_id
 from .pack import (FEATURES, KNOWN_CHUNKS, MEMBER_TYPES, RESERVED_TYPES, TABLE_TYPES, Member, NativeModel,
-                   build_chunks, edge_id, graph_id, node_id, rule_id, write_model)
+                   build_chunks, write_model)
 
 __all__ = [
     "MAGIC", "MAJOR", "MINOR", "Chunk", "ChunkEntry", "Container", "encode",
