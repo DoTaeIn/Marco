@@ -1,0 +1,259 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-24-chess-clocks",
+ "language": "en",
+ "domain": "chess club",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "restart",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SVO",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "Coach Ferreira": 12,
+   "junior room": 4
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Coach Ferreira looks after 12 chess clocks.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Coach Ferreira",
+    "item": "chess clocks",
+    "quantity": 12,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Coach Ferreira",
+      "item": "chess clocks",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Coach Ferreira",
+      "item": "chess clocks",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The junior room has 4 of its own.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "junior room",
+    "item": "chess clocks",
+    "quantity": 4,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "junior room",
+      "item": "chess clocks",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "junior room",
+      "item": "chess clocks",
+      "quantity": 4
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "He moved three clocks into the junior room for the tournament.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Coach Ferreira",
+    "item": "chess clocks",
+    "quantity": 3,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Coach Ferreira",
+      "to": "junior room",
+      "item": "chess clocks",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Coach Ferreira",
+      "item": "chess clocks",
+      "quantity": 9
+     },
+     {
+      "entity": "junior room",
+      "item": "chess clocks",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "One of the junior room's clocks died and was binned.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "junior room",
+    "item": "chess clocks",
+    "quantity": 1,
+    "relation": "use",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "junior room",
+      "item": "chess clocks",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "junior room",
+      "item": "chess clocks",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many clocks does Coach Ferreira have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Coach Ferreira",
+    "item": "chess clocks",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "Same question for the junior room?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "restart"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "junior room",
+    "item": "chess clocks",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    }
+   },
+   "restart_before": true
+  },
+  {
+   "n": 7,
+   "say": "What gets you to six?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "junior room",
+    "item": "chess clocks",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    }
+   }
+  },
+  {
+   "n": 8,
+   "say": "How many does the senior room have?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "senior room",
+    "item": "chess clocks",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  }
+ ]
+}

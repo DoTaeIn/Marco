@@ -1,0 +1,218 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-07-energybar",
+ "language": "ko",
+ "domain": "등산",
+ "categories": [
+  "correction",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "first_person",
+  "register": "반말",
+  "split": "two_facts_one_sentence",
+  "correction_position": "immediate",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "나": 12,
+   "태윤": 5
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "나한테 에너지바가 열두 개 있고 태윤이한테 다섯 개 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "나",
+    "item": "에너지바",
+    "quantity": 12,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "나",
+      "item": "에너지바",
+      "quantity": 12
+     },
+     {
+      "type": "has",
+      "holder": "태윤",
+      "item": "에너지바",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "에너지바",
+      "quantity": 12
+     },
+     {
+      "entity": "태윤",
+      "item": "에너지바",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "방금 내가 소희 배낭에 세 개 넣어 줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "나",
+    "item": "에너지바",
+    "quantity": 3,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "소희",
+      "item": "에너지바",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "에너지바",
+      "quantity": 9
+     },
+     {
+      "entity": "소희",
+      "item": "에너지바",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "아, 잘못 말했다, 소희가 아니라 태윤이한테 세 개 준 거야.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "나",
+    "item": "에너지바",
+    "quantity": 3,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    },
+    "target_turn": 2,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "소희",
+      "item": "에너지바",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "나",
+      "to": "태윤",
+      "item": "에너지바",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "나",
+      "item": "에너지바",
+      "quantity": 9
+     },
+     {
+      "entity": "소희",
+      "item": "에너지바",
+      "quantity": null
+     },
+     {
+      "entity": "태윤",
+      "item": "에너지바",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "태윤이 지금 몇 개 갖고 있어?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "태윤",
+    "item": "에너지바",
+    "quantity": 8,
+    "relation": "count",
+    "retracted_quantity": 5,
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "그럼 나한테는 몇 개 남은 거지?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "나",
+    "item": "에너지바",
+    "quantity": 9,
+    "relation": "count",
+    "reexecuted_quantity": 6,
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

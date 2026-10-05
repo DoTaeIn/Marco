@@ -1,0 +1,259 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-24-racket",
+ "language": "ko",
+ "domain": "탁구 교실",
+ "categories": [
+  "follow_up",
+  "missing_premise",
+  "ownership",
+  "restart",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "dative_existential",
+  "register": "합쇼체",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "남 코치": 14,
+   "초급반": 5
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "남 코치님한테 탁구 라켓이 14개 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "남 코치",
+    "item": "탁구 라켓",
+    "quantity": 14,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "남 코치",
+      "item": "탁구 라켓",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "남 코치",
+      "item": "탁구 라켓",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "초급반 교실에는 5개가 걸려 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "초급반",
+    "item": "탁구 라켓",
+    "quantity": 5,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "초급반",
+      "item": "탁구 라켓",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "초급반",
+      "item": "탁구 라켓",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "대회 때문에 남 코치님이 초급반 교실로 네 개를 옮겨 놓으셨습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "남 코치",
+    "item": "탁구 라켓",
+    "quantity": 4,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "남 코치",
+      "to": "초급반",
+      "item": "탁구 라켓",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "남 코치",
+      "item": "탁구 라켓",
+      "quantity": 10
+     },
+     {
+      "entity": "초급반",
+      "item": "탁구 라켓",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "초급반 라켓 가운데 하나는 부러져서 버렸습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "초급반",
+    "item": "탁구 라켓",
+    "quantity": 1,
+    "relation": "use",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "초급반",
+      "item": "탁구 라켓",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "초급반",
+      "item": "탁구 라켓",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "남 코치님께 남은 라켓은 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "남 코치",
+    "item": "탁구 라켓",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "초급반 교실도 같은 걸 묻겠습니다, 몇 개입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "restart"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "초급반",
+    "item": "탁구 라켓",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    }
+   },
+   "restart_before": true
+  },
+  {
+   "n": 7,
+   "say": "여덟 개가 나온 과정을 설명해 주십시오.",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "초급반",
+    "item": "탁구 라켓",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3,
+      4
+     ]
+    }
+   }
+  },
+  {
+   "n": 8,
+   "say": "상급반 교실에는 몇 개 있습니까?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "상급반",
+    "item": "탁구 라켓",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  }
+ ]
+}

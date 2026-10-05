@@ -1,0 +1,253 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-23-lantern",
+ "language": "ko",
+ "domain": "캠핑장",
+ "categories": [
+  "correction",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "locative",
+  "register": "해요체",
+  "split": "one_fact_per_turn",
+  "correction_position": "after_question",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "관리동": 18
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "캠핑장 관리동에 랜턴이 18개 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "관리동",
+    "item": "랜턴",
+    "quantity": 18,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "관리동",
+      "item": "랜턴",
+      "quantity": 18
+     }
+    ],
+    "state": [
+     {
+      "entity": "관리동",
+      "item": "랜턴",
+      "quantity": 18
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "관리동 랜턴 가운데 여섯 개를 스카우트 단체가 빌려 갔어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "관리동",
+    "item": "랜턴",
+    "quantity": 6,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "관리동",
+      "to": "스카우트",
+      "item": "랜턴",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "관리동",
+      "item": "랜턴",
+      "quantity": 12
+     },
+     {
+      "entity": "스카우트",
+      "item": "랜턴",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "관리동에 있던 랜턴 세 개는 고장 나서 버렸어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "관리동",
+    "item": "랜턴",
+    "quantity": 3,
+    "relation": "use",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "관리동",
+      "item": "랜턴",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "관리동",
+      "item": "랜턴",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "관리동에 랜턴이 몇 개 있나요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "관리동",
+    "item": "랜턴",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "스카우트 단체는 랜턴이 전부 몇 개인가요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "스카우트",
+    "item": "랜턴",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "대여 장부를 다시 보니 스카우트가 빌려 간 건 네 개였어요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "관리동",
+    "item": "랜턴",
+    "quantity": 4,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2,
+      6
+     ]
+    },
+    "target_turn": 2,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "관리동",
+      "to": "스카우트",
+      "item": "랜턴",
+      "quantity": 6
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "관리동",
+      "to": "스카우트",
+      "item": "랜턴",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "관리동",
+      "item": "랜턴",
+      "quantity": 11
+     },
+     {
+      "entity": "스카우트",
+      "item": "랜턴",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "이제 관리동은 몇 개?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "관리동",
+    "item": "랜턴",
+    "quantity": 11,
+    "relation": "count",
+    "retracted_quantity": 9,
+    "reexecuted_quantity": 5,
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6
+     ]
+    }
+   }
+  }
+ ]
+}

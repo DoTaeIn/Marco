@@ -1,0 +1,253 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-23-life-jackets",
+ "language": "en",
+ "domain": "marina",
+ "categories": [
+  "correction",
+  "missing_premise",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "SVO",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": "after_question",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "boathouse": 22
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The boathouse is equipped with 22 life jackets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "boathouse",
+    "item": "life jackets",
+    "quantity": 22,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "boathouse",
+      "item": "life jackets",
+      "quantity": 22
+     }
+    ],
+    "state": [
+     {
+      "entity": "boathouse",
+      "item": "life jackets",
+      "quantity": 22
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The sailing school borrowed nine of the boathouse's jackets.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "boathouse",
+    "item": "life jackets",
+    "quantity": 9,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "boathouse",
+      "to": "sailing school",
+      "item": "life jackets",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "boathouse",
+      "item": "life jackets",
+      "quantity": 13
+     },
+     {
+      "entity": "sailing school",
+      "item": "life jackets",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Two jackets at the boathouse were thrown out for torn straps.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "boathouse",
+    "item": "life jackets",
+    "quantity": 2,
+    "relation": "use",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "boathouse",
+      "item": "life jackets",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "boathouse",
+      "item": "life jackets",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many life jackets are at the boathouse?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "boathouse",
+    "item": "life jackets",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many does the sailing school have in all?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "sailing school",
+    "item": "life jackets",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "The school actually borrowed seven, I misread the sign-out sheet.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "boathouse",
+    "item": "life jackets",
+    "quantity": 7,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2,
+      6
+     ]
+    },
+    "target_turn": 2,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "boathouse",
+      "to": "sailing school",
+      "item": "life jackets",
+      "quantity": 9
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "boathouse",
+      "to": "sailing school",
+      "item": "life jackets",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "boathouse",
+      "item": "life jackets",
+      "quantity": 13
+     },
+     {
+      "entity": "sailing school",
+      "item": "life jackets",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "say": "Boathouse count now?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "boathouse",
+    "item": "life jackets",
+    "quantity": 13,
+    "relation": "count",
+    "retracted_quantity": 11,
+    "reexecuted_quantity": 4,
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3,
+      6
+     ]
+    }
+   }
+  }
+ ]
+}

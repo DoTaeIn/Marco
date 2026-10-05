@@ -1,0 +1,203 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-13-rental-bikes",
+ "language": "en",
+ "domain": "bike rental",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SVO",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_receives",
+  "initial_values": {
+   "harbor kiosk": 9,
+   "station kiosk": 13
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "The harbor kiosk opened with 9 rental bikes on the rack.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "harbor kiosk",
+    "item": "rental bikes",
+    "quantity": 9,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "harbor kiosk",
+      "item": "rental bikes",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "harbor kiosk",
+      "item": "rental bikes",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "The station kiosk had 13.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "station kiosk",
+    "item": "rental bikes",
+    "quantity": 13,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "station kiosk",
+      "item": "rental bikes",
+      "quantity": 13
+     }
+    ],
+    "state": [
+     {
+      "entity": "station kiosk",
+      "item": "rental bikes",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Five bikes got ridden from the station kiosk over to the harbor kiosk.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "station kiosk",
+    "item": "rental bikes",
+    "quantity": 5,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "station kiosk",
+      "to": "harbor kiosk",
+      "item": "rental bikes",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "station kiosk",
+      "item": "rental bikes",
+      "quantity": 8
+     },
+     {
+      "entity": "harbor kiosk",
+      "item": "rental bikes",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many bikes are parked at the station kiosk?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "station kiosk",
+    "item": "rental bikes",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "Which kiosk has more bikes right now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "harbor kiosk",
+    "item": "rental bikes",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "harbor kiosk",
+     "station kiosk"
+    ],
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "How do you figure?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "harbor kiosk",
+    "item": "rental bikes",
+    "quantity": 14,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

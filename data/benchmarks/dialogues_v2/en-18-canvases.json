@@ -1,0 +1,265 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-18-canvases",
+ "language": "en",
+ "domain": "art studio",
+ "categories": [
+  "correction",
+  "ownership",
+  "restart",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SVO",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "immediate",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "Imogen": 12,
+   "Lucian": 3
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Imogen has 12 canvases stretched and ready.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Imogen",
+    "item": "canvases",
+    "quantity": 12,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Imogen",
+      "item": "canvases",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Imogen",
+      "item": "canvases",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Lucian only has 3.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Lucian",
+    "item": "canvases",
+    "quantity": 3,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Lucian",
+      "item": "canvases",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Lucian",
+      "item": "canvases",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Imogen dropped four off with Lucian.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Imogen",
+    "item": "canvases",
+    "quantity": 4,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Imogen",
+      "to": "Lucian",
+      "item": "canvases",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Imogen",
+      "item": "canvases",
+      "quantity": 8
+     },
+     {
+      "entity": "Lucian",
+      "item": "canvases",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "Scratch that last bit, the four went to Odalys, not Lucian.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "Imogen",
+    "item": "canvases",
+    "quantity": 4,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "Imogen",
+      "to": "Lucian",
+      "item": "canvases",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "Imogen",
+      "to": "Odalys",
+      "item": "canvases",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "Imogen",
+      "item": "canvases",
+      "quantity": 8
+     },
+     {
+      "entity": "Lucian",
+      "item": "canvases",
+      "quantity": 3
+     },
+     {
+      "entity": "Odalys",
+      "item": "canvases",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "How many canvases does Lucian have?",
+   "label": "answerable",
+   "tags": [
+    "ownership",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Lucian",
+    "item": "canvases",
+    "quantity": 3,
+    "relation": "count",
+    "retracted_quantity": 7,
+    "reexecuted_quantity": 7,
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "Why only three?",
+   "label": "why",
+   "tags": [
+    "why",
+    "correction"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "Lucian",
+    "item": "canvases",
+    "quantity": 3,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 7,
+   "say": "Good morning, how many does Imogen have left?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction",
+    "restart"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Imogen",
+    "item": "canvases",
+    "quantity": 8,
+    "relation": "count",
+    "reexecuted_quantity": 4,
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    }
+   },
+   "restart_before": true
+  }
+ ]
+}

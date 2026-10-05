@@ -1,0 +1,206 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-16-juchagwon",
+ "language": "ko",
+ "domain": "사무실",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "SOV",
+  "register": "합쇼체",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "서진": 9,
+   "하람": 5
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "김서진 대리는 주차권을 아홉 장 갖고 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "서진",
+    "item": "주차권",
+    "quantity": 9,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "서진",
+      "item": "주차권",
+      "quantity": 9
+     }
+    ],
+    "state": [
+     {
+      "entity": "서진",
+      "item": "주차권",
+      "quantity": 9
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "김하람 대리에게는 다섯 장이 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "하람",
+    "item": "주차권",
+    "quantity": 5,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "하람",
+      "item": "주차권",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "하람",
+      "item": "주차권",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "서진 대리가 그중 세 장을 경비실에 맡겼습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "서진",
+    "item": "주차권",
+    "quantity": 3,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "서진",
+      "to": "경비실",
+      "item": "주차권",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "서진",
+      "item": "주차권",
+      "quantity": 6
+     },
+     {
+      "entity": "경비실",
+      "item": "주차권",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "김 대리 주차권은 몇 장입니까?",
+   "label": "ambiguous",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "clarify",
+    "entity": null,
+    "item": "주차권",
+    "quantity": null,
+    "relation": "count",
+    "candidates": [
+     "서진",
+     "하람"
+    ],
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "하람 대리 쪽입니다.",
+   "label": "answerable",
+   "tags": [
+    "ownership",
+    "follow_up",
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "하람",
+    "item": "주차권",
+    "quantity": 5,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "두 대리 것을 다 더하면 몇 장입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "서진",
+     "하람"
+    ],
+    "item": "주차권",
+    "quantity": 11,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

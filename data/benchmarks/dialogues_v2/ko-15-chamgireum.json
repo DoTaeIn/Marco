@@ -1,0 +1,160 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-15-chamgireum",
+ "language": "ko",
+ "domain": "시골집",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SOV",
+  "register": "해요체",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "시골집": 14
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "시골집 광에 참기름이 열네 병 있어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "시골집",
+    "item": "참기름",
+    "quantity": 14,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "시골집",
+      "item": "참기름",
+      "quantity": 14
+     }
+    ],
+    "state": [
+     {
+      "entity": "시골집",
+      "item": "참기름",
+      "quantity": 14
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "시골집에서 그중 여덟 병을 이모네로 보냈어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "시골집",
+    "item": "참기름",
+    "quantity": 8,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "시골집",
+      "to": "이모네",
+      "item": "참기름",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "시골집",
+      "item": "참기름",
+      "quantity": 6
+     },
+     {
+      "entity": "이모네",
+      "item": "참기름",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "이모네에는 지금 참기름이 다 해서 몇 병이에요?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "이모네",
+    "item": "참기름",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 4,
+   "say": "그렇군요, 시골집에는 몇 병 남았어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "시골집",
+    "item": "참기름",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "계산 과정을 보여 주세요.",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "시골집",
+    "item": "참기름",
+    "quantity": 6,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  }
+ ]
+}

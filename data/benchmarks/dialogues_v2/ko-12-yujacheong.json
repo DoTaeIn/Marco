@@ -1,0 +1,229 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-12-yujacheong",
+ "language": "ko",
+ "domain": "집 찬장",
+ "categories": [
+  "correction",
+  "ownership",
+  "restart",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "dative_existential",
+  "register": "반말",
+  "split": "one_fact_per_turn",
+  "correction_position": "immediate",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "찬장": 12
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "찬장에 유자청이 열두 병 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "찬장",
+    "item": "유자청",
+    "quantity": 12,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "찬장",
+      "item": "유자청",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "찬장",
+      "item": "유자청",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "시어머니께서 찬장에서 세 병 가져가셨어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "찬장",
+    "item": "유자청",
+    "quantity": 3,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "찬장",
+      "to": "시어머니",
+      "item": "유자청",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "찬장",
+      "item": "유자청",
+      "quantity": 9
+     },
+     {
+      "entity": "시어머니",
+      "item": "유자청",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "찬장에 몇 병 남았지?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "찬장",
+    "item": "유자청",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 4,
+   "say": "주말 지나고 다시 적는 건데, 손님상 차리느라 찬장 유자청 네 병을 땄어.",
+   "label": "hold",
+   "tags": [
+    "transfer",
+    "restart"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "찬장",
+    "item": "유자청",
+    "quantity": 4,
+    "relation": "use",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "찬장",
+      "item": "유자청",
+      "quantity": 4
+     }
+    ],
+    "state": [
+     {
+      "entity": "찬장",
+      "item": "유자청",
+      "quantity": 5
+     }
+    ]
+   },
+   "restart_before": true
+  },
+  {
+   "n": 5,
+   "say": "아니다, 딴 건 두 병뿐이고 나머지 두 병은 그대로야.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "찬장",
+    "item": "유자청",
+    "quantity": 2,
+    "relation": "use",
+    "evidence": {
+     "turns": [
+      4,
+      5
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "use",
+      "holder": "찬장",
+      "item": "유자청",
+      "quantity": 4
+     }
+    ],
+    "with": [
+     {
+      "type": "use",
+      "holder": "찬장",
+      "item": "유자청",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "찬장",
+      "item": "유자청",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "그러면 찬장에 안 딴 유자청은 몇 병이야?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "찬장",
+    "item": "유자청",
+    "quantity": 7,
+    "relation": "count",
+    "retracted_quantity": 5,
+    "reexecuted_quantity": 3,
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      5
+     ]
+    }
+   }
+  }
+ ]
+}

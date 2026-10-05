@@ -1,0 +1,225 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-11-infusion-sets",
+ "language": "en",
+ "domain": "hospital ward",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "dative_existential",
+  "register": "neutral",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_receives",
+  "initial_values": {
+   "Delacroix": 12,
+   "Whitfield": 20
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Nurse Delacroix's cart is stocked with 12 infusion sets.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Delacroix",
+    "item": "infusion sets",
+    "quantity": 12,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Delacroix",
+      "item": "infusion sets",
+      "quantity": 12
+     }
+    ],
+    "state": [
+     {
+      "entity": "Delacroix",
+      "item": "infusion sets",
+      "quantity": 12
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Nurse Whitfield has 20 on his.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Whitfield",
+    "item": "infusion sets",
+    "quantity": 20,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Whitfield",
+      "item": "infusion sets",
+      "quantity": 20
+     }
+    ],
+    "state": [
+     {
+      "entity": "Whitfield",
+      "item": "infusion sets",
+      "quantity": 20
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "At shift change Whitfield sent seven over to Delacroix.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Whitfield",
+    "item": "infusion sets",
+    "quantity": 7,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Whitfield",
+      "to": "Delacroix",
+      "item": "infusion sets",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "Whitfield",
+      "item": "infusion sets",
+      "quantity": 13
+     },
+     {
+      "entity": "Delacroix",
+      "item": "infusion sets",
+      "quantity": 19
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many infusion sets does the nurse have?",
+   "label": "ambiguous",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "clarify",
+    "entity": null,
+    "item": "infusion sets",
+    "quantity": null,
+    "relation": "count",
+    "candidates": [
+     "Delacroix",
+     "Whitfield"
+    ],
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "Delacroix is the one I'm asking about.",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Delacroix",
+    "item": "infusion sets",
+    "quantity": 19,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "And Whitfield's cart?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Whitfield",
+    "item": "infusion sets",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 7,
+   "say": "Why thirteen?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "Whitfield",
+    "item": "infusion sets",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

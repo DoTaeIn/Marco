@@ -1,0 +1,213 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-06-gyesangi",
+ "language": "ko",
+ "domain": "학교",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SOV",
+  "register": "해요체",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "윤 선생": 16,
+   "오 선생": 5
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "윤 선생님은 수학실에 계산기를 16대 두고 계세요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "윤 선생",
+    "item": "계산기",
+    "quantity": 16,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "윤 선생",
+      "item": "계산기",
+      "quantity": 16
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤 선생",
+      "item": "계산기",
+      "quantity": 16
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "오 선생님 교실에는 5대가 있고요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "오 선생",
+    "item": "계산기",
+    "quantity": 5,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "오 선생",
+      "item": "계산기",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "오 선생",
+      "item": "계산기",
+      "quantity": 5
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "어제 윤 선생님이 오 선생님께 시험용으로 여섯 대 빌려주셨어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "윤 선생",
+    "item": "계산기",
+    "quantity": 6,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "윤 선생",
+      "to": "오 선생",
+      "item": "계산기",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "윤 선생",
+      "item": "계산기",
+      "quantity": 10
+     },
+     {
+      "entity": "오 선생",
+      "item": "계산기",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "오 선생님 교실에 계산기가 이제 몇 대죠?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "오 선생",
+    "item": "계산기",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "그건 무슨 근거로 나온 숫자예요?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "오 선생",
+    "item": "계산기",
+    "quantity": 11,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "열 대 더 사게 구매 신청서 좀 올려 주세요.",
+   "label": "unsupported",
+   "tags": [],
+   "expect": {
+    "act": "decline",
+    "entity": null,
+    "quantity": null,
+    "relation": null,
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 7,
+   "say": "알겠어요, 그럼 윤 선생님한테는 몇 대 남았어요?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "윤 선생",
+    "item": "계산기",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

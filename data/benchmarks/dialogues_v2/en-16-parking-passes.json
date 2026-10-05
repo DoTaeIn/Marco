@@ -1,0 +1,206 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-16-parking-passes",
+ "language": "en",
+ "domain": "office building",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "SVO",
+  "register": "formal",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "Helen": 6,
+   "Tobias": 10
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Helen Varga has been issued 6 visitor parking passes.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Helen",
+    "item": "parking passes",
+    "quantity": 6,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Helen",
+      "item": "parking passes",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "Helen",
+      "item": "parking passes",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "Tobias Varga holds 10.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Tobias",
+    "item": "parking passes",
+    "quantity": 10,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Tobias",
+      "item": "parking passes",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "Tobias",
+      "item": "parking passes",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "Helen surrendered two of hers to the front desk.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Helen",
+    "item": "parking passes",
+    "quantity": 2,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Helen",
+      "to": "front desk",
+      "item": "parking passes",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "Helen",
+      "item": "parking passes",
+      "quantity": 4
+     },
+     {
+      "entity": "front desk",
+      "item": "parking passes",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "How many passes does Varga have?",
+   "label": "ambiguous",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "clarify",
+    "entity": null,
+    "item": "parking passes",
+    "quantity": null,
+    "relation": "count",
+    "candidates": [
+     "Helen",
+     "Tobias"
+    ],
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "Tobias, sorry.",
+   "label": "answerable",
+   "tags": [
+    "ownership",
+    "follow_up",
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Tobias",
+    "item": "parking passes",
+    "quantity": 10,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "And the two Vargas combined?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": [
+     "Helen",
+     "Tobias"
+    ],
+    "item": "parking passes",
+    "quantity": 14,
+    "relation": "total",
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

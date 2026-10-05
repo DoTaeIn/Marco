@@ -1,0 +1,160 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-15-rioja",
+ "language": "en",
+ "domain": "wine cellar",
+ "categories": [
+  "missing_premise",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "first_person",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "cellar": 30
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Our cellar has 30 bottles of Rioja laid down.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "cellar",
+    "item": "bottles of Rioja",
+    "quantity": 30,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "cellar",
+      "item": "bottles of Rioja",
+      "quantity": 30
+     }
+    ],
+    "state": [
+     {
+      "entity": "cellar",
+      "item": "bottles of Rioja",
+      "quantity": 30
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "We brought 8 of them from the cellar to the Hendersons for their dinner.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "cellar",
+    "item": "bottles of Rioja",
+    "quantity": 8,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "cellar",
+      "to": "Hendersons",
+      "item": "bottles of Rioja",
+      "quantity": 8
+     }
+    ],
+    "state": [
+     {
+      "entity": "cellar",
+      "item": "bottles of Rioja",
+      "quantity": 22
+     },
+     {
+      "entity": "Hendersons",
+      "item": "bottles of Rioja",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "How many bottles of Rioja do the Hendersons have now?",
+   "label": "hold",
+   "tags": [
+    "missing_premise"
+   ],
+   "expect": {
+    "act": "hold",
+    "entity": "Hendersons",
+    "item": "bottles of Rioja",
+    "quantity": null,
+    "relation": "count",
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 4,
+   "say": "Fair enough, how many are left in our cellar?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "cellar",
+    "item": "bottles of Rioja",
+    "quantity": 22,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "Show me the arithmetic.",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "cellar",
+    "item": "bottles of Rioja",
+    "quantity": 22,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  }
+ ]
+}

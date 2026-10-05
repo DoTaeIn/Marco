@@ -1,0 +1,176 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-01-toner",
+ "language": "en",
+ "domain": "office supplies",
+ "categories": [
+  "follow_up",
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SVO",
+  "register": "neutral",
+  "split": "two_facts_one_sentence",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "Marguerite": 14,
+   "Desmond": 3
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "Quick inventory note: Marguerite has fourteen toner cartridges in her cabinet and Desmond has three.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Marguerite",
+    "item": "toner cartridges",
+    "quantity": 14,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "Marguerite",
+      "item": "toner cartridges",
+      "quantity": 14
+     },
+     {
+      "type": "has",
+      "holder": "Desmond",
+      "item": "toner cartridges",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "Marguerite",
+      "item": "toner cartridges",
+      "quantity": 14
+     },
+     {
+      "entity": "Desmond",
+      "item": "toner cartridges",
+      "quantity": 3
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "She handed 5 of them over to Desmond this morning.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "Marguerite",
+    "item": "toner cartridges",
+    "quantity": 5,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "Marguerite",
+      "to": "Desmond",
+      "item": "toner cartridges",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "Marguerite",
+      "item": "toner cartridges",
+      "quantity": 9
+     },
+     {
+      "entity": "Desmond",
+      "item": "toner cartridges",
+      "quantity": 8
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "How many is Desmond sitting on now?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Desmond",
+    "item": "toner cartridges",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 4,
+   "say": "And Marguerite?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "Marguerite",
+    "item": "toner cartridges",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "How did you arrive at nine?",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "Marguerite",
+    "item": "toner cartridges",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  }
+ ]
+}

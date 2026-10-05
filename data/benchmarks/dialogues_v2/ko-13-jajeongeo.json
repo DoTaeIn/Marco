@@ -1,0 +1,203 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-13-jajeongeo",
+ "language": "ko",
+ "domain": "자전거 대여",
+ "categories": [
+  "ownership",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SOV",
+  "register": "합쇼체",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_receives",
+  "initial_values": {
+   "한강 대여소": 7,
+   "역 앞 대여소": 15
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "한강 대여소에 자전거가 7대 세워져 있습니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "한강 대여소",
+    "item": "자전거",
+    "quantity": 7,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "한강 대여소",
+      "item": "자전거",
+      "quantity": 7
+     }
+    ],
+    "state": [
+     {
+      "entity": "한강 대여소",
+      "item": "자전거",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "역 앞 대여소에는 15대입니다.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "역 앞 대여소",
+    "item": "자전거",
+    "quantity": 15,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "역 앞 대여소",
+      "item": "자전거",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "역 앞 대여소",
+      "item": "자전거",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "손님들이 역 앞 대여소에서 빌린 여섯 대를 한강 대여소에 반납했습니다.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "역 앞 대여소",
+    "item": "자전거",
+    "quantity": 6,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "역 앞 대여소",
+      "to": "한강 대여소",
+      "item": "자전거",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "역 앞 대여소",
+      "item": "자전거",
+      "quantity": 9
+     },
+     {
+      "entity": "한강 대여소",
+      "item": "자전거",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "역 앞 대여소에 남은 자전거는 몇 대입니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "역 앞 대여소",
+    "item": "자전거",
+    "quantity": 9,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "지금 어느 대여소에 자전거가 더 많습니까?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "한강 대여소",
+    "item": "자전거",
+    "quantity": null,
+    "relation": "more",
+    "candidates": [
+     "한강 대여소",
+     "역 앞 대여소"
+    ],
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "그렇게 본 이유를 알려 주십시오.",
+   "label": "why",
+   "tags": [
+    "why"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "한강 대여소",
+    "item": "자전거",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

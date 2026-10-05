@@ -1,0 +1,203 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-04-hwabun",
+ "language": "ko",
+ "domain": "가족",
+ "categories": [
+  "ambiguous_referent",
+  "follow_up",
+  "ownership",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "dative_existential",
+  "register": "반말",
+  "split": "one_fact_per_turn",
+  "correction_position": null,
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "큰언니": 6,
+   "작은언니": 11
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "큰언니한테 화분이 여섯 개 있어.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "큰언니",
+    "item": "화분",
+    "quantity": 6,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "큰언니",
+      "item": "화분",
+      "quantity": 6
+     }
+    ],
+    "state": [
+     {
+      "entity": "큰언니",
+      "item": "화분",
+      "quantity": 6
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "작은언니는 열한 개나 키워.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "작은언니",
+    "item": "화분",
+    "quantity": 11,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "작은언니",
+      "item": "화분",
+      "quantity": 11
+     }
+    ],
+    "state": [
+     {
+      "entity": "작은언니",
+      "item": "화분",
+      "quantity": 11
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "어제 큰언니가 작은언니한테 두 개 줬어.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "큰언니",
+    "item": "화분",
+    "quantity": 2,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "큰언니",
+      "to": "작은언니",
+      "item": "화분",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "큰언니",
+      "item": "화분",
+      "quantity": 4
+     },
+     {
+      "entity": "작은언니",
+      "item": "화분",
+      "quantity": 13
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "언니 지금 화분 몇 개야?",
+   "label": "ambiguous",
+   "tags": [
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "clarify",
+    "entity": null,
+    "item": "화분",
+    "quantity": null,
+    "relation": "count",
+    "candidates": [
+     "큰언니",
+     "작은언니"
+    ],
+    "evidence": {
+     "turns": []
+    }
+   }
+  },
+  {
+   "n": 5,
+   "say": "작은언니 말이야.",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up",
+    "ambiguous_referent"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "작은언니",
+    "item": "화분",
+    "quantity": 13,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "큰언니 집에는 몇 개 남았어?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "follow_up"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "큰언니",
+    "item": "화분",
+    "quantity": 4,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

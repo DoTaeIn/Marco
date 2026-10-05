@@ -1,0 +1,265 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "ko-18-canvas",
+ "language": "ko",
+ "domain": "화실",
+ "categories": [
+  "correction",
+  "ownership",
+  "restart",
+  "transfer",
+  "why"
+ ],
+ "variation": {
+  "word_order": "SOV",
+  "register": "해요체",
+  "split": "one_fact_per_turn",
+  "correction_position": "immediate",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "예린": 15,
+   "동욱": 2
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "예린 씨가 캔버스를 15개 짜 놨어요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "예린",
+    "item": "캔버스",
+    "quantity": 15,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "예린",
+      "item": "캔버스",
+      "quantity": 15
+     }
+    ],
+    "state": [
+     {
+      "entity": "예린",
+      "item": "캔버스",
+      "quantity": 15
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "동욱 씨 것은 2개고요.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "동욱",
+    "item": "캔버스",
+    "quantity": 2,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "동욱",
+      "item": "캔버스",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "동욱",
+      "item": "캔버스",
+      "quantity": 2
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "예린 씨가 동욱 씨한테 다섯 개를 갖다줬어요.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "예린",
+    "item": "캔버스",
+    "quantity": 5,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "예린",
+      "to": "동욱",
+      "item": "캔버스",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "예린",
+      "item": "캔버스",
+      "quantity": 10
+     },
+     {
+      "entity": "동욱",
+      "item": "캔버스",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "say": "방금 건 취소할게요, 다섯 개를 받은 사람은 동욱 씨가 아니라 가람 씨예요.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "예린",
+    "item": "캔버스",
+    "quantity": 5,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      3,
+      4
+     ]
+    },
+    "target_turn": 3,
+    "replaces": [
+     {
+      "type": "transfer",
+      "from": "예린",
+      "to": "동욱",
+      "item": "캔버스",
+      "quantity": 5
+     }
+    ],
+    "with": [
+     {
+      "type": "transfer",
+      "from": "예린",
+      "to": "가람",
+      "item": "캔버스",
+      "quantity": 5
+     }
+    ],
+    "state": [
+     {
+      "entity": "예린",
+      "item": "캔버스",
+      "quantity": 10
+     },
+     {
+      "entity": "동욱",
+      "item": "캔버스",
+      "quantity": 2
+     },
+     {
+      "entity": "가람",
+      "item": "캔버스",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "say": "동욱 씨 캔버스는 몇 개예요?",
+   "label": "answerable",
+   "tags": [
+    "ownership",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "동욱",
+    "item": "캔버스",
+    "quantity": 2,
+    "relation": "count",
+    "retracted_quantity": 7,
+    "reexecuted_quantity": 7,
+    "evidence": {
+     "turns": [
+      2,
+      4
+     ]
+    }
+   }
+  },
+  {
+   "n": 6,
+   "say": "왜 두 개밖에 안 돼요?",
+   "label": "why",
+   "tags": [
+    "why",
+    "correction"
+   ],
+   "expect": {
+    "act": "explain",
+    "entity": "동욱",
+    "item": "캔버스",
+    "quantity": 2,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 7,
+   "say": "좋은 아침이에요, 예린 씨한테는 몇 개 남아 있죠?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction",
+    "restart"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "예린",
+    "item": "캔버스",
+    "quantity": 10,
+    "relation": "count",
+    "reexecuted_quantity": 5,
+    "evidence": {
+     "turns": [
+      1,
+      3,
+      4
+     ]
+    }
+   },
+   "restart_before": true
+  }
+ ]
+}

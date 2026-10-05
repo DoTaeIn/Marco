@@ -1,0 +1,229 @@
+{
+ "schema": "marco1-dialogue-gate-v1",
+ "id": "en-12-marmalade",
+ "language": "en",
+ "domain": "home pantry",
+ "categories": [
+  "correction",
+  "ownership",
+  "restart",
+  "transfer"
+ ],
+ "variation": {
+  "word_order": "dative_existential",
+  "register": "casual",
+  "split": "one_fact_per_turn",
+  "correction_position": "immediate",
+  "roles": "first_mentioned_gives",
+  "initial_values": {
+   "pantry": 10
+  }
+ },
+ "turns": [
+  {
+   "n": 1,
+   "say": "There are 10 jars of marmalade in the pantry.",
+   "label": "hold",
+   "tags": [
+    "ownership"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "pantry",
+    "item": "jars of marmalade",
+    "quantity": 10,
+    "relation": "has",
+    "evidence": {
+     "turns": [
+      1
+     ]
+    },
+    "events": [
+     {
+      "type": "has",
+      "holder": "pantry",
+      "item": "jars of marmalade",
+      "quantity": 10
+     }
+    ],
+    "state": [
+     {
+      "entity": "pantry",
+      "item": "jars of marmalade",
+      "quantity": 10
+     }
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "say": "My mother-in-law took two jars home from the pantry.",
+   "label": "hold",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "pantry",
+    "item": "jars of marmalade",
+    "quantity": 2,
+    "relation": "transfer",
+    "evidence": {
+     "turns": [
+      2
+     ]
+    },
+    "events": [
+     {
+      "type": "transfer",
+      "from": "pantry",
+      "to": "mother-in-law",
+      "item": "jars of marmalade",
+      "quantity": 2
+     }
+    ],
+    "state": [
+     {
+      "entity": "pantry",
+      "item": "jars of marmalade",
+      "quantity": 8
+     },
+     {
+      "entity": "mother-in-law",
+      "item": "jars of marmalade",
+      "quantity": null
+     }
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "say": "How many jars does the pantry have?",
+   "label": "answerable",
+   "tags": [
+    "transfer"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "pantry",
+    "item": "jars of marmalade",
+    "quantity": 8,
+    "relation": "count",
+    "evidence": {
+     "turns": [
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "n": 4,
+   "say": "Picking this up again after the weekend: we opened three of the pantry jars for brunch.",
+   "label": "hold",
+   "tags": [
+    "transfer",
+    "restart"
+   ],
+   "expect": {
+    "act": "record",
+    "entity": "pantry",
+    "item": "jars of marmalade",
+    "quantity": 3,
+    "relation": "use",
+    "evidence": {
+     "turns": [
+      4
+     ]
+    },
+    "events": [
+     {
+      "type": "use",
+      "holder": "pantry",
+      "item": "jars of marmalade",
+      "quantity": 3
+     }
+    ],
+    "state": [
+     {
+      "entity": "pantry",
+      "item": "jars of marmalade",
+      "quantity": 5
+     }
+    ]
+   },
+   "restart_before": true
+  },
+  {
+   "n": 5,
+   "say": "Actually we only opened one, the other two are still sealed.",
+   "label": "correction",
+   "tags": [
+    "correction"
+   ],
+   "expect": {
+    "act": "revise",
+    "entity": "pantry",
+    "item": "jars of marmalade",
+    "quantity": 1,
+    "relation": "use",
+    "evidence": {
+     "turns": [
+      4,
+      5
+     ]
+    },
+    "target_turn": 4,
+    "replaces": [
+     {
+      "type": "use",
+      "holder": "pantry",
+      "item": "jars of marmalade",
+      "quantity": 3
+     }
+    ],
+    "with": [
+     {
+      "type": "use",
+      "holder": "pantry",
+      "item": "jars of marmalade",
+      "quantity": 1
+     }
+    ],
+    "state": [
+     {
+      "entity": "pantry",
+      "item": "jars of marmalade",
+      "quantity": 7
+     }
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "say": "How many unopened jars does that leave in the pantry?",
+   "label": "answerable",
+   "tags": [
+    "transfer",
+    "correction"
+   ],
+   "expect": {
+    "act": "answer",
+    "entity": "pantry",
+    "item": "jars of marmalade",
+    "quantity": 7,
+    "relation": "count",
+    "retracted_quantity": 5,
+    "reexecuted_quantity": 4,
+    "evidence": {
+     "turns": [
+      1,
+      2,
+      4,
+      5
+     ]
+    }
+   }
+  }
+ ]
+}
