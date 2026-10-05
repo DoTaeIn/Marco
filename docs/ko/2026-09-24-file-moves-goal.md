@@ -1,6 +1,6 @@
 # Goal S4: file moves — the root becomes packages, references rewritten, no shims
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
 then `docs/architecture/structure-audit.md` (A1, A6, A8) and
 `docs/architecture/target-map.json`. Written 2026-09-24. Own checkout, branch
 `file-moves`. **Runs alone:** it starts only after understanding round 4 (G4) is

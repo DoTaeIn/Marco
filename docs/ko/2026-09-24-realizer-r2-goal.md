@@ -1,6 +1,6 @@
 # Goal W2: realizer round 2 — say everything, name the subject, clean the voice
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Written 2026-09-24. Own checkout, branch `realizer-r2`. Runs alongside G3
 (understanding round 3), which owns the parsing side.
 

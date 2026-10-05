@@ -1,6 +1,6 @@
 # Goal G1: understanding, round 1 — turn holds into answers
 
-Model: Opus 5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Written 2026-09-23. Starts after `frozen-dialogue-set` and `s2-minimal` are on `main`.
 Check `git log --oneline -5` shows both merges; if not, stop and tell the owner.
 

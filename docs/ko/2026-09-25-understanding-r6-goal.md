@@ -1,6 +1,6 @@
 # Goal G6: understanding, round 6 — the exam's own classes, read from the ledger
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first
 (the exam rule and the standing decision: no token-based model in the runtime),
 then `docs/ko/2026-09-25-understanding-r5-goal.md` and G5's row in the freeze
 queue, `docs/requests/G5-2.md` (items 3 to 11 are yours), `docs/requests/W5-3.md`,

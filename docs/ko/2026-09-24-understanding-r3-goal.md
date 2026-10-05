@@ -1,6 +1,6 @@
 # Goal G3: understanding, round 3 — the exam is the language, not the generator
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Written 2026-09-24. Own checkout, branch `understanding-r3`. Runs alongside W2
 (realizer round 2), which owns `marco/language/` and a few reply-return sites.
 

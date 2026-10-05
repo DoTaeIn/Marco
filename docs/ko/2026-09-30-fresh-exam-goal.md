@@ -1,6 +1,6 @@
 # Goal X2: the fresh exam — frozen dialogue set v2
 
-Model: Opus 5.5, effort high. Written 2026-09-30 by the plan manager on the
+Model: the owner's chat model, effort high. Written 2026-09-30 by the plan manager on the
 owner's go. Own checkout, branch `fresh-exam-v2`.
 
 ## Why

@@ -1,6 +1,6 @@
 # Goal S2-min: package skeleton and the language seam — nothing more
 
-Model: Opus 5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Starts after S1 reports A6 (target layout) and after P0 (branches merged).
 
 ## Core rule

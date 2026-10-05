@@ -1,6 +1,6 @@
 # Goal G2: understanding, round 2 — read the statements, then generalize
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Written 2026-09-23. Starts after `main` contains a8388e9 (G1) and 6e03889 (W1).
 Check `git log --oneline -8` shows both merges; if not, stop and tell the owner.
 Own hidden checkout, branch `understanding-r2`.

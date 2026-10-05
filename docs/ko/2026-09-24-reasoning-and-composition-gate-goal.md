@@ -1,6 +1,6 @@
 # Goal F2: the frozen reasoning set and the composition gate
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Written 2026-09-24. Starts now, in parallel with G2 (understanding round 2).
 Data, scorers, tests, and one report. **No engine edits, no realizer edits, no
 pack edits.**

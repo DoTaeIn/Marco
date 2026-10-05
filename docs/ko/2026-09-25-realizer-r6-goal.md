@@ -1,6 +1,6 @@
 # Goal W6: realizer round 6 — what round 5 asked, and why with a named holder
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
 then `docs/requests/G5-2.md` (items 1 and 2 are yours), `docs/requests/W5-4.md`,
 `docs/ko/2026-09-25-understanding-r6-goal.md` (class C: why with a restated
 fact, whose replies you compose), `docs/architecture/naming.md`. Written

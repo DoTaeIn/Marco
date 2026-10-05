@@ -1,6 +1,6 @@
 # Goal S3: test hygiene and speed
 
-Model: Opus 5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Starts after P0 (goal 2 merged to `main`), because it edits test files goal 2 changed.
 
 ## Baseline

@@ -1,6 +1,6 @@
 # Goal W5: realizer round 5 — the round-4 requests, the trace fields, the samples
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
 then `docs/requests/G4-1.md` (second part), `docs/requests/G4-2.md`, `docs/requests/W4-2.md`,
 `docs/architecture/naming.md`, `marco/language/W1-report.md`. Written 2026-09-25.
 Own checkout, branch `realizer-r5`. Runs alongside G5, which owns the parsing side.

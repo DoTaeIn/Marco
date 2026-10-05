@@ -1,6 +1,6 @@
 # Goal G7: understanding, round 7 — questions as frames, statements that cascade
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first
 (the exam rule, the data rule, the standing decision: no token-based model in the
 runtime), then `docs/ko/2026-09-25-understanding-r6-goal.md` (classes 1–14 are
 still the class list) and G6's row in the queue, `docs/requests/G6-2.md`,

@@ -1,6 +1,6 @@
 # Goal L1: trace ledger — MARCO records why, not only what it said
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
 then the owner's design note `docs/ko/2026-09-24-trace-logging-design.md` (45
 sections; §38 minimal schema, §39 event kinds, §16 epistemic statuses, §44
 principles). Written 2026-09-24. Own checkout, branch `trace-ledger`. Runs

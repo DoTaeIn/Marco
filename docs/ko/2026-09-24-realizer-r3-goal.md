@@ -1,6 +1,6 @@
 # Goal W3: realizer round 3 — close the requests, say every kind
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Written 2026-09-24. Own checkout, branch `realizer-r3`. Runs alongside G4
 (understanding round 4), which owns the parsing side.
 

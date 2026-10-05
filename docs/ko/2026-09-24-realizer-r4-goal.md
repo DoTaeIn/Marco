@@ -1,6 +1,6 @@
 # Goal W4: realizer round 4 — "why" said from the trace graph
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
 then `docs/architecture/naming.md` (Palinorrhesis, Hypomnema), `docs/architecture/trace-ledger.md`,
 `docs/requests/L1-2.md` (the request this goal answers), and `marco/language/W1-report.md`.
 Written 2026-09-24. Own checkout, branch `realizer-r4`. Runs alongside G4

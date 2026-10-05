@@ -23,7 +23,7 @@ Frozen, no chat: W2 MCO binary, W3 ALMA, W4 POLO, W5 document fixtures.
 - Each chat is opened from a task card posted by the plan-manager session, or
   by the owner. Each gets its own hidden checkout in the app's worktrees folder inside the repository
   on its own branch. No sibling folders.
-- Model: Opus 5, effort high, set by the owner in the chat or by the
+- Model: the owner's chat model, effort high, set by the owner in the chat or by the
   plan-manager session after the chat exists.
 - At most three chats at once.
 - A chat commits only the paths its goal file lists, by name, author is the

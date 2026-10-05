@@ -1,6 +1,6 @@
 # Goal P0: integrate goal 2 and park `mco/` — main stays green
 
-Model: Opus 5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Written 2026-09-22. Starts now. One chat, own hidden checkout branched from `main`.
 
 ## Why this is a goal and not a merge command

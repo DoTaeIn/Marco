@@ -1,6 +1,6 @@
 # Goal G5: understanding, round 5 — the blocking classes, and readings as candidates
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first,
 then `docs/ko/2026-09-25-g5-compositional-understanding-design.md` (the owner's
 design; this goal is its hybrid scope), `docs/ko/2026-09-24-understanding-r4-goal.md`
 and G4's report in the freeze queue, `docs/requests/W3-1.md`, `docs/requests/L1-1.md`,

@@ -1,5 +1,5 @@
 # Next goal: say what was meant — a language realizer from meaning to sentence
-> **Added 2026-09-23.** Model: Opus 5, effort high. Read
+> **Added 2026-09-23.** Model: the owner's chat model, effort high. Read
 > `docs/ko/2026-09-22-freeze-decision.md` first. The owner started this goal on
 > 2026-09-23 in parallel with G1 round 1 (`docs/ko/2026-09-23-understanding-r1-goal.md`),
 > which owns the parsing side. The frozen gate baseline is 3/108, so develop

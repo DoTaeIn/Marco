@@ -1,6 +1,6 @@
 # Goal F1: the frozen dialogue set — 50 unseen dialogues and a scorer
 
-Model: Opus 5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Written 2026-09-22. Starts now. Data and scorer only; **no engine edits**.
 
 ## Core rule

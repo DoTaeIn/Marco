@@ -1,6 +1,6 @@
 # Goal G4: understanding, round 4 — natural language, not templates
 
-Model: Opus 5.5, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
+Model: the owner's chat model, effort high. Read `docs/ko/2026-09-22-freeze-decision.md` first.
 Written 2026-09-24. Own checkout, branch `understanding-r4`. Runs alongside W3
 (realizer round 3), which owns `marco/language/` and the reply-return sites.
 
