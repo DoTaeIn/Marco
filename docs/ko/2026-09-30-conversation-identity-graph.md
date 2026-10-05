@@ -6,7 +6,7 @@ Owner's decision, 2026-09-30. Read `docs/ko/2026-09-22-freeze-decision.md` first
 the grounding compares holders and things by the words of string keys in about
 130 places and consults no graph).
 
-**Baseline frozen:** tag `ur7-baseline-90` = `5166f31`, frozen exam 90 of 108,
+**Baseline frozen:** tag `ur7-baseline-90` = `dd016c8`, frozen exam 90 of 108,
 0 wrong, 0 violations, composition 340 of 340, reasoning 110 of 113. No further
 patch on the string-key route is merged. The owner does not allow an architecture
 outside MARCO's own: the internal language is the graph.

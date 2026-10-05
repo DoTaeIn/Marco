@@ -1,7 +1,7 @@
 # `marco.host`
 
-Written 2026-10-01 against commit `c8ad9a5`; checked 2026-10-01 against
-`2864b34` (no file named here changed between the two).
+Written 2026-10-01 against commit `e3a6394`; checked 2026-10-01 against
+`547f85b` (no file named here changed between the two).
 
 ## Purpose
 
@@ -72,7 +72,7 @@ its default before importing `engine` (line 34).
 | `trace_path(g)` | same | no test names it |
 
 No file in `tests/` imports `marco.host`. The only check is the module's own
-`_selfcheck`, run by hand. Run twice on 2026-10-01 at `2864b34`
+`_selfcheck`, run by hand. Run twice on 2026-10-01 at `547f85b`
 (`python marco/host/act.py`), it printed `act 자체검사: 2건 실패` both times:
 in group 3, the unknown `PermissionError` is matched to `관찰_데이터오류` by
 embedding (score 0.222), so the run recovers and reports itself complete.

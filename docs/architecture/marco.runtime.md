@@ -1,7 +1,7 @@
 # `marco.runtime`
 
-Written 2026-10-01 against commit `c8ad9a5`; checked 2026-10-01 against
-`2864b34` (no file named here changed between the two).
+Written 2026-10-01 against commit `e3a6394`; checked 2026-10-01 against
+`547f85b` (no file named here changed between the two).
 
 ## Purpose
 

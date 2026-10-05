@@ -1,6 +1,6 @@
 # `marco.perception`
 
-Written 2026-10-01 against commit `c8ad9a5`; checked against `2864b34`, where `marco/perception/` is unchanged.
+Written 2026-10-01 against commit `e3a6394`; checked against `547f85b`, where `marco/perception/` is unchanged.
 
 ## Purpose
 
@@ -14,7 +14,7 @@ Each fact candidate `analyze_image` returns carries `location`, `confidence` and
 `method` (visual.py:602–638). Goal S4 moved the root files `document_visual`,
 `document_vlm`, `document_objects` and `document_pose` here
 ([target-map.json](target-map.json) `moved_in_s4`), and `document_vision.swift`
-with them ([file moves](../ko/2026-09-24-file-moves-goal.md), commit `cf9ad58`).
+with them ([file moves](../ko/2026-09-24-file-moves-goal.md), commit `e4ede99`).
 Layer 1 in the target layout; forbidden: graph writes and sentences
 ([structure-audit.md](structure-audit.md) A6). The fact candidates carry Korean
 sentence text (visual.py:606–633).

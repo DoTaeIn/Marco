@@ -1,6 +1,6 @@
 """Goal G7-Q: questions read as a frame plus slots, follow-ups as partial frames, under an effort budget.
 
-Effort (amendment A2): level 0 is main's behaviour as it was when round 7 began (8c90141/da949e9),
+Effort (amendment A2): level 0 is main's behaviour as it was when round 7 began (9c86391/1890e77),
 byte for byte; each higher level only adds candidates the checks then validate.
 """
 import os
@@ -9,7 +9,7 @@ import pytest
 
 os.environ.setdefault("KG_ENCODER", "문자")
 
-# The seven-step replies on main before round 7 (da949e9), both languages.
+# The seven-step replies on main before round 7 (1890e77), both languages.
 SEVEN_STEP_MAIN = {
     "english": [
         "Recorded. Jiyeon has 2 apples.",

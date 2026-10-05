@@ -1,6 +1,6 @@
 # `marco.knowledge.ingest`
 
-Written 2026-10-01 against commit `c8ad9a5`; checked 2026-10-01 against `5c50e90`, which
+Written 2026-10-01 against commit `e3a6394`; checked 2026-10-01 against `d9c9559`, which
 changes none of the files named here.
 
 ## Purpose

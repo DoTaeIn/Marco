@@ -1,6 +1,6 @@
 # `mco.native`
 
-Written 2026-10-01 against commit `c8ad9a5`.
+Written 2026-10-01 against commit `e3a6394`.
 
 ## Purpose
 

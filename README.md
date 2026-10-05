@@ -10,7 +10,7 @@ dialogue exam and no wrong turn. MARCO 1 is not released yet; only safety fixes 
 go in before the tag ([Status](#status)).
 
 After the declaration, wrong answers found on invented sentences outside the exam were fixed as
-safety fixes; with them the exam stays at 98 of 108 with no wrong turn ([release-safety-fixes.json](docs/ko/dialogue-gate-2026-09-22/release-safety-fixes.json), code `7286944`).
+safety fixes; with them the exam stays at 98 of 108 with no wrong turn ([release-safety-fixes.json](docs/ko/dialogue-gate-2026-09-22/release-safety-fixes.json), code `8e0277a`).
 
 ```
 > Minsu has five apples, and Jiyeon has two.
@@ -54,7 +54,7 @@ reasoning problems; development never opens them, and only the owner's plan
 manager scores them. The structural failure classes the plan manager read from
 the dialogue exam (structure and counts, never sentences) guided the
 experiments, so a fresh 50-dialogue exam is scored once at the release. Numbers below are read from the report files named beside
-them, run on 2026-10-01 with code `650efc9` (the dialogue exam at `c128040`, the same code).
+them, run on 2026-10-01 with code `982343f` (the dialogue exam at `a05733d`, the same code).
 
 | # | Gate condition | State | Report |
 | --- | --- | --- | --- |
@@ -68,7 +68,7 @@ them, run on 2026-10-01 with code `650efc9` (the dialogue exam at `c128040`, the
 The table is the run of 2026-10-01. The safety fixes made after it (an unread sentence is no longer
 dropped by its shape, a bare imperative is a declared request, one thing counted in two units keeps both
 counts, and others in the [experiment log](docs/ko/2026-09-29-experiment-log.md)) change no exam turn:
-98 of 108, 0 wrong, 0 violations at `7286944`.
+98 of 108, 0 wrong, 0 violations at `8e0277a`.
 
 The other turns of the dialogue exam, reported apart as the gate requires:
 
@@ -99,7 +99,7 @@ is a row in the [experiment log](docs/ko/2026-09-29-experiment-log.md).
 `python tools/doc_facts.py frozen --run graph-step-3s6` prints these numbers
 from the report files without running an exam.
 
-**Tests** at `5987ed5`: 2,641 passed, 3 failed, 2 expected failures. The three
+**Tests** at `eca0367`: 2,641 passed, 3 failed, 2 expected failures. The three
 failures are machine-dependent and known: two `test_response_composer` tests and
 the macOS memory assertion of the ALMA reproduction.
 
@@ -212,7 +212,7 @@ graphs/*.kg  legal/*.kg  axioms/  styles/  cases/  data/     knowledge and data
 docs/                      architecture, en, ko (design records and goals), releases, requests
 ```
 
-`python tools/doc_facts.py counts` at `c8ad9a5`: 904 graph files, 6,982 nodes,
+`python tools/doc_facts.py counts` at `e3a6394`: 904 graph files, 6,982 nodes,
 6,263 argument edges and 60 authored concept-network edges, 8 root `.py` files,
 103 package `.py` files, 108 test files in `tests/` (129 with subfolders). A
 working checkout may hold one more graph, `graphs/graph_목적_자가검사.kg`, which
@@ -287,7 +287,7 @@ The owner's list for MARCO 1
   problems written for another purpose, 70 are in MARCO's domain; MARCO answers
   1 of the 70 correctly and holds 69, and reads 20 of their 151 statements. It
   gave one confident wrong answer, on an out-of-domain problem; the cause is
-  fixed (`6db2c16`) and that problem is now held. The full run has not been
+  fixed (`1d0751e`) and that problem is now held. The full run has not been
   repeated since the fix. The in-domain labels were written by a language model
   outside MARCO, used only for labelling, and checked against the dataset's
   answers ([SVAMP check](docs/ko/2026-10-01-svamp-accuracy.md)). Reading real

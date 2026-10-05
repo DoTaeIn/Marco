@@ -1,8 +1,8 @@
 # Re-verification set of step 4, at the frozen baseline
 
 Step 4 of `docs/ko/2026-09-30-conversation-identity-graph.md`: the numbers and replies the node-based
-conversation (steps 1 to 3) must meet or beat. Recorded 2026-09-30 by the statements chat on main `2e79631`,
-whose code is the baseline tag `ur7-baseline-90` = `5166f31` (`git diff --stat 5166f31 2e79631` touches
+conversation (steps 1 to 3) must meet or beat. Recorded 2026-09-30 by the statements chat on main `fa16533`,
+whose code is the baseline tag `ur7-baseline-90` = `dd016c8` (`git diff --stat dd016c8 fa16533` touches
 documents only). Dev data only; the frozen sets are never read.
 
 The reports and the replies are kept beside this file, in `docs/ko/reverification-2026-09-30/`, so a later
@@ -128,7 +128,7 @@ Found while diagnosing, not on the exam's gate turns; each must hold or record r
   `태오는 자두가 몇 개 있어?` is answered 23; the right answer is 24, or a hold. One node for 태오, whatever words
   name it, is the case of step 1.
 
-## Re-run on the node-based conversation (2026-10-01, main `650efc9`)
+## Re-run on the node-based conversation (2026-10-01, main `982343f`)
 
 Step 4 of the identity-graph order, run by the plan manager with the command of section 1. Every set meets or
 beats the baseline; no new wrong turn in any label.

@@ -12,7 +12,7 @@ branch `understanding-r7-questions`) and **G7-S** (statements, branch
 
 ## Where round 6 left MARCO 1
 
-Frozen exam at main f88f679 (owner run 2026-09-29, same as round 6): **63/108
+Frozen exam at main 2145028 (owner run 2026-09-29, same as round 6): **63/108
 (58.3%)**, 0 wrong, 0 violations, record 138/150, why 18/26. Round 6 did the
 statement classes of its list and stopped before the question classes (8–12).
 The exam's held answerable turns, by the engine's own hold reason, classes only:

@@ -1,6 +1,6 @@
 # `marco.reasoning`
 
-Written 2026-10-01 against commit `c8ad9a5`; checked against `2864b34`, which
+Written 2026-10-01 against commit `e3a6394`; checked against `547f85b`, which
 changes nothing under `marco/reasoning/`.
 
 ## Purpose
@@ -14,9 +14,9 @@ actions run as JSON action programs ([actions.py](../../marco/reasoning/actions.
 docstring); `state.evaluate` computes over validated state JSON with the
 operators a KG declares. Goal S4 ([file moves](../ko/2026-09-24-file-moves-goal.md))
 moved five root files here whole (`reasoning_context`, `graph_inference`,
-`state_engine`, `action_runtime`, `situation_reasoner`; commit `94eced5`,
+`state_engine`, `action_runtime`, `situation_reasoner`; commit `11a3383`,
 [target-map.json](target-map.json)). `identity.py` was added on 2026-09-30
-(commit `bff284a`) for the conversation identity graph
+(commit `0f1fd7c`) for the conversation identity graph
 ([conversation-graph.md](conversation-graph.md)).
 
 ## Owns

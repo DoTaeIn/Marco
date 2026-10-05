@@ -1,6 +1,6 @@
 # `marco.storage`
 
-Written 2026-10-01 against commit `c8ad9a5`.
+Written 2026-10-01 against commit `e3a6394`.
 
 ## Purpose
 
@@ -8,7 +8,7 @@ Bytes on disk: the files MARCO reads its knowledge from and the state it keeps
 between turns and processes. The target layout puts the package at layer 2,
 "bytes on disk" ([structure-audit.md](structure-audit.md) A6,
 [target-map.json](target-map.json)). Goal S4 moved three root files here whole
-on 2026-09-28 (commit `ee1390f`): `conversation_store` (now `conversations.py`),
+on 2026-09-28 (commit `7dab5c7`): `conversation_store` (now `conversations.py`),
 `kgbin`, `kgpack` (`python tools/doc_facts.py layout`: no root file left to
 move). The MCO scope for MARCO 1 (`docs/ko/2026-09-22-freeze-decision.md`)
 added the rest on 2026-10-01: `ids`, `overlay`, `graph_view`, `graph_text`

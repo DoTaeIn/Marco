@@ -1,6 +1,6 @@
 # `alma`
 
-Written 2026-10-01 against commit `c8ad9a5`; checked again at `2864b34`, where `alma/`, its
+Written 2026-10-01 against commit `e3a6394`; checked again at `547f85b`, where `alma/`, its
 tests and the `bench/alma_*` scripts are unchanged.
 
 ## Purpose

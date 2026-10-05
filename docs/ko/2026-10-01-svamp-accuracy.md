@@ -13,7 +13,7 @@ outside the repository under `data/external/mwp/` (git-ignored).
   dataset's answer. 70 of 726 pass; the rest are comparisons ("how many more than"), unknown starts,
   multiplication, rates and prices.
 - Scored by the dialogue gate's own scorer; the expected number is the dataset's answer.
-- Harness: `data/external/mwp/work/run_mwp.py svamp`. Engine: main `650efc9`, effort 3. 3 h 12 min on one core.
+- Harness: `data/external/mwp/work/run_mwp.py svamp`. Engine: main `982343f`, effort 3. 3 h 12 min on one core.
 
 ## Result
 
@@ -32,8 +32,8 @@ outside the repository under `data/external/mwp/` (git-ignored).
 `chal-266`: three statements, the second not read and naming no holder, then a count question. MARCO answered
 the last stated count (8; the dataset's answer is 997) where it should have held. Cause and fix are the last
 row of the [experiment log](2026-09-29-experiment-log.md): an unread turn now marks every thing node it
-mentions, and a holder's count stays held until each marked thing is said again (`6db2c16`, merged
-`2ed290c`). Replayed on `5987ed5`: held. The frozen exam is unchanged at 98 of 108.
+mentions, and a holder's count stays held until each marked thing is said again (`1d0751e`, merged
+`ea005a5`). Replayed on `eca0367`: held. The frozen exam is unchanged at 98 of 108.
 
 ## What it means
 

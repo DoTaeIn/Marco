@@ -3,7 +3,7 @@
 Branch `understanding-r7-statements`. Goal: `docs/ko/2026-09-29-understanding-r7-goal.md`, part G7-S,
 amendments A1 to A4. Dev data only; the frozen sets are never read.
 
-## Before (main da949e9, every effort level the same: no step is gated yet)
+## Before (main 1890e77, every effort level the same: no step is gated yet)
 
 `python bench/dialogue_gate.py run --dataset <set> --split <half>`, `KG_ENCODER=문자`.
 

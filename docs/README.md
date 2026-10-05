@@ -321,40 +321,40 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [composition-after-w5.json](ko/dialogue-gate-2026-09-22/composition-after-w5.json) | Composition after realizer round 5: 340 of 340 |
 | [round5.json](ko/dialogue-gate-2026-09-22/round5.json) | Round 5, `ca64770`: 45 of 108, 0 wrong, 0 violations, records 120 of 150 |
 | [composition-round5.json](ko/dialogue-gate-2026-09-22/composition-round5.json) | Composition at round 5: 340 of 340 |
-| [round6.json](ko/dialogue-gate-2026-09-22/round6.json) | Round 6, `735b7a4`: 63 of 108, 0 wrong, 0 violations, records 138 of 150 |
-| [experiment-01.json](ko/dialogue-gate-2026-09-22/experiment-01.json) | Experiment 1, `2ccd19c`: 63 of 108, no turn changed |
-| [experiment-02.json](ko/dialogue-gate-2026-09-22/experiment-02.json) | Experiment 2, `095b434`: 69 of 108, 0 wrong, 0 violations |
-| [experiment-03.json](ko/dialogue-gate-2026-09-22/experiment-03.json) | Experiment 3, `dc4d103`: 69 of 108, gate unchanged |
-| [experiment-04.json](ko/dialogue-gate-2026-09-22/experiment-04.json) | Experiment 4, `a18c617`: 67 of 108, 0 wrong, 0 violations, after the regression fixes |
-| [experiment-05.json](ko/dialogue-gate-2026-09-22/experiment-05.json) | Experiment 5, `89cd4b0`: 67 of 108, statements recorded 142 of 150 |
-| [experiment-06.json](ko/dialogue-gate-2026-09-22/experiment-06.json) | Experiment 6, `18b9f53`: 67 of 108, no wrong turn on the exam |
-| [experiment-07.json](ko/dialogue-gate-2026-09-22/experiment-07.json) | Experiment 7, `46427c5`: 76 of 108, 0 wrong, 0 violations |
-| [experiment-08.json](ko/dialogue-gate-2026-09-22/experiment-08.json) | Experiment 8, `1683212`: 81 of 108, 0 wrong, 0 violations |
-| [experiment-09.json](ko/dialogue-gate-2026-09-22/experiment-09.json) | Experiment 9, `564a97e`: 82 of 108, statements 144 of 150 |
-| [experiment-10.json](ko/dialogue-gate-2026-09-22/experiment-10.json) | Experiment 10, `5e9289a`: 82 of 108, no turn changed |
-| [experiment-11.json](ko/dialogue-gate-2026-09-22/experiment-11.json) | Experiment 11, `030d04c`: 82 of 108, no turn changed |
-| [experiment-12.json](ko/dialogue-gate-2026-09-22/experiment-12.json) | Experiment 12, `fc113ea`: 85 of 108, which-person turns 12 of 12 |
-| [experiment-13.json](ko/dialogue-gate-2026-09-22/experiment-13.json) | Experiment 13, `5712ebf`: 86 of 108, Korean 41 of 54 |
-| [experiment-14.json](ko/dialogue-gate-2026-09-22/experiment-14.json) | Experiment 14, `4e78fa0`: 88 of 108, 0 wrong, 0 violations |
-| [experiment-15.json](ko/dialogue-gate-2026-09-22/experiment-15.json) | Experiment 15, `cca6ca4`: 92 of 108, one correction scored wrong (not pushed until fixed) |
-| [experiment-16.json](ko/dialogue-gate-2026-09-22/experiment-16.json) | Experiment 16, `55849b6`: 90 of 108, 0 wrong on the whole exam |
-| [experiment-17.json](ko/dialogue-gate-2026-09-22/experiment-17.json) | Experiment 17, `5166f31`: 90 of 108, no turn changed |
-| [graph-step-1.json](ko/dialogue-gate-2026-09-22/graph-step-1.json) | Identity graph step 1, `762e2dc`: 90 of 108, nothing changed |
-| [graph-step-2.json](ko/dialogue-gate-2026-09-22/graph-step-2.json) | Identity graph step 2, `d210739`: 90 of 108, nothing changed |
-| [graph-step-3s1.json](ko/dialogue-gate-2026-09-22/graph-step-3s1.json) | Identity graph step 3, statements 1, `056ae3e`: 91 of 108, one which-person turn lost |
-| [graph-step-3s2.json](ko/dialogue-gate-2026-09-22/graph-step-3s2.json) | Identity graph step 3, statements 2, `80369f7`: 90 of 108, the baseline's turns exactly |
-| [graph-step-3q.json](ko/dialogue-gate-2026-09-22/graph-step-3q.json) | Identity graph step 3, question side, `4f3a3a3`: 90 of 108, no turn changed |
-| [graph-step-3s3.json](ko/dialogue-gate-2026-09-22/graph-step-3s3.json) | Identity graph step 3, statements 3, `77144e1`: 90 of 108, statements recorded 146 of 150 |
-| [graph-step-3q2.json](ko/dialogue-gate-2026-09-22/graph-step-3q2.json) | On nodes, the reply to a which-person ask, `e0f087b`: 93 of 108, 0 wrong |
-| [graph-step-3s4q3.json](ko/dialogue-gate-2026-09-22/graph-step-3s4q3.json) | On nodes, `c3eb7a7`: 94 of 108, 0 wrong |
-| [graph-step-3s5.json](ko/dialogue-gate-2026-09-22/graph-step-3s5.json) | On nodes, `c1c0be6`: 94 of 108, no turn changed |
-| [graph-safety-pointer.json](ko/dialogue-gate-2026-09-22/graph-safety-pointer.json) | The pointer safety fix, `65fcb7f`: 94 of 108, no turn changed |
-| [graph-corrections-evidence.json](ko/dialogue-gate-2026-09-22/graph-corrections-evidence.json) | Corrections on nodes, the answer cites the correction turn, `13d8965`: 98 of 108, 0 wrong |
-| [graph-step-3s6.json](ko/dialogue-gate-2026-09-22/graph-step-3s6.json) | Identity graph step 3, statements 6, `c128040`: 98 of 108, no turn changed |
-| [graph-safety-unread-thing.json](ko/dialogue-gate-2026-09-22/graph-safety-unread-thing.json) | Safety fix for an unread turn that names a thing, with the overlay view merged, `5987ed5`: 98 of 108, no turn changed |
-| [release-safety-fixes.json](ko/dialogue-gate-2026-09-22/release-safety-fixes.json) | Release freeze, `7286944`: four wrong-answer fixes, the two-unit fix and the declared request: 98 of 108, no turn changed |
+| [round6.json](ko/dialogue-gate-2026-09-22/round6.json) | Round 6, `11b110b`: 63 of 108, 0 wrong, 0 violations, records 138 of 150 |
+| [experiment-01.json](ko/dialogue-gate-2026-09-22/experiment-01.json) | Experiment 1, `db7cb9f`: 63 of 108, no turn changed |
+| [experiment-02.json](ko/dialogue-gate-2026-09-22/experiment-02.json) | Experiment 2, `fd73709`: 69 of 108, 0 wrong, 0 violations |
+| [experiment-03.json](ko/dialogue-gate-2026-09-22/experiment-03.json) | Experiment 3, `24feb64`: 69 of 108, gate unchanged |
+| [experiment-04.json](ko/dialogue-gate-2026-09-22/experiment-04.json) | Experiment 4, `16bf9f2`: 67 of 108, 0 wrong, 0 violations, after the regression fixes |
+| [experiment-05.json](ko/dialogue-gate-2026-09-22/experiment-05.json) | Experiment 5, `c37e4d6`: 67 of 108, statements recorded 142 of 150 |
+| [experiment-06.json](ko/dialogue-gate-2026-09-22/experiment-06.json) | Experiment 6, `27f2656`: 67 of 108, no wrong turn on the exam |
+| [experiment-07.json](ko/dialogue-gate-2026-09-22/experiment-07.json) | Experiment 7, `a3e0490`: 76 of 108, 0 wrong, 0 violations |
+| [experiment-08.json](ko/dialogue-gate-2026-09-22/experiment-08.json) | Experiment 8, `7894c11`: 81 of 108, 0 wrong, 0 violations |
+| [experiment-09.json](ko/dialogue-gate-2026-09-22/experiment-09.json) | Experiment 9, `b0a7125`: 82 of 108, statements 144 of 150 |
+| [experiment-10.json](ko/dialogue-gate-2026-09-22/experiment-10.json) | Experiment 10, `0f00af4`: 82 of 108, no turn changed |
+| [experiment-11.json](ko/dialogue-gate-2026-09-22/experiment-11.json) | Experiment 11, `13fbf3d`: 82 of 108, no turn changed |
+| [experiment-12.json](ko/dialogue-gate-2026-09-22/experiment-12.json) | Experiment 12, `8155e2d`: 85 of 108, which-person turns 12 of 12 |
+| [experiment-13.json](ko/dialogue-gate-2026-09-22/experiment-13.json) | Experiment 13, `f151934`: 86 of 108, Korean 41 of 54 |
+| [experiment-14.json](ko/dialogue-gate-2026-09-22/experiment-14.json) | Experiment 14, `b95cad7`: 88 of 108, 0 wrong, 0 violations |
+| [experiment-15.json](ko/dialogue-gate-2026-09-22/experiment-15.json) | Experiment 15, `4775494`: 92 of 108, one correction scored wrong (not pushed until fixed) |
+| [experiment-16.json](ko/dialogue-gate-2026-09-22/experiment-16.json) | Experiment 16, `2267e99`: 90 of 108, 0 wrong on the whole exam |
+| [experiment-17.json](ko/dialogue-gate-2026-09-22/experiment-17.json) | Experiment 17, `dd016c8`: 90 of 108, no turn changed |
+| [graph-step-1.json](ko/dialogue-gate-2026-09-22/graph-step-1.json) | Identity graph step 1, `396efac`: 90 of 108, nothing changed |
+| [graph-step-2.json](ko/dialogue-gate-2026-09-22/graph-step-2.json) | Identity graph step 2, `e35028d`: 90 of 108, nothing changed |
+| [graph-step-3s1.json](ko/dialogue-gate-2026-09-22/graph-step-3s1.json) | Identity graph step 3, statements 1, `c545af7`: 91 of 108, one which-person turn lost |
+| [graph-step-3s2.json](ko/dialogue-gate-2026-09-22/graph-step-3s2.json) | Identity graph step 3, statements 2, `347d0cc`: 90 of 108, the baseline's turns exactly |
+| [graph-step-3q.json](ko/dialogue-gate-2026-09-22/graph-step-3q.json) | Identity graph step 3, question side, `d1a9d49`: 90 of 108, no turn changed |
+| [graph-step-3s3.json](ko/dialogue-gate-2026-09-22/graph-step-3s3.json) | Identity graph step 3, statements 3, `76671f7`: 90 of 108, statements recorded 146 of 150 |
+| [graph-step-3q2.json](ko/dialogue-gate-2026-09-22/graph-step-3q2.json) | On nodes, the reply to a which-person ask, `947f503`: 93 of 108, 0 wrong |
+| [graph-step-3s4q3.json](ko/dialogue-gate-2026-09-22/graph-step-3s4q3.json) | On nodes, `fe0f976`: 94 of 108, 0 wrong |
+| [graph-step-3s5.json](ko/dialogue-gate-2026-09-22/graph-step-3s5.json) | On nodes, `58a1dc6`: 94 of 108, no turn changed |
+| [graph-safety-pointer.json](ko/dialogue-gate-2026-09-22/graph-safety-pointer.json) | The pointer safety fix, `390c833`: 94 of 108, no turn changed |
+| [graph-corrections-evidence.json](ko/dialogue-gate-2026-09-22/graph-corrections-evidence.json) | Corrections on nodes, the answer cites the correction turn, `5a4fe5d`: 98 of 108, 0 wrong |
+| [graph-step-3s6.json](ko/dialogue-gate-2026-09-22/graph-step-3s6.json) | Identity graph step 3, statements 6, `a05733d`: 98 of 108, no turn changed |
+| [graph-safety-unread-thing.json](ko/dialogue-gate-2026-09-22/graph-safety-unread-thing.json) | Safety fix for an unread turn that names a thing, with the overlay view merged, `eca0367`: 98 of 108, no turn changed |
+| [release-safety-fixes.json](ko/dialogue-gate-2026-09-22/release-safety-fixes.json) | Release freeze, `8e0277a`: four wrong-answer fixes, the two-unit fix and the declared request: 98 of 108, no turn changed |
 | [composition-experiment-04.json](ko/dialogue-gate-2026-09-22/composition-experiment-04.json) | Composition at experiment 4: 340 of 340 |
-| [composition-graph-step-3s6.json](ko/dialogue-gate-2026-09-22/composition-graph-step-3s6.json) | Composition on the identity graph, `650efc9`: 340 of 340 |
+| [composition-graph-step-3s6.json](ko/dialogue-gate-2026-09-22/composition-graph-step-3s6.json) | Composition on the identity graph, `982343f`: 340 of 340 |
 | [composition-experiment-02.json](ko/dialogue-gate-2026-09-22/composition-experiment-02.json) | Composition at experiment 2 |
 
 ### Frozen reasoning gate (`ko/reasoning-gate-2026-09-24/`)
@@ -371,9 +371,9 @@ printed by `python tools/doc_facts.py frozen --run <name>`.
 | [round4.json](ko/reasoning-gate-2026-09-24/round4.json) | Round 4: 108 of 111 problems, 148 of 151 questions, 0 wrong |
 | [after-w5.json](ko/reasoning-gate-2026-09-24/after-w5.json) | After realizer round 5: unchanged, 0 wrong |
 | [round5.json](ko/reasoning-gate-2026-09-24/round5.json) | Round 5: 108 of 111 problems, 148 of 151 questions, 0 wrong |
-| [experiment-02.json](ko/reasoning-gate-2026-09-24/experiment-02.json) | Reasoning at experiment 2, `095b434` |
-| [experiment-04.json](ko/reasoning-gate-2026-09-24/experiment-04.json) | Reasoning at experiment 4, `a18c617`: 110 of 113 problems, 0 wrong |
-| [graph-step-3s6.json](ko/reasoning-gate-2026-09-24/graph-step-3s6.json) | Reasoning on the identity graph, `650efc9`: 110 of 113 problems, 0 wrong |
+| [experiment-02.json](ko/reasoning-gate-2026-09-24/experiment-02.json) | Reasoning at experiment 2, `fd73709` |
+| [experiment-04.json](ko/reasoning-gate-2026-09-24/experiment-04.json) | Reasoning at experiment 4, `16bf9f2`: 110 of 113 problems, 0 wrong |
+| [graph-step-3s6.json](ko/reasoning-gate-2026-09-24/graph-step-3s6.json) | Reasoning on the identity graph, `982343f`: 110 of 113 problems, 0 wrong |
 
 ### Model comparison (`ko/model-comparison-2026-09-24/`)
 

@@ -206,7 +206,7 @@ its limits:
   conversation snapshots work on it (below); the file itself carries neither;
 - nothing is loaded lazily, and partial loading is not measured;
 - the native file is larger and opens a little slower than the compat file
-  today. For the whole source tree at commit `99890011`, on a busy machine,
+  today. For the whole source tree at commit `f1f3ffd8`, on a busy machine,
   three fresh processes each: 2,200,688 bytes against 1,587,372 (the string and
   graph tables are stored uncompressed for direct access), open 0.78 s against
   0.65 s, first answer 3.14 s against 3.13 s (medians). The 1.1 tables add
