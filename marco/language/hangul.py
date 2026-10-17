@@ -300,6 +300,7 @@ def clause_spans(text, grammar=None, *, commas=False, accept_prefix=None, inflec
     protected = iter(_protected_clause_text.finditer(text))
     protected_range = next(protected, None)
     spans, start = [], 0
+    soft_accepted = False
 
     def emit(end, connector=None):
         nonlocal start
@@ -316,6 +317,7 @@ def clause_spans(text, grammar=None, *, commas=False, accept_prefix=None, inflec
 
     for boundary in _clause_break.finditer(text):
         pos = boundary.start()
+        soft_comma_ok, soft_accepted, accepted_soft = soft_accepted, False, False
         while protected_range is not None and protected_range.end() <= pos:
             protected_range = next(protected, None)
         if protected_range is not None and protected_range.start() <= pos < protected_range.end():
@@ -348,6 +350,7 @@ def clause_spans(text, grammar=None, *, commas=False, accept_prefix=None, inflec
                 continue
             if accept_prefix is not None and not accept_prefix(text[start:pos].strip()):
                 continue
+            accepted_soft = accept_prefix is not None
         else:
             if char in ".," and pos > 0 and pos + 1 < len(text):
                 if text[pos - 1].isdigit() and text[pos + 1].isdigit():
@@ -355,6 +358,9 @@ def clause_spans(text, grammar=None, *, commas=False, accept_prefix=None, inflec
             if char == "." and any(text[:pos + 1].endswith(word) and (pos + 1 == len(word)
                                                                       or not text[pos - len(word)].isalnum())
                                    for word in abbreviations):
+                continue
+            if char == "," and commas and soft_comma_ok and not text[start:pos].strip():
+                start = boundary.end()
                 continue
             if char == "," and not commas:
                 if not any(text[start:pos].endswith(s) for s in grammar.get("comma_after_suffixes", [])):
@@ -377,8 +383,10 @@ def clause_spans(text, grammar=None, *, commas=False, accept_prefix=None, inflec
                     emit(pos, marker)
                     start = boundary.end() + gap + len(marker)
                     continue
+        emitted_before = len(spans)
         emit(pos)
         start = boundary.end()
+        soft_accepted = accepted_soft and len(spans) > emitted_before
     emit(len(text))
     return spans
 

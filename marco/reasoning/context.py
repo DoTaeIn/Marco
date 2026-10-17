@@ -1590,8 +1590,9 @@ class ReasoningContext:
                 if got is None:
                     return None
                 verified.append(got)
-            collect = (evidence_out if type(evidence_out) is dict and not evidence_out and len(scoped) == 1
+            collect = (evidence_out if type(evidence_out) is dict and not evidence_out and 1 <= len(scoped) <= 2
                        else None)
+            막힘 = []
             걸린것 = [c for c in scoped if c["evidence"]["end"] <= start]
             if not 걸린것:
                 return True
@@ -1604,17 +1605,21 @@ class ReasoningContext:
                          if isinstance(row, dict) and row.get("modality", "asserted") == "asserted"
                          and isinstance(row.get("triple"), (list, tuple)) and list(row["triple"]) == triple}
                 결과.append(True if found == {True} else False if found == {False} else None)
-                if (collect is not None and len(걸린것) == 1 and all(type(p) is bool for p in found)
+                if (collect is not None and len(걸린것) == len(scoped) and all(type(p) is bool for p in found)
                         and (not found or found == {True, False})):
-                    ref = _scoped_compact(verified[0].get("source_ref"))
+                    at = next(i for i, c in enumerate(scoped) if c is 조건)
+                    ref = _scoped_compact(verified[at].get("source_ref"))
                     if _scoped_compact_ok(ref):
                         both = found == {True, False}
-                        collect.update({"outcome": "conflicting_evidence" if both else "missing_premise",
-                                        "guard_ref": ref, "positive_support": both,
-                                        "negative_support": both})
+                        막힘.append((0 if both else 1, verified[at]["span"][0], at, both, ref))
             if False in 결과:
                 return False
             if None in 결과:
+                if collect is not None and 막힘:
+                    _k, _s, _a, both, ref = min(막힘, key=lambda b: (b[0], b[1], b[2]))
+                    collect.update({"outcome": "conflicting_evidence" if both else "missing_premise",
+                                    "guard_ref": ref, "positive_support": both,
+                                    "negative_support": both})
                 return None
             return True
         걸린것 = [c for c in 조건들 if c["evidence"].get("end", 0) <= start]
@@ -10192,7 +10197,7 @@ class ReasoningContext:
                 or env["schema"] != "marco-entry-selection-v1" or env["scope"] != "known_selected_input_clauses"
                 or env["status"] != "partial" or env["coordinate_space"] != "parser_view"
                 or type(env["items"]) is not list or type(env["gaps"]) is not list
-                or len(env["items"]) != 1 or len(env["gaps"]) > 2):
+                or len(env["items"]) != 1 or len(env["gaps"]) > (3 if len(conds) == 2 else 2)):
             return None
         if any(current.get(key) for key in ("사건", "가정사건", "사건정정", "정의", "원인", "이유물음", "events",
                                             "definition", "cause", "reason", "correction", "hypothesis", "가정")):
@@ -10217,7 +10222,8 @@ class ReasoningContext:
 
         unknown = gap_of("origin_unknown", True)
         scopes = gap_of("condition_scope_uncollected", False)
-        if (len(unknown) + len(scopes) != len(gaps) or len(unknown) > 1 or len(scopes) > 1
+        if (len(unknown) + len(scopes) != len(gaps) or len(unknown) > 1
+                or len(scopes) > (2 if len(conds) == 2 else 1)
                 or (unknown and item["origin"] is not None)):
             return None
         frames = auth["frames"]
@@ -10432,6 +10438,60 @@ class ReasoningContext:
             if (not g_hi <= c_lo or text[c_lo:c_hi] != witness["source"] or not evidence_at(fact, item["span"])
                     or text[:g_lo].strip() or not edge(text[g_hi:c_lo], seps) or not edge(text[c_hi:], terms)
                     or not derived_ok(witness, want, cap)):
+                return None
+            return "conditional"
+        if len(facts) == 1 and not query and len(conds) == 2:
+            fact = facts[0]
+            cap = _scoped_cap(auth, "conditional_binary")
+            if (cap is None or current.get("수선")
+                    or len(scopes) != 2 or [g["clause_ordinal"] for g in scopes] != [0, 1]
+                    or item["clause_ordinal"] != 2
+                    or extra != {"source_witness"} or not triple_ok(fact)
+                    or fact.get("unnamed") or fact.get("polarity", True) is not True
+                    or fact.get("modality", "asserted") != "asserted" or any(m in text for m in qmarks)
+                    or not _scoped_native_eq(item["targets"], {"facts": [0], "query": []})):
+                return None
+            guards = []
+            for cond in conds:
+                if (type(cond) is not dict or not triple_ok(cond) or cond.get("polarity", True) is not True
+                        or cond.get("kind") != "guard" or cond.get("marker") is not None
+                        or _scoped_plain(cond.get("source_original")) != text):
+                    return None
+                g_cert = cond.get("source_certificate")
+                g_wit = g_cert.get("witness") if type(g_cert) is dict else None
+                g_meaning = _scoped_positive_meaning(g_wit.get("meaning") if type(g_wit) is dict else None,
+                                                     cond["triple"])
+                if g_meaning is None:
+                    return None
+                guard = _scoped_cert(parser, auth, text, g_cert, "positive_guard", cap, g_meaning)
+                if guard is None or not evidence_at(cond, guard["span"]):
+                    return None
+                guards.append(guard)
+            witness = item["source_witness"]
+            witnessed = getattr(parser, "verify_selected_binary_witness", None)
+            want = _scoped_positive_meaning(witness.get("meaning") if type(witness) is dict else None,
+                                            fact["triple"])
+            if (want is None or not callable(witnessed) or type(witness) is not dict or len(witness) != 11
+                    or type(witness.get("source")) is not str or not witness["source"].strip()
+                    or not _scoped_native_eq(witness.get("meaning"), want)):
+                return None
+            seen = witnessed(witness["source"], witness, "positive_fact")
+            full = seen.get("source_ref") if type(seen) is dict else None
+            compact = _scoped_compact(full)
+            if (type(seen) is not dict
+                    or set(seen) != {"source_ref", "compiler_index", "meaning", "capability_sha256"}
+                    or seen["capability_sha256"] != cap["capability_sha256"]
+                    or not _scoped_native_eq(seen["meaning"], want) or compact is None
+                    or not _scoped_native_eq(_scoped_resolve(auth["frame_full"], compact), full)
+                    or not any(_scoped_native_eq(compact, r) for r in cap["basis"]["frame_refs"])
+                    or type(seen["compiler_index"]) is not int or seen["compiler_index"] != full["index"]
+                    or seen["compiler_index"] != item["compiler_index"]):
+                return None
+            (a_lo, a_hi), (b_lo, b_hi), (c_lo, c_hi) = guards[0]["span"], guards[1]["span"], item["span"]
+            if (not a_hi <= b_lo or not b_hi <= c_lo or text[c_lo:c_hi] != witness["source"]
+                    or not evidence_at(fact, item["span"]) or text[:a_lo].strip()
+                    or not edge(text[a_hi:b_lo], seps) or not edge(text[b_hi:c_lo], seps)
+                    or not edge(text[c_hi:], terms) or not derived_ok(witness, want, cap)):
                 return None
             return "conditional"
         return None
@@ -10734,7 +10794,7 @@ class ReasoningContext:
             if self._scoped_admission(obs, stored, parser) != "conditional":
                 return None
             rows = stored["facts"]
-            if len(conds) != 1 or len(rows) != 1:
+            if not 1 <= len(conds) <= 2 or len(rows) != 1:
                 return None
             guard, fact = conds[0], rows[0]
             if (type(guard) is not dict or type(guard.get("triple")) is not list
@@ -10793,7 +10853,7 @@ class ReasoningContext:
                     or any(type(item[key]) is not dict or item[key]
                            for key in ("자리", "빈자리", "충돌", "헛자리"))
                     or not _scoped_native_eq(item["조각"], guard["evidence"])
-                    or not _scoped_native_eq(item["닿는곳"], [guard["triple"]])):
+                    or not _scoped_native_eq(item["닿는곳"], [c["triple"] for c in conds])):
                 return None
             reason = self._못잰까닭("condition_unknown")
         else:

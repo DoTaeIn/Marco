@@ -6702,6 +6702,37 @@ class RelationalParser:
                             조건[0]["source_original"] = gplain
                             조건[0]["source_certificate"] = gg[1]
                             item["source_witness"] = copy.deepcopy(gc[0])
+            elif (plain_only and len(clauses) == 3 and len(entry_items) == 1 and len(read_info) == 3
+                    and guard_at == [0, 1] and len(조건) == 2
+                    and all(c.get("kind") == "guard" and c.get("marker") is None for c in 조건)
+                    and query is None and len(facts) == 1
+                    and facts[0].get("polarity", True) is True):
+                g0ev, g0k, g0m, _g0n = read_info[0]
+                g1ev, g1k, g1m, _g1n = read_info[1]
+                cev, ck, cm3, _cn = read_info[2]
+                item = entry_items[0]
+                r0, r1, rc = asserted(g0m), asserted(g1m), asserted(cm3)
+                if (g0ev["end"] <= g1ev["start"] and g1ev["end"] <= cev["start"]
+                        and g0m.get("polarity", True) is True
+                        and g1m.get("polarity", True) is True
+                        and cm3.get("polarity", True) is True
+                        and len(r0) == 1 and r0[0] == 조건[0]["triple"]
+                        and len(r1) == 1 and r1[0] == 조건[1]["triple"]
+                        and len(rc) == 1
+                        and [self.canonical_name(rc[0][0])] + list(rc[0][1:]) == facts[0]["triple"]):
+                    gg0 = carrier_for("positive_guard", g0ev, g0k, g0m, True)
+                    gg1 = carrier_for("positive_guard", g1ev, g1k, g1m, True)
+                    gc3 = carrier_for("positive_fact", cev, ck, cm3, False)
+                    if (gg0 is not None and gg0[1] is not None
+                            and gg1 is not None and gg1[1] is not None
+                            and gc3 is not None):
+                        gplain3 = self._sb_plain(original_text)
+                        if gplain3 is not None:
+                            조건[0]["source_original"] = gplain3
+                            조건[0]["source_certificate"] = gg0[1]
+                            조건[1]["source_original"] = gplain3
+                            조건[1]["source_certificate"] = gg1[1]
+                            item["source_witness"] = copy.deepcopy(gc3[0])
         return result
 
     def _answer_negative(self, parsed, negatives):
