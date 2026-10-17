@@ -24,6 +24,8 @@ from marco.language.realizer import discourse, expression, intent as intents, me
 from marco.language.realizer.check import Checker
 from marco.language.realizer.grammar import ClauseRealizer, Grammar, RealizationError, finish_sentence
 from marco.language.realizer.packs import Language, available, language as load_language, register, stem_of
+from marco.language.realizer.packs import bind_conversation, selected_binding, selected_identities, selected_scope
+from marco.language.realizer.packs import _SelectedUnavailable
 
 
 class Realizer:
@@ -48,6 +50,8 @@ class Realizer:
 
     # languages ------------------------------------------------------------
     def language(self, stem):
+        if selected_binding() is not None:
+            return load_language(stem)
         if stem in self.overrides:
             if stem not in self._languages:
                 self._languages[stem] = Language(stem, self.overrides[stem])
@@ -55,7 +59,11 @@ class Realizer:
         return load_language(stem, self._models.get(stem))
 
     def learned(self, stem):
-        return self.learning.candidates(stem, self._conversation) if self.learning else []
+        conversation = self._conversation
+        binding = selected_binding()
+        if binding is not None:
+            conversation = binding["conversation"]
+        return self.learning.candidates(stem, conversation) if self.learning else []
 
     def _learning_declared(self, stem):
         """Live learning runs only where the language's realizer file declares it."""
@@ -68,8 +76,18 @@ class Realizer:
 
     def realize_with_report(self, result, intent, language):
         model = language if hasattr(language, "parser") else None
+        with selected_scope(model, model):
+            text, report = self._realize_with_report(result, intent, language)
+            identities = selected_identities()
+            if identities is not None and isinstance(report, dict):
+                report["source_identity"] = identities["source"]
+                report["target_identity"] = identities["target"]
+            return text, report
+
+    def _realize_with_report(self, result, intent, language):
+        model = language if hasattr(language, "parser") else None
         speaker = stem_of(language)
-        if model is not None and speaker:
+        if model is not None and speaker and selected_binding() is None:
             register(speaker, model)
         # The conversation's own language (its words); a companion model speaks the reply.
         said_in = (result.get("meaning") or {}).get("conversation_language") if isinstance(
@@ -80,18 +98,26 @@ class Realizer:
         # what was held and why even when its caller has no engine meaning.
         report = {"realized": False, "intent": intent, "source": source,
                   "meaning": {"act": block.get("act"), "reason": block.get("reason")}}
-        if not available(source, model if source == speaker else None):
+        if not available(source, model if source == speaker else None) or (
+                selected_binding() is not None and not available(speaker)):
             report["reason"] = "no_declarations"
             return self._passthrough(result, report)
         meaning = result.get("meaning") if isinstance(result.get("meaning"), dict) else {}
-        self._conversation = meaning.get("conversation")
-        text, report = self._realize(result, report, source, model)
-        if self.learning is None and self._learning_declared(source):
-            from marco.language.realizer.learning import LearnedExpressions
-            self.learning = LearnedExpressions(self)
-        if self.learning is not None:
-            # Learned after the turn is said: a sentence never confirms itself.
-            report["learned"] = [c["id"] for c in self.learning.observe(result, source)]
+        if selected_binding() is not None:
+            bind_conversation(meaning.get("conversation"))
+        else:
+            self._conversation = meaning.get("conversation")
+        try:
+            text, report = self._realize(result, report, source, model)
+            if self.learning is None and self._learning_declared(source):
+                from marco.language.realizer.learning import LearnedExpressions
+                self.learning = LearnedExpressions(self)
+            if self.learning is not None:
+                # Learned after the turn is said: a sentence never confirms itself.
+                report["learned"] = [c["id"] for c in self.learning.observe(result, source)]
+        except _SelectedUnavailable:
+            report["reason"] = "no_declarations"
+            return self._passthrough(result, report)
         return text, report
 
     def _realize(self, result, report, source, model):
@@ -101,13 +127,19 @@ class Realizer:
                 graph["answer_language"], model if stem_of(model) == graph["answer_language"] else None):
             report["reason"] = "no_declarations"
             return self._passthrough(result, report)
-        if model is not None:
+        if model is not None and selected_binding() is None:
             self._models[stem_of(model)] = model
         if not intents.plan(graph):
             report["reason"] = "no_plan"
             return self._passthrough(result, report)
         report["plan"] = graph.get("plan_match")
+        # Ordinary dynamic public dispatch: overrides and instrumentation stay effective. A native
+        # unavailable classification reaches the ordinary no_declarations passthrough.
         text, detail = self.realize_graph(graph, graph["answer_language"])
+        if text is None and isinstance(detail, dict) and detail.get("held") is True and detail.get(
+                "reason") == "no_declarations":
+            report["reason"] = "no_declarations"
+            return self._passthrough(result, report)
         report.update(detail)
         report["realized"] = True
         self.reports.append(report)
@@ -119,11 +151,28 @@ class Realizer:
 
     def build_graph(self, result, language):
         """The Meaning Graph of a turn result with its acts planned, or None."""
-        graph = mg.build(result, stem_of(language))
-        return graph if intents.plan(graph) else None
+        model = language if hasattr(language, "parser") else None
+        with selected_scope(model, model):
+            if selected_binding() is not None and not available(stem_of(language)):
+                return None
+            try:
+                graph = mg.build(result, stem_of(language))
+                return graph if intents.plan(graph) else None
+            except _SelectedUnavailable:
+                return None
 
     # realization ----------------------------------------------------------
     def realize_graph(self, graph, target):
+        model = target if hasattr(target, "parser") else None
+        with selected_scope(model, model):
+            stem = stem_of(target) if model is not None else target
+            try:
+                return self._realize_graph_bound(graph, stem)
+            except _SelectedUnavailable:
+                return None, {"held": True, "reason": "no_declarations", "clauses": [], "discourse": {},
+                              "text": None}
+
+    def _realize_graph_bound(self, graph, target):
         lang = self.language(target)
         grammar = Grammar(lang)
         factory = lambda: ClauseRealizer(grammar)
@@ -399,10 +448,18 @@ def follow_up(text, language):
     answer or correction came out so; ``repairs``: what a reading changed). Only the
     listed phrasings count, compared after the language's own punctuation and case.
     """
-    stem = stem_of(language)
-    if not available(stem, language if hasattr(language, "parser") else None):
-        return None
-    decl = load_language(stem, language if hasattr(language, "parser") else None).decl
+    model = language if hasattr(language, "parser") else None
+    with selected_scope(model, model):
+        stem = stem_of(language)
+        if not available(stem, model):
+            return None
+        try:
+            found = load_language(stem, model)
+        except _SelectedUnavailable:
+            return None
+        if found is None:
+            return None
+        decl = found.decl
     marks = "".join(decl["orthography"]["punctuation"].values())
     separator = decl["orthography"]["word_separator"]
 

@@ -216,7 +216,7 @@ class _BodyExtractor(HTMLParser):
         return list(dict.fromkeys(self.block))
 
 
-_sentence = re.compile(r"[^.!?。！？\n]{12,}[.!?。！？](?=\s|$)")
+_sentence = re.compile(r"(?:[^.!?。！？\n]|(?<=\d)\.(?=\d)){12,}[.!?。！？](?=\s|$)")
 
 
 def complete_sentences(txt, topic=None, max_sentence=None, dialect=None):

@@ -21,6 +21,10 @@ Standard library only; nothing here imports ``mco`` or the engine.
 from __future__ import annotations
 
 import re
+import hashlib
+import math
+import struct
+import types
 
 __all__ = ["GraphTextError", "parse", "write", "unwritable", "POS", "NEG", "LAYER_KEYS", "SLOT_KEYS"]
 
@@ -276,3 +280,139 @@ def write(g, name="<graph>"):
         differ = sorted(k for k in set(got) | set(want) if got.get(k) != want.get(k))
         raise GraphTextError("%s: its .kg text does not read back equal (%s)" % (name, ", ".join(differ)))
     return text
+
+__all__ += ["NATIVE_LANGUAGE_CARRIER_PROFILE", "NativeCarrierError", "native_language_tree_sha256"]
+
+NATIVE_LANGUAGE_CARRIER_PROFILE = types.MappingProxyType({
+    "id": "native-language-carrier-v1-fixed-1",
+    "selected_graph_raw_bytes": 4194304,
+    "payload_nodes": 32768,
+    "payload_edges": 65536,
+    "ownership_edge_depth": 32,
+    "container_entries": 256,
+    "decoded_tree_bytes": 1048576,
+    "decoded_string_bytes": 8192,
+    "integer_decimal_bytes": 1024,
+    "source_ref_bytes": 16384,
+    "origin_record_bytes": 16384,
+    "authoring_raw_bytes": 1048576,
+})
+
+
+class NativeCarrierError(GraphTextError):
+    """A native language carrier value or tree is refused; ``gap`` names the declared code."""
+
+    def __init__(self, message, gap):
+        super().__init__(message)
+        self.gap = str(gap)
+
+
+def _native_emit(state, digest, data):
+    state[2] += len(data)
+    if state[2] > 1048576:
+        raise NativeCarrierError("native tree tape exceeds 1048576 bytes", "native_cap_overflow")
+    digest.update(data)
+
+
+def _native_string(state, digest, text):
+    if len(text) > 8192:
+        raise NativeCarrierError("native string exceeds 8192 bytes", "native_cap_overflow")
+    try:
+        raw = text.encode("utf-8", "strict")
+    except UnicodeEncodeError:
+        raise NativeCarrierError("native string is not strict UTF-8", "native_invalid_scalar") from None
+    if len(raw) > 8192:
+        raise NativeCarrierError("native string exceeds 8192 bytes", "native_cap_overflow")
+    _native_emit(state, digest, b"s" + str(len(raw)).encode("ascii") + b":")
+    _native_emit(state, digest, raw)
+
+
+def _native_visit(state, digest, value, depth, active, seen):
+    if depth > 32:
+        raise NativeCarrierError("native tree depth exceeds 32", "native_cap_overflow")
+    state[0] += 1
+    if state[0] > 32768:
+        raise NativeCarrierError("native tree exceeds 32768 values", "native_cap_overflow")
+    if depth > 0:
+        state[1] += 1
+        if state[1] > 65536:
+            raise NativeCarrierError("native tree exceeds 65536 links", "native_cap_overflow")
+    kind = type(value)
+    if value is None:
+        _native_emit(state, digest, b"n;")
+    elif kind is bool:
+        _native_emit(state, digest, b"b1;" if value else b"b0;")
+    elif kind is int:
+        if value.bit_length() > 4 * 1024:
+            raise NativeCarrierError("native integer is too large", "native_cap_overflow")
+        body = _native_decimal_bytes(value)
+        if len(body) > 1024:
+            raise NativeCarrierError("native integer exceeds 1024 decimal bytes", "native_cap_overflow")
+        _native_emit(state, digest, b"i" + body + b";")
+    elif kind is float:
+        if not math.isfinite(value):
+            raise NativeCarrierError("native float is not finite", "native_invalid_scalar")
+        _native_emit(state, digest, b"f" + struct.pack(">d", value).hex().encode("ascii") + b";")
+    elif kind is str:
+        _native_string(state, digest, value)
+    elif kind is list or kind is dict:
+        ident = id(value)
+        if ident in active:
+            raise NativeCarrierError("native tree contains a cycle", "native_cycle")
+        if ident in seen:
+            raise NativeCarrierError("native tree shares a container", "native_shared_ownership")
+        if len(value) > 256:
+            raise NativeCarrierError("native container exceeds 256 entries", "native_cap_overflow")
+        active.add(ident)
+        if kind is list:
+            _native_emit(state, digest, b"a" + str(len(value)).encode("ascii") + b"[")
+            for item in value:
+                _native_visit(state, digest, item, depth + 1, active, seen)
+            _native_emit(state, digest, b"]")
+        else:
+            _native_emit(state, digest, b"o" + str(len(value)).encode("ascii") + b"{")
+            for key, item in value.items():
+                if type(key) is not str:
+                    raise NativeCarrierError("native object key is not str", "native_invalid_shape")
+                _native_string(state, digest, key)
+                _native_visit(state, digest, item, depth + 1, active, seen)
+            _native_emit(state, digest, b"}")
+        active.discard(ident)
+        seen.add(ident)
+    else:
+        raise NativeCarrierError("native tree has unsupported type", "native_invalid_shape")
+
+
+def native_language_tree_sha256(value):
+    """Lowercase SHA256 hex of the canonical tape of a plain built-in tree."""
+    digest = hashlib.sha256()
+    state = [0, 0, 0]
+    _native_visit(state, digest, value, 0, set(), set())
+    return digest.hexdigest()
+
+
+def _native_decimal_bytes(value):
+    """Canonical signed decimal ASCII bytes of a bounded int using chunked integer arithmetic only."""
+    magnitude = -value if value < 0 else value
+    chunks = []
+    while magnitude:
+        magnitude, chunk = divmod(magnitude, 1000000000)
+        chunks.append(chunk)
+    if not chunks:
+        return b"0"
+    out = bytearray()
+    if value < 0:
+        out.append(45)
+    first = True
+    for chunk in reversed(chunks):
+        digits = bytearray()
+        while chunk:
+            chunk, digit = divmod(chunk, 10)
+            digits.append(48 + digit)
+        if first:
+            first = False
+        else:
+            digits.extend(b"0" * (9 - len(digits)))
+        digits.reverse()
+        out += digits
+    return bytes(out)

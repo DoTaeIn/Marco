@@ -725,6 +725,10 @@ def load(path="graphs/graph.kg"):
         slot = g.setdefault("무관층", {}).setdefault(counter_table + node, [])
         slot += [m for m in phrases if m not in slot]
     _include(g, os.path.dirname(os.path.abspath(path)))
+    return _prepare_graph(g)
+
+
+def _prepare_graph(g, *, cache_disk=True):
     verify(g)
     to_write = _related_concepts(g)
     # 걸러낸 개념을 버리지 않고 널 클래스로 재활용한다.
@@ -750,7 +754,7 @@ def load(path="graphs/graph.kg"):
     # 사례층 자체는 안 건드린다. 표현() 이 그것을 읽어 화면에 내보내므로,
     # 기계가 만든 문장이 사람이 적은 예시인 척 나가면 안 된다.
     g["증거별칭"] = {n: expand_examples(g, g["사례층"][n]) for n in g["증거"]}
-    g["vec"] = _example_vecs(g)
+    g["vec"] = _example_vecs(g, cache_disk=cache_disk)
     return g
 
 
@@ -854,7 +858,7 @@ def _purge_stale_vecs(folder, max_count=200):
         pass
 
 
-def _example_vecs(graph, cache_loc=None):
+def _example_vecs(graph, cache_loc=None, *, cache_disk=True):
     """노드별 예시 문장을 미리 인코딩. 로드 시 1회.
 
     인코딩은 그래프당 15초쯤 걸린다. 예시 문장이 바뀌지 않으면 결과도 같으므로
@@ -862,34 +866,36 @@ def _example_vecs(graph, cache_loc=None):
     다시 계산된다."""
     import numpy as np
     graph.setdefault("무관층", {})
-    material = {layer: graph.get(layer, {}) for layer in ("공통층", "사례층", "무관층")}
-    material["개념엣지"] = graph.get("개념엣지", [])
-    # 별칭을 불리는 규칙(expand_examples)이 바뀌면 같은 그래프라도 결과가
-    # 달라진다. 내용만 키로 삼으면 낡은 캐시를 조용히 다시 쓴다 — 조사를
-    # 다시 계산하게 고쳤을 때 실제로 그럴 뻔했다.
-    material["_불리기판"] = _EXPAND_VERSION
-    key = hashlib.sha1(
-        (encoder.active_runtime().model_name + json.dumps(material, ensure_ascii=False, sort_keys=True)).encode("utf-8")
-    ).hexdigest()[:16]
-    cache = cache_loc or os.path.join(_here, ".marco", "cache", ".vec_%s.npz" % key)
-    if os.path.exists(cache):
-        try:
-            z = np.load(cache, allow_pickle=False)
-            return {k: z[k] for k in z.files}
-        except Exception:
-            pass                        # 캐시가 깨졌으면 그냥 다시 만든다
+    if cache_disk:
+        material = {layer: graph.get(layer, {}) for layer in ("공통층", "사례층", "무관층")}
+        material["개념엣지"] = graph.get("개념엣지", [])
+        # 별칭을 불리는 규칙(expand_examples)이 바뀌면 같은 그래프라도 결과가
+        # 달라진다. 내용만 키로 삼으면 낡은 캐시를 조용히 다시 쓴다 — 조사를
+        # 다시 계산하게 고쳤을 때 실제로 그럴 뻔했다.
+        material["_불리기판"] = _EXPAND_VERSION
+        key = hashlib.sha1(
+            (encoder.active_runtime().model_name + json.dumps(material, ensure_ascii=False, sort_keys=True)).encode("utf-8")
+        ).hexdigest()[:16]
+        cache = cache_loc or os.path.join(_here, ".marco", "cache", ".vec_%s.npz" % key)
+        if os.path.exists(cache):
+            try:
+                z = np.load(cache, allow_pickle=False)
+                return {k: z[k] for k in z.files}
+            except Exception:
+                pass                    # 캐시가 깨졌으면 그냥 다시 만든다
     out = {}
     for layer in ("공통층", "사례층", "무관층"):
         for node, exs in graph[layer].items():
             exs = expand_examples(graph, exs)
             out[node] = np.array(encoder._model().encode([mask_numbers(e) for e in exs],
                                                  normalize_embeddings=True))
-    try:
-        os.makedirs(os.path.dirname(cache) or ".", exist_ok=True)
-        np.savez_compressed(cache, **out)
-        _purge_stale_vecs(os.path.dirname(cache))
-    except OSError:
-        pass                            # 쓰기 못 해도 동작에는 지장 없다
+    if cache_disk:
+        try:
+            os.makedirs(os.path.dirname(cache) or ".", exist_ok=True)
+            np.savez_compressed(cache, **out)
+            _purge_stale_vecs(os.path.dirname(cache))
+        except OSError:
+            pass                        # 쓰기 못 해도 동작에는 지장 없다
     return out
 
 
@@ -917,7 +923,7 @@ def _reverse_examples(graph, node):
     return reverse
 
 
-def match(text, candidates, graph, bonus=None):
+def match(text, candidates, graph, bonus=None, *, language_pack=None):
     """가장 가까운 노드와 점수. 문자에서는 양방향 포함도의 기하평균이다.
 
     가산은 대화의 활성값(`세션.가산`)이다. 후보가 엇비슷할 때 아까 이야기하던
@@ -929,7 +935,7 @@ def match(text, candidates, graph, bonus=None):
     넘으면 안 된다."""
     import numpy as np
     best, score, measured = None, -1.0, 0.0
-    for chunk in split_fragments(text):
+    for chunk in split_fragments(text, language_pack=language_pack):
         v = encoder._embed(chunk)
         inner = encoder._embed_sub(chunk) if encoder.active_runtime().model_name.startswith("문자") else None
         inner_cols = np.flatnonzero(inner) if inner is not None else None
@@ -1155,9 +1161,24 @@ def _digest(value):
     return hashlib.sha256(str(value).encode("utf-8")).hexdigest()[:16]
 
 
-def _trace_emit(site, events):
+def _trace_emit(site, events, *, trace_sink=...):
     """``events``: [(kind, fields)] of one call, the first the root; each later one names the root as its
-    parent. A recording problem never changes the call's result."""
+    parent. A recording problem never changes the call's result. ``trace_sink``: omitted keeps the legacy
+    pending path, None is off, a callable receives this call's rows only."""
+    if trace_sink is None:
+        return
+    if trace_sink is not ...:
+        try:
+            group = []
+            for kind, fields in events:
+                fields = dict(fields)
+                fields.setdefault("subsystem", "routing" if site == "pick_graph" else "reasoning")
+                fields["source"] = {"type": "engine_site", "site": site, **fields.get("source", {})}
+                group.append((kind, fields))
+            trace_sink(group)
+        except Exception:        # noqa: BLE001 -- the ledger records the call, it never decides it
+            pass
+        return
     if TRACE is None:
         return
     try:
@@ -1190,7 +1211,7 @@ def flush_trace(ledger, parent=None):
     return written
 
 
-def judge(graph, text, streak_A=0, share=None):
+def judge(graph, text, streak_A=0, share=None, *, language_pack=None, trace_sink=...):
     """판정과 그래프가 적은 대사 한 줄. 채운 뒤 조사를 고쳐서 돌려준다.
 
     대사 틀에는 조사가 박혀 있다 — `인정: {ev}이니까 {claim}네요`. 무엇이
@@ -1198,8 +1219,8 @@ def judge(graph, text, streak_A=0, share=None):
     안 고치면 '옷 안쪽 라벨을 읽었다이니까' 가 그대로 나간다. 아래를 부르는
     자리마다 따로 고치고 있었고, 그중 한 길이 빠져 있었다."""
     slot = {} if share is None else share
-    tag, line = _judge_raw(graph, text, streak_A, slot)
-    if TRACE is not None:
+    tag, line = _judge_raw(graph, text, streak_A, slot, language_pack=language_pack)
+    if trace_sink is not None and (trace_sink is not ... or TRACE is not None):
         # L1-1 B2: the evidence, claim and basis slots the verdict used (by digest), then the conclusion
         # or a hold with the verdict's gap class
         used = [(role, slot.get(key)) for role, key in (("evidence", "증거"), ("claim", "주장"), ("basis", "기준"))
@@ -1216,7 +1237,7 @@ def judge(graph, text, streak_A=0, share=None):
             events.append(("hold", {"status": "hold", "epistemic_status": "unknown",
                                     "payload": {"reason": "verdict_%s" % tag, "gap": VERDICT_GAP.get(tag, "evidence"),
                                                 "gap_declared": tag in VERDICT_GAP}}))
-        _trace_emit("judge", events)
+        _trace_emit("judge", events, trace_sink=trace_sink)
     if not line:
         return tag, line
     ev, claim, basis = slot.get("증거"), slot.get("주장"), slot.get("기준")
@@ -1227,7 +1248,7 @@ def judge(graph, text, streak_A=0, share=None):
     return tag, fix_particles(line, [w for w in seen if w])
 
 
-def _judge_raw(graph, text, streak_A=0, share=None):
+def _judge_raw(graph, text, streak_A=0, share=None, *, language_pack=None):
     """→ (판정, 대사). 판정: 인정 / A / B1 / B2 / C / 근거없음
 
     몫: 넘기면 judge 가 실제로 고른 {증거, 주장, 확신}을 여기 채운다.
@@ -1252,7 +1273,7 @@ def _judge_raw(graph, text, streak_A=0, share=None):
     # 노드가 늘어도 마진이 버틴다 — 평평한 풀에 절대 임계값만 쓰면 붕괴한다.
     claim_pool = ([n for n in graph["사례층"] if n not in graph["증거"]]
                   + list(graph["공통층"]))
-    claim, conf = match(body, claim_pool, graph)
+    claim, conf = match(body, claim_pool, graph, language_pack=language_pack)
 
     # 널 클래스는 발화 전체를 두고 실노드와 겨뤄야 한다. 조각마다 섞어서 최고를
     # 뽑으면, 막연한 한 조각이 널 클래스에 걸렸다는 이유로 실제 주장을 담은
@@ -1264,7 +1285,7 @@ def _judge_raw(graph, text, streak_A=0, share=None):
     irrelevant_cand = list(graph.get("무관층", {}))
     removed = set()
     while irrelevant_cand:
-        irrelevant_node, irrelevant_pt = match(body, irrelevant_cand, graph)
+        irrelevant_node, irrelevant_pt = match(body, irrelevant_cand, graph, language_pack=language_pack)
         # 반례는 동점이어도 이긴다. 반례는 사용자가 그 말을 두고 직접
         # '아니요' 라고 한 것이라, 같은 말이 같은 점수로 붙는 것이 정상이다.
         # `>` 로만 재면 1.0 대 1.0 에서 반례가 져서, 아니라고 한 노드를
@@ -1283,7 +1304,7 @@ def _judge_raw(graph, text, streak_A=0, share=None):
         removed.add(irrelevant_node[len(counter_table):])
         irrelevant_cand = [n for n in irrelevant_cand if n != irrelevant_node]
         remaining = [n for n in claim_pool if n not in removed]
-        claim, conf = match(body, remaining, graph) if remaining else (None, 0.0)
+        claim, conf = match(body, remaining, graph, language_pack=language_pack) if remaining else (None, 0.0)
 
     # 발화가 통째로 증거이면 주장을 글에서 찾을 수 없다. 남은 글이 없다.
     # 그 증거가 무엇을 뒷받침하는지는 근거관계 엣지에 적혀 있으므로 거기서
@@ -1313,7 +1334,7 @@ def _judge_raw(graph, text, streak_A=0, share=None):
     if ev and conf < OK_MIN:
         reach_ok = [n for n in reachable(graph, ev) if n in graph["vec"]]
         if reach_ok:
-            n2, c2 = match(body, reach_ok, graph)
+            n2, c2 = match(body, reach_ok, graph, language_pack=language_pack)
             if c2 >= A_MIN and c2 > conf:
                 claim, conf = n2, c2
 
@@ -1357,7 +1378,7 @@ def _judge_raw(graph, text, streak_A=0, share=None):
             # a short generic question can overlap only its question ending.
             # Preserve the original goal-coverage requirement without retuning.
             coverage = max(float((graph["vec"][claim] @ encoder._embed(chunk)).max())
-                           for chunk in split_fragments(body))
+                           for chunk in split_fragments(body, language_pack=language_pack))
             if min(conf, coverage) < encoder.active_runtime().goal_sim_thresh:
                 _unknown_log(graph, text, conf, claim)
                 return "미지", phrase.get("미지") or phrase["B2"]

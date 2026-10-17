@@ -550,7 +550,7 @@ def split_fragments(text, *, language_pack=None):
     # 영어 껍데기를 벗긴 것도 조각으로 더한다. 통째 영어 질문이 그래프가
     # 아는 낱말을 들고도 못 가는 자리를 메운다. 원문도 그대로 남으므로
     # 후보가 늘 뿐이다.
-    stripped = strip_english_shell(text)
+    stripped = strip_english_shell(text) if language_pack is None else text
     if stripped != text and stripped not in yielded:
         yielded.append(stripped)
     # 선언된 군말을 떼는 것은 추측이 아니라 고르기다 — 언어팩이 '이 말은 뜻을
