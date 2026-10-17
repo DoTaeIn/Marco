@@ -150,3 +150,114 @@ def finish_validation(work, accepted, evidence_ref, blocked_reason):
     if evidence_ref is not None or type(blocked_reason) is not str or blocked_reason != BLOCKED_REASON:
         raise ValueError('invalid blocked finish')
     return _build(goal, 'blocked', None, refusal)
+
+
+_FR_SCHEMA = 'bounded-failure-response-work-v1'
+_FR_SCOPE = 'failure_response_emission'
+_FR_STATUSES = ('pending', 'running', 'completed', 'blocked')
+_FR_KEYS = {'schema', 'scope', 'budget', 'used', 'goal_ref', 'evidence', 'uncertainty',
+            'emission_status', 'claim_refusal', 'selected_action', 'nodes', 'edges'}
+
+
+def _fr_goal_ref(goal_ref):
+    # Structural only; the caller attests the goal reference.
+    g = _detach(goal_ref, 20, 1400, 32768)
+    if type(g) is not dict or set(g) != {'input_sha256', 'query'}:
+        raise ValueError('invalid goal_ref')
+    if not _is_hash(g['input_sha256']):
+        raise ValueError('invalid goal_ref')
+    query = g['query']
+    if query is not None:
+        query = _check_goal(query)
+    return {'input_sha256': g['input_sha256'], 'query': query}
+
+
+def _fr_evidence(evidence):
+    # Closed tagged union; caller attests it. Structure and consistency only.
+    ev = _detach(evidence, 20, 1400, 32768)
+    if type(ev) is not dict or type(ev.get('scope')) is not str:
+        raise ValueError('invalid evidence')
+    scope = ev['scope']
+    if scope == 'selected_reader_processing_failure':
+        if (set(ev) != {'scope', 'outcome', 'authority_sha256'}
+                or type(ev['outcome']) is not str or ev['outcome'] != 'exhausted'
+                or not _is_hash(ev['authority_sha256'])):
+            raise ValueError('invalid evidence')
+        return ev, 'understanding_failure', 'emit_existing_gap'
+    if scope == 'selected_binary_guard':
+        if (set(ev) != {'scope', 'outcome', 'guard_ref', 'positive_support', 'negative_support'}
+                or type(ev['outcome']) is not str
+                or type(ev['positive_support']) is not bool
+                or type(ev['negative_support']) is not bool):
+            raise ValueError('invalid evidence')
+        _check_ref(ev['guard_ref'])
+        pos, neg = ev['positive_support'], ev['negative_support']
+        if ev['outcome'] == 'missing_premise' and pos is False and neg is False:
+            return ev, 'missing_premise', 'emit_existing_information_gap'
+        if ev['outcome'] == 'conflicting_evidence' and pos is True and neg is True:
+            return ev, 'conflicting_evidence', 'emit_existing_conflict'
+    raise ValueError('unsupported evidence')
+
+
+def _fr_build(goal_ref, evidence, uncertainty, action, status, refusal):
+    nodes = [{'id': 'goal0', 'kind': 'goal', 'status': 'blocked'},
+             {'id': 'evidence0', 'kind': 'evidence', 'evidence': evidence,
+              'attested_by': 'caller'},
+             {'id': 'gap0', 'kind': 'gap', 'uncertainty': uncertainty}]
+    edges = [{'source': 'evidence0', 'target': 'gap0', 'relation': 'supports'},
+             {'source': 'gap0', 'target': 'goal0', 'relation': 'blocks'}]
+    claimed = status in ('running', 'completed')
+    if claimed:
+        nodes.append({'id': 'op0', 'kind': 'operation', 'action': action,
+                      'emission_status': status})
+        edges.append({'source': 'goal0', 'target': 'op0', 'relation': 'requires'})
+    work = {'schema': _FR_SCHEMA, 'scope': _FR_SCOPE, 'budget': 1,
+            'used': 0 if status == 'pending' else 1,
+            'goal_ref': goal_ref, 'evidence': evidence, 'uncertainty': uncertainty,
+            'emission_status': status, 'claim_refusal': refusal,
+            'selected_action': action if claimed else None,
+            'nodes': nodes, 'edges': edges}
+    return _detach(work, 20, 1400, 32768)
+
+
+def _fr_validate(work):
+    w = _detach(work, 20, 1400, 32768)
+    if type(w) is not dict or set(w) != _FR_KEYS:
+        raise ValueError('invalid work')
+    status = w['emission_status']
+    if type(status) is not str or status not in _FR_STATUSES:
+        raise ValueError('invalid status')
+    refusal = w['claim_refusal']
+    if refusal is not None and (type(refusal) is not str or refusal != 'capacity'):
+        raise ValueError('invalid claim_refusal')
+    if (refusal == 'capacity') != (status == 'blocked'):
+        raise ValueError('inconsistent refusal')
+    gr = _fr_goal_ref(w['goal_ref'])
+    ev, unc, act = _fr_evidence(w['evidence'])
+    expected = _fr_build(gr, ev, unc, act, status, refusal)
+    if _canon(expected) != _canon(w):
+        raise ValueError('inconsistent work')
+    return gr, ev, unc, act, status
+
+
+def new_thinking_work(goal_ref, evidence):
+    gr = _fr_goal_ref(goal_ref)
+    ev, unc, act = _fr_evidence(evidence)
+    return _fr_build(gr, ev, unc, act, 'pending', None)
+
+
+def choose_thinking_operation(work):
+    gr, ev, unc, act, status = _fr_validate(work)
+    if status == 'pending':
+        return _fr_build(gr, ev, unc, act, 'running', None), act
+    # Duplicate or over-budget claim: deny, block with capacity refusal, no action.
+    return _fr_build(gr, ev, unc, act, 'blocked', 'capacity'), None
+
+
+def finish_thinking_operation(work, action):
+    gr, ev, unc, act, status = _fr_validate(work)
+    if status != 'running':
+        raise ValueError('work is not running')
+    if type(action) is not str or action != act:
+        raise ValueError('action mismatch')
+    return _fr_build(gr, ev, unc, act, 'completed', None)

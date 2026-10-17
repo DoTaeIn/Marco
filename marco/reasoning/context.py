@@ -1560,7 +1560,7 @@ class ReasoningContext:
                 "condition_unknown": "unmeasured_condition"}.get(까닭, "unresolved")
 
     @staticmethod
-    def _holds(parser, 조건들, start, 앞선사실, projection=None, actual_source=None):
+    def _holds(parser, 조건들, start, 앞선사실, projection=None, actual_source=None, *, evidence_out=None):
         """이 자리에 걸린 조건이 참인가. 참/거짓/**못 잼(None)** 을 가른다.
 
         견줄 성질도 연산도 공리가 선언한다 — 여기는 어느 성질인지 모른 채 잰다.
@@ -1584,9 +1584,14 @@ class ReasoningContext:
             cap = _scoped_cap(auth, "conditional_binary") if auth is not None else None
             if cap is None:
                 return None
+            verified = []
             for 조건 in scoped:
-                if _scoped_guard(parser, auth, cap, 조건, actual) is None:
+                got = _scoped_guard(parser, auth, cap, 조건, actual)
+                if got is None:
                     return None
+                verified.append(got)
+            collect = (evidence_out if type(evidence_out) is dict and not evidence_out and len(scoped) == 1
+                       else None)
             걸린것 = [c for c in scoped if c["evidence"]["end"] <= start]
             if not 걸린것:
                 return True
@@ -1599,6 +1604,14 @@ class ReasoningContext:
                          if isinstance(row, dict) and row.get("modality", "asserted") == "asserted"
                          and isinstance(row.get("triple"), (list, tuple)) and list(row["triple"]) == triple}
                 결과.append(True if found == {True} else False if found == {False} else None)
+                if (collect is not None and len(걸린것) == 1 and all(type(p) is bool for p in found)
+                        and (not found or found == {True, False})):
+                    ref = _scoped_compact(verified[0].get("source_ref"))
+                    if _scoped_compact_ok(ref):
+                        both = found == {True, False}
+                        collect.update({"outcome": "conflicting_evidence" if both else "missing_premise",
+                                        "guard_ref": ref, "positive_support": both,
+                                        "negative_support": both})
             if False in 결과:
                 return False
             if None in 결과:
@@ -9207,15 +9220,22 @@ class ReasoningContext:
         setattr(self, self._UNREAD_FRAME_ATTR, self._unread_continuation_enter(text, previous_frame))
         self._current_query_read = {"source": text, "calls": 0, "parser": None, "value": None, "gap": None}
         self._query_work = None
+        self._thinking_work = None
+        self._thinking_exhaustion = None
         try:
             result = self._turn_said(text, knowledge_path)
             work = self.__dict__.get("_query_work")
             if type(result) is dict and type(work) is dict:
                 result["reasoning_work"] = deepcopy(work)
+            thinking = self.__dict__.get("_thinking_work")
+            if type(result) is dict and type(thinking) is dict:
+                result["thinking_work"] = deepcopy(thinking)
             path = self._trace_path
             return result
         finally:
             self.__dict__.pop("_query_work", None)
+            self.__dict__.pop("_thinking_work", None)
+            self.__dict__.pop("_thinking_exhaustion", None)
             if previous_frame is not None:
                 setattr(self, self._UNREAD_FRAME_ATTR, previous_frame)
             else:
@@ -9502,6 +9522,24 @@ class ReasoningContext:
             return self._graph_dialogue_gap(text, knowledge_path, missing_replies=missing,
                                             unsupported=unsupported)
         result = self._turn(text, knowledge_path)
+        if result is None:
+            marker = self.__dict__.get("_thinking_exhaustion")
+            self.__dict__["_thinking_exhaustion"] = None
+            source = _scoped_text(text)
+            if (type(marker) is not dict or set(marker) != {"source", "parser"}
+                    or marker["source"] is not text or marker["parser"] is not parser
+                    or source is None or not source.strip()
+                    or len(source.encode("utf-8", "surrogatepass")) > 65536):
+                return None
+            auth = _scoped_authority(projection, parser)
+            if auth is None or not _scoped_hex(auth.get("scope_sha256")):
+                return None
+            native = data.get("context_replies")
+            if type(installed) is not dict or type(native) is not dict or not _scoped_native_eq(installed, native):
+                return None
+            evidence = {"scope": "selected_reader_processing_failure", "outcome": "exhausted",
+                        "authority_sha256": auth["scope_sha256"]}
+            return self._failure_dispatch(text, knowledge_path, None, evidence, installed, text, False)
         if result is not None and "answer" in result and isinstance(result.get("meaning"), dict):
             result["meaning"] = {**result["meaning"], "conversation": self.conversation_id}
         return result
@@ -10736,7 +10774,9 @@ class ReasoningContext:
                     or not same_source(item["text"])):
                 return None
         prior, _d, _p, _r = self._cached_replay(parser, observations[:index], [])
-        result = self._holds(parser, conds, start, prior, projection, actual_source=source)
+        diagnosis = {}
+        result = self._holds(parser, conds, start, prior, projection, actual_source=source,
+                             evidence_out=diagnosis)
         if result is True:
             return None
         if result is False:
@@ -10778,6 +10818,21 @@ class ReasoningContext:
         native = data.get("context_replies")
         if type(installed) is not dict or type(native) is not dict or not _scoped_native_eq(installed, native):
             return self._graph_dialogue_gap(text, knowledge_path, unsupported=["reply_authority"])
+        evidence = None
+        if (result is None and reason == "unmeasured_condition"
+                and set(diagnosis) == {"outcome", "guard_ref", "positive_support", "negative_support"}
+                and _scoped_compact_ok(diagnosis["guard_ref"])
+                and type(diagnosis["positive_support"]) is bool and type(diagnosis["negative_support"]) is bool):
+            outcome = diagnosis["outcome"]
+            pos, neg = diagnosis["positive_support"], diagnosis["negative_support"]
+            if ((outcome == "missing_premise" and pos is False and neg is False)
+                    or (outcome == "conflicting_evidence" and pos is True and neg is True)):
+                evidence = {"scope": "selected_binary_guard", "outcome": outcome,
+                            "guard_ref": deepcopy(diagnosis["guard_ref"]),
+                            "positive_support": pos, "negative_support": neg}
+        if evidence is not None:
+            return self._failure_dispatch(text, knowledge_path, deepcopy(current["query"]), evidence,
+                                          installed, source, True)
         reply = installed.get(reason)
         if type(reply) is not str or not reply.strip():
             return self._graph_dialogue_gap(text, knowledge_path, missing_replies=[reason])
@@ -10787,6 +10842,40 @@ class ReasoningContext:
                 "meaning": {"act": "hold", "reason": reason, "said": str(source),
                             "conversation": self.conversation_id},
                 "verification": self._verification(knowledge_path, [])}
+
+    def _failure_dispatch(self, text, knowledge_path, query, evidence, replies, said, hold):
+        """Claim one bounded failure-response operation, then build the existing native reply for its action."""
+        import hashlib
+        from marco.reasoning.query_work import (new_thinking_work, choose_thinking_operation,
+                                                finish_thinking_operation)
+        work = self.__dict__.get("_thinking_work")
+        if work is None:
+            digest = hashlib.sha256(str(text).encode("utf-8", "surrogatepass")).hexdigest()
+            work = new_thinking_work({"input_sha256": digest, "query": query}, evidence)
+        work, action = choose_thinking_operation(work)
+        self._thinking_work = deepcopy(work)
+        if action is None:
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=["capacity"])
+        branches = {"emit_existing_gap": "input_understanding_failed",
+                    "emit_existing_information_gap": "unmeasured_condition",
+                    "emit_existing_conflict": "contradiction"}
+        if type(action) is not str or action not in branches:
+            raise RuntimeError("failure response action mismatch")
+        if type(replies) is not dict:
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=["reply_authority"])
+        key = branches[action]
+        reply = replies.get(key)
+        if type(reply) is not str or not reply.strip():
+            return self._graph_dialogue_gap(text, knowledge_path, missing_replies=[key])
+        response = {"operator": "relational_graph", "status": "unresolved",
+                    "answer": reply.format(말=str(said).strip()), "transitions": [],
+                    "meaning": {"act": "hold", "reason": branches[action], "said": str(said),
+                                "conversation": self.conversation_id},
+                    "verification": self._verification(knowledge_path, [])}
+        self._thinking_work = deepcopy(finish_thinking_operation(work, action))
+        if hold:
+            self.held_question = text
+        return response
 
     def _graph_dialogue_guard(self, text, knowledge_path, current, parser):
         from pack_model import PackModel
@@ -11800,9 +11889,17 @@ class ReasoningContext:
             # 모르므로, 그 말이 가리킨 것에 대해서는 지금 값을 확정하지 않는다.
             # 물음은 사건이 아니다 — 묻는 말은 아무 상태도 안 바꾼다. 다만 그
             # 판단은 **메시지 전체가 아니라 구간마다** 해야 한다.
+            attest = ("_thinking_exhaustion" in self.__dict__ and self.__dict__["_thinking_exhaustion"] is None
+                      and not getattr(self, "_rereading", False) and not getattr(self, "_in_name_reply", False)
+                      and type(getattr(self.model, "language_projection", None)) is dict
+                      and type(self.__dict__.get("_current_query_read")) is dict
+                      and self.__dict__["_current_query_read"].get("source") is text
+                      and self._permitted(knowledge_path) and not self._live())
+            kept = 0
             for piece, asking in self._segments(text, parser):
                 notes = []
                 if asking:
+                    attest = False
                     continue
                 read = parser.parse(piece, partial=True, events=True, verbs=verbs, repair=True, _diagnostics=notes)
                 # nothing of this turn was applied. A piece read as a question states nothing; any other piece
@@ -11810,13 +11907,16 @@ class ReasoningContext:
                 # said with a sentence nobody reads), only as the shape of an event (이보는 상대방한테 받았다가
                 # 돌려줬어) or not at all: it is kept, and what it names is not said as known
                 if read is not None and read.get("query") and not read.get("facts"):
+                    attest = False
                     continue
                 # 묻는 말은 못 읽은 사건이 아니다. 아무 상태도 안 바꾼다.
                 if any(note.get("reason") == "question_is_not_an_observation"
                        for note in notes):
+                    attest = False
                     continue
                 # A request asks for an action; it reports no event.
                 if self._is_request(parser, piece):
+                    attest = False
                     continue
                 # An unread piece that says an earlier statement was wrong (a declared contrast,
                 # "..., not ...") may retract any statement: every value is held until a later
@@ -11826,6 +11926,9 @@ class ReasoningContext:
                 general = any(fold(marker) in fold(piece) for marker in markers)
                 self._remember_unread({"text": piece, "at": len(self.observations),
                                        **({"범용": True} if general else {})})
+                kept += 1
+            if attest and kept and not self._is_request(parser, text):
+                self._thinking_exhaustion = {"source": text, "parser": parser}
             return None
         # 같은 말이 뒤늦게 읽히면 매듭이 풀린 것이다.
         heard = {piece for piece, _asking in self._segments(text, parser)}
