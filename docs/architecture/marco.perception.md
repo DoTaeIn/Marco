@@ -14,7 +14,7 @@ Each fact candidate `analyze_image` returns carries `location`, `confidence` and
 `method` (visual.py:602–638). Goal S4 moved the root files `document_visual`,
 `document_vlm`, `document_objects` and `document_pose` here
 ([target-map.json](target-map.json) `moved_in_s4`), and `document_vision.swift`
-with them ([file moves](../ko/2026-09-24-file-moves-goal.md), commit `e4ede99`).
+with them ([file moves](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-24-file-moves-goal.md"), commit `e4ede99`).
 Layer 1 in the target layout; forbidden: graph writes and sentences
 ([structure-audit.md](structure-audit.md) A6). The fact candidates carry Korean
 sentence text (visual.py:606–633).

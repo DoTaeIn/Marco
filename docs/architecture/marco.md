@@ -14,7 +14,7 @@ the root: `marco.reasoning`, `marco.runtime`, `marco.storage`,
 `python tools/doc_facts.py layout` prints which file went where. Seven large
 files stay at the root (`engine.py`, `relational_semantics.py`, ...); their
 splits stay frozen until MARCO 1 ships
-([freeze decision](../ko/2026-09-22-freeze-decision.md)).
+([freeze decision](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-22-freeze-decision.md")).
 
 ## Owns
 

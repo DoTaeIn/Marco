@@ -12,7 +12,7 @@ docstring); conclusions come from finite Horn-rule joins that can keep their
 proofs ([inference.py](../../marco/reasoning/inference.py) docstring); learned
 actions run as JSON action programs ([actions.py](../../marco/reasoning/actions.py)
 docstring); `state.evaluate` computes over validated state JSON with the
-operators a KG declares. Goal S4 ([file moves](../ko/2026-09-24-file-moves-goal.md))
+operators a KG declares. Goal S4 ([file moves](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-24-file-moves-goal.md"))
 moved five root files here whole (`reasoning_context`, `graph_inference`,
 `state_engine`, `action_runtime`, `situation_reasoner`; commit `11a3383`,
 [target-map.json](target-map.json)). `identity.py` was added on 2026-09-30

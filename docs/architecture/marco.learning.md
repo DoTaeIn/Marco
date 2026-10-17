@@ -10,7 +10,7 @@ check: a routing gate (`authoring`), validation cases (`expressions`, `rules`), 
 (`self_authoring`, `proof_chunking`, `experience_concepts`, `expression_learning`,
 `semantic_feedback`, `rule_learning` before S4; [target-map.json](target-map.json)).
 
-The [freeze decision](../ko/2026-09-22-freeze-decision.md) keeps "the freeze on MARCO's
+The [freeze decision](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-22-freeze-decision.md") keeps "the freeze on MARCO's
 learning or reasoning behaviour", and MARCO 1 is published with "no autonomous learning". The
 decision lists autonomous persistent learning, automatic rule creation and automatic graph
 mutation from dialogue as not in MARCO 1. This page states what the code does; the MARCO 1 gate

@@ -6,7 +6,7 @@ Written 2026-10-01 against commit `e3a6394`; checked 2026-10-01 against
 ## Purpose
 
 Run actions that a graph chose, on the host, and record what happened. Goal S4
-([file moves](../ko/2026-09-24-file-moves-goal.md)) moved the root file `act.py`
+([file moves](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-24-file-moves-goal.md")) moved the root file `act.py`
 here whole ([target-map.json](target-map.json): the `modules` row `act` and the
 `moved_in_s4` list). The target layout puts the host
 permission boundary in this package, layer 7

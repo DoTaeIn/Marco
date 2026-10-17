@@ -26,7 +26,7 @@ also puts `상위` and `정의` edges and any hand-written relations it is given
 | [`web.py`](../../marco/knowledge/ingest/web.py) | 1347 | open-web search through DuckDuckGo's lite HTML page (`https://lite.duckduckgo.com/lite/`), page reading into complete sentences, topic and role evidence checks, and storage in a sidecar `<graph>.수집.jsonl` beside the graph under a file lock (`<sidecar>.lock`). Limits from `KG_LEARN_MAX_TOPICS` (200), `KG_LEARN_MAX_RECORDS` (20), `KG_LEARN_MAX_BYTES` (5 MiB), `KG_LEARN_COOLDOWN` (300 s). `load()` is `engine.load()` with the collected records stacked on under prefixed node names (`지식_`, `출처_`). CLI `_main` with `--check` self-check |
 
 The sidecar files are one of "the existing learning routes" the
-[freeze decision](../ko/2026-09-22-freeze-decision.md) keeps as they are; it lists
+[freeze decision](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-22-freeze-decision.md") keeps as they are; it lists
 "promotion of web or document knowledge" as not in MARCO 1.
 
 ## Does not own

@@ -5,7 +5,7 @@ Palinorrhesis: speak only after the sentence has returned to its meaning.
 Rewritten 2026-09-24 against commit `5f321a3` (goal D2). The first version of
 this page, written 2026-09-23 against `78bd062`, described a stub that returned
 the engine's sentence unchanged; realizer rounds W1, W2 and W3 replaced it. The
-names are explained in [the pipelines article](../en/pipelines.md#hermeneia-language-realization)
+names are explained in [the pipelines article](../archive/README.md "보관 ZIP 내부: docs/en/pipelines.md")
 and fixed in [naming.md](naming.md).
 
 ## Purpose
