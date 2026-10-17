@@ -888,6 +888,33 @@ def _normalized_frame_authority(parser, record, compiled_frames, predicate_hits)
     return out
 
 
+def _select_unique_seed_flat(parser, source, declaration):
+    """Unique flat meaning over every declared seed frame (pure; overlapping alternatives)."""
+    import json
+    from copy import deepcopy
+
+    def canon(v):
+        return json.dumps(v, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+    if not isinstance(source, str):
+        raise ValueError("seed role binder: source")
+    if not isinstance(declaration, dict):
+        raise ValueError("seed role binder: declaration")
+    rows = declaration.get("frames")
+    if not isinstance(rows, list) or not rows or len(rows) > 16:
+        raise ValueError("seed role binder: frames")
+    oks, reason = [], None
+    for row in rows:
+        out = _bind_seed_roles(parser, source, declaration, row, overlapping_alternatives=True)
+        if out and out[0] == "ok":
+            oks.append({"meaning": deepcopy(out[1]), "trace": deepcopy(out[2])})
+        elif out and out[0] == "hold":
+            reason = reason or out[1]
+    if len({canon(c["meaning"]) for c in oks}) == 1:
+        return ("ok", deepcopy(oks[0]["meaning"]), deepcopy(oks[0]["trace"]))
+    return ("hold", "ambiguous_binding" if oks else (reason or "no_binding"))
+
+
 def _declared_route(parser, source, *, phase, legacy_witnesses=(), literal=None, guard_names=True,
                     exclude=(), legacy_selection=None):
     """Pure route over a predicate-frames-v2 declaration (no activation, no writes)."""
@@ -1095,17 +1122,10 @@ def _declared_route(parser, source, *, phase, legacy_witnesses=(), literal=None,
     if owned:
         return result("legacy", keys=owned)
 
-    oks, reason = [], None
-    for row in rows:
-        out = _bind_seed_roles(parser, source, decl, row, overlapping_alternatives=True)
-        if out and out[0] == "ok":
-            oks.append({"meaning": deepcopy(out[1]), "trace": deepcopy(out[2])})
-        elif out and out[0] == "hold":
-            reason = reason or out[1]
-    if len({canon(c["meaning"]) for c in oks}) == 1:
-        return result("flat", flat=oks[:1])
-    reason = "ambiguous_binding" if oks else (reason or "no_binding")
-    return result("segment" if phase == "whole" else "blocked", reason=reason)
+    sel = _select_unique_seed_flat(parser, source, decl)
+    if sel[0] == "ok":
+        return result("flat", flat=[{"meaning": sel[1], "trace": sel[2]}])
+    return result("segment" if phase == "whole" else "blocked", reason=sel[1])
 
 
 def _check_declaration(decl):

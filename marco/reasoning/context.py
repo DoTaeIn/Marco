@@ -9206,11 +9206,16 @@ class ReasoningContext:
         previous_frame = getattr(self, self._UNREAD_FRAME_ATTR, None)
         setattr(self, self._UNREAD_FRAME_ATTR, self._unread_continuation_enter(text, previous_frame))
         self._current_query_read = {"source": text, "calls": 0, "parser": None, "value": None, "gap": None}
+        self._query_work = None
         try:
             result = self._turn_said(text, knowledge_path)
+            work = self.__dict__.get("_query_work")
+            if type(result) is dict and type(work) is dict:
+                result["reasoning_work"] = deepcopy(work)
             path = self._trace_path
             return result
         finally:
+            self.__dict__.pop("_query_work", None)
             if previous_frame is not None:
                 setattr(self, self._UNREAD_FRAME_ATTR, previous_frame)
             else:
@@ -10253,7 +10258,7 @@ class ReasoningContext:
                 return False
             from marco.language import frames as _seed_frames
             try:
-                res = _seed_frames._bind_seed_roles(parser, tsrc, decl, decl["frames"][hits[0]])
+                res = _seed_frames._select_unique_seed_flat(parser, tsrc, decl)
             except ValueError:
                 return False
             if type(res) is not tuple or len(res) != 3 or res[0] != "ok":
@@ -10393,6 +10398,186 @@ class ReasoningContext:
             return "conditional"
         return None
 
+    def _selected_positive_query_input(self, parser, text, current):
+        """True only for a parser-proved, independently re-verified canonical selected original positive query.
+
+        Bounded per-turn source validation only: never parses, evaluates, asserts or completes an answer.
+        """
+        source = _scoped_text(text)
+        if source is None:
+            return False
+        try:
+            if len(source.encode("utf-8")) > 65536:
+                return False
+        except UnicodeEncodeError:
+            return False
+        keys = {"facts", "query", "정의", "사건", "가정사건", "조건", "가정", "원인", "이유물음", "수선",
+                "사건정정", "entry_selection"}
+        if type(current) is not dict or set(current) != keys:
+            return False
+        size = _scoped_size(current)
+        if size is None or size > 65536:
+            return False
+        for key in keys - {"query", "entry_selection"}:
+            if type(current[key]) is not list or current[key]:
+                return False
+        query = current["query"]
+        if type(query) is not list or len(query) != 1:
+            return False
+        row = query[0]
+        if type(row) is not dict or set(row) != {"triple", "render"}:
+            return False
+        triple, render = row["triple"], row["render"]
+        if (type(triple) is not list or len(triple) != 3
+                or not all(type(t) is str and t.strip() for t in triple)
+                or any("$" in t for t in triple) or "?" in triple[1]
+                or sum(1 for t in (triple[0], triple[2]) if t.startswith("?")) != 1
+                or sum(t.count("?") for t in triple) != 1):
+            return False
+        if type(render) is not list or not render or not all(type(r) is str for r in render):
+            return False
+        projection = getattr(self.model, "language_projection", None)
+        auth = _scoped_authority(projection, parser)
+        if auth is None:
+            return False
+        neg = _scoped_cap(auth, "negative_binary")
+        if neg is None or _scoped_cap(auth, "conditional_binary") is None:
+            return False
+        env = current["entry_selection"]
+        if (type(env) is not dict
+                or set(env) != {"schema", "scope", "status", "coordinate_space", "items", "gaps"}
+                or not all(_scoped_native_eq(env[k], v) for k, v in (
+                    ("schema", "marco-entry-selection-v1"), ("scope", "known_selected_input_clauses"),
+                    ("status", "partial"), ("coordinate_space", "parser_view")))):
+            return False
+        items, gaps = env["items"], env["gaps"]
+        if type(items) is not list or len(items) != 1 or type(gaps) is not list:
+            return False
+        item = items[0]
+        if (type(item) is not dict
+                or set(item) != {"clause_ordinal", "span", "compiler_index", "origin", "targets", "derivation"}
+                or type(item["clause_ordinal"]) is not int or item["clause_ordinal"] != 0
+                or type(item["compiler_index"]) is not int or item["compiler_index"] < 0
+                or type(item["span"]) is not list or len(item["span"]) != 2
+                or not all(type(v) is int for v in item["span"])
+                or not 0 <= item["span"][0] < item["span"][1] <= len(source)
+                or not _scoped_native_eq(item["targets"], {"facts": [], "query": [0]})
+                or item["derivation"] is not None):
+            return False
+        origin = item["origin"]
+        if origin is None:
+            if not _scoped_native_eq(gaps, [{"clause_ordinal": 0, "code": "origin_unknown"}]):
+                return False
+        else:
+            if gaps or type(origin) is not dict or origin.get("graph_binding") is None:
+                return False
+            from marco.language.entry_origins import validated_entry_origin
+            try:
+                checked = validated_entry_origin(origin)
+            except (ValueError, TypeError):
+                return False
+            if not _scoped_native_eq(checked, origin):
+                return False
+        pack = projection["language_pack"]
+        slots = pack.get("slot_particles", [])
+        counters = pack.get("counters", {})
+        if counters is None:
+            counters = {}
+        pointers = pack.get("pointers", [])
+        if (type(slots) is not list or type(counters) is not dict or type(pointers) is not list
+                or not all(_scoped_wire(v)[0] for v in (slots, counters, pointers))
+                or not _scoped_native_eq(getattr(parser, "slot_particles", None), slots)
+                or not _scoped_native_eq(getattr(parser, "counters", None), counters)
+                or not _scoped_native_eq(getattr(parser, "pointers", None), pointers)):
+            return False
+        native, held = auth["data"], parser.data
+        mine_num, held_num = native.get("numerals", {}), held.get("numerals", {})
+        if (type(mine_num) is not dict or type(held_num) is not dict or not _scoped_wire(mine_num)[0]
+                or not _scoped_native_eq(mine_num, held_num)
+                or ("ignore_case" in native) != ("ignore_case" in held)):
+            return False
+        if "ignore_case" in native and (type(native["ignore_case"]) is not bool
+                                        or not _scoped_native_eq(native["ignore_case"], held["ignore_case"])):
+            return False
+        verify = getattr(parser, "verify_selected_positive_query", None)
+        if not callable(verify):
+            return False
+        from marco.reasoning import query_work as _qw
+        work = getattr(self, "_query_work", None)
+        if type(work) is not dict:
+            work = _qw.new_query_work(deepcopy(query))
+        work, allowed = _qw.claim_validation(work)
+        self._query_work = work
+        if allowed is not True:
+            return False
+        accepted, evidence = self._positive_query_proof_ok(
+            verify, parser, source, current, row, item, auth, neg, env)
+        accepted = accepted is True
+        self._query_work = _qw.finish_validation(
+            work, accepted, evidence if accepted else None,
+            None if accepted else "input_understanding_failed")
+        return accepted
+
+    def _positive_query_proof_ok(self, verify, parser, source, current, row, item, auth, neg, env):
+        """(True, compact own source ref) when the parser proof survives all independent checks, else (False, None)."""
+        proof = verify(source, deepcopy(current))
+        if proof is None or proof is False:
+            return False, None
+        ok, proof = _scoped_wire(proof)
+        if not ok or type(proof) is not dict or set(proof) != {"compiler_index", "source_ref", "meaning", "source_span"}:
+            return False, None
+        size = _scoped_size(proof)
+        if size is None or size > 65536:
+            return False, None
+        index = proof["compiler_index"]
+        if type(index) is not int or index != item["compiler_index"]:
+            return False, None
+        full = proof["source_ref"]
+        if type(full) is not dict or type(full.get("index")) is not int or full["index"] != index:
+            return False, None
+        compact = _scoped_compact(full)
+        if compact is None or compact["index"] != index:
+            return False, None
+        own = _scoped_resolve(auth["original_full"], compact)
+        if own is None or not _scoped_native_eq(own, full) or not _scoped_native_eq(full, own):
+            return False, None
+        if sum(1 for r in auth["original_full"] if _scoped_native_eq(_scoped_compact(r), compact)) != 1:
+            return False, None
+        if not any(_scoped_native_eq(compact, r) for r in neg["basis"]["original_query_refs"]):
+            return False, None
+        if not any(type(r) is dict and "negative_derivation" not in r and _scoped_native_eq(r, own)
+                   for r in auth["derived_full"]):
+            return False, None
+        mine = auth["data"].get("examples")
+        held = parser.data.get("examples")
+        if (type(mine) is not list or type(held) is not list or not 0 <= index < len(mine)
+                or index >= len(held) or not _scoped_native_eq(mine[index], held[index])):
+            return False, None
+        if own.get("annotation_sha256") != _scoped_sha(mine[index]):
+            return False, None
+        meaning = proof["meaning"]
+        if (type(meaning) is not dict or set(meaning) != {"query"} or type(meaning["query"]) is not list
+                or len(meaning["query"]) != 1 or not _scoped_native_eq(meaning["query"][0], row)):
+            return False, None
+        span = proof["source_span"]
+        if (type(span) is not list or len(span) != 2 or not all(type(s) is int for s in span)
+                or not 0 <= span[0] < span[1] <= len(source)):
+            return False, None
+        if not _scoped_native_eq(item["span"], span):
+            return False, None
+        lo, hi = span
+        core = source[lo:hi]
+        if not core.strip() or core != core.strip() or source[:lo].strip():
+            return False, None
+        tail = source[hi:].strip()
+        terms = auth["frames"].get("terminators")
+        terms = terms if type(terms) is list else []
+        marks = [m for m in terms + list(auth["question_marks"])
+                 if type(m) is str and m and m.strip() == m]
+        if tail and tail not in marks:
+            return False, None
+        return True, compact
+
     def _selected_negative_answer_input(self, parser, text, current, facts, query):
         """Answer input: ordinary dict unchanged; a scoped signed-negative query only with its re-verified proof."""
         env = current.get("entry_selection") if type(current) is dict else None
@@ -10411,6 +10596,197 @@ class ReasoningContext:
             return None
         return {"facts": facts, "query": query,
                 "selected_query_source": {"source_original": source, "source_certificate": deepcopy(cert)}}
+
+    def _selected_conditional_status_reply(self, text, knowledge_path, current, parser, facts, pending):
+        """Hold reply for one ordinary query about the consequent of one archived selected conditional.
+
+        Routes an actual typed-binary conditional whose guard is False or unmeasured (None) to the existing
+        native condition_false/unmeasured_condition replies. Never asserts, settles or replays anything new;
+        any unsupported state returns None (existing routing).
+        """
+        # Refuse any live/unread/rereading conversation state before closure, read or replay.
+        if (self.unread or self.unread_guard or self._live() or self.fills
+                or getattr(self, "_rereading", False) or getattr(self, "_in_name_reply", False)):
+            return None
+        keys = {"facts", "query", "정의", "사건", "가정사건", "조건", "가정", "원인", "이유물음", "수선",
+                "사건정정", "entry_selection"}
+        advanced = keys - {"facts", "query", "entry_selection"}
+        # Exact current shape (same accepted shape as the selected-query source proof).
+        if type(current) is not dict or set(current) != keys:
+            return None
+        for key in keys - {"query", "entry_selection"}:
+            if type(current[key]) is not list or current[key]:
+                return None
+        query = current["query"]
+        if type(query) is not list or len(query) != 1:
+            return None
+        row = query[0]
+        if type(row) is not dict or set(row) != {"triple", "render"}:
+            return None
+        asked, render = row["triple"], row["render"]
+        if (type(asked) is not list or len(asked) != 3
+                or not all(type(t) is str and t.strip() for t in asked)
+                or any("$" in t for t in asked) or "?" in asked[1]
+                or sum(1 for t in (asked[0], asked[2]) if t.startswith("?")) != 1
+                or sum(t.count("?") for t in asked) != 1):
+            return None
+        if type(render) is not list or not render or not all(type(r) is str for r in render):
+            return None
+        projection = getattr(self.model, "language_projection", None)
+        data = projection.get("data") if type(projection) is dict else None
+        if type(data) is not dict:
+            return None
+        asked = list(asked)
+        if pending is not None and type(pending) is not list:
+            return None
+        pending = list(pending or [])
+        if len(pending) > 1:
+            return None
+        observations = list(self.observations)
+        if not observations or len(observations) > self.max_turns:
+            return None
+        chosen = getattr(parser, "chosen_readings", None)
+        if type(chosen) is not dict:
+            return None
+        # Every source must already own an exact archived chosen native reading before any read/replay.
+        for obs in observations:
+            if not isinstance(obs, Obs):
+                return None
+            oid = _readings.oid_of(obs)
+            rev = getattr(obs, "rev", None)
+            if (type(oid) is not str or not oid.strip() or oid == TENTATIVE
+                    or type(rev) is not int or rev < 1
+                    or getattr(obs, "reading", None) is not None
+                    or getattr(obs, "reason", None) == "correction"):
+                return None
+            entry = self.reading_ledger.get(oid)
+            if type(entry) is not dict:
+                return None
+            active, versions = entry.get("active"), entry.get("versions")
+            if (type(active) is not int or active != rev or type(versions) is not list
+                    or not 1 <= active <= len(versions)):
+                return None
+            record = self._active_record(obs)
+            view = chosen.get(oid)
+            if (type(record) is not dict
+                    or type(record.get("observation_id")) is not str or record.get("observation_id") != oid
+                    or type(record.get("reading_revision")) is not int or record.get("reading_revision") != rev
+                    or record.get("unavailable") is not False
+                    or type(record.get("source")) is not str or record.get("source") != str(obs)
+                    or view is None or self._structural_marked(view)
+                    or self._unread_json(record.get("parsed"), 65536) is None
+                    or not self._unread_native_equal(view, record.get("parsed"))):
+                return None
+            parsed = record.get("parsed")
+            if type(parsed) is not dict or set(parsed) != keys or not _scoped_native_eq(view, parsed):
+                return None
+        from marco.reasoning.inference import bind as _bind
+        read = [self._read_source(parser, obs) for obs in observations]
+        matched = []
+        for index, (obs, stored) in enumerate(zip(observations, read)):
+            if type(stored) is not dict or set(stored) != keys:
+                return None
+            if (type(stored["facts"]) is not list or stored["query"] is not None
+                    or any(type(stored[key]) is not list for key in advanced)
+                    or any(stored[key] for key in advanced - {"조건"})):
+                return None
+            conds = stored["조건"]
+            if not conds:
+                continue
+            if self._scoped_admission(obs, stored, parser) != "conditional":
+                return None
+            rows = stored["facts"]
+            if len(conds) != 1 or len(rows) != 1:
+                return None
+            guard, fact = conds[0], rows[0]
+            if (type(guard) is not dict or type(guard.get("triple")) is not list
+                    or "evidence" not in guard or type(fact) is not dict):
+                return None
+            triple = fact.get("triple")
+            if (type(triple) is not list or len(triple) != 3
+                    or not all(type(t) is str and t.strip() for t in triple)
+                    or fact.get("polarity", True) is not True
+                    or fact.get("modality", "asserted") != "asserted"
+                    or type(fact.get("modality", "asserted")) is not str):
+                return None
+            if triple[1] == asked[1] and _bind(asked, list(triple), {}) is not None:
+                matched.append((index, obs, conds, fact))
+        if len(matched) != 1:
+            return None
+        index, source, conds, fact = matched[0]
+        evidence = fact.get("evidence")
+        start = evidence.get("start") if type(evidence) is dict else None
+        if type(start) is not int:
+            return None
+        guard = conds[0]
+
+        def same_source(other):
+            return (other is source
+                    or (isinstance(other, Obs) and type(_readings.oid_of(other)) is str
+                        and _readings.oid_of(other) == _readings.oid_of(source)
+                        and type(getattr(other, "rev", None)) is int
+                        and getattr(other, "rev", None) == getattr(source, "rev", None)
+                        and str(other) == str(source)))
+
+        fields = {"text", "at", "동사", "id", "잘림", "차례", "못잼", "조각", "자리", "빈자리", "충돌", "헛자리",
+                  "닿는곳"}
+        for item in pending:
+            if (type(item) is not dict or set(item) != fields
+                    or type(item["at"]) is not int or item["at"] != index
+                    or not same_source(item["text"])):
+                return None
+        prior, _d, _p, _r = self._cached_replay(parser, observations[:index], [])
+        result = self._holds(parser, conds, start, prior, projection, actual_source=source)
+        if result is True:
+            return None
+        if result is False:
+            if pending:
+                return None
+            reason = "condition_false"
+        elif result is None:
+            if len(pending) != 1:
+                return None
+            item = pending[0]
+            if (item["동사"] is not None or item["id"] is not None or item["잘림"] is not False
+                    or type(item["차례"]) is not int or item["차례"] != index
+                    or type(item["못잼"]) is not str or item["못잼"] != "condition_unknown"
+                    or any(type(item[key]) is not dict or item[key]
+                           for key in ("자리", "빈자리", "충돌", "헛자리"))
+                    or not _scoped_native_eq(item["조각"], guard["evidence"])
+                    or not _scoped_native_eq(item["닿는곳"], [guard["triple"]])):
+                return None
+            reason = self._못잰까닭("condition_unknown")
+        else:
+            return None
+        if type(reason) is not str or reason not in ("condition_false", "unmeasured_condition"):
+            return None
+        # Eligible status established: host closure callbacks stay owned by the original answer route.
+        if (getattr(parser, "rule_selector", None) is not None
+                or getattr(parser, "closure_selector", None) is not None
+                or getattr(parser, "closure_recorder", None) is not None):
+            return None
+        from marco.reasoning.inference import current_facts as _current_facts
+        state, _changes = _current_facts(facts, parser.data.get("mutable_predicates", []),
+                                         parser.data.get("numeric_updates", {}))
+        known = parser._closure(state)
+        for key in known:
+            if _bind(asked, list(key), {}) is not None:
+                return None
+        if self._selected_positive_query_input(parser, text, current) is not True:
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=["query_pending"])
+        installed = parser.data.get("context_replies")
+        native = data.get("context_replies")
+        if type(installed) is not dict or type(native) is not dict or not _scoped_native_eq(installed, native):
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=["reply_authority"])
+        reply = installed.get(reason)
+        if type(reply) is not str or not reply.strip():
+            return self._graph_dialogue_gap(text, knowledge_path, missing_replies=[reason])
+        self.held_question = text
+        return {"operator": "relational_graph", "status": "unresolved",
+                "answer": reply.format(말=str(source).strip()), "transitions": [],
+                "meaning": {"act": "hold", "reason": reason, "said": str(source),
+                            "conversation": self.conversation_id},
+                "verification": self._verification(knowledge_path, [])}
 
     def _graph_dialogue_guard(self, text, knowledge_path, current, parser):
         from pack_model import PackModel
@@ -10470,6 +10846,10 @@ class ReasoningContext:
                     unsupported.append("advanced_input")
                 else:
                     _f, _d, pending, _r = self._cached_replay(parser, self.observations, self.fills)
+                    held = self._selected_conditional_status_reply(text, knowledge_path, current, parser,
+                                                                   _f, pending)
+                    if held is not None:
+                        return held
                     if pending and self._unsettled(query, parser, pending) is not None:
                         unsupported.append("query_pending")
         if unsupported:
@@ -11453,7 +11833,8 @@ class ReasoningContext:
         marks = parser.clause_grammar.get("question_marks", [])
         if (current.get("query") and not current.get("facts")
                 and not any(text.rstrip().endswith(mark) for mark in marks) and self._counts_something(text, parser)
-                and self._scoped_admission(text, current, parser) != "negative_query"):
+                and self._scoped_admission(text, current, parser) != "negative_query"
+                and not self._selected_positive_query_input(parser, text, current)):
             # Read only as a question though it asks nothing and states an amount: it may be a statement
             # this reader did not read, so what it names is not fixed until a later statement pins it.
             self._remember_unread({"text": text.strip(), "at": len(self.observations)})

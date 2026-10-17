@@ -1602,7 +1602,7 @@ class RelationalParser:
     def _sb_native_flat_bind(self, source, idx, resolved):
         # Pure: independently rebind the unique own frame with the native binder; (meaning, trace) or None.
         try:
-            from marco.language.frames import _bind_seed_roles
+            from marco.language.frames import _select_unique_seed_flat
         except ImportError:
             return None
         def canon(v):
@@ -1625,7 +1625,7 @@ class RelationalParser:
         except (TypeError, ValueError, KeyError, AttributeError, IndexError, RecursionError, re.error):
             return None
         try:
-            out = _bind_seed_roles(self, source, decl, frame)
+            out = _select_unique_seed_flat(self, source, decl)
         except ValueError:
             return None
         try:
@@ -2665,6 +2665,225 @@ class RelationalParser:
         except (TypeError, ValueError):
             return None
         return rec
+
+    def verify_selected_positive_query(self, fullinput, current):
+        # Pure: recompute the selected original positive-query source proof from own public data only.
+        from marco.reasoning.readings import Obs
+        if type(fullinput) is not str and type(fullinput) is not Obs:
+            return None
+        try:
+            raw = str.encode(fullinput, 'utf-8')
+        except UnicodeEncodeError:
+            return None
+        if not raw or len(raw) > 65536:
+            return None
+        text = raw.decode('utf-8')
+        wired = self._sb_wire_detach(current, 262144)
+        if wired is None or type(wired[1]) is not dict:
+            return None
+        cur = wired[1]
+        lists = ['facts', 'query', '정의', '사건', '가정사건', '조건', '가정', '원인', '이유물음', '수선', '사건정정']
+        if set(cur) != set(lists) | {'entry_selection'}:
+            return None
+        for key in lists:
+            if type(cur[key]) is not list or (key != 'query' and cur[key]):
+                return None
+        query = cur['query']
+        if len(query) != 1:
+            return None
+        row = query[0]
+        if type(row) is not dict or set(row) != {'triple', 'render'}:
+            return None
+        triple, render = row['triple'], row['render']
+        if (type(triple) is not list or len(triple) != 3
+                or not all(type(p) is str and p.strip() and '$' not in p for p in triple)
+                or '?' in triple[1]
+                or sum(p.count('?') for p in triple) != 1
+                or triple[0].startswith('?') == triple[2].startswith('?')
+                or type(render) is not list or not render
+                or not all(type(r) is str and r.strip() for r in render)):
+            return None
+        env = cur['entry_selection']
+        if (type(env) is not dict
+                or set(env) != {'schema', 'scope', 'status', 'coordinate_space', 'items', 'gaps'}):
+            return None
+        for key, want in (('schema', 'marco-entry-selection-v1'), ('scope', 'known_selected_input_clauses'),
+                          ('status', 'partial'), ('coordinate_space', 'parser_view')):
+            if type(env[key]) is not str or env[key] != want:
+                return None
+        if type(env['items']) is not list or len(env['items']) != 1 or type(env['gaps']) is not list:
+            return None
+        item, gaps = env['items'][0], env['gaps']
+        if (type(item) is not dict
+                or set(item) != {'clause_ordinal', 'span', 'compiler_index', 'origin', 'targets', 'derivation'}
+                or type(item['clause_ordinal']) is not int or item['clause_ordinal'] != 0
+                or type(item['compiler_index']) is not int or item['compiler_index'] < 0
+                or type(item['span']) is not list or len(item['span']) != 2
+                or not all(type(v) is int for v in item['span'])
+                or not 0 <= item['span'][0] < item['span'][1] <= len(text)
+                or type(item['targets']) is not dict or set(item['targets']) != {'facts', 'query'}
+                or type(item['targets']['facts']) is not list or item['targets']['facts']
+                or type(item['targets']['query']) is not list or len(item['targets']['query']) != 1
+                or type(item['targets']['query'][0]) is not int or item['targets']['query'][0] != 0
+                or item['derivation'] is not None):
+            return None
+        origin = item['origin']
+        if origin is None:
+            if (len(gaps) != 1 or type(gaps[0]) is not dict or set(gaps[0]) != {'clause_ordinal', 'code'}
+                    or type(gaps[0]['clause_ordinal']) is not int or gaps[0]['clause_ordinal'] != 0
+                    or gaps[0]['code'] != 'origin_unknown'):
+                return None
+        else:
+            if gaps:
+                return None
+            from marco.language.entry_origins import validated_entry_origin
+            try:
+                valid = validated_entry_origin(origin)
+            except ValueError:
+                return None
+            if valid != origin or valid['graph_binding'] is None:
+                return None
+        lo, hi = item['span']
+        start = len(text) - len(text.lstrip())
+        end = len(text.rstrip())
+        if start >= end or lo != start:
+            return None
+        grammar_clauses = self.clause_grammar
+        marks = grammar_clauses.get('question_marks') if type(grammar_clauses) is dict else None
+        frames = self.data.get('predicate_frames') if type(self.data) is dict else None
+        terms = frames.get('terminators', []) if type(frames) is dict else []
+        for seq in (marks, terms):
+            if type(seq) is not list or not all(type(m) is str and m for m in seq):
+                return None
+        trimmed = text[start:end]
+        hits = {m for m in terms + marks if trimmed.endswith(m)}
+        if hits:
+            mark = max(hits, key=len)
+            cut = len(text[:end - len(mark)].rstrip())
+            if cut <= start:
+                return None
+            canonical_end = cut
+        else:
+            canonical_end = end
+        if hi != canonical_end:
+            return None
+        body = text[lo:hi]
+        # Authority: original selected query refs of the negative binary capability only.
+        canon, sha = self._sb_canon, self._sb_sha
+        isindex, ishash, isref = self._sb_isindex, self._sb_ishash, self._sb_iscompact
+        caps = self.data.get('semantic_capabilities')
+        if (type(caps) is not dict or caps.get('schema') != 'selected-binary-semantic-capabilities-v1'
+                or set(caps) - {'negative_binary', 'conditional_binary', 'schema'}
+                or not set(caps) & {'negative_binary', 'conditional_binary'}):
+            return None
+        cap = caps.get('negative_binary')
+        if (type(cap) is not dict or set(cap) != {'schema', 'basis', 'capability_sha256', 'query_refs'}
+                or cap['schema'] != 'selected-negative-binary-v1'):
+            return None
+        basis = cap['basis']
+        if (type(basis) is not dict
+                or set(basis) != {'schema', 'grammar_reference', 'frame_refs', 'original_query_refs',
+                                  'normalized_language_scope_sha256'}
+                or basis['schema'] != 'selected-negative-binary-basis-v1'):
+            return None
+        grammar = basis['grammar_reference']
+        frame_refs, originals, derived = basis['frame_refs'], basis['original_query_refs'], cap['query_refs']
+        if (type(grammar) is not dict or set(grammar) != {'member_path', 'schema', 'sha256'}
+                or grammar['schema'] != 'selected-scoped-grammar-v2'
+                or not self._sb_safe_path(grammar['member_path']) or not ishash(grammar['sha256'])
+                or not ishash(cap['capability_sha256']) or sha(basis) != cap['capability_sha256']
+                or not ishash(basis['normalized_language_scope_sha256'])
+                or basis['normalized_language_scope_sha256'] != self._authority_scope_sha256()):
+            return None
+        for refs, low, high in ((frame_refs, 1, 16), (originals, 1, 2), (derived, 0, 2)):
+            if (type(refs) is not list or not low <= len(refs) <= high
+                    or not all(isref(r) for r in refs) or len({r['index'] for r in refs}) != len(refs)):
+                return None
+        if len(originals) != len(derived):
+            return None
+        examples = self.data.get('examples')
+        registry = self.data.get('semantic_query_sources')
+        if (type(examples) is not list or type(registry) is not list or not registry or len(registry) > 4
+                or len(registry) != len(originals) + len(derived)):
+            return None
+        plain = {'index', 'annotation_sha256', 'graph_source'}
+        total, seen, matched, found = 0, set(), [], {}
+        for entry in registry:
+            if type(entry) is not dict or set(entry) not in (plain, plain | {'negative_derivation'}):
+                return None
+            size = self._sb_bytes(entry)
+            if size is None or len(size) > 65536:
+                return None
+            total += len(size)
+            idx = entry['index']
+            if (not isindex(idx) or idx in seen or idx >= len(examples)
+                    or not ishash(entry['annotation_sha256']) or type(entry['graph_source']) is not dict
+                    or sha(examples[idx]) != entry['annotation_sha256']):
+                return None
+            seen.add(idx)
+            ref = {'index': idx, 'annotation_sha256': entry['annotation_sha256'],
+                   'source_ref_sha256': sha(entry)}
+            if 'negative_derivation' in entry:
+                d = entry['negative_derivation']
+                if (type(d) is not dict
+                        or set(d) != {'original_query_ref', 'grammar_reference', 'capability_sha256'}
+                        or d['capability_sha256'] != cap['capability_sha256']
+                        or d['grammar_reference'] != grammar or d['original_query_ref'] not in originals
+                        or ref not in derived):
+                    return None
+            else:
+                if ref not in originals:
+                    return None
+                found[idx] = entry
+            matched.append(canon(ref))
+        if total > 262144 or sorted(matched) != sorted(canon(r) for r in originals + derived):
+            return None
+        index = item['compiler_index']
+        selected = found.get(index)
+        if selected is None:
+            return None
+        # Compile options bound to the installed pack, as the native init does.
+        pack = self.language_pack
+        if type(pack) is not dict:
+            return None
+        slot_particles, counters, pointers = self.slot_particles, self.counters, self.pointers
+        want_slots = pack['slot_particles'] if 'slot_particles' in pack else []
+        want_points = pack['pointers'] if 'pointers' in pack else []
+        want_counters = pack.get('counters')
+        if want_counters is None:
+            want_counters = {}
+        numerals = self.data.get('numerals', {})
+        if (type(want_slots) is not list or type(slot_particles) is not list
+                or slot_particles != want_slots
+                or type(want_counters) is not dict or type(counters) is not dict
+                or counters != want_counters
+                or type(want_points) is not list or type(pointers) is not list
+                or pointers != want_points
+                or type(numerals) is not dict
+                or ('ignore_case' in self.data and type(self.data['ignore_case']) is not bool)):
+            return None
+        ignore_case = bool(self.data.get('ignore_case'))
+        accepted = set()
+        for ref in originals:
+            ex = examples[ref['index']]
+            if (type(ex) is not dict or type(ex.get('text')) is not str or type(ex.get('slots')) is not dict
+                    or type(ex.get('meaning')) is not dict):
+                return None
+            try:
+                patterns, meaning = self.compile(ex, numerals, slot_particles, ignore_case=ignore_case,
+                                                 counters=counters, pointers=pointers)
+            except (ValueError, re.error):
+                return None
+            for pattern in patterns:
+                got = pattern.fullmatch(body)
+                if got is not None:
+                    accepted.add((ref['index'], canon(substitute(meaning, got.groupdict()))))
+        expected = {'query': [row]}
+        want = canon(expected)
+        if want is None or accepted != {(index, want)}:
+            return None
+        return {'compiler_index': index, 'source_ref': copy.deepcopy(selected),
+                'meaning': copy.deepcopy(expected), 'source_span': [lo, hi]}
 
     def make_selected_binary_certificate(self, source, source_span, witness, kind):
         """Detached 9-key source certificate, or None unless the pure verifier accepts it."""
