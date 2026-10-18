@@ -254,8 +254,257 @@ def _scoped_scope(inflection, negation, clauses):
     marks = clauses.get("question_marks", [])
     if type(sfx) is not list or type(marks) is not list:
         return None
-    return {"inflection": inflection, "negation": negation,
-            "clauses": {"candidate_suffixes": sfx, "question_marks": marks}}
+    out = {"inflection": inflection, "negation": negation,
+           "clauses": {"candidate_suffixes": sfx, "question_marks": marks}}
+    if "condition_combinations" in clauses:
+        policy = _scoped_combo_policy(clauses["condition_combinations"])
+        if policy is None:
+            return None
+        out["clauses"]["condition_combinations"] = policy
+    return out
+
+
+def _scoped_run_and(program, guards):
+    """Run the authenticated AND program; (ok, value) with ok False on any refusal."""
+    from marco.reasoning import graph_vm
+    res = graph_vm.run(program, {"guards": guards})
+    if (type(res) is not dict or set(res) != {"schema", "status", "value", "used"}
+            or res["schema"] != "marco-graph-vm-result-v1" or res["status"] != "completed"
+            or type(res["used"]) is not int or not 0 <= res["used"] <= 4096
+            or not (res["value"] is None or type(res["value"]) is bool)):
+        return False, None
+    return True, res["value"]
+
+
+def _scoped_graph_and(projection, parser):
+    """(False, None): no program namespace anywhere; (True, None): fail closed; (True, program)."""
+    return _scoped_graph_program(projection, parser, "scoped-and")
+
+
+def _scoped_graph_program(projection, parser, name):
+    """Selected named program under validated native/held namespace; same contract as _scoped_graph_and."""
+    native = projection.get("data") if type(projection) is dict else None
+    held = getattr(parser, "data", None)
+    has_n = type(native) is dict and "graph_programs" in native
+    has_h = type(held) is dict and "graph_programs" in held
+    if not has_n and not has_h:
+        return False, None
+    if not (has_n and has_h):
+        return True, None
+    try:
+        from marco.reasoning import graph_vm
+        ns = native["graph_programs"]
+        if (type(ns) is not dict or not _scoped_native_eq(ns, held["graph_programs"])
+                or set(ns) != {"schema", "provenance", "entries"}
+                or ns["schema"] != "marco-selected-graph-programs-v1"
+                or type(ns["provenance"]) is not dict or type(ns["entries"]) is not dict
+                or not 1 <= len(ns["entries"]) <= 16
+                or not _scoped_native_eq(ns["provenance"], projection.get("provenance"))):
+            return True, None
+        for key in ("graph_id", "root_id", "effective_graph_sha256", "view_key", "base_origin",
+                    "source", "nodes", "edges"):
+            if key not in ns["provenance"]:
+                return True, None
+        for entry_name, entry in ns["entries"].items():
+            if type(entry_name) is not str or not entry_name or type(entry) is not dict:
+                return True, None
+            ref = entry.get("reference")
+            if (set(entry) != {"reference", "program", "program_sha256"} or type(ref) is not dict
+                    or set(ref) != {"member_path", "sha256", "schema"}
+                    or type(ref["member_path"]) is not str or type(ref["sha256"]) is not str
+                    or not _scoped_hex(ref["sha256"]) or ref["schema"] != "marco-graph-vm-program-v1"):
+                return True, None
+            if (not _scoped_native_eq(graph_vm.validate_program(entry["program"]), entry["program"])
+                    or not _scoped_hex(entry["program_sha256"])
+                    or entry["program_sha256"] != _scoped_sha(entry["program"])):
+                return True, None
+        chosen = ns["entries"].get(name) if type(name) is str else None
+        if chosen is None:
+            return True, None
+        return True, chosen["program"]
+    except (ValueError, TypeError, KeyError):
+        return True, None
+
+
+def _scoped_combo_policy(raw):
+    """Exact detached selected-condition-combinations-v1 policy, else None."""
+    if (type(raw) is not dict
+            or set(raw) != {"schema", "program", "max_guards", "negative_guards", "any_connectors"}
+            or type(raw["schema"]) is not str or raw["schema"] != "selected-condition-combinations-v1"
+            or type(raw["program"]) is not str or raw["program"] != "scoped-conditions"
+            or type(raw["max_guards"]) is not int or raw["max_guards"] != 2
+            or raw["negative_guards"] is not True):
+        return None
+    conns = raw["any_connectors"]
+    if type(conns) is not list or not 1 <= len(conns) <= 4:
+        return None
+    for c in conns:
+        if type(c) is not str or not c or c.strip() != c or len(c) > 16:
+            return None
+    if len(set(conns)) != len(conns):
+        return None
+    return {"schema": raw["schema"], "program": raw["program"], "max_guards": 2,
+            "negative_guards": True, "any_connectors": list(conns)}
+
+
+def _scoped_run(program, payload):
+    """Run one authenticated program on `payload`; (ok, value) with ok False on any refusal."""
+    from marco.reasoning import graph_vm
+    res = graph_vm.run(program, payload)
+    if (type(res) is not dict or set(res) != {"schema", "status", "value", "used"}
+            or res["schema"] != "marco-graph-vm-result-v1" or res["status"] != "completed"
+            or type(res["used"]) is not int or not 0 <= res["used"] <= 4096
+            or not (res["value"] is None or type(res["value"]) is bool)):
+        return False, None
+    return True, res["value"]
+
+
+def _scoped_negative_meaning(meaning, triple):
+    """Exact signed negative guard meaning {triple, polarity: False}, else None."""
+    if (type(meaning) is not dict or type(triple) is not list or len(triple) != 3
+            or set(meaning) != {"triple", "polarity"} or meaning["polarity"] is not False
+            or not _scoped_native_eq(meaning["triple"], list(triple))):
+        return None
+    return deepcopy(meaning)
+
+
+def _scoped_seps(auth):
+    """Declared own-native separators (same filter as admission), else []."""
+    frames = auth.get("frames") if type(auth) is dict else None
+    marks = auth.get("question_marks") if type(auth) is dict else None
+    qmarks = [m for m in marks if type(m) is str and m] if type(marks) is list else []
+    got = frames.get("separators") if type(frames) is dict else None
+    return ([m for m in got if type(m) is str and m.strip() and m.strip() == m and m not in qmarks]
+            if type(got) is list else [])
+
+
+def _scoped_guard_cert(parser, auth, cap, source, cond):
+    """Verified positive_guard or (new policy only) negative_guard certificate result, else None."""
+    if type(cond) is not dict or type(auth) is not dict:
+        return None
+    policy = auth.get("combinations")
+    if "combination" in cond and policy is None:
+        return None
+    triple = cond.get("triple")
+    cert = cond.get("source_certificate")
+    seen_w = cert.get("witness") if type(cert) is dict else None
+    wm = seen_w.get("meaning") if type(seen_w) is dict else None
+    pol = cond.get("polarity", True)
+    if pol is True:
+        meaning = _scoped_positive_meaning(wm, triple)
+        if meaning is None:
+            return None
+        return _scoped_cert(parser, auth, source, cert, "positive_guard", cap, meaning)
+    if pol is not False or "polarity" not in cond or policy is None:
+        return None
+    meaning = _scoped_negative_meaning(wm, triple)
+    ncap = _scoped_cap(auth, "negative_binary")
+    if meaning is None or ncap is None:
+        return None
+    norm = seen_w.get("normalization")
+    if (type(norm) is not dict or set(norm) != {"id", "canonical", "example_index", "polarity"}
+            or type(norm["id"]) is not str or norm["id"] != "declared-negation-v1"
+            or norm["polarity"] is not False or type(norm["example_index"]) is not int):
+        return None
+    got = _scoped_cert(parser, auth, source, cert, "negative_guard", cap, meaning)
+    if got is None or got["polarity"] is not False:
+        return None
+    if not any(_scoped_native_eq(cert["source_ref"], r) for r in ncap["basis"]["frame_refs"]):
+        return None
+    return got
+
+
+def _scoped_group(auth, conds, verified, text):
+    """Authenticated composition 'all'|'any' of ordered verified guards, else None."""
+    policy = auth.get("combinations") if type(auth) is dict else None
+    if (type(conds) is not list or type(verified) is not list or len(conds) != len(verified)
+            or not all(type(c) is dict for c in conds) or type(text) is not str):
+        return None
+    marked = ["combination" in c for c in conds]
+    if policy is None:
+        return None if any(marked) else "all"
+    if len(conds) == 1:
+        return None if marked[0] else "all"
+    if len(conds) != 2:
+        return None
+    (a_lo, a_hi), (b_lo, b_hi) = verified[0]["span"], verified[1]["span"]
+    if not a_hi <= b_lo:
+        return None
+    conns = policy["any_connectors"]
+    if not any(marked):
+        gap = text[a_hi:b_lo]
+        core = gap.strip()
+        if any(c in gap for c in conns) or (core != "" and core not in _scoped_seps(auth)):
+            return None
+        return "all"
+    if not all(marked):
+        return None
+    ok0, m = _scoped_wire(conds[0]["combination"])
+    ok1, w = _scoped_wire(conds[1]["combination"])
+    if (not ok0 or not ok1 or type(conds[0]["combination"]) is not dict
+            or type(conds[1]["combination"]) is not dict
+            or not _scoped_native_eq(m, w) or not _scoped_native_eq(w, m) or type(m) is not dict
+            or set(m) != {"schema", "operator", "source_span", "connector_span", "connector"}
+            or m["schema"] != "selected-condition-combination-v1" or m["operator"] != "any"
+            or type(m["connector"]) is not str or m["connector"] not in conns):
+        return None
+    ss, cs = m["source_span"], m["connector_span"]
+    for span in (ss, cs):
+        if type(span) is not list or len(span) != 2 or not all(type(v) is int for v in span):
+            return None
+    if ss != [a_lo, b_hi]:
+        return None
+    c_lo, c_hi = cs
+    if not a_hi <= c_lo < c_hi <= b_lo or text[c_lo:c_hi] != m["connector"]:
+        return None
+    seps = _scoped_seps(auth)
+    for chunk in (text[a_hi:c_lo], text[c_hi:b_lo]):
+        core = chunk.strip()
+        if core != "" and core not in seps:
+            return None
+    return "any"
+
+
+def _scoped_holds_conditions(parser, auth, scoped, verified, start, prior, projection, actual, evidence_out):
+    """New-policy signed/composite guard truth via the scoped-conditions program only, else None."""
+    if not 1 <= len(scoped) <= 2 or len(verified) != len(scoped):
+        return None
+    comp = _scoped_group(auth, scoped, verified, actual)
+    if comp is None:
+        return None
+    mode, prog = _scoped_graph_program(projection, parser, "scoped-conditions")
+    if not mode or prog is None:
+        return None
+    if any(c["evidence"]["end"] > start for c in scoped):
+        return None
+    collect = evidence_out if type(evidence_out) is dict and not evidence_out else None
+    state, _changes = current_facts(prior, parser.data.get("mutable_predicates", []),
+                                    parser.data.get("numeric_updates", {}))
+    rows, blocked = [], []
+    for at, cond in enumerate(scoped):
+        triple = list(cond["triple"])
+        found = {row.get("polarity", True) for row in state
+                 if isinstance(row, dict) and row.get("modality", "asserted") == "asserted"
+                 and isinstance(row.get("triple"), (list, tuple)) and list(row["triple"]) == triple}
+        pol = verified[at]["polarity"]
+        if type(pol) is not bool:
+            return None
+        rows.append({"positive": any(p is True for p in found),
+                     "negative": any(p is False for p in found), "polarity": pol})
+        if (collect is not None and all(type(p) is bool for p in found)
+                and (not found or found == {True, False})):
+            ref = _scoped_compact(verified[at].get("source_ref"))
+            if _scoped_compact_ok(ref):
+                both = found == {True, False}
+                blocked.append((0 if both else 1, verified[at]["span"][0], at, both, ref))
+    ok, value = _scoped_run(prog, {"composition": comp, "guards": rows})
+    if not ok:
+        return None
+    if value is None and collect is not None and blocked:
+        _k, _s, _a, both, ref = min(blocked, key=lambda b: (b[0], b[1], b[2]))
+        collect.update({"outcome": "conflicting_evidence" if both else "missing_premise",
+                        "guard_ref": ref, "positive_support": both, "negative_support": both})
+    return value
 
 
 def _scoped_authority(projection, parser):
@@ -297,6 +546,7 @@ def _scoped_authority(projection, parser):
     original_full = [r.get("source_ref", r) for r in originals if type(r) is dict]
     return {"data": native, "frames": frames, "scope_sha256": scope_sha,
             "question_marks": mine["clauses"]["question_marks"], "frame_full": frame_full,
+            "combinations": deepcopy(mine["clauses"].get("condition_combinations")),
             "original_full": [r for r in original_full if type(r) is dict], "derived_full": derived}
 
 
@@ -428,15 +678,10 @@ def _scoped_guard(parser, auth, cap, cond, actual_source):
         return None
     triple, ev = cond.get("triple"), cond.get("evidence")
     source = _scoped_plain(cond.get("source_original"))
-    if (type(triple) is not list or len(triple) != 3 or cond.get("polarity", True) is not True
+    if (type(triple) is not list or len(triple) != 3
             or source is None or type(ev) is not dict):
         return None
-    cert = cond.get("source_certificate")
-    seen_w = cert.get("witness") if type(cert) is dict else None
-    meaning = _scoped_positive_meaning(seen_w.get("meaning") if type(seen_w) is dict else None, triple)
-    if meaning is None:
-        return None
-    got = _scoped_cert(parser, auth, source, cert, "positive_guard", cap, meaning)
+    got = _scoped_guard_cert(parser, auth, cap, source, cond)
     if (got is None or type(ev.get("start")) is not int or type(ev.get("end")) is not int
             or [ev["start"], ev["end"]] != got["span"] or type(ev.get("text")) is not str
             or ev["text"] != source[ev["start"]:ev["end"]]):
@@ -459,8 +704,13 @@ def _scoped_guard_ids(parser, conds, projection, actual_source):
     cap = _scoped_cap(auth, "conditional_binary") if auth is not None else None
     if cap is None:
         return frozenset()
-    if any(_scoped_guard(parser, auth, cap, c, actual) is None for c in scoped):
+    got = [_scoped_guard(parser, auth, cap, c, actual) for c in scoped]
+    if any(g is None for g in got):
         return frozenset()
+    if (auth.get("combinations") is not None
+            or any("combination" in c or c.get("polarity", True) is not True for c in scoped)):
+        if len(scoped) > 2 or _scoped_group(auth, scoped, got, actual) is None:
+            return frozenset()
     return frozenset(id(c) for c in scoped)
 
 
@@ -1590,21 +1840,34 @@ class ReasoningContext:
                 if got is None:
                     return None
                 verified.append(got)
+            if auth.get("combinations") is not None:
+                return _scoped_holds_conditions(parser, auth, scoped, verified, start, 앞선사실,
+                                                projection, actual, evidence_out)
+            mode, prog = _scoped_graph_and(projection, parser)
+            if mode and prog is None:
+                return None
             collect = (evidence_out if type(evidence_out) is dict and not evidence_out and 1 <= len(scoped) <= 2
                        else None)
             막힘 = []
+            지지 = []
             걸린것 = [c for c in scoped if c["evidence"]["end"] <= start]
-            if not 걸린것:
+            if not 걸린것 and not mode:
                 return True
-            상태, _변화 = current_facts(앞선사실, parser.data.get("mutable_predicates", []),
-                                     parser.data.get("numeric_updates", {}))
+            if 걸린것:
+                상태, _변화 = current_facts(앞선사실, parser.data.get("mutable_predicates", []),
+                                         parser.data.get("numeric_updates", {}))
+            else:
+                상태 = []
             결과 = []
             for 조건 in 걸린것:
                 triple = list(조건["triple"])
                 found = {row.get("polarity", True) for row in 상태
                          if isinstance(row, dict) and row.get("modality", "asserted") == "asserted"
                          and isinstance(row.get("triple"), (list, tuple)) and list(row["triple"]) == triple}
-                결과.append(True if found == {True} else False if found == {False} else None)
+                if not mode:
+                    결과.append(True if found == {True} else False if found == {False} else None)
+                지지.append({"positive": any(p is True for p in found),
+                           "negative": any(p is False for p in found)})
                 if (collect is not None and len(걸린것) == len(scoped) and all(type(p) is bool for p in found)
                         and (not found or found == {True, False})):
                     at = next(i for i, c in enumerate(scoped) if c is 조건)
@@ -1612,6 +1875,16 @@ class ReasoningContext:
                     if _scoped_compact_ok(ref):
                         both = found == {True, False}
                         막힘.append((0 if both else 1, verified[at]["span"][0], at, both, ref))
+            if mode:
+                ok, value = _scoped_run_and(prog, 지지)
+                if not ok:
+                    return None
+                if value is None and collect is not None and 막힘:
+                    _k, _s, _a, both, ref = min(막힘, key=lambda b: (b[0], b[1], b[2]))
+                    collect.update({"outcome": "conflicting_evidence" if both else "missing_premise",
+                                    "guard_ref": ref, "positive_support": both,
+                                    "negative_support": both})
+                return value
             if False in 결과:
                 return False
             if None in 결과:
@@ -10401,18 +10674,13 @@ class ReasoningContext:
             if (cap is None or len(scopes) != 1 or scopes[0]["clause_ordinal"] >= item["clause_ordinal"]
                     or extra != {"source_witness"} or not triple_ok(fact) or not triple_ok(cond)
                     or fact.get("unnamed") or fact.get("polarity", True) is not True
-                    or fact.get("modality", "asserted") != "asserted" or cond.get("polarity", True) is not True
+                    or fact.get("modality", "asserted") != "asserted"
                     or _scoped_plain(cond.get("source_original")) != text or any(m in text for m in qmarks)
                     or not _scoped_native_eq(item["targets"], {"facts": [0], "query": []})):
                 return None
-            g_cert = cond.get("source_certificate")
-            g_wit = g_cert.get("witness") if type(g_cert) is dict else None
-            g_meaning = _scoped_positive_meaning(g_wit.get("meaning") if type(g_wit) is dict else None,
-                                                 cond["triple"])
-            if g_meaning is None:
-                return None
-            guard = _scoped_cert(parser, auth, text, g_cert, "positive_guard", cap, g_meaning)
-            if guard is None or not evidence_at(cond, guard["span"]):
+            guard = _scoped_guard_cert(parser, auth, cap, text, cond)
+            if (guard is None or not evidence_at(cond, guard["span"])
+                    or _scoped_group(auth, [cond], [guard], text) is None):
                 return None
             witness = item["source_witness"]
             witnessed = getattr(parser, "verify_selected_binary_witness", None)
@@ -10453,20 +10721,17 @@ class ReasoningContext:
                 return None
             guards = []
             for cond in conds:
-                if (type(cond) is not dict or not triple_ok(cond) or cond.get("polarity", True) is not True
+                if (type(cond) is not dict or not triple_ok(cond)
                         or cond.get("kind") != "guard" or cond.get("marker") is not None
                         or _scoped_plain(cond.get("source_original")) != text):
                     return None
-                g_cert = cond.get("source_certificate")
-                g_wit = g_cert.get("witness") if type(g_cert) is dict else None
-                g_meaning = _scoped_positive_meaning(g_wit.get("meaning") if type(g_wit) is dict else None,
-                                                     cond["triple"])
-                if g_meaning is None:
-                    return None
-                guard = _scoped_cert(parser, auth, text, g_cert, "positive_guard", cap, g_meaning)
+                guard = _scoped_guard_cert(parser, auth, cap, text, cond)
                 if guard is None or not evidence_at(cond, guard["span"]):
                     return None
                 guards.append(guard)
+            comp = _scoped_group(auth, conds, guards, text)
+            if comp is None:
+                return None
             witness = item["source_witness"]
             witnessed = getattr(parser, "verify_selected_binary_witness", None)
             want = _scoped_positive_meaning(witness.get("meaning") if type(witness) is dict else None,
@@ -10490,7 +10755,7 @@ class ReasoningContext:
             (a_lo, a_hi), (b_lo, b_hi), (c_lo, c_hi) = guards[0]["span"], guards[1]["span"], item["span"]
             if (not a_hi <= b_lo or not b_hi <= c_lo or text[c_lo:c_hi] != witness["source"]
                     or not evidence_at(fact, item["span"]) or text[:a_lo].strip()
-                    or not edge(text[a_hi:b_lo], seps) or not edge(text[b_hi:c_lo], seps)
+                    or (comp != "any" and not edge(text[a_hi:b_lo], seps)) or not edge(text[b_hi:c_lo], seps)
                     or not edge(text[c_hi:], terms) or not derived_ok(witness, want, cap)):
                 return None
             return "conditional"

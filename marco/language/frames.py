@@ -206,13 +206,15 @@ def _selected_reference_forms(parser):
             "ignore_case": isinstance(data, dict) and bool(data.get("ignore_case"))}
 
 
-def _reference_span_ok(ref, text, atom_ok, blocked, source=None, span=None):
+def _reference_span_ok(ref, text, atom_ok, blocked, source=None, span=None, under=None):
     """Exact original-source span acceptance: atomic head, or owner[+suffix] + one space + selected tail."""
     import re
     if not isinstance(text, str) or not text or not isinstance(source, str) \
             or not isinstance(span, (list, tuple)) or len(span) != 2 \
             or any(type(x) is not int for x in span) or not 0 <= span[0] < span[1] <= len(source) \
             or source[span[0]:span[1]] != text:
+        return False
+    if under is not None and under(text):
         return False
     if not any(c.isspace() for c in text):
         return bool(atom_ok(text))
@@ -231,7 +233,7 @@ def _reference_span_ok(ref, text, atom_ok, blocked, source=None, span=None):
             if suf and not (len(prefix) > len(suf) and fold(prefix).endswith(fold(suf))):
                 continue
             owner = prefix[:len(prefix) - len(suf)]
-            if owner and ref["name"].fullmatch(owner) \
+            if owner and ref["name"].fullmatch(owner) and not (under is not None and under(owner)) \
                     and atom_ok(owner) and not blocked(owner) and not any(blocked(w) for w in parts):
                 return True
     return False
@@ -460,7 +462,8 @@ def _bind_seed_roles(parser, source, declaration, frame, *, overlapping_alternat
     def span_ok(a, b):
         if a >= b or (a < pe and b > ps):
             return False
-        return _reference_span_ok(ref, source[a:b], head_ok, blocked, source, [a, b])
+        return _reference_span_ok(ref, source[a:b], head_ok, blocked, source, [a, b],
+                                  getattr(parser, "_reference_underspecified", None))
 
     scalar_pattern = None
     if three:
@@ -1107,7 +1110,8 @@ def _declared_route(parser, source, *, phase, legacy_witnesses=(), literal=None,
                                               (lambda t: t.casefold()) if flags else (lambda t: t))
 
             if not isinstance(head, str) or not _reference_span_ok(
-                    _selected_reference_forms(parser), head, atom_ok, word_blocked, source, cap.get("span")):
+                    _selected_reference_forms(parser), head, atom_ok, word_blocked, source, cap.get("span"),
+                    getattr(parser, "_reference_underspecified", None)):
                 return False
         for lo, hi in kernel_marks:
             if any(a <= lo and hi <= b for a, b in fixed):

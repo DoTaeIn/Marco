@@ -3336,6 +3336,12 @@
    "습니다",
    "며"
   ],
+  "subject_continuity": {
+   "from_predicates": [
+    "count"
+   ],
+   "actor_particle": "이"
+  },
   "time_order": {
    "before": [
     "기 전에"
@@ -5765,6 +5771,17 @@
    "kind": "regular"
   },
   {
+   "as": "가지",
+   "stems": [
+    "소유하",
+    "보유하"
+   ],
+   "endings": [
+    "go"
+   ],
+   "kind": "regular"
+  },
+  {
    "as": "있",
    "stems": [
     "계시"
@@ -7010,5 +7027,5370 @@
   "있는",
   "가진"
  ],
- "_이름밖": "이름에 들지 않는 낱말: 때와 차례를 말하는 부사(지금·현재·이제·아까·방금·어제·오늘·그때·이미·벌써·먼저·나중에·처음에·원래·그다음에), 되풀이(또·다시), 잇는 말(그러고·그리고). 이름이 이 낱말을 삼킨 읽기는 받지 않는다. 앞서 말한 물건을 도로 가리키는 말(그중·그중에서·그거·그것·그것들)도 이름에 들지 않는다. 가짐을 말하는 동사의 꼴(가지고·갖고·들고·보관하고·맡고·있는·가진: 가진쪽꼴의 가짐 동사 전부)도 이름에 들지 않는다(G5: `나 맡고 구슬`, `하루 보관 있는 구슬` 같은 이름을 만들지 않는다)."
+ "_이름밖": "이름에 들지 않는 낱말: 때와 차례를 말하는 부사(지금·현재·이제·아까·방금·어제·오늘·그때·이미·벌써·먼저·나중에·처음에·원래·그다음에), 되풀이(또·다시), 잇는 말(그러고·그리고). 이름이 이 낱말을 삼킨 읽기는 받지 않는다. 앞서 말한 물건을 도로 가리키는 말(그중·그중에서·그거·그것·그것들)도 이름에 들지 않는다. 가짐을 말하는 동사의 꼴(가지고·갖고·들고·보관하고·맡고·있는·가진: 가진쪽꼴의 가짐 동사 전부)도 이름에 들지 않는다(G5: `나 맡고 구슬`, `하루 보관 있는 구슬` 같은 이름을 만들지 않는다).",
+  "realizer": {
+    "_about": "Korean realizer declarations: orthography, case particles, lexicon, endings, expression candidates per frame, and the reading rules the semantic check applies. Particle mates, the inflection grammar, negation, numerals, senses and romanization are reused from styles/한국어.json through its parser; nothing here repeats them.",
+    "language": "한국어",
+    "version": {
+      "release": "0.6.0",
+      "round": "W6"
+    },
+    "negation_marker_key": "부정표지",
+    "pack": "styles/한국어.json",
+    "pack_keys": {
+      "_about": "Names the pack itself uses for these fields.",
+      "exception_codas": "받침예외",
+      "exception_form": "쓸것",
+      "negation_connective": "연결",
+      "negation_stem": "어간",
+      "negation_kind": "갈래"
+    },
+    "orthography": {
+      "word_separator": " ",
+      "sentence_separator": " ",
+      "list_separator": ", ",
+      "quotes": {
+        "double": [
+          "\"",
+          "\""
+        ],
+        "single": [
+          "'",
+          "'"
+        ]
+      },
+      "cite": [
+        " (",
+        ")"
+      ],
+      "cite_separator": ", ",
+      "symbols": {
+        "arrow": " → ",
+        "slash": "/",
+        "colon": ":",
+        "semicolon": "; ",
+        "middle_dot": "·",
+        "comma": ","
+      },
+      "punctuation": {
+        "declarative": ".",
+        "question": "?",
+        "request": "."
+      },
+      "initial_capital": false,
+      "digit_codas": {
+        "0": "ㅇ",
+        "1": "ㄹ",
+        "2": "",
+        "3": "ㅁ",
+        "4": "",
+        "5": "",
+        "6": "ㄱ",
+        "7": "ㄹ",
+        "8": "ㄹ",
+        "9": ""
+      },
+      "latin_codas": "romanization",
+      "compound": {
+        "_about": "The engine's compound subject (owner words, then item words) is said by juxtaposition.",
+        "join": "juxtapose"
+      }
+    },
+    "register": {
+      "default": "formal",
+      "from_endings": {
+        "informal": "casual",
+        "polite": "polite",
+        "formal_declarative": "formal",
+        "plain": "plain",
+        "indicative": "plain"
+      }
+    },
+    "sentence_endings": {
+      "option": {
+        "_about": "A reading offered as a choice (options): the quotative form, before 는 (줬다는, 있다는, 3개라는).",
+        "formal": "quotative",
+        "polite": "quotative",
+        "casual": "quotative",
+        "plain": "quotative",
+        "reading": "quotative"
+      },
+      "declarative": {
+        "formal": "formal_declarative",
+        "polite": "polite",
+        "casual": "informal",
+        "plain": "indicative",
+        "reading": "plain"
+      },
+      "question": {
+        "formal": "question_ga_polite",
+        "polite": "question_ga_polite",
+        "casual": "informal",
+        "plain": "question_ga",
+        "reading": "question_ga"
+      },
+      "request": {
+        "formal": "request_polite",
+        "polite": "request_polite",
+        "casual": "informal",
+        "plain": "request_polite",
+        "reading": "request_polite"
+      },
+      "before": {
+        "_about": "A clause said before 전: its predicate in the nominal form (-기), whatever the register.",
+        "formal": "nominal",
+        "polite": "nominal",
+        "casual": "nominal",
+        "plain": "nominal",
+        "reading": "nominal"
+      },
+      "after": {
+        "_about": "A clause said before 뒤: its predicate in the past adnominal form (-(으)ㄴ), whatever the register.",
+        "formal": "past_adnominal",
+        "polite": "past_adnominal",
+        "casual": "past_adnominal",
+        "plain": "past_adnominal",
+        "reading": "past_adnominal"
+      }
+    },
+    "grammar": {
+      "kinds": [
+        "copula"
+      ],
+      "endings": {
+        "formal_declarative": [
+          {
+            "steps": [
+              {
+                "op": "coda_suffix",
+                "coda": "ㅂ",
+                "open": "니다",
+                "closed": "습니다",
+                "drop_codas": [
+                  "ㄹ"
+                ]
+              }
+            ]
+          }
+        ],
+        "connective_ji": [
+          {
+            "steps": [
+              {
+                "op": "append",
+                "text": "지"
+              }
+            ]
+          }
+        ],
+        "whether": [
+          {
+            "steps": [
+              {
+                "op": "append",
+                "text": "는지"
+              }
+            ]
+          }
+        ],
+        "nominal": [
+          {
+            "steps": [
+              {
+                "op": "append",
+                "text": "기"
+              }
+            ]
+          }
+        ],
+        "future_whether": [
+          {
+            "steps": [
+              {
+                "op": "coda_suffix",
+                "coda": "ㄹ",
+                "open": "지",
+                "closed": "을지"
+              }
+            ]
+          }
+        ],
+        "question_kka_polite": [
+          {
+            "steps": [
+              {
+                "op": "coda_suffix",
+                "coda": "ㄹ",
+                "open": "까요",
+                "closed": "을까요"
+              }
+            ]
+          }
+        ],
+        "presumptive_formal": [
+          {
+            "steps": [
+              {
+                "op": "append",
+                "text": "겠습니다"
+              }
+            ]
+          }
+        ],
+        "quotative": [
+          {
+            "_about": "A clause quoted before 는 (options): a verb in its plain form (줬다, 준다, 있다); the copula is 라 / 이라 (grammar.copula).",
+            "when": {
+              "tense": "past"
+            },
+            "steps": [
+              {
+                "op": "append",
+                "text": "다"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "regular"
+            },
+            "steps": [
+              {
+                "op": "coda_suffix",
+                "coda": "ㄴ",
+                "open": "다",
+                "closed": "는다",
+                "drop_codas": [
+                  "ㄹ"
+                ]
+              }
+            ]
+          },
+          {
+            "steps": [
+              {
+                "op": "append",
+                "text": "다"
+              }
+            ]
+          }
+        ]
+      },
+      "negation": {
+        "not": {
+          "from_pack": true
+        },
+        "cannot": {
+          "connective": "지",
+          "aux": "못하",
+          "kind": "regular"
+        }
+      },
+      "copula": {
+        "stem": "이",
+        "kind": "copula",
+        "question_kind": "descriptive",
+        "bind": true,
+        "after_open": {
+          "informal": "야",
+          "plain": "다",
+          "whether": "인지",
+          "quotative": "라"
+        },
+        "after_closed": {
+          "informal": "이야",
+          "whether": "인지",
+          "quotative": "이라"
+        }
+      },
+      "noun_number": null,
+      "strategies": {
+        "verbs": "endings",
+        "case_marking": "particles"
+      }
+    },
+    "cases": {
+      "topic": {
+        "mate": "은"
+      },
+      "subject": {
+        "mate": "이"
+      },
+      "object": {
+        "mate": "을"
+      },
+      "goal": {
+        "mate": "으로"
+      },
+      "with": {
+        "mate": "과"
+      },
+      "recipient": {
+        "form": "에게"
+      },
+      "locative": {
+        "form": "에"
+      },
+      "source": {
+        "form": "에서"
+      },
+      "source_person": {
+        "_about": "From a person (받다's giver): 에게서.",
+        "form": "에게서"
+      },
+      "genitive": {
+        "form": "의"
+      },
+      "or": {
+        "closed": "이나",
+        "open": "나"
+      },
+      "goal_topic": {
+        "mate": "으로",
+        "then": "topic"
+      },
+      "locative_topic": {
+        "form": "에",
+        "then": "topic"
+      }
+    },
+    "counters": {
+      "count": {
+        "form": "개"
+      },
+      "turn": {
+        "_about": "The turn of a conversation, by its number (goal W4).",
+        "form": "번째"
+      }
+    },
+    "numbers": {
+      "_about": "How a number is said. Digits by default; numeral words (native Korean before a counter) when an expression asks for them.",
+      "style": "digits",
+      "words_need_counter": true,
+      "words": {
+        "1": "한",
+        "2": "두",
+        "3": "세",
+        "4": "네",
+        "5": "다섯",
+        "6": "여섯",
+        "7": "일곱",
+        "8": "여덟",
+        "9": "아홉",
+        "10": "열",
+        "20": "스무"
+      }
+    },
+    "relation_words": {
+      "location": "위치",
+      "count": "수량"
+    },
+    "person": {
+      "_about": "The persons of a conversation (meaning.json: holders). user: the words the user says of themself, by the case a reply's part gives the holder (a part with no case, or a holder said juxtaposed before what it holds: default); the reading the semantic check parses says the user so, and each word it says is one the pack groups with its first person (임자자리말 나; 자리말 나, 내); the humble forms (저, 제) are the user's words in a polite register, turned like the others when a holder is named with them (제 룸메이트 -> 룸메이트). addressee: the user is not said in a topic or a subject, juxtaposed before what they hold, or as a possessor (zero anaphora), and a predicate that agrees with them takes the honorific stem -(으)시- (a stem that ends in ㄹ drops it: 알 -> 아시; a negated predicate takes it on the negation's auxiliary: 같지 않으십니다). Round 5 (request G4-2): the user is not said either as a member of a list its particle joins (with: 오다와 합쳐서 … 있으십니다; 자두는 오다와 똑같이 4개 있으십니다), where the clause's predicate honours the list. The user left unsaid is always said by the honorific of a predicate in the same clause; a clause without one is not said (the grammar refuses it). The user in any other case is not declared, and a clause that needs it is not said.",
+      "user": {
+        "subject": "내",
+        "possessive": "내",
+        "default": "나",
+        "humble": "저",
+        "humble_possessive": "제"
+      },
+      "addressee": {
+        "topic": "",
+        "subject": "",
+        "juxtaposed": "",
+        "possessive": "",
+        "humble": "",
+        "humble_possessive": "",
+        "with": ""
+      },
+      "honorific": {
+        "closed": "으시",
+        "open": "시",
+        "drop_codas": [
+          "ㄹ"
+        ],
+        "negation": "auxiliary"
+      }
+    },
+    "lexicon": {
+      "this": {
+        "word": "이"
+      },
+      "conversation": {
+        "word": "대화"
+      },
+      "experience": {
+        "word": "적"
+      },
+      "so": {
+        "word": "그래서"
+      },
+      "now": {
+        "word": "이제"
+      },
+      "who": {
+        "word": "누구"
+      },
+      "among": {
+        "word": "가운데"
+      },
+      "other": {
+        "word": "다른"
+      },
+      "person": {
+        "word": "사람"
+      },
+      "same": {
+        "word": "같은"
+      },
+      "event": {
+        "word": "사건"
+      },
+      "amount": {
+        "word": "수량"
+      },
+      "new": {
+        "word": "새"
+      },
+      "correction": {
+        "word": "정정"
+      },
+      "because": {
+        "word": "때문"
+      },
+      "side": {
+        "word": "쪽"
+      },
+      "that_much": {
+        "word": "그만큼"
+      },
+      "basis": {
+        "word": "근거"
+      },
+      "rule": {
+        "word": "규칙"
+      },
+      "these": {
+        "word": "이"
+      },
+      "among_these": {
+        "word": "가운데"
+      },
+      "repair": {
+        "_about": "The pack's own label for a repair: the word its repair note encloses.",
+        "from_pack": {
+          "reply": "repaired",
+          "enclosed": [
+            "[",
+            "]"
+          ]
+        }
+      },
+      "word": {
+        "word": "말"
+      },
+      "particle": {
+        "word": "조사"
+      },
+      "behind": {
+        "word": "뒤"
+      },
+      "instead": {
+        "word": "대신"
+      },
+      "just_as_adv": {
+        "word": "똑같이"
+      },
+      "receiving_adn": {
+        "word": "받는"
+      },
+      "have_v": {
+        "verb": "가지",
+        "kind": "regular"
+      },
+      "quote_neun": {
+        "_about": "After a plain-form clause offered as a reading: 다는.",
+        "word": "는"
+      },
+      "remark_n": {
+        "word": "말씀"
+      },
+      "way_kind_n": {
+        "word": "가지"
+      },
+      "be_read": {
+        "verb": "읽히",
+        "kind": "regular"
+      },
+      "ending_form": {
+        "word": "맺음꼴"
+      },
+      "order": {
+        "word": "순서"
+      },
+      "cost": {
+        "word": "비용"
+      },
+      "answer_n": {
+        "word": "답"
+      },
+      "exist": {
+        "verb": "있",
+        "kind": "existential"
+      },
+      "not_exist": {
+        "verb": "없",
+        "kind": "descriptive"
+      },
+      "give": {
+        "verb": "주",
+        "kind": "regular"
+      },
+      "receive": {
+        "verb": "받",
+        "kind": "regular"
+      },
+      "lose": {
+        "verb": "잃",
+        "kind": "regular"
+      },
+      "gain": {
+        "verb": "얻",
+        "kind": "regular"
+      },
+      "fix": {
+        "verb": "고치",
+        "kind": "regular"
+      },
+      "add": {
+        "verb": "더하",
+        "kind": "regular"
+      },
+      "answer": {
+        "verb": "답하",
+        "kind": "regular"
+      },
+      "record": {
+        "verb": "반영하",
+        "kind": "regular"
+      },
+      "come_up": {
+        "verb": "나오",
+        "kind": "regular"
+      },
+      "know": {
+        "verb": "알",
+        "kind": "regular"
+      },
+      "point_to": {
+        "verb": "가리키",
+        "kind": "regular"
+      },
+      "be_right": {
+        "verb": "맞",
+        "kind": "regular"
+      },
+      "confirm": {
+        "verb": "확인하",
+        "kind": "regular"
+      },
+      "give_aux": {
+        "verb": "주",
+        "kind": "regular"
+      },
+      "decide": {
+        "verb": "정하",
+        "kind": "regular"
+      },
+      "read": {
+        "verb": "읽",
+        "kind": "regular"
+      },
+      "hold": {
+        "verb": "보류하",
+        "kind": "regular"
+      },
+      "move": {
+        "verb": "옮기",
+        "kind": "regular"
+      },
+      "remove": {
+        "verb": "빼",
+        "kind": "regular"
+      },
+      "attach": {
+        "verb": "붙이",
+        "kind": "regular"
+      },
+      "write": {
+        "verb": "쓰",
+        "kind": "regular"
+      },
+      "change": {
+        "verb": "바꾸",
+        "kind": "regular"
+      },
+      "skip": {
+        "verb": "건너뛰",
+        "kind": "regular"
+      },
+      "statement": {
+        "word": "말"
+      },
+      "already": {
+        "word": "이미"
+      },
+      "state": {
+        "word": "상태"
+      },
+      "fit": {
+        "verb": "맞",
+        "kind": "regular"
+      },
+      "yet": {
+        "word": "아직"
+      },
+      "current": {
+        "word": "지금"
+      },
+      "value": {
+        "word": "값"
+      },
+      "again": {
+        "word": "다시"
+      },
+      "say": {
+        "verb": "말하",
+        "kind": "regular"
+      },
+      "earlier": {
+        "word": "앞선"
+      },
+      "find": {
+        "verb": "찾",
+        "kind": "regular"
+      },
+      "held_tag": {
+        "word": "[보류]"
+      },
+      "bound": {
+        "word": "한도"
+      },
+      "reckoning": {
+        "word": "셈"
+      },
+      "thing": {
+        "word": "것"
+      },
+      "last_adj": {
+        "word": "앞"
+      },
+      "sentence": {
+        "word": "문장"
+      },
+      "together": {
+        "word": "합쳐서"
+      },
+      "more_adv": {
+        "word": "더"
+      },
+      "many": {
+        "verb": "많",
+        "kind": "descriptive"
+      },
+      "few": {
+        "verb": "적",
+        "kind": "descriptive"
+      },
+      "count_n": {
+        "word": "수"
+      },
+      "before_n": {
+        "word": "전"
+      },
+      "after_n": {
+        "word": "뒤"
+      },
+      "quote_adn": {
+        "word": "라는"
+      },
+      "happening_n": {
+        "word": "일"
+      },
+      "answer_yes": {
+        "_about": "The pack's own yes: the word its answer that two counts are the same begins with.",
+        "from_pack": {
+          "answer": "same"
+        }
+      },
+      "answer_no": {
+        "_about": "The pack's own no: the word its answer that two counts differ begins with.",
+        "from_pack": {
+          "answer": "different"
+        }
+      },
+      "about_adn": {
+        "word": "대한"
+      },
+      "condition": {
+        "word": "조건"
+      },
+      "meaning_n": {
+        "word": "뜻"
+      },
+      "inform": {
+        "verb": "알리",
+        "kind": "regular"
+      },
+      "explain": {
+        "verb": "설명하",
+        "kind": "regular"
+      },
+      "record_n": {
+        "word": "기록"
+      },
+      "all": {
+        "word": "다"
+      },
+      "use": {
+        "verb": "쓰",
+        "kind": "regular"
+      },
+      "explanation_n": {
+        "word": "설명"
+      },
+      "i_humble": {
+        "word": "제가"
+      },
+      "write_down": {
+        "verb": "적",
+        "kind": "regular"
+      },
+      "base_n": {
+        "word": "기준"
+      },
+      "divide_evenly": {
+        "verb": "나누어떨어지",
+        "kind": "regular"
+      },
+      "how_many": {
+        "word": "몇"
+      },
+      "none_adv": {
+        "word": "하나도"
+      },
+      "know_adn": {
+        "word": "알"
+      },
+      "way_n": {
+        "word": "수"
+      },
+      "put": {
+        "verb": "두",
+        "kind": "regular"
+      },
+      "take_away": {
+        "verb": "가져가",
+        "kind": "regular"
+      },
+      "be_moved": {
+        "verb": "옮겨지",
+        "kind": "regular"
+      },
+      "piece": {
+        "word": "개"
+      },
+      "divide": {
+        "verb": "나누",
+        "kind": "regular"
+      },
+      "measure": {
+        "verb": "재",
+        "kind": "regular"
+      },
+      "need": {
+        "verb": "필요하",
+        "kind": "descriptive"
+      },
+      "state_n": {
+        "word": "상태"
+      },
+      "place_n": {
+        "word": "위치"
+      },
+      "several": {
+        "word": "여럿"
+      },
+      "which_det": {
+        "word": "어느"
+      },
+      "make_clear": {
+        "verb": "밝히",
+        "kind": "regular"
+      },
+      "relation_n": {
+        "word": "관계"
+      },
+      "that_det": {
+        "word": "그"
+      },
+      "action": {
+        "word": "동작"
+      },
+      "do": {
+        "verb": "하",
+        "kind": "regular"
+      },
+      "way": {
+        "word": "길"
+      },
+      "too": {
+        "word": "너무"
+      },
+      "short_adv": {
+        "word": "짧게"
+      },
+      "speak": {
+        "verb": "말씀하",
+        "kind": "regular"
+      },
+      "definition_n": {
+        "word": "뜻풀이"
+      },
+      "slot_n": {
+        "word": "자리"
+      },
+      "cover": {
+        "verb": "다루",
+        "kind": "regular"
+      },
+      "differ": {
+        "verb": "다르",
+        "kind": "descriptive"
+      },
+      "empty": {
+        "verb": "비",
+        "kind": "regular"
+      },
+      "fill": {
+        "verb": "채우",
+        "kind": "regular"
+      },
+      "wait": {
+        "verb": "기다리",
+        "kind": "regular"
+      },
+      "where_until": {
+        "word": "어디까지"
+      },
+      "choose": {
+        "verb": "고르",
+        "kind": "regular"
+      },
+      "one_n": {
+        "word": "하나"
+      },
+      "nearest": {
+        "word": "가장"
+      },
+      "near_adn": {
+        "word": "가까운"
+      },
+      "reading_n": {
+        "word": "읽기"
+      },
+      "what_n": {
+        "word": "무엇"
+      },
+      "easy_adv": {
+        "word": "쉽게"
+      },
+      "little": {
+        "word": "조금"
+      },
+      "detail_adv": {
+        "word": "자세히"
+      },
+      "knowledge_pack": {
+        "word": "지식팩"
+      },
+      "topic_n": {
+        "word": "주제"
+      },
+      "sure": {
+        "verb": "확실하",
+        "kind": "descriptive"
+      },
+      "question_n": {
+        "word": "물음"
+      },
+      "graph_n": {
+        "word": "그래프"
+      },
+      "take_on": {
+        "verb": "맡",
+        "kind": "regular"
+      },
+      "several_adn": {
+        "word": "여러"
+      },
+      "source_n": {
+        "word": "원문"
+      },
+      "complete_adn": {
+        "word": "완결된"
+      },
+      "knowledge": {
+        "word": "지식"
+      },
+      "make": {
+        "verb": "만들",
+        "kind": "regular"
+      },
+      "together_adv": {
+        "word": "함께"
+      },
+      "present_adj": {
+        "word": "현재"
+      },
+      "candidate_n": {
+        "word": "후보"
+      },
+      "execute": {
+        "verb": "실행하",
+        "kind": "regular"
+      },
+      "before_adv": {
+        "word": "앞서"
+      },
+      "asked_adn": {
+        "word": "여쭌"
+      },
+      "not_be": {
+        "verb": "아니",
+        "kind": "descriptive"
+      },
+      "alike": {
+        "verb": "같",
+        "kind": "descriptive"
+      },
+      "correct_v": {
+        "verb": "정정하",
+        "kind": "regular"
+      },
+      "cannot_short": {
+        "word": "못"
+      },
+      "become": {
+        "verb": "되",
+        "kind": "regular"
+      },
+      "cancel": {
+        "verb": "취소하",
+        "kind": "regular"
+      },
+      "follow": {
+        "verb": "따르",
+        "kind": "regular"
+      },
+      "ask_hon": {
+        "_about": "To ask, said of the one addressed: the stem with the honorific.",
+        "verb": "물으시",
+        "kind": "regular"
+      },
+      "quote_go": {
+        "_about": "The ending that closes a quotation before a verb of saying.",
+        "word": "라고"
+      },
+      "first_adv": {
+        "word": "처음에"
+      },
+      "at_least": {
+        "word": "적어도"
+      },
+      "hear": {
+        "verb": "듣",
+        "kind": "regular"
+      }
+    },
+    "lexicon_forms": {},
+    "expressions": {
+      "count": [
+        {
+          "id": "count_addressee_exist",
+          "_about": "The user's count: the user is not said, the existence verb takes the honorific (사과는 3개 있으십니다; an answer: 3개 있으십니다).",
+          "when": {
+            "holder": {
+              "owner": "speaker"
+            }
+          },
+          "requires": [
+            "owner"
+          ],
+          "parts": [
+            {
+              "np": [
+                "owner",
+                "item"
+              ],
+              "case": "topic"
+            },
+            {
+              "num": "value",
+              "counter": "count"
+            },
+            {
+              "verb": "exist",
+              "predicate": true,
+              "honor": "owner",
+              "negation": "not"
+            }
+          ]
+        },
+        {
+          "id": "count_place_exist",
+          "_about": "A place's count: the things are in the place (창고에는 상자가 5개 있습니다).",
+          "when": {
+            "holder": {
+              "owner": "place"
+            }
+          },
+          "requires": [
+            "owner"
+          ],
+          "parts": [
+            {
+              "np": [
+                "owner"
+              ],
+              "case": "locative_topic"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "num": "value",
+              "counter": "count"
+            },
+            {
+              "verb": "exist",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        },
+        {
+          "id": "count_topic_copula",
+          "when": {
+            "holder": {
+              "owner": [
+                "name",
+                "place",
+                "named"
+              ]
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "owner",
+                "item"
+              ],
+              "case": "topic"
+            },
+            {
+              "num": "value",
+              "counter": "count",
+              "cop": "predicate"
+            }
+          ]
+        },
+        {
+          "id": "count_topic_exist",
+          "_about": "A holder's count said with the holder as topic and the thing as subject (나은은 사탕이 7개 있습니다), for a name whose juxtaposed saying the pack reads otherwise (나은 사탕은 → 나 + 은).",
+          "when": {
+            "holder": {
+              "owner": [
+                "name",
+                "named"
+              ]
+            }
+          },
+          "requires": [
+            "owner"
+          ],
+          "parts": [
+            {
+              "np": [
+                "owner"
+              ],
+              "case": "topic"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "num": "value",
+              "counter": "count"
+            },
+            {
+              "verb": "exist",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "count_none": [
+        {
+          "id": "none_not_even_one",
+          "_about": "A count of zero: not even one (민수 사과는 하나도 없습니다; an answer: 하나도 없습니다).",
+          "parts": [
+            {
+              "np": [
+                "owner",
+                "item"
+              ],
+              "case": "topic"
+            },
+            {
+              "lex": "none_adv"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true,
+              "honor": "owner"
+            }
+          ]
+        }
+      ],
+      "count_unknown": [
+        {
+          "id": "unknown_place_exists_but",
+          "_about": "A vague count in a place: the things are there, how many cannot be known (도서관에는 머핀이 있지만 몇 개인지 알 수 없습니다).",
+          "when": {
+            "polarity": false,
+            "holder": {
+              "owner": "place"
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "owner"
+              ],
+              "case": "locative_topic"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "verb": "exist",
+              "ending": "contrast"
+            },
+            {
+              "lex": "how_many"
+            },
+            {
+              "lex": "piece",
+              "cop": "whether"
+            },
+            {
+              "lex": "know_adn"
+            },
+            {
+              "lex": "way_n"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "unknown_exists_but",
+          "_about": "A vague count: the holder has the thing, how many cannot be known (우나는 배가 있지만 몇 개인지 알 수 없습니다).",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "np": [
+                "owner"
+              ],
+              "case": "topic"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "verb": "exist",
+              "ending": "contrast",
+              "honor": "owner"
+            },
+            {
+              "lex": "how_many"
+            },
+            {
+              "lex": "piece",
+              "cop": "whether"
+            },
+            {
+              "lex": "know_adn"
+            },
+            {
+              "lex": "way_n"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "count_before_unheard": [
+        {
+          "id": "before_place_not_heard",
+          "_about": "A place's count before was never said (창고에는 처음에 연필이 몇 개 있었는지 듣지 못했습니다).",
+          "when": {
+            "polarity": false,
+            "holder": {
+              "owner": "place"
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "owner"
+              ],
+              "case": "locative_topic"
+            },
+            {
+              "lex": "first_adv"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "lex": "how_many"
+            },
+            {
+              "lex": "piece"
+            },
+            {
+              "verb": "exist",
+              "ending": "whether"
+            },
+            {
+              "verb": "hear",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        },
+        {
+          "id": "before_not_heard",
+          "_about": "The holder's count before was never said (하늘은 처음에 연필이 몇 개 있었는지 듣지 못했습니다).",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "np": [
+                "owner"
+              ],
+              "case": "topic"
+            },
+            {
+              "lex": "first_adv"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "lex": "how_many"
+            },
+            {
+              "lex": "piece"
+            },
+            {
+              "verb": "exist",
+              "ending": "whether",
+              "honor": "owner"
+            },
+            {
+              "verb": "hear",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "count_at_least": [
+        {
+          "id": "at_least_place_exist",
+          "_about": "The least a place is known to hold (창고에는 연필이 적어도 3개 있습니다).",
+          "when": {
+            "holder": {
+              "owner": "place"
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "owner"
+              ],
+              "case": "locative_topic"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "lex": "at_least"
+            },
+            {
+              "num": "value",
+              "counter": "count"
+            },
+            {
+              "verb": "exist",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "at_least_exist",
+          "_about": "The least a holder is known to have (하늘은 연필이 적어도 3개 있습니다).",
+          "parts": [
+            {
+              "np": [
+                "owner"
+              ],
+              "case": "topic"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "lex": "at_least"
+            },
+            {
+              "num": "value",
+              "counter": "count"
+            },
+            {
+              "verb": "exist",
+              "predicate": true,
+              "honor": "owner"
+            }
+          ]
+        }
+      ],
+      "count_whose": [
+        {
+          "id": "whose_count_unknown",
+          "_about": "A number no holder was named for ('4'가 누구의 수인지 알지 못합니다).",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "word",
+              "marks": "single",
+              "case": "subject"
+            },
+            {
+              "lex": "who",
+              "case": "genitive"
+            },
+            {
+              "lex": "count_n",
+              "cop": "whether"
+            },
+            {
+              "verb": "know",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "location": [
+        {
+          "id": "location_exist",
+          "parts": [
+            {
+              "np": [
+                "theme"
+              ],
+              "case": "topic"
+            },
+            {
+              "np": [
+                "place"
+              ],
+              "case": "locative"
+            },
+            {
+              "verb": "exist",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "transfer": [
+        {
+          "id": "transfer_receive_from",
+          "_about": "To the user (request G4-2): said from the receiver's side, the user not said and 받다 honouring them (오다에게서 자두 2개를 받으셨습니다); the pack reads 받다 by its role swap.",
+          "when": {
+            "holder": {
+              "giver": [
+                "name",
+                "named"
+              ],
+              "receiver": "speaker"
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "receiver"
+              ],
+              "case": "subject"
+            },
+            {
+              "np": [
+                "giver"
+              ],
+              "case": "source_person"
+            },
+            {
+              "np": [
+                "item"
+              ]
+            },
+            {
+              "num": "amount",
+              "counter": "count",
+              "case": "object",
+              "elided_case": "previous"
+            },
+            {
+              "verb": "receive",
+              "predicate": true,
+              "honor": "receiver",
+              "negation": "not"
+            }
+          ]
+        },
+        {
+          "id": "transfer_give",
+          "when": {
+            "holder": {
+              "giver": [
+                "name",
+                "speaker",
+                "named"
+              ],
+              "receiver": [
+                "name",
+                "named"
+              ]
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "giver"
+              ],
+              "case": "subject"
+            },
+            {
+              "np": [
+                "receiver"
+              ],
+              "case": "recipient"
+            },
+            {
+              "np": [
+                "item"
+              ]
+            },
+            {
+              "num": "amount",
+              "counter": "count",
+              "case": "object",
+              "elided_case": "previous"
+            },
+            {
+              "verb": "give",
+              "predicate": true,
+              "honor": "giver",
+              "negation": "not"
+            }
+          ]
+        },
+        {
+          "id": "transfer_put_at",
+          "_about": "Into a place: the giver put the things there (창고에 상자 3개를 뒀습니다).",
+          "when": {
+            "holder": {
+              "giver": [
+                "name",
+                "speaker",
+                "named"
+              ],
+              "receiver": "place"
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "giver"
+              ],
+              "case": "subject"
+            },
+            {
+              "np": [
+                "receiver"
+              ],
+              "case": "locative"
+            },
+            {
+              "np": [
+                "item"
+              ]
+            },
+            {
+              "num": "amount",
+              "counter": "count",
+              "case": "object",
+              "elided_case": "previous"
+            },
+            {
+              "verb": "put",
+              "predicate": true,
+              "honor": "giver",
+              "negation": "not"
+            }
+          ]
+        },
+        {
+          "id": "transfer_take_from",
+          "_about": "Out of a place: the receiver took the things from it (창고에서 상자 3개를 가져갔습니다).",
+          "when": {
+            "holder": {
+              "giver": "place",
+              "receiver": [
+                "name",
+                "speaker",
+                "named"
+              ]
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "receiver"
+              ],
+              "case": "subject"
+            },
+            {
+              "np": [
+                "giver"
+              ],
+              "case": "source"
+            },
+            {
+              "np": [
+                "item"
+              ]
+            },
+            {
+              "num": "amount",
+              "counter": "count",
+              "case": "object",
+              "elided_case": "previous"
+            },
+            {
+              "verb": "take_away",
+              "predicate": true,
+              "honor": "receiver",
+              "negation": "not"
+            }
+          ]
+        },
+        {
+          "id": "transfer_moved_between",
+          "_about": "From one place to another: the things were moved (상자 3개가 북쪽 창고에서 남쪽 창고로 옮겨졌습니다).",
+          "when": {
+            "holder": {
+              "giver": "place",
+              "receiver": "place"
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "item"
+              ]
+            },
+            {
+              "num": "amount",
+              "counter": "count",
+              "case": "subject",
+              "elided_case": "previous"
+            },
+            {
+              "np": [
+                "giver"
+              ],
+              "case": "source"
+            },
+            {
+              "np": [
+                "receiver"
+              ],
+              "case": "goal"
+            },
+            {
+              "verb": "be_moved",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "known": [
+        {
+          "id": "known_never_came_up_addressee",
+          "_about": "The user's thing is known, the relation never came up (이 대화에서 가지신 사탕의 위치는 나온 적이 없습니다).",
+          "when": {
+            "polarity": false,
+            "holder": {
+              "subject": "speaker"
+            }
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "source"
+            },
+            {
+              "verb": "have_v",
+              "tense": "present",
+              "ending": "past_adnominal",
+              "honor": "subject"
+            },
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "genitive"
+            },
+            {
+              "rel": "relation",
+              "case": "topic"
+            },
+            {
+              "verb": "come_up",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "experience",
+              "case": "subject"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "known_never_came_up",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "source"
+            },
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "genitive"
+            },
+            {
+              "rel": "relation",
+              "case": "topic"
+            },
+            {
+              "verb": "come_up",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "experience",
+              "case": "subject"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "answered": [
+        {
+          "id": "answered_not",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "so"
+            },
+            {
+              "verb": "answer",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "recorded": [
+        {
+          "id": "recorded",
+          "parts": [
+            {
+              "verb": "record",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "reference": [
+        {
+          "id": "reference_unknown",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "word",
+              "marks": "single",
+              "case": "subject"
+            },
+            {
+              "lex": "who",
+              "case": "object"
+            },
+            {
+              "verb": "point_to",
+              "ending": "whether"
+            },
+            {
+              "verb": "know",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "choice": [
+        {
+          "id": "choice_who",
+          "parts": [
+            {
+              "list": "candidates",
+              "each": {
+                "quote": "$item",
+                "marks": "single"
+              }
+            },
+            {
+              "lex": "among"
+            },
+            {
+              "lex": "who",
+              "cop": "predicate"
+            }
+          ]
+        }
+      ],
+      "other_than": [
+        {
+          "id": "other_than_if",
+          "parts": [
+            {
+              "quote": "word",
+              "marks": "single",
+              "case": "subject"
+            },
+            {
+              "np": [
+                "excluded"
+              ],
+              "cop": "condition"
+            },
+            {
+              "lex": "other"
+            },
+            {
+              "lex": "person",
+              "case": "topic"
+            },
+            {
+              "np": [
+                "other"
+              ],
+              "cop": "predicate"
+            }
+          ]
+        }
+      ],
+      "confirm": [
+        {
+          "id": "confirm_request",
+          "parts": [
+            {
+              "np": [
+                "other"
+              ],
+              "case": "subject"
+            },
+            {
+              "verb": "be_right",
+              "ending": "whether"
+            },
+            {
+              "verb": "confirm",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "assumed": [
+        {
+          "id": "assumed_not",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "np": [
+                "other"
+              ],
+              "case": "goal"
+            },
+            {
+              "verb": "decide",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "corrected": [
+        {
+          "id": "corrected_amount",
+          "parts": [
+            {
+              "lex": "same"
+            },
+            {
+              "lex": "event"
+            },
+            {
+              "quote": "event",
+              "marks": "double",
+              "case": "genitive"
+            },
+            {
+              "lex": "amount",
+              "case": "object"
+            },
+            {
+              "num": "old",
+              "counter": "count",
+              "case": "source"
+            },
+            {
+              "num": "new",
+              "counter": "count",
+              "case": "goal"
+            },
+            {
+              "verb": "fix",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "new_event": [
+        {
+          "id": "new_event_not_added",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "new"
+            },
+            {
+              "lex": "event",
+              "case": "topic"
+            },
+            {
+              "verb": "add",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "cause": [
+        {
+          "id": "cause_correction",
+          "parts": [
+            {
+              "lex": "correction"
+            },
+            {
+              "quote": "utterance",
+              "marks": "double"
+            },
+            {
+              "lex": "because",
+              "cop": "predicate"
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "id": "evidence_basis",
+          "parts": [
+            {
+              "lex": "basis",
+              "case": "topic"
+            },
+            {
+              "list": "statements",
+              "each": {
+                "quote": "$item",
+                "marks": "double"
+              },
+              "cop": "predicate"
+            }
+          ]
+        }
+      ],
+      "repairs": [
+        {
+          "id": "repairs_listed",
+          "report": true,
+          "parts": [
+            {
+              "lex": "these"
+            },
+            {
+              "lex": "among_these"
+            },
+            {
+              "lex": "repair",
+              "case": "goal"
+            },
+            {
+              "verb": "read",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "word"
+            },
+            {
+              "sym": "colon",
+              "bind": true
+            },
+            {
+              "list": "pairs",
+              "each": {
+                "pair": "$item",
+                "marks": "double",
+                "join": "arrow"
+              },
+              "separator": "semicolon"
+            }
+          ]
+        },
+        {
+          "id": "repairs_listed_unlabelled",
+          "report": true,
+          "parts": [
+            {
+              "lex": "these"
+            },
+            {
+              "lex": "among_these"
+            },
+            {
+              "verb": "fix",
+              "ending": "informal"
+            },
+            {
+              "verb": "read",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "word"
+            },
+            {
+              "sym": "colon",
+              "bind": true
+            },
+            {
+              "list": "pairs",
+              "each": {
+                "pair": "$item",
+                "marks": "double",
+                "join": "arrow"
+              },
+              "separator": "semicolon"
+            }
+          ]
+        }
+      ],
+      "repair_note": [
+        {
+          "id": "repair_read_as",
+          "parts": [
+            {
+              "quote": "source",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "quote": "reading",
+              "marks": "double",
+              "case": "goal"
+            },
+            {
+              "verb": "read",
+              "predicate": true,
+              "tense": "past"
+            }
+          ]
+        }
+      ],
+      "repair_note_full": [
+        {
+          "id": "repair_read_as_full",
+          "parts": [
+            {
+              "quote": "source",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "quote": "reading",
+              "marks": "double",
+              "case": "goal"
+            },
+            {
+              "verb": "read",
+              "predicate": true
+            },
+            {
+              "cite": [
+                [
+                  {
+                    "lex": "rule"
+                  },
+                  {
+                    "quote": "rule",
+                    "marks": "double"
+                  }
+                ],
+                [
+                  {
+                    "list": "operations",
+                    "each": {
+                      "operation": "$item"
+                    }
+                  }
+                ],
+                [
+                  {
+                    "lex": "cost"
+                  },
+                  {
+                    "num": "cost"
+                  },
+                  {
+                    "sym": "slash",
+                    "bind": true
+                  },
+                  {
+                    "num": "bound",
+                    "bind": true
+                  }
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "changed": [
+        {
+          "id": "changed_nothing",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "last_adj"
+            },
+            {
+              "lex": "sentence",
+              "case": "source"
+            },
+            {
+              "verb": "fix",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "thing",
+              "case": "topic"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "total": [
+        {
+          "id": "total_with_addressee",
+          "_about": "A total that includes the user (request G4-2): the user is not said, the others are joined with 과/와 before 합쳐서, and the existence verb honours the list (오다와 합쳐서 자두가 8개 있으십니다).",
+          "when": {
+            "includes": {
+              "members": "speaker"
+            }
+          },
+          "parts": [
+            {
+              "list": "members",
+              "each": {
+                "np": [
+                  "$item"
+                ],
+                "person_case": "with"
+              },
+              "join_case": "with",
+              "case": "with"
+            },
+            {
+              "lex": "together"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "num": "value",
+              "counter": "count"
+            },
+            {
+              "verb": "exist",
+              "predicate": true,
+              "honor": "members"
+            }
+          ]
+        },
+        {
+          "id": "total_together",
+          "parts": [
+            {
+              "list": "members",
+              "each": {
+                "np": [
+                  "$item"
+                ]
+              },
+              "join_case": "with",
+              "case": "topic"
+            },
+            {
+              "lex": "together"
+            },
+            {
+              "np": [
+                "item"
+              ]
+            },
+            {
+              "num": "value",
+              "counter": "count",
+              "cop": "predicate"
+            }
+          ]
+        }
+      ],
+      "more": [
+        {
+          "id": "more_many",
+          "parts": [
+            {
+              "np": [
+                "item"
+              ],
+              "case": "topic"
+            },
+            {
+              "np": [
+                "winner"
+              ],
+              "case": "subject"
+            },
+            {
+              "lex": "more_adv"
+            },
+            {
+              "verb": "many",
+              "predicate": true,
+              "honor": "winner"
+            }
+          ]
+        }
+      ],
+      "fewer": [
+        {
+          "id": "fewer_few",
+          "parts": [
+            {
+              "np": [
+                "item"
+              ],
+              "case": "topic"
+            },
+            {
+              "np": [
+                "winner"
+              ],
+              "case": "subject"
+            },
+            {
+              "lex": "more_adv"
+            },
+            {
+              "verb": "few",
+              "predicate": true,
+              "honor": "winner"
+            }
+          ]
+        }
+      ],
+      "same_count": [
+        {
+          "id": "same_count_addressee_alike",
+          "_about": "The user holds as many as the others (request G4-2): the thing first, the others with 과/와, 똑같이, and the existence verb honours the list (자두는 오다와 똑같이 4개 있으십니다).",
+          "when": {
+            "polarity": true,
+            "includes": {
+              "members": "speaker"
+            }
+          },
+          "requires": [
+            "value"
+          ],
+          "parts": [
+            {
+              "np": [
+                "item"
+              ],
+              "case": "topic"
+            },
+            {
+              "list": "members",
+              "each": {
+                "np": [
+                  "$item"
+                ],
+                "person_case": "with"
+              },
+              "join_case": "with",
+              "case": "with"
+            },
+            {
+              "lex": "just_as_adv"
+            },
+            {
+              "num": "value",
+              "counter": "count"
+            },
+            {
+              "verb": "exist",
+              "predicate": true,
+              "honor": "members"
+            }
+          ]
+        },
+        {
+          "id": "same_count_addressee_not_alike",
+          "_about": "The user does not hold as many as the others (request G4-2): the count of the thing, the others with 과/와, and the negated verb honours the list on its auxiliary (자두 수가 오다와 같지 않으십니다).",
+          "when": {
+            "polarity": false,
+            "includes": {
+              "members": "speaker"
+            }
+          },
+          "parts": [
+            {
+              "np": [
+                "item"
+              ]
+            },
+            {
+              "lex": "count_n",
+              "case": "subject"
+            },
+            {
+              "list": "members",
+              "each": {
+                "np": [
+                  "$item"
+                ],
+                "person_case": "with"
+              },
+              "join_case": "with",
+              "case": "with"
+            },
+            {
+              "verb": "alike",
+              "predicate": true,
+              "negation": "not",
+              "honor": "members"
+            }
+          ]
+        },
+        {
+          "id": "same_count_alike",
+          "when": {
+            "polarity": true
+          },
+          "requires": [
+            "value"
+          ],
+          "parts": [
+            {
+              "list": "members",
+              "each": {
+                "np": [
+                  "$item"
+                ]
+              },
+              "join_case": "with",
+              "case": "topic"
+            },
+            {
+              "np": [
+                "item"
+              ],
+              "case": "subject"
+            },
+            {
+              "num": "value",
+              "counter": "count",
+              "case": "goal"
+            },
+            {
+              "verb": "alike",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "same_count_not_alike",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "list": "members",
+              "each": {
+                "np": [
+                  "$item"
+                ]
+              },
+              "join_case": "with",
+              "case": "topic"
+            },
+            {
+              "np": [
+                "item"
+              ]
+            },
+            {
+              "lex": "count_n",
+              "case": "subject"
+            },
+            {
+              "verb": "alike",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "event_said": [
+        {
+          "id": "event_quoted",
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double"
+            },
+            {
+              "lex": "quote_adn",
+              "bind": true
+            },
+            {
+              "lex": "happening_n",
+              "case": "subject"
+            },
+            {
+              "verb": "exist",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "heard": [
+        {
+          "id": "heard_never_addressee",
+          "_about": "The user's thing never came up: the user is not said, the thing is said as the one they have, honoured (이 대화에서 가지신 사탕에 대한 말은 나온 적이 없습니다).",
+          "when": {
+            "polarity": false,
+            "holder": {
+              "subject": "speaker"
+            }
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "source"
+            },
+            {
+              "verb": "have_v",
+              "tense": "present",
+              "ending": "past_adnominal",
+              "honor": "subject"
+            },
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "locative"
+            },
+            {
+              "lex": "about_adn"
+            },
+            {
+              "lex": "statement",
+              "case": "topic"
+            },
+            {
+              "verb": "come_up",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "experience",
+              "case": "subject"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "heard_never",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "source"
+            },
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "locative"
+            },
+            {
+              "lex": "about_adn"
+            },
+            {
+              "lex": "statement",
+              "case": "topic"
+            },
+            {
+              "verb": "come_up",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "experience",
+              "case": "subject"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "decided": [
+        {
+          "id": "decided_not",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "source"
+            },
+            {
+              "verb": "come_up",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "condition",
+              "case": "goal_topic"
+            },
+            {
+              "lex": "answer_n",
+              "case": "object"
+            },
+            {
+              "verb": "decide",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "word_known": [
+        {
+          "id": "word_not_known",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "word",
+              "marks": "double",
+              "case": "genitive"
+            },
+            {
+              "lex": "meaning_n",
+              "case": "object"
+            },
+            {
+              "lex": "yet"
+            },
+            {
+              "verb": "know",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "meaning_request": [
+        {
+          "id": "meaning_request",
+          "parts": [
+            {
+              "lex": "meaning_n",
+              "case": "object"
+            },
+            {
+              "verb": "inform",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "explainable": [
+        {
+          "id": "explainable_none",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "locative_topic"
+            },
+            {
+              "verb": "explain",
+              "tense": "present",
+              "ending": "adnominal_future"
+            },
+            {
+              "lex": "earlier"
+            },
+            {
+              "lex": "answer_n",
+              "case": "or"
+            },
+            {
+              "lex": "correction",
+              "case": "subject"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "correction_form": [
+        {
+          "id": "correction_form",
+          "parts": [
+            {
+              "lex": "earlier"
+            },
+            {
+              "lex": "sentence",
+              "case": "with"
+            },
+            {
+              "lex": "new"
+            },
+            {
+              "lex": "sentence",
+              "case": "object"
+            },
+            {
+              "lex": "together_adv"
+            },
+            {
+              "verb": "inform",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "limit_reached": [
+        {
+          "id": "limit_reached",
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "genitive"
+            },
+            {
+              "lex": "state_n"
+            },
+            {
+              "lex": "record_n"
+            },
+            {
+              "lex": "bound",
+              "case": "object"
+            },
+            {
+              "lex": "all"
+            },
+            {
+              "verb": "use",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "new_conversation": [
+        {
+          "id": "new_conversation",
+          "parts": [
+            {
+              "lex": "new"
+            },
+            {
+              "lex": "conversation",
+              "case": "source"
+            },
+            {
+              "lex": "condition",
+              "case": "object"
+            },
+            {
+              "lex": "again"
+            },
+            {
+              "verb": "inform",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "definition_read": [
+        {
+          "id": "definition_not_read",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "explanation_n"
+            },
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "lex": "yet"
+            },
+            {
+              "lex": "cannot_short"
+            },
+            {
+              "verb": "read",
+              "predicate": true,
+              "tense": "present",
+              "ending": "presumptive_formal"
+            }
+          ]
+        }
+      ],
+      "known_words_request": [
+        {
+          "id": "known_words_request",
+          "parts": [
+            {
+              "lex": "i_humble"
+            },
+            {
+              "verb": "know",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "word",
+              "case": "goal"
+            },
+            {
+              "lex": "again"
+            },
+            {
+              "verb": "write_down",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "basis_known": [
+        {
+          "id": "basis_not_known",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "genitive"
+            },
+            {
+              "lex": "base_n"
+            },
+            {
+              "lex": "amount",
+              "case": "object"
+            },
+            {
+              "verb": "know",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "basis_request": [
+        {
+          "id": "basis_request",
+          "parts": [
+            {
+              "lex": "base_n"
+            },
+            {
+              "lex": "amount",
+              "case": "object"
+            },
+            {
+              "verb": "inform",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "divides": [
+        {
+          "id": "divides_not",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "genitive"
+            },
+            {
+              "lex": "amount",
+              "case": "subject"
+            },
+            {
+              "verb": "divide_evenly",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "how_many_request": [
+        {
+          "id": "how_many_request",
+          "parts": [
+            {
+              "lex": "how_many"
+            },
+            {
+              "lex": "piece",
+              "case": "goal"
+            },
+            {
+              "verb": "divide",
+              "tense": "present",
+              "ending": "future_whether"
+            },
+            {
+              "verb": "inform",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "condition_checked": [
+        {
+          "id": "condition_not_checked",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "condition"
+            },
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "verb": "measure",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "state_found": [
+        {
+          "id": "state_not_found",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "locative"
+            },
+            {
+              "verb": "need",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "state_n",
+              "case": "object"
+            },
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "source"
+            },
+            {
+              "verb": "find",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "state_request": [
+        {
+          "id": "state_request",
+          "parts": [
+            {
+              "lex": "present_adj"
+            },
+            {
+              "lex": "place_n",
+              "case": "or"
+            },
+            {
+              "lex": "value",
+              "case": "object"
+            },
+            {
+              "verb": "inform",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "several_states": [
+        {
+          "id": "several_states",
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "locative"
+            },
+            {
+              "verb": "fit",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "state_n"
+            },
+            {
+              "lex": "candidate_n",
+              "case": "subject"
+            },
+            {
+              "lex": "several",
+              "cop": "predicate"
+            }
+          ]
+        }
+      ],
+      "which_request": [
+        {
+          "id": "which_request",
+          "parts": [
+            {
+              "lex": "which_det"
+            },
+            {
+              "lex": "thing",
+              "cop": "whether"
+            },
+            {
+              "verb": "make_clear",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "several_relations": [
+        {
+          "id": "several_relations",
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "locative"
+            },
+            {
+              "lex": "relation_n",
+              "case": "subject"
+            },
+            {
+              "lex": "several",
+              "cop": "predicate"
+            }
+          ]
+        }
+      ],
+      "condition_holds": [
+        {
+          "id": "condition_not_holding",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "condition"
+            },
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "subject"
+            },
+            {
+              "lex": "current"
+            },
+            {
+              "lex": "state_n",
+              "case": "with"
+            },
+            {
+              "verb": "fit",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "carried_out": [
+        {
+          "id": "not_carried_out",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "so"
+            },
+            {
+              "lex": "that_det"
+            },
+            {
+              "lex": "action",
+              "case": "object"
+            },
+            {
+              "verb": "execute",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "reading_fits": [
+        {
+          "id": "reading_fits_none",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "topic"
+            },
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "with"
+            },
+            {
+              "verb": "fit",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "reading_n",
+              "case": "subject"
+            },
+            {
+              "verb": "not_exist",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "several_readings": [
+        {
+          "id": "several_readings",
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "topic"
+            },
+            {
+              "lex": "several_adn"
+            },
+            {
+              "lex": "way_kind_n",
+              "case": "goal"
+            },
+            {
+              "verb": "be_read",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "many_readings": [
+        {
+          "id": "many_readings",
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "verb": "read",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "way",
+              "case": "subject"
+            },
+            {
+              "lex": "too"
+            },
+            {
+              "verb": "many",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "shorter_request": [
+        {
+          "id": "shorter_request",
+          "parts": [
+            {
+              "lex": "short_adv"
+            },
+            {
+              "verb": "divide",
+              "ending": "informal"
+            },
+            {
+              "verb": "speak",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "role_covered": [
+        {
+          "id": "role_not_covered",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "definition_n",
+              "case": "topic"
+            },
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "genitive"
+            },
+            {
+              "quote": "rest",
+              "marks": "single"
+            },
+            {
+              "lex": "slot_n",
+              "case": "object"
+            },
+            {
+              "verb": "cover",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "definition_conflict": [
+        {
+          "id": "definition_conflict",
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "genitive"
+            },
+            {
+              "quote": "given",
+              "marks": "single",
+              "case": "topic"
+            },
+            {
+              "lex": "definition_n",
+              "case": "genitive"
+            },
+            {
+              "quote": "declared",
+              "marks": "single",
+              "case": "with"
+            },
+            {
+              "verb": "differ",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "scope_ask": [
+        {
+          "id": "scope_ask",
+          "parts": [
+            {
+              "list": "choices",
+              "each": {
+                "quote": "$item",
+                "marks": "single"
+              }
+            },
+            {
+              "lex": "among"
+            },
+            {
+              "lex": "which_det"
+            },
+            {
+              "lex": "thing",
+              "cop": "predicate"
+            }
+          ]
+        }
+      ],
+      "event_settled": [
+        {
+          "id": "event_role_not_filled",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "genitive"
+            },
+            {
+              "list": "slots",
+              "each": {
+                "quote": "$item",
+                "marks": "single"
+              }
+            },
+            {
+              "lex": "slot_n",
+              "case": "object"
+            },
+            {
+              "lex": "yet"
+            },
+            {
+              "verb": "fill",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "fill_request": [
+        {
+          "id": "fill_request",
+          "parts": [
+            {
+              "lex": "that_det"
+            },
+            {
+              "lex": "slot_n",
+              "case": "object"
+            },
+            {
+              "verb": "fill",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "role_empty": [
+        {
+          "id": "role_not_filled",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "genitive"
+            },
+            {
+              "list": "slots",
+              "each": {
+                "quote": "$item",
+                "marks": "single"
+              }
+            },
+            {
+              "lex": "slot_n",
+              "case": "object"
+            },
+            {
+              "lex": "yet"
+            },
+            {
+              "verb": "fill",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "slot_question": [
+        {
+          "id": "slot_question",
+          "parts": [
+            {
+              "lookup": "slot",
+              "table": "slot_words"
+            },
+            {
+              "verb": "do",
+              "predicate": true,
+              "ending": "question_nayo"
+            }
+          ]
+        }
+      ],
+      "short_answer_request": [
+        {
+          "id": "short_answer_request",
+          "parts": [
+            {
+              "lex": "short_adv"
+            },
+            {
+              "verb": "answer",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "which_event": [
+        {
+          "id": "which_event_not_known",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "list": "items",
+              "each": {
+                "quote": "$item",
+                "marks": "double"
+              }
+            },
+            {
+              "lex": "among"
+            },
+            {
+              "lex": "which_det"
+            },
+            {
+              "lex": "side"
+            },
+            {
+              "lex": "answer_n",
+              "cop": "whether"
+            },
+            {
+              "verb": "know",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "role_answer": [
+        {
+          "id": "role_answer_other",
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "topic"
+            },
+            {
+              "lex": "asked_adn"
+            },
+            {
+              "lex": "slot_n",
+              "case": "locative"
+            },
+            {
+              "lex": "about_adn"
+            },
+            {
+              "lex": "answer_n",
+              "case": "subject"
+            },
+            {
+              "verb": "not_be",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "thing"
+            },
+            {
+              "verb": "alike",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "value_confirm": [
+        {
+          "id": "value_confirm",
+          "parts": [
+            {
+              "quote": "value",
+              "marks": "single",
+              "case": "subject"
+            },
+            {
+              "verb": "be_right",
+              "ending": "whether"
+            },
+            {
+              "verb": "confirm",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "answer_taken": [
+        {
+          "id": "answer_not_taken",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "lex": "answer_n",
+              "case": "goal"
+            },
+            {
+              "verb": "read",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "scope_understood": [
+        {
+          "id": "scope_not_understood",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "subject"
+            },
+            {
+              "lex": "where_until",
+              "cop": "whether"
+            },
+            {
+              "verb": "know",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "target_ask": [
+        {
+          "id": "target_ask",
+          "parts": [
+            {
+              "list": "choices",
+              "each": {
+                "quote": "$item",
+                "marks": "single"
+              }
+            },
+            {
+              "lex": "among"
+            },
+            {
+              "lex": "what_n",
+              "case": "object"
+            },
+            {
+              "verb": "correct_v",
+              "predicate": true,
+              "ending": "question_kka_polite"
+            }
+          ]
+        }
+      ],
+      "scope_applied": [
+        {
+          "id": "scope_applied",
+          "parts": [
+            {
+              "quote": "scope",
+              "marks": "single",
+              "case": "goal"
+            },
+            {
+              "verb": "record",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "role_filled": [
+        {
+          "id": "role_filled",
+          "parts": [
+            {
+              "lex": "before_adv"
+            },
+            {
+              "lex": "asked_adn"
+            },
+            {
+              "lex": "slot_n",
+              "case": "object"
+            },
+            {
+              "verb": "fill",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "new_event_request": [
+        {
+          "id": "new_event_request",
+          "parts": [
+            {
+              "lex": "new"
+            },
+            {
+              "lex": "event",
+              "cop": "condition"
+            },
+            {
+              "verb": "inform",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "several_events": [
+        {
+          "id": "several_events",
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "subject"
+            },
+            {
+              "verb": "point_to",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "event",
+              "case": "subject"
+            },
+            {
+              "lex": "several",
+              "cop": "predicate"
+            },
+            {
+              "sym": "colon",
+              "bind": true
+            },
+            {
+              "list": "items",
+              "each": {
+                "quote": "$item",
+                "marks": "double"
+              }
+            }
+          ]
+        }
+      ],
+      "chosen": [
+        {
+          "id": "not_chosen",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "so"
+            },
+            {
+              "verb": "choose",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "value_place": [
+        {
+          "id": "value_place_not_found",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "event",
+              "marks": "double",
+              "case": "source"
+            },
+            {
+              "num": "old",
+              "case": "genitive"
+            },
+            {
+              "lex": "slot_n",
+              "case": "object"
+            },
+            {
+              "lex": "one_n",
+              "case": "goal"
+            },
+            {
+              "verb": "decide",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "applied": [
+        {
+          "id": "not_applied",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "topic"
+            },
+            {
+              "verb": "record",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "protected_change": [
+        {
+          "id": "protected_change",
+          "parts": [
+            {
+              "lex": "nearest"
+            },
+            {
+              "lex": "near_adn"
+            },
+            {
+              "lex": "reading_n",
+              "case": "subject"
+            },
+            {
+              "list": "words",
+              "each": {
+                "quote": "$item",
+                "marks": "double"
+              },
+              "case": "object"
+            },
+            {
+              "verb": "change",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "recipient_corrected": [
+        {
+          "id": "recipient_corrected_received",
+          "_about": "A receiver corrected in place (request G4-1): the same event, who received before and who received now, each said as having received (같은 사건 \"…\"에서 준호가 받은 것을 도현이 받은 것으로 고쳤습니다); the user is not said and 받다 honours them (…에서 준호가 받은 것을 받으신 것으로 고쳤습니다).",
+          "when": {
+            "holder": {
+              "old": [
+                "name",
+                "speaker",
+                "named"
+              ],
+              "new": [
+                "name",
+                "speaker",
+                "named"
+              ]
+            }
+          },
+          "parts": [
+            {
+              "lex": "same"
+            },
+            {
+              "lex": "event"
+            },
+            {
+              "quote": "event",
+              "marks": "double",
+              "case": "source"
+            },
+            {
+              "np": [
+                "old"
+              ],
+              "case": "subject"
+            },
+            {
+              "verb": "receive",
+              "ending": "past_adnominal",
+              "tense": "present",
+              "honor": "old"
+            },
+            {
+              "lex": "thing",
+              "case": "object"
+            },
+            {
+              "np": [
+                "new"
+              ],
+              "case": "subject"
+            },
+            {
+              "verb": "receive",
+              "ending": "past_adnominal",
+              "tense": "present",
+              "honor": "new"
+            },
+            {
+              "lex": "thing",
+              "case": "goal"
+            },
+            {
+              "verb": "fix",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "recipient_corrected_side",
+          "_about": "A receiving side that is a place, corrected in place: the side the things went to, from the old to the new (같은 사건 \"…\"의 받는 쪽을 북쪽 창고에서 남쪽 창고로 고쳤습니다).",
+          "when": {
+            "holder": {
+              "old": [
+                "name",
+                "place",
+                "named"
+              ],
+              "new": [
+                "name",
+                "place",
+                "named"
+              ]
+            }
+          },
+          "parts": [
+            {
+              "lex": "same"
+            },
+            {
+              "lex": "event"
+            },
+            {
+              "quote": "event",
+              "marks": "double",
+              "case": "genitive"
+            },
+            {
+              "lex": "receiving_adn"
+            },
+            {
+              "lex": "side",
+              "case": "object"
+            },
+            {
+              "np": [
+                "old"
+              ],
+              "case": "source"
+            },
+            {
+              "np": [
+                "new"
+              ],
+              "case": "goal"
+            },
+            {
+              "verb": "fix",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "revised": [
+        {
+          "id": "revised",
+          "parts": [
+            {
+              "quote": "before",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "quote": "after",
+              "marks": "double",
+              "case": "goal"
+            },
+            {
+              "verb": "fix",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "topic_found": [
+        {
+          "id": "topic_not_found",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "sentence",
+              "case": "subject"
+            },
+            {
+              "lex": "what_n",
+              "case": "locative"
+            },
+            {
+              "lex": "about_adn"
+            },
+            {
+              "lex": "statement",
+              "cop": "whether"
+            },
+            {
+              "verb": "find",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "plainer_request": [
+        {
+          "id": "plainer_request",
+          "parts": [
+            {
+              "lex": "more_adv"
+            },
+            {
+              "lex": "easy_adv"
+            },
+            {
+              "lex": "again"
+            },
+            {
+              "verb": "speak",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "more_request": [
+        {
+          "id": "more_request",
+          "parts": [
+            {
+              "lex": "little"
+            },
+            {
+              "lex": "more_adv"
+            },
+            {
+              "lex": "detail_adv"
+            },
+            {
+              "verb": "speak",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "topic_covered": [
+        {
+          "id": "topic_not_covered",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "knowledge_pack",
+              "case": "topic"
+            },
+            {
+              "lex": "that_det"
+            },
+            {
+              "lex": "topic_n",
+              "case": "object"
+            },
+            {
+              "verb": "cover",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "topic_sure": [
+        {
+          "id": "topic_not_sure",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "topic_n",
+              "case": "subject"
+            },
+            {
+              "verb": "sure",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "evidence_found": [
+        {
+          "id": "evidence_not_found",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "question_n",
+              "case": "genitive"
+            },
+            {
+              "lex": "basis",
+              "case": "object"
+            },
+            {
+              "lex": "graph_n",
+              "case": "source"
+            },
+            {
+              "verb": "find",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "graph_chosen": [
+        {
+          "id": "graph_not_chosen",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "question_n",
+              "case": "object"
+            },
+            {
+              "verb": "take_on",
+              "tense": "present",
+              "ending": "adnominal_future"
+            },
+            {
+              "lex": "graph_n",
+              "case": "object"
+            },
+            {
+              "verb": "choose",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "sources_complete": [
+        {
+          "id": "sources_not_complete",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "several_adn"
+            },
+            {
+              "lex": "source_n",
+              "case": "source"
+            },
+            {
+              "lex": "complete_adn"
+            },
+            {
+              "lex": "knowledge",
+              "case": "object"
+            },
+            {
+              "verb": "make",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "not_phrased": [
+        {
+          "id": "hold_answer",
+          "parts": [
+            {
+              "lex": "answer_n",
+              "case": "object"
+            },
+            {
+              "verb": "hold",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "conflict": [
+        {
+          "id": "conflict_not_fit",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "new"
+            },
+            {
+              "lex": "statement",
+              "case": "subject"
+            },
+            {
+              "lex": "already"
+            },
+            {
+              "verb": "record",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "state",
+              "case": "with"
+            },
+            {
+              "verb": "fit",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "check_request": [
+        {
+          "id": "check_request",
+          "parts": [
+            {
+              "verb": "confirm",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "unread": [
+        {
+          "id": "unread_yet",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "lex": "yet"
+            },
+            {
+              "verb": "read",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "value_fixed": [
+        {
+          "id": "value_not_fixed",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "so"
+            },
+            {
+              "lex": "current"
+            },
+            {
+              "lex": "value",
+              "case": "object"
+            },
+            {
+              "verb": "decide",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "rephrase": [
+        {
+          "id": "rephrase_request",
+          "parts": [
+            {
+              "lex": "other"
+            },
+            {
+              "lex": "word",
+              "case": "goal"
+            },
+            {
+              "lex": "again"
+            },
+            {
+              "verb": "say",
+              "ending": "informal"
+            },
+            {
+              "verb": "give_aux",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "no_event": [
+        {
+          "id": "no_event_found",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "subject"
+            },
+            {
+              "verb": "point_to",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "earlier"
+            },
+            {
+              "lex": "event",
+              "case": "object"
+            },
+            {
+              "verb": "find",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "nothing_corrected": [
+        {
+          "id": "nothing_corrected",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "so"
+            },
+            {
+              "verb": "fix",
+              "predicate": true,
+              "negation": "not"
+            }
+          ]
+        }
+      ],
+      "repair_held": [
+        {
+          "id": "repair_held",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "held_tag"
+            },
+            {
+              "quote": "source",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "verb": "read",
+              "predicate": true,
+              "negation": "not"
+            },
+            {
+              "cite": [
+                [
+                  {
+                    "lex": "rule"
+                  },
+                  {
+                    "quote": "rule",
+                    "marks": "double"
+                  }
+                ],
+                [
+                  {
+                    "list": "operations",
+                    "each": {
+                      "operation": "$item"
+                    }
+                  }
+                ],
+                [
+                  {
+                    "lex": "cost"
+                  },
+                  {
+                    "num": "cost"
+                  }
+                ],
+                [
+                  {
+                    "lex": "bound"
+                  },
+                  {
+                    "num": "bound"
+                  }
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "sum_mismatch": [
+        {
+          "id": "sum_not_fit",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "reckoning",
+              "case": "subject"
+            },
+            {
+              "verb": "fit",
+              "predicate": true,
+              "negation": "not"
+            },
+            {
+              "sym": "colon",
+              "bind": true
+            },
+            {
+              "quote": "said",
+              "marks": "double"
+            }
+          ]
+        }
+      ],
+      "referent_found": [
+        {
+          "id": "referent_not_found",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "word",
+              "marks": "single",
+              "case": "subject"
+            },
+            {
+              "verb": "point_to",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "thing",
+              "case": "object"
+            },
+            {
+              "lex": "this"
+            },
+            {
+              "lex": "conversation",
+              "case": "source"
+            },
+            {
+              "verb": "find",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "chain_statement": [
+        {
+          "id": "statement_recorded_at",
+          "_about": "Why from the trace graph (goal W4): a statement the answer rests on, with its turn.",
+          "parts": [
+            {
+              "num": "turn",
+              "counter": "turn"
+            },
+            {
+              "lex": "word"
+            },
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "verb": "record",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "chain_asked": [
+        {
+          "id": "asked_at",
+          "parts": [
+            {
+              "num": "turn",
+              "counter": "turn"
+            },
+            {
+              "lex": "word",
+              "case": "source"
+            },
+            {
+              "quote": "said",
+              "marks": "double"
+            },
+            {
+              "lex": "quote_go",
+              "bind": true
+            },
+            {
+              "verb": "ask_hon",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "count_change": [
+        {
+          "id": "count_became_addressee",
+          "_about": "The user's count changed (가지신 사탕은 3개에서 5개가 되었습니다).",
+          "when": {
+            "holder": {
+              "subject": "speaker"
+            }
+          },
+          "parts": [
+            {
+              "verb": "have_v",
+              "tense": "present",
+              "ending": "past_adnominal",
+              "honor": "subject"
+            },
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "topic"
+            },
+            {
+              "num": "before",
+              "counter": "count",
+              "case": "source"
+            },
+            {
+              "num": "after",
+              "counter": "count",
+              "case": "subject"
+            },
+            {
+              "verb": "become",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "count_became",
+          "parts": [
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "topic"
+            },
+            {
+              "num": "before",
+              "counter": "count",
+              "case": "source"
+            },
+            {
+              "num": "after",
+              "counter": "count",
+              "case": "subject"
+            },
+            {
+              "verb": "become",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "reading_corrected": [
+        {
+          "id": "correction_reread",
+          "parts": [
+            {
+              "num": "by",
+              "counter": "turn"
+            },
+            {
+              "lex": "word"
+            },
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "locative"
+            },
+            {
+              "verb": "follow",
+              "tense": "present",
+              "ending": "informal"
+            },
+            {
+              "num": "turn",
+              "counter": "turn"
+            },
+            {
+              "lex": "word",
+              "case": "object"
+            },
+            {
+              "verb": "fix",
+              "tense": "present",
+              "ending": "informal"
+            },
+            {
+              "verb": "read",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "change_withdrawn": [
+        {
+          "id": "withdrew_change_addressee",
+          "_about": "A change of the user's count withdrawn (가지신 사탕이 3개에서 5개가 된 것은 취소했습니다).",
+          "when": {
+            "holder": {
+              "subject": "speaker"
+            }
+          },
+          "requires": [
+            "before"
+          ],
+          "parts": [
+            {
+              "verb": "have_v",
+              "tense": "present",
+              "ending": "past_adnominal",
+              "honor": "subject"
+            },
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "subject"
+            },
+            {
+              "num": "before",
+              "counter": "count",
+              "case": "source"
+            },
+            {
+              "num": "after",
+              "counter": "count",
+              "case": "subject"
+            },
+            {
+              "verb": "become",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "thing",
+              "case": "topic"
+            },
+            {
+              "verb": "cancel",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "withdrew_value_addressee",
+          "_about": "An earlier value of the user's count withdrawn (가지신 사탕의 앞선 값 5개는 취소했습니다).",
+          "when": {
+            "holder": {
+              "subject": "speaker"
+            }
+          },
+          "parts": [
+            {
+              "verb": "have_v",
+              "tense": "present",
+              "ending": "past_adnominal",
+              "honor": "subject"
+            },
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "genitive"
+            },
+            {
+              "lex": "earlier"
+            },
+            {
+              "lex": "value"
+            },
+            {
+              "num": "after",
+              "counter": "count",
+              "case": "topic"
+            },
+            {
+              "verb": "cancel",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "withdrew_change",
+          "requires": [
+            "before"
+          ],
+          "parts": [
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "subject"
+            },
+            {
+              "num": "before",
+              "counter": "count",
+              "case": "source"
+            },
+            {
+              "num": "after",
+              "counter": "count",
+              "case": "subject"
+            },
+            {
+              "verb": "become",
+              "tense": "present",
+              "ending": "past_adnominal"
+            },
+            {
+              "lex": "thing",
+              "case": "topic"
+            },
+            {
+              "verb": "cancel",
+              "predicate": true
+            }
+          ]
+        },
+        {
+          "id": "withdrew_value",
+          "parts": [
+            {
+              "np": [
+                "subject"
+              ],
+              "case": "genitive"
+            },
+            {
+              "lex": "earlier"
+            },
+            {
+              "lex": "value"
+            },
+            {
+              "num": "after",
+              "counter": "count",
+              "case": "topic"
+            },
+            {
+              "verb": "cancel",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "chain_held": [
+        {
+          "id": "held_answer_to",
+          "parts": [
+            {
+              "num": "turn",
+              "counter": "turn"
+            },
+            {
+              "lex": "word"
+            },
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "locative_topic"
+            },
+            {
+              "lex": "answer_n",
+              "case": "object"
+            },
+            {
+              "verb": "hold",
+              "predicate": true
+            }
+          ]
+        }
+      ],
+      "chain_unread": [
+        {
+          "id": "unread_at",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "num": "turn",
+              "counter": "turn"
+            },
+            {
+              "lex": "word"
+            },
+            {
+              "quote": "said",
+              "marks": "double",
+              "case": "object"
+            },
+            {
+              "verb": "read",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "chain_which": [
+        {
+          "id": "which_could_not_tell",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "quote": "word",
+              "marks": "single",
+              "case": "subject"
+            },
+            {
+              "list": "candidates",
+              "each": {
+                "np": [
+                  "$item"
+                ]
+              },
+              "join_case": "with"
+            },
+            {
+              "lex": "among"
+            },
+            {
+              "lex": "who",
+              "cop": "whether"
+            },
+            {
+              "verb": "know",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "chain_which_event": [
+        {
+          "id": "which_event_could_not_tell",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "correction",
+              "case": "subject"
+            },
+            {
+              "lex": "which_det"
+            },
+            {
+              "lex": "earlier"
+            },
+            {
+              "lex": "event",
+              "case": "object"
+            },
+            {
+              "verb": "point_to",
+              "tense": "present",
+              "ending": "whether"
+            },
+            {
+              "verb": "know",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "chain_value_place": [
+        {
+          "id": "value_place_could_not_find",
+          "when": {
+            "polarity": false
+          },
+          "parts": [
+            {
+              "lex": "correction",
+              "case": "subject"
+            },
+            {
+              "verb": "change",
+              "tense": "present",
+              "ending": "adnominal"
+            },
+            {
+              "lex": "value",
+              "case": "object"
+            },
+            {
+              "verb": "find",
+              "predicate": true,
+              "negation": "cannot"
+            }
+          ]
+        }
+      ],
+      "chain_replied": [
+        {
+          "id": "replied_at",
+          "parts": [
+            {
+              "num": "turn",
+              "counter": "turn"
+            },
+            {
+              "lex": "word",
+              "case": "locative_topic"
+            },
+            {
+              "quote": "said",
+              "marks": "double"
+            },
+            {
+              "lex": "quote_go",
+              "bind": true
+            },
+            {
+              "verb": "answer",
+              "predicate": true
+            }
+          ]
+        }
+      ]
+    },
+    "rules": {
+      "_about": "Each rule said in words, by its id. The id itself is never said; it stays in the trace.",
+      "count_remove": [
+        {
+          "verb": "give",
+          "tense": "present",
+          "ending": "adnominal"
+        },
+        {
+          "lex": "side",
+          "case": "source"
+        },
+        {
+          "lex": "that_much"
+        },
+        {
+          "verb": "remove",
+          "predicate": true
+        }
+      ],
+      "count_add": [
+        {
+          "verb": "receive",
+          "tense": "present",
+          "ending": "adnominal"
+        },
+        {
+          "lex": "side",
+          "case": "locative"
+        },
+        {
+          "lex": "that_much"
+        },
+        {
+          "verb": "add",
+          "predicate": true
+        }
+      ]
+    },
+    "operations": {
+      "particle_move": [
+        {
+          "quote": "word",
+          "marks": "single",
+          "case": "genitive"
+        },
+        {
+          "lex": "particle"
+        },
+        {
+          "quote": "particle",
+          "marks": "single",
+          "case": "object"
+        },
+        {
+          "quote": "to",
+          "marks": "single"
+        },
+        {
+          "lex": "behind",
+          "case": "goal"
+        },
+        {
+          "verb": "move",
+          "ending": "nominal"
+        }
+      ],
+      "particle_drop": [
+        {
+          "quote": "word",
+          "marks": "single",
+          "case": "source"
+        },
+        {
+          "lex": "particle"
+        },
+        {
+          "quote": "particle",
+          "marks": "single"
+        },
+        {
+          "verb": "remove",
+          "ending": "nominal"
+        }
+      ],
+      "particle_insert": [
+        {
+          "quote": "word",
+          "marks": "single"
+        },
+        {
+          "lex": "behind",
+          "case": "locative"
+        },
+        {
+          "lex": "particle"
+        },
+        {
+          "quote": "particle",
+          "marks": "single"
+        },
+        {
+          "verb": "attach",
+          "ending": "nominal"
+        }
+      ],
+      "ending_restore": [
+        {
+          "quote": "word",
+          "marks": "single"
+        },
+        {
+          "lex": "instead"
+        },
+        {
+          "lex": "ending_form"
+        },
+        {
+          "quote": "to",
+          "marks": "single"
+        },
+        {
+          "verb": "write",
+          "ending": "nominal"
+        }
+      ],
+      "adjacent_swap": [
+        {
+          "quote": "word",
+          "marks": "single"
+        },
+        {
+          "sym": "middle_dot",
+          "bind": true
+        },
+        {
+          "quote": "to",
+          "marks": "single",
+          "bind": true
+        },
+        {
+          "lex": "order"
+        },
+        {
+          "verb": "change",
+          "ending": "nominal"
+        }
+      ],
+      "token_skip": [
+        {
+          "quote": "word",
+          "marks": "single"
+        },
+        {
+          "verb": "skip",
+          "ending": "nominal"
+        }
+      ]
+    },
+    "coordination": {
+      "_about": "Clauses of one frame said in one sentence: every clause before the last says no copula (gapped); a verb there takes the joining ending -고 (사과는 3개 있으시고, 아라는 2개입니다).",
+      "count": {
+        "gap_predicate": true,
+        "separator": "comma",
+        "verb_joint": "go"
+      }
+    },
+    "leads": {
+      "now": [
+        {
+          "lex": "now"
+        }
+      ],
+      "so": [
+        {
+          "lex": "so"
+        }
+      ],
+      "answer_yes": {
+        "parts": [
+          {
+            "lex": "answer_yes"
+          }
+        ],
+        "polarity": true,
+        "join": "comma"
+      },
+      "answer_no": {
+        "parts": [
+          {
+            "lex": "answer_no"
+          }
+        ],
+        "polarity": false,
+        "join": "comma"
+      }
+    },
+    "options": {
+      "_about": "A choice between readings, asked (goal G5 B, request W5-2): each reading in its plain form with 는 말씀인가요 after it, a comma between two (민수가 영희에게 사과 3개를 줬다는 말씀인가요, 민수가 사과 3개를 영희에게서 받았다는 말씀인가요?). A count is said with the existence verb, not the copula (다는, never 이다는).",
+      "sentence": "option",
+      "prefer": {
+        "count": "count_topic_exist"
+      },
+      "first": [],
+      "after_each": [
+        {
+          "lex": "quote_neun",
+          "bind": true
+        },
+        {
+          "lex": "remark_n",
+          "cop": "predicate"
+        }
+      ],
+      "between": [
+        {
+          "sym": "comma",
+          "bind": true
+        }
+      ]
+    },
+    "subordinate": {
+      "_about": "An event an answer is relative to in time: its clause first, its predicate in the form the following noun governs (전 takes -기, 뒤 takes -(으)ㄴ), then the noun with 에 and the topic 는.",
+      "before": {
+        "sentence": "before",
+        "tense": "present",
+        "open": [],
+        "close": [
+          {
+            "lex": "before_n",
+            "case": "locative_topic"
+          }
+        ]
+      },
+      "after": {
+        "sentence": "after",
+        "tense": "present",
+        "open": [],
+        "close": [
+          {
+            "lex": "after_n",
+            "case": "locative_topic"
+          }
+        ]
+      }
+    },
+    "ellipsis": {
+      "_about": "A given role is not said at all (zero anaphora). An answer keeps only its focus.",
+      "strategy": "zero",
+      "keep": []
+    },
+    "readings": {
+      "_about": "How the pack parser's reading of a clause maps back onto frame roles. Used only by the semantic check; independent of the expressions above.",
+      "count": {
+        "facts": [
+          {
+            "predicate": "count",
+            "subject": [
+              "owner",
+              "item"
+            ],
+            "object": "value"
+          }
+        ],
+        "default_counter": true
+      },
+      "count_none": {
+        "_about": "Having none of a thing is read as the count zero, not as a denied count.",
+        "facts": [
+          {
+            "predicate": "count",
+            "subject": [
+              "owner",
+              "item"
+            ],
+            "value": "0",
+            "polarity": true
+          }
+        ]
+      },
+      "transfer": {
+        "facts": [
+          {
+            "predicate": "count_remove",
+            "subject": [
+              "giver",
+              "item"
+            ],
+            "object": "amount"
+          },
+          {
+            "predicate": "count_add",
+            "subject": [
+              "receiver",
+              "item"
+            ],
+            "object": "amount"
+          }
+        ]
+      },
+      "location": {
+        "facts": [
+          {
+            "predicate": "location",
+            "subject": [
+              "theme"
+            ],
+            "object": "place"
+          }
+        ],
+        "events": [
+          {
+            "key": "사건",
+            "roles_key": "자리",
+            "roles": {
+              "theme": "은",
+              "place": "에"
+            },
+            "candidates_key": "자리후보"
+          }
+        ]
+      }
+    },
+    "slot_words": {
+      "_about": "The question word that asks for a role, by the role's particle (the pack's slot particles).",
+      "은": "누가",
+      "는": "누가",
+      "이": "누가",
+      "가": "누가",
+      "을": "무엇을",
+      "를": "무엇을",
+      "와": "누구와",
+      "과": "누구와",
+      "에게": "누구에게",
+      "한테": "누구에게",
+      "으로": "어디로",
+      "로": "어디로"
+    },
+    "follow_ups": {
+      "_about": "Questions about the conversation's own last reply, by kind: why_last asks why the last answer or correction came out so (the bare why word); repairs asks what a reading changed. Only these phrasings, compared after punctuation.",
+      "why_last": [
+        "왜",
+        "왜요"
+      ],
+      "repairs": [
+        "뭘 고쳤어",
+        "뭘 고쳤어요",
+        "뭘 고쳤나요",
+        "무엇을 고쳤어",
+        "무엇을 고쳤어요",
+        "무엇을 고쳤습니까",
+        "뭐 고쳤어",
+        "뭘 바꿨어",
+        "뭘 바꿨어요",
+        "무엇을 바꿨어요"
+      ]
+    },
+    "learning": {
+      "_about": "Expression learning from user sentences. live: false means a user's way of speaking never enters replies unless this file declares live: true. Learned expressions serve only the conversation they came from.",
+      "live": false,
+      "frames": [
+        "count"
+      ],
+      "register_from": "ending"
+    },
+    "render_slot_marker": "$"
+  }
 }

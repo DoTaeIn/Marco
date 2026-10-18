@@ -32,8 +32,10 @@ _SHAPES = {
              "queries": False, "replies": False, "question-marks": False,
              "hypotheses": False, "learning-controls": False,
              "unread-continuation": False, "action-grounding": False,
-             "fact-batch": False, "grammar-ref": False},
+             "fact-batch": False, "grammar-ref": False, "programs": False},
     "sequence": {"op": True, "first": False},
+    "graph-program-ref": {"op": True, "next": False, "name": True, "member-path": True,
+                          "sha256": True, "schema": True},
     "grammar-ref": {"op": True, "member-path": True, "sha256": True, "schema": True},
     "inflection-ref": {"op": True, "stem": True, "tense": True, "ending": True,
                        "kind": True, "endings": True},
@@ -127,7 +129,7 @@ _ITEM_OPS = frozenset({"scalar", "literal", "predicate", "rule-ref", "role-ref",
                        "action-ref", "action-role-ref", "action-emit", "action-triple",
                        "action-call", "action-call-binding", "action-sense-ref",
                        "action-case-group", "action-surface-role", "action-rank",
-                       "action-reply", "action-learning-role-label"})
+                       "action-reply", "action-learning-role-label", "graph-program-ref"})
 
 
 class LanguageProjectionGap(ValueError):
@@ -729,7 +731,22 @@ def _gunique(items):
         raise _grammar_gap()
 
 
-def _normalize_grammar(doc):
+def _normalize_references(refs, ignore_case):
+    refs = _gdict(refs, ("schema", "underspecified_forms"))
+    if not isinstance(refs["schema"], str) or refs["schema"] != "selected-reference-policy-v1":
+        raise _grammar_gap()
+    forms = _glist(refs["underspecified_forms"], 1, 32)
+    keys = []
+    for form in forms:
+        _gtext(form, 64, True)
+        if any(unicodedata.category(ch).startswith("C") or ch in "\u2028\u2029" for ch in form):
+            raise _grammar_gap()
+        keys.append(form.casefold())
+    _gunique(keys)
+    return {"schema": refs["schema"], "underspecified_forms": list(forms)}
+
+
+def _normalize_grammar(doc, ignore_case=False):
     from marco.language import hangul as _h
     codas = _h._CODAS[1:]
     v2 = isinstance(doc, dict) and doc.get("schema") == "selected-scoped-grammar-v2"
@@ -740,7 +757,7 @@ def _normalize_grammar(doc):
         if doc["schema"] != "selected-positive-grammar-v1":
             raise _grammar_gap()
     pack = _gdict(doc["language_pack"], ("inflection", "case_particles"),
-                  ("slot_particles", "negation", "clauses") if v2 else ("slot_particles",))
+                  ("slot_particles", "negation", "clauses", "references") if v2 else ("slot_particles",))
     infl = _gdict(pack["inflection"],
                   ("id", "kinds", "max_forms", "tenses", "endings", "parsing_endings",
                    "question_endings"),
@@ -840,6 +857,8 @@ def _normalize_grammar(doc):
             groups.append(sorted(group, key=len, reverse=True))
         normalized["slot_particles"] = groups
     if v2:
+        if "references" in pack:
+            normalized["references"] = _normalize_references(pack["references"], ignore_case)
         caps = _gdict(doc["semantic_capabilities"], (), ("negative_binary", "conditional_binary"))
         if not caps:
             raise _grammar_gap()
@@ -864,11 +883,23 @@ def _normalize_grammar(doc):
                 raise _grammar_gap()
             normalized["negation"] = deepcopy(neg)
         if "clauses" in pack:
-            clauses = _gdict(pack["clauses"], ("candidate_suffixes",))
+            clauses = _gdict(pack["clauses"], ("candidate_suffixes",), ("condition_combinations",))
             suffixes = _glist(clauses["candidate_suffixes"], 1, 16)
             for suffix in suffixes:
                 _gtext(suffix, 16)
             _gunique(suffixes)
+            if "condition_combinations" in clauses:
+                combo = _gdict(clauses["condition_combinations"],
+                               ("schema", "program", "max_guards", "negative_guards", "any_connectors"))
+                if (combo["schema"] != "selected-condition-combinations-v1"
+                        or combo["program"] != "scoped-conditions"
+                        or type(combo["max_guards"]) is not int or combo["max_guards"] != 2
+                        or combo["negative_guards"] is not True or not has_neg):
+                    raise _grammar_gap()
+                conns = _glist(combo["any_connectors"], 1, 4)
+                for conn in conns:
+                    _gtext(conn, 16)
+                _gunique(conns)
             normalized["clauses"] = deepcopy(clauses)
         if has_neg:
             cap = _gdict(caps["negative_binary"], ("frame_indices", "query_ordinals"))
@@ -927,7 +958,7 @@ def _read_grammar(p):
     _grammar_walk(doc, 1, [0])
     if not isinstance(doc, dict) or doc.get("schema") != schema:
         raise _grammar_gap()
-    pack = _normalize_grammar(doc)
+    pack = _normalize_grammar(doc, p.scalar(p.link(p.root, "ignore-case")))
     caps = pack.pop("semantic_capabilities", None)
     result = {"reference": {"member_path": path, "sha256": sha, "schema": schema},
               "language_pack": pack}
@@ -1121,6 +1152,65 @@ def _ref_targets(p, relation, op_name):
     return targets
 
 
+def _program_pairs(pairs):
+    out = {}
+    for key, value in pairs:
+        if key in out:
+            raise LanguageProjectionGap("graph program repeats a key", "unsupported_shape")
+        out[key] = value
+    return out
+
+
+def _program_refuse(_token):
+    raise LanguageProjectionGap("graph program has a nonfinite or float number", "unsupported_shape")
+
+
+def _program_ref_targets(p):
+    seq = p.link(p.root, "programs", optional=True)
+    if seq is None:
+        return []
+    items = p.sequence(seq, {"graph-program-ref"})
+    if not items or len(items) > 16:
+        raise LanguageProjectionGap("programs require 1..16 entries", "cap_overflow")
+    return items
+
+
+def _graph_program_entries(p, refs):
+    from marco.reasoning import graph_vm
+    entries = {}
+    for ref in refs:
+        name = p.scalar(p.link(ref, "name"))
+        path = p.scalar(p.link(ref, "member-path"))
+        sha = p.scalar(p.link(ref, "sha256"))
+        schema = p.scalar(p.link(ref, "schema"))
+        if (not isinstance(name, str) or not name or len(name) > 128 or name in entries
+                or not isinstance(path, str) or not path or not isinstance(sha, str)
+                or not _SHA_RE.fullmatch(sha) or schema != "marco-graph-vm-program-v1"):
+            raise LanguageProjectionGap("invalid graph program reference", "unsupported_shape")
+        member = p._member
+        if member is None:
+            raise LanguageProjectionGap("graph program member unavailable", "source_identity_mismatch")
+        try:
+            data = member(path, sha, 65536)
+        except LanguageProjectionGap:
+            raise
+        except Exception as exc:
+            raise LanguageProjectionGap("graph program member unavailable", "source_identity_mismatch") from exc
+        if type(data) is not bytes or len(data) > 65536 or hashlib.sha256(data).hexdigest() != sha:
+            raise LanguageProjectionGap("graph program identity mismatch", "source_identity_mismatch")
+        try:
+            doc = json.loads(data.decode("utf-8"), object_pairs_hook=_program_pairs,
+                             parse_constant=_program_refuse, parse_float=_program_refuse)
+            program = graph_vm.validate_program(doc)
+        except LanguageProjectionGap:
+            raise
+        except (UnicodeDecodeError, ValueError, RecursionError) as exc:
+            raise LanguageProjectionGap("invalid graph program", "unsupported_shape") from exc
+        entries[name] = {"reference": {"member_path": path, "sha256": sha, "schema": schema},
+                         "program": program, "program_sha256": _digest(program)}
+    return entries
+
+
 def _read_dialogue_targets(p):
     settings, rules = _read_rule_targets(p)
     queries = _ref_targets(p, "queries", "query-ref")
@@ -1147,11 +1237,12 @@ def _read_dialogue_targets(p):
         controls = _ref_targets(p, "learning-controls", "learning-control-ref")
         if not controls:
             raise LanguageProjectionGap("learning-controls must declare at least one control", "invalid_binding")
+    programs = _program_ref_targets(p)
     continuation = p.link(p.root, "unread-continuation", optional=True)
     fact_batch = p.link(p.root, "fact-batch", optional=True)
     return {"settings": settings, "rules": rules, "queries": queries, "replies": replies, "marks": marks,
             "hypotheses": hypotheses, "controls": controls, "continuation": continuation,
-            "fact_batch": fact_batch}
+            "fact_batch": fact_batch, "programs": programs}
 
 
 def _read_hypothesis_targets(p, rules):
@@ -1711,9 +1802,12 @@ def _scoped_semantics(grammar, facts, frames, queries, query_sources, marks):
                                          separators=(",", ":")).encode("utf-8")).hexdigest()
 
     out = {"schema": "selected-binary-semantic-capabilities-v1"}
+    clause_scope = {'candidate_suffixes': pack.get('clauses', {}).get('candidate_suffixes', []),
+                    'question_marks': list(marks)}
+    if 'condition_combinations' in pack.get('clauses', {}):
+        clause_scope['condition_combinations'] = deepcopy(pack['clauses']['condition_combinations'])
     scope = sha_of({'inflection': infl, 'negation': pack.get('negation', {}),
-                    'clauses': {'candidate_suffixes': pack.get('clauses', {}).get('candidate_suffixes', []),
-                                'question_marks': list(marks)}})
+                    'clauses': clause_scope})
     if "negative_binary" in caps:
         cap = caps["negative_binary"]
         ordinals = cap["query_ordinals"]
@@ -1849,6 +1943,11 @@ def project_language_dialogue(view, graph_id, root, *, source=None):
         p = _fresh_dialogue_reader(first, view, graph_id, root, targets)
         fact_batch_policy = _fact_batch_policy_projection(p, targets["fact_batch"])
         _merge_reader(p, nodes, edges, names, rows)
+    graph_entries = None
+    if targets["programs"]:
+        p = _fresh_dialogue_reader(first, view, graph_id, root, targets)
+        graph_entries = _graph_program_entries(p, targets["programs"])
+        _merge_reader(p, nodes, edges, names, rows)
     hypotheses = None
     if targets["hypotheses"] is not None:
         hypotheses, seen_frames = [], set()
@@ -1910,6 +2009,11 @@ def project_language_dialogue(view, graph_id, root, *, source=None):
     if fact_batch_policy is not None:
         fingerprint["fact_batch"] = fact_batch_policy
         data_extra["fact_batch"] = fact_batch_policy
+    if graph_entries:
+        namespace = {"schema": "marco-selected-graph-programs-v1",
+                     "provenance": deepcopy(provenance), "entries": graph_entries}
+        fingerprint["graph_programs"] = namespace
+        data_extra["graph_programs"] = namespace
     return deepcopy({
         **extra,
         "schema": schema,

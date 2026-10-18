@@ -295,6 +295,10 @@ def clause_spans(text, grammar=None, *, commas=False, accept_prefix=None, inflec
     suffixes = tuple(grammar.get("candidate_suffixes", []))
     continuations = tuple(grammar.get("continuation_prefixes", []))
     after_markers = tuple(grammar.get("after_clause_markers", []))
+    combo = grammar.get("condition_combinations")
+    if isinstance(combo, dict) and isinstance(combo.get("any_connectors"), list):
+        after_markers = after_markers + tuple(c for c in combo["any_connectors"]
+                                              if isinstance(c, str) and c and c not in after_markers)
     # A declared abbreviation ("Mr.") ends with a full stop that ends no sentence.
     abbreviations = tuple(grammar.get("abbreviations", []))
     protected = iter(_protected_clause_text.finditer(text))

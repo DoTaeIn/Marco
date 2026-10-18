@@ -145,6 +145,98 @@ class LearningMemory:
                 self._store.reject(cid, rejected_by="learning-gate", reason="replay_invalidated: %s" % e)
         return self._view(self._store.candidate(cid))
 
+    def teach_patterns(self, payload, provenance, *, replaces=None):
+        payload = self._bounded(payload, "payload")
+        provenance = self._bounded(provenance, "provenance")
+        self._bounded({"payload": payload, "provenance": provenance}, "teaching")
+        if not isinstance(payload, dict) or set(payload) != {"demonstrations", "validation"}:
+            raise MemoryLimitError("unsupported_payload_keys")
+        if not isinstance(provenance, dict) or not (
+                _nonempty(provenance.get("conversation_id")) and _nonempty(provenance.get("turn_id"))):
+            raise MemoryLimitError("teach_provenance_requires_conversation_id_and_turn_id")
+        validation = payload.get("validation")
+        if isinstance(validation, list) and len(validation) > self.validation_limit:
+            raise MemoryLimitError("validation_limit_exceeded")
+        self._room()
+        old = self._active_rule(replaces) if replaces is not None else None
+        current = self._replay(self._store, exclude=old["id"] if old else None)
+        report, graph = self._evaluate_graph(current, payload)
+        record = {"schema": SCHEMA, "kind": "expression", "payload": payload,
+                  "annotation": report["inferred_annotations"], "pattern_graph": graph,
+                  "provenance": provenance, "report": report, "supervision": SUPERVISION,
+                  "replaces": replaces}
+        rule_id, cid = "memory:" + uuid.uuid4().hex, "cand_" + uuid.uuid4().hex
+        accepted = report["accepted"]
+        deltas = [add_rule(rule_id, record, revision=0)]
+        if accepted and old:
+            deltas.append(disable_rule(old["id"], revision=old["revision"]))
+        evidence = {"operation": "replace" if replaces else "teach", "candidate_id": cid,
+                    "rule_id": rule_id, "kind": "expression", "report": report}
+        self._store.propose(deltas, actor=ACTOR, source=SOURCE, reason="explicit user teaching",
+                            evidence=evidence, candidate_id=cid)
+        if not accepted:
+            self._store.reject(cid, rejected_by="learning-gate", reason=dumps(report))
+        else:
+            try:
+                self._store.approve(cid, approved_by="learning-memory",
+                                    validation=report,
+                                    check=lambda store: self._replay(store))
+            except MemoryReplayError as e:
+                self._store.reject(cid, rejected_by="learning-gate", reason="replay_invalidated: %s" % e)
+        return self._view(self._store.candidate(cid))
+
+    def _evaluate_graph(self, parser, payload, *, entry_origin=None):
+        from marco.learning import expression_graph as eg
+        base, graph, annotations = self._fresh(), None, None
+        try:
+            demos = payload.get("demonstrations")
+            if (not isinstance(demos, list) or not 2 <= len(demos) <= 8
+                    or any(not isinstance(d, dict) or set(d) != {"text", "equivalent"} for d in demos)):
+                raise ValueError("invalid_demonstrations")
+            cases = self._expected(base, payload.get("validation"))
+            # New graph admission requires genuinely flat positive reference semantics;
+            # the classic _reference reducer intentionally remains unchanged.
+            for case in payload["validation"]:
+                if "equivalent" not in case:
+                    continue
+                raw = base.parse(case["equivalent"], partial=True)
+                if type(raw) is not dict:
+                    raise ValueError("graph_validation_requires_positive_flat_reference")
+                for field in ("definitions", "definition", "events", "condition", "assumption", "reason",
+                              "cause", "hypothesis", "correction", "repair", "정의", "사건", "가정사건", "조건", "가정",
+                              "원인", "이유물음", "수선", "사건정정"):
+                    if field in raw and raw[field] not in (None, [], {}, ""):
+                        raise ValueError("graph_validation_requires_positive_flat_reference")
+                facts = raw.get("facts")
+                if (raw.get("query") not in (None, []) or type(facts) is not list or len(facts) != 1
+                        or type(facts[0]) is not dict
+                        or set(facts[0]) - {"triple", "evidence", "polarity", "modality"}
+                        or facts[0].get("polarity", True) is not True
+                        or facts[0].get("modality", "asserted") != "asserted"):
+                    raise ValueError("graph_validation_requires_positive_flat_reference")
+                triple = facts[0].get("triple")
+                if (type(triple) is not list or len(triple) != 3
+                        or any(type(term) is not str or not term.strip() or "$" in term or "?" in term
+                               for term in triple)):
+                    raise ValueError("graph_validation_requires_positive_flat_reference")
+            entities = set()
+            for d in demos:
+                self._reference(base, d["equivalent"])
+                ann = expressions.from_paraphrase(base, d["text"], d["equivalent"])
+                entities.update(v for v in ann["slots"].values())
+            for case in cases:
+                if any(e in case["text"] for e in entities):
+                    raise ValueError("training_validation_entity_overlap")
+            graph = eg.induce_pattern_graph(base, demos)
+            annotations = eg.graph_annotations(graph)
+            report = eg.propose_pattern_graph(parser, graph, cases, entry_origin=entry_origin)
+        except (ValueError, KeyError, TypeError) as e:
+            report = {"kind": "validated_supervised_expression", "accepted": False,
+                      "reason": str(e) or type(e).__name__, "validation": []}
+        report["inferred_annotations"] = annotations if annotations is not None else []
+        report["induction_policy"] = "selected-reference-choice-graph-v1"
+        return json.loads(dumps(report)), (json.loads(dumps(graph)) if graph is not None else None)
+
     def parser(self):
         diagnostic = {"scope": "installed_expression_origin_transport", "status": "available", "issues": []}
         try:
@@ -2229,13 +2321,25 @@ class LearningMemory:
                 marker = stored["induction_policy"]
                 if isinstance(marker, str) and marker == "selected-reference-word-slots-v1":
                     return True
+                if isinstance(marker, str) and marker == "selected-reference-choice-graph-v1":
+                    return "graph"
                 if isinstance(marker, str) and marker == "selected-reference-query-slots-v1":
                     return "query"
                 fail("induction_policy")
 
             flag = _verified_policy(rule["id"], record, rule)
-            kind = "query" if flag == "query" else "fact"
-            if kind == "query":
+            kind = "graph" if flag == "graph" else ("query" if flag == "query" else "fact")
+            if (kind == "graph") != ("pattern_graph" in record):
+                raise MemoryReplayError("corrupt_record:%s" % rule["id"])
+            if kind == "graph":
+                report, graph = self._evaluate_graph(parser, record["payload"],
+                                                     entry_origin=origin_map.get(rule["id"]))
+                if report.get("accepted") is True and (
+                        dumps(graph) != dumps(record.get("pattern_graph"))
+                        or dumps(report.get("inferred_annotations")) != dumps(record.get("annotation"))):
+                    raise MemoryReplayError("replay_graph_mismatch:%s" % rule["id"])
+                report["inferred_annotation"] = report.get("inferred_annotations")
+            elif kind == "query":
                 report = self._evaluate(parser, record["payload"], entry_origin=origin_map.get(rule["id"]),
                                         inherit_declared_slots=True, expression_kind=kind)
             else:
@@ -2249,12 +2353,14 @@ class LearningMemory:
         base = self._fresh()
         for rule_id, record, kind in records:
             payload = record["payload"]
-            if kind == "query":
-                expected = self._reference(base, payload["equivalent"], expression_kind=kind)
-            else:
-                expected = self._reference(base, payload["equivalent"])
-            if expressions.semantics(parser, payload["text"]) != expected:
-                raise MemoryReplayError("training_meaning_changed:%s" % rule_id)
+            pairs = payload["demonstrations"] if kind == "graph" else [payload]
+            for pair in pairs:
+                if kind == "query":
+                    expected = self._reference(base, pair["equivalent"], expression_kind=kind)
+                else:
+                    expected = self._reference(base, pair["equivalent"])
+                if expressions.semantics(parser, pair["text"]) != expected:
+                    raise MemoryReplayError("training_meaning_changed:%s" % rule_id)
             if kind == "query":
                 cases = self._expected(base, payload["validation"], expression_kind=kind)
             else:

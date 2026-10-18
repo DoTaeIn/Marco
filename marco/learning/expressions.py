@@ -403,3 +403,21 @@ def propose(parser, correction, validation, *, entry_origin=None, expression_kin
     return {"kind": "validated_supervised_expression", "accepted": accepted,
             "reason": "validated_transfer" if accepted else "no_improvement_or_validation_failure",
             "validation": rows}
+
+
+def induce_pattern_graph(base, demonstrations):
+    """Delegate to the pure bounded choice-graph inducer."""
+    from marco.learning.expression_graph import induce_pattern_graph as _impl
+    return _impl(base, demonstrations)
+
+
+def graph_annotations(graph):
+    """Delegate to the strict choice-graph compiler."""
+    from marco.learning.expression_graph import graph_annotations as _impl
+    return _impl(graph)
+
+
+def propose_pattern_graph(parser, graph, validation, *, entry_origin=None):
+    """Delegate to the atomic choice-graph proposal gate."""
+    from marco.learning.expression_graph import propose_pattern_graph as _impl
+    return _impl(parser, graph, validation, entry_origin=entry_origin)

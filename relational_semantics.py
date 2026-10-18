@@ -248,6 +248,11 @@ class RelationalParser:
                               "why_count": dict(self.why_count),
                               "holder_forms": dict(self.holder_forms),
                               "word_order_forms": dict(self.word_order_forms)}
+        self._reference_forms = None
+        if "references" in language_pack:
+            raw_refs = language_pack.get("references")
+            self._reference_forms = RelationalParser._selected_reference_policy(raw_refs)
+            self.language_pack["references"] = copy.deepcopy(raw_refs)
         if selected_action_surface is not None:
             self.language_pack["selected_action_surface"] = copy.deepcopy(selected_action_surface)
         # 몸통에서 꺼낸 틀은 예문이 그대로인 동안만 같다. `learn` 이 예문을
@@ -294,6 +299,87 @@ class RelationalParser:
             if delimiter:
                 self.definition_body_delimiters.add(delimiter)
         self._rebuild_inflections()
+
+    @staticmethod
+    def _selected_reference_policy(raw):
+        """Strict pure validation of selected-reference-policy-v1; returns a detached tuple of forms."""
+        def bad(msg):
+            raise ValueError("selected reference policy: " + msg)
+        if (type(raw) is not dict or set(raw) != {"schema", "underspecified_forms"}
+                or raw["schema"] != "selected-reference-policy-v1"):
+            bad("declaration")
+        import unicodedata
+        forms = raw["underspecified_forms"]
+        if type(forms) is not list or not 1 <= len(forms) <= 32:
+            bad("forms")
+        seen = set()
+        for form in forms:
+            if (type(form) is not str or not 1 <= len(form) <= 64 or form != form.strip()
+                    or any(unicodedata.category(c).startswith("C") or c in "\n\r\u2028\u2029" for c in form)):
+                bad("form")
+            if form.casefold() in seen:
+                bad("duplicate")
+            seen.add(form.casefold())
+        return tuple(forms)
+
+    def _reference_underspecified(self, value):
+        """Whether one whole captured entity value is a declared underspecified reference (exact)."""
+        forms = getattr(self, "_reference_forms", None)
+        if not forms or not isinstance(value, str):
+            return False
+        text = value.strip()
+        if not text:
+            return False
+        if (self.data or {}).get("ignore_case"):
+            return text.casefold() in {f.casefold() for f in forms}
+        return text in forms
+
+    @staticmethod
+    def _reference_entity_slots(meaning):
+        """Slot names referenced in subject/object positions of the meaning's triples."""
+        names = set()
+
+        def refs(term):
+            if isinstance(term, str):
+                if term.startswith("$"):
+                    names.add(term[1:])
+            elif isinstance(term, list):
+                for t in term:
+                    refs(t)
+
+        def walk(node):
+            if isinstance(node, dict):
+                tri = node.get("triple")
+                if isinstance(tri, list) and len(tri) == 3:
+                    refs(tri[0])
+                    refs(tri[2])
+                for k, v in node.items():
+                    if k == "triples" and isinstance(v, list):
+                        for row in v:
+                            if isinstance(row, list) and len(row) == 3:
+                                refs(row[0])
+                                refs(row[2])
+                    elif k != "triple":
+                        walk(v)
+            elif isinstance(node, list):
+                for v in node:
+                    walk(v)
+        walk(meaning)
+        return names
+
+    def _reference_blocked(self, meaning, example, raw, normalized=None):
+        """Selected reference gate over raw and holder-normalized entity captures (no policy: False)."""
+        if not getattr(self, "_reference_forms", None):
+            return False
+        annotated = example.get("slots") if isinstance(example, dict) else None
+        annotated = annotated if isinstance(annotated, dict) else {}
+        for name in self._reference_entity_slots(meaning):
+            if str(annotated.get(name, "")).isdecimal():
+                continue
+            for source in (raw, normalized):
+                if isinstance(source, dict) and self._reference_underspecified(source.get(name)):
+                    return True
+        return False
 
     def _elided_counted_nouns(self, examples, *, _parents=None):
         """Every statement example with its counted noun left out (생략.counted_noun).
@@ -1424,7 +1510,9 @@ class RelationalParser:
         if (type(infl) is not dict or not infl or type(clauses) is not dict or type(neg) is not dict
                 or self.language_pack.get('inflection') != infl
                 or self.language_pack.get('clauses') != clauses
-                or set(clauses) - {'candidate_suffixes', 'question_marks'}
+                or set(clauses) - {'candidate_suffixes', 'question_marks', 'condition_combinations'}
+                or ('condition_combinations' in clauses
+                    and RelationalParser._sb_combo(clauses['condition_combinations']) is None)
                 or (neg and (set(neg) != {'연결', '어간', '갈래'}
                              or not all(type(x) is str for x in neg.values())))
                 or type(clauses.get('question_marks')) is not list or not clauses['question_marks']
@@ -1434,15 +1522,85 @@ class RelationalParser:
                 or not all(type(x) is str for x in clauses.get('candidate_suffixes', []))
                 or not pure(infl)):
             return None
-        scope = {'inflection': infl, 'negation': neg,
-                 'clauses': {'candidate_suffixes': clauses.get('candidate_suffixes', []),
-                             'question_marks': clauses['question_marks']}}
+        clause_scope = {'candidate_suffixes': clauses.get('candidate_suffixes', []),
+                        'question_marks': clauses['question_marks']}
+        if 'condition_combinations' in clauses:
+            clause_scope['condition_combinations'] = RelationalParser._sb_combo(clauses['condition_combinations'])
+        scope = {'inflection': infl, 'negation': neg, 'clauses': clause_scope}
         try:
             text = json.dumps(scope, ensure_ascii=False, sort_keys=True, separators=(',', ':'),
                               allow_nan=False)
         except (TypeError, ValueError):
             return None
         return hashlib.sha256(text.encode('utf-8')).hexdigest()
+
+    @staticmethod
+    def _sb_combo(raw):
+        if (type(raw) is not dict
+                or set(raw) != {'schema', 'program', 'max_guards', 'negative_guards', 'any_connectors'}
+                or type(raw['schema']) is not str or raw['schema'] != 'selected-condition-combinations-v1'
+                or type(raw['program']) is not str or raw['program'] != 'scoped-conditions'
+                or type(raw['max_guards']) is not int or raw['max_guards'] != 2
+                or raw['negative_guards'] is not True):
+            return None
+        conns = raw['any_connectors']
+        if type(conns) is not list or not 1 <= len(conns) <= 4:
+            return None
+        for c in conns:
+            if type(c) is not str or not c or c.strip() != c or len(c) > 16:
+                return None
+        if len(set(conns)) != len(conns):
+            return None
+        return {'schema': raw['schema'], 'program': raw['program'], 'max_guards': 2,
+                'negative_guards': True, 'any_connectors': list(conns)}
+
+    def _condition_connectors(self):
+        combo = (self.clause_grammar or {}).get('condition_combinations')
+        got = combo.get('any_connectors') if isinstance(combo, dict) else None
+        return [c for c in got if isinstance(c, str) and c] if isinstance(got, list) else []
+
+    def _scoped_guard_negative_candidates(self, literal):
+        """Negative conditional guard candidates (new combination policy only)."""
+        from marco.language.hangul import inflect
+        if (self.clause_grammar or {}).get('condition_combinations') is None:
+            return
+        state = self._scoped_negative_state()
+        plain = self._sb_plain(literal)
+        caps = self.data.get('semantic_capabilities')
+        cond = caps.get('conditional_binary') if type(caps) is dict else None
+        basis = cond.get('basis') if type(cond) is dict else None
+        refs = basis.get('frame_refs') if type(basis) is dict else None
+        decl = self.data.get('predicate_frames')
+        frames = decl.get('frames') if type(decl) is dict else None
+        infl, neg = self.inflection_grammar, self.language_pack.get('negation')
+        if (state is None or plain is None or type(refs) is not list or type(frames) is not list
+                or type(neg) is not dict or type(infl) is not dict):
+            return
+        allowed_idx = {r.get('index') for r in refs if type(r) is dict}
+        qmarks = [m for m in self.clause_grammar.get('question_marks', []) if type(m) is str and m]
+        body = plain.strip()
+        if not body or any(m in body for m in qmarks):
+            return
+        for idx, stem, tail in state[0]:
+            if idx not in allowed_idx or type(idx) is not int or idx >= len(frames) or type(frames[idx]) is not dict:
+                continue
+            allowed = frames[idx].get('allowed_endings')
+            if type(allowed) is not list:
+                continue
+            for ending in infl.get('condition_endings', []):
+                if ending not in allowed:
+                    continue
+                try:
+                    made = inflect(neg['어간'], 'present', ending, infl, kind=neg['갈래'])
+                except (ValueError, KeyError, TypeError):
+                    continue
+                for aux in sorted({f['text'] for f in made}):
+                    suffix = stem + neg['연결'] + ' ' + aux
+                    if plain.endswith(suffix):
+                        candidate = plain[:len(plain) - len(suffix)] + tail
+                        yield candidate, {'id': 'declared-negation-v1', 'canonical': candidate,
+                                          'example_index': idx, 'polarity': False,
+                                          'guard_ending': ending}
 
     @staticmethod
     def _sb_canon(value):
@@ -1686,6 +1844,10 @@ class RelationalParser:
                 return None
             roles = ntrace['roles']
             slotset = set(ex['slots'])
+            if type(roles) is dict and self._reference_blocked(
+                    ex.get('meaning'), ex,
+                    {n: r.get('value') for n, r in roles.items() if type(r) is dict}):
+                return None
         except bad:
             return None
         built = self._sb_native_flat_caps(whole, roles, slotset)
@@ -2041,6 +2203,7 @@ class RelationalParser:
         isindex, ishash, isref = self._sb_isindex, self._sb_ishash, self._sb_iscompact
         table = {'negative_fact': ('negative_binary', False), 'negative_query': ('negative_binary', True),
                  'positive_guard': ('conditional_binary', False),
+                 'negative_guard': ('conditional_binary', False),
                  'positive_fact': ('conditional_binary', False)}
         if (type(kind) is not str or kind not in table or not isindex(compiler_index)
                 or not isref(compact_ref) or compact_ref['index'] != compiler_index):
@@ -2082,6 +2245,9 @@ class RelationalParser:
         if name == 'negative_binary' and len(originals) != len(derived):
             return None
         if compact_ref not in (derived if is_query else frame_refs):
+            return None
+        if kind == 'negative_guard' and self.resolve_selected_binary_authority(
+                'negative_fact', compiler_index, compact_ref) is None:
             return None
         examples = self.data.get('examples')
         if type(examples) is not list or compiler_index >= len(examples):
@@ -2154,9 +2320,12 @@ class RelationalParser:
         from marco.language.numerals import parse_numeral
         keys = {'meaning_key', 'meaning', 'example_index', 'annotation_sha256', 'canonical', 'normalization',
                 'source', 'capture_spans', 'fixed_spans', 'reader_kind', 'grammar_scope'}
-        if (type(kind) is not str or kind not in ('negative_fact', 'negative_query', 'positive_guard', 'positive_fact')
+        if (type(kind) is not str or kind not in ('negative_fact', 'negative_query', 'positive_guard', 'positive_fact', 'negative_guard')
                 or type(clause_source) is not str or not clause_source or len(clause_source) > 65536
                 or type(rec) is not dict or set(rec) != keys):
+            return None
+        if kind == 'negative_guard' and (type(self.clause_grammar) is not dict
+                                         or self.clause_grammar.get('condition_combinations') is None):
             return None
         native = False
         try:
@@ -2283,7 +2452,7 @@ class RelationalParser:
 
         tmean = ex['meaning']
         limit, ending, trace = None, None, None
-        if kind == 'negative_fact':
+        if kind in ('negative_fact', 'negative_guard'):
             neg = self.language_pack.get('negation')
             ann = ex.get('inflection')
             if (type(neg) is not dict or set(neg) != {'연결', '어간', '갈래'}
@@ -2318,9 +2487,11 @@ class RelationalParser:
             if not canonical.endswith(tail):
                 return None
             prefix = canonical[:len(canonical) - len(tail)]
+            aux_endings = ([e for e in cond if e not in asking and frame_allows(e)]
+                           if kind == 'negative_guard' else assertive)
             auxes = set()
             for tense in infl.get('tenses', {}):
-                for aux_ending in assertive:
+                for aux_ending in aux_endings:
                     try:
                         made = inflect(neg['어간'], tense, aux_ending, infl, kind=neg['갈래'])
                     except ValueError:
@@ -2366,7 +2537,8 @@ class RelationalParser:
                 return None
         if kind == 'positive_guard' and trace is None:
             return None
-        want_reader = {'negative_query': 'query', 'positive_guard': 'guard'}.get(kind, 'template')
+        want_reader = {'negative_query': 'query', 'positive_guard': 'guard',
+                       'negative_guard': 'guard'}.get(kind, 'template')
         scope = rec['grammar_scope']
         if kind == 'positive_guard':
             if (type(scope) is not dict or set(scope) != {'kind', 'ending', 'scope', 'rule_id'}
@@ -2374,6 +2546,20 @@ class RelationalParser:
                     or scope['rule_id'] != trace['id'] or type(scope['scope']) is not list
                     or len(scope['scope']) != 2 or not all(type(x) is int for x in scope['scope'])
                     or scope['scope'] != [0, len(whole)]):
+                return None
+        elif kind == 'negative_guard':
+            if (type(scope) is not dict or set(scope) != {'kind', 'ending', 'scope', 'rule_id'}
+                    or scope['kind'] != 'guard' or type(scope['ending']) is not str
+                    or scope['ending'] not in cond or not frame_allows(scope['ending'])
+                    or scope['rule_id'] != 'declared-negation-v1' or type(scope['scope']) is not list
+                    or len(scope['scope']) != 2 or not all(type(x) is int for x in scope['scope'])
+                    or scope['scope'] != [0, len(whole)]):
+                return None
+            try:
+                made = inflect(neg['어간'], 'present', scope['ending'], infl, kind=neg['갈래'])
+            except ValueError:
+                return None
+            if body not in {prefix + ann['stem'] + neg['연결'] + ' ' + f['text'] for f in made}:
                 return None
         elif scope is not None:
             return None
@@ -2422,6 +2608,8 @@ class RelationalParser:
             return None
         live = copy.deepcopy(ex)
         slots = self._holder_slot_forms(dict(raw), copy.deepcopy(tmeaning))
+        if self._reference_blocked(tmeaning, ex, dict(raw), slots):
+            return None
         for name, annotated in live['slots'].items():
             if type(annotated) is str and annotated.isdecimal():
                 typed = slots[name].lower() if self.data.get('ignore_case') else slots[name]
@@ -2448,7 +2636,7 @@ class RelationalParser:
         else:
             if not set(detached) <= {'triple', 'polarity', 'places'} or self._sb_triple(detached.get('triple')) is None:
                 return None
-            if kind == 'negative_fact':
+            if kind in ('negative_fact', 'negative_guard'):
                 if detached.get('polarity') is not False:
                     return None
             elif 'polarity' in detached and detached['polarity'] is not True:
@@ -2466,7 +2654,7 @@ class RelationalParser:
         if (type(source) is not str or not source or len(source) > 262144 or type(cert) is not dict
                 or set(cert) != keys or cert['schema'] != 'selected-binary-source-certificate-v1'
                 or type(cert['kind']) is not str
-                or cert['kind'] not in ('negative_fact', 'negative_query', 'positive_guard')):
+                or cert['kind'] not in ('negative_fact', 'negative_query', 'positive_guard', 'negative_guard')):
             return None
         size = self._sb_bytes(cert)
         if size is None or len(size) > 65536:
@@ -2627,7 +2815,17 @@ class RelationalParser:
         if body and body[-1] in marks:
             body = body[:-1]
         limit = len(prefix)
-        if not body.startswith(prefix) or body[limit:] not in {stem + state[2] + ' ' + a for a in state[1]}:
+        guard_ending = normalization.get('guard_ending')
+        auxes = state[1]
+        if guard_ending is not None:
+            from marco.language.hangul import inflect
+            neg = self.language_pack.get('negation')
+            try:
+                auxes = {f['text'] for f in inflect(neg['어간'], 'present', guard_ending,
+                                                    self.inflection_grammar, kind=neg['갈래'])}
+            except (ValueError, KeyError, TypeError):
+                return None
+        if not body.startswith(prefix) or body[limit:] not in {stem + state[2] + ' ' + a for a in auxes}:
             return None
         spans = {name: match.span(name) for name in example['slots']}
         ordered = sorted(spans.values())
@@ -2649,14 +2847,19 @@ class RelationalParser:
             norm = json.loads(json.dumps(normalization, ensure_ascii=False))
         except (TypeError, ValueError):
             return None
+        norm.pop('guard_ending', None)
         digest = self._sb_sha(example)
         if digest is None:
             return None
         rec = {'meaning_key': key, 'meaning': detached, 'example_index': index,
                'annotation_sha256': digest, 'canonical': candidate, 'normalization': norm,
                'source': whole, 'capture_spans': captures, 'fixed_spans': fixed,
-               'reader_kind': 'template', 'grammar_scope': None}
-        got = self.verify_selected_binary_witness(whole, rec, 'negative_fact')
+               'reader_kind': 'template' if guard_ending is None else 'guard',
+               'grammar_scope': (None if guard_ending is None else
+                                 {'kind': 'guard', 'ending': guard_ending, 'scope': [0, len(whole)],
+                                  'rule_id': 'declared-negation-v1'})}
+        got = self.verify_selected_binary_witness(
+            whole, rec, 'negative_fact' if guard_ending is None else 'negative_guard')
         if got is None or got['compiler_index'] != index:
             return None
         try:
@@ -2887,7 +3090,7 @@ class RelationalParser:
 
     def make_selected_binary_certificate(self, source, source_span, witness, kind):
         """Detached 9-key source certificate, or None unless the pure verifier accepts it."""
-        if type(kind) is not str or kind not in ('negative_fact', 'negative_query', 'positive_guard'):
+        if type(kind) is not str or kind not in ('negative_fact', 'negative_query', 'positive_guard', 'negative_guard'):
             return None
         text = self._sb_plain(source)
         if text is None or not text or len(text) > 262144:
@@ -2945,6 +3148,7 @@ class RelationalParser:
         if "semantic_capabilities" in self.data:
             # Opt-in scoped negative: only authenticated selected facts; never the legacy inference.
             yield from self._scoped_negative_candidates(literal)
+            yield from self._scoped_guard_negative_candidates(literal)
             return
         forms = self.negation.get("forms", set())
         connector = self.negation.get("연결", "")
@@ -4441,6 +4645,8 @@ class RelationalParser:
                     if not match:
                         continue
                     slots = self._holder_slot_forms(match.groupdict(), meaning)
+                    if self._reference_blocked(meaning, example, match.groupdict(), slots):
+                        continue
                     # (A number slot may hold a numeral a variant wrote: an onion = 1 onion.)
                     if written and any(word in written for name, value in slots.items()
                                        if isinstance(value, str) and not str(example["slots"].get(name, "")).isdecimal()
@@ -4602,6 +4808,13 @@ class RelationalParser:
                             if normalization and "operations" in normalization:
                                 derivations[key].update({k: normalization[k] for k in
                                                          ("stem", "tense", "ending", "operations")})
+                            if (normalization and scoped_record is not None
+                                    and scoped_record.get("reader_kind") == "guard"
+                                    and type(scoped_record.get("grammar_scope")) is dict
+                                    and type(normalization.get("guard_ending")) is str
+                                    and scoped_record["grammar_scope"].get("ending") == normalization["guard_ending"]
+                                    and normalization["guard_ending"] in self.condition_endings):
+                                derivations[key]["guard_ending"] = normalization["guard_ending"]
                         if matched is not None:
                             matched.setdefault(key, index)
                         if records is not None and key not in meanings and scoped_record is not None:
@@ -5884,7 +6097,8 @@ class RelationalParser:
             terminals = [m for m in [*(_frames.get("terminators") or []),
                                      *self.clause_grammar.get("question_marks", [])] if isinstance(m, str) and m]
             joiners = sorted([m for m in [*(_frames.get("separators") or []),
-                                          *self.clause_grammar.get("after_clause_markers", [])]
+                                          *self.clause_grammar.get("after_clause_markers", []),
+                                          *self._condition_connectors()]
                               if isinstance(m, str) and m], key=len, reverse=True)
 
             def gap_unread(gap, terminal):
@@ -6381,6 +6595,45 @@ class RelationalParser:
                 return origin, "binding_unknown"
             return origin, None
 
+        combo_policy = (self.clause_grammar or {}).get("condition_combinations")
+
+        def guard_pol_ok(m):
+            pol = m.get("polarity", True)
+            return pol is True or (pol is False and combo_policy is not None)
+
+        def guard_kind(m):
+            return "negative_guard" if m.get("polarity", True) is False else "positive_guard"
+
+        def connect(first, second):
+            # None: plain gap (AND); False: unusable gap; dict: OR metadata
+            if combo_policy is None:
+                return None
+            gap_lo, gap_hi = first["end"], second["start"]
+            gap = original_text[gap_lo:gap_hi]
+            hits = []
+            for c in combo_policy["any_connectors"]:
+                at = gap.find(c)
+                while at >= 0:
+                    hits.append((at, c))
+                    at = gap.find(c, at + 1)
+            if not hits:
+                return None
+            if len(hits) != 1:
+                return False
+            at, c = hits[0]
+            decl = self.data.get("predicate_frames") or {}
+            qm = [m for m in self.clause_grammar.get("question_marks", []) if isinstance(m, str) and m]
+            got = decl.get("separators") if isinstance(decl, dict) else None
+            seps = ([m for m in got if isinstance(m, str) and m.strip() and m.strip() == m and m not in qm]
+                    if isinstance(got, list) else [])
+            for chunk in (gap[:at], gap[at + len(c):]):
+                core = chunk.strip()
+                if core and core not in seps:
+                    return False
+            return {"schema": "selected-condition-combination-v1", "operator": "any",
+                    "source_span": [first["start"], second["end"]],
+                    "connector_span": [gap_lo + at, gap_lo + at + len(c)], "connector": c}
+
         for options, evidence in clauses:
             entry_ordinal += 1
             facts_before, ordinary_query = len(facts), False
@@ -6403,10 +6656,12 @@ class RelationalParser:
             # 조건 맺음으로 읽힌 절은 **일어난 일이 아니다.** 사실로 적으면
             # `5개보다 많으면` 이 "많다" 는 단정이 되고, 뒤의 일도 그냥 일어난
             # 일이 된다. 어느 맺음이 조건인지는 문법이 선언한다 — 낱말이 아니다.
-            if stated and (normalization or {}).get("ending") in self.condition_endings:
+            if stated and ((normalization or {}).get("ending") in self.condition_endings
+                           or (normalization or {}).get("guard_ending") in self.condition_endings):
                 _candidate, marker = without_hypothetical_prefix(evidence["text"])
                 조건 += [{"triple": triple, "evidence": evidence, "kind": "guard",
-                          "marker": marker}
+                          "marker": marker,
+                          **({"polarity": False} if meaning.get("polarity") is False else {})}
                          for triple in stated]
                 if _entry_selection:
                     entry_gaps.append({"clause_ordinal": entry_ordinal, "code": "condition_scope_uncollected"})
@@ -6689,12 +6944,12 @@ class RelationalParser:
                 cev, ck, cm2, _cn = read_info[1]
                 item = entry_items[0]
                 grows, crows = asserted(gm), asserted(cm2)
-                if (gev["end"] <= cev["start"] and gm.get("polarity", True) is True
+                if (gev["end"] <= cev["start"] and guard_pol_ok(gm)
                         and cm2.get("polarity", True) is True
                         and len(grows) == 1 and grows[0] == 조건[0]["triple"]
                         and len(crows) == 1
                         and [self.canonical_name(crows[0][0])] + list(crows[0][1:]) == facts[0]["triple"]):
-                    gg = carrier_for("positive_guard", gev, gk, gm, True)
+                    gg = carrier_for(guard_kind(gm), gev, gk, gm, True)
                     gc = carrier_for("positive_fact", cev, ck, cm2, False)
                     if gg is not None and gg[1] is not None and gc is not None:
                         gplain = self._sb_plain(original_text)
@@ -6713,25 +6968,29 @@ class RelationalParser:
                 item = entry_items[0]
                 r0, r1, rc = asserted(g0m), asserted(g1m), asserted(cm3)
                 if (g0ev["end"] <= g1ev["start"] and g1ev["end"] <= cev["start"]
-                        and g0m.get("polarity", True) is True
-                        and g1m.get("polarity", True) is True
+                        and guard_pol_ok(g0m)
+                        and guard_pol_ok(g1m)
                         and cm3.get("polarity", True) is True
                         and len(r0) == 1 and r0[0] == 조건[0]["triple"]
                         and len(r1) == 1 and r1[0] == 조건[1]["triple"]
                         and len(rc) == 1
                         and [self.canonical_name(rc[0][0])] + list(rc[0][1:]) == facts[0]["triple"]):
-                    gg0 = carrier_for("positive_guard", g0ev, g0k, g0m, True)
-                    gg1 = carrier_for("positive_guard", g1ev, g1k, g1m, True)
+                    gg0 = carrier_for(guard_kind(g0m), g0ev, g0k, g0m, True)
+                    gg1 = carrier_for(guard_kind(g1m), g1ev, g1k, g1m, True)
                     gc3 = carrier_for("positive_fact", cev, ck, cm3, False)
+                    combo = connect(g0ev, g1ev)
                     if (gg0 is not None and gg0[1] is not None
                             and gg1 is not None and gg1[1] is not None
                             and gc3 is not None):
                         gplain3 = self._sb_plain(original_text)
-                        if gplain3 is not None:
+                        if gplain3 is not None and combo is not False:
                             조건[0]["source_original"] = gplain3
                             조건[0]["source_certificate"] = gg0[1]
                             조건[1]["source_original"] = gplain3
                             조건[1]["source_certificate"] = gg1[1]
+                            if combo is not None:
+                                조건[0]["combination"] = copy.deepcopy(combo)
+                                조건[1]["combination"] = copy.deepcopy(combo)
                             item["source_witness"] = copy.deepcopy(gc3[0])
         return result
 

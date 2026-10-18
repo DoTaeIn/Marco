@@ -2167,11 +2167,1205 @@ class DialogueSession:
                                            ("learning_accepted_resubmit_required",)))
         return self._result(self._hold("learning_rejected", text, ("learning_rejected",)))
 
+    _goal_work = None
+    _goal_gap = None
+    _solve_work = None
+    _solve_gap = None
+    _solve_running = False
+    _solve_committed = ()
+    _solve_req = None
+    _solve_resp = None
+    _GOAL_ADVANCED = ("조건", "condition", "사건", "가정사건", "사건정정", "정의", "원인", "이유물음",
+                      "correction", "hypothesis", "가정", "수선", "events", "definition", "cause", "reason")
+
+    @staticmethod
+    def _goal_canon(value):
+        return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+                          allow_nan=False)
+
+    def _goal_sha(self, value):
+        return hashlib.sha256(self._goal_canon(value).encode("utf-8")).hexdigest()
+
+    def _goal_binding(self):
+        revision = self._revision()
+        if not _nonneg(revision):
+            raise ValueError("goal_binding_invalid")
+        return {"conversation_id": self.conversation_id,
+                "model_sha256": self._goal_sha(self._model_binding()),
+                "memory_revision": str(revision)}
+
+    def _goal_program(self):
+        from pathlib import Path
+        from marco.reasoning import graph_vm
+        path = Path(__file__).resolve().parents[2] / "programs" / "scoped-goal-attempts.json"
+        if path.is_symlink():
+            raise ValueError("goal_program_unavailable")
+        with open(path, "rb") as handle:
+            raw = handle.read(65537)
+        if len(raw) > 65536:
+            raise ValueError("goal_program_unavailable")
+        def unique_pairs(rows):
+            result = {}
+            for key, value in rows:
+                if key in result:
+                    raise ValueError("goal_program_unavailable")
+                result[key] = value
+            return result
+        program = json.loads(raw.decode("utf-8"), object_pairs_hook=unique_pairs)
+        graph_vm.validate_program(program)
+        return program, self._goal_sha(program)
+
+    def _goal_query(self, text):
+        if self._parser_revision != self._revision():
+            self._rehydrate(self.context.snapshot())
+        parser = self.context._parser_instance
+        parsed = parser.parse(text, partial=True, repair=True, _entry_selection=True)
+        query_authority = parser.verify_selected_positive_query(text, parsed)
+        if type(query_authority) is not dict:
+            raise ValueError("goal_query_authority_unavailable")
+        if not isinstance(parsed, dict) or parsed.get("facts") \
+                or any(parsed.get(k) for k in self._GOAL_ADVANCED):
+            raise ValueError("goal_unsupported")
+        query = parsed.get("query")
+        if not isinstance(query, list) or len(query) != 1 or not isinstance(query[0], dict) \
+                or set(query[0]) != {"triple", "render"}:
+            raise ValueError("goal_unsupported")
+        triple = query[0]["triple"]
+        if not isinstance(triple, list) or len(triple) != 3 \
+                or any(type(x) is not str or not x.strip() or "$" in x for x in triple) \
+                or triple[1].startswith("?") or "?" in triple[1]:
+            raise ValueError("goal_unsupported")
+        asked = [i for i in (0, 2) if triple[i].startswith("?")]
+        if len(asked) != 1 or len(triple[asked[0]]) < 2 or "?" in triple[2 - asked[0]]:
+            raise ValueError("goal_unsupported")
+        return [str(x) for x in triple]
+
+    def _goal_state(self):
+        ctx = self.context
+        try:
+            clean = not (ctx.unread or ctx.unread_guard or ctx._live())
+            snapshot = ctx.snapshot()
+            if snapshot.get("corrections") or snapshot.get("fills"):
+                clean = False
+            if clean:
+                _facts, _defined, pending, _read = ctx._cached_replay(
+                    ctx._parser_instance, ctx.observations, ctx.fills)
+                if pending:
+                    clean = False
+            records = snapshot.get("reading_ledger", {}).get("records", {})
+            for oid in snapshot.get("observation_ids", []):
+                record = records.get(oid)
+                versions = record.get("versions") if type(record) is dict else None
+                active = record.get("active") if type(record) is dict else None
+                version = (versions[active - 1] if type(versions) is list
+                           and type(active) is int and 1 <= active <= len(versions) else None)
+                parsed = version.get("parsed") if type(version) is dict else None
+                if (type(parsed) is not dict or version.get("unavailable") is not False
+                        or parsed.get("query") or any(parsed.get(k) for k in self._GOAL_ADVANCED)
+                        or type(parsed.get("facts")) is not list):
+                    clean = False
+                    break
+                for fact in parsed["facts"]:
+                    if (type(fact) is not dict or fact.get("polarity", True) is not True
+                            or fact.get("modality", "asserted") != "asserted"
+                            or set(fact) - {"triple", "evidence", "polarity", "modality", "unnamed"}
+                            or fact.get("unnamed")):
+                        clean = False
+                        break
+            state = ctx.current_state() if clean else []
+            triples = sorted({tuple(t) for t in state})
+            if any(len(t) != 3 or any(type(x) is not str or "?" in x or "$" in x for x in t)
+                   for t in triples):
+                clean, triples = False, []
+        except Exception:
+            clean, triples = False, []
+        fp = self._goal_sha({"binding": self._goal_binding(), "state": [list(t) for t in triples]})
+        return clean, set(triples), fp
+
+    def _goal_verify(self, response, goal):
+        from marco.reasoning.inference import bind
+        q = goal["query"]
+        if type(response) is not dict or response.get("status") != "answered":
+            return False, None, "unresolved"
+        try:
+            clean, _state, _fp = self._goal_state()
+            if not clean:
+                return False, None, "unsupported"
+            meaning = response.get("meaning")
+            if (type(meaning) is not dict or meaning.get("act") != "inform"
+                    or meaning.get("kind") is not None or meaning.get("query") != q
+                    or meaning.get("asked") != q):
+                return False, None, "unsupported"
+            parser = self.context._parser_instance
+            current = parser.parse(goal["text"], partial=True, repair=True, _entry_selection=True)
+            if (type(current) is not dict or current.get("facts")
+                    or any(current.get(k) for k in self._GOAL_ADVANCED)
+                    or type(current.get("query")) is not list or len(current["query"]) != 1
+                    or current["query"][0].get("triple") != q):
+                return False, None, "proof_unavailable"
+            certificate = parser.verify_selected_positive_query(goal["text"], current)
+            if type(certificate) is not dict:
+                return False, None, "proof_unavailable"
+            facts, _defined, pending, _read = self.context._cached_replay(
+                parser, self.context.observations, self.context.fills)
+            if pending:
+                return False, None, "unsupported"
+            native = parser.answer({"facts": facts, "query": current["query"]})
+            if (type(native) is not dict or type(native.get("answer")) is not str
+                    or not native["answer"].strip()
+                    or native.get("answer") != response.get("answer")
+                    or self._goal_canon(native.get("transitions")) != self._goal_canon(response.get("transitions"))):
+                return False, None, "proof_unavailable"
+            roots = [row for row in native.get("transitions", [])
+                     if type(row) is dict and "operation" not in row
+                     and type(row.get("fact")) is list and len(row["fact"]) == 3
+                     and all(type(x) is str and "?" not in x and "$" not in x for x in row["fact"])
+                     and bind(q, row["fact"], {}) is not None]
+            if len(roots) != 1:
+                return False, None, "proof_unavailable"
+            return True, self._goal_sha({"query": q, "certificate": certificate,
+                                        "native_answer": native}), None
+        except (ValueError, TypeError, KeyError, AttributeError, ReadingUnavailable):
+            return False, None, "proof_unavailable"
+
+    def _goal_run(self, work, program, progress):
+        from marco.reasoning import query_work as gw
+        work, action = gw.claim_goal_operation(work, program, progress)
+        self._goal_work = work
+        self._save_memory_change()     # charged state is durable BEFORE any original respond
+        if action != "attempt":
+            return None
+        response = self.respond(work["goal"]["text"])
+        work = gw.record_goal_attempt(self._goal_work, self._goal_sha(response))
+        self._goal_work = work
+        # the pre-query charged pending save is already durable; the verify claim only needs the original progress
+        if gw.plan_goal_operation(work, program, progress) == "verify":
+            work, _ = gw.claim_goal_operation(work, program, progress)
+            self._goal_work = work
+            ok, proof, code = self._goal_verify(response, work["goal"])
+            self._goal_work = gw.finish_goal_verification(work, ok, proof, code)
+            self._save_memory_change()
+        return response
+
+    def start_goal(self, text):
+        from marco.reasoning import query_work as gw
+        with self._guard():
+            pass
+        _text("text", text)
+        self._solve_refuse_goal()
+        if self._goal_gap is not None:
+            raise ValueError("goal_work_unavailable")
+        if type(self.model) is not pack_model.PackModel or not self.state_path:
+            raise ValueError("goal requires explicit selected model and state_path")
+        program, psha = self._goal_program()
+        binding = self._goal_binding()
+        if self._goal_work is not None:
+            self._goal_work = gw.recover_goal_work(self._goal_work, binding=binding, program_sha256=psha)
+            if self._goal_work["phase"] not in ("completed", "blocked"):
+                raise ValueError("goal_active")
+            if (self._goal_work["phase"] == "blocked"
+                    and self._goal_work["goal"]["text"] == text
+                    and self._goal_work["binding"] == binding):
+                _clean, _state, current_fp = self._goal_state()
+                if any(a["state_sha256"] == current_fp for a in self._goal_work["attempts"]):
+                    raise ValueError("goal_repeated_without_progress")
+        query = self._goal_query(text)
+        clean, _state, fp = self._goal_state()
+        if not clean:
+            raise ValueError("goal_context_ineligible")
+        work = gw.new_goal_work({"text": text, "query": query}, binding, psha)
+        progress = {"state_sha256": fp, "relevant_new_positive": False, "eligible": bool(clean)}
+        gw.plan_goal_operation(work, program, progress)
+        response = self._goal_run(work, program, progress)
+        return {"goal_work": copy.deepcopy(self._goal_work), "response": response}
+
+    def _prerequisite_program(self):
+        from pathlib import Path
+        from marco.reasoning import graph_vm
+        path = Path(__file__).resolve().parents[2] / "programs" / "scoped-prerequisite-plan.json"
+        if path.is_symlink():
+            raise ValueError("prerequisite_program_unavailable")
+        with open(path, "rb") as handle:
+            raw = handle.read(65537)
+        if len(raw) > 65536:
+            raise ValueError("prerequisite_program_unavailable")
+
+        def unique_pairs(rows):
+            result = {}
+            for key, value in rows:
+                if key in result:
+                    raise ValueError("prerequisite_program_unavailable")
+                result[key] = value
+            return result
+        program = json.loads(raw.decode("utf-8"), object_pairs_hook=unique_pairs)
+        graph_vm.validate_program(program)
+        return program, self._goal_sha(program)
+
+    def analyze_goal(self, text):
+        """Read-only native archive prerequisite report; never executes or asserts a planned rule."""
+        import re
+        from marco.reasoning import query_work as qw
+        from marco.reasoning.inference import current_facts as _cf
+        from marco.reasoning.context import _scoped_sha
+        from marco.reasoning.readings import Obs, TENTATIVE
+        with self._guard():
+            pass
+        _text("text", text)
+        if type(self.model) is not pack_model.PackModel:
+            raise ValueError("goal requires explicit selected model")
+        # An analyzer does not rehydrate or change an installed parser as a side effect.
+        if self._parser_revision != self._revision():
+            raise ValueError("prerequisite_authority_unavailable")
+        program, _psha = self._prerequisite_program()
+        query = self._goal_query(text)
+        if any(len(x) > 256 for x in query):
+            raise ValueError("goal_unsupported")
+        ctx, parser = self.context, self.context._parser_instance
+        digest = lambda value: hashlib.sha256(str(value).encode("utf-8")).hexdigest()
+        def grounded(triple):
+            return (type(triple) is list and len(triple) == 3
+                    and all(type(x) is str and x.strip() and len(x) <= 256
+                            and "?" not in x and "$" not in x for x in triple))
+        def bad():
+            raise ValueError("prerequisite_authority_unavailable")
+        keys = {"facts", "query", "정의", "사건", "가정사건", "조건", "가정", "원인", "이유물음", "수선", "사건정정", "entry_selection"}
+        advanced = keys - {"facts", "query", "entry_selection"}
+        facts, rules, conditional_by_index = [], [], {}
+        try:
+            if (ctx.unread or ctx.unread_guard or ctx._live() or ctx.fills
+                    or getattr(ctx, "_rereading", False) or getattr(ctx, "_in_name_reply", False)):
+                bad()
+            snap = ctx.snapshot()
+            if snap.get("corrections") or snap.get("fills"):
+                bad()
+            replay = snap.get("replay")
+            if type(replay) is not dict or type(replay.get("pending")) is not list or len(replay["pending"]) > 2:
+                bad()
+            observations = list(ctx.observations)
+            chosen = getattr(parser, "chosen_readings", None)
+            if type(chosen) is not dict:
+                bad()
+            identities = {}
+            for index, obs in enumerate(observations):
+                oid, rev = getattr(obs, "oid", None), getattr(obs, "rev", None)
+                if (not isinstance(obs, Obs) or type(oid) is not str
+                        or re.fullmatch(r"o[1-9][0-9]*", oid) is None or len(oid) > 64 or oid == TENTATIVE
+                        or type(rev) is not int or not 1 <= rev <= 10 ** 20 - 1
+                        or getattr(obs, "reading", None) is not None or getattr(obs, "reason", None) == "correction"):
+                    bad()
+                entry = ctx.reading_ledger.get(oid)
+                if (type(entry) is not dict or type(entry.get("active")) is not int or entry["active"] != rev
+                        or type(entry.get("versions")) is not list or not 1 <= rev <= len(entry["versions"])):
+                    bad()
+                record, view = ctx._active_record(obs), chosen.get(oid)
+                if (type(record) is not dict or record.get("observation_id") != oid
+                        or type(record.get("reading_revision")) is not int or record["reading_revision"] != rev
+                        or record.get("unavailable") is not False or type(record.get("source")) is not str
+                        or record["source"] != str(obs) or view is None or ctx._structural_marked(view)
+                        or ctx._unread_json(record.get("parsed"), 65536) is None
+                        or not ctx._unread_native_equal(view, record.get("parsed"))):
+                    bad()
+                stored = ctx._read_source(parser, obs)
+                if (type(stored) is not dict or set(stored) != keys
+                        or not ctx._unread_native_equal(stored, record["parsed"])
+                        or type(stored["facts"]) is not list or stored["query"] is not None
+                        or any(type(stored[k]) is not list for k in advanced)
+                        or any(stored[k] for k in advanced - {"조건"})):
+                    bad()
+                identities[(oid, rev)] = obs
+                conds = stored["조건"]
+                if not conds:
+                    continue
+                if ctx._scoped_admission(obs, stored, parser) != "conditional":
+                    bad()
+                rows, items = stored["facts"], stored["entry_selection"].get("items")
+                if not 1 <= len(conds) <= 2 or len(rows) != 1 or type(items) is not list or len(items) != 1:
+                    bad()
+                fact = rows[0]
+                if (type(fact) is not dict or fact.get("polarity", True) is not True
+                        or fact.get("modality", "asserted") != "asserted" or not grounded(fact.get("triple"))
+                        or any(type(c) is not dict or c.get("polarity", True) is not True
+                               or "combination" in c or not grounded(c.get("triple")) for c in conds)):
+                    bad()
+                guards = [_scoped_sha(c.get("source_certificate")) for c in conds]
+                witness = _scoped_sha(items[0].get("source_witness"))
+                if witness is None or any(g is None for g in guards) or len(rules) >= 2:
+                    bad()
+                conditional_by_index[index] = (obs, conds)
+                rules.append({"rule_id": "%s@%d" % (oid, rev), "body": [list(c["triple"]) for c in conds],
+                              "head": list(fact["triple"]), "authority": {"observation_id": oid,
+                              "reading_revision": rev, "source_sha256": digest(obs),
+                              "guard_certificate_sha256": guards, "consequent_witness_sha256": witness}})
+            # Only the existing native unknown-condition pending shape is an admissible missing premise.
+            fields = {"text", "at", "동사", "id", "잘림", "차례", "못잼", "조각", "자리", "빈자리", "충돌", "헛자리", "닿는곳"}
+            pending_seen = set()
+            for item in replay["pending"]:
+                if type(item) is not dict or set(item) != fields or type(item["at"]) is not int:
+                    bad()
+                at = item["at"]
+                if at not in conditional_by_index or at in pending_seen:
+                    bad()
+                pending_seen.add(at)
+                source, conds = conditional_by_index[at]
+                other = item["text"]
+                if (not isinstance(other, Obs) or other.oid != source.oid or other.rev != source.rev
+                        or str(other) != str(source) or item["동사"] is not None or item["id"] is not None
+                        or item["잘림"] is not False or type(item["차례"]) is not int or item["차례"] != at
+                        or item["못잼"] != "condition_unknown"
+                        or any(type(item[k]) is not dict or item[k] for k in ("자리", "빈자리", "충돌", "헛자리"))
+                        or not ctx._unread_native_equal(item["조각"], conds[0]["evidence"])
+                        or not ctx._unread_native_equal(item["닿는곳"], [c["triple"] for c in conds])):
+                    bad()
+            if type(replay.get("facts")) is not list:
+                bad()
+            state, _changes = _cf(replay["facts"], parser.data.get("mutable_predicates", []),
+                                  parser.data.get("numeric_updates", {}))
+            for row in state:
+                src = (row.get("evidence") or {}).get("source") if type(row) is dict else None
+                pol = row.get("polarity", True) if type(row) is dict else None
+                if (not isinstance(src, Obs) or (src.oid, src.rev) not in identities
+                        or str(src) != str(identities[(src.oid, src.rev)]) or type(pol) is not bool
+                        or row.get("modality", "asserted") != "asserted" or not grounded(row.get("triple"))
+                        or len(facts) >= 64):
+                    bad()
+                facts.append({"triple": list(row["triple"]), "polarity": pol, "source_sha256": digest(src)})
+        except Exception as error:
+            raise ValueError("prerequisite_authority_unavailable") from error
+        # No native-to-typed fallback: zero valid rules is still an honest native archive report.
+        report = qw.plan_goal_prerequisites(list(query), facts, rules, program, budget=64,
+                                             input_scope="authenticated_native_archive")
+        return copy.deepcopy(report)
+
+    def advance_goal(self, text):
+        from marco.reasoning import query_work as gw
+        from marco.reasoning.inference import bind
+        with self._guard():
+            pass
+        _text("text", text)
+        if self._goal_gap is not None:
+            raise ValueError("goal_work_unavailable")
+        self._solve_refuse_goal()
+        if self._goal_work is None:
+            raise ValueError("goal_missing")
+        program, psha = self._goal_program()
+        binding = self._goal_binding()
+        recovered = gw.recover_goal_work(self._goal_work, binding=binding, program_sha256=psha)
+        if recovered != self._goal_work:
+            self._goal_work = recovered
+            self._save_memory_change()
+        if self._goal_work["phase"] != "waiting":
+            raise ValueError("goal_not_waiting")
+        query = self._goal_work["goal"]["query"]
+        clean0, state0, _fp0 = self._goal_state()
+        snap0 = self.context.snapshot()
+        ids0 = list(snap0.get("observation_ids") or ())
+        corr0 = snap0.get("corrections")
+        input_response = self.respond(text)
+        eligible, relevant = False, False
+        try:
+            snap1 = self.context.snapshot()
+            clean1, state1, fp1 = self._goal_state()
+            ids1 = list(snap1.get("observation_ids") or ())
+            new = [o for o in ids1 if o not in ids0]
+            if clean0 and clean1 and len(new) == 1 and len(ids1) == len(ids0) + 1 \
+                    and snap1.get("corrections") == corr0 \
+                    and isinstance(input_response, dict) and input_response.get("status") == "observed":
+                rec = ((snap1.get("reading_ledger") or {}).get("records") or {}).get(new[0])
+                versions = rec.get("versions") if isinstance(rec, dict) else None
+                active = rec.get("active") if isinstance(rec, dict) else None
+                version = versions[active - 1] if isinstance(versions, list) and type(active) is int \
+                    and 1 <= active <= len(versions) else None
+                parsed = version.get("parsed") if isinstance(version, dict) else None
+                facts = parsed.get("facts") if isinstance(parsed, dict) else None
+                if isinstance(version, dict) and version.get("source") == text and not version.get("unavailable") \
+                        and isinstance(facts, list) and len(facts) == 1 and not parsed.get("query") \
+                        and not any(parsed.get(k) for k in self._GOAL_ADVANCED):
+                    fact = facts[0]
+                    triple = fact.get("triple") if isinstance(fact, dict) else None
+                    if isinstance(fact, dict) and set(fact) <= {"triple", "evidence", "polarity", "modality", "unnamed"} \
+                            and fact.get("polarity", True) is True \
+                            and fact.get("modality", "asserted") == "asserted" and not fact.get("unnamed") \
+                            and isinstance(triple, list) and len(triple) == 3 \
+                            and all(type(x) is str and "?" not in x and "$" not in x for x in triple) \
+                            and tuple(triple) in (state1 - state0):
+                        eligible = True
+                        relevant = bind(query, triple, {}) is not None
+        except Exception:
+            eligible, relevant, fp1 = False, False, self._goal_state()[2]
+        progress = {"state_sha256": fp1, "relevant_new_positive": bool(relevant), "eligible": bool(eligible)}
+        action = gw.plan_goal_operation(self._goal_work, program, progress)
+        retry = None
+        if action == "attempt":
+            retry = self._goal_run(self._goal_work, program, progress)
+        elif action == "stop":
+            self._goal_work, _ = gw.claim_goal_operation(self._goal_work, program, progress)
+            self._save_memory_change()
+        return {"goal_work": copy.deepcopy(self._goal_work), "input_response": input_response,
+                "retry_response": retry}
+
+    # ---- V69 bounded evidence-acquisition solve -------------------------------------------
+    # Solve metadata lives ONLY in the session snapshot key 'solve_work' (strict detached plain JSON
+    # owned by marco.reasoning.query_work). Provider trust: the world-fact truth of a provider source
+    # rests on the explicit trusted provider capability; native parsing/certificates authenticate
+    # interpretation only. The actual native answer response is kept only in an ephemeral local
+    # variable (self._solve_resp); durable work stores its hash only.
+
+    def _solve_refuse_goal(self):
+        w = self._solve_work
+        pw = self._paths_work
+        if (self._paths_running or self._paths_gap is not None
+                or (isinstance(pw, dict) and pw.get('status') in ('ready', 'running'))):
+            raise ValueError('paths_active')
+        if (self._solve_running or self._solve_gap is not None
+                or (isinstance(w, dict) and w.get('status') in ('ready', 'waiting'))):
+            raise ValueError('solve_active')
+
+    def _solve_program(self):
+        from pathlib import Path
+        from marco.reasoning import graph_vm
+        path = Path(__file__).resolve().parents[2] / 'programs' / 'scoped-evidence-solve.json'
+        if path.is_symlink():
+            raise ValueError('solve_program_unavailable')
+        with open(path, 'rb') as handle:
+            raw = handle.read(65537)
+        if len(raw) > 65536:
+            raise ValueError('solve_program_unavailable')
+
+        def pairs(rows):
+            out = {}
+            for key, value in rows:
+                if key in out:
+                    raise ValueError('solve_program_unavailable')
+                out[key] = value
+            return out
+        program = json.loads(raw.decode('utf-8'), object_pairs_hook=pairs)
+        graph_vm.validate_program(program)
+        return program, self._goal_sha(program)
+
+    def _solve_archive(self):
+        # Same native archive authority as V68 analyze_goal; no new semantic evaluator.
+        import re
+        from marco.reasoning.readings import Obs, TENTATIVE
+        from marco.reasoning.context import _scoped_authority
+        from marco.reasoning.inference import current_facts
+        ctx, parser = self.context, self.context._parser_instance
+        def bad():
+            raise ValueError('solve_context_ineligible')
+        def ground(t):
+            return (type(t) is list and len(t) == 3 and all(type(x) is str and x.strip()
+                    and len(x) <= 256 and '?' not in x and '$' not in x for x in t))
+        if (self._parser_revision != self._revision() or ctx.unread or ctx.unread_guard
+                or ctx._live() or ctx.fills or getattr(ctx, '_rereading', False)
+                or getattr(ctx, '_in_name_reply', False)
+                or _scoped_authority(getattr(ctx.model, 'language_projection', None), parser) is None):
+            bad()
+        snapshot = ctx.snapshot()
+        if snapshot.get('corrections') or snapshot.get('fills'):
+            bad()
+        chosen = getattr(parser, 'chosen_readings', None)
+        if type(chosen) is not dict:
+            bad()
+        keys = {'facts','query','정의','사건','가정사건','조건','가정','원인','이유물음','수선','사건정정','entry_selection'}
+        advanced = keys - {'facts','query','entry_selection'}
+        observations, ids, records = list(ctx.observations), {}, {}
+        if len(observations) != len(ctx.observation_ids):
+            bad()
+        for index, obs in enumerate(observations):
+            oid, rev = getattr(obs, 'oid', None), getattr(obs, 'rev', None)
+            if (not isinstance(obs, Obs) or type(oid) is not str or len(oid)>64
+                    or re.fullmatch(r'o[1-9][0-9]*',oid) is None or oid == TENTATIVE
+                    or ctx.observation_ids[index] != oid or type(rev) is not int
+                    or not 1 <= rev <= 10**20-1 or getattr(obs,'reading',None) is not None
+                    or getattr(obs,'reason',None)=='correction' or (oid,rev) in ids):
+                bad()
+            entry = ctx.reading_ledger.get(oid)
+            if (type(entry) is not dict or type(entry.get('active')) is not int or entry['active']!=rev
+                    or type(entry.get('versions')) is not list or not 1<=rev<=len(entry['versions'])):
+                bad()
+            record, view = ctx._active_record(obs), chosen.get(oid)
+            if (type(record) is not dict or record.get('observation_id')!=oid
+                    or type(record.get('reading_revision')) is not int or record['reading_revision']!=rev
+                    or record.get('unavailable') is not False or record.get('source')!=str(obs)
+                    or view is None or ctx._structural_marked(view)
+                    or ctx._unread_json(record.get('parsed'),65536) is None
+                    or not ctx._unread_native_equal(view,record.get('parsed'))):
+                bad()
+            parsed = ctx._read_source(parser,obs)
+            if (type(parsed) is not dict or set(parsed)!=keys or parsed['query'] is not None
+                    or not ctx._unread_native_equal(parsed,record['parsed'])
+                    or type(parsed['facts']) is not list
+                    or any(type(parsed[k]) is not list for k in advanced)
+                    or any(parsed[k] for k in advanced-{'조건'})):
+                bad()
+            for fact in parsed['facts']:
+                if (type(fact) is not dict or not ground(fact.get('triple'))
+                        or fact.get('polarity',True) is not True or fact.get('modality','asserted')!='asserted'
+                        or fact.get('unnamed') or set(fact)-{'triple','evidence','polarity','modality','unnamed'}):
+                    bad()
+            conds=parsed['조건']
+            if conds and (not 1<=len(conds)<=2 or len(parsed['facts'])!=1
+                    or any(type(c) is not dict or not ground(c.get('triple'))
+                           or c.get('polarity',True) is not True or 'combination' in c for c in conds)
+                    or ctx._scoped_admission(obs,parsed,parser)!='conditional'):
+                bad()
+            ids[(oid,rev)]=obs
+            records[oid]={'observation':obs,'parsed':parsed,'record':record}
+        facts,_defined,pending,_read=ctx._cached_replay(parser,observations,ctx.fills)
+        if type(facts) is not list or pending:
+            bad()
+        rows,_changes=current_facts(facts,parser.data.get('mutable_predicates',[]),parser.data.get('numeric_updates',{}))
+        if len(rows)>64:
+            bad()
+        for row in rows:
+            src=(row.get('evidence')or{}).get('source') if type(row)is dict else None
+            if (not isinstance(src,Obs) or (src.oid,src.rev) not in ids
+                    or str(src)!=str(ids[(src.oid,src.rev)]) or not ground(row.get('triple'))
+                    or row.get('polarity',True) is not True or row.get('modality','asserted')!='asserted'):
+                bad()
+        state={tuple(row['triple']) for row in rows}
+        native=ctx.current_state()
+        if type(native)is not list or any(not ground(t) for t in native) or state!={tuple(t)for t in native}:
+            bad()
+        return {'snapshot':snapshot,'facts':facts,'rows':rows,'state':state,'records':records,'identities':ids}
+
+    def _solve_state(self):
+        try:
+            archive=self._solve_archive()
+            state=archive['state']
+            clean=True
+        except Exception:
+            clean,state=False,set()
+        fp=self._goal_sha({'binding':self._goal_binding(),'state':[list(t)for t in sorted(state)]})
+        return clean,state,fp
+    def _solve_parse(self, source):
+        if self._parser_revision != self._revision():
+            raise ValueError('solve_context_ineligible')
+        return self.context._parser_instance.parse(source, partial=True, repair=True, _entry_selection=True)
+
+    def _solve_prepare(self, rule_sources, limit=2):
+        from marco.reasoning.context import _scoped_sha
+        if type(rule_sources) is not list or len(rule_sources) > limit:
+            raise ValueError('solve_packets_invalid')
+        ctx = self.context
+        parser = None
+        advanced = tuple(k for k in self._GOAL_ADVANCED if k not in ('조건', 'condition'))
+
+        def ground(t):
+            return (type(t) is list and len(t) == 3
+                    and all(type(x) is str and x.strip() and '?' not in x and '$' not in x for x in t))
+        if self._parser_revision != self._revision():
+            raise ValueError('solve_context_ineligible')
+        archive = self._solve_archive()
+        parser = ctx._parser_instance
+        archived, sigs = set(), set()
+        try:
+            for obs in ctx.observations:
+                archived.add(' '.join(str(obs).split()))
+                stored = ctx._read_source(parser, obs)
+                if isinstance(stored, dict) and stored.get('조건') and len(stored.get('facts') or []) == 1:
+                    sigs.add((tuple(sorted(tuple(c['triple']) for c in stored['조건'])),
+                              tuple(stored['facts'][0]['triple'])))
+        except Exception as error:
+            raise ValueError('solve_context_ineligible') from error
+        packets, seen = [], set()
+        for number, source in enumerate(rule_sources, 1):
+            if (type(source) is not str or not source.strip() or len(source) > 4096
+                    or len(source.encode('utf-8')) > 16384):
+                raise ValueError('solve_packets_invalid')
+            norm = ' '.join(source.split())
+            if norm in archived or norm in seen:
+                raise ValueError('solve_packet_archived')
+            seen.add(norm)
+            parsed = self._solve_parse(source)
+            if (not isinstance(parsed, dict) or len(parsed.get('facts') or []) != 1 or parsed.get('query')
+                    or any(parsed.get(k) for k in advanced)):
+                raise ValueError('solve_packet_invalid')
+            conds = parsed.get('조건') or []
+            if not 1 <= len(conds) <= 2 or ctx._scoped_admission(source, parsed, parser) != 'conditional':
+                raise ValueError('solve_packet_unauthenticated')
+            fact = parsed['facts'][0]
+            if (fact.get('polarity', True) is not True or fact.get('modality', 'asserted') != 'asserted'
+                    or fact.get('unnamed') or not ground(fact.get('triple'))
+                    or any(c.get('polarity', True) is not True or 'combination' in c
+                           or not ground(c.get('triple')) for c in conds)):
+                raise ValueError('solve_packet_invalid')
+            items = (parsed.get('entry_selection') or {}).get('items') or []
+            if (len(items)!=1 or type(items[0])is not dict
+                    or type(items[0].get('source_witness'))is not dict
+                    or any(type(c.get('source_certificate'))is not dict for c in conds)):
+                raise ValueError('solve_packet_unauthenticated')
+            witness = _scoped_sha(items[0]['source_witness'])
+            guards = [_scoped_sha(c['source_certificate']) for c in conds]
+            if witness is None or any(g is None for g in guards):
+                raise ValueError('solve_packet_unauthenticated')
+            body = [[str(x) for x in c['triple']] for c in conds]
+            head = [str(x) for x in fact['triple']]
+            sig = (tuple(sorted(tuple(b) for b in body)), tuple(head))
+            if sig in sigs:
+                raise ValueError('solve_packet_archived')
+            sigs.add(sig)
+            sha = hashlib.sha256(source.encode('utf-8')).hexdigest()
+            sid = 'p%d' % number
+            packets.append({'source_id': sid, 'source_text': source, 'source_sha256': sha,
+                            'body': body, 'head': head,
+                            'authority': {'kind': 'prospective_selected_native_source', 'source_id': sid,
+                                          'source_sha256': sha, 'guard_certificate_sha256': guards,
+                                          'consequent_witness_sha256': witness}})
+        return packets
+
+    def _solve_body_true(self, packet):
+        from marco.reasoning.context import ReasoningContext
+        ctx = self.context
+        try:
+            src = packet['source_text']
+            parsed = self._solve_parse(src)
+            parser = ctx._parser_instance
+            conds = parsed.get('조건') if isinstance(parsed, dict) else None
+            if (not conds or ctx._scoped_admission(src, parsed, parser) != 'conditional'
+                    or [[str(x) for x in c['triple']] for c in conds] != packet['body']):
+                return False
+            facts = ctx._cached_replay(parser, ctx.observations, ctx.fills)[0]
+            proj = getattr(ctx.model, 'language_projection', None)
+            return ReasoningContext._holds(parser, conds, len(src), facts, proj, actual_source=src) is True
+        except Exception:
+            return False
+
+    def _solve_committed_ids(self, work):
+        return {p['source_id'] for p in work['packets'] if any(
+            h['kind']=='commit_rule' and h['status']=='accepted'
+            and h['target_sha256']==self._goal_sha(p['source_id']) for h in work['history'])}
+
+    def _solve_view(self, work, query):
+        from marco.reasoning import query_work as qw
+        from marco.reasoning.inference import bind
+        clean, state, fp = self._solve_state()
+        view = {'eligible': bool(clean), 'state_sha256': fp, 'plan_status': 'unsupported', 'missing': [],
+                'needed_rule_ids': [], 'available_rule_ids': [], 'native_target_ready': False}
+        if not clean:
+            return view
+        matches = {t for t in state if bind(query, list(t), {}) is not None}
+        view['native_target_ready'] = len(matches) == 1
+        packets = list(work['packets'])
+        try:
+            facts = [{'triple': list(t), 'polarity': True,
+                      'source_sha256': self._goal_sha(list(t))} for t in sorted(state)]
+            rules = [{'rule_id': p['source_id'], 'body': p['body'], 'head': p['head'],
+                      'authority': p['authority']} for p in packets]
+            report = qw.plan_prospective_prerequisites(list(query), facts, rules,
+                                                      self._prerequisite_program()[0], budget=64)
+            view['plan_status'] = report['status']
+            view['missing'] = [list(m) for m in report['missing']][:4]
+            needed = []
+            for node in report['nodes']:
+                if node.get('kind') == 'rule' and node.get('rule_id') not in needed:
+                    needed.append(node['rule_id'])
+            view['needed_rule_ids'] = needed
+            by_id = {p['source_id']: p for p in packets}
+            view['available_rule_ids'] = [
+                rid for rid in needed if rid in by_id and rid not in self._solve_committed_ids(work)
+                and tuple(by_id[rid]['head']) not in state
+                and self._solve_body_true(by_id[rid])]
+        except Exception:
+            view['plan_status'] = 'unsupported'
+            view['eligible'] = False
+        return view
+
+    def _solve_fp(self, work):
+        return self._goal_sha({'snapshot': self.context.snapshot(), 'binding': self._goal_binding(),
+                               'solve_work': self._solve_work,
+                               'model': self._model_binding(), 'provider': work['provider_id'],
+                               'packets': [p['source_sha256'] for p in work['packets']],
+                               'program': self._solve_program()[1],
+                               'planning_program': self._prerequisite_program()[1],
+                               'turn': self.turn_counter})
+    def _solve_block(self, work):
+        from marco.reasoning import query_work as qw
+        try:
+            self._solve_work = qw.recover_solve_work(
+                work, binding=self._goal_binding(), provider_id=work['provider_id'],
+                program_sha256=work['program_sha256'])
+        except Exception:
+            self._solve_work = work
+        try:
+            self.save()
+        except Exception:
+            pass
+
+    def _solve_admit(self, source, triple):
+        ctx=self.context
+        archive0=self._solve_archive()
+        parsed=self._solve_parse(source)
+        if (type(parsed)is not dict or type(parsed.get('facts'))is not list or len(parsed['facts'])!=1
+                or parsed.get('query') is not None or any(parsed.get(k)for k in self._GOAL_ADVANCED)):
+            return False,None
+        fact=parsed['facts'][0]
+        if (type(fact)is not dict or fact.get('triple')!=triple or fact.get('polarity',True)is not True
+                or fact.get('modality','asserted')!='asserted' or fact.get('unnamed')
+                or set(fact)-{'triple','evidence','polarity','modality','unnamed'}):
+            return False,None
+        if ' '.join(source.split())in{' '.join(str(o).split())for o in ctx.observations}:
+            return False,None
+        before=list(ctx.observation_ids)
+        response=self.respond(source)
+        archive1=self._solve_archive()
+        if (type(response)is not dict or response.get('status')!='observed'
+                or list(ctx.observation_ids[:-1])!=before or len(ctx.observation_ids)!=len(before)+1):
+            return False,None
+        oid=ctx.observation_ids[-1]
+        item=archive1['records'][oid]
+        obs,stored=item['observation'],item['parsed']
+        if (str(obs)!=source or not ctx._unread_native_equal(stored,parsed)
+                or len(stored['facts'])!=1 or stored['facts'][0]['triple']!=triple
+                or tuple(triple)not in archive1['state']-archive0['state']):
+            return False,None
+        hit=[r for r in archive1['rows'] if r['triple']==triple
+             and (r.get('evidence')or{}).get('source') is not None
+             and getattr(r['evidence']['source'],'oid',None)==oid
+             and getattr(r['evidence']['source'],'rev',None)==obs.rev
+             and str(r['evidence']['source'])==source]
+        if len(hit)!=1:
+            return False,None
+        return True,self._goal_sha({'triple':triple,'observation_id':oid,'revision':obs.rev,
+                                    'source_sha256':hashlib.sha256(source.encode('utf-8')).hexdigest()})
+    def _solve_commit(self, packet):
+        ctx=self.context
+        archive0=self._solve_archive()
+        head=packet['head']
+        if tuple(head)in archive0['state'] or not self._solve_body_true(packet):
+            return False,None
+        source=packet['source_text']
+        if ' '.join(source.split())in{' '.join(str(o).split())for o in ctx.observations}:
+            return False,None
+        before=list(ctx.observation_ids)
+        response=self.respond(source)
+        archive1=self._solve_archive()
+        if (type(response)is not dict or response.get('status')!='observed'
+                or list(ctx.observation_ids[:-1])!=before or len(ctx.observation_ids)!=len(before)+1):
+            return False,None
+        oid=ctx.observation_ids[-1]
+        item=archive1['records'][oid]
+        obs,stored=item['observation'],item['parsed']
+        if (str(obs)!=source or ctx._scoped_admission(obs,stored,ctx._parser_instance)!='conditional'
+                or [list(c['triple'])for c in stored['조건']]!=packet['body']
+                or len(stored['facts'])!=1 or stored['facts'][0]['triple']!=head
+                or tuple(head)not in archive1['state']-archive0['state']):
+            return False,None
+        hit=[r for r in archive1['rows'] if r['triple']==head
+             and getattr((r.get('evidence')or{}).get('source'),'oid',None)==oid
+             and getattr((r.get('evidence')or{}).get('source'),'rev',None)==obs.rev
+             and str(r['evidence']['source'])==source]
+        if len(hit)!=1:
+            return False,None
+        return True,self._goal_sha({'head':head,'observation_id':oid,'revision':obs.rev,
+                                    'source_sha256':packet['source_sha256']})
+    def _solve_verify(self, response, goal):
+        from marco.reasoning.inference import bind
+        q = goal['query']
+        if type(response) is not dict or response.get('status') != 'answered':
+            return False, None, 'unresolved'
+        try:
+            if not self._solve_state()[0]:
+                return False, None, 'unsupported'
+            meaning = response.get('meaning')
+            if (type(meaning) is not dict or meaning.get('act') != 'inform' or meaning.get('kind') is not None
+                    or meaning.get('query') != q or meaning.get('asked') != q):
+                return False, None, 'unsupported'
+            parser = self.context._parser_instance
+            current = parser.parse(goal['text'], partial=True, repair=True, _entry_selection=True)
+            if (type(current) is not dict or current.get('facts')
+                    or any(current.get(k) for k in self._GOAL_ADVANCED)
+                    or type(current.get('query')) is not list or len(current['query']) != 1
+                    or current['query'][0].get('triple') != q):
+                return False, None, 'proof_unavailable'
+            certificate = parser.verify_selected_positive_query(goal['text'], current)
+            if type(certificate) is not dict:
+                return False, None, 'proof_unavailable'
+            facts, _defined, pending, _read = self.context._cached_replay(
+                parser, self.context.observations, self.context.fills)
+            if pending:
+                return False, None, 'unsupported'
+            native = parser.answer({'facts': facts, 'query': current['query']})
+            if (type(native) is not dict or type(native.get('answer')) is not str
+                    or not native['answer'].strip() or native.get('answer') != response.get('answer')
+                    or self._goal_canon(native.get('transitions')) != self._goal_canon(response.get('transitions'))):
+                return False, None, 'proof_unavailable'
+            roots = [row for row in native.get('transitions', [])
+                     if type(row) is dict and 'operation' not in row
+                     and type(row.get('fact')) is list and len(row['fact']) == 3
+                     and all(type(x) is str and '?' not in x and '$' not in x for x in row['fact'])
+                     and bind(q, row['fact'], {}) is not None]
+            if len(roots) != 1:
+                return False, None, 'proof_unavailable'
+            return True, self._goal_sha({'query': q, 'certificate': certificate, 'native_answer': native}), None
+        except (ValueError, TypeError, KeyError, AttributeError, ReadingUnavailable):
+            return False, None, 'proof_unavailable'
+
+    def _solve_exec(self, work, action, provider):
+        kind = action['kind']
+        if kind == 'lookup':
+            triple = [str(x) for x in action['target']]
+            self._solve_req = triple
+            request = {'schema': 'marco-premise-request-v1', 'request_id': action['operation_id'],
+                       'triple': list(triple)}
+            before = self._solve_fp(work)
+            got = provider.lookup(copy.deepcopy(request))
+            if self._solve_fp(work) != before:
+                return None
+            if type(got) is not dict or set(got) != {'status', 'source_id', 'source_text'}:
+                return None
+            sid, text = got['source_id'], got['source_text']
+            if got['status'] == 'missing':
+                if sid is not None or text is not None:
+                    return None
+                return {'kind': 'lookup', 'status': 'missing', 'source_text': None, 'source_id': None}
+            if (got['status'] != 'found' or type(text) is not str or not text.strip() or len(text) > 4096
+                    or len(text.encode('utf-8')) > 16384
+                    or type(sid) is not str or not sid.strip() or len(sid) > 128):
+                return None
+            return {'kind': 'lookup', 'status': 'found', 'source_text': text, 'source_id': sid}
+        if kind == 'admit_source':
+            target=action['target']
+            fields={'request_id','triple','source_id','source_text','source_sha256'}
+            if (type(target)is not dict or set(target)!=fields
+                    or not _native_identity_equal(target,work.get('staged_source'))
+                    or type(target['source_text'])is not str
+                    or hashlib.sha256(target['source_text'].encode('utf-8')).hexdigest()!=target['source_sha256']):
+                return None
+            ok, proof = self._solve_admit(target['source_text'],target['triple'])
+            return {'kind': 'admit_source', 'accepted': bool(ok), 'proof_sha256': proof if ok else None}
+        if kind == 'commit_rule':
+            packet = next((p for p in work['packets'] if p['source_id'] == action['target']), None)
+            if packet is None or packet['source_id'] in self._solve_committed_ids(work):
+                return None
+            ok, proof = self._solve_commit(packet)
+            return {'kind': 'commit_rule', 'accepted': bool(ok), 'proof_sha256': proof if ok else None}
+        if kind == 'ask_original':
+            response = self.respond(action['target'])
+            digest = self._goal_sha(response)
+            self._solve_resp = (digest, response)
+            return {'kind': 'ask_original', 'result_sha256': digest}
+        if kind == 'verify':
+            held = self._solve_resp
+            if (held is None or type(work.get('staged_answer'))is not dict
+                    or held[0]!=action['target']
+                    or work['staged_answer'].get('result_sha256')!=action['target']
+                    or self._goal_sha(held[1])!=action['target']):
+                return {'kind': 'verify', 'verified': False, 'proof_sha256': None, 'failure_code': 'unresolved'}
+            ok, proof, code = self._solve_verify(held[1], work['goal'])
+            return {'kind': 'verify', 'verified': bool(ok), 'proof_sha256': proof if ok else None,
+                    'failure_code': None if ok else code}
+        return None
+
+    def solve_goal(self, text, provider, *, provider_id, rule_sources):
+        with self._guard():
+            pass
+        if self._solve_running:
+            raise ValueError('solve_reentry')
+        owned_paths = (self._paths_running and self._paths_delegate
+                       and type(provider) is self._PathsDisabledProvider
+                       and provider_id == 'paths-disabled')
+        if (self._paths_running or self._paths_gap is not None
+                or (isinstance(self._paths_work, dict)
+                    and self._paths_work.get('status') in ('ready', 'running'))) and not owned_paths:
+            raise ValueError('paths_active')
+        _text('text', text)
+        if not callable(getattr(provider, 'lookup', None)):
+            raise ValueError('solve_provider_invalid')
+        if type(provider_id) is not str or not provider_id.strip() or len(provider_id) > 128:
+            raise ValueError('solve_provider_invalid')
+        if self._solve_gap is not None:
+            raise ValueError('solve_work_unavailable')
+        if (self._goal_gap is not None or (self._goal_work is not None
+                                           and self._goal_work.get('phase') not in ('completed', 'blocked'))):
+            raise ValueError('goal_active')
+        if type(self.model) is not pack_model.PackModel or not self.state_path:
+            raise ValueError('solve requires explicit selected model and state_path')
+        self._solve_running = True
+        try:
+            return self._solve_main(text, provider, provider_id, rule_sources)
+        finally:
+            self._solve_running = False
+            self._solve_resp = None
+            self._solve_req = None
+
+    def _solve_main(self, text, provider, provider_id, rule_sources):
+        from marco.reasoning import query_work as qw
+        program, psha = self._solve_program()
+        binding = self._goal_binding()
+        query = self._goal_query(text)
+        if self._solve_work is not None:
+            self._solve_work = qw.recover_solve_work(self._solve_work, binding=binding,
+                                                     provider_id=provider_id, program_sha256=psha)
+            old = self._solve_work
+            if old['status'] not in ('completed', 'blocked'):
+                raise ValueError('solve_active')
+            shas = ([hashlib.sha256(s.encode('utf-8')).hexdigest() for s in rule_sources]
+                    if type(rule_sources) is list and all(type(s) is str for s in rule_sources) else None)
+            if (old['status'] == 'blocked' and old['goal']['query'] == query
+                    and old['provider_id'] == provider_id and old['binding'] == binding
+                    and shas is not None and [p['source_sha256'] for p in old['packets']] == shas):
+                raise ValueError('solve_repeated_without_progress')
+        if not self._solve_state()[0]:
+            raise ValueError('solve_context_ineligible')
+        packets = self._solve_prepare(rule_sources)
+        work = qw.new_solve_work({'text': text, 'query': query}, binding, packets, provider_id, psha)
+        previous = self._solve_work
+        self._solve_work = work
+        self._solve_committed = ()
+        self._solve_req = None
+        self._solve_resp = None
+        try:
+            self._save_memory_change()
+        except BaseException:
+            self._solve_work = previous
+            raise
+        for _step in range(24):
+            view = self._solve_view(work, query)
+            work2, action = qw.claim_solve_operation(work, program, view)
+            if action['kind'] in ('wait', 'stop'):
+                work = work2
+                self._solve_work = work
+                self._save_memory_change()
+                break
+            frozenclaimed = qw.validate_solve_work(work2)
+            self._solve_work = copy.deepcopy(frozenclaimed)
+            try:
+                self._save_memory_change()
+            except BaseException:
+                self._solve_work = work
+                raise
+            try:
+                result = self._solve_exec(frozenclaimed, action, provider)
+            except BaseException:
+                self._solve_block(frozenclaimed)
+                raise
+            if result is None or not _native_identity_equal(self._solve_work, frozenclaimed):
+                self._solve_block(frozenclaimed)
+                break
+            try:
+                work = qw.record_solve_result(frozenclaimed, result)
+            except BaseException:
+                self._solve_block(frozenclaimed)
+                raise
+            self._solve_work = work
+            self._save_memory_change()
+            if work['status'] in ('completed', 'blocked'):
+                break
+        held = self._solve_resp
+        return {'solve_work': copy.deepcopy(self._solve_work),
+                'response': copy.deepcopy(held[1]) if held is not None else None}
+
+    # ---- V70 bounded alternative proof paths (delegates to the V69 solve_goal engine) ----
+    _paths_work = None
+    _paths_gap = None
+    _paths_running = False
+    _paths_delegate = False
+
+    class _PathsDisabledProvider:
+        def lookup(self, request):
+            raise RuntimeError('unexpected_acquisition')
+
+    def _paths_program(self):
+        from pathlib import Path
+        from marco.reasoning import graph_vm
+        path = Path(__file__).resolve().parents[2] / 'programs' / 'scoped-alternative-paths.json'
+        if path.is_symlink():
+            raise ValueError('paths_program_unavailable')
+        with open(path, 'rb') as handle:
+            raw = handle.read(65537)
+        if len(raw) > 65536:
+            raise ValueError('paths_program_unavailable')
+
+        def pairs(rows):
+            out = {}
+            for key, value in rows:
+                if key in out:
+                    raise ValueError('paths_program_unavailable')
+                out[key] = value
+            return out
+        program = json.loads(raw.decode('utf-8'), object_pairs_hook=pairs)
+        graph_vm.validate_program(program)
+        return program, self._goal_sha(program)
+
+    def _paths_fp(self, work):
+        from pathlib import Path
+        from marco.reasoning import query_work as qw
+        source = Path(qw.__file__)
+        if source.is_symlink():
+            raise ValueError('paths_planner_unavailable')
+        with source.open('rb') as handle:
+            raw = handle.read(262145)
+        if len(raw) > 262144:
+            raise ValueError('paths_planner_unavailable')
+        return self._goal_sha({'snapshot': self.context.snapshot(),
+                               'binding': self._goal_binding(), 'model': self._model_binding(),
+                               'turn': self.turn_counter, 'program': self._paths_program()[1],
+                               'planner': hashlib.sha256(raw).hexdigest(),
+                               'packets': work['packets'], 'plan': work['plan']})
+
+    def _paths_block(self, work, stale=False):
+        from marco.reasoning import query_work as qw
+        binding = self._goal_binding()
+        try:
+            self._paths_work = qw.recover_paths_work(
+                work, binding=binding, program_sha256=work['program_sha256'])
+        except Exception:
+            self._paths_work = work
+        try:
+            self.save()
+        except Exception:
+            pass
+
+    def _paths_verify(self, path, fp0, work):
+        fail = lambda code: {'kind': 'verify_path', 'accepted': False, 'failure_code': code,
+                             'proof_sha256': None}
+        clean, state, fp = self._solve_state()
+        if not clean:
+            return fail('authority_unavailable')
+        if self._paths_fp(work) != fp0:
+            return None
+        if path['status'] != 'ready':
+            return fail(path['status'])
+        if any(tuple(leaf) not in state for leaf in path['leaves']):
+            return fail('missing_premise')
+        if self._paths_fp(work) != fp0:
+            return None
+        return {'kind': 'verify_path', 'accepted': True, 'failure_code': None,
+                'proof_sha256': self._goal_sha({'path': path, 'state': fp0})}
+
+    def solve_paths(self, text, *, rule_sources):
+        with self._guard():
+            pass
+        _text('text', text)
+        if self._paths_running:
+            raise ValueError('paths_reentry')
+        if self._solve_running:
+            raise ValueError('solve_reentry')
+        if self._paths_gap is not None:
+            raise ValueError('paths_work_unavailable')
+        sw = self._solve_work
+        if self._solve_gap is not None or (isinstance(sw, dict) and sw.get('status') in ('ready', 'waiting')):
+            raise ValueError('solve_active')
+        if (self._goal_gap is not None or (self._goal_work is not None
+                                           and self._goal_work.get('phase') not in ('completed', 'blocked'))):
+            raise ValueError('goal_active')
+        if type(self.model) is not pack_model.PackModel or not self.state_path:
+            raise ValueError('paths requires explicit selected model and state_path')
+        self._paths_running = True
+        try:
+            return self._paths_main(text, rule_sources)
+        finally:
+            self._paths_running = False
+            self._paths_delegate = False
+
+    def _paths_main(self, text, rule_sources):
+        from marco.reasoning import query_work as qw
+        program, psha = self._paths_program()
+        binding = self._goal_binding()
+        query = self._goal_query(text)
+        if self._paths_work is not None:
+            self._paths_work = qw.recover_paths_work(self._paths_work, binding=binding, program_sha256=psha)
+            old = self._paths_work
+            if old['status'] not in ('completed', 'blocked'):
+                raise ValueError('paths_active')
+            shas = ([hashlib.sha256(s.encode('utf-8')).hexdigest() for s in rule_sources]
+                    if type(rule_sources) is list and all(type(s) is str for s in rule_sources) else None)
+            if (old['status'] == 'blocked' and old['goal']['query'] == query and old['binding'] == binding
+                    and shas is not None and [p['source_sha256'] for p in old['packets']] == shas):
+                raise ValueError('paths_repeated_without_progress')
+        clean, _state, fp0 = self._solve_state()
+        if not clean:
+            raise ValueError('solve_context_ineligible')
+        packets = self._solve_prepare(rule_sources, limit=3)
+        archive = self._solve_archive()
+        facts = []
+        for row in archive['rows']:
+            src = (row.get('evidence') or {}).get('source')
+            facts.append({'triple': [str(x) for x in row['triple']], 'polarity': True,
+                          'source_sha256': hashlib.sha256(str(src).encode('utf-8')).hexdigest()})
+        plan = qw.plan_alternative_paths(list(query), facts, packets, budget=128)
+        work = qw.new_paths_work({'text': text, 'query': query}, binding, packets, plan, psha)
+        fp0 = self._paths_fp(work)
+        previous = self._paths_work
+        self._paths_work = work
+        try:
+            self._save_memory_change()
+        except BaseException:
+            self._paths_work = previous
+            raise
+        response = None
+        for _step in range(8):
+            work2, action = qw.claim_paths_operation(work, program)
+            if action['kind'] == 'stop':
+                work = work2
+                self._paths_work = work
+                self._save_memory_change()
+                break
+            frozen = qw.validate_paths_work(work2)
+            self._paths_work = copy.deepcopy(frozen)
+            try:
+                self._save_memory_change()
+            except BaseException:
+                self._paths_work = work
+                raise
+            if (not _native_identity_equal(self._paths_work, frozen)
+                    or self._paths_fp(frozen) != fp0):
+                self._paths_block(frozen)
+                break
+            path = next((p for p in frozen['plan']['paths'] if p['path_id'] == action['path_id']), None)
+            if path is None:
+                self._paths_block(frozen)
+                break
+            try:
+                if action['kind'] == 'verify_path':
+                    result = self._paths_verify(path, fp0, frozen)
+                    if self._paths_fp(frozen) != fp0:
+                        result = None
+                else:
+                    result = None
+                    if self._paths_fp(frozen) == fp0:
+                        by_id = {p['source_id']: p for p in frozen['packets']}
+                        sources = [by_id[r]['source_text'] for r in path['rule_ids']]
+                        completed, proof = False, None
+                        self._paths_delegate = True
+                        try:
+                            res = self.solve_goal(frozen['goal']['text'], self._PathsDisabledProvider(),
+                                                  provider_id='paths-disabled', rule_sources=sources)
+                            response = res.get('response')
+                            inner = res.get('solve_work') or {}
+                            proof = next((h['proof_sha256'] for h in inner.get('history', [])
+                                          if h['kind'] == 'verify' and h['status'] == 'verified'), None)
+                            completed = inner.get('status') == 'completed' and proof is not None
+                        except Exception:
+                            completed, proof = False, None
+                        finally:
+                            self._paths_delegate = False
+                        result = {'kind': 'execute_path', 'completed': bool(completed),
+                                  'proof_sha256': proof if completed else None}
+            except BaseException:
+                self._paths_block(frozen)
+                raise
+            if result is None or not _native_identity_equal(self._paths_work, frozen):
+                self._paths_block(frozen)
+                break
+            try:
+                work = qw.record_paths_result(frozen, result)
+            except BaseException:
+                self._paths_block(frozen)
+                raise
+            self._paths_work = work
+            self._save_memory_change()
+            if work['status'] in ('completed', 'blocked'):
+                break
+        return {'paths_work': copy.deepcopy(self._paths_work), 'response': response}
+
     def teach(self, payload, *, turn_id=None, replaces=None, expression_kind="fact"):
         if type(expression_kind) is not str or expression_kind not in ("fact", "query"):
             raise ValueError("invalid_expression_kind")
         if not isinstance(payload, dict):
             raise ValueError("payload must be a dict")
+        if expression_kind == "fact" and set(payload) == {"demonstrations", "validation"}:
+            return self.teach_patterns(payload, turn_id=turn_id, replaces=replaces)
         if replaces is not None:
             _text("replaces", replaces)
         if turn_id is not None:
@@ -2188,6 +3382,19 @@ class DialogueSession:
             return self._teach(payload, turn_id, replaces)
         text = self._action_text("teach", payload=payload, turn_id=turn_id, replaces=replaces)
         return self._traced(text, lambda: self._teach(payload, turn_id, replaces), "teach", memory=True)
+
+    def teach_patterns(self, payload, *, turn_id=None, replaces=None):
+        if not isinstance(payload, dict):
+            raise ValueError("payload must be a dict")
+        if replaces is not None:
+            _text("replaces", replaces)
+        if turn_id is not None:
+            _text("turn_id", turn_id)
+        if self._recorder is None:
+            return self._teach(payload, turn_id, replaces, graph=True)
+        text = self._action_text("teach", payload=payload, turn_id=turn_id, replaces=replaces)
+        return self._traced(text, lambda: self._teach(payload, turn_id, replaces, graph=True),
+                            "teach", memory=True)
 
     _LESSON_SOURCE_KEYS = ("text", "text_sha256", "conversation_id", "turn_id", "observation_id",
                            "input_event_id", "provenance_status", "model_binding")
@@ -2303,7 +3510,8 @@ class DialogueSession:
             fail("learning_budget_exceeded", "payload and provenance exceed %d bytes" % bytes_limit)
         return _json({"payload": payload, "lesson": lesson})
 
-    def _teach(self, payload, turn_id, replaces, *, lesson=None, outcome=None, expression_kind="fact"):
+    def _teach(self, payload, turn_id, replaces, *, lesson=None, outcome=None, expression_kind="fact",
+               graph=False):
         if type(expression_kind) is not str or expression_kind not in ("fact", "query"):
             raise ValueError("invalid_expression_kind")
         with self._guard():
@@ -2325,7 +3533,9 @@ class DialogueSession:
                 provenance["lesson"] = lesson
             if self._active is not None:
                 self._active["operation_kind"] = "teach"
-            if expression_kind == "query":
+            if graph:
+                view = self.memory.teach_patterns(payload, provenance, replaces=replaces)
+            elif expression_kind == "query":
                 view = self.memory.teach(payload, provenance, replaces=replaces,
                                          expression_kind=expression_kind)
             else:
@@ -2723,6 +3933,12 @@ class DialogueSession:
             packed = self._query_learning_pack()
             if packed is not None:
                 state["query_learning_draft"] = packed
+        if self._goal_work is not None or self._goal_gap is not None:
+            state["goal_work"] = copy.deepcopy(self._goal_work)
+        if self._solve_work is not None or self._solve_gap is not None:
+            state["solve_work"] = copy.deepcopy(self._solve_work)
+        if self._paths_work is not None or self._paths_gap is not None:
+            state["paths_work"] = copy.deepcopy(self._paths_work)
         if self._selected is not None:
             state["selected_graph_turns"] = self._native_turns
             if self._native_history_gap is not None:
@@ -2835,6 +4051,22 @@ class DialogueSession:
                 except TypeError:
                     continue
         roots = by_fact.get(tuple(query), [])
+        graph_root_fallback = False
+        if (not roots and not query[1].startswith(("?", "$"))
+                and all(term.strip() and "$" not in term for term in query)
+                and sum(term.count("?") for term in query) == 1
+                and sum(term.startswith("?") and len(term) > 1 for term in (query[0], query[2])) == 1):
+            # Passive graph-only proof lookup: the answering engine and its query stay unchanged.
+            from marco.reasoning.inference import bind
+            matching = []
+            for fact, rows in by_fact.items():
+                if (len(fact) == 3 and all(type(term) is str and term.strip()
+                                          and "$" not in term and "?" not in term for term in fact)
+                        and bind(query, list(fact), {}) is not None):
+                    matching.extend(rows)
+            if len(matching) == 1:
+                roots = matching
+                graph_root_fallback = True
         if len(roots) != 1:
             gap("answer_root_uncollected")
             return capsule
@@ -3030,10 +4262,10 @@ class DialogueSession:
         body_keys = ("schema", "kind", "payload", "annotation", "provenance", "report",
                      "supervision", "replaces")
 
-        def finite(value):
+        def finite(value, limit=8192):
             try:
                 raw = json.dumps(value, allow_nan=False, sort_keys=True, ensure_ascii=False)
-                return len(raw.encode("utf-8")) <= 8192
+                return len(raw.encode("utf-8")) <= limit
             except Exception:
                 return False
 
@@ -3047,7 +4279,7 @@ class DialogueSession:
         def nonblank(value):
             return isinstance(value, str) and bool(value.strip())
 
-        def confirm(origin, record):
+        def confirm(origin, record, item):
             cid = origin["candidate_id"]
             rule_id = origin["rule_id"]
             teaching = origin["teaching"]
@@ -3056,22 +4288,60 @@ class DialogueSession:
                     or found[0].get("gate_accepted") is not True):
                 return False
             view = found[0]
-            if any(k not in view for k in body_keys):
+            graph_record = (isinstance(view.get("report"), dict)
+                            and view["report"].get("induction_policy") == "selected-reference-choice-graph-v1")
+            if graph_root_fallback and not graph_record:
                 return False
-            body = {k: view[k] for k in body_keys}
-            if not finite(body):
+            record_keys = body_keys + (("pattern_graph",) if graph_record else ())
+            limit = 8192
+            if graph_record:
+                bound = getattr(self.memory, "payload_bytes_limit", None)
+                if type(bound) is not int or bound <= 0:
+                    return False
+                limit = min(bound, 65536)
+            if any(k not in view for k in record_keys):
+                return False
+            body = {k: view[k] for k in record_keys}
+            if not finite(body, limit):
                 return False
             prov, report = body["provenance"], body["report"]
             if (body["schema"] != "marco-learning-memory-v1" or body["kind"] != "expression"
                     or body["supervision"] != "explicit_user_teaching"
                     or not isinstance(body["payload"], dict)
-                    or not isinstance(body["annotation"], dict)
+                    or (not graph_record and not isinstance(body["annotation"], dict))
                     or not isinstance(prov, dict) or not isinstance(report, dict)
                     or report.get("accepted") is not True
                     or not nonblank(prov.get("conversation_id")) or not nonblank(prov.get("turn_id"))
                     or prov.get("conversation_id") != teaching["conversation_id"]
                     or prov.get("turn_id") != teaching["turn_id"]):
                 return False
+            if graph_record:
+                from marco.learning import expression_graph as eg
+                payload = body["payload"]
+                if (set(payload) != {"demonstrations", "validation"}
+                        or not isinstance(body["annotation"], list)
+                        or not isinstance(body["pattern_graph"], dict)):
+                    return False
+                graph = eg.induce_pattern_graph(self.memory._fresh(), payload["demonstrations"])
+                annotations = eg.graph_annotations(body["pattern_graph"])
+                if (not _native_identity_equal(graph, body["pattern_graph"])
+                        or not _native_identity_equal(annotations, body["annotation"])
+                        or not _native_identity_equal(report.get("inferred_annotations"), annotations)):
+                    return False
+                # Only the genuine installed current parser/index is attested; historical index
+                # remapping remains an explicit gap rather than being guessed or reparsed.
+                parser = getattr(self.context, "_parser_instance", None)
+                ci = item.get("compiler_index")
+                installed_head = record.get("installed_memory_head")
+                examples = getattr(parser, "data", {}).get("examples")
+                origins = getattr(parser, "_entry_origins", None)
+                if (type(installed_head) is not int or type(self._parser_revision) is not int
+                        or installed_head != self._parser_revision
+                        or type(ci) is not int or type(examples) is not list or type(origins) is not list
+                        or len(examples) != len(origins) or not 0 <= ci < len(examples)
+                        or not _native_identity_equal(origins[ci], origin)
+                        or sum(_native_identity_equal(examples[ci], ann) for ann in annotations) != 1):
+                    return False
             history = view.get("history")
             if not isinstance(history, list):
                 return False
@@ -3103,13 +4373,13 @@ class DialogueSession:
                 return False
             pl = row.get("payload")
             hbody = pl.get("body") if isinstance(pl, dict) else None
-            if (not isinstance(hbody, dict) or set(hbody) != set(body_keys)
-                    or not finite(hbody) or not same(hbody, body)):
+            if (not isinstance(hbody, dict) or set(hbody) != set(record_keys)
+                    or not finite(hbody, limit) or not same(hbody, body)):
                 return False
             ev_report, validation = row["evidence"].get("report"), row.get("validation")
-            if (not isinstance(ev_report, dict) or not finite(ev_report)
+            if (not isinstance(ev_report, dict) or not finite(ev_report, limit)
                     or not same(ev_report, report)
-                    or not isinstance(validation, dict) or not finite(validation)
+                    or not isinstance(validation, dict) or not finite(validation, limit)
                     or not same(validation, report)):
                 return False
             head = record.get("installed_memory_head")
@@ -3125,7 +4395,7 @@ class DialogueSession:
         for path, oid, rev, ordinal, item, origin, record in selected:
             clause = item.get("clause_ordinal")
             try:
-                confirmed = confirm(origin, record) is True
+                confirmed = confirm(origin, record, item) is True
             except Exception:
                 confirmed = False
             if not confirmed:
@@ -4287,6 +5557,49 @@ class DialogueSession:
         if not isinstance(observations, list) or any(not isinstance(source, str) for source in observations):
             raise ValueError("malformed context observations")
         self._restore_state(saved_id, state["turn_counter"], context, state["memory_revision"])
+        if "goal_work" in state:
+            try:
+                from marco.reasoning import query_work as gw
+                _program, psha = self._goal_program()
+                self._goal_work = gw.recover_goal_work(state["goal_work"], binding=self._goal_binding(),
+                                                       program_sha256=psha)
+            except Exception:
+                # Preserve the exact bounded failed envelope and consumed budget. Never permit
+                # a new goal to replace it merely because its program or schema is unavailable.
+                raw_goal = self._goal_canon(state["goal_work"]).encode("utf-8")
+                if len(raw_goal) > 32768:
+                    raise ValueError("goal_work_unavailable")
+                self._goal_work = copy.deepcopy(state["goal_work"])
+                self._goal_gap = {"code": "goal_work_unavailable", "sha256": hashlib.sha256(raw_goal).hexdigest()}
+        if "solve_work" in state:
+            try:
+                from marco.reasoning import query_work as qw
+                raw_solve = state["solve_work"]
+                _sprog, spsha = self._solve_program()
+                spid = raw_solve.get("provider_id") if isinstance(raw_solve, dict) else None
+                self._solve_work = qw.recover_solve_work(raw_solve, binding=self._goal_binding(),
+                                                         provider_id=spid, program_sha256=spsha)
+            except Exception:
+                raw_bytes = self._goal_canon(state["solve_work"]).encode("utf-8")
+                if len(raw_bytes) > 65536:
+                    raise ValueError("solve_work_unavailable")
+                self._solve_work = copy.deepcopy(state["solve_work"])
+                self._solve_gap = {"code": "solve_work_unavailable",
+                                   "sha256": hashlib.sha256(raw_bytes).hexdigest()}
+        if "paths_work" in state:
+            raw_paths = state["paths_work"]
+            try:
+                from marco.reasoning import query_work as qw
+                _pprog, ppsha = self._paths_program()
+                self._paths_work = qw.recover_paths_work(raw_paths, binding=self._goal_binding(),
+                                                         program_sha256=ppsha)
+            except Exception:
+                raw_bytes = self._goal_canon(raw_paths).encode("utf-8")
+                if len(raw_bytes) > 98304:
+                    raise ValueError("paths_work_unavailable")
+                self._paths_work = copy.deepcopy(raw_paths)
+                self._paths_gap = {"code": "paths_work_unavailable",
+                                   "sha256": hashlib.sha256(raw_bytes).hexdigest()}
         if self._selected is not None:
             known_gap = {"code": "native_history_unavailable"}
             try:
