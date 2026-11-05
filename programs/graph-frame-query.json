@@ -1,0 +1,11 @@
+{
+  "schema": "marco-graph-vm-program-v1",
+  "entry": "initialize",
+  "nodes": [
+    {"id": "initialize", "op": "set", "name": "matches", "value": {"literal": []}, "next": "records"},
+    {"id": "records", "op": "scan", "source": {"input": ["records"]}, "item": "record", "body": "bind", "done": "finish"},
+    {"id": "bind", "op": "match", "pattern": {"input": ["pattern"]}, "value": {"var": ["record"]}, "bindings": "binding", "yes": "collect", "no": "records"},
+    {"id": "collect", "op": "append", "name": "matches", "value": {"var": ["binding"]}, "next": "records"},
+    {"id": "finish", "op": "return", "value": {"var": ["matches"]}}
+  ]
+}

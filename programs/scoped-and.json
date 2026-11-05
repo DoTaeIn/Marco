@@ -1,0 +1,12 @@
+{"schema":"marco-graph-vm-program-v1","entry":"init","nodes":[
+{"id":"init","op":"set","name":"unknown","value":{"literal":false},"next":"loop"},
+{"id":"loop","op":"scan","source":{"input":["guards"]},"item":"g","body":"chk","done":"fin"},
+{"id":"chk","op":"branch","left":{"var":["g","positive"]},"right":{"literal":true},"yes":"pt","no":"pf"},
+{"id":"pt","op":"branch","left":{"var":["g","negative"]},"right":{"literal":true},"yes":"mark","no":"loop"},
+{"id":"pf","op":"branch","left":{"var":["g","negative"]},"right":{"literal":true},"yes":"retf","no":"mark"},
+{"id":"mark","op":"set","name":"unknown","value":{"literal":true},"next":"loop"},
+{"id":"retf","op":"return","value":{"literal":false}},
+{"id":"fin","op":"branch","left":{"var":["unknown"]},"right":{"literal":true},"yes":"retn","no":"rett"},
+{"id":"retn","op":"return","value":{"literal":null}},
+{"id":"rett","op":"return","value":{"literal":true}}
+]}

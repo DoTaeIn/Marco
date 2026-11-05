@@ -6,7 +6,7 @@ the stability contract is [docs/mco/api.md](../mco/api.md).
 
 **Release state.** Version 0.1.0 is on PyPI since 2026-09-24
 ([release notes](../releases/2026-09-24-mco-0.1.0.md)): `pip install mco`. The
-[freeze decision](../ko/2026-09-22-freeze-decision.md) still parks the API: it
+[freeze decision](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-22-freeze-decision.md") still parks the API: it
 is packaged as it is and not extended until MARCO 1 ships. Since 2026-10-01 the
 repository (not the 0.1.0 package) also reads and writes the native binary
 file, MCO Format 1.0 ([format-1.md](../mco/format-1.md)), through

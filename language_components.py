@@ -454,6 +454,124 @@ def _validate_components(declared, source=""):
     return dict(declared)
 
 
+def _validate_realizer(value, source=''):
+    """Admit the optional inline realizer declaration: a bounded built-in JSON tree with minimum containers."""
+    if value is None:
+        return None
+    import copy
+    import json
+    import math
+    limit_bytes, limit_depth, limit_nodes, limit_text = 131072, 16, 16384, 8192
+    state = {'nodes': 0, 'bytes': 0}
+    active = set()
+
+    def fail(why):
+        raise ValueError('language pack realizer %s: %s' % (why, source))
+
+    def emit(raw):
+        state['bytes'] += len(raw)
+        if state['bytes'] > limit_bytes:
+            fail('exceeds the byte limit')
+
+    def visit(depth):
+        state['nodes'] += 1
+        if depth > limit_depth or state['nodes'] > limit_nodes:
+            fail('exceeds the depth or size limit')
+
+    def text(item):
+        if len(item) > limit_text:
+            fail('has an oversized string')
+        try:
+            raw = item.encode('utf-8')
+        except UnicodeEncodeError:
+            fail('has invalid text')
+        if len(raw) > limit_text:
+            fail('has an oversized string')
+        emit(json.dumps(item, ensure_ascii=False).encode('utf-8'))
+
+    def walk(node, depth):
+        visit(depth)
+        kind = type(node)
+        if node is None:
+            emit(b'null')
+        elif kind is bool:
+            emit(b'true' if node else b'false')
+        elif kind is int:
+            if node.bit_length() > 4 * limit_bytes:
+                fail('has an oversized integer')
+            try:
+                raw = str(node).encode('ascii')
+            except ValueError:
+                fail('has an unreadable integer')
+            emit(raw)
+        elif kind is float:
+            if not math.isfinite(node):
+                fail('has a nonfinite number')
+            emit(repr(node).encode('ascii'))
+        elif kind is str:
+            text(node)
+        elif kind is list or kind is dict:
+            if id(node) in active:
+                fail('has a cycle')
+            active.add(id(node))
+            if kind is list:
+                emit(b'[')
+                for index, item in enumerate(node):
+                    if index:
+                        emit(b',')
+                    walk(item, depth + 1)
+                emit(b']')
+            else:
+                emit(b'{')
+                for index, (key, item) in enumerate(node.items()):
+                    if type(key) is not str:
+                        fail('has a non-string key')
+                    if index:
+                        emit(b',')
+                    visit(depth + 1)
+                    text(key)
+                    emit(b':')
+                    walk(item, depth + 1)
+                emit(b'}')
+            active.discard(id(node))
+        else:
+            fail('has an unsupported value')
+
+    walk(value, 1)
+    if type(value) is not dict:
+        fail('must be an object')
+    if not isinstance(value.get('language'), str) or not value['language']:
+        fail('needs a language string')
+    for key in ('orthography', 'register', 'grammar', 'cases', 'lexicon', 'expressions'):
+        if not isinstance(value.get(key), dict):
+            fail('needs an object ' + key)
+    for key in ('coordination', 'counters', 'determiners', 'ellipsis', 'follow_ups', 'leads', 'learning',
+                'lexicon_forms', 'numbers', 'operations', 'options', 'pack_keys', 'person', 'readings',
+                'relation_words', 'rules', 'sentence_endings', 'slot_words', 'subordinate', 'version'):
+        if key in value and not isinstance(value[key], dict):
+            fail(key + ' must be an object')
+    ortho = value['orthography']
+    for key in ('word_separator', 'sentence_separator', 'list_separator', 'cite_separator'):
+        if not isinstance(ortho.get(key), str):
+            fail('orthography needs a string ' + key)
+    for key in ('punctuation', 'symbols', 'quotes'):
+        if not isinstance(ortho.get(key), dict):
+            fail('orthography needs an object ' + key)
+
+    def pair(item):
+        return isinstance(item, list) and len(item) == 2 and all(isinstance(part, str) for part in item)
+    for key in ('punctuation', 'symbols'):
+        if not all(isinstance(k, str) and isinstance(v, str) for k, v in ortho[key].items()):
+            fail('orthography ' + key + ' must map strings to strings')
+    if not all(pair(item) for item in ortho['quotes'].values()):
+        fail('orthography quotes must be string pairs')
+    if not pair(ortho.get('cite')):
+        fail('orthography cite must be a string pair')
+    if 'list_last' in ortho and not isinstance(ortho['list_last'], str):
+        fail('orthography list_last must be a string')
+    return copy.deepcopy(value)
+
+
 def _validate_encoder(declared, source=""):
     """팩 하나가 고르는 경량 인코더의 재현 가능한 설정.
 
@@ -598,6 +716,7 @@ def decode_language_pack(pack: dict, source: str = "") -> dict[str, Any]:
             "learning_topic_exclusions": list(pack.get("학습주제제외", [])),
             "search_stopwords": list(pack.get("검색불용어", [])),
             "components": _validate_components(pack.get("부품", {}), path),
+            "realizer": _validate_realizer(pack.get("realizer"), path),
             "encoder": _validate_encoder(pack.get("인코더", pack.get("encoder", {})), path),
             "document_kinds": pack.get("문서분류", {}),
             "verbal_expressions": pack.get("말수식", {}),
@@ -684,6 +803,86 @@ class TemplateBackend:
             if best is None or len(item["text"]) > best[0]:
                 best = (len(item["text"]), candidate)
         return best[1] if best else None
+
+
+def _native_judge_items(pack: Any) -> list[tuple[int, dict[str, Any], str, str, str]]:
+    """원본 팩의 engine.judge 선언 템플릿만 엄격히 검증해 (index, item, slot, prefix, suffix)로 돌려준다."""
+    if not isinstance(pack, dict):
+        raise ValueError("native judge pack must be an object")
+    conversation = pack.get("conversation")
+    if conversation is None:
+        return []
+    if not isinstance(conversation, dict):
+        raise ValueError("native judge conversation must be an object")
+    for phrase in conversation.get("phrases") or []:
+        if isinstance(phrase, dict) and isinstance(phrase.get("result"), dict) \
+                and phrase["result"].get("operator") == "engine.judge":
+            raise ValueError("native judge phrases are forbidden")
+    templates = conversation.get("templates") or []
+    if not isinstance(templates, list):
+        raise ValueError("native judge templates must be a list")
+    found = []
+    for index, item in enumerate(templates):
+        result = item.get("result") if isinstance(item, dict) else None
+        if not isinstance(result, dict) or result.get("operator") != "engine.judge":
+            continue
+        if set(result) != {"operator", "input_slot"}:
+            raise ValueError("native judge result keys are invalid")
+        slot, template = result["input_slot"], item.get("template")
+        if not isinstance(slot, str) or not slot or not isinstance(template, str):
+            raise ValueError("native judge declaration is invalid")
+        if slot != slot.strip() or not slot.strip() or "{" in slot or "}" in slot:
+            # TemplateBackend strips slot names inside braces; an untrimmed/braced declared name
+            # would silently disagree with the stripped key it captures under
+            raise ValueError("native judge input_slot must be a trimmed brace-free name")
+        marker = "{" + slot + "}"
+        if template.count(marker) != 1 or template.replace(marker, "").count("{") \
+                or template.replace(marker, "").count("}"):
+            raise ValueError("native judge template must hold exactly one slot")
+        if item.get("slot_types") != {slot: "text"}:
+            raise ValueError("native judge slot_types must declare only the text slot")
+        prefix, suffix = template.split(marker)
+        found.append((index, item, slot, prefix, suffix))
+    return found
+
+
+def validate_native_judge_routes(pack: dict[str, Any]) -> int:
+    """선언된 engine.judge 템플릿을 검증하고 개수를 돌려준다. 잘못되면 ValueError."""
+    return len(_native_judge_items(pack))
+
+
+def read_native_judge_route(text: str, pack: dict[str, Any]) -> dict[str, Any] | None:
+    """기존 TemplateBackend로 각 선언을 따로 읽는다. 없으면 None, 여럿이면 held."""
+    import hashlib
+    import json
+    if not isinstance(text, str):
+        raise ValueError("native judge text must be a string")
+    backend, matches = TemplateBackend(), []
+    for index, item, slot, prefix, suffix in _native_judge_items(pack):
+        parsed = backend.parse(text, {"conversation": {"templates": [item]}})
+        if parsed is None:
+            continue
+        capture = (parsed.get("slots") or {}).get(slot)
+        if not isinstance(capture, str) or not capture:
+            continue
+        if not (text.startswith(prefix) and text.endswith(suffix)
+                and len(text) >= len(prefix) + len(suffix)):
+            continue
+        body = text[len(prefix):len(text) - len(suffix)]
+        if body.strip() != capture:
+            continue
+        start = len(prefix) + (len(body) - len(body.lstrip()))
+        end = start + len(capture)
+        digest = hashlib.sha256(json.dumps(item, sort_keys=True, separators=(",", ":"),
+                                           ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
+        matches.append({"status": "matched", "operator": "engine.judge", "input_slot": slot,
+                        "text": capture, "span": {"start": start, "end": end, "text": text[start:end]},
+                        "template_index": index, "template_sha256": digest})
+    if not matches:
+        return None
+    if len(matches) > 1:
+        return {"status": "held", "gap": "native_route_ambiguous"}
+    return matches[0]
 
 
 def resolve_backend(backend: DialogueBackend | None = None, pack: dict[str, Any] | None = None) -> DialogueBackend:

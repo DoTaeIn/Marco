@@ -3,6 +3,12 @@
 Written 2026-10-01 against commit `e3a6394`; checked 2026-10-01 against `d9c9559`, which
 changes none of the files named here.
 
+Updated 2026-10-06 for the working-tree retrieval adapter. The
+[MARCO 2 development decision](../archive/README.md "보관 ZIP 내부: docs/ko/2026-10-06-marco2-development-decision.md")
+supersedes the release freeze discussed below. The
+[first implementation record](../archive/README.md "보관 ZIP 내부: docs/ko/2026-10-06-marco2-first-slices.md") distinguishes
+actual web requests from fixtures and from verified facts.
+
 ## Purpose
 
 Read outside material (text folders, a dictionary export, PDF and PPTX files, web pages)
@@ -26,8 +32,26 @@ also puts `상위` and `정의` edges and any hand-written relations it is given
 | [`web.py`](../../marco/knowledge/ingest/web.py) | 1347 | open-web search through DuckDuckGo's lite HTML page (`https://lite.duckduckgo.com/lite/`), page reading into complete sentences, topic and role evidence checks, and storage in a sidecar `<graph>.수집.jsonl` beside the graph under a file lock (`<sidecar>.lock`). Limits from `KG_LEARN_MAX_TOPICS` (200), `KG_LEARN_MAX_RECORDS` (20), `KG_LEARN_MAX_BYTES` (5 MiB), `KG_LEARN_COOLDOWN` (300 s). `load()` is `engine.load()` with the collected records stacked on under prefixed node names (`지식_`, `출처_`). CLI `_main` with `--check` self-check |
 
 The sidecar files are one of "the existing learning routes" the
-[freeze decision](../ko/2026-09-22-freeze-decision.md) keeps as they are; it lists
+[freeze decision](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-22-freeze-decision.md") keeps as they are; it lists
 "promotion of web or document knowledge" as not in MARCO 1.
+
+`retrieval.py` adds `SearchEvidenceService` and `PublicWebBackend`: bounded public
+Bing RSS discovery and page reads, exact source observations, timestamps, explicit
+errors, optional parsed claims and scoped conflict links. It writes no graph,
+promotes no fact, and does not change the older sidecar routes. Injected backends
+are labelled `offline_fixture`; two domains agreeing never set `verified` true.
+
+Answer orchestration lives in `marco.runtime.research.ResearchAnswerer`, and
+statement composition lives in `marco.language.realizer.source_answer`.
+The earlier `research_answer.py` prototype was moved out of ingest on
+2026-10-06 to keep ingest responsible for source observations. The runtime
+re-reads complete included observations, uses the ordinary graph proof engine,
+and cites the selected proof's asserted leaves. Shared source scope remains an
+explicit interpretation assumption. Language composition additionally requires
+the selected model's neutral or timeless output declaration; a bare triple
+does not justify inventing a tense. A missing declaration holds that answer
+while retaining its grounded proof and citations. Answers stay
+`source_observed`, with `verified` false. Actual-web answering is not demonstrated.
 
 ## Does not own
 
@@ -58,6 +82,9 @@ The sidecar files are one of "the existing learning routes" the
   `kiwipiepy`. At import it sets `KG_ENCODER=문자` when unset (web.py:39). Network through
   `urllib`: the search page and each result URL.
 - All four modules put the repository root on `sys.path` at import (`parents[3]` of the file).
+- `retrieval.py`: the standard library and existing `web.py` extraction/coverage;
+  when the platform has no CA certificates, an already installed `certifi` bundle
+  supplies verified HTTPS trust. If unavailable, retrieval reports a failure.
 
 ## Public interface
 
@@ -71,6 +98,7 @@ The sidecar files are one of "the existing learning routes" the
 | `documents.learn`, `.DocumentKGError` | `views/kgpack_ui.py` (lines 756, 1612) | `DocumentKGError`: `tests/test_document_kg.py::test_insufficient_input_does_not_become_knowledge`; `learn`: no test names it |
 | `documents.Unit`, `.analyze_units`, `.read_pptx`, `.to_graph`, `.add_visual_claims` | tests only | `tests/test_document_kg.py` (five tests; all but `add_visual_claims`), `tests/test_document_visual.py` (three tests; `analyze_units`, `add_visual_claims`) |
 | `web.search`, `.read_source`, `.question_word` | `goal_runtime.py` | `tests/test_learning_question_flow.py` patches them, e.g. `test_research_sends_only_the_needed_topic_and_reports_evidence_status` |
+| `retrieval.SearchEvidenceService.research`, `retrieval.PublicWebBackend` | `examples/marco2_retrieval_demo.py`, tests | `tests/test_marco2_retrieval.py` (17 focused checks) |
 | `web.external_need`, `.relation_evidence_sentences`, `.evidence_coverage` | `goal_runtime.py` | no test names them; `GoalRuntime.research` runs them in `tests/test_learning_question_flow.py` |
 | `web.extract_topic`, `.load` | `goal_runtime.py`, `views/kgpack_ui.py` | `tests/test_learning_question_flow.py::test_natural_question_extracts_its_content_topic` |
 | `web.save_verified_knowledge` | `goal_runtime.py` | `tests/test_learning_question_flow.py::test_approved_sources_are_saved_without_a_second_search` |
@@ -78,3 +106,11 @@ The sidecar files are one of "the existing learning routes" the
 | `web.learn`, `.topic_related` | `views/kgpack_ui.py` | no test names them |
 | `web.LearnFailed` | `views/kgpack_ui.py`, `goal_runtime.py` | no test names it |
 | every other name | used only inside its own module, except `text.stopwords` and `text._kiwi`, which `web.py` reads | `documents._pptx_visuals`: `tests/test_document_kg.py::test_pptx_media_is_bound_to_its_slide_location`; `web._read_dialect` is patched in `tests/test_learning_question_flow.py::test_question_detection_follows_language_style_data`; the rest: no test names them |
+
+The [actual web audit](../../logs/marco2-actual-web-answer-audit-2026-10-06.json)
+distinguishes one real Bing discovery attempt that held after bounded acquisition from
+one successful direct NASA URL acquisition. The latter retained all 16 complete
+observations (15 unreadable), grounded one complete claim and used the existing
+`ResearchAnswerer` proof, exact leaf citation and selected-template roundtrip. It used
+an explicitly selected in-memory generic neutral output declaration and caller scope;
+it did not persist facts, change the default model or establish automatic session search.

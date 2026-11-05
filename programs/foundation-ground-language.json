@@ -1,0 +1,1122 @@
+{
+  "schema": "marco-graph-vm-program-v1",
+  "entry": "mode_parse",
+  "nodes": [
+    {
+      "id": "mode_parse",
+      "op": "branch",
+      "left": {
+        "input": [
+          "mode"
+        ]
+      },
+      "right": {
+        "literal": "parse"
+      },
+      "yes": "p_meaning",
+      "no": "mode_render"
+    },
+    {
+      "id": "mode_render",
+      "op": "branch",
+      "left": {
+        "input": [
+          "mode"
+        ]
+      },
+      "right": {
+        "literal": "render"
+      },
+      "yes": "r_text",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "p_meaning",
+      "op": "branch",
+      "left": {
+        "input": [
+          "meaning"
+        ]
+      },
+      "right": {
+        "literal": null
+      },
+      "yes": "p_state",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "p_state",
+      "op": "branch",
+      "left": {
+        "input": [
+          "state"
+        ]
+      },
+      "right": {
+        "literal": null
+      },
+      "yes": "v_scan",
+      "no": "p_resume"
+    },
+    {
+      "id": "v_scan",
+      "op": "scan",
+      "source": {
+        "input": [
+          "model",
+          "patterns"
+        ]
+      },
+      "item": "vp",
+      "body": "v_kind",
+      "done": "init_ret"
+    },
+    {
+      "id": "v_kind",
+      "op": "branch",
+      "left": {
+        "var": [
+          "vp",
+          "kind"
+        ]
+      },
+      "right": {
+        "literal": "fact"
+      },
+      "yes": "v_pol",
+      "no": "v_query"
+    },
+    {
+      "id": "v_query",
+      "op": "branch",
+      "left": {
+        "var": [
+          "vp",
+          "kind"
+        ]
+      },
+      "right": {
+        "literal": "query"
+      },
+      "yes": "v_qpol",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "v_qpol",
+      "op": "branch",
+      "left": {
+        "var": [
+          "vp",
+          "polarity"
+        ]
+      },
+      "right": {
+        "literal": true
+      },
+      "yes": "v_scan",
+      "no": "v_qneg"
+    },
+    {
+      "id": "v_qneg",
+      "op": "branch",
+      "left": {
+        "var": [
+          "vp",
+          "polarity"
+        ]
+      },
+      "right": {
+        "literal": false
+      },
+      "yes": "hold_unsupported",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "v_pol",
+      "op": "branch",
+      "left": {
+        "var": [
+          "vp",
+          "polarity"
+        ]
+      },
+      "right": {
+        "literal": true
+      },
+      "yes": "v_scan",
+      "no": "v_neg"
+    },
+    {
+      "id": "v_neg",
+      "op": "branch",
+      "left": {
+        "var": [
+          "vp",
+          "polarity"
+        ]
+      },
+      "right": {
+        "literal": false
+      },
+      "yes": "v_scan",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "init_ret",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "continue"
+          },
+          "state": {
+            "literal": {
+              "si": 0,
+              "oi": 0,
+              "found": []
+            }
+          },
+          "meaning": {
+            "literal": null
+          },
+          "text": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "progress"
+          }
+        }
+      }
+    },
+    {
+      "id": "p_resume",
+      "op": "match",
+      "pattern": {
+        "literal": {
+          "si": {
+            "capture": "si"
+          },
+          "oi": {
+            "capture": "oi"
+          },
+          "found": {
+            "capture": "found"
+          }
+        }
+      },
+      "value": {
+        "input": [
+          "state"
+        ]
+      },
+      "bindings": "st",
+      "yes": "p_found",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "p_found",
+      "op": "set",
+      "name": "found",
+      "value": {
+        "var": [
+          "st",
+          "found"
+        ]
+      },
+      "next": "p_end"
+    },
+    {
+      "id": "p_end",
+      "op": "branch",
+      "left": {
+        "var": [
+          "st",
+          "si"
+        ]
+      },
+      "right": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels"
+              ]
+            }
+          ]
+        }
+      },
+      "yes": "p_finish",
+      "no": "p_subj"
+    },
+    {
+      "id": "p_subj",
+      "op": "set",
+      "name": "s",
+      "value": {
+        "compute": {
+          "op": "get",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels"
+              ]
+            },
+            {
+              "var": [
+                "st",
+                "si"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "p_obj"
+    },
+    {
+      "id": "p_obj",
+      "op": "set",
+      "name": "o",
+      "value": {
+        "compute": {
+          "op": "get",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels"
+              ]
+            },
+            {
+              "var": [
+                "st",
+                "oi"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "p_scan"
+    },
+    {
+      "id": "p_scan",
+      "op": "scan",
+      "source": {
+        "input": [
+          "model",
+          "patterns"
+        ]
+      },
+      "item": "pt",
+      "body": "p_cand",
+      "done": "p_adv"
+    },
+    {
+      "id": "p_cand",
+      "op": "set",
+      "name": "cand",
+      "value": {
+        "compute": {
+          "op": "concat",
+          "args": [
+            {
+              "var": [
+                "pt",
+                "prefix"
+              ]
+            },
+            {
+              "var": [
+                "s",
+                "text"
+              ]
+            },
+            {
+              "var": [
+                "pt",
+                "between"
+              ]
+            },
+            {
+              "var": [
+                "o",
+                "text"
+              ]
+            },
+            {
+              "var": [
+                "pt",
+                "suffix"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "p_eq"
+    },
+    {
+      "id": "p_eq",
+      "op": "branch",
+      "left": {
+        "var": [
+          "cand"
+        ]
+      },
+      "right": {
+        "input": [
+          "text"
+        ]
+      },
+      "yes": "p_mean",
+      "no": "p_scan"
+    },
+    {
+      "id": "p_mean",
+      "op": "set",
+      "name": "m",
+      "value": {
+        "object": {
+          "kind": {
+            "var": [
+              "pt",
+              "kind"
+            ]
+          },
+          "triple": {
+            "array": [
+              {
+                "var": [
+                  "s",
+                  "id"
+                ]
+              },
+              {
+                "var": [
+                  "pt",
+                  "relation"
+                ]
+              },
+              {
+                "var": [
+                  "o",
+                  "id"
+                ]
+              }
+            ]
+          },
+          "polarity": {
+            "var": [
+              "pt",
+              "polarity"
+            ]
+          }
+        }
+      },
+      "next": "p_dup"
+    },
+    {
+      "id": "p_dup",
+      "op": "intersect",
+      "name": "hit",
+      "left": {
+        "array": [
+          {
+            "var": [
+              "m"
+            ]
+          }
+        ]
+      },
+      "right": {
+        "var": [
+          "found"
+        ]
+      },
+      "next": "p_new"
+    },
+    {
+      "id": "p_new",
+      "op": "branch",
+      "left": {
+        "var": [
+          "hit"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "p_add",
+      "no": "p_scan"
+    },
+    {
+      "id": "p_add",
+      "op": "append",
+      "name": "found",
+      "value": {
+        "var": [
+          "m"
+        ]
+      },
+      "next": "p_two"
+    },
+    {
+      "id": "p_two",
+      "op": "branch",
+      "left": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "var": [
+                "found"
+              ]
+            }
+          ]
+        }
+      },
+      "right": {
+        "literal": 2
+      },
+      "yes": "hold_ambiguous",
+      "no": "p_scan"
+    },
+    {
+      "id": "p_adv",
+      "op": "set",
+      "name": "oi",
+      "value": {
+        "compute": {
+          "op": "add",
+          "args": [
+            {
+              "var": [
+                "st",
+                "oi"
+              ]
+            },
+            {
+              "literal": 1
+            }
+          ]
+        }
+      },
+      "next": "p_wrap"
+    },
+    {
+      "id": "p_wrap",
+      "op": "branch",
+      "left": {
+        "var": [
+          "oi"
+        ]
+      },
+      "right": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels"
+              ]
+            }
+          ]
+        }
+      },
+      "yes": "p_next_s",
+      "no": "p_next_o"
+    },
+    {
+      "id": "p_next_o",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "continue"
+          },
+          "state": {
+            "object": {
+              "si": {
+                "var": [
+                  "st",
+                  "si"
+                ]
+              },
+              "oi": {
+                "var": [
+                  "oi"
+                ]
+              },
+              "found": {
+                "var": [
+                  "found"
+                ]
+              }
+            }
+          },
+          "meaning": {
+            "literal": null
+          },
+          "text": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "progress"
+          }
+        }
+      }
+    },
+    {
+      "id": "p_next_s",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "continue"
+          },
+          "state": {
+            "object": {
+              "si": {
+                "compute": {
+                  "op": "add",
+                  "args": [
+                    {
+                      "var": [
+                        "st",
+                        "si"
+                      ]
+                    },
+                    {
+                      "literal": 1
+                    }
+                  ]
+                }
+              },
+              "oi": {
+                "literal": 0
+              },
+              "found": {
+                "var": [
+                  "found"
+                ]
+              }
+            }
+          },
+          "meaning": {
+            "literal": null
+          },
+          "text": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "progress"
+          }
+        }
+      }
+    },
+    {
+      "id": "p_finish",
+      "op": "branch",
+      "left": {
+        "var": [
+          "found"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "hold_unsupported",
+      "no": "p_done"
+    },
+    {
+      "id": "p_done",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "done"
+          },
+          "state": {
+            "literal": null
+          },
+          "meaning": {
+            "compute": {
+              "op": "get",
+              "args": [
+                {
+                  "var": [
+                    "found"
+                  ]
+                },
+                {
+                  "literal": 0
+                }
+              ]
+            }
+          },
+          "text": {
+            "input": [
+              "text"
+            ]
+          },
+          "reason": {
+            "literal": "complete"
+          }
+        }
+      }
+    },
+    {
+      "id": "r_text",
+      "op": "branch",
+      "left": {
+        "input": [
+          "text"
+        ]
+      },
+      "right": {
+        "literal": ""
+      },
+      "yes": "r_state",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "r_state",
+      "op": "branch",
+      "left": {
+        "input": [
+          "state"
+        ]
+      },
+      "right": {
+        "literal": null
+      },
+      "yes": "r_shape",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "r_shape",
+      "op": "match",
+      "pattern": {
+        "literal": {
+          "kind": {
+            "capture": "k"
+          },
+          "triple": [
+            {
+              "capture": "a"
+            },
+            {
+              "capture": "r"
+            },
+            {
+              "capture": "b"
+            }
+          ],
+          "polarity": {
+            "capture": "pol"
+          }
+        }
+      },
+      "value": {
+        "input": [
+          "meaning"
+        ]
+      },
+      "bindings": "mm",
+      "yes": "r_kind",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "r_kind",
+      "op": "branch",
+      "left": {
+        "var": [
+          "mm",
+          "k"
+        ]
+      },
+      "right": {
+        "literal": "fact"
+      },
+      "yes": "r_fpol",
+      "no": "r_query"
+    },
+    {
+      "id": "r_query",
+      "op": "branch",
+      "left": {
+        "var": [
+          "mm",
+          "k"
+        ]
+      },
+      "right": {
+        "literal": "query"
+      },
+      "yes": "r_qpol",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "r_qpol",
+      "op": "branch",
+      "left": {
+        "var": [
+          "mm",
+          "pol"
+        ]
+      },
+      "right": {
+        "literal": true
+      },
+      "yes": "r_sl",
+      "no": "r_qneg"
+    },
+    {
+      "id": "r_qneg",
+      "op": "branch",
+      "left": {
+        "var": [
+          "mm",
+          "pol"
+        ]
+      },
+      "right": {
+        "literal": false
+      },
+      "yes": "hold_unsupported",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "r_fpol",
+      "op": "branch",
+      "left": {
+        "var": [
+          "mm",
+          "pol"
+        ]
+      },
+      "right": {
+        "literal": true
+      },
+      "yes": "r_sl",
+      "no": "r_fneg"
+    },
+    {
+      "id": "r_fneg",
+      "op": "branch",
+      "left": {
+        "var": [
+          "mm",
+          "pol"
+        ]
+      },
+      "right": {
+        "literal": false
+      },
+      "yes": "r_sl",
+      "no": "hold_malformed"
+    },
+    {
+      "id": "r_sl",
+      "op": "set",
+      "name": "sl",
+      "value": {
+        "compute": {
+          "op": "lookup",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels_by_id"
+              ]
+            },
+            {
+              "var": [
+                "mm",
+                "a"
+              ]
+            },
+            {
+              "literal": null
+            }
+          ]
+        }
+      },
+      "next": "r_sl_ok"
+    },
+    {
+      "id": "r_sl_ok",
+      "op": "branch",
+      "left": {
+        "var": [
+          "sl"
+        ]
+      },
+      "right": {
+        "literal": null
+      },
+      "yes": "hold_unrealizable",
+      "no": "r_ol"
+    },
+    {
+      "id": "r_ol",
+      "op": "set",
+      "name": "ol",
+      "value": {
+        "compute": {
+          "op": "lookup",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels_by_id"
+              ]
+            },
+            {
+              "var": [
+                "mm",
+                "b"
+              ]
+            },
+            {
+              "literal": null
+            }
+          ]
+        }
+      },
+      "next": "r_ol_ok"
+    },
+    {
+      "id": "r_ol_ok",
+      "op": "branch",
+      "left": {
+        "var": [
+          "ol"
+        ]
+      },
+      "right": {
+        "literal": null
+      },
+      "yes": "hold_unrealizable",
+      "no": "r_scan"
+    },
+    {
+      "id": "r_scan",
+      "op": "scan",
+      "source": {
+        "input": [
+          "model",
+          "patterns"
+        ]
+      },
+      "item": "rp",
+      "body": "r_m1",
+      "done": "hold_unrealizable"
+    },
+    {
+      "id": "r_m1",
+      "op": "branch",
+      "left": {
+        "var": [
+          "rp",
+          "kind"
+        ]
+      },
+      "right": {
+        "var": [
+          "mm",
+          "k"
+        ]
+      },
+      "yes": "r_m2",
+      "no": "r_scan"
+    },
+    {
+      "id": "r_m2",
+      "op": "branch",
+      "left": {
+        "var": [
+          "rp",
+          "relation"
+        ]
+      },
+      "right": {
+        "var": [
+          "mm",
+          "r"
+        ]
+      },
+      "yes": "r_m3",
+      "no": "r_scan"
+    },
+    {
+      "id": "r_m3",
+      "op": "branch",
+      "left": {
+        "var": [
+          "rp",
+          "polarity"
+        ]
+      },
+      "right": {
+        "var": [
+          "mm",
+          "pol"
+        ]
+      },
+      "yes": "r_done",
+      "no": "r_scan"
+    },
+    {
+      "id": "r_done",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "done"
+          },
+          "state": {
+            "literal": null
+          },
+          "meaning": {
+            "input": [
+              "meaning"
+            ]
+          },
+          "text": {
+            "compute": {
+              "op": "concat",
+              "args": [
+                {
+                  "var": [
+                    "rp",
+                    "prefix"
+                  ]
+                },
+                {
+                  "var": [
+                    "sl"
+                  ]
+                },
+                {
+                  "var": [
+                    "rp",
+                    "between"
+                  ]
+                },
+                {
+                  "var": [
+                    "ol"
+                  ]
+                },
+                {
+                  "var": [
+                    "rp",
+                    "suffix"
+                  ]
+                }
+              ]
+            }
+          },
+          "reason": {
+            "literal": "complete"
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_malformed",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "meaning": {
+            "literal": null
+          },
+          "text": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "malformed"
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_unsupported",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "meaning": {
+            "literal": null
+          },
+          "text": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "unsupported"
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_ambiguous",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "meaning": {
+            "literal": null
+          },
+          "text": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "ambiguous"
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_unrealizable",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "meaning": {
+            "literal": null
+          },
+          "text": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "unrealizable"
+          }
+        }
+      }
+    }
+  ]
+}

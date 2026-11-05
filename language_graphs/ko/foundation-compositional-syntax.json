@@ -1,0 +1,1599 @@
+{
+  "schema": "marco-graph-compositional-induction-v1",
+  "active": false,
+  "semantics": null,
+  "min_support": 2,
+  "seed_sha256": "d5fee4366d5f4a5df579d13c6aae75e049b06c45ce3308a7a000b31e35b88956",
+  "sources": [
+    {
+      "id": "source:0d819134597628c9ce3e4d9fd6f0732f384a25d341ddbd7589294f0293b6a044",
+      "text": "하린은 열쇠를 사용할 수 있나요?",
+      "sha256": "0d819134597628c9ce3e4d9fd6f0732f384a25d341ddbd7589294f0293b6a044"
+    },
+    {
+      "id": "source:13c86cab9fa42b04ba23b9a4f3507aa8eb158f1a4cd4412f0ded709dbf24774c",
+      "text": "하린은 지도를 확인했나요?",
+      "sha256": "13c86cab9fa42b04ba23b9a4f3507aa8eb158f1a4cd4412f0ded709dbf24774c"
+    },
+    {
+      "id": "source:20f866001a39f343f617ba046616ac0820892f8970813860b1a0110f3aabb1fd",
+      "text": "지도를 서준이 확인했나요?",
+      "sha256": "20f866001a39f343f617ba046616ac0820892f8970813860b1a0110f3aabb1fd"
+    },
+    {
+      "id": "source:2b7fee526ad1863615ebb7b7a9c6607a2638b54d5976a693d4083e135ce3b209",
+      "text": "열쇠를 하린은 사용할 수 있다.",
+      "sha256": "2b7fee526ad1863615ebb7b7a9c6607a2638b54d5976a693d4083e135ce3b209"
+    },
+    {
+      "id": "source:32bc8e483d292bf03db272fd5fb1a7e74d627e6974c0f22084f551ae28a40d1a",
+      "text": "서준은 지도를 사용할 수 없다.",
+      "sha256": "32bc8e483d292bf03db272fd5fb1a7e74d627e6974c0f22084f551ae28a40d1a"
+    },
+    {
+      "id": "source:353342661d2d197b9af633cbccff530958c6a66ab15609c62d17353349461929",
+      "text": "하린은 열쇠를 확인하지 않았다.",
+      "sha256": "353342661d2d197b9af633cbccff530958c6a66ab15609c62d17353349461929"
+    },
+    {
+      "id": "source:356a16ca46aadda9df12418d2bcd54c56c50c1aba41acc0fc1ef2900ac82077c",
+      "text": "하린이 지도를 사용할 수 있나요?",
+      "sha256": "356a16ca46aadda9df12418d2bcd54c56c50c1aba41acc0fc1ef2900ac82077c"
+    },
+    {
+      "id": "source:3c445205046b16df77a0934e62edf6f7022b7ccd070b6d41ca69a8968aabffee",
+      "text": "지도를 하린이 확인했다.",
+      "sha256": "3c445205046b16df77a0934e62edf6f7022b7ccd070b6d41ca69a8968aabffee"
+    },
+    {
+      "id": "source:3e76fc0bd5e3a04cb5ef099a13f05ca8be64c7b736e96eed67f8986a509c0502",
+      "text": "서준은 지도를 확인했다.",
+      "sha256": "3e76fc0bd5e3a04cb5ef099a13f05ca8be64c7b736e96eed67f8986a509c0502"
+    },
+    {
+      "id": "source:40cec17e0fc9c0633153b8688fa4c766c0b49f7952180a5bf3a8058ef53b6ffb",
+      "text": "열쇠를 서준은 가지고 있다.",
+      "sha256": "40cec17e0fc9c0633153b8688fa4c766c0b49f7952180a5bf3a8058ef53b6ffb"
+    },
+    {
+      "id": "source:40eb1b07c25a865479ebf015f6b4989134843eb063aa9102e9ef2a7880a60329",
+      "text": "서준은 열쇠를 가지고 있나요?",
+      "sha256": "40eb1b07c25a865479ebf015f6b4989134843eb063aa9102e9ef2a7880a60329"
+    },
+    {
+      "id": "source:4143185fc27f72a9514f5eab9f92b0723e23a24162dea9d8e15f60db5dbf9d4d",
+      "text": "하린은 열쇠를 가지고 있다.",
+      "sha256": "4143185fc27f72a9514f5eab9f92b0723e23a24162dea9d8e15f60db5dbf9d4d"
+    },
+    {
+      "id": "source:43d36ce49ed3b90a43d23b13dfcfcdbc5c1aa48a17de487e2f5f7bbc9781fbd8",
+      "text": "하린이 열쇠를 확인했다.",
+      "sha256": "43d36ce49ed3b90a43d23b13dfcfcdbc5c1aa48a17de487e2f5f7bbc9781fbd8"
+    },
+    {
+      "id": "source:4fa3cb445e834a67ad0ee19fed8828a02a22816e75c9774c452158d1b7ee7f6f",
+      "text": "지도를 서준은 가지고 있지 않다.",
+      "sha256": "4fa3cb445e834a67ad0ee19fed8828a02a22816e75c9774c452158d1b7ee7f6f"
+    },
+    {
+      "id": "source:5193d18521a4f9fb4a146e4a3bef793446bcc871a7621c99dd39d7aa8fe9f2d1",
+      "text": "지도를 하린은 확인했다.",
+      "sha256": "5193d18521a4f9fb4a146e4a3bef793446bcc871a7621c99dd39d7aa8fe9f2d1"
+    },
+    {
+      "id": "source:689c11253cc56d8e20402204aa2ff22411f67c0d1d62462f4f325f6c8a626708",
+      "text": "열쇠를 서준은 확인하지 않았다.",
+      "sha256": "689c11253cc56d8e20402204aa2ff22411f67c0d1d62462f4f325f6c8a626708"
+    },
+    {
+      "id": "source:80581c15972e58599b790b0054dc01abf1855014699e7e9e0a4ef8d69734e903",
+      "text": "하린이 지도를 확인하지 않았다.",
+      "sha256": "80581c15972e58599b790b0054dc01abf1855014699e7e9e0a4ef8d69734e903"
+    },
+    {
+      "id": "source:95a54d69c77d1afa60b0cdeab817cec1929332d487585144b0df18674a569ea2",
+      "text": "하린이 열쇠를 사용할 수 없다.",
+      "sha256": "95a54d69c77d1afa60b0cdeab817cec1929332d487585144b0df18674a569ea2"
+    },
+    {
+      "id": "source:960a6c45e2b75569cb04b0dca7fda0cef8a19caff88620d1886d78057ce193f0",
+      "text": "열쇠를 하린이 사용할 수 있다.",
+      "sha256": "960a6c45e2b75569cb04b0dca7fda0cef8a19caff88620d1886d78057ce193f0"
+    },
+    {
+      "id": "source:9f5aedc0c023287d8fb6e6872d37c618ab445df2585dd9d77d0a6621d27e58df",
+      "text": "지도를 하린이 사용할 수 없다.",
+      "sha256": "9f5aedc0c023287d8fb6e6872d37c618ab445df2585dd9d77d0a6621d27e58df"
+    },
+    {
+      "id": "source:a430a53e7aa0e0cb150d906e1cf405e1e342841f51526cc6a831db88656c294c",
+      "text": "열쇠를 하린이 가지고 있나요?",
+      "sha256": "a430a53e7aa0e0cb150d906e1cf405e1e342841f51526cc6a831db88656c294c"
+    },
+    {
+      "id": "source:a54d99c54da951c17669c95321cc30aa227532f6e1c7cb1d38990466d0ec4dde",
+      "text": "열쇠를 하린은 가지고 있나요?",
+      "sha256": "a54d99c54da951c17669c95321cc30aa227532f6e1c7cb1d38990466d0ec4dde"
+    },
+    {
+      "id": "source:a65813ea538e4236d85eef0c071153c999ac224d70f1eacd326430b0c0f521df",
+      "text": "서준은 열쇠를 사용할 수 있다.",
+      "sha256": "a65813ea538e4236d85eef0c071153c999ac224d70f1eacd326430b0c0f521df"
+    },
+    {
+      "id": "source:b529908cc2d100783d6220935df7e3eb19757a94857faab072cec6f866ebc78a",
+      "text": "하린이 지도를 가지고 있다.",
+      "sha256": "b529908cc2d100783d6220935df7e3eb19757a94857faab072cec6f866ebc78a"
+    },
+    {
+      "id": "source:b928866079547ff09f2dd640724a60179db01d172862c5742cc328984e410f90",
+      "text": "지도를 서준은 확인했나요?",
+      "sha256": "b928866079547ff09f2dd640724a60179db01d172862c5742cc328984e410f90"
+    },
+    {
+      "id": "source:bd43af997ba5370200b2fdb7c6ede0a971060cbf0994dbd98a51c87709d83e99",
+      "text": "하린은 지도를 가지고 있지 않다.",
+      "sha256": "bd43af997ba5370200b2fdb7c6ede0a971060cbf0994dbd98a51c87709d83e99"
+    },
+    {
+      "id": "source:c068e7df388600a8fd1ce6db2feb0663fa4cbc0c16c0aba3319c1101c0d524d9",
+      "text": "서준이 열쇠를 확인했나요?",
+      "sha256": "c068e7df388600a8fd1ce6db2feb0663fa4cbc0c16c0aba3319c1101c0d524d9"
+    },
+    {
+      "id": "source:d711daf360b92d28b96c4b77a26fa77d75541f32ebd79c6cb3332b3a277cafb6",
+      "text": "열쇠를 서준이 사용할 수 있나요?",
+      "sha256": "d711daf360b92d28b96c4b77a26fa77d75541f32ebd79c6cb3332b3a277cafb6"
+    },
+    {
+      "id": "source:ea2fbdf5c81b703a44dae7676010a2a96da32dc70c87bc5e66effcfcf63acd9c",
+      "text": "서준이 지도를 사용할 수 있다.",
+      "sha256": "ea2fbdf5c81b703a44dae7676010a2a96da32dc70c87bc5e66effcfcf63acd9c"
+    },
+    {
+      "id": "source:ec117b8d65ad7555dad496717cd0490f6940c85ce7c4fa8b14d7c0d17dffbb1d",
+      "text": "열쇠를 서준이 확인하지 않았다.",
+      "sha256": "ec117b8d65ad7555dad496717cd0490f6940c85ce7c4fa8b14d7c0d17dffbb1d"
+    },
+    {
+      "id": "source:f1944fc5286c24f42e7d3b75c703eb2d3b7cc43a0fc4d2b6585ed75509ef63c6",
+      "text": "서준이 열쇠를 가지고 있지 않다.",
+      "sha256": "f1944fc5286c24f42e7d3b75c703eb2d3b7cc43a0fc4d2b6585ed75509ef63c6"
+    },
+    {
+      "id": "source:f9bfce69af68e7b16e7798e05432d4c5839f313ac1f769dc24bef541a455e0a9",
+      "text": "서준이 지도를 가지고 있나요?",
+      "sha256": "f9bfce69af68e7b16e7798e05432d4c5839f313ac1f769dc24bef541a455e0a9"
+    }
+  ],
+  "seed": {
+    "subject_markers": [
+      "은 "
+    ],
+    "object_marker": "를 ",
+    "orders": [
+      [
+        0,
+        1,
+        2
+      ]
+    ],
+    "predicates": [
+      {
+        "pattern": "checks:fact:False",
+        "prefix": "",
+        "predicate": "확인하지 않았다.",
+        "kind": "fact",
+        "relation": "checks",
+        "polarity": false
+      },
+      {
+        "pattern": "checks:fact:True",
+        "prefix": "",
+        "predicate": "확인했다.",
+        "kind": "fact",
+        "relation": "checks",
+        "polarity": true
+      },
+      {
+        "pattern": "checks:query:True",
+        "prefix": "",
+        "predicate": "확인했나요?",
+        "kind": "query",
+        "relation": "checks",
+        "polarity": true
+      },
+      {
+        "pattern": "has:fact:False",
+        "prefix": "",
+        "predicate": "가지고 있지 않다.",
+        "kind": "fact",
+        "relation": "has",
+        "polarity": false
+      },
+      {
+        "pattern": "has:fact:True",
+        "prefix": "",
+        "predicate": "가지고 있다.",
+        "kind": "fact",
+        "relation": "has",
+        "polarity": true
+      },
+      {
+        "pattern": "has:query:True",
+        "prefix": "",
+        "predicate": "가지고 있나요?",
+        "kind": "query",
+        "relation": "has",
+        "polarity": true
+      },
+      {
+        "pattern": "uses:fact:False",
+        "prefix": "",
+        "predicate": "사용할 수 없다.",
+        "kind": "fact",
+        "relation": "uses",
+        "polarity": false
+      },
+      {
+        "pattern": "uses:fact:True",
+        "prefix": "",
+        "predicate": "사용할 수 있다.",
+        "kind": "fact",
+        "relation": "uses",
+        "polarity": true
+      },
+      {
+        "pattern": "uses:query:True",
+        "prefix": "",
+        "predicate": "사용할 수 있나요?",
+        "kind": "query",
+        "relation": "uses",
+        "polarity": true
+      }
+    ]
+  },
+  "learned": {
+    "subject_markers": [
+      "은 ",
+      "이 "
+    ],
+    "object_markers": [
+      "를 "
+    ],
+    "orders": [
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        1,
+        0,
+        2
+      ]
+    ]
+  },
+  "evidence": [
+    {
+      "source": "source:0d819134597628c9ce3e4d9fd6f0732f384a25d341ddbd7589294f0293b6a044",
+      "pattern": "uses:query:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        18
+      ]
+    },
+    {
+      "source": "source:13c86cab9fa42b04ba23b9a4f3507aa8eb158f1a4cd4412f0ded709dbf24774c",
+      "pattern": "checks:query:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        14
+      ]
+    },
+    {
+      "source": "source:20f866001a39f343f617ba046616ac0820892f8970813860b1a0110f3aabb1fd",
+      "pattern": "checks:query:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        14
+      ]
+    },
+    {
+      "source": "source:2b7fee526ad1863615ebb7b7a9c6607a2638b54d5976a693d4083e135ce3b209",
+      "pattern": "uses:fact:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:32bc8e483d292bf03db272fd5fb1a7e74d627e6974c0f22084f551ae28a40d1a",
+      "pattern": "uses:fact:False",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:353342661d2d197b9af633cbccff530958c6a66ab15609c62d17353349461929",
+      "pattern": "checks:fact:False",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:356a16ca46aadda9df12418d2bcd54c56c50c1aba41acc0fc1ef2900ac82077c",
+      "pattern": "uses:query:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        18
+      ]
+    },
+    {
+      "source": "source:3c445205046b16df77a0934e62edf6f7022b7ccd070b6d41ca69a8968aabffee",
+      "pattern": "checks:fact:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        13
+      ]
+    },
+    {
+      "source": "source:3e76fc0bd5e3a04cb5ef099a13f05ca8be64c7b736e96eed67f8986a509c0502",
+      "pattern": "checks:fact:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        13
+      ]
+    },
+    {
+      "source": "source:40cec17e0fc9c0633153b8688fa4c766c0b49f7952180a5bf3a8058ef53b6ffb",
+      "pattern": "has:fact:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        15
+      ]
+    },
+    {
+      "source": "source:40eb1b07c25a865479ebf015f6b4989134843eb063aa9102e9ef2a7880a60329",
+      "pattern": "has:query:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        16
+      ]
+    },
+    {
+      "source": "source:4143185fc27f72a9514f5eab9f92b0723e23a24162dea9d8e15f60db5dbf9d4d",
+      "pattern": "has:fact:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        15
+      ]
+    },
+    {
+      "source": "source:43d36ce49ed3b90a43d23b13dfcfcdbc5c1aa48a17de487e2f5f7bbc9781fbd8",
+      "pattern": "checks:fact:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        13
+      ]
+    },
+    {
+      "source": "source:4fa3cb445e834a67ad0ee19fed8828a02a22816e75c9774c452158d1b7ee7f6f",
+      "pattern": "has:fact:False",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        18
+      ]
+    },
+    {
+      "source": "source:5193d18521a4f9fb4a146e4a3bef793446bcc871a7621c99dd39d7aa8fe9f2d1",
+      "pattern": "checks:fact:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        13
+      ]
+    },
+    {
+      "source": "source:689c11253cc56d8e20402204aa2ff22411f67c0d1d62462f4f325f6c8a626708",
+      "pattern": "checks:fact:False",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:80581c15972e58599b790b0054dc01abf1855014699e7e9e0a4ef8d69734e903",
+      "pattern": "checks:fact:False",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:95a54d69c77d1afa60b0cdeab817cec1929332d487585144b0df18674a569ea2",
+      "pattern": "uses:fact:False",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:960a6c45e2b75569cb04b0dca7fda0cef8a19caff88620d1886d78057ce193f0",
+      "pattern": "uses:fact:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:9f5aedc0c023287d8fb6e6872d37c618ab445df2585dd9d77d0a6621d27e58df",
+      "pattern": "uses:fact:False",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:a430a53e7aa0e0cb150d906e1cf405e1e342841f51526cc6a831db88656c294c",
+      "pattern": "has:query:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        16
+      ]
+    },
+    {
+      "source": "source:a54d99c54da951c17669c95321cc30aa227532f6e1c7cb1d38990466d0ec4dde",
+      "pattern": "has:query:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        16
+      ]
+    },
+    {
+      "source": "source:a65813ea538e4236d85eef0c071153c999ac224d70f1eacd326430b0c0f521df",
+      "pattern": "uses:fact:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:b529908cc2d100783d6220935df7e3eb19757a94857faab072cec6f866ebc78a",
+      "pattern": "has:fact:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        15
+      ]
+    },
+    {
+      "source": "source:b928866079547ff09f2dd640724a60179db01d172862c5742cc328984e410f90",
+      "pattern": "checks:query:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        14
+      ]
+    },
+    {
+      "source": "source:bd43af997ba5370200b2fdb7c6ede0a971060cbf0994dbd98a51c87709d83e99",
+      "pattern": "has:fact:False",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:harin",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "은 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        18
+      ]
+    },
+    {
+      "source": "source:c068e7df388600a8fd1ce6db2feb0663fa4cbc0c16c0aba3319c1101c0d524d9",
+      "pattern": "checks:query:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        14
+      ]
+    },
+    {
+      "source": "source:d711daf360b92d28b96c4b77a26fa77d75541f32ebd79c6cb3332b3a277cafb6",
+      "pattern": "uses:query:True",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        18
+      ]
+    },
+    {
+      "source": "source:ea2fbdf5c81b703a44dae7676010a2a96da32dc70c87bc5e66effcfcf63acd9c",
+      "pattern": "uses:fact:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:ec117b8d65ad7555dad496717cd0490f6940c85ce7c4fa8b14d7c0d17dffbb1d",
+      "pattern": "checks:fact:False",
+      "order": [
+        1,
+        0,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": "source:f1944fc5286c24f42e7d3b75c703eb2d3b7cc43a0fc4d2b6585ed75509ef63c6",
+      "pattern": "has:fact:False",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:key",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        18
+      ]
+    },
+    {
+      "source": "source:f9bfce69af68e7b16e7798e05432d4c5839f313ac1f769dc24bef541a455e0a9",
+      "pattern": "has:query:True",
+      "order": [
+        0,
+        1,
+        2
+      ],
+      "subject": {
+        "label": "person:seojun",
+        "span": [
+          0,
+          2
+        ],
+        "marker": "이 ",
+        "marker_span": [
+          2,
+          4
+        ]
+      },
+      "object": {
+        "label": "item:map",
+        "span": [
+          4,
+          6
+        ],
+        "marker": "를 ",
+        "marker_span": [
+          6,
+          8
+        ]
+      },
+      "prefix_span": [
+        0,
+        0
+      ],
+      "predicate_span": [
+        8,
+        16
+      ]
+    }
+  ],
+  "rejected": [],
+  "limitations": [
+    "seed role markers and slot semantics are caller assumptions, not induced meaning",
+    "new markers are lexical role candidates supported by counts, not proof of synonymy or truth",
+    "no facts are admitted from the corpus and no semantics are discovered",
+    "sentences with ambiguous or conflicting decompositions are refused, not guessed",
+    "bounded to the stated sentence, length, marker, pattern and work limits"
+  ]
+}

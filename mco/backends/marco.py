@@ -31,6 +31,7 @@ Runtime behaviour:
 from __future__ import annotations
 
 from collections.abc import Mapping
+from copy import deepcopy
 import hashlib
 import importlib
 import importlib.util
@@ -291,25 +292,30 @@ def read_snapshot(path: Any, *, marco_root: Optional[str] = None) -> tuple[Snaps
     return SnapshotInfo._from_summary(snap.summary(), ids), snap
 
 
-def _base_identity(file: ModelFile, pack_path: Path) -> dict[str, Any]:
-    """The base a conversation binds to: the SHA-256 of the pack's ``manifest.json``.
+def _base_identity(file: ModelFile, pack_path: Path) -> tuple[dict[str, Any], str]:
+    """The base a conversation binds to, and the verified SHA-256 of the pack's raw ``manifest.json``.
 
-    For a native file that is its manifest's ``content_sha256`` (format-1.md 6.6); a compat
-    file or a bare pack of the same content gets the same value."""
+    For a native file the content identity is its authenticated manifest ``content_sha256``
+    (format-1.md 6.6), which must equal the rebuilt raw manifest SHA. Any other file binds to
+    the SHA-256 of the canonical pack manifest JSON plus newline, as ``base_identity`` does."""
     with zipfile.ZipFile(pack_path) as zf:
-        content = hashlib.sha256(zf.read("manifest.json")).hexdigest()
+        raw = hashlib.sha256(zf.read("manifest.json")).hexdigest()
     manifest = file.manifest or {}
     if file.kind == "mco-native":
-        if manifest.get("content_sha256") != content:
+        if manifest.get("content_sha256") != raw:
             raise IntegrityError(f"{file.path}: the rebuilt pack does not match the manifest's content_sha256")
+        content = raw
         fmt = file.native.get("format") or {}
         version = f"{fmt.get('major')}.{fmt.get('minor')}"
         source = "MCO Format 1 manifest content_sha256"
     else:
+        text = json.dumps(file.pack_manifest, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+                          allow_nan=False)
+        content = hashlib.sha256((text + "\n").encode("utf-8")).hexdigest()
         version = str(file.version)
-        source = "sha256 of the pack's manifest.json (equals the Format 1 content_sha256 of the same pack)"
-    return {"content_sha256": content, "build_id": manifest.get("build_id"), "format": file.kind,
-            "format_version": version, "identity_source": source}
+        source = "sha256 of the canonical pack manifest JSON plus newline (mco canonical base identity v2)"
+    return ({"content_sha256": content, "build_id": manifest.get("build_id"), "format": file.kind,
+             "format_version": version, "identity_source": source}, raw)
 
 
 # --- opened model and sessions ------------------------------------------------------
@@ -350,7 +356,8 @@ class MarcoModel(BackendModel):
                 self.info = self.info.replace(notes=self.info.notes + (_attached_note(self._graph_overlay),))
             # What a conversation binds to: the base identity and, with an overlay attached, the
             # overlay head its saved state was derived under (each application keeps it current).
-            self._base = _base_identity(file, self._pack_path)
+            self._base, self._raw_manifest_sha = _base_identity(file, self._pack_path)
+            self._file_kind = file.kind
             head = self._graph_overlay.head() if self._graph_overlay is not None else (None, None)
             self._binding = self._store_module.binding(self._base["content_sha256"], self._base["build_id"], *head)
             self._runtime = f"mco {__version__}; backend {backend.name}"
@@ -364,10 +371,10 @@ class MarcoModel(BackendModel):
     def _new_app(self) -> Any:
         extra = {"graph_overlay": self._graph_overlay} if self._graph_overlay is not None else {}
         try:
-            app = self._ui.AppState(self._pack_path, overlay_root=self._overlay, **extra)
+            store = self._new_store()
+            app = self._ui.AppState(self._pack_path, overlay_root=self._overlay, conversations=store, **extra)
         except Exception as exc:
             raise BackendError(f"MARCO could not open {self.info.path}: {type(exc).__name__}: {exc}") from exc
-        app.conversations = self._new_store()
         if not self._options.get("allow_network", False):
             app.goals.research = _offline_research
         return app
@@ -390,7 +397,25 @@ class MarcoModel(BackendModel):
         try:
             # The attached overlay (or none) must hold the snapshot's recorded overlay history.
             attached = self._graph_overlay.path if self._graph_overlay is not None else None
-            _status, records = snap.restore_states(self._base, attached)
+            base = self._base
+            body = _mapping(snap.body)
+            recorded = _mapping(body.get("base"))
+            recorded_overlay = _mapping(body.get("overlay"))
+            raw = self._raw_manifest_sha
+            if (self._graph_overlay is None
+                    and self._file_kind in ("kgpack", "mco-compat")
+                    and recorded.get("format") == self._file_kind
+                    and recorded.get("identity_source")
+                    == "sha256 of the pack's manifest.json (equals the Format 1 content_sha256 of the same pack)"
+                    and recorded.get("content_sha256") == raw
+                    and raw != self._base["content_sha256"]
+                    and recorded_overlay.get("attached") is False):
+                # Narrow legacy restore: a snapshot saved under the old raw-manifest identity of this
+                # exact pack, with no overlay. Build checks still run in restore_states.
+                base = dict(self._base)
+                base["content_sha256"] = raw
+                attached = None
+            _status, records = snap.restore_states(base, attached)
             wanted = snap.conversation(conversation)["id"]     # names one conversation, or the only one
         except module.SnapshotError as exc:
             raise _snapshot_error(module, exc) from exc
@@ -483,63 +508,166 @@ class MarcoSession(BackendSession):
             self._check()
             module, app = self._model._snapshot_module, self._app
             chat_id = self._chat()
-            with app.lock, app.model.encoder.activate():
-                if self._model._graph_overlay is not None:
-                    app._sync_graph_overlay()           # the state is taken under the overlay's head
-                chat = app.conversations.get_chat(chat_id)
-                context = app.reasoning_contexts.get("chat_" + chat_id)
-                try:
-                    state = (context.snapshot() if context is not None
-                             else app.conversations.reasoning_state(chat_id))
-                except self._model._store_module.ConversationBaseMismatch as exc:
-                    raise SnapshotMismatchError(str(exc)) from exc
-            record = {key: chat.get(key) for key in ("id", "title", "created_at", "updated_at")}
-            record.update(turns=chat["turns"], reasoning_state=state)
+            capture = getattr(app, "_action_grounding_capture_entry", None)
+            restore_entry = getattr(app, "_action_grounding_restore_entry", None)
+            entry = None
+            legacy = None
+
+            def _restore():
+                if entry is not None and restore_entry is not None:
+                    restore_entry(entry)
+                    return
+                if legacy is None:
+                    return
+                app.model = legacy[0]
+                if legacy[1] is not None:
+                    app.language_pack = legacy[1]
+                app.reasoning_contexts = legacy[2]
+                if hasattr(app, "action_grounding_states"):
+                    app.action_grounding_states = legacy[3]
+                app.history = legacy[4]
+                if legacy[5] is not None:
+                    app._overlay_applied = legacy[5]
+                binding = getattr(app.conversations, "binding", None)
+                if isinstance(binding, dict) and isinstance(legacy[6], dict):
+                    binding.clear()
+                    binding.update(deepcopy(legacy[6]))
+                elif legacy[7]:
+                    try:
+                        setattr(app.conversations, "binding", deepcopy(legacy[6]))
+                    except Exception:
+                        pass
+
             try:
-                attached = self._model._graph_overlay
-                module.write(path, base=self._model._base, conversations=[record],
-                             overlay=attached.path if attached is not None else None, runtime=self._model._runtime)
-            except module.SnapshotError as exc:
-                raise _snapshot_error(module, exc) from exc
-            return read_snapshot(path, marco_root=self._model._options.get("marco_root"))[0]
+                with app.lock, app.model.encoder.activate():
+                    if capture is not None and restore_entry is not None:
+                        entry = capture()
+                    else:
+                        legacy = (app.model, getattr(app, "language_pack", None), dict(app.reasoning_contexts),
+                                  dict(getattr(app, "action_grounding_states", {})), list(app.history),
+                                  getattr(app, "_overlay_applied", None),
+                                  deepcopy(getattr(app.conversations, "binding", None)),
+                                  hasattr(app.conversations, "binding"))
+                    if self._model._graph_overlay is not None:
+                        app._sync_graph_overlay()           # the state is taken under the overlay's head
+                    chat = app.conversations.get_chat(chat_id)
+                    context = app.reasoning_contexts.get("chat_" + chat_id)
+                    try:
+                        if context is not None:
+                            state = context.snapshot()
+                            action = deepcopy(getattr(app, "action_grounding_states", {}).get("chat_" + chat_id))
+                        else:
+                            state = app.conversations.reasoning_state(chat_id)
+                            action = (app.conversations.action_grounding_state(chat_id)
+                                      if state is not None and hasattr(app.conversations, "action_grounding_state")
+                                      else None)
+                    except self._model._store_module.ConversationBaseMismatch as exc:
+                        raise SnapshotMismatchError(str(exc)) from exc
+                    if action is not None:
+                        try:
+                            action = module.validate_action_grounding_state(action, state)
+                        except module.SnapshotError as exc:
+                            raise _snapshot_error(module, exc) from exc
+                record = {key: chat.get(key) for key in ("id", "title", "created_at", "updated_at")}
+                record.update(turns=chat["turns"], reasoning_state=state)
+                if action is not None:
+                    record["action_grounding_state"] = action
+                try:
+                    attached = self._model._graph_overlay
+                    module.write(path, base=self._model._base, conversations=[record],
+                                 overlay=attached.path if attached is not None else None, runtime=self._model._runtime)
+                except module.SnapshotError as exc:
+                    raise _snapshot_error(module, exc) from exc
+                return read_snapshot(path, marco_root=self._model._options.get("marco_root"))[0]
+            except BaseException:
+                try:
+                    with app.lock:
+                        _restore()
+                except Exception:
+                    pass
+                raise
 
     def _adopt(self, record: dict[str, Any]) -> None:
         """Take over a conversation from a checked snapshot record.
 
-        The turns and reasoning state go into this session's store; the context is restored
-        from it at the next turn, exactly as MARCO restores a saved conversation. The
-        input-understanding history is not stored in a snapshot; it is regenerated here from
-        the turns' user texts, in order, as the original turns built it."""
+        The turns and reasoning state go into a staged store and (native path) a staged
+        context and action state first; the session, store and tables are published only
+        when every preparation step succeeded. For the legacy path the input-understanding
+        history is regenerated from the turns' user texts, in order, before publication."""
         with self.lock:
             self._check()
             app = self._app
             with app.lock, app.model.encoder.activate():
+                module = self._model._snapshot_module
                 store = app.conversations
-                app.conversations = self._model._new_store()
-                Path(store.path).unlink(missing_ok=True)
-                self._chat_id = app.conversations.import_chat(record)["id"]
-                understand = self._model._ui.input_understanding.understand
-                history = app.understanding_history.setdefault("chat_" + self._chat_id, [])
-                for turn in record.get("turns") or []:
-                    history.append(understand(turn["user"], history, language_pack=app.language_pack))
-                    del history[:-30]
+                staged = self._model._new_store()
+                context = state = history = None
+                try:
+                    action = record.get("action_grounding_state")
+                    if action is not None:
+                        module.validate_action_grounding_state(action, record.get("reasoning_state"))
+                    chat_id = staged.import_chat(record)["id"]
+                    key = "chat_" + chat_id
+                    from pack_model import PackModel
+                    if type(app.model) is PackModel and getattr(app.model, "language_projection", None) is not None:
+                        if record.get("reasoning_state") is not None and hasattr(app, "_action_grounding_stage_context"):
+                            context, state = app._action_grounding_stage_context(chat_id, staged)
+                    else:
+                        understand = self._model._ui.input_understanding.understand
+                        history = list(app.understanding_history.get(key, []))
+                        for turn in record.get("turns") or []:
+                            history.append(understand(turn["user"], history, language_pack=app.language_pack))
+                            del history[:-30]
+                except BaseException:
+                    Path(staged.path).unlink(missing_ok=True)
+                    raise
+                app.conversations = staged
+                self._chat_id = chat_id
+                if context is not None:
+                    app.reasoning_contexts[key] = context
+                    if state is not None:
+                        app.action_grounding_states[key] = state
+                    else:
+                        app.action_grounding_states.pop(key, None)
+                if history is not None:
+                    app.understanding_history[key] = history
+                try:
+                    Path(store.path).unlink(missing_ok=True)
+                except OSError:
+                    pass
 
     def reset(self) -> None:
         with self.lock:
             app, old = self._app, self._session_id
-            app.reset()
             keys = {old} | ({"chat_" + self._chat_id} if self._chat_id else set())
-            for table in ("reasoning_contexts", "understanding_history", "affect_sessions"):
-                for key in keys:
-                    getattr(app, table, {}).pop(key, None)
+            tables = ("reasoning_contexts", "understanding_history", "affect_sessions", "action_grounding_states")
+            # The replacement store is prepared before anything destructive happens.
+            replacement = self._model._new_store() if self._chat_id is not None else None
+            entry = {t: dict(getattr(app, t)) for t in tables if hasattr(app, t)}
+            history = list(app.history)
+            try:
+                app.reset()
+                for table in tables:
+                    for key in keys:
+                        getattr(app, table, {}).pop(key, None)
+            except BaseException:
+                for table, value in entry.items():
+                    setattr(app, table, value)
+                app.history = history
+                if replacement is not None:
+                    Path(replacement.path).unlink(missing_ok=True)
+                raise
             pending = getattr(app.goals, "pending", {})
             for key in [k for k in pending if isinstance(k, tuple) and k and k[0] in keys]:
                 pending.pop(key, None)
             if self._chat_id is not None:
                 store = app.conversations
-                app.conversations = self._model._new_store()
-                Path(store.path).unlink(missing_ok=True)
+                app.conversations = replacement
                 self._chat_id = None
+                try:
+                    Path(store.path).unlink(missing_ok=True)
+                except OSError:
+                    pass
             self._session_id = self._new_id()
 
     def close(self) -> None:
@@ -601,6 +729,12 @@ def translate(payload: Mapping[str, Any], text: str, backend: str) -> Result:
         transitions = list(reasoning.get("transitions") or [])
         steps.append(TraceStep("reason", f"{reasoning.get('operator')}: {len(transitions)} transition(s)",
                                {"operator": reasoning.get("operator"), "transitions": transitions}))
+    action_grounding = trace.get("action_grounding")
+    if isinstance(action_grounding, Mapping):
+        grounded = deepcopy(dict(action_grounding))
+        steps.append(TraceStep("contextual_action",
+                               f"{len(grounded.get('results') or [])} contextual action result(s)",
+                               {"action_grounding": grounded}))
     retrieval = trace.get("retrieval")
     if isinstance(retrieval, Mapping):
         steps.append(TraceStep("retrieval", str(retrieval.get("diagnosis")), dict(retrieval)))

@@ -11,7 +11,720 @@ import uuid
 
 from marco.reasoning.inference import current_facts
 from relational_semantics import RelationalParser
-from marco.language import realize
+
+
+def _scoped_native_eq(a, b):
+    """Exact type-sensitive plain-JSON equality (bounded depth)."""
+    def eq(x, y, depth):
+        if depth > 32 or type(x) is not type(y):
+            return False
+        if type(x) is dict:
+            return set(x) == set(y) and all(eq(x[k], y[k], depth + 1) for k in x)
+        if type(x) is list:
+            return len(x) == len(y) and all(eq(p, q, depth + 1) for p, q in zip(x, y))
+        if x is None:
+            return True
+        return type(x) in (str, int, bool, float) and x == y
+    return eq(a, b, 0)
+
+
+def _scoped_canon(v):
+    """Canonical V4 JSON text (sorted, compact, finite, non-ASCII kept)."""
+    return json.dumps(v, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
+
+
+def _scoped_size(v):
+    """Canonical UTF-8 byte size of plain JSON, else None."""
+    try:
+        return len(_scoped_canon(v).encode("utf-8"))
+    except (TypeError, ValueError, UnicodeEncodeError, RecursionError):
+        return None
+
+
+def _scoped_sha(v, limit=65536):
+    """Lowercase canonical SHA-256 of bounded plain JSON, else None."""
+    import hashlib
+    size = _scoped_size(v)
+    if size is None or size > limit:
+        return None
+    return hashlib.sha256(_scoped_canon(v).encode("utf-8")).hexdigest()
+
+
+def _scoped_positive_meaning(meaning, triple):
+    """Actual authenticated positive witness meaning for `triple`, shape preserved, else None.
+
+    Supported shapes are {triple} and {triple, polarity}; polarity, when present, must be exactly
+    bool True. An omitted polarity is kept omitted (never added).
+    """
+    if (type(meaning) is not dict or type(triple) is not list or len(triple) != 3
+            or "triple" not in meaning or not set(meaning) <= {"triple", "polarity"}
+            or not _scoped_native_eq(meaning["triple"], list(triple))):
+        return None
+    if "polarity" in meaning and meaning["polarity"] is not True:
+        return None
+    if meaning.get("polarity", True) is not True:
+        return None
+    return deepcopy(meaning)
+
+
+def _scoped_tree_sha(v, depth=0):
+    """Deterministic componentwise bounded canonical digest of plain JSON, else None.
+
+    Components <=65536 canonical bytes hash directly; larger dict/list values hash an ordered
+    manifest of their children's digests (type, key/index, order and count preserved). A
+    leaf that is itself oversized, a non-plain value, or excessive depth/count fails closed.
+    """
+    import hashlib
+    leaf = _scoped_sha(v)
+    if leaf is not None:
+        return "L:" + leaf
+    if depth >= 8 or type(v) not in (dict, list) or len(v) > 65536:
+        return None
+    h = hashlib.sha256()
+    h.update(_scoped_canon([type(v).__name__, len(v)]).encode("utf-8"))
+    if type(v) is dict:
+        if not all(type(k) is str for k in v):
+            return None
+        pairs = sorted(v.items())
+    else:
+        pairs = list(enumerate(v))
+    for k, x in pairs:
+        sub = _scoped_tree_sha(x, depth + 1)
+        if sub is None:
+            return None
+        try:
+            h.update(_scoped_canon([k, sub]).encode("utf-8"))
+            h.update(b"\n")
+        except (TypeError, ValueError, UnicodeEncodeError):
+            return None
+    return "T:" + type(v).__name__ + ":" + str(len(v)) + ":" + h.hexdigest()
+
+
+def _scoped_authority_digest(projection, auth):
+    """Compact ordered digest manifest of an already-validated own-native authority, else None."""
+    if type(projection) is not dict or type(auth) is not dict:
+        return None
+    for group in (auth.get("frame_full"), auth.get("original_full"), auth.get("derived_full")):
+        if type(group) is not list:
+            return None
+        sizes = [_scoped_size(r) for r in group]
+        if None in sizes or any(s > 65536 for s in sizes):
+            return None
+    derived = auth["derived_full"]
+    if len(derived) > 4 or sum(_scoped_size(r) for r in derived) > 262144:
+        return None
+    caps = []
+    for name in ("negative_binary", "conditional_binary"):
+        cap = _scoped_cap(auth, name)
+        caps.append(None if cap is None else _scoped_sha(cap))
+        if cap is not None and caps[-1] is None:
+            return None
+    parts = [_scoped_tree_sha(projection), _scoped_tree_sha(auth.get("data")), _scoped_tree_sha(auth.get("frames")),
+             _scoped_tree_sha(auth["frame_full"]), _scoped_tree_sha(auth["original_full"]),
+             _scoped_tree_sha(derived), _scoped_tree_sha(auth.get("question_marks"))]
+    if any(p is None for p in parts) or not _scoped_hex(auth.get("scope_sha256")):
+        return None
+    manifest = {"schema": "scoped-authority-manifest-v1", "parts": parts,
+                "counts": [len(auth["frame_full"]), len(auth["original_full"]), len(derived)],
+                "caps": caps, "scope_sha256": auth["scope_sha256"]}
+    return _scoped_sha(manifest)
+
+
+def _scoped_plain(text):
+    """Trusted str/Obs normalized once to an exact plain str (content preserved), else None."""
+    if not isinstance(text, str):
+        return None
+    out = str.__str__(text)
+    return out if type(out) is str else None
+
+
+def _scoped_text(x):
+    """Exact plain str or trusted Obs (str-backed) detached via str.__str__, else None (no user __str__)."""
+    if type(x) is str:
+        return str.__str__(x)
+    if type(x) is Obs and isinstance(x, str):
+        out = str.__str__(x)
+        return out if type(out) is str else None
+    return None
+
+
+def _scoped_wire(value):
+    """(True, detached string-normalized copy) of exact plain JSON, else (False, None).
+
+    Only exact dict/list containers and None/bool/int/finite float primitives (types preserved);
+    only plain str or trusted Obs strings are normalized; dict keys must be strings, collisions
+    rejected. Tuples, custom objects and unknown str subclasses are rejected. Bounded depth 12,
+    4096 items, 65536 canonical bytes (final strict UTF-8 canonical JSON length enforced).
+    """
+    state = [0, 0]
+
+    def walk(x, depth):
+        if depth > 12:
+            return False, None
+        state[0] += 1
+        if state[0] > 4096:
+            return False, None
+        t = type(x)
+        if x is None or t is bool or t is int:
+            out, size = x, len(repr(x))
+        elif t is float:
+            if x != x or x in (float("inf"), float("-inf")):
+                return False, None
+            out, size = x, len(repr(x))
+        elif t is dict:
+            out, size = {}, 2
+            for k, v in x.items():
+                key = _scoped_text(k)
+                if key is None or key in out:
+                    return False, None
+                ok, val = walk(v, depth + 1)
+                if not ok:
+                    return False, None
+                out[key] = val
+                size += len(key.encode("utf-8", "surrogatepass")) + 4
+        elif t is list:
+            out, size = [], 2
+            for v in x:
+                ok, val = walk(v, depth + 1)
+                if not ok:
+                    return False, None
+                out.append(val)
+                size += 1
+        else:
+            got = _scoped_text(x)
+            if got is None:
+                return False, None
+            out, size = got, len(got.encode("utf-8", "surrogatepass")) + 2
+        state[1] += size
+        if state[1] > 65536:
+            return False, None
+        return True, out
+
+    ok, detached = walk(value, 0)
+    if not ok:
+        return False, None
+    try:
+        data = json.dumps(
+            detached,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+    except (UnicodeEncodeError, ValueError, TypeError, RecursionError):
+        return False, None
+    if len(data) > 65536:
+        return False, None
+    return True, detached
+
+
+def _scoped_hex(v):
+    return type(v) is str and re.fullmatch(r"[0-9a-f]{64}", v) is not None
+
+
+def _scoped_compact_ok(r):
+    return (type(r) is dict and set(r) == {"index", "annotation_sha256", "source_ref_sha256"}
+            and type(r["index"]) is int and _scoped_hex(r["annotation_sha256"])
+            and _scoped_hex(r["source_ref_sha256"]))
+
+
+def _scoped_compact(full):
+    """Exact compact ref of one FULL native source ref, else None."""
+    if type(full) is not dict or type(full.get("index")) is not int or not _scoped_hex(full.get("annotation_sha256")):
+        return None
+    digest = _scoped_sha(full)
+    if digest is None:
+        return None
+    return {"index": full["index"], "annotation_sha256": full["annotation_sha256"], "source_ref_sha256": digest}
+
+
+def _scoped_resolve(pool, compact):
+    """Unique own-native FULL ref whose compact form equals `compact`, else None."""
+    if not _scoped_compact_ok(compact) or type(pool) is not list:
+        return None
+    hits = [full for full in pool if _scoped_native_eq(_scoped_compact(full), compact)]
+    return hits[0] if len(hits) == 1 else None
+
+
+def _scoped_scope(inflection, negation, clauses):
+    """Canonical normalized language scope {inflection, negation, clauses}, else None."""
+    if type(clauses) is not dict or type(negation) is not dict:
+        return None
+    sfx = clauses.get("candidate_suffixes", [])
+    marks = clauses.get("question_marks", [])
+    if type(sfx) is not list or type(marks) is not list:
+        return None
+    out = {"inflection": inflection, "negation": negation,
+           "clauses": {"candidate_suffixes": sfx, "question_marks": marks}}
+    if "condition_combinations" in clauses:
+        policy = _scoped_combo_policy(clauses["condition_combinations"])
+        if policy is None:
+            return None
+        out["clauses"]["condition_combinations"] = policy
+    return out
+
+
+def _scoped_run_and(program, guards):
+    """Run the authenticated AND program; (ok, value) with ok False on any refusal."""
+    from marco.reasoning import graph_vm
+    res = graph_vm.run(program, {"guards": guards})
+    if (type(res) is not dict or set(res) != {"schema", "status", "value", "used"}
+            or res["schema"] != "marco-graph-vm-result-v1" or res["status"] != "completed"
+            or type(res["used"]) is not int or not 0 <= res["used"] <= 4096
+            or not (res["value"] is None or type(res["value"]) is bool)):
+        return False, None
+    return True, res["value"]
+
+
+def _scoped_graph_and(projection, parser):
+    """(False, None): no program namespace anywhere; (True, None): fail closed; (True, program)."""
+    return _scoped_graph_program(projection, parser, "scoped-and")
+
+
+def _scoped_graph_program(projection, parser, name):
+    """Selected named program under validated native/held namespace; same contract as _scoped_graph_and."""
+    native = projection.get("data") if type(projection) is dict else None
+    held = getattr(parser, "data", None)
+    has_n = type(native) is dict and "graph_programs" in native
+    has_h = type(held) is dict and "graph_programs" in held
+    if not has_n and not has_h:
+        return False, None
+    if not (has_n and has_h):
+        return True, None
+    try:
+        from marco.reasoning import graph_vm
+        ns = native["graph_programs"]
+        if (type(ns) is not dict or not _scoped_native_eq(ns, held["graph_programs"])
+                or set(ns) != {"schema", "provenance", "entries"}
+                or ns["schema"] != "marco-selected-graph-programs-v1"
+                or type(ns["provenance"]) is not dict or type(ns["entries"]) is not dict
+                or not 1 <= len(ns["entries"]) <= 16
+                or not _scoped_native_eq(ns["provenance"], projection.get("provenance"))):
+            return True, None
+        for key in ("graph_id", "root_id", "effective_graph_sha256", "view_key", "base_origin",
+                    "source", "nodes", "edges"):
+            if key not in ns["provenance"]:
+                return True, None
+        for entry_name, entry in ns["entries"].items():
+            if type(entry_name) is not str or not entry_name or type(entry) is not dict:
+                return True, None
+            ref = entry.get("reference")
+            legacy = (type(ref) is dict and set(ref) == {"member_path", "sha256", "schema"}
+                      and type(ref["schema"]) is str and ref["schema"] == "marco-graph-vm-program-v1")
+            bundled = (type(ref) is dict and set(ref) == {"member_path", "sha256", "schema", "entry_name"}
+                       and type(ref["schema"]) is str and ref["schema"] == "marco-graph-vm-program-bundle-v1"
+                       and type(ref["entry_name"]) is str and ref["entry_name"] == entry_name)
+            if (set(entry) != {"reference", "program", "program_sha256"} or not (legacy or bundled)
+                    or type(ref["member_path"]) is not str or type(ref["sha256"]) is not str
+                    or not _scoped_hex(ref["sha256"])):
+                return True, None
+            if (not _scoped_native_eq(graph_vm.validate_program(entry["program"]), entry["program"])
+                    or not _scoped_hex(entry["program_sha256"])
+                    or entry["program_sha256"] != _scoped_sha(entry["program"])):
+                return True, None
+        chosen = ns["entries"].get(name) if type(name) is str else None
+        if chosen is None:
+            return True, None
+        return True, chosen["program"]
+    except (ValueError, TypeError, KeyError):
+        return True, None
+
+
+def _scoped_combo_policy(raw):
+    """Exact detached selected-condition-combinations-v1 policy, else None."""
+    if (type(raw) is not dict
+            or set(raw) != {"schema", "program", "max_guards", "negative_guards", "any_connectors"}
+            or type(raw["schema"]) is not str or raw["schema"] != "selected-condition-combinations-v1"
+            or type(raw["program"]) is not str or raw["program"] != "scoped-conditions"
+            or type(raw["max_guards"]) is not int or raw["max_guards"] != 2
+            or raw["negative_guards"] is not True):
+        return None
+    conns = raw["any_connectors"]
+    if type(conns) is not list or not 1 <= len(conns) <= 4:
+        return None
+    for c in conns:
+        if type(c) is not str or not c or c.strip() != c or len(c) > 16:
+            return None
+    if len(set(conns)) != len(conns):
+        return None
+    return {"schema": raw["schema"], "program": raw["program"], "max_guards": 2,
+            "negative_guards": True, "any_connectors": list(conns)}
+
+
+def _scoped_run(program, payload):
+    """Run one authenticated program on `payload`; (ok, value) with ok False on any refusal."""
+    from marco.reasoning import graph_vm
+    res = graph_vm.run(program, payload)
+    if (type(res) is not dict or set(res) != {"schema", "status", "value", "used"}
+            or res["schema"] != "marco-graph-vm-result-v1" or res["status"] != "completed"
+            or type(res["used"]) is not int or not 0 <= res["used"] <= 4096
+            or not (res["value"] is None or type(res["value"]) is bool)):
+        return False, None
+    return True, res["value"]
+
+
+def _scoped_negative_meaning(meaning, triple):
+    """Exact signed negative guard meaning {triple, polarity: False}, else None."""
+    if (type(meaning) is not dict or type(triple) is not list or len(triple) != 3
+            or set(meaning) != {"triple", "polarity"} or meaning["polarity"] is not False
+            or not _scoped_native_eq(meaning["triple"], list(triple))):
+        return None
+    return deepcopy(meaning)
+
+
+def _scoped_seps(auth):
+    """Declared own-native separators (same filter as admission), else []."""
+    frames = auth.get("frames") if type(auth) is dict else None
+    marks = auth.get("question_marks") if type(auth) is dict else None
+    qmarks = [m for m in marks if type(m) is str and m] if type(marks) is list else []
+    got = frames.get("separators") if type(frames) is dict else None
+    return ([m for m in got if type(m) is str and m.strip() and m.strip() == m and m not in qmarks]
+            if type(got) is list else [])
+
+
+def _scoped_guard_cert(parser, auth, cap, source, cond):
+    """Verified positive_guard or (new policy only) negative_guard certificate result, else None."""
+    if type(cond) is not dict or type(auth) is not dict:
+        return None
+    policy = auth.get("combinations")
+    if "combination" in cond and policy is None:
+        return None
+    triple = cond.get("triple")
+    cert = cond.get("source_certificate")
+    seen_w = cert.get("witness") if type(cert) is dict else None
+    wm = seen_w.get("meaning") if type(seen_w) is dict else None
+    pol = cond.get("polarity", True)
+    if pol is True:
+        meaning = _scoped_positive_meaning(wm, triple)
+        if meaning is None:
+            return None
+        return _scoped_cert(parser, auth, source, cert, "positive_guard", cap, meaning)
+    if pol is not False or "polarity" not in cond or policy is None:
+        return None
+    meaning = _scoped_negative_meaning(wm, triple)
+    ncap = _scoped_cap(auth, "negative_binary")
+    if meaning is None or ncap is None:
+        return None
+    norm = seen_w.get("normalization")
+    if (type(norm) is not dict or set(norm) != {"id", "canonical", "example_index", "polarity"}
+            or type(norm["id"]) is not str or norm["id"] != "declared-negation-v1"
+            or norm["polarity"] is not False or type(norm["example_index"]) is not int):
+        return None
+    got = _scoped_cert(parser, auth, source, cert, "negative_guard", cap, meaning)
+    if got is None or got["polarity"] is not False:
+        return None
+    if not any(_scoped_native_eq(cert["source_ref"], r) for r in ncap["basis"]["frame_refs"]):
+        return None
+    return got
+
+
+def _scoped_group(auth, conds, verified, text):
+    """Authenticated composition 'all'|'any' of ordered verified guards, else None."""
+    policy = auth.get("combinations") if type(auth) is dict else None
+    if (type(conds) is not list or type(verified) is not list or len(conds) != len(verified)
+            or not all(type(c) is dict for c in conds) or type(text) is not str):
+        return None
+    marked = ["combination" in c for c in conds]
+    if policy is None:
+        return None if any(marked) else "all"
+    if len(conds) == 1:
+        return None if marked[0] else "all"
+    if len(conds) != 2:
+        return None
+    (a_lo, a_hi), (b_lo, b_hi) = verified[0]["span"], verified[1]["span"]
+    if not a_hi <= b_lo:
+        return None
+    conns = policy["any_connectors"]
+    if not any(marked):
+        gap = text[a_hi:b_lo]
+        core = gap.strip()
+        if any(c in gap for c in conns) or (core != "" and core not in _scoped_seps(auth)):
+            return None
+        return "all"
+    if not all(marked):
+        return None
+    ok0, m = _scoped_wire(conds[0]["combination"])
+    ok1, w = _scoped_wire(conds[1]["combination"])
+    if (not ok0 or not ok1 or type(conds[0]["combination"]) is not dict
+            or type(conds[1]["combination"]) is not dict
+            or not _scoped_native_eq(m, w) or not _scoped_native_eq(w, m) or type(m) is not dict
+            or set(m) != {"schema", "operator", "source_span", "connector_span", "connector"}
+            or m["schema"] != "selected-condition-combination-v1" or m["operator"] != "any"
+            or type(m["connector"]) is not str or m["connector"] not in conns):
+        return None
+    ss, cs = m["source_span"], m["connector_span"]
+    for span in (ss, cs):
+        if type(span) is not list or len(span) != 2 or not all(type(v) is int for v in span):
+            return None
+    if ss != [a_lo, b_hi]:
+        return None
+    c_lo, c_hi = cs
+    if not a_hi <= c_lo < c_hi <= b_lo or text[c_lo:c_hi] != m["connector"]:
+        return None
+    seps = _scoped_seps(auth)
+    for chunk in (text[a_hi:c_lo], text[c_hi:b_lo]):
+        core = chunk.strip()
+        if core != "" and core not in seps:
+            return None
+    return "any"
+
+
+def _scoped_holds_conditions(parser, auth, scoped, verified, start, prior, projection, actual, evidence_out):
+    """New-policy signed/composite guard truth via the scoped-conditions program only, else None."""
+    if not 1 <= len(scoped) <= 2 or len(verified) != len(scoped):
+        return None
+    comp = _scoped_group(auth, scoped, verified, actual)
+    if comp is None:
+        return None
+    mode, prog = _scoped_graph_program(projection, parser, "scoped-conditions")
+    if not mode or prog is None:
+        return None
+    if any(c["evidence"]["end"] > start for c in scoped):
+        return None
+    collect = evidence_out if type(evidence_out) is dict and not evidence_out else None
+    state, _changes = current_facts(prior, parser.data.get("mutable_predicates", []),
+                                    parser.data.get("numeric_updates", {}))
+    rows, blocked = [], []
+    for at, cond in enumerate(scoped):
+        triple = list(cond["triple"])
+        found = {row.get("polarity", True) for row in state
+                 if isinstance(row, dict) and row.get("modality", "asserted") == "asserted"
+                 and isinstance(row.get("triple"), (list, tuple)) and list(row["triple"]) == triple}
+        pol = verified[at]["polarity"]
+        if type(pol) is not bool:
+            return None
+        rows.append({"positive": any(p is True for p in found),
+                     "negative": any(p is False for p in found), "polarity": pol})
+        if (collect is not None and all(type(p) is bool for p in found)
+                and (not found or found == {True, False})):
+            ref = _scoped_compact(verified[at].get("source_ref"))
+            if _scoped_compact_ok(ref):
+                both = found == {True, False}
+                blocked.append((0 if both else 1, verified[at]["span"][0], at, both, ref))
+    ok, value = _scoped_run(prog, {"composition": comp, "guards": rows})
+    if not ok:
+        return None
+    if value is None and collect is not None and blocked:
+        _k, _s, _a, both, ref = min(blocked, key=lambda b: (b[0], b[1], b[2]))
+        collect.update({"outcome": "conflicting_evidence" if both else "missing_premise",
+                        "guard_ref": ref, "positive_support": both, "negative_support": both})
+    return value
+
+
+def _scoped_authority(projection, parser):
+    """Own-native selected authority bound to the held parser (boundary, scope, refs), else None."""
+    native = projection.get("data") if type(projection) is dict else None
+    pack = projection.get("language_pack") if type(projection) is dict else None
+    held = getattr(parser, "data", None)
+    ppack = getattr(parser, "language_pack", None)
+    if type(native) is not dict or type(held) is not dict or type(pack) is not dict or type(ppack) is not dict:
+        return None
+    frames = native.get("predicate_frames")
+    if (type(frames) is not dict or type(frames.get("frames")) is not list
+            or not _scoped_native_eq(frames, held.get("predicate_frames"))
+            or "semantic_capabilities" not in native
+            or not _scoped_native_eq(native["semantic_capabilities"], held.get("semantic_capabilities"))):
+        return None
+
+    def negation(src):
+        raw = src.get("negation")
+        return {} if raw is None else raw
+
+    mine = _scoped_scope(getattr(parser, "inflection_grammar", None), negation(ppack),
+                         getattr(parser, "clause_grammar", None))
+    own = _scoped_scope(pack.get("inflection"), negation(pack), pack.get("clauses"))
+    scope_sha = _scoped_sha(mine) if mine is not None else None
+    if scope_sha is None or own is None or not _scoped_native_eq(mine, own):
+        return None
+    frame_full = [row["source_ref"] for row in frames["frames"]
+                  if type(row) is dict and type(row.get("source_ref")) is dict]
+    originals = projection.get("query_sources")
+    derived = native.get("semantic_query_sources", [])
+    if type(originals) is not list or type(derived) is not list or len(derived) > 4:
+        return None
+    if not all(type(r) is dict for r in derived):
+        return None
+    sizes = [_scoped_size(r) for r in derived]
+    if None in sizes or any(s > 65536 for s in sizes) or sum(sizes) > 262144:
+        return None
+    original_full = [r.get("source_ref", r) for r in originals if type(r) is dict]
+    return {"data": native, "frames": frames, "scope_sha256": scope_sha,
+            "question_marks": mine["clauses"]["question_marks"], "frame_full": frame_full,
+            "combinations": deepcopy(mine["clauses"].get("condition_combinations")),
+            "original_full": [r for r in original_full if type(r) is dict], "derived_full": derived}
+
+
+def _scoped_cap(auth, name):
+    """One live selected capability under own-native V4 compact/basis authority, else None."""
+    data = auth.get("data") if type(auth) is dict else None
+    caps = data.get("semantic_capabilities") if type(data) is dict else None
+    schema = {"negative_binary": "selected-negative-binary-v1",
+              "conditional_binary": "selected-conditional-binary-v1"}.get(name)
+    if (type(caps) is not dict or schema is None
+            or caps.get("schema") != "selected-binary-semantic-capabilities-v1"
+            or not set(caps) <= {"schema", "negative_binary", "conditional_binary"} or len(caps) < 2):
+        return None
+    cap = caps.get(name)
+    if type(cap) is not dict or set(cap) != {"schema", "basis", "capability_sha256", "query_refs"}:
+        return None
+    basis, refs, digest = cap["basis"], cap["query_refs"], cap["capability_sha256"]
+    if (cap["schema"] != schema or type(basis) is not dict
+            or set(basis) != {"schema", "grammar_reference", "frame_refs", "original_query_refs",
+                              "normalized_language_scope_sha256"}
+            or basis["normalized_language_scope_sha256"] != auth["scope_sha256"]
+            or type(basis["frame_refs"]) is not list or not 1 <= len(basis["frame_refs"]) <= 16
+            or type(basis["original_query_refs"]) is not list or type(refs) is not list
+            or not all(_scoped_compact_ok(r) for r in basis["frame_refs"] + basis["original_query_refs"] + refs)
+            or not _scoped_hex(digest)):
+        return None
+    if name == "conditional_binary" and (basis["original_query_refs"] or refs):
+        return None
+    if name == "negative_binary" and (len(refs) > 2 or len(refs) != len(basis["original_query_refs"])):
+        return None
+    for group in (basis["frame_refs"], basis["original_query_refs"], refs):
+        if len({_scoped_canon(r) for r in group}) != len(group):
+            return None
+    queries = basis["original_query_refs"] + refs
+    if len({r["index"] for r in queries}) != len(queries):
+        return None
+    if _scoped_sha(basis) != digest or _scoped_size(cap) is None or _scoped_size(cap) > 65536:
+        return None
+    if any(_scoped_resolve(auth["frame_full"], r) is None for r in basis["frame_refs"]):
+        return None
+    if any(_scoped_resolve(auth["original_full"], r) is None for r in basis["original_query_refs"]):
+        return None
+    for r in refs:
+        full = _scoped_resolve(auth["derived_full"], r)
+        derived = full.get("negative_derivation") if full is not None else None
+        if (type(derived) is not dict
+                or set(derived) != {"original_query_ref", "grammar_reference", "capability_sha256"}
+                or derived["capability_sha256"] != digest
+                or not _scoped_native_eq(derived["grammar_reference"], basis["grammar_reference"])
+                or not _scoped_compact_ok(derived["original_query_ref"])
+                or not any(_scoped_native_eq(derived["original_query_ref"], o)
+                           for o in basis["original_query_refs"])):
+            return None
+    return cap
+
+
+def _scoped_cert(parser, auth, source, cert, kind, cap, meaning):
+    """Detached result (FULL own-native ref) for one exact current-source certificate of `kind`, else None.
+
+    `meaning` is the exact type-sensitive witness meaning built from the full signed current row.
+    """
+    import hashlib
+    source = _scoped_plain(source)
+    if (source is None or type(auth) is not dict or type(cert) is not dict or type(cap) is not dict
+            or type(meaning) is not dict
+            or set(cert) != {"schema", "kind", "capability_sha256", "source_sha256", "source_span",
+                             "compiler_index", "source_ref", "witness", "meaning"}
+            or cert["schema"] != "selected-binary-source-certificate-v1" or cert["kind"] != kind
+            or type(cert["capability_sha256"]) is not str
+            or cert["capability_sha256"] != cap.get("capability_sha256")):
+        return None
+    try:
+        own = hashlib.sha256(source.encode("utf-8")).hexdigest()
+    except UnicodeEncodeError:
+        return None
+    size = _scoped_size(cert)
+    span, ref, witness, index = cert["source_span"], cert["source_ref"], cert["witness"], cert["compiler_index"]
+    if (size is None or size > 65536 or cert["source_sha256"] != own or type(span) is not list or len(span) != 2
+            or not all(type(v) is int for v in span) or not 0 <= span[0] < span[1] <= len(source)
+            or type(index) is not int or not _scoped_compact_ok(ref) or ref["index"] != index
+            or type(witness) is not dict or len(witness) != 11 or type(witness.get("source")) is not str
+            or witness["source"] != source[span[0]:span[1]]
+            or not _scoped_native_eq(cert["meaning"], meaning)
+            or not _scoped_native_eq(witness.get("meaning"), meaning)):
+        return None
+    if kind == "negative_query":
+        rows = meaning.get("query")
+        if set(meaning) != {"query"} or type(rows) is not list or len(rows) != 1 or type(rows[0]) is not dict:
+            return None
+        triple, pool, member = rows[0].get("triple"), auth["derived_full"], cap["query_refs"]
+    else:
+        triple, pool, member = meaning.get("triple"), auth["frame_full"], cap["basis"]["frame_refs"]
+    full = _scoped_resolve(pool, ref)
+    if full is None or not any(_scoped_native_eq(ref, r) for r in member):
+        return None
+    verify = getattr(parser, "verify_selected_binary_certificate", None)
+    witnessed = getattr(parser, "verify_selected_binary_witness", None)
+    if not callable(verify) or not callable(witnessed):
+        return None
+    got = verify(source, cert)
+    if (type(got) is not dict or set(got) != {"kind", "triple", "polarity", "compiler_index", "source_ref"}
+            or got["kind"] != kind or type(got["compiler_index"]) is not int or got["compiler_index"] != index
+            or not _scoped_native_eq(got["source_ref"], full)
+            or not _scoped_native_eq(_scoped_compact(got["source_ref"]), ref)
+            or type(got["triple"]) is not list or len(got["triple"]) != 3
+            or not all(type(p) is str and p for p in got["triple"]) or type(got["polarity"]) is not bool
+            or got["polarity"] is not (kind == "positive_guard")
+            or not _scoped_native_eq(got["triple"], triple)):
+        return None
+    seen = witnessed(witness["source"], witness, kind)
+    if (type(seen) is not dict or set(seen) != {"source_ref", "compiler_index", "meaning", "capability_sha256"}
+            or type(seen["compiler_index"]) is not int or seen["compiler_index"] != index
+            or not _scoped_native_eq(seen["source_ref"], full)
+            or not _scoped_native_eq(seen["meaning"], cert["meaning"])
+            or seen["capability_sha256"] != cap["capability_sha256"]):
+        return None
+    return {"kind": kind, "triple": list(got["triple"]), "polarity": got["polarity"], "compiler_index": index,
+            "source_ref": deepcopy(full), "span": list(span)}
+
+
+def _scoped_guard(parser, auth, cap, cond, actual_source):
+    """Detached positive_guard result for one own selected condition, else None. Truth-independent.
+
+    The condition's source_original must exactly equal the actual replayed source content."""
+    if type(cond) is not dict:
+        return None
+    actual = _scoped_text(actual_source)
+    if actual is None or _scoped_text(cond.get("source_original")) != actual:
+        return None
+    triple, ev = cond.get("triple"), cond.get("evidence")
+    source = _scoped_plain(cond.get("source_original"))
+    if (type(triple) is not list or len(triple) != 3
+            or source is None or type(ev) is not dict):
+        return None
+    got = _scoped_guard_cert(parser, auth, cap, source, cond)
+    if (got is None or type(ev.get("start")) is not int or type(ev.get("end")) is not int
+            or [ev["start"], ev["end"]] != got["span"] or type(ev.get("text")) is not str
+            or ev["text"] != source[ev["start"]:ev["end"]]):
+        return None
+    return got
+
+
+def _scoped_guard_ids(parser, conds, projection, actual_source):
+    """ids of conditions when ALL are independently authenticated own positive guards, else empty."""
+    if type(conds) is not list:
+        return frozenset()
+    scoped = [c for c in conds if isinstance(c, dict)
+              and ("source_certificate" in c or "source_original" in c)]
+    if not scoped or len(scoped) != len(conds) or len(scoped) > 16:
+        return frozenset()
+    actual = _scoped_text(actual_source)
+    if actual is None or any(_scoped_text(c.get("source_original")) != actual for c in scoped):
+        return frozenset()
+    auth = _scoped_authority(projection, parser)
+    cap = _scoped_cap(auth, "conditional_binary") if auth is not None else None
+    if cap is None:
+        return frozenset()
+    got = [_scoped_guard(parser, auth, cap, c, actual) for c in scoped]
+    if any(g is None for g in got):
+        return frozenset()
+    if (auth.get("combinations") is not None
+            or any("combination" in c or c.get("polarity", True) is not True for c in scoped)):
+        if len(scoped) > 2 or _scoped_group(auth, scoped, got, actual) is None:
+            return frozenset()
+    return frozenset(id(c) for c in scoped)
+
+
+def realize(meaning, intent, language) -> str:
+    from marco.language import realize as _realize
+    return _realize(meaning, intent, language)
+
+
+from marco.reasoning import readings as _readings
+from marco.reasoning.readings import Obs, ReadingUnavailable, TENTATIVE
 
 
 # ---------------------------------------------------------------------------
@@ -27,7 +740,8 @@ from marco.language import realize
 # gives (a test reads every reason literal in it); a reason missing here is emitted as parser with
 # ``gap_declared`` false, so the table can be completed from the ledger.
 GAP_CLASSES = {
-    "routing": ("capacity", "graph_limit", "join_limit", "below_threshold", "no_graph_selected"),
+    "routing": ("capacity", "graph_limit", "join_limit", "below_threshold", "no_graph_selected",
+                "language_graph_capability_gap"),
     "lexical": ("unknown_word",),
     "concept": ("unreadable_definition", "conflicting_definition"),
     "relation": ("cause_effect_missing_or_ambiguous", "time_unresolved"),
@@ -224,6 +938,11 @@ class ReasoningContext:
 
     def __init__(self, max_turns=128, *, model=None, companions=(), language=None, effort=None):
         self.effort = self._declared_effort(effort)
+        # One authoritative, bounded ledger: observation slot -> every reading version, one active.
+        # ``parser.chosen_readings`` / ``parser.chosen_programs`` are views of it, keyed by identity.
+        self.max_turns = max_turns
+        self._obs, self.reading_ledger, self._next_observation = [], {}, 1
+        self.parser_base_sha256, self.installed_memory_head = None, None
         self.observations = []
         self.corrections = []
         # Allocation is independent of parsed role values: correcting a role
@@ -394,7 +1113,12 @@ class ReasoningContext:
             # 가장 늦은 미확인 시점으로 남겨, 그보다 앞의 못 박은 값을 다시
             # 확정하지 않는다.
             latest = max(item["at"] for item in self.unread_guard)
-            self.unread_guard = [{"text": self._parser().data["ledger_labels"]["overflow"],
+            graph_text = None
+            from pack_model import PackModel
+            if type(self.model) is PackModel and self.model.language_projection is not None:
+                graph_text = next((item["text"] for item in self.unread_guard if item["at"] == latest), None)
+            self.unread_guard = [{"text": graph_text if graph_text is not None
+                                  else self._parser().data["ledger_labels"]["overflow"],
                                   "at": latest, "까닭": "한도", "범용": True}] + newest
 
     def _forget_heard(self, heard):
@@ -580,7 +1304,8 @@ class ReasoningContext:
         try:
             table.update(readings)
             facts, _d, _p, _r = self._replay(parser, self.observations + [text], self.fills,
-                                             deepcopy(self.event_ids) if self.event_ids is not None else None)
+                                             deepcopy(self.event_ids) if self.event_ids is not None else None,
+                                             projection=getattr(self.model, "language_projection", None))
             facts = self._unit_keys(parser, self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", [])))
             _state, changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
         except ValueError as exc:
@@ -606,8 +1331,8 @@ class ReasoningContext:
         for i in turns:
             if not (isinstance(i, int) and 0 <= i < len(self.observations)):
                 continue
-            source = self.observations[i].strip()
-            reading = deepcopy(self._read_source(parser, source, events=True, verbs=verbs))
+            source = self.observations[i].oid
+            reading = deepcopy(self._read_source(parser, self.observations[i], events=True, verbs=verbs))
             if not reading or not any(isinstance(f.get("triple"), list) and f["triple"][0] == old
                                       for f in reading.get("facts", [])):
                 return None
@@ -680,8 +1405,7 @@ class ReasoningContext:
             winner, deciding, _ranking = self._rank_candidates(survivors, kind="other_key")
             if winner is None:
                 continue
-            parser.__dict__.setdefault("chosen_readings", {}).update(winner["readings"])
-            self._replay_cache = None
+            self._revise_readings(winner["readings"], "referent_resolution")
             self.__dict__.setdefault("_trace_buffer", []).append(("hypothesis_verified", {"checks": [{
                 "ok": True, "reason": "other_key", "kind": winner["kind"], "from": winner["from"],
                 "to": winner["to"], "decided_by": deciding, "effort": self.effort}]}))
@@ -891,8 +1615,9 @@ class ReasoningContext:
 
     def _read_wrong_thing(self, parser, text, current, verbs, knowledge_path):
         """G7-S experiment 4, effort 2 (amendment A1): a statement read completely whose reading the state
-        refuses, with a word in its thing slot that is no thing this conversation counts (Nora gave Eli three
-        blorp., Dr. Lambert gave three quix to Ms. Daniels.): the word may be the thing, or not. Candidates:
+        refuses, with a word in its thing slot that is a word of a thing this conversation counts or a declared
+        counter (Nora gave Eli three bundles. for bundles of herbs): the word may be the thing, or not. A word
+        that is neither (an unfamiliar thing said) is never taken out: the statement stays unread. Candidates:
         the reading as it is (the word is a new thing), and the reading with the word taken out of every
         holder's key, whose thing then comes from the conversation (``_unsaid_thing_candidates``: each thing a
         named holder counts, the thing of the statement before) or from the holder's one key (the leading
@@ -930,20 +1655,14 @@ class ReasoningContext:
         word = split[0][-size:] if size else []
         if not word or word[-1] in things or any(s in keys for s in subjects):
             return None
-        # A word of a thing this conversation counts, or a declared counter (three bundles for bundles of
-        # herbs), may be no thing of its own. Any other word may be taken out only when it cannot be a counted
-        # noun: after an amount other than one it is no plural the pack's number rules (명사수) could make.
-        # A language without them, or an amount of one, cannot tell, and the word stays the thing: a thing
-        # never counted before is said, and taking it out would answer about another (three apples).
+        # Only a word of a thing this conversation counts, or a declared counter (three bundles for bundles of
+        # herbs), may be no thing of its own. Any other word is a thing that was said and never counted: it
+        # stays the thing, whatever its shape (singular or plural), and the statement is not read without it,
+        # because that would move the count of another thing.
         counted_words = {w for key in keys for w in key.split()[1:]} | set(
             ((parser.language_pack or {}).get("counters") or {}).get("units") or [])
         if not all(w in counted_words for w in word):
-            number = getattr(parser, "noun_number", None) or {}
-            amounts = {str(f["triple"][2]) for f in facts_now}
-            last = word[-1].lower()
-            if not number.get("plural") or amounts == {str(number.get("count_slot_value", 1))} \
-                    or last.endswith("s") or last in {str(v).lower() for v in (number.get("irregular") or {}).values()}:
-                return None
+            return None
         part = (getattr(parser, "ellipsis", None) or {}).get("part_reference")
         stripped = deepcopy(current)
         for fact in stripped.get("facts", []):
@@ -1059,7 +1778,8 @@ class ReasoningContext:
         played with it; None, and nothing kept, when there is no winner or the turn is then not recorded."""
         if winner is None:
             return None
-        said = str(text).strip()
+        text = _readings.tentative(text)
+        said = text.oid
         parser.__dict__.setdefault("chosen_readings", {})[said] = winner["parsed"]
         self._replay_cache = None
         self._rereading = True
@@ -1094,18 +1814,91 @@ class ReasoningContext:
                 "condition_unknown": "unmeasured_condition"}.get(까닭, "unresolved")
 
     @staticmethod
-    def _holds(parser, 조건들, start, 앞선사실):
+    def _holds(parser, 조건들, start, 앞선사실, projection=None, actual_source=None, *, evidence_out=None):
         """이 자리에 걸린 조건이 참인가. 참/거짓/**못 잼(None)** 을 가른다.
 
         견줄 성질도 연산도 공리가 선언한다 — 여기는 어느 성질인지 모른 채 잰다.
-        그래서 자리나 관계를 견주게 되어도 선언이 한 줄 늘 뿐 이 셈은 안 는다.
+        **차례를 지켜 앞선 사실까지만** 접어서 본다. 못 재면 거짓이라고 하지 않는다.
 
-        **차례를 지켜 앞선 사실까지만** 접어서 본다. 뒤에 올 일로 앞의 조건을
-        재면 아직 안 일어난 일이 조건을 바꾸게 된다.
-
-        못 재면 거짓이라고 하지 않는다. 기준이 없다는 것과 조건이 안 맞는다는
-        것은 다르다 — 못 잰 것을 거짓으로 접으면 옛 값이 그대로 확정된다.
+        Selected scoped conditions are fully re-verified against the own native projection
+        before any evidence filter; without that authority they fail closed (None), never vacuous True.
         """
+        scoped = [c for c in 조건들 if isinstance(c, dict)
+                  and ("source_certificate" in c or "source_original" in c)]
+        if scoped:
+            if len(scoped) != len(조건들) or len(scoped) > 16 or type(start) is not int or start < 0:
+                return None
+            actual = _scoped_text(actual_source)
+            if actual is None:
+                return None
+            for 조건 in scoped:
+                if _scoped_text(조건.get("source_original")) != actual:
+                    return None
+            auth = _scoped_authority(projection, parser)
+            cap = _scoped_cap(auth, "conditional_binary") if auth is not None else None
+            if cap is None:
+                return None
+            verified = []
+            for 조건 in scoped:
+                got = _scoped_guard(parser, auth, cap, 조건, actual)
+                if got is None:
+                    return None
+                verified.append(got)
+            if auth.get("combinations") is not None:
+                return _scoped_holds_conditions(parser, auth, scoped, verified, start, 앞선사실,
+                                                projection, actual, evidence_out)
+            mode, prog = _scoped_graph_and(projection, parser)
+            if mode and prog is None:
+                return None
+            collect = (evidence_out if type(evidence_out) is dict and not evidence_out and 1 <= len(scoped) <= 2
+                       else None)
+            막힘 = []
+            지지 = []
+            걸린것 = [c for c in scoped if c["evidence"]["end"] <= start]
+            if not 걸린것 and not mode:
+                return True
+            if 걸린것:
+                상태, _변화 = current_facts(앞선사실, parser.data.get("mutable_predicates", []),
+                                         parser.data.get("numeric_updates", {}))
+            else:
+                상태 = []
+            결과 = []
+            for 조건 in 걸린것:
+                triple = list(조건["triple"])
+                found = {row.get("polarity", True) for row in 상태
+                         if isinstance(row, dict) and row.get("modality", "asserted") == "asserted"
+                         and isinstance(row.get("triple"), (list, tuple)) and list(row["triple"]) == triple}
+                if not mode:
+                    결과.append(True if found == {True} else False if found == {False} else None)
+                지지.append({"positive": any(p is True for p in found),
+                           "negative": any(p is False for p in found)})
+                if (collect is not None and len(걸린것) == len(scoped) and all(type(p) is bool for p in found)
+                        and (not found or found == {True, False})):
+                    at = next(i for i, c in enumerate(scoped) if c is 조건)
+                    ref = _scoped_compact(verified[at].get("source_ref"))
+                    if _scoped_compact_ok(ref):
+                        both = found == {True, False}
+                        막힘.append((0 if both else 1, verified[at]["span"][0], at, both, ref))
+            if mode:
+                ok, value = _scoped_run_and(prog, 지지)
+                if not ok:
+                    return None
+                if value is None and collect is not None and 막힘:
+                    _k, _s, _a, both, ref = min(막힘, key=lambda b: (b[0], b[1], b[2]))
+                    collect.update({"outcome": "conflicting_evidence" if both else "missing_premise",
+                                    "guard_ref": ref, "positive_support": both,
+                                    "negative_support": both})
+                return value
+            if False in 결과:
+                return False
+            if None in 결과:
+                if collect is not None and 막힘:
+                    _k, _s, _a, both, ref = min(막힘, key=lambda b: (b[0], b[1], b[2]))
+                    collect.update({"outcome": "conflicting_evidence" if both else "missing_premise",
+                                    "guard_ref": ref, "positive_support": both,
+                                    "negative_support": both})
+                return None
+            return True
         걸린것 = [c for c in 조건들 if c["evidence"].get("end", 0) <= start]
         if not 걸린것:
             return True
@@ -1330,18 +2123,362 @@ class ReasoningContext:
                                      else self.model.parser())
             # the reader's own candidates (a declared question frame) are read from effort 1 on
             self._parser_instance.effort = self.effort
+            self._grammar_cache = (self._parser_instance, _readings.grammar_fingerprint(self._parser_instance))
         return self._parser_instance
+
+    def _grammar(self):
+        """Fingerprint of the installed parser; a wrapper that installs a parser sets ``_grammar_cache``."""
+        parser = self._parser()
+        cached = getattr(self, "_grammar_cache", None)
+        if cached is None or cached[0] is not parser:
+            cached = self._grammar_cache = (parser, _readings.grammar_fingerprint(parser))
+        return cached[1]
+
+    # --- observation identity and the reading ledger ------------------------------------
+
+    @property
+    def observations(self):
+        return self._obs
+
+    @observations.setter
+    def observations(self, items):
+        self._commit_observations(list(items))
+
+    @property
+    def observation_ids(self):
+        return [source.oid for source in self._obs]
+
+    def _active_record(self, source):
+        entry = self.reading_ledger.get(_readings.oid_of(source))
+        return entry["versions"][entry["active"] - 1] if entry else None
+
+    @staticmethod
+    def _marked_carrier(parsed):
+        """Require the one non-executing carrier shape of a marked parsed reading; raise otherwise.
+
+        A marked reading may only be the ordinary parser container (its eleven fixed scope keys plus
+        an optional ``entry_selection`` dict) whose only content is exactly one ``사건`` dict that
+        carries BOTH ``structural_reading`` and ``selected_action_binding`` dicts, a read
+        unknown-action reading, no tail, no truncation, no raw executable/marker key, and whose raw
+        ``자리후보``/``자리`` correspond exactly to the reader's ``role_candidates`` in order.  Every
+        original candidate, binding, span and binding declaration is preserved untouched.  Any other
+        marked shape fails before full replay so the ledger can never hide an effect of a malformed
+        carrier.  ``entry_selection`` is origin metadata only, never a semantic assertion.
+        """
+        bad = ReadingUnavailable("structural_archive_invalid")
+        if type(parsed) is not dict:
+            raise bad
+        if ReasoningContext._unread_json(parsed, 65536) is None:
+            raise bad
+        empty_lists = ("facts", "정의", "가정사건", "조건", "가정", "원인", "이유물음", "수선", "사건정정")
+        required = set(empty_lists) | {"query", "사건"}
+        keys = set(parsed)
+        if keys != required and keys != required | {"entry_selection"}:
+            raise bad
+        for key in empty_lists:
+            if type(parsed[key]) is not list or parsed[key] != []:
+                raise bad
+        if parsed["query"] is not None:
+            raise bad
+        if "entry_selection" in parsed and type(parsed["entry_selection"]) is not dict:
+            raise bad
+        events = parsed["사건"]
+        if type(events) is not list or len(events) != 1 or type(events[0]) is not dict:
+            raise bad
+        event = events[0]
+        for marker in ("실행", "program", "negative", "hypothetical", "hypothesis"):
+            if marker in event:
+                raise bad
+        if "polarity" in event and event["polarity"] is not True:
+            raise bad
+        if "modality" in event and (type(event["modality"]) is not str
+                                   or event["modality"] != "asserted"):
+            raise bad
+        reading = event.get("structural_reading")
+        binding = event.get("selected_action_binding")
+        if type(reading) is not dict or type(binding) is not dict:
+            raise bad
+        if (reading.get("schema") != "unknown-action-reading-v1" or reading.get("status") != "read"
+                or reading.get("search_complete") is not True or reading.get("truncated") is not False
+                or type(reading.get("gaps")) is not list or reading.get("gaps") != []):
+            raise bad
+        verb = event.get("verb")
+        unknown = reading.get("unknown_text")
+        if type(verb) is not str or not verb or type(unknown) is not str or verb != unknown:
+            raise bad
+        tail = event.get("꼬리")
+        if type(tail) is not str or tail != "" or event.get("잘림") is not False:
+            raise bad
+        candidates = reading.get("role_candidates")
+        raw_maps = event.get("자리후보")
+        raw_shared = event.get("자리")
+        if (type(candidates) is not list or not candidates or type(raw_maps) is not list
+                or len(raw_maps) != len(candidates) or type(raw_shared) is not dict):
+            raise bad
+        maps = []
+        for candidate, raw_map in zip(candidates, raw_maps):
+            if type(candidate) is not dict or type(raw_map) is not dict:
+                raise bad
+            bindings = candidate.get("bindings")
+            if type(bindings) is not list or not bindings:
+                raise bad
+            row = {}
+            for item in bindings:
+                if type(item) is not dict:
+                    raise bad
+                slot, value = item.get("slot"), item.get("value")
+                if type(slot) is not str or not slot or type(value) is not str or not value:
+                    raise bad
+                if slot in row:
+                    raise bad
+                row[slot] = value
+            if not ReasoningContext._unread_native_equal(row, raw_map):
+                raise bad
+            maps.append(row)
+        shared = {slot: value for slot, value in maps[0].items()
+                  if all(slot in other and other[slot] == value for other in maps[1:])}
+        if not ReasoningContext._unread_native_equal(shared, raw_shared):
+            raise bad
+        return parsed
+
+    @staticmethod
+    def _structural_marked(item):
+        """True when a parsed reading or event carries any structural marker (presence only)."""
+        if not isinstance(item, dict):
+            return False
+        if "structural_reading" in item or "selected_action_binding" in item:
+            return True
+        run = item.get("실행")
+        if isinstance(run, dict) and ("structural_reading" in run or "selected_action_binding" in run):
+            return True
+        events = item.get("사건")
+        return isinstance(events, list) and any(
+            isinstance(event, dict) and ReasoningContext._structural_marked(event) for event in events)
+
+    def _marked_archive(self, source):
+        """The actual active archived reading of ``source`` when it carries a structural marker.
+
+        None when the source is not an archived observation or its active reading has no marker.
+        A marker found on a record whose identity does not check out fails honestly.
+        """
+        oid = _readings.oid_of(source)
+        if not isinstance(source, Obs) or type(oid) is not str or not oid.strip() or oid == TENTATIVE:
+            return None
+        held = self.reading_ledger.get(oid)
+        if type(held) is not dict:
+            return None
+        try:
+            record = self._active_record(source)
+        except (KeyError, IndexError, TypeError):
+            record = None
+        if type(record) is not dict:
+            versions = held.get("versions")
+            if isinstance(versions, list) and any(
+                    type(version) is dict and self._structural_marked(version.get("parsed"))
+                    for version in versions):
+                raise ReadingUnavailable("structural_archive_invalid")
+            return None
+        parsed = record.get("parsed")
+        if not self._structural_marked(parsed):
+            return None
+        revision = record.get("reading_revision")
+        archived = record.get("source")
+        if (type(revision) is not int or revision < 1
+                or type(held.get("active")) is not int or revision != held.get("active")
+                or type(getattr(source, "rev", None)) is not int or source.rev != revision
+                or type(record.get("observation_id")) is not str or record.get("observation_id") != oid
+                or record.get("unavailable") is not False or type(archived) is not str
+                or archived != str(source)):
+            raise ReadingUnavailable("structural_archive_invalid")
+        self._marked_carrier(parsed)
+        return {"source": source, "record": record, "parsed": parsed}
+
+    def _marked_archive_events(self):
+        """Raw marked events of the actual active archives of this conversation's observations."""
+        out = []
+        for index, source in enumerate(self.observations):
+            found = self._marked_archive(source)
+            if found is None:
+                continue
+            for ordinal, raw in enumerate(found["parsed"]["사건"]):
+                if type(raw) is not dict:
+                    raise ReadingUnavailable("structural_archive_invalid")
+                if self._structural_marked(raw):
+                    out.append({"index": index, "ordinal": ordinal, "raw": raw,
+                                "parsed": found["parsed"], "record": found["record"]})
+        return out
+
+    def _marker_sources(self, parser, sources):
+        """Refusal gate only: any supplied source whose archive, staged or chosen reading carries a marker.
+
+        Every supplied source is validated (no early return).  A committed marked source requires the
+        installed chosen view to exist and equal its actual archived parsed reading exactly; a proper
+        ``correct()`` trial (old actual observation, rev == active + 1, reason ``correction``, explicit
+        staged reading) requires the chosen view to equal that staged reading.  Any missing or drifted
+        view fails honestly; nothing here repairs, rewrites or allocates.
+        """
+        bad = ReadingUnavailable("structural_archive_invalid")
+        chosen = getattr(parser, "chosen_readings", None) or {}
+        marked = False
+        for source in sources:
+            staged = getattr(source, "reading", None)
+            oid = _readings.oid_of(source)
+            view = chosen.get(oid) if isinstance(chosen, dict) and oid is not None else None
+            staged_marked = self._structural_marked(staged)
+            view_marked = self._structural_marked(view)
+            if staged_marked:
+                self._marked_carrier(staged)
+            if view_marked:
+                self._marked_carrier(view)
+            held = (self.reading_ledger.get(oid)
+                    if isinstance(source, Obs) and type(oid) is str and oid.strip() and oid != TENTATIVE
+                    else None)
+            if type(held) is not dict:
+                # staged/tentative or unarchived: refusal-only, no admission or provenance
+                marked = marked or staged_marked or view_marked
+                continue
+            active = held.get("active")
+            rev = getattr(source, "rev", None)
+            if (getattr(source, "reason", None) == "correction" and staged is not None
+                    and type(active) is int and type(rev) is int and rev == active + 1):
+                # separately authorized correct() trial: check the ACTUAL old observation, not the staged one
+                old = next((obs for obs in self.observations
+                            if isinstance(obs, Obs) and _readings.oid_of(obs) == oid
+                            and getattr(obs, "rev", None) == active), None)
+                if old is None:
+                    if staged_marked or view_marked:
+                        raise bad
+                    continue
+                old_marked = self._marked_archive(old) is not None
+                if not (staged_marked or view_marked or old_marked):
+                    continue
+                if (view is None or self._unread_json(staged, 65536) is None
+                        or not self._unread_native_equal(view, staged)):
+                    raise bad
+                marked = True
+                continue
+            archive_marked = self._marked_archive(source) is not None
+            if not (archive_marked or staged_marked or view_marked):
+                continue
+            try:
+                record = self._active_record(source)
+            except (KeyError, IndexError, TypeError):
+                record = None
+            if (type(record) is not dict or type(active) is not int or type(rev) is not int
+                    or rev != active or record.get("reading_revision") != active
+                    or type(record.get("observation_id")) is not str or record.get("observation_id") != oid
+                    or record.get("unavailable") is not False or type(record.get("source")) is not str
+                    or record.get("source") != str(source)):
+                raise bad
+            parsed = record.get("parsed")
+            if (view is None or self._unread_json(parsed, 65536) is None
+                    or not self._unread_native_equal(view, parsed)):
+                raise bad
+            marked = True
+        return marked
+
+    def _unread_marked(self, entry):
+        """An unread entry bound to a marked source stays held; malformed marked binding stays held too."""
+        candidates = []
+        at = entry.get("at") if isinstance(entry, dict) else None
+        obs = getattr(self, "_obs", None)
+        if type(at) is int and isinstance(obs, (list, tuple)) and 0 <= at < len(obs):
+            candidates.append(obs[at])
+        if isinstance(entry, dict) and isinstance(entry.get("source"), Obs):
+            candidates.append(entry["source"])
+        for source in candidates:
+            if self._structural_marked(getattr(source, "reading", None)):
+                return True
+            try:
+                if self._marked_archive(source) is not None:
+                    return True
+            except ReadingUnavailable:
+                return True
+        return False
+
+    def _archive(self, oid, revision, item, parsed, reason, prior):
+        """Append one reading version (raw parsed JSON plus source binding) and make it the active one."""
+        try:
+            parsed = json.loads(json.dumps(parsed, allow_nan=False)) if parsed is not None else None
+        except (TypeError, ValueError):
+            parsed = deepcopy(parsed)
+        held = self.reading_ledger.get(oid)
+        if len(held["versions"] if held else ()) != revision - 1 or sum(
+                len(e["versions"]) for e in self.reading_ledger.values()) >= self.max_turns * 8:
+            raise ValueError("reading_capacity")
+        entry = self.reading_ledger.setdefault(oid, {"active": revision, "versions": []})
+        entry["versions"].append(_readings.make_record(
+            oid, revision, item, parsed, base=self.parser_base_sha256, head=self.installed_memory_head,
+            reason="unavailable" if parsed is None else reason, prior=prior, unavailable=parsed is None,
+            grammar=self._grammar()))
+        entry["active"] = revision
+        view = self._parser().__dict__.setdefault("chosen_readings", {})
+        if parsed is None:
+            view.pop(oid, None)
+        else:
+            view[oid] = deepcopy(parsed)
+        return Obs(str(item), oid, revision)
+
+    def _commit_observations(self, items):
+        """The one place observation slots are created, revised or dropped; keeps IDs and ledger aligned."""
+        if not items and not self._obs and not self.reading_ledger:
+            return
+        parser = self._parser()
+        view = parser.__dict__.setdefault("chosen_readings", {})
+        provisional = (view.pop(TENTATIVE, None)
+                       if any(_readings.oid_of(i) == TENTATIVE for i in items) else None)
+        verbs, out = None, []
+        for item in items:
+            oid = _readings.oid_of(item)
+            entry = self.reading_ledger.get(oid) if oid not in (None, TENTATIVE) else None
+            if entry is not None and getattr(item, "rev", entry["active"]) <= entry["active"]:
+                out.append(Obs(str(item), oid, entry["active"]))
+                continue
+            parsed = getattr(item, "reading", None)
+            reason = getattr(item, "reason", None)
+            if entry is None:
+                reason = reason or "initial"
+                if oid == TENTATIVE and provisional is not None:
+                    parsed, reason, provisional = provisional, "candidate_reading", None
+            if parsed is None:
+                if verbs is None:
+                    verbs = self._verbs_for(parser, items)
+                parsed = self._read_source(parser, str(item), events=True, verbs=verbs)
+            if entry is None:
+                oid = "o%d" % self._next_observation
+                self._next_observation += 1
+                out.append(self._archive(oid, 1, item, parsed, reason, None))
+            else:
+                out.append(self._archive(oid, entry["active"] + 1, item, parsed, reason or "correction",
+                                         [oid, entry["active"]]))
+        live = {source.oid for source in out}
+        for gone in set(self.reading_ledger) - live:
+            self.reading_ledger.pop(gone)
+            view.pop(gone, None)
+        self._obs = out
+
+    def _revise_readings(self, updates, reason):
+        """Explicit reading revisions of named slots ({oid: raw reading}); other slots are untouched."""
+        for index, source in enumerate(self._obs):
+            if source.oid in updates:
+                entry = self.reading_ledger[source.oid]
+                self._obs[index] = self._archive(source.oid, entry["active"] + 1, source,
+                                                 updates[source.oid], reason, [source.oid, entry["active"]])
+        self._replay_cache = None
 
     def _verbs_for(self, parser, sources):
         """이전 관찰 접두어의 활용표는 유지하고, 새 원문만 더 읽는다."""
         source_key = tuple(sources)
+        grammar = self._grammar()
+        if self._verb_cache is not None and (len(self._verb_cache) < 4 or self._verb_cache[3] != grammar):
+            self._verb_cache = None     # forms derived under another installed grammar are never reused
         if self._verb_cache is not None and self._verb_cache[0] == source_key:
             return deepcopy(self._verb_cache[2])
         if (self._verb_cache is not None
                 and source_key[:len(self._verb_cache[0])] == self._verb_cache[0]):
             stems = set(self._verb_cache[1])
             for source in source_key[len(self._verb_cache[0]):]:
-                parsed = parser.parse(source, partial=True)
+                parsed = self._definitions_read(parser, source)
                 if parsed is not None:
                     stems.update(rule["verb"] for rule in parsed.get("정의", []))
             forms = self._forms_of(parser, stems)
@@ -1352,18 +2489,18 @@ class ReasoningContext:
             # only the new final input instead of treating that sibling cache
             # key as a reason to reread the whole conversation.
             stems = set(self._verb_cache[1])
-            parsed = parser.parse(source_key[-1], partial=True)
+            parsed = self._definitions_read(parser, source_key[-1])
             if parsed is not None:
                 stems.update(rule["verb"] for rule in parsed.get("정의", []))
             forms = self._forms_of(parser, stems)
         else:
             stems = set()
             for source in source_key:
-                parsed = parser.parse(source, partial=True)
+                parsed = self._definitions_read(parser, source)
                 if parsed is not None:
                     stems.update(rule["verb"] for rule in parsed.get("정의", []))
             forms = self._forms_of(parser, stems)
-        self._verb_cache = (source_key, frozenset(stems), deepcopy(forms))
+        self._verb_cache = (source_key, frozenset(stems), deepcopy(forms), grammar)
         return forms
 
     @staticmethod
@@ -1515,7 +2652,9 @@ class ReasoningContext:
                 continue
             truth = self._holds(parser, parsed.get("조건", []),
                                 raw.get("evidence", {}).get("start", 0),
-                                facts + [row for _start, row in rows])
+                                facts + [row for _start, row in rows],
+                                getattr(self.model, "language_projection", None),
+                                actual_source=source)
             if truth is None:
                 pending.append({"text": source, "at": index, "동사": stem, "id": event_id,
                                 "잘림": bool(raw.get("잘림")), "차례": index,
@@ -1561,6 +2700,17 @@ class ReasoningContext:
                 or new_sources[:-1] != old_sources):
             return None
         index, source = len(old_sources), new_sources[-1]
+        # Archived raw events whose action had no definition when they were
+        # read are not ``pending`` and so are invisible to the check above.
+        # A definition that now covers one of them must not leave it a no-op:
+        # decline the shortcut so the full archived-reading replay (ledger
+        # readings, same event ids, no reparse of historical text) applies it.
+        # Surface forms (e.g. inflections) may map to a new stem only through
+        # the full replay, so any programless uninterpreted event declines.
+        if any(isinstance(row, dict) and row.get("status") == "uninterpreted"
+               and isinstance(row.get("event"), dict) and not row["event"].get("program")
+               for row in self._stored_event_records):
+            return None
         prior = DefinitionTable(deepcopy(dict(old_result[1])),
                                 deepcopy(getattr(old_result[1], "programs", {})))
         parsed = self._read_source(parser, source, events=True,
@@ -1684,6 +2834,15 @@ class ReasoningContext:
         old_sources, old_fills = old_key
         new_sources = tuple(sources)
         if old_fills != key[1] or len(new_sources) != len(old_sources) or old_result[2]:
+            return None
+        # Same guard as ``_append_semantic_definition``: an archived raw event whose action had no
+        # program when it was read is replayed only from its ledger reading.  This shortcut rebuilds
+        # from stored envelopes alone, so it would silently drop that event's effects (the records
+        # stay programless even after a later definition covered them).  Decline; the full
+        # archived-reading replay keeps the same event ids and does not reparse historical text.
+        if any(isinstance(row, dict) and row.get("status") == "uninterpreted"
+               and isinstance(row.get("event"), dict) and not row["event"].get("program")
+               for row in self._stored_event_records):
             return None
         changed = [at for at, pair in enumerate(zip(old_sources, new_sources)) if pair[0] != pair[1]]
         if len(changed) != 1:
@@ -1836,33 +2995,53 @@ class ReasoningContext:
     def _cached_replay(self, parser, sources, fills):
         key = (tuple(sources), json.dumps(fills, ensure_ascii=False, sort_keys=True,
                                           separators=(",", ":")))
-        if self._replay_cache is not None and self._replay_cache[0] == key:
+        # A structurally marked source never takes a cached or incremental shortcut: only the
+        # full archived-reading replay, whose lookup refuses marked events.
+        marked = self._marker_sources(parser, sources)
+        # Authority stamp is kept beside (not inside) the two-element replay key ABI. It is bound to
+        # the verified own-native authority for this parser; any drift drops every cached/incremental
+        # shortcut and forces a full replay under the current own projection.
+        projection = getattr(self.model, "language_projection", None)
+        auth = _scoped_authority(projection, parser)
+        stamp = (None if auth is None else
+                 (id(projection), _scoped_authority_digest(projection, auth), auth["scope_sha256"]))
+        drift = getattr(self, "_replay_authority", None) != stamp or (auth is not None and stamp[1] is None)
+        if drift:
+            self._replay_cache = None
+        self._replay_authority = stamp
+        if drift and auth is not None and stamp[1] is None:
+            self._replay_authority = ("unbound", object())
+        marked = marked or drift
+        if not marked and self._replay_cache is not None and self._replay_cache[0] == key:
             self._last_replay_scope = "same_input"
             return deepcopy(self._replay_cache[1])
-        result = self._incremental_replay(parser, key, sources, fills)
+        result = None if marked else self._incremental_replay(parser, key, sources, fills)
         reusable = {"append": False, "direct": ()}
         if result is None:
-            result = self._resume_semantic_replay(parser, key, sources, fills)
+            result = None if marked else self._resume_semantic_replay(parser, key, sources, fills)
             if result is not None:
                 self._last_replay_scope = "semantic_resume"
-            else:
+            elif not marked:
                 result = self._append_semantic_replay(parser, key, sources, fills)
             if result is not None:
                 if self._last_replay_scope != "semantic_resume":
                     self._last_replay_scope = "semantic_append"
-            if result is None:
+            if result is None and not marked:
                 result = self._append_semantic_definition(parser, key, sources, fills)
                 if result is not None:
                     self._last_replay_scope = "semantic_definition"
-            if result is None:
+            if result is None and not marked:
                 result = self._semantic_correction_replay(parser, key, sources, fills)
                 if result is not None:
                     self._last_replay_scope = "semantic_correction"
             if result is None:
-                result = self._replay(parser, sources, fills, self.event_ids)
+                result = self._replay(parser, sources, fills, self.event_ids, projection=projection)
                 self._last_replay_scope = "full"
-                direct = tuple(self._incremental_source(parser, source) for source in sources)
-                reusable = {"append": not result[2] and not fills, "direct": direct}
+                if marked:
+                    reusable = {"append": False, "direct": tuple(False for _source in sources)}
+                else:
+                    direct = tuple(self._incremental_source(parser, source) for source in sources)
+                    reusable = {"append": not result[2] and not fills, "direct": direct}
         else:
             old_sources = self._replay_cache[0][0]
             self._last_replay_scope = ("append_suffix"
@@ -1887,7 +3066,7 @@ class ReasoningContext:
         if self._last_replay_scope in {"semantic_append", "semantic_resume", "semantic_correction",
                                        "semantic_definition"}:
             stems = frozenset(result[1])
-            self._verb_cache = (tuple(sources), stems, self._forms_of(parser, stems))
+            self._verb_cache = (tuple(sources), stems, self._forms_of(parser, stems), self._grammar())
         return result
 
     def current_state(self):
@@ -2062,13 +3241,20 @@ class ReasoningContext:
             # A restored context has a saved inflection table for its whole
             # history.  Read only the new suffix: reparsing the old prefix
             # would violate the saved-semantic replay contract.
-            verbs = deepcopy(self._verb_cache[2]) if self._verb_cache is not None else self._verbs_for(parser, self.observations)
+            fresh = (self._verb_cache is not None and len(self._verb_cache) > 3
+                     and self._verb_cache[3] == self._grammar())
+            verbs = deepcopy(self._verb_cache[2]) if fresh else self._verbs_for(parser, self.observations)
+            marked_at = {item["index"] for item in self._marked_archive_events()}
             for index in indices:
                 source = self.observations[index]
+                if index in marked_at:
+                    continue    # reconciled from the actual archive below, never reread
                 parsed = self._read_source(parser, source, events=True, verbs=verbs)
                 if parsed is None:
                     continue
                 for ordinal, raw in enumerate(parsed.get("사건", [])):
+                    if self._structural_marked(raw):
+                        continue
                     slot = "%d:%d" % (index, ordinal)
                     event_id = (self._event_id(index, raw.get("verb"), raw.get("자리", {}), ordinal)
                                 if self.event_ids is None else self.event_ids.setdefault(slot, "event:%s" % slot))
@@ -2082,7 +3268,9 @@ class ReasoningContext:
                         (fact.get("evidence") or {}).get("turn", -1) < index
                         or ((fact.get("evidence") or {}).get("turn") == index
                             and (fact.get("evidence") or {}).get("start", 0) < evidence.get("start", 0)))]
-                    truth = self._holds(parser, parsed.get("조건") or [], evidence.get("start", 0), prior)
+                    truth = self._holds(parser, parsed.get("조건") or [], evidence.get("start", 0), prior,
+                                        getattr(self.model, "language_projection", None),
+                                        actual_source=source)
                     modality = raw.get("modality", "asserted")
                     status = ("negative" if raw.get("polarity", True) is False
                               else modality if modality != "asserted"
@@ -2114,6 +3302,32 @@ class ReasoningContext:
                                    else "condition_unmeasured" if status == "pending"
                                    else "definition_unavailable"),
                         "effects": [], "state_changes": []}
+        # Every actual active archived marked event (restored prefix included) is reconciled as an
+        # uninterpreted row: no program, no effects, never a stale row for the same ID.
+        for item in self._marked_archive_events():
+            index, ordinal, raw = item["index"], item["ordinal"], item["raw"]
+            roles = raw.get("자리") if isinstance(raw.get("자리"), dict) else {}
+            slot = "%d:%d" % (index, ordinal)
+            event_id = (self._event_id(index, None, roles, 0) if self.event_ids is None
+                        else self.event_ids.setdefault(slot, "event:%s" % slot))
+            event = {"schema": "nai-action-event-v1", "id": event_id, "action": raw.get("verb"),
+                     "definition_version": None, "program": None, "domain": None, "references": {},
+                     "roles": deepcopy(roles),
+                     "role_candidates": deepcopy(raw.get("자리후보") or []),
+                     "conditions": [], "fills": [], "state_fills": [], "overrides": {},
+                     "polarity": True, "modality": "asserted", "sequence": index,
+                     "evidence": deepcopy(raw.get("evidence") or {})}
+            run = raw.get("실행") if isinstance(raw.get("실행"), dict) else {}
+            for name in ("structural_reading", "selected_action_binding"):
+                for carrier in (raw, run, item["parsed"]):
+                    if name in carrier:
+                        event[name] = deepcopy(carrier[name])
+                        break
+            rows[event_id] = {"event": event, "status": "uninterpreted", "reason": "unknown_word",
+                              "effects": [], "state_changes": []}
+        for row in rows.values():
+            if isinstance(row, dict) and self._structural_marked(row.get("event")):
+                row.update(status="uninterpreted", reason="unknown_word", effects=[], state_changes=[])
         result = [rows[key] for key in sorted(rows)]
         self._stored_event_records = deepcopy(result)
         self._event_records_count = len(self.observations)
@@ -2384,12 +3598,15 @@ class ReasoningContext:
         return {"answer": self._render_reason(render, current),
                 "transitions": [{"operation": "concept_relation_reason", **deepcopy(current)}]}
 
-    def _inference_ledger(self):
+    def _inference_ledger(self, *, max_bundle_id_bytes=None):
         """Serialisable proof bundles for the same inputs a normal answer sees."""
         from marco.reasoning.inference import closure_with_provenance
         parser = self._parser()
         identified = self._common_inference_facts(parser)
-        result = closure_with_provenance(identified, parser.data.get("rules", []))
+        result = (closure_with_provenance(identified, parser.data.get("rules", []))
+                  if max_bundle_id_bytes is None else
+                  closure_with_provenance(identified, parser.data.get("rules", []),
+                                          max_bundle_id_bytes=max_bundle_id_bytes))
         bundles = [bundle for rows in result["proof_bundles"].values() for bundle in rows]
         return {"complete": result["complete"], "reason": result["reason"],
                 "searches": result["searches"],
@@ -2429,7 +3646,7 @@ class ReasoningContext:
                               "query": [{"triple": [matches[0], "classified_by", "?concept"],
                                          "render": list(parser.data["concept_answer_render"])}]})
 
-    def snapshot(self):
+    def snapshot(self, *, max_bundle_id_bytes=None):
         # Keep the established envelope version: added fields are optional so
         # existing local stores and callers remain forward-compatible.
         parser = self._parser()
@@ -2442,17 +3659,67 @@ class ReasoningContext:
         replay = {"facts": deepcopy(facts), "definitions": deepcopy(dict(definitions)),
                   "programs": deepcopy(getattr(definitions, "programs", {})),
                   "pending": deepcopy(pending), "read": sorted(read)}
+
+        def _fact_source_row(fact, ids, base):
+            evidence = fact.get("evidence") if isinstance(fact, dict) else None
+            source = evidence.get("source") if isinstance(evidence, dict) else None
+            if not isinstance(source, Obs):
+                return None
+            oid, rev = source.oid, source.rev
+            if not isinstance(oid, str) or not oid.strip():
+                return None
+            if type(rev) is not int or rev < 1:
+                return None
+            turn = evidence.get("turn") if isinstance(evidence, dict) else None
+            if type(turn) is not int or not 0 <= turn < len(ids) or ids[turn] != oid:
+                return None
+            entry = self.reading_ledger.get(oid)
+            versions = entry.get("versions") if isinstance(entry, dict) else None
+            if not isinstance(versions, list) or rev > len(versions):
+                return None
+            record = versions[rev - 1]
+            if not isinstance(record, dict):
+                return None
+            rec_rev = record.get("reading_revision")
+            rec_base = record.get("parser_base_sha256")
+            if (record.get("observation_id") != oid or type(rec_rev) is not int
+                    or rec_rev != rev or not isinstance(record.get("source"), str)
+                    or record["source"] != str(source)
+                    or not isinstance(rec_base, str) or len(rec_base) != 64
+                    or any(c not in "0123456789abcdef" for c in rec_base)
+                    or rec_base != base):
+                return None
+            row = {"observation_id": oid, "reading_revision": rev}
+            try:
+                encoded = json.dumps(row, allow_nan=False).encode("utf-8")
+            except (TypeError, ValueError, OverflowError, RecursionError):
+                return None
+            return row if len(encoded) <= 8192 else None
+
+        _ids = list(self.observation_ids)
+        replay["fact_sources"] = [
+            _fact_source_row(fact, _ids, self.parser_base_sha256)
+            for fact in facts]
         events = self._event_ledger()
         concepts = self.concepts.sync(events)
-        said = {source.strip() for source in self.observations}
-        kept = {source: reading for source, reading in (getattr(parser, "chosen_readings", None) or {}).items()
-                if source in said}
-        return {"schema": "reasoning-context-v10", "observations": list(self.observations),
+        # The ledger is the only semantic source of historical readings (``parser.chosen_*`` are views).
+        ledger = deepcopy({"next": self._next_observation, "records": self.reading_ledger})
+        for (who, number), kept in (parser.__dict__.get("chosen_programs") or {}).items():
+            entry = ledger["records"].get(who[0])
+            if entry and who[1] <= len(entry["versions"]):
+                record = entry["versions"][who[1] - 1]
+                try:
+                    record.setdefault("programs", {})[str(number)] = json.loads(
+                        json.dumps(kept, allow_nan=False))
+                except (TypeError, ValueError):
+                    # the original program cannot be archived: mark it unavailable, never re-induce it
+                    lost = record.setdefault("programs_unavailable", [])
+                    if str(number) not in lost:
+                        lost.append(str(number))
+        return {"schema": "reasoning-context-v11", "observations": [str(source) for source in self.observations],
+                "observation_ids": self.observation_ids, "reading_ledger": ledger,
                 # the conversation identity graph (M1): nodes, aliases with their turns, count edges, frames
                 "graph": self.conversation_graph().to_dict(),
-                # the readings this conversation kept for its statements (a candidate step's winner): a restored
-                # conversation reads those statements the same way when it replays them
-                **({"readings": deepcopy(kept)} if kept else {}),
                 "corrections": deepcopy(self.corrections), "unread": deepcopy(self.unread),
                 "unread_guard": deepcopy(self.unread_guard),
                 "asked": deepcopy(self.asked), "held_question": self.held_question,
@@ -2466,7 +3733,10 @@ class ReasoningContext:
                 "event_revisions": deepcopy(self.event_revisions),
                 "events": events,
                 "experience_concepts": concepts,
-                "inference_bundles": self._inference_ledger(),
+                "inference_bundles": (self._inference_ledger()
+                                      if max_bundle_id_bytes is None else
+                                      self._inference_ledger(
+                                          max_bundle_id_bytes=max_bundle_id_bytes)),
                 "conversation": self.conversation_id,
                 "replay": replay}
 
@@ -2476,7 +3746,7 @@ class ReasoningContext:
                 "reasoning-context-v3", "reasoning-context-v4",
                 "reasoning-context-v5", "reasoning-context-v6",
                 "reasoning-context-v7", "reasoning-context-v8",
-                "reasoning-context-v9", "reasoning-context-v10"}
+                "reasoning-context-v9", "reasoning-context-v10", "reasoning-context-v11"}
                 or not isinstance(snapshot.get("observations"), list)
                 or len(snapshot["observations"]) > self.max_turns
                 or any(not isinstance(x, str) or not x.strip() for x in snapshot["observations"])):
@@ -2534,19 +3804,37 @@ class ReasoningContext:
                        for row in reading.get("facts", []))
                 for source, reading in readings.items())):
             raise ValueError("invalid_reasoning_context_snapshot")
-        self.observations = list(snapshot["observations"])
-        # The readings the conversation kept for its statements, on this conversation's parser copy: only for
-        # statements the snapshot holds (an older snapshot has none, and reads its statements as the reader does).
-        said = {source.strip() for source in self.observations}
-        self._parser().__dict__["chosen_readings"] = {
-            source: deepcopy(reading) for source, reading in (readings or {}).items() if source in said}
-        self._replay_cache = None
-        if isinstance(snapshot.get("conversation"), str) and snapshot["conversation"]:
-            self.conversation_id = snapshot["conversation"]
-        self.corrections = deepcopy(corrections)
-        # 옛 갈무리에는 이 칸이 없다. 없으면 못 읽은 말도 없는 것으로 읽는다.
-        self.unread = deepcopy(unread)
-        self.unread_guard = deepcopy(unread_guard)
+        texts = list(snapshot["observations"])
+        if snapshot["schema"] == "reasoning-context-v11":
+            ids, ledger = snapshot.get("observation_ids"), snapshot.get("reading_ledger")
+            ledger = _readings.validate_ledger(texts, ids, ledger, max_turns=self.max_turns,
+                                               base=self.parser_base_sha256,
+                                               head_limit=self.installed_memory_head)
+        else:
+            # A bare older snapshot never kept the original reads: carry the verified replay state, mark every
+            # slot without a kept choice unavailable, and never reparse with the latest grammar as "original".
+            ids, ledger = _readings.legacy_ledger(texts, readings, base=self.parser_base_sha256,
+                                                  head=self.installed_memory_head)
+        # Everything below only validates and prepares values.  Nothing on ``self`` (or on the parser
+        # views) changes until every field of the snapshot has been accepted: a rejected snapshot must
+        # leave the live context exactly as it was.
+        ledger = deepcopy(ledger)
+        view, programs, blocked = {}, {}, set()
+        current = self._grammar()
+        for oid, entry in ledger["records"].items():
+            active = entry["versions"][entry["active"] - 1]
+            who = (oid, active["reading_revision"])
+            if active["parsed"] is not None:
+                view[oid] = deepcopy(active["parsed"])
+            for number, kept in (active.get("programs") or {}).items():
+                if isinstance(kept, dict) and isinstance(kept.get("usable"), dict) \
+                        and isinstance(kept.get("origins"), dict) and number.isdigit():
+                    programs[(who, int(number))] = deepcopy(kept)
+            stale = active.get("parser_grammar_sha256") != current
+            for number in range(len((active["parsed"] or {}).get("정의") or [])):
+                if (who, number) not in programs and (stale or str(number) in active.get("programs_unavailable", [])):
+                    blocked.add((who, number))
+        new_obs = [Obs(text, oid, ledger["records"][oid]["active"]) for text, oid in zip(texts, ids)]
         asked = snapshot.get("asked") or []
         asked = [asked] if isinstance(asked, dict) else asked
         # 옛 갈무리의 되물음은 꼴이 다르다. 못 알아보면 **안 이어 붙인다** — 덜
@@ -2575,56 +3863,47 @@ class ReasoningContext:
         if (not isinstance(fills, list) or len(fills) > self.max_turns
                 or any(not valid_fill(item) for item in fills)):
             raise ValueError("invalid_reasoning_context_snapshot")
-        self.fills = deepcopy(fills)
         마지막 = snapshot.get("last_subject")
         if 마지막 is not None and not isinstance(마지막, str):
             raise ValueError("invalid_reasoning_context_snapshot")
-        self.last_subject = 마지막
         salient = snapshot.get("salient")
         if salient is not None and (not isinstance(salient, list)
                                     or any(not isinstance(name, str) or not name for name in salient)):
             raise ValueError("invalid_reasoning_context_snapshot")
         # An older snapshot has no salient set: the last subject stands in for it.
-        self.salient = list(salient) if salient is not None else (
+        new_salient = list(salient) if salient is not None else (
             [마지막.split()[0]] if isinstance(마지막, str) and 마지막.strip() else [])
         graph = snapshot.get("graph")
         if graph is not None and not isinstance(graph, dict):
             raise ValueError("invalid_reasoning_context_snapshot")
+        graph_carried = None
         if graph:
             from marco.reasoning.identity import ConversationGraph
-            self._graph_carried = ConversationGraph.from_dict(graph).carried()
-        self._graph_cache = None
+            graph_carried = ConversationGraph.from_dict(graph).carried()
         frame = snapshot.get("last_frame")
         if frame is not None and not (isinstance(frame, dict) and isinstance(frame.get("text"), str)
                                       and isinstance(frame.get("holders"), list)
                                       and all(isinstance(h, str) for h in frame["holders"])
                                       and (frame.get("item") is None or isinstance(frame.get("item"), str))):
             raise ValueError("invalid_reasoning_context_snapshot")
-        self.last_frame = deepcopy(frame)
         최근역할 = snapshot.get("last_referents", {})
         if (not isinstance(최근역할, dict)
                 or any(not isinstance(key, str) or not isinstance(value, str) or not value
                        for key, value in 최근역할.items())):
             raise ValueError("invalid_reasoning_context_snapshot")
-        self.last_referents = deepcopy(최근역할)
         last_concept_relation = snapshot.get("last_concept_relation")
         if last_concept_relation is not None and not isinstance(last_concept_relation, dict):
             raise ValueError("invalid_reasoning_context_snapshot")
-        self.last_concept_relation = deepcopy(last_concept_relation)
         event_ids = snapshot.get("event_ids", None)
         if event_ids is not None and (not isinstance(event_ids, dict)
                                       or any(not isinstance(key, str) or not isinstance(value, str)
                                              or not value for key, value in event_ids.items())):
             raise ValueError("invalid_reasoning_context_snapshot")
-        # Older snapshots retain their content-addressed ids so their saved
-        # completion records still join correctly during a compatibility replay.
-        self.event_ids = deepcopy(event_ids) if event_ids is not None else None
         revisions = snapshot.get("event_revisions", [])
         if (not isinstance(revisions, list) or len(revisions) > self.max_turns
                 or any(not isinstance(row, dict) or not isinstance(row.get("event_id"), str)
                        for row in revisions)):
             raise ValueError("invalid_reasoning_context_snapshot")
-        self.event_revisions = deepcopy(revisions)
         stored_events = snapshot.get("events")
         if stored_events is not None and (
                 not isinstance(stored_events, list)
@@ -2632,32 +3911,446 @@ class ReasoningContext:
                        or not isinstance(record["event"].get("id"), str)
                        for record in stored_events)):
             raise ValueError("invalid_reasoning_context_snapshot")
-        self._stored_event_records = deepcopy(stored_events) if stored_events is not None else None
-        self._event_records_count = len(self.observations) if stored_events is not None else 0
         concepts = snapshot.get("experience_concepts")
+        new_concepts = None
         if concepts is not None:
-            self.concepts.restore(concepts)
-        # 되물은 기억이 없으면 아무것도 안 이어 붙인다 — 덜 잇는 쪽이다.
-        self.asked = deepcopy(asked)
+            # The concept store validates while it assigns, so restore into a fresh store and
+            # only adopt it once the whole snapshot is accepted.
+            from marco.learning.concepts import ExperienceConceptStore
+            new_concepts = ExperienceConceptStore(support_limit=self.concepts.support_limit,
+                                                  candidate_limit=self.concepts.candidate_limit,
+                                                  validation_limit=self.concepts.validation_limit)
+            new_concepts.restore(concepts)
         held = snapshot.get("held_question")
         if held is not None and (not isinstance(held, str) or not held.strip()):
             raise ValueError("invalid_reasoning_context_snapshot")
-        # 막아 둔 물음도 이어져야 한다. 안 그러면 다시 묻게 만든다.
-        self.held_question = held
+        parser = self._parser()
+        replay_cache = verb_cache = None
         if replay is not None:
-            restored = (deepcopy(replay["facts"]),
+            restored_facts = deepcopy(replay["facts"])
+            fact_sources = replay.get("fact_sources")
+            records = ledger.get("records") if isinstance(ledger, dict) else None
+            base = self.parser_base_sha256
+            if (isinstance(fact_sources, list) and isinstance(records, dict)
+                    and len(fact_sources) == len(restored_facts)):
+                for fact, row in zip(restored_facts, fact_sources):
+                    if type(row) is not dict or set(row) != {"observation_id",
+                                                             "reading_revision"}:
+                        continue
+                    oid, rev = row["observation_id"], row["reading_revision"]
+                    if not isinstance(oid, str) or not oid.strip():
+                        continue
+                    if type(rev) is not int or rev < 1:
+                        continue
+                    try:
+                        encoded = json.dumps(row, allow_nan=False).encode("utf-8")
+                    except (TypeError, ValueError, OverflowError, RecursionError):
+                        continue
+                    if len(encoded) > 8192:
+                        continue
+                    entry = records.get(oid)
+                    versions = entry.get("versions") if isinstance(entry, dict) else None
+                    if not isinstance(versions, list) or rev > len(versions):
+                        continue
+                    record = versions[rev - 1]
+                    if not isinstance(record, dict):
+                        continue
+                    rec_rev = record.get("reading_revision")
+                    rec_base = record.get("parser_base_sha256")
+                    rec_source = record.get("source")
+                    if (record.get("observation_id") != oid
+                            or type(rec_rev) is not int or rec_rev != rev
+                            or not isinstance(rec_source, str)
+                            or not isinstance(rec_base, str) or len(rec_base) != 64
+                            or any(c not in "0123456789abcdef" for c in rec_base)
+                            or rec_base != base):
+                        continue
+                    evidence = fact.get("evidence") if isinstance(fact, dict) else None
+                    source = evidence.get("source") if isinstance(evidence, dict) else None
+                    turn = evidence.get("turn") if isinstance(evidence, dict) else None
+                    if (not isinstance(source, str) or str(source) != rec_source
+                            or type(turn) is not int or not 0 <= turn < len(ids)
+                            or ids[turn] != oid):
+                        continue
+                    evidence["source"] = Obs(str(source), oid, rev)
+            restored = (restored_facts,
                         DefinitionTable(deepcopy(replay["definitions"]),
                                         deepcopy(replay["programs"])),
                         deepcopy(replay["pending"]), set(replay["read"]))
-            key = (tuple(self.observations), json.dumps(self.fills, ensure_ascii=False,
-                                                        sort_keys=True, separators=(",", ":")))
-            self._replay_cache = (key, restored, {"append": False, "direct": ()})
+            key = (tuple(new_obs), json.dumps(fills, ensure_ascii=False,
+                                               sort_keys=True, separators=(",", ":")))
+            replay_cache = (key, restored, {"append": False, "direct": ()})
             # The saved definition programs also supply inflected learned
             # verb forms; only a newly typed sentence needs parsing now.
-            parser = self._parser()
             stems = frozenset(replay["definitions"])
-            self._verb_cache = (tuple(self.observations), stems,
-                                self._forms_of(parser, stems))
+            verb_cache = (tuple(new_obs), stems, self._forms_of(parser, stems), self._grammar())
+        # ---- N1b3: optional structural marker coherence (staged values only; no mutation) ----
+        def _n1b3_check():
+            def refuse():
+                raise ValueError("invalid_reasoning_context_snapshot")
+            same = ReasoningContext._unread_native_equal
+            keys = ("structural_reading", "selected_action_binding")
+            marked = {}
+
+            def _n1b3_name(value, limit=512):
+                return type(value) is str and 0 < len(value) <= limit
+
+            def _n1b3_span(value, limit):
+                return (type(value) is list and len(value) == 2
+                        and type(value[0]) is int and type(value[1]) is int
+                        and 0 <= value[0] < value[1] <= limit)
+
+            def _n1b3_blank(piece):
+                return type(piece) is str and piece.strip() == ""
+
+            def _n1b3_solid(piece):
+                return type(piece) is str and piece != "" and not any(c.isspace() for c in piece)
+
+            def _n1b3_source_check(record, reading, raw):
+                # Exact original-source anchoring only: no live archive, graph, surface or parser
+                # lookup; this cannot prove historical surface policy or dropped candidates.
+                source = record["source"]
+                if (reading.get("source_scope") != "current_clause"
+                        or reading.get("offset_unit") != "unicode_codepoint"
+                        or not _n1b3_name(reading.get("surface_id"))
+                        or not _n1b3_span(reading.get("unknown_span"), len(source))):
+                    refuse()
+                ustart, uend = reading["unknown_span"]
+                unknown = reading["unknown_text"]
+                if (source[ustart:uend] != unknown or unknown != raw["verb"]
+                        or not _n1b3_solid(unknown)):
+                    refuse()
+                candidates = reading.get("role_candidates")
+                if type(candidates) is not list or not candidates:
+                    refuse()
+                prefix = source[:ustart]
+                fields = ("slot", "value", "case_group", "type_ref", "presence", "coreference_group")
+                meta, universe, witnessed, omitted_all = {}, None, set(), set()
+                for candidate in candidates:
+                    if type(candidate) is not dict:
+                        refuse()
+                    bindings, omitted = candidate.get("bindings"), candidate.get("omitted_slots")
+                    if type(bindings) is not list or not bindings or type(omitted) is not list:
+                        refuse()
+                    cursor, slots, groups, corefs = 0, set(), set(), {}
+                    for item in bindings:
+                        if type(item) is not dict or not all(k in item for k in fields):
+                            refuse()
+                        f = {k: item.get(k) for k in fields}
+                        if (not all(_n1b3_name(f[k]) for k in fields[:4])
+                                or type(f["presence"]) is not str
+                                or f["presence"] not in ("required", "optional")
+                                or (f["coreference_group"] is not None
+                                    and not _n1b3_name(f["coreference_group"]))):
+                            refuse()
+                        sp, mk, ch = item.get("span"), item.get("marker_span"), item.get("chunk_span")
+                        if not (_n1b3_span(sp, ustart) and _n1b3_span(mk, ustart)
+                                and _n1b3_span(ch, ustart)):
+                            refuse()
+                        start, vend = sp
+                        if (mk[0] != vend or ch[0] != start or ch[1] != mk[1] or start < cursor
+                                or source[start:vend] != f["value"]
+                                or not _n1b3_solid(source[vend:mk[1]])
+                                or not _n1b3_blank(prefix[cursor:start])):
+                            refuse()
+                        cursor = mk[1]
+                        if f["slot"] in slots or f["case_group"] in groups:
+                            refuse()
+                        slots.add(f["slot"])
+                        groups.add(f["case_group"])
+                        if (f["coreference_group"] is not None
+                                and corefs.setdefault(f["coreference_group"], f["value"]) != f["value"]):
+                            refuse()
+                        decl = (f["case_group"], f["type_ref"], f["presence"], f["coreference_group"])
+                        if meta.setdefault(f["slot"], decl) != decl:
+                            refuse()
+                        if f["presence"] == "required":
+                            witnessed.add(f["slot"])
+                    if not _n1b3_blank(prefix[cursor:]):
+                        refuse()
+                    omitted_set = set()
+                    for name in omitted:
+                        if not _n1b3_name(name) or name in omitted_set or name in slots:
+                            refuse()
+                        omitted_set.add(name)
+                    omitted_all |= omitted_set
+                    roles = slots | omitted_set
+                    if universe is None:
+                        universe = roles
+                    elif roles != universe:
+                        refuse()
+                if witnessed & omitted_all:
+                    refuse()
+            for index, (text, oid) in enumerate(zip(texts, ids)):
+                entry = ledger["records"].get(oid)
+                if type(entry) is not dict:
+                    continue
+                versions, active = entry.get("versions"), entry.get("active")
+                if (type(active) is not int or not isinstance(versions, list)
+                        or not 1 <= active <= len(versions)):
+                    continue
+                record = versions[active - 1]
+                parsed = record.get("parsed") if type(record) is dict else None
+                if not ReasoningContext._structural_marked(parsed):
+                    continue
+                if (record.get("observation_id") != oid or type(oid) is not str
+                        or type(record.get("reading_revision")) is not int
+                        or record["reading_revision"] != active
+                        or type(record.get("source")) is not str or record["source"] != str(text)
+                        or record.get("unavailable") is not False or type(parsed) is not dict
+                        or ReasoningContext._unread_json(record, 65536) is None):
+                    refuse()
+                run = parsed.get("실행")
+                if any(k in parsed for k in keys) or (
+                        isinstance(run, dict) and any(k in run for k in keys)):
+                    refuse()
+                events = parsed.get("사건")
+                if type(events) is not list or len(events) != 1:
+                    refuse()
+                for key, value in parsed.items():
+                    if key == "사건" or value in (None, [], {}, "", False):
+                        continue
+                    if (key != "entry_selection" or type(value) is not dict
+                            or value.get("schema") != "marco-entry-selection-v1"
+                            or value.get("scope") != "known_selected_input_clauses"
+                            or value.get("status") != "partial"
+                            or value.get("coordinate_space") != "parser_view"
+                            or type(value.get("items")) is not list or value["items"]
+                            or type(value.get("gaps")) is not list):
+                        refuse()
+                raw = events[0]
+                if type(raw) is not dict or not all(k in raw for k in keys):
+                    refuse()
+                reading, binding = raw["structural_reading"], raw["selected_action_binding"]
+                if (type(reading) is not dict or type(binding) is not dict
+                        or reading.get("schema") != "unknown-action-reading-v1"
+                        or reading.get("status") != "read"
+                        or reading.get("search_complete") is not True
+                        or reading.get("truncated") is not False
+                        or type(reading.get("gaps")) is not list or reading["gaps"]
+                        or type(reading.get("unknown_text")) is not str
+                        or type(raw.get("verb")) is not str
+                        or raw["verb"] != reading["unknown_text"]
+                        or raw.get("꼬리", "") not in ("", None, [])
+                        or raw.get("잘림", False) is not False
+                        or type(raw.get("자리", {})) is not dict):
+                    refuse()
+                try:
+                    ReasoningContext._marked_carrier(parsed)
+                except ReadingUnavailable:
+                    refuse()
+                _n1b3_source_check(record, reading, raw)
+                if isinstance(event_ids, dict):
+                    eid = event_ids.get("%d:0" % index)
+                    if type(eid) is not str or not eid:
+                        refuse()
+                else:
+                    eid = ReasoningContext._event_id(index, None, raw.get("자리", {}), 0)
+                if eid in marked:
+                    refuse()
+                marked[eid] = {"index": index, "oid": oid, "rev": active,
+                               "text": record["source"], "raw": raw}
+            rows = stored_events if isinstance(stored_events, list) else []
+            if not marked:
+                if any(ReasoningContext._structural_marked(r["event"]) for r in rows):
+                    refuse()
+            stored, srows = {}, {}
+            for row in rows:
+                event = row["event"]
+                eid = event.get("id")
+                if eid not in marked:
+                    if ReasoningContext._structural_marked(event):
+                        refuse()
+                    continue
+                if eid in stored:
+                    refuse()
+                stored[eid] = event
+                srows[eid] = row
+            for eid, item in marked.items():
+                event, raw, srow = stored.get(eid), item["raw"], srows.get(eid)
+                if event is None or type(srow) is not dict:
+                    refuse()
+                if (type(event.get("sequence")) is not int or event["sequence"] != item["index"]
+                        or event.get("action") != raw["verb"] or type(event.get("action")) is not str
+                        or not same(event.get("roles"), raw.get("자리", {}))
+                        or not same(event.get("role_candidates"), raw.get("자리후보"))
+                        or not all(k in event and same(event[k], raw[k]) for k in keys)
+                        or event.get("schema") != "nai-action-event-v1"
+                        or any(event.get(k) is not None
+                               for k in ("program", "domain", "definition_version"))
+                        or srow.get("status") != "uninterpreted"
+                        or not same(srow.get("effects"), [])
+                        or not same(srow.get("state_changes"), [])
+                        or any(not same(event.get(k), v) for k, v in (
+                            ("references", {}),
+                            ("conditions", []), ("fills", []), ("state_fills", []),
+                            ("overrides", {}), ("polarity", True), ("modality", "asserted")))):
+                    refuse()
+            if replay is None:
+                return
+            smarked = ReasoningContext._structural_marked
+            indices = {item["index"] for item in marked.values()}
+            oids = {item["oid"] for item in marked.values()}
+            mtexts = {item["text"] for item in marked.values()}
+            positions = {oid: index for index, oid in enumerate(ids)}
+            facts = replay["facts"]
+            sources = replay.get("fact_sources")
+            usable = isinstance(sources, list) and len(sources) == len(facts)
+
+            def active_record(oid):
+                entry = ledger["records"].get(oid) if type(oid) is str else None
+                if type(entry) is not dict:
+                    return None
+                versions, active = entry.get("versions"), entry.get("active")
+                if (type(active) is not int or not isinstance(versions, list)
+                        or not 1 <= active <= len(versions)):
+                    return None
+                record = versions[active - 1]
+                return (record, active) if type(record) is dict else None
+
+            def unmarked_join(oid, rev, turn, text):
+                if type(oid) is not str or oid in oids or oid not in positions:
+                    return False
+                index = positions[oid]
+                if turn is not None and turn != index:
+                    return False
+                found = active_record(oid)
+                if found is None:
+                    return False
+                record, active = found
+                if rev is not None and (type(rev) is not int or rev != active):
+                    return False
+                if (record.get("observation_id") != oid
+                        or type(record.get("source")) is not str
+                        or record["source"] != text or str(texts[index]) != text
+                        or record.get("unavailable") is not False
+                        or smarked(record.get("parsed"))):
+                    return False
+                return True
+
+            for position, fact in enumerate(facts):
+                evidence = fact["evidence"]
+                turn, source = evidence.get("turn"), evidence.get("source")
+                action = evidence.get("action_event")
+                if action is not None:
+                    if smarked(action):
+                        refuse()
+                    if marked and isinstance(action, dict):
+                        aid = action.get("id")
+                        if type(aid) is str and aid in marked:
+                            refuse()
+                        aseq = action.get("sequence")
+                        if type(aseq) is int and aseq in indices:
+                            refuse()
+                if not marked:
+                    continue
+                soid = getattr(source, "oid", None)
+                srev = getattr(source, "rev", None)
+                if type(soid) is str and soid in oids:
+                    refuse()
+                meta = sources[position] if usable else None
+                meta_ok = (type(meta) is dict
+                           and set(meta) == {"observation_id", "reading_revision"}
+                           and type(meta["observation_id"]) is str
+                           and type(meta["reading_revision"]) is int)
+                if meta_ok and meta["observation_id"] in oids:
+                    refuse()
+                valid = type(turn) is int and 0 <= turn < len(ids)
+                if valid and turn in indices:
+                    refuse()
+                if not isinstance(source, str) or str(source) not in mtexts:
+                    continue
+                text = str(source)
+                if turn is not None and not valid:
+                    refuse()
+                if soid is not None or srev is not None:
+                    if meta_ok and (meta["observation_id"] != soid
+                                    or meta["reading_revision"] != srev):
+                        refuse()
+                    if not unmarked_join(soid, srev, turn, text):
+                        refuse()
+                elif meta_ok:
+                    if not unmarked_join(meta["observation_id"], meta["reading_revision"],
+                                         turn, text):
+                        refuse()
+                elif valid:
+                    if text != str(texts[turn]) or not unmarked_join(ids[turn], None, turn, text):
+                        refuse()
+                else:
+                    refuse()
+
+            for row in replay["pending"]:
+                if not isinstance(row, dict):
+                    continue
+                old = row.get("event")
+                if any(k in row for k in keys) or (isinstance(old, dict) and smarked(old)):
+                    refuse()
+                run = row.get("실행")
+                env = run if isinstance(run, dict) else None
+                at = row.get("at")
+                bearing = env is not None and smarked(env)
+                if not marked and not bearing:
+                    continue
+                eid = env.get("id") if env is not None else None
+                seq = env.get("sequence") if env is not None else None
+                named = ((type(eid) is str and eid in marked)
+                         or (type(seq) is int and seq in indices)
+                         or (type(at) is int and at in indices))
+                if not named and not bearing:
+                    continue
+                if (env is None or not bearing or type(eid) is not str
+                        or eid not in marked):
+                    refuse()
+                item = marked[eid]
+                if (type(seq) is not int or seq != item["index"]
+                        or type(at) is not int or at != item["index"]):
+                    refuse()
+                if any(env.get(k) is not None
+                       for k in ("program", "domain", "definition_version")):
+                    refuse()
+                for carrier in (row, env):
+                    for k in ("effects", "state_changes"):
+                        value = carrier.get(k)
+                        if value is not None and not same(value, []):
+                            refuse()
+                if not all(k in env for k in keys) or not same(env, stored[eid]):
+                    refuse()
+        _n1b3_check()
+        # ---- commit: the snapshot is fully validated; nothing below can raise ----
+        parser.__dict__["chosen_readings"], parser.__dict__["chosen_programs"] = view, programs
+        parser.__dict__["blocked_programs"] = blocked
+        self.reading_ledger, self._next_observation = ledger["records"], ledger["next"]
+        self._obs = new_obs
+        self._replay_cache = replay_cache
+        if isinstance(snapshot.get("conversation"), str) and snapshot["conversation"]:
+            self.conversation_id = snapshot["conversation"]
+        self.corrections = deepcopy(corrections)
+        # 옛 갈무리에는 이 칸이 없다. 없으면 못 읽은 말도 없는 것으로 읽는다.
+        self.unread = deepcopy(unread)
+        self.unread_guard = deepcopy(unread_guard)
+        self.fills = deepcopy(fills)
+        self.last_subject = 마지막
+        self.salient = new_salient
+        if graph_carried is not None:
+            self._graph_carried = graph_carried
+        self._graph_cache = None
+        self.last_frame = deepcopy(frame)
+        self.last_referents = deepcopy(최근역할)
+        self.last_concept_relation = deepcopy(last_concept_relation)
+        # Older snapshots retain their content-addressed ids so their saved
+        # completion records still join correctly during a compatibility replay.
+        self.event_ids = deepcopy(event_ids) if event_ids is not None else None
+        self.event_revisions = deepcopy(revisions)
+        self._stored_event_records = deepcopy(stored_events) if stored_events is not None else None
+        self._event_records_count = len(new_obs) if stored_events is not None else 0
+        if new_concepts is not None:
+            self.concepts = new_concepts
+        # 되물은 기억이 없으면 아무것도 안 이어 붙인다 — 덜 잇는 쪽이다.
+        self.asked = deepcopy(asked)
+        # 막아 둔 물음도 이어져야 한다. 안 그러면 다시 묻게 만든다.
+        self.held_question = held
+        if verb_cache is not None:
+            self._verb_cache = verb_cache
 
     @staticmethod
     def _triples(parser, rule, event, 이름=(), 받은값=(), 덮기=(), 앞선사실=(), programs=None,
@@ -2671,6 +4364,14 @@ class ReasoningContext:
         빈 자리를 채우고 어긋나지 않으며 남는 자리가 적은 자름이 옳은 자름이다.
         낱말만 봐서는 못 가르는 것을 개체 증거로 가르는 자리다.
         """
+        if isinstance(event, dict) and (
+                "structural_reading" in event or "selected_action_binding" in event
+                or (isinstance(event.get("실행"), dict)
+                    and ("structural_reading" in event["실행"]
+                         or "selected_action_binding" in event["실행"]))):
+            return {"사실": [], "빈자리": {}, "충돌": {}, "남은자리": set(),
+                    "닿는곳": [], "못잼": "structural_uninterpreted",
+                    "계산값": {}, "필요": None, "헛자리": {}}
         from marco.reasoning.actions import execute
         from marco.language.frames import particle_key
         임자 = particle_key(parser.doer_particle, parser.slot_particles)
@@ -2818,6 +4519,12 @@ class ReasoningContext:
     @staticmethod
     def _lookup(parser, event, keys, table=None):
         """사건에 나온 꼴을 뜻풀이의 어간에 잇는다."""
+        if isinstance(event, dict) and (
+                "structural_reading" in event or "selected_action_binding" in event
+                or (isinstance(event.get("실행"), dict)
+                    and ("structural_reading" in event["실행"]
+                         or "selected_action_binding" in event["실행"]))):
+            return None
         verb = event["verb"]
         if verb in keys:
             return verb
@@ -3750,22 +5457,20 @@ class ReasoningContext:
         # changed and nothing else: a rewrite that drops, adds or reshapes an
         # event is not the correction the user asked for (G3.4).
         expected = sorted((s, p, str(request["new"]) if v == str(request["old"]) else v) for s, p, v in shape(source))
-        chosen = getattr(parser, "chosen_readings", None) or {}
+        record = self._active_record(source) or {}
         for attempt in [replacement] + ([agreed] if agreed and agreed != replacement else []):
             if shape(attempt) != expected:
                 continue
-            carried = attempt.strip() not in chosen and source.strip() in chosen
-            if carried:
+            carried = None
+            if record.get("reason") in _readings.CARRIED_REASONS and record.get("parsed") is not None:
                 # the statement was read by a reading kept for it (its thing through the thing node): the corrected
                 # statement is read the same way, with only the amount changed (step 3)
-                chosen[attempt.strip()] = self._reading_rewritten(
-                    chosen[source.strip()], source, attempt, request["old"], request["new"], updates)
+                carried = self._reading_rewritten(
+                    deepcopy(record["parsed"]), source, attempt, request["old"], request["new"], updates)
             try:
-                corrected = self.correct(index, attempt, knowledge_path)
+                corrected = self.correct(index, attempt, knowledge_path, reading=carried)
                 break
             except ValueError:
-                if carried:
-                    chosen.pop(attempt.strip(), None)
                 continue
         if corrected is None:
             return reply("reference_value_unclear", {"event": source.strip(), "old": request["old"]},
@@ -3948,7 +5653,8 @@ class ReasoningContext:
 
         def replays(index, sentence):
             try:
-                self._replay(parser, self.observations[:index] + [sentence] + self.observations[index + 1:], self.fills)
+                self._replay(parser, self.observations[:index] + [sentence] + self.observations[index + 1:], self.fills,
+                             projection=getattr(self.model, "language_projection", None))
                 return True
             except ValueError:
                 return False
@@ -5852,29 +7558,66 @@ class ReasoningContext:
         A statement this conversation read by another of the reader's readings (G5.4 B) is read that
         way again: the choice is kept on the conversation's parser (``chosen_readings``) and replayed.
         """
-        chosen = (getattr(parser, "chosen_readings", None) or {}).get(str(source).strip())
-        if chosen is not None:
-            return deepcopy(chosen)
+        oid = _readings.oid_of(source)
+        if oid is not None:
+            chosen = (getattr(parser, "chosen_readings", None) or {}).get(oid)
+            if chosen is not None:
+                return deepcopy(chosen)
+            if oid != TENTATIVE:
+                raise ReadingUnavailable("historical_reading_unavailable")
+        import inspect
         from encoder import strip_fillers
+        kw = dict(kw)
+        if "_entry_selection" not in kw:
+            try:
+                declared = inspect.signature(parser.parse).parameters.get("_entry_selection")
+            except (TypeError, ValueError):
+                declared = None
+            if declared is not None and declared.kind in (inspect.Parameter.POSITIONAL_OR_KEYWORD,
+                                                          inspect.Parameter.KEYWORD_ONLY):
+                kw["_entry_selection"] = True
         읽음 = parser.parse(source, partial=True, repair=True, **kw)
         벗긴말 = strip_fillers(source, parser.language_pack)
         if not 벗긴말 or 벗긴말 == source.strip():
             return 읽음
         벗김 = parser.parse(벗긴말, partial=True, repair=True, **kw)
-        return 벗김 if 벗김 is not None else 읽음
+        if 벗김 is None:
+            return 읽음
+        capsule = 벗김.get("entry_selection") if isinstance(벗김, dict) else None
+        if isinstance(capsule, dict) and capsule.get("schema") == "marco-entry-selection-v1" \
+                and capsule.get("scope") == "known_selected_input_clauses" \
+                and capsule.get("status") == "partial" and capsule.get("coordinate_space") == "parser_view" \
+                and isinstance(capsule.get("gaps"), list):
+            capsule = deepcopy(capsule)
+            capsule["gaps"].append({"clause_ordinal": None, "code": "filler_source_offset_unproven"})
+            벗김 = dict(벗김, entry_selection=capsule)
+        return 벗김
 
     @staticmethod
     def _known_verbs(parser, sources):
         """이 말들에서 설명받은 어간들의 꼴 → {어간, 물음}."""
         stems = set()
         for source in sources:
-            parsed = parser.parse(source, partial=True)
+            parsed = ReasoningContext._definitions_read(parser, source)
             if parsed is not None:
                 stems |= {rule["verb"] for rule in parsed.get("정의", [])}
         return ReasoningContext._forms_of(parser, stems)
 
     @staticmethod
-    def _replay(parser, sources, fills=(), event_ids=None):
+    def _definitions_read(parser, source):
+        """Definition discovery goes through the bound raw reading; only unidentified or provisional
+        inputs are parsed fresh by the installed parser."""
+        oid = _readings.oid_of(source)
+        if oid is not None:
+            chosen = (getattr(parser, "chosen_readings", None) or {}).get(oid)
+            if chosen is not None:
+                return chosen
+            if oid != TENTATIVE:
+                raise ReadingUnavailable("historical_reading_unavailable")
+        return parser.parse(source, partial=True)
+
+    @staticmethod
+    def _replay(parser, sources, fills=(), event_ids=None, *, projection=None):
         """관찰을 다시 읽어 사실을 만든다. (사실, 뜻이 정해진 낱말, 못 채운 사건, 읽힌 몸통).
 
         ``fills`` 는 되물어서 받은 답이다 — **어느 사건의 어느 역할을 어떤 값으로
@@ -5891,8 +7634,10 @@ class ReasoningContext:
         """
         table = ReasoningContext._forms_of(parser, {
             rule["verb"] for source in sources
-            for parsed in [parser.parse(source, partial=True)] if parsed is not None
+            for parsed in [ReasoningContext._definitions_read(parser, source)] if parsed is not None
             for rule in parsed.get("정의", [])})
+        archive = parser.__dict__.setdefault("chosen_programs", {})
+        origin = {}
         read = []
         for source in sources:
             parsed = ReasoningContext._read_source(parser, source, events=True, verbs=table)
@@ -5903,14 +7648,35 @@ class ReasoningContext:
         # 재료로 쓰고, 뒤에 배운 것이 앞 사건에 소급되지 않는다.
         timeline, 꼴모음, 읽힌몸통 = {}, {}, set()
         for index, parsed in enumerate(read):
-            for rule in parsed.get("정의", []):
+            who = _readings.oid_of(sources[index])
+            who = (who, getattr(sources[index], "rev", 1)) if who not in (None, TENTATIVE) else None
+            for number, rule in enumerate(parsed.get("정의", [])):
                 배운것 = ReasoningContext._learned(parser, timeline, 꼴모음)
-                usable = ReasoningContext._rule(parser, rule, 배운것)
+                # An archived induced/compiled rule is reused while every definition version its calls
+                # captured is still the same identified reading; an explicit correction of a referenced
+                # definition changes that identity and rebuilds it.  Ordinary parser learning never does.
+                kept = archive.get((who, number)) if who else None
+                if kept is not None and kept["origins"] == {
+                        "%s@%s" % (c.get("action"), c.get("definition_version")):
+                        origin.get((c.get("action"), c.get("definition_version")))
+                        for c in kept["usable"]["프로그램"].get("calls") or []}:
+                    usable = deepcopy(kept["usable"])
+                else:
+                    if kept is None and who and (who, number) in parser.__dict__.get("blocked_programs", ()):
+                        # original program not archived and its grammar is unknown or changed
+                        raise ReadingUnavailable("historical_reading_unavailable")
+                    usable = ReasoningContext._rule(parser, rule, 배운것)
+                    if usable is not None and who:
+                        archive[(who, number)] = {"usable": deepcopy(usable), "origins": {
+                            "%s@%s" % (c.get("action"), c.get("definition_version")):
+                            origin.get((c.get("action"), c.get("definition_version")))
+                            for c in usable["프로그램"].get("calls") or []}}
                 if usable is not None:
                     # The definition's position is part of its identity.  A
                     # later redefinition must not silently change an older
                     # event that is replayed or completed.
                     usable["프로그램"] = {**usable["프로그램"], "definition_version": index}
+                    origin[(rule["verb"], index)] = list(who) if who else None
                     timeline.setdefault(rule["verb"], []).append((index, usable))
                     읽힌몸통.add(rule.get("몸통"))
 
@@ -6020,6 +7786,8 @@ class ReasoningContext:
             # `민수 구슬은 8개 있다. 지연에게 베풀었다` 에서 덜어내기가 처음 수량
             # 보다 앞서고, 처음 수량이 없다며 통째로 막힌다.
             rows, 조건들 = [], parsed.get("조건", [])
+            인증 = _scoped_guard_ids(parser, 조건들, projection, source)
+            미정 = False
             for at, stem, event, rule, 이름표, 받은값, 덮을값, 보완값, 보완사실 in happened:
                 if at != index:
                     continue
@@ -6048,7 +7816,8 @@ class ReasoningContext:
                 # 값도 안 바뀐 것이고(그건 아는 것이다), 조건을 못 재면 바뀌었는지
                 # 자체를 모르는 것이다 — 뒤쪽은 보류로 넘겨 옛 값을 확정하지 못하게 한다.
                 참 = ReasoningContext._holds(parser, 조건들, event["evidence"].get("start", 0),
-                                            facts + [row for _start, row in rows])
+                                            facts + [row for _start, row in rows], projection,
+                                            actual_source=source)
                 if 참 is None:
                     pending.append({"text": source, "at": index, "동사": stem,
                                     "id": 이름표, "잘림": bool(event.get("잘림")),
@@ -6072,7 +7841,10 @@ class ReasoningContext:
                 # 조건 뒤에 적힌 것이 사건이 아니라 값일 수도 있다. 같은 시험을
                 # 거치지 않으면 `…면 3개다` 가 조건과 상관없이 못 박힌다.
                 참 = ReasoningContext._holds(parser, 조건들, item["evidence"].get("start", 0),
-                                            facts + [row for _start, row in rows])
+                                            facts + [row for _start, row in rows], projection,
+                                            actual_source=source)
+                if 참 is None and 인증:
+                    미정 = True
                 if 참 is not True:
                     continue
                 item = deepcopy(item)
@@ -6092,13 +7864,14 @@ class ReasoningContext:
             # 아래 `turn`에서 임시 투영한다. 그렇지 않으면 가정도 실제 조건도
             # 같은 보류가 되어, 계산 가능한 가정을 버리게 된다.
             못잴조건 = [c for c in 조건들 if not 가정인가(c)
-                        and c["triple"][1] not in 표]
+                        and c["triple"][1] not in 표 and id(c) not in 인증]
             걸린수 = sum(1 for 하나 in happened if 하나[0] == index) + len(parsed["facts"])
             실제조건 = [c for c in 조건들 if not 가정인가(c)]
-            if 실제조건 and (못잴조건 or not 걸린수):
+            if 실제조건 and (못잴조건 or not 걸린수 or 미정):
                 pending.append({"text": source, "at": index, "동사": None,
                                 "id": None, "잘림": False, "차례": index,
-                                "못잼": "조건", "조각": 조건들[0]["evidence"],
+                                "못잼": "조건" if (못잴조건 or not 걸린수) else "condition_unknown",
+                                "조각": 조건들[0]["evidence"],
                                 "자리": {}, "빈자리": {}, "충돌": {}, "헛자리": {},
                                 "닿는곳": [c["triple"] for c in 조건들]})
             facts += [row for _start, row in sorted(rows, key=lambda row: row[0])]
@@ -6164,7 +7937,7 @@ class ReasoningContext:
             out.append(row)
         return out
 
-    def correct(self, index, replacement, knowledge_path=None):
+    def correct(self, index, replacement, knowledge_path=None, reading=None):
         """Replace one identified observation atomically, then replay all events.
 
         A correction is not a new event appended to the current quantity. Later
@@ -6177,13 +7950,19 @@ class ReasoningContext:
         if len(self.corrections) >= self.max_turns:
             raise ValueError("correction_capacity")
         parser = self._parser()
-        parsed = parser.parse(replacement, partial=True, events=True, repair=True)
+        parsed = reading
+        if parsed is None:
+            parsed = parser.parse(replacement, partial=True, events=True, repair=True)
         # 정정 대상은 초기 사실만이 아니다. 배운 뜻풀이와 조건은 뒤 사건의
         # 해석·발생 여부를 바꾸므로, 같은 원문 자리에서 교체하고 이후 근거를
         # 다시 검증한다. 물음이나 빈 말은 관찰을 대체할 수 없다.
         if (not parsed or parsed["query"] or not (parsed["facts"] or parsed.get("정의")
                                                    or parsed.get("사건") or parsed.get("조건"))):
             raise ValueError("correction_requires_observation")
+        # The committed revision needs one more ledger version; refuse before any trial state exists.
+        slot = self.reading_ledger.get(self.observations[index].oid)
+        if slot is not None and sum(len(e["versions"]) for e in self.reading_ledger.values()) >= self.max_turns * 8:
+            raise ValueError("reading_capacity")
         before_facts, _defined, _unsettled, _read = self._cached_replay(
             parser, self.observations, self.fills)
         before_state, _before_changes = current_facts(
@@ -6191,10 +7970,39 @@ class ReasoningContext:
             parser.data.get("numeric_updates", {}))
         pending = list(self.observations)
         before = pending[index]
-        pending[index] = replacement
-        facts, _defined, _unsettled, _읽힘 = self._cached_replay(parser, pending, self.fills)
-        after_state, changes = current_facts(facts, parser.data.get("mutable_predicates", []),
-                                             parser.data.get("numeric_updates", {}))
+        # Same slot, next reading revision (also when the text is unchanged): only this slot is re-read;
+        # every other archived interpretation is kept.  The new reading is visible to the trial replay
+        # only for this identity and is withdrawn if the replay fails.
+        pending[index] = Obs(str(replacement), before.oid, before.rev + 1, parsed, "correction")
+        view = parser.__dict__.setdefault("chosen_readings", {})
+        programs = parser.__dict__.setdefault("chosen_programs", {})
+        saved = {"view": dict(view), "programs": dict(programs),
+                 "ledger": deepcopy(getattr(self, "reading_ledger", None)),
+                 "next": getattr(self, "_next_observation", None),
+                 "event_ids": deepcopy(self.event_ids),
+                 "event_revisions": list(self.event_revisions),
+                 "scope": getattr(self, "_last_replay_scope", None),
+                 "verb": getattr(self, "_verb_cache", None),
+                 "obs": list(self._obs), "corrections": list(self.corrections)}
+        view[before.oid] = deepcopy(parsed)
+        try:
+            facts, _defined, _unsettled, _읽힘 = self._cached_replay(parser, pending, self.fills)
+            after_state, changes = current_facts(facts, parser.data.get("mutable_predicates", []),
+                                                 parser.data.get("numeric_updates", {}))
+            self.observations = pending
+        except BaseException:
+            self._obs = saved["obs"]
+            self.corrections[:] = saved["corrections"]
+            view.clear()
+            view.update(saved["view"])
+            programs.clear()
+            programs.update(saved["programs"])
+            self.reading_ledger, self._next_observation = saved["ledger"], saved["next"]
+            self.event_ids, self.event_revisions = saved["event_ids"], saved["event_revisions"]
+            self._last_replay_scope, self._verb_cache = saved["scope"], saved["verb"]
+            # the failed trial's revision is never reusable: drop the cache, which the original sources re-fill
+            self._replay_cache = None
+            raise
         before_values = {(row["triple"][0], row["triple"][1]): row["triple"][2]
                          for row in before_state}
         after_values = {(row["triple"][0], row["triple"][1]): row["triple"][2]
@@ -6207,7 +8015,6 @@ class ReasoningContext:
         changes = [change for change in changes
                    if (change.get("subject"), change.get("predicate")) in affected]
         record = {"index": index, "before": before, "after": replacement}
-        self.observations = pending
         self.corrections.append(record)
         # The observation slot is stable.  Keep an append-only revision link
         # for every event originally introduced by that input instead of
@@ -6227,6 +8034,1459 @@ class ReasoningContext:
                     {"ok": True, "observation_turns": len(pending),
                      "affected_state": [list(key) for key in sorted(affected)]}])}
 
+    def _capture_current_query_read(self, text, parser, current):
+        carrier = None
+        try:
+            import hashlib, json, math
+            carrier = self.__dict__.get("_current_query_read")
+            if not isinstance(carrier, dict) or set(carrier) != {"source", "calls", "parser", "value", "gap"}:
+                carrier = None
+                return
+            calls = carrier["calls"]
+            if type(calls) is not int or calls < 0:
+                carrier.update(parser=None, value=None, gap="current_read_carrier_invalid")
+                return
+            carrier["calls"] = calls + 1
+            if calls + 1 > 1 or carrier["value"] is not None or carrier["parser"] is not None:
+                carrier.update(parser=None, value=None, gap="current_read_nested")
+                return
+            if (carrier["source"] is not text or not isinstance(text, str) or _readings.oid_of(text) != TENTATIVE
+                    or TENTATIVE in (getattr(parser, "chosen_readings", None) or {})
+                    or self.__dict__.get("_rereading") is True):
+                carrier.update(parser=None, value=None, gap="current_read_source_mismatch")
+                return
+
+            def index_ok(x, allow_none=False):
+                return (x is None and allow_none) or (type(x) is int and x >= 0)
+
+            def detach(obj, depth=0):
+                if depth > 32:
+                    raise ValueError("depth")
+                if obj is None or type(obj) in (bool, int, str):
+                    return obj
+                if type(obj) is float:
+                    if not math.isfinite(obj):
+                        raise ValueError("nonfinite")
+                    return obj
+                if type(obj) is list:
+                    return [detach(item, depth + 1) for item in obj]
+                if type(obj) is dict:
+                    if any(type(key) is not str for key in obj):
+                        raise ValueError("key")
+                    return {key: detach(item, depth + 1) for key, item in obj.items()}
+                raise ValueError("type")
+            advanced = ("definitions", "events", "condition", "assumption", "reason", "correction", "repair",
+                        "정의", "사건", "가정사건", "조건", "가정", "원인", "이유물음", "수선", "사건정정")
+            query = current.get("query") if isinstance(current, dict) else None
+            if (not isinstance(current, dict) or current.get("facts") != []
+                    or any(current.get(key) not in (None, [], {}, "") for key in advanced)
+                    or not isinstance(query, list) or len(query) != 1 or not isinstance(query[0], dict)
+                    or set(query[0]) != {"triple", "render"}):
+                carrier["gap"] = "unsupported_query"
+                return
+            triple, render = query[0]["triple"], query[0]["render"]
+            if (not isinstance(triple, list) or len(triple) != 3
+                    or any(type(x) is not str or not x for x in triple)
+                    or not isinstance(render, list) or not render
+                    or any(type(x) is not str for x in render)
+                    or triple[1].startswith(("$", "?"))):
+                carrier["gap"] = "unsupported_query"
+                return
+            asked = [i for i in (0, 2) if triple[i].startswith("?")]
+            if (len(asked) != 1 or len(triple[asked[0]]) < 2
+                    or triple[2 - asked[0]].startswith(("$", "?"))):
+                carrier["gap"] = "unsupported_query"
+                return
+            selection = current.get("entry_selection")
+            if (not isinstance(selection, dict)
+                    or set(selection) != {"schema", "scope", "status", "coordinate_space", "items", "gaps"}
+                    or selection["schema"] != "marco-entry-selection-v1"
+                    or selection["scope"] != "known_selected_input_clauses"
+                    or selection["status"] != "partial" or selection["coordinate_space"] != "parser_view"
+                    or not isinstance(selection["items"], list) or not isinstance(selection["gaps"], list)):
+                carrier["gap"] = "native_selection_unavailable"
+                return
+            if len(selection["gaps"]) > 64:
+                carrier["gap"] = "native_selection_overflow"
+                return
+            for gap in selection["gaps"]:
+                if (not isinstance(gap, dict) or set(gap) != {"clause_ordinal", "code"}
+                        or not index_ok(gap["clause_ordinal"], allow_none=True)
+                        or type(gap["code"]) is not str or not gap["code"].strip()):
+                    carrier["gap"] = "native_selection_invalid"
+                    return
+            items = selection["items"]
+            if len(items) != 1 or not isinstance(items[0], dict) or set(items[0]) != {
+                    "clause_ordinal", "span", "compiler_index", "origin", "targets", "derivation"}:
+                carrier["gap"] = "native_selection_invalid"
+                return
+            item = items[0]
+            span, targets = item["span"], item["targets"]
+            if (item["clause_ordinal"] != 0 or type(item["clause_ordinal"]) is not int
+                    or not index_ok(item["compiler_index"], allow_none=True)
+                    or item["origin"] is not None and not isinstance(item["origin"], dict)
+                    or item["derivation"] is not None
+                    or not isinstance(targets, dict) or set(targets) != {"facts", "query"}
+                    or targets["facts"] != [] or not isinstance(targets["query"], list)
+                    or len(targets["query"]) != 1 or type(targets["query"][0]) is not int
+                    or targets["query"][0] != 0
+                    or not isinstance(span, list) or len(span) != 2
+                    or not all(type(x) is int for x in span)
+                    or not 0 <= span[0] < span[1] <= len(text)):
+                carrier["gap"] = "native_selection_invalid"
+                return
+            unaligned = ("relative_source_offset_unproven", "filler_source_offset_unproven",
+                         "derivation_unavailable", "uncollected_scope", "uncollected_index")
+            native_codes = [gap["code"] for gap in selection["gaps"] if gap["code"] in unaligned]
+            if item["compiler_index"] is None and not any(
+                    gap["code"] == "uncollected_index" and gap["clause_ordinal"] == 0
+                    for gap in selection["gaps"]):
+                carrier["gap"] = "native_selection_invalid"
+                return
+            cached = self.__dict__.get("_grammar_cache")
+            grammar = cached[1] if isinstance(cached, tuple) and len(cached) == 2 else None
+            if (cached is None or cached[0] is not parser or type(grammar) is not str
+                    or len(grammar) != 64 or any(c not in "0123456789abcdef" for c in grammar)):
+                carrier["gap"] = "grammar_cache_unavailable"
+                return
+            value = detach({"text_sha256": hashlib.sha256(str.encode(text, "utf-8")).hexdigest(),
+                            "parser_base_sha256": getattr(self, "parser_base_sha256", None),
+                            "parser_grammar_sha256": grammar,
+                            "installed_memory_head": getattr(self, "installed_memory_head", None),
+                            "query": query, "entry_selection": selection})
+            encoded = json.dumps(value, ensure_ascii=False, allow_nan=False).encode("utf-8")
+            if len(encoded) > 65536:
+                carrier["gap"] = "value_overflow"
+                return
+            if native_codes:
+                # Passive transport only: the bounded native selection/gaps travel intact and
+                # Session rejects admission locally; a single native code is exposed unrewritten.
+                carrier.update(parser=parser, value=value,
+                               gap=native_codes[0] if len(native_codes) == 1 else "native_alignment_unproven")
+                return
+            carrier.update(parser=parser, value=value)
+        except Exception:
+            try:
+                if isinstance(carrier, dict):
+                    carrier.update(parser=None, value=None, gap="capture_failed")
+            except Exception:
+                pass
+    _UNREAD_JSON_BOUNDS = (4096, 32)
+    _UNREAD_FRAME_FIELDS = ("source", "calls", "parser", "current", "model", "nested", "gap",
+                            "pending_witness")
+    _UNREAD_PENDING_TEXT_BYTES = 8192
+    _UNREAD_PENDING_SCHEMA_V2 = "graph-unread-continuation-policy-v2"
+
+    def _unread_pending_sha(self, value):
+        """Hex SHA-256 of canonical JSON, or None when the value is not plain/bounded JSON."""
+        import hashlib
+        text = self._unread_json(value, 65536)
+        if text is None:
+            return None
+        try:
+            encoded = text.encode("utf-8")
+        except UnicodeEncodeError:
+            return None
+        return hashlib.sha256(encoded).hexdigest()
+
+    def _unread_pending_shape(self, entry):
+        """Classify one native pending entry by exact shape; returns (kind, metadata) or None.
+
+        Only ``{text, at}`` and ``{text, at, 말, 꼬리}`` plain dicts qualify.  No parsing, no
+        evidence admission: control text that stays unresolved is simply kind ``text``.
+        """
+        if type(entry) is not dict:
+            return None
+        keys = set(entry)
+        if keys == {"text", "at"}:
+            kind = "text"
+        elif keys == {"text", "at", "말", "꼬리"}:
+            kind = "unknown_word"
+        else:
+            return None
+        text, at = entry["text"], entry["at"]
+        if not isinstance(text, str) or not str(text).strip():
+            return None
+        try:
+            if len(str(text).encode("utf-8")) > self._UNREAD_PENDING_TEXT_BYTES:
+                return None
+        except UnicodeEncodeError:
+            return None
+        count = len(self._obs)
+        if type(at) is not int or at < 0 or at > count:
+            return None
+        meta = {"kind": kind, "at": at, "text": str(text)}
+        if kind == "unknown_word":
+            word, tail = entry["말"], entry["꼬리"]
+            if at >= count or type(word) is not str or not word.strip() or type(tail) is not str:
+                return None
+            meta["말"], meta["꼬리"] = word, tail
+        return kind, meta
+
+    def _unread_pending_unknown_binding(self, meta):
+        """Bind an unknown-word entry to its actual archived reading; None when anything is off."""
+        source = self._obs[meta["at"]]
+        if not isinstance(source, Obs):
+            return None
+        oid = _readings.oid_of(source)
+        if type(oid) is not str or not oid.strip() or oid == TENTATIVE:
+            return None
+        held = self.reading_ledger.get(oid)
+        record = self._active_record(source)
+        if type(held) is not dict or type(record) is not dict:
+            return None
+        revision = record.get("reading_revision")
+        archived = record.get("source")
+        parsed = record.get("parsed")
+        source_rev = getattr(source, "rev", None)
+        if type(revision) is not int or revision < 1 or revision != held.get("active") \
+                or type(source_rev) is not int or source_rev != revision \
+                or type(record.get("observation_id")) is not str or record.get("observation_id") != oid:
+            return None
+        if record.get("unavailable") or not isinstance(archived, str) or str(archived).strip() != meta["text"]:
+            return None
+        if type(parsed) is not dict or not isinstance(parsed.get("사건"), list):
+            return None
+        matches = [event for event in parsed["사건"] if type(event) is dict
+                   and event.get("verb") == meta["말"] and event.get("꼬리", "") == meta["꼬리"]]
+        if len(matches) != 1:
+            return None
+        record_sha256 = self._unread_pending_sha(record)
+        if record_sha256 is None:
+            return None
+        return {"source": source, "record": record, "archived": archived,
+                "public": {"observation_id": oid, "reading_revision": revision,
+                           "record_sha256": record_sha256}}
+
+    def _unread_pending_v2(self, max_pending):
+        """Pure witness of every actual pending entry, or None.  Private refs are never public."""
+        pending = getattr(self, "unread", None)
+        if type(max_pending) is not int or not 1 <= max_pending <= 8:
+            return None
+        if getattr(self, "unread_guard", None) or not isinstance(pending, list):
+            return None
+        if not 1 <= len(pending) <= max_pending:
+            return None
+        import hashlib
+        refs, public, total = [], [], 0
+        for index, entry in enumerate(pending):
+            shape = self._unread_pending_shape(entry)
+            if shape is None:
+                return None
+            kind, meta = shape
+            try:
+                text_bytes = meta["text"].encode("utf-8")
+            except UnicodeEncodeError:
+                return None
+            # Joined-with-newline byte budget: separators count, kind is a separate descriptor.
+            total += len(text_bytes) + (1 if index else 0)
+            if total > self._UNREAD_PENDING_TEXT_BYTES:
+                return None
+            text_sha256 = hashlib.sha256(text_bytes).hexdigest()
+            entry_sha256 = self._unread_pending_sha({key: meta[key] for key in meta if key != "kind"})
+            if text_sha256 is None or entry_sha256 is None:
+                return None
+            item = {"unread_index": index, "kind": kind, "at": meta["at"], "text_sha256": text_sha256,
+                    "entry_sha256": entry_sha256, "resolved": False}
+            binding = None
+            if kind == "unknown_word":
+                binding = self._unread_pending_unknown_binding(meta)
+                if binding is None:
+                    return None
+                item["archive"] = binding["public"]
+            refs.append({"entry": entry, "text": entry["text"], "meta": meta, "binding": binding})
+            public.append(item)
+        set_sha256 = self._unread_pending_sha(public)
+        if set_sha256 is None:
+            return None
+        return {"public": {"count": len(public), "max_pending": max_pending,
+                           "set_sha256": set_sha256, "entries": public},
+                "refs": refs}
+
+    def _unread_pending_v2_same(self, witness):
+        """True iff the actual pending set is still exactly the witnessed one.  No mutations."""
+        if type(witness) is not dict or set(witness) != {"public", "refs"}:
+            return False
+        public, refs = witness["public"], witness["refs"]
+        if type(public) is not dict or not isinstance(refs, list):
+            return False
+        current = self._unread_pending_v2(public.get("max_pending"))
+        if current is None or not self._unread_native_equal(current["public"], public) \
+                or len(current["refs"]) != len(refs):
+            return False
+        for old, new in zip(refs, current["refs"]):
+            if type(old) is not dict or old.get("entry") is not new["entry"] or old.get("text") is not new["text"]:
+                return False
+            if not self._unread_native_equal(old.get("meta"), new["meta"]):
+                return False
+            held, binding = old.get("binding"), new["binding"]
+            if (held is None) != (binding is None):
+                return False
+            if binding is not None and (type(held) is not dict
+                                        or held.get("source") is not binding["source"]
+                                        or held.get("record") is not binding["record"]
+                                        or held.get("archived") is not binding["archived"]
+                                        or not self._unread_native_equal(held.get("public"), binding["public"])):
+                return False
+        return True
+    _UNREAD_FRAME_ATTR = "_unread_continuation_frame"
+
+    @staticmethod
+    def _unread_json(value, max_bytes):
+        """Canonical finite plain JSON of ``value`` or None.
+
+        Plain JSON only: dict with str keys, list, str, bool, int, finite float, None.  Primitive
+        identity is exact (a bool is not an int, a subclass is not its base).  Node budget 4096,
+        depth 32, and the caller's UTF-8 byte bound are all enforced; any refusal is None.
+        """
+        if type(max_bytes) is not int or max_bytes <= 0:
+            return None
+        node_budget, max_depth = ReasoningContext._UNREAD_JSON_BOUNDS
+        nodes = 0
+        stack = [(value, 1)]
+        while stack:
+            node, depth = stack.pop()
+            nodes += 1
+            if nodes > node_budget or depth > max_depth:
+                return None
+            kind = type(node)
+            if node is None or kind is bool or kind is int or kind is str:
+                continue
+            if kind is float:
+                if node != node or node in (float("inf"), float("-inf")):
+                    return None
+                continue
+            if kind is list:
+                stack.extend((item, depth + 1) for item in node)
+                continue
+            if kind is dict:
+                for key, item in node.items():
+                    if type(key) is not str:
+                        return None
+                    stack.append((item, depth + 1))
+                continue
+            return None
+        try:
+            rendered = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+                                  allow_nan=False)
+        except (TypeError, ValueError):
+            return None
+        try:
+            encoded = rendered.encode("utf-8")
+        except UnicodeEncodeError:
+            return None
+        if len(encoded) > max_bytes:
+            return None
+        return rendered
+
+    @staticmethod
+    def _unread_native_equal(left, right):
+        """Structural equality of two plain JSON values with exact primitive identity.
+
+        Types must match exactly at every node (bool/int distinguished, str subclasses distinguished
+        from str).  Floats must be finite.  Depth and node budgets match ``_unread_json``; exceeding
+        either, or meeting a non-JSON node, is False rather than an exception.
+        """
+        node_budget, max_depth = ReasoningContext._UNREAD_JSON_BOUNDS
+        nodes = 0
+        stack = [(left, right, 1)]
+        while stack:
+            a, b, depth = stack.pop()
+            nodes += 1
+            if nodes > node_budget or depth > max_depth:
+                return False
+            kind = type(a)
+            if kind is not type(b):
+                return False
+            if a is None:
+                continue
+            if kind is bool or kind is int or kind is str:
+                if a != b:
+                    return False
+                continue
+            if kind is float:
+                if a != a or b != b or a in (float("inf"), float("-inf")) or a != b:
+                    return False
+                continue
+            if kind is list:
+                if len(a) != len(b):
+                    return False
+                stack.extend((x, y, depth + 1) for x, y in zip(a, b))
+                continue
+            if kind is dict:
+                if len(a) != len(b):
+                    return False
+                for key in b:
+                    if type(key) is not str:
+                        return False
+                for key, item in a.items():
+                    if type(key) is not str or key not in b:
+                        return False
+                    stack.append((item, b[key], depth + 1))
+                continue
+            return False
+        return True
+
+    def _unread_continuation_enter(self, text, previous):
+        """Open the ephemeral frame for one turn; returns the new frame dict (never installs it).
+
+        ``text`` must be the actual tentative ``Obs`` the turn made; the reference is retained, not
+        copied.  ``previous`` is whatever frame was active before (None when none).  An active
+        previous frame means a nested turn: both it and the new frame are marked nested and carry a
+        gap, so neither is eligible.  A frame opened inside ``_name_reply`` is likewise ineligible.
+        """
+        frame = {"source": text, "calls": 0, "parser": None, "current": None, "model": None,
+                 "nested": False, "gap": None, "pending_witness": None}
+        projection = getattr(getattr(self, "model", None), "language_projection", None)
+        projected = projection.get("data") if isinstance(projection, dict) else None
+        policy = projected.get("unread_continuation") if isinstance(projected, dict) else None
+        if (type(policy) is dict and policy.get("schema") == self._UNREAD_PENDING_SCHEMA_V2
+                and type(policy.get("max_pending")) is int):
+            # Captured before the current turn touches anything; v1 / no policy leaves None.
+            frame["pending_witness"] = self._unread_pending_v2(policy["max_pending"])
+        if not isinstance(text, Obs) or _readings.oid_of(text) != TENTATIVE:
+            frame["gap"] = "input_owner_unavailable"
+        if previous is not None:
+            frame["nested"] = True
+            if frame["gap"] is None:
+                frame["gap"] = "input_scope_unsupported"
+            if isinstance(previous, dict) and set(previous) == set(self._UNREAD_FRAME_FIELDS):
+                previous["nested"] = True
+                if previous["gap"] is None:
+                    previous["gap"] = "input_scope_unsupported"
+        if getattr(self, "_in_name_reply", False) and frame["gap"] is None:
+            frame["gap"] = "input_scope_unsupported"
+        return frame
+
+    def _unread_continuation_read(self, text, parser, current):
+        """Record the one actual ``_read_source`` of the turn into the active frame.
+
+        Returns the frame (or None when no well-formed frame is active, a pure no-op).  The read
+        count saturates at 2; only the first read captures, and it keeps the actual ``parser``,
+        ``current`` and ``self.model`` references.  A second read, a source object that is not the
+        frame's own, a parser other than the installed instance, a name reply or a nested frame
+        sets a finite gap code and leaves any first capture untouched.  Nothing is parsed, copied
+        or cached here.
+        """
+        frame = getattr(self, self._UNREAD_FRAME_ATTR, None)
+        if not isinstance(frame, dict) or set(frame) != set(self._UNREAD_FRAME_FIELDS) \
+                or type(frame["calls"]) is not int:
+            return None
+        first = frame["calls"] == 0
+        frame["calls"] = min(frame["calls"] + 1, 2)
+        if not first:
+            if frame["gap"] is None:
+                frame["gap"] = "input_scope_unsupported"
+            return frame
+        if text is not frame["source"] or parser is None \
+                or parser is not getattr(self, "_parser_instance", None):
+            if frame["gap"] is None:
+                frame["gap"] = "input_owner_unavailable"
+            return frame
+        if frame["nested"] or getattr(self, "_in_name_reply", False) \
+                or getattr(self, "_rereading", False):
+            if frame["gap"] is None:
+                frame["gap"] = "input_scope_unsupported"
+            return frame
+        frame["parser"], frame["current"], frame["model"] = parser, current, self.model
+        return frame
+
+    def _unread_continuation_start(self, text, current, parser, facts, unsettled, blocker, result, replies):
+        """Stage B: guarded start of the known-support continuation; returns the private continuation or None.
+
+        Called (by Stage C) right after the unchanged ``_blocked_by`` has produced ``blocker``.  With no
+        selected graph policy this is an immediate no-op.  Every refusal is a finite code in the
+        ephemeral ``frame["gap"]`` only; nothing else is touched and the original unread hold runs.  On
+        success the saved exact native ``unread_event`` hold is kept for the later finish refusal.  No
+        parsing, closure reconstruction, archive mutation, hook or answer call happens here.
+        """
+        from pack_model import PackModel
+        model = self.model
+        if type(model) is not PackModel:
+            return None
+        projection = model.language_projection
+        if projection is None:
+            return None
+        projected = projection.get("data") if isinstance(projection, dict) else None
+        policy = projected.get("unread_continuation") if isinstance(projected, dict) else None
+        installed = parser.data.get("unread_continuation") if parser is not None \
+            and isinstance(getattr(parser, "data", None), dict) else None
+        if policy is None and installed is None:
+            return None
+
+        frame = getattr(self, self._UNREAD_FRAME_ATTR, None)
+        well_formed = isinstance(frame, dict) and set(frame) == set(self._UNREAD_FRAME_FIELDS)
+
+        max_text, max_canonical, hex_len = 8192, 65536, 64
+
+        # ---- selected policy: identical in projection and actual parser ------------------------
+        if policy is None or installed is None:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_unavailable"
+            return None
+        policy_fields = {"schema", "scope", "render", "source", "declaration_sha256"}
+        policy_v2 = isinstance(policy, dict) and set(policy) == policy_fields | {"max_pending"}
+        if not isinstance(policy, dict) or not (set(policy) == policy_fields or policy_v2):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_invalid"
+            return None
+        max_pending = policy["max_pending"] if policy_v2 else None
+        if policy_v2 and (type(max_pending) is not int or not 1 <= max_pending <= 8):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_invalid"
+            return None
+        expected_schema = self._UNREAD_PENDING_SCHEMA_V2 if policy_v2 else "graph-unread-continuation-policy-v1"
+        if policy["schema"] != expected_schema \
+                or policy["scope"] != "direct_positive_immutable_binary" \
+                or not (type(policy["declaration_sha256"]) is str and len(policy["declaration_sha256"]) == hex_len
+                        and all(ch in "0123456789abcdef" for ch in policy["declaration_sha256"])):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_invalid"
+            return None
+        render = policy["render"]
+        if type(render) is not str or not render.strip() or len(render) > 1024:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_invalid"
+            return None
+        try:
+            render_bytes = len(render.encode("utf-8"))
+        except UnicodeEncodeError:
+            render_bytes = None
+        if (render_bytes or 4097) > 4096:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_invalid"
+            return None
+        capsule = policy["source"]
+        if not isinstance(capsule, dict) or set(capsule) != {"graph_id", "root_id", "rule_id", "sense_id",
+                                                             "effective_graph_sha256", "view_key", "nodes",
+                                                             "edges"}:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_invalid"
+            return None
+        view_key = capsule["view_key"]
+        if not all(type(capsule[key]) is str and capsule[key].strip() for key in ("graph_id", "root_id", "rule_id")) \
+                or capsule["sense_id"] is not None \
+                or not (type(capsule["effective_graph_sha256"]) is str
+                        and len(capsule["effective_graph_sha256"]) == hex_len
+                        and all(ch in "0123456789abcdef" for ch in capsule["effective_graph_sha256"])) \
+                or not isinstance(view_key, list) or len(view_key) != 2 \
+                or type(view_key[0]) is not int or view_key[0] < 0 \
+                or not (view_key[1] is None or (type(view_key[1]) is str and view_key[1].strip())) \
+                or type(capsule["nodes"]) is not dict or len(capsule["nodes"]) > 512 \
+                or type(capsule["edges"]) is not dict or len(capsule["edges"]) > 1024:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_invalid"
+            return None
+        provenance = projection.get("provenance")
+        projection_fingerprint = projection.get("fingerprint")
+        if projection.get("schema") != "graph-dialogue-projection-v1" or not isinstance(provenance, dict) \
+                or any(not self._unread_native_equal(provenance.get(key), capsule[key])
+                       for key in ("graph_id", "root_id", "effective_graph_sha256", "view_key")) \
+                or not (type(projection_fingerprint) is str and len(projection_fingerprint) == hex_len
+                        and all(ch in "0123456789abcdef" for ch in projection_fingerprint)):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_invalid"
+            return None
+        declared_keys = ("schema", "scope", "render", "max_pending", "source") if policy_v2 \
+            else ("schema", "scope", "render", "source")
+        declaration_json = self._unread_json({key: policy[key] for key in declared_keys}, max_canonical)
+        policy_json = self._unread_json(policy, max_canonical)
+        if declaration_json is None or policy_json is None \
+                or _sha(declaration_json) != policy["declaration_sha256"] \
+                or not self._unread_native_equal(policy, installed):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "policy_invalid"
+            return None
+
+        # ---- ephemeral frame ownership ----------------------------------------------------------
+        if not well_formed:
+            return None
+        if frame["gap"] is not None:
+            return None
+        if frame["source"] is not text or not isinstance(text, Obs) or _readings.oid_of(text) != TENTATIVE:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "input_owner_unavailable"
+            return None
+        if frame["nested"] is not False or type(frame["calls"]) is not int or frame["calls"] != 1 \
+                or getattr(self, "_in_name_reply", False) or getattr(self, "_rereading", False):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "input_scope_unsupported"
+            return None
+        if frame["parser"] is None or frame["parser"] is not parser \
+                or parser is not getattr(self, "_parser_instance", None) \
+                or frame["model"] is not model or frame["current"] is not current:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "input_owner_unavailable"
+            return None
+
+        # ---- grammar cache / head chronology of the current parser -------------------------------
+        cache = getattr(self, "_grammar_cache", None)
+        if type(cache) is not tuple or len(cache) != 2 or cache[0] is not parser:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_identity_mismatch"
+            return None
+        current_grammar = cache[1]
+        current_base = self.parser_base_sha256
+        current_head = self.installed_memory_head
+        conversation_id = getattr(self, "conversation_id", None)
+        model_content = getattr(model, "content_fingerprint", None)
+        model_effective = getattr(model, "effective_key", None)
+        if not all(type(item) is str and len(item) == hex_len and all(ch in "0123456789abcdef" for ch in item)
+                   for item in (current_grammar, current_base, model_content)) \
+                or not (current_head is None or (type(current_head) is int and current_head >= 0)) \
+                or type(conversation_id) is not str or not conversation_id.strip() \
+                or type(model_effective) is not str or len(model_effective) != hex_len \
+                or not all(ch in "0123456789abcdef" for ch in model_effective):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_identity_mismatch"
+            return None
+
+        # ---- the one actual blocker / pending record ---------------------------------------------
+        if blocker is None or not isinstance(blocker, tuple) or len(blocker) != 2 or blocker[1] is not None:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "pending_scope_unsupported"
+            return None
+        witness = frame["pending_witness"]
+        pending_meta = None
+        blocker_index = 0
+        if policy_v2:
+            if type(witness) is not dict or not self._unread_pending_v2_same(witness) \
+                    or type(witness["public"]["max_pending"]) is not int \
+                    or witness["public"]["max_pending"] != policy["max_pending"] \
+                    or not isinstance(self.unread, list) or len(witness["refs"]) != len(self.unread):
+                if well_formed and frame["gap"] is None:
+                    frame["gap"] = "pending_scope_unsupported"
+                return None
+            hits = [index for index, ref in enumerate(witness["refs"]) if ref["text"] is blocker[0]]
+            if len(hits) != 1:
+                if well_formed and frame["gap"] is None:
+                    frame["gap"] = "pending_scope_unsupported"
+                return None
+            blocker_index = hits[0]
+            ref = witness["refs"][blocker_index]
+            entry = ref["entry"]
+            if entry is not self.unread[blocker_index] or type(entry) is not dict \
+                    or entry["text"] is not blocker[0] or type(ref["meta"]) is not dict:
+                if well_formed and frame["gap"] is None:
+                    frame["gap"] = "pending_scope_unsupported"
+                return None
+            pending_meta = {key: ref["meta"][key] for key in ref["meta"] if key != "kind"}
+        else:
+            if self.unread_guard or len(self.unread) != 1:
+                if well_formed and frame["gap"] is None:
+                    frame["gap"] = "pending_scope_unsupported"
+                return None
+            entry = self.unread[0]
+            if not isinstance(entry, dict) or set(entry) != {"text", "at"} or entry["text"] is not blocker[0]:
+                if well_formed and frame["gap"] is None:
+                    frame["gap"] = "pending_scope_unsupported"
+                return None
+        at = entry["at"]
+        if type(at) is not int or at < 0 or at > len(self.observations):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "pending_scope_unsupported"
+            return None
+        pending_text = str(entry["text"])
+        try:
+            pending_bytes = len(pending_text.encode("utf-8"))
+        except UnicodeEncodeError:
+            pending_bytes = None
+        if pending_bytes is None or pending_bytes > max_text:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "qualification_over_bound"
+            return None
+
+        # ---- one plain one-variable query --------------------------------------------------------
+        if not isinstance(current, dict) or current.get("facts"):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "query_scope_unsupported"
+            return None
+        advanced = ("사건", "가정사건", "사건정정", "정의", "원인", "이유물음", "조건", "events", "definition",
+                    "cause", "reason", "correction", "condition", "hypothesis", "가정", "수선")
+        if any(current.get(key) for key in advanced):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "query_scope_unsupported"
+            return None
+        query = current.get("query")
+        if not isinstance(query, list) or len(query) != 1 or not isinstance(query[0], dict) \
+                or set(query[0]) != {"triple", "render"}:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "query_scope_unsupported"
+            return None
+        triple, render_words = query[0]["triple"], query[0]["render"]
+        if not isinstance(triple, (list, tuple)) or len(triple) != 3 \
+                or not all(type(part) is str and part.strip() for part in triple) \
+                or sum(part.startswith("?") for part in (triple[0], triple[2])) != 1 \
+                or triple[1].startswith("?") or any("$" in part for part in triple) \
+                or (isinstance(triple[0], str) and re.fullmatch(r"[+-]?\d+(\.\d+)?", triple[0].strip()) is not None) \
+                or (isinstance(triple[2], str) and re.fullmatch(r"[+-]?\d+(\.\d+)?", triple[2].strip()) is not None) \
+                or not isinstance(render_words, list) or not render_words \
+                or not all(type(item) is str for item in render_words):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "query_scope_unsupported"
+            return None
+        predicate = triple[1]
+        grounded = triple[2] if triple[0].startswith("?") else triple[0]
+        data = parser.data
+        updates = data.get("numeric_updates") or {}
+        excluded = set(data.get("mutable_predicates") or []) | set(updates) \
+            | set(data.get("comparisons") or {}) \
+            | {spec.get("target") for spec in updates.values() if isinstance(spec, dict)}
+        if predicate in excluded:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "query_scope_unsupported"
+            return None
+        words = grounded.split()
+        speaker = getattr(parser, "speaker_placeholder", "")
+        if speaker and (speaker in words or grounded == speaker):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "query_scope_unsupported"
+            return None
+        for pointer in getattr(parser, "pointers", []) or []:
+            if not isinstance(pointer, str) or not pointer.strip():
+                continue
+            sequence = pointer.split()
+            if any(words[i:i + len(sequence)] == sequence for i in range(len(words))):
+                if well_formed and frame["gap"] is None:
+                    frame["gap"] = "query_scope_unsupported"
+                return None
+        if frame["current"] is not current or not self._unread_native_equal(query, current.get("query")):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "query_scope_unsupported"
+            return None
+        question_text = str(text)
+        try:
+            question_bytes = len(question_text.encode("utf-8"))
+        except UnicodeEncodeError:
+            question_bytes = None
+        render_json = self._unread_json(render_words, max_text)
+        if question_bytes is None or question_bytes > max_text or render_json is None:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "qualification_over_bound"
+            return None
+
+        # ---- exactly one direct positive asserted immutable support, no denial -------------------
+        try:
+            from . import inference as _inference
+        except ImportError:
+            from marco.reasoning import inference as _inference
+        if not isinstance(facts, list) or len(facts) > 2048:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "qualification_over_bound"
+            return None
+        support = None
+        matched = 0
+        for fact in facts:
+            if not isinstance(fact, dict):
+                continue
+            row = fact.get("triple")
+            if not isinstance(row, (list, tuple)) or len(row) != 3 \
+                    or not all(type(part) is str for part in row):
+                continue
+            if _inference.bind(list(triple), list(row), {}) is None:
+                continue
+            matched += 1
+            polarity = fact.get("polarity", True)
+            if polarity is False:
+                if well_formed and frame["gap"] is None:
+                    frame["gap"] = "support_unavailable"
+                return None
+            if matched > 1:
+                if well_formed and frame["gap"] is None:
+                    frame["gap"] = "support_unavailable"
+                return None
+            support = fact
+        if support is None:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_unavailable"
+            return None
+        evidence = support.get("evidence")
+        modality = support.get("modality", "asserted")
+        if support.get("polarity", True) is not True or type(modality) is not str or modality != "asserted" \
+                or support.get("unnamed") or any(key in support for key in ("at_least", "resolve", "bound")) \
+                or not isinstance(evidence, dict) or "action_event" in evidence \
+                or (type(evidence.get("mode")) is str and evidence.get("mode") == "hypothetical") \
+                or any(key in evidence for key in ("at_least", "resolve", "unnamed", "bound", "derived", "rule")):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_unavailable"
+            return None
+
+        # ---- actual active archive ownership -----------------------------------------------------
+        import hashlib
+        turn_index = evidence.get("turn")
+        source = evidence.get("source")
+        if type(turn_index) is not int or turn_index < 0 or turn_index >= len(self.observations) \
+                or not isinstance(source, Obs):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_identity_mismatch"
+            return None
+        oid = _readings.oid_of(source)
+        source_rev = getattr(source, "rev", None)
+        active_obs = self.observations[turn_index]
+        if type(oid) is not str or not oid.strip() or oid == TENTATIVE \
+                or type(source_rev) is not int or source_rev < 1 \
+                or not isinstance(active_obs, Obs) \
+                or type(_readings.oid_of(active_obs)) is not str or _readings.oid_of(active_obs) != oid \
+                or type(getattr(active_obs, "rev", None)) is not int or active_obs.rev != source_rev \
+                or str(active_obs) != str(source):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_identity_mismatch"
+            return None
+        ledger_entry = self.reading_ledger.get(oid)
+        if not isinstance(ledger_entry, dict):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_unavailable"
+            return None
+        revision = ledger_entry.get("active")
+        versions = ledger_entry.get("versions")
+        if type(revision) is not int or revision < 1 or revision != source_rev or not isinstance(versions, list) \
+                or len(versions) < revision or len(versions) > min(self.max_turns * 8, 2048):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_identity_mismatch"
+            return None
+        record = versions[revision - 1]
+        if not isinstance(record, dict) or type(record.get("observation_id")) is not str \
+                or record.get("observation_id") != oid \
+                or type(record.get("reading_revision")) is not int or record.get("reading_revision") != revision \
+                or type(record.get("source")) is not str or record.get("source") != str(source) \
+                or record.get("unavailable") is not False \
+                or not isinstance(record.get("parsed"), dict):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_identity_mismatch"
+            return None
+        if record.get("parser_base_sha256") != current_base \
+                or not (type(record.get("parser_grammar_sha256")) is str
+                        and len(record.get("parser_grammar_sha256")) == hex_len
+                        and all(ch in "0123456789abcdef" for ch in record.get("parser_grammar_sha256"))):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_identity_mismatch"
+            return None
+        archived_head = record.get("installed_memory_head")
+        if archived_head is not None:
+            if type(archived_head) is not int or archived_head < 0 \
+                    or current_head is None or archived_head > current_head:
+                if well_formed and frame["gap"] is None:
+                    frame["gap"] = "support_identity_mismatch"
+                return None
+        parsed = record["parsed"]
+        archived_facts = parsed.get("facts")
+        if not isinstance(archived_facts, list) \
+                or (not 1 <= len(archived_facts) <= 2 if policy_v2 else len(archived_facts) != 1) \
+                or parsed.get("query") is not None and (type(parsed.get("query")) is not list or parsed.get("query")) \
+                or any(parsed.get(key) for key in advanced):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_unavailable"
+            return None
+        replay_view = {key: value for key, value in support.items() if key != "evidence"}
+        replay_view["evidence"] = {key: value for key, value in evidence.items() if key not in ("turn", "source")}
+        if policy_v2 and len(archived_facts) == 2 \
+                and self._fact_batch_admissible(record["source"], record["parsed"], parser) is not True:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_unavailable"
+            return None
+        archived_hits = [index for index, row in enumerate(archived_facts)
+                         if isinstance(row, dict) and self._unread_native_equal(row, replay_view)]
+        if len(archived_hits) != 1:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "support_identity_mismatch"
+            return None
+        archived_fact_index = archived_hits[0]
+        archived_fact = archived_facts[archived_fact_index]
+        source_text = str(source)
+        try:
+            source_bytes = len(source_text.encode("utf-8"))
+        except UnicodeEncodeError:
+            source_bytes = None
+        record_json = self._unread_json(record, max_canonical)
+        fact_json = self._unread_json(archived_fact, max_text)
+        evidence_json = self._unread_json(archived_fact.get("evidence"), max_text)
+        entry_json = self._unread_json(pending_meta if pending_meta is not None
+                                       else {"text": pending_text, "at": at}, max_text)
+        if source_bytes is None or source_bytes > max_text or record_json is None \
+                or fact_json is None or evidence_json is None or entry_json is None:
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "qualification_over_bound"
+            return None
+
+        # ---- saved exact native unread_event hold for the later finish refusal -------------------
+        if not isinstance(result, dict) or not isinstance(replies, dict) \
+                or not isinstance(replies.get("unread_event"), str):
+            if well_formed and frame["gap"] is None:
+                frame["gap"] = "native_answer_unavailable"
+            return None
+        unread = blocker[0]
+        hold = {**result, "status": "unresolved",
+                "meaning": {"act": "hold", "reason": "unread_event", "said": unread},
+                "answer": replies["unread_event"].format(**{"말": unread})}
+
+        continuation = {
+            "frame": frame, "text": text, "current": current, "parser": parser, "model": model,
+            "policy": policy, "policy_sha256": _sha(policy_json),
+            "binding": {"conversation_id": conversation_id, "model_content_sha256": model_content,
+                        "model_effective_key": model_effective, "projection_fingerprint": projection_fingerprint,
+                        "parser_base_sha256": current_base, "parser_grammar_sha256": current_grammar,
+                        "installed_memory_head": current_head},
+            "question": {"triple": list(triple), "text_sha256": hashlib.sha256(question_text.encode("utf-8")).hexdigest(),
+                         "render_sha256": hashlib.sha256(render_json.encode("utf-8")).hexdigest()},
+            "pending": {"entry": entry, "unread_index": blocker_index, "at": at, "text_sha256": hashlib.sha256(pending_text.encode("utf-8")).hexdigest(),
+                        "entry_sha256": hashlib.sha256(entry_json.encode("utf-8")).hexdigest(), "resolved": False},
+            "support": {"fact": support, "source": source, "record": record,
+                        "observation_id": oid, "reading_revision": revision, "turn": turn_index,
+                        "triple": list(support["triple"]), "polarity": True, "modality": "asserted",
+                        "source_text_sha256": hashlib.sha256(source_text.encode("utf-8")).hexdigest(), "record_sha256": hashlib.sha256(record_json.encode("utf-8")).hexdigest(),
+                        "archived_fact_index": archived_fact_index, "archived_fact_sha256": hashlib.sha256(fact_json.encode("utf-8")).hexdigest(),
+                        "archived_parser_base_sha256": record["parser_base_sha256"],
+                        "archived_parser_grammar_sha256": record["parser_grammar_sha256"],
+                        "archived_installed_memory_head": archived_head,
+                        "archived_evidence_sha256": hashlib.sha256(evidence_json.encode("utf-8")).hexdigest()},
+            "hold": hold,
+        }
+        if policy_v2:
+            continuation["pending_set"] = witness
+            continuation["blocker_index"] = blocker_index
+            continuation["support"]["archived_fact_count"] = len(archived_facts)
+        return continuation
+
+    def _unread_continuation_finish(self, continuation, text, current, parser, resolved_queries, facts, outcome):
+        """Qualify one successful native answer by the accepted B continuation, or refuse with None.
+
+        Called by the C2 hook only after the sole original ``parser.answer`` succeeded inside the
+        same question branch.  Every identity the B start captured is rechecked against the actual
+        live objects (frame, source, parser, current, model, cache, policy, pending entry, support
+        record/source).  The native outcome must be exactly one direct ``fact``/``evidence`` leaf
+        whose fact is the chosen support triple and whose evidence is the chosen support evidence.
+        Refusal is a finite private ``frame["gap"]`` code and ``None``; the caller restores the
+        saved native hold.  Success is a shallow copy of the native outcome with only ``answer``
+        replaced and ``qualification`` added.  Nothing is parsed, stored, logged or taught here.
+        """
+        import hashlib
+        from marco.language.graph_projection import _render_unread_qualification
+        frame = getattr(self, self._UNREAD_FRAME_ATTR, None)
+        if not isinstance(frame, dict) or set(frame) != set(self._UNREAD_FRAME_FIELDS):
+            return None
+        if frame["gap"] is not None:
+            return None
+        gap = None
+        hexdigits = "0123456789abcdef"
+        fields = {"frame", "text", "current", "parser", "model", "policy", "policy_sha256", "binding",
+                  "question", "pending", "support", "hold"}
+        # B2: a genuine v2 continuation carries exactly the two extra B1 fields; nothing else changes.
+        policy_v2 = isinstance(continuation, dict) and "pending_set" in continuation
+        if policy_v2:
+            fields = fields | {"pending_set", "blocker_index"}
+        if not isinstance(continuation, dict) or set(continuation) != fields \
+                or continuation["frame"] is not frame:
+            gap = "input_owner_unavailable"
+        if gap is None and (continuation["text"] is not text or frame["source"] is not text
+                            or not isinstance(text, Obs) or _readings.oid_of(text) != TENTATIVE):
+            gap = "input_owner_unavailable"
+        if gap is None and (type(frame["calls"]) is not int or frame["calls"] != 1
+                            or frame["nested"] is not False or getattr(self, "_in_name_reply", False)
+                            or getattr(self, "_rereading", False)):
+            gap = "input_scope_unsupported"
+        if gap is None and (parser is None or frame["parser"] is not parser
+                            or continuation["parser"] is not parser
+                            or parser is not getattr(self, "_parser_instance", None)
+                            or current is None or frame["current"] is not current
+                            or continuation["current"] is not current
+                            or frame["model"] is not self.model or continuation["model"] is not self.model):
+            gap = "input_owner_unavailable"
+        policy, policy_sha256 = (continuation["policy"], continuation["policy_sha256"]) if gap is None else (None, None)
+        if gap is None and not isinstance(policy, dict):
+            gap = "policy_unavailable"
+        policy_fields = {"schema", "scope", "render", "source", "declaration_sha256"}
+        if policy_v2:
+            policy_fields = policy_fields | {"max_pending"}
+        if gap is None and set(policy) != policy_fields:
+            gap = "policy_invalid"
+        # B2: continuation shape and declared schema must agree; v2 needs an exact int bound 1..8.
+        if gap is None and (policy_v2 != (policy["schema"] == self._UNREAD_PENDING_SCHEMA_V2)
+                            or (policy_v2 and (type(policy["max_pending"]) is not int
+                                               or not 1 <= policy["max_pending"] <= 8))):
+            gap = "policy_invalid"
+        render = policy.get("render") if gap is None else None
+        source = policy.get("source") if gap is None else None
+        if gap is None:
+            policy_json = self._unread_json(policy, 65536)
+            declaration = {"schema": policy["schema"], "scope": policy["scope"], "render": render, "source": source}
+            if policy_v2:
+                declaration["max_pending"] = policy["max_pending"]
+            declaration_json = self._unread_json(declaration, 65536)
+            if policy_json is None or declaration_json is None or type(policy_sha256) is not str \
+                    or hashlib.sha256(policy_json.encode("utf-8")).hexdigest() != policy_sha256 \
+                    or type(policy["declaration_sha256"]) is not str \
+                    or hashlib.sha256(declaration_json.encode("utf-8")).hexdigest() != policy["declaration_sha256"]:
+                gap = "policy_invalid"
+        if gap is None and (not isinstance(source, dict) or set(source) != {
+                "graph_id", "root_id", "rule_id", "sense_id", "effective_graph_sha256", "view_key", "nodes", "edges"}
+                or source["sense_id"] is not None):
+            gap = "policy_invalid"
+        if gap is None:
+            view_key = source["view_key"]
+            for value in (policy["schema"], policy["scope"], render,
+                          source["rule_id"], source["graph_id"], source["root_id"]):
+                if type(value) is not str or not value.strip():
+                    gap = "policy_invalid"
+            for value in (policy["declaration_sha256"], source["effective_graph_sha256"]):
+                if type(value) is not str or len(value) != 64 or set(value) - set("0123456789abcdef"):
+                    gap = "policy_invalid"
+            if type(view_key) is not list or len(view_key) != 2 or type(view_key[0]) is not int \
+                    or view_key[0] < 0 or not (view_key[1] is None
+                                               or (type(view_key[1]) is str and view_key[1].strip())):
+                gap = "policy_invalid"
+        binding = continuation["binding"] if gap is None else None
+        if gap is None and (not isinstance(binding, dict) or set(binding) != {
+                "conversation_id", "model_content_sha256", "model_effective_key", "projection_fingerprint",
+                "parser_base_sha256", "parser_grammar_sha256", "installed_memory_head"}):
+            gap = "input_owner_unavailable"
+        if gap is None:
+            cached = getattr(self, "_grammar_cache", None)
+            model = self.model
+            head = binding["installed_memory_head"]
+            frame = continuation["frame"]
+            if type(binding["conversation_id"]) is not str or not binding["conversation_id"].strip() \
+                    or binding["conversation_id"] != self.conversation_id \
+                    or not isinstance(cached, tuple) or len(cached) != 2 or cached[0] is not parser \
+                    or parser is not continuation["parser"] \
+                    or not isinstance(frame, dict) \
+                    or frame is not getattr(self, "_unread_continuation_frame", None) \
+                    or frame.get("parser") is not parser or frame.get("current") is not current \
+                    or frame.get("model") is not model \
+                    or binding["parser_grammar_sha256"] != cached[1] \
+                    or binding["parser_base_sha256"] != self.parser_base_sha256 \
+                    or model is None or model is not continuation["model"] \
+                    or binding["model_content_sha256"] != getattr(model, "content_fingerprint", None) \
+                    or binding["model_effective_key"] != getattr(model, "effective_key", None) \
+                    or type(head) is not type(self.installed_memory_head) \
+                    or head != self.installed_memory_head \
+                    or not (head is None or (type(head) is int and head >= 0)):
+                gap = "input_owner_unavailable"
+            for value in (binding["model_content_sha256"], binding["model_effective_key"],
+                          binding["projection_fingerprint"], binding["parser_base_sha256"],
+                          binding["parser_grammar_sha256"]):
+                if type(value) is not str or len(value) != 64 or set(value) - set("0123456789abcdef"):
+                    gap = "input_owner_unavailable"
+        if gap is None:
+            projection = getattr(model, "language_projection", None)
+            parser_data = getattr(parser, "data", None)
+            if not isinstance(projection, dict) or not isinstance(projection.get("data"), dict) \
+                    or not isinstance(projection.get("provenance"), dict) \
+                    or projection.get("fingerprint") != binding["projection_fingerprint"] \
+                    or not self._unread_native_equal(projection["data"].get("unread_continuation"), policy) \
+                    or not isinstance(parser_data, dict) \
+                    or not self._unread_native_equal(parser_data.get("unread_continuation"), policy) \
+                    or not self._unread_native_equal(projection["provenance"].get("graph_id"), source["graph_id"]) \
+                    or not self._unread_native_equal(projection["provenance"].get("root_id"), source["root_id"]) \
+                    or not self._unread_native_equal(projection["provenance"].get("effective_graph_sha256"),
+                                                     source["effective_graph_sha256"]) \
+                    or not self._unread_native_equal(projection["provenance"].get("view_key"), view_key):
+                gap = "input_owner_unavailable"
+        question = continuation["question"] if gap is None else None
+        if gap is None and (not isinstance(question, dict)
+                            or set(question) != {"triple", "text_sha256", "render_sha256"}):
+            gap = "query_scope_unsupported"
+        if gap is None:
+            try:
+                text_digest = hashlib.sha256(str(text).encode("utf-8")).hexdigest()
+            except UnicodeEncodeError:
+                text_digest = None
+            if text_digest is None or question["text_sha256"] != text_digest \
+                    or len(str(text).encode("utf-8", "replace")) > 8192:
+                gap = "query_scope_unsupported"
+            value = question["render_sha256"]
+            if type(value) is not str or len(value) != 64 or set(value) - set("0123456789abcdef"):
+                gap = "query_scope_unsupported"
+        if gap is None and (not isinstance(current, dict) or not isinstance(resolved_queries, list)
+                            or len(resolved_queries) != 1
+                            or not self._unread_native_equal(resolved_queries, current.get("query"))
+                            or not isinstance(resolved_queries[0], dict)
+                            or set(resolved_queries[0]) != {"triple", "render"}
+                            or not self._unread_native_equal(resolved_queries[0].get("triple"), question["triple"])
+                            or type(question["triple"]) is not list or len(question["triple"]) != 3
+                            or not all(type(part) is str and part.strip() for part in question["triple"])):
+            gap = "query_scope_unsupported"
+        if gap is None:
+            render_json = self._unread_json(resolved_queries[0]["render"], 65536)
+            if render_json is None \
+                    or hashlib.sha256(render_json.encode("utf-8")).hexdigest() != question["render_sha256"]:
+                gap = "query_scope_unsupported"
+        pending = continuation["pending"] if gap is None else None
+        pending_text = None
+        if gap is None and (not isinstance(pending, dict) or set(pending) != {
+                "entry", "unread_index", "at", "text_sha256", "entry_sha256", "resolved"}):
+            gap = "pending_scope_unsupported"
+        unread_text = None
+        witness = None
+        blocker_index = None
+        if gap is None and policy_v2:
+            # B2 v2 branch: the complete B0 witness must still be the live pending set, and the
+            # primary descriptor must correspond exactly to the selected blocker entry.
+            witness = continuation["pending_set"]
+            blocker_index = continuation["blocker_index"]
+            unread = getattr(self, "unread", None)
+            entry = pending["entry"]
+            owned_text = entry.get("text") if isinstance(entry, dict) else None
+            if isinstance(owned_text, str):
+                pending_text = str(owned_text)
+            public = witness["public"] if type(witness) is dict and type(witness.get("public")) is dict else None
+            refs = witness.get("refs") if type(witness) is dict else None
+            entries = public.get("entries") if public is not None else None
+            if witness is None or witness is not frame["pending_witness"] \
+                    or public is None or not isinstance(refs, list) or not isinstance(entries, list) \
+                    or not self._unread_pending_v2_same(witness) \
+                    or type(public.get("max_pending")) is not int \
+                    or public["max_pending"] != policy["max_pending"] \
+                    or not isinstance(unread, list) or getattr(self, "unread_guard", None) \
+                    or len(refs) != len(unread) or len(entries) != len(refs) \
+                    or type(blocker_index) is not int or not 0 <= blocker_index < len(refs) \
+                    or type(refs[blocker_index]) is not dict or type(entries[blocker_index]) is not dict \
+                    or type(pending["unread_index"]) is not int or pending["unread_index"] != blocker_index \
+                    or pending["resolved"] is not False:
+                gap = "pending_scope_unsupported"
+            else:
+                ref = refs[blocker_index]
+                descriptor = entries[blocker_index]
+                meta = ref.get("meta")
+                if ref.get("entry") is not entry or entry is not unread[blocker_index] \
+                        or type(entry) is not dict or ref.get("text") is not entry.get("text") \
+                        or type(pending_text) is not str or not pending_text.strip() \
+                        or type(meta) is not dict or meta.get("text") != pending_text \
+                        or type(pending["at"]) is not int or pending["at"] < 0 \
+                        or pending["at"] > len(self.observations) \
+                        or meta.get("at") != pending["at"] or entry.get("at") != pending["at"] \
+                        or descriptor.get("unread_index") != blocker_index \
+                        or descriptor.get("at") != pending["at"] \
+                        or descriptor.get("text_sha256") != pending["text_sha256"] \
+                        or descriptor.get("entry_sha256") != pending["entry_sha256"] \
+                        or descriptor.get("resolved") is not False:
+                    gap = "pending_scope_unsupported"
+                else:
+                    try:
+                        encoded = pending_text.encode("utf-8")
+                    except UnicodeEncodeError:
+                        encoded = None
+                    entry_json = self._unread_json({key: meta[key] for key in meta if key != "kind"}, 65536)
+                    if encoded is None or len(encoded) > 8192 \
+                            or hashlib.sha256(encoded).hexdigest() != pending["text_sha256"]:
+                        gap = "pending_scope_unsupported"
+                    value = pending["entry_sha256"]
+                    if type(value) is not str or len(value) != 64 or set(value) - set("0123456789abcdef") \
+                            or entry_json is None \
+                            or hashlib.sha256(entry_json.encode("utf-8")).hexdigest() != value:
+                        gap = "pending_scope_unsupported"
+                    if gap is None:
+                        if any(type(item) is not dict or not isinstance(item.get("text"), str) for item in refs):
+                            gap = "pending_scope_unsupported"
+                        else:
+                            joined = "\n".join(str(item["text"]) for item in refs)
+                            try:
+                                joined_bytes = joined.encode("utf-8")
+                            except UnicodeEncodeError:
+                                joined_bytes = None
+                            if joined_bytes is None or len(joined_bytes) > 8192:
+                                gap = "qualification_over_bound"
+                            else:
+                                unread_text = joined
+        elif gap is None:
+            unread = getattr(self, "unread", None)
+            entry = pending["entry"]
+            owned_text = entry.get("text") if isinstance(entry, dict) else None
+            if isinstance(owned_text, str):
+                pending_text = str(owned_text)
+            if not isinstance(unread, list) or len(unread) != 1 or unread[0] is not entry \
+                    or getattr(self, "unread_guard", None) \
+                    or not isinstance(entry, dict) or set(entry) != {"text", "at"} \
+                    or type(pending["unread_index"]) is not int or pending["unread_index"] != 0 \
+                    or type(pending["at"]) is not int or pending["at"] < 0 \
+                    or pending["at"] > len(self.observations) \
+                    or type(entry["at"]) is not int or entry["at"] != pending["at"] \
+                    or pending["resolved"] is not False or type(pending_text) is not str \
+                    or not pending_text.strip():
+                gap = "pending_scope_unsupported"
+            else:
+                try:
+                    encoded = pending_text.encode("utf-8")
+                except UnicodeEncodeError:
+                    encoded = None
+                entry_json = self._unread_json({"text": pending_text, "at": entry["at"]}, 65536)
+                if encoded is None or len(encoded) > 8192 \
+                        or hashlib.sha256(encoded).hexdigest() != pending["text_sha256"]:
+                    gap = "pending_scope_unsupported"
+                value = pending["entry_sha256"]
+                if type(value) is not str or len(value) != 64 or set(value) - set("0123456789abcdef") \
+                        or entry_json is None \
+                        or hashlib.sha256(entry_json.encode("utf-8")).hexdigest() != value:
+                    gap = "pending_scope_unsupported"
+        support = continuation["support"] if gap is None else None
+        public_support = ("observation_id", "reading_revision", "turn", "triple", "polarity", "modality",
+                          "source_text_sha256", "record_sha256", "archived_fact_index",
+                          "archived_fact_sha256", "archived_parser_base_sha256",
+                          "archived_parser_grammar_sha256", "archived_installed_memory_head",
+                          "archived_evidence_sha256")
+        if policy_v2:
+            public_support = public_support + ("archived_fact_count",)
+        if gap is None and (not isinstance(support, dict)
+                            or set(support) != {"fact", "source", "record"} | set(public_support)):
+            gap = "support_unavailable"
+        if gap is None:
+            source, record, fact = support["source"], support["record"], support["fact"]
+            oid = _readings.oid_of(source)
+            turn = support["turn"]
+            if not isinstance(source, Obs) or type(oid) is not str or not oid.strip() or oid == TENTATIVE \
+                    or oid != support["observation_id"] \
+                    or type(getattr(source, "rev", None)) is not int or source.rev < 1 \
+                    or type(support["reading_revision"]) is not int \
+                    or source.rev != support["reading_revision"] \
+                    or type(turn) is not int or turn < 0 or turn >= len(self.observations) \
+                    or not isinstance(record, dict) \
+                    or not isinstance(fact, dict) or not isinstance(fact.get("evidence"), dict):
+                gap = "support_unavailable"
+        if gap is None:
+            active_obs = self.observations[turn]
+            ledger_entry = self.reading_ledger.get(oid)
+            active = ledger_entry.get("active") if isinstance(ledger_entry, dict) else None
+            versions = ledger_entry.get("versions") if isinstance(ledger_entry, dict) else None
+            if not isinstance(active_obs, Obs) or _readings.oid_of(active_obs) != oid \
+                    or type(getattr(active_obs, "rev", None)) is not int or active_obs.rev != source.rev \
+                    or str(active_obs) != str(source) \
+                    or type(active) is not int or active < 1 or active != source.rev \
+                    or not isinstance(versions, list) or len(versions) < active \
+                    or len(versions) > min(self.max_turns * 8, 2048) \
+                    or versions[active - 1] is not record \
+                    or type(record.get("observation_id")) is not str or record.get("observation_id") != oid \
+                    or type(record.get("reading_revision")) is not int \
+                    or record.get("reading_revision") != active \
+                    or type(record.get("source")) is not str or record.get("source") != str(source) \
+                    or record.get("unavailable") is not False \
+                    or fact["evidence"].get("source") is not source \
+                    or type(fact["evidence"].get("turn")) is not int or fact["evidence"]["turn"] != turn:
+                gap = "support_identity_mismatch"
+        if gap is None:
+            try:
+                encoded = str(source).encode("utf-8")
+            except UnicodeEncodeError:
+                encoded = None
+            if encoded is None or len(encoded) > 8192 \
+                    or hashlib.sha256(encoded).hexdigest() != support["source_text_sha256"]:
+                gap = "support_identity_mismatch"
+            parsed = record.get("parsed")
+            archived = parsed.get("facts") if isinstance(parsed, dict) else None
+            index = support["archived_fact_index"]
+            replay_view = {key: value for key, value in fact.items() if key != "evidence"}
+            replay_view["evidence"] = {key: value for key, value in fact["evidence"].items()
+                                       if key not in ("turn", "source")}
+            fact_bound = 2 if policy_v2 else 1
+            if type(index) is not int or not isinstance(archived, list) \
+                    or not 1 <= len(archived) <= fact_bound \
+                    or not 0 <= index < len(archived) or (not policy_v2 and index != 0) \
+                    or not isinstance(archived[index], dict) \
+                    or (policy_v2 and (type(support["archived_fact_count"]) is not int
+                                       or support["archived_fact_count"] != len(archived))) \
+                    or parsed.get("query") is not None and (type(parsed.get("query")) is not list or parsed.get("query")) \
+                    or not self._unread_native_equal(archived[index], replay_view) \
+                    or type(support["triple"]) is not list \
+                    or not self._unread_native_equal(list(fact.get("triple", [])), support["triple"]) \
+                    or sum(1 for item in archived if isinstance(item, dict)
+                           and item.get("polarity", True) is True
+                           and item.get("modality", "asserted") == "asserted"
+                           and self._unread_native_equal(list(item.get("triple", [])), support["triple"])) != 1:
+                gap = "support_identity_mismatch"
+            if support["polarity"] is not True or support["modality"] != "asserted" \
+                    or type(support["modality"]) is not str \
+                    or fact.get("polarity", True) is not True \
+                    or fact.get("modality", "asserted") != "asserted" \
+                    or support["archived_parser_base_sha256"] != record.get("parser_base_sha256") \
+                    or support["archived_parser_grammar_sha256"] != record.get("parser_grammar_sha256") \
+                    or support["archived_installed_memory_head"] != record.get("installed_memory_head") \
+                    or not (support["archived_installed_memory_head"] is None
+                            or (type(support["archived_installed_memory_head"]) is int
+                                and support["archived_installed_memory_head"] >= 0)):
+                gap = "support_identity_mismatch"
+            for value in (support["record_sha256"], support["archived_fact_sha256"],
+                          support["archived_parser_base_sha256"], support["archived_parser_grammar_sha256"],
+                          support["archived_evidence_sha256"]):
+                if type(value) is not str or len(value) != 64 or value != value.lower() \
+                        or any(c not in hexdigits for c in value):
+                    gap = "support_identity_mismatch"
+        if (gap is None and policy_v2 and len(archived) == 2
+                and self._fact_batch_admissible(record["source"], record["parsed"], parser) is not True):
+            gap = "support_identity_mismatch"
+        if gap is None:
+            record_json = self._unread_json(record, 65536)
+            fact_json = self._unread_json(archived[index], 8192)
+            evidence_json = self._unread_json(archived[index].get("evidence"), 8192)
+            if record_json is None or fact_json is None or evidence_json is None \
+                    or hashlib.sha256(record_json.encode("utf-8")).hexdigest() != support["record_sha256"] \
+                    or hashlib.sha256(fact_json.encode("utf-8")).hexdigest() != support["archived_fact_sha256"] \
+                    or hashlib.sha256(evidence_json.encode("utf-8")).hexdigest() != support["archived_evidence_sha256"]:
+                gap = "support_identity_mismatch"
+        if gap is None and (not isinstance(outcome, dict) or type(outcome.get("answer")) is not str
+                            or not isinstance(outcome.get("transitions"), list)):
+            gap = "native_answer_unavailable"
+        if gap is None:
+            transitions = outcome["transitions"]
+            leaf = transitions[0] if len(transitions) == 1 and isinstance(transitions[0], dict) else None
+            if leaf is None or set(leaf) != {"fact", "evidence"} \
+                    or not self._unread_native_equal(list(leaf["fact"]) if isinstance(leaf["fact"], list)
+                                                     else None, support["triple"]):
+                gap = "native_answer_identity_mismatch"
+        if gap is None:
+            evidence, chosen = leaf["evidence"], fact["evidence"]
+            native_source = evidence.get("source") if isinstance(evidence, dict) else None
+            if not isinstance(evidence, dict) or not isinstance(native_source, Obs) \
+                    or not (type(_readings.oid_of(native_source)) is str
+                            and _readings.oid_of(native_source).strip()
+                            and _readings.oid_of(native_source) != TENTATIVE
+                            and _readings.oid_of(native_source) == _readings.oid_of(source)) \
+                    or not (type(getattr(native_source, "rev", None)) is int
+                            and native_source.rev >= 1 and native_source.rev == source.rev) \
+                    or str(native_source) != str(source) \
+                    or self._active_record(native_source) is not record \
+                    or not isinstance(chosen.get("source"), Obs) \
+                    or not (type(_readings.oid_of(chosen["source"])) is str
+                            and _readings.oid_of(chosen["source"]).strip()
+                            and _readings.oid_of(chosen["source"]) != TENTATIVE
+                            and _readings.oid_of(chosen["source"]) == _readings.oid_of(source)) \
+                    or not (type(getattr(chosen["source"], "rev", None)) is int
+                            and chosen["source"].rev >= 1 and chosen["source"].rev == source.rev) \
+                    or str(chosen["source"]) != str(source) \
+                    or type(evidence.get("turn")) is not int or evidence["turn"] != support["turn"] \
+                    or set(evidence) != set(chosen) \
+                    or not self._unread_native_equal({k: v for k, v in evidence.items() if k != "source"},
+                                                     {k: v for k, v in chosen.items() if k != "source"}):
+                gap = "native_answer_identity_mismatch"
+        if gap is None and policy_v2:
+            # Actual-facts closure: native may augment the ``facts`` argument after the B start chose
+            # its support, so re-establish exactly one direct positive support in the actual list
+            # (no denial, no duplicate) and bind it to the chosen support by payload and source.
+            try:
+                from . import inference as _inference
+            except ImportError:
+                from marco.reasoning import inference as _inference
+            actual = None
+            if not isinstance(facts, list) or len(facts) > 2048:
+                gap = "support_unavailable"
+            else:
+                actual_matched = 0
+                for item in facts:
+                    if not isinstance(item, dict):
+                        continue
+                    row = item.get("triple")
+                    if not isinstance(row, (list, tuple)) or len(row) != 3 \
+                            or not all(type(part) is str for part in row):
+                        continue
+                    if _inference.bind(list(question["triple"]), list(row), {}) is None:
+                        continue
+                    actual_matched += 1
+                    if item.get("polarity", True) is False or actual_matched > 1:
+                        gap = "support_unavailable"
+                        break
+                    actual = item
+                if gap is None and actual is None:
+                    gap = "support_unavailable"
+            if gap is None:
+                actual_evidence = actual.get("evidence")
+                actual_modality = actual.get("modality", "asserted")
+                if actual.get("polarity", True) is not True or type(actual_modality) is not str \
+                        or actual_modality != "asserted" or actual.get("unnamed") \
+                        or any(key in actual for key in ("at_least", "resolve", "bound")) \
+                        or not isinstance(actual_evidence, dict) or "action_event" in actual_evidence \
+                        or (type(actual_evidence.get("mode")) is str
+                            and actual_evidence.get("mode") == "hypothetical") \
+                        or any(key in actual_evidence for key in (
+                            "at_least", "resolve", "unnamed", "bound", "derived", "rule")):
+                    gap = "support_unavailable"
+            if gap is None:
+                actual_source = actual_evidence.get("source")
+                actual_view = {k: v for k, v in actual.items() if k not in ("evidence", "id")}
+                support_view = {k: v for k, v in fact.items() if k != "evidence"}
+                if not self._unread_native_equal(actual_view, support_view) \
+                        or set(actual_evidence) != set(chosen) \
+                        or not self._unread_native_equal(
+                            {k: v for k, v in actual_evidence.items() if k != "source"},
+                            {k: v for k, v in chosen.items() if k != "source"}) \
+                        or not isinstance(actual_source, Obs) \
+                        or not (type(_readings.oid_of(actual_source)) is str
+                                and _readings.oid_of(actual_source).strip()
+                                and _readings.oid_of(actual_source) != TENTATIVE
+                                and _readings.oid_of(actual_source) == oid) \
+                        or type(getattr(actual_source, "rev", None)) is not int \
+                        or actual_source.rev < 1 or actual_source.rev != source.rev \
+                        or str(actual_source) != str(source) \
+                        or self._active_record(actual_source) is not record:
+                    gap = "support_identity_mismatch"
+        if gap is None:
+            answer = outcome["answer"]
+            try:
+                encoded = answer.encode("utf-8")
+            except UnicodeEncodeError:
+                encoded = None
+            if encoded is None or len(encoded) > 8192:
+                gap = "qualification_over_bound"
+        qualified = None
+        if gap is None:
+            native_answer_sha256 = hashlib.sha256(encoded).hexdigest()
+            try:
+                qualified = _render_unread_qualification(render, answer,
+                                                         unread_text if policy_v2 else pending_text)
+            except ValueError:
+                qualified = None
+            if type(qualified) is not str:
+                gap = "qualification_over_bound"
+            else:
+                try:
+                    encoded = qualified.encode("utf-8")
+                except UnicodeEncodeError:
+                    encoded = None
+                if encoded is None or len(encoded) > 24576:
+                    gap = "qualification_over_bound"
+        if gap is None:
+            qualification = {
+                "schema": ("marco-known-support-with-pending-set-v2" if policy_v2
+                           else "marco-known-support-with-pending-input-v1"),
+                "scope": ("archived_known_direct_support_with_complete_unresolved_inputs" if policy_v2
+                          else "current_known_direct_support_with_unresolved_input"),
+                "policy": {"declaration_sha256": policy["declaration_sha256"],
+                           "graph_id": policy["source"]["graph_id"],
+                           "root_id": policy["source"]["root_id"],
+                           "policy_id": policy["source"]["rule_id"],
+                           "effective_graph_sha256": policy["source"]["effective_graph_sha256"],
+                           "view_key": list(policy["source"]["view_key"])},
+                "binding": {key: binding[key] for key in (
+                    "conversation_id", "model_content_sha256", "model_effective_key", "projection_fingerprint",
+                    "parser_base_sha256", "parser_grammar_sha256", "installed_memory_head")},
+                "question": {"text_sha256": question["text_sha256"],
+                             "triple": list(question["triple"]),
+                             "render_sha256": question["render_sha256"]},
+                "pending": {key: pending[key] for key in (
+                    "unread_index", "at", "text_sha256", "entry_sha256", "resolved")},
+                "support": {key: (list(support[key]) if key == "triple" else support[key])
+                            for key in public_support},
+                "native_answer_sha256": native_answer_sha256,
+            }
+            if policy_v2:
+                import copy
+                public = witness["public"]
+                qualification["pending_set"] = {
+                    "complete": True,
+                    "count": public["count"],
+                    "max_pending": public["max_pending"],
+                    "set_sha256": public["set_sha256"],
+                    "blocker_index": blocker_index,
+                    "entries": copy.deepcopy(public["entries"]),
+                    "rendered_unread_sha256": hashlib.sha256(unread_text.encode("utf-8")).hexdigest(),
+                }
+            if self._unread_json(qualification, 65536) is None:
+                gap = "qualification_over_bound"
+        if gap is not None:
+            if frame["gap"] is None:
+                frame["gap"] = gap
+            return None
+        result = dict(outcome)
+        result["answer"] = qualified
+        result["qualification"] = qualification
+        return result
+
     def turn(self, text, knowledge_path=None):
         """One turn. Its sentence comes from ``marco.language.realize``."""
         self._trace_buffer, self._trace_readings, self._readings_dropped = [], None, []
@@ -6236,11 +9496,33 @@ class ReasoningContext:
         self._recent_before_turn = list(getattr(self, "recent_frames", None) or [])
         observed_before = len(self.observations)
         result, path = None, "reply"
+        # The utterance gets an isolated provisional identity; it is bound to a real slot only if committed.
+        text = _readings.tentative(text)
+        previous_frame = getattr(self, self._UNREAD_FRAME_ATTR, None)
+        setattr(self, self._UNREAD_FRAME_ATTR, self._unread_continuation_enter(text, previous_frame))
+        self._current_query_read = {"source": text, "calls": 0, "parser": None, "value": None, "gap": None}
+        self._query_work = None
+        self._thinking_work = None
+        self._thinking_exhaustion = None
         try:
             result = self._turn_said(text, knowledge_path)
+            work = self.__dict__.get("_query_work")
+            if type(result) is dict and type(work) is dict:
+                result["reasoning_work"] = deepcopy(work)
+            thinking = self.__dict__.get("_thinking_work")
+            if type(result) is dict and type(thinking) is dict:
+                result["thinking_work"] = deepcopy(thinking)
             path = self._trace_path
             return result
         finally:
+            self.__dict__.pop("_query_work", None)
+            self.__dict__.pop("_thinking_work", None)
+            self.__dict__.pop("_thinking_exhaustion", None)
+            if previous_frame is not None:
+                setattr(self, self._UNREAD_FRAME_ATTR, previous_frame)
+            else:
+                self.__dict__.pop(self._UNREAD_FRAME_ATTR, None)
+            self._parser().__dict__.setdefault("chosen_readings", {}).pop(TENTATIVE, None)
             if self.trace is not None:
                 self._emit_turn(text, result, path, observed_before)
             self._trace_buffer = []
@@ -6304,8 +9586,8 @@ class ReasoningContext:
                 "verification": self._verification(knowledge_path, checks)}
 
     def _fragment_amount(self, parser, spec, piece):
-        """The amount of a sentence that says only an amount (``Two, to be exact.``, ``두 개.``,
-        ``정확히는 네 자루예요``): (the amount as it goes into a statement, its value), else None. The
+        """The amount of a sentence that states a quantity without its holder:
+        (the amount as it goes into a statement, its value), else None. The
         words around it are the pack's: its fragment heads, the phrases its variants read as nothing, the
         copula tails and the counters."""
         from marco.language.numerals import parse_numeral
@@ -6415,9 +9697,15 @@ class ReasoningContext:
         return asked if asked is not None and asked.get("status") == "answered" else named
 
     def _turn_said(self, text, knowledge_path=None):
+        from pack_model import PackModel
+        projection = (self.model.language_projection
+                      if type(self.model) is PackModel else None)
+        if projection is not None:
+            return self._graph_dialogue_turn(text, knowledge_path, projection)
         spliced = self._spliced_fragment(text)
         if spliced is not None:
             text, replaced = spliced
+            text = _readings.tentative(text) if _readings.oid_of(text) is None else text
             if replaced is not None:
                 self._forget_heard({replaced})
                 # the statement kept as an observation is replaced by the one with its amount, not read twice
@@ -6462,7 +9750,10 @@ class ReasoningContext:
             from marco.language.realizer import default_realizer
             reports = default_realizer().reports
             before = reports[-1] if reports else None
-            result["answer"] = realize(result, result.get("status"), self._speaker(result, language))
+            speaker = self._speaker(result, language)
+            from marco.language.realizer.packs import selected_scope
+            with selected_scope(self.model, speaker, self.conversation_id):
+                result["answer"] = realize(result, result.get("status"), speaker)
             report = reports[-1] if reports and reports[-1] is not before else None
             if report is not None and report.get("held") and report.get("text") == result["answer"] \
                     and result.get("status") == "answered":
@@ -6480,6 +9771,2073 @@ class ReasoningContext:
                                    "blocked": [clause.get("frame") for clause in report.get("clauses") or []
                                                if clause.get("blocked")]})
         return result
+
+    def _graph_dialogue_turn(self, text, knowledge_path, projection):
+        self._last_said = str(text).strip()
+        self._trace_path = "reply"
+        parser = self._parser()
+        required = ("observed", "unresolved", "unread_event", "unknown_word", "input_understanding_failed",
+                    "no_reading", "ambiguous_reading", "capacity", "invalid", "contradiction")
+        bundle = projection if isinstance(projection, dict) else {}
+        data = bundle.get("data") if isinstance(bundle.get("data"), dict) else {}
+        installed = parser.data.get("context_replies")
+        missing = [key for key in required
+                   if not (isinstance(installed, dict) and isinstance(installed.get(key), str)
+                           and installed[key].strip())]
+        capabilities = data.get("semantic_capabilities")
+        if (isinstance(capabilities, dict)
+                and capabilities.get("schema") == "selected-binary-semantic-capabilities-v1"
+                and "conditional_binary" in capabilities):
+            conditional_missing = [key for key in ("unmeasured_condition", "condition_false")
+                                   if not (isinstance(installed, dict)
+                                           and isinstance(installed.get(key), str)
+                                           and installed[key].strip())]
+            missing.extend(key for key in conditional_missing if key not in missing)
+        unsupported = []
+        if not isinstance(projection, dict) or bundle.get("schema") != "graph-dialogue-projection-v1":
+            unsupported.append("projection_schema")
+        if not self._permitted(knowledge_path):
+            unsupported.append("operator_not_permitted")
+        if installed != data.get("context_replies"):
+            unsupported.append("reply_authority")
+        if missing or unsupported:
+            return self._graph_dialogue_gap(text, knowledge_path, missing_replies=missing,
+                                            unsupported=unsupported)
+        bridged = self._reference_query_bridge(text, knowledge_path, projection, parser)
+        if bridged is not None:
+            return bridged
+        result = self._turn(text, knowledge_path)
+        if result is None:
+            marker = self.__dict__.get("_thinking_exhaustion")
+            self.__dict__["_thinking_exhaustion"] = None
+            source = _scoped_text(text)
+            if (type(marker) is not dict or set(marker) != {"source", "parser"}
+                    or marker["source"] is not text or marker["parser"] is not parser
+                    or source is None or not source.strip()
+                    or len(source.encode("utf-8", "surrogatepass")) > 65536):
+                return None
+            auth = _scoped_authority(projection, parser)
+            if auth is None or not _scoped_hex(auth.get("scope_sha256")):
+                return None
+            native = data.get("context_replies")
+            if type(installed) is not dict or type(native) is not dict or not _scoped_native_eq(installed, native):
+                return None
+            evidence = {"scope": "selected_reader_processing_failure", "outcome": "exhausted",
+                        "authority_sha256": auth["scope_sha256"]}
+            return self._failure_dispatch(text, knowledge_path, None, evidence, installed, text, False)
+        if result is not None and "answer" in result and isinstance(result.get("meaning"), dict):
+            result["meaning"] = {**result["meaning"], "conversation": self.conversation_id}
+        return result
+
+    def _reference_query_bridge(self, text, knowledge_path, projection, parser):
+        """Authenticated query-only selected reference bridge; None for every ordinary input."""
+        src = _scoped_plain(text)
+        make = getattr(parser, 'make_selected_reference_query', None)
+        verify = getattr(parser, 'verify_selected_reference_query', None)
+        if src is None or not callable(make) or not callable(verify):
+            return None
+        try:
+            capsule = make(src)
+        except (ValueError, TypeError, KeyError):
+            return None
+        if capsule is None:
+            return None
+
+        def gap():
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=['reference_scope'])
+        try:
+            checked = verify(src, capsule)
+            ok1, a = _scoped_wire(capsule)
+            ok2, b = _scoped_wire(checked)
+            if (checked is None or checked is capsule or not ok1 or not ok2 or not _scoped_native_eq(a, b)
+                    or a.get('schema') not in ('selected-reference-query-v1', 'selected-reference-query-v2', 'selected-reference-query-v3',
+                                            'selected-reference-query-v4')):
+                return gap()
+            cap = b
+            data = projection.get('data')
+            examples, seed = data['examples'], data['predicate_frames']['seed_count']
+            qs = projection['query_sources']
+            decl = projection['language_pack'].get('reference_queries')
+            if (type(decl) is not dict or set(decl) != {'schema', 'bindings'}
+                    or decl['schema'] != 'selected-reference-query-declarations-v1'
+                    or type(decl['bindings']) is not list or not 1 <= len(decl['bindings']) <= 8
+                    or type(seed) is not int or seed < 0):
+                return gap()
+            auths, seen, compact_bindings, compact_auths = [], set(), [], []
+            cue_ids = []
+            for original_binding in decl['bindings']:
+                row_ok, bd = _scoped_wire(original_binding)
+                if (not row_ok or type(bd) is not dict or ('cue' in bd and 'cues' in bd)
+                        or set(bd) - {'cue', 'cues'} != {'compiler_index', 'source_ref', 'form', 'endpoint',
+                                      'antecedent_relation', 'antecedent_endpoint'}):
+                    return gap()
+                ci = bd['compiler_index']
+                if type(ci) is not int or ci < 0 or ci >= len(examples):
+                    return gap()
+                ordinal = ci - seed
+                if not 0 <= ordinal < len(qs):
+                    return gap()
+                ref_ok, ref = _scoped_wire(qs[ordinal])
+                ann_ok, annotation = _scoped_wire(examples[ci])
+                if not ref_ok or not ann_ok:
+                    return gap()
+                annotation_sha = _scoped_sha(annotation)
+                ref_sha = _scoped_sha(ref)
+                if (type(ref) is not dict or set(ref) != {'index', 'annotation_sha256', 'graph_source'}
+                        or type(ref['index']) is not int or ref['index'] != ci
+                        or annotation_sha is None or ref_sha is None
+                        or ref['annotation_sha256'] != annotation_sha
+                        or not _scoped_native_eq(ref, bd['source_ref'])):
+                    return gap()
+                compact_bindings.append({key: bd[key] for key in (
+                    'compiler_index', 'form', 'endpoint', 'antecedent_relation', 'antecedent_endpoint')})
+                compact_bindings[-1]['source_ref_sha256'] = ref_sha
+                if 'cue' in bd:
+                    cue_ok = self._ref_cue_verify(parser, projection, bd['cue'], ci, seed, ref)
+                    if cue_ok is None:
+                        return gap()
+                    compact_bindings[-1]['cue'] = cue_ok
+                    cue_ids.append(cue_ok['id'])
+                if 'cues' in bd:
+                    raw_cues = bd['cues']
+                    if type(raw_cues) is not list or not 1 <= len(raw_cues) <= 8:
+                        return gap()
+                    got_cues = []
+                    for one_cue in raw_cues:
+                        one_ok = self._ref_cue_verify(parser, projection, one_cue, ci, seed, ref)
+                        if one_ok is None:
+                            return gap()
+                        got_cues.append(one_ok)
+                    got_ids = [c['id'] for c in got_cues]
+                    if (len(set(got_ids)) != len(got_ids)
+                            or len({c['query_role'] for c in got_cues}) != 1):
+                        return gap()
+                    compact_bindings[-1]['cues'] = got_cues
+                    cue_ids.extend(got_ids)
+                if ci not in seen:
+                    seen.add(ci)
+                    auths.append({'compiler_index': ci, 'source_ref': ref, 'annotation': annotation})
+                    compact_auths.append({'compiler_index': ci, 'source_ref_sha256': ref_sha,
+                                          'annotation_sha256': annotation_sha})
+            reg_n, reg_p = data.get('reference_cue_sources'), parser.data.get('reference_cue_sources')
+            if not cue_ids:
+                if reg_n is not None or reg_p is not None:
+                    return gap()
+            else:
+                want_ids = list(dict.fromkeys(cue_ids))
+                if (type(reg_n) is not list or len(reg_n) > 8 or len(reg_n) != len(want_ids)
+                        or [e.get('id') if type(e) is dict else None for e in reg_n] != want_ids
+                        or not _scoped_native_eq(reg_n, reg_p)):
+                    return gap()
+            compact = {'schema': ('selected-reference-query-scope-v3'
+                                  if any('cues' in b for b in compact_bindings)
+                                  else 'selected-reference-query-scope-v2'),
+                       'declaration': {'schema': decl['schema'], 'bindings': compact_bindings},
+                       'authorities': compact_auths}
+            compact_ok, compact_plain = _scoped_wire(compact)
+            if not compact_ok:
+                return gap()
+            sha = _scoped_sha(compact_plain)
+            scope = parser.selected_reference_query_scope()
+            if (sha is None or type(scope) is not dict
+                    or not _scoped_native_eq(scope.get('declaration'), decl)
+                    or not _scoped_native_eq(getattr(parser, 'language_pack', {}).get('reference_queries'), decl)
+                    or not _scoped_native_eq(scope.get('authorities'), auths)
+                    or scope.get('sha256') != sha or cap.get('scope_sha256') != sha):
+                return gap()
+            ref_info, qrow = cap['reference'], cap['query']
+            mine = [bd for bd in decl['bindings']
+                    if bd['compiler_index'] == cap['compiler_index']
+                    and _scoped_native_eq(bd.get('source_ref'), cap['source_ref'])
+                    and all(_scoped_native_eq(bd.get(key), ref_info.get(key))
+                            for key in ('form', 'endpoint', 'antecedent_relation', 'antecedent_endpoint'))]
+            if len(mine) != 1:
+                return gap()
+            cue_c = None
+            multi = None
+            v4 = False
+            has_cue = 'cue' in mine[0]
+            if cap['schema'] != 'selected-reference-query-v4' and 'cues' in mine[0] and 'constraints' in cap:
+                return gap()
+            if cap['schema'] == 'selected-reference-query-v2':
+                cw_ok, cue = _scoped_wire(mine[0].get('cue'))
+                cons = cap.get('constraints')
+                ckeys = {'cue_id', 'frame_index', 'relation', 'candidate_endpoint', 'query_role',
+                         'candidate_role', 'anchor', 'anchor_span', 'pattern_span', 'annotation_sha256',
+                         'frame_source_ref_sha256', 'graph_source_sha256'}
+                if (not has_cue or not cw_ok or type(cue) is not dict or type(cons) is not list
+                        or 'continuation_literal' in cue
+                        or len(cons) != 1 or type(cons[0]) is not dict or set(cons[0]) != ckeys):
+                    return gap()
+                k = cons[0]
+                if not _scoped_native_eq(k['cue_id'], cue['id']):
+                    return gap()
+                for fld in ('frame_index', 'relation', 'candidate_endpoint', 'query_role', 'candidate_role',
+                            'annotation_sha256', 'frame_source_ref_sha256', 'graph_source_sha256'):
+                    if not _scoped_native_eq(k[fld], cue[fld]):
+                        return gap()
+                import unicodedata
+                a, asp, psp = k['anchor'], k['anchor_span'], k['pattern_span']
+                rs, ss = ref_info['span'], cap['source_span']
+
+                def pair(v, hi):
+                    return (type(v) is list and len(v) == 2 and all(type(x) is int for x in v)
+                            and 0 <= v[0] < v[1] <= hi)
+                quotes = {chr(c) for c in (34, 39, 96, 0x201c, 0x201d, 0x2018, 0x2019, 0x300c, 0x300d,
+                                           0x300e, 0x300f, 0xab, 0xbb)}
+                if (not all(pair(v, len(src)) for v in (asp, psp, rs, ss)) or type(a) is not str or not a
+                        or a != a.strip() or src[asp[0]:asp[1]] != a
+                        or any(unicodedata.category(c).startswith('C') or c in quotes for c in a)
+                        or a[0] in '$?' or parser._reference_underspecified(a)
+                        or not (psp[0] <= asp[0] and asp[1] <= psp[1] and psp[0] <= rs[0] and rs[1] <= psp[1])
+                        or not (asp[1] <= rs[0] or rs[1] <= asp[0])
+                        or not (ss[0] <= psp[0] and psp[1] <= ss[1])):
+                    return gap()
+                cue_c = (cue, k)
+            elif cap['schema'] == 'selected-reference-query-v3':
+                import unicodedata
+                cw_ok, cue = _scoped_wire(mine[0].get('cue'))
+                cons = cap.get('constraints')
+                ckeys = {'cue_id', 'frame_index', 'relation', 'candidate_endpoint', 'query_role',
+                         'candidate_role', 'anchor', 'anchor_span', 'pattern_span', 'annotation_sha256',
+                         'frame_source_ref_sha256', 'graph_source_sha256'}
+                if (not has_cue or not cw_ok or type(cue) is not dict or 'continuation_literal' not in cue
+                        or type(cons) is not list or not cons):
+                    return gap()
+                cont, fin = cue['continuation_literal'], cue['reads'][1]['value']
+                rs, ss = ref_info['span'], cap['source_span']
+
+                def pair3(v, hi):
+                    return (type(v) is list and len(v) == 2 and all(type(x) is int for x in v)
+                            and 0 <= v[0] < v[1] <= hi)
+                quotes = {chr(c) for c in (34, 39, 96, 0x201c, 0x201d, 0x2018, 0x2019, 0x300c, 0x300d,
+                                           0x300e, 0x300f, 0xab, 0xbb)}
+                if not pair3(rs, len(src)) or not pair3(ss, len(src)):
+                    return gap()
+                prev = None
+                for pos, k in enumerate(cons):
+                    if (type(k) is not dict or set(k) != ckeys
+                            or not _scoped_native_eq(k['cue_id'], cue['id'])):
+                        return gap()
+                    for fld in ('frame_index', 'relation', 'candidate_endpoint', 'query_role', 'candidate_role',
+                                'annotation_sha256', 'frame_source_ref_sha256', 'graph_source_sha256'):
+                        if not _scoped_native_eq(k[fld], cue[fld]):
+                            return gap()
+                    a, asp, psp = k['anchor'], k['anchor_span'], k['pattern_span']
+                    if (not pair3(asp, len(src)) or not pair3(psp, len(src)) or type(a) is not str or not a
+                            or a != a.strip() or src[asp[0]:asp[1]] != a
+                            or any(unicodedata.category(c).startswith('C') or c in quotes for c in a)
+                            or a[0] in '$?' or parser._reference_underspecified(a)
+                            or asp[0] != psp[0] or psp[0] < ss[0] or psp[1] > ss[1]
+                            or (prev is not None and psp[0] != prev)):
+                        return gap()
+                    if pos < len(cons) - 1:
+                        if psp[1] != asp[1] + len(cont) or src[asp[1]:psp[1]] != cont:
+                            return gap()
+                    elif psp[1] != rs[1] or rs[0] < asp[1] or src[asp[1]:rs[0]] != fin:
+                        return gap()
+                    prev = psp[1]
+                multi = [(cue, k) for k in cons]
+            elif cap['schema'] == 'selected-reference-query-v4':
+                import unicodedata
+                cw_ok, cues = _scoped_wire(mine[0].get('cues'))
+                cons = cap.get('constraints')
+                ckeys = {'cue_id', 'frame_index', 'relation', 'candidate_endpoint', 'query_role',
+                         'candidate_role', 'anchor', 'anchor_span', 'pattern_span', 'annotation_sha256',
+                         'frame_source_ref_sha256', 'graph_source_sha256'}
+                if (has_cue or 'cues' not in mine[0] or not cw_ok or type(cues) is not list or not cues
+                        or not all(type(c) is dict for c in cues)
+                        or type(cons) is not list or not cons):
+                    return gap()
+                rs, ss = ref_info['span'], cap['source_span']
+
+                def pair4(v, hi):
+                    return (type(v) is list and len(v) == 2 and all(type(x) is int for x in v)
+                            and 0 <= v[0] < v[1] <= hi)
+                quotes = {chr(c) for c in (34, 39, 96, 0x201c, 0x201d, 0x2018, 0x2019, 0x300c, 0x300d,
+                                           0x300e, 0x300f, 0xab, 0xbb)}
+                if not pair4(rs, len(src)) or not pair4(ss, len(src)):
+                    return gap()
+                prev, pairs4 = None, []
+                for pos, k in enumerate(cons):
+                    if type(k) is not dict or set(k) != ckeys or type(k['cue_id']) is not str:
+                        return gap()
+                    hits = [c for c in cues if _scoped_native_eq(c.get('id'), k['cue_id'])]
+                    if len(hits) != 1:
+                        return gap()
+                    cue = hits[0]
+                    for fld in ('frame_index', 'relation', 'candidate_endpoint', 'query_role', 'candidate_role',
+                                'annotation_sha256', 'frame_source_ref_sha256', 'graph_source_sha256'):
+                        if not _scoped_native_eq(k[fld], cue.get(fld)):
+                            return gap()
+                    a, asp, psp = k['anchor'], k['anchor_span'], k['pattern_span']
+                    if (not pair4(asp, len(src)) or not pair4(psp, len(src)) or type(a) is not str or not a
+                            or a != a.strip() or src[asp[0]:asp[1]] != a
+                            or any(unicodedata.category(c).startswith('C') or c in quotes for c in a)
+                            or a[0] in '$?' or parser._reference_underspecified(a)
+                            or asp[0] != psp[0] or psp[0] < ss[0] or psp[1] > ss[1]
+                            or (prev is not None and psp[0] != prev)):
+                        return gap()
+                    if pos < len(cons) - 1:
+                        cont = cue.get('continuation_literal')
+                        if (type(cont) is not str or not cont or psp[1] != asp[1] + len(cont)
+                                or src[asp[1]:psp[1]] != cont):
+                            return gap()
+                    else:
+                        fin = cue['reads'][1]['value']
+                        if psp[1] != rs[1] or rs[0] < asp[1] or src[asp[1]:rs[0]] != fin:
+                            return gap()
+                    prev = psp[1]
+                    pairs4.append((cue, k))
+                multi = pairs4
+                v4 = True
+            elif 'constraints' in cap:
+                return gap()
+            endpoint, aend = ref_info['endpoint'], ref_info['antecedent_endpoint']
+            relation = ref_info['antecedent_relation']
+            triple = list(qrow['triple'])
+            render = list(qrow['render'])
+            if endpoint not in (0, 2) or aend not in (0, 2) or triple[endpoint] is not None:
+                return gap()
+            parser_ = parser
+            facts, _defined, pending, _read = self._cached_replay(parser_, self.observations, self.fills)
+            state, _changes = current_facts(facts, parser_.data.get('mutable_predicates', []),
+                                            parser_.data.get('numeric_updates', {}))
+        except (ValueError, TypeError, KeyError, IndexError, AttributeError):
+            return gap()
+        rows = []
+        for row in state:
+            t = row.get('triple') if isinstance(row, dict) else None
+            if (isinstance(t, (list, tuple)) and len(t) == 3 and t[1] == relation
+                    and row.get('modality', 'asserted') == 'asserted' and row.get('polarity', True) is True
+                    and all(type(part) is str and part and part == part.strip()
+                            and '?' not in part and '$' not in part
+                            and all(ch == ' ' or not ch.isspace() for ch in part)
+                            for part in t)
+                    and not row.get('unnamed') and not row.get('resolve') and 'at_least' not in row
+                    and isinstance(row.get('evidence'), dict)):
+                rows.append(row)
+        cands = sorted({r['triple'][aend] for r in rows})
+        initial, cue_matches, overflow = list(cands), [], False
+        if cue_c is not None:
+            overflow = len(cands) > 64
+            if not overflow:
+                cend = cue_c[0]['candidate_endpoint']
+                pool = set(cands)
+                cue_matches = [r for r in self._ref_rows(state, cue_c[0]['relation'])
+                               if r['triple'][cend] in pool and r['triple'][2 - cend] == cue_c[1]['anchor']]
+                cands = sorted({r['triple'][cend] for r in cue_matches})
+        execution, vm_final, clause_matches, vm_missing = None, None, [], False
+        if multi is not None:
+            overflow = len(initial) > 64
+            mpool = set(initial)
+            clause_matches = []
+            for mcue, k in multi:
+                mend = mcue['candidate_endpoint']
+                clause_matches.append([r for r in self._ref_rows(state, mcue['relation'])
+                                       if r['triple'][mend] in mpool
+                                       and r['triple'][2 - mend] == k['anchor']])
+            clauses = [{'index': i,
+                        'candidates': sorted({r['triple'][multi[i][0]['candidate_endpoint']] for r in ms})}
+                       for i, ms in enumerate(clause_matches)]
+            if not overflow:
+                execution, vm_final = self._ref_run_clauses(projection, parser, list(initial), clauses)
+            vm_missing = execution is None
+            cands = list(vm_final) if vm_final is not None else []
+        replies = parser.data.get('context_replies', {})
+        form = ref_info.get('form')
+
+        def proof(resolved):
+            if multi is not None:
+                return {'schema': ('selected-reference-resolution-v4' if v4
+                                   else 'selected-reference-resolution-v3'), 'capsule': deepcopy(cap),
+                        'initial_candidates': list(initial), 'candidates': list(cands),
+                        'resolved': resolved, 'evidence': [deepcopy(r) for r in rows],
+                        'cue_evidence': [{'cue_index': i, 'matches': [deepcopy(r) for r in ms]}
+                                         for i, ms in enumerate(clause_matches)],
+                        'execution': deepcopy(execution)}
+            if cue_c is not None:
+                return {'schema': 'selected-reference-resolution-v2', 'capsule': deepcopy(cap),
+                        'initial_candidates': list(initial), 'candidates': list(cands),
+                        'resolved': resolved, 'evidence': [deepcopy(r) for r in rows],
+                        'cue_evidence': [{'cue_index': 0, 'matches': [deepcopy(r) for r in cue_matches]}]}
+            return {'schema': 'selected-reference-resolution-v1', 'capsule': deepcopy(cap),
+                    'candidates': list(cands), 'resolved': resolved,
+                    'evidence': [deepcopy(r) for r in rows if resolved is None or r['triple'][aend] == resolved]}
+
+        def hold(reason, key, extra=None):
+            tpl = replies.get(key) or replies.get('unresolved')
+            try:
+                answer = tpl.format(**{'말': form, '목록': ', '.join("'%s'" % c for c in cands)}) if tpl else None
+            except (KeyError, IndexError, ValueError):
+                answer = replies.get('unresolved')
+            check = {'ok': False, 'reason': reason, 'source_text': src}
+            ver = self._verification(knowledge_path, [check])
+            ver['reference_resolution'] = proof(None)
+            return {'operator': 'relational_graph', 'status': 'unresolved', 'answer': answer, 'transitions': [],
+                    'meaning': {'act': 'ask' if key != 'unresolved' else 'hold', 'reason': reason,
+                                'word': form, 'candidates': list(cands), 'said': src,
+                                'conversation': self.conversation_id, **(extra or {})},
+                    'verification': ver}
+        if self._live() or self.unread or self.unread_guard:
+            return hold('unread_event', 'unread_event')
+        if any(not item.get('거짓조건') for item in pending):
+            return hold('unsettled_event', 'unsettled_event')
+        if multi is not None:
+            if overflow:
+                return hold('candidate_overflow', 'unresolved')
+            if vm_missing:
+                return gap()
+            if execution['status'] != 'completed':
+                reason = 'capacity' if execution['status'] == 'capacity' else 'invalid'
+                return hold(reason, reason)
+            if vm_final is None:
+                return hold('invalid', 'invalid')
+            if len(cands) != 1:
+                return hold('cue_filter_none' if not cands else 'cue_filter_multiple', 'unresolved')
+        if cue_c is not None:
+            if overflow:
+                return hold('candidate_overflow', 'unresolved')
+            if len(cands) != 1:
+                return hold('cue_filter_none' if not cands else 'cue_filter_multiple', 'unresolved')
+        if len(cands) == 0:
+            return hold('no_referent', 'no_referent')
+        if len(cands) > 1:
+            return hold('which_referent', 'which_referent')
+        resolved = cands[0]
+        if 'cues' in mine[0]:
+            # Bind the authenticated known slot in the ephemeral native query only.
+            # The original capsule/source/proof remain untouched.
+            try:
+                from relational_semantics import substitute
+                annotation = examples[cap['compiler_index']]
+                authored = annotation['meaning']['query'][0]
+                token = authored['triple'][endpoint]
+                if (type(token) is not str or not token.startswith('$') or len(token) < 2
+                        or set(annotation.get('slots', {})) != {token[1:]}
+                        or not _scoped_native_eq(authored['render'], render)):
+                    return gap()
+                expected = deepcopy(authored)
+                expected['triple'][endpoint] = None
+                if not _scoped_native_eq(expected, qrow):
+                    return gap()
+                render = substitute(render, {token[1:]: resolved})
+                if type(render) is not list or not all(type(part) is str for part in render):
+                    return gap()
+            except (ValueError, TypeError, KeyError, IndexError):
+                return gap()
+        triple[endpoint] = resolved
+        query = [{'triple': triple, 'render': render}]
+        blocked = self._blocked_by(query, parser, facts)
+        if blocked is not None or self._unsettled(query, parser, pending) is not None:
+            return hold('unread_event', 'unread_event')
+        try:
+            outcome = parser.answer({'facts': facts, 'query': deepcopy(query)})
+        except ValueError:
+            outcome = None
+        if outcome is None:
+            return hold('unresolved', 'unresolved')
+        ver = self._verification(knowledge_path, [{'ok': True, 'reason': 'reference_query_resolved',
+                                                    'source_text': src}])
+        ver['reference_resolution'] = proof(resolved)
+        return {'operator': 'relational_graph', 'status': 'answered', **outcome,
+                'meaning': {'act': 'inform', 'query': list(triple), 'render': list(render),
+                            'said': src, 'conversation': self.conversation_id},
+                'verification': ver}
+
+    @staticmethod
+    def _ref_run_clauses(projection, parser, initial, clauses):
+        """(execution, final) from the authenticated reference-clauses program; (None, None) when absent."""
+        from marco.reasoning import graph_vm
+        mode, prog = _scoped_graph_program(projection, parser, 'reference-clauses')
+        if not mode or prog is None:
+            return None, None
+        try:
+            entry = projection['data']['graph_programs']['entries']['reference-clauses']
+        except (TypeError, KeyError):
+            return None, None
+        inputs = {'initial_candidates': deepcopy(initial), 'clauses': deepcopy(clauses)}
+        frozen = deepcopy(inputs)
+        res = graph_vm.run(prog, inputs)
+        ex = {'reference': deepcopy(entry['reference']), 'program_sha256': entry['program_sha256'],
+              'status': 'invalid', 'used': 0, 'applied_indices': [], 'stages': []}
+        if (type(res) is not dict or set(res) != {'schema', 'status', 'value', 'used'}
+                or res['schema'] != 'marco-graph-vm-result-v1' or type(res['used']) is not int
+                or type(res['status']) is not str):
+            return ex, None
+        ex['status'], ex['used'] = res['status'], res['used']
+        if res['status'] != 'completed' or not _scoped_native_eq(inputs, frozen):
+            return ex, None
+        val = res['value']
+        n = len(clauses)
+        if type(val) is not list or len(val) != 3:
+            return ex, None
+        final, applied, stages = val
+        if (not _scoped_native_eq(applied, list(range(n))) or type(stages) is not list
+                or len(stages) != n or type(final) is not list):
+            return ex, None
+        before = initial
+        for i, st in enumerate(stages):
+            if (type(st) is not list or len(st) != 3 or type(st[0]) is not int or st[0] != i
+                    or not _scoped_native_eq(st[1], before)):
+                return ex, None
+            after = st[2]
+            if (type(after) is not list or not all(type(a) is str for a in after)
+                    or len(set(after)) != len(after)
+                    or any(a not in st[1] or a not in clauses[i]['candidates'] for a in after)):
+                return ex, None
+            # Validate coverage of the VM's actual stage; never construct or substitute a result.
+            for candidate in st[1]:
+                if candidate in clauses[i]['candidates'] and candidate not in after:
+                    return ex, None
+            if after != [candidate for candidate in st[1] if candidate in after]:
+                return ex, None
+            before = after
+        if not _scoped_native_eq(final, before):
+            return ex, None
+        ex['applied_indices'], ex['stages'] = deepcopy(applied), deepcopy(stages)
+        return ex, list(final)
+
+    @staticmethod
+    def _ref_rows(state, rel):
+        out = []
+        for row in state:
+            t = row.get('triple') if isinstance(row, dict) else None
+            if (isinstance(t, (list, tuple)) and len(t) == 3 and t[1] == rel
+                    and row.get('modality', 'asserted') == 'asserted' and row.get('polarity', True) is True
+                    and all(type(part) is str and part and part == part.strip()
+                            and '?' not in part and '$' not in part
+                            and all(ch == ' ' or not ch.isspace() for ch in part)
+                            for part in t)
+                    and not row.get('unnamed') and not row.get('resolve') and 'at_least' not in row
+                    and isinstance(row.get('evidence'), dict)):
+                out.append(row)
+        return out
+
+    @staticmethod
+    def _ref_has_node(gs, nid):
+        if type(gs) is not dict or type(nid) is not str or not nid:
+            return False
+        nodes = gs.get('nodes')
+        if type(nodes) is dict:
+            return nid in nodes
+        if type(nodes) is list:
+            return any(type(n) is dict and n.get('id') == nid for n in nodes)
+        return False
+
+    def _ref_cue_verify(self, parser, projection, cue, ci, seed, qref):
+        """Independently verified detached cue object, else None."""
+        try:
+            ok, c = _scoped_wire(cue)
+            keys = {'id', 'reads', 'frame_index', 'relation', 'candidate_endpoint', 'query_role',
+                    'candidate_role', 'annotation_sha256', 'frame_source_ref_sha256', 'graph_source_sha256'}
+            if not ok or type(c) is not dict or set(c) - {'continuation_literal'} != keys or not keys <= set(c):
+                return None
+            if 'continuation_literal' in c:
+                import unicodedata
+                cl = c['continuation_literal']
+                if (type(cl) is not str or not 1 <= len(cl) <= 64
+                        or any(unicodedata.category(ch).startswith('C') for ch in cl)):
+                    return None
+            fi = c['frame_index']
+            if (type(fi) is not int or not 0 <= fi < seed or type(c['candidate_endpoint']) is not int
+                    or c['candidate_endpoint'] not in (0, 2)
+                    or not all(type(c[k]) is str and c[k] for k in ('id', 'relation', 'query_role', 'candidate_role'))):
+                return None
+            reads = c['reads']
+            if (type(reads) is not list or len(reads) != 3 or not _scoped_native_eq(reads[0], {'kind': 'anchor'})
+                    or not _scoped_native_eq(reads[2], {'kind': 'reference'}) or type(reads[1]) is not dict
+                    or set(reads[1]) != {'kind', 'value'} or reads[1]['kind'] != 'literal'
+                    or type(reads[1]['value']) is not str or not reads[1]['value']):
+                return None
+            data = projection['data']
+            held = parser.data
+            ann, hann = data['examples'][fi], held['examples'][fi]
+            fref = data['predicate_frames']['frames'][fi]['source_ref']
+            hfref = held['predicate_frames']['frames'][fi]['source_ref']
+            ann_sha, fref_sha = _scoped_sha(ann), _scoped_sha(fref)
+            if (ann_sha is None or fref_sha is None or c['annotation_sha256'] != ann_sha
+                    or c['frame_source_ref_sha256'] != fref_sha or not _scoped_native_eq(ann, hann)
+                    or not _scoped_native_eq(fref, hfref) or type(fref) is not dict
+                    or fref.get('index') != fi or fref.get('annotation_sha256') != ann_sha):
+                return None
+            meaning = ann.get('meaning') if type(ann) is dict else None
+            t = meaning.get('triple') if type(meaning) is dict else None
+            if (type(meaning) is not dict or not set(meaning) <= {'triple', 'polarity', 'modality'}
+                    or meaning.get('polarity', True) is not True
+                    or meaning.get('modality', 'asserted') != 'asserted' or type(t) is not list or len(t) != 3
+                    or not all(type(x) is str and x for x in t) or t[1] != c['relation']):
+                return None
+            reg = data.get('reference_cue_sources')
+            hreg = held.get('reference_cue_sources')
+            if type(reg) is not list or type(hreg) is not list:
+                return None
+            hits = [e for e in reg if type(e) is dict and e.get('id') == c['id']]
+            hhits = [e for e in hreg if type(e) is dict and e.get('id') == c['id']]
+            if len(hits) != 1 or len(hhits) != 1 or not _scoped_native_eq(hits[0], hhits[0]):
+                return None
+            entry = hits[0]
+            e_ok, entry_w = _scoped_wire(entry)
+            if not e_ok or set(entry_w) != {'id', 'graph_source'}:
+                return None
+            gs = entry_w['graph_source']
+            if _scoped_sha(gs) != c['graph_source_sha256']:
+                return None
+            if not (self._ref_has_node(qref.get('graph_source'), c['query_role'])
+                    and self._ref_has_node(fref.get('graph_source'), c['candidate_role'])
+                    and self._ref_has_node(gs, c['query_role']) and self._ref_has_node(gs, c['candidate_role'])):
+                return None
+            return c
+        except (TypeError, ValueError, KeyError, IndexError, AttributeError):
+            return None
+
+    def _graph_dialogue_gap(self, text, knowledge_path, *, missing_replies=(), unsupported=()):
+        missing, tags = sorted(set(missing_replies)), sorted(set(unsupported))
+        return {"operator": "relational_graph", "status": "unresolved", "answer": None, "transitions": [],
+                "meaning": {"act": "hold", "reason": "language_graph_capability_gap", "said": str(text),
+                            "missing_replies": missing, "unsupported": tags,
+                            "conversation": self.conversation_id},
+                "verification": self._verification(knowledge_path, [{
+                    "ok": False, "reason": "language_graph_capability_gap",
+                    "missing_replies": missing, "unsupported": tags}])}
+
+    _FACT_BATCH_IDENTITY = ('graph_id', 'root_id', 'effective_graph_sha256', 'view_key')
+
+    def _fact_batch_capsule_ok(self, capsule, provenance):
+        """Capsule identity equals the installed projection provenance (exact plain-JSON types)."""
+        if not isinstance(capsule, dict) or not isinstance(provenance, dict):
+            return False
+        if any(key not in capsule or key not in provenance for key in self._FACT_BATCH_IDENTITY):
+            return False
+        ident = {key: capsule[key] for key in self._FACT_BATCH_IDENTITY}
+        expect = {key: provenance[key] for key in self._FACT_BATCH_IDENTITY}
+        if self._unread_json(ident, 8192) is None or not self._unread_native_equal(ident, expect):
+            return False
+        return type(capsule.get('rule_id')) is str and bool(capsule['rule_id'])
+
+    def _fact_batch_policy(self, parser=None):
+        import hashlib
+        projection = getattr(self.model, 'language_projection', None)
+        if not isinstance(projection, dict):
+            return None
+        data = projection.get('data')
+        provenance = projection.get('provenance')
+        policy = data.get('fact_batch') if isinstance(data, dict) else None
+        if (not isinstance(policy, dict) or not isinstance(provenance, dict)
+                or set(policy) != {'schema', 'scope', 'max_rows', 'source', 'declaration_sha256'}
+                or policy['schema'] != 'graph-fact-batch-policy-v1'
+                or policy['scope'] != 'direct_positive_asserted_binary_fact_batch'
+                or type(policy['max_rows']) is not int or policy['max_rows'] != 2
+                or not isinstance(policy['source'], dict)
+                or type(policy['declaration_sha256']) is not str
+                or not re.fullmatch(r'[0-9a-f]{64}', policy['declaration_sha256'])):
+            return None
+        try:
+            declared = {k: v for k, v in policy.items() if k != 'declaration_sha256'}
+            rendered = json.dumps(declared, sort_keys=True, separators=(',', ':'), ensure_ascii=False,
+                                  allow_nan=False)
+            digest = hashlib.sha256(rendered.encode('utf-8')).hexdigest()
+            full = json.dumps(policy, sort_keys=True, separators=(',', ':'), ensure_ascii=False,
+                              allow_nan=False)
+            if len(full.encode('utf-8')) > 65536:
+                return None
+        except (TypeError, ValueError, UnicodeEncodeError):
+            return None
+        if digest != policy['declaration_sha256']:
+            return None
+        # Declared preimage and full policy must be bounded plain JSON (65536 bytes, 4096 nodes, depth 32).
+        if self._unread_json(declared, 65536) is None or self._unread_json(policy, 65536) is None:
+            return None
+        if not self._fact_batch_capsule_ok(policy['source'], provenance):
+            return None
+        head = {k: policy[k] for k in ('schema', 'scope', 'max_rows', 'declaration_sha256')}
+        if self._unread_json(head, 4096) is None:
+            return None
+        if parser is not None:
+            held = getattr(parser, 'data', None)
+            installed = held.get('fact_batch') if isinstance(held, dict) else None
+            # Full bounded exact comparison: installed policy (including source nodes/edges) equals native.
+            if (not isinstance(installed, dict) or set(installed) != set(policy)
+                    or not isinstance(installed['source'], dict)
+                    or self._unread_json(installed, 65536) is None
+                    or not self._unread_native_equal(installed, policy)
+                    or not self._fact_batch_capsule_ok(installed['source'], provenance)):
+                return None
+        return policy
+
+    def _fact_batch_admissible(self, text, current, parser):
+        try:
+            return bool(self._fact_batch_check(text, current, parser))
+        except (TypeError, ValueError, KeyError, AttributeError, IndexError):
+            return False
+
+    def _fact_batch_check(self, text, current, parser):
+        facts = current.get('facts')
+        if (not isinstance(facts, list) or len(facts) != 2 or current.get('query')
+                or not isinstance(text, str) or self._live()):
+            return False
+        policy = self._fact_batch_policy(parser)
+        if policy is None or len(facts) > policy['max_rows']:
+            return False
+        try:
+            if len(text.encode('utf-8')) > 8192:
+                return False
+        except UnicodeEncodeError:
+            return False
+        if any(current.get(key) for key in ('사건', '가정사건', '사건정정', '정의', '원인', '이유물음', '조건',
+                                            '수선', '가정', 'events', 'definition', 'cause', 'reason',
+                                            'correction', 'condition', 'hypothesis', 'repairs')):
+            return False
+        data = getattr(parser, 'data', None)
+        data = data if isinstance(data, dict) else {}
+        blocked = set()
+        for key in ('numeric_updates', 'mutable_predicates', 'comparisons', 'comparison_predicates'):
+            held = data.get(key)
+            if isinstance(held, (dict, list, tuple, set, frozenset)):
+                blocked.update(k for k in held if isinstance(k, str))
+        # Declared numeric update specs also block their target predicate.
+        updates = data.get('numeric_updates')
+        specs = updates.values() if isinstance(updates, dict) else updates
+        if isinstance(specs, (list, tuple)) or isinstance(updates, dict):
+            for spec in specs:
+                if isinstance(spec, dict) and isinstance(spec.get('target'), str) and spec['target']:
+                    blocked.add(spec['target'])
+        frames = data.get('predicate_frames')
+        frames = frames if isinstance(frames, dict) else {}
+        marks = set()
+        grammar = getattr(parser, 'clause_grammar', None)
+        for held in (frames.get('separators'), frames.get('terminators'),
+                     grammar.get('question_marks') if isinstance(grammar, dict) else None):
+            if isinstance(held, (list, tuple)):
+                marks.update(m for m in held if isinstance(m, str) and m)
+        number = r'[+-]?\d+(\.\d+)?'
+        for fact in facts:
+            if not isinstance(fact, dict) or fact.get('unnamed') or fact.get('resolve') or fact.get('elided'):
+                return False
+            triple = fact.get('triple')
+            if not isinstance(triple, (list, tuple)) or len(triple) != 3:
+                return False
+            if not all(isinstance(part, str) and part.strip() and '$' not in part and '?' not in part
+                       for part in triple):
+                return False
+            if (fact.get('polarity', True) is not True or fact.get('modality', 'asserted') != 'asserted'
+                    or re.fullmatch(number, triple[2].strip()) or re.fullmatch(number, triple[0].strip())
+                    or triple[1] in blocked):
+                return False
+            evidence = fact.get('evidence')
+            if (not isinstance(evidence, dict) or evidence.get('normalization') or evidence.get('repair')
+                    or evidence.get('ellipsis') or fact.get('ellipsis') or fact.get('derived')
+                    or fact.get('negation') or fact.get('variables')):
+                return False
+        import hashlib
+        selection = current.get('entry_selection')
+        if (not isinstance(selection, dict) or selection.get('schema') != 'marco-entry-selection-v1'
+                or selection.get('scope') != 'known_selected_input_clauses'
+                or selection.get('status') != 'partial'
+                or selection.get('coordinate_space') != 'parser_view'
+                or not isinstance(selection.get('gaps'), list)
+                or not isinstance(selection.get('items'), list)
+                or len(selection['items']) != 2):
+            return False
+        # Native source authority: installed predicate frames / examples are the projection's own.
+        projection = self.model.language_projection
+        native = projection.get('data') if isinstance(projection, dict) else None
+        provenance = projection.get('provenance') if isinstance(projection, dict) else None
+        if not isinstance(native, dict) or not isinstance(provenance, dict):
+            return False
+        native_frames = native.get('predicate_frames')
+        held_frames = frames.get('frames')
+        native_held = native_frames.get('frames') if isinstance(native_frames, dict) else None
+        seed_count = native_frames.get('seed_count') if isinstance(native_frames, dict) else None
+        seed_sha256 = native_frames.get('seed_sha256') if isinstance(native_frames, dict) else None
+        examples = native.get('examples')
+        installed = data.get('examples')
+        if (not isinstance(native_frames, dict) or native_frames.get('schema') != 'predicate-frames-v2'
+                or frames.get('schema') != 'predicate-frames-v2'
+                or type(seed_count) is not int or seed_count <= 0
+                or type(frames.get('seed_count')) is not int or frames['seed_count'] != seed_count
+                or type(seed_sha256) is not str or frames.get('seed_sha256') != seed_sha256
+                or not isinstance(held_frames, list) or not isinstance(native_held, list)
+                or len(held_frames) != len(native_held)
+                or not isinstance(examples, list) or not isinstance(installed, list)
+                or len(examples) < seed_count or len(installed) < seed_count):
+            return False
+        try:
+            seed_text = json.dumps(examples[:seed_count], sort_keys=True, separators=(',', ':'),
+                                   ensure_ascii=False, allow_nan=False)
+            if hashlib.sha256(seed_text.encode('utf-8')).hexdigest() != seed_sha256:
+                return False
+        except (TypeError, ValueError, UnicodeEncodeError):
+            return False
+        for row in range(seed_count):
+            if (not isinstance(examples[row], dict) or examples[row].get('derived')
+                    or not self._unread_native_equal(installed[row], examples[row])):
+                return False
+        for held, own in zip(held_frames, native_held):
+            if (not isinstance(held, dict) or not isinstance(own, dict)
+                    or not isinstance(held.get('source_ref'), dict) or not isinstance(own.get('source_ref'), dict)
+                    or not self._unread_native_equal({k: v for k, v in held.items() if k != 'source_ref'},
+                                                     {k: v for k, v in own.items() if k != 'source_ref'})
+                    or not self._unread_native_equal(
+                        {k: held['source_ref'].get(k) for k in ('index', 'annotation_sha256')},
+                        {k: own['source_ref'].get(k) for k in ('index', 'annotation_sha256')})
+                    or not self._fact_batch_capsule_ok(own['source_ref'].get('graph_source'), provenance)
+                    or not self._fact_batch_capsule_ok(held['source_ref'].get('graph_source'), provenance)
+                    # Full bounded exact native equality of graph_source (rule/sense/nodes/edges included).
+                    or self._unread_json(own['source_ref'].get('graph_source'), 65536) is None
+                    or self._unread_json(held['source_ref'].get('graph_source'), 65536) is None
+                    or not self._unread_native_equal(held['source_ref'].get('graph_source'),
+                                                     own['source_ref'].get('graph_source'))):
+                return False
+        vector = getattr(parser, '_entry_origins', None)
+        if not isinstance(vector, list) or len(vector) != len(installed):
+            return False
+        spans, expected_gaps = [], []
+        item_keys = {'clause_ordinal', 'span', 'compiler_index', 'origin', 'targets', 'derivation'}
+        for index, (fact, item) in enumerate(zip(facts, selection['items'])):
+            evidence = fact['evidence']
+            start, end = evidence.get('start'), evidence.get('end')
+            if (type(start) is not int or type(end) is not int or not 0 <= start < end <= len(text)
+                    or evidence.get('text') != text[start:end]):
+                return False
+            if (not isinstance(item, dict) or set(item) != item_keys
+                    or item.get('clause_ordinal') != index or type(item['clause_ordinal']) is not int
+                    or not self._unread_native_equal(item.get('span'), [start, end])
+                    or not self._unread_native_equal(item.get('targets'), {'facts': [index], 'query': []})
+                    or item.get('derivation') is not None
+                    or type(item.get('compiler_index')) is not int
+                    or not 0 <= item['compiler_index'] < seed_count):
+                return False
+            # Distinct clauses may share one compiler_index / native frame; no uniqueness demanded.
+            ci = item['compiler_index']
+            if self._unread_json(examples[ci], 65536) is None:
+                return False
+            matches = [f for f in native_held if isinstance(f, dict) and isinstance(f.get('source_ref'), dict)
+                       and type(f['source_ref'].get('index')) is int and f['source_ref']['index'] == ci]
+            if len(matches) != 1:
+                return False
+            ref = matches[0]['source_ref']
+            if (type(ref.get('annotation_sha256')) is not str
+                    or not re.fullmatch(r'[0-9a-f]{64}', ref['annotation_sha256'])
+                    or not isinstance(ref.get('graph_source'), dict)
+                    or matches[0].get('id') != ref['graph_source'].get('rule_id')
+                    or self._unread_json(ref['annotation_sha256'], 256) is None):
+                return False
+            held_origin = vector[ci]
+            origin = item.get('origin')
+            if held_origin is None:
+                # Native default: truthful persisted unknown origin; only this exact gap is permitted.
+                if origin is not None:
+                    return False
+                expected_gaps.append({'clause_ordinal': index, 'code': 'origin_unknown'})
+            elif (not isinstance(origin, dict) or not origin or not isinstance(held_origin, dict)
+                    or self._unread_json(origin, 8192) is None
+                    or not self._unread_native_equal(origin, held_origin)):
+                return False
+            spans.append((start, end))
+        if not self._unread_native_equal(selection['gaps'], expected_gaps):
+            return False
+        if spans[0][1] > spans[1][0]:
+            return False
+        gaps = (text[:spans[0][0]], text[spans[0][1]:spans[1][0]], text[spans[1][1]:])
+        for gap in gaps:
+            rest = gap
+            for mark in sorted(marks, key=len, reverse=True):
+                rest = rest.replace(mark, ' ')
+            if rest.strip():
+                return False
+        rendered = json.dumps({'facts': facts, 'entry_selection': selection}, sort_keys=True,
+                              ensure_ascii=False, allow_nan=False)
+        return len(rendered.encode('utf-8')) <= 65536
+
+    def _admit_structural_observation(self, text, current, parser, verbs, knowledge_path):
+        """One-commit transactional admission of a native structural unknown-action observation.
+
+        None when the existing pure preflight declines. Otherwise either the raw capacity hold (no
+        commit) or exactly one ``_commit_observations`` plus the unread binding; any other error
+        restores the original containers and propagates. No parse/replay/answer/turn is added.
+        """
+        bundle = self._prepare_structural_observation(text, current, parser, verbs)
+        if bundle is None:
+            return None
+        equal = self._unread_native_equal
+        source, parsed, word = bundle["source"], bundle["parsed"], bundle["word"]
+        old_count = bundle["old_count"]
+        raw = source.strip()
+        saved = dict(self.__dict__)
+        obs_ref, obs_items = self._obs, list(self._obs)
+        ledger_ref = self.reading_ledger
+        ledger_items = dict(ledger_ref)
+        ledger_shape = {key: (held, held["active"], len(held["versions"])) for key, held in ledger_items.items()}
+        parser_dict = parser.__dict__
+        chosen_present = "chosen_readings" in parser_dict
+        chosen_ref = parser_dict.get("chosen_readings")
+        chosen_items = dict(chosen_ref) if chosen_present and isinstance(chosen_ref, dict) else None
+        unread_ref, unread_items = self.unread, list(self.unread)
+        guard_ref, guard_items = self.unread_guard, list(self.unread_guard)
+        next_id = self._next_observation
+        trace_present = "_trace_buffer" in self.__dict__
+        trace_ref = self.__dict__.get("_trace_buffer")
+        trace_len = len(trace_ref) if trace_ref is not None else 0
+
+        def rollback():
+            state = self.__dict__
+            for key in [k for k in state if k not in saved]:
+                del state[key]
+            state.update(saved)
+            obs_ref[:] = obs_items
+            self._obs = obs_ref
+            ledger_ref.clear()
+            ledger_ref.update(ledger_items)
+            self.reading_ledger = ledger_ref
+            if chosen_present:
+                parser_dict["chosen_readings"] = chosen_ref
+                if chosen_items is not None:
+                    chosen_ref.clear()
+                    chosen_ref.update(chosen_items)
+            else:
+                parser_dict.pop("chosen_readings", None)
+            unread_ref[:] = unread_items
+            guard_ref[:] = guard_items
+            self.unread, self.unread_guard = unread_ref, guard_ref
+            self._next_observation = next_id
+            if trace_present and trace_ref is not None:
+                del trace_ref[trace_len:]
+
+        def capacity_hold():
+            self._remember_unread({"text": raw, "at": old_count, "까닭": "용량"})
+            return {"operator": "relational_graph", "status": "unresolved", "answer": bundle["capacity_reply"],
+                    "transitions": [], "meaning": {"act": "hold", "reason": "capacity"},
+                    "verification": self._verification(knowledge_path, [{"ok": False, "reason": "capacity",
+                                                                         "source": source}])}
+
+        def mismatch():
+            raise ReadingUnavailable("structural_binding_mismatch")
+
+        try:
+            if bundle["capacity"]:
+                return capacity_hold()
+            if len(self._obs) != old_count or self._next_observation != next_id:
+                mismatch()
+            new = Obs(source, TENTATIVE, 1, reading=deepcopy(parsed), reason="candidate_reading")
+            try:
+                self._commit_observations(list(obs_items) + [new])
+            except ValueError as exc:
+                if type(exc) is ValueError and exc.args == ("reading_capacity",):
+                    rollback()
+                    return capacity_hold()
+                raise
+            current_obs = self._obs
+            if type(current_obs) is not list or len(current_obs) != old_count + 1 \
+                    or self._next_observation != next_id + 1 or self.reading_ledger is not ledger_ref:
+                mismatch()
+            actual = current_obs[-1]
+            oid = _readings.oid_of(actual)
+            if (not isinstance(actual, Obs) or oid != "o%d" % next_id or getattr(actual, "rev", None) != 1
+                    or str(actual) != source):
+                mismatch()
+            for old, kept in zip(obs_items, current_obs[:old_count]):
+                if (str(old) != str(kept) or _readings.oid_of(old) != _readings.oid_of(kept)
+                        or getattr(old, "rev", None) != getattr(kept, "rev", None)):
+                    mismatch()
+            if list(ledger_ref) != list(ledger_items) + [oid]:
+                mismatch()
+            for key, (held, active, count) in ledger_shape.items():
+                if ledger_ref[key] is not held or held["active"] != active or len(held["versions"]) != count:
+                    mismatch()
+            entry = ledger_ref[oid]
+            record = self._active_record(actual)
+            if (type(entry) is not dict or entry.get("active") != 1 or len(entry["versions"]) != 1
+                    or type(record) is not dict or record is not entry["versions"][0]
+                    or record.get("observation_id") != oid or record.get("reading_revision") != 1
+                    or record.get("source") != source or record.get("unavailable") is not False
+                    or record.get("reason") != "candidate_reading" or not equal(record.get("parsed"), parsed)):
+                mismatch()
+            view = parser_dict.get("chosen_readings")
+            if (type(view) is not dict or (chosen_present and view is not chosen_ref) or oid not in view
+                    or not equal(view[oid], parsed)):
+                mismatch()
+            if self._unread_json(record, 65536) is None:
+                mismatch()
+            obs_ref[:] = list(obs_items) + [actual]
+            self._obs = obs_ref
+            self._forget_heard({raw})
+            pending = {"text": raw, "at": old_count, "말": word, "꼬리": ""}
+            self._remember_unread(pending)
+            if not any(item is pending for item in self.unread):
+                mismatch()
+            shaped = self._unread_pending_shape(pending)
+            if shaped is None or shaped[0] != "unknown_word":
+                mismatch()
+            bound = self._unread_pending_unknown_binding(shaped[1])
+            if (bound is None or bound["source"] is not actual or bound["record"] is not record
+                    or bound["archived"] != source
+                    or bound["record"].get("parsed") is not record.get("parsed")):
+                mismatch()
+            result = {"operator": "relational_graph", "status": "unresolved", "answer": bundle["unknown_reply"],
+                      "transitions": [],
+                      "meaning": {"act": "hold", "reason": "unknown_word", "word": word, "said": source},
+                      "verification": self._verification(knowledge_path, [{"ok": False, "reason": "unknown_word",
+                                                                           "source": str(actual)}])}
+            for name in ("_replay_cache", "_verb_cache", "_graph_cache"):
+                if name in self.__dict__:
+                    cache = self.__dict__[name]
+                    self.__dict__[name] = {} if type(cache) is dict else [] if type(cache) is list else None
+            return result
+        except BaseException:
+            rollback()
+            raise
+
+    def _prepare_structural_observation(self, text, current, parser, verbs):
+        """Pure eligibility/preflight for a native structural unknown-action observation.
+
+        Returns None when ineligible, else the evidence bundle. Writes nothing (apart from the
+        existing ``_grammar`` fingerprint cache) and publishes no IDs. The predicted next oid is
+        used only to shape-check the prospective record and is never returned.
+        Owner fields are the actual ones used by ``__init__``/``_archive``/``_commit_observations``:
+        ``_next_observation``, ``reading_ledger``, ``max_turns``, ``parser_base_sha256``,
+        ``installed_memory_head`` and the parser-owned ``chosen_readings`` view.
+        """
+        from pack_model import PackModel
+        equal = self._unread_native_equal
+        if type(self.model) is not PackModel:
+            return None
+        if not isinstance(text, Obs) or _readings.oid_of(text) != TENTATIVE:
+            return None
+        if parser is None or parser is not getattr(self, "_parser_instance", None):
+            return None
+        source = str(text)
+        frame = getattr(self, self._UNREAD_FRAME_ATTR, None)
+        if not isinstance(frame, dict) or set(frame) != set(self._UNREAD_FRAME_FIELDS):
+            return None
+        if (frame["source"] is not text or frame["current"] is not current
+                or frame["parser"] is not parser or frame["model"] is not self.model
+                or type(frame["calls"]) is not int or frame["calls"] != 1
+                or frame["nested"] is not False or frame["gap"] is not None):
+            return None
+        if (self._live() or self.pending_pointer is not None or self.held_question is not None
+                or getattr(self, "_in_name_reply", False) or getattr(self, "_rereading", False)):
+            return None
+
+        def pair(value):
+            return (type(value) is list and len(value) == 2 and all(type(x) is int for x in value)
+                    and 0 <= value[0] < value[1] <= len(source))
+
+        grounding = self.model.action_grounding_projection
+        if (type(grounding) is not dict or grounding.get("schema") != "pack-action-grounding-projection-v1"
+                or grounding.get("status") != "paired" or grounding.get("gaps") != []):
+            return None
+        projection = grounding.get("projection")
+        binding = grounding.get("binding")
+        if type(projection) is not dict or type(binding) is not dict:
+            return None
+        surface = projection.get("surface")
+        if type(surface) is not dict:
+            return None
+        language_pack = parser.language_pack
+        declaration = language_pack.get("selected_action_surface") if isinstance(language_pack, dict) else None
+        if type(declaration) is not dict or set(declaration) != {"surface", "binding"}:
+            return None
+        if not equal(declaration, {"surface": surface, "binding": binding}):
+            return None
+
+        language = self.model.language_projection
+        if type(language) is not dict or language.get("schema") != "graph-dialogue-projection-v1":
+            return None
+        data = language.get("data")
+        replies = data.get("context_replies") if type(data) is dict else None
+        installed = parser.data.get("context_replies")
+        if type(replies) is not dict or not equal(installed, replies):
+            return None
+        required = ("observed", "unresolved", "unread_event", "unknown_word", "input_understanding_failed",
+                    "no_reading", "ambiguous_reading", "capacity", "invalid", "contradiction")
+        if not all(type(replies.get(key)) is str and replies[key].strip() for key in required):
+            return None
+
+        # Normal parser container: only one raw 사건, optional entry_selection dict (may be empty).
+        if type(current) is not dict:
+            return None
+        empty_lists = ("facts", "정의", "가정사건", "조건", "가정", "원인", "이유물음", "수선", "사건정정")
+        base_keys = set(empty_lists) | {"query", "사건"}
+        keys = set(current)
+        if keys != base_keys and keys != base_keys | {"entry_selection"}:
+            return None
+        if any(type(current[key]) is not list or current[key] != [] for key in empty_lists):
+            return None
+        if current["query"] is not None:
+            return None
+        if "entry_selection" in current and type(current["entry_selection"]) is not dict:
+            return None
+        events = current["사건"]
+        if type(events) is not list or len(events) != 1 or type(events[0]) is not dict:
+            return None
+        event = events[0]
+        if any(marker in event for marker in ("실행", "program", "negative", "hypothetical", "hypothesis")):
+            return None
+        if "polarity" in event and event["polarity"] is not True:
+            return None
+        if "modality" in event and (type(event["modality"]) is not str or event["modality"] != "asserted"):
+            return None
+        if not equal(event.get("selected_action_binding"), binding):
+            return None
+        reading = event.get("structural_reading")
+        if type(reading) is not dict:
+            return None
+        if (reading.get("schema") != "unknown-action-reading-v1" or reading.get("status") != "read"
+                or reading.get("search_complete") is not True or reading.get("truncated") is not False
+                or type(reading.get("gaps")) is not list or reading.get("gaps") != []):
+            return None
+        surface_id = reading.get("surface_id")
+        if "surface_id" not in surface:
+            return None
+        declared_id = surface["surface_id"]
+        if type(surface_id) is not str or not surface_id or not equal(surface_id, declared_id):
+            return None
+        unknown = reading.get("unknown_text")
+        verb = event.get("verb")
+        if type(unknown) is not str or not unknown or type(verb) is not str or verb != unknown:
+            return None
+        if type(event.get("꼬리")) is not str or event["꼬리"] != "" or event.get("잘림") is not False:
+            return None
+
+        # Supplied verbs table: a known key or stem rejects (marker-denied lookup is not evidence).
+        table = {} if verbs is None else verbs
+        if not isinstance(table, dict):
+            return None
+        if unknown in table:
+            return None
+        for found in table.values():
+            if (found.get("stem") if isinstance(found, dict) else found) == unknown:
+                return None
+
+        # Spans: exact Unicode codepoint offsets into str(text).
+        unknown_span = reading.get("unknown_span")
+        if not pair(unknown_span) or source[unknown_span[0]:unknown_span[1]] != unknown:
+            return None
+        roles = surface.get("roles")
+        if type(roles) is not list or not all(type(role) is dict for role in roles):
+            return None
+        candidates = reading.get("role_candidates")
+        raw_maps = event.get("자리후보")
+        raw_shared = event.get("자리")
+        if (type(candidates) is not list or not candidates or type(raw_maps) is not list
+                or len(raw_maps) != len(candidates) or type(raw_shared) is not dict):
+            return None
+        declared_keys = ("case_group", "slot", "type_ref", "presence", "coreference_group")
+        # Declared role order: distinct non-empty slot names, used for exact omitted-role lists.
+        declared_slots = [role.get("slot") for role in roles]
+        if (not all(type(slot) is str and slot for slot in declared_slots)
+                or len(set(declared_slots)) != len(declared_slots)):
+            return None
+        maps = []
+        for candidate, raw_map in zip(candidates, raw_maps):
+            if type(candidate) is not dict or type(raw_map) is not dict:
+                return None
+            bindings = candidate.get("bindings")
+            if type(bindings) is not list or not bindings:
+                return None
+            seen = set()
+            row = {}
+            for item in bindings:
+                if type(item) is not dict:
+                    return None
+                slot, value = item.get("slot"), item.get("value")
+                if type(slot) is not str or not slot or type(value) is not str or not value:
+                    return None
+                if slot in seen:
+                    return None
+                seen.add(slot)
+                span = item.get("span")
+                if not pair(span) or source[span[0]:span[1]] != value:
+                    return None
+                marker, chunk = item.get("marker_span"), item.get("chunk_span")
+                if not pair(marker) or not pair(chunk):
+                    return None
+                # Reader emits span=[st,ve], marker_span=[ve,e], chunk_span=[st,e].
+                if span[1] != marker[0] or chunk[0] != span[0] or chunk[1] != marker[1]:
+                    return None
+                matches = [role for role in roles if role.get("slot") == slot]
+                if len(matches) != 1:
+                    return None
+                if not all(equal(item.get(key), matches[0].get(key)) for key in declared_keys):
+                    return None
+                row[slot] = value
+            # F01: exact omitted roles in declaration order; every required role must be bound.
+            omitted = [slot for slot in declared_slots if slot not in seen]
+            if "omitted_slots" not in candidate or not equal(candidate["omitted_slots"], omitted):
+                return None
+            if any(role.get("presence") == "required" and role["slot"] not in seen for role in roles):
+                return None
+            # F02: raw per-candidate slot map must equal the reader-order binding map.
+            if not equal(row, raw_map):
+                return None
+            maps.append(row)
+        # F02: raw shared 자리 must equal the identical slot/value intersection across ALL maps,
+        # checked here regardless of record fitting/capacity.
+        shared = {slot: value for slot, value in maps[0].items()
+                  if all(slot in other and other[slot] == value for other in maps[1:])}
+        if not equal(shared, raw_shared):
+            return None
+
+        # Existing provisional view (parser-owned ``chosen_readings``, read without creating it):
+        # absent, or a TENTATIVE entry bounded-native-equal to ``current``. Never overwritten here.
+        chosen = parser.__dict__.get("chosen_readings")
+        if chosen is not None:
+            if not isinstance(chosen, dict):
+                return None
+            if TENTATIVE in chosen and not equal(chosen[TENTATIVE], current):
+                return None
+
+        # Allocator and capacity: the actual ledger owner fields, no fallbacks.
+        allocated = self._next_observation
+        if type(allocated) is not int or allocated <= 0:
+            raise ReadingUnavailable("structural_allocator_invalid")
+        oid = "o%d" % allocated
+        ledger = self.reading_ledger
+        if type(ledger) is not dict:
+            raise ReadingUnavailable("structural_allocator_invalid")
+        if oid in ledger or any(_readings.oid_of(old) == oid for old in self._obs):
+            raise ReadingUnavailable("structural_allocator_invalid")
+        max_turns = self.max_turns
+        if type(max_turns) is not int or max_turns <= 0:
+            raise ReadingUnavailable("structural_capacity_unavailable")
+        old_count = len(self._obs)
+        versions = sum(len(entry["versions"]) for entry in ledger.values())
+        capacity = old_count >= max_turns or versions >= max_turns * 8
+        record = _readings.make_record(oid, 1, source, current, base=self.parser_base_sha256,
+                                       head=self.installed_memory_head,
+                                       reason="candidate_reading", prior=None, unavailable=False,
+                                       grammar=self._grammar())
+        if self._unread_json(record, 65536) is None:
+            capacity = True
+        else:
+            try:
+                self._marked_carrier(current)
+            except ReadingUnavailable:
+                return None
+        return {"source": source, "parsed": current, "word": unknown, "old_count": old_count,
+                "capacity": capacity,
+                "unknown_reply": replies["unknown_word"].format(말=unknown),
+                "capacity_reply": replies["capacity"]}
+
+    def _scoped_admission(self, text, current, parser):
+        """Selected signed/conditional scope name after full V4 own-native source verification, else None."""
+        text = _scoped_plain(text)
+        auth = _scoped_authority(getattr(self.model, "language_projection", None), parser)
+        if (auth is None or text is None or type(current) is not dict
+                or self._unread_json(auth["data"]["semantic_capabilities"], 65536) is None):
+            return None
+        facts = current.get("facts") or []
+        query = current.get("query") or []
+        if current.get("조건") and current.get("condition"):
+            return None
+        conds = current.get("조건") or current.get("condition") or []
+        env = current.get("entry_selection")
+        if (type(facts) is not list or type(query) is not list or type(conds) is not list
+                or type(env) is not dict
+                or set(env) != {"schema", "scope", "status", "coordinate_space", "items", "gaps"}
+                or env["schema"] != "marco-entry-selection-v1" or env["scope"] != "known_selected_input_clauses"
+                or env["status"] != "partial" or env["coordinate_space"] != "parser_view"
+                or type(env["items"]) is not list or type(env["gaps"]) is not list
+                or len(env["items"]) != 1 or len(env["gaps"]) > (3 if len(conds) == 2 else 2)):
+            return None
+        if any(current.get(key) for key in ("사건", "가정사건", "사건정정", "정의", "원인", "이유물음", "events",
+                                            "definition", "cause", "reason", "correction", "hypothesis", "가정")):
+            return None
+        item, gaps = env["items"][0], env["gaps"]
+        base = {"clause_ordinal", "span", "compiler_index", "origin", "targets", "derivation"}
+        extra = set(item) - base if type(item) is dict else None
+        if (extra is None or not base <= set(item) or len(extra) != 1
+                or not extra <= {"source_certificate", "source_witness"}
+                or type(item["clause_ordinal"]) is not int or type(item["compiler_index"]) is not int
+                or type(item["span"]) is not list or len(item["span"]) != 2
+                or not all(type(v) is int for v in item["span"])
+                or not 0 <= item["span"][0] < item["span"][1] <= len(text)
+                or type(item["targets"]) is not dict or set(item["targets"]) != {"facts", "query"}
+                or not all(type(v) is list and all(type(i) is int for i in v) for v in item["targets"].values())):
+            return None
+
+        def gap_of(code, same):
+            return [g for g in gaps if type(g) is dict and set(g) == {"clause_ordinal", "code"}
+                    and g["code"] == code and type(g["clause_ordinal"]) is int
+                    and (g["clause_ordinal"] == item["clause_ordinal"]) is same]
+
+        unknown = gap_of("origin_unknown", True)
+        scopes = gap_of("condition_scope_uncollected", False)
+        if (len(unknown) + len(scopes) != len(gaps) or len(unknown) > 1
+                or len(scopes) > (2 if len(conds) == 2 else 1)
+                or (unknown and item["origin"] is not None)):
+            return None
+        frames = auth["frames"]
+        qmarks = [m for m in auth["question_marks"] if type(m) is str and m]
+
+        def declared(key):
+            got = frames.get(key)
+            return ([m for m in got if type(m) is str and m.strip() and m.strip() == m and m not in qmarks]
+                    if type(got) is list else [])
+
+        terms, seps = declared("terminators"), declared("separators")
+
+        def edge(chunk, allowed):
+            core = chunk.strip()
+            return core == "" or core in allowed
+
+        def evidence_at(row, span):
+            ev = row.get("evidence") if type(row) is dict else None
+            if not (type(ev) is dict and type(ev.get("start")) is int and type(ev.get("end")) is int
+                    and [ev["start"], ev["end"]] == span):
+                return False
+            plain = _scoped_text(ev.get("text"))
+            if plain is None:
+                return False
+            return plain == text[span[0]:span[1]]
+
+        def plain(part, var_ok=False):
+            return (type(part) is str and bool(part.strip()) and "$" not in part
+                    and (var_ok or "?" not in part) and not re.fullmatch(r"[+-]?\d+(\.\d+)?", part.strip()))
+
+        def triple_ok(row, var_ok=False):
+            t = row.get("triple") if type(row) is dict else None
+            return type(t) is list and len(t) == 3 and all(plain(p, var_ok) for p in t)
+
+        native_keys = {"rule", "source", "seed_count", "seed_sha256", "source_ref", "frame_id",
+                       "declaration_sha256", "predicate_span", "roles", "markers", "punctuation",
+                       "coverage", "inflection", "operators", "scope"}
+
+        def native_ok(der, want, cap):
+            # Canonical flat (normalization None) native trace only, positive-fact consequent only,
+            # called after independent witness/cert verification. Sole rederivation: pure existing
+            # frames._bind_seed_roles on the own-native frame; never _declared_route/parse/events.
+            if want is None or type(cap) is not dict or type(der) is not dict or set(der) != native_keys:
+                return False
+            ok, trace = _scoped_wire(der)
+            if not ok or trace["rule"] != "seed-constituents-v2":
+                return False
+            tsrc = trace["source"]
+            if type(tsrc) is not str or not tsrc.strip() or any(q in tsrc for q in qmarks):
+                return False
+            lo, hi = item["span"]
+            core = text[lo:hi]
+            lead = len(tsrc) - len(tsrc.lstrip())
+            body = tsrc.strip()
+            if body != core and not any(body.endswith(m) and body[:-len(m)].rstrip() == core
+                                        for m in terms):
+                return False
+            start = lo - lead
+            if start < 0 or text[start:start + len(tsrc)] != tsrc:
+                return False
+            if not _scoped_native_eq(trace["scope"], [0, len(tsrc)]):
+                return False
+            ref, fid = trace["source_ref"], trace["frame_id"]
+            if (type(ref) is not dict or type(fid) is not str or type(ref.get("index")) is not int
+                    or ref["index"] != item["compiler_index"]):
+                return False
+            compact = _scoped_compact(ref)
+            if (compact is None or not _scoped_native_eq(_scoped_resolve(auth["frame_full"], compact), ref)
+                    or not any(_scoped_native_eq(compact, r) for r in cap["basis"]["frame_refs"])):
+                return False
+            decl = deepcopy(frames)
+            hits = [i for i, row in enumerate(decl["frames"])
+                    if type(row) is dict and type(row.get("id")) is str and row["id"] == fid
+                    and _scoped_native_eq(row.get("source_ref"), ref)]
+            if len(hits) != 1:
+                return False
+            from marco.language import frames as _seed_frames
+            try:
+                res = _seed_frames._select_unique_seed_flat(parser, tsrc, decl)
+            except ValueError:
+                return False
+            if type(res) is not tuple or len(res) != 3 or res[0] != "ok":
+                return False
+            ok_t, native_trace = _scoped_wire(res[2])
+            ok_m, native_meaning = _scoped_wire(res[1])
+            ok_w, wanted = _scoped_wire(want)
+            return (ok_t and ok_m and ok_w
+                    and _scoped_native_eq(native_trace, trace) and _scoped_native_eq(trace, native_trace)
+                    and _scoped_native_eq(native_meaning, wanted) and _scoped_native_eq(wanted, native_meaning))
+
+        def derived_ok(src, want=None, cap=None):
+            # Called only after pure verification of the 11-key source witness `src`. Entry derivation
+            # is the legacy producer's DERIVATION SUMMARY of src's verified normalization; rebuild the
+            # exact expected summary from the closed normalization shapes and compare type-sensitively
+            # (None vs dict included) over detached string-normalized wire copies. Unknown
+            # shapes/ids/repair variants are rejected. No early acceptance. A canonical-flat native
+            # seed-constituents-v2 trace is proved separately by native_ok.
+            if (type(src) is not dict or len(src) != 11 or "normalization" not in src
+                    or _scoped_text(src.get("canonical")) is None):
+                return False
+            der, norm = item["derivation"], src["normalization"]
+            if norm is None and type(der) is dict and der.get("rule") == "seed-constituents-v2":
+                return native_ok(der, want, cap)
+            if norm is None:
+                expected = None
+            elif type(norm) is not dict:
+                return False
+            elif set(norm) == {"id", "canonical", "example_index", "polarity"}:
+                if (norm["id"] != "declared-negation-v1" or type(norm["id"]) is not str
+                        or _scoped_text(norm["canonical"]) is None
+                        or _scoped_text(norm["canonical"]) != _scoped_text(src["canonical"])
+                        or type(norm["example_index"]) is not int or type(norm["polarity"]) is not bool):
+                    return False
+                expected = {"rule": norm["id"], "canonical": src["canonical"]}
+            elif set(norm) == {"id", "stem", "tense", "ending", "operations", "example_index"}:
+                if (type(norm["id"]) is not str or not norm["id"] or norm["id"] == "declared-negation-v1"
+                        or type(norm["example_index"]) is not int
+                        or type(norm["stem"]) is not str or type(norm["ending"]) is not str
+                        or type(norm["operations"]) is not list):
+                    return False
+                expected = {"rule": norm["id"], "canonical": src["canonical"], "stem": norm["stem"],
+                            "tense": norm["tense"], "ending": norm["ending"],
+                            "operations": deepcopy(norm["operations"])}
+            else:
+                return False
+            if expected is None:
+                return der is None
+            if type(der) is not dict:
+                return False
+            ok_e, wire_e = _scoped_wire(expected)
+            ok_d, wire_d = _scoped_wire(der)
+            return (ok_e and ok_d and _scoped_native_eq(wire_e, wire_d)
+                    and _scoped_native_eq(wire_d, wire_e))
+
+        if len(facts) == 1 and not query and not conds:
+            fact = facts[0]
+            cap = _scoped_cap(auth, "negative_binary")
+            if (cap is None or scopes or extra != {"source_certificate"} or not triple_ok(fact)
+                    or fact.get("unnamed") or fact.get("polarity") is not False
+                    or fact.get("modality", "asserted") != "asserted" or any(m in text for m in qmarks)
+                    or not _scoped_native_eq(item["targets"], {"facts": [0], "query": []})):
+                return None
+            got = _scoped_cert(parser, auth, text, item["source_certificate"], "negative_fact", cap,
+                               {"triple": list(fact["triple"]), "polarity": False})
+            if (got is None or got["compiler_index"] != item["compiler_index"] or got["span"] != item["span"]
+                    or not evidence_at(fact, got["span"]) or text[:got["span"][0]].strip()
+                    or not edge(text[got["span"][1]:], terms)
+                    or not derived_ok(item["source_certificate"]["witness"])):
+                return None
+            return "negative_fact"
+        if len(query) == 1 and not facts and not conds:
+            asked = query[0]
+            cap = _scoped_cap(auth, "negative_binary")
+            if (cap is None or scopes or extra != {"source_certificate"} or type(asked) is not dict
+                    or set(asked) != {"triple", "render", "polarity"} or asked["polarity"] is not False
+                    or not triple_ok(asked, True)
+                    or not _scoped_native_eq(item["targets"], {"facts": [], "query": [0]})):
+                return None
+            triple, render = asked["triple"], asked["render"]
+            if (sum(p.startswith("?") for p in (triple[0], triple[2])) != 1 or "?" in triple[1]
+                    or type(render) is not list or not render or not all(type(r) is str for r in render)):
+                return None
+            got = _scoped_cert(parser, auth, text, item["source_certificate"], "negative_query", cap,
+                               {"query": [deepcopy(asked)]})
+            derived = got["source_ref"].get("negative_derivation") if got is not None else None
+            if (got is None or got["compiler_index"] != item["compiler_index"] or got["span"] != item["span"]
+                    or type(derived) is not dict or derived.get("capability_sha256") != cap["capability_sha256"]
+                    or text[:got["span"][0]].strip() or not edge(text[got["span"][1]:], terms + qmarks)
+                    or not derived_ok(item["source_certificate"]["witness"])):
+                return None
+            return "negative_query"
+        if len(facts) == 1 and not query and len(conds) == 1:
+            fact, cond = facts[0], conds[0]
+            cap = _scoped_cap(auth, "conditional_binary")
+            if (cap is None or len(scopes) != 1 or scopes[0]["clause_ordinal"] >= item["clause_ordinal"]
+                    or extra != {"source_witness"} or not triple_ok(fact) or not triple_ok(cond)
+                    or fact.get("unnamed") or fact.get("polarity", True) is not True
+                    or fact.get("modality", "asserted") != "asserted"
+                    or _scoped_plain(cond.get("source_original")) != text or any(m in text for m in qmarks)
+                    or not _scoped_native_eq(item["targets"], {"facts": [0], "query": []})):
+                return None
+            guard = _scoped_guard_cert(parser, auth, cap, text, cond)
+            if (guard is None or not evidence_at(cond, guard["span"])
+                    or _scoped_group(auth, [cond], [guard], text) is None):
+                return None
+            witness = item["source_witness"]
+            witnessed = getattr(parser, "verify_selected_binary_witness", None)
+            want = _scoped_positive_meaning(witness.get("meaning") if type(witness) is dict else None,
+                                            fact["triple"])
+            if (want is None or not callable(witnessed) or type(witness) is not dict or len(witness) != 11
+                    or type(witness.get("source")) is not str or not witness["source"].strip()
+                    or not _scoped_native_eq(witness.get("meaning"), want)):
+                return None
+            seen = witnessed(witness["source"], witness, "positive_fact")
+            full = seen.get("source_ref") if type(seen) is dict else None
+            compact = _scoped_compact(full)
+            if (type(seen) is not dict
+                    or set(seen) != {"source_ref", "compiler_index", "meaning", "capability_sha256"}
+                    or seen["capability_sha256"] != cap["capability_sha256"]
+                    or not _scoped_native_eq(seen["meaning"], want) or compact is None
+                    or not _scoped_native_eq(_scoped_resolve(auth["frame_full"], compact), full)
+                    or not any(_scoped_native_eq(compact, r) for r in cap["basis"]["frame_refs"])
+                    or type(seen["compiler_index"]) is not int or seen["compiler_index"] != full["index"]
+                    or seen["compiler_index"] != item["compiler_index"]):
+                return None
+            (g_lo, g_hi), (c_lo, c_hi) = guard["span"], item["span"]
+            if (not g_hi <= c_lo or text[c_lo:c_hi] != witness["source"] or not evidence_at(fact, item["span"])
+                    or text[:g_lo].strip() or not edge(text[g_hi:c_lo], seps) or not edge(text[c_hi:], terms)
+                    or not derived_ok(witness, want, cap)):
+                return None
+            return "conditional"
+        if len(facts) == 1 and not query and len(conds) == 2:
+            fact = facts[0]
+            cap = _scoped_cap(auth, "conditional_binary")
+            if (cap is None or current.get("수선")
+                    or len(scopes) != 2 or [g["clause_ordinal"] for g in scopes] != [0, 1]
+                    or item["clause_ordinal"] != 2
+                    or extra != {"source_witness"} or not triple_ok(fact)
+                    or fact.get("unnamed") or fact.get("polarity", True) is not True
+                    or fact.get("modality", "asserted") != "asserted" or any(m in text for m in qmarks)
+                    or not _scoped_native_eq(item["targets"], {"facts": [0], "query": []})):
+                return None
+            guards = []
+            for cond in conds:
+                if (type(cond) is not dict or not triple_ok(cond)
+                        or cond.get("kind") != "guard" or cond.get("marker") is not None
+                        or _scoped_plain(cond.get("source_original")) != text):
+                    return None
+                guard = _scoped_guard_cert(parser, auth, cap, text, cond)
+                if guard is None or not evidence_at(cond, guard["span"]):
+                    return None
+                guards.append(guard)
+            comp = _scoped_group(auth, conds, guards, text)
+            if comp is None:
+                return None
+            witness = item["source_witness"]
+            witnessed = getattr(parser, "verify_selected_binary_witness", None)
+            want = _scoped_positive_meaning(witness.get("meaning") if type(witness) is dict else None,
+                                            fact["triple"])
+            if (want is None or not callable(witnessed) or type(witness) is not dict or len(witness) != 11
+                    or type(witness.get("source")) is not str or not witness["source"].strip()
+                    or not _scoped_native_eq(witness.get("meaning"), want)):
+                return None
+            seen = witnessed(witness["source"], witness, "positive_fact")
+            full = seen.get("source_ref") if type(seen) is dict else None
+            compact = _scoped_compact(full)
+            if (type(seen) is not dict
+                    or set(seen) != {"source_ref", "compiler_index", "meaning", "capability_sha256"}
+                    or seen["capability_sha256"] != cap["capability_sha256"]
+                    or not _scoped_native_eq(seen["meaning"], want) or compact is None
+                    or not _scoped_native_eq(_scoped_resolve(auth["frame_full"], compact), full)
+                    or not any(_scoped_native_eq(compact, r) for r in cap["basis"]["frame_refs"])
+                    or type(seen["compiler_index"]) is not int or seen["compiler_index"] != full["index"]
+                    or seen["compiler_index"] != item["compiler_index"]):
+                return None
+            (a_lo, a_hi), (b_lo, b_hi), (c_lo, c_hi) = guards[0]["span"], guards[1]["span"], item["span"]
+            if (not a_hi <= b_lo or not b_hi <= c_lo or text[c_lo:c_hi] != witness["source"]
+                    or not evidence_at(fact, item["span"]) or text[:a_lo].strip()
+                    or (comp != "any" and not edge(text[a_hi:b_lo], seps)) or not edge(text[b_hi:c_lo], seps)
+                    or not edge(text[c_hi:], terms) or not derived_ok(witness, want, cap)):
+                return None
+            return "conditional"
+        return None
+
+    def _selected_positive_query_input(self, parser, text, current):
+        """True only for a parser-proved, independently re-verified canonical selected original positive query.
+
+        Bounded per-turn source validation only: never parses, evaluates, asserts or completes an answer.
+        """
+        source = _scoped_text(text)
+        if source is None:
+            return False
+        try:
+            if len(source.encode("utf-8")) > 65536:
+                return False
+        except UnicodeEncodeError:
+            return False
+        keys = {"facts", "query", "정의", "사건", "가정사건", "조건", "가정", "원인", "이유물음", "수선",
+                "사건정정", "entry_selection"}
+        if type(current) is not dict or set(current) != keys:
+            return False
+        size = _scoped_size(current)
+        if size is None or size > 65536:
+            return False
+        for key in keys - {"query", "entry_selection"}:
+            if type(current[key]) is not list or current[key]:
+                return False
+        query = current["query"]
+        if type(query) is not list or len(query) != 1:
+            return False
+        row = query[0]
+        if type(row) is not dict or set(row) != {"triple", "render"}:
+            return False
+        triple, render = row["triple"], row["render"]
+        if (type(triple) is not list or len(triple) != 3
+                or not all(type(t) is str and t.strip() for t in triple)
+                or any("$" in t for t in triple) or "?" in triple[1]
+                or sum(1 for t in (triple[0], triple[2]) if t.startswith("?")) != 1
+                or sum(t.count("?") for t in triple) != 1):
+            return False
+        if type(render) is not list or not render or not all(type(r) is str for r in render):
+            return False
+        projection = getattr(self.model, "language_projection", None)
+        auth = _scoped_authority(projection, parser)
+        if auth is None:
+            return False
+        neg = _scoped_cap(auth, "negative_binary")
+        if neg is None or _scoped_cap(auth, "conditional_binary") is None:
+            return False
+        env = current["entry_selection"]
+        if (type(env) is not dict
+                or set(env) != {"schema", "scope", "status", "coordinate_space", "items", "gaps"}
+                or not all(_scoped_native_eq(env[k], v) for k, v in (
+                    ("schema", "marco-entry-selection-v1"), ("scope", "known_selected_input_clauses"),
+                    ("status", "partial"), ("coordinate_space", "parser_view")))):
+            return False
+        items, gaps = env["items"], env["gaps"]
+        if type(items) is not list or len(items) != 1 or type(gaps) is not list:
+            return False
+        item = items[0]
+        if (type(item) is not dict
+                or set(item) != {"clause_ordinal", "span", "compiler_index", "origin", "targets", "derivation"}
+                or type(item["clause_ordinal"]) is not int or item["clause_ordinal"] != 0
+                or type(item["compiler_index"]) is not int or item["compiler_index"] < 0
+                or type(item["span"]) is not list or len(item["span"]) != 2
+                or not all(type(v) is int for v in item["span"])
+                or not 0 <= item["span"][0] < item["span"][1] <= len(source)
+                or not _scoped_native_eq(item["targets"], {"facts": [], "query": [0]})
+                or item["derivation"] is not None):
+            return False
+        origin = item["origin"]
+        if origin is None:
+            if not _scoped_native_eq(gaps, [{"clause_ordinal": 0, "code": "origin_unknown"}]):
+                return False
+        else:
+            if gaps or type(origin) is not dict or origin.get("graph_binding") is None:
+                return False
+            from marco.language.entry_origins import validated_entry_origin
+            try:
+                checked = validated_entry_origin(origin)
+            except (ValueError, TypeError):
+                return False
+            if not _scoped_native_eq(checked, origin):
+                return False
+        pack = projection["language_pack"]
+        slots = pack.get("slot_particles", [])
+        counters = pack.get("counters", {})
+        if counters is None:
+            counters = {}
+        pointers = pack.get("pointers", [])
+        if (type(slots) is not list or type(counters) is not dict or type(pointers) is not list
+                or not all(_scoped_wire(v)[0] for v in (slots, counters, pointers))
+                or not _scoped_native_eq(getattr(parser, "slot_particles", None), slots)
+                or not _scoped_native_eq(getattr(parser, "counters", None), counters)
+                or not _scoped_native_eq(getattr(parser, "pointers", None), pointers)):
+            return False
+        native, held = auth["data"], parser.data
+        mine_num, held_num = native.get("numerals", {}), held.get("numerals", {})
+        if (type(mine_num) is not dict or type(held_num) is not dict or not _scoped_wire(mine_num)[0]
+                or not _scoped_native_eq(mine_num, held_num)
+                or ("ignore_case" in native) != ("ignore_case" in held)):
+            return False
+        if "ignore_case" in native and (type(native["ignore_case"]) is not bool
+                                        or not _scoped_native_eq(native["ignore_case"], held["ignore_case"])):
+            return False
+        verify = getattr(parser, "verify_selected_positive_query", None)
+        if not callable(verify):
+            return False
+        from marco.reasoning import query_work as _qw
+        work = getattr(self, "_query_work", None)
+        if type(work) is not dict:
+            work = _qw.new_query_work(deepcopy(query))
+        work, allowed = _qw.claim_validation(work)
+        self._query_work = work
+        if allowed is not True:
+            return False
+        accepted, evidence = self._positive_query_proof_ok(
+            verify, parser, source, current, row, item, auth, neg, env)
+        accepted = accepted is True
+        self._query_work = _qw.finish_validation(
+            work, accepted, evidence if accepted else None,
+            None if accepted else "input_understanding_failed")
+        return accepted
+
+    def _positive_query_proof_ok(self, verify, parser, source, current, row, item, auth, neg, env):
+        """(True, compact own source ref) when the parser proof survives all independent checks, else (False, None)."""
+        proof = verify(source, deepcopy(current))
+        if proof is None or proof is False:
+            return False, None
+        ok, proof = _scoped_wire(proof)
+        if not ok or type(proof) is not dict or set(proof) != {"compiler_index", "source_ref", "meaning", "source_span"}:
+            return False, None
+        size = _scoped_size(proof)
+        if size is None or size > 65536:
+            return False, None
+        index = proof["compiler_index"]
+        if type(index) is not int or index != item["compiler_index"]:
+            return False, None
+        full = proof["source_ref"]
+        if type(full) is not dict or type(full.get("index")) is not int or full["index"] != index:
+            return False, None
+        compact = _scoped_compact(full)
+        if compact is None or compact["index"] != index:
+            return False, None
+        own = _scoped_resolve(auth["original_full"], compact)
+        if own is None or not _scoped_native_eq(own, full) or not _scoped_native_eq(full, own):
+            return False, None
+        if sum(1 for r in auth["original_full"] if _scoped_native_eq(_scoped_compact(r), compact)) != 1:
+            return False, None
+        if not any(_scoped_native_eq(compact, r) for r in neg["basis"]["original_query_refs"]):
+            return False, None
+        if not any(type(r) is dict and "negative_derivation" not in r and _scoped_native_eq(r, own)
+                   for r in auth["derived_full"]):
+            return False, None
+        mine = auth["data"].get("examples")
+        held = parser.data.get("examples")
+        if (type(mine) is not list or type(held) is not list or not 0 <= index < len(mine)
+                or index >= len(held) or not _scoped_native_eq(mine[index], held[index])):
+            return False, None
+        if own.get("annotation_sha256") != _scoped_sha(mine[index]):
+            return False, None
+        meaning = proof["meaning"]
+        if (type(meaning) is not dict or set(meaning) != {"query"} or type(meaning["query"]) is not list
+                or len(meaning["query"]) != 1 or not _scoped_native_eq(meaning["query"][0], row)):
+            return False, None
+        span = proof["source_span"]
+        if (type(span) is not list or len(span) != 2 or not all(type(s) is int for s in span)
+                or not 0 <= span[0] < span[1] <= len(source)):
+            return False, None
+        if not _scoped_native_eq(item["span"], span):
+            return False, None
+        lo, hi = span
+        core = source[lo:hi]
+        if not core.strip() or core != core.strip() or source[:lo].strip():
+            return False, None
+        tail = source[hi:].strip()
+        terms = auth["frames"].get("terminators")
+        terms = terms if type(terms) is list else []
+        marks = [m for m in terms + list(auth["question_marks"])
+                 if type(m) is str and m and m.strip() == m]
+        if tail and tail not in marks:
+            return False, None
+        return True, compact
+
+    def _selected_negative_answer_input(self, parser, text, current, facts, query):
+        """Answer input: ordinary dict unchanged; a scoped signed-negative query only with its re-verified proof."""
+        env = current.get("entry_selection") if type(current) is dict else None
+        items = env.get("items") if type(env) is dict else None
+        claimed = type(items) is list and any(type(i) is dict and "source_certificate" in i for i in items)
+        signed = type(query) is list and any(type(q) is dict and q.get("polarity") is False for q in query)
+        if not claimed or not signed:
+            return {"facts": facts, "query": query}
+        source = _scoped_plain(text)
+        if (source is None or type(current.get("query")) is not list or len(query) != 1
+                or not _scoped_native_eq(query, current["query"])
+                or self._scoped_admission(source, current, parser) != "negative_query"):
+            return None
+        cert = items[0].get("source_certificate") if len(items) == 1 and type(items[0]) is dict else None
+        if type(cert) is not dict:
+            return None
+        return {"facts": facts, "query": query,
+                "selected_query_source": {"source_original": source, "source_certificate": deepcopy(cert)}}
+
+    def _selected_conditional_status_reply(self, text, knowledge_path, current, parser, facts, pending):
+        """Hold reply for one ordinary query about the consequent of one archived selected conditional.
+
+        Routes an actual typed-binary conditional whose guard is False or unmeasured (None) to the existing
+        native condition_false/unmeasured_condition replies. Never asserts, settles or replays anything new;
+        any unsupported state returns None (existing routing).
+        """
+        # Refuse any live/unread/rereading conversation state before closure, read or replay.
+        if (self.unread or self.unread_guard or self._live() or self.fills
+                or getattr(self, "_rereading", False) or getattr(self, "_in_name_reply", False)):
+            return None
+        keys = {"facts", "query", "정의", "사건", "가정사건", "조건", "가정", "원인", "이유물음", "수선",
+                "사건정정", "entry_selection"}
+        advanced = keys - {"facts", "query", "entry_selection"}
+        # Exact current shape (same accepted shape as the selected-query source proof).
+        if type(current) is not dict or set(current) != keys:
+            return None
+        for key in keys - {"query", "entry_selection"}:
+            if type(current[key]) is not list or current[key]:
+                return None
+        query = current["query"]
+        if type(query) is not list or len(query) != 1:
+            return None
+        row = query[0]
+        if type(row) is not dict or set(row) != {"triple", "render"}:
+            return None
+        asked, render = row["triple"], row["render"]
+        if (type(asked) is not list or len(asked) != 3
+                or not all(type(t) is str and t.strip() for t in asked)
+                or any("$" in t for t in asked) or "?" in asked[1]
+                or sum(1 for t in (asked[0], asked[2]) if t.startswith("?")) != 1
+                or sum(t.count("?") for t in asked) != 1):
+            return None
+        if type(render) is not list or not render or not all(type(r) is str for r in render):
+            return None
+        projection = getattr(self.model, "language_projection", None)
+        data = projection.get("data") if type(projection) is dict else None
+        if type(data) is not dict:
+            return None
+        asked = list(asked)
+        if pending is not None and type(pending) is not list:
+            return None
+        pending = list(pending or [])
+        if len(pending) > 1:
+            return None
+        observations = list(self.observations)
+        if not observations or len(observations) > self.max_turns:
+            return None
+        chosen = getattr(parser, "chosen_readings", None)
+        if type(chosen) is not dict:
+            return None
+        # Every source must already own an exact archived chosen native reading before any read/replay.
+        for obs in observations:
+            if not isinstance(obs, Obs):
+                return None
+            oid = _readings.oid_of(obs)
+            rev = getattr(obs, "rev", None)
+            if (type(oid) is not str or not oid.strip() or oid == TENTATIVE
+                    or type(rev) is not int or rev < 1
+                    or getattr(obs, "reading", None) is not None
+                    or getattr(obs, "reason", None) == "correction"):
+                return None
+            entry = self.reading_ledger.get(oid)
+            if type(entry) is not dict:
+                return None
+            active, versions = entry.get("active"), entry.get("versions")
+            if (type(active) is not int or active != rev or type(versions) is not list
+                    or not 1 <= active <= len(versions)):
+                return None
+            record = self._active_record(obs)
+            view = chosen.get(oid)
+            if (type(record) is not dict
+                    or type(record.get("observation_id")) is not str or record.get("observation_id") != oid
+                    or type(record.get("reading_revision")) is not int or record.get("reading_revision") != rev
+                    or record.get("unavailable") is not False
+                    or type(record.get("source")) is not str or record.get("source") != str(obs)
+                    or view is None or self._structural_marked(view)
+                    or self._unread_json(record.get("parsed"), 65536) is None
+                    or not self._unread_native_equal(view, record.get("parsed"))):
+                return None
+            parsed = record.get("parsed")
+            if type(parsed) is not dict or set(parsed) != keys or not _scoped_native_eq(view, parsed):
+                return None
+        from marco.reasoning.inference import bind as _bind
+        read = [self._read_source(parser, obs) for obs in observations]
+        matched = []
+        for index, (obs, stored) in enumerate(zip(observations, read)):
+            if type(stored) is not dict or set(stored) != keys:
+                return None
+            if (type(stored["facts"]) is not list or stored["query"] is not None
+                    or any(type(stored[key]) is not list for key in advanced)
+                    or any(stored[key] for key in advanced - {"조건"})):
+                return None
+            conds = stored["조건"]
+            if not conds:
+                continue
+            if self._scoped_admission(obs, stored, parser) != "conditional":
+                return None
+            rows = stored["facts"]
+            if not 1 <= len(conds) <= 2 or len(rows) != 1:
+                return None
+            guard, fact = conds[0], rows[0]
+            if (type(guard) is not dict or type(guard.get("triple")) is not list
+                    or "evidence" not in guard or type(fact) is not dict):
+                return None
+            triple = fact.get("triple")
+            if (type(triple) is not list or len(triple) != 3
+                    or not all(type(t) is str and t.strip() for t in triple)
+                    or fact.get("polarity", True) is not True
+                    or fact.get("modality", "asserted") != "asserted"
+                    or type(fact.get("modality", "asserted")) is not str):
+                return None
+            if triple[1] == asked[1] and _bind(asked, list(triple), {}) is not None:
+                matched.append((index, obs, conds, fact))
+        if len(matched) != 1:
+            return None
+        index, source, conds, fact = matched[0]
+        evidence = fact.get("evidence")
+        start = evidence.get("start") if type(evidence) is dict else None
+        if type(start) is not int:
+            return None
+        guard = conds[0]
+
+        def same_source(other):
+            return (other is source
+                    or (isinstance(other, Obs) and type(_readings.oid_of(other)) is str
+                        and _readings.oid_of(other) == _readings.oid_of(source)
+                        and type(getattr(other, "rev", None)) is int
+                        and getattr(other, "rev", None) == getattr(source, "rev", None)
+                        and str(other) == str(source)))
+
+        fields = {"text", "at", "동사", "id", "잘림", "차례", "못잼", "조각", "자리", "빈자리", "충돌", "헛자리",
+                  "닿는곳"}
+        for item in pending:
+            if (type(item) is not dict or set(item) != fields
+                    or type(item["at"]) is not int or item["at"] != index
+                    or not same_source(item["text"])):
+                return None
+        prior, _d, _p, _r = self._cached_replay(parser, observations[:index], [])
+        diagnosis = {}
+        result = self._holds(parser, conds, start, prior, projection, actual_source=source,
+                             evidence_out=diagnosis)
+        if result is True:
+            return None
+        if result is False:
+            if pending:
+                return None
+            reason = "condition_false"
+        elif result is None:
+            if len(pending) != 1:
+                return None
+            item = pending[0]
+            if (item["동사"] is not None or item["id"] is not None or item["잘림"] is not False
+                    or type(item["차례"]) is not int or item["차례"] != index
+                    or type(item["못잼"]) is not str or item["못잼"] != "condition_unknown"
+                    or any(type(item[key]) is not dict or item[key]
+                           for key in ("자리", "빈자리", "충돌", "헛자리"))
+                    or not _scoped_native_eq(item["조각"], guard["evidence"])
+                    or not _scoped_native_eq(item["닿는곳"], [c["triple"] for c in conds])):
+                return None
+            reason = self._못잰까닭("condition_unknown")
+        else:
+            return None
+        if type(reason) is not str or reason not in ("condition_false", "unmeasured_condition"):
+            return None
+        # Eligible status established: host closure callbacks stay owned by the original answer route.
+        if (getattr(parser, "rule_selector", None) is not None
+                or getattr(parser, "closure_selector", None) is not None
+                or getattr(parser, "closure_recorder", None) is not None):
+            return None
+        from marco.reasoning.inference import current_facts as _current_facts
+        state, _changes = _current_facts(facts, parser.data.get("mutable_predicates", []),
+                                         parser.data.get("numeric_updates", {}))
+        known = parser._closure(state)
+        for key in known:
+            if _bind(asked, list(key), {}) is not None:
+                return None
+        if self._selected_positive_query_input(parser, text, current) is not True:
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=["query_pending"])
+        installed = parser.data.get("context_replies")
+        native = data.get("context_replies")
+        if type(installed) is not dict or type(native) is not dict or not _scoped_native_eq(installed, native):
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=["reply_authority"])
+        evidence = None
+        if (result is None and reason == "unmeasured_condition"
+                and set(diagnosis) == {"outcome", "guard_ref", "positive_support", "negative_support"}
+                and _scoped_compact_ok(diagnosis["guard_ref"])
+                and type(diagnosis["positive_support"]) is bool and type(diagnosis["negative_support"]) is bool):
+            outcome = diagnosis["outcome"]
+            pos, neg = diagnosis["positive_support"], diagnosis["negative_support"]
+            if ((outcome == "missing_premise" and pos is False and neg is False)
+                    or (outcome == "conflicting_evidence" and pos is True and neg is True)):
+                evidence = {"scope": "selected_binary_guard", "outcome": outcome,
+                            "guard_ref": deepcopy(diagnosis["guard_ref"]),
+                            "positive_support": pos, "negative_support": neg}
+        if evidence is not None:
+            return self._failure_dispatch(text, knowledge_path, deepcopy(current["query"]), evidence,
+                                          installed, source, True)
+        reply = installed.get(reason)
+        if type(reply) is not str or not reply.strip():
+            return self._graph_dialogue_gap(text, knowledge_path, missing_replies=[reason])
+        self.held_question = text
+        return {"operator": "relational_graph", "status": "unresolved",
+                "answer": reply.format(말=str(source).strip()), "transitions": [],
+                "meaning": {"act": "hold", "reason": reason, "said": str(source),
+                            "conversation": self.conversation_id},
+                "verification": self._verification(knowledge_path, [])}
+
+    def _failure_dispatch(self, text, knowledge_path, query, evidence, replies, said, hold):
+        """Claim one bounded failure-response operation, then build the existing native reply for its action."""
+        import hashlib
+        from marco.reasoning.query_work import (new_thinking_work, choose_thinking_operation,
+                                                finish_thinking_operation)
+        work = self.__dict__.get("_thinking_work")
+        if work is None:
+            digest = hashlib.sha256(str(text).encode("utf-8", "surrogatepass")).hexdigest()
+            work = new_thinking_work({"input_sha256": digest, "query": query}, evidence)
+        work, action = choose_thinking_operation(work)
+        self._thinking_work = deepcopy(work)
+        if action is None:
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=["capacity"])
+        branches = {"emit_existing_gap": "input_understanding_failed",
+                    "emit_existing_information_gap": "unmeasured_condition",
+                    "emit_existing_conflict": "contradiction"}
+        if type(action) is not str or action not in branches:
+            raise RuntimeError("failure response action mismatch")
+        if type(replies) is not dict:
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=["reply_authority"])
+        key = branches[action]
+        reply = replies.get(key)
+        if type(reply) is not str or not reply.strip():
+            return self._graph_dialogue_gap(text, knowledge_path, missing_replies=[key])
+        response = {"operator": "relational_graph", "status": "unresolved",
+                    "answer": reply.format(말=str(said).strip()), "transitions": [],
+                    "meaning": {"act": "hold", "reason": branches[action], "said": str(said),
+                                "conversation": self.conversation_id},
+                    "verification": self._verification(knowledge_path, [])}
+        self._thinking_work = deepcopy(finish_thinking_operation(work, action))
+        if hold:
+            self.held_question = text
+        return response
+
+    def _graph_dialogue_guard(self, text, knowledge_path, current, parser):
+        from pack_model import PackModel
+        if type(self.model) is not PackModel or self.model.language_projection is None:
+            return None
+        unsupported = []
+        facts = (current or {}).get("facts") or []
+        query = (current or {}).get("query") or []
+        if current is None:
+            if self._live():
+                unsupported.append("active_clarification")
+        else:
+            scoped = self._scoped_admission(text, current, parser)
+        if current is not None and scoped is not None:
+            if scoped == "negative_query":
+                _f, _d, pending, _r = self._cached_replay(parser, self.observations, self.fills)
+                if pending and self._unsettled(query, parser, pending) is not None:
+                    unsupported.append("query_pending")
+            elif self._state_completion(current, self._live()) is not None:
+                unsupported.append("state_completion")
+        elif current is not None:
+            if any(current.get(key) for key in ("사건", "가정사건", "사건정정", "정의", "원인", "이유물음", "조건",
+                                                "events", "definition", "cause", "reason", "correction",
+                                                "condition", "hypothesis", "가정")):
+                unsupported.append("advanced_input")
+            batch = len(facts) == 2 and not query and self._fact_batch_admissible(text, current, parser)
+            if len(facts) + len(query) != 1 and not batch:
+                unsupported.append("multiclause")
+            elif facts:
+                fact = facts[0] if isinstance(facts[0], dict) else {}
+                triple = fact.get("triple")
+                value = triple[2] if isinstance(triple, (list, tuple)) and len(triple) == 3 else None
+                if (not isinstance(facts[0], dict) or fact.get("unnamed") or not isinstance(value, str)
+                        or fact.get("polarity", True) is not True
+                        or fact.get("modality", "asserted") != "asserted"
+                        or re.fullmatch(r"[+-]?\d+(\.\d+)?", value.strip())
+                        or (isinstance(triple[0], str) and re.fullmatch(r"[+-]?\d+(\.\d+)?", triple[0].strip()))
+                        or not all(isinstance(part, str) and part.strip() and "$" not in part
+                                   and "?" not in part for part in triple)):
+                    unsupported.append("advanced_input")
+                elif self._state_completion(current, self._live()) is not None:
+                    unsupported.append("state_completion")
+            else:
+                asked = query[0]
+                triple = asked.get("triple") if isinstance(asked, dict) else None
+                render = asked.get("render") if isinstance(asked, dict) else None
+                if (not isinstance(triple, (list, tuple)) or len(triple) != 3
+                        or set(asked) - {"triple", "render"}
+                        or not all(isinstance(part, str) and part.strip() for part in triple)
+                        or sum(part.startswith("?") for part in (triple[0], triple[2])) != 1
+                        or triple[1].startswith("?") or "$" in triple[1]
+                        or any("$" in part for part in triple)
+                        or re.fullmatch(r"[+-]?\d+(\.\d+)?", triple[0].strip())
+                        or re.fullmatch(r"[+-]?\d+(\.\d+)?", triple[2].strip())
+                        or not isinstance(render, list) or not render
+                        or not all(isinstance(item, str) for item in render)):
+                    unsupported.append("advanced_input")
+                else:
+                    _f, _d, pending, _r = self._cached_replay(parser, self.observations, self.fills)
+                    held = self._selected_conditional_status_reply(text, knowledge_path, current, parser,
+                                                                   _f, pending)
+                    if held is not None:
+                        return held
+                    if pending and self._unsettled(query, parser, pending) is not None:
+                        unsupported.append("query_pending")
+        if unsupported:
+            return self._graph_dialogue_gap(text, knowledge_path, unsupported=unsupported)
+        return None
 
     @staticmethod
     def _is_statement(parsed):
@@ -6522,18 +11880,23 @@ class ReasoningContext:
             return ("frame", "same_holder"), []
         if self._thing_as_holder(parser, rows):
             return ("kinds", "thing_as_holder"), []
-        key = str(text).strip()
+        text = _readings.tentative(text)
+        key = text.oid
         table = parser.__dict__.setdefault("chosen_readings", {})
         before = table.get(key)
         table[key] = parsed
         index = len(self.observations)
         try:
             facts, _d, _p, _r = self._replay(parser, self.observations + [text], self.fills,
-                                             deepcopy(self.event_ids) if self.event_ids is not None else None)
+                                             deepcopy(self.event_ids) if self.event_ids is not None else None,
+                                             projection=getattr(self.model, "language_projection", None))
             facts = self._unit_keys(parser, self._bind_unnamed_counts(parser, [], facts, getattr(self, "bind_hints", [])))
             _state, changes = current_facts(facts, parser.data.get("mutable_predicates", []), updates)
             if self._unit_kinds_differ(parser, facts, index) is not None:
                 raise ValueError("unit_mismatch")
+        except ReadingUnavailable:
+            # a missing historical reading is not a constraint this statement breaks
+            raise
         except ValueError as exc:
             reason = str(exc).split(":")[0]
             return (CONSTRAINT_OF.get(reason, "readable"), reason), []
@@ -6617,9 +11980,33 @@ class ReasoningContext:
         reading's failure. With nothing to choose between: None, and the caller holds as before. The dropped
         readings and their reasons go to the trace and the checks."""
         # the reader's readings that state something; with fewer than two there is nothing to choose between
-        readings = [r for r in parser.readings(text, partial=True, events=True, repair=True, verbs=verbs)
+        import inspect
+        extra = {}
+        try:
+            parse_has = inspect.signature(parser.parse).parameters.get("_entry_selection")
+            read_params = inspect.signature(parser.readings).parameters
+        except (TypeError, ValueError):
+            parse_has, read_params = None, {}
+        keyword_kinds = (inspect.Parameter.POSITIONAL_OR_KEYWORD, inspect.Parameter.KEYWORD_ONLY)
+        read_has = read_params.get("_entry_selection")
+        if parse_has is not None and parse_has.kind in keyword_kinds and (
+                (read_has is not None and read_has.kind in keyword_kinds)
+                or any(p.kind == inspect.Parameter.VAR_KEYWORD for p in read_params.values())):
+            extra["_entry_selection"] = True
+        readings = [r for r in parser.readings(text, partial=True, events=True, repair=True, verbs=verbs, **extra)
                     if self._is_statement(r["parsed"])]
-        readings += self._pointer_readings(parser, readings)
+        pointed = self._pointer_readings(parser, readings)
+        for pointer_reading in pointed:
+            parsed = pointer_reading.get("parsed")
+            capsule = parsed.get("entry_selection") if isinstance(parsed, dict) else None
+            if isinstance(capsule, dict) and capsule.get("schema") == "marco-entry-selection-v1" \
+                    and capsule.get("scope") == "known_selected_input_clauses" \
+                    and capsule.get("status") == "partial" and capsule.get("coordinate_space") == "parser_view" \
+                    and isinstance(capsule.get("gaps"), list):
+                capsule = deepcopy(capsule)
+                capsule["gaps"].append({"clause_ordinal": None, "code": "referent_resolution_uncollected"})
+                pointer_reading["parsed"] = dict(parsed, entry_selection=capsule)
+        readings += pointed
         if first_failure is None and len(readings) < 1:
             return None
         if first_failure is not None and len(readings) < 2:
@@ -6658,7 +12045,8 @@ class ReasoningContext:
         tier = min(r["tier"] for r in survivors)
         best = [r for r in survivors if r["tier"] == tier]
         if len({r["said"] for r in best}) == 1:
-            parser.__dict__.setdefault("chosen_readings", {})[said] = best[0]["parsed"]
+            text = _readings.tentative(text)
+            parser.__dict__.setdefault("chosen_readings", {})[text.oid] = best[0]["parsed"]
             self._replay_cache = None        # a replay made with the first reading is not this one
             self._rereading = True
             try:
@@ -6670,7 +12058,7 @@ class ReasoningContext:
                     "ok": True, "reason": "reading_checked", "readings": len(readings), "tier": tier,
                     "dropped": self._readings_dropped})
             if result is None or result.get("status") != "observed":
-                parser.chosen_readings.pop(said, None)
+                parser.chosen_readings.pop(text.oid, None)
                 self._replay_cache = None
             return result
         self._remember_unread({"text": said, "at": len(self.observations)})
@@ -7151,6 +12539,9 @@ class ReasoningContext:
                     if len(matches) != 1:
                         raise ValueError("ambiguous_or_missing_correction_target")
                     return self.correct(matches[0], parts[1].strip(), knowledge_path)
+                except ReadingUnavailable:
+                    # not an invalid correction: an original reading is missing; the adapter decides
+                    raise
                 except ValueError as exc:
                     return {"operator": "relational_graph", "status": "unresolved",
                             "answer": parser.data["context_replies"]["correction_invalid"], "transitions": [],
@@ -7161,6 +12552,14 @@ class ReasoningContext:
             self.bind_hints = [hint for hint in getattr(self, "bind_hints", []) if hint[0] != asked[1]] + [asked[::-1]]
         verbs = self._verbs_for(parser, self.observations + [text])
         current = self._read_source(parser, text, events=True, verbs=verbs)
+        self._unread_continuation_read(text, parser, current)
+        self._capture_current_query_read(text, parser, current)
+        structural = self._admit_structural_observation(text, current, parser, verbs, knowledge_path)
+        if structural is not None:
+            return structural
+        gap = self._graph_dialogue_guard(text, knowledge_path, current, parser)
+        if gap is not None:
+            return gap
         if current is not None and current.get("facts") and all(f.get("unnamed") for f in current["facts"]) \
                 and not any(current.get(key) for key in ("query", "사건", "정의", "원인", "조건")):
             # An amount said with no holder at all (18 of them, 3명이야) is the count not known yet that
@@ -7384,9 +12783,17 @@ class ReasoningContext:
             # 모르므로, 그 말이 가리킨 것에 대해서는 지금 값을 확정하지 않는다.
             # 물음은 사건이 아니다 — 묻는 말은 아무 상태도 안 바꾼다. 다만 그
             # 판단은 **메시지 전체가 아니라 구간마다** 해야 한다.
+            attest = ("_thinking_exhaustion" in self.__dict__ and self.__dict__["_thinking_exhaustion"] is None
+                      and not getattr(self, "_rereading", False) and not getattr(self, "_in_name_reply", False)
+                      and type(getattr(self.model, "language_projection", None)) is dict
+                      and type(self.__dict__.get("_current_query_read")) is dict
+                      and self.__dict__["_current_query_read"].get("source") is text
+                      and self._permitted(knowledge_path) and not self._live())
+            kept = 0
             for piece, asking in self._segments(text, parser):
                 notes = []
                 if asking:
+                    attest = False
                     continue
                 read = parser.parse(piece, partial=True, events=True, verbs=verbs, repair=True, _diagnostics=notes)
                 # nothing of this turn was applied. A piece read as a question states nothing; any other piece
@@ -7394,13 +12801,16 @@ class ReasoningContext:
                 # said with a sentence nobody reads), only as the shape of an event (이보는 상대방한테 받았다가
                 # 돌려줬어) or not at all: it is kept, and what it names is not said as known
                 if read is not None and read.get("query") and not read.get("facts"):
+                    attest = False
                     continue
                 # 묻는 말은 못 읽은 사건이 아니다. 아무 상태도 안 바꾼다.
                 if any(note.get("reason") == "question_is_not_an_observation"
                        for note in notes):
+                    attest = False
                     continue
                 # A request asks for an action; it reports no event.
                 if self._is_request(parser, piece):
+                    attest = False
                     continue
                 # An unread piece that says an earlier statement was wrong (a declared contrast,
                 # "..., not ...") may retract any statement: every value is held until a later
@@ -7410,13 +12820,18 @@ class ReasoningContext:
                 general = any(fold(marker) in fold(piece) for marker in markers)
                 self._remember_unread({"text": piece, "at": len(self.observations),
                                        **({"범용": True} if general else {})})
+                kept += 1
+            if attest and kept and not self._is_request(parser, text):
+                self._thinking_exhaustion = {"source": text, "parser": parser}
             return None
         # 같은 말이 뒤늦게 읽히면 매듭이 풀린 것이다.
         heard = {piece for piece, _asking in self._segments(text, parser)}
         self._forget_heard(heard)
         marks = parser.clause_grammar.get("question_marks", [])
         if (current.get("query") and not current.get("facts")
-                and not any(text.rstrip().endswith(mark) for mark in marks) and self._counts_something(text, parser)):
+                and not any(text.rstrip().endswith(mark) for mark in marks) and self._counts_something(text, parser)
+                and self._scoped_admission(text, current, parser) != "negative_query"
+                and not self._selected_positive_query_input(parser, text, current)):
             # Read only as a question though it asks nothing and states an amount: it may be a statement
             # this reader did not read, so what it names is not fixed until a later statement pins it.
             self._remember_unread({"text": text.strip(), "at": len(self.observations)})
@@ -7504,9 +12919,11 @@ class ReasoningContext:
             result["verification"] = self._verification(knowledge_path, [])
             # 뜻을 알게 된 낱말의 사건은 더 이상 막지 않는다 — 설명을 듣고 이어 푼다.
             self.unread = [entry for entry in self.unread if entry.get("말") is None
+                           or self._unread_marked(entry)
                            or self._lookup(parser, {"verb": entry["말"], "꼬리": entry.get("꼬리", "")},
                                            defined) is None]
             self.unread_guard = [entry for entry in self.unread_guard if entry.get("말") is None
+                                 or self._unread_marked(entry)
                                  or self._lookup(parser, {"verb": entry["말"], "꼬리": entry.get("꼬리", "")},
                                                  defined) is None]
             # Validate a new observation even if no question has been asked yet.
@@ -7641,7 +13058,8 @@ class ReasoningContext:
                 self.salient = asked_people
             self._record_frame(parser, text, current["query"])
             unread = self._blocked_by(current["query"], parser, facts)
-            if unread is not None:
+            unread_continuation = self._unread_continuation_start(text, current, parser, facts, unsettled, unread, result, replies)
+            if unread is not None and unread_continuation is None:
                 unread, 까닭 = unread
                 self.held_question = text
                 # 못 읽은 말과 앞말과 어긋난 말은 막는 까닭이 다르다. 어긋난 것을
@@ -7888,7 +13306,14 @@ class ReasoningContext:
                 풀린물음, which = self._ground_lookup(parser, 풀린물음, 답사실)
                 if which is not None:
                     return self._ask_which(parser, text, which, result)
-            outcome = parser.answer({"facts": 답사실, "query": 풀린물음}) if 풀린물음 else None
+            outcome = ((parser.answer(_selected) if (_selected := self._selected_negative_answer_input(
+                parser, text, current, 답사실, 풀린물음)) is not None else None) if 풀린물음 else None)
+            if unread_continuation is not None:
+                qualified = self._unread_continuation_finish(unread_continuation, text, current, parser, 풀린물음, 답사실, outcome)
+                if qualified is None:
+                    self.held_question = text
+                    return unread_continuation["hold"]
+                outcome = qualified
             if (outcome is None and 풀린물음 and self._effort_allows(2) and not self._in_name_reply
                     and not (self.unread or self.unread_guard)):
                 # a holder the state does not count, said as a description (the tall one, her brother): the
@@ -7898,7 +13323,8 @@ class ReasoningContext:
                     return which
                 if which is not None:
                     풀린물음 = which["query"]
-                    outcome = parser.answer({"facts": 답사실, "query": 풀린물음})
+                    outcome = (parser.answer(_selected) if (_selected := self._selected_negative_answer_input(
+                        parser, text, current, 답사실, 풀린물음)) is not None else None)
             if outcome is None and 풀린물음:
                 빠진전제 = self._missing_premise(parser, 풀린물음, 답사실)
                 if 빠진전제 is None:
@@ -7916,6 +13342,8 @@ class ReasoningContext:
                     self.last_subject = 대상
                     self.last_question = {"text": text.strip(), "subject": 대상}
                     self.pending_pointer = None
+        except ReadingUnavailable:
+            raise
         except ValueError as exc:
             # **못 읽은 것과 앞말과 안 맞는 것은 다르다 — 그러나 둘 다 버리지 않는다.**
             #   못 읽음  — 말을 어디에 놓을지 몰랐다.

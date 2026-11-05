@@ -6,7 +6,7 @@ changes none of the files named here.
 ## Purpose
 
 Give MARCO's knowledge code one package. Today it holds no graph code (that is still in
-`engine.py`); goal S4 ([file moves](../ko/2026-09-24-file-moves-goal.md)) created it for
+`engine.py`); goal S4 ([file moves](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-24-file-moves-goal.md")) created it for
 two kinds of moved file: the local definition index (`local_definitions.py` before S4) and the readers
 in the subpackage [`marco.knowledge.ingest`](marco.knowledge.ingest.md). The target map
 ([target-map.json](target-map.json)) puts the package on layer 3: it may import only

@@ -144,3 +144,16 @@ data/웹_되돌림/
 dist/
 logs/
 data/external/
+
+# 독립 Git 저장소로 관리하는 잎새의 집 게임
+/games/leaf_home/
+
+# 로컬 개발·평가 기록과 실험 생성물은 공개 소스와 분리해 보존한다.
+/tools/marco2_*_dev/
+/prototypes/
+/tts/
+/docs/ko/fresh-exam-v2-2026-10-05/
+/docs/ko/release-checks-2026-10-02/
+/tests/_marco2_*
+/tests/marco2_L6_source/
+/tests/marco2_selected_slots/

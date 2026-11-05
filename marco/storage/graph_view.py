@@ -30,6 +30,7 @@ import hashlib
 import json
 import os
 import posixpath
+import unicodedata
 
 from marco.storage import graph_text, ids
 from marco.storage import overlay as ov
@@ -71,6 +72,7 @@ class PackBase:
         self._paths = {ids.graph_id(p): p for p in members if p.endswith(".kg")}
         self._rules = pack_rules(manifest, members)
         self._parsed = {}
+        self._auth_manifest = deepcopy(manifest)
 
     def graph_ids(self):
         return sorted(self._paths)
@@ -95,6 +97,62 @@ class PackBase:
 
     def rules(self):
         return deepcopy(self._rules)
+
+    def authenticated_member(self, path, expected_sha256, max_bytes):
+        """The exact bytes of pack member ``path``, returned only after the manifest row for
+        it and the member bytes are verified against ``expected_sha256`` and ``max_bytes``.
+        Raises :class:`ViewError` with a fixed identifier on any failure."""
+        if type(path) is not str or not path:
+            raise ViewError("auth_member_path_type")
+        if unicodedata.normalize("NFC", path) != path:
+            raise ViewError("auth_member_path_not_nfc")
+        if path.startswith("/") or "\\" in path or ":" in path:
+            raise ViewError("auth_member_path_unsafe")
+        for ch in path:
+            if unicodedata.category(ch) == "Cc":
+                raise ViewError("auth_member_path_control")
+        for segment in path.split("/"):
+            if segment in ("", ".", ".."):
+                raise ViewError("auth_member_path_segment")
+        if (type(expected_sha256) is not str or len(expected_sha256) != 64
+                or any(c not in "0123456789abcdef" for c in expected_sha256)):
+            raise ViewError("auth_member_sha256_format")
+        if type(max_bytes) is not int or max_bytes < 1 or max_bytes > 65536:
+            raise ViewError("auth_member_max_bytes")
+        manifest = self._auth_manifest
+        if not isinstance(manifest, dict):
+            raise ViewError("auth_member_manifest_type")
+        files = manifest.get("files")
+        if not isinstance(files, list):
+            raise ViewError("auth_member_manifest_files")
+        rows = [row for row in files
+                if isinstance(row, dict) and type(row.get("path")) is str and row.get("path") == path]
+        if not rows:
+            raise ViewError("auth_member_manifest_missing")
+        if len(rows) != 1:
+            raise ViewError("auth_member_manifest_duplicate")
+        row = rows[0]
+        if path not in self._members:
+            raise ViewError("auth_member_absent")
+        data = self._members[path]
+        if type(data) is not bytes:
+            raise ViewError("auth_member_data_type")
+        size = row.get("bytes")
+        if type(size) is not int or size < 0:
+            raise ViewError("auth_member_row_bytes")
+        if size > max_bytes:
+            raise ViewError("auth_member_too_large")
+        if size != len(data):
+            raise ViewError("auth_member_size_mismatch")
+        digest = row.get("sha256")
+        if (type(digest) is not str or len(digest) != 64
+                or any(c not in "0123456789abcdef" for c in digest)):
+            raise ViewError("auth_member_row_sha256")
+        if digest != expected_sha256:
+            raise ViewError("auth_member_sha256_expected_mismatch")
+        if hashlib.sha256(data).hexdigest() != expected_sha256:
+            raise ViewError("auth_member_sha256_data_mismatch")
+        return data
 
 
 def node_data(data):

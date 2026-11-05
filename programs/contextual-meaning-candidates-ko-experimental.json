@@ -1,0 +1,3784 @@
+{
+  "schema": "marco-graph-vm-program-v1",
+  "entry": "entry_mode_decompose",
+  "nodes": [
+    {
+      "id": "entry_mode_decompose",
+      "op": "branch",
+      "left": {
+        "input": [
+          "mode"
+        ]
+      },
+      "right": {
+        "literal": "decompose"
+      },
+      "yes": "de_state_null",
+      "no": "entry_mode_clarify"
+    },
+    {
+      "id": "entry_mode_clarify",
+      "op": "branch",
+      "left": {
+        "input": [
+          "mode"
+        ]
+      },
+      "right": {
+        "literal": "clarify"
+      },
+      "yes": "c_candidate_count",
+      "no": "hold_bad_mode"
+    },
+    {
+      "id": "hold_bad_mode",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "invalid_shape"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "de_state_null",
+      "op": "branch",
+      "left": {
+        "input": [
+          "state"
+        ]
+      },
+      "right": {
+        "literal": null
+      },
+      "yes": "d_init_model",
+      "no": "d_state_match"
+    },
+    {
+      "id": "d_state_match",
+      "op": "match",
+      "pattern": {
+        "literal": {
+          "phase": {
+            "capture": "phase"
+          },
+          "si": {
+            "capture": "si"
+          },
+          "oi": {
+            "capture": "oi"
+          },
+          "pi": {
+            "capture": "pi"
+          },
+          "found": {
+            "capture": "found"
+          },
+          "ambiguous": {
+            "capture": "ambiguous"
+          },
+          "decomposition": {
+            "capture": "decomposition"
+          },
+          "candidates": {
+            "capture": "candidates"
+          },
+          "signatures": {
+            "capture": "signatures"
+          },
+          "relations": {
+            "capture": "relations"
+          }
+        }
+      },
+      "value": {
+        "input": [
+          "state"
+        ]
+      },
+      "bindings": "state_bindings",
+      "yes": "d_state_ok",
+      "no": "hold_bad_state"
+    },
+    {
+      "id": "d_state_ok",
+      "op": "set",
+      "name": "st",
+      "value": {
+        "input": [
+          "state"
+        ]
+      },
+      "next": "d_resume_prefix"
+    },
+    {
+      "id": "d_resume_prefix",
+      "op": "set",
+      "name": "base_pattern",
+      "value": {
+        "compute": {
+          "op": "get",
+          "args": [
+            {
+              "input": [
+                "model",
+                "patterns"
+              ]
+            },
+            {
+              "literal": 0
+            }
+          ]
+        }
+      },
+      "next": "d_resume_prefix_field"
+    },
+    {
+      "id": "d_resume_prefix_field",
+      "op": "set",
+      "name": "prefix",
+      "value": {
+        "var": [
+          "base_pattern",
+          "prefix"
+        ]
+      },
+      "next": "d_phase_roles"
+    },
+    {
+      "id": "d_phase_roles",
+      "op": "branch",
+      "left": {
+        "var": [
+          "st",
+          "phase"
+        ]
+      },
+      "right": {
+        "literal": "roles"
+      },
+      "yes": "d_roles_check",
+      "no": "d_phase_candidates"
+    },
+    {
+      "id": "d_phase_candidates",
+      "op": "branch",
+      "left": {
+        "var": [
+          "st",
+          "phase"
+        ]
+      },
+      "right": {
+        "literal": "candidates"
+      },
+      "yes": "d_candidate_bind_decomp",
+      "no": "hold_bad_state"
+    },
+    {
+      "id": "d_candidate_bind_decomp",
+      "op": "set",
+      "name": "decomp",
+      "value": {
+        "var": [
+          "st",
+          "decomposition"
+        ]
+      },
+      "next": "d_candidates_check"
+    },
+    {
+      "id": "hold_bad_state",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "invalid_shape"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "d_init_model",
+      "op": "set",
+      "name": "patterns",
+      "value": {
+        "input": [
+          "model",
+          "patterns"
+        ]
+      },
+      "next": "d_init_patterns_empty"
+    },
+    {
+      "id": "d_init_patterns_empty",
+      "op": "branch",
+      "left": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "var": [
+                "patterns"
+              ]
+            }
+          ]
+        }
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "hold_unsupported",
+      "no": "d_init_base_pattern"
+    },
+    {
+      "id": "d_init_base_pattern",
+      "op": "set",
+      "name": "base_pattern",
+      "value": {
+        "compute": {
+          "op": "get",
+          "args": [
+            {
+              "var": [
+                "patterns"
+              ]
+            },
+            {
+              "literal": 0
+            }
+          ]
+        }
+      },
+      "next": "d_init_prefix"
+    },
+    {
+      "id": "d_init_prefix",
+      "op": "set",
+      "name": "prefix",
+      "value": {
+        "var": [
+          "base_pattern",
+          "prefix"
+        ]
+      },
+      "next": "d_init_bad_prefix"
+    },
+    {
+      "id": "d_init_bad_prefix",
+      "op": "set",
+      "name": "bad_prefix",
+      "value": {
+        "literal": false
+      },
+      "next": "d_init_terms"
+    },
+    {
+      "id": "d_init_terms",
+      "op": "set",
+      "name": "fact_terms",
+      "value": {
+        "literal": []
+      },
+      "next": "d_init_query_terms"
+    },
+    {
+      "id": "d_init_query_terms",
+      "op": "set",
+      "name": "query_terms",
+      "value": {
+        "literal": []
+      },
+      "next": "d_prefix_scan"
+    },
+    {
+      "id": "d_prefix_scan",
+      "op": "scan",
+      "source": {
+        "var": [
+          "patterns"
+        ]
+      },
+      "item": "pt",
+      "body": "d_prefix_check",
+      "done": "d_prefix_done"
+    },
+    {
+      "id": "d_prefix_check",
+      "op": "branch",
+      "left": {
+        "var": [
+          "pt",
+          "prefix"
+        ]
+      },
+      "right": {
+        "var": [
+          "prefix"
+        ]
+      },
+      "yes": "d_prefix_scan",
+      "no": "d_prefix_bad"
+    },
+    {
+      "id": "d_prefix_bad",
+      "op": "set",
+      "name": "bad_prefix",
+      "value": {
+        "literal": true
+      },
+      "next": "d_prefix_scan"
+    },
+    {
+      "id": "d_prefix_done",
+      "op": "branch",
+      "left": {
+        "var": [
+          "bad_prefix"
+        ]
+      },
+      "right": {
+        "literal": false
+      },
+      "yes": "d_term_scan",
+      "no": "hold_unsupported"
+    },
+    {
+      "id": "d_term_scan",
+      "op": "scan",
+      "source": {
+        "var": [
+          "patterns"
+        ]
+      },
+      "item": "pt",
+      "body": "d_term_kind_fact",
+      "done": "d_term_done"
+    },
+    {
+      "id": "d_term_kind_fact",
+      "op": "branch",
+      "left": {
+        "var": [
+          "pt",
+          "kind"
+        ]
+      },
+      "right": {
+        "literal": "fact"
+      },
+      "yes": "d_fact_suffix_empty",
+      "no": "d_term_kind_query"
+    },
+    {
+      "id": "d_fact_suffix_empty",
+      "op": "branch",
+      "left": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "var": [
+                "pt",
+                "suffix"
+              ]
+            }
+          ]
+        }
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_term_scan",
+      "no": "d_fact_term"
+    },
+    {
+      "id": "d_fact_term",
+      "op": "set",
+      "name": "term_char",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "var": [
+                "pt",
+                "suffix"
+              ]
+            },
+            {
+              "compute": {
+                "op": "add",
+                "args": [
+                  {
+                    "compute": {
+                      "op": "len",
+                      "args": [
+                        {
+                          "var": [
+                            "pt",
+                            "suffix"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "literal": -1
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "pt",
+                      "suffix"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_fact_term_append"
+    },
+    {
+      "id": "d_fact_term_append",
+      "op": "append",
+      "name": "fact_terms",
+      "value": {
+        "var": [
+          "term_char"
+        ]
+      },
+      "next": "d_term_scan"
+    },
+    {
+      "id": "d_term_kind_query",
+      "op": "branch",
+      "left": {
+        "var": [
+          "pt",
+          "kind"
+        ]
+      },
+      "right": {
+        "literal": "query"
+      },
+      "yes": "d_query_suffix_empty",
+      "no": "d_term_scan"
+    },
+    {
+      "id": "d_query_suffix_empty",
+      "op": "branch",
+      "left": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "var": [
+                "pt",
+                "suffix"
+              ]
+            }
+          ]
+        }
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_term_scan",
+      "no": "d_query_term"
+    },
+    {
+      "id": "d_query_term",
+      "op": "set",
+      "name": "term_char",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "var": [
+                "pt",
+                "suffix"
+              ]
+            },
+            {
+              "compute": {
+                "op": "add",
+                "args": [
+                  {
+                    "compute": {
+                      "op": "len",
+                      "args": [
+                        {
+                          "var": [
+                            "pt",
+                            "suffix"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "literal": -1
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "pt",
+                      "suffix"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_query_term_append"
+    },
+    {
+      "id": "d_query_term_append",
+      "op": "append",
+      "name": "query_terms",
+      "value": {
+        "var": [
+          "term_char"
+        ]
+      },
+      "next": "d_term_scan"
+    },
+    {
+      "id": "d_term_done",
+      "op": "set",
+      "name": "text_length",
+      "value": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "input": [
+                "text"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_text_empty"
+    },
+    {
+      "id": "d_text_empty",
+      "op": "branch",
+      "left": {
+        "var": [
+          "text_length"
+        ]
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "hold_unsupported",
+      "no": "d_last_char"
+    },
+    {
+      "id": "d_last_char",
+      "op": "set",
+      "name": "last_char",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "input": [
+                "text"
+              ]
+            },
+            {
+              "compute": {
+                "op": "add",
+                "args": [
+                  {
+                    "var": [
+                      "text_length"
+                    ]
+                  },
+                  {
+                    "literal": -1
+                  }
+                ]
+              }
+            },
+            {
+              "var": [
+                "text_length"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_query_terminal_check"
+    },
+    {
+      "id": "d_query_terminal_check",
+      "op": "intersect",
+      "name": "query_terminal_hit",
+      "left": {
+        "array": [
+          {
+            "var": [
+              "last_char"
+            ]
+          }
+        ]
+      },
+      "right": {
+        "var": [
+          "query_terms"
+        ]
+      },
+      "next": "d_query_terminal_branch"
+    },
+    {
+      "id": "d_query_terminal_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "query_terminal_hit"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "d_fact_terminal_check",
+      "no": "hold_unknown_query"
+    },
+    {
+      "id": "hold_unknown_query",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "unknown_query"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "d_fact_terminal_check",
+      "op": "intersect",
+      "name": "fact_terminal_hit",
+      "left": {
+        "array": [
+          {
+            "var": [
+              "last_char"
+            ]
+          }
+        ]
+      },
+      "right": {
+        "var": [
+          "fact_terms"
+        ]
+      },
+      "next": "d_fact_terminal_branch"
+    },
+    {
+      "id": "d_fact_terminal_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "fact_terminal_hit"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "hold_unsupported",
+      "no": "d_init_state"
+    },
+    {
+      "id": "d_init_state",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "continue"
+          },
+          "state": {
+            "literal": {
+              "phase": "roles",
+              "si": 0,
+              "oi": 0,
+              "pi": 0,
+              "found": [],
+              "ambiguous": false,
+              "decomposition": null,
+              "candidates": [],
+              "signatures": [],
+              "relations": []
+            }
+          },
+          "reason": {
+            "literal": "progress"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "d_roles_check",
+      "op": "branch",
+      "left": {
+        "var": [
+          "st",
+          "si"
+        ]
+      },
+      "right": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels"
+              ]
+            }
+          ]
+        }
+      },
+      "yes": "d_roles_finish",
+      "no": "d_roles_pair"
+    },
+    {
+      "id": "d_roles_pair",
+      "op": "set",
+      "name": "s",
+      "value": {
+        "compute": {
+          "op": "get",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels"
+              ]
+            },
+            {
+              "var": [
+                "st",
+                "si"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_roles_object"
+    },
+    {
+      "id": "d_roles_object",
+      "op": "set",
+      "name": "o",
+      "value": {
+        "compute": {
+          "op": "get",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels"
+              ]
+            },
+            {
+              "var": [
+                "st",
+                "oi"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_roles_found"
+    },
+    {
+      "id": "d_roles_found",
+      "op": "set",
+      "name": "found",
+      "value": {
+        "var": [
+          "st",
+          "found"
+        ]
+      },
+      "next": "d_roles_ambiguous"
+    },
+    {
+      "id": "d_roles_ambiguous",
+      "op": "set",
+      "name": "ambiguous",
+      "value": {
+        "var": [
+          "st",
+          "ambiguous"
+        ]
+      },
+      "next": "d_sm_scan"
+    },
+    {
+      "id": "d_sm_scan",
+      "op": "scan",
+      "source": {
+        "input": [
+          "markers",
+          "subject_markers"
+        ]
+      },
+      "item": "sm",
+      "body": "d_om_scan",
+      "done": "d_pair_advance"
+    },
+    {
+      "id": "d_om_scan",
+      "op": "scan",
+      "source": {
+        "input": [
+          "markers",
+          "object_markers"
+        ]
+      },
+      "item": "om",
+      "body": "d_order_scan",
+      "done": "d_sm_scan"
+    },
+    {
+      "id": "d_order_scan",
+      "op": "scan",
+      "source": {
+        "input": [
+          "markers",
+          "orders"
+        ]
+      },
+      "item": "od",
+      "body": "d_order_check",
+      "done": "d_om_scan"
+    },
+    {
+      "id": "d_order_check",
+      "op": "branch",
+      "left": {
+        "var": [
+          "od"
+        ]
+      },
+      "right": {
+        "literal": [
+          0,
+          1,
+          2
+        ]
+      },
+      "yes": "d_s_first_prefix",
+      "no": "d_order_reverse_check"
+    },
+    {
+      "id": "d_order_reverse_check",
+      "op": "branch",
+      "left": {
+        "var": [
+          "od"
+        ]
+      },
+      "right": {
+        "literal": [
+          1,
+          0,
+          2
+        ]
+      },
+      "yes": "d_o_first_prefix",
+      "no": "d_order_scan"
+    },
+    {
+      "id": "d_s_first_prefix",
+      "op": "branch",
+      "left": {
+        "var": [
+          "prefix"
+        ]
+      },
+      "right": {
+        "literal": ""
+      },
+      "yes": "d_s_first_text",
+      "no": "d_s_first_find_prefix"
+    },
+    {
+      "id": "d_s_first_text",
+      "op": "set",
+      "name": "role_text",
+      "value": {
+        "input": [
+          "text"
+        ]
+      },
+      "next": "d_s_first_chunks"
+    },
+    {
+      "id": "d_s_first_find_prefix",
+      "op": "set",
+      "name": "prefix_at",
+      "value": {
+        "compute": {
+          "op": "find",
+          "args": [
+            {
+              "input": [
+                "text"
+              ]
+            },
+            {
+              "var": [
+                "prefix"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_s_first_prefix_at"
+    },
+    {
+      "id": "d_s_first_prefix_at",
+      "op": "branch",
+      "left": {
+        "var": [
+          "prefix_at"
+        ]
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_s_first_prefix_slice",
+      "no": "d_order_scan"
+    },
+    {
+      "id": "d_s_first_prefix_slice",
+      "op": "set",
+      "name": "role_text",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "input": [
+                "text"
+              ]
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "prefix"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "input": [
+                      "text"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_s_first_chunks"
+    },
+    {
+      "id": "d_s_first_chunks",
+      "op": "set",
+      "name": "sc",
+      "value": {
+        "compute": {
+          "op": "concat",
+          "args": [
+            {
+              "var": [
+                "s",
+                "text"
+              ]
+            },
+            {
+              "var": [
+                "sm"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_s_first_oc"
+    },
+    {
+      "id": "d_s_first_oc",
+      "op": "set",
+      "name": "oc",
+      "value": {
+        "compute": {
+          "op": "concat",
+          "args": [
+            {
+              "var": [
+                "o",
+                "text"
+              ]
+            },
+            {
+              "var": [
+                "om"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_s_first_subject_at"
+    },
+    {
+      "id": "d_s_first_subject_at",
+      "op": "set",
+      "name": "role_at",
+      "value": {
+        "compute": {
+          "op": "find",
+          "args": [
+            {
+              "var": [
+                "role_text"
+              ]
+            },
+            {
+              "var": [
+                "sc"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_s_first_subject_branch"
+    },
+    {
+      "id": "d_s_first_subject_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "role_at"
+        ]
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_s_first_mid",
+      "no": "d_order_scan"
+    },
+    {
+      "id": "d_s_first_mid",
+      "op": "set",
+      "name": "mid",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "var": [
+                "role_text"
+              ]
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "sc"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "role_text"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_s_first_object_at"
+    },
+    {
+      "id": "d_s_first_object_at",
+      "op": "set",
+      "name": "role_at",
+      "value": {
+        "compute": {
+          "op": "find",
+          "args": [
+            {
+              "var": [
+                "mid"
+              ]
+            },
+            {
+              "var": [
+                "oc"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_s_first_object_branch"
+    },
+    {
+      "id": "d_s_first_object_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "role_at"
+        ]
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_s_first_residual",
+      "no": "d_order_scan"
+    },
+    {
+      "id": "d_s_first_residual",
+      "op": "set",
+      "name": "unknown",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "var": [
+                "mid"
+              ]
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "oc"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "mid"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_s_first_nonempty"
+    },
+    {
+      "id": "d_s_first_nonempty",
+      "op": "branch",
+      "left": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "var": [
+                "unknown"
+              ]
+            }
+          ]
+        }
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_order_scan",
+      "no": "d_s_first_start"
+    },
+    {
+      "id": "d_s_first_start",
+      "op": "set",
+      "name": "unknown_start",
+      "value": {
+        "compute": {
+          "op": "add",
+          "args": [
+            {
+              "compute": {
+                "op": "add",
+                "args": [
+                  {
+                    "compute": {
+                      "op": "len",
+                      "args": [
+                        {
+                          "var": [
+                            "prefix"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "compute": {
+                      "op": "len",
+                      "args": [
+                        {
+                          "var": [
+                            "sc"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "oc"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_s_first_row"
+    },
+    {
+      "id": "d_s_first_row",
+      "op": "set",
+      "name": "decomp_row",
+      "value": {
+        "object": {
+          "source_id": {
+            "input": [
+              "source_id"
+            ]
+          },
+          "source_text": {
+            "input": [
+              "text"
+            ]
+          },
+          "kind": {
+            "literal": "fact"
+          },
+          "subject_id": {
+            "var": [
+              "s",
+              "id"
+            ]
+          },
+          "object_id": {
+            "var": [
+              "o",
+              "id"
+            ]
+          },
+          "unknown_surface": {
+            "var": [
+              "unknown"
+            ]
+          },
+          "span": {
+            "object": {
+              "start": {
+                "var": [
+                  "unknown_start"
+                ]
+              },
+              "end": {
+                "compute": {
+                  "op": "len",
+                  "args": [
+                    {
+                      "input": [
+                        "text"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "template": {
+            "object": {
+              "prefix": {
+                "var": [
+                  "prefix"
+                ]
+              },
+              "between": {
+                "var": [
+                  "sm"
+                ]
+              },
+              "suffix": {
+                "compute": {
+                  "op": "concat",
+                  "args": [
+                    {
+                      "input": [
+                        "markers",
+                        "seed_object_marker"
+                      ]
+                    },
+                    {
+                      "var": [
+                        "unknown"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "next": "d_match_seen"
+    },
+    {
+      "id": "d_o_first_prefix",
+      "op": "branch",
+      "left": {
+        "var": [
+          "prefix"
+        ]
+      },
+      "right": {
+        "literal": ""
+      },
+      "yes": "d_o_first_text",
+      "no": "d_o_first_find_prefix"
+    },
+    {
+      "id": "d_o_first_text",
+      "op": "set",
+      "name": "role_text",
+      "value": {
+        "input": [
+          "text"
+        ]
+      },
+      "next": "d_o_first_chunks"
+    },
+    {
+      "id": "d_o_first_find_prefix",
+      "op": "set",
+      "name": "prefix_at",
+      "value": {
+        "compute": {
+          "op": "find",
+          "args": [
+            {
+              "input": [
+                "text"
+              ]
+            },
+            {
+              "var": [
+                "prefix"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_o_first_prefix_at"
+    },
+    {
+      "id": "d_o_first_prefix_at",
+      "op": "branch",
+      "left": {
+        "var": [
+          "prefix_at"
+        ]
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_o_first_prefix_slice",
+      "no": "d_order_scan"
+    },
+    {
+      "id": "d_o_first_prefix_slice",
+      "op": "set",
+      "name": "role_text",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "input": [
+                "text"
+              ]
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "prefix"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "input": [
+                      "text"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_o_first_chunks"
+    },
+    {
+      "id": "d_o_first_chunks",
+      "op": "set",
+      "name": "sc",
+      "value": {
+        "compute": {
+          "op": "concat",
+          "args": [
+            {
+              "var": [
+                "s",
+                "text"
+              ]
+            },
+            {
+              "var": [
+                "sm"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_o_first_oc"
+    },
+    {
+      "id": "d_o_first_oc",
+      "op": "set",
+      "name": "oc",
+      "value": {
+        "compute": {
+          "op": "concat",
+          "args": [
+            {
+              "var": [
+                "o",
+                "text"
+              ]
+            },
+            {
+              "var": [
+                "om"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_o_first_object_at"
+    },
+    {
+      "id": "d_o_first_object_at",
+      "op": "set",
+      "name": "role_at",
+      "value": {
+        "compute": {
+          "op": "find",
+          "args": [
+            {
+              "var": [
+                "role_text"
+              ]
+            },
+            {
+              "var": [
+                "oc"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_o_first_object_branch"
+    },
+    {
+      "id": "d_o_first_object_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "role_at"
+        ]
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_o_first_mid",
+      "no": "d_order_scan"
+    },
+    {
+      "id": "d_o_first_mid",
+      "op": "set",
+      "name": "mid",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "var": [
+                "role_text"
+              ]
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "oc"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "role_text"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_o_first_subject_at"
+    },
+    {
+      "id": "d_o_first_subject_at",
+      "op": "set",
+      "name": "role_at",
+      "value": {
+        "compute": {
+          "op": "find",
+          "args": [
+            {
+              "var": [
+                "mid"
+              ]
+            },
+            {
+              "var": [
+                "sc"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_o_first_subject_branch"
+    },
+    {
+      "id": "d_o_first_subject_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "role_at"
+        ]
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_o_first_residual",
+      "no": "d_order_scan"
+    },
+    {
+      "id": "d_o_first_residual",
+      "op": "set",
+      "name": "unknown",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "var": [
+                "mid"
+              ]
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "sc"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "mid"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_o_first_nonempty"
+    },
+    {
+      "id": "d_o_first_nonempty",
+      "op": "branch",
+      "left": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "var": [
+                "unknown"
+              ]
+            }
+          ]
+        }
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_order_scan",
+      "no": "d_o_first_start"
+    },
+    {
+      "id": "d_o_first_start",
+      "op": "set",
+      "name": "unknown_start",
+      "value": {
+        "compute": {
+          "op": "add",
+          "args": [
+            {
+              "compute": {
+                "op": "add",
+                "args": [
+                  {
+                    "compute": {
+                      "op": "len",
+                      "args": [
+                        {
+                          "var": [
+                            "prefix"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "compute": {
+                      "op": "len",
+                      "args": [
+                        {
+                          "var": [
+                            "oc"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "sc"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_o_first_row"
+    },
+    {
+      "id": "d_o_first_row",
+      "op": "set",
+      "name": "decomp_row",
+      "value": {
+        "object": {
+          "source_id": {
+            "input": [
+              "source_id"
+            ]
+          },
+          "source_text": {
+            "input": [
+              "text"
+            ]
+          },
+          "kind": {
+            "literal": "fact"
+          },
+          "subject_id": {
+            "var": [
+              "s",
+              "id"
+            ]
+          },
+          "object_id": {
+            "var": [
+              "o",
+              "id"
+            ]
+          },
+          "unknown_surface": {
+            "var": [
+              "unknown"
+            ]
+          },
+          "span": {
+            "object": {
+              "start": {
+                "var": [
+                  "unknown_start"
+                ]
+              },
+              "end": {
+                "compute": {
+                  "op": "len",
+                  "args": [
+                    {
+                      "input": [
+                        "text"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "template": {
+            "object": {
+              "prefix": {
+                "var": [
+                  "prefix"
+                ]
+              },
+              "between": {
+                "var": [
+                  "sm"
+                ]
+              },
+              "suffix": {
+                "compute": {
+                  "op": "concat",
+                  "args": [
+                    {
+                      "input": [
+                        "markers",
+                        "seed_object_marker"
+                      ]
+                    },
+                    {
+                      "var": [
+                        "unknown"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "next": "d_match_seen"
+    },
+    {
+      "id": "d_match_seen",
+      "op": "branch",
+      "left": {
+        "var": [
+          "found"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "d_match_append",
+      "no": "d_match_ambiguous"
+    },
+    {
+      "id": "d_match_append",
+      "op": "append",
+      "name": "found",
+      "value": {
+        "var": [
+          "decomp_row"
+        ]
+      },
+      "next": "d_order_scan"
+    },
+    {
+      "id": "d_match_ambiguous",
+      "op": "set",
+      "name": "ambiguous",
+      "value": {
+        "literal": true
+      },
+      "next": "d_order_scan"
+    },
+    {
+      "id": "d_pair_advance",
+      "op": "set",
+      "name": "next_oi",
+      "value": {
+        "compute": {
+          "op": "add",
+          "args": [
+            {
+              "var": [
+                "st",
+                "oi"
+              ]
+            },
+            {
+              "literal": 1
+            }
+          ]
+        }
+      },
+      "next": "d_pair_wrap"
+    },
+    {
+      "id": "d_pair_wrap",
+      "op": "branch",
+      "left": {
+        "var": [
+          "next_oi"
+        ]
+      },
+      "right": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "input": [
+                "model",
+                "labels"
+              ]
+            }
+          ]
+        }
+      },
+      "yes": "d_pair_next_subject",
+      "no": "d_pair_next_object"
+    },
+    {
+      "id": "d_pair_next_subject",
+      "op": "set",
+      "name": "next_si",
+      "value": {
+        "compute": {
+          "op": "add",
+          "args": [
+            {
+              "var": [
+                "st",
+                "si"
+              ]
+            },
+            {
+              "literal": 1
+            }
+          ]
+        }
+      },
+      "next": "d_pair_return_subject"
+    },
+    {
+      "id": "d_pair_return_subject",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "continue"
+          },
+          "state": {
+            "object": {
+              "phase": {
+                "literal": "roles"
+              },
+              "si": {
+                "var": [
+                  "next_si"
+                ]
+              },
+              "oi": {
+                "literal": 0
+              },
+              "pi": {
+                "literal": 0
+              },
+              "found": {
+                "var": [
+                  "found"
+                ]
+              },
+              "ambiguous": {
+                "var": [
+                  "ambiguous"
+                ]
+              },
+              "decomposition": {
+                "literal": null
+              },
+              "candidates": {
+                "literal": []
+              },
+              "signatures": {
+                "literal": []
+              },
+              "relations": {
+                "literal": []
+              }
+            }
+          },
+          "reason": {
+            "literal": "progress"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "d_pair_next_object",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "continue"
+          },
+          "state": {
+            "object": {
+              "phase": {
+                "literal": "roles"
+              },
+              "si": {
+                "var": [
+                  "st",
+                  "si"
+                ]
+              },
+              "oi": {
+                "var": [
+                  "next_oi"
+                ]
+              },
+              "pi": {
+                "literal": 0
+              },
+              "found": {
+                "var": [
+                  "found"
+                ]
+              },
+              "ambiguous": {
+                "var": [
+                  "ambiguous"
+                ]
+              },
+              "decomposition": {
+                "literal": null
+              },
+              "candidates": {
+                "literal": []
+              },
+              "signatures": {
+                "literal": []
+              },
+              "relations": {
+                "literal": []
+              }
+            }
+          },
+          "reason": {
+            "literal": "progress"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "d_roles_finish",
+      "op": "branch",
+      "left": {
+        "var": [
+          "st",
+          "ambiguous"
+        ]
+      },
+      "right": {
+        "literal": true
+      },
+      "yes": "hold_ambiguous",
+      "no": "d_roles_found_empty"
+    },
+    {
+      "id": "d_roles_found_empty",
+      "op": "branch",
+      "left": {
+        "var": [
+          "st",
+          "found"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "hold_unsupported",
+      "no": "d_decomp_select"
+    },
+    {
+      "id": "d_decomp_select",
+      "op": "set",
+      "name": "decomp",
+      "value": {
+        "compute": {
+          "op": "get",
+          "args": [
+            {
+              "var": [
+                "st",
+                "found"
+              ]
+            },
+            {
+              "literal": 0
+            }
+          ]
+        }
+      },
+      "next": "d_extra_init"
+    },
+    {
+      "id": "d_extra_init",
+      "op": "set",
+      "name": "extra_entity",
+      "value": {
+        "literal": false
+      },
+      "next": "d_extra_scan"
+    },
+    {
+      "id": "d_extra_scan",
+      "op": "scan",
+      "source": {
+        "input": [
+          "model",
+          "labels"
+        ]
+      },
+      "item": "label",
+      "body": "d_extra_check",
+      "done": "d_extra_done"
+    },
+    {
+      "id": "d_extra_check",
+      "op": "set",
+      "name": "entity_at",
+      "value": {
+        "compute": {
+          "op": "find",
+          "args": [
+            {
+              "var": [
+                "decomp",
+                "unknown_surface"
+              ]
+            },
+            {
+              "var": [
+                "label",
+                "text"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_extra_branch"
+    },
+    {
+      "id": "d_extra_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "entity_at"
+        ]
+      },
+      "right": {
+        "literal": -1
+      },
+      "yes": "d_extra_scan",
+      "no": "d_extra_set"
+    },
+    {
+      "id": "d_extra_set",
+      "op": "set",
+      "name": "extra_entity",
+      "value": {
+        "literal": true
+      },
+      "next": "d_extra_scan"
+    },
+    {
+      "id": "d_extra_done",
+      "op": "branch",
+      "left": {
+        "var": [
+          "extra_entity"
+        ]
+      },
+      "right": {
+        "literal": false
+      },
+      "yes": "d_known_init",
+      "no": "hold_extra_entity"
+    },
+    {
+      "id": "d_known_init",
+      "op": "set",
+      "name": "known_terminal",
+      "value": {
+        "literal": false
+      },
+      "next": "d_known_scan"
+    },
+    {
+      "id": "d_known_scan",
+      "op": "scan",
+      "source": {
+        "input": [
+          "model",
+          "patterns"
+        ]
+      },
+      "item": "pt",
+      "body": "d_known_kind",
+      "done": "d_known_done"
+    },
+    {
+      "id": "d_known_kind",
+      "op": "branch",
+      "left": {
+        "var": [
+          "pt",
+          "kind"
+        ]
+      },
+      "right": {
+        "literal": "fact"
+      },
+      "yes": "d_known_marker_at",
+      "no": "d_known_scan"
+    },
+    {
+      "id": "d_known_marker_at",
+      "op": "set",
+      "name": "marker_at",
+      "value": {
+        "compute": {
+          "op": "find",
+          "args": [
+            {
+              "var": [
+                "pt",
+                "suffix"
+              ]
+            },
+            {
+              "input": [
+                "markers",
+                "seed_object_marker"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_known_marker_branch"
+    },
+    {
+      "id": "d_known_marker_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "marker_at"
+        ]
+      },
+      "right": {
+        "literal": 0
+      },
+      "yes": "d_known_tail",
+      "no": "d_known_scan"
+    },
+    {
+      "id": "d_known_tail",
+      "op": "set",
+      "name": "known_tail",
+      "value": {
+        "compute": {
+          "op": "slice",
+          "args": [
+            {
+              "var": [
+                "pt",
+                "suffix"
+              ]
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "input": [
+                      "markers",
+                      "seed_object_marker"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "compute": {
+                "op": "len",
+                "args": [
+                  {
+                    "var": [
+                      "pt",
+                      "suffix"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "next": "d_known_tail_eq"
+    },
+    {
+      "id": "d_known_tail_eq",
+      "op": "branch",
+      "left": {
+        "var": [
+          "known_tail"
+        ]
+      },
+      "right": {
+        "var": [
+          "decomp",
+          "unknown_surface"
+        ]
+      },
+      "yes": "d_known_set",
+      "no": "d_known_scan"
+    },
+    {
+      "id": "d_known_set",
+      "op": "set",
+      "name": "known_terminal",
+      "value": {
+        "literal": true
+      },
+      "next": "d_known_scan"
+    },
+    {
+      "id": "d_known_done",
+      "op": "branch",
+      "left": {
+        "var": [
+          "known_terminal"
+        ]
+      },
+      "right": {
+        "literal": true
+      },
+      "yes": "hold_known_terminal",
+      "no": "d_candidate_init"
+    },
+    {
+      "id": "hold_known_terminal",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "known_terminal"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_ambiguous",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "ambiguous"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_extra_entity",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "extra_known_entity"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "d_candidate_init",
+      "op": "set",
+      "name": "unused_stage",
+      "value": {
+        "literal": null
+      },
+      "next": "d_candidate_continue"
+    },
+    {
+      "id": "d_candidate_continue",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "continue"
+          },
+          "state": {
+            "object": {
+              "phase": {
+                "literal": "candidates"
+              },
+              "si": {
+                "var": [
+                  "st",
+                  "si"
+                ]
+              },
+              "oi": {
+                "var": [
+                  "st",
+                  "oi"
+                ]
+              },
+              "pi": {
+                "literal": 0
+              },
+              "found": {
+                "var": [
+                  "st",
+                  "found"
+                ]
+              },
+              "ambiguous": {
+                "literal": false
+              },
+              "decomposition": {
+                "var": [
+                  "decomp"
+                ]
+              },
+              "candidates": {
+                "literal": []
+              },
+              "signatures": {
+                "literal": []
+              },
+              "relations": {
+                "literal": []
+              }
+            }
+          },
+          "reason": {
+            "literal": "progress"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "d_candidates_check",
+      "op": "branch",
+      "left": {
+        "var": [
+          "st",
+          "pi"
+        ]
+      },
+      "right": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "input": [
+                "model",
+                "patterns"
+              ]
+            }
+          ]
+        }
+      },
+      "yes": "d_candidates_finish_count",
+      "no": "d_candidate_pattern"
+    },
+    {
+      "id": "d_candidate_pattern",
+      "op": "set",
+      "name": "pt",
+      "value": {
+        "compute": {
+          "op": "get",
+          "args": [
+            {
+              "input": [
+                "model",
+                "patterns"
+              ]
+            },
+            {
+              "var": [
+                "st",
+                "pi"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_candidate_kind"
+    },
+    {
+      "id": "d_candidate_kind",
+      "op": "branch",
+      "left": {
+        "var": [
+          "pt",
+          "kind"
+        ]
+      },
+      "right": {
+        "literal": "fact"
+      },
+      "yes": "d_candidate_signature",
+      "no": "d_candidate_skip"
+    },
+    {
+      "id": "d_candidate_signature",
+      "op": "set",
+      "name": "signature",
+      "value": {
+        "object": {
+          "relation": {
+            "var": [
+              "pt",
+              "relation"
+            ]
+          },
+          "polarity": {
+            "var": [
+              "pt",
+              "polarity"
+            ]
+          }
+        }
+      },
+      "next": "d_candidate_duplicate"
+    },
+    {
+      "id": "d_candidate_duplicate",
+      "op": "intersect",
+      "name": "signature_hit",
+      "left": {
+        "array": [
+          {
+            "var": [
+              "signature"
+            ]
+          }
+        ]
+      },
+      "right": {
+        "var": [
+          "st",
+          "signatures"
+        ]
+      },
+      "next": "d_candidate_duplicate_branch"
+    },
+    {
+      "id": "d_candidate_duplicate_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "signature_hit"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "d_candidate_new",
+      "no": "d_candidate_skip"
+    },
+    {
+      "id": "d_candidate_new",
+      "op": "set",
+      "name": "candidate_list",
+      "value": {
+        "var": [
+          "st",
+          "candidates"
+        ]
+      },
+      "next": "d_candidate_sig_list"
+    },
+    {
+      "id": "d_candidate_sig_list",
+      "op": "set",
+      "name": "signature_list",
+      "value": {
+        "var": [
+          "st",
+          "signatures"
+        ]
+      },
+      "next": "d_candidate_rel_list"
+    },
+    {
+      "id": "d_candidate_rel_list",
+      "op": "set",
+      "name": "relation_list",
+      "value": {
+        "var": [
+          "st",
+          "relations"
+        ]
+      },
+      "next": "d_candidate_record"
+    },
+    {
+      "id": "d_candidate_record",
+      "op": "set",
+      "name": "candidate_row",
+      "value": {
+        "object": {
+          "candidate_id": {
+            "compute": {
+              "op": "concat",
+              "args": [
+                {
+                  "literal": "candidate:"
+                },
+                {
+                  "var": [
+                    "pt",
+                    "id"
+                  ]
+                }
+              ]
+            }
+          },
+          "source_id": {
+            "var": [
+              "decomp",
+              "source_id"
+            ]
+          },
+          "source_surface": {
+            "var": [
+              "decomp",
+              "unknown_surface"
+            ]
+          },
+          "span": {
+            "var": [
+              "decomp",
+              "span"
+            ]
+          },
+          "seed_pattern_id": {
+            "var": [
+              "pt",
+              "id"
+            ]
+          },
+          "proposed_meaning": {
+            "object": {
+              "kind": {
+                "literal": "fact"
+              },
+              "triple": {
+                "array": [
+                  {
+                    "var": [
+                      "decomp",
+                      "subject_id"
+                    ]
+                  },
+                  {
+                    "var": [
+                      "pt",
+                      "relation"
+                    ]
+                  },
+                  {
+                    "var": [
+                      "decomp",
+                      "object_id"
+                    ]
+                  }
+                ]
+              },
+              "polarity": {
+                "var": [
+                  "pt",
+                  "polarity"
+                ]
+              }
+            }
+          },
+          "display_text": {
+            "compute": {
+              "op": "concat",
+              "args": [
+                {
+                  "var": [
+                    "pt",
+                    "prefix"
+                  ]
+                },
+                {
+                  "compute": {
+                    "op": "get",
+                    "args": [
+                      {
+                        "input": [
+                          "model",
+                          "labels_by_id"
+                        ]
+                      },
+                      {
+                        "var": [
+                          "decomp",
+                          "subject_id"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "var": [
+                    "pt",
+                    "between"
+                  ]
+                },
+                {
+                  "compute": {
+                    "op": "get",
+                    "args": [
+                      {
+                        "input": [
+                          "model",
+                          "labels_by_id"
+                        ]
+                      },
+                      {
+                        "var": [
+                          "decomp",
+                          "object_id"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "var": [
+                    "pt",
+                    "suffix"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "next": "d_candidate_append"
+    },
+    {
+      "id": "d_candidate_append",
+      "op": "append",
+      "name": "candidate_list",
+      "value": {
+        "var": [
+          "candidate_row"
+        ]
+      },
+      "next": "d_candidate_signature_append"
+    },
+    {
+      "id": "d_candidate_signature_append",
+      "op": "append",
+      "name": "signature_list",
+      "value": {
+        "var": [
+          "signature"
+        ]
+      },
+      "next": "d_candidate_relation_check"
+    },
+    {
+      "id": "d_candidate_relation_check",
+      "op": "intersect",
+      "name": "relation_hit",
+      "left": {
+        "array": [
+          {
+            "var": [
+              "pt",
+              "relation"
+            ]
+          }
+        ]
+      },
+      "right": {
+        "var": [
+          "relation_list"
+        ]
+      },
+      "next": "d_candidate_relation_branch"
+    },
+    {
+      "id": "d_candidate_relation_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "relation_hit"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "d_candidate_relation_append",
+      "no": "d_candidate_store"
+    },
+    {
+      "id": "d_candidate_relation_append",
+      "op": "append",
+      "name": "relation_list",
+      "value": {
+        "var": [
+          "pt",
+          "relation"
+        ]
+      },
+      "next": "d_candidate_store"
+    },
+    {
+      "id": "d_candidate_store",
+      "op": "set",
+      "name": "candidate_next_pi",
+      "value": {
+        "compute": {
+          "op": "add",
+          "args": [
+            {
+              "var": [
+                "st",
+                "pi"
+              ]
+            },
+            {
+              "literal": 1
+            }
+          ]
+        }
+      },
+      "next": "d_candidate_return_new"
+    },
+    {
+      "id": "d_candidate_return_new",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "continue"
+          },
+          "state": {
+            "object": {
+              "phase": {
+                "literal": "candidates"
+              },
+              "si": {
+                "var": [
+                  "st",
+                  "si"
+                ]
+              },
+              "oi": {
+                "var": [
+                  "st",
+                  "oi"
+                ]
+              },
+              "pi": {
+                "var": [
+                  "candidate_next_pi"
+                ]
+              },
+              "found": {
+                "var": [
+                  "st",
+                  "found"
+                ]
+              },
+              "ambiguous": {
+                "literal": false
+              },
+              "decomposition": {
+                "var": [
+                  "decomp"
+                ]
+              },
+              "candidates": {
+                "var": [
+                  "candidate_list"
+                ]
+              },
+              "signatures": {
+                "var": [
+                  "signature_list"
+                ]
+              },
+              "relations": {
+                "var": [
+                  "relation_list"
+                ]
+              }
+            }
+          },
+          "reason": {
+            "literal": "progress"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "d_candidate_skip",
+      "op": "set",
+      "name": "candidate_skip_pi",
+      "value": {
+        "compute": {
+          "op": "add",
+          "args": [
+            {
+              "var": [
+                "st",
+                "pi"
+              ]
+            },
+            {
+              "literal": 1
+            }
+          ]
+        }
+      },
+      "next": "d_candidate_return_skip"
+    },
+    {
+      "id": "d_candidate_return_skip",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "continue"
+          },
+          "state": {
+            "object": {
+              "phase": {
+                "literal": "candidates"
+              },
+              "si": {
+                "var": [
+                  "st",
+                  "si"
+                ]
+              },
+              "oi": {
+                "var": [
+                  "st",
+                  "oi"
+                ]
+              },
+              "pi": {
+                "var": [
+                  "candidate_skip_pi"
+                ]
+              },
+              "found": {
+                "var": [
+                  "st",
+                  "found"
+                ]
+              },
+              "ambiguous": {
+                "literal": false
+              },
+              "decomposition": {
+                "var": [
+                  "decomp"
+                ]
+              },
+              "candidates": {
+                "var": [
+                  "st",
+                  "candidates"
+                ]
+              },
+              "signatures": {
+                "var": [
+                  "st",
+                  "signatures"
+                ]
+              },
+              "relations": {
+                "var": [
+                  "st",
+                  "relations"
+                ]
+              }
+            }
+          },
+          "reason": {
+            "literal": "progress"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "d_candidates_finish_count",
+      "op": "set",
+      "name": "candidate_count",
+      "value": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "var": [
+                "st",
+                "candidates"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_candidates_finish_branch"
+    },
+    {
+      "id": "d_candidates_finish_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "candidate_count"
+        ]
+      },
+      "right": {
+        "literal": 6
+      },
+      "yes": "d_relations_finish",
+      "no": "hold_candidate_limit"
+    },
+    {
+      "id": "d_relations_finish",
+      "op": "set",
+      "name": "relation_count",
+      "value": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "var": [
+                "st",
+                "relations"
+              ]
+            }
+          ]
+        }
+      },
+      "next": "d_relations_count_check"
+    },
+    {
+      "id": "d_relations_count_check",
+      "op": "branch",
+      "left": {
+        "var": [
+          "relation_count"
+        ]
+      },
+      "right": {
+        "literal": 3
+      },
+      "yes": "d_candidates_done",
+      "no": "hold_candidate_limit"
+    },
+    {
+      "id": "d_candidates_done",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "done"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "candidates_ready"
+          },
+          "decomposition": {
+            "var": [
+              "st",
+              "decomposition"
+            ]
+          },
+          "candidates": {
+            "var": [
+              "st",
+              "candidates"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_candidate_limit",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "candidate_limit"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "c_candidate_count",
+      "op": "branch",
+      "left": {
+        "compute": {
+          "op": "len",
+          "args": [
+            {
+              "input": [
+                "candidates"
+              ]
+            }
+          ]
+        }
+      },
+      "right": {
+        "literal": 6
+      },
+      "yes": "c_init",
+      "no": "c_invalid_count"
+    },
+    {
+      "id": "c_invalid_count",
+      "op": "return",
+      "value": {
+        "object": {
+          "status": {
+            "literal": "hold"
+          },
+          "reason": {
+            "literal": "candidate_limit"
+          },
+          "question": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "c_init",
+      "op": "set",
+      "name": "compatible",
+      "value": {
+        "literal": []
+      },
+      "next": "c_init_conflicts"
+    },
+    {
+      "id": "c_init_conflicts",
+      "op": "set",
+      "name": "conflicted",
+      "value": {
+        "literal": []
+      },
+      "next": "c_source_scan"
+    },
+    {
+      "id": "c_source_scan",
+      "op": "scan",
+      "source": {
+        "input": [
+          "candidates"
+        ]
+      },
+      "item": "candidate",
+      "body": "c_context_check",
+      "done": "c_order_init"
+    },
+    {
+      "id": "c_context_check",
+      "op": "intersect",
+      "name": "context_hit",
+      "left": {
+        "array": [
+          {
+            "var": [
+              "candidate",
+              "candidate_id"
+            ]
+          }
+        ]
+      },
+      "right": {
+        "input": [
+          "context_conflicts"
+        ]
+      },
+      "next": "c_context_branch"
+    },
+    {
+      "id": "c_context_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "context_hit"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "c_add_compatible",
+      "no": "c_add_conflict"
+    },
+    {
+      "id": "c_add_compatible",
+      "op": "append",
+      "name": "compatible",
+      "value": {
+        "var": [
+          "candidate"
+        ]
+      },
+      "next": "c_source_scan"
+    },
+    {
+      "id": "c_add_conflict",
+      "op": "append",
+      "name": "conflicted",
+      "value": {
+        "var": [
+          "candidate"
+        ]
+      },
+      "next": "c_source_scan"
+    },
+    {
+      "id": "c_order_init",
+      "op": "set",
+      "name": "ordered",
+      "value": {
+        "literal": []
+      },
+      "next": "c_compatible_scan"
+    },
+    {
+      "id": "c_compatible_scan",
+      "op": "scan",
+      "source": {
+        "var": [
+          "compatible"
+        ]
+      },
+      "item": "candidate",
+      "body": "c_compatible_append",
+      "done": "c_conflict_scan"
+    },
+    {
+      "id": "c_compatible_append",
+      "op": "append",
+      "name": "ordered",
+      "value": {
+        "var": [
+          "candidate"
+        ]
+      },
+      "next": "c_compatible_scan"
+    },
+    {
+      "id": "c_conflict_scan",
+      "op": "scan",
+      "source": {
+        "var": [
+          "conflicted"
+        ]
+      },
+      "item": "candidate",
+      "body": "c_conflict_append",
+      "done": "c_choices_init"
+    },
+    {
+      "id": "c_conflict_append",
+      "op": "append",
+      "name": "ordered",
+      "value": {
+        "var": [
+          "candidate"
+        ]
+      },
+      "next": "c_conflict_scan"
+    },
+    {
+      "id": "c_choices_init",
+      "op": "set",
+      "name": "choices",
+      "value": {
+        "literal": []
+      },
+      "next": "c_choice_scan"
+    },
+    {
+      "id": "c_choice_scan",
+      "op": "scan",
+      "source": {
+        "var": [
+          "ordered"
+        ]
+      },
+      "item": "candidate",
+      "body": "c_choice_conflict_check",
+      "done": "c_question_prompt"
+    },
+    {
+      "id": "c_choice_conflict_check",
+      "op": "intersect",
+      "name": "choice_conflict_hit",
+      "left": {
+        "array": [
+          {
+            "var": [
+              "candidate",
+              "candidate_id"
+            ]
+          }
+        ]
+      },
+      "right": {
+        "input": [
+          "context_conflicts"
+        ]
+      },
+      "next": "c_choice_conflict_branch"
+    },
+    {
+      "id": "c_choice_conflict_branch",
+      "op": "branch",
+      "left": {
+        "var": [
+          "choice_conflict_hit"
+        ]
+      },
+      "right": {
+        "literal": []
+      },
+      "yes": "c_choice_reply_unknown",
+      "no": "c_choice_reply_conflict"
+    },
+    {
+      "id": "c_choice_reply_unknown",
+      "op": "set",
+      "name": "reply_text",
+      "value": {
+        "compute": {
+          "op": "concat",
+          "args": [
+            {
+              "literal": "표현 \""
+            },
+            {
+              "compute": {
+                "op": "get",
+                "args": [
+                  {
+                    "input": [
+                      "decomposition"
+                    ]
+                  },
+                  {
+                    "literal": "unknown_surface"
+                  }
+                ]
+              }
+            },
+            {
+              "literal": "\"의 뜻은 \""
+            },
+            {
+              "var": [
+                "candidate",
+                "display_text"
+              ]
+            },
+            {
+              "literal": "\"와 같습니다."
+            }
+          ]
+        }
+      },
+      "next": "c_choice_unknown"
+    },
+    {
+      "id": "c_choice_unknown",
+      "op": "set",
+      "name": "choice_row",
+      "value": {
+        "object": {
+          "candidate_id": {
+            "var": [
+              "candidate",
+              "candidate_id"
+            ]
+          },
+          "display_text": {
+            "var": [
+              "candidate",
+              "display_text"
+            ]
+          },
+          "reply_text": {
+            "var": [
+              "reply_text"
+            ]
+          },
+          "context_compatibility": {
+            "literal": "unknown"
+          }
+        }
+      },
+      "next": "c_choice_append"
+    },
+    {
+      "id": "c_choice_reply_conflict",
+      "op": "set",
+      "name": "reply_text",
+      "value": {
+        "compute": {
+          "op": "concat",
+          "args": [
+            {
+              "literal": "표현 \""
+            },
+            {
+              "compute": {
+                "op": "get",
+                "args": [
+                  {
+                    "input": [
+                      "decomposition"
+                    ]
+                  },
+                  {
+                    "literal": "unknown_surface"
+                  }
+                ]
+              }
+            },
+            {
+              "literal": "\"의 뜻은 \""
+            },
+            {
+              "var": [
+                "candidate",
+                "display_text"
+              ]
+            },
+            {
+              "literal": "\"와 같습니다."
+            }
+          ]
+        }
+      },
+      "next": "c_choice_conflict"
+    },
+    {
+      "id": "c_choice_conflict",
+      "op": "set",
+      "name": "choice_row",
+      "value": {
+        "object": {
+          "candidate_id": {
+            "var": [
+              "candidate",
+              "candidate_id"
+            ]
+          },
+          "display_text": {
+            "var": [
+              "candidate",
+              "display_text"
+            ]
+          },
+          "reply_text": {
+            "var": [
+              "reply_text"
+            ]
+          },
+          "context_compatibility": {
+            "literal": "conflict"
+          }
+        }
+      },
+      "next": "c_choice_append"
+    },
+    {
+      "id": "c_choice_append",
+      "op": "append",
+      "name": "choices",
+      "value": {
+        "var": [
+          "choice_row"
+        ]
+      },
+      "next": "c_choice_scan"
+    },
+    {
+      "id": "c_question_prompt",
+      "op": "set",
+      "name": "prompt",
+      "value": {
+        "compute": {
+          "op": "concat",
+          "args": [
+            {
+              "literal": "표현 \""
+            },
+            {
+              "compute": {
+                "op": "get",
+                "args": [
+                  {
+                    "input": [
+                      "decomposition"
+                    ]
+                  },
+                  {
+                    "literal": "unknown_surface"
+                  }
+                ]
+              }
+            },
+            {
+              "literal": "\"의 뜻을 확인하고 싶습니다. 보기 중 의도한 뜻 하나를 골라 답변 문장을 그대로 보내 주세요."
+            }
+          ]
+        }
+      },
+      "next": "c_question_return"
+    },
+    {
+      "id": "c_question_return",
+      "op": "return",
+      "value": {
+        "object": {
+          "status": {
+            "literal": "clarify"
+          },
+          "reason": {
+            "literal": "clarification_required"
+          },
+          "question": {
+            "object": {
+              "question_id": {
+                "input": [
+                  "question_id"
+                ]
+              },
+              "prompt": {
+                "var": [
+                  "prompt"
+                ]
+              },
+              "choices": {
+                "var": [
+                  "choices"
+                ]
+              }
+            }
+          },
+          "candidates": {
+            "var": [
+              "ordered"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_unsupported",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "unsupported"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_invalid_shape",
+      "op": "return",
+      "value": {
+        "object": {
+          "action": {
+            "literal": "hold"
+          },
+          "state": {
+            "literal": null
+          },
+          "reason": {
+            "literal": "invalid_shape"
+          },
+          "decomposition": {
+            "literal": null
+          },
+          "candidates": {
+            "literal": null
+          }
+        }
+      }
+    }
+  ]
+}

@@ -13,7 +13,8 @@ import uuid
 from copy import deepcopy
 from pathlib import Path
 
-from marco.storage.snapshot import atomic_write
+from marco.storage.snapshot import (atomic_write, invalidate_action_grounding_state,
+                                    _action_state_pair)
 
 
 class ConversationBaseMismatch(ValueError):
@@ -108,6 +109,34 @@ class ConversationStore:
         if not chat: raise ValueError("대화를 찾을 수 없습니다")
         return deepcopy(chat.get("reasoning_binding"))
 
+    def _action_state_head_changed(self, chat_id, saved):
+        """Refuse another base; True when only the overlay head differs from the saved binding."""
+        if not isinstance(saved, dict) or self.binding is None:
+            return False
+        mine, theirs = self.binding["base"], saved.get("base") or {}
+        if (theirs.get("content_sha256") != mine["content_sha256"]
+                or (theirs.get("build_id") is not None and mine.get("build_id") is not None
+                    and theirs["build_id"] != mine["build_id"])):
+            raise ConversationBaseMismatch(
+                "conversation %s: its action state was saved on base %s (build %s); this store runs on "
+                "base %s (build %s); the state is refused, the turns stay readable"
+                % (chat_id, theirs.get("content_sha256"), theirs.get("build_id"),
+                   mine["content_sha256"], mine.get("build_id")))
+        return _overlay_head(saved) != _overlay_head(self.binding)
+
+    def action_grounding_state(self, chat_id):
+        """A detached copy of the optional outer action state, invalidated if the overlay head moved."""
+        chat = self._chat(chat_id)
+        if not chat: raise ValueError("대화를 찾을 수 없습니다")
+        raw = chat.get("action_grounding_state")
+        if raw is None:
+            return None
+        changed = self._action_state_head_changed(chat_id, chat.get("reasoning_binding"))
+        state = _action_state_pair(raw, chat.get("reasoning_state"), chat_id)
+        if changed:
+            state = invalidate_action_grounding_state(state, "overlay_head_changed")
+        return state
+
     def import_chat(self, record):
         """Add a chat from a snapshot record (``id``, ``title``, ``turns``, ``reasoning_state``).
 
@@ -116,6 +145,7 @@ class ConversationStore:
         chat_id = str(record.get("id") or "")
         if not chat_id or self._chat(chat_id):
             raise ValueError("대화 id가 비었거나 이미 있습니다: %r" % chat_id)
+        action = _action_state_pair(record.get("action_grounding_state"), record.get("reasoning_state"), chat_id)
         now = time.time()
         chat = {"id": chat_id, "title": str(record.get("title") or "새 대화")[:80], "project_id": None,
                 "created_at": record.get("created_at") or now, "updated_at": record.get("updated_at") or now,
@@ -124,33 +154,45 @@ class ConversationStore:
             chat["reasoning_state"] = deepcopy(record["reasoning_state"])
             if self.binding is not None:
                 chat["reasoning_binding"] = deepcopy(self.binding)
-        self.data["chats"].append(chat)
+            if action is not None:
+                chat["action_grounding_state"] = action
+        previous_chats = list(self.data["chats"])
         try:
+            self.data["chats"].append(chat)
             self._save()
-        except OSError:
-            self.data["chats"].remove(chat)
+        except Exception:
+            self.data["chats"][:] = previous_chats
             raise
         return self.get_chat(chat_id)
 
-    def append_turn(self, chat_id, user, assistant, phase, reasoning_state=None):
+    def append_turn(self, chat_id, user, assistant, phase, reasoning_state=None, *, action_grounding_state=None):
         chat = self._chat(chat_id)
         if not chat: return None
+        action = None
+        if action_grounding_state is not None:
+            action = _action_state_pair(action_grounding_state,
+                                        reasoning_state if reasoning_state is not None else chat.get("reasoning_state"),
+                                        chat_id)
         previous = deepcopy(chat)
-        now = time.time(); turns = chat.setdefault("turns", [])
-        turns.append({"id": self._id(), "at": now, "user": str(user), "assistant": str(assistant), "phase": str(phase)})
-        if len(turns) == 1 and chat.get("title") == "새 대화": chat["title"] = str(user).replace("\n", " ").strip()[:34] or "새 대화"
-        chat["updated_at"] = now
-        if reasoning_state is not None:
-            chat["reasoning_state"] = deepcopy(reasoning_state)
-            # The binding is beside the state it describes: a state saved by an unbound store
-            # carries none, so an old binding never vouches for a newer state.
-            if self.binding is not None:
-                chat["reasoning_binding"] = deepcopy(self.binding)
-            else:
-                chat.pop("reasoning_binding", None)
         try:
+            now = time.time(); turns = chat.setdefault("turns", [])
+            turns.append({"id": self._id(), "at": now, "user": str(user), "assistant": str(assistant), "phase": str(phase)})
+            if len(turns) == 1 and chat.get("title") == "새 대화": chat["title"] = str(user).replace("\n", " ").strip()[:34] or "새 대화"
+            chat["updated_at"] = now
+            if reasoning_state is not None:
+                chat["reasoning_state"] = deepcopy(reasoning_state)
+                # The binding is beside the state it describes: a state saved by an unbound store
+                # carries none, so an old binding never vouches for a newer state.
+                if self.binding is not None:
+                    chat["reasoning_binding"] = deepcopy(self.binding)
+                else:
+                    chat.pop("reasoning_binding", None)
+            if action is not None:
+                chat["action_grounding_state"] = action
+            elif reasoning_state is not None:
+                chat.pop("action_grounding_state", None)
             self._save()
-        except OSError:
+        except Exception:
             chat.clear(); chat.update(previous)
             raise
         return self.get_chat(chat_id)

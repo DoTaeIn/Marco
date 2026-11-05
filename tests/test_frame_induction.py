@@ -432,7 +432,7 @@ class ShortReplyTest(unittest.TestCase):
             context.turn(text, KG)
         self.assertTrue(context._live())
         context.asked = []                        # 되물은 기억을 지운다
-        parser = RelationalParser()
+        parser = context._parser()
         verbs = context._known_verbs(parser, context.observations)
         current = parser.parse("민수가 지연에게 베풀었다.", partial=True, events=True, verbs=verbs)
         self.assertIsNone(context._completion(parser, current, verbs, context._live()))
@@ -923,7 +923,7 @@ class PlanTest(unittest.TestCase):
         context = ReasoningContext()
         for text in [self.뜻] + self.기준 + ["민수가 지연에게 베풀 예정이다."]:
             context.turn(text, KG)
-        parser = RelationalParser()
+        parser = context._parser()
         facts, _d, _p, _r = context._replay(parser, context.observations, context.fills)
         계획 = [f for f in facts if f.get("modality") == "planned"]
         self.assertEqual(len(계획), 2)
@@ -944,7 +944,7 @@ class PlanTest(unittest.TestCase):
         context = ReasoningContext()
         for text in [self.뜻] + self.기준 + ["민수가 지연에게 베풀 예정이다."]:
             context.turn(text, KG)
-        parser = RelationalParser()
+        parser = context._parser()
         facts, _d, _p, _r = context._replay(parser, context.observations, context.fills)
         self.assertFalse([f for f in facts if f["triple"][1] == "isa"])
 

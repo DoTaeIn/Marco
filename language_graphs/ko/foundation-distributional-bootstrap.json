@@ -1,0 +1,162 @@
+{
+  "frame": {
+    "schema": "marco-graph-frame-v1",
+    "nodes": [
+      {
+        "id": "node:minjun",
+        "type": "type:entity",
+        "scope": "scope:bootstrap",
+        "value": "민준"
+      },
+      {
+        "id": "node:seojin",
+        "type": "type:entity",
+        "scope": "scope:bootstrap",
+        "value": "서진"
+      },
+      {
+        "id": "node:kitchen",
+        "type": "type:place",
+        "scope": "scope:bootstrap",
+        "value": "부엌"
+      },
+      {
+        "id": "node:livingroom",
+        "type": "type:place",
+        "scope": "scope:bootstrap",
+        "value": "거실"
+      },
+      {
+        "id": "node:surface:07177f3621f372335a92fdb73e075719c2b621fc3727b81e9f729a577d1e6266",
+        "type": "type:place",
+        "scope": "scope:bootstrap",
+        "value": "서문 넓은 자료실"
+      },
+      {
+        "id": "node:surface:2874b63b68cbed749d98489027c28e29fc6acca1aaebcae76341a0a5403ba932",
+        "type": "type:entity",
+        "scope": "scope:bootstrap",
+        "value": "붉은 망토 대원"
+      },
+      {
+        "id": "node:surface:4840f25dbd271a6b8da4f72fac2c80f687ca9fcc41133a31f60c3c88328e94a1",
+        "type": "type:place",
+        "scope": "scope:bootstrap",
+        "value": "북문 조용한 작업장"
+      },
+      {
+        "id": "node:surface:49cdd081e71e395dd91a4b6871804575e5730d8fbde7c7d5f7bc7b7d6a4f6db0",
+        "type": "type:entity",
+        "scope": "scope:bootstrap",
+        "value": "초록 가방 학생"
+      },
+      {
+        "id": "node:surface:4c65e0d0f279a5eedf2e539d7d941678d60e4cadc0d688b534de8f5eae75a0f4",
+        "type": "type:place",
+        "scope": "scope:bootstrap",
+        "value": "남문 높은 전시관"
+      },
+      {
+        "id": "node:surface:4fa3ce3870d7b33b9a189fac31897c288a8ebc0e05bfccec3eb30b70cf43585a",
+        "type": "type:entity",
+        "scope": "scope:bootstrap",
+        "value": "파란 우산 손님"
+      },
+      {
+        "id": "node:surface:b0e417443bdf9b32df222414f7376c49613992d3a3855a67394ec361999f3766",
+        "type": "type:entity",
+        "scope": "scope:bootstrap",
+        "value": "검은 안경 관찰꾼"
+      },
+      {
+        "id": "node:surface:c517a3986f24141e06eaec435364e9b125b44c5b2fc7467a2bff2893acde2d88",
+        "type": "type:place",
+        "scope": "scope:bootstrap",
+        "value": "동문 작은 관측소"
+      }
+    ],
+    "edges": [],
+    "sources": [],
+    "spans": []
+  },
+  "model": {
+    "labels": [
+      {
+        "id": "node:minjun",
+        "text": "민준"
+      },
+      {
+        "id": "node:seojin",
+        "text": "서진"
+      },
+      {
+        "id": "node:kitchen",
+        "text": "부엌"
+      },
+      {
+        "id": "node:livingroom",
+        "text": "거실"
+      },
+      {
+        "id": "node:surface:07177f3621f372335a92fdb73e075719c2b621fc3727b81e9f729a577d1e6266",
+        "text": "서문 넓은 자료실"
+      },
+      {
+        "id": "node:surface:2874b63b68cbed749d98489027c28e29fc6acca1aaebcae76341a0a5403ba932",
+        "text": "붉은 망토 대원"
+      },
+      {
+        "id": "node:surface:4840f25dbd271a6b8da4f72fac2c80f687ca9fcc41133a31f60c3c88328e94a1",
+        "text": "북문 조용한 작업장"
+      },
+      {
+        "id": "node:surface:49cdd081e71e395dd91a4b6871804575e5730d8fbde7c7d5f7bc7b7d6a4f6db0",
+        "text": "초록 가방 학생"
+      },
+      {
+        "id": "node:surface:4c65e0d0f279a5eedf2e539d7d941678d60e4cadc0d688b534de8f5eae75a0f4",
+        "text": "남문 높은 전시관"
+      },
+      {
+        "id": "node:surface:4fa3ce3870d7b33b9a189fac31897c288a8ebc0e05bfccec3eb30b70cf43585a",
+        "text": "파란 우산 손님"
+      },
+      {
+        "id": "node:surface:b0e417443bdf9b32df222414f7376c49613992d3a3855a67394ec361999f3766",
+        "text": "검은 안경 관찰꾼"
+      },
+      {
+        "id": "node:surface:c517a3986f24141e06eaec435364e9b125b44c5b2fc7467a2bff2893acde2d88",
+        "text": "동문 작은 관측소"
+      }
+    ],
+    "relation": "relation:located-in",
+    "scope": "scope:asserted",
+    "statement_end": ".",
+    "subject_particle": "은 ",
+    "object_suffix": "에 있다",
+    "question_rest": "어디에 있니?",
+    "answer_suffix": "에 있다.",
+    "responses": {
+      "observed": {
+        "status": "observed",
+        "answer": "알겠습니다."
+      },
+      "answered": {
+        "status": "answered"
+      },
+      "missing": {
+        "status": "missing",
+        "answer": "알 수 없습니다."
+      },
+      "ambiguous": {
+        "status": "ambiguous",
+        "answer": "여러 곳이 기록되어 있어 답할 수 없습니다."
+      },
+      "unsupported": {
+        "status": "unsupported",
+        "answer": null
+      }
+    }
+  }
+}

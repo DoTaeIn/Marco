@@ -175,14 +175,22 @@ class _Index:
             raise LedgerError("unreadable line, not declared truncated by a later error event", line=line)
 
 
-def read(path):
+def read(path, *, max_bytes=None):
     """``(events, problems)`` of one ledger file.
 
     A truncated last line is reported in ``problems``; an unreadable line
     elsewhere, a schema violation, or a reference to a later or missing event
     raises ``LedgerError`` with the line number.
     """
-    data = Path(path).read_bytes()
+    if max_bytes is None:
+        data = Path(path).read_bytes()
+    else:
+        if type(max_bytes) is not int or max_bytes <= 0:
+            raise LedgerError("max_bytes must be a positive int")
+        with open(Path(path), "rb") as handle:
+            data = handle.read(max_bytes + 1)
+        if len(data) > max_bytes:
+            raise LedgerError("ledger exceeds max_bytes %d" % max_bytes)
     index = _Index()
     cut = data.rfind(b"\n") + 1
     index.feed(data[:cut])
@@ -226,6 +234,7 @@ class Ledger:
         self._fd = None
         self._state = _Index()
         self._offset = 0
+        self._broken = False         # a write/fsync failed: file state unknown until reopened
         self._open_line = False      # the file does not end with a newline
         self._cut = None             # the truncated last line, until it is declared
         self._sync()
@@ -284,12 +293,27 @@ class Ledger:
 
     # -- writing -------------------------------------------------------------------
     def _write(self, data):
+        if self._broken:
+            raise OSError("ledger writer invalidated by an earlier write/fsync failure; close and reopen it")
         if self._fd is None:
             self.path.parent.mkdir(parents=True, exist_ok=True)
             self._fd = os.open(self.path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
-        os.write(self._fd, data)
-        if self.fsync:
-            os.fsync(self._fd)
+        done = 0
+        try:
+            while done < len(data):
+                try:
+                    count = os.write(self._fd, data[done:])
+                except InterruptedError:
+                    continue
+                if count <= 0:
+                    raise OSError("ledger write made no progress")
+                done += count
+            if self.fsync:
+                os.fsync(self._fd)
+        except BaseException:
+            # Bytes may or may not be on disk: fail closed rather than append after an unknown tail.
+            self._broken = True
+            raise
         self._offset += len(data)
         self.bytes_written += len(data)
 
@@ -327,6 +351,8 @@ class Ledger:
         ``level``, ``event_id``, ``timestamp``.
         """
         with self._lock:
+            if self._broken:
+                raise OSError("ledger writer invalidated by an earlier write/fsync failure; close and reopen it")
             if self._open_line:
                 self._end_open_line()
             return self._append(kind, trace_id, **fields)
@@ -377,7 +403,7 @@ class Ledger:
     def withdraw(self, old_id, trace_id, *, parent_ids, reason, superseded_by=None, **fields):
         """A ``conclusion_withdrawn`` event for ``old_id``; the old event stays as it was."""
         old = self.get(old_id) or {}
-        payload = {"withdrawn": old_id, "reason": reason}
+        payload = {**(fields.pop("payload", None) or {}), "withdrawn": old_id, "reason": reason}
         if superseded_by is not None:
             payload["superseded_by"] = superseded_by
         fields.setdefault("epistemic_status", "withdrawn")
@@ -392,8 +418,9 @@ class Ledger:
         Returns ``(new_event, withdrawal_event)``.
         """
         new = self.append(kind, trace_id, supersedes=old_id, **fields)
+        carried = {k: x for k, x in (fields.get("payload") or {}).items() if k == "attempt_id"}
         gone = self.withdraw(old_id, trace_id, parent_ids=[new["event_id"]], reason=reason,
-                             superseded_by=new["event_id"], runtime=fields.get("runtime"))
+                             superseded_by=new["event_id"], runtime=fields.get("runtime"), payload=carried)
         return new, gone
 
     def close(self):

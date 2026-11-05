@@ -17,6 +17,7 @@ import copy
 from marco.language.realizer import meaning as mg
 from marco.language.realizer.grammar import ClauseRealizer, Grammar, RealizationError
 from marco.language.numerals import parse_numeral
+from marco.language.realizer.packs import selected_binding, selected_identity
 
 
 def json_key(value):
@@ -33,7 +34,11 @@ class LearnedExpressions:
     # listing ----------------------------------------------------------------
     def candidates(self, stem, conversation=None):
         """Learned candidates of this language; one learned in a conversation serves that conversation only."""
+        binding = selected_identity(stem) if selected_binding() is not None else None
+        if selected_binding() is not None and binding is None:
+            return []
         return [item for item in self.items if item["language"] == stem
+                and item["learned"].get("model_binding") == binding
                 and item["learned"].get("conversation") in (None, conversation)]
 
     def list(self):
@@ -60,6 +65,10 @@ class LearnedExpressions:
     def observe(self, result, source):
         """Learn from the statements this turn recorded."""
         if result.get("status") != "observed":
+            return []
+        bound = selected_binding() is not None
+        binding = selected_identity(source) if bound else None
+        if bound and binding is None:
             return []
         lang = self.realizer.language(source)
         frames = (lang.decl.get("learning") or {}).get("frames", [])
@@ -88,8 +97,12 @@ class LearnedExpressions:
             if candidate is None:
                 continue
             candidate["learned"] = {"source": text, "turn": latest, "conversation": conversation}
+            if binding:
+                candidate["learned"]["model_binding"] = binding
             if any(self.shape(item["parts"], lang) == self.shape(candidate["parts"], lang)
                    and item["register"] == candidate["register"] and item["language"] == source
+                   and item["learned"].get("model_binding") == binding
+                   and (not bound or item["learned"].get("conversation") in (None, conversation))
                    for item in self.items):
                 continue
             if self._declared(lang, candidate):

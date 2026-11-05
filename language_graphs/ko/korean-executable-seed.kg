@@ -1,0 +1,1600 @@
+
+[개념]
+owner_role: "n=null"
+leaf1: "s=role"
+leaf2: "s=owner"
+leaf3: "s=seedA1"
+leaf4: "s=suffix"
+owner_role-markers-item0: "n=null"
+leaf5: "s=scalar"
+leaf6: "s=은"
+owner_role-markers-item1: "n=null"
+leaf7: "s=scalar"
+leaf8: "s=는"
+owner_role-markers-item2: "n=null"
+leaf9: "s=scalar"
+leaf10: "s=이"
+owner_role-markers-item3: "n=null"
+leaf11: "s=scalar"
+leaf12: "s=가"
+owner_role-markers: "n=null"
+leaf13: "s=sequence"
+item_role: "n=null"
+leaf14: "s=role"
+leaf15: "s=item"
+leaf16: "s=seedB2"
+leaf17: "s=suffix"
+item_role-markers-item0: "n=null"
+leaf18: "s=scalar"
+leaf19: "s=을"
+item_role-markers-item1: "n=null"
+leaf20: "s=scalar"
+leaf21: "s=를"
+item_role-markers: "n=null"
+leaf22: "s=sequence"
+thing_role: "n=null"
+leaf23: "s=role"
+leaf24: "s=thing"
+leaf25: "s=seedC3"
+leaf26: "s=suffix"
+thing_role-markers-item0: "n=null"
+leaf27: "s=scalar"
+leaf28: "s=은"
+thing_role-markers-item1: "n=null"
+leaf29: "s=scalar"
+leaf30: "s=는"
+thing_role-markers-item2: "n=null"
+leaf31: "s=scalar"
+leaf32: "s=이"
+thing_role-markers-item3: "n=null"
+leaf33: "s=scalar"
+leaf34: "s=가"
+thing_role-markers: "n=null"
+leaf35: "s=sequence"
+place_role: "n=null"
+leaf36: "s=role"
+leaf37: "s=place"
+leaf38: "s=seedD4"
+leaf39: "s=suffix"
+place_role-markers-item0: "n=null"
+leaf40: "s=scalar"
+leaf41: "s=에"
+place_role-markers-item1: "n=null"
+leaf42: "s=scalar"
+leaf43: "s=에는"
+place_role-markers: "n=null"
+leaf44: "s=sequence"
+seed_owns: "n=null"
+leaf45: "s=sense"
+seed_located_in: "n=null"
+leaf46: "s=sense"
+empty-endings: "n=null"
+leaf47: "s=sequence"
+fact_owns: "n=null"
+leaf48: "s=rule"
+fact_owns-binds-item0: "n=null"
+leaf49: "s=role-ref"
+fact_owns-binds-item1: "n=null"
+leaf50: "s=role-ref"
+fact_owns-binds: "n=null"
+leaf51: "s=sequence"
+fact_owns-reads-item0: "n=null"
+leaf52: "s=slot"
+fact_owns-reads-item1: "n=null"
+leaf53: "s=literal"
+leaf54: "s=는"
+fact_owns-reads-item2: "n=null"
+leaf55: "s=literal"
+leaf56: "s= "
+fact_owns-reads-item3: "n=null"
+leaf57: "s=slot"
+fact_owns-reads-item4: "n=null"
+leaf58: "s=literal"
+leaf59: "s=를"
+fact_owns-reads-item5: "n=null"
+leaf60: "s=literal"
+leaf61: "s= "
+fact_owns-reads-item6: "n=null"
+leaf62: "s=predicate"
+leaf63: "s=가지고 있다"
+fact_owns-reads: "n=null"
+leaf64: "s=sequence"
+fact_owns-meaning: "n=null"
+leaf65: "s=meaning"
+fact_owns-subjects-item0: "n=null"
+leaf66: "s=role-ref"
+fact_owns-subjects: "n=null"
+leaf67: "s=sequence"
+fact_located: "n=null"
+leaf68: "s=rule"
+fact_located-binds-item0: "n=null"
+leaf69: "s=role-ref"
+fact_located-binds-item1: "n=null"
+leaf70: "s=role-ref"
+fact_located-binds: "n=null"
+leaf71: "s=sequence"
+fact_located-reads-item0: "n=null"
+leaf72: "s=slot"
+fact_located-reads-item1: "n=null"
+leaf73: "s=literal"
+leaf74: "s=는"
+fact_located-reads-item2: "n=null"
+leaf75: "s=literal"
+leaf76: "s= "
+fact_located-reads-item3: "n=null"
+leaf77: "s=slot"
+fact_located-reads-item4: "n=null"
+leaf78: "s=literal"
+leaf79: "s=에"
+fact_located-reads-item5: "n=null"
+leaf80: "s=literal"
+leaf81: "s= "
+fact_located-reads-item6: "n=null"
+leaf82: "s=predicate"
+leaf83: "s=있다"
+fact_located-reads: "n=null"
+leaf84: "s=sequence"
+fact_located-meaning: "n=null"
+leaf85: "s=meaning"
+fact_located-subjects-item0: "n=null"
+leaf86: "s=role-ref"
+fact_located-subjects: "n=null"
+leaf87: "s=sequence"
+query_owns_a: "n=null"
+leaf88: "s=query-rule"
+query_owns_a-binds-item0: "n=null"
+leaf89: "s=role-ref"
+query_owns_a-binds-item1: "n=null"
+leaf90: "s=role-ref"
+query_owns_a-binds: "n=null"
+leaf91: "s=sequence"
+query_owns_a-reads-item0: "n=null"
+leaf92: "s=slot"
+query_owns_a-reads-item1: "n=null"
+leaf93: "s=literal"
+leaf94: "s=는 무엇을 "
+query_owns_a-reads-item2: "n=null"
+leaf95: "s=predicate"
+leaf96: "s=가지고 있니"
+query_owns_a-reads: "n=null"
+leaf97: "s=sequence"
+query_owns_a-meaning: "n=null"
+leaf98: "s=query-meaning"
+query_owns_a-answers-item0: "n=null"
+leaf99: "s=slot"
+query_owns_a-answers: "n=null"
+leaf100: "s=sequence"
+leaf101: "s=?"
+query_owns_b: "n=null"
+leaf102: "s=query-rule"
+query_owns_b-binds-item0: "n=null"
+leaf103: "s=role-ref"
+query_owns_b-binds-item1: "n=null"
+leaf104: "s=role-ref"
+query_owns_b-binds: "n=null"
+leaf105: "s=sequence"
+query_owns_b-reads-item0: "n=null"
+leaf106: "s=slot"
+query_owns_b-reads-item1: "n=null"
+leaf107: "s=literal"
+leaf108: "s=가 무엇을 "
+query_owns_b-reads-item2: "n=null"
+leaf109: "s=predicate"
+leaf110: "s=가지고 있어요"
+query_owns_b-reads: "n=null"
+leaf111: "s=sequence"
+query_owns_b-meaning: "n=null"
+leaf112: "s=query-meaning"
+query_owns_b-answers-item0: "n=null"
+leaf113: "s=slot"
+query_owns_b-answers: "n=null"
+leaf114: "s=sequence"
+leaf115: "s=?"
+query_located_a: "n=null"
+leaf116: "s=query-rule"
+query_located_a-binds-item0: "n=null"
+leaf117: "s=role-ref"
+query_located_a-binds-item1: "n=null"
+leaf118: "s=role-ref"
+query_located_a-binds: "n=null"
+leaf119: "s=sequence"
+query_located_a-reads-item0: "n=null"
+leaf120: "s=slot"
+query_located_a-reads-item1: "n=null"
+leaf121: "s=literal"
+leaf122: "s=는 어디에 "
+query_located_a-reads-item2: "n=null"
+leaf123: "s=predicate"
+leaf124: "s=있니"
+query_located_a-reads: "n=null"
+leaf125: "s=sequence"
+query_located_a-meaning: "n=null"
+leaf126: "s=query-meaning"
+query_located_a-answers-item0: "n=null"
+leaf127: "s=slot"
+query_located_a-answers: "n=null"
+leaf128: "s=sequence"
+leaf129: "s=?"
+query_located_b: "n=null"
+leaf130: "s=query-rule"
+query_located_b-binds-item0: "n=null"
+leaf131: "s=role-ref"
+query_located_b-binds-item1: "n=null"
+leaf132: "s=role-ref"
+query_located_b-binds: "n=null"
+leaf133: "s=sequence"
+query_located_b-reads-item0: "n=null"
+leaf134: "s=slot"
+query_located_b-reads-item1: "n=null"
+leaf135: "s=literal"
+leaf136: "s=가 어디에 "
+query_located_b-reads-item2: "n=null"
+leaf137: "s=predicate"
+leaf138: "s=있어요"
+query_located_b-reads: "n=null"
+leaf139: "s=sequence"
+query_located_b-meaning: "n=null"
+leaf140: "s=query-meaning"
+query_located_b-answers-item0: "n=null"
+leaf141: "s=slot"
+query_located_b-answers: "n=null"
+leaf142: "s=sequence"
+leaf143: "s=?"
+query_owns_a_eun: "n=null"
+leaf144: "s=query-rule"
+query_owns_a_eun-binds-item0: "n=null"
+leaf145: "s=role-ref"
+query_owns_a_eun-binds-item1: "n=null"
+leaf146: "s=role-ref"
+query_owns_a_eun-binds: "n=null"
+leaf147: "s=sequence"
+query_owns_a_eun-reads-item0: "n=null"
+leaf148: "s=slot"
+query_owns_a_eun-reads-item1: "n=null"
+leaf149: "s=literal"
+leaf150: "s=은 무엇을 "
+query_owns_a_eun-reads-item2: "n=null"
+leaf151: "s=predicate"
+leaf152: "s=가지고 있니"
+query_owns_a_eun-reads: "n=null"
+leaf153: "s=sequence"
+query_owns_a_eun-meaning: "n=null"
+leaf154: "s=query-meaning"
+query_owns_a_eun-answers-item0: "n=null"
+leaf155: "s=slot"
+query_owns_a_eun-answers: "n=null"
+leaf156: "s=sequence"
+leaf157: "s=?"
+query_owns_b_i: "n=null"
+leaf158: "s=query-rule"
+query_owns_b_i-binds-item0: "n=null"
+leaf159: "s=role-ref"
+query_owns_b_i-binds-item1: "n=null"
+leaf160: "s=role-ref"
+query_owns_b_i-binds: "n=null"
+leaf161: "s=sequence"
+query_owns_b_i-reads-item0: "n=null"
+leaf162: "s=slot"
+query_owns_b_i-reads-item1: "n=null"
+leaf163: "s=literal"
+leaf164: "s=이 무엇을 "
+query_owns_b_i-reads-item2: "n=null"
+leaf165: "s=predicate"
+leaf166: "s=가지고 있어요"
+query_owns_b_i-reads: "n=null"
+leaf167: "s=sequence"
+query_owns_b_i-meaning: "n=null"
+leaf168: "s=query-meaning"
+query_owns_b_i-answers-item0: "n=null"
+leaf169: "s=slot"
+query_owns_b_i-answers: "n=null"
+leaf170: "s=sequence"
+leaf171: "s=?"
+query_located_a_eun: "n=null"
+leaf172: "s=query-rule"
+query_located_a_eun-binds-item0: "n=null"
+leaf173: "s=role-ref"
+query_located_a_eun-binds-item1: "n=null"
+leaf174: "s=role-ref"
+query_located_a_eun-binds: "n=null"
+leaf175: "s=sequence"
+query_located_a_eun-reads-item0: "n=null"
+leaf176: "s=slot"
+query_located_a_eun-reads-item1: "n=null"
+leaf177: "s=literal"
+leaf178: "s=은 어디에 "
+query_located_a_eun-reads-item2: "n=null"
+leaf179: "s=predicate"
+leaf180: "s=있니"
+query_located_a_eun-reads: "n=null"
+leaf181: "s=sequence"
+query_located_a_eun-meaning: "n=null"
+leaf182: "s=query-meaning"
+query_located_a_eun-answers-item0: "n=null"
+leaf183: "s=slot"
+query_located_a_eun-answers: "n=null"
+leaf184: "s=sequence"
+leaf185: "s=?"
+query_located_b_i: "n=null"
+leaf186: "s=query-rule"
+query_located_b_i-binds-item0: "n=null"
+leaf187: "s=role-ref"
+query_located_b_i-binds-item1: "n=null"
+leaf188: "s=role-ref"
+query_located_b_i-binds: "n=null"
+leaf189: "s=sequence"
+query_located_b_i-reads-item0: "n=null"
+leaf190: "s=slot"
+query_located_b_i-reads-item1: "n=null"
+leaf191: "s=literal"
+leaf192: "s=이 어디에 "
+query_located_b_i-reads-item2: "n=null"
+leaf193: "s=predicate"
+leaf194: "s=있어요"
+query_located_b_i-reads: "n=null"
+leaf195: "s=sequence"
+query_located_b_i-meaning: "n=null"
+leaf196: "s=query-meaning"
+query_located_b_i-answers-item0: "n=null"
+leaf197: "s=slot"
+query_located_b_i-answers: "n=null"
+leaf198: "s=sequence"
+leaf199: "s=?"
+reply0: "n=null"
+leaf200: "s=reply"
+leaf201: "s=observed"
+leaf202: "s=입력에서 읽은 내용을 확인했습니다."
+reply1: "n=null"
+leaf203: "s=reply"
+leaf204: "s=unresolved"
+leaf205: "s=아직 확인된 내용이 없어 답을 정할 수 없습니다."
+reply2: "n=null"
+leaf206: "s=reply"
+leaf207: "s=unread_event"
+leaf208: "s=입력 문장을 읽을 수 없어 사건으로 처리하지 못했습니다."
+reply3: "n=null"
+leaf209: "s=reply"
+leaf210: "s=unknown_word"
+leaf211: "s=모르는 낱말이 있어 이해하지 못했습니다."
+reply4: "n=null"
+leaf212: "s=reply"
+leaf213: "s=input_understanding_failed"
+leaf214: "s=입력을 이해하지 못했습니다."
+reply5: "n=null"
+leaf215: "s=reply"
+leaf216: "s=no_reading"
+leaf217: "s=일치하는 읽기 규칙이 없습니다."
+reply6: "n=null"
+leaf218: "s=reply"
+leaf219: "s=ambiguous_reading"
+leaf220: "s=읽는 방법이 여러 가지라 하나로 정할 수 없습니다."
+reply7: "n=null"
+leaf221: "s=reply"
+leaf222: "s=capacity"
+leaf223: "s=처리할 수 있는 용량을 넘었습니다."
+reply8: "n=null"
+leaf224: "s=reply"
+leaf225: "s=invalid"
+leaf226: "s=입력 형식이 올바르지 않습니다."
+reply9: "n=null"
+leaf227: "s=reply"
+leaf228: "s=contradiction"
+leaf229: "s=앞서 알려진 내용과 서로 맞지 않습니다."
+language_root: "n=null"
+leaf230: "s=root"
+leaf231: "s=[가-힣A-Za-z][가-힣A-Za-z0-9_]*"
+leaf232: "b=false"
+root-separators-item0: "n=null"
+leaf233: "s=scalar"
+leaf234: "s=,"
+root-separators: "n=null"
+leaf235: "s=sequence"
+root-terminators-item0: "n=null"
+leaf236: "s=scalar"
+leaf237: "s=."
+root-terminators: "n=null"
+leaf238: "s=sequence"
+root-operators-item0: "n=null"
+leaf239: "s=scalar"
+leaf240: "s=ne"
+root-operators: "n=null"
+leaf241: "s=sequence"
+root-question-marks-item0: "n=null"
+leaf242: "s=scalar"
+leaf243: "s=?"
+root-question-marks: "n=null"
+leaf244: "s=sequence"
+root-rules-item0: "n=null"
+leaf245: "s=rule-ref"
+root-rules-item1: "n=null"
+leaf246: "s=rule-ref"
+root-rules: "n=null"
+leaf247: "s=sequence"
+root-queries-item0: "n=null"
+leaf248: "s=query-ref"
+root-queries-item1: "n=null"
+leaf249: "s=query-ref"
+root-queries-item2: "n=null"
+leaf250: "s=query-ref"
+root-queries-item3: "n=null"
+leaf251: "s=query-ref"
+root-queries-item4: "n=null"
+leaf252: "s=query-ref"
+root-queries-item5: "n=null"
+leaf253: "s=query-ref"
+root-queries-item6: "n=null"
+leaf254: "s=query-ref"
+root-queries-item7: "n=null"
+leaf255: "s=query-ref"
+root-queries: "n=null"
+leaf256: "s=sequence"
+root-replies-item0: "n=null"
+leaf257: "s=reply-ref"
+root-replies-item1: "n=null"
+leaf258: "s=reply-ref"
+root-replies-item2: "n=null"
+leaf259: "s=reply-ref"
+root-replies-item3: "n=null"
+leaf260: "s=reply-ref"
+root-replies-item4: "n=null"
+leaf261: "s=reply-ref"
+root-replies-item5: "n=null"
+leaf262: "s=reply-ref"
+root-replies-item6: "n=null"
+leaf263: "s=reply-ref"
+root-replies-item7: "n=null"
+leaf264: "s=reply-ref"
+root-replies-item8: "n=null"
+leaf265: "s=reply-ref"
+root-replies-item9: "n=null"
+leaf266: "s=reply-ref"
+root-replies: "n=null"
+leaf267: "s=sequence"
+ag_root: "n=null"
+leaf268: "s=action-grounding"
+leaf269: "s=provisional_nonexecuting_v1"
+ag_type: "n=null"
+leaf270: "s=action-type"
+leaf271: "s=ag_scoped_opaque_action_type"
+ag_catalog: "n=null"
+leaf272: "s=action-catalog"
+leaf273: "s=ag_catalog_v1"
+ag_cat_limits: "n=null"
+leaf274: "s=action-limits"
+leaf275: "i=8"
+leaf276: "i=2"
+leaf277: "i=8"
+leaf278: "i=4"
+leaf279: "i=64"
+leaf280: "i=4096"
+leaf281: "i=262144"
+ag_e_owns: "n=null"
+leaf282: "s=action-entry"
+leaf283: "s=ag_owns_action"
+leaf284: "i=1"
+leaf285: "b=true"
+leaf286: "s=소유 관계"
+ag_e_owns_r_arg_subject: "n=null"
+leaf287: "s=action-role"
+leaf288: "s=subject_var"
+leaf289: "s=arg_subject"
+leaf290: "s=required"
+leaf291: "n=null"
+leaf292: "s=open"
+ag_e_owns_r_arg_subject_v: "n=null"
+leaf293: "s=action-value"
+leaf294: "s=variable"
+ag_e_owns_r_arg_object: "n=null"
+leaf295: "s=action-role"
+leaf296: "s=object_var"
+leaf297: "s=arg_object"
+leaf298: "s=required"
+leaf299: "n=null"
+leaf300: "s=open"
+ag_e_owns_r_arg_object_v: "n=null"
+leaf301: "s=action-value"
+leaf302: "s=variable"
+ag_e_owns_roles-item0: "n=null"
+leaf303: "s=action-role-ref"
+ag_e_owns_roles-item1: "n=null"
+leaf304: "s=action-role-ref"
+ag_e_owns_roles: "n=null"
+leaf305: "s=sequence"
+ag_e_owns_prog: "n=null"
+leaf306: "s=action-program"
+ag_e_owns_emit: "n=null"
+leaf307: "s=action-emit"
+ag_e_owns_triple: "n=null"
+leaf308: "s=action-triple"
+ag_e_owns_triples: "n=null"
+leaf309: "s=sequence"
+ag_e_owns_steps: "n=null"
+leaf310: "s=sequence"
+ag_e_owns_ops: "n=null"
+leaf311: "s=sequence"
+ag_e_loc: "n=null"
+leaf312: "s=action-entry"
+leaf313: "s=ag_located_action"
+leaf314: "i=1"
+leaf315: "b=true"
+leaf316: "s=위치 관계"
+ag_e_loc_r_arg_subject: "n=null"
+leaf317: "s=action-role"
+leaf318: "s=subject_var"
+leaf319: "s=arg_subject"
+leaf320: "s=required"
+leaf321: "n=null"
+leaf322: "s=open"
+ag_e_loc_r_arg_subject_v: "n=null"
+leaf323: "s=action-value"
+leaf324: "s=variable"
+ag_e_loc_r_arg_object: "n=null"
+leaf325: "s=action-role"
+leaf326: "s=object_var"
+leaf327: "s=arg_object"
+leaf328: "s=required"
+leaf329: "n=null"
+leaf330: "s=open"
+ag_e_loc_r_arg_object_v: "n=null"
+leaf331: "s=action-value"
+leaf332: "s=variable"
+ag_e_loc_roles-item0: "n=null"
+leaf333: "s=action-role-ref"
+ag_e_loc_roles-item1: "n=null"
+leaf334: "s=action-role-ref"
+ag_e_loc_roles: "n=null"
+leaf335: "s=sequence"
+ag_e_loc_prog: "n=null"
+leaf336: "s=action-program"
+ag_e_loc_emit: "n=null"
+leaf337: "s=action-emit"
+ag_e_loc_triple: "n=null"
+leaf338: "s=action-triple"
+ag_e_loc_triples: "n=null"
+leaf339: "s=sequence"
+ag_e_loc_steps: "n=null"
+leaf340: "s=sequence"
+ag_e_loc_ops: "n=null"
+leaf341: "s=sequence"
+ag_programs-item0: "n=null"
+leaf342: "s=action-ref"
+ag_programs-item1: "n=null"
+leaf343: "s=action-ref"
+ag_programs: "n=null"
+leaf344: "s=sequence"
+ag_surface: "n=null"
+leaf345: "s=action-surface"
+leaf346: "s=ag_surface_v1"
+leaf347: "s=exact_raw_value_v1"
+ag_boundary: "n=null"
+leaf348: "s=action-boundary"
+leaf349: "s=final_token_case_groups_v1"
+leaf350: "s=unicode_whitespace_v1"
+ag_boundary_terminators-item0: "n=null"
+leaf351: "s=scalar"
+leaf352: "s=."
+ag_boundary_terminators: "n=null"
+leaf353: "s=sequence"
+ag_boundary_question-marks-item0: "n=null"
+leaf354: "s=scalar"
+leaf355: "s=?"
+ag_boundary_question-marks: "n=null"
+leaf356: "s=sequence"
+ag_boundary_clause-separators-item0: "n=null"
+leaf357: "s=scalar"
+leaf358: "s=,"
+ag_boundary_clause-separators: "n=null"
+leaf359: "s=sequence"
+ag_boundary_excluded-final-forms: "n=null"
+leaf360: "s=sequence"
+ag_boundary_excluded-final-suffixes: "n=null"
+leaf361: "s=sequence"
+ag_group_subject: "n=null"
+leaf362: "s=action-case-group"
+leaf363: "s=ag_group_subject"
+ag_group_subject_markers-item0: "n=null"
+leaf364: "s=scalar"
+leaf365: "s=은"
+ag_group_subject_markers-item1: "n=null"
+leaf366: "s=scalar"
+leaf367: "s=는"
+ag_group_subject_markers-item2: "n=null"
+leaf368: "s=scalar"
+leaf369: "s=이"
+ag_group_subject_markers-item3: "n=null"
+leaf370: "s=scalar"
+leaf371: "s=가"
+ag_group_subject_markers: "n=null"
+leaf372: "s=sequence"
+ag_srole_arg_subject: "n=null"
+leaf373: "s=action-surface-role"
+leaf374: "s=arg_subject"
+leaf375: "s=required"
+leaf376: "n=null"
+ag_group_object: "n=null"
+leaf377: "s=action-case-group"
+leaf378: "s=ag_group_object"
+ag_group_object_markers-item0: "n=null"
+leaf379: "s=scalar"
+leaf380: "s=을"
+ag_group_object_markers-item1: "n=null"
+leaf381: "s=scalar"
+leaf382: "s=를"
+ag_group_object_markers-item2: "n=null"
+leaf383: "s=scalar"
+leaf384: "s=에"
+ag_group_object_markers-item3: "n=null"
+leaf385: "s=scalar"
+leaf386: "s=에는"
+ag_group_object_markers: "n=null"
+leaf387: "s=sequence"
+ag_srole_arg_object: "n=null"
+leaf388: "s=action-surface-role"
+leaf389: "s=arg_object"
+leaf390: "s=required"
+leaf391: "n=null"
+ag_case_groups: "n=null"
+leaf392: "s=sequence"
+ag_surface_roles: "n=null"
+leaf393: "s=sequence"
+ag_known_surfaces-item0: "n=null"
+leaf394: "s=scalar"
+leaf395: "s=가지고 있다"
+ag_known_surfaces-item1: "n=null"
+leaf396: "s=scalar"
+leaf397: "s=있다"
+ag_known_surfaces-item2: "n=null"
+leaf398: "s=scalar"
+leaf399: "s=가지고 있니"
+ag_known_surfaces-item3: "n=null"
+leaf400: "s=scalar"
+leaf401: "s=있니"
+ag_known_surfaces-item4: "n=null"
+leaf402: "s=scalar"
+leaf403: "s=가지고 있어요"
+ag_known_surfaces-item5: "n=null"
+leaf404: "s=scalar"
+leaf405: "s=있어요"
+ag_known_surfaces: "n=null"
+leaf406: "s=sequence"
+ag_surface_limits: "n=null"
+leaf407: "s=action-surface-limits"
+leaf408: "i=512"
+leaf409: "i=40"
+leaf410: "i=8"
+leaf411: "i=64"
+leaf412: "i=64"
+leaf413: "i=4096"
+leaf414: "i=2048"
+leaf415: "i=65536"
+ag_policy: "n=null"
+leaf416: "s=action-policy"
+leaf417: "s=ag_policy_v1"
+leaf418: "s=open"
+leaf419: "b=false"
+ag_assoc: "n=null"
+leaf420: "s=action-association"
+leaf421: "s=pending_role_functional_key_v1"
+leaf422: "s=arg_subject"
+leaf423: "s=latest_prior_independent_positive_v1"
+leaf424: "s=latest_later_independent_positive_v1"
+leaf425: "s=association_assumed_v1"
+ag_functional-item0: "n=null"
+leaf426: "s=action-sense-ref"
+ag_functional: "n=null"
+leaf427: "s=sequence"
+ag_closed: "n=null"
+leaf428: "s=sequence"
+ag_evidence-item0: "n=null"
+leaf429: "s=scalar"
+leaf430: "s=archived_positive_fact_v1"
+ag_evidence: "n=null"
+leaf431: "s=sequence"
+ag_term_counts-item0: "n=null"
+leaf432: "s=scalar"
+leaf433: "i=1"
+ag_term_counts-item1: "n=null"
+leaf434: "s=scalar"
+leaf435: "i=2"
+ag_term_counts: "n=null"
+leaf436: "s=sequence"
+ag_rank_support_count: "n=null"
+leaf437: "s=action-rank"
+leaf438: "s=support_count"
+leaf439: "s=desc"
+ag_rank_conflict_count: "n=null"
+leaf440: "s=action-rank"
+leaf441: "s=conflict_count"
+leaf442: "s=asc"
+ag_rank_term_count: "n=null"
+leaf443: "s=action-rank"
+leaf444: "s=term_count"
+leaf445: "s=asc"
+ag_ranking: "n=null"
+leaf446: "s=sequence"
+ag_policy_limits: "n=null"
+leaf447: "s=action-policy-limits"
+leaf448: "i=64"
+leaf449: "i=64"
+leaf450: "i=128"
+leaf451: "i=16"
+leaf452: "i=128"
+leaf453: "i=262144"
+ag_reply_conditional: "n=null"
+leaf454: "s=action-reply"
+leaf455: "s=conditional"
+leaf456: "s={expression} 표현의 뜻은 확인되지 않았습니다. 지금까지의 관찰에서 가장 앞선 후보 {leading_count}개는 {leading_candidates}입니다. 후보 순서대로 지지 {leading_support_count}, 충돌 {leading_conflict_count}, 대비 {leading_contrast_count}, 미관찰 {leading_unobserved_count}이며, 관찰에 기댄 잠정 가설일 뿐 원인이나 뜻을 확정하지 않습니다. {question}"
+ag_reply_clarify: "n=null"
+leaf457: "s=action-reply"
+leaf458: "s=clarify"
+leaf459: "s={expression} 표현과 관계의 연결은 아직 가설일 뿐입니다. {question}"
+ag_reply_question: "n=null"
+leaf460: "s=action-reply"
+leaf461: "s=question"
+leaf462: "s={expression} 표현이 {candidates} 중 어느 관계를 뜻하는지 알려 주시겠어요?"
+ag_reply_observed_with_hypothesis: "n=null"
+leaf463: "s=action-reply"
+leaf464: "s=observed_with_hypothesis"
+leaf465: "s={answer} 별도로 다음 연결은 확인된 사실이 아니라 가설입니다. {hypothesis}"
+ag_reply_gap: "n=null"
+leaf466: "s=action-reply"
+leaf467: "s=gap"
+leaf468: "s=이번 경우에는 독립적인 근거가 없거나 불완전해서 연결을 확인하지 못했습니다."
+ag_replies: "n=null"
+leaf469: "s=sequence"
+ag_required_operators-item0: "n=null"
+leaf470: "s=scalar"
+leaf471: "s=relational_graph"
+ag_required_operators-item1: "n=null"
+leaf472: "s=scalar"
+leaf473: "s=contextual_action_hypothesis"
+ag_required_operators: "n=null"
+leaf474: "s=sequence"
+uc_known_evidence: "n=null"
+leaf475: "s=known-evidence-policy"
+leaf476: "s=direct_positive_immutable_binary"
+leaf477: "s={answer} 이 답은 독립적으로 알려진 내용에 근거한 것이며, {unread} 표현의 뜻과 영향은 아직 확인되지 않았습니다."
+
+[논증]
+owner_role -op-> leaf1
+owner_role -name-> leaf2
+owner_role -seed-> leaf3
+owner_role -mode-> leaf4
+owner_role-markers-item0 -op-> leaf5
+owner_role-markers-item0 -value-> leaf6
+owner_role-markers-item1 -op-> leaf7
+owner_role-markers-item1 -value-> leaf8
+owner_role-markers-item2 -op-> leaf9
+owner_role-markers-item2 -value-> leaf10
+owner_role-markers-item3 -op-> leaf11
+owner_role-markers-item3 -value-> leaf12
+owner_role-markers -op-> leaf13
+owner_role-markers -first-> owner_role-markers-item0
+owner_role-markers-item0 -next-> owner_role-markers-item1
+owner_role-markers-item1 -next-> owner_role-markers-item2
+owner_role-markers-item2 -next-> owner_role-markers-item3
+owner_role -markers-> owner_role-markers
+item_role -op-> leaf14
+item_role -name-> leaf15
+item_role -seed-> leaf16
+item_role -mode-> leaf17
+item_role-markers-item0 -op-> leaf18
+item_role-markers-item0 -value-> leaf19
+item_role-markers-item1 -op-> leaf20
+item_role-markers-item1 -value-> leaf21
+item_role-markers -op-> leaf22
+item_role-markers -first-> item_role-markers-item0
+item_role-markers-item0 -next-> item_role-markers-item1
+item_role -markers-> item_role-markers
+thing_role -op-> leaf23
+thing_role -name-> leaf24
+thing_role -seed-> leaf25
+thing_role -mode-> leaf26
+thing_role-markers-item0 -op-> leaf27
+thing_role-markers-item0 -value-> leaf28
+thing_role-markers-item1 -op-> leaf29
+thing_role-markers-item1 -value-> leaf30
+thing_role-markers-item2 -op-> leaf31
+thing_role-markers-item2 -value-> leaf32
+thing_role-markers-item3 -op-> leaf33
+thing_role-markers-item3 -value-> leaf34
+thing_role-markers -op-> leaf35
+thing_role-markers -first-> thing_role-markers-item0
+thing_role-markers-item0 -next-> thing_role-markers-item1
+thing_role-markers-item1 -next-> thing_role-markers-item2
+thing_role-markers-item2 -next-> thing_role-markers-item3
+thing_role -markers-> thing_role-markers
+place_role -op-> leaf36
+place_role -name-> leaf37
+place_role -seed-> leaf38
+place_role -mode-> leaf39
+place_role-markers-item0 -op-> leaf40
+place_role-markers-item0 -value-> leaf41
+place_role-markers-item1 -op-> leaf42
+place_role-markers-item1 -value-> leaf43
+place_role-markers -op-> leaf44
+place_role-markers -first-> place_role-markers-item0
+place_role-markers-item0 -next-> place_role-markers-item1
+place_role -markers-> place_role-markers
+seed_owns -op-> leaf45
+seed_located_in -op-> leaf46
+empty-endings -op-> leaf47
+fact_owns -op-> leaf48
+fact_owns-binds-item0 -op-> leaf49
+fact_owns-binds-item0 -target-> owner_role
+fact_owns-binds-item1 -op-> leaf50
+fact_owns-binds-item1 -target-> item_role
+fact_owns-binds -op-> leaf51
+fact_owns-binds -first-> fact_owns-binds-item0
+fact_owns-binds-item0 -next-> fact_owns-binds-item1
+fact_owns -binds-> fact_owns-binds
+fact_owns-reads-item0 -op-> leaf52
+fact_owns-reads-item0 -role-> owner_role
+fact_owns-reads-item1 -op-> leaf53
+fact_owns-reads-item1 -value-> leaf54
+fact_owns-reads-item2 -op-> leaf55
+fact_owns-reads-item2 -value-> leaf56
+fact_owns-reads-item3 -op-> leaf57
+fact_owns-reads-item3 -role-> item_role
+fact_owns-reads-item4 -op-> leaf58
+fact_owns-reads-item4 -value-> leaf59
+fact_owns-reads-item5 -op-> leaf60
+fact_owns-reads-item5 -value-> leaf61
+fact_owns-reads-item6 -op-> leaf62
+fact_owns-reads-item6 -value-> leaf63
+fact_owns-reads -op-> leaf64
+fact_owns-reads -first-> fact_owns-reads-item0
+fact_owns-reads-item0 -next-> fact_owns-reads-item1
+fact_owns-reads-item1 -next-> fact_owns-reads-item2
+fact_owns-reads-item2 -next-> fact_owns-reads-item3
+fact_owns-reads-item3 -next-> fact_owns-reads-item4
+fact_owns-reads-item4 -next-> fact_owns-reads-item5
+fact_owns-reads-item5 -next-> fact_owns-reads-item6
+fact_owns -reads-> fact_owns-reads
+fact_owns-meaning -op-> leaf65
+fact_owns -emits-> fact_owns-meaning
+fact_owns-subjects-item0 -op-> leaf66
+fact_owns-subjects-item0 -target-> owner_role
+fact_owns-subjects -op-> leaf67
+fact_owns-subjects -first-> fact_owns-subjects-item0
+fact_owns-meaning -subjects-> fact_owns-subjects
+fact_owns-meaning -relation-> seed_owns
+fact_owns-meaning -object-> item_role
+fact_owns -allowed-endings-> empty-endings
+fact_owns -realizes-> fact_owns-reads
+fact_located -op-> leaf68
+fact_located-binds-item0 -op-> leaf69
+fact_located-binds-item0 -target-> thing_role
+fact_located-binds-item1 -op-> leaf70
+fact_located-binds-item1 -target-> place_role
+fact_located-binds -op-> leaf71
+fact_located-binds -first-> fact_located-binds-item0
+fact_located-binds-item0 -next-> fact_located-binds-item1
+fact_located -binds-> fact_located-binds
+fact_located-reads-item0 -op-> leaf72
+fact_located-reads-item0 -role-> thing_role
+fact_located-reads-item1 -op-> leaf73
+fact_located-reads-item1 -value-> leaf74
+fact_located-reads-item2 -op-> leaf75
+fact_located-reads-item2 -value-> leaf76
+fact_located-reads-item3 -op-> leaf77
+fact_located-reads-item3 -role-> place_role
+fact_located-reads-item4 -op-> leaf78
+fact_located-reads-item4 -value-> leaf79
+fact_located-reads-item5 -op-> leaf80
+fact_located-reads-item5 -value-> leaf81
+fact_located-reads-item6 -op-> leaf82
+fact_located-reads-item6 -value-> leaf83
+fact_located-reads -op-> leaf84
+fact_located-reads -first-> fact_located-reads-item0
+fact_located-reads-item0 -next-> fact_located-reads-item1
+fact_located-reads-item1 -next-> fact_located-reads-item2
+fact_located-reads-item2 -next-> fact_located-reads-item3
+fact_located-reads-item3 -next-> fact_located-reads-item4
+fact_located-reads-item4 -next-> fact_located-reads-item5
+fact_located-reads-item5 -next-> fact_located-reads-item6
+fact_located -reads-> fact_located-reads
+fact_located-meaning -op-> leaf85
+fact_located -emits-> fact_located-meaning
+fact_located-subjects-item0 -op-> leaf86
+fact_located-subjects-item0 -target-> thing_role
+fact_located-subjects -op-> leaf87
+fact_located-subjects -first-> fact_located-subjects-item0
+fact_located-meaning -subjects-> fact_located-subjects
+fact_located-meaning -relation-> seed_located_in
+fact_located-meaning -object-> place_role
+fact_located -allowed-endings-> empty-endings
+fact_located -realizes-> fact_located-reads
+query_owns_a -op-> leaf88
+query_owns_a-binds-item0 -op-> leaf89
+query_owns_a-binds-item0 -target-> owner_role
+query_owns_a-binds-item1 -op-> leaf90
+query_owns_a-binds-item1 -target-> item_role
+query_owns_a-binds -op-> leaf91
+query_owns_a-binds -first-> query_owns_a-binds-item0
+query_owns_a-binds-item0 -next-> query_owns_a-binds-item1
+query_owns_a -binds-> query_owns_a-binds
+query_owns_a-reads-item0 -op-> leaf92
+query_owns_a-reads-item0 -role-> owner_role
+query_owns_a-reads-item1 -op-> leaf93
+query_owns_a-reads-item1 -value-> leaf94
+query_owns_a-reads-item2 -op-> leaf95
+query_owns_a-reads-item2 -value-> leaf96
+query_owns_a-reads -op-> leaf97
+query_owns_a-reads -first-> query_owns_a-reads-item0
+query_owns_a-reads-item0 -next-> query_owns_a-reads-item1
+query_owns_a-reads-item1 -next-> query_owns_a-reads-item2
+query_owns_a -reads-> query_owns_a-reads
+query_owns_a-meaning -op-> leaf98
+query_owns_a -emits-> query_owns_a-meaning
+query_owns_a-meaning -subject-> owner_role
+query_owns_a-meaning -relation-> seed_owns
+query_owns_a-meaning -object-> item_role
+query_owns_a-meaning -asked-> item_role
+query_owns_a-answers-item0 -op-> leaf99
+query_owns_a-answers-item0 -role-> item_role
+query_owns_a-answers -op-> leaf100
+query_owns_a-answers -first-> query_owns_a-answers-item0
+query_owns_a -answers-> query_owns_a-answers
+query_owns_a -terminal-> leaf101
+query_owns_b -op-> leaf102
+query_owns_b-binds-item0 -op-> leaf103
+query_owns_b-binds-item0 -target-> owner_role
+query_owns_b-binds-item1 -op-> leaf104
+query_owns_b-binds-item1 -target-> item_role
+query_owns_b-binds -op-> leaf105
+query_owns_b-binds -first-> query_owns_b-binds-item0
+query_owns_b-binds-item0 -next-> query_owns_b-binds-item1
+query_owns_b -binds-> query_owns_b-binds
+query_owns_b-reads-item0 -op-> leaf106
+query_owns_b-reads-item0 -role-> owner_role
+query_owns_b-reads-item1 -op-> leaf107
+query_owns_b-reads-item1 -value-> leaf108
+query_owns_b-reads-item2 -op-> leaf109
+query_owns_b-reads-item2 -value-> leaf110
+query_owns_b-reads -op-> leaf111
+query_owns_b-reads -first-> query_owns_b-reads-item0
+query_owns_b-reads-item0 -next-> query_owns_b-reads-item1
+query_owns_b-reads-item1 -next-> query_owns_b-reads-item2
+query_owns_b -reads-> query_owns_b-reads
+query_owns_b-meaning -op-> leaf112
+query_owns_b -emits-> query_owns_b-meaning
+query_owns_b-meaning -subject-> owner_role
+query_owns_b-meaning -relation-> seed_owns
+query_owns_b-meaning -object-> item_role
+query_owns_b-meaning -asked-> item_role
+query_owns_b-answers-item0 -op-> leaf113
+query_owns_b-answers-item0 -role-> item_role
+query_owns_b-answers -op-> leaf114
+query_owns_b-answers -first-> query_owns_b-answers-item0
+query_owns_b -answers-> query_owns_b-answers
+query_owns_b -terminal-> leaf115
+query_located_a -op-> leaf116
+query_located_a-binds-item0 -op-> leaf117
+query_located_a-binds-item0 -target-> thing_role
+query_located_a-binds-item1 -op-> leaf118
+query_located_a-binds-item1 -target-> place_role
+query_located_a-binds -op-> leaf119
+query_located_a-binds -first-> query_located_a-binds-item0
+query_located_a-binds-item0 -next-> query_located_a-binds-item1
+query_located_a -binds-> query_located_a-binds
+query_located_a-reads-item0 -op-> leaf120
+query_located_a-reads-item0 -role-> thing_role
+query_located_a-reads-item1 -op-> leaf121
+query_located_a-reads-item1 -value-> leaf122
+query_located_a-reads-item2 -op-> leaf123
+query_located_a-reads-item2 -value-> leaf124
+query_located_a-reads -op-> leaf125
+query_located_a-reads -first-> query_located_a-reads-item0
+query_located_a-reads-item0 -next-> query_located_a-reads-item1
+query_located_a-reads-item1 -next-> query_located_a-reads-item2
+query_located_a -reads-> query_located_a-reads
+query_located_a-meaning -op-> leaf126
+query_located_a -emits-> query_located_a-meaning
+query_located_a-meaning -subject-> thing_role
+query_located_a-meaning -relation-> seed_located_in
+query_located_a-meaning -object-> place_role
+query_located_a-meaning -asked-> place_role
+query_located_a-answers-item0 -op-> leaf127
+query_located_a-answers-item0 -role-> place_role
+query_located_a-answers -op-> leaf128
+query_located_a-answers -first-> query_located_a-answers-item0
+query_located_a -answers-> query_located_a-answers
+query_located_a -terminal-> leaf129
+query_located_b -op-> leaf130
+query_located_b-binds-item0 -op-> leaf131
+query_located_b-binds-item0 -target-> thing_role
+query_located_b-binds-item1 -op-> leaf132
+query_located_b-binds-item1 -target-> place_role
+query_located_b-binds -op-> leaf133
+query_located_b-binds -first-> query_located_b-binds-item0
+query_located_b-binds-item0 -next-> query_located_b-binds-item1
+query_located_b -binds-> query_located_b-binds
+query_located_b-reads-item0 -op-> leaf134
+query_located_b-reads-item0 -role-> thing_role
+query_located_b-reads-item1 -op-> leaf135
+query_located_b-reads-item1 -value-> leaf136
+query_located_b-reads-item2 -op-> leaf137
+query_located_b-reads-item2 -value-> leaf138
+query_located_b-reads -op-> leaf139
+query_located_b-reads -first-> query_located_b-reads-item0
+query_located_b-reads-item0 -next-> query_located_b-reads-item1
+query_located_b-reads-item1 -next-> query_located_b-reads-item2
+query_located_b -reads-> query_located_b-reads
+query_located_b-meaning -op-> leaf140
+query_located_b -emits-> query_located_b-meaning
+query_located_b-meaning -subject-> thing_role
+query_located_b-meaning -relation-> seed_located_in
+query_located_b-meaning -object-> place_role
+query_located_b-meaning -asked-> place_role
+query_located_b-answers-item0 -op-> leaf141
+query_located_b-answers-item0 -role-> place_role
+query_located_b-answers -op-> leaf142
+query_located_b-answers -first-> query_located_b-answers-item0
+query_located_b -answers-> query_located_b-answers
+query_located_b -terminal-> leaf143
+query_owns_a_eun -op-> leaf144
+query_owns_a_eun-binds-item0 -op-> leaf145
+query_owns_a_eun-binds-item0 -target-> owner_role
+query_owns_a_eun-binds-item1 -op-> leaf146
+query_owns_a_eun-binds-item1 -target-> item_role
+query_owns_a_eun-binds -op-> leaf147
+query_owns_a_eun-binds -first-> query_owns_a_eun-binds-item0
+query_owns_a_eun-binds-item0 -next-> query_owns_a_eun-binds-item1
+query_owns_a_eun -binds-> query_owns_a_eun-binds
+query_owns_a_eun-reads-item0 -op-> leaf148
+query_owns_a_eun-reads-item0 -role-> owner_role
+query_owns_a_eun-reads-item1 -op-> leaf149
+query_owns_a_eun-reads-item1 -value-> leaf150
+query_owns_a_eun-reads-item2 -op-> leaf151
+query_owns_a_eun-reads-item2 -value-> leaf152
+query_owns_a_eun-reads -op-> leaf153
+query_owns_a_eun-reads -first-> query_owns_a_eun-reads-item0
+query_owns_a_eun-reads-item0 -next-> query_owns_a_eun-reads-item1
+query_owns_a_eun-reads-item1 -next-> query_owns_a_eun-reads-item2
+query_owns_a_eun -reads-> query_owns_a_eun-reads
+query_owns_a_eun-meaning -op-> leaf154
+query_owns_a_eun -emits-> query_owns_a_eun-meaning
+query_owns_a_eun-meaning -subject-> owner_role
+query_owns_a_eun-meaning -relation-> seed_owns
+query_owns_a_eun-meaning -object-> item_role
+query_owns_a_eun-meaning -asked-> item_role
+query_owns_a_eun-answers-item0 -op-> leaf155
+query_owns_a_eun-answers-item0 -role-> item_role
+query_owns_a_eun-answers -op-> leaf156
+query_owns_a_eun-answers -first-> query_owns_a_eun-answers-item0
+query_owns_a_eun -answers-> query_owns_a_eun-answers
+query_owns_a_eun -terminal-> leaf157
+query_owns_b_i -op-> leaf158
+query_owns_b_i-binds-item0 -op-> leaf159
+query_owns_b_i-binds-item0 -target-> owner_role
+query_owns_b_i-binds-item1 -op-> leaf160
+query_owns_b_i-binds-item1 -target-> item_role
+query_owns_b_i-binds -op-> leaf161
+query_owns_b_i-binds -first-> query_owns_b_i-binds-item0
+query_owns_b_i-binds-item0 -next-> query_owns_b_i-binds-item1
+query_owns_b_i -binds-> query_owns_b_i-binds
+query_owns_b_i-reads-item0 -op-> leaf162
+query_owns_b_i-reads-item0 -role-> owner_role
+query_owns_b_i-reads-item1 -op-> leaf163
+query_owns_b_i-reads-item1 -value-> leaf164
+query_owns_b_i-reads-item2 -op-> leaf165
+query_owns_b_i-reads-item2 -value-> leaf166
+query_owns_b_i-reads -op-> leaf167
+query_owns_b_i-reads -first-> query_owns_b_i-reads-item0
+query_owns_b_i-reads-item0 -next-> query_owns_b_i-reads-item1
+query_owns_b_i-reads-item1 -next-> query_owns_b_i-reads-item2
+query_owns_b_i -reads-> query_owns_b_i-reads
+query_owns_b_i-meaning -op-> leaf168
+query_owns_b_i -emits-> query_owns_b_i-meaning
+query_owns_b_i-meaning -subject-> owner_role
+query_owns_b_i-meaning -relation-> seed_owns
+query_owns_b_i-meaning -object-> item_role
+query_owns_b_i-meaning -asked-> item_role
+query_owns_b_i-answers-item0 -op-> leaf169
+query_owns_b_i-answers-item0 -role-> item_role
+query_owns_b_i-answers -op-> leaf170
+query_owns_b_i-answers -first-> query_owns_b_i-answers-item0
+query_owns_b_i -answers-> query_owns_b_i-answers
+query_owns_b_i -terminal-> leaf171
+query_located_a_eun -op-> leaf172
+query_located_a_eun-binds-item0 -op-> leaf173
+query_located_a_eun-binds-item0 -target-> thing_role
+query_located_a_eun-binds-item1 -op-> leaf174
+query_located_a_eun-binds-item1 -target-> place_role
+query_located_a_eun-binds -op-> leaf175
+query_located_a_eun-binds -first-> query_located_a_eun-binds-item0
+query_located_a_eun-binds-item0 -next-> query_located_a_eun-binds-item1
+query_located_a_eun -binds-> query_located_a_eun-binds
+query_located_a_eun-reads-item0 -op-> leaf176
+query_located_a_eun-reads-item0 -role-> thing_role
+query_located_a_eun-reads-item1 -op-> leaf177
+query_located_a_eun-reads-item1 -value-> leaf178
+query_located_a_eun-reads-item2 -op-> leaf179
+query_located_a_eun-reads-item2 -value-> leaf180
+query_located_a_eun-reads -op-> leaf181
+query_located_a_eun-reads -first-> query_located_a_eun-reads-item0
+query_located_a_eun-reads-item0 -next-> query_located_a_eun-reads-item1
+query_located_a_eun-reads-item1 -next-> query_located_a_eun-reads-item2
+query_located_a_eun -reads-> query_located_a_eun-reads
+query_located_a_eun-meaning -op-> leaf182
+query_located_a_eun -emits-> query_located_a_eun-meaning
+query_located_a_eun-meaning -subject-> thing_role
+query_located_a_eun-meaning -relation-> seed_located_in
+query_located_a_eun-meaning -object-> place_role
+query_located_a_eun-meaning -asked-> place_role
+query_located_a_eun-answers-item0 -op-> leaf183
+query_located_a_eun-answers-item0 -role-> place_role
+query_located_a_eun-answers -op-> leaf184
+query_located_a_eun-answers -first-> query_located_a_eun-answers-item0
+query_located_a_eun -answers-> query_located_a_eun-answers
+query_located_a_eun -terminal-> leaf185
+query_located_b_i -op-> leaf186
+query_located_b_i-binds-item0 -op-> leaf187
+query_located_b_i-binds-item0 -target-> thing_role
+query_located_b_i-binds-item1 -op-> leaf188
+query_located_b_i-binds-item1 -target-> place_role
+query_located_b_i-binds -op-> leaf189
+query_located_b_i-binds -first-> query_located_b_i-binds-item0
+query_located_b_i-binds-item0 -next-> query_located_b_i-binds-item1
+query_located_b_i -binds-> query_located_b_i-binds
+query_located_b_i-reads-item0 -op-> leaf190
+query_located_b_i-reads-item0 -role-> thing_role
+query_located_b_i-reads-item1 -op-> leaf191
+query_located_b_i-reads-item1 -value-> leaf192
+query_located_b_i-reads-item2 -op-> leaf193
+query_located_b_i-reads-item2 -value-> leaf194
+query_located_b_i-reads -op-> leaf195
+query_located_b_i-reads -first-> query_located_b_i-reads-item0
+query_located_b_i-reads-item0 -next-> query_located_b_i-reads-item1
+query_located_b_i-reads-item1 -next-> query_located_b_i-reads-item2
+query_located_b_i -reads-> query_located_b_i-reads
+query_located_b_i-meaning -op-> leaf196
+query_located_b_i -emits-> query_located_b_i-meaning
+query_located_b_i-meaning -subject-> thing_role
+query_located_b_i-meaning -relation-> seed_located_in
+query_located_b_i-meaning -object-> place_role
+query_located_b_i-meaning -asked-> place_role
+query_located_b_i-answers-item0 -op-> leaf197
+query_located_b_i-answers-item0 -role-> place_role
+query_located_b_i-answers -op-> leaf198
+query_located_b_i-answers -first-> query_located_b_i-answers-item0
+query_located_b_i -answers-> query_located_b_i-answers
+query_located_b_i -terminal-> leaf199
+reply0 -op-> leaf200
+reply0 -key-> leaf201
+reply0 -value-> leaf202
+reply1 -op-> leaf203
+reply1 -key-> leaf204
+reply1 -value-> leaf205
+reply2 -op-> leaf206
+reply2 -key-> leaf207
+reply2 -value-> leaf208
+reply3 -op-> leaf209
+reply3 -key-> leaf210
+reply3 -value-> leaf211
+reply4 -op-> leaf212
+reply4 -key-> leaf213
+reply4 -value-> leaf214
+reply5 -op-> leaf215
+reply5 -key-> leaf216
+reply5 -value-> leaf217
+reply6 -op-> leaf218
+reply6 -key-> leaf219
+reply6 -value-> leaf220
+reply7 -op-> leaf221
+reply7 -key-> leaf222
+reply7 -value-> leaf223
+reply8 -op-> leaf224
+reply8 -key-> leaf225
+reply8 -value-> leaf226
+reply9 -op-> leaf227
+reply9 -key-> leaf228
+reply9 -value-> leaf229
+language_root -op-> leaf230
+language_root -head-pattern-> leaf231
+language_root -ignore-case-> leaf232
+root-separators-item0 -op-> leaf233
+root-separators-item0 -value-> leaf234
+root-separators -op-> leaf235
+root-separators -first-> root-separators-item0
+language_root -separators-> root-separators
+root-terminators-item0 -op-> leaf236
+root-terminators-item0 -value-> leaf237
+root-terminators -op-> leaf238
+root-terminators -first-> root-terminators-item0
+language_root -terminators-> root-terminators
+root-operators-item0 -op-> leaf239
+root-operators-item0 -value-> leaf240
+root-operators -op-> leaf241
+root-operators -first-> root-operators-item0
+language_root -operators-> root-operators
+root-question-marks-item0 -op-> leaf242
+root-question-marks-item0 -value-> leaf243
+root-question-marks -op-> leaf244
+root-question-marks -first-> root-question-marks-item0
+language_root -question-marks-> root-question-marks
+root-rules-item0 -op-> leaf245
+root-rules-item0 -target-> fact_owns
+root-rules-item1 -op-> leaf246
+root-rules-item1 -target-> fact_located
+root-rules -op-> leaf247
+root-rules -first-> root-rules-item0
+root-rules-item0 -next-> root-rules-item1
+language_root -rules-> root-rules
+root-queries-item0 -op-> leaf248
+root-queries-item0 -target-> query_owns_a
+root-queries-item1 -op-> leaf249
+root-queries-item1 -target-> query_owns_b
+root-queries-item2 -op-> leaf250
+root-queries-item2 -target-> query_located_a
+root-queries-item3 -op-> leaf251
+root-queries-item3 -target-> query_located_b
+root-queries-item4 -op-> leaf252
+root-queries-item4 -target-> query_owns_a_eun
+root-queries-item5 -op-> leaf253
+root-queries-item5 -target-> query_owns_b_i
+root-queries-item6 -op-> leaf254
+root-queries-item6 -target-> query_located_a_eun
+root-queries-item7 -op-> leaf255
+root-queries-item7 -target-> query_located_b_i
+root-queries -op-> leaf256
+root-queries -first-> root-queries-item0
+root-queries-item0 -next-> root-queries-item1
+root-queries-item1 -next-> root-queries-item2
+root-queries-item2 -next-> root-queries-item3
+root-queries-item3 -next-> root-queries-item4
+root-queries-item4 -next-> root-queries-item5
+root-queries-item5 -next-> root-queries-item6
+root-queries-item6 -next-> root-queries-item7
+language_root -queries-> root-queries
+root-replies-item0 -op-> leaf257
+root-replies-item0 -target-> reply0
+root-replies-item1 -op-> leaf258
+root-replies-item1 -target-> reply1
+root-replies-item2 -op-> leaf259
+root-replies-item2 -target-> reply2
+root-replies-item3 -op-> leaf260
+root-replies-item3 -target-> reply3
+root-replies-item4 -op-> leaf261
+root-replies-item4 -target-> reply4
+root-replies-item5 -op-> leaf262
+root-replies-item5 -target-> reply5
+root-replies-item6 -op-> leaf263
+root-replies-item6 -target-> reply6
+root-replies-item7 -op-> leaf264
+root-replies-item7 -target-> reply7
+root-replies-item8 -op-> leaf265
+root-replies-item8 -target-> reply8
+root-replies-item9 -op-> leaf266
+root-replies-item9 -target-> reply9
+root-replies -op-> leaf267
+root-replies -first-> root-replies-item0
+root-replies-item0 -next-> root-replies-item1
+root-replies-item1 -next-> root-replies-item2
+root-replies-item2 -next-> root-replies-item3
+root-replies-item3 -next-> root-replies-item4
+root-replies-item4 -next-> root-replies-item5
+root-replies-item5 -next-> root-replies-item6
+root-replies-item6 -next-> root-replies-item7
+root-replies-item7 -next-> root-replies-item8
+root-replies-item8 -next-> root-replies-item9
+language_root -replies-> root-replies
+ag_root -op-> leaf268
+ag_root -hypothesis-scope-> leaf269
+language_root -action-grounding-> ag_root
+ag_type -op-> leaf270
+ag_type -name-> leaf271
+ag_catalog -op-> leaf272
+ag_catalog -catalog-id-> leaf273
+ag_cat_limits -op-> leaf274
+ag_cat_limits -max-catalog-entries-> leaf275
+ag_cat_limits -max-candidate-terms-> leaf276
+ag_cat_limits -max-program-steps-> leaf277
+ag_cat_limits -max-call-depth-> leaf278
+ag_cat_limits -max-expanded-steps-> leaf279
+ag_cat_limits -max-json-nodes-> leaf280
+ag_cat_limits -max-catalog-bytes-> leaf281
+ag_catalog -limits-> ag_cat_limits
+ag_e_owns -op-> leaf282
+ag_e_owns -id-> leaf283
+ag_e_owns -version-> leaf284
+ag_e_owns -composable-> leaf285
+ag_e_owns -label-> leaf286
+ag_e_owns_r_arg_subject -op-> leaf287
+ag_e_owns_r_arg_subject -variable-> leaf288
+ag_e_owns_r_arg_subject -slot-> leaf289
+ag_e_owns_r_arg_subject -presence-> leaf290
+ag_e_owns_r_arg_subject -coreference-group-> leaf291
+ag_e_owns_r_arg_subject -binding-mode-> leaf292
+ag_e_owns_r_arg_subject -type-ref-> ag_type
+ag_e_owns_r_arg_subject_v -op-> leaf293
+ag_e_owns_r_arg_subject_v -kind-> leaf294
+ag_e_owns_r_arg_subject_v -role-> ag_e_owns_r_arg_subject
+ag_e_owns_r_arg_object -op-> leaf295
+ag_e_owns_r_arg_object -variable-> leaf296
+ag_e_owns_r_arg_object -slot-> leaf297
+ag_e_owns_r_arg_object -presence-> leaf298
+ag_e_owns_r_arg_object -coreference-group-> leaf299
+ag_e_owns_r_arg_object -binding-mode-> leaf300
+ag_e_owns_r_arg_object -type-ref-> ag_type
+ag_e_owns_r_arg_object_v -op-> leaf301
+ag_e_owns_r_arg_object_v -kind-> leaf302
+ag_e_owns_r_arg_object_v -role-> ag_e_owns_r_arg_object
+ag_e_owns_roles-item0 -op-> leaf303
+ag_e_owns_roles-item0 -target-> ag_e_owns_r_arg_subject
+ag_e_owns_roles-item1 -op-> leaf304
+ag_e_owns_roles-item1 -target-> ag_e_owns_r_arg_object
+ag_e_owns_roles -op-> leaf305
+ag_e_owns_roles -first-> ag_e_owns_roles-item0
+ag_e_owns_roles-item0 -next-> ag_e_owns_roles-item1
+ag_e_owns -roles-> ag_e_owns_roles
+ag_e_owns_prog -op-> leaf306
+ag_e_owns_emit -op-> leaf307
+ag_e_owns_triple -op-> leaf308
+ag_e_owns_triple -subject-> ag_e_owns_r_arg_subject_v
+ag_e_owns_triple -predicate-> seed_owns
+ag_e_owns_triple -object-> ag_e_owns_r_arg_object_v
+ag_e_owns_triples -op-> leaf309
+ag_e_owns_triples -first-> ag_e_owns_triple
+ag_e_owns_emit -triples-> ag_e_owns_triples
+ag_e_owns_steps -op-> leaf310
+ag_e_owns_steps -first-> ag_e_owns_emit
+ag_e_owns_prog -steps-> ag_e_owns_steps
+ag_e_owns -program-> ag_e_owns_prog
+ag_e_owns_ops -op-> leaf311
+ag_e_owns -allowed-compute-operators-> ag_e_owns_ops
+ag_e_loc -op-> leaf312
+ag_e_loc -id-> leaf313
+ag_e_loc -version-> leaf314
+ag_e_loc -composable-> leaf315
+ag_e_loc -label-> leaf316
+ag_e_loc_r_arg_subject -op-> leaf317
+ag_e_loc_r_arg_subject -variable-> leaf318
+ag_e_loc_r_arg_subject -slot-> leaf319
+ag_e_loc_r_arg_subject -presence-> leaf320
+ag_e_loc_r_arg_subject -coreference-group-> leaf321
+ag_e_loc_r_arg_subject -binding-mode-> leaf322
+ag_e_loc_r_arg_subject -type-ref-> ag_type
+ag_e_loc_r_arg_subject_v -op-> leaf323
+ag_e_loc_r_arg_subject_v -kind-> leaf324
+ag_e_loc_r_arg_subject_v -role-> ag_e_loc_r_arg_subject
+ag_e_loc_r_arg_object -op-> leaf325
+ag_e_loc_r_arg_object -variable-> leaf326
+ag_e_loc_r_arg_object -slot-> leaf327
+ag_e_loc_r_arg_object -presence-> leaf328
+ag_e_loc_r_arg_object -coreference-group-> leaf329
+ag_e_loc_r_arg_object -binding-mode-> leaf330
+ag_e_loc_r_arg_object -type-ref-> ag_type
+ag_e_loc_r_arg_object_v -op-> leaf331
+ag_e_loc_r_arg_object_v -kind-> leaf332
+ag_e_loc_r_arg_object_v -role-> ag_e_loc_r_arg_object
+ag_e_loc_roles-item0 -op-> leaf333
+ag_e_loc_roles-item0 -target-> ag_e_loc_r_arg_subject
+ag_e_loc_roles-item1 -op-> leaf334
+ag_e_loc_roles-item1 -target-> ag_e_loc_r_arg_object
+ag_e_loc_roles -op-> leaf335
+ag_e_loc_roles -first-> ag_e_loc_roles-item0
+ag_e_loc_roles-item0 -next-> ag_e_loc_roles-item1
+ag_e_loc -roles-> ag_e_loc_roles
+ag_e_loc_prog -op-> leaf336
+ag_e_loc_emit -op-> leaf337
+ag_e_loc_triple -op-> leaf338
+ag_e_loc_triple -subject-> ag_e_loc_r_arg_subject_v
+ag_e_loc_triple -predicate-> seed_located_in
+ag_e_loc_triple -object-> ag_e_loc_r_arg_object_v
+ag_e_loc_triples -op-> leaf339
+ag_e_loc_triples -first-> ag_e_loc_triple
+ag_e_loc_emit -triples-> ag_e_loc_triples
+ag_e_loc_steps -op-> leaf340
+ag_e_loc_steps -first-> ag_e_loc_emit
+ag_e_loc_prog -steps-> ag_e_loc_steps
+ag_e_loc -program-> ag_e_loc_prog
+ag_e_loc_ops -op-> leaf341
+ag_e_loc -allowed-compute-operators-> ag_e_loc_ops
+ag_programs-item0 -op-> leaf342
+ag_programs-item0 -target-> ag_e_owns
+ag_programs-item1 -op-> leaf343
+ag_programs-item1 -target-> ag_e_loc
+ag_programs -op-> leaf344
+ag_programs -first-> ag_programs-item0
+ag_programs-item0 -next-> ag_programs-item1
+ag_catalog -programs-> ag_programs
+ag_root -catalog-> ag_catalog
+ag_surface -op-> leaf345
+ag_surface -surface-id-> leaf346
+ag_surface -coreference-policy-> leaf347
+ag_boundary -op-> leaf348
+ag_boundary -kind-> leaf349
+ag_boundary -token-separator-> leaf350
+ag_boundary_terminators-item0 -op-> leaf351
+ag_boundary_terminators-item0 -value-> leaf352
+ag_boundary_terminators -op-> leaf353
+ag_boundary_terminators -first-> ag_boundary_terminators-item0
+ag_boundary -terminators-> ag_boundary_terminators
+ag_boundary_question-marks-item0 -op-> leaf354
+ag_boundary_question-marks-item0 -value-> leaf355
+ag_boundary_question-marks -op-> leaf356
+ag_boundary_question-marks -first-> ag_boundary_question-marks-item0
+ag_boundary -question-marks-> ag_boundary_question-marks
+ag_boundary_clause-separators-item0 -op-> leaf357
+ag_boundary_clause-separators-item0 -value-> leaf358
+ag_boundary_clause-separators -op-> leaf359
+ag_boundary_clause-separators -first-> ag_boundary_clause-separators-item0
+ag_boundary -clause-separators-> ag_boundary_clause-separators
+ag_boundary_excluded-final-forms -op-> leaf360
+ag_boundary -excluded-final-forms-> ag_boundary_excluded-final-forms
+ag_boundary_excluded-final-suffixes -op-> leaf361
+ag_boundary -excluded-final-suffixes-> ag_boundary_excluded-final-suffixes
+ag_surface -boundary-> ag_boundary
+ag_group_subject -op-> leaf362
+ag_group_subject -id-> leaf363
+ag_group_subject_markers-item0 -op-> leaf364
+ag_group_subject_markers-item0 -value-> leaf365
+ag_group_subject_markers-item1 -op-> leaf366
+ag_group_subject_markers-item1 -value-> leaf367
+ag_group_subject_markers-item2 -op-> leaf368
+ag_group_subject_markers-item2 -value-> leaf369
+ag_group_subject_markers-item3 -op-> leaf370
+ag_group_subject_markers-item3 -value-> leaf371
+ag_group_subject_markers -op-> leaf372
+ag_group_subject_markers -first-> ag_group_subject_markers-item0
+ag_group_subject_markers-item0 -next-> ag_group_subject_markers-item1
+ag_group_subject_markers-item1 -next-> ag_group_subject_markers-item2
+ag_group_subject_markers-item2 -next-> ag_group_subject_markers-item3
+ag_group_subject -markers-> ag_group_subject_markers
+ag_srole_arg_subject -op-> leaf373
+ag_srole_arg_subject -slot-> leaf374
+ag_srole_arg_subject -presence-> leaf375
+ag_srole_arg_subject -coreference-group-> leaf376
+ag_srole_arg_subject -case-group-> ag_group_subject
+ag_srole_arg_subject -type-ref-> ag_type
+ag_group_object -op-> leaf377
+ag_group_object -id-> leaf378
+ag_group_object_markers-item0 -op-> leaf379
+ag_group_object_markers-item0 -value-> leaf380
+ag_group_object_markers-item1 -op-> leaf381
+ag_group_object_markers-item1 -value-> leaf382
+ag_group_object_markers-item2 -op-> leaf383
+ag_group_object_markers-item2 -value-> leaf384
+ag_group_object_markers-item3 -op-> leaf385
+ag_group_object_markers-item3 -value-> leaf386
+ag_group_object_markers -op-> leaf387
+ag_group_object_markers -first-> ag_group_object_markers-item0
+ag_group_object_markers-item0 -next-> ag_group_object_markers-item1
+ag_group_object_markers-item1 -next-> ag_group_object_markers-item2
+ag_group_object_markers-item2 -next-> ag_group_object_markers-item3
+ag_group_object -markers-> ag_group_object_markers
+ag_srole_arg_object -op-> leaf388
+ag_srole_arg_object -slot-> leaf389
+ag_srole_arg_object -presence-> leaf390
+ag_srole_arg_object -coreference-group-> leaf391
+ag_srole_arg_object -case-group-> ag_group_object
+ag_srole_arg_object -type-ref-> ag_type
+ag_case_groups -op-> leaf392
+ag_case_groups -first-> ag_group_subject
+ag_group_subject -next-> ag_group_object
+ag_surface -case-groups-> ag_case_groups
+ag_surface_roles -op-> leaf393
+ag_surface_roles -first-> ag_srole_arg_subject
+ag_srole_arg_subject -next-> ag_srole_arg_object
+ag_surface -roles-> ag_surface_roles
+ag_known_surfaces-item0 -op-> leaf394
+ag_known_surfaces-item0 -value-> leaf395
+ag_known_surfaces-item1 -op-> leaf396
+ag_known_surfaces-item1 -value-> leaf397
+ag_known_surfaces-item2 -op-> leaf398
+ag_known_surfaces-item2 -value-> leaf399
+ag_known_surfaces-item3 -op-> leaf400
+ag_known_surfaces-item3 -value-> leaf401
+ag_known_surfaces-item4 -op-> leaf402
+ag_known_surfaces-item4 -value-> leaf403
+ag_known_surfaces-item5 -op-> leaf404
+ag_known_surfaces-item5 -value-> leaf405
+ag_known_surfaces -op-> leaf406
+ag_known_surfaces -first-> ag_known_surfaces-item0
+ag_known_surfaces-item0 -next-> ag_known_surfaces-item1
+ag_known_surfaces-item1 -next-> ag_known_surfaces-item2
+ag_known_surfaces-item2 -next-> ag_known_surfaces-item3
+ag_known_surfaces-item3 -next-> ag_known_surfaces-item4
+ag_known_surfaces-item4 -next-> ag_known_surfaces-item5
+ag_surface -known-action-surfaces-> ag_known_surfaces
+ag_surface_limits -op-> leaf407
+ag_surface_limits -max-source-chars-> leaf408
+ag_surface_limits -max-tokens-> leaf409
+ag_surface_limits -max-case-groups-> leaf410
+ag_surface_limits -max-markers-> leaf411
+ag_surface_limits -max-role-candidates-> leaf412
+ag_surface_limits -max-search-steps-> leaf413
+ag_surface_limits -max-json-nodes-> leaf414
+ag_surface_limits -max-output-bytes-> leaf415
+ag_surface -limits-> ag_surface_limits
+ag_root -surface-> ag_surface
+ag_policy -op-> leaf416
+ag_policy -policy-id-> leaf417
+ag_policy -world-> leaf418
+ag_policy -allow-repeated-terms-> leaf419
+ag_assoc -op-> leaf420
+ag_assoc -mode-> leaf421
+ag_assoc -key-slot-> leaf422
+ag_assoc -before-selection-> leaf423
+ag_assoc -after-selection-> leaf424
+ag_assoc -causal-status-> leaf425
+ag_functional-item0 -op-> leaf426
+ag_functional-item0 -target-> seed_located_in
+ag_functional -op-> leaf427
+ag_functional -first-> ag_functional-item0
+ag_assoc -functional-predicates-> ag_functional
+ag_policy -association-> ag_assoc
+ag_closed -op-> leaf428
+ag_policy -closed-predicates-> ag_closed
+ag_evidence-item0 -op-> leaf429
+ag_evidence-item0 -value-> leaf430
+ag_evidence -op-> leaf431
+ag_evidence -first-> ag_evidence-item0
+ag_policy -evidence-kinds-> ag_evidence
+ag_term_counts-item0 -op-> leaf432
+ag_term_counts-item0 -value-> leaf433
+ag_term_counts-item1 -op-> leaf434
+ag_term_counts-item1 -value-> leaf435
+ag_term_counts -op-> leaf436
+ag_term_counts -first-> ag_term_counts-item0
+ag_term_counts-item0 -next-> ag_term_counts-item1
+ag_policy -allowed-term-counts-> ag_term_counts
+ag_rank_support_count -op-> leaf437
+ag_rank_support_count -key-> leaf438
+ag_rank_support_count -direction-> leaf439
+ag_rank_conflict_count -op-> leaf440
+ag_rank_conflict_count -key-> leaf441
+ag_rank_conflict_count -direction-> leaf442
+ag_rank_term_count -op-> leaf443
+ag_rank_term_count -key-> leaf444
+ag_rank_term_count -direction-> leaf445
+ag_ranking -op-> leaf446
+ag_ranking -first-> ag_rank_support_count
+ag_rank_support_count -next-> ag_rank_conflict_count
+ag_rank_conflict_count -next-> ag_rank_term_count
+ag_policy -ranking-> ag_ranking
+ag_policy_limits -op-> leaf447
+ag_policy_limits -max-candidates-> leaf448
+ag_policy_limits -max-observations-> leaf449
+ag_policy_limits -max-window-turns-> leaf450
+ag_policy_limits -max-pending-> leaf451
+ag_policy_limits -max-effect-triples-> leaf452
+ag_policy_limits -max-output-bytes-> leaf453
+ag_policy -limits-> ag_policy_limits
+ag_root -policy-> ag_policy
+ag_reply_conditional -op-> leaf454
+ag_reply_conditional -key-> leaf455
+ag_reply_conditional -text-> leaf456
+ag_reply_clarify -op-> leaf457
+ag_reply_clarify -key-> leaf458
+ag_reply_clarify -text-> leaf459
+ag_reply_question -op-> leaf460
+ag_reply_question -key-> leaf461
+ag_reply_question -text-> leaf462
+ag_reply_observed_with_hypothesis -op-> leaf463
+ag_reply_observed_with_hypothesis -key-> leaf464
+ag_reply_observed_with_hypothesis -text-> leaf465
+ag_reply_gap -op-> leaf466
+ag_reply_gap -key-> leaf467
+ag_reply_gap -text-> leaf468
+ag_replies -op-> leaf469
+ag_replies -first-> ag_reply_conditional
+ag_reply_conditional -next-> ag_reply_clarify
+ag_reply_clarify -next-> ag_reply_question
+ag_reply_question -next-> ag_reply_observed_with_hypothesis
+ag_reply_observed_with_hypothesis -next-> ag_reply_gap
+ag_root -replies-> ag_replies
+ag_required_operators-item0 -op-> leaf470
+ag_required_operators-item0 -value-> leaf471
+ag_required_operators-item1 -op-> leaf472
+ag_required_operators-item1 -value-> leaf473
+ag_required_operators -op-> leaf474
+ag_required_operators -first-> ag_required_operators-item0
+ag_required_operators-item0 -next-> ag_required_operators-item1
+ag_root -required-operators-> ag_required_operators
+uc_known_evidence -op-> leaf475
+uc_known_evidence -scope-> leaf476
+uc_known_evidence -render-> leaf477
+language_root -unread-continuation-> uc_known_evidence

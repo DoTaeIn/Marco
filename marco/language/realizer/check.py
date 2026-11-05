@@ -34,19 +34,18 @@ def _quoted_fields():
     return set(meaning_declarations()["quoted_fields"]["fields"])
 
 
-QUOTED_FIELDS = _quoted_fields()
-
-
-def _quoted_strings(value, out):
+def _quoted_strings(value, out, fields=None):
+    if fields is None:
+        fields = _quoted_fields()
     if isinstance(value, dict):
         for key, item in value.items():
-            if key in QUOTED_FIELDS:
+            if key in fields:
                 if isinstance(item, str):
                     out.add(item)
-            _quoted_strings(item, out)
+            _quoted_strings(item, out, fields)
     elif isinstance(value, list):
         for item in value:
-            _quoted_strings(item, out)
+            _quoted_strings(item, out, fields)
     return out
 
 

@@ -225,21 +225,12 @@ def test_the_location_question_is_still_a_location_question():
 # Experiment 4: a statement read completely whose thing slot holds a word that is no thing of this
 # conversation, refused by the state (the giver has no count under "<giver> <word>"). From effort 2 the reading
 # without the word is a candidate, its thing from the conversation; the reading as said is one too. The slot is
-# found by position, so any word can stand there, including ones no pack declares (blorp, zeb zeb, quix, 뿌뿌).
-# A word that could be a counted noun (a plural after an amount above one, or any word in a language without
-# number marking, or after an amount of one) stays the thing unless it is a word of a counted thing or a
-# declared counter: taking out a thing that was said would answer about another.
+# found by position. Only a word of a counted thing or a declared counter may be taken out; an unfamiliar thing
+# word (blorp, zeb zeb, quix, vorn, 뿌뿌), singular- or plural-shaped, is a thing that was said: it is never
+# taken out, so it never moves the count of another thing (see WRONG_THING_HELD).
 PENS = [("Nora has 7 pens.", "rec"), ("Eli has 2 pens.", "rec"), ("Dr. Lambert has nine pens.", "rec"),
         ("Ms. Daniels has three pens.", "rec")]
 WRONG_THING = [
-    ("english", PENS + [("Nora gave Eli three blorp.", "rec"), ("How many pens does Nora have?", 4),
-                        ("How many pens does Eli have?", 5)]),
-    ("english", PENS + [("Nora handed Eli two zeb zeb.", "rec"), ("How many pens does Nora have?", 5)]),
-    ("english", PENS + [("Nora gave three zeb zeb to Eli.", "rec"), ("How many pens does Eli have?", 5)]),
-    ("english", PENS + [("Dr. Lambert gave three quix to Ms. Daniels.", "rec"),
-                        ("How many pens does Dr. Lambert have?", 6), ("How many pens does Ms. Daniels have?", 6)]),
-    ("english", PENS + [("Dr. Lambert lent Ms. Daniels four vorn.", "rec"),
-                        ("How many pens does Dr. Lambert have?", 5)]),
     # a counter of the counted thing, the giver counting two things: the thing of the statement before wins
     ("english", [("Nora has 5 bundles of herbs.", "rec"), ("Nora has 3 cups.", "rec"),
                  ("Eli has 2 bundles of herbs.", "rec"), ("Nora gave Eli three bundles.", "rec"),
@@ -247,6 +238,18 @@ WRONG_THING = [
                  ("How many cups does Nora have?", 3)]),
 ]
 WRONG_THING_HELD = [
+    # an unfamiliar thing said after an amount above one, singular- or plural-shaped, one word or several: never
+    # read as the pens (formerly read without the word); the change and the counts it affects stay held
+    ("english", PENS + [("Nora gave Eli three blorp.", "hold"), ("How many pens does Nora have?", "hold"),
+                        ("How many pens does Eli have?", "hold")]),
+    ("english", PENS + [("Nora handed Eli two zeb zeb.", "hold"), ("How many pens does Nora have?", "hold")]),
+    ("english", PENS + [("Nora gave three zeb zeb to Eli.", "hold"), ("How many pens does Eli have?", "hold")]),
+    ("english", PENS + [("Dr. Lambert gave three quix to Ms. Daniels.", "hold"),
+                        ("How many pens does Dr. Lambert have?", "hold"),
+                        ("How many pens does Ms. Daniels have?", "hold")]),
+    ("english", PENS + [("Dr. Lambert lent Ms. Daniels four vorn.", "hold"),
+                        ("How many pens does Dr. Lambert have?", "hold")]),
+    ("english", PENS + [("Nora gave Eli three daxels.", "hold"), ("How many pens does Nora have?", "hold")]),
     # a plural noun after three: a thing said, never counted for Nora; not read as her pens
     ("english", PENS + [("Nora gave Eli three apples.", "hold"), ("How many pens does Nora have?", "hold")]),
     # after one, any word agrees as a noun: held
@@ -265,7 +268,7 @@ WRONG_THING_HELD = [
 
 @pytest.mark.parametrize("n", range(len(WRONG_THING)))
 @pytest.mark.parametrize("effort", [2, 3])
-def test_a_word_in_the_thing_slot_that_is_no_thing_is_read_without(n, effort):
+def test_a_counter_word_in_the_thing_slot_is_read_without(n, effort):
     language, dialogue = WRONG_THING[n]
     assert play(language, effort, dialogue) == []
 
@@ -580,8 +583,9 @@ def test_a_measure_word_before_the_thing_heads_a_container():
 # conversation replays those statements the same way. Without them a statement after the restart that needs a
 # candidate step was refused, and the question after it held (the earlier statement was read fresh in the check).
 @pytest.mark.parametrize("language,before,after", [
-    ("english", ["Nora has 7 pens.", "Eli has 2 pens.", "Nora gave Eli three blorp."],
-     [("Nora gave Eli two zeb.", "rec"), ("How many pens does Nora have?", 2)]),
+    ("english", ["Nora has 5 bundles of herbs.", "Nora has 3 cups.", "Eli has 2 bundles of herbs.",
+                 "Nora gave Eli three bundles."],
+     [("Nora gave Eli two bundles.", "rec"), ("How many bundles of herbs does Eli have?", 7)]),
     ("english", ["Ada has five striped cotton beach towels.", "Bo has three striped towels.", "Ada gave Bo one towel."],
      [("Ada gave Bo one striped towel.", "rec"), ("How many striped towels does Bo have?", 5)]),
     ("한국어", ["세훈은 핸드백이 열한 개 있어.", "기 대표님에게는 열 개 있어.", "기 대표님이 세훈에게 세 개를 줬어."],

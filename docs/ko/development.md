@@ -2,7 +2,7 @@
 
 코드를 고치려는 사람을 위한 문서입니다.
 그래프만 만들 거라면 [graph-authoring.md](graph-authoring.md)를,
-왜 이렇게 설계했는지는 [design.md](design.md)를 보세요.
+왜 이렇게 설계했는지는 [design.md](../archive/README.md "보관 ZIP 내부: docs/ko/design.md")를 보세요.
 
 ---
 

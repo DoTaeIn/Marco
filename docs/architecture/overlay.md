@@ -387,3 +387,19 @@ takes 308 ms. That part grows with the length of the open conversations.
 - A conversation snapshot taken while a commit lands between the turn's application of the
   head and the copy of the overlay records the newer head with a state derived under the
   older one.
+
+## MARCO 2 native selected judgment reader (2026-10-07)
+
+The selected native API now reads approved KG node/edge changes using this same
+`OverlayAttachment → PackBase/GraphView` infrastructure. Original pack bytes and
+manifest authority stay separate from the pinned applied head and effective raw
+graph digest. Read-only validation runs while the store is open; pending/rejected
+candidates are not installed, and nonempty JSON rule changes are explicitly
+unsupported in the native node/edge route. No new storage engine or autonomous
+writer is added. Installed origin inventory remains partial and is not used proof.
+
+[Selected native adapter contract](marco.runtime.selected_graph.md#native-nodeedge-overlay-read-composition-2026-10-07)
+and [actual main audit](../../logs/marco2-native-graph-overlay-audit-2026-10-07.json)
+document 13 distinct finite checks, original HOST expectation correction and
+observed IO limits. Persistent `DialogueSession` attachment identity and history
+transport are the next integration; this API alone does not complete them.

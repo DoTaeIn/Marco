@@ -41,12 +41,14 @@ FEATURE_BASE = "base-binding/1"
 FEATURE_TURNS = "conversation-turns/1"
 FEATURE_STATE = "reasoning-context-state/1"
 FEATURE_OVERLAY = "overlay-sqlite-copy/1"
-FEATURES = frozenset({FEATURE_BASE, FEATURE_TURNS, FEATURE_STATE, FEATURE_OVERLAY})
+FEATURE_ACTION = "contextual-action-state/1"
+FEATURES = frozenset({FEATURE_BASE, FEATURE_TURNS, FEATURE_STATE, FEATURE_OVERLAY, FEATURE_ACTION})
 
 TURNS_SCHEMA = "conversation-turns-v1"
+ACTION_STATE_SCHEMA = "contextual-action-state-v1"
 #: The reasoning state schemas ``ReasoningContext.restore`` accepts today.
-REASONING_SCHEMAS = frozenset("reasoning-context-v%d" % n for n in range(1, 11))
-STATE_SCHEMAS = REASONING_SCHEMAS | {TURNS_SCHEMA}
+REASONING_SCHEMAS = frozenset("reasoning-context-v%d" % n for n in range(1, 12))
+STATE_SCHEMAS = REASONING_SCHEMAS | {TURNS_SCHEMA, ACTION_STATE_SCHEMA}
 
 #: What a snapshot never holds, written into every snapshot so a reader does not have to guess.
 EXCLUDED = (
@@ -59,7 +61,8 @@ EXCLUDED = (
     {"id": "learning_sidecars", "reason": "learned-record sidecars and the runtime's learning directory"},
 )
 
-_RECORD_KEYS = frozenset({"id", "title", "created_at", "updated_at", "turns", "reasoning_state"})
+_RECORD_KEYS = frozenset({"id", "title", "created_at", "updated_at", "turns", "reasoning_state",
+                          "action_grounding_state"})
 _HEX64 = re.compile(r"[0-9a-f]{64}\Z")
 _HEADER = re.compile(rb"MARCO-SNAPSHOT/1 ([1-9][0-9]{0,11}) ([0-9a-f]{64})\n")
 
@@ -124,7 +127,8 @@ def _check_turn(turn, where):
         raise SnapshotError("%s: a turn needs string 'user' and 'assistant'" % where)
 
 
-def conversation_record(*, id, turns, reasoning_state=None, title=None, created_at=None, updated_at=None):
+def conversation_record(*, id, turns, reasoning_state=None, title=None, created_at=None, updated_at=None,
+                        action_grounding_state=None):
     """One conversation: its turns and its reasoning state (the context's snapshot, unchanged)."""
     if not isinstance(id, str) or not id:
         raise SnapshotError("a conversation needs a non-empty string id")
@@ -137,8 +141,11 @@ def conversation_record(*, id, turns, reasoning_state=None, title=None, created_
         if not isinstance(state, dict) or state.get("schema") not in REASONING_SCHEMAS:
             raise SnapshotError("%s: reasoning state schema %r is not one this writer knows"
                                 % (id, state.get("schema") if isinstance(state, dict) else None))
-    return {"id": id, "title": title, "created_at": created_at, "updated_at": updated_at,
-            "turns": turns, "reasoning_state": state}
+    record = {"id": id, "title": title, "created_at": created_at, "updated_at": updated_at,
+              "turns": turns, "reasoning_state": state}
+    if action_grounding_state is not None:
+        record["action_grounding_state"] = _action_state_pair(action_grounding_state, state, id)
+    return record
 
 
 def _overlay_copy(path, base):
@@ -199,6 +206,9 @@ def build(*, base, conversations, overlay=None, runtime=None):
         if record["reasoning_state"] is not None:
             requires.add(FEATURE_STATE)
             schemas.add(record["reasoning_state"]["schema"])
+        if record.get("action_grounding_state") is not None:
+            requires.add(FEATURE_ACTION)
+            schemas.add(ACTION_STATE_SCHEMA)
     if overlay is None:
         overlay_part = {"attached": False}
     else:
@@ -337,6 +347,16 @@ def _validate(body, where):
             if schema not in contract["schemas"]:
                 raise SnapshotDamaged("%s: conversation %s has a schema its contract does not list"
                                       % (where, record["id"]))
+        action = record.get("action_grounding_state")
+        if action is not None:
+            if FEATURE_ACTION not in contract["requires"] or ACTION_STATE_SCHEMA not in contract["schemas"]:
+                raise SnapshotDamaged("%s: conversation %s has an action state its contract does not list"
+                                      % (where, record["id"]))
+            try:
+                _action_state_pair(action, state, record["id"])
+            except SnapshotError as e:
+                raise SnapshotDamaged("%s: conversation %s has a malformed action state (%s)"
+                                      % (where, record["id"], e)) from None
 
 
 class Snapshot:
@@ -486,6 +506,9 @@ class Snapshot:
             for record in records:
                 if isinstance(record.get("reasoning_state"), dict):
                     record["reasoning_state"].pop("replay", None)
+                if record.get("action_grounding_state") is not None:
+                    record["action_grounding_state"] = invalidate_action_grounding_state(
+                        record["action_grounding_state"], "overlay_head_changed")
         return status, records
 
 
@@ -516,3 +539,244 @@ def is_snapshot(path):
             return handle.read(len(MAGIC)) == MAGIC
     except OSError:
         return False
+
+
+# --- optional outer action state (transport and bookkeeping validation only) -----------------
+
+_ACTION_MAX_INT = 9007199254740991
+_ACTION_MAX_BYTES = 2097152
+_ACTION_ID = re.compile(r'a[1-9][0-9]{0,30}\Z')
+_ACTION_CODE = re.compile(r'[A-Za-z][A-Za-z0-9_]{0,63}\Z')
+_ACTION_STATE_KEYS = frozenset(('schema', 'binding', 'input_turn', 'next_pending', 'observation_turns',
+                                'pending', 'gaps'))
+_ACTION_PENDING_KEYS = frozenset(('id', 'text', 'created_input_turn', 'pre_observation_refs', 'binding',
+                                  'reading', 'original_outcome', 'status', 'reason'))
+_ACTION_BINDING_KEYS = frozenset(('conversation_id', 'model_content_sha256', 'model_effective_key', 'graph_id',
+                                  'root_id', 'effective_graph_sha256', 'view_key',
+                                  'language_projection_fingerprint', 'action_projection_fingerprint',
+                                  'parser_base_sha256', 'parser_grammar_sha256', 'installed_memory_head'))
+_ACTION_HEX_FIELDS = ('model_content_sha256', 'model_effective_key', 'effective_graph_sha256', 'language_projection_fingerprint',
+                      'action_projection_fingerprint', 'parser_base_sha256', 'parser_grammar_sha256')
+
+
+def _action_state_fail(what):
+    raise SnapshotError('action grounding state: %s' % what)
+
+
+def _action_state_scan(value, depth, count):
+    count[0] += 1
+    if count[0] > 65536 or depth > 64:
+        _action_state_fail('exceeds the node or depth bound')
+    kind = type(value)
+    if value is None or kind is bool or kind is str:
+        return
+    if kind is int:
+        if abs(value) > _ACTION_MAX_INT:
+            _action_state_fail('an integer exceeds the bound')
+        return
+    if kind is float:
+        if value - value != 0:
+            _action_state_fail('a number is not finite')
+        return
+    if kind is list:
+        for item in value:
+            _action_state_scan(item, depth + 1, count)
+        return
+    if kind is dict:
+        for key, item in value.items():
+            if type(key) is not str:
+                _action_state_fail('an object key is not a string')
+            _action_state_scan(item, depth + 1, count)
+        return
+    _action_state_fail('holds a value that is not plain JSON')
+
+
+def _action_state_int(value, low, what, high=_ACTION_MAX_INT):
+    if type(value) is not int or value < low or value > high:
+        _action_state_fail('%s is not an integer within bounds' % what)
+
+
+def _action_state_str(value, what, limit=512):
+    if type(value) is not str or not value or len(value) > limit:
+        _action_state_fail('%s is not a bounded non-empty string' % what)
+
+
+def _action_state_hex(value, what):
+    if type(value) is not str or not _HEX64.match(value):
+        _action_state_fail('%s is not 64 lower-case hex digits' % what)
+
+
+def _action_state_binding(value, what):
+    if type(value) is not dict or set(value) != _ACTION_BINDING_KEYS:
+        _action_state_fail('%s binding keys are not exact' % what)
+    _action_state_str(value['conversation_id'], 'conversation_id', 128)
+    for key in ('model_effective_key', 'graph_id', 'root_id'):
+        _action_state_str(value[key], key)
+    if not value['model_effective_key']:
+        _action_state_fail('model_effective_key is empty')
+    for key in _ACTION_HEX_FIELDS:
+        _action_state_hex(value[key], key)
+    view = value['view_key']
+    if type(view) is not list or len(view) != 2:
+        _action_state_fail('view_key is not a pair')
+    _action_state_int(view[0], 0, 'view_key sequence')
+    if view[1] is not None:
+        _action_state_str(view[1], 'view_key name')
+    if value['installed_memory_head'] is not None:
+        _action_state_int(value['installed_memory_head'], 0, 'installed_memory_head')
+
+
+def validate_action_grounding_state(value, reasoning_state=None):
+    """A detached normalized action state, or None; SnapshotError otherwise. With a
+    ``reasoning_state`` the matching reasoning-context-v11 pairing is required too."""
+    if value is None:
+        return None
+    _action_state_scan(value, 0, [0])
+    if type(value) is not dict or set(value) != _ACTION_STATE_KEYS:
+        _action_state_fail('keys are not exact')
+    if len(canonical(value)) > _ACTION_MAX_BYTES:
+        _action_state_fail('exceeds the byte bound')
+    state = deepcopy(value)
+    if state['schema'] != ACTION_STATE_SCHEMA:
+        _action_state_fail('schema is not %s' % ACTION_STATE_SCHEMA)
+    _action_state_binding(state['binding'], 'state')
+    conversation_id = state['binding']['conversation_id']
+    chronology_ids = None
+    chronology_records = None
+    if reasoning_state is not None:
+        if type(reasoning_state) is not dict or reasoning_state.get('schema') != 'reasoning-context-v11':
+            _action_state_fail('needs a reasoning-context-v11 state beside it')
+        conversation = reasoning_state.get('conversation')
+        if type(conversation) is not str or not conversation or len(conversation) > 128:
+            _action_state_fail('reasoning state conversation is not a bounded nonempty string')
+        if conversation != conversation_id:
+            _action_state_fail('conversation id differs from the reasoning state')
+        chronology_ids = reasoning_state.get('observation_ids')
+        if type(chronology_ids) is not list:
+            _action_state_fail('reasoning state observation_ids is not a list')
+        for oid in chronology_ids:
+            if type(oid) is not str:
+                _action_state_fail('a reasoning state observation id is not a string')
+        if len(set(chronology_ids)) != len(chronology_ids):
+            _action_state_fail('reasoning state observation_ids repeat')
+        ledger = reasoning_state.get('reading_ledger')
+        if type(ledger) is not dict or type(ledger.get('records')) is not dict:
+            _action_state_fail('reasoning state reading_ledger records are not a dictionary')
+        chronology_records = ledger['records']
+    turn = state['input_turn']
+    _action_state_int(turn, 0, 'input_turn')
+    _action_state_int(state['next_pending'], 1, 'next_pending')
+    rows = state['observation_turns']
+    if type(rows) is not list or len(rows) > 128:
+        _action_state_fail('observation_turns is not a bounded list')
+    seen = set()
+    last_index = -1
+    for row in rows:
+        if type(row) is not dict or set(row) != {'observation_id', 'reading_revision', 'input_turn'}:
+            _action_state_fail('an observation row has inexact keys')
+        _action_state_str(row['observation_id'], 'observation_id', 128)
+        _action_state_int(row['reading_revision'], 1, 'reading_revision')
+        _action_state_int(row['input_turn'], 1, 'observation input_turn', turn)
+        identity = (row['observation_id'], row['reading_revision'])
+        if identity in seen:
+            _action_state_fail('an observation identity repeats')
+        seen.add(identity)
+        if chronology_ids is not None:
+            oid = row['observation_id']
+            if oid not in chronology_ids:
+                _action_state_fail('an observation row names an id missing from the reasoning state')
+            index = chronology_ids.index(oid)
+            if index <= last_index:
+                _action_state_fail('observation rows do not follow the reasoning state chronology')
+            last_index = index
+            entry = chronology_records.get(oid)
+            if type(entry) is not dict or type(entry.get('active')) is not int or isinstance(entry.get('active'), bool):
+                _action_state_fail('an observation row has no active reading in the reasoning state')
+            if entry['active'] < 1 or entry['active'] != row['reading_revision']:
+                _action_state_fail('an observation row revision differs from the active reading')
+    pending = state['pending']
+    if type(pending) is not list or len(pending) > 64:
+        _action_state_fail('pending is not a bounded list')
+    ids = set()
+    for item in pending:
+        if type(item) is not dict or set(item) != _ACTION_PENDING_KEYS:
+            _action_state_fail('a pending entry has inexact keys')
+        pid = item['id']
+        if type(pid) is not str or len(pid) > 128 or not _ACTION_ID.match(pid):
+            _action_state_fail('a pending id is malformed')
+        if int(pid[1:]) >= state['next_pending'] or pid in ids:
+            _action_state_fail('a pending id is reused or not below next_pending')
+        ids.add(pid)
+        if type(item['text']) is not str or len(item['text']) > 512:
+            _action_state_fail('pending text is not a bounded string')
+        _action_state_int(item['created_input_turn'], 1, 'created_input_turn', turn)
+        refs = item['pre_observation_refs']
+        if type(refs) is not list or len(refs) > 128:
+            _action_state_fail('pre_observation_refs is not a bounded list')
+        ref_seen = set()
+        for ref in refs:
+            if type(ref) is not dict or set(ref) != {'observation_id', 'reading_revision', 'record_sha256'}:
+                _action_state_fail('a pre observation ref has inexact keys')
+            _action_state_str(ref['observation_id'], 'ref observation_id', 128)
+            _action_state_int(ref['reading_revision'], 1, 'ref reading_revision')
+            _action_state_hex(ref['record_sha256'], 'record_sha256')
+            identity = (ref['observation_id'], ref['reading_revision'])
+            if identity in ref_seen:
+                _action_state_fail('a pre observation ref repeats')
+            ref_seen.add(identity)
+        _action_state_binding(item['binding'], 'pending')
+        if item['status'] == 'active' and item['binding']['conversation_id'] != conversation_id:
+            _action_state_fail('a pending binding names another conversation')
+        reading = item['reading']
+        if type(reading) is not dict or reading.get('schema') != 'unknown-action-reading-v1':
+            _action_state_fail('a pending reading is not unknown-action-reading-v1')
+        if item['original_outcome'] is not None and type(item['original_outcome']) is not dict:
+            _action_state_fail('original_outcome is not an object or null')
+        if item['status'] == 'active':
+            if item['reason'] is not None:
+                _action_state_fail('an active pending has a reason')
+        elif item['status'] == 'stale':
+            reason = item['reason']
+            if type(reason) is not str or not _ACTION_CODE.match(reason):
+                _action_state_fail('a stale pending needs a finite reason code')
+        else:
+            _action_state_fail('a pending status is unknown')
+    gaps = state['gaps']
+    if type(gaps) is not list or len(gaps) > 16:
+        _action_state_fail('gaps is not a bounded list')
+    codes = set()
+    for gap in gaps:
+        if type(gap) is not dict or set(gap) != {'code'}:
+            _action_state_fail('a gap has inexact keys')
+        code = gap['code']
+        if type(code) is not str or not _ACTION_CODE.match(code) or code in codes:
+            _action_state_fail('a gap code is malformed or repeats')
+        codes.add(code)
+    return state
+
+
+def _action_state_pair(value, reasoning_state, conversation_id):
+    """Validate an action state against the reasoning state it rides beside. The outer
+    ``conversation_id`` is the store record id, independent of the Context conversation."""
+    if value is None:
+        return None
+    if reasoning_state is None:
+        _action_state_fail('needs a reasoning state beside it')
+    return validate_action_grounding_state(value, reasoning_state)
+
+
+def invalidate_action_grounding_state(value, code):
+    """A detached copy with every active pending marked stale for ``code``; evidence unchanged."""
+    if type(code) is not str or not _ACTION_CODE.match(code):
+        raise SnapshotError('action grounding state: invalidation code is not a finite identifier')
+    state = validate_action_grounding_state(value)
+    if state is None:
+        return None
+    for item in state['pending']:
+        if item['status'] == 'active':
+            item['status'] = 'stale'
+            item['reason'] = code
+    gap = {'code': code}
+    if gap not in state['gaps'] and len(state['gaps']) < 16:
+        state['gaps'].append(gap)
+    return state

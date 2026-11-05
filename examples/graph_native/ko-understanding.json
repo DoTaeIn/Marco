@@ -1,0 +1,151 @@
+{
+  "description": "선언한 예시 규칙에 따른 추론. 실제 사용 허가를 뜻하지 않습니다. 답변은 등록된 문장 꼴을 사용합니다.",
+  "context_id": "demo:graph-native:leaf",
+  "model": {
+    "labels": [
+      {
+        "id": "person:harin",
+        "text": "하린"
+      },
+      {
+        "id": "person:seojun",
+        "text": "서준"
+      },
+      {
+        "id": "item:key",
+        "text": "열쇠"
+      },
+      {
+        "id": "item:map",
+        "text": "지도"
+      }
+    ],
+    "labels_by_id": {
+      "person:harin": "하린",
+      "person:seojun": "서준",
+      "item:key": "열쇠",
+      "item:map": "지도"
+    },
+    "patterns": [
+      {
+        "id": "has:fact:True",
+        "kind": "fact",
+        "polarity": true,
+        "relation": "has",
+        "prefix": "",
+        "between": "은 ",
+        "suffix": "를 가지고 있다."
+      },
+      {
+        "id": "has:fact:False",
+        "kind": "fact",
+        "polarity": false,
+        "relation": "has",
+        "prefix": "",
+        "between": "은 ",
+        "suffix": "를 가지고 있지 않다."
+      },
+      {
+        "id": "has:query:True",
+        "kind": "query",
+        "polarity": true,
+        "relation": "has",
+        "prefix": "",
+        "between": "은 ",
+        "suffix": "를 가지고 있나요?"
+      },
+      {
+        "id": "checks:fact:True",
+        "kind": "fact",
+        "polarity": true,
+        "relation": "checks",
+        "prefix": "",
+        "between": "은 ",
+        "suffix": "를 확인했다."
+      },
+      {
+        "id": "checks:fact:False",
+        "kind": "fact",
+        "polarity": false,
+        "relation": "checks",
+        "prefix": "",
+        "between": "은 ",
+        "suffix": "를 확인하지 않았다."
+      },
+      {
+        "id": "checks:query:True",
+        "kind": "query",
+        "polarity": true,
+        "relation": "checks",
+        "prefix": "",
+        "between": "은 ",
+        "suffix": "를 확인했나요?"
+      },
+      {
+        "id": "uses:fact:True",
+        "kind": "fact",
+        "polarity": true,
+        "relation": "uses",
+        "prefix": "",
+        "between": "은 ",
+        "suffix": "를 사용할 수 있다."
+      },
+      {
+        "id": "uses:fact:False",
+        "kind": "fact",
+        "polarity": false,
+        "relation": "uses",
+        "prefix": "",
+        "between": "은 ",
+        "suffix": "를 사용할 수 없다."
+      },
+      {
+        "id": "uses:query:True",
+        "kind": "query",
+        "polarity": true,
+        "relation": "uses",
+        "prefix": "",
+        "between": "은 ",
+        "suffix": "를 사용할 수 있나요?"
+      }
+    ]
+  },
+  "rules": [
+    {
+      "id": "demo:inspect",
+      "version": 0,
+      "body": [
+        [
+          "person:seojun",
+          "has",
+          "item:map"
+        ]
+      ],
+      "head": [
+        "person:seojun",
+        "checks",
+        "item:map"
+      ]
+    },
+    {
+      "id": "demo:use",
+      "version": 0,
+      "body": [
+        [
+          "person:seojun",
+          "checks",
+          "item:map"
+        ]
+      ],
+      "head": [
+        "person:seojun",
+        "uses",
+        "item:map"
+      ]
+    }
+  ],
+  "statements": [
+    "서준은 지도를 가지고 있다."
+  ],
+  "query": "서준은 지도를 사용할 수 있나요?"
+}

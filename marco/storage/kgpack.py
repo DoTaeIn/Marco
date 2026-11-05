@@ -313,5 +313,138 @@ def main(argv=None) -> int:
         return 1
 
 
+_RULE_SLOT = 'axioms/learned-experience-rules.json'
+_RR_EXPORT_KEYS = {'schema', 'base_binding', 'overlay_head', 'rules', 'origins', 'scope', 'sha256'}
+
+
+def _rr_canon_sha(value):
+    return _hash(json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False,
+                            allow_nan=False).encode('utf-8'))
+
+
+def _rr_hex(v):
+    return isinstance(v, str) and len(v) == 64 and all(c in '0123456789abcdef' for c in v)
+
+
+def write_rule_revision(base_pack, base_sha256, memory, output, *, expected_head):
+    """Publish a NEW explicit pack revision from the original base plus at most one verified learned rule."""
+    from marco.learning.memory import LearningMemory
+    import copy
+    if type(memory) is not LearningMemory:
+        raise KGPackError('rule revision requires an actual LearningMemory')
+    if not _rr_hex(base_sha256):
+        raise KGPackError('base_sha256 must be 64 lowercase hex')
+    try:
+        src = os.path.abspath(os.fspath(base_pack))
+        dst = os.path.abspath(os.fspath(output))
+    except TypeError:
+        raise KGPackError('invalid pack path') from None
+    parent = os.path.dirname(dst)
+    if src == dst or os.path.lexists(dst) or not os.path.isdir(parent):
+        raise KGPackError('output must be a new path in an existing directory')
+    for candidate_path in (src, dst):
+        p = candidate_path
+        while True:
+            if os.path.islink(p):
+                raise KGPackError('symlink path refused')
+            ancestor = os.path.dirname(p)
+            if ancestor == p:
+                break
+            p = ancestor
+    if not os.path.isfile(src) or os.path.realpath(src) == os.path.realpath(dst):
+        raise KGPackError('invalid input/output relation')
+    head = expected_head
+    export = LearningMemory.export_rule_revision(memory, expected_head=head)
+    cap = 1 << 28
+
+    def slurp():
+        with open(src, 'rb') as f:
+            raw = f.read(cap + 1)
+        if len(raw) > cap:
+            raise KGPackError('base pack too large')
+        return raw
+    if _hash(slurp()) != base_sha256:
+        raise KGPackError('base pack sha256 mismatch')
+    manifest, members = read(src)
+    if _hash(slurp()) != base_sha256:
+        raise KGPackError('base pack changed while reading')
+    decl = manifest.get('model')
+    if (_RULE_SLOT in members or not isinstance(decl, dict) or not isinstance(decl.get('axioms'), list)
+            or _RULE_SLOT in decl['axioms']
+            or any(isinstance(x, dict) and x.get('path') == _RULE_SLOT for x in manifest['files'])):
+        raise KGPackError('base pack is not an original pack without the reserved learned slot')
+    from pack_model import PackModel
+    from marco.storage.graph_view import pack_rules
+    try:
+        fingerprint = PackModel(manifest, members).content_fingerprint
+        base_rules = pack_rules(manifest, members)
+    except Exception as exc:
+        raise KGPackError('base pack model invalid: %s' % exc) from exc
+    base_rules_sha = _rr_canon_sha(base_rules)
+    if (type(export) is not dict or set(export) != _RR_EXPORT_KEYS
+            or export['schema'] != 'marco-rule-experience-export-v1'
+            or export['scope'] != 'finite_supervised_rule_revision_not_universal_truth'
+            or export['sha256'] != _rr_canon_sha({k: v for k, v in export.items() if k != 'sha256'})):
+        raise KGPackError('rule experience export is malformed')
+    if (export['base_binding'] != {'graph_binding': fingerprint, 'base_rules_sha256': base_rules_sha}
+            or export['overlay_head'] != head):
+        raise KGPackError('export is not bound to this base pack and head')
+    rules, origins = export['rules'], export['origins']
+    base_ids = {r.get('id') for r in base_rules if isinstance(r, dict)}
+    if (type(rules) is not list or type(origins) is not list or len(rules) > 1
+            or len(origins) != len(rules) or len(base_rules) + len(rules) > 3):
+        raise KGPackError('rule capacity violated')
+    for r in rules:
+        if (type(r) is not dict or set(r) != {'id', 'body', 'head'} or not isinstance(r['id'], str)
+                or r['id'] in base_ids):
+            raise KGPackError('invalid learned rule')
+    doc = {'schema': 'nai-axioms-v1', 'rules': copy.deepcopy(rules),
+           'rule_experience_origin': {'schema': 'marco-rule-experience-origin-v1',
+                                      'export_sha256': export['sha256'], 'base_pack_sha256': base_sha256,
+                                      'base_rules_sha256': base_rules_sha, 'overlay_head': copy.deepcopy(head),
+                                      'origins': copy.deepcopy(origins)}}
+    doc_bytes = (json.dumps(doc, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
+    manifest2 = copy.deepcopy(manifest)
+    manifest2['files'].append({'bytes': len(doc_bytes), 'kind': 'axiom', 'path': _RULE_SLOT,
+                               'sha256': _hash(doc_bytes)})
+    manifest2['model']['axioms'].append(_RULE_SLOT)
+    members2 = dict(members)
+    members2[_RULE_SLOT] = doc_bytes
+    mbytes = (json.dumps(manifest2, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
+    fd, tmp = tempfile.mkstemp(prefix='.rule-revision-', suffix='.tmp', dir=parent)
+    try:
+        with os.fdopen(fd, 'wb') as fh:
+            with zipfile.ZipFile(fh, 'w') as zf:
+                _write(zf, 'manifest.json', mbytes)
+                for name in sorted(members2):
+                    _write(zf, name, members2[name])
+            fh.flush()
+            os.fsync(fh.fileno())
+        m2, d2 = read(tmp)
+        if m2 != manifest2 or d2 != members2 or any(d2[k] != v for k, v in members.items()):
+            raise KGPackError('built revision does not match the expected content')
+        PackModel(m2, d2)
+        if pack_rules(m2, d2) != base_rules + rules:
+            raise KGPackError('built revision rule bank mismatch')
+        if LearningMemory.export_rule_revision(memory, expected_head=head) != export:
+            raise KGPackError('memory export changed before publication')
+        with open(tmp, 'rb') as f:
+            out = f.read()
+        try:
+            os.link(tmp, dst)
+        except FileExistsError:
+            raise KGPackError('output already exists') from None
+        except OSError as exc:
+            raise KGPackError('exclusive publication failed: %s' % exc) from exc
+    finally:
+        try:
+            os.unlink(tmp)
+        except FileNotFoundError:
+            pass
+    return {'output_path': dst, 'sha256': _hash(out), 'bytes': len(out), 'base_pack_sha256': base_sha256,
+            'export_sha256': export['sha256'], 'overlay_head': copy.deepcopy(head),
+            'rule_count': len(rules)}
+
+
 if __name__ == "__main__":
     raise SystemExit(main())

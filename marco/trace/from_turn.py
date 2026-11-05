@@ -38,6 +38,8 @@ except ``input_received`` has at least one parent (§44 principle 4).
 Only the standard library.
 """
 import hashlib
+import json
+import uuid
 
 from marco.trace import runtime as rt
 
@@ -93,6 +95,135 @@ def _request_kind(understanding):
     return node if isinstance(node, str) else None
 
 
+_CQ_V2 = "marco-known-support-with-pending-set-v2"
+_CQ_CAPTURE_SCHEMA = "marco-context-qualification-capture-v1"
+_CQ_MAX_BYTES = 65536
+_CQ_MAX_ANSWER_BYTES = 24576
+_CQ_MAX_NODES = 8192
+_CQ_MAX_DEPTH = 32
+_CQ_MAX_INT_BITS = _CQ_MAX_BYTES * 4
+
+
+class _CqInvalid(Exception):
+    pass
+
+
+def _cq_bound(value, depth, ancestors, count):
+    """Bound nodes, depth, int size and string length with exact plain types (identity checks only),
+    before any copy or serialization."""
+    count[0] += 1
+    if count[0] > _CQ_MAX_NODES or depth > _CQ_MAX_DEPTH:
+        raise _CqInvalid()
+    kind = type(value)
+    if kind is str:
+        if len(value) > _CQ_MAX_BYTES:
+            raise _CqInvalid()
+    elif kind is bool or value is None:
+        return
+    elif kind is int:
+        if value.bit_length() > _CQ_MAX_INT_BITS:
+            raise _CqInvalid()
+    elif kind is float:
+        if value != value or value == float("inf") or value == float("-inf"):
+            raise _CqInvalid()
+    elif kind is list or kind is dict:
+        if id(value) in ancestors:
+            raise _CqInvalid()
+        inner = ancestors | {id(value)}
+        if kind is list:
+            for item in value:
+                _cq_bound(item, depth + 1, inner, count)
+        else:
+            for key, item in value.items():
+                if type(key) is not str:
+                    raise _CqInvalid()
+                _cq_bound(key, depth + 1, inner, count)
+                _cq_bound(item, depth + 1, inner, count)
+    else:
+        raise _CqInvalid()
+
+
+def _cq_canonical_digest(copied):
+    """Streamed canonical digest equal to sha256 of the canonical json.dumps bytes, without allocating the
+    full serialization; raises _CqInvalid once cumulative UTF-8 bytes would exceed _CQ_MAX_BYTES."""
+    encoder = json.JSONEncoder(sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    digest = hashlib.sha256()
+    total = 0
+    for chunk in encoder.iterencode(copied):
+        if type(chunk) is not str:
+            raise _CqInvalid()
+        remaining = _CQ_MAX_BYTES - total
+        if len(chunk) > remaining:
+            raise _CqInvalid()
+        data = chunk.encode("utf-8")
+        if len(data) > remaining:
+            raise _CqInvalid()
+        total += len(data)
+        digest.update(data)
+    return digest.hexdigest()
+
+
+def _cq_pick_field(data, name):
+    """Callback-free bounded exact-str field pick from an exact external dict: (found, value).
+
+    Never performs a hash lookup (no data[key] / data.get, which may invoke a stored non-plain
+    key's __eq__). Iterates built-in dict.items, compares only exact str keys to the own literal
+    field name and uses the yielded value directly. Non-plain or other keys are skipped; an
+    oversized or unreadable dict is reported as not found."""
+    if type(data) is not dict or type(name) is not str:
+        return (False, None)
+    try:
+        if len(data) > _CQ_MAX_NODES:
+            return (False, None)
+        visits = 0
+        for item in dict.items(data):
+            visits += 1
+            if visits > _CQ_MAX_NODES:
+                return (False, None)
+            key = item[0]
+            if type(key) is str and key == name:
+                return (True, item[1])
+    except Exception:
+        return (False, None)
+    return (False, None)
+
+
+def _capture_context_qualification(source):
+    """The capture artifact of a recognized v2 qualification in a Context return, else None (add nothing).
+
+    Only hashes and the qualification metadata are kept, never the answer text."""
+    if type(source) is not dict:
+        return None
+    found, qualification = _cq_pick_field(source, "qualification")
+    if not found or type(qualification) is not dict:
+        return None
+    found, schema = _cq_pick_field(qualification, "schema")
+    if not found or type(schema) is not str or schema != _CQ_V2:
+        return None
+
+    def unavailable(reason):
+        return {"schema": _CQ_CAPTURE_SCHEMA, "basis": "context_return_copy", "status": "unavailable",
+                "reason": reason}
+    try:
+        found, answer = _cq_pick_field(source, "answer")
+        if not found or type(answer) is not str or len(answer) > _CQ_MAX_ANSWER_BYTES:
+            return unavailable("invalid_answer")
+        answer_bytes = answer.encode("utf-8")
+        if len(answer_bytes) > _CQ_MAX_ANSWER_BYTES:
+            return unavailable("invalid_answer")
+    except Exception:
+        return unavailable("invalid_answer")
+    try:
+        _cq_bound(qualification, 0, frozenset(), [0])
+        copied = rt.plain_json(qualification, "context_qualification")
+        qualification_sha256 = _cq_canonical_digest(copied)
+    except Exception:
+        return unavailable("invalid_qualification")
+    return {"schema": _CQ_CAPTURE_SCHEMA, "basis": "context_return_copy", "status": "captured",
+            "qualification": copied, "qualification_sha256": qualification_sha256,
+            "qualified_answer_sha256": hashlib.sha256(answer_bytes).hexdigest()}
+
+
 def view(envelope, context_result=None, error=None, meaning=None):
     """The fields of a turn the adapter reads, from either envelope shape.
 
@@ -133,9 +264,17 @@ def view(envelope, context_result=None, error=None, meaning=None):
                "retrieval": {}, "sources": [], "rankings": [], "route": {}, "semantic_model": None,
                "request": None,
                "meaning": env.get("meaning") if isinstance(env.get("meaning"), dict) else None}
+    capture = _capture_context_qualification(
+        env if out["shape"] == "context" else context_result if isinstance(context_result, dict) else None)
+    if capture is not None:
+        out["context_qualification_capture"] = capture
     out["error"] = error
     out["transitions"] = [row for row in out["transitions"] if isinstance(row, dict)]
-    out["checks"] = [c for c in out["verification"].get("checks") or [] if isinstance(c, dict)]
+    raw_checks = out["verification"].get("checks")
+    raw_checks = [] if raw_checks is None else rt.plain_json(raw_checks, "checks")
+    if not isinstance(raw_checks, list) or any(not isinstance(row, dict) for row in raw_checks):
+        raise rt.TraceContractError("checks must be a plain JSON list of objects")
+    out["checks"] = raw_checks
     return out
 
 
@@ -280,7 +419,8 @@ def _repair(evidence):
 # ---------------------------------------------------------------------------
 def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversation="default", turn=None,
                 context_result=None, meaning=None, label=None, act=None, restart=False, pack=None,
-                pack_file=None, error=None, gap=None):
+                pack_file=None, error=None, gap=None, runtime_stamp=None, provenance=None,
+                prewritten_input=None, pending_flush=None, attempt_id=None, stage=None):
     """Write one turn's events to ``ledger`` under ``trace_id``. Returns a summary dict.
 
     ``conversation`` keys the adapter state (which statements and state changes
@@ -292,50 +432,108 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
     envelope's verification sources). ``pack_file``: the ``.kgpack`` file, for
     its digest. ``error``: the exception the turn raised; ``envelope`` is then None. ``gap``: the gap class
     the engine gave its own hold of the turn (request G5-1); else the declared class of the hold's reason.
+
+    Trace contract (optional metadata from a trusted caller; missing metadata is explicit on every call):
+    ``runtime_stamp``: the actual selected model/encoder/realizer data; ``provenance``: what the answer used
+    (``rt.SECTIONS``), kept exactly; neither is read from the host, a name not supplied is listed as missing.
+    ``prewritten_input``: the id of an ``input_received`` event the runtime wrote before executing; it is reused
+    (kind, trace, conversation, text and ``attempt_id`` are checked), never written twice. ``pending_flush``:
+    ``f(ledger, input_event_id, trace_id)`` called after the input exists and before any output; it appends the
+    engine's pending events and returns their ids, which become parents of the operator or error event.
+    ``attempt_id``: this attempt's identity (independent of ``turn``); ``stage``: where an ``error`` happened.
+    A check result is a parent of the output; the output is never ``verified``: ``world_truth_status`` is
+    ``unverified`` and ``verified`` means the declared criterion held, nothing more.
     """
     v = view(envelope, context_result, error, meaning)
     session = session_for(ledger, conversation)
-    session.turns = turn if turn is not None else session.turns + 1
     meaning = v["meaning"] or {}
     report = realizer_report if isinstance(realizer_report, dict) else None
     sources = v["verification"].get("sources") or []
     pack = pack or next((s for s in sources if isinstance(s, str) and s.startswith("styles/")), None)
-    stamp = rt.stamp(pack)
+    contract = rt.contract_provenance(runtime_stamp, provenance, pack=pack, has_checks=bool(v["checks"]))
+    # Preflight plain-JSON metadata before anything is appended, so bad checks cannot leave a partial record.
+    rt.plain_json(v["checks"], "checks")
+    rt.plain_json(v["verification"].get("replay_scope"), "replay_scope")
+    source_model_digest = rt.plain_json(v["verification"].get("model"), "source_model_digest")
+    stamp, prior = contract["base"], None
+    if attempt_id is not None and (not isinstance(attempt_id, str) or not attempt_id):
+        raise rt.TraceContractError("attempt_id must be a non-empty string")
+    if prewritten_input is not None:
+        prior = _prewritten(ledger, prewritten_input, trace_id, text, conversation, attempt_id)
+        attempt_id = prior["payload"]["attempt_id"]
+        if turn is not None and prior["payload"].get("turn") != turn:
+            raise rt.TraceContractError("prewritten_input turn does not match this attempt")
+        if prior["runtime"].get("selected") != contract["first"]["selected"] \
+                or prior["runtime"].get("declared_runtime") != contract["first"]["declared_runtime"]:
+            raise rt.TraceContractError("prewritten_input selected runtime does not match this attempt")
+    attempt_id = attempt_id or "attempt_" + uuid.uuid4().hex
+    if prior is None and any(e["kind"] == "input_received" and e["payload"].get("attempt_id") == attempt_id
+                             for e in ledger.events):
+        raise rt.TraceContractError("attempt_id already has an input; use prewritten_input")
+    session.turns = turn if turn is not None else session.turns + 1
+    cx = {"attempt_id": attempt_id, "provenance_status": contract["status"],
+          "provenance_missing": list(contract["missing"])}
     gate = gate_status(v)
-    approximate = ["web_research"] if v["phase"] == "research" else []
-    if report and report.get("learned"):
-        approximate.append("realizer_learning")
-    if v["semantic_model"] and v["semantic_model"] not in rt.DETERMINISTIC_SEMANTIC:
-        approximate.append("semantic_backend")
     written = []
 
     def emit(kind, **fields):
         fields.setdefault("runtime", stamp)
+        fields["payload"] = {**(fields.get("payload") or {}), "attempt_id": attempt_id}
         event = ledger.append(kind, trace_id, **fields)
         written.append(event["event_id"])
         return event["event_id"]
 
     # 1. the input -------------------------------------------------------------------
-    first = {**stamp, **rt.first_stamp(pack, pack_file=pack_file, model_digest=v["verification"].get("model"),
-                                       approximate=approximate)}
+    first = contract["first"]
+    first["source_model_digest"] = source_model_digest
+    if pack_file is not None:
+        first["pack_digest"] = rt.pack_digest(pack_file)
     said = {"text": text, "sha256": sha(text), "conversation": conversation, "turn": session.turns}
     for key, value in (("label", label), ("act", act)):
         if value is not None:
             said[key] = value
     if restart:
         said["restart"] = True
-    inp = emit("input_received", subsystem="dialogue", epistemic_status="reported", runtime=first,
-               source={"type": "dialogue_turn", "conversation": conversation, "turn": session.turns},
-               payload=said)
+    if prior is not None:
+        inp = prior["event_id"]
+        written.append(inp)
+    else:
+        said["attempt_id"] = attempt_id
+        said["installed_memory_head"] = contract["declared"].get("installed_memory_head")
+        inp = emit("input_received", subsystem="dialogue", epistemic_status="reported", runtime=first,
+                   source={"type": "dialogue_turn", "conversation": conversation, "turn": session.turns},
+                   payload=said)
     session.digests[said["sha256"]] = inp
     summary = {"trace_id": trace_id, "input": inp, "gate_status": gate, "new_state": 0, "withdrawn": 0,
                "events": written}
+    pending = _flush(ledger, pending_flush, inp, trace_id) if pending_flush is not None else []
+    summary["attempt_id"] = attempt_id
+    summary["pending"] = pending
+    base = [inp] + pending
 
     if v["error"] is not None:
-        err = emit("error", parent_ids=[inp], status="error", epistemic_status="observed", subsystem="dialogue",
-                   payload={"problem": "execution_error", "type": type(v["error"]).__name__,
-                            "message": str(v["error"])[:200]})
-        summary["output"] = _output(emit, v, report, "error", gate, [err], session, conversation, None)
+        checked = None
+        passed = bool(v["checks"]) and all(c.get("ok") is True for c in v["checks"])
+        if v["checks"]:
+            criteria_known = not any(name.startswith("provenance.criterion") for name in contract["missing"])
+            checked = emit("hypothesis_verified" if passed else "hypothesis_rejected", parent_ids=base,
+                status="success" if passed else "failed", subsystem="verification",
+                epistemic_status="verified" if passed and criteria_known else "inferred" if passed else "unknown",
+                payload={**cx, "checks": rt.plain_json(v["checks"], "checks"),
+                         "criterion": contract["declared"].get("criterion"),
+                         "assumptions": contract["declared"].get("assumptions"),
+                         "criterion_declared": criteria_known, "world_truth_status": "unverified",
+                         "verified_scope": "declared_criterion_only" if criteria_known else "unspecified"})
+        problem = {"problem": "execution_error", "type": type(v["error"]).__name__,
+                   "message": str(v["error"])[:200]}
+        if stage is not None:
+            problem["stage"] = str(stage)
+        err = emit("error", parent_ids=_unique(base + [checked]), status="error", epistemic_status="observed", subsystem="dialogue",
+                   payload={**problem, **cx})
+        v["text"] = ""     # execution may have calculated an answer before a save/trace failure; it was not delivered
+        # The computed answer was never delivered: neither report text nor its realized flag is logged.
+        summary["output"] = _output(emit, v, None, "error", gate, [err], session, conversation, None,
+                                    _extra(cx, contract, checked, passed))
         summary["status"] = "error"
         return summary
 
@@ -367,7 +565,7 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
         operation = {"type": "operator", "id": str(v["operator"])}
         if meaning.get("rules"):
             operation["rules"] = [str(r) for r in meaning["rules"]]
-        op = emit("rule_applied", parent_ids=[inp], input_refs=refs, subsystem="reasoning",
+        op = emit("rule_applied", parent_ids=base, input_refs=refs, subsystem="reasoning",
                   epistemic_status="inferred", operation=operation,
                   payload={"operator": str(v["operator"]), "mode": v["mode"], "verdict": v["verdict"],
                            "transitions": len(v["transitions"]), "statements": len(refs)})
@@ -375,7 +573,7 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
         ranked = v["route"].get("candidates") if isinstance(v["route"].get("candidates"), list) else v["rankings"]
         candidates = [[_scalar(r[0]), _scalar(r[1])] for r in ranked[:5]
                       if isinstance(r, (list, tuple)) and len(r) >= 2]
-        op = emit("routing_selected", parent_ids=[inp], input_refs=refs, subsystem="routing",
+        op = emit("routing_selected", parent_ids=base, input_refs=refs, subsystem="routing",
                   epistemic_status="inferred",
                   payload={"selected": _scalar(v["winner"]) if v["winner"] is not None else v["mode"],
                            "mode": v["mode"], "verdict": v["verdict"], "phase": v["phase"],
@@ -396,7 +594,7 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
                 continue
             current = session.obs.get(index)
             payload = {"field": "observation", "index": index, "before": {"sha256": key[1]},
-                       "after": {"sha256": key[2]}, "cause": inp}
+                       "after": {"sha256": key[2]}, "cause": inp, "attempt_id": attempt_id}
             fields = dict(parent_ids=_unique([op, (current or {}).get("input")]), subsystem="state",
                           epistemic_status="reported", subject="observation:%s" % index,
                           operation={"type": "correction"}, payload=payload, runtime=stamp)
@@ -442,7 +640,7 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
             last[pair] = stale["event"]
             continue
         evidence = row.get("evidence") if isinstance(row.get("evidence"), dict) else {}
-        payload = {"field": key[2], "before": value[0], "after": value[1], "cause": cause or inp,
+        payload = {"attempt_id": attempt_id, "field": key[2], "before": value[0], "after": value[1], "cause": cause or inp,
                    "row": list(key), "observation": key[3]}
         if row.get("delta") is not None:
             payload["delta"] = _scalar(row["delta"])
@@ -483,7 +681,8 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
             current = next((x for x in reversed(versions) if not ledger.is_withdrawn(x["event"])), None)
             if current is not None and current["event"] not in seen:
                 gone = ledger.withdraw(current["event"], trace_id, parent_ids=corrections,
-                                       reason="not_in_replay_after_correction", runtime=stamp)
+                                       reason="not_in_replay_after_correction", runtime=stamp,
+                                       payload={"attempt_id": attempt_id})
                 written.append(gone["event_id"])
                 summary["withdrawn"] += 1
     summary["new_state"] = len(new_state)
@@ -533,13 +732,18 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
     # 7. verification ----------------------------------------------------------------------
     verification = None
     if v["checks"]:
-        failed = [c for c in v["checks"] if not c.get("ok")]
-        slim = [{k: _scalar(c[k]) for k in ("ok", "reason", "observation_turns") if k in c} for c in v["checks"]]
-        payload = {"checks": slim, "replay_scope": v["verification"].get("replay_scope")}
+        failed = [c for c in v["checks"] if c.get("ok") is not True]
+        payload = {"checks": rt.plain_json(v["checks"], "checks"),
+                   "replay_scope": rt.plain_json(v["verification"].get("replay_scope"), "replay_scope")}
+        declared = contract["declared"]
+        criterion_declared = not any(name.startswith("provenance.criterion") for name in contract["missing"])
+        payload.update(cx, criterion=declared.get("criterion"), assumptions=declared.get("assumptions"),
+                       criterion_declared=criterion_declared, world_truth_status="unverified",
+                       verified_scope="declared_criterion_only" if criterion_declared else "unspecified")
         parents = conclusions or new_state or new_obs or [op]
         if not failed:
             verification = emit("hypothesis_verified", parent_ids=parents, subsystem="verification",
-                                epistemic_status="verified", payload=payload)
+                                epistemic_status="verified" if criterion_declared else "inferred", payload=payload)
         elif any(c.get("reason") in CONTRADICTION_CHECKS for c in failed) or \
                 meaning.get("reason") in CONTRADICTION_REASONS:
             verification = emit("contradiction_found", parent_ids=parents, status="failed",
@@ -559,7 +763,8 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
         gap = _gap(reason, gap)
         if gap is not None:
             payload["gap"] = gap        # the gap class of the hold (request G5-1, the adaptive note's taxonomy)
-        parents = [verification] if verification and not verified else [op]
+        payload.update(cx)
+        parents = _unique([op, verification])    # a passed check before a local hold is still a cause
         subject = meaning.get("subject") if isinstance(meaning.get("subject"), str) else None
         hold = emit("hold", parent_ids=parents, status=status, subsystem="dialogue", epistemic_status="unknown",
                     subject=subject, payload=payload)
@@ -574,8 +779,10 @@ def record_turn(ledger, trace_id, text, envelope, realizer_report, *, conversati
         parents = new_state or new_obs or ([verification] if verification else []) or [op]
     else:
         parents = [op]
-    summary["output"] = _output(emit, v, report, status, gate, parents, session, conversation,
-                                "verified" if status == "answered" and verified else None)
+    parents = _unique(parents + [op, verification])    # every status keeps operator/routing (and pending) ancestry
+    summary["output"] = _output(emit, v, report, status, gate, parents, session, conversation, None,
+                                _extra(cx, contract, verification, verified,
+                                       v.get("context_qualification_capture")))
     summary["status"] = status
     summary["used_withdrawn"] = len(used_withdrawn)
     return summary
@@ -595,7 +802,62 @@ def _gap(reason, given=None):
     return gap if declared else None
 
 
-def _output(emit, v, report, status, gate, parents, session, conversation, epistemic):
+def _prewritten(ledger, event_id, trace_id, text, conversation, attempt_id):
+    """The input event the runtime wrote before executing, when it matches this turn; else an error."""
+    event = ledger.get(event_id) if isinstance(event_id, str) else None
+    if event is None or event["kind"] != "input_received":
+        raise rt.TraceContractError("prewritten_input %r is not an input_received event of this ledger" % (event_id,))
+    payload = event["payload"]
+    for name, ok in (("trace_id", event["trace_id"] == trace_id), ("conversation", payload.get("conversation") == conversation),
+                     ("text", payload.get("text") == text and payload.get("sha256") == sha(text)),
+                     ("attempt_id", isinstance(payload.get("attempt_id"), str) and bool(payload["attempt_id"])
+                      and attempt_id in (None, payload.get("attempt_id")))):
+        if not ok:
+            raise rt.TraceContractError("prewritten_input %s does not match this turn" % name)
+    if ledger.is_withdrawn(event_id) or any(
+            (e["kind"] == "output_created" or e["kind"] == "error" and e["payload"].get("terminal") is True)
+            and e["payload"].get("attempt_id") == payload["attempt_id"] for e in ledger.events):
+        raise rt.TraceContractError("attempt %s already has its output" % payload["attempt_id"])
+    return event
+
+
+def _flush(ledger, callback, input_id, trace_id):
+    """Flush pending events before output; each returned event must rest on this input in this ledger.
+
+    Existing context flushers allocate their own trace IDs, so ancestry (not equal trace IDs) binds them.
+    """
+    ids = callback(ledger, input_id, trace_id)
+    ids = [] if ids is None else ids
+    if not isinstance(ids, (list, tuple)) or any(not isinstance(ref, str) for ref in ids) or len(set(ids)) != len(ids):
+        raise rt.TraceContractError("pending_flush must return a list of distinct event ids")
+    start = ledger.position(input_id)
+    for ref in ids:
+        event = ledger.get(ref) if isinstance(ref, str) else None
+        if event is None or ledger.position(ref) <= start or event["kind"] in {"input_received", "output_created"}:
+            raise rt.TraceContractError("pending event %r is not a pending event after the input" % (ref,))
+        todo, seen = list(event["parent_ids"]), set()
+        while todo:
+            parent = todo.pop()
+            if parent in seen:
+                continue
+            seen.add(parent)
+            todo.extend((ledger.get(parent) or {}).get("parent_ids", []))
+        if input_id not in seen:
+            raise rt.TraceContractError("pending event %r does not rest on this input" % (ref,))
+    return list(ids)
+
+
+def _extra(cx, contract, verification, verified, capture=None):
+    """Output payload fields of the trace contract: identity, provenance, and what verification does not mean."""
+    extra = {**cx, "world_truth_status": "unverified", "provenance": contract["declared"],
+             "criterion_result": None if verification is None else ("passed" if verified else "failed"),
+             "check_event": verification, "provenance_basis": "caller_reported_usage"}
+    if capture is not None:
+        extra["context_qualification"] = capture
+    return extra
+
+
+def _output(emit, v, report, status, gate, parents, session, conversation, epistemic, extra=None):
     text = report.get("text") if report and isinstance(report.get("text"), str) else v["text"]
     payload = {"text": text or "", "sha256": sha(text or ""), "realized": bool(report and report.get("realized")),
                "status": status, "gate_status": gate, "turn": session.turns, "conversation": conversation,
@@ -616,5 +878,17 @@ def _output(emit, v, report, status, gate, parents, session, conversation, epist
         payload["reply_sha256"] = sha(v["text"])     # the UI changed the realized text (affect, format)
     if epistemic is None:
         epistemic = {"answered": "inferred", "recorded": "reported"}.get(status, "unknown")
+    payload.update(extra or {})
+    captured = payload.get("context_qualification")
+    if isinstance(captured, dict) and captured.get("status") == "captured":
+        # qualified_answer_sha256 is raw UTF-8, whereas payload["sha256"] is normalized (sha() strips).
+        # Compare on the same raw basis against the actual output text selected by _output; the
+        # comparator is transient and the displayed hash is not persisted again. A mismatch is truthful.
+        _raw_display_sha256 = hashlib.sha256(str.encode(payload["text"], "utf-8")).hexdigest()
+        payload["context_qualification"] = {
+            **captured,
+            "display_match_basis": "raw_utf8_output_text",
+            "matches_display": captured.get("qualified_answer_sha256") == _raw_display_sha256,
+        }
     return emit("output_created", parent_ids=parents, status=status, subsystem="dialogue",
                 epistemic_status=epistemic, payload=payload)

@@ -6,13 +6,13 @@ tests and the `bench/alma_*` scripts are unchanged.
 ## Purpose
 
 ALMA 0.1: a small, resumable, one-agent research loop on MARCO's event and proof core
-([alma-research-loop.md](../en/alma-research-loop.md), design record
-[alma-0.1.md](../ko/alma-0.1.md)). It keeps one agent's personal state in one JSON file,
+([alma-research-loop.md](../archive/README.md "보관 ZIP 내부: docs/en/alma-research-loop.md"), design record
+[alma-0.1.md](../archive/README.md "보관 ZIP 내부: docs/ko/alma-0.1.md")). It keeps one agent's personal state in one JSON file,
 apart from portable `.kgpack` knowledge; event replay, proofs and action programs stay
 with `ReasoningContext` (module docstring of `runtime.py`). ALMA is not in MARCO 1
 (title of alma-research-loop.md). ALMA advancement is frozen: no persona or social
 features (A1, A2), no new ALMA modules and no ALMA goal after goal 1; existing ALMA tests
-keep passing ([freeze decision](../ko/2026-09-22-freeze-decision.md), line 14). Goal S4
+keep passing ([freeze decision](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-22-freeze-decision.md"), line 14). Goal S4
 moved the three files here from the root (`alma_runtime`, `alma_environment`, `alma_cli`;
 `moved_in_s4` in [target-map.json](target-map.json)).
 
@@ -37,7 +37,7 @@ Not in the package: five scripts under `bench/` import it (`alma_environment_rep
   (`chunking.py`, `rules.py`); ALMA keeps the proposal, approval and activation records.
 - Pack format: `marco.storage.kgpack`; graph loading and lint: `engine.py` (`engine.load`,
   `engine.lint` in `propose_graph_asset_change`).
-- MARCO. Rule S4.3 of [goal S4](../ko/2026-09-24-file-moves-goal.md) says `marco/` imports
+- MARCO. Rule S4.3 of [goal S4](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-24-file-moves-goal.md") says `marco/` imports
   nothing from `alma/`; `alma` is on layer 10 of [target-map.json](target-map.json), above
   every `marco` layer (0 to 9).
 
@@ -58,5 +58,5 @@ Not in the package: five scripts under `bench/` import it (`alma_environment_rep
 | `runtime.local_file_read_adapter` | tests only | `tests/test_alma_runtime.py::test_goal_affect_preference_and_capability_are_causal_and_resumable` |
 | `runtime.LANGUAGE` (`"한국어"`) | `alma/cli.py` | no test names it |
 | `environment.run_local_environment` | `alma/cli.py`, `bench/alma_environment_reproduction.py`, `bench/alma_unified_reproduction.py` | `tests/test_alma_environment.py` (three tests) |
-| `python -m alma.cli` / `python alma/cli.py` | command line; `bench/alma_unified_reproduction.py` runs `alma/cli.py` as a subprocess | `tests/test_alma_cli.py` (six tests, listed in [alma-research-loop.md](../en/alma-research-loop.md)) |
+| `python -m alma.cli` / `python alma/cli.py` | command line; `bench/alma_unified_reproduction.py` runs `alma/cli.py` as a subprocess | `tests/test_alma_cli.py` (six tests, listed in [alma-research-loop.md](../archive/README.md "보관 ZIP 내부: docs/en/alma-research-loop.md")) |
 | fixed reproduction | `bench/alma_integrated_reproduction.py` | `tests/test_alma_integrated_reproduction.py` (two tests; [structure-audit.md](structure-audit.md) line 64 records its RSS assertion as machine-dependent: macOS reports RSS) |

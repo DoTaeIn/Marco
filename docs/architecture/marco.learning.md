@@ -2,6 +2,11 @@
 
 Written 2026-10-01 against commit `e3a6394`; checked against `547f85b`, where `marco/learning/` is unchanged.
 
+Updated 2026-10-06 for the working-tree `LearningMemory` slice. The owner has
+[cancelled MARCO 1 release and started MARCO 2](../archive/README.md "보관 ZIP 내부: docs/ko/2026-10-06-marco2-development-decision.md");
+the freeze discussion below is historical. The
+[first implementation record](../archive/README.md "보관 ZIP 내부: docs/ko/2026-10-06-marco2-first-slices.md") states the measured limits.
+
 ## Purpose
 
 Propose changes to what MARCO knows or how it reads, and admit or use a change only after a
@@ -10,7 +15,7 @@ check: a routing gate (`authoring`), validation cases (`expressions`, `rules`), 
 (`self_authoring`, `proof_chunking`, `experience_concepts`, `expression_learning`,
 `semantic_feedback`, `rule_learning` before S4; [target-map.json](target-map.json)).
 
-The [freeze decision](../ko/2026-09-22-freeze-decision.md) keeps "the freeze on MARCO's
+The [freeze decision](../archive/README.md "보관 ZIP 내부: docs/ko/2026-09-22-freeze-decision.md") keeps "the freeze on MARCO's
 learning or reasoning behaviour", and MARCO 1 is published with "no autonomous learning". The
 decision lists autonomous persistent learning, automatic rule creation and automatic graph
 mutation from dialogue as not in MARCO 1. This page states what the code does; the MARCO 1 gate
@@ -28,6 +33,8 @@ is not measured.
 | [`expressions.py`](../../marco/learning/expressions.py) | `propose`, `propose_paraphrase`, `from_paraphrase`: a supervised expression template is kept only if every separate validation case passes after learning and at least one failed before; validation must hold a positive and a negative case and share no entity with the correction; its docstring says validation labels take no part in induction. On acceptance `propose` copies the learned data and templates into the parser it was given |
 | [`rules.py`](../../marco/learning/rules.py) | `induce`, `propose`: a Horn rule from two or more aligned, corrected proof examples; `propose` needs positive and negative validation that shares no entity with the examples, and returns the candidate without mutating the model |
 | [`feedback.py`](../../marco/learning/feedback.py) | CLI `diagnose / expression / paraphrase / rule`: `diagnose` reports on one question; the other three apply a correction JSON file to a relational model, require `--output`, and save there only when accepted |
+| [`memory.py`](../../marco/learning/memory.py) | `LearningMemory`: bounded explicit expression teaching, base-grounded positive/negative transfer checks, durable candidates, atomic replacement, replay validation, retraction and inert source observations; `installed_expression_origins()` reads exact accepted origins of active expression rules without asserting actual use; never learns inference rules or automatically trusts web claims |
+| [`demo_memory.py`](../../marco/learning/demo_memory.py) | Three-process public teaching, transfer and withdrawal demo with a small comparison seed; this does not establish general dialogue performance |
 
 ## Does not own
 
@@ -45,6 +52,7 @@ is not measured.
 - `concepts.py`: the Python standard library only.
 - `expressions.py`, `feedback.py`: `relational_semantics` (root; lazily in `expressions.py`).
   `feedback.py` imports `expressions` lazily.
+- `memory.py`: `expressions`, `marco.storage.overlay`, and `relational_semantics` lazily.
 - `authoring.py`: `engine`, `purpose_graph`, `bench.routing_benchmark`, `marco.progress` at
   import; lazily `marco.knowledge.ingest.dictionary`, `bench.yardstick`. The structure audit
   ([structure-audit.md](structure-audit.md) A6) lists four of these as upward edges to fix in
@@ -62,6 +70,33 @@ is not measured.
 | `concepts.ExperienceConceptStore` | `marco/reasoning/context.py:239`, `bench/alma_cross_domain_transfer_reproduction.py`, `bench/alma_structural_transfer_reproduction.py` | `tests/test_experience_concepts.py` (ten tests); `tests/test_repair_and_english.py` lists `marco/learning/concepts.py` among the dialogue modules it checks for Korean prose |
 | `expressions.propose` | `feedback.py`, tests | `tests/test_expression_learning.py`, `tests/test_r6_parse_speed.py::test_expression_learning_drops_the_literal_memos`, `tests/test_r6_parse_speed.py::test_two_conversations_on_one_model_do_not_share_what_one_learns` |
 | `expressions.propose_paraphrase`, `.from_paraphrase` | `propose_paraphrase`: `feedback.py`, tests; `from_paraphrase`: tests (and `propose_paraphrase` itself) | `tests/test_paraphrase_learning.py` |
+| `memory.LearningMemory`: `teach`, `parser`, `candidates`, `retract`, `observe` | `demo_memory.py`, tests | `tests/test_learning_memory.py` (12 focused checks, including new processes and interference rollback) |
+| `memory.LearningMemory.installed_expression_origins` | tests; public origin process audit | `tests/test_marco2_installed_expression_origins.py` (22 focused checks); root audit adds two independent checks and six separate processes with two selected models |
+| `memory.LearningMemory.parser` origin transport | Public builds after approval; internal approval replay keeps its defaults | `tests/test_marco2_public_parser_origins.py`, `tests/test_marco2_metadata_error_boundary.py`; root adds ten independent fault checks |
 | `rules.propose` | `relational_semantics.py:2558` (`RelationalParser.learn_rule`), `alma/runtime.py:366` | `tests/test_rule_learning.py` |
 | `rules.induce` | tests (and `rules.propose` itself) | `tests/test_rule_learning.py` |
 | `python marco/learning/feedback.py` | command line | `tests/test_rule_learning.py::test_cli_publishes_only_validated_rule`, `tests/test_expression_learning.py::test_cli_only_publishes_successful_validation`, `tests/test_paraphrase_learning.py::test_cli_accepts_sentence_pairs_without_explicit_semantic_annotations` |
+
+The origin catalog reports the actual rule revision, accepted change and candidate IDs,
+teacher conversation and turn IDs, and the explicitly supplied graph binding (null when
+unknown). It checks the active body against both immutable accepted ADD_RULE records.
+Replacement and retraction remove inactive entries from this catalog while preserving store
+history. It performs no semantic replay, validation or writes. Catalog membership is not proof
+that a particular answer used that learning; the answer-use collector remains incomplete.
+The [six-process public report](../../logs/marco2-installed-learning-origins-2026-10-06.json)
+records the selected meanings, restart, withdrawal and foreign-binding refusal.
+
+The public `parser()` now joins this catalog to actual active rule versions and
+accepted changes before one semantic replay. The compiler preserves origins at
+actual retained, derived and appended positions; `expressions.propose` copies
+them only alongside its existing accepted semantic result. Teaching approval,
+finite validation reports and retraction ordering are unchanged.
+
+Unavailable catalog metadata produces explicit unknown origins. A safely
+identified oversized, stale or malformed row loses only its origin while valid
+other rows survive. A valid null graph binding preserves known teacher and rule
+IDs and reports the binding gap. Genuine semantic replay errors still propagate.
+The returned parser's `_learning_origin_provenance` describes installed-origin
+transport only; it never marks an answer's provenance complete. The
+[six-process transport demo](../../logs/marco2-installed-origin-transport-demo-2026-10-06.json)
+checks teaching, reopening, retraction and two selected parser graphs.

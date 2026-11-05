@@ -1,0 +1,8 @@
+{
+  "description": "기존 예시의 선언된 규칙과 동일한 정보. 학습된 조사·어순 조각을 조합하며 일반 한국어 이해를 보장하지 않습니다.",
+  "context_id": "demo:composition:experimental",
+  "statements": [
+    "지도를 서준이 가지고 있다."
+  ],
+  "query": "지도를 서준이 사용할 수 있나요?"
+}

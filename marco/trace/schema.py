@@ -62,6 +62,8 @@ RUNTIME = ("build", "pack")
 # The first event of a trace also carries these.
 RUNTIME_FIRST = ("pack_digest", "model_digest", "encoder", "realizer", "replay_status")
 REPLAY_STATUSES = ("exact", "approximate")
+# Trace-contract provenance (marco/trace/runtime.py contract_provenance): trace-only metadata.
+PROVENANCE_STATUSES = ("provenance_complete", "provenance_incomplete")
 
 
 # ---------------------------------------------------------------------------
@@ -235,6 +237,9 @@ def problems(event):
     replay = event["runtime"].get("replay_status")
     if replay is not None and replay not in REPLAY_STATUSES:
         out.append(("runtime.replay_status", "unknown replay status %r" % replay))
+    found = event["runtime"].get("provenance_status")
+    if found is not None and found not in PROVENANCE_STATUSES:
+        out.append(("runtime.provenance_status", "unknown provenance status %r" % (found,)))
     if "level" in event and event["level"] not in LEVELS:
         out.append(("level", "unknown level %r" % event["level"]))
     return out
