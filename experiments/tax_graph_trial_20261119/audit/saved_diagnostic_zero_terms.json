@@ -1,0 +1,53 @@
+{
+  "method": "saved JSON inspection only; no model replay",
+  "rows": [
+    {
+      "question_id": "C01",
+      "zeros_in_first_saved_reading": [
+        {
+          "what": "length of a free value",
+          "piece": "일반과세자",
+          "decision": "5 characters",
+          "count": 0,
+          "given": "*"
+        }
+      ]
+    },
+    {
+      "question_id": "C02",
+      "zeros_in_first_saved_reading": [
+        {
+          "what": "length of a free value",
+          "piece": "법인사업자",
+          "decision": "5 characters",
+          "count": 0,
+          "given": "*"
+        }
+      ]
+    },
+    {
+      "question_id": "C03",
+      "zeros_in_first_saved_reading": [
+        {
+          "what": "length of a free value",
+          "piece": "사업자등록",
+          "decision": "5 characters",
+          "count": 0,
+          "given": "*"
+        }
+      ]
+    },
+    {
+      "question_id": "C04",
+      "zeros_in_first_saved_reading": [
+        {
+          "what": "length of a free value",
+          "piece": "국세상담센터",
+          "decision": "6 characters",
+          "count": 0,
+          "given": "*"
+        }
+      ]
+    }
+  ]
+}

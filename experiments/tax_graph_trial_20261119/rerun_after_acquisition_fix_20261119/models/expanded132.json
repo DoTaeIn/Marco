@@ -1,0 +1,2645 @@
+{
+  "schema": "graph-piece-reader-v1",
+  "policy": {
+    "alpha": [
+      1,
+      2
+    ],
+    "margin_ratio": 3,
+    "beam": 16,
+    "max_value_chars": 40,
+    "max_whole_chars": 200,
+    "max_skip_chars": 20,
+    "max_assignments": 5000,
+    "origins_kept": 5
+  },
+  "examples": 132,
+  "tables": {
+    "value_type": {
+      "의 ": {
+        "subject": {
+          "n": 120,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "이다.": {
+        "amount": {
+          "n": 27,
+          "origins": [
+            "fix-000-p",
+            "fix-002-p",
+            "fix-004-p",
+            "fix-006-p",
+            "fix-008-p"
+          ]
+        }
+      },
+      "입니다.": {
+        "amount": {
+          "n": 27,
+          "origins": [
+            "fix-001-p",
+            "fix-003-p",
+            "fix-005-p",
+            "fix-007-p",
+            "fix-009-p"
+          ]
+        }
+      },
+      "는 ": {
+        "subject": {
+          "n": 1,
+          "origins": [
+            "more-016"
+          ]
+        }
+      },
+      "은 ": {
+        "subject": {
+          "n": 5,
+          "origins": [
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020",
+            "more-021"
+          ]
+        }
+      },
+      "을 온라인으로 ": {
+        "subject": {
+          "n": 5,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-025",
+            "more-026",
+            "more-027"
+          ]
+        }
+      },
+      "를 온라인으로 ": {
+        "subject": {
+          "n": 1,
+          "origins": [
+            "more-024"
+          ]
+        }
+      },
+      "가 ": {
+        "amount": {
+          "n": 6,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-031",
+            "more-032",
+            "more-033"
+          ]
+        }
+      },
+      "이 ": {
+        "amount": {
+          "n": 2,
+          "origins": [
+            "more-030",
+            "more-034"
+          ]
+        }
+      }
+    },
+    "value_length": {
+      "*": {
+        "3": {
+          "n": 85,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        },
+        "2": {
+          "n": 13,
+          "origins": [
+            "fix-000-p",
+            "fix-001-p",
+            "fix-004-p",
+            "fix-005-p",
+            "fix-007-p"
+          ]
+        },
+        "4": {
+          "n": 24,
+          "origins": [
+            "fix-003-p",
+            "fix-021-p",
+            "fix-024-p",
+            "fix-024-q",
+            "fix-030-p"
+          ]
+        },
+        "7": {
+          "n": 19,
+          "origins": [
+            "fix-004-p",
+            "fix-004-q",
+            "fix-011-p",
+            "fix-011-q",
+            "fix-012-p"
+          ]
+        },
+        "6": {
+          "n": 12,
+          "origins": [
+            "fix-018-p",
+            "fix-018-q",
+            "fix-025-p",
+            "fix-025-q",
+            "fix-029-p"
+          ]
+        },
+        "9": {
+          "n": 9,
+          "origins": [
+            "fix-018-p",
+            "fix-019-p",
+            "fix-022-p",
+            "fix-023-p",
+            "fix-024-p"
+          ]
+        },
+        "10": {
+          "n": 1,
+          "origins": [
+            "fix-020-p"
+          ]
+        },
+        "8": {
+          "n": 3,
+          "origins": [
+            "fix-026-p",
+            "fix-042-p",
+            "fix-046-p"
+          ]
+        },
+        "5": {
+          "n": 20,
+          "origins": [
+            "fix-030-p",
+            "fix-030-q",
+            "fix-032-p",
+            "fix-033-p",
+            "fix-037-p"
+          ]
+        },
+        "12": {
+          "n": 8,
+          "origins": [
+            "fix-036-p",
+            "fix-036-q",
+            "fix-043-p",
+            "fix-043-q",
+            "more-010"
+          ]
+        }
+      }
+    },
+    "head": {
+      "세율": {
+        "{\"literals\":[[\"kind\",\"세율\"]],\"type\":\"relation\"}": {
+          "n": 18,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "과세기간": {
+        "{\"literals\":[[\"kind\",\"과세기간\"]],\"type\":\"relation\"}": {
+          "n": 13,
+          "origins": [
+            "fix-006-p",
+            "fix-006-q",
+            "fix-007-p",
+            "fix-007-q",
+            "fix-008-p"
+          ]
+        }
+      },
+      "신고횟수": {
+        "{\"literals\":[[\"kind\",\"신고횟수\"]],\"type\":\"relation\"}": {
+          "n": 13,
+          "origins": [
+            "fix-012-p",
+            "fix-012-q",
+            "fix-013-p",
+            "fix-013-q",
+            "fix-014-p"
+          ]
+        }
+      },
+      "신고기간": {
+        "{\"literals\":[[\"kind\",\"신고기간\"]],\"type\":\"relation\"}": {
+          "n": 12,
+          "origins": [
+            "fix-018-p",
+            "fix-018-q",
+            "fix-019-p",
+            "fix-019-q",
+            "fix-020-p"
+          ]
+        }
+      },
+      "신청기한": {
+        "{\"literals\":[[\"kind\",\"신청기한\"]],\"type\":\"relation\"}": {
+          "n": 12,
+          "origins": [
+            "fix-024-p",
+            "fix-024-q",
+            "fix-025-p",
+            "fix-025-q",
+            "fix-026-p"
+          ]
+        }
+      },
+      "신청경로": {
+        "{\"literals\":[[\"kind\",\"신청경로\"]],\"type\":\"relation\"}": {
+          "n": 13,
+          "origins": [
+            "fix-030-p",
+            "fix-030-q",
+            "fix-031-p",
+            "fix-031-q",
+            "fix-032-p"
+          ]
+        }
+      },
+      "상담전화": {
+        "{\"literals\":[[\"kind\",\"상담전화\"]],\"type\":\"relation\"}": {
+          "n": 12,
+          "origins": [
+            "fix-036-p",
+            "fix-036-q",
+            "fix-037-p",
+            "fix-037-q",
+            "fix-038-p"
+          ]
+        }
+      },
+      "신고기한": {
+        "{\"literals\":[[\"kind\",\"신고기한\"]],\"type\":\"relation\"}": {
+          "n": 13,
+          "origins": [
+            "fix-042-p",
+            "fix-042-q",
+            "fix-043-p",
+            "fix-043-q",
+            "fix-044-p"
+          ]
+        }
+      },
+      "부가가치세율": {
+        "{\"literals\":[[\"kind\",\"세율\"]],\"type\":\"relation\"}": {
+          "n": 7,
+          "origins": [
+            "more-000",
+            "more-001",
+            "more-004",
+            "more-005",
+            "more-008"
+          ]
+        }
+      },
+      "일반세율": {
+        "{\"literals\":[[\"kind\",\"세율\"]],\"type\":\"relation\"}": {
+          "n": 7,
+          "origins": [
+            "more-002",
+            "more-003",
+            "more-006",
+            "more-007",
+            "more-010"
+          ]
+        }
+      },
+      "신청해야": {
+        "{\"literals\":[[\"kind\",\"신청기한\"]],\"type\":\"relation\"}": {
+          "n": 6,
+          "origins": [
+            "more-016",
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020"
+          ]
+        }
+      },
+      "신청하려면": {
+        "{\"literals\":[[\"kind\",\"신청경로\"]],\"type\":\"relation\"}": {
+          "n": 6,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-024",
+            "more-025",
+            "more-026"
+          ]
+        }
+      }
+    },
+    "gap": {
+      "start": {
+        "": {
+          "n": 132,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "mid": {
+        "의 ": {
+          "n": 120,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        },
+        "은 ": {
+          "n": 87,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        },
+        "는 ": {
+          "n": 39,
+          "origins": [
+            "fix-012-p",
+            "fix-012-q",
+            "fix-013-p",
+            "fix-013-q",
+            "fix-014-p"
+          ]
+        },
+        "까지 ": {
+          "n": 6,
+          "origins": [
+            "more-016",
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020"
+          ]
+        },
+        "을 온라인으로 ": {
+          "n": 5,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-025",
+            "more-026",
+            "more-027"
+          ]
+        },
+        " ": {
+          "n": 6,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-024",
+            "more-025",
+            "more-026"
+          ]
+        },
+        "를 온라인으로 ": {
+          "n": 1,
+          "origins": [
+            "more-024"
+          ]
+        },
+        "가 ": {
+          "n": 6,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-031",
+            "more-032",
+            "more-033"
+          ]
+        },
+        "이 ": {
+          "n": 2,
+          "origins": [
+            "more-030",
+            "more-034"
+          ]
+        }
+      },
+      "end": {
+        "이다.": {
+          "n": 27,
+          "origins": [
+            "fix-000-p",
+            "fix-002-p",
+            "fix-004-p",
+            "fix-006-p",
+            "fix-008-p"
+          ]
+        },
+        "인가?": {
+          "n": 29,
+          "origins": [
+            "fix-000-q",
+            "fix-002-q",
+            "fix-004-q",
+            "fix-006-q",
+            "fix-008-q"
+          ]
+        },
+        "입니다.": {
+          "n": 27,
+          "origins": [
+            "fix-001-p",
+            "fix-003-p",
+            "fix-005-p",
+            "fix-007-p",
+            "fix-009-p"
+          ]
+        },
+        "인가요?": {
+          "n": 29,
+          "origins": [
+            "fix-001-q",
+            "fix-003-q",
+            "fix-005-q",
+            "fix-007-q",
+            "fix-009-q"
+          ]
+        },
+        " 하는가?": {
+          "n": 3,
+          "origins": [
+            "more-016",
+            "more-018",
+            "more-020"
+          ]
+        },
+        " 하나요?": {
+          "n": 3,
+          "origins": [
+            "more-017",
+            "more-019",
+            "more-021"
+          ]
+        },
+        "를 이용하면 되는가?": {
+          "n": 3,
+          "origins": [
+            "more-022",
+            "more-024",
+            "more-026"
+          ]
+        },
+        "를 이용하면 되나요?": {
+          "n": 3,
+          "origins": [
+            "more-023",
+            "more-025",
+            "more-027"
+          ]
+        },
+        "?": {
+          "n": 8,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-030",
+            "more-031",
+            "more-032"
+          ]
+        }
+      }
+    },
+    "gap_after": {
+      "start": {
+        "": {
+          "n": 132,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "value": {
+        "의 ": {
+          "n": 120,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        },
+        "이다.": {
+          "n": 27,
+          "origins": [
+            "fix-000-p",
+            "fix-002-p",
+            "fix-004-p",
+            "fix-006-p",
+            "fix-008-p"
+          ]
+        },
+        "입니다.": {
+          "n": 27,
+          "origins": [
+            "fix-001-p",
+            "fix-003-p",
+            "fix-005-p",
+            "fix-007-p",
+            "fix-009-p"
+          ]
+        },
+        "는 ": {
+          "n": 1,
+          "origins": [
+            "more-016"
+          ]
+        },
+        "은 ": {
+          "n": 5,
+          "origins": [
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020",
+            "more-021"
+          ]
+        },
+        "을 온라인으로 ": {
+          "n": 5,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-025",
+            "more-026",
+            "more-027"
+          ]
+        },
+        "를 온라인으로 ": {
+          "n": 1,
+          "origins": [
+            "more-024"
+          ]
+        },
+        "가 ": {
+          "n": 6,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-031",
+            "more-032",
+            "more-033"
+          ]
+        },
+        "이 ": {
+          "n": 2,
+          "origins": [
+            "more-030",
+            "more-034"
+          ]
+        }
+      },
+      "head": {
+        "은 ": {
+          "n": 82,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        },
+        "는 ": {
+          "n": 38,
+          "origins": [
+            "fix-012-p",
+            "fix-012-q",
+            "fix-013-p",
+            "fix-013-q",
+            "fix-014-p"
+          ]
+        },
+        " 하는가?": {
+          "n": 3,
+          "origins": [
+            "more-016",
+            "more-018",
+            "more-020"
+          ]
+        },
+        " 하나요?": {
+          "n": 3,
+          "origins": [
+            "more-017",
+            "more-019",
+            "more-021"
+          ]
+        },
+        " ": {
+          "n": 6,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-024",
+            "more-025",
+            "more-026"
+          ]
+        }
+      },
+      "closed": {
+        "인가?": {
+          "n": 29,
+          "origins": [
+            "fix-000-q",
+            "fix-002-q",
+            "fix-004-q",
+            "fix-006-q",
+            "fix-008-q"
+          ]
+        },
+        "인가요?": {
+          "n": 29,
+          "origins": [
+            "fix-001-q",
+            "fix-003-q",
+            "fix-005-q",
+            "fix-007-q",
+            "fix-009-q"
+          ]
+        },
+        "까지 ": {
+          "n": 6,
+          "origins": [
+            "more-016",
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020"
+          ]
+        },
+        "를 이용하면 되는가?": {
+          "n": 3,
+          "origins": [
+            "more-022",
+            "more-024",
+            "more-026"
+          ]
+        },
+        "를 이용하면 되나요?": {
+          "n": 3,
+          "origins": [
+            "more-023",
+            "more-025",
+            "more-027"
+          ]
+        },
+        "?": {
+          "n": 8,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-030",
+            "more-031",
+            "more-032"
+          ]
+        }
+      }
+    },
+    "kind_after": {
+      "": {
+        "value": {
+          "n": 132,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "의 ": {
+        "head": {
+          "n": 120,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "은 ": {
+        "value": {
+          "n": 42,
+          "origins": [
+            "fix-000-p",
+            "fix-001-p",
+            "fix-002-p",
+            "fix-003-p",
+            "fix-004-p"
+          ]
+        },
+        "closed": {
+          "n": 45,
+          "origins": [
+            "fix-000-q",
+            "fix-001-q",
+            "fix-002-q",
+            "fix-003-q",
+            "fix-004-q"
+          ]
+        }
+      },
+      "는 ": {
+        "value": {
+          "n": 20,
+          "origins": [
+            "fix-012-p",
+            "fix-013-p",
+            "fix-014-p",
+            "fix-015-p",
+            "fix-016-p"
+          ]
+        },
+        "closed": {
+          "n": 19,
+          "origins": [
+            "fix-012-q",
+            "fix-013-q",
+            "fix-014-q",
+            "fix-015-q",
+            "fix-016-q"
+          ]
+        }
+      },
+      "까지 ": {
+        "head": {
+          "n": 6,
+          "origins": [
+            "more-016",
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020"
+          ]
+        }
+      },
+      "을 온라인으로 ": {
+        "head": {
+          "n": 5,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-025",
+            "more-026",
+            "more-027"
+          ]
+        }
+      },
+      " ": {
+        "closed": {
+          "n": 6,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-024",
+            "more-025",
+            "more-026"
+          ]
+        }
+      },
+      "를 온라인으로 ": {
+        "head": {
+          "n": 1,
+          "origins": [
+            "more-024"
+          ]
+        }
+      },
+      "가 ": {
+        "closed": {
+          "n": 6,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-031",
+            "more-032",
+            "more-033"
+          ]
+        }
+      },
+      "이 ": {
+        "closed": {
+          "n": 2,
+          "origins": [
+            "more-030",
+            "more-034"
+          ]
+        }
+      }
+    },
+    "gap_after_type": {
+      "subject": {
+        "의 ": {
+          "n": 120,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        },
+        "는 ": {
+          "n": 1,
+          "origins": [
+            "more-016"
+          ]
+        },
+        "은 ": {
+          "n": 5,
+          "origins": [
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020",
+            "more-021"
+          ]
+        },
+        "을 온라인으로 ": {
+          "n": 5,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-025",
+            "more-026",
+            "more-027"
+          ]
+        },
+        "를 온라인으로 ": {
+          "n": 1,
+          "origins": [
+            "more-024"
+          ]
+        }
+      },
+      "relation": {
+        "은 ": {
+          "n": 82,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        },
+        "는 ": {
+          "n": 38,
+          "origins": [
+            "fix-012-p",
+            "fix-012-q",
+            "fix-013-p",
+            "fix-013-q",
+            "fix-014-p"
+          ]
+        },
+        " 하는가?": {
+          "n": 3,
+          "origins": [
+            "more-016",
+            "more-018",
+            "more-020"
+          ]
+        },
+        " 하나요?": {
+          "n": 3,
+          "origins": [
+            "more-017",
+            "more-019",
+            "more-021"
+          ]
+        },
+        " ": {
+          "n": 6,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-024",
+            "more-025",
+            "more-026"
+          ]
+        }
+      },
+      "amount": {
+        "이다.": {
+          "n": 27,
+          "origins": [
+            "fix-000-p",
+            "fix-002-p",
+            "fix-004-p",
+            "fix-006-p",
+            "fix-008-p"
+          ]
+        },
+        "인가?": {
+          "n": 29,
+          "origins": [
+            "fix-000-q",
+            "fix-002-q",
+            "fix-004-q",
+            "fix-006-q",
+            "fix-008-q"
+          ]
+        },
+        "입니다.": {
+          "n": 27,
+          "origins": [
+            "fix-001-p",
+            "fix-003-p",
+            "fix-005-p",
+            "fix-007-p",
+            "fix-009-p"
+          ]
+        },
+        "인가요?": {
+          "n": 29,
+          "origins": [
+            "fix-001-q",
+            "fix-003-q",
+            "fix-005-q",
+            "fix-007-q",
+            "fix-009-q"
+          ]
+        },
+        "까지 ": {
+          "n": 6,
+          "origins": [
+            "more-016",
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020"
+          ]
+        },
+        "를 이용하면 되는가?": {
+          "n": 3,
+          "origins": [
+            "more-022",
+            "more-024",
+            "more-026"
+          ]
+        },
+        "를 이용하면 되나요?": {
+          "n": 3,
+          "origins": [
+            "more-023",
+            "more-025",
+            "more-027"
+          ]
+        },
+        "가 ": {
+          "n": 6,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-031",
+            "more-032",
+            "more-033"
+          ]
+        },
+        "이 ": {
+          "n": 2,
+          "origins": [
+            "more-030",
+            "more-034"
+          ]
+        }
+      },
+      "check": {
+        "?": {
+          "n": 8,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-030",
+            "more-031",
+            "more-032"
+          ]
+        }
+      }
+    },
+    "attach": {
+      "*": {
+        "0": {
+          "n": 138,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        },
+        "-1": {
+          "n": 134,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      }
+    },
+    "role_right": {
+      "의 ": {
+        "subject": {
+          "n": 120,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "이다.": {
+        "amount": {
+          "n": 27,
+          "origins": [
+            "fix-000-p",
+            "fix-002-p",
+            "fix-004-p",
+            "fix-006-p",
+            "fix-008-p"
+          ]
+        }
+      },
+      "인가?": {
+        "amount": {
+          "n": 29,
+          "origins": [
+            "fix-000-q",
+            "fix-002-q",
+            "fix-004-q",
+            "fix-006-q",
+            "fix-008-q"
+          ]
+        }
+      },
+      "입니다.": {
+        "amount": {
+          "n": 27,
+          "origins": [
+            "fix-001-p",
+            "fix-003-p",
+            "fix-005-p",
+            "fix-007-p",
+            "fix-009-p"
+          ]
+        }
+      },
+      "인가요?": {
+        "amount": {
+          "n": 29,
+          "origins": [
+            "fix-001-q",
+            "fix-003-q",
+            "fix-005-q",
+            "fix-007-q",
+            "fix-009-q"
+          ]
+        }
+      },
+      "는 ": {
+        "subject": {
+          "n": 1,
+          "origins": [
+            "more-016"
+          ]
+        }
+      },
+      "까지 ": {
+        "amount": {
+          "n": 6,
+          "origins": [
+            "more-016",
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020"
+          ]
+        }
+      },
+      "은 ": {
+        "subject": {
+          "n": 5,
+          "origins": [
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020",
+            "more-021"
+          ]
+        }
+      },
+      "을 온라인으로 ": {
+        "subject": {
+          "n": 5,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-025",
+            "more-026",
+            "more-027"
+          ]
+        }
+      },
+      "를 이용하면 되는가?": {
+        "amount": {
+          "n": 3,
+          "origins": [
+            "more-022",
+            "more-024",
+            "more-026"
+          ]
+        }
+      },
+      "를 이용하면 되나요?": {
+        "amount": {
+          "n": 3,
+          "origins": [
+            "more-023",
+            "more-025",
+            "more-027"
+          ]
+        }
+      },
+      "를 온라인으로 ": {
+        "subject": {
+          "n": 1,
+          "origins": [
+            "more-024"
+          ]
+        }
+      },
+      "가 ": {
+        "amount": {
+          "n": 6,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-031",
+            "more-032",
+            "more-033"
+          ]
+        }
+      },
+      "?": {
+        "claim": {
+          "n": 8,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-030",
+            "more-031",
+            "more-032"
+          ]
+        }
+      },
+      "이 ": {
+        "amount": {
+          "n": 2,
+          "origins": [
+            "more-030",
+            "more-034"
+          ]
+        }
+      }
+    },
+    "role_left": {
+      "": {
+        "subject": {
+          "n": 132,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "은 ": {
+        "amount": {
+          "n": 87,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "는 ": {
+        "amount": {
+          "n": 39,
+          "origins": [
+            "fix-012-p",
+            "fix-012-q",
+            "fix-013-p",
+            "fix-013-q",
+            "fix-014-p"
+          ]
+        }
+      },
+      " ": {
+        "amount": {
+          "n": 6,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-024",
+            "more-025",
+            "more-026"
+          ]
+        }
+      },
+      "가 ": {
+        "claim": {
+          "n": 6,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-031",
+            "more-032",
+            "more-033"
+          ]
+        }
+      },
+      "이 ": {
+        "claim": {
+          "n": 2,
+          "origins": [
+            "more-030",
+            "more-034"
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "role:subject": {
+        "[[\"ARG\"],[\"HEAD\"]]": {
+          "n": 132,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "role:amount": {
+        "[[\"HEAD\"],[\"ARG\"]]": {
+          "n": 132,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "literal:kind": {
+        "[[\"HEAD\"]]": {
+          "n": 132,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "value": {
+        "[[\"ARG\"]]": {
+          "n": 194,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      },
+      "role:claim": {
+        "[[\"HEAD\"],[\"ARG\"]]": {
+          "n": 8,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-030",
+            "more-031",
+            "more-032"
+          ]
+        }
+      }
+    },
+    "frame": {
+      "{\"literals\":[[\"kind\",\"세율\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 28,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        },
+        "[\"amount\",\"claim\",\"subject\"]": {
+          "n": 4,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-033",
+            "more-035"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"과세기간\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 12,
+          "origins": [
+            "fix-006-p",
+            "fix-006-q",
+            "fix-007-p",
+            "fix-007-q",
+            "fix-008-p"
+          ]
+        },
+        "[\"amount\",\"claim\",\"subject\"]": {
+          "n": 1,
+          "origins": [
+            "more-030"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신고횟수\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 12,
+          "origins": [
+            "fix-012-p",
+            "fix-012-q",
+            "fix-013-p",
+            "fix-013-q",
+            "fix-014-p"
+          ]
+        },
+        "[\"amount\",\"claim\",\"subject\"]": {
+          "n": 1,
+          "origins": [
+            "more-031"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신고기간\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 12,
+          "origins": [
+            "fix-018-p",
+            "fix-018-q",
+            "fix-019-p",
+            "fix-019-q",
+            "fix-020-p"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신청기한\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 18,
+          "origins": [
+            "fix-024-p",
+            "fix-024-q",
+            "fix-025-p",
+            "fix-025-q",
+            "fix-026-p"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신청경로\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 18,
+          "origins": [
+            "fix-030-p",
+            "fix-030-q",
+            "fix-031-p",
+            "fix-031-q",
+            "fix-032-p"
+          ]
+        },
+        "[\"amount\",\"claim\",\"subject\"]": {
+          "n": 1,
+          "origins": [
+            "more-032"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"상담전화\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 12,
+          "origins": [
+            "fix-036-p",
+            "fix-036-q",
+            "fix-037-p",
+            "fix-037-q",
+            "fix-038-p"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신고기한\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 12,
+          "origins": [
+            "fix-042-p",
+            "fix-042-q",
+            "fix-043-p",
+            "fix-043-q",
+            "fix-044-p"
+          ]
+        },
+        "[\"amount\",\"claim\",\"subject\"]": {
+          "n": 1,
+          "origins": [
+            "more-034"
+          ]
+        }
+      }
+    },
+    "repeat_role": {
+      "*": {
+        "no": {
+          "n": 132,
+          "origins": [
+            "fix-000-p",
+            "fix-000-q",
+            "fix-001-p",
+            "fix-001-q",
+            "fix-002-p"
+          ]
+        }
+      }
+    },
+    "closes": {
+      "이다.": {
+        "states": {
+          "n": 27,
+          "origins": [
+            "fix-000-p",
+            "fix-002-p",
+            "fix-004-p",
+            "fix-006-p",
+            "fix-008-p"
+          ]
+        }
+      },
+      "인가?": {
+        "asks": {
+          "n": 29,
+          "origins": [
+            "fix-000-q",
+            "fix-002-q",
+            "fix-004-q",
+            "fix-006-q",
+            "fix-008-q"
+          ]
+        }
+      },
+      "입니다.": {
+        "states": {
+          "n": 27,
+          "origins": [
+            "fix-001-p",
+            "fix-003-p",
+            "fix-005-p",
+            "fix-007-p",
+            "fix-009-p"
+          ]
+        }
+      },
+      "인가요?": {
+        "asks": {
+          "n": 29,
+          "origins": [
+            "fix-001-q",
+            "fix-003-q",
+            "fix-005-q",
+            "fix-007-q",
+            "fix-009-q"
+          ]
+        }
+      },
+      " 하는가?": {
+        "asks": {
+          "n": 3,
+          "origins": [
+            "more-016",
+            "more-018",
+            "more-020"
+          ]
+        }
+      },
+      " 하나요?": {
+        "asks": {
+          "n": 3,
+          "origins": [
+            "more-017",
+            "more-019",
+            "more-021"
+          ]
+        }
+      },
+      "를 이용하면 되는가?": {
+        "asks": {
+          "n": 3,
+          "origins": [
+            "more-022",
+            "more-024",
+            "more-026"
+          ]
+        }
+      },
+      "를 이용하면 되나요?": {
+        "asks": {
+          "n": 3,
+          "origins": [
+            "more-023",
+            "more-025",
+            "more-027"
+          ]
+        }
+      },
+      "?": {
+        "claims": {
+          "n": 8,
+          "origins": [
+            "more-028",
+            "more-029",
+            "more-030",
+            "more-031",
+            "more-032"
+          ]
+        }
+      }
+    },
+    "head_in": {
+      "세율": {
+        "states": {
+          "n": 6,
+          "origins": [
+            "fix-000-p",
+            "fix-001-p",
+            "fix-002-p",
+            "fix-003-p",
+            "fix-004-p"
+          ]
+        },
+        "asks": {
+          "n": 10,
+          "origins": [
+            "fix-000-q",
+            "fix-001-q",
+            "fix-002-q",
+            "fix-003-q",
+            "fix-004-q"
+          ]
+        },
+        "claims": {
+          "n": 2,
+          "origins": [
+            "more-028",
+            "more-035"
+          ]
+        }
+      },
+      "과세기간": {
+        "states": {
+          "n": 6,
+          "origins": [
+            "fix-006-p",
+            "fix-007-p",
+            "fix-008-p",
+            "fix-009-p",
+            "fix-010-p"
+          ]
+        },
+        "asks": {
+          "n": 6,
+          "origins": [
+            "fix-006-q",
+            "fix-007-q",
+            "fix-008-q",
+            "fix-009-q",
+            "fix-010-q"
+          ]
+        },
+        "claims": {
+          "n": 1,
+          "origins": [
+            "more-030"
+          ]
+        }
+      },
+      "신고횟수": {
+        "states": {
+          "n": 6,
+          "origins": [
+            "fix-012-p",
+            "fix-013-p",
+            "fix-014-p",
+            "fix-015-p",
+            "fix-016-p"
+          ]
+        },
+        "asks": {
+          "n": 6,
+          "origins": [
+            "fix-012-q",
+            "fix-013-q",
+            "fix-014-q",
+            "fix-015-q",
+            "fix-016-q"
+          ]
+        },
+        "claims": {
+          "n": 1,
+          "origins": [
+            "more-031"
+          ]
+        }
+      },
+      "신고기간": {
+        "states": {
+          "n": 6,
+          "origins": [
+            "fix-018-p",
+            "fix-019-p",
+            "fix-020-p",
+            "fix-021-p",
+            "fix-022-p"
+          ]
+        },
+        "asks": {
+          "n": 6,
+          "origins": [
+            "fix-018-q",
+            "fix-019-q",
+            "fix-020-q",
+            "fix-021-q",
+            "fix-022-q"
+          ]
+        }
+      },
+      "신청기한": {
+        "states": {
+          "n": 6,
+          "origins": [
+            "fix-024-p",
+            "fix-025-p",
+            "fix-026-p",
+            "fix-027-p",
+            "fix-028-p"
+          ]
+        },
+        "asks": {
+          "n": 6,
+          "origins": [
+            "fix-024-q",
+            "fix-025-q",
+            "fix-026-q",
+            "fix-027-q",
+            "fix-028-q"
+          ]
+        }
+      },
+      "신청경로": {
+        "states": {
+          "n": 6,
+          "origins": [
+            "fix-030-p",
+            "fix-031-p",
+            "fix-032-p",
+            "fix-033-p",
+            "fix-034-p"
+          ]
+        },
+        "asks": {
+          "n": 6,
+          "origins": [
+            "fix-030-q",
+            "fix-031-q",
+            "fix-032-q",
+            "fix-033-q",
+            "fix-034-q"
+          ]
+        },
+        "claims": {
+          "n": 1,
+          "origins": [
+            "more-032"
+          ]
+        }
+      },
+      "상담전화": {
+        "states": {
+          "n": 6,
+          "origins": [
+            "fix-036-p",
+            "fix-037-p",
+            "fix-038-p",
+            "fix-039-p",
+            "fix-040-p"
+          ]
+        },
+        "asks": {
+          "n": 6,
+          "origins": [
+            "fix-036-q",
+            "fix-037-q",
+            "fix-038-q",
+            "fix-039-q",
+            "fix-040-q"
+          ]
+        }
+      },
+      "신고기한": {
+        "states": {
+          "n": 6,
+          "origins": [
+            "fix-042-p",
+            "fix-043-p",
+            "fix-044-p",
+            "fix-045-p",
+            "fix-046-p"
+          ]
+        },
+        "asks": {
+          "n": 6,
+          "origins": [
+            "fix-042-q",
+            "fix-043-q",
+            "fix-044-q",
+            "fix-045-q",
+            "fix-046-q"
+          ]
+        },
+        "claims": {
+          "n": 1,
+          "origins": [
+            "more-034"
+          ]
+        }
+      },
+      "부가가치세율": {
+        "states": {
+          "n": 3,
+          "origins": [
+            "more-000",
+            "more-004",
+            "more-008"
+          ]
+        },
+        "asks": {
+          "n": 3,
+          "origins": [
+            "more-001",
+            "more-005",
+            "more-009"
+          ]
+        },
+        "claims": {
+          "n": 1,
+          "origins": [
+            "more-033"
+          ]
+        }
+      },
+      "일반세율": {
+        "states": {
+          "n": 3,
+          "origins": [
+            "more-002",
+            "more-006",
+            "more-010"
+          ]
+        },
+        "asks": {
+          "n": 3,
+          "origins": [
+            "more-003",
+            "more-007",
+            "more-011"
+          ]
+        },
+        "claims": {
+          "n": 1,
+          "origins": [
+            "more-029"
+          ]
+        }
+      },
+      "신청해야": {
+        "asks": {
+          "n": 6,
+          "origins": [
+            "more-016",
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020"
+          ]
+        }
+      },
+      "신청하려면": {
+        "asks": {
+          "n": 6,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-024",
+            "more-025",
+            "more-026"
+          ]
+        }
+      }
+    },
+    "closed": {
+      "얼마": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 8,
+          "origins": [
+            "fix-000-q",
+            "fix-002-q",
+            "fix-004-q",
+            "fix-006-q",
+            "fix-008-q"
+          ]
+        }
+      },
+      "무엇": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 29,
+          "origins": [
+            "fix-001-q",
+            "fix-003-q",
+            "fix-005-q",
+            "fix-007-q",
+            "fix-009-q"
+          ]
+        }
+      },
+      "몇회": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 3,
+          "origins": [
+            "fix-012-q",
+            "fix-014-q",
+            "fix-016-q"
+          ]
+        }
+      },
+      "언제": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 15,
+          "origins": [
+            "fix-018-q",
+            "fix-020-q",
+            "fix-022-q",
+            "fix-024-q",
+            "fix-026-q"
+          ]
+        }
+      },
+      "어디": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 9,
+          "origins": [
+            "fix-030-q",
+            "fix-032-q",
+            "fix-034-q",
+            "more-022",
+            "more-023"
+          ]
+        }
+      },
+      "몇 퍼센트": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 6,
+          "origins": [
+            "more-001",
+            "more-007",
+            "more-012",
+            "more-013",
+            "more-014"
+          ]
+        }
+      },
+      "맞는가": {
+        "{\"project\":false,\"type\":\"check\"}": {
+          "n": 4,
+          "origins": [
+            "more-028",
+            "more-030",
+            "more-032",
+            "more-034"
+          ]
+        }
+      },
+      "맞나요": {
+        "{\"project\":false,\"type\":\"check\"}": {
+          "n": 4,
+          "origins": [
+            "more-029",
+            "more-031",
+            "more-033",
+            "more-035"
+          ]
+        }
+      }
+    },
+    "role_surface": {
+      "얼마": {
+        "amount": {
+          "n": 8,
+          "origins": [
+            "fix-000-q",
+            "fix-002-q",
+            "fix-004-q",
+            "fix-006-q",
+            "fix-008-q"
+          ]
+        }
+      },
+      "무엇": {
+        "amount": {
+          "n": 29,
+          "origins": [
+            "fix-001-q",
+            "fix-003-q",
+            "fix-005-q",
+            "fix-007-q",
+            "fix-009-q"
+          ]
+        }
+      },
+      "몇회": {
+        "amount": {
+          "n": 3,
+          "origins": [
+            "fix-012-q",
+            "fix-014-q",
+            "fix-016-q"
+          ]
+        }
+      },
+      "언제": {
+        "amount": {
+          "n": 15,
+          "origins": [
+            "fix-018-q",
+            "fix-020-q",
+            "fix-022-q",
+            "fix-024-q",
+            "fix-026-q"
+          ]
+        }
+      },
+      "어디": {
+        "amount": {
+          "n": 9,
+          "origins": [
+            "fix-030-q",
+            "fix-032-q",
+            "fix-034-q",
+            "more-022",
+            "more-023"
+          ]
+        }
+      },
+      "몇 퍼센트": {
+        "amount": {
+          "n": 6,
+          "origins": [
+            "more-001",
+            "more-007",
+            "more-012",
+            "more-013",
+            "more-014"
+          ]
+        }
+      },
+      "맞는가": {
+        "claim": {
+          "n": 4,
+          "origins": [
+            "more-028",
+            "more-030",
+            "more-032",
+            "more-034"
+          ]
+        }
+      },
+      "맞나요": {
+        "claim": {
+          "n": 4,
+          "origins": [
+            "more-029",
+            "more-031",
+            "more-033",
+            "more-035"
+          ]
+        }
+      }
+    },
+    "stem": {
+      "신청": {
+        "{\"literals\":[[\"kind\",\"신청기한\"]],\"type\":\"relation\"}": {
+          "n": 1,
+          "origins": [
+            "fix-024-p",
+            "fix-024-q",
+            "fix-025-p",
+            "fix-025-q",
+            "fix-026-p"
+          ],
+          "forms": [
+            "신청기한",
+            "신청해야"
+          ]
+        },
+        "{\"literals\":[[\"kind\",\"신청경로\"]],\"type\":\"relation\"}": {
+          "n": 1,
+          "origins": [
+            "fix-030-p",
+            "fix-030-q",
+            "fix-031-p",
+            "fix-031-q",
+            "fix-032-p"
+          ],
+          "forms": [
+            "신청경로",
+            "신청하려면"
+          ]
+        }
+      },
+      "신고": {
+        "{\"literals\":[[\"kind\",\"신고기한\"]],\"type\":\"relation\"}": {
+          "n": 1,
+          "origins": [
+            "fix-042-p",
+            "fix-042-q",
+            "fix-043-p",
+            "fix-043-q",
+            "fix-044-p"
+          ],
+          "forms": [
+            "신고기한"
+          ]
+        }
+      }
+    },
+    "ending": {
+      "*": {
+        "기한": {
+          "n": 1,
+          "origins": [
+            "fix-024-p",
+            "fix-024-q",
+            "fix-025-p",
+            "fix-025-q",
+            "fix-026-p"
+          ],
+          "forms": [
+            "신청기한"
+          ]
+        },
+        "해야": {
+          "n": 1,
+          "origins": [
+            "more-016",
+            "more-017",
+            "more-018",
+            "more-019",
+            "more-020"
+          ],
+          "forms": [
+            "신청해야"
+          ]
+        },
+        "경로": {
+          "n": 1,
+          "origins": [
+            "fix-030-p",
+            "fix-030-q",
+            "fix-031-p",
+            "fix-031-q",
+            "fix-032-p"
+          ],
+          "forms": [
+            "신청경로"
+          ]
+        },
+        "하려면": {
+          "n": 1,
+          "origins": [
+            "more-022",
+            "more-023",
+            "more-024",
+            "more-025",
+            "more-026"
+          ],
+          "forms": [
+            "신청하려면"
+          ]
+        }
+      }
+    }
+  },
+  "cues": {
+    "은 ": {
+      "used": {
+        "n": 87,
+        "origins": [
+          "fix-000-p",
+          "fix-000-q",
+          "fix-001-p",
+          "fix-001-q",
+          "fix-002-p"
+        ]
+      }
+    },
+    "세율": {
+      "used": {
+        "n": 18,
+        "origins": [
+          "fix-000-p",
+          "fix-000-q",
+          "fix-001-p",
+          "fix-001-q",
+          "fix-002-p"
+        ]
+      }
+    },
+    "이다.": {
+      "used": {
+        "n": 27,
+        "origins": [
+          "fix-000-p",
+          "fix-002-p",
+          "fix-004-p",
+          "fix-006-p",
+          "fix-008-p"
+        ]
+      }
+    },
+    "의 ": {
+      "used": {
+        "n": 120,
+        "origins": [
+          "fix-000-p",
+          "fix-000-q",
+          "fix-001-p",
+          "fix-001-q",
+          "fix-002-p"
+        ]
+      }
+    },
+    "인가?": {
+      "used": {
+        "n": 29,
+        "origins": [
+          "fix-000-q",
+          "fix-002-q",
+          "fix-004-q",
+          "fix-006-q",
+          "fix-008-q"
+        ]
+      }
+    },
+    "얼마": {
+      "used": {
+        "n": 8,
+        "origins": [
+          "fix-000-q",
+          "fix-002-q",
+          "fix-004-q",
+          "fix-006-q",
+          "fix-008-q"
+        ]
+      }
+    },
+    "입니다.": {
+      "used": {
+        "n": 27,
+        "origins": [
+          "fix-001-p",
+          "fix-003-p",
+          "fix-005-p",
+          "fix-007-p",
+          "fix-009-p"
+        ]
+      }
+    },
+    "무엇": {
+      "used": {
+        "n": 29,
+        "origins": [
+          "fix-001-q",
+          "fix-003-q",
+          "fix-005-q",
+          "fix-007-q",
+          "fix-009-q"
+        ]
+      }
+    },
+    "인가요?": {
+      "used": {
+        "n": 29,
+        "origins": [
+          "fix-001-q",
+          "fix-003-q",
+          "fix-005-q",
+          "fix-007-q",
+          "fix-009-q"
+        ]
+      }
+    },
+    "과세기간": {
+      "used": {
+        "n": 13,
+        "origins": [
+          "fix-006-p",
+          "fix-006-q",
+          "fix-007-p",
+          "fix-007-q",
+          "fix-008-p"
+        ]
+      }
+    },
+    "는 ": {
+      "used": {
+        "n": 39,
+        "origins": [
+          "fix-012-p",
+          "fix-012-q",
+          "fix-013-p",
+          "fix-013-q",
+          "fix-014-p"
+        ]
+      }
+    },
+    "신고횟수": {
+      "used": {
+        "n": 13,
+        "origins": [
+          "fix-012-p",
+          "fix-012-q",
+          "fix-013-p",
+          "fix-013-q",
+          "fix-014-p"
+        ]
+      }
+    },
+    "몇회": {
+      "used": {
+        "n": 3,
+        "origins": [
+          "fix-012-q",
+          "fix-014-q",
+          "fix-016-q"
+        ]
+      }
+    },
+    "신고기간": {
+      "used": {
+        "n": 12,
+        "origins": [
+          "fix-018-p",
+          "fix-018-q",
+          "fix-019-p",
+          "fix-019-q",
+          "fix-020-p"
+        ]
+      }
+    },
+    "언제": {
+      "used": {
+        "n": 15,
+        "origins": [
+          "fix-018-q",
+          "fix-020-q",
+          "fix-022-q",
+          "fix-024-q",
+          "fix-026-q"
+        ]
+      }
+    },
+    "신청기한": {
+      "used": {
+        "n": 12,
+        "origins": [
+          "fix-024-p",
+          "fix-024-q",
+          "fix-025-p",
+          "fix-025-q",
+          "fix-026-p"
+        ]
+      }
+    },
+    "신청경로": {
+      "used": {
+        "n": 13,
+        "origins": [
+          "fix-030-p",
+          "fix-030-q",
+          "fix-031-p",
+          "fix-031-q",
+          "fix-032-p"
+        ]
+      }
+    },
+    "어디": {
+      "used": {
+        "n": 9,
+        "origins": [
+          "fix-030-q",
+          "fix-032-q",
+          "fix-034-q",
+          "more-022",
+          "more-023"
+        ]
+      }
+    },
+    "상담전화": {
+      "used": {
+        "n": 12,
+        "origins": [
+          "fix-036-p",
+          "fix-036-q",
+          "fix-037-p",
+          "fix-037-q",
+          "fix-038-p"
+        ]
+      }
+    },
+    "신고기한": {
+      "used": {
+        "n": 13,
+        "origins": [
+          "fix-042-p",
+          "fix-042-q",
+          "fix-043-p",
+          "fix-043-q",
+          "fix-044-p"
+        ]
+      }
+    },
+    "부가가치세율": {
+      "used": {
+        "n": 7,
+        "origins": [
+          "more-000",
+          "more-001",
+          "more-004",
+          "more-005",
+          "more-008"
+        ]
+      }
+    },
+    "몇 퍼센트": {
+      "used": {
+        "n": 6,
+        "origins": [
+          "more-001",
+          "more-007",
+          "more-012",
+          "more-013",
+          "more-014"
+        ]
+      }
+    },
+    "일반세율": {
+      "used": {
+        "n": 7,
+        "origins": [
+          "more-002",
+          "more-003",
+          "more-006",
+          "more-007",
+          "more-010"
+        ]
+      }
+    },
+    "까지 ": {
+      "used": {
+        "n": 6,
+        "origins": [
+          "more-016",
+          "more-017",
+          "more-018",
+          "more-019",
+          "more-020"
+        ]
+      }
+    },
+    " 하는가?": {
+      "used": {
+        "n": 3,
+        "origins": [
+          "more-016",
+          "more-018",
+          "more-020"
+        ]
+      }
+    },
+    "신청해야": {
+      "used": {
+        "n": 6,
+        "origins": [
+          "more-016",
+          "more-017",
+          "more-018",
+          "more-019",
+          "more-020"
+        ]
+      }
+    },
+    " 하나요?": {
+      "used": {
+        "n": 3,
+        "origins": [
+          "more-017",
+          "more-019",
+          "more-021"
+        ]
+      }
+    },
+    "을 온라인으로 ": {
+      "used": {
+        "n": 5,
+        "origins": [
+          "more-022",
+          "more-023",
+          "more-025",
+          "more-026",
+          "more-027"
+        ]
+      }
+    },
+    "신청하려면": {
+      "used": {
+        "n": 6,
+        "origins": [
+          "more-022",
+          "more-023",
+          "more-024",
+          "more-025",
+          "more-026"
+        ]
+      }
+    },
+    "를 이용하면 되는가?": {
+      "used": {
+        "n": 3,
+        "origins": [
+          "more-022",
+          "more-024",
+          "more-026"
+        ]
+      }
+    },
+    "를 이용하면 되나요?": {
+      "used": {
+        "n": 3,
+        "origins": [
+          "more-023",
+          "more-025",
+          "more-027"
+        ]
+      }
+    },
+    "를 온라인으로 ": {
+      "used": {
+        "n": 1,
+        "origins": [
+          "more-024"
+        ]
+      }
+    },
+    "가 ": {
+      "used": {
+        "n": 6,
+        "origins": [
+          "more-028",
+          "more-029",
+          "more-031",
+          "more-032",
+          "more-033"
+        ]
+      }
+    },
+    "맞는가": {
+      "used": {
+        "n": 4,
+        "origins": [
+          "more-028",
+          "more-030",
+          "more-032",
+          "more-034"
+        ]
+      }
+    },
+    "?": {
+      "used": {
+        "n": 8,
+        "origins": [
+          "more-028",
+          "more-029",
+          "more-030",
+          "more-031",
+          "more-032"
+        ]
+      }
+    },
+    "맞나요": {
+      "used": {
+        "n": 4,
+        "origins": [
+          "more-029",
+          "more-031",
+          "more-033",
+          "more-035"
+        ]
+      }
+    },
+    "이 ": {
+      "used": {
+        "n": 2,
+        "origins": [
+          "more-030",
+          "more-034"
+        ]
+      }
+    }
+  },
+  "identity": {},
+  "skipped": [],
+  "alias": {}
+}

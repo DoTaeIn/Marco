@@ -1,0 +1,66 @@
+{
+  "status": "complete first capture independently recounted",
+  "records": 48,
+  "distinct_question_arm_pairs": 48,
+  "tier_counts": [
+    {
+      "arm": "graph",
+      "tier": "direct",
+      "status": "hold",
+      "count": 14
+    },
+    {
+      "arm": "end_to_end",
+      "tier": "direct",
+      "status": "hold",
+      "count": 14
+    },
+    {
+      "arm": "graph",
+      "tier": "paraphrase",
+      "status": "hold",
+      "count": 6
+    },
+    {
+      "arm": "end_to_end",
+      "tier": "paraphrase",
+      "status": "hold",
+      "count": 2
+    },
+    {
+      "arm": "end_to_end",
+      "tier": "paraphrase",
+      "status": "timeout",
+      "count": 4
+    },
+    {
+      "arm": "graph",
+      "tier": "boundary",
+      "status": "hold",
+      "count": 4
+    },
+    {
+      "arm": "end_to_end",
+      "tier": "boundary",
+      "status": "hold",
+      "count": 4
+    }
+  ],
+  "factual_answers_emitted": 0,
+  "correct_factual_answers": 0,
+  "wrong_factual_answers": 0,
+  "held": 44,
+  "errors": 0,
+  "timeouts": 4,
+  "unknown_detection_credit": false,
+  "boundary_interpretation": "All four boundary holds stem from question/passage reading failures; no demonstrated arithmetic, eligibility, unknown-fact recognition, or yes/no rejection.",
+  "scope_interpretation": "No factual value was emitted; no false legal claim observed. This supplies zero evidence of successful tax lookup in main24.",
+  "manifest_sha256": "1f6972280a86b930d44c41eb965af19cd74d3cf19a66cbfc16ba324bff8aa9a1",
+  "results_sha256": "a8ebaac4210fc774c3526bce7dd04431ad9783a4c9d1f18391136c8bfb12ef35",
+  "result_reasons": {
+    "the question was not read with confidence: every reading uses something never seen in training": 10,
+    "the passage was not read with confidence: search bound reached": 20,
+    "the question was not read with confidence: the text cannot be cut into known pieces": 14,
+    "first attempt exceeded 10 seconds": 4
+  }
+}

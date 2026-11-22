@@ -1,0 +1,89 @@
+{
+  "audit": "independent preflight",
+  "status": "METHOD PASS for one-shot frozen capture",
+  "student_questions_executed_by_auditor": false,
+  "observed_counts": {
+    "facts": 14,
+    "contexts": 1,
+    "lessons": 44,
+    "questions": 24,
+    "direct": 14,
+    "paraphrase": 6,
+    "boundary": 4
+  },
+  "method_findings": [
+    "Only lessons go to R.build; question metadata is not forwarded to R.read or A.answer.",
+    "All questions share tax-all; no gold fact routing.",
+    "14 subject/property/value anchors exactly match facts.",
+    "Fictional subjects and values are distinct from tax facts; tax relation labels and question constructions are supervised.",
+    "Raw graph arm uses manually authored supplied facts; end_to_end reads full context.",
+    "Exclusive output creation with per-record flush preserves first attempts."
+  ],
+  "limitations": [
+    "Scopes/exceptions are metadata rather than graph conditions. Attach scopes to legal interpretation. In particular F04 excludes small corporations with advance notice; no universal four-filings claim.",
+    "Direct tier is canonical wording, but uniform 무엇인가 differs from lessons for most relation labels. Do not describe every control as an exact registered-form control.",
+    "Hold is neither correct factual answer nor proof of correctly understood unknown. Boundary holds need separate interpretation.",
+    "This is graph lookup demonstration, not independent broad tax reasoning."
+  ],
+  "independent_official_source_checks": [
+    {
+      "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7693&mi=2272",
+      "facts": [
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "F07"
+      ],
+      "result": "values confirmed including small-corporation exception; original 7694 page timed out twice"
+    },
+    {
+      "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7776&mi=2444",
+      "facts": [
+        "F08",
+        "F10"
+      ],
+      "result": "20 days from commencement and 126 confirmed"
+    },
+    {
+      "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7806&mi=2486",
+      "facts": [
+        "F09"
+      ],
+      "result": "Hometax online application confirmed"
+    },
+    {
+      "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7665&mi=2225",
+      "facts": [
+        "F11",
+        "F12",
+        "F13"
+      ],
+      "result": "general May period, 2026 June 1, June 30 confirmed"
+    },
+    {
+      "url": "https://www.nts.go.kr/gangseo/na/ntt/selectNttInfo.do?mi=5512&nttSn=1353291",
+      "facts": [
+        "F14"
+      ],
+      "result": "2026 July 27 confirmed"
+    }
+  ],
+  "as_of": "2026-11-19",
+  "input_sha256": {
+    "facts.json": "33b2dd9474e8e850b40c3740e45396e62099ae16e10fc3522dab526ea586b1d7",
+    "contexts.json": "8d1e1fc64af17d9d44f3b3f0c466be4416a8e75493894a3b4ee5c3e0a57cddd9",
+    "lessons.json": "8c215a2064d4db5c8fb2fb0268ff6dded748658851a3dbad98cd284bdca9e8fe",
+    "questions.json": "21f8ec52e370d7f85de705900d9c8235c4d8e4eec251b507937080092c609253"
+  },
+  "runner_sha256": "2e090533d7983b46ebc1800947992973d9315786806de4149fde5d68af9a4d8b",
+  "manifest_sha256": "1f6972280a86b930d44c41eb965af19cd74d3cf19a66cbfc16ba324bff8aa9a1",
+  "model_sha256": "b4a9cdeaf3fb67af41e4386480c25b490101db1f71e47e67ea73388fed0a2fda",
+  "runtime_hash_check": "all manifest paths verified; root relational_semantics.py included",
+  "timeouts": {
+    "graph_seconds": 20,
+    "end_to_end_seconds": 10
+  }
+}

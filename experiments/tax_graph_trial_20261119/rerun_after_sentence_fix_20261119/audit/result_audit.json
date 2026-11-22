@@ -1,0 +1,676 @@
+{
+  "record_count": 52,
+  "same_input_model_and_previous_results": true,
+  "changed_source_since_previous": [
+    "experiments/graph_weighted_acquisition/reader.py"
+  ],
+  "source_snapshot_and_postcheck_pass": true,
+  "counts": [
+    {
+      "group": "main",
+      "arm": "end_to_end",
+      "classification": "correct",
+      "n": 10
+    },
+    {
+      "group": "main",
+      "arm": "end_to_end",
+      "classification": "hold",
+      "n": 14
+    },
+    {
+      "group": "main",
+      "arm": "graph",
+      "classification": "correct",
+      "n": 10
+    },
+    {
+      "group": "main",
+      "arm": "graph",
+      "classification": "hold",
+      "n": 14
+    },
+    {
+      "group": "supplemental",
+      "arm": "graph",
+      "classification": "correct",
+      "n": 4
+    }
+  ],
+  "executor_states": [
+    {
+      "executor": "not run",
+      "verified": false,
+      "n": 28
+    },
+    {
+      "executor": "unavailable",
+      "verified": false,
+      "n": 24
+    }
+  ],
+  "passage_graphs_equal_to_supplied_context_ignoring_node_ids": 24,
+  "answered_returns": 24,
+  "proofs_checked": 24,
+  "proof_conditions_with_exact_context_spans": 120,
+  "manifest_sha256": "4101e4f80e8ae4269c5f872490172a724f1a5db37c2a2f12cf422c37464a0860",
+  "results_sha256": "561dcb87d0f6aee490c5c423ec628d911a2df03e7f47786d37715b57be29579c",
+  "rows": [
+    {
+      "id": "Q01",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q01",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q02",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "6개월"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q02",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "6개월"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q03",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q03",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q04",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q04",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q05",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "7월1일~7월25일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q05",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "7월1일~7월25일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q06",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q06",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q07",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q07",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q08",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q08",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q09",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q09",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q10",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q10",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q11",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "다음해5월1일~5월31일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q11",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "다음해5월1일~5월31일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q12",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "2026년6월1일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q12",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "2026년6월1일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q13",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "다음해6월30일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q13",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "다음해6월30일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q14",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q14",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "Q15",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q15",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q16",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q16",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q17",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q17",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q18",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q18",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q19",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q20",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q19",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q21",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q20",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q22",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q21",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q23",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q22",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q24",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q23",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "Q24",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false
+    },
+    {
+      "id": "C01",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "C02",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "연4회"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "C03",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    },
+    {
+      "id": "C04",
+      "arm": "graph",
+      "before": "correct",
+      "after": "correct",
+      "answers": [
+        [
+          "126"
+        ]
+      ],
+      "reason": "every condition of the question holds in the passage",
+      "executor": "unavailable",
+      "verified": false
+    }
+  ]
+}

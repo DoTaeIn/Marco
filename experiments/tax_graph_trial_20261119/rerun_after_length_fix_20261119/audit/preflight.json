@@ -1,0 +1,21 @@
+{
+  "status": "SNAPSHOT METHOD PASS",
+  "manifest_sha256": "b8cff783d37540cfaad15906e31105b36f978c353b776b47b7f0eb06c30f403e",
+  "runner_sha256": "f4da985e4fd9e80f18a287019ddf3e9c1a4865f2f4e274b9f059c8e7459f1ca9",
+  "original_inputs_and_model_unchanged": true,
+  "original_results_preserved": true,
+  "snapshot_matches_current_sources": true,
+  "gold_metadata_passed_to_reader": false,
+  "graph_context": "all14 shared facts",
+  "limits_seconds": {
+    "graph": 20,
+    "end_to_end": 10
+  },
+  "workers": 2,
+  "question_jobs": 52,
+  "changes_vs_original_manifest": [
+    "experiments/graph_weighted_acquisition/reader.py",
+    "experiments/graph_weighted_acquisition/answer.py"
+  ],
+  "disclosure": "Fixed-input regression after source change; not independent new generalization benchmark. No retraining. Answer.py source also changed; avoid only-reader-byte claim."
+}

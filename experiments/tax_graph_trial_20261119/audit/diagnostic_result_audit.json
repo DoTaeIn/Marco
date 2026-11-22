@@ -1,0 +1,15 @@
+{
+  "status": "independently verified complete first diagnostic capture",
+  "records": 4,
+  "held": 4,
+  "answers": 0,
+  "native_states": {
+    "not run": 4
+  },
+  "reasons": {
+    "the question was not read with confidence: every reading uses something never seen in training": 4
+  },
+  "results_sha256": "c52e76d2543022bcacfb725b39e7dcdc5635e24803c7b05317b5f75d4d9ff150",
+  "interpretation": "All four exact supervised forms still held after tax subject substitution. This diagnoses a limitation beyond just main question wording. Reader accepted no fully observed supported reading; no native graph lookup was attempted. It does not prove the manually authored context graph or matcher incorrect. No post-hoc diagnostic success or main score gain.",
+  "main_preserved": true
+}

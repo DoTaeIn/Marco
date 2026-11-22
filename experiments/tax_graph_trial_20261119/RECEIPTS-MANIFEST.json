@@ -1,0 +1,3159 @@
+{
+  "schema": "public-tax-receipts-v1",
+  "date": "2026-11-22",
+  "base_commit": "6d74db8032e433eb11561c99c28e34c9f1dac2b0",
+  "archive": "experiments/tax_graph_trial_20261119/receipts-20261119.tar.gz",
+  "archive_sha256": "41080bfd4fdadfe8d4353b30e64371fd4f90fd84d5aaa184a8fe6cf1b5edbf95",
+  "files": [
+    {
+      "path": "experiments/tax_graph_trial_20261119/REPORT.md",
+      "sha256": "35a1e2f08660b624e4a9b285fddc47fc2fde8f55e09e66c02b29e2772e2cfe4f",
+      "bytes": 15489,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/audit/diagnostic_result_audit.json",
+      "sha256": "4cb266f3f6e36b95f8f6fa459192d1f5e98c74f2c6740d73b1b4e944473618e9",
+      "bytes": 780,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/audit/main_result_audit.json",
+      "sha256": "a4082bbcc802b316ba4227ae1f8417eb017efdf3684f1531e06063705b04dbc3",
+      "bytes": 1925,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/audit/preflight.json",
+      "sha256": "e6d644546c30b300be5a28773e51180ffcf5db39eeebeceff6436f0e1f97b4e4",
+      "bytes": 3529,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/audit/saved_diagnostic_zero_terms.json",
+      "sha256": "b433fe92cd9955390571b999a2ab77e842f5401c4b79811086b7c4b4554d6aeb",
+      "bytes": 1177,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/diagnostic.py",
+      "sha256": "c7835763475117adfe98f869ba07ad6e22f58a392cb0094cb6062807f4edfe89",
+      "bytes": 1621,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/diagnostic_first_results.jsonl",
+      "sha256": "c52e76d2543022bcacfb725b39e7dcdc5635e24803c7b05317b5f75d4d9ff150",
+      "bytes": 79849,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/diagnostic_manifest.json",
+      "sha256": "51e0f5941dcc43df2ec95113f1f664bfb1c88c8be9ddf6f4eb94adb840caae54",
+      "bytes": 278,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/first_results.jsonl",
+      "sha256": "a8ebaac4210fc774c3526bce7dd04431ad9783a4c9d1f18391136c8bfb12ef35",
+      "bytes": 7243322,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/manifest.json",
+      "sha256": "1f6972280a86b930d44c41eb965af19cd74d3cf19a66cbfc16ba324bff8aa9a1",
+      "bytes": 15917,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/model.json",
+      "sha256": "b4a9cdeaf3fb67af41e4386480c25b490101db1f71e47e67ea73388fed0a2fda",
+      "bytes": 19631,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/report.py",
+      "sha256": "994d940416d4c2694281940ac02d09e92ee61b5473d2ddc4b89289eca96197ca",
+      "bytes": 3679,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/REPORT.md",
+      "sha256": "3ceb76f611da4cdf3c8dddf0e08ebd1a80690538c74c5f4ae4ff1575f3da902a",
+      "bytes": 8370,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/audit/result_audit.json",
+      "sha256": "b9f10df4168dd2fd97c13e8d976fbf347f95247589777bcc6473a3711f524833",
+      "bytes": 70868,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/audit_report.py",
+      "sha256": "2d4fb295c745926436c283b80471378fca1f881806b172d4e38bae9ee4bfd092",
+      "bytes": 12278,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/first_results.jsonl",
+      "sha256": "2e78be5f276651b026b7fa57bc22cc886e46265d3bd4fad0cb9f048383114cdb",
+      "bytes": 13045376,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/manifest.json",
+      "sha256": "193fd78496967d46a741f6df2e1c792ff83feffa7c1e6011ec6f65d6f237b51c",
+      "bytes": 19225,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/models/expanded132.json",
+      "sha256": "2d4360770b898ea7055a9983a76276cb18fad4f4bd7f9b32b97d83661bbb2bab",
+      "bytes": 52659,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/models/frozen44.json",
+      "sha256": "b4a9cdeaf3fb67af41e4386480c25b490101db1f71e47e67ea73388fed0a2fda",
+      "bytes": 19631,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/models/variants44.json",
+      "sha256": "00b03c38e9544bac36a1c67755c79bdcddc449d7ccd047a1ce8d203dca2cf9e2",
+      "bytes": 24308,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/postcheck.json",
+      "sha256": "b77803afdbff1b02c3996af178d2a14b5e669c10ccdb55352547f0ec77b99e9c",
+      "bytes": 138,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/run.py",
+      "sha256": "d9dbeac705d956397eec54edbfb518f7993eb84247064773d8f21cdf797fc0fd",
+      "bytes": 6549,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_example_acquisition/acquire.py",
+      "sha256": "2d9564f11a3f58924437b5d260c1f62ca186a596f26a6819119fe32bbd0f7cb4",
+      "bytes": 10334,
+      "storage": "git_blob",
+      "git_blob": "7fd7a13f58cdb38868c6e744688ba799c2877b17"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_example_acquisition/driver.py",
+      "sha256": "4712661557356df145b755c550c6c8c36bddd1c7c70f7b2e87de57ca558f6636",
+      "bytes": 1621,
+      "storage": "git_blob",
+      "git_blob": "53220dbb78ebe42f2790d454f131fc8e6a17ffd1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_example_acquisition/native.py",
+      "sha256": "2b8a4cb5c9c44caa538592f26c28a54b037fbfef05b422c7a05af65c7e27d8a5",
+      "bytes": 10887,
+      "storage": "git_blob",
+      "git_blob": "d5ddcbf388484e5d75e13ba9bb590000cf657068"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_example_acquisition/v2.py",
+      "sha256": "00f83c2b892457922635240fdb7db8b4d4478415bb0eb0284827a616d43daee9",
+      "bytes": 41142,
+      "storage": "git_blob",
+      "git_blob": "d97317178c64ce3947886316f5db4f6171d1e7ea"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/__init__.py",
+      "sha256": "f3347c31aa0c3cc88b4f5dcd7294b68951cfd0215cfbf2b7e1e5d56e4107d095",
+      "bytes": 1421,
+      "storage": "git_blob",
+      "git_blob": "6184b2d7e29d80458a0a24eacc05986ae6ce416d"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/chart.py",
+      "sha256": "2d26cea4b6944edf2a34c4d43bb5a3b14b49d7b28031b532f07c429f786aa310",
+      "bytes": 19530,
+      "storage": "git_blob",
+      "git_blob": "f8f84ae4413f212e7ca00c9fa973c8bc198b2a7c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/comparators.py",
+      "sha256": "8620344f14e2ca9c4f495378775e6a980ad4156e893f9fe230597ff5a97a2d49",
+      "bytes": 13842,
+      "storage": "git_blob",
+      "git_blob": "a3793584ef78ae3b2377d67fae90a2a8d5c18b7f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/events.py",
+      "sha256": "076675b05d3022dc3c025b9c833c28372a6018612074687df22d768116b84663",
+      "bytes": 14630,
+      "storage": "git_blob",
+      "git_blob": "6bf7459c7de5af2de83f2aedc1f467b19760d70b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/graph_store.py",
+      "sha256": "c411eeb0312d10a4fbf8079cb825e789f420171e741def1b0e573541001e903f",
+      "bytes": 5597,
+      "storage": "git_blob",
+      "git_blob": "39b4b7decacfbe72d84f51587089775bda935280"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/identity.py",
+      "sha256": "5f9f659c867dfed8e0dab32a4d52f0099f2015c8d6b468ac8318232bc8efcf54",
+      "bytes": 5620,
+      "storage": "git_blob",
+      "git_blob": "9cf6a2f5752291bbe9e37274e733adf2580bc891"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/mentions.py",
+      "sha256": "f204f10bbc76ac1acffec260f496f389d3be3908ad0c78c7cdbb623d5d49e0d2",
+      "bytes": 3986,
+      "storage": "git_blob",
+      "git_blob": "434ad4bf0c33b2acb12e6fc283f866c621125fa8"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/morphology.py",
+      "sha256": "447eb85eb5b9345fb2564180645b6fca5f86e82295b9ad97a26eaa6632d78f8a",
+      "bytes": 11108,
+      "storage": "git_blob",
+      "git_blob": "3c67b547ca65bc44dfff5b78e3aa12d04ce50dad"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/policy.py",
+      "sha256": "b271483cf14d074fde4ec9f8a3684f145144c48d8669ba7c77d6e959155fcb8a",
+      "bytes": 2999,
+      "storage": "git_blob",
+      "git_blob": "6311cd4b0f6a75c8fcba6b5e082a6664de2cf30d"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/reading.py",
+      "sha256": "8fbc0ca7bdc0a231c9d279f9e7114c078f8c09c63087f3e4ab4502acef688ba2",
+      "bytes": 45348,
+      "storage": "git_blob",
+      "git_blob": "7a1cba885689ad82e4e1e6e4491e00a03d40655a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/rows.py",
+      "sha256": "18476f2e2fe514a7661ab9a39e4ffcacb7c8862d563b1657e075c676cd71d58d",
+      "bytes": 2316,
+      "storage": "git_blob",
+      "git_blob": "c91a1449e6b7de5776832599c1b5de4be91a625c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/scope.py",
+      "sha256": "b62ea8a2dcd870d4a3706a304e7a89bd5afac03458ca939cf6d600d90a386dd8",
+      "bytes": 7531,
+      "storage": "git_blob",
+      "git_blob": "859d79e300696b8660c2134f82c6a489fbc6ce13"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/search.py",
+      "sha256": "76b4f117322f049e541a5a4aae0ed23c81f21f9bbf7f8f29c3bf9a2decd53b38",
+      "bytes": 10919,
+      "storage": "git_blob",
+      "git_blob": "50ff9e405b826b19d75f839dee8850aa597dbb60"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/solver.py",
+      "sha256": "91d4874f854e959fdbae6db5227264b44750ffe87e099eeb1bad6f45f3ef6424",
+      "bytes": 14961,
+      "storage": "git_blob",
+      "git_blob": "8d0feb12ba3515bd774f87236d38b2a729e643a4"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compile.py",
+      "sha256": "0155e00607ced1ab07df6e1054e689a2bff497fadeeb98e98986599a0c4f7ce3",
+      "bytes": 42412,
+      "storage": "git_blob",
+      "git_blob": "98e8086ea3cc68e15d10d1462e7405507b2d70f1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compositional.py",
+      "sha256": "387c29ba1dafc08faa72e0573c22ad168d01e5f31ba594937648cf6c88468f34",
+      "bytes": 37850,
+      "storage": "git_blob",
+      "git_blob": "48b5cddab761c79ff547150f8003c43b2a0362fd"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/query_graph.py",
+      "sha256": "eebaec49cf1b92b7a64736b042129847ec6d616ce525ad4020282bc6e566328c",
+      "bytes": 18047,
+      "storage": "git_blob",
+      "git_blob": "12637a6885334c08ac16a7c1a40a4380592c617b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/respond.py",
+      "sha256": "7eb256ca9bd6da9919c03853337e9d7d4f0ea68c406a9856a8fd23cf15416b70",
+      "bytes": 6187,
+      "storage": "git_blob",
+      "git_blob": "dd387d75aff39e218a1388edff410c89f79ac94f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/select.py",
+      "sha256": "7ee57039b389c9dd91325df346afc7a90b935fa11d10f5ea834f7b4cf69881b0",
+      "bytes": 36308,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/answer.py",
+      "sha256": "0e685f6941a874b2b55f813020f2d1ed97115160fbe0b406c48d5e1f7312524e",
+      "bytes": 21318,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/augment.py",
+      "sha256": "51c6402d18613ad7791ce2bf06650a5a6257a97fd0c84aa89d3d7daf4367023e",
+      "bytes": 6542,
+      "storage": "git_blob",
+      "git_blob": "0cecf19d0643bb43093180f3f59ea78f641256aa"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/driver.py",
+      "sha256": "a20eae373e4971fdb85dd034b30ba3f55deafc000b032f319cbd9b5cb85dd9c6",
+      "bytes": 4749,
+      "storage": "git_blob",
+      "git_blob": "0f72ca62e1db1841bbe2f3bbbc6c21e2a4d09691"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/learn.py",
+      "sha256": "fc5e2b7ccb3bcab71137d57205c3a0923ab9867e4bfa3b4eeafd33d2b3a3753b",
+      "bytes": 7159,
+      "storage": "git_blob",
+      "git_blob": "190df4df8ebd130decabc6ea3a0770c9012d42a7"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/match.py",
+      "sha256": "9d85b44631b2521067b5bbfd3c14cafde898946dece8951a4461348e620f50ab",
+      "bytes": 7059,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/merge.py",
+      "sha256": "adb86f2824480df536a3cfe770332701f8fcfb9f5c9865a977549a477e696aab",
+      "bytes": 3824,
+      "storage": "git_blob",
+      "git_blob": "fd0199387339510b5ffd5a0e3c8a1551e3c1ab0b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/reader.py",
+      "sha256": "c61883edc3a8638a76ec2ae5e91b8c4f1d0d1257fb461c1337057de4c6b31fc4",
+      "bytes": 47083,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/variants.py",
+      "sha256": "ceb56e1f6a45ad532f076c48cba1a6fca85738acae74f3e7941de2d7890beb17",
+      "bytes": 9228,
+      "storage": "git_blob",
+      "git_blob": "601e90538a58045555ce8adf44d48e6b384621e4"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/weights.py",
+      "sha256": "694c60f6f295225d41c3ec9af753219818c9eff409981468553009d4320607b5",
+      "bytes": 9477,
+      "storage": "git_blob",
+      "git_blob": "356a8e59aacb6c671c7556d5c9508f9a4630935f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/tax_graph_trial_20261119/runner.py",
+      "sha256": "2e090533d7983b46ebc1800947992973d9315786806de4149fde5d68af9a4d8b",
+      "bytes": 6216,
+      "storage": "git_blob",
+      "git_blob": "b6dbbed72da3c4c01901d06f0c6d93d4420c2ca6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/__init__.py",
+      "sha256": "42a9154be6d03c7a01a5c4f45ad2e24f6660661fe8700aeb43aace3ef1afd0bb",
+      "bytes": 130,
+      "storage": "git_blob",
+      "git_blob": "886c15fbbeecf04b765300a474dc8c6ab4c66d54"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/host/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/host/act.py",
+      "sha256": "64e4cc901ea6268467881adc3935000a24dce68cb9b897965ed0d18a753dcc78",
+      "bytes": 17508,
+      "storage": "git_blob",
+      "git_blob": "bfd29a1668d1e5d135388d150fdfb78a07118dbc"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/definitions.py",
+      "sha256": "ff7cb3c178342eeb69bc5aa06718ee9f10a3a3a856d0018defb5d558998e7f09",
+      "bytes": 9732,
+      "storage": "git_blob",
+      "git_blob": "81417e3ff1d745fcd64012fb450e331cb8b05ace"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/dictionary.py",
+      "sha256": "8d6da41c6b0baf89ce4ad4c9f4ac7e3f934d539ceddba3489eea70df9e47cf3f",
+      "bytes": 17936,
+      "storage": "git_blob",
+      "git_blob": "2ac17f15482c80187ed87084e4e2bf65664bcd18"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/documents.py",
+      "sha256": "f9b877625de4d4bee2bc56cfa8ff2a7791239bf711c78f16eca884429b4cc8fc",
+      "bytes": 26743,
+      "storage": "git_blob",
+      "git_blob": "33ffb816e88128794245afd15056a639f91c2a56"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/retrieval.py",
+      "sha256": "fd4dda45c07197c411fb524f33f1e7fd0e60564200b8952a47939e5432e9e289",
+      "bytes": 27004,
+      "storage": "git_blob",
+      "git_blob": "dc0fbdcd5a29e02c6e6b5d677466271b9d527dfc"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/text.py",
+      "sha256": "f6125ebb3bd72d784beee6dff9569b0b306930b4a06f63cfd090d84c5e0237ab",
+      "bytes": 53008,
+      "storage": "git_blob",
+      "git_blob": "94072a0dc584a91012cca8f6d87973f88e36b439"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/web.py",
+      "sha256": "b94c0e7c48335376ffaae72c2b270935f11ba2b8cb92e0f36a237c1b845e80d0",
+      "bytes": 67498,
+      "storage": "git_blob",
+      "git_blob": "69224807443bd3f0caef71f7c0eadfff85ceefc6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/__init__.py",
+      "sha256": "1e982e1f452dd4289e0492788e93361dea365e12ae0c4b1f0ffb1ebc7fad469c",
+      "bytes": 444,
+      "storage": "git_blob",
+      "git_blob": "4fddfe2830675d544c9c8fd4398f656b8b3c24bb"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/arithmetic.py",
+      "sha256": "f7b5e53e208990a2c672309298bf5934cd1a9a8fa822417ce51c0e0c3aa5b1d1",
+      "bytes": 4180,
+      "storage": "git_blob",
+      "git_blob": "239baf92f56786ed8b747db3575d78ef70b59572"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/arithmetic_spoken.py",
+      "sha256": "0a242f3ec7def3680e222a9775347c55113f326d6aad842d1941d448bf5d9961",
+      "bytes": 3372,
+      "storage": "git_blob",
+      "git_blob": "e308f153a6f5d7b99b5f38670e2bf24135019f2a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/entry_origins.py",
+      "sha256": "635c8dd0b3a0df1ba920b6633af010ecf9b2b744d8cc46e359dc549b6310f1c6",
+      "bytes": 4395,
+      "storage": "git_blob",
+      "git_blob": "05a8b1815d4fe26be5cb867aea4ab4ef6fdaf02a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/frames.py",
+      "sha256": "d5ad6eb59aaaef383dbf0bd3c8f9e254f5feb30ef9f274582d79c2e27814348b",
+      "bytes": 112207,
+      "storage": "git_blob",
+      "git_blob": "65132870a40c00fe38ed25b61e62c690ed16775e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/graph_projection.py",
+      "sha256": "459a3ad1003d217c26450e7914b7c85e4e8307a7f101272c4fec32ad2f51d463",
+      "bytes": 174368,
+      "storage": "git_blob",
+      "git_blob": "026e2fdd4da1a417bb842ad0ee90e058f900c478"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/hangul.py",
+      "sha256": "939e641dd581475de3ef6de8d372d4a7599d3a3a41e281bbc38d611932d1b08c",
+      "bytes": 33381,
+      "storage": "git_blob",
+      "git_blob": "4bb3be6d472adb380f631e7deb3bf23f3d0e4e13"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/numerals.py",
+      "sha256": "6bdbcc5c71d15e731ea6247c5f71f01e94e5aff2ec449668da97cba959288dc2",
+      "bytes": 1517,
+      "storage": "git_blob",
+      "git_blob": "cd91e50fe0e851ffe714ee52d06a931e4cd3ec46"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/passage_components.py",
+      "sha256": "bc52591ac9bea6b5ce208f09eaacf40d3db63dc5e55e255c959f47b1ce1f0154",
+      "bytes": 1443,
+      "storage": "git_blob",
+      "git_blob": "ac62b1790f77d1ac97469d2f75ceaedb5e36bfa6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/passages.py",
+      "sha256": "320aed3682c7de0ce6fd9f12499d316d81681ee72fdcbfd0b1fd6718f1d0df2a",
+      "bytes": 4110,
+      "storage": "git_blob",
+      "git_blob": "272c196cad624930081ce8cac34d71365fe1c2ab"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/__init__.py",
+      "sha256": "24b67f9e66c90c90fed2b63b5a96ea3dba5a3010b84649eb0b52033bde1ad9ca",
+      "bytes": 26358,
+      "storage": "git_blob",
+      "git_blob": "d5c2fcad91b72077f3f3d4e2d8f842a6157495c9"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/affect.py",
+      "sha256": "ceb4c45e60732f8041ad87ab2e83595b854c2a7e63f806af0a4ecd2d5a71ac46",
+      "bytes": 2840,
+      "storage": "git_blob",
+      "git_blob": "04378074388707b5c3e15cbafd8b49eeb5143a95"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/check.py",
+      "sha256": "e87c2a61646bb39ea39cc56db0f5d26e0c4a7906d94ce09695db99ba9b2312f0",
+      "bytes": 16837,
+      "storage": "git_blob",
+      "git_blob": "00b047fb92eb21038244a442f83b147da39b03d6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/composer.py",
+      "sha256": "894d7bda783364da92a6a8037a955fb6ff6ce31fc2f73ea33de43f601ee3fec6",
+      "bytes": 12243,
+      "storage": "git_blob",
+      "git_blob": "40b491b53ca8a75428a66bf8f08c4f0d1a383e5e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/contracts.py",
+      "sha256": "69de5c617c093c3d7019092c41bb243487b7222c89d6dec58627d81ca25c6673",
+      "bytes": 890,
+      "storage": "git_blob",
+      "git_blob": "727af9d99e3ee217e415a61d0aa3ffc56732c17c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/discourse.py",
+      "sha256": "9aa289b5a0d6f98cc88c48a51211a80e966ca27c54f2dfbeddfac8852cf18eee",
+      "bytes": 5419,
+      "storage": "git_blob",
+      "git_blob": "2a55c78a7dba73d660b373f75a01027ae6844e6b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/expression.py",
+      "sha256": "718b17d83daf4e6f4147f4c9f553332ff09c2e14d4dd0d1c160683ce434caa37",
+      "bytes": 3694,
+      "storage": "git_blob",
+      "git_blob": "09a3dcb593861d9203ad63973f8ee249a5295b61"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/grammar.py",
+      "sha256": "38b90369d4ce63d77ae20e0861fd2a1b277e9438b96ae4f86f1d91555bab159b",
+      "bytes": 45581,
+      "storage": "git_blob",
+      "git_blob": "60a3f7b5b8cf57bd8c8bbbe2ccf54515b95d2500"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/intent.py",
+      "sha256": "786b7eceecb2c844c771238533efb3b326fb1909bef459227e0a976411c4786b",
+      "bytes": 29234,
+      "storage": "git_blob",
+      "git_blob": "9ce92077f64903066a3d6b01d27e5185f87aef69"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/learning.py",
+      "sha256": "3fdd5aa793d53e0abb8717072d3a96a3cc0a7f2b67d6481ab720fc7ed34db56d",
+      "bytes": 12229,
+      "storage": "git_blob",
+      "git_blob": "49c5329290023231b39b98584a7e079f6518d93b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/meaning.py",
+      "sha256": "db3f78ef4445e6813e16dc4421b748b9e818d542b202173a9f6d2c278cf2d104",
+      "bytes": 9347,
+      "storage": "git_blob",
+      "git_blob": "d6addf163d4d0a325d11cf8918b874174ffee7f6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/packs.py",
+      "sha256": "8efa76f20b300ec2dd40d82cb4675db58d8eb47b4e049035de1964881f849fac",
+      "bytes": 13795,
+      "storage": "git_blob",
+      "git_blob": "239850b3ea86ac2ff53dc4e3ba86f01900f3be1e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/source_answer.py",
+      "sha256": "c865d5e113327b614f2d25b4bb25e0ac505c3456e7da97dd1208fc578758364b",
+      "bytes": 5044,
+      "storage": "git_blob",
+      "git_blob": "ebaa2fdb6c085340b04ef7cd0e19fbddd60e7006"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/relation_hypotheses.py",
+      "sha256": "bce316241132fec0e3e0ac7d5c4bfee6dbd9a57eb3b1c33f2989c9a246693fad",
+      "bytes": 22352,
+      "storage": "git_blob",
+      "git_blob": "64b7763d8a6123201c454c9ce84e9f23e8cb1250"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/relation_query_hypotheses.py",
+      "sha256": "b180dcefeb384805c4d0a687d105ed061856a71ed8f9f0bb9422f0d5b8dc9dfa",
+      "bytes": 30593,
+      "storage": "git_blob",
+      "git_blob": "7447726a2768320d53588b26e8726a31cf434d9c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/representation.py",
+      "sha256": "fb775f36c1e66682dab41e2e36149d143bc6ba908774cd6710a45f2a89bb3bb5",
+      "bytes": 16395,
+      "storage": "git_blob",
+      "git_blob": "ed2ba1ce7aaff0441ad36281833e24288d8f9e0b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/teaching.py",
+      "sha256": "2c286d6e8781b7303bd37d3a48eed41dcd8c17238554b018f464bae21f81e9d5",
+      "bytes": 30130,
+      "storage": "git_blob",
+      "git_blob": "28ab42c0406feffcef477eacd9ad3a3774a4a393"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/understanding.py",
+      "sha256": "f7e2484970df507a465f3e6b178f3f992ca548030146a538233ee61bd5fa72bc",
+      "bytes": 9260,
+      "storage": "git_blob",
+      "git_blob": "f2ea5f948c915b63cd997fd22a5f694742063063"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/authoring.py",
+      "sha256": "ca04bd9a8de3b353356d7f7dd63abfe22f47efb322cc4b3e9da0836af24c8efd",
+      "bytes": 27811,
+      "storage": "git_blob",
+      "git_blob": "76cfd1151c25898533f8630e52392d473be38fa0"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/chunking.py",
+      "sha256": "93ef168faf6f2caae5760a90f4f2c53610279951498c5fe6836bb10a8cb4128a",
+      "bytes": 4769,
+      "storage": "git_blob",
+      "git_blob": "e79ac02d211577a24e56c0267ddb4f1045c24eb7"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/concepts.py",
+      "sha256": "67d665136189b03d9bd5f222194b35ee8d1f82908b80a2864f62a38e41ec0ea9",
+      "bytes": 27316,
+      "storage": "git_blob",
+      "git_blob": "2f34b619322d4f3d13248f2f86431fe29e8c2801"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/demo_memory.py",
+      "sha256": "5b14d3ebd382b7ee594a51265800cc33bc32d41f6479deb9ae888571dd663e00",
+      "bytes": 3762,
+      "storage": "git_blob",
+      "git_blob": "5da3fd413e18ad54eff066e96a8dcf0acbd597ec"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/expression_graph.py",
+      "sha256": "e81b47f370e1fdddf87b55ed6d35dcd58d3153999c5d2e00a7709d5a58255c27",
+      "bytes": 15986,
+      "storage": "git_blob",
+      "git_blob": "b3fc01b8c525b53d0a6b11fdf40a1e4843c8d5f1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/expressions.py",
+      "sha256": "4df76947d674737988ef36d2f9479269b2ddde9c80bb78e2112cc2aa921c2c78",
+      "bytes": 22521,
+      "storage": "git_blob",
+      "git_blob": "18a0efa46d138ecfb4c51363ab2adf37fbc79e37"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/feedback.py",
+      "sha256": "a312cb36e411959ae02912f7f6a7dcad7abe5b9759d07688bcd09f505b754f04",
+      "bytes": 2412,
+      "storage": "git_blob",
+      "git_blob": "18489c059add2994b0f2a676017fc0ac3b0b41e8"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/memory.py",
+      "sha256": "11befd370c4e1921422ef4eb642cca487ea89418af29ac655b3e65541d6dda01",
+      "bytes": 162044,
+      "storage": "git_blob",
+      "git_blob": "f679a2c6f9b8b62035e4f42a0845b3531447ea43"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/rules.py",
+      "sha256": "aaab8d7c5fbe3dc6b8822357353bb8341063abd9c6729813ebc6590c1f851446",
+      "bytes": 14530,
+      "storage": "git_blob",
+      "git_blob": "be6af5e59b5ea95ca0126f171bc8e500273eb85b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/objects.py",
+      "sha256": "8b14e10ebd6a607cd3e8dfb0e2c138c17c93ce45895bed9933075e89e23fa5ca",
+      "bytes": 1550,
+      "storage": "git_blob",
+      "git_blob": "7a8f5ac8494bd4ee8a252eef3f36edfc5b79af58"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/pose.py",
+      "sha256": "e46f8a33c656106e5c6adc28e3affa45534e29f2d678773c8ad704dee0e0dbb3",
+      "bytes": 2450,
+      "storage": "git_blob",
+      "git_blob": "bcd56d8d6cda66e95d2485b3ad796282c17e4a0c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/visual.py",
+      "sha256": "e414bed553e3a0efb7b044bfe105e7c1cec322dbbbb1d2b174b5c161b212fa3c",
+      "bytes": 37716,
+      "storage": "git_blob",
+      "git_blob": "93327dadde3039faa120c0796f9540170555356e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/vlm.py",
+      "sha256": "b552f5a006725c1ce9ffa313094e1d32aa251639bb6bd4493a9a2316df4fff7a",
+      "bytes": 4326,
+      "storage": "git_blob",
+      "git_blob": "751abd3fef72441f8e29bcbbbeada0f212d9e994"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/progress.py",
+      "sha256": "3f25fe85665399b7e0aa93bd8ba46e9a03d31dc5c7af5537cfad36dcfaaac9e2",
+      "bytes": 5356,
+      "storage": "git_blob",
+      "git_blob": "e093e45c99f622d9fea16a2381b87f271370d678"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/actions.py",
+      "sha256": "ce67419cd1af14100f4b308da8a5b38d36ef4d62d84918062f87d52a731093f3",
+      "bytes": 143729,
+      "storage": "git_blob",
+      "git_blob": "face59409f616693184f8b11fc79dcafc836acf1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/context.py",
+      "sha256": "3b5da319c13853d0bb8206b20ff1730ee9d48c4d3dcedaec528505ca84084120",
+      "bytes": 828328,
+      "storage": "git_blob",
+      "git_blob": "d7507577de1c05ae71a6daeeaca54f3b87371fd3"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/graph_contract.py",
+      "sha256": "31dedbf02a28bfb739ccba5628bab33a9a0647e60bb43ff84dbff8c0b0001721",
+      "bytes": 9517,
+      "storage": "git_blob",
+      "git_blob": "ca04ca0463fe7cec6cd6cc5637a9bc24982da97a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/graph_vm.py",
+      "sha256": "50db3bfbc5720e640318e24def47878b08385ffb4a9cfd937e5d769fb5b27b09",
+      "bytes": 28040,
+      "storage": "git_blob",
+      "git_blob": "47b264bd83fa37de165ab889ffd2f076c280b72a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/identity.py",
+      "sha256": "173b2405cb50dcf850540fc050175e1c4562736dda903c1bd0e2c9b753b83c6d",
+      "bytes": 10099,
+      "storage": "git_blob",
+      "git_blob": "1c9565628c077876985e3454ddf41b8a9ddbf23a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/inference.py",
+      "sha256": "40ec49cdad9963a663b81fae130a0648e6b3584064e0c81e4ea54abdd01008ab",
+      "bytes": 34717,
+      "storage": "git_blob",
+      "git_blob": "7e4928d48ac1e9d2b56fa2b5b7d1434ba7441716"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/proof_graph.py",
+      "sha256": "19092825ca88e4c30b82a09423389708b5cf3f41541f1718fd57a33a9ca7f3a3",
+      "bytes": 25829,
+      "storage": "git_blob",
+      "git_blob": "09297adb9fdefc7524b8e303801304031fcc816c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/query_work.py",
+      "sha256": "99d3ad4cba90b40f41579fe72beb12857a51e48e968210bda555fc9627ca9b69",
+      "bytes": 94188,
+      "storage": "git_blob",
+      "git_blob": "b07ff2d38dd5541d9a8ec192e6c0661ba59c2d5f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/readings.py",
+      "sha256": "b16ca42b8565e495b4caa48736d010f4df7fe68b3e12be9a5ea681e6e0e53121",
+      "bytes": 15123,
+      "storage": "git_blob",
+      "git_blob": "37b6401c76878dcef95def031a7ac712143b7353"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/relation_hypotheses.py",
+      "sha256": "c9834ba501c1d97f59a4f0b8bde888581e578ef043c788004899222f6c46c9cd",
+      "bytes": 37953,
+      "storage": "git_blob",
+      "git_blob": "86e4d1bf81ead1a173f149cad5c6129759b7e0bd"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/relation_query_hypotheses.py",
+      "sha256": "6176a5ec1b60eb731a51213c29b34ebcb1c5b979c81d5ee67a8553befe461f58",
+      "bytes": 13214,
+      "storage": "git_blob",
+      "git_blob": "03495aaf43b6d2f8f0823401b7a549370780f44c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/situation.py",
+      "sha256": "e759a4f74f0c8d0a1d238fb27a5c6c950c2ef7a1160409c72cf95d59b0de8728",
+      "bytes": 596,
+      "storage": "git_blob",
+      "git_blob": "4ce5f73d60c8ccb3aac752825cf4b496a6310771"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/state.py",
+      "sha256": "34f3ed626a810c6ac5e2cab139a9978aa496c4ac8c86cf0787df970561c8f4a8",
+      "bytes": 11008,
+      "storage": "git_blob",
+      "git_blob": "8ddaa5cbd9929c337cc88cdc7b299aed0e37ddb0"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/contextual_meaning_host.py",
+      "sha256": "5dea323a270da62b99b911ae6c95187551d6d5ec1957adf8ce6fdabc71a2e8e2",
+      "bytes": 52558,
+      "storage": "git_blob",
+      "git_blob": "4f8a5a3e1f7776de0fbb70678efbaa53b5b157b2"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/conversation.py",
+      "sha256": "ba1018351684ea3606b8a323e3681ddd19af7946aaf9afdb9c0f75ff44d661d8",
+      "bytes": 7606,
+      "storage": "git_blob",
+      "git_blob": "99d2899e1a32535372c0af9f1c9c3a2d0eb3b36f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/dialogue_trace.py",
+      "sha256": "3d78ebd317821c91a7ea806478bf9587df0ae533461c43e7d7ebecf24aa82aa6",
+      "bytes": 14885,
+      "storage": "git_blob",
+      "git_blob": "0e594111ddcda25d48afa2f19afeebfc6439f141"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/explain.py",
+      "sha256": "70798734166fd09832502c331d80d20eb330ab9938c3524b3a76f25f428298ad",
+      "bytes": 126812,
+      "storage": "git_blob",
+      "git_blob": "6664cbae4e4ab99261389cfc38dab2d44955f337"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/graph_dialogue.py",
+      "sha256": "dee2892b50320b4b7c791ee204206321e55037d92da84de29d6a4069f5e9b6c9",
+      "bytes": 11779,
+      "storage": "git_blob",
+      "git_blob": "5fe2d2ec0ce58b618a1b100c91045061d4d9a218"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/graph_route_work.py",
+      "sha256": "de986200659eb64401a1de1b610b7d85d4b95df5aebdcfd9b19ea151ca059a9d",
+      "bytes": 40661,
+      "storage": "git_blob",
+      "git_blob": "8a0ecbf031d7d27659561fef123a7590f2df9121"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/ground_language_work.py",
+      "sha256": "6083936ccc27f9d1eb8a95afd473fcb345b494ad8778b93a814fe6035797e654",
+      "bytes": 20705,
+      "storage": "git_blob",
+      "git_blob": "a7ae4acab0b4a36501a1d7f69a507581f37b876c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/learning_dialogue.py",
+      "sha256": "68a0fdbc04e5116a5fe6806ebd9178e1c31506678ffb14ee85204ae7859a6d16",
+      "bytes": 345012,
+      "storage": "git_blob",
+      "git_blob": "ce15e005313aa6e489dcdc57031a39104d284b18"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/relation_attempt.py",
+      "sha256": "36a34c88ac23834fa78e6a99386f35bad179bdd19e83613fec737bd9f468e698",
+      "bytes": 35457,
+      "storage": "git_blob",
+      "git_blob": "4d1ef2f939f4f7495d8d74ea85720e5118921b4a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/research.py",
+      "sha256": "7c601af11da780a36f845a856003f0e45d2158af3d0e15842251746830ae57f8",
+      "bytes": 17788,
+      "storage": "git_blob",
+      "git_blob": "63026609024032152a664c4a634d9dfa40506283"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/selected_graph.py",
+      "sha256": "49975d30f3031d63eff878df590e0182fbae6424d9ae7ee63a6418fb206d52cf",
+      "bytes": 18531,
+      "storage": "git_blob",
+      "git_blob": "cc45261bf384a74d07d5d9f45164ef645cdbd133"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/source_reading.py",
+      "sha256": "83b9ed21e004affff006a6707ce31df1519b1c404a85b192d2c3dc9eac08b8e7",
+      "bytes": 15738,
+      "storage": "git_blob",
+      "git_blob": "afe9d217cb5188820732cad5657fcfd4718c0f22"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/source_research.py",
+      "sha256": "077c190b41f3d77a65f2abff62f08c7c058b3d53ced88ab33dbc06eef107cdfe",
+      "bytes": 2175,
+      "storage": "git_blob",
+      "git_blob": "dade6be19079402883151c5a0d6dca487d7ae0f8"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/source_snapshot.py",
+      "sha256": "1b97b68a6a494d13bf56f7e629c534b67eb3aba371df638c30db730709320fce",
+      "bytes": 14897,
+      "storage": "git_blob",
+      "git_blob": "e7bde180ce709c1792e960c226e7d3435bf990e9"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/verified_graph_turn.py",
+      "sha256": "3532bd95e04c0c4fd9dd0674266e71dd98ec7d0a9843679ef61af80dec598d5b",
+      "bytes": 10951,
+      "storage": "git_blob",
+      "git_blob": "10c96912f4fb0e8196f18258c4a4e2d9f5643395"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/conversations.py",
+      "sha256": "5cb5e5824dae4dc2c18b76a691adb1a75c300b2ec0579800f515272359a5bd1a",
+      "bytes": 11669,
+      "storage": "git_blob",
+      "git_blob": "db1dbafc4fc5e9cf933dabd0d87a8f4426330177"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/graph_text.py",
+      "sha256": "8c0f94db1ddc6f1128bf253b001130930f1797fb981007749c49bc139e68ebf0",
+      "bytes": 18062,
+      "storage": "git_blob",
+      "git_blob": "b9fbe953f5160b578c1565035e433f80c0f66515"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/graph_view.py",
+      "sha256": "6d49d69b21cbc49c23add1b2c00fdb4e58eba2b54337c10e10ba412780b95d6e",
+      "bytes": 25728,
+      "storage": "git_blob",
+      "git_blob": "1d362cda807b7726837d541c47508ee87be606e3"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/ids.py",
+      "sha256": "0210f6389181dab5fd64a984ad16f9d1a48432b5aec5b695d7b2b29daf3d5b54",
+      "bytes": 2810,
+      "storage": "git_blob",
+      "git_blob": "c8af198938134dfa8b6c4dc301dace9fc1c31dfb"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/kgbin.py",
+      "sha256": "61f66ecff650435b60f6b663868f5add95cb3d588f16ec72665995e0f29d446a",
+      "bytes": 12116,
+      "storage": "git_blob",
+      "git_blob": "073bd2969e53e84f1faa3f95e37c3126deb7dd0f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/kgpack.py",
+      "sha256": "6c561218629ac151d597c5d8739a28457f4545cdd83974b32df758c24017b4fb",
+      "bytes": 20721,
+      "storage": "git_blob",
+      "git_blob": "859147024613a1cfd6c29b0da0433f8662097de1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/overlay.py",
+      "sha256": "4a95ab63d2e9ce32dea25f69384ecf0ed9826a43beb3f44ce8a9ee7702832740",
+      "bytes": 45801,
+      "storage": "git_blob",
+      "git_blob": "d4c3286d61871a31fbdd69a8e3e666b98f00e488"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/snapshot.py",
+      "sha256": "e22c0488298a0aefbe1027382563f0d663361d6e715e56cdd4d9862d0bb8b6c0",
+      "bytes": 38966,
+      "storage": "git_blob",
+      "git_blob": "f62989f3f825a73cfede2f83366ad2bc411a8ead"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/__init__.py",
+      "sha256": "2b14edbf259e1658067c620ff9146e6d75c0dd0ecf89d999c89f680f67915d9c",
+      "bytes": 1265,
+      "storage": "git_blob",
+      "git_blob": "48ad6eca66b6aa259ed2cb80760c209d2d207602"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/__main__.py",
+      "sha256": "20e51512d4d4d8bd1f9760a3e3e25ffbb1e5963b70d9d8518097154ffa63846b",
+      "bytes": 5440,
+      "storage": "git_blob",
+      "git_blob": "da0d847f9bab5aa3f7f89e108409d4ce2810b096"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/drive.py",
+      "sha256": "26bfa9241df36171cb351199c13154e2c1df339040ccaaec894a1369ca80af01",
+      "bytes": 12117,
+      "storage": "git_blob",
+      "git_blob": "9a99ef4ce3bbd1a2f4858944881bae4764cb129a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/explain.py",
+      "sha256": "1847b6eb42aafc3f223781a69bb88d20bc929954ae299e89b928d0ded5d401e6",
+      "bytes": 15851,
+      "storage": "git_blob",
+      "git_blob": "c36c7be77ce9cad392c425110e6277b97477cb8c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/from_turn.py",
+      "sha256": "a6e88461db91cd0b14e32736101532967d514c038fa371cfecf33cc8535d1504",
+      "bytes": 49195,
+      "storage": "git_blob",
+      "git_blob": "13ece622ca27f68fa2b4ebb0d405f3ef4eab0def"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/ledger.py",
+      "sha256": "b38ebdac1d320e4c365647d32dd0e0b5271160513184e3a41287f8c291a7d762",
+      "bytes": 18485,
+      "storage": "git_blob",
+      "git_blob": "9d12335ee04b94f76f7f6b547dce3e909c3d8971"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/pretty.py",
+      "sha256": "15b6468411161df440f72776c413794bd61c277c688766b9b20467315721d35b",
+      "bytes": 3719,
+      "storage": "git_blob",
+      "git_blob": "d434c9526b650a574f68eba819636d4704ddcdee"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/runtime.py",
+      "sha256": "b3d9b0f4610603fe164c96383509586f120d4d4bab5ac8e8708bc0d0b7b52784",
+      "bytes": 18726,
+      "storage": "git_blob",
+      "git_blob": "5cb7ea9cb853a97d0d654bf724d3d8161e70b54a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/schema.py",
+      "sha256": "a00deb6e093a117a64a87033865eed6c611baaf3d03467c4c57e644795e3431c",
+      "bytes": 13829,
+      "storage": "git_blob",
+      "git_blob": "e80601bc4739d12305e0be57882a25165aa97401"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/stats.py",
+      "sha256": "c0e9b87f661b324d07e7940d966481834afc55eb28459c6b7d5a174a27a1a3f5",
+      "bytes": 8763,
+      "storage": "git_blob",
+      "git_blob": "e8f495f37b372ef17aafb639e4a8be8556e0d529"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/why.py",
+      "sha256": "47183ef46819c1a6cc414b2b81d51bb1b411fe8b329ede7e74026a71472a4670",
+      "bytes": 2888,
+      "storage": "git_blob",
+      "git_blob": "e0f6cdcbaf5f49d805e285da18008c173ed7efbe"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/relational_semantics.py",
+      "sha256": "5d485caae33eae9f25a7b9a311ccdd1df9de557b5fe68467f8ecfb203a4aa331",
+      "bytes": 467740,
+      "storage": "git_blob",
+      "git_blob": "e71b22f4aa72ecccc863fab87bace8aa756ae9a5"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/REPORT.md",
+      "sha256": "d60dcbfb360fb04468de03e7851c5fb8a8ca744205cddf7fef5d0b5e22d3dff2",
+      "bytes": 22121,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/audit/preflight.json",
+      "sha256": "678529da20ab4b01dcc43fde8e086e025b29e91d8700ed10048b6a3932bc3621",
+      "bytes": 869,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/audit/result_audit.json",
+      "sha256": "d477b6f61f583196c6216c7bb2a75482e93919b7ae6e6fe19658df7ed1894ca7",
+      "bytes": 20811,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/first_results.jsonl",
+      "sha256": "30ad2e334df56fab60f1dbd9d5194af77f2e69c566566df1373b19dec0921e99",
+      "bytes": 9043068,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/manifest.json",
+      "sha256": "b8cff783d37540cfaad15906e31105b36f978c353b776b47b7f0eb06c30f403e",
+      "bytes": 16632,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/postcheck.json",
+      "sha256": "7cf18ecf9cc3cf5125e6eaea76fc413448bcababdad397d7cb82e772bbbb5453",
+      "bytes": 16436,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/report.py",
+      "sha256": "2793255383c1e2e8d88758cf37e9a48beaef97cb22185f1607d43ff722687f32",
+      "bytes": 3938,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/run.py",
+      "sha256": "f4da985e4fd9e80f18a287019ddf3e9c1a4865f2f4e274b9f059c8e7459f1ca9",
+      "bytes": 4121,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_example_acquisition/acquire.py",
+      "sha256": "2d9564f11a3f58924437b5d260c1f62ca186a596f26a6819119fe32bbd0f7cb4",
+      "bytes": 10334,
+      "storage": "git_blob",
+      "git_blob": "7fd7a13f58cdb38868c6e744688ba799c2877b17"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_example_acquisition/driver.py",
+      "sha256": "4712661557356df145b755c550c6c8c36bddd1c7c70f7b2e87de57ca558f6636",
+      "bytes": 1621,
+      "storage": "git_blob",
+      "git_blob": "53220dbb78ebe42f2790d454f131fc8e6a17ffd1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_example_acquisition/native.py",
+      "sha256": "2b8a4cb5c9c44caa538592f26c28a54b037fbfef05b422c7a05af65c7e27d8a5",
+      "bytes": 10887,
+      "storage": "git_blob",
+      "git_blob": "d5ddcbf388484e5d75e13ba9bb590000cf657068"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_example_acquisition/v2.py",
+      "sha256": "00f83c2b892457922635240fdb7db8b4d4478415bb0eb0284827a616d43daee9",
+      "bytes": 41142,
+      "storage": "git_blob",
+      "git_blob": "d97317178c64ce3947886316f5db4f6171d1e7ea"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/__init__.py",
+      "sha256": "f3347c31aa0c3cc88b4f5dcd7294b68951cfd0215cfbf2b7e1e5d56e4107d095",
+      "bytes": 1421,
+      "storage": "git_blob",
+      "git_blob": "6184b2d7e29d80458a0a24eacc05986ae6ce416d"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/chart.py",
+      "sha256": "2d26cea4b6944edf2a34c4d43bb5a3b14b49d7b28031b532f07c429f786aa310",
+      "bytes": 19530,
+      "storage": "git_blob",
+      "git_blob": "f8f84ae4413f212e7ca00c9fa973c8bc198b2a7c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/comparators.py",
+      "sha256": "8620344f14e2ca9c4f495378775e6a980ad4156e893f9fe230597ff5a97a2d49",
+      "bytes": 13842,
+      "storage": "git_blob",
+      "git_blob": "a3793584ef78ae3b2377d67fae90a2a8d5c18b7f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/events.py",
+      "sha256": "076675b05d3022dc3c025b9c833c28372a6018612074687df22d768116b84663",
+      "bytes": 14630,
+      "storage": "git_blob",
+      "git_blob": "6bf7459c7de5af2de83f2aedc1f467b19760d70b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/graph_store.py",
+      "sha256": "c411eeb0312d10a4fbf8079cb825e789f420171e741def1b0e573541001e903f",
+      "bytes": 5597,
+      "storage": "git_blob",
+      "git_blob": "39b4b7decacfbe72d84f51587089775bda935280"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/identity.py",
+      "sha256": "5f9f659c867dfed8e0dab32a4d52f0099f2015c8d6b468ac8318232bc8efcf54",
+      "bytes": 5620,
+      "storage": "git_blob",
+      "git_blob": "9cf6a2f5752291bbe9e37274e733adf2580bc891"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/mentions.py",
+      "sha256": "f204f10bbc76ac1acffec260f496f389d3be3908ad0c78c7cdbb623d5d49e0d2",
+      "bytes": 3986,
+      "storage": "git_blob",
+      "git_blob": "434ad4bf0c33b2acb12e6fc283f866c621125fa8"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/morphology.py",
+      "sha256": "447eb85eb5b9345fb2564180645b6fca5f86e82295b9ad97a26eaa6632d78f8a",
+      "bytes": 11108,
+      "storage": "git_blob",
+      "git_blob": "3c67b547ca65bc44dfff5b78e3aa12d04ce50dad"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/policy.py",
+      "sha256": "b271483cf14d074fde4ec9f8a3684f145144c48d8669ba7c77d6e959155fcb8a",
+      "bytes": 2999,
+      "storage": "git_blob",
+      "git_blob": "6311cd4b0f6a75c8fcba6b5e082a6664de2cf30d"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/reading.py",
+      "sha256": "8fbc0ca7bdc0a231c9d279f9e7114c078f8c09c63087f3e4ab4502acef688ba2",
+      "bytes": 45348,
+      "storage": "git_blob",
+      "git_blob": "7a1cba885689ad82e4e1e6e4491e00a03d40655a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/rows.py",
+      "sha256": "18476f2e2fe514a7661ab9a39e4ffcacb7c8862d563b1657e075c676cd71d58d",
+      "bytes": 2316,
+      "storage": "git_blob",
+      "git_blob": "c91a1449e6b7de5776832599c1b5de4be91a625c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/scope.py",
+      "sha256": "b62ea8a2dcd870d4a3706a304e7a89bd5afac03458ca939cf6d600d90a386dd8",
+      "bytes": 7531,
+      "storage": "git_blob",
+      "git_blob": "859d79e300696b8660c2134f82c6a489fbc6ce13"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/search.py",
+      "sha256": "76b4f117322f049e541a5a4aae0ed23c81f21f9bbf7f8f29c3bf9a2decd53b38",
+      "bytes": 10919,
+      "storage": "git_blob",
+      "git_blob": "50ff9e405b826b19d75f839dee8850aa597dbb60"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/solver.py",
+      "sha256": "91d4874f854e959fdbae6db5227264b44750ffe87e099eeb1bad6f45f3ef6424",
+      "bytes": 14961,
+      "storage": "git_blob",
+      "git_blob": "8d0feb12ba3515bd774f87236d38b2a729e643a4"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compile.py",
+      "sha256": "0155e00607ced1ab07df6e1054e689a2bff497fadeeb98e98986599a0c4f7ce3",
+      "bytes": 42412,
+      "storage": "git_blob",
+      "git_blob": "98e8086ea3cc68e15d10d1462e7405507b2d70f1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compositional.py",
+      "sha256": "387c29ba1dafc08faa72e0573c22ad168d01e5f31ba594937648cf6c88468f34",
+      "bytes": 37850,
+      "storage": "git_blob",
+      "git_blob": "48b5cddab761c79ff547150f8003c43b2a0362fd"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/query_graph.py",
+      "sha256": "eebaec49cf1b92b7a64736b042129847ec6d616ce525ad4020282bc6e566328c",
+      "bytes": 18047,
+      "storage": "git_blob",
+      "git_blob": "12637a6885334c08ac16a7c1a40a4380592c617b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/respond.py",
+      "sha256": "7eb256ca9bd6da9919c03853337e9d7d4f0ea68c406a9856a8fd23cf15416b70",
+      "bytes": 6187,
+      "storage": "git_blob",
+      "git_blob": "dd387d75aff39e218a1388edff410c89f79ac94f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/select.py",
+      "sha256": "7ee57039b389c9dd91325df346afc7a90b935fa11d10f5ea834f7b4cf69881b0",
+      "bytes": 36308,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/answer.py",
+      "sha256": "36f819cae43cb91e8263183047bd220840f9861eb2a87a4fcf02ed643b5740bb",
+      "bytes": 14342,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/augment.py",
+      "sha256": "51c6402d18613ad7791ce2bf06650a5a6257a97fd0c84aa89d3d7daf4367023e",
+      "bytes": 6542,
+      "storage": "git_blob",
+      "git_blob": "0cecf19d0643bb43093180f3f59ea78f641256aa"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/driver.py",
+      "sha256": "a20eae373e4971fdb85dd034b30ba3f55deafc000b032f319cbd9b5cb85dd9c6",
+      "bytes": 4749,
+      "storage": "git_blob",
+      "git_blob": "0f72ca62e1db1841bbe2f3bbbc6c21e2a4d09691"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/match.py",
+      "sha256": "1d8419ba0c43ce61a388f7e48496b1698b67a2504a4c415bebeaa424afdc5332",
+      "bytes": 5571,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/merge.py",
+      "sha256": "adb86f2824480df536a3cfe770332701f8fcfb9f5c9865a977549a477e696aab",
+      "bytes": 3824,
+      "storage": "git_blob",
+      "git_blob": "fd0199387339510b5ffd5a0e3c8a1551e3c1ab0b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/reader.py",
+      "sha256": "4308e860788f929f65ff378fd4ecb0f47f460ffafeb6e4aaa8806a904a78fde8",
+      "bytes": 31148,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/weights.py",
+      "sha256": "694c60f6f295225d41c3ec9af753219818c9eff409981468553009d4320607b5",
+      "bytes": 9477,
+      "storage": "git_blob",
+      "git_blob": "356a8e59aacb6c671c7556d5c9508f9a4630935f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/tax_graph_trial_20261119/runner.py",
+      "sha256": "2e090533d7983b46ebc1800947992973d9315786806de4149fde5d68af9a4d8b",
+      "bytes": 6216,
+      "storage": "git_blob",
+      "git_blob": "b6dbbed72da3c4c01901d06f0c6d93d4420c2ca6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/__init__.py",
+      "sha256": "42a9154be6d03c7a01a5c4f45ad2e24f6660661fe8700aeb43aace3ef1afd0bb",
+      "bytes": 130,
+      "storage": "git_blob",
+      "git_blob": "886c15fbbeecf04b765300a474dc8c6ab4c66d54"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/host/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/host/act.py",
+      "sha256": "64e4cc901ea6268467881adc3935000a24dce68cb9b897965ed0d18a753dcc78",
+      "bytes": 17508,
+      "storage": "git_blob",
+      "git_blob": "bfd29a1668d1e5d135388d150fdfb78a07118dbc"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/definitions.py",
+      "sha256": "ff7cb3c178342eeb69bc5aa06718ee9f10a3a3a856d0018defb5d558998e7f09",
+      "bytes": 9732,
+      "storage": "git_blob",
+      "git_blob": "81417e3ff1d745fcd64012fb450e331cb8b05ace"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/dictionary.py",
+      "sha256": "8d6da41c6b0baf89ce4ad4c9f4ac7e3f934d539ceddba3489eea70df9e47cf3f",
+      "bytes": 17936,
+      "storage": "git_blob",
+      "git_blob": "2ac17f15482c80187ed87084e4e2bf65664bcd18"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/documents.py",
+      "sha256": "f9b877625de4d4bee2bc56cfa8ff2a7791239bf711c78f16eca884429b4cc8fc",
+      "bytes": 26743,
+      "storage": "git_blob",
+      "git_blob": "33ffb816e88128794245afd15056a639f91c2a56"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/retrieval.py",
+      "sha256": "fd4dda45c07197c411fb524f33f1e7fd0e60564200b8952a47939e5432e9e289",
+      "bytes": 27004,
+      "storage": "git_blob",
+      "git_blob": "dc0fbdcd5a29e02c6e6b5d677466271b9d527dfc"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/text.py",
+      "sha256": "f6125ebb3bd72d784beee6dff9569b0b306930b4a06f63cfd090d84c5e0237ab",
+      "bytes": 53008,
+      "storage": "git_blob",
+      "git_blob": "94072a0dc584a91012cca8f6d87973f88e36b439"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/web.py",
+      "sha256": "b94c0e7c48335376ffaae72c2b270935f11ba2b8cb92e0f36a237c1b845e80d0",
+      "bytes": 67498,
+      "storage": "git_blob",
+      "git_blob": "69224807443bd3f0caef71f7c0eadfff85ceefc6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/__init__.py",
+      "sha256": "1e982e1f452dd4289e0492788e93361dea365e12ae0c4b1f0ffb1ebc7fad469c",
+      "bytes": 444,
+      "storage": "git_blob",
+      "git_blob": "4fddfe2830675d544c9c8fd4398f656b8b3c24bb"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/arithmetic.py",
+      "sha256": "f7b5e53e208990a2c672309298bf5934cd1a9a8fa822417ce51c0e0c3aa5b1d1",
+      "bytes": 4180,
+      "storage": "git_blob",
+      "git_blob": "239baf92f56786ed8b747db3575d78ef70b59572"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/arithmetic_spoken.py",
+      "sha256": "0a242f3ec7def3680e222a9775347c55113f326d6aad842d1941d448bf5d9961",
+      "bytes": 3372,
+      "storage": "git_blob",
+      "git_blob": "e308f153a6f5d7b99b5f38670e2bf24135019f2a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/entry_origins.py",
+      "sha256": "635c8dd0b3a0df1ba920b6633af010ecf9b2b744d8cc46e359dc549b6310f1c6",
+      "bytes": 4395,
+      "storage": "git_blob",
+      "git_blob": "05a8b1815d4fe26be5cb867aea4ab4ef6fdaf02a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/frames.py",
+      "sha256": "d5ad6eb59aaaef383dbf0bd3c8f9e254f5feb30ef9f274582d79c2e27814348b",
+      "bytes": 112207,
+      "storage": "git_blob",
+      "git_blob": "65132870a40c00fe38ed25b61e62c690ed16775e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/graph_projection.py",
+      "sha256": "459a3ad1003d217c26450e7914b7c85e4e8307a7f101272c4fec32ad2f51d463",
+      "bytes": 174368,
+      "storage": "git_blob",
+      "git_blob": "026e2fdd4da1a417bb842ad0ee90e058f900c478"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/hangul.py",
+      "sha256": "939e641dd581475de3ef6de8d372d4a7599d3a3a41e281bbc38d611932d1b08c",
+      "bytes": 33381,
+      "storage": "git_blob",
+      "git_blob": "4bb3be6d472adb380f631e7deb3bf23f3d0e4e13"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/numerals.py",
+      "sha256": "6bdbcc5c71d15e731ea6247c5f71f01e94e5aff2ec449668da97cba959288dc2",
+      "bytes": 1517,
+      "storage": "git_blob",
+      "git_blob": "cd91e50fe0e851ffe714ee52d06a931e4cd3ec46"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/passage_components.py",
+      "sha256": "bc52591ac9bea6b5ce208f09eaacf40d3db63dc5e55e255c959f47b1ce1f0154",
+      "bytes": 1443,
+      "storage": "git_blob",
+      "git_blob": "ac62b1790f77d1ac97469d2f75ceaedb5e36bfa6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/passages.py",
+      "sha256": "320aed3682c7de0ce6fd9f12499d316d81681ee72fdcbfd0b1fd6718f1d0df2a",
+      "bytes": 4110,
+      "storage": "git_blob",
+      "git_blob": "272c196cad624930081ce8cac34d71365fe1c2ab"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/__init__.py",
+      "sha256": "24b67f9e66c90c90fed2b63b5a96ea3dba5a3010b84649eb0b52033bde1ad9ca",
+      "bytes": 26358,
+      "storage": "git_blob",
+      "git_blob": "d5c2fcad91b72077f3f3d4e2d8f842a6157495c9"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/affect.py",
+      "sha256": "ceb4c45e60732f8041ad87ab2e83595b854c2a7e63f806af0a4ecd2d5a71ac46",
+      "bytes": 2840,
+      "storage": "git_blob",
+      "git_blob": "04378074388707b5c3e15cbafd8b49eeb5143a95"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/check.py",
+      "sha256": "e87c2a61646bb39ea39cc56db0f5d26e0c4a7906d94ce09695db99ba9b2312f0",
+      "bytes": 16837,
+      "storage": "git_blob",
+      "git_blob": "00b047fb92eb21038244a442f83b147da39b03d6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/composer.py",
+      "sha256": "894d7bda783364da92a6a8037a955fb6ff6ce31fc2f73ea33de43f601ee3fec6",
+      "bytes": 12243,
+      "storage": "git_blob",
+      "git_blob": "40b491b53ca8a75428a66bf8f08c4f0d1a383e5e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/contracts.py",
+      "sha256": "69de5c617c093c3d7019092c41bb243487b7222c89d6dec58627d81ca25c6673",
+      "bytes": 890,
+      "storage": "git_blob",
+      "git_blob": "727af9d99e3ee217e415a61d0aa3ffc56732c17c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/discourse.py",
+      "sha256": "9aa289b5a0d6f98cc88c48a51211a80e966ca27c54f2dfbeddfac8852cf18eee",
+      "bytes": 5419,
+      "storage": "git_blob",
+      "git_blob": "2a55c78a7dba73d660b373f75a01027ae6844e6b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/expression.py",
+      "sha256": "718b17d83daf4e6f4147f4c9f553332ff09c2e14d4dd0d1c160683ce434caa37",
+      "bytes": 3694,
+      "storage": "git_blob",
+      "git_blob": "09a3dcb593861d9203ad63973f8ee249a5295b61"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/grammar.py",
+      "sha256": "38b90369d4ce63d77ae20e0861fd2a1b277e9438b96ae4f86f1d91555bab159b",
+      "bytes": 45581,
+      "storage": "git_blob",
+      "git_blob": "60a3f7b5b8cf57bd8c8bbbe2ccf54515b95d2500"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/intent.py",
+      "sha256": "786b7eceecb2c844c771238533efb3b326fb1909bef459227e0a976411c4786b",
+      "bytes": 29234,
+      "storage": "git_blob",
+      "git_blob": "9ce92077f64903066a3d6b01d27e5185f87aef69"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/learning.py",
+      "sha256": "3fdd5aa793d53e0abb8717072d3a96a3cc0a7f2b67d6481ab720fc7ed34db56d",
+      "bytes": 12229,
+      "storage": "git_blob",
+      "git_blob": "49c5329290023231b39b98584a7e079f6518d93b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/meaning.py",
+      "sha256": "db3f78ef4445e6813e16dc4421b748b9e818d542b202173a9f6d2c278cf2d104",
+      "bytes": 9347,
+      "storage": "git_blob",
+      "git_blob": "d6addf163d4d0a325d11cf8918b874174ffee7f6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/packs.py",
+      "sha256": "8efa76f20b300ec2dd40d82cb4675db58d8eb47b4e049035de1964881f849fac",
+      "bytes": 13795,
+      "storage": "git_blob",
+      "git_blob": "239850b3ea86ac2ff53dc4e3ba86f01900f3be1e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/source_answer.py",
+      "sha256": "c865d5e113327b614f2d25b4bb25e0ac505c3456e7da97dd1208fc578758364b",
+      "bytes": 5044,
+      "storage": "git_blob",
+      "git_blob": "ebaa2fdb6c085340b04ef7cd0e19fbddd60e7006"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/relation_hypotheses.py",
+      "sha256": "bce316241132fec0e3e0ac7d5c4bfee6dbd9a57eb3b1c33f2989c9a246693fad",
+      "bytes": 22352,
+      "storage": "git_blob",
+      "git_blob": "64b7763d8a6123201c454c9ce84e9f23e8cb1250"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/relation_query_hypotheses.py",
+      "sha256": "b180dcefeb384805c4d0a687d105ed061856a71ed8f9f0bb9422f0d5b8dc9dfa",
+      "bytes": 30593,
+      "storage": "git_blob",
+      "git_blob": "7447726a2768320d53588b26e8726a31cf434d9c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/representation.py",
+      "sha256": "fb775f36c1e66682dab41e2e36149d143bc6ba908774cd6710a45f2a89bb3bb5",
+      "bytes": 16395,
+      "storage": "git_blob",
+      "git_blob": "ed2ba1ce7aaff0441ad36281833e24288d8f9e0b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/teaching.py",
+      "sha256": "2c286d6e8781b7303bd37d3a48eed41dcd8c17238554b018f464bae21f81e9d5",
+      "bytes": 30130,
+      "storage": "git_blob",
+      "git_blob": "28ab42c0406feffcef477eacd9ad3a3774a4a393"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/understanding.py",
+      "sha256": "f7e2484970df507a465f3e6b178f3f992ca548030146a538233ee61bd5fa72bc",
+      "bytes": 9260,
+      "storage": "git_blob",
+      "git_blob": "f2ea5f948c915b63cd997fd22a5f694742063063"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/authoring.py",
+      "sha256": "ca04bd9a8de3b353356d7f7dd63abfe22f47efb322cc4b3e9da0836af24c8efd",
+      "bytes": 27811,
+      "storage": "git_blob",
+      "git_blob": "76cfd1151c25898533f8630e52392d473be38fa0"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/chunking.py",
+      "sha256": "93ef168faf6f2caae5760a90f4f2c53610279951498c5fe6836bb10a8cb4128a",
+      "bytes": 4769,
+      "storage": "git_blob",
+      "git_blob": "e79ac02d211577a24e56c0267ddb4f1045c24eb7"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/concepts.py",
+      "sha256": "67d665136189b03d9bd5f222194b35ee8d1f82908b80a2864f62a38e41ec0ea9",
+      "bytes": 27316,
+      "storage": "git_blob",
+      "git_blob": "2f34b619322d4f3d13248f2f86431fe29e8c2801"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/demo_memory.py",
+      "sha256": "5b14d3ebd382b7ee594a51265800cc33bc32d41f6479deb9ae888571dd663e00",
+      "bytes": 3762,
+      "storage": "git_blob",
+      "git_blob": "5da3fd413e18ad54eff066e96a8dcf0acbd597ec"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/expression_graph.py",
+      "sha256": "e81b47f370e1fdddf87b55ed6d35dcd58d3153999c5d2e00a7709d5a58255c27",
+      "bytes": 15986,
+      "storage": "git_blob",
+      "git_blob": "b3fc01b8c525b53d0a6b11fdf40a1e4843c8d5f1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/expressions.py",
+      "sha256": "4df76947d674737988ef36d2f9479269b2ddde9c80bb78e2112cc2aa921c2c78",
+      "bytes": 22521,
+      "storage": "git_blob",
+      "git_blob": "18a0efa46d138ecfb4c51363ab2adf37fbc79e37"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/feedback.py",
+      "sha256": "a312cb36e411959ae02912f7f6a7dcad7abe5b9759d07688bcd09f505b754f04",
+      "bytes": 2412,
+      "storage": "git_blob",
+      "git_blob": "18489c059add2994b0f2a676017fc0ac3b0b41e8"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/memory.py",
+      "sha256": "11befd370c4e1921422ef4eb642cca487ea89418af29ac655b3e65541d6dda01",
+      "bytes": 162044,
+      "storage": "git_blob",
+      "git_blob": "f679a2c6f9b8b62035e4f42a0845b3531447ea43"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/rules.py",
+      "sha256": "aaab8d7c5fbe3dc6b8822357353bb8341063abd9c6729813ebc6590c1f851446",
+      "bytes": 14530,
+      "storage": "git_blob",
+      "git_blob": "be6af5e59b5ea95ca0126f171bc8e500273eb85b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/objects.py",
+      "sha256": "8b14e10ebd6a607cd3e8dfb0e2c138c17c93ce45895bed9933075e89e23fa5ca",
+      "bytes": 1550,
+      "storage": "git_blob",
+      "git_blob": "7a8f5ac8494bd4ee8a252eef3f36edfc5b79af58"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/pose.py",
+      "sha256": "e46f8a33c656106e5c6adc28e3affa45534e29f2d678773c8ad704dee0e0dbb3",
+      "bytes": 2450,
+      "storage": "git_blob",
+      "git_blob": "bcd56d8d6cda66e95d2485b3ad796282c17e4a0c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/visual.py",
+      "sha256": "e414bed553e3a0efb7b044bfe105e7c1cec322dbbbb1d2b174b5c161b212fa3c",
+      "bytes": 37716,
+      "storage": "git_blob",
+      "git_blob": "93327dadde3039faa120c0796f9540170555356e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/vlm.py",
+      "sha256": "b552f5a006725c1ce9ffa313094e1d32aa251639bb6bd4493a9a2316df4fff7a",
+      "bytes": 4326,
+      "storage": "git_blob",
+      "git_blob": "751abd3fef72441f8e29bcbbbeada0f212d9e994"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/progress.py",
+      "sha256": "3f25fe85665399b7e0aa93bd8ba46e9a03d31dc5c7af5537cfad36dcfaaac9e2",
+      "bytes": 5356,
+      "storage": "git_blob",
+      "git_blob": "e093e45c99f622d9fea16a2381b87f271370d678"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/actions.py",
+      "sha256": "ce67419cd1af14100f4b308da8a5b38d36ef4d62d84918062f87d52a731093f3",
+      "bytes": 143729,
+      "storage": "git_blob",
+      "git_blob": "face59409f616693184f8b11fc79dcafc836acf1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/context.py",
+      "sha256": "3b5da319c13853d0bb8206b20ff1730ee9d48c4d3dcedaec528505ca84084120",
+      "bytes": 828328,
+      "storage": "git_blob",
+      "git_blob": "d7507577de1c05ae71a6daeeaca54f3b87371fd3"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/graph_contract.py",
+      "sha256": "31dedbf02a28bfb739ccba5628bab33a9a0647e60bb43ff84dbff8c0b0001721",
+      "bytes": 9517,
+      "storage": "git_blob",
+      "git_blob": "ca04ca0463fe7cec6cd6cc5637a9bc24982da97a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/graph_vm.py",
+      "sha256": "50db3bfbc5720e640318e24def47878b08385ffb4a9cfd937e5d769fb5b27b09",
+      "bytes": 28040,
+      "storage": "git_blob",
+      "git_blob": "47b264bd83fa37de165ab889ffd2f076c280b72a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/identity.py",
+      "sha256": "173b2405cb50dcf850540fc050175e1c4562736dda903c1bd0e2c9b753b83c6d",
+      "bytes": 10099,
+      "storage": "git_blob",
+      "git_blob": "1c9565628c077876985e3454ddf41b8a9ddbf23a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/inference.py",
+      "sha256": "40ec49cdad9963a663b81fae130a0648e6b3584064e0c81e4ea54abdd01008ab",
+      "bytes": 34717,
+      "storage": "git_blob",
+      "git_blob": "7e4928d48ac1e9d2b56fa2b5b7d1434ba7441716"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/proof_graph.py",
+      "sha256": "19092825ca88e4c30b82a09423389708b5cf3f41541f1718fd57a33a9ca7f3a3",
+      "bytes": 25829,
+      "storage": "git_blob",
+      "git_blob": "09297adb9fdefc7524b8e303801304031fcc816c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/query_work.py",
+      "sha256": "99d3ad4cba90b40f41579fe72beb12857a51e48e968210bda555fc9627ca9b69",
+      "bytes": 94188,
+      "storage": "git_blob",
+      "git_blob": "b07ff2d38dd5541d9a8ec192e6c0661ba59c2d5f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/readings.py",
+      "sha256": "b16ca42b8565e495b4caa48736d010f4df7fe68b3e12be9a5ea681e6e0e53121",
+      "bytes": 15123,
+      "storage": "git_blob",
+      "git_blob": "37b6401c76878dcef95def031a7ac712143b7353"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/relation_hypotheses.py",
+      "sha256": "c9834ba501c1d97f59a4f0b8bde888581e578ef043c788004899222f6c46c9cd",
+      "bytes": 37953,
+      "storage": "git_blob",
+      "git_blob": "86e4d1bf81ead1a173f149cad5c6129759b7e0bd"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/relation_query_hypotheses.py",
+      "sha256": "6176a5ec1b60eb731a51213c29b34ebcb1c5b979c81d5ee67a8553befe461f58",
+      "bytes": 13214,
+      "storage": "git_blob",
+      "git_blob": "03495aaf43b6d2f8f0823401b7a549370780f44c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/situation.py",
+      "sha256": "e759a4f74f0c8d0a1d238fb27a5c6c950c2ef7a1160409c72cf95d59b0de8728",
+      "bytes": 596,
+      "storage": "git_blob",
+      "git_blob": "4ce5f73d60c8ccb3aac752825cf4b496a6310771"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/state.py",
+      "sha256": "34f3ed626a810c6ac5e2cab139a9978aa496c4ac8c86cf0787df970561c8f4a8",
+      "bytes": 11008,
+      "storage": "git_blob",
+      "git_blob": "8ddaa5cbd9929c337cc88cdc7b299aed0e37ddb0"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/contextual_meaning_host.py",
+      "sha256": "5dea323a270da62b99b911ae6c95187551d6d5ec1957adf8ce6fdabc71a2e8e2",
+      "bytes": 52558,
+      "storage": "git_blob",
+      "git_blob": "4f8a5a3e1f7776de0fbb70678efbaa53b5b157b2"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/conversation.py",
+      "sha256": "ba1018351684ea3606b8a323e3681ddd19af7946aaf9afdb9c0f75ff44d661d8",
+      "bytes": 7606,
+      "storage": "git_blob",
+      "git_blob": "99d2899e1a32535372c0af9f1c9c3a2d0eb3b36f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/dialogue_trace.py",
+      "sha256": "3d78ebd317821c91a7ea806478bf9587df0ae533461c43e7d7ebecf24aa82aa6",
+      "bytes": 14885,
+      "storage": "git_blob",
+      "git_blob": "0e594111ddcda25d48afa2f19afeebfc6439f141"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/explain.py",
+      "sha256": "70798734166fd09832502c331d80d20eb330ab9938c3524b3a76f25f428298ad",
+      "bytes": 126812,
+      "storage": "git_blob",
+      "git_blob": "6664cbae4e4ab99261389cfc38dab2d44955f337"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/graph_dialogue.py",
+      "sha256": "dee2892b50320b4b7c791ee204206321e55037d92da84de29d6a4069f5e9b6c9",
+      "bytes": 11779,
+      "storage": "git_blob",
+      "git_blob": "5fe2d2ec0ce58b618a1b100c91045061d4d9a218"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/graph_route_work.py",
+      "sha256": "de986200659eb64401a1de1b610b7d85d4b95df5aebdcfd9b19ea151ca059a9d",
+      "bytes": 40661,
+      "storage": "git_blob",
+      "git_blob": "8a0ecbf031d7d27659561fef123a7590f2df9121"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/ground_language_work.py",
+      "sha256": "6083936ccc27f9d1eb8a95afd473fcb345b494ad8778b93a814fe6035797e654",
+      "bytes": 20705,
+      "storage": "git_blob",
+      "git_blob": "a7ae4acab0b4a36501a1d7f69a507581f37b876c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/learning_dialogue.py",
+      "sha256": "68a0fdbc04e5116a5fe6806ebd9178e1c31506678ffb14ee85204ae7859a6d16",
+      "bytes": 345012,
+      "storage": "git_blob",
+      "git_blob": "ce15e005313aa6e489dcdc57031a39104d284b18"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/relation_attempt.py",
+      "sha256": "36a34c88ac23834fa78e6a99386f35bad179bdd19e83613fec737bd9f468e698",
+      "bytes": 35457,
+      "storage": "git_blob",
+      "git_blob": "4d1ef2f939f4f7495d8d74ea85720e5118921b4a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/research.py",
+      "sha256": "7c601af11da780a36f845a856003f0e45d2158af3d0e15842251746830ae57f8",
+      "bytes": 17788,
+      "storage": "git_blob",
+      "git_blob": "63026609024032152a664c4a634d9dfa40506283"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/selected_graph.py",
+      "sha256": "49975d30f3031d63eff878df590e0182fbae6424d9ae7ee63a6418fb206d52cf",
+      "bytes": 18531,
+      "storage": "git_blob",
+      "git_blob": "cc45261bf384a74d07d5d9f45164ef645cdbd133"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/source_reading.py",
+      "sha256": "83b9ed21e004affff006a6707ce31df1519b1c404a85b192d2c3dc9eac08b8e7",
+      "bytes": 15738,
+      "storage": "git_blob",
+      "git_blob": "afe9d217cb5188820732cad5657fcfd4718c0f22"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/source_research.py",
+      "sha256": "077c190b41f3d77a65f2abff62f08c7c058b3d53ced88ab33dbc06eef107cdfe",
+      "bytes": 2175,
+      "storage": "git_blob",
+      "git_blob": "dade6be19079402883151c5a0d6dca487d7ae0f8"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/source_snapshot.py",
+      "sha256": "1b97b68a6a494d13bf56f7e629c534b67eb3aba371df638c30db730709320fce",
+      "bytes": 14897,
+      "storage": "git_blob",
+      "git_blob": "e7bde180ce709c1792e960c226e7d3435bf990e9"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/verified_graph_turn.py",
+      "sha256": "3532bd95e04c0c4fd9dd0674266e71dd98ec7d0a9843679ef61af80dec598d5b",
+      "bytes": 10951,
+      "storage": "git_blob",
+      "git_blob": "10c96912f4fb0e8196f18258c4a4e2d9f5643395"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/conversations.py",
+      "sha256": "5cb5e5824dae4dc2c18b76a691adb1a75c300b2ec0579800f515272359a5bd1a",
+      "bytes": 11669,
+      "storage": "git_blob",
+      "git_blob": "db1dbafc4fc5e9cf933dabd0d87a8f4426330177"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/graph_text.py",
+      "sha256": "8c0f94db1ddc6f1128bf253b001130930f1797fb981007749c49bc139e68ebf0",
+      "bytes": 18062,
+      "storage": "git_blob",
+      "git_blob": "b9fbe953f5160b578c1565035e433f80c0f66515"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/graph_view.py",
+      "sha256": "6d49d69b21cbc49c23add1b2c00fdb4e58eba2b54337c10e10ba412780b95d6e",
+      "bytes": 25728,
+      "storage": "git_blob",
+      "git_blob": "1d362cda807b7726837d541c47508ee87be606e3"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/ids.py",
+      "sha256": "0210f6389181dab5fd64a984ad16f9d1a48432b5aec5b695d7b2b29daf3d5b54",
+      "bytes": 2810,
+      "storage": "git_blob",
+      "git_blob": "c8af198938134dfa8b6c4dc301dace9fc1c31dfb"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/kgbin.py",
+      "sha256": "61f66ecff650435b60f6b663868f5add95cb3d588f16ec72665995e0f29d446a",
+      "bytes": 12116,
+      "storage": "git_blob",
+      "git_blob": "073bd2969e53e84f1faa3f95e37c3126deb7dd0f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/kgpack.py",
+      "sha256": "6c561218629ac151d597c5d8739a28457f4545cdd83974b32df758c24017b4fb",
+      "bytes": 20721,
+      "storage": "git_blob",
+      "git_blob": "859147024613a1cfd6c29b0da0433f8662097de1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/overlay.py",
+      "sha256": "4a95ab63d2e9ce32dea25f69384ecf0ed9826a43beb3f44ce8a9ee7702832740",
+      "bytes": 45801,
+      "storage": "git_blob",
+      "git_blob": "d4c3286d61871a31fbdd69a8e3e666b98f00e488"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/snapshot.py",
+      "sha256": "e22c0488298a0aefbe1027382563f0d663361d6e715e56cdd4d9862d0bb8b6c0",
+      "bytes": 38966,
+      "storage": "git_blob",
+      "git_blob": "f62989f3f825a73cfede2f83366ad2bc411a8ead"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/__init__.py",
+      "sha256": "2b14edbf259e1658067c620ff9146e6d75c0dd0ecf89d999c89f680f67915d9c",
+      "bytes": 1265,
+      "storage": "git_blob",
+      "git_blob": "48ad6eca66b6aa259ed2cb80760c209d2d207602"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/__main__.py",
+      "sha256": "20e51512d4d4d8bd1f9760a3e3e25ffbb1e5963b70d9d8518097154ffa63846b",
+      "bytes": 5440,
+      "storage": "git_blob",
+      "git_blob": "da0d847f9bab5aa3f7f89e108409d4ce2810b096"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/drive.py",
+      "sha256": "26bfa9241df36171cb351199c13154e2c1df339040ccaaec894a1369ca80af01",
+      "bytes": 12117,
+      "storage": "git_blob",
+      "git_blob": "9a99ef4ce3bbd1a2f4858944881bae4764cb129a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/explain.py",
+      "sha256": "1847b6eb42aafc3f223781a69bb88d20bc929954ae299e89b928d0ded5d401e6",
+      "bytes": 15851,
+      "storage": "git_blob",
+      "git_blob": "c36c7be77ce9cad392c425110e6277b97477cb8c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/from_turn.py",
+      "sha256": "a6e88461db91cd0b14e32736101532967d514c038fa371cfecf33cc8535d1504",
+      "bytes": 49195,
+      "storage": "git_blob",
+      "git_blob": "13ece622ca27f68fa2b4ebb0d405f3ef4eab0def"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/ledger.py",
+      "sha256": "b38ebdac1d320e4c365647d32dd0e0b5271160513184e3a41287f8c291a7d762",
+      "bytes": 18485,
+      "storage": "git_blob",
+      "git_blob": "9d12335ee04b94f76f7f6b547dce3e909c3d8971"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/pretty.py",
+      "sha256": "15b6468411161df440f72776c413794bd61c277c688766b9b20467315721d35b",
+      "bytes": 3719,
+      "storage": "git_blob",
+      "git_blob": "d434c9526b650a574f68eba819636d4704ddcdee"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/runtime.py",
+      "sha256": "b3d9b0f4610603fe164c96383509586f120d4d4bab5ac8e8708bc0d0b7b52784",
+      "bytes": 18726,
+      "storage": "git_blob",
+      "git_blob": "5cb7ea9cb853a97d0d654bf724d3d8161e70b54a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/schema.py",
+      "sha256": "a00deb6e093a117a64a87033865eed6c611baaf3d03467c4c57e644795e3431c",
+      "bytes": 13829,
+      "storage": "git_blob",
+      "git_blob": "e80601bc4739d12305e0be57882a25165aa97401"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/stats.py",
+      "sha256": "c0e9b87f661b324d07e7940d966481834afc55eb28459c6b7d5a174a27a1a3f5",
+      "bytes": 8763,
+      "storage": "git_blob",
+      "git_blob": "e8f495f37b372ef17aafb639e4a8be8556e0d529"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/why.py",
+      "sha256": "47183ef46819c1a6cc414b2b81d51bb1b411fe8b329ede7e74026a71472a4670",
+      "bytes": 2888,
+      "storage": "git_blob",
+      "git_blob": "e0f6cdcbaf5f49d805e285da18008c173ed7efbe"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/relational_semantics.py",
+      "sha256": "5d485caae33eae9f25a7b9a311ccdd1df9de557b5fe68467f8ecfb203a4aa331",
+      "bytes": 467740,
+      "storage": "git_blob",
+      "git_blob": "e71b22f4aa72ecccc863fab87bace8aa756ae9a5"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/REPORT.md",
+      "sha256": "b3431daae0931825b462af96b1431ea741f0d8feb10c528b9a2b16e98b1d3b72",
+      "bytes": 6845,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/audit/result_audit.json",
+      "sha256": "09e08d9cfac2508aa211dc33667858b3fc95b2656fa345fb9172678f3c28452a",
+      "bytes": 17020,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/audit_report.py",
+      "sha256": "58ea57d23ce6cc5210d5c2d012bd247d509f3b9ddd3352065eab35f1e31fba22",
+      "bytes": 11290,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/first_results.jsonl",
+      "sha256": "561dcb87d0f6aee490c5c423ec628d911a2df03e7f47786d37715b57be29579c",
+      "bytes": 3435350,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/manifest.json",
+      "sha256": "4101e4f80e8ae4269c5f872490172a724f1a5db37c2a2f12cf422c37464a0860",
+      "bytes": 17119,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/postcheck.json",
+      "sha256": "b26a76216a77d4ef75d787ee301c606eb3ea4a16bb0e60f7f500e4a2627afa61",
+      "bytes": 16923,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/run.py",
+      "sha256": "968c65e3e29a61cf5a4afeae522adf688cad25e999234a61178aab28acfa1681",
+      "bytes": 4437,
+      "storage": "checkout"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_example_acquisition/acquire.py",
+      "sha256": "2d9564f11a3f58924437b5d260c1f62ca186a596f26a6819119fe32bbd0f7cb4",
+      "bytes": 10334,
+      "storage": "git_blob",
+      "git_blob": "7fd7a13f58cdb38868c6e744688ba799c2877b17"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_example_acquisition/driver.py",
+      "sha256": "4712661557356df145b755c550c6c8c36bddd1c7c70f7b2e87de57ca558f6636",
+      "bytes": 1621,
+      "storage": "git_blob",
+      "git_blob": "53220dbb78ebe42f2790d454f131fc8e6a17ffd1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_example_acquisition/native.py",
+      "sha256": "2b8a4cb5c9c44caa538592f26c28a54b037fbfef05b422c7a05af65c7e27d8a5",
+      "bytes": 10887,
+      "storage": "git_blob",
+      "git_blob": "d5ddcbf388484e5d75e13ba9bb590000cf657068"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_example_acquisition/v2.py",
+      "sha256": "00f83c2b892457922635240fdb7db8b4d4478415bb0eb0284827a616d43daee9",
+      "bytes": 41142,
+      "storage": "git_blob",
+      "git_blob": "d97317178c64ce3947886316f5db4f6171d1e7ea"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/__init__.py",
+      "sha256": "f3347c31aa0c3cc88b4f5dcd7294b68951cfd0215cfbf2b7e1e5d56e4107d095",
+      "bytes": 1421,
+      "storage": "git_blob",
+      "git_blob": "6184b2d7e29d80458a0a24eacc05986ae6ce416d"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/chart.py",
+      "sha256": "2d26cea4b6944edf2a34c4d43bb5a3b14b49d7b28031b532f07c429f786aa310",
+      "bytes": 19530,
+      "storage": "git_blob",
+      "git_blob": "f8f84ae4413f212e7ca00c9fa973c8bc198b2a7c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/comparators.py",
+      "sha256": "8620344f14e2ca9c4f495378775e6a980ad4156e893f9fe230597ff5a97a2d49",
+      "bytes": 13842,
+      "storage": "git_blob",
+      "git_blob": "a3793584ef78ae3b2377d67fae90a2a8d5c18b7f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/events.py",
+      "sha256": "076675b05d3022dc3c025b9c833c28372a6018612074687df22d768116b84663",
+      "bytes": 14630,
+      "storage": "git_blob",
+      "git_blob": "6bf7459c7de5af2de83f2aedc1f467b19760d70b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/graph_store.py",
+      "sha256": "c411eeb0312d10a4fbf8079cb825e789f420171e741def1b0e573541001e903f",
+      "bytes": 5597,
+      "storage": "git_blob",
+      "git_blob": "39b4b7decacfbe72d84f51587089775bda935280"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/identity.py",
+      "sha256": "5f9f659c867dfed8e0dab32a4d52f0099f2015c8d6b468ac8318232bc8efcf54",
+      "bytes": 5620,
+      "storage": "git_blob",
+      "git_blob": "9cf6a2f5752291bbe9e37274e733adf2580bc891"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/mentions.py",
+      "sha256": "f204f10bbc76ac1acffec260f496f389d3be3908ad0c78c7cdbb623d5d49e0d2",
+      "bytes": 3986,
+      "storage": "git_blob",
+      "git_blob": "434ad4bf0c33b2acb12e6fc283f866c621125fa8"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/morphology.py",
+      "sha256": "447eb85eb5b9345fb2564180645b6fca5f86e82295b9ad97a26eaa6632d78f8a",
+      "bytes": 11108,
+      "storage": "git_blob",
+      "git_blob": "3c67b547ca65bc44dfff5b78e3aa12d04ce50dad"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/policy.py",
+      "sha256": "b271483cf14d074fde4ec9f8a3684f145144c48d8669ba7c77d6e959155fcb8a",
+      "bytes": 2999,
+      "storage": "git_blob",
+      "git_blob": "6311cd4b0f6a75c8fcba6b5e082a6664de2cf30d"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/reading.py",
+      "sha256": "8fbc0ca7bdc0a231c9d279f9e7114c078f8c09c63087f3e4ab4502acef688ba2",
+      "bytes": 45348,
+      "storage": "git_blob",
+      "git_blob": "7a1cba885689ad82e4e1e6e4491e00a03d40655a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/rows.py",
+      "sha256": "18476f2e2fe514a7661ab9a39e4ffcacb7c8862d563b1657e075c676cd71d58d",
+      "bytes": 2316,
+      "storage": "git_blob",
+      "git_blob": "c91a1449e6b7de5776832599c1b5de4be91a625c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/scope.py",
+      "sha256": "b62ea8a2dcd870d4a3706a304e7a89bd5afac03458ca939cf6d600d90a386dd8",
+      "bytes": 7531,
+      "storage": "git_blob",
+      "git_blob": "859d79e300696b8660c2134f82c6a489fbc6ce13"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/search.py",
+      "sha256": "76b4f117322f049e541a5a4aae0ed23c81f21f9bbf7f8f29c3bf9a2decd53b38",
+      "bytes": 10919,
+      "storage": "git_blob",
+      "git_blob": "50ff9e405b826b19d75f839dee8850aa597dbb60"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/solver.py",
+      "sha256": "91d4874f854e959fdbae6db5227264b44750ffe87e099eeb1bad6f45f3ef6424",
+      "bytes": 14961,
+      "storage": "git_blob",
+      "git_blob": "8d0feb12ba3515bd774f87236d38b2a729e643a4"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compile.py",
+      "sha256": "0155e00607ced1ab07df6e1054e689a2bff497fadeeb98e98986599a0c4f7ce3",
+      "bytes": 42412,
+      "storage": "git_blob",
+      "git_blob": "98e8086ea3cc68e15d10d1462e7405507b2d70f1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compositional.py",
+      "sha256": "387c29ba1dafc08faa72e0573c22ad168d01e5f31ba594937648cf6c88468f34",
+      "bytes": 37850,
+      "storage": "git_blob",
+      "git_blob": "48b5cddab761c79ff547150f8003c43b2a0362fd"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/query_graph.py",
+      "sha256": "eebaec49cf1b92b7a64736b042129847ec6d616ce525ad4020282bc6e566328c",
+      "bytes": 18047,
+      "storage": "git_blob",
+      "git_blob": "12637a6885334c08ac16a7c1a40a4380592c617b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/respond.py",
+      "sha256": "7eb256ca9bd6da9919c03853337e9d7d4f0ea68c406a9856a8fd23cf15416b70",
+      "bytes": 6187,
+      "storage": "git_blob",
+      "git_blob": "dd387d75aff39e218a1388edff410c89f79ac94f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/select.py",
+      "sha256": "7ee57039b389c9dd91325df346afc7a90b935fa11d10f5ea834f7b4cf69881b0",
+      "bytes": 36308,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/answer.py",
+      "sha256": "36f819cae43cb91e8263183047bd220840f9861eb2a87a4fcf02ed643b5740bb",
+      "bytes": 14342,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/augment.py",
+      "sha256": "51c6402d18613ad7791ce2bf06650a5a6257a97fd0c84aa89d3d7daf4367023e",
+      "bytes": 6542,
+      "storage": "git_blob",
+      "git_blob": "0cecf19d0643bb43093180f3f59ea78f641256aa"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/driver.py",
+      "sha256": "a20eae373e4971fdb85dd034b30ba3f55deafc000b032f319cbd9b5cb85dd9c6",
+      "bytes": 4749,
+      "storage": "git_blob",
+      "git_blob": "0f72ca62e1db1841bbe2f3bbbc6c21e2a4d09691"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/match.py",
+      "sha256": "1d8419ba0c43ce61a388f7e48496b1698b67a2504a4c415bebeaa424afdc5332",
+      "bytes": 5571,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/merge.py",
+      "sha256": "adb86f2824480df536a3cfe770332701f8fcfb9f5c9865a977549a477e696aab",
+      "bytes": 3824,
+      "storage": "git_blob",
+      "git_blob": "fd0199387339510b5ffd5a0e3c8a1551e3c1ab0b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/reader.py",
+      "sha256": "bfb06e144099070843317bdb1e0fc813d23f22ab427c376a9413417d3348758f",
+      "bytes": 36883,
+      "storage": "archive"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/weights.py",
+      "sha256": "694c60f6f295225d41c3ec9af753219818c9eff409981468553009d4320607b5",
+      "bytes": 9477,
+      "storage": "git_blob",
+      "git_blob": "356a8e59aacb6c671c7556d5c9508f9a4630935f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/tax_graph_trial_20261119/runner.py",
+      "sha256": "2e090533d7983b46ebc1800947992973d9315786806de4149fde5d68af9a4d8b",
+      "bytes": 6216,
+      "storage": "git_blob",
+      "git_blob": "b6dbbed72da3c4c01901d06f0c6d93d4420c2ca6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/__init__.py",
+      "sha256": "42a9154be6d03c7a01a5c4f45ad2e24f6660661fe8700aeb43aace3ef1afd0bb",
+      "bytes": 130,
+      "storage": "git_blob",
+      "git_blob": "886c15fbbeecf04b765300a474dc8c6ab4c66d54"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/host/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/host/act.py",
+      "sha256": "64e4cc901ea6268467881adc3935000a24dce68cb9b897965ed0d18a753dcc78",
+      "bytes": 17508,
+      "storage": "git_blob",
+      "git_blob": "bfd29a1668d1e5d135388d150fdfb78a07118dbc"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/definitions.py",
+      "sha256": "ff7cb3c178342eeb69bc5aa06718ee9f10a3a3a856d0018defb5d558998e7f09",
+      "bytes": 9732,
+      "storage": "git_blob",
+      "git_blob": "81417e3ff1d745fcd64012fb450e331cb8b05ace"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/dictionary.py",
+      "sha256": "8d6da41c6b0baf89ce4ad4c9f4ac7e3f934d539ceddba3489eea70df9e47cf3f",
+      "bytes": 17936,
+      "storage": "git_blob",
+      "git_blob": "2ac17f15482c80187ed87084e4e2bf65664bcd18"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/documents.py",
+      "sha256": "f9b877625de4d4bee2bc56cfa8ff2a7791239bf711c78f16eca884429b4cc8fc",
+      "bytes": 26743,
+      "storage": "git_blob",
+      "git_blob": "33ffb816e88128794245afd15056a639f91c2a56"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/retrieval.py",
+      "sha256": "fd4dda45c07197c411fb524f33f1e7fd0e60564200b8952a47939e5432e9e289",
+      "bytes": 27004,
+      "storage": "git_blob",
+      "git_blob": "dc0fbdcd5a29e02c6e6b5d677466271b9d527dfc"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/text.py",
+      "sha256": "f6125ebb3bd72d784beee6dff9569b0b306930b4a06f63cfd090d84c5e0237ab",
+      "bytes": 53008,
+      "storage": "git_blob",
+      "git_blob": "94072a0dc584a91012cca8f6d87973f88e36b439"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/web.py",
+      "sha256": "b94c0e7c48335376ffaae72c2b270935f11ba2b8cb92e0f36a237c1b845e80d0",
+      "bytes": 67498,
+      "storage": "git_blob",
+      "git_blob": "69224807443bd3f0caef71f7c0eadfff85ceefc6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/__init__.py",
+      "sha256": "1e982e1f452dd4289e0492788e93361dea365e12ae0c4b1f0ffb1ebc7fad469c",
+      "bytes": 444,
+      "storage": "git_blob",
+      "git_blob": "4fddfe2830675d544c9c8fd4398f656b8b3c24bb"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/arithmetic.py",
+      "sha256": "f7b5e53e208990a2c672309298bf5934cd1a9a8fa822417ce51c0e0c3aa5b1d1",
+      "bytes": 4180,
+      "storage": "git_blob",
+      "git_blob": "239baf92f56786ed8b747db3575d78ef70b59572"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/arithmetic_spoken.py",
+      "sha256": "0a242f3ec7def3680e222a9775347c55113f326d6aad842d1941d448bf5d9961",
+      "bytes": 3372,
+      "storage": "git_blob",
+      "git_blob": "e308f153a6f5d7b99b5f38670e2bf24135019f2a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/entry_origins.py",
+      "sha256": "635c8dd0b3a0df1ba920b6633af010ecf9b2b744d8cc46e359dc549b6310f1c6",
+      "bytes": 4395,
+      "storage": "git_blob",
+      "git_blob": "05a8b1815d4fe26be5cb867aea4ab4ef6fdaf02a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/frames.py",
+      "sha256": "d5ad6eb59aaaef383dbf0bd3c8f9e254f5feb30ef9f274582d79c2e27814348b",
+      "bytes": 112207,
+      "storage": "git_blob",
+      "git_blob": "65132870a40c00fe38ed25b61e62c690ed16775e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/graph_projection.py",
+      "sha256": "459a3ad1003d217c26450e7914b7c85e4e8307a7f101272c4fec32ad2f51d463",
+      "bytes": 174368,
+      "storage": "git_blob",
+      "git_blob": "026e2fdd4da1a417bb842ad0ee90e058f900c478"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/hangul.py",
+      "sha256": "939e641dd581475de3ef6de8d372d4a7599d3a3a41e281bbc38d611932d1b08c",
+      "bytes": 33381,
+      "storage": "git_blob",
+      "git_blob": "4bb3be6d472adb380f631e7deb3bf23f3d0e4e13"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/numerals.py",
+      "sha256": "6bdbcc5c71d15e731ea6247c5f71f01e94e5aff2ec449668da97cba959288dc2",
+      "bytes": 1517,
+      "storage": "git_blob",
+      "git_blob": "cd91e50fe0e851ffe714ee52d06a931e4cd3ec46"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/passage_components.py",
+      "sha256": "bc52591ac9bea6b5ce208f09eaacf40d3db63dc5e55e255c959f47b1ce1f0154",
+      "bytes": 1443,
+      "storage": "git_blob",
+      "git_blob": "ac62b1790f77d1ac97469d2f75ceaedb5e36bfa6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/passages.py",
+      "sha256": "320aed3682c7de0ce6fd9f12499d316d81681ee72fdcbfd0b1fd6718f1d0df2a",
+      "bytes": 4110,
+      "storage": "git_blob",
+      "git_blob": "272c196cad624930081ce8cac34d71365fe1c2ab"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/__init__.py",
+      "sha256": "24b67f9e66c90c90fed2b63b5a96ea3dba5a3010b84649eb0b52033bde1ad9ca",
+      "bytes": 26358,
+      "storage": "git_blob",
+      "git_blob": "d5c2fcad91b72077f3f3d4e2d8f842a6157495c9"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/affect.py",
+      "sha256": "ceb4c45e60732f8041ad87ab2e83595b854c2a7e63f806af0a4ecd2d5a71ac46",
+      "bytes": 2840,
+      "storage": "git_blob",
+      "git_blob": "04378074388707b5c3e15cbafd8b49eeb5143a95"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/check.py",
+      "sha256": "e87c2a61646bb39ea39cc56db0f5d26e0c4a7906d94ce09695db99ba9b2312f0",
+      "bytes": 16837,
+      "storage": "git_blob",
+      "git_blob": "00b047fb92eb21038244a442f83b147da39b03d6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/composer.py",
+      "sha256": "894d7bda783364da92a6a8037a955fb6ff6ce31fc2f73ea33de43f601ee3fec6",
+      "bytes": 12243,
+      "storage": "git_blob",
+      "git_blob": "40b491b53ca8a75428a66bf8f08c4f0d1a383e5e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/contracts.py",
+      "sha256": "69de5c617c093c3d7019092c41bb243487b7222c89d6dec58627d81ca25c6673",
+      "bytes": 890,
+      "storage": "git_blob",
+      "git_blob": "727af9d99e3ee217e415a61d0aa3ffc56732c17c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/discourse.py",
+      "sha256": "9aa289b5a0d6f98cc88c48a51211a80e966ca27c54f2dfbeddfac8852cf18eee",
+      "bytes": 5419,
+      "storage": "git_blob",
+      "git_blob": "2a55c78a7dba73d660b373f75a01027ae6844e6b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/expression.py",
+      "sha256": "718b17d83daf4e6f4147f4c9f553332ff09c2e14d4dd0d1c160683ce434caa37",
+      "bytes": 3694,
+      "storage": "git_blob",
+      "git_blob": "09a3dcb593861d9203ad63973f8ee249a5295b61"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/grammar.py",
+      "sha256": "38b90369d4ce63d77ae20e0861fd2a1b277e9438b96ae4f86f1d91555bab159b",
+      "bytes": 45581,
+      "storage": "git_blob",
+      "git_blob": "60a3f7b5b8cf57bd8c8bbbe2ccf54515b95d2500"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/intent.py",
+      "sha256": "786b7eceecb2c844c771238533efb3b326fb1909bef459227e0a976411c4786b",
+      "bytes": 29234,
+      "storage": "git_blob",
+      "git_blob": "9ce92077f64903066a3d6b01d27e5185f87aef69"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/learning.py",
+      "sha256": "3fdd5aa793d53e0abb8717072d3a96a3cc0a7f2b67d6481ab720fc7ed34db56d",
+      "bytes": 12229,
+      "storage": "git_blob",
+      "git_blob": "49c5329290023231b39b98584a7e079f6518d93b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/meaning.py",
+      "sha256": "db3f78ef4445e6813e16dc4421b748b9e818d542b202173a9f6d2c278cf2d104",
+      "bytes": 9347,
+      "storage": "git_blob",
+      "git_blob": "d6addf163d4d0a325d11cf8918b874174ffee7f6"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/packs.py",
+      "sha256": "8efa76f20b300ec2dd40d82cb4675db58d8eb47b4e049035de1964881f849fac",
+      "bytes": 13795,
+      "storage": "git_blob",
+      "git_blob": "239850b3ea86ac2ff53dc4e3ba86f01900f3be1e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/source_answer.py",
+      "sha256": "c865d5e113327b614f2d25b4bb25e0ac505c3456e7da97dd1208fc578758364b",
+      "bytes": 5044,
+      "storage": "git_blob",
+      "git_blob": "ebaa2fdb6c085340b04ef7cd0e19fbddd60e7006"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/relation_hypotheses.py",
+      "sha256": "bce316241132fec0e3e0ac7d5c4bfee6dbd9a57eb3b1c33f2989c9a246693fad",
+      "bytes": 22352,
+      "storage": "git_blob",
+      "git_blob": "64b7763d8a6123201c454c9ce84e9f23e8cb1250"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/relation_query_hypotheses.py",
+      "sha256": "b180dcefeb384805c4d0a687d105ed061856a71ed8f9f0bb9422f0d5b8dc9dfa",
+      "bytes": 30593,
+      "storage": "git_blob",
+      "git_blob": "7447726a2768320d53588b26e8726a31cf434d9c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/representation.py",
+      "sha256": "fb775f36c1e66682dab41e2e36149d143bc6ba908774cd6710a45f2a89bb3bb5",
+      "bytes": 16395,
+      "storage": "git_blob",
+      "git_blob": "ed2ba1ce7aaff0441ad36281833e24288d8f9e0b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/teaching.py",
+      "sha256": "2c286d6e8781b7303bd37d3a48eed41dcd8c17238554b018f464bae21f81e9d5",
+      "bytes": 30130,
+      "storage": "git_blob",
+      "git_blob": "28ab42c0406feffcef477eacd9ad3a3774a4a393"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/understanding.py",
+      "sha256": "f7e2484970df507a465f3e6b178f3f992ca548030146a538233ee61bd5fa72bc",
+      "bytes": 9260,
+      "storage": "git_blob",
+      "git_blob": "f2ea5f948c915b63cd997fd22a5f694742063063"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/authoring.py",
+      "sha256": "ca04bd9a8de3b353356d7f7dd63abfe22f47efb322cc4b3e9da0836af24c8efd",
+      "bytes": 27811,
+      "storage": "git_blob",
+      "git_blob": "76cfd1151c25898533f8630e52392d473be38fa0"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/chunking.py",
+      "sha256": "93ef168faf6f2caae5760a90f4f2c53610279951498c5fe6836bb10a8cb4128a",
+      "bytes": 4769,
+      "storage": "git_blob",
+      "git_blob": "e79ac02d211577a24e56c0267ddb4f1045c24eb7"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/concepts.py",
+      "sha256": "67d665136189b03d9bd5f222194b35ee8d1f82908b80a2864f62a38e41ec0ea9",
+      "bytes": 27316,
+      "storage": "git_blob",
+      "git_blob": "2f34b619322d4f3d13248f2f86431fe29e8c2801"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/demo_memory.py",
+      "sha256": "5b14d3ebd382b7ee594a51265800cc33bc32d41f6479deb9ae888571dd663e00",
+      "bytes": 3762,
+      "storage": "git_blob",
+      "git_blob": "5da3fd413e18ad54eff066e96a8dcf0acbd597ec"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/expression_graph.py",
+      "sha256": "e81b47f370e1fdddf87b55ed6d35dcd58d3153999c5d2e00a7709d5a58255c27",
+      "bytes": 15986,
+      "storage": "git_blob",
+      "git_blob": "b3fc01b8c525b53d0a6b11fdf40a1e4843c8d5f1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/expressions.py",
+      "sha256": "4df76947d674737988ef36d2f9479269b2ddde9c80bb78e2112cc2aa921c2c78",
+      "bytes": 22521,
+      "storage": "git_blob",
+      "git_blob": "18a0efa46d138ecfb4c51363ab2adf37fbc79e37"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/feedback.py",
+      "sha256": "a312cb36e411959ae02912f7f6a7dcad7abe5b9759d07688bcd09f505b754f04",
+      "bytes": 2412,
+      "storage": "git_blob",
+      "git_blob": "18489c059add2994b0f2a676017fc0ac3b0b41e8"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/memory.py",
+      "sha256": "11befd370c4e1921422ef4eb642cca487ea89418af29ac655b3e65541d6dda01",
+      "bytes": 162044,
+      "storage": "git_blob",
+      "git_blob": "f679a2c6f9b8b62035e4f42a0845b3531447ea43"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/rules.py",
+      "sha256": "aaab8d7c5fbe3dc6b8822357353bb8341063abd9c6729813ebc6590c1f851446",
+      "bytes": 14530,
+      "storage": "git_blob",
+      "git_blob": "be6af5e59b5ea95ca0126f171bc8e500273eb85b"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/objects.py",
+      "sha256": "8b14e10ebd6a607cd3e8dfb0e2c138c17c93ce45895bed9933075e89e23fa5ca",
+      "bytes": 1550,
+      "storage": "git_blob",
+      "git_blob": "7a8f5ac8494bd4ee8a252eef3f36edfc5b79af58"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/pose.py",
+      "sha256": "e46f8a33c656106e5c6adc28e3affa45534e29f2d678773c8ad704dee0e0dbb3",
+      "bytes": 2450,
+      "storage": "git_blob",
+      "git_blob": "bcd56d8d6cda66e95d2485b3ad796282c17e4a0c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/visual.py",
+      "sha256": "e414bed553e3a0efb7b044bfe105e7c1cec322dbbbb1d2b174b5c161b212fa3c",
+      "bytes": 37716,
+      "storage": "git_blob",
+      "git_blob": "93327dadde3039faa120c0796f9540170555356e"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/vlm.py",
+      "sha256": "b552f5a006725c1ce9ffa313094e1d32aa251639bb6bd4493a9a2316df4fff7a",
+      "bytes": 4326,
+      "storage": "git_blob",
+      "git_blob": "751abd3fef72441f8e29bcbbbeada0f212d9e994"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/progress.py",
+      "sha256": "3f25fe85665399b7e0aa93bd8ba46e9a03d31dc5c7af5537cfad36dcfaaac9e2",
+      "bytes": 5356,
+      "storage": "git_blob",
+      "git_blob": "e093e45c99f622d9fea16a2381b87f271370d678"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/actions.py",
+      "sha256": "ce67419cd1af14100f4b308da8a5b38d36ef4d62d84918062f87d52a731093f3",
+      "bytes": 143729,
+      "storage": "git_blob",
+      "git_blob": "face59409f616693184f8b11fc79dcafc836acf1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/context.py",
+      "sha256": "3b5da319c13853d0bb8206b20ff1730ee9d48c4d3dcedaec528505ca84084120",
+      "bytes": 828328,
+      "storage": "git_blob",
+      "git_blob": "d7507577de1c05ae71a6daeeaca54f3b87371fd3"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/graph_contract.py",
+      "sha256": "31dedbf02a28bfb739ccba5628bab33a9a0647e60bb43ff84dbff8c0b0001721",
+      "bytes": 9517,
+      "storage": "git_blob",
+      "git_blob": "ca04ca0463fe7cec6cd6cc5637a9bc24982da97a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/graph_vm.py",
+      "sha256": "50db3bfbc5720e640318e24def47878b08385ffb4a9cfd937e5d769fb5b27b09",
+      "bytes": 28040,
+      "storage": "git_blob",
+      "git_blob": "47b264bd83fa37de165ab889ffd2f076c280b72a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/identity.py",
+      "sha256": "173b2405cb50dcf850540fc050175e1c4562736dda903c1bd0e2c9b753b83c6d",
+      "bytes": 10099,
+      "storage": "git_blob",
+      "git_blob": "1c9565628c077876985e3454ddf41b8a9ddbf23a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/inference.py",
+      "sha256": "40ec49cdad9963a663b81fae130a0648e6b3584064e0c81e4ea54abdd01008ab",
+      "bytes": 34717,
+      "storage": "git_blob",
+      "git_blob": "7e4928d48ac1e9d2b56fa2b5b7d1434ba7441716"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/proof_graph.py",
+      "sha256": "19092825ca88e4c30b82a09423389708b5cf3f41541f1718fd57a33a9ca7f3a3",
+      "bytes": 25829,
+      "storage": "git_blob",
+      "git_blob": "09297adb9fdefc7524b8e303801304031fcc816c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/query_work.py",
+      "sha256": "99d3ad4cba90b40f41579fe72beb12857a51e48e968210bda555fc9627ca9b69",
+      "bytes": 94188,
+      "storage": "git_blob",
+      "git_blob": "b07ff2d38dd5541d9a8ec192e6c0661ba59c2d5f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/readings.py",
+      "sha256": "b16ca42b8565e495b4caa48736d010f4df7fe68b3e12be9a5ea681e6e0e53121",
+      "bytes": 15123,
+      "storage": "git_blob",
+      "git_blob": "37b6401c76878dcef95def031a7ac712143b7353"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/relation_hypotheses.py",
+      "sha256": "c9834ba501c1d97f59a4f0b8bde888581e578ef043c788004899222f6c46c9cd",
+      "bytes": 37953,
+      "storage": "git_blob",
+      "git_blob": "86e4d1bf81ead1a173f149cad5c6129759b7e0bd"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/relation_query_hypotheses.py",
+      "sha256": "6176a5ec1b60eb731a51213c29b34ebcb1c5b979c81d5ee67a8553befe461f58",
+      "bytes": 13214,
+      "storage": "git_blob",
+      "git_blob": "03495aaf43b6d2f8f0823401b7a549370780f44c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/situation.py",
+      "sha256": "e759a4f74f0c8d0a1d238fb27a5c6c950c2ef7a1160409c72cf95d59b0de8728",
+      "bytes": 596,
+      "storage": "git_blob",
+      "git_blob": "4ce5f73d60c8ccb3aac752825cf4b496a6310771"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/state.py",
+      "sha256": "34f3ed626a810c6ac5e2cab139a9978aa496c4ac8c86cf0787df970561c8f4a8",
+      "bytes": 11008,
+      "storage": "git_blob",
+      "git_blob": "8ddaa5cbd9929c337cc88cdc7b299aed0e37ddb0"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/contextual_meaning_host.py",
+      "sha256": "5dea323a270da62b99b911ae6c95187551d6d5ec1957adf8ce6fdabc71a2e8e2",
+      "bytes": 52558,
+      "storage": "git_blob",
+      "git_blob": "4f8a5a3e1f7776de0fbb70678efbaa53b5b157b2"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/conversation.py",
+      "sha256": "ba1018351684ea3606b8a323e3681ddd19af7946aaf9afdb9c0f75ff44d661d8",
+      "bytes": 7606,
+      "storage": "git_blob",
+      "git_blob": "99d2899e1a32535372c0af9f1c9c3a2d0eb3b36f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/dialogue_trace.py",
+      "sha256": "3d78ebd317821c91a7ea806478bf9587df0ae533461c43e7d7ebecf24aa82aa6",
+      "bytes": 14885,
+      "storage": "git_blob",
+      "git_blob": "0e594111ddcda25d48afa2f19afeebfc6439f141"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/explain.py",
+      "sha256": "70798734166fd09832502c331d80d20eb330ab9938c3524b3a76f25f428298ad",
+      "bytes": 126812,
+      "storage": "git_blob",
+      "git_blob": "6664cbae4e4ab99261389cfc38dab2d44955f337"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/graph_dialogue.py",
+      "sha256": "dee2892b50320b4b7c791ee204206321e55037d92da84de29d6a4069f5e9b6c9",
+      "bytes": 11779,
+      "storage": "git_blob",
+      "git_blob": "5fe2d2ec0ce58b618a1b100c91045061d4d9a218"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/graph_route_work.py",
+      "sha256": "de986200659eb64401a1de1b610b7d85d4b95df5aebdcfd9b19ea151ca059a9d",
+      "bytes": 40661,
+      "storage": "git_blob",
+      "git_blob": "8a0ecbf031d7d27659561fef123a7590f2df9121"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/ground_language_work.py",
+      "sha256": "6083936ccc27f9d1eb8a95afd473fcb345b494ad8778b93a814fe6035797e654",
+      "bytes": 20705,
+      "storage": "git_blob",
+      "git_blob": "a7ae4acab0b4a36501a1d7f69a507581f37b876c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/learning_dialogue.py",
+      "sha256": "68a0fdbc04e5116a5fe6806ebd9178e1c31506678ffb14ee85204ae7859a6d16",
+      "bytes": 345012,
+      "storage": "git_blob",
+      "git_blob": "ce15e005313aa6e489dcdc57031a39104d284b18"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/relation_attempt.py",
+      "sha256": "36a34c88ac23834fa78e6a99386f35bad179bdd19e83613fec737bd9f468e698",
+      "bytes": 35457,
+      "storage": "git_blob",
+      "git_blob": "4d1ef2f939f4f7495d8d74ea85720e5118921b4a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/research.py",
+      "sha256": "7c601af11da780a36f845a856003f0e45d2158af3d0e15842251746830ae57f8",
+      "bytes": 17788,
+      "storage": "git_blob",
+      "git_blob": "63026609024032152a664c4a634d9dfa40506283"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/selected_graph.py",
+      "sha256": "49975d30f3031d63eff878df590e0182fbae6424d9ae7ee63a6418fb206d52cf",
+      "bytes": 18531,
+      "storage": "git_blob",
+      "git_blob": "cc45261bf384a74d07d5d9f45164ef645cdbd133"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/source_reading.py",
+      "sha256": "83b9ed21e004affff006a6707ce31df1519b1c404a85b192d2c3dc9eac08b8e7",
+      "bytes": 15738,
+      "storage": "git_blob",
+      "git_blob": "afe9d217cb5188820732cad5657fcfd4718c0f22"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/source_research.py",
+      "sha256": "077c190b41f3d77a65f2abff62f08c7c058b3d53ced88ab33dbc06eef107cdfe",
+      "bytes": 2175,
+      "storage": "git_blob",
+      "git_blob": "dade6be19079402883151c5a0d6dca487d7ae0f8"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/source_snapshot.py",
+      "sha256": "1b97b68a6a494d13bf56f7e629c534b67eb3aba371df638c30db730709320fce",
+      "bytes": 14897,
+      "storage": "git_blob",
+      "git_blob": "e7bde180ce709c1792e960c226e7d3435bf990e9"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/verified_graph_turn.py",
+      "sha256": "3532bd95e04c0c4fd9dd0674266e71dd98ec7d0a9843679ef61af80dec598d5b",
+      "bytes": 10951,
+      "storage": "git_blob",
+      "git_blob": "10c96912f4fb0e8196f18258c4a4e2d9f5643395"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "storage": "git_blob",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/conversations.py",
+      "sha256": "5cb5e5824dae4dc2c18b76a691adb1a75c300b2ec0579800f515272359a5bd1a",
+      "bytes": 11669,
+      "storage": "git_blob",
+      "git_blob": "db1dbafc4fc5e9cf933dabd0d87a8f4426330177"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/graph_text.py",
+      "sha256": "8c0f94db1ddc6f1128bf253b001130930f1797fb981007749c49bc139e68ebf0",
+      "bytes": 18062,
+      "storage": "git_blob",
+      "git_blob": "b9fbe953f5160b578c1565035e433f80c0f66515"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/graph_view.py",
+      "sha256": "6d49d69b21cbc49c23add1b2c00fdb4e58eba2b54337c10e10ba412780b95d6e",
+      "bytes": 25728,
+      "storage": "git_blob",
+      "git_blob": "1d362cda807b7726837d541c47508ee87be606e3"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/ids.py",
+      "sha256": "0210f6389181dab5fd64a984ad16f9d1a48432b5aec5b695d7b2b29daf3d5b54",
+      "bytes": 2810,
+      "storage": "git_blob",
+      "git_blob": "c8af198938134dfa8b6c4dc301dace9fc1c31dfb"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/kgbin.py",
+      "sha256": "61f66ecff650435b60f6b663868f5add95cb3d588f16ec72665995e0f29d446a",
+      "bytes": 12116,
+      "storage": "git_blob",
+      "git_blob": "073bd2969e53e84f1faa3f95e37c3126deb7dd0f"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/kgpack.py",
+      "sha256": "6c561218629ac151d597c5d8739a28457f4545cdd83974b32df758c24017b4fb",
+      "bytes": 20721,
+      "storage": "git_blob",
+      "git_blob": "859147024613a1cfd6c29b0da0433f8662097de1"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/overlay.py",
+      "sha256": "4a95ab63d2e9ce32dea25f69384ecf0ed9826a43beb3f44ce8a9ee7702832740",
+      "bytes": 45801,
+      "storage": "git_blob",
+      "git_blob": "d4c3286d61871a31fbdd69a8e3e666b98f00e488"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/snapshot.py",
+      "sha256": "e22c0488298a0aefbe1027382563f0d663361d6e715e56cdd4d9862d0bb8b6c0",
+      "bytes": 38966,
+      "storage": "git_blob",
+      "git_blob": "f62989f3f825a73cfede2f83366ad2bc411a8ead"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/__init__.py",
+      "sha256": "2b14edbf259e1658067c620ff9146e6d75c0dd0ecf89d999c89f680f67915d9c",
+      "bytes": 1265,
+      "storage": "git_blob",
+      "git_blob": "48ad6eca66b6aa259ed2cb80760c209d2d207602"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/__main__.py",
+      "sha256": "20e51512d4d4d8bd1f9760a3e3e25ffbb1e5963b70d9d8518097154ffa63846b",
+      "bytes": 5440,
+      "storage": "git_blob",
+      "git_blob": "da0d847f9bab5aa3f7f89e108409d4ce2810b096"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/drive.py",
+      "sha256": "26bfa9241df36171cb351199c13154e2c1df339040ccaaec894a1369ca80af01",
+      "bytes": 12117,
+      "storage": "git_blob",
+      "git_blob": "9a99ef4ce3bbd1a2f4858944881bae4764cb129a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/explain.py",
+      "sha256": "1847b6eb42aafc3f223781a69bb88d20bc929954ae299e89b928d0ded5d401e6",
+      "bytes": 15851,
+      "storage": "git_blob",
+      "git_blob": "c36c7be77ce9cad392c425110e6277b97477cb8c"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/from_turn.py",
+      "sha256": "a6e88461db91cd0b14e32736101532967d514c038fa371cfecf33cc8535d1504",
+      "bytes": 49195,
+      "storage": "git_blob",
+      "git_blob": "13ece622ca27f68fa2b4ebb0d405f3ef4eab0def"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/ledger.py",
+      "sha256": "b38ebdac1d320e4c365647d32dd0e0b5271160513184e3a41287f8c291a7d762",
+      "bytes": 18485,
+      "storage": "git_blob",
+      "git_blob": "9d12335ee04b94f76f7f6b547dce3e909c3d8971"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/pretty.py",
+      "sha256": "15b6468411161df440f72776c413794bd61c277c688766b9b20467315721d35b",
+      "bytes": 3719,
+      "storage": "git_blob",
+      "git_blob": "d434c9526b650a574f68eba819636d4704ddcdee"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/runtime.py",
+      "sha256": "b3d9b0f4610603fe164c96383509586f120d4d4bab5ac8e8708bc0d0b7b52784",
+      "bytes": 18726,
+      "storage": "git_blob",
+      "git_blob": "5cb7ea9cb853a97d0d654bf724d3d8161e70b54a"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/schema.py",
+      "sha256": "a00deb6e093a117a64a87033865eed6c611baaf3d03467c4c57e644795e3431c",
+      "bytes": 13829,
+      "storage": "git_blob",
+      "git_blob": "e80601bc4739d12305e0be57882a25165aa97401"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/stats.py",
+      "sha256": "c0e9b87f661b324d07e7940d966481834afc55eb28459c6b7d5a174a27a1a3f5",
+      "bytes": 8763,
+      "storage": "git_blob",
+      "git_blob": "e8f495f37b372ef17aafb639e4a8be8556e0d529"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/why.py",
+      "sha256": "47183ef46819c1a6cc414b2b81d51bb1b411fe8b329ede7e74026a71472a4670",
+      "bytes": 2888,
+      "storage": "git_blob",
+      "git_blob": "e0f6cdcbaf5f49d805e285da18008c173ed7efbe"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/relational_semantics.py",
+      "sha256": "5d485caae33eae9f25a7b9a311ccdd1df9de557b5fe68467f8ecfb203a4aa331",
+      "bytes": 467740,
+      "storage": "git_blob",
+      "git_blob": "e71b22f4aa72ecccc863fab87bace8aa756ae9a5"
+    },
+    {
+      "path": "experiments/tax_graph_trial_20261119/supplemental_questions.json",
+      "sha256": "e1426dfb8d2d1547b5d093060847d04b87a756cb1b2f5d4c9cd6fcb0451863b3",
+      "bytes": 2967,
+      "storage": "checkout"
+    }
+  ],
+  "note": "Only public tax trial receipts captured in this chat. Historical source bytes are restored from existing reachable Git blobs where identical; originals were not edited."
+}

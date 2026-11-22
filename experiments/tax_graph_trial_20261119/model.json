@@ -1,0 +1,874 @@
+{
+  "schema": "graph-piece-reader-v1",
+  "policy": {
+    "alpha": [
+      1,
+      2
+    ],
+    "margin_ratio": 3,
+    "beam": 16,
+    "max_value_chars": 40,
+    "max_assignments": 5000,
+    "origins_kept": 5
+  },
+  "examples": 44,
+  "tables": {
+    "value_type": {
+      "의 ": {
+        "subject": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "이다.": {
+        "amount": {
+          "n": 22,
+          "origins": [
+            "fiction-0-0",
+            "fiction-1-0",
+            "fiction-2-0",
+            "fiction-3-0",
+            "fiction-4-0"
+          ]
+        }
+      }
+    },
+    "value_length": {
+      "*": {
+        "3": {
+          "n": 46,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        },
+        "2": {
+          "n": 20,
+          "origins": [
+            "fiction-0-0",
+            "fiction-1-0",
+            "fiction-3-0",
+            "fiction-5-0",
+            "fiction-6-0"
+          ]
+        }
+      }
+    },
+    "head": {
+      "세율": {
+        "{\"literals\":[[\"kind\",\"세율\"]],\"type\":\"relation\"}": {
+          "n": 16,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "과세기간": {
+        "{\"literals\":[[\"kind\",\"과세기간\"]],\"type\":\"relation\"}": {
+          "n": 4,
+          "origins": [
+            "fiction-과세기간-0-0",
+            "fiction-과세기간-0-1",
+            "fiction-과세기간-1-0",
+            "fiction-과세기간-1-1"
+          ]
+        }
+      },
+      "신고횟수": {
+        "{\"literals\":[[\"kind\",\"신고횟수\"]],\"type\":\"relation\"}": {
+          "n": 4,
+          "origins": [
+            "fiction-신고횟수-0-0",
+            "fiction-신고횟수-0-1",
+            "fiction-신고횟수-1-0",
+            "fiction-신고횟수-1-1"
+          ]
+        }
+      },
+      "신고기간": {
+        "{\"literals\":[[\"kind\",\"신고기간\"]],\"type\":\"relation\"}": {
+          "n": 4,
+          "origins": [
+            "fiction-신고기간-0-0",
+            "fiction-신고기간-0-1",
+            "fiction-신고기간-1-0",
+            "fiction-신고기간-1-1"
+          ]
+        }
+      },
+      "신청기한": {
+        "{\"literals\":[[\"kind\",\"신청기한\"]],\"type\":\"relation\"}": {
+          "n": 4,
+          "origins": [
+            "fiction-신청기한-0-0",
+            "fiction-신청기한-0-1",
+            "fiction-신청기한-1-0",
+            "fiction-신청기한-1-1"
+          ]
+        }
+      },
+      "신청경로": {
+        "{\"literals\":[[\"kind\",\"신청경로\"]],\"type\":\"relation\"}": {
+          "n": 4,
+          "origins": [
+            "fiction-신청경로-0-0",
+            "fiction-신청경로-0-1",
+            "fiction-신청경로-1-0",
+            "fiction-신청경로-1-1"
+          ]
+        }
+      },
+      "상담전화": {
+        "{\"literals\":[[\"kind\",\"상담전화\"]],\"type\":\"relation\"}": {
+          "n": 4,
+          "origins": [
+            "fiction-상담전화-0-0",
+            "fiction-상담전화-0-1",
+            "fiction-상담전화-1-0",
+            "fiction-상담전화-1-1"
+          ]
+        }
+      },
+      "신고기한": {
+        "{\"literals\":[[\"kind\",\"신고기한\"]],\"type\":\"relation\"}": {
+          "n": 4,
+          "origins": [
+            "fiction-신고기한-0-0",
+            "fiction-신고기한-0-1",
+            "fiction-신고기한-1-0",
+            "fiction-신고기한-1-1"
+          ]
+        }
+      }
+    },
+    "gap": {
+      "start": {
+        "": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "mid": {
+        "의 ": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        },
+        "은 ": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "end": {
+        "이다.": {
+          "n": 22,
+          "origins": [
+            "fiction-0-0",
+            "fiction-1-0",
+            "fiction-2-0",
+            "fiction-3-0",
+            "fiction-4-0"
+          ]
+        },
+        "인가?": {
+          "n": 22,
+          "origins": [
+            "fiction-0-1",
+            "fiction-1-1",
+            "fiction-2-1",
+            "fiction-3-1",
+            "fiction-4-1"
+          ]
+        }
+      }
+    },
+    "gap_after": {
+      "start": {
+        "": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "value": {
+        "의 ": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        },
+        "이다.": {
+          "n": 22,
+          "origins": [
+            "fiction-0-0",
+            "fiction-1-0",
+            "fiction-2-0",
+            "fiction-3-0",
+            "fiction-4-0"
+          ]
+        }
+      },
+      "head": {
+        "은 ": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "closed": {
+        "인가?": {
+          "n": 22,
+          "origins": [
+            "fiction-0-1",
+            "fiction-1-1",
+            "fiction-2-1",
+            "fiction-3-1",
+            "fiction-4-1"
+          ]
+        }
+      }
+    },
+    "kind_after": {
+      "": {
+        "value": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "의 ": {
+        "head": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "은 ": {
+        "value": {
+          "n": 22,
+          "origins": [
+            "fiction-0-0",
+            "fiction-1-0",
+            "fiction-2-0",
+            "fiction-3-0",
+            "fiction-4-0"
+          ]
+        },
+        "closed": {
+          "n": 22,
+          "origins": [
+            "fiction-0-1",
+            "fiction-1-1",
+            "fiction-2-1",
+            "fiction-3-1",
+            "fiction-4-1"
+          ]
+        }
+      }
+    },
+    "attach": {
+      "*": {
+        "0": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        },
+        "-1": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      }
+    },
+    "role_right": {
+      "의 ": {
+        "subject": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "이다.": {
+        "amount": {
+          "n": 22,
+          "origins": [
+            "fiction-0-0",
+            "fiction-1-0",
+            "fiction-2-0",
+            "fiction-3-0",
+            "fiction-4-0"
+          ]
+        }
+      },
+      "인가?": {
+        "amount": {
+          "n": 22,
+          "origins": [
+            "fiction-0-1",
+            "fiction-1-1",
+            "fiction-2-1",
+            "fiction-3-1",
+            "fiction-4-1"
+          ]
+        }
+      }
+    },
+    "role_left": {
+      "": {
+        "subject": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "은 ": {
+        "amount": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "role:subject": {
+        "[[\"ARG\"],[\"HEAD\"]]": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "role:amount": {
+        "[[\"HEAD\"],[\"ARG\"]]": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "literal:kind": {
+        "[[\"HEAD\"]]": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "value": {
+        "[[\"ARG\"]]": {
+          "n": 66,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      }
+    },
+    "frame": {
+      "{\"literals\":[[\"kind\",\"세율\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 16,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"과세기간\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 4,
+          "origins": [
+            "fiction-과세기간-0-0",
+            "fiction-과세기간-0-1",
+            "fiction-과세기간-1-0",
+            "fiction-과세기간-1-1"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신고횟수\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 4,
+          "origins": [
+            "fiction-신고횟수-0-0",
+            "fiction-신고횟수-0-1",
+            "fiction-신고횟수-1-0",
+            "fiction-신고횟수-1-1"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신고기간\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 4,
+          "origins": [
+            "fiction-신고기간-0-0",
+            "fiction-신고기간-0-1",
+            "fiction-신고기간-1-0",
+            "fiction-신고기간-1-1"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신청기한\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 4,
+          "origins": [
+            "fiction-신청기한-0-0",
+            "fiction-신청기한-0-1",
+            "fiction-신청기한-1-0",
+            "fiction-신청기한-1-1"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신청경로\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 4,
+          "origins": [
+            "fiction-신청경로-0-0",
+            "fiction-신청경로-0-1",
+            "fiction-신청경로-1-0",
+            "fiction-신청경로-1-1"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"상담전화\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 4,
+          "origins": [
+            "fiction-상담전화-0-0",
+            "fiction-상담전화-0-1",
+            "fiction-상담전화-1-0",
+            "fiction-상담전화-1-1"
+          ]
+        }
+      },
+      "{\"literals\":[[\"kind\",\"신고기한\"]],\"type\":\"relation\"}": {
+        "[\"amount\",\"subject\"]": {
+          "n": 4,
+          "origins": [
+            "fiction-신고기한-0-0",
+            "fiction-신고기한-0-1",
+            "fiction-신고기한-1-0",
+            "fiction-신고기한-1-1"
+          ]
+        }
+      }
+    },
+    "repeat_role": {
+      "*": {
+        "no": {
+          "n": 44,
+          "origins": [
+            "fiction-0-0",
+            "fiction-0-1",
+            "fiction-1-0",
+            "fiction-1-1",
+            "fiction-2-0"
+          ]
+        }
+      }
+    },
+    "closed": {
+      "얼마": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 10,
+          "origins": [
+            "fiction-0-1",
+            "fiction-1-1",
+            "fiction-2-1",
+            "fiction-3-1",
+            "fiction-4-1"
+          ]
+        }
+      },
+      "몇회": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 2,
+          "origins": [
+            "fiction-신고횟수-0-1",
+            "fiction-신고횟수-1-1"
+          ]
+        }
+      },
+      "언제": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 6,
+          "origins": [
+            "fiction-신고기간-0-1",
+            "fiction-신고기간-1-1",
+            "fiction-신청기한-0-1",
+            "fiction-신청기한-1-1",
+            "fiction-신고기한-0-1"
+          ]
+        }
+      },
+      "어디": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 2,
+          "origins": [
+            "fiction-신청경로-0-1",
+            "fiction-신청경로-1-1"
+          ]
+        }
+      },
+      "무엇": {
+        "{\"project\":true,\"type\":\"amount\"}": {
+          "n": 2,
+          "origins": [
+            "fiction-상담전화-0-1",
+            "fiction-상담전화-1-1"
+          ]
+        }
+      }
+    },
+    "role_surface": {
+      "얼마": {
+        "amount": {
+          "n": 10,
+          "origins": [
+            "fiction-0-1",
+            "fiction-1-1",
+            "fiction-2-1",
+            "fiction-3-1",
+            "fiction-4-1"
+          ]
+        }
+      },
+      "몇회": {
+        "amount": {
+          "n": 2,
+          "origins": [
+            "fiction-신고횟수-0-1",
+            "fiction-신고횟수-1-1"
+          ]
+        }
+      },
+      "언제": {
+        "amount": {
+          "n": 6,
+          "origins": [
+            "fiction-신고기간-0-1",
+            "fiction-신고기간-1-1",
+            "fiction-신청기한-0-1",
+            "fiction-신청기한-1-1",
+            "fiction-신고기한-0-1"
+          ]
+        }
+      },
+      "어디": {
+        "amount": {
+          "n": 2,
+          "origins": [
+            "fiction-신청경로-0-1",
+            "fiction-신청경로-1-1"
+          ]
+        }
+      },
+      "무엇": {
+        "amount": {
+          "n": 2,
+          "origins": [
+            "fiction-상담전화-0-1",
+            "fiction-상담전화-1-1"
+          ]
+        }
+      }
+    }
+  },
+  "cues": {
+    "이다.": {
+      "used": {
+        "n": 22,
+        "origins": [
+          "fiction-0-0",
+          "fiction-1-0",
+          "fiction-2-0",
+          "fiction-3-0",
+          "fiction-4-0"
+        ]
+      }
+    },
+    "의": {
+      "used": {
+        "n": 44,
+        "origins": [
+          "fiction-0-0",
+          "fiction-0-1",
+          "fiction-1-0",
+          "fiction-1-1",
+          "fiction-2-0"
+        ]
+      }
+    },
+    "세율": {
+      "used": {
+        "n": 16,
+        "origins": [
+          "fiction-0-0",
+          "fiction-0-1",
+          "fiction-1-0",
+          "fiction-1-1",
+          "fiction-2-0"
+        ]
+      }
+    },
+    "은": {
+      "used": {
+        "n": 44,
+        "origins": [
+          "fiction-0-0",
+          "fiction-0-1",
+          "fiction-1-0",
+          "fiction-1-1",
+          "fiction-2-0"
+        ]
+      },
+      "unused": {
+        "n": 4,
+        "origins": [
+          "fiction-3-0",
+          "fiction-3-1",
+          "fiction-5-0",
+          "fiction-5-1"
+        ]
+      }
+    },
+    "얼마": {
+      "used": {
+        "n": 10,
+        "origins": [
+          "fiction-0-1",
+          "fiction-1-1",
+          "fiction-2-1",
+          "fiction-3-1",
+          "fiction-4-1"
+        ]
+      }
+    },
+    "인가?": {
+      "used": {
+        "n": 22,
+        "origins": [
+          "fiction-0-1",
+          "fiction-1-1",
+          "fiction-2-1",
+          "fiction-3-1",
+          "fiction-4-1"
+        ]
+      }
+    },
+    "과세기간": {
+      "used": {
+        "n": 4,
+        "origins": [
+          "fiction-과세기간-0-0",
+          "fiction-과세기간-0-1",
+          "fiction-과세기간-1-0",
+          "fiction-과세기간-1-1"
+        ]
+      }
+    },
+    "신고횟수": {
+      "used": {
+        "n": 4,
+        "origins": [
+          "fiction-신고횟수-0-0",
+          "fiction-신고횟수-0-1",
+          "fiction-신고횟수-1-0",
+          "fiction-신고횟수-1-1"
+        ]
+      }
+    },
+    "몇회": {
+      "used": {
+        "n": 2,
+        "origins": [
+          "fiction-신고횟수-0-1",
+          "fiction-신고횟수-1-1"
+        ]
+      }
+    },
+    "신고기간": {
+      "used": {
+        "n": 4,
+        "origins": [
+          "fiction-신고기간-0-0",
+          "fiction-신고기간-0-1",
+          "fiction-신고기간-1-0",
+          "fiction-신고기간-1-1"
+        ]
+      }
+    },
+    "언제": {
+      "used": {
+        "n": 6,
+        "origins": [
+          "fiction-신고기간-0-1",
+          "fiction-신고기간-1-1",
+          "fiction-신청기한-0-1",
+          "fiction-신청기한-1-1",
+          "fiction-신고기한-0-1"
+        ]
+      }
+    },
+    "신청기한": {
+      "used": {
+        "n": 4,
+        "origins": [
+          "fiction-신청기한-0-0",
+          "fiction-신청기한-0-1",
+          "fiction-신청기한-1-0",
+          "fiction-신청기한-1-1"
+        ]
+      }
+    },
+    "신청경로": {
+      "used": {
+        "n": 4,
+        "origins": [
+          "fiction-신청경로-0-0",
+          "fiction-신청경로-0-1",
+          "fiction-신청경로-1-0",
+          "fiction-신청경로-1-1"
+        ]
+      }
+    },
+    "어디": {
+      "used": {
+        "n": 2,
+        "origins": [
+          "fiction-신청경로-0-1",
+          "fiction-신청경로-1-1"
+        ]
+      }
+    },
+    "상담전화": {
+      "used": {
+        "n": 4,
+        "origins": [
+          "fiction-상담전화-0-0",
+          "fiction-상담전화-0-1",
+          "fiction-상담전화-1-0",
+          "fiction-상담전화-1-1"
+        ]
+      }
+    },
+    "무엇": {
+      "used": {
+        "n": 2,
+        "origins": [
+          "fiction-상담전화-0-1",
+          "fiction-상담전화-1-1"
+        ]
+      }
+    },
+    "신고기한": {
+      "used": {
+        "n": 4,
+        "origins": [
+          "fiction-신고기한-0-0",
+          "fiction-신고기한-0-1",
+          "fiction-신고기한-1-0",
+          "fiction-신고기한-1-1"
+        ]
+      }
+    }
+  },
+  "identity": {},
+  "skipped": []
+}

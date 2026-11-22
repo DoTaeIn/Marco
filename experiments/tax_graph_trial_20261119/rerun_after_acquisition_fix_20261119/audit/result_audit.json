@@ -1,0 +1,2793 @@
+{
+  "records": 156,
+  "unique_calls": 156,
+  "source_input_model_postcheck": true,
+  "original_context_and_questions_in_all_configs": true,
+  "counts": [
+    {
+      "config": "expanded132",
+      "group": "main",
+      "arm": "end_to_end",
+      "verdict": "correct_value",
+      "n": 15
+    },
+    {
+      "config": "expanded132",
+      "group": "main",
+      "arm": "end_to_end",
+      "verdict": "correct_value_partial",
+      "n": 3
+    },
+    {
+      "config": "expanded132",
+      "group": "main",
+      "arm": "end_to_end",
+      "verdict": "hold",
+      "n": 6
+    },
+    {
+      "config": "expanded132",
+      "group": "main",
+      "arm": "graph",
+      "verdict": "correct_value",
+      "n": 15
+    },
+    {
+      "config": "expanded132",
+      "group": "main",
+      "arm": "graph",
+      "verdict": "correct_value_partial",
+      "n": 3
+    },
+    {
+      "config": "expanded132",
+      "group": "main",
+      "arm": "graph",
+      "verdict": "hold",
+      "n": 6
+    },
+    {
+      "config": "expanded132",
+      "group": "supplemental",
+      "arm": "graph",
+      "verdict": "correct_value",
+      "n": 4
+    },
+    {
+      "config": "frozen44",
+      "group": "main",
+      "arm": "end_to_end",
+      "verdict": "correct_value",
+      "n": 10
+    },
+    {
+      "config": "frozen44",
+      "group": "main",
+      "arm": "end_to_end",
+      "verdict": "hold",
+      "n": 14
+    },
+    {
+      "config": "frozen44",
+      "group": "main",
+      "arm": "graph",
+      "verdict": "correct_value",
+      "n": 10
+    },
+    {
+      "config": "frozen44",
+      "group": "main",
+      "arm": "graph",
+      "verdict": "hold",
+      "n": 14
+    },
+    {
+      "config": "frozen44",
+      "group": "supplemental",
+      "arm": "graph",
+      "verdict": "correct_value",
+      "n": 4
+    },
+    {
+      "config": "variants44",
+      "group": "main",
+      "arm": "end_to_end",
+      "verdict": "correct_value",
+      "n": 14
+    },
+    {
+      "config": "variants44",
+      "group": "main",
+      "arm": "end_to_end",
+      "verdict": "hold",
+      "n": 10
+    },
+    {
+      "config": "variants44",
+      "group": "main",
+      "arm": "graph",
+      "verdict": "correct_value",
+      "n": 14
+    },
+    {
+      "config": "variants44",
+      "group": "main",
+      "arm": "graph",
+      "verdict": "hold",
+      "n": 10
+    },
+    {
+      "config": "variants44",
+      "group": "supplemental",
+      "arm": "graph",
+      "verdict": "correct_value",
+      "n": 4
+    }
+  ],
+  "verification": [
+    {
+      "config": "expanded132",
+      "executor": "not comparable",
+      "verified": false,
+      "n": 4
+    },
+    {
+      "config": "expanded132",
+      "executor": "not run",
+      "verified": false,
+      "n": 12
+    },
+    {
+      "config": "expanded132",
+      "executor": "unavailable",
+      "verified": false,
+      "n": 36
+    },
+    {
+      "config": "frozen44",
+      "executor": "not run",
+      "verified": false,
+      "n": 28
+    },
+    {
+      "config": "frozen44",
+      "executor": "unavailable",
+      "verified": false,
+      "n": 24
+    },
+    {
+      "config": "variants44",
+      "executor": "not run",
+      "verified": false,
+      "n": 20
+    },
+    {
+      "config": "variants44",
+      "executor": "unavailable",
+      "verified": false,
+      "n": 32
+    }
+  ],
+  "passage_graph_comparison": [
+    {
+      "config": "expanded132",
+      "same_graph": true,
+      "n": 24
+    },
+    {
+      "config": "frozen44",
+      "same_graph": true,
+      "n": 24
+    },
+    {
+      "config": "variants44",
+      "same_graph": true,
+      "n": 24
+    }
+  ],
+  "proofs_checked": 96,
+  "proof_conditions_checked": 480,
+  "changed_sources_since_previous": [
+    "experiments/graph_weighted_acquisition/answer.py",
+    "experiments/graph_weighted_acquisition/learn.py",
+    "experiments/graph_weighted_acquisition/match.py",
+    "experiments/graph_weighted_acquisition/reader.py",
+    "experiments/graph_weighted_acquisition/variants.py"
+  ],
+  "models": {
+    "frozen44": "b4a9cdeaf3fb67af41e4386480c25b490101db1f71e47e67ea73388fed0a2fda",
+    "variants44": "00b03c38e9544bac36a1c67755c79bdcddc449d7ccd047a1ce8d203dca2cf9e2",
+    "expanded132": "2d4360770b898ea7055a9983a76276cb18fad4f4bd7f9b32b97d83661bbb2bab"
+  },
+  "results_sha256": "2e78be5f276651b026b7fa57bc22cc886e46265d3bd4fad0cb9f048383114cdb",
+  "transitions": [
+    {
+      "config": "frozen44",
+      "id": "Q01",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q01",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q02",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "6개월"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q02",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "6개월"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q03",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q03",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q04",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q04",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q05",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "7월1일~7월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q05",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "7월1일~7월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q06",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q06",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q07",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q07",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q08",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q08",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q09",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q09",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q10",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q10",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q11",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해5월1일~5월31일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q11",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해5월1일~5월31일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q12",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년6월1일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q12",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년6월1일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q13",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해6월30일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q13",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해6월30일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q14",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q14",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q15",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q15",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q16",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q16",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q17",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q17",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q18",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q18",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q19",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q19",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q20",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q20",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q21",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q21",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q22",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q22",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q23",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q23",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q24",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "Q24",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "C01",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "C02",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연4회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "C03",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "frozen44",
+      "id": "C04",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "126"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q01",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q01",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q02",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "6개월"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q02",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "6개월"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q03",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연2회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q03",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연2회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q04",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연4회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q04",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연4회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q05",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "7월1일~7월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q05",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "7월1일~7월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q06",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q06",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q07",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q07",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q08",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q08",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q09",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q09",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q10",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "126"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q10",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "126"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q11",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해5월1일~5월31일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q11",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해5월1일~5월31일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q12",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년6월1일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q12",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년6월1일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q13",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해6월30일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q13",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해6월30일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q14",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q14",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q15",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q15",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q16",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q16",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q17",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q17",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q18",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q18",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q19",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q19",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q20",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q20",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q21",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q21",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q22",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q22",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q23",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q23",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q24",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "Q24",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "C01",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "C02",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연4회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "C03",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "variants44",
+      "id": "C04",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "126"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q01",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q01",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q02",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "6개월"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q02",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "6개월"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q03",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연2회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q03",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연2회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q04",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연4회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q04",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연4회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q05",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "7월1일~7월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q05",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "7월1일~7월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q06",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q06",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q07",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q07",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해1월1일~1월25일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q08",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q08",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q09",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q09",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q10",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "126"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q10",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "126"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q11",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해5월1일~5월31일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q11",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해5월1일~5월31일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q12",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년6월1일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q12",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년6월1일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q13",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해6월30일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q13",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "다음해6월30일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q14",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q14",
+      "arm": "end_to_end",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q15",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: every reading uses something never seen in training",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q15",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: every reading uses something never seen in training",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q16",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value_partial",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "partial": [
+        "\"사업을 시작하고 사업자등록\" was taken as \"사업자등록\"; the words \"사업을 시작하고\" in front of it were ignored"
+      ],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified; partial reading",
+      "executor": "not comparable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q16",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value_partial",
+      "answers": [
+        [
+          "사업개시일부터20일이내"
+        ]
+      ],
+      "partial": [
+        "\"사업을 시작하고 사업자등록\" was taken as \"사업자등록\"; the words \"사업을 시작하고\" in front of it were ignored"
+      ],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified; partial reading",
+      "executor": "not comparable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q17",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q17",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q18",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q18",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q19",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q19",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q20",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value_partial",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "partial": [
+        "words in the question were ignored: \"실제 일반\"",
+        "\"2026년 제1기 부가가치세 확정신고\" was taken as \"2026년제1기부가가치세확정신고\" (spacing differs)"
+      ],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified; partial reading",
+      "executor": "not comparable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q20",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value_partial",
+      "answers": [
+        [
+          "2026년7월27일"
+        ]
+      ],
+      "partial": [
+        "words in the question were ignored: \"실제 일반\"",
+        "\"2026년 제1기 부가가치세 확정신고\" was taken as \"2026년제1기부가가치세확정신고\" (spacing differs)"
+      ],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified; partial reading",
+      "executor": "not comparable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q21",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: every reading uses something never seen in training",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q21",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: every reading uses something never seen in training",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q22",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q22",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q23",
+      "arm": "graph",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "nothing in the passage fits every condition of the question",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q23",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "hold",
+      "answers": [],
+      "partial": [],
+      "claim": null,
+      "reason": "nothing in the passage fits every condition of the question",
+      "executor": "not run",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q24",
+      "arm": "graph",
+      "before": "hold",
+      "after": "correct_value_partial",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [
+        "words in the question were ignored: \"부가가치세\""
+      ],
+      "claim": {
+        "claimed": "0%",
+        "holds": false
+      },
+      "reason": "every condition of the question holds in the passage; not independently verified; partial reading",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "Q24",
+      "arm": "end_to_end",
+      "before": "hold",
+      "after": "correct_value_partial",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [
+        "words in the question were ignored: \"부가가치세\""
+      ],
+      "claim": {
+        "claimed": "0%",
+        "holds": false
+      },
+      "reason": "every condition of the question holds in the passage; not independently verified; partial reading",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "C01",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "10%"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "C02",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "연4회"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "C03",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "홈택스"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    },
+    {
+      "config": "expanded132",
+      "id": "C04",
+      "arm": "graph",
+      "before": "correct_value",
+      "after": "correct_value",
+      "answers": [
+        [
+          "126"
+        ]
+      ],
+      "partial": [],
+      "claim": null,
+      "reason": "every condition of the question holds in the passage; not independently verified",
+      "executor": "unavailable",
+      "verified": false,
+      "proposals": []
+    }
+  ]
+}

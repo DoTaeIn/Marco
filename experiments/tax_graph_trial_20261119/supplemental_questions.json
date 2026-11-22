@@ -1,0 +1,102 @@
+[
+  {
+    "id": "C01",
+    "text": "일반과세자의 세율은 얼마인가?",
+    "context_id": "tax-all",
+    "tier": "posthoc_supported_form",
+    "expected_bindings": [
+      {
+        "subject": "일반과세자",
+        "property": "세율",
+        "value": "10%"
+      }
+    ],
+    "expected_behavior": {
+      "gold_status": "answer",
+      "allow_hold_if_unsupported": true
+    },
+    "fact_ids": [
+      "F01"
+    ],
+    "target_scopes": [
+      "부가가치세 일반세율; 영세율·면세 등 예외 제외"
+    ],
+    "original_lesson_id": "fiction-0-1",
+    "purpose": "사후 진단: 학습된 질문 형식에서 사실 조회가 가능한지 확인한다. 독립 일반화 벤치마크가 아니다."
+  },
+  {
+    "id": "C02",
+    "text": "법인사업자의 신고횟수은 몇회인가?",
+    "context_id": "tax-all",
+    "tier": "posthoc_supported_form",
+    "expected_bindings": [
+      {
+        "subject": "법인사업자",
+        "property": "신고횟수",
+        "value": "연4회"
+      }
+    ],
+    "expected_behavior": {
+      "gold_status": "answer",
+      "allow_hold_if_unsupported": true
+    },
+    "fact_ids": [
+      "F04"
+    ],
+    "target_scopes": [
+      "통상 부가가치세 신고; 소규모법인 예정고지 등 특례 제외"
+    ],
+    "original_lesson_id": "fiction-신고횟수-0-1",
+    "purpose": "사후 진단: 학습된 질문 형식에서 사실 조회가 가능한지 확인한다. 독립 일반화 벤치마크가 아니다."
+  },
+  {
+    "id": "C03",
+    "text": "사업자등록의 신청경로은 어디인가?",
+    "context_id": "tax-all",
+    "tier": "posthoc_supported_form",
+    "expected_bindings": [
+      {
+        "subject": "사업자등록",
+        "property": "신청경로",
+        "value": "홈택스"
+      }
+    ],
+    "expected_behavior": {
+      "gold_status": "answer",
+      "allow_hold_if_unsupported": true
+    },
+    "fact_ids": [
+      "F09"
+    ],
+    "target_scopes": [
+      "온라인 신청경로; 세무서 방문도 가능"
+    ],
+    "original_lesson_id": "fiction-신청경로-0-1",
+    "purpose": "사후 진단: 학습된 질문 형식에서 사실 조회가 가능한지 확인한다. 독립 일반화 벤치마크가 아니다."
+  },
+  {
+    "id": "C04",
+    "text": "국세상담센터의 상담전화은 무엇인가?",
+    "context_id": "tax-all",
+    "tier": "posthoc_supported_form",
+    "expected_bindings": [
+      {
+        "subject": "국세상담센터",
+        "property": "상담전화",
+        "value": "126"
+      }
+    ],
+    "expected_behavior": {
+      "gold_status": "answer",
+      "allow_hold_if_unsupported": true
+    },
+    "fact_ids": [
+      "F10"
+    ],
+    "target_scopes": [
+      "국번없이 국세상담"
+    ],
+    "original_lesson_id": "fiction-상담전화-0-1",
+    "purpose": "사후 진단: 학습된 질문 형식에서 사실 조회가 가능한지 확인한다. 독립 일반화 벤치마크가 아니다."
+  }
+]
