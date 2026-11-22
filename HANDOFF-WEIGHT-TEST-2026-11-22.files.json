@@ -1,0 +1,2548 @@
+{
+  "date": "2026-11-22",
+  "timezone": "Asia/Seoul",
+  "branch": "weight_test",
+  "head": "e81da1dd154b0a40b4f66699919b2af439b886e4",
+  "main": "e82cf43e14c1f0219e24ae28e6805483d5ce127d",
+  "last_test_result_sha256": "2e78be5f276651b026b7fa57bc22cc886e46265d3bd4fad0cb9f048383114cdb",
+  "current_changed_since_last_test": [
+    "experiments/graph_weighted_acquisition/answer.py",
+    "experiments/graph_weighted_acquisition/match.py",
+    "experiments/graph_weighted_acquisition/reader.py",
+    "experiments/graph_language_repair/questions/select.py"
+  ],
+  "current_extra_weighted_modules_since_last_test": [
+    "experiments/graph_weighted_acquisition/pack.py",
+    "experiments/graph_weighted_acquisition/write.py"
+  ],
+  "files": {
+    "experiments/graph_example_acquisition/acquire.py": {
+      "sha256": "2d9564f11a3f58924437b5d260c1f62ca186a596f26a6819119fe32bbd0f7cb4",
+      "bytes": 10334
+    },
+    "experiments/graph_example_acquisition/driver.py": {
+      "sha256": "4712661557356df145b755c550c6c8c36bddd1c7c70f7b2e87de57ca558f6636",
+      "bytes": 1621
+    },
+    "experiments/graph_example_acquisition/native.py": {
+      "sha256": "2b8a4cb5c9c44caa538592f26c28a54b037fbfef05b422c7a05af65c7e27d8a5",
+      "bytes": 10887
+    },
+    "experiments/graph_example_acquisition/v2.py": {
+      "sha256": "00f83c2b892457922635240fdb7db8b4d4478415bb0eb0284827a616d43daee9",
+      "bytes": 41142
+    },
+    "experiments/graph_language_repair/core/__init__.py": {
+      "sha256": "f3347c31aa0c3cc88b4f5dcd7294b68951cfd0215cfbf2b7e1e5d56e4107d095",
+      "bytes": 1421
+    },
+    "experiments/graph_language_repair/core/chart.py": {
+      "sha256": "2d26cea4b6944edf2a34c4d43bb5a3b14b49d7b28031b532f07c429f786aa310",
+      "bytes": 19530
+    },
+    "experiments/graph_language_repair/core/comparators.py": {
+      "sha256": "8620344f14e2ca9c4f495378775e6a980ad4156e893f9fe230597ff5a97a2d49",
+      "bytes": 13842
+    },
+    "experiments/graph_language_repair/core/events.py": {
+      "sha256": "076675b05d3022dc3c025b9c833c28372a6018612074687df22d768116b84663",
+      "bytes": 14630
+    },
+    "experiments/graph_language_repair/core/graph_store.py": {
+      "sha256": "c411eeb0312d10a4fbf8079cb825e789f420171e741def1b0e573541001e903f",
+      "bytes": 5597
+    },
+    "experiments/graph_language_repair/core/identity.py": {
+      "sha256": "5f9f659c867dfed8e0dab32a4d52f0099f2015c8d6b468ac8318232bc8efcf54",
+      "bytes": 5620
+    },
+    "experiments/graph_language_repair/core/mentions.py": {
+      "sha256": "f204f10bbc76ac1acffec260f496f389d3be3908ad0c78c7cdbb623d5d49e0d2",
+      "bytes": 3986
+    },
+    "experiments/graph_language_repair/core/morphology.py": {
+      "sha256": "447eb85eb5b9345fb2564180645b6fca5f86e82295b9ad97a26eaa6632d78f8a",
+      "bytes": 11108
+    },
+    "experiments/graph_language_repair/core/policy.py": {
+      "sha256": "b271483cf14d074fde4ec9f8a3684f145144c48d8669ba7c77d6e959155fcb8a",
+      "bytes": 2999
+    },
+    "experiments/graph_language_repair/core/reading.py": {
+      "sha256": "8fbc0ca7bdc0a231c9d279f9e7114c078f8c09c63087f3e4ab4502acef688ba2",
+      "bytes": 45348
+    },
+    "experiments/graph_language_repair/core/rows.py": {
+      "sha256": "18476f2e2fe514a7661ab9a39e4ffcacb7c8862d563b1657e075c676cd71d58d",
+      "bytes": 2316
+    },
+    "experiments/graph_language_repair/core/scope.py": {
+      "sha256": "b62ea8a2dcd870d4a3706a304e7a89bd5afac03458ca939cf6d600d90a386dd8",
+      "bytes": 7531
+    },
+    "experiments/graph_language_repair/core/search.py": {
+      "sha256": "76b4f117322f049e541a5a4aae0ed23c81f21f9bbf7f8f29c3bf9a2decd53b38",
+      "bytes": 10919
+    },
+    "experiments/graph_language_repair/core/solver.py": {
+      "sha256": "91d4874f854e959fdbae6db5227264b44750ffe87e099eeb1bad6f45f3ef6424",
+      "bytes": 14961
+    },
+    "experiments/graph_language_repair/questions/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/graph_language_repair/questions/compile.py": {
+      "sha256": "0155e00607ced1ab07df6e1054e689a2bff497fadeeb98e98986599a0c4f7ce3",
+      "bytes": 42412
+    },
+    "experiments/graph_language_repair/questions/compositional.py": {
+      "sha256": "387c29ba1dafc08faa72e0573c22ad168d01e5f31ba594937648cf6c88468f34",
+      "bytes": 37850
+    },
+    "experiments/graph_language_repair/questions/query_graph.py": {
+      "sha256": "eebaec49cf1b92b7a64736b042129847ec6d616ce525ad4020282bc6e566328c",
+      "bytes": 18047
+    },
+    "experiments/graph_language_repair/questions/respond.py": {
+      "sha256": "7eb256ca9bd6da9919c03853337e9d7d4f0ea68c406a9856a8fd23cf15416b70",
+      "bytes": 6187
+    },
+    "experiments/graph_language_repair/questions/select.py": {
+      "sha256": "aa88b5a16123a01194b73aab9bb0490fbf694d6c9d81b6777de049cc5c08e5af",
+      "bytes": 36308
+    },
+    "experiments/graph_weighted_acquisition/CONTRACT.md": {
+      "sha256": "10d62eefbe7d9d01fecc8bf1bc07eae30a4f0d0d5b8b9284352e8eeb7148bb9b",
+      "bytes": 15292
+    },
+    "experiments/graph_weighted_acquisition/README.md": {
+      "sha256": "5428c7d7902fdfdabc88be2b570e8b8da01d3851100f7df87d7832b08a8a0825",
+      "bytes": 16149
+    },
+    "experiments/graph_weighted_acquisition/SAMPLE-REPORT.md": {
+      "sha256": "f6d97e47ff3a18883864b5c0339e0b4de9d601ab6949af642655ab6eee17dbc6",
+      "bytes": 10851
+    },
+    "experiments/graph_weighted_acquisition/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/graph_weighted_acquisition/answer.py": {
+      "sha256": "c4f76aa7e2590024036ac10870278331c5431ac17f87c609c5a53e1131935f96",
+      "bytes": 22791
+    },
+    "experiments/graph_weighted_acquisition/augment.py": {
+      "sha256": "51c6402d18613ad7791ce2bf06650a5a6257a97fd0c84aa89d3d7daf4367023e",
+      "bytes": 6542
+    },
+    "experiments/graph_weighted_acquisition/data/connector_variants_ko.json": {
+      "sha256": "d460be2842ffb4ee0b79e9e31fe396fe5bb6e0add83bd594500b9015b977a7ad",
+      "bytes": 1753
+    },
+    "experiments/graph_weighted_acquisition/data/reading_recipe.json": {
+      "sha256": "aa428f1db9e8829958c0a69cabb16b2d49656ea7ea624a1dbed05f957de0e3e6",
+      "bytes": 3793
+    },
+    "experiments/graph_weighted_acquisition/driver.py": {
+      "sha256": "a20eae373e4971fdb85dd034b30ba3f55deafc000b032f319cbd9b5cb85dd9c6",
+      "bytes": 4749
+    },
+    "experiments/graph_weighted_acquisition/learn.py": {
+      "sha256": "fc5e2b7ccb3bcab71137d57205c3a0923ab9867e4bfa3b4eeafd33d2b3a3753b",
+      "bytes": 7159
+    },
+    "experiments/graph_weighted_acquisition/match.py": {
+      "sha256": "cce78c40ac8213ab2b4839ef4b65a98711deaac37a6cebcd51d398c58843e11c",
+      "bytes": 7708
+    },
+    "experiments/graph_weighted_acquisition/merge.py": {
+      "sha256": "adb86f2824480df536a3cfe770332701f8fcfb9f5c9865a977549a477e696aab",
+      "bytes": 3824
+    },
+    "experiments/graph_weighted_acquisition/pack.py": {
+      "sha256": "fc988b33ca3a0be763e2835fa0ee1805f26e662750871ef1c7482c02f39cb9f4",
+      "bytes": 7400
+    },
+    "experiments/graph_weighted_acquisition/packs/SAMPLE-LIBRARY-REPORT.md": {
+      "sha256": "3561f91914c294e181d5ccbeca9c1fef750cf879967fa22e15e35ec70ed20022",
+      "bytes": 25794
+    },
+    "experiments/graph_weighted_acquisition/packs/language.json": {
+      "sha256": "a6d157b3f82f20ffa643289cf84662412b948145927f41353fabdb1f1bce1551",
+      "bytes": 29534
+    },
+    "experiments/graph_weighted_acquisition/packs/language_lessons.json": {
+      "sha256": "2584008750cc7d7ef6b48df3df1af7bec80e7fcddd8caa6352dbc1586d295459",
+      "bytes": 124729
+    },
+    "experiments/graph_weighted_acquisition/packs/library_facts.json": {
+      "sha256": "0689c538a0afc00f3763abeb79c6b70f6c899e925271cfb7b64ad263f868b462",
+      "bytes": 2352
+    },
+    "experiments/graph_weighted_acquisition/packs/library_questions.json": {
+      "sha256": "101c40338cd0349311c7095977fbfd4f4eaad1148ef072cb577456282477d0a8",
+      "bytes": 1699
+    },
+    "experiments/graph_weighted_acquisition/packs/library_words.json": {
+      "sha256": "d2be6a5a322f22bf8ff509df8c2fdec9f09f9fa41b3e31c8795e273a15764a02",
+      "bytes": 971
+    },
+    "experiments/graph_weighted_acquisition/packs/make_language.py": {
+      "sha256": "91fe308f4f2e3992fd70332bd51f5de69a890990454b81688bd2ff52e98e2506",
+      "bytes": 3977
+    },
+    "experiments/graph_weighted_acquisition/packs/tax_facts.json": {
+      "sha256": "a6f8f918aa19ce75dbcddd48601b0da6e296ca397fcbe0586d2e948433647d48",
+      "bytes": 4806
+    },
+    "experiments/graph_weighted_acquisition/packs/tax_words.json": {
+      "sha256": "bc40325522b762256e66e76abaf19312a3c64e5da2f02aaeb136d28e908cddc0",
+      "bytes": 1101
+    },
+    "experiments/graph_weighted_acquisition/reader.py": {
+      "sha256": "b605f6a32916e3faa7a802c201b9e2f7f1eb8708453ebe4f1100578450fd817d",
+      "bytes": 50435
+    },
+    "experiments/graph_weighted_acquisition/tests/test_reader.py": {
+      "sha256": "091722194c4dfac89103dab3fab7ceb5774dc4b4f545fa01658708a6462dc79b",
+      "bytes": 47175
+    },
+    "experiments/graph_weighted_acquisition/tests/test_weights.py": {
+      "sha256": "36024834e9af1832fe085f48146499f958e5bc52a14179b28aae3fb3dfad9a9d",
+      "bytes": 11367
+    },
+    "experiments/graph_weighted_acquisition/variants.py": {
+      "sha256": "ceb56e1f6a45ad532f076c48cba1a6fca85738acae74f3e7941de2d7890beb17",
+      "bytes": 9228
+    },
+    "experiments/graph_weighted_acquisition/weights.py": {
+      "sha256": "694c60f6f295225d41c3ec9af753219818c9eff409981468553009d4320607b5",
+      "bytes": 9477
+    },
+    "experiments/graph_weighted_acquisition/write.py": {
+      "sha256": "7f68eea059409b6ef7f48dcea3a51bc24e62ed024e613ca4c42cda5017d1c4b7",
+      "bytes": 11449
+    },
+    "experiments/tax_graph_trial_20261119/README.md": {
+      "sha256": "d87de9f876c027851a2ba8afe9c5b56bf71f2f1bffb565e890a0cd0f8bec7ff8",
+      "bytes": 2142
+    },
+    "experiments/tax_graph_trial_20261119/REPORT.md": {
+      "sha256": "35a1e2f08660b624e4a9b285fddc47fc2fde8f55e09e66c02b29e2772e2cfe4f",
+      "bytes": 15489
+    },
+    "experiments/tax_graph_trial_20261119/audit/diagnostic_result_audit.json": {
+      "sha256": "4cb266f3f6e36b95f8f6fa459192d1f5e98c74f2c6740d73b1b4e944473618e9",
+      "bytes": 780
+    },
+    "experiments/tax_graph_trial_20261119/audit/main_result_audit.json": {
+      "sha256": "a4082bbcc802b316ba4227ae1f8417eb017efdf3684f1531e06063705b04dbc3",
+      "bytes": 1925
+    },
+    "experiments/tax_graph_trial_20261119/audit/preflight.json": {
+      "sha256": "e6d644546c30b300be5a28773e51180ffcf5db39eeebeceff6436f0e1f97b4e4",
+      "bytes": 3529
+    },
+    "experiments/tax_graph_trial_20261119/audit/saved_diagnostic_zero_terms.json": {
+      "sha256": "b433fe92cd9955390571b999a2ab77e842f5401c4b79811086b7c4b4554d6aeb",
+      "bytes": 1177
+    },
+    "experiments/tax_graph_trial_20261119/contexts.json": {
+      "sha256": "8d1e1fc64af17d9d44f3b3f0c466be4416a8e75493894a3b4ee5c3e0a57cddd9",
+      "bytes": 25588
+    },
+    "experiments/tax_graph_trial_20261119/diagnostic.py": {
+      "sha256": "c7835763475117adfe98f869ba07ad6e22f58a392cb0094cb6062807f4edfe89",
+      "bytes": 1621
+    },
+    "experiments/tax_graph_trial_20261119/diagnostic_first_results.jsonl": {
+      "sha256": "c52e76d2543022bcacfb725b39e7dcdc5635e24803c7b05317b5f75d4d9ff150",
+      "bytes": 79849
+    },
+    "experiments/tax_graph_trial_20261119/diagnostic_manifest.json": {
+      "sha256": "51e0f5941dcc43df2ec95113f1f664bfb1c88c8be9ddf6f4eb94adb840caae54",
+      "bytes": 278
+    },
+    "experiments/tax_graph_trial_20261119/facts.json": {
+      "sha256": "33b2dd9474e8e850b40c3740e45396e62099ae16e10fc3522dab526ea586b1d7",
+      "bytes": 4856
+    },
+    "experiments/tax_graph_trial_20261119/first_results.jsonl": {
+      "sha256": "a8ebaac4210fc774c3526bce7dd04431ad9783a4c9d1f18391136c8bfb12ef35",
+      "bytes": 7243322
+    },
+    "experiments/tax_graph_trial_20261119/helds_fix_20261119/REPORT.md": {
+      "sha256": "e9bd95df194eb6d5d3630b348913fdb96df92cead3fbce144d3fbe1be6b60ec1",
+      "bytes": 5852
+    },
+    "experiments/tax_graph_trial_20261119/helds_fix_20261119/lessons.json": {
+      "sha256": "20f53ee69879f37f3c7272fdbf3bc3d801480cfe8d890400ad62ec87a1c50b5d",
+      "bytes": 144515
+    },
+    "experiments/tax_graph_trial_20261119/helds_fix_20261119/make_lessons.py": {
+      "sha256": "b487025e8b319d40b52179a1905b4bb738581548320cf011c932b07729d08908",
+      "bytes": 5181
+    },
+    "experiments/tax_graph_trial_20261119/helds_fix_20261119/results.jsonl": {
+      "sha256": "376cb9b549d99d738c3a4a3d5afe2cd2f84cfb1dab23f8a89dca165cf88be74a",
+      "bytes": 874795
+    },
+    "experiments/tax_graph_trial_20261119/helds_fix_20261119/run.py": {
+      "sha256": "7d9c69e5de0aa15bacb301c453c5e182384e7bac8872a4bef5d535f0c55db6a3",
+      "bytes": 4689
+    },
+    "experiments/tax_graph_trial_20261119/lessons.json": {
+      "sha256": "8c215a2064d4db5c8fb2fb0268ff6dded748658851a3dbad98cd284bdca9e8fe",
+      "bytes": 69353
+    },
+    "experiments/tax_graph_trial_20261119/lessons_fix_20261119/REPORT.md": {
+      "sha256": "3dd22ab62f3cf717377f50a5f9bea75de506d569d76bf02d51c1a5eab74c39fe",
+      "bytes": 4414
+    },
+    "experiments/tax_graph_trial_20261119/lessons_fix_20261119/contexts.json": {
+      "sha256": "1739f063ab63537f96ed1641d61689a7bfb9c01128057f80febee1b545b5b78b",
+      "bytes": 18216
+    },
+    "experiments/tax_graph_trial_20261119/lessons_fix_20261119/lessons.json": {
+      "sha256": "7fd277cfc19350a1c8ca93797acdf3e4635b44564798dd85aec59439d2733c47",
+      "bytes": 104020
+    },
+    "experiments/tax_graph_trial_20261119/lessons_fix_20261119/make_lessons.py": {
+      "sha256": "1d00c6d9f82bf0ed65d362bf5043a36e6a1886184951de6abaa3a70f8a4a144d",
+      "bytes": 3385
+    },
+    "experiments/tax_graph_trial_20261119/lessons_fix_20261119/results.jsonl": {
+      "sha256": "94f60f7cd48d3cbec1156de2d9ceb2e4e991df4532ff174e8d260b22fa57803e",
+      "bytes": 13805
+    },
+    "experiments/tax_graph_trial_20261119/lessons_fix_20261119/run.py": {
+      "sha256": "5a8b471e970050c258a3033eaeb89a04c3a6ecf7d06e89b97c3e545934b9b093",
+      "bytes": 3959
+    },
+    "experiments/tax_graph_trial_20261119/manifest.json": {
+      "sha256": "1f6972280a86b930d44c41eb965af19cd74d3cf19a66cbfc16ba324bff8aa9a1",
+      "bytes": 15917
+    },
+    "experiments/tax_graph_trial_20261119/model.json": {
+      "sha256": "b4a9cdeaf3fb67af41e4386480c25b490101db1f71e47e67ea73388fed0a2fda",
+      "bytes": 19631
+    },
+    "experiments/tax_graph_trial_20261119/questions.json": {
+      "sha256": "21f8ec52e370d7f85de705900d9c8235c4d8e4eec251b507937080092c609253",
+      "bytes": 14929
+    },
+    "experiments/tax_graph_trial_20261119/report.py": {
+      "sha256": "994d940416d4c2694281940ac02d09e92ee61b5473d2ddc4b89289eca96197ca",
+      "bytes": 3679
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/REPORT.md": {
+      "sha256": "3ceb76f611da4cdf3c8dddf0e08ebd1a80690538c74c5f4ae4ff1575f3da902a",
+      "bytes": 8370
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/audit/result_audit.json": {
+      "sha256": "b9f10df4168dd2fd97c13e8d976fbf347f95247589777bcc6473a3711f524833",
+      "bytes": 70868
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/audit_report.py": {
+      "sha256": "2d4fb295c745926436c283b80471378fca1f881806b172d4e38bae9ee4bfd092",
+      "bytes": 12278
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/first_results.jsonl": {
+      "sha256": "2e78be5f276651b026b7fa57bc22cc886e46265d3bd4fad0cb9f048383114cdb",
+      "bytes": 13045376
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/manifest.json": {
+      "sha256": "193fd78496967d46a741f6df2e1c792ff83feffa7c1e6011ec6f65d6f237b51c",
+      "bytes": 19225
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/models/expanded132.json": {
+      "sha256": "2d4360770b898ea7055a9983a76276cb18fad4f4bd7f9b32b97d83661bbb2bab",
+      "bytes": 52659
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/models/frozen44.json": {
+      "sha256": "b4a9cdeaf3fb67af41e4386480c25b490101db1f71e47e67ea73388fed0a2fda",
+      "bytes": 19631
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/models/variants44.json": {
+      "sha256": "00b03c38e9544bac36a1c67755c79bdcddc449d7ccd047a1ce8d203dca2cf9e2",
+      "bytes": 24308
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/postcheck.json": {
+      "sha256": "b77803afdbff1b02c3996af178d2a14b5e669c10ccdb55352547f0ec77b99e9c",
+      "bytes": 138
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/run.py": {
+      "sha256": "d9dbeac705d956397eec54edbfb518f7993eb84247064773d8f21cdf797fc0fd",
+      "bytes": 6549
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_example_acquisition/acquire.py": {
+      "sha256": "2d9564f11a3f58924437b5d260c1f62ca186a596f26a6819119fe32bbd0f7cb4",
+      "bytes": 10334
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_example_acquisition/driver.py": {
+      "sha256": "4712661557356df145b755c550c6c8c36bddd1c7c70f7b2e87de57ca558f6636",
+      "bytes": 1621
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_example_acquisition/native.py": {
+      "sha256": "2b8a4cb5c9c44caa538592f26c28a54b037fbfef05b422c7a05af65c7e27d8a5",
+      "bytes": 10887
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_example_acquisition/v2.py": {
+      "sha256": "00f83c2b892457922635240fdb7db8b4d4478415bb0eb0284827a616d43daee9",
+      "bytes": 41142
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/__init__.py": {
+      "sha256": "f3347c31aa0c3cc88b4f5dcd7294b68951cfd0215cfbf2b7e1e5d56e4107d095",
+      "bytes": 1421
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/chart.py": {
+      "sha256": "2d26cea4b6944edf2a34c4d43bb5a3b14b49d7b28031b532f07c429f786aa310",
+      "bytes": 19530
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/comparators.py": {
+      "sha256": "8620344f14e2ca9c4f495378775e6a980ad4156e893f9fe230597ff5a97a2d49",
+      "bytes": 13842
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/events.py": {
+      "sha256": "076675b05d3022dc3c025b9c833c28372a6018612074687df22d768116b84663",
+      "bytes": 14630
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/graph_store.py": {
+      "sha256": "c411eeb0312d10a4fbf8079cb825e789f420171e741def1b0e573541001e903f",
+      "bytes": 5597
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/identity.py": {
+      "sha256": "5f9f659c867dfed8e0dab32a4d52f0099f2015c8d6b468ac8318232bc8efcf54",
+      "bytes": 5620
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/mentions.py": {
+      "sha256": "f204f10bbc76ac1acffec260f496f389d3be3908ad0c78c7cdbb623d5d49e0d2",
+      "bytes": 3986
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/morphology.py": {
+      "sha256": "447eb85eb5b9345fb2564180645b6fca5f86e82295b9ad97a26eaa6632d78f8a",
+      "bytes": 11108
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/policy.py": {
+      "sha256": "b271483cf14d074fde4ec9f8a3684f145144c48d8669ba7c77d6e959155fcb8a",
+      "bytes": 2999
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/reading.py": {
+      "sha256": "8fbc0ca7bdc0a231c9d279f9e7114c078f8c09c63087f3e4ab4502acef688ba2",
+      "bytes": 45348
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/rows.py": {
+      "sha256": "18476f2e2fe514a7661ab9a39e4ffcacb7c8862d563b1657e075c676cd71d58d",
+      "bytes": 2316
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/scope.py": {
+      "sha256": "b62ea8a2dcd870d4a3706a304e7a89bd5afac03458ca939cf6d600d90a386dd8",
+      "bytes": 7531
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/search.py": {
+      "sha256": "76b4f117322f049e541a5a4aae0ed23c81f21f9bbf7f8f29c3bf9a2decd53b38",
+      "bytes": 10919
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/core/solver.py": {
+      "sha256": "91d4874f854e959fdbae6db5227264b44750ffe87e099eeb1bad6f45f3ef6424",
+      "bytes": 14961
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compile.py": {
+      "sha256": "0155e00607ced1ab07df6e1054e689a2bff497fadeeb98e98986599a0c4f7ce3",
+      "bytes": 42412
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compositional.py": {
+      "sha256": "387c29ba1dafc08faa72e0573c22ad168d01e5f31ba594937648cf6c88468f34",
+      "bytes": 37850
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/query_graph.py": {
+      "sha256": "eebaec49cf1b92b7a64736b042129847ec6d616ce525ad4020282bc6e566328c",
+      "bytes": 18047
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/respond.py": {
+      "sha256": "7eb256ca9bd6da9919c03853337e9d7d4f0ea68c406a9856a8fd23cf15416b70",
+      "bytes": 6187
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/select.py": {
+      "sha256": "7ee57039b389c9dd91325df346afc7a90b935fa11d10f5ea834f7b4cf69881b0",
+      "bytes": 36308
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/answer.py": {
+      "sha256": "0e685f6941a874b2b55f813020f2d1ed97115160fbe0b406c48d5e1f7312524e",
+      "bytes": 21318
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/augment.py": {
+      "sha256": "51c6402d18613ad7791ce2bf06650a5a6257a97fd0c84aa89d3d7daf4367023e",
+      "bytes": 6542
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/driver.py": {
+      "sha256": "a20eae373e4971fdb85dd034b30ba3f55deafc000b032f319cbd9b5cb85dd9c6",
+      "bytes": 4749
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/learn.py": {
+      "sha256": "fc5e2b7ccb3bcab71137d57205c3a0923ab9867e4bfa3b4eeafd33d2b3a3753b",
+      "bytes": 7159
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/match.py": {
+      "sha256": "9d85b44631b2521067b5bbfd3c14cafde898946dece8951a4461348e620f50ab",
+      "bytes": 7059
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/merge.py": {
+      "sha256": "adb86f2824480df536a3cfe770332701f8fcfb9f5c9865a977549a477e696aab",
+      "bytes": 3824
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/reader.py": {
+      "sha256": "c61883edc3a8638a76ec2ae5e91b8c4f1d0d1257fb461c1337057de4c6b31fc4",
+      "bytes": 47083
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/variants.py": {
+      "sha256": "ceb56e1f6a45ad532f076c48cba1a6fca85738acae74f3e7941de2d7890beb17",
+      "bytes": 9228
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/weights.py": {
+      "sha256": "694c60f6f295225d41c3ec9af753219818c9eff409981468553009d4320607b5",
+      "bytes": 9477
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/experiments/tax_graph_trial_20261119/runner.py": {
+      "sha256": "2e090533d7983b46ebc1800947992973d9315786806de4149fde5d68af9a4d8b",
+      "bytes": 6216
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/__init__.py": {
+      "sha256": "42a9154be6d03c7a01a5c4f45ad2e24f6660661fe8700aeb43aace3ef1afd0bb",
+      "bytes": 130
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/host/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/host/act.py": {
+      "sha256": "64e4cc901ea6268467881adc3935000a24dce68cb9b897965ed0d18a753dcc78",
+      "bytes": 17508
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/definitions.py": {
+      "sha256": "ff7cb3c178342eeb69bc5aa06718ee9f10a3a3a856d0018defb5d558998e7f09",
+      "bytes": 9732
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/dictionary.py": {
+      "sha256": "8d6da41c6b0baf89ce4ad4c9f4ac7e3f934d539ceddba3489eea70df9e47cf3f",
+      "bytes": 17936
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/documents.py": {
+      "sha256": "f9b877625de4d4bee2bc56cfa8ff2a7791239bf711c78f16eca884429b4cc8fc",
+      "bytes": 26743
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/retrieval.py": {
+      "sha256": "fd4dda45c07197c411fb524f33f1e7fd0e60564200b8952a47939e5432e9e289",
+      "bytes": 27004
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/text.py": {
+      "sha256": "f6125ebb3bd72d784beee6dff9569b0b306930b4a06f63cfd090d84c5e0237ab",
+      "bytes": 53008
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/knowledge/ingest/web.py": {
+      "sha256": "b94c0e7c48335376ffaae72c2b270935f11ba2b8cb92e0f36a237c1b845e80d0",
+      "bytes": 67498
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/__init__.py": {
+      "sha256": "1e982e1f452dd4289e0492788e93361dea365e12ae0c4b1f0ffb1ebc7fad469c",
+      "bytes": 444
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/arithmetic.py": {
+      "sha256": "f7b5e53e208990a2c672309298bf5934cd1a9a8fa822417ce51c0e0c3aa5b1d1",
+      "bytes": 4180
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/arithmetic_spoken.py": {
+      "sha256": "0a242f3ec7def3680e222a9775347c55113f326d6aad842d1941d448bf5d9961",
+      "bytes": 3372
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/entry_origins.py": {
+      "sha256": "635c8dd0b3a0df1ba920b6633af010ecf9b2b744d8cc46e359dc549b6310f1c6",
+      "bytes": 4395
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/frames.py": {
+      "sha256": "d5ad6eb59aaaef383dbf0bd3c8f9e254f5feb30ef9f274582d79c2e27814348b",
+      "bytes": 112207
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/graph_projection.py": {
+      "sha256": "459a3ad1003d217c26450e7914b7c85e4e8307a7f101272c4fec32ad2f51d463",
+      "bytes": 174368
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/hangul.py": {
+      "sha256": "939e641dd581475de3ef6de8d372d4a7599d3a3a41e281bbc38d611932d1b08c",
+      "bytes": 33381
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/numerals.py": {
+      "sha256": "6bdbcc5c71d15e731ea6247c5f71f01e94e5aff2ec449668da97cba959288dc2",
+      "bytes": 1517
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/passage_components.py": {
+      "sha256": "bc52591ac9bea6b5ce208f09eaacf40d3db63dc5e55e255c959f47b1ce1f0154",
+      "bytes": 1443
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/passages.py": {
+      "sha256": "320aed3682c7de0ce6fd9f12499d316d81681ee72fdcbfd0b1fd6718f1d0df2a",
+      "bytes": 4110
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/__init__.py": {
+      "sha256": "24b67f9e66c90c90fed2b63b5a96ea3dba5a3010b84649eb0b52033bde1ad9ca",
+      "bytes": 26358
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/affect.py": {
+      "sha256": "ceb4c45e60732f8041ad87ab2e83595b854c2a7e63f806af0a4ecd2d5a71ac46",
+      "bytes": 2840
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/check.py": {
+      "sha256": "e87c2a61646bb39ea39cc56db0f5d26e0c4a7906d94ce09695db99ba9b2312f0",
+      "bytes": 16837
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/composer.py": {
+      "sha256": "894d7bda783364da92a6a8037a955fb6ff6ce31fc2f73ea33de43f601ee3fec6",
+      "bytes": 12243
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/contracts.py": {
+      "sha256": "69de5c617c093c3d7019092c41bb243487b7222c89d6dec58627d81ca25c6673",
+      "bytes": 890
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/discourse.py": {
+      "sha256": "9aa289b5a0d6f98cc88c48a51211a80e966ca27c54f2dfbeddfac8852cf18eee",
+      "bytes": 5419
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/expression.py": {
+      "sha256": "718b17d83daf4e6f4147f4c9f553332ff09c2e14d4dd0d1c160683ce434caa37",
+      "bytes": 3694
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/grammar.py": {
+      "sha256": "38b90369d4ce63d77ae20e0861fd2a1b277e9438b96ae4f86f1d91555bab159b",
+      "bytes": 45581
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/intent.py": {
+      "sha256": "786b7eceecb2c844c771238533efb3b326fb1909bef459227e0a976411c4786b",
+      "bytes": 29234
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/learning.py": {
+      "sha256": "3fdd5aa793d53e0abb8717072d3a96a3cc0a7f2b67d6481ab720fc7ed34db56d",
+      "bytes": 12229
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/meaning.py": {
+      "sha256": "db3f78ef4445e6813e16dc4421b748b9e818d542b202173a9f6d2c278cf2d104",
+      "bytes": 9347
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/packs.py": {
+      "sha256": "8efa76f20b300ec2dd40d82cb4675db58d8eb47b4e049035de1964881f849fac",
+      "bytes": 13795
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/realizer/source_answer.py": {
+      "sha256": "c865d5e113327b614f2d25b4bb25e0ac505c3456e7da97dd1208fc578758364b",
+      "bytes": 5044
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/relation_hypotheses.py": {
+      "sha256": "bce316241132fec0e3e0ac7d5c4bfee6dbd9a57eb3b1c33f2989c9a246693fad",
+      "bytes": 22352
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/relation_query_hypotheses.py": {
+      "sha256": "b180dcefeb384805c4d0a687d105ed061856a71ed8f9f0bb9422f0d5b8dc9dfa",
+      "bytes": 30593
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/representation.py": {
+      "sha256": "fb775f36c1e66682dab41e2e36149d143bc6ba908774cd6710a45f2a89bb3bb5",
+      "bytes": 16395
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/teaching.py": {
+      "sha256": "2c286d6e8781b7303bd37d3a48eed41dcd8c17238554b018f464bae21f81e9d5",
+      "bytes": 30130
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/language/understanding.py": {
+      "sha256": "f7e2484970df507a465f3e6b178f3f992ca548030146a538233ee61bd5fa72bc",
+      "bytes": 9260
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/authoring.py": {
+      "sha256": "ca04bd9a8de3b353356d7f7dd63abfe22f47efb322cc4b3e9da0836af24c8efd",
+      "bytes": 27811
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/chunking.py": {
+      "sha256": "93ef168faf6f2caae5760a90f4f2c53610279951498c5fe6836bb10a8cb4128a",
+      "bytes": 4769
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/concepts.py": {
+      "sha256": "67d665136189b03d9bd5f222194b35ee8d1f82908b80a2864f62a38e41ec0ea9",
+      "bytes": 27316
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/demo_memory.py": {
+      "sha256": "5b14d3ebd382b7ee594a51265800cc33bc32d41f6479deb9ae888571dd663e00",
+      "bytes": 3762
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/expression_graph.py": {
+      "sha256": "e81b47f370e1fdddf87b55ed6d35dcd58d3153999c5d2e00a7709d5a58255c27",
+      "bytes": 15986
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/expressions.py": {
+      "sha256": "4df76947d674737988ef36d2f9479269b2ddde9c80bb78e2112cc2aa921c2c78",
+      "bytes": 22521
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/feedback.py": {
+      "sha256": "a312cb36e411959ae02912f7f6a7dcad7abe5b9759d07688bcd09f505b754f04",
+      "bytes": 2412
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/memory.py": {
+      "sha256": "11befd370c4e1921422ef4eb642cca487ea89418af29ac655b3e65541d6dda01",
+      "bytes": 162044
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/learning/rules.py": {
+      "sha256": "aaab8d7c5fbe3dc6b8822357353bb8341063abd9c6729813ebc6590c1f851446",
+      "bytes": 14530
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/objects.py": {
+      "sha256": "8b14e10ebd6a607cd3e8dfb0e2c138c17c93ce45895bed9933075e89e23fa5ca",
+      "bytes": 1550
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/pose.py": {
+      "sha256": "e46f8a33c656106e5c6adc28e3affa45534e29f2d678773c8ad704dee0e0dbb3",
+      "bytes": 2450
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/visual.py": {
+      "sha256": "e414bed553e3a0efb7b044bfe105e7c1cec322dbbbb1d2b174b5c161b212fa3c",
+      "bytes": 37716
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/perception/vlm.py": {
+      "sha256": "b552f5a006725c1ce9ffa313094e1d32aa251639bb6bd4493a9a2316df4fff7a",
+      "bytes": 4326
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/progress.py": {
+      "sha256": "3f25fe85665399b7e0aa93bd8ba46e9a03d31dc5c7af5537cfad36dcfaaac9e2",
+      "bytes": 5356
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/actions.py": {
+      "sha256": "ce67419cd1af14100f4b308da8a5b38d36ef4d62d84918062f87d52a731093f3",
+      "bytes": 143729
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/context.py": {
+      "sha256": "3b5da319c13853d0bb8206b20ff1730ee9d48c4d3dcedaec528505ca84084120",
+      "bytes": 828328
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/graph_contract.py": {
+      "sha256": "31dedbf02a28bfb739ccba5628bab33a9a0647e60bb43ff84dbff8c0b0001721",
+      "bytes": 9517
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/graph_vm.py": {
+      "sha256": "50db3bfbc5720e640318e24def47878b08385ffb4a9cfd937e5d769fb5b27b09",
+      "bytes": 28040
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/identity.py": {
+      "sha256": "173b2405cb50dcf850540fc050175e1c4562736dda903c1bd0e2c9b753b83c6d",
+      "bytes": 10099
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/inference.py": {
+      "sha256": "40ec49cdad9963a663b81fae130a0648e6b3584064e0c81e4ea54abdd01008ab",
+      "bytes": 34717
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/proof_graph.py": {
+      "sha256": "19092825ca88e4c30b82a09423389708b5cf3f41541f1718fd57a33a9ca7f3a3",
+      "bytes": 25829
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/query_work.py": {
+      "sha256": "99d3ad4cba90b40f41579fe72beb12857a51e48e968210bda555fc9627ca9b69",
+      "bytes": 94188
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/readings.py": {
+      "sha256": "b16ca42b8565e495b4caa48736d010f4df7fe68b3e12be9a5ea681e6e0e53121",
+      "bytes": 15123
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/relation_hypotheses.py": {
+      "sha256": "c9834ba501c1d97f59a4f0b8bde888581e578ef043c788004899222f6c46c9cd",
+      "bytes": 37953
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/relation_query_hypotheses.py": {
+      "sha256": "6176a5ec1b60eb731a51213c29b34ebcb1c5b979c81d5ee67a8553befe461f58",
+      "bytes": 13214
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/situation.py": {
+      "sha256": "e759a4f74f0c8d0a1d238fb27a5c6c950c2ef7a1160409c72cf95d59b0de8728",
+      "bytes": 596
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/reasoning/state.py": {
+      "sha256": "34f3ed626a810c6ac5e2cab139a9978aa496c4ac8c86cf0787df970561c8f4a8",
+      "bytes": 11008
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/contextual_meaning_host.py": {
+      "sha256": "5dea323a270da62b99b911ae6c95187551d6d5ec1957adf8ce6fdabc71a2e8e2",
+      "bytes": 52558
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/conversation.py": {
+      "sha256": "ba1018351684ea3606b8a323e3681ddd19af7946aaf9afdb9c0f75ff44d661d8",
+      "bytes": 7606
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/dialogue_trace.py": {
+      "sha256": "3d78ebd317821c91a7ea806478bf9587df0ae533461c43e7d7ebecf24aa82aa6",
+      "bytes": 14885
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/explain.py": {
+      "sha256": "70798734166fd09832502c331d80d20eb330ab9938c3524b3a76f25f428298ad",
+      "bytes": 126812
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/graph_dialogue.py": {
+      "sha256": "dee2892b50320b4b7c791ee204206321e55037d92da84de29d6a4069f5e9b6c9",
+      "bytes": 11779
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/graph_route_work.py": {
+      "sha256": "de986200659eb64401a1de1b610b7d85d4b95df5aebdcfd9b19ea151ca059a9d",
+      "bytes": 40661
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/ground_language_work.py": {
+      "sha256": "6083936ccc27f9d1eb8a95afd473fcb345b494ad8778b93a814fe6035797e654",
+      "bytes": 20705
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/learning_dialogue.py": {
+      "sha256": "68a0fdbc04e5116a5fe6806ebd9178e1c31506678ffb14ee85204ae7859a6d16",
+      "bytes": 345012
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/relation_attempt.py": {
+      "sha256": "36a34c88ac23834fa78e6a99386f35bad179bdd19e83613fec737bd9f468e698",
+      "bytes": 35457
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/research.py": {
+      "sha256": "7c601af11da780a36f845a856003f0e45d2158af3d0e15842251746830ae57f8",
+      "bytes": 17788
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/selected_graph.py": {
+      "sha256": "49975d30f3031d63eff878df590e0182fbae6424d9ae7ee63a6418fb206d52cf",
+      "bytes": 18531
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/source_reading.py": {
+      "sha256": "83b9ed21e004affff006a6707ce31df1519b1c404a85b192d2c3dc9eac08b8e7",
+      "bytes": 15738
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/source_research.py": {
+      "sha256": "077c190b41f3d77a65f2abff62f08c7c058b3d53ced88ab33dbc06eef107cdfe",
+      "bytes": 2175
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/source_snapshot.py": {
+      "sha256": "1b97b68a6a494d13bf56f7e629c534b67eb3aba371df638c30db730709320fce",
+      "bytes": 14897
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/runtime/verified_graph_turn.py": {
+      "sha256": "3532bd95e04c0c4fd9dd0674266e71dd98ec7d0a9843679ef61af80dec598d5b",
+      "bytes": 10951
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/conversations.py": {
+      "sha256": "5cb5e5824dae4dc2c18b76a691adb1a75c300b2ec0579800f515272359a5bd1a",
+      "bytes": 11669
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/graph_text.py": {
+      "sha256": "8c0f94db1ddc6f1128bf253b001130930f1797fb981007749c49bc139e68ebf0",
+      "bytes": 18062
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/graph_view.py": {
+      "sha256": "6d49d69b21cbc49c23add1b2c00fdb4e58eba2b54337c10e10ba412780b95d6e",
+      "bytes": 25728
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/ids.py": {
+      "sha256": "0210f6389181dab5fd64a984ad16f9d1a48432b5aec5b695d7b2b29daf3d5b54",
+      "bytes": 2810
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/kgbin.py": {
+      "sha256": "61f66ecff650435b60f6b663868f5add95cb3d588f16ec72665995e0f29d446a",
+      "bytes": 12116
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/kgpack.py": {
+      "sha256": "6c561218629ac151d597c5d8739a28457f4545cdd83974b32df758c24017b4fb",
+      "bytes": 20721
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/overlay.py": {
+      "sha256": "4a95ab63d2e9ce32dea25f69384ecf0ed9826a43beb3f44ce8a9ee7702832740",
+      "bytes": 45801
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/storage/snapshot.py": {
+      "sha256": "e22c0488298a0aefbe1027382563f0d663361d6e715e56cdd4d9862d0bb8b6c0",
+      "bytes": 38966
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/__init__.py": {
+      "sha256": "2b14edbf259e1658067c620ff9146e6d75c0dd0ecf89d999c89f680f67915d9c",
+      "bytes": 1265
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/__main__.py": {
+      "sha256": "20e51512d4d4d8bd1f9760a3e3e25ffbb1e5963b70d9d8518097154ffa63846b",
+      "bytes": 5440
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/drive.py": {
+      "sha256": "26bfa9241df36171cb351199c13154e2c1df339040ccaaec894a1369ca80af01",
+      "bytes": 12117
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/explain.py": {
+      "sha256": "1847b6eb42aafc3f223781a69bb88d20bc929954ae299e89b928d0ded5d401e6",
+      "bytes": 15851
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/from_turn.py": {
+      "sha256": "a6e88461db91cd0b14e32736101532967d514c038fa371cfecf33cc8535d1504",
+      "bytes": 49195
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/ledger.py": {
+      "sha256": "b38ebdac1d320e4c365647d32dd0e0b5271160513184e3a41287f8c291a7d762",
+      "bytes": 18485
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/pretty.py": {
+      "sha256": "15b6468411161df440f72776c413794bd61c277c688766b9b20467315721d35b",
+      "bytes": 3719
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/runtime.py": {
+      "sha256": "b3d9b0f4610603fe164c96383509586f120d4d4bab5ac8e8708bc0d0b7b52784",
+      "bytes": 18726
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/schema.py": {
+      "sha256": "a00deb6e093a117a64a87033865eed6c611baaf3d03467c4c57e644795e3431c",
+      "bytes": 13829
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/stats.py": {
+      "sha256": "c0e9b87f661b324d07e7940d966481834afc55eb28459c6b7d5a174a27a1a3f5",
+      "bytes": 8763
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/marco/trace/why.py": {
+      "sha256": "47183ef46819c1a6cc414b2b81d51bb1b411fe8b329ede7e74026a71472a4670",
+      "bytes": 2888
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_acquisition_fix_20261119/source_snapshot/relational_semantics.py": {
+      "sha256": "5d485caae33eae9f25a7b9a311ccdd1df9de557b5fe68467f8ecfb203a4aa331",
+      "bytes": 467740
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/REPORT.md": {
+      "sha256": "d60dcbfb360fb04468de03e7851c5fb8a8ca744205cddf7fef5d0b5e22d3dff2",
+      "bytes": 22121
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/audit/preflight.json": {
+      "sha256": "678529da20ab4b01dcc43fde8e086e025b29e91d8700ed10048b6a3932bc3621",
+      "bytes": 869
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/audit/result_audit.json": {
+      "sha256": "d477b6f61f583196c6216c7bb2a75482e93919b7ae6e6fe19658df7ed1894ca7",
+      "bytes": 20811
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/first_results.jsonl": {
+      "sha256": "30ad2e334df56fab60f1dbd9d5194af77f2e69c566566df1373b19dec0921e99",
+      "bytes": 9043068
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/manifest.json": {
+      "sha256": "b8cff783d37540cfaad15906e31105b36f978c353b776b47b7f0eb06c30f403e",
+      "bytes": 16632
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/postcheck.json": {
+      "sha256": "7cf18ecf9cc3cf5125e6eaea76fc413448bcababdad397d7cb82e772bbbb5453",
+      "bytes": 16436
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/report.py": {
+      "sha256": "2793255383c1e2e8d88758cf37e9a48beaef97cb22185f1607d43ff722687f32",
+      "bytes": 3938
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/run.py": {
+      "sha256": "f4da985e4fd9e80f18a287019ddf3e9c1a4865f2f4e274b9f059c8e7459f1ca9",
+      "bytes": 4121
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_example_acquisition/acquire.py": {
+      "sha256": "2d9564f11a3f58924437b5d260c1f62ca186a596f26a6819119fe32bbd0f7cb4",
+      "bytes": 10334
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_example_acquisition/driver.py": {
+      "sha256": "4712661557356df145b755c550c6c8c36bddd1c7c70f7b2e87de57ca558f6636",
+      "bytes": 1621
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_example_acquisition/native.py": {
+      "sha256": "2b8a4cb5c9c44caa538592f26c28a54b037fbfef05b422c7a05af65c7e27d8a5",
+      "bytes": 10887
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_example_acquisition/v2.py": {
+      "sha256": "00f83c2b892457922635240fdb7db8b4d4478415bb0eb0284827a616d43daee9",
+      "bytes": 41142
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/__init__.py": {
+      "sha256": "f3347c31aa0c3cc88b4f5dcd7294b68951cfd0215cfbf2b7e1e5d56e4107d095",
+      "bytes": 1421
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/chart.py": {
+      "sha256": "2d26cea4b6944edf2a34c4d43bb5a3b14b49d7b28031b532f07c429f786aa310",
+      "bytes": 19530
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/comparators.py": {
+      "sha256": "8620344f14e2ca9c4f495378775e6a980ad4156e893f9fe230597ff5a97a2d49",
+      "bytes": 13842
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/events.py": {
+      "sha256": "076675b05d3022dc3c025b9c833c28372a6018612074687df22d768116b84663",
+      "bytes": 14630
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/graph_store.py": {
+      "sha256": "c411eeb0312d10a4fbf8079cb825e789f420171e741def1b0e573541001e903f",
+      "bytes": 5597
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/identity.py": {
+      "sha256": "5f9f659c867dfed8e0dab32a4d52f0099f2015c8d6b468ac8318232bc8efcf54",
+      "bytes": 5620
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/mentions.py": {
+      "sha256": "f204f10bbc76ac1acffec260f496f389d3be3908ad0c78c7cdbb623d5d49e0d2",
+      "bytes": 3986
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/morphology.py": {
+      "sha256": "447eb85eb5b9345fb2564180645b6fca5f86e82295b9ad97a26eaa6632d78f8a",
+      "bytes": 11108
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/policy.py": {
+      "sha256": "b271483cf14d074fde4ec9f8a3684f145144c48d8669ba7c77d6e959155fcb8a",
+      "bytes": 2999
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/reading.py": {
+      "sha256": "8fbc0ca7bdc0a231c9d279f9e7114c078f8c09c63087f3e4ab4502acef688ba2",
+      "bytes": 45348
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/rows.py": {
+      "sha256": "18476f2e2fe514a7661ab9a39e4ffcacb7c8862d563b1657e075c676cd71d58d",
+      "bytes": 2316
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/scope.py": {
+      "sha256": "b62ea8a2dcd870d4a3706a304e7a89bd5afac03458ca939cf6d600d90a386dd8",
+      "bytes": 7531
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/search.py": {
+      "sha256": "76b4f117322f049e541a5a4aae0ed23c81f21f9bbf7f8f29c3bf9a2decd53b38",
+      "bytes": 10919
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/core/solver.py": {
+      "sha256": "91d4874f854e959fdbae6db5227264b44750ffe87e099eeb1bad6f45f3ef6424",
+      "bytes": 14961
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compile.py": {
+      "sha256": "0155e00607ced1ab07df6e1054e689a2bff497fadeeb98e98986599a0c4f7ce3",
+      "bytes": 42412
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compositional.py": {
+      "sha256": "387c29ba1dafc08faa72e0573c22ad168d01e5f31ba594937648cf6c88468f34",
+      "bytes": 37850
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/query_graph.py": {
+      "sha256": "eebaec49cf1b92b7a64736b042129847ec6d616ce525ad4020282bc6e566328c",
+      "bytes": 18047
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/respond.py": {
+      "sha256": "7eb256ca9bd6da9919c03853337e9d7d4f0ea68c406a9856a8fd23cf15416b70",
+      "bytes": 6187
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/select.py": {
+      "sha256": "7ee57039b389c9dd91325df346afc7a90b935fa11d10f5ea834f7b4cf69881b0",
+      "bytes": 36308
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/answer.py": {
+      "sha256": "36f819cae43cb91e8263183047bd220840f9861eb2a87a4fcf02ed643b5740bb",
+      "bytes": 14342
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/augment.py": {
+      "sha256": "51c6402d18613ad7791ce2bf06650a5a6257a97fd0c84aa89d3d7daf4367023e",
+      "bytes": 6542
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/driver.py": {
+      "sha256": "a20eae373e4971fdb85dd034b30ba3f55deafc000b032f319cbd9b5cb85dd9c6",
+      "bytes": 4749
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/match.py": {
+      "sha256": "1d8419ba0c43ce61a388f7e48496b1698b67a2504a4c415bebeaa424afdc5332",
+      "bytes": 5571
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/merge.py": {
+      "sha256": "adb86f2824480df536a3cfe770332701f8fcfb9f5c9865a977549a477e696aab",
+      "bytes": 3824
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/reader.py": {
+      "sha256": "4308e860788f929f65ff378fd4ecb0f47f460ffafeb6e4aaa8806a904a78fde8",
+      "bytes": 31148
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/weights.py": {
+      "sha256": "694c60f6f295225d41c3ec9af753219818c9eff409981468553009d4320607b5",
+      "bytes": 9477
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/experiments/tax_graph_trial_20261119/runner.py": {
+      "sha256": "2e090533d7983b46ebc1800947992973d9315786806de4149fde5d68af9a4d8b",
+      "bytes": 6216
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/__init__.py": {
+      "sha256": "42a9154be6d03c7a01a5c4f45ad2e24f6660661fe8700aeb43aace3ef1afd0bb",
+      "bytes": 130
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/host/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/host/act.py": {
+      "sha256": "64e4cc901ea6268467881adc3935000a24dce68cb9b897965ed0d18a753dcc78",
+      "bytes": 17508
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/definitions.py": {
+      "sha256": "ff7cb3c178342eeb69bc5aa06718ee9f10a3a3a856d0018defb5d558998e7f09",
+      "bytes": 9732
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/dictionary.py": {
+      "sha256": "8d6da41c6b0baf89ce4ad4c9f4ac7e3f934d539ceddba3489eea70df9e47cf3f",
+      "bytes": 17936
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/documents.py": {
+      "sha256": "f9b877625de4d4bee2bc56cfa8ff2a7791239bf711c78f16eca884429b4cc8fc",
+      "bytes": 26743
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/retrieval.py": {
+      "sha256": "fd4dda45c07197c411fb524f33f1e7fd0e60564200b8952a47939e5432e9e289",
+      "bytes": 27004
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/text.py": {
+      "sha256": "f6125ebb3bd72d784beee6dff9569b0b306930b4a06f63cfd090d84c5e0237ab",
+      "bytes": 53008
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/knowledge/ingest/web.py": {
+      "sha256": "b94c0e7c48335376ffaae72c2b270935f11ba2b8cb92e0f36a237c1b845e80d0",
+      "bytes": 67498
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/__init__.py": {
+      "sha256": "1e982e1f452dd4289e0492788e93361dea365e12ae0c4b1f0ffb1ebc7fad469c",
+      "bytes": 444
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/arithmetic.py": {
+      "sha256": "f7b5e53e208990a2c672309298bf5934cd1a9a8fa822417ce51c0e0c3aa5b1d1",
+      "bytes": 4180
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/arithmetic_spoken.py": {
+      "sha256": "0a242f3ec7def3680e222a9775347c55113f326d6aad842d1941d448bf5d9961",
+      "bytes": 3372
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/entry_origins.py": {
+      "sha256": "635c8dd0b3a0df1ba920b6633af010ecf9b2b744d8cc46e359dc549b6310f1c6",
+      "bytes": 4395
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/frames.py": {
+      "sha256": "d5ad6eb59aaaef383dbf0bd3c8f9e254f5feb30ef9f274582d79c2e27814348b",
+      "bytes": 112207
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/graph_projection.py": {
+      "sha256": "459a3ad1003d217c26450e7914b7c85e4e8307a7f101272c4fec32ad2f51d463",
+      "bytes": 174368
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/hangul.py": {
+      "sha256": "939e641dd581475de3ef6de8d372d4a7599d3a3a41e281bbc38d611932d1b08c",
+      "bytes": 33381
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/numerals.py": {
+      "sha256": "6bdbcc5c71d15e731ea6247c5f71f01e94e5aff2ec449668da97cba959288dc2",
+      "bytes": 1517
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/passage_components.py": {
+      "sha256": "bc52591ac9bea6b5ce208f09eaacf40d3db63dc5e55e255c959f47b1ce1f0154",
+      "bytes": 1443
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/passages.py": {
+      "sha256": "320aed3682c7de0ce6fd9f12499d316d81681ee72fdcbfd0b1fd6718f1d0df2a",
+      "bytes": 4110
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/__init__.py": {
+      "sha256": "24b67f9e66c90c90fed2b63b5a96ea3dba5a3010b84649eb0b52033bde1ad9ca",
+      "bytes": 26358
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/affect.py": {
+      "sha256": "ceb4c45e60732f8041ad87ab2e83595b854c2a7e63f806af0a4ecd2d5a71ac46",
+      "bytes": 2840
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/check.py": {
+      "sha256": "e87c2a61646bb39ea39cc56db0f5d26e0c4a7906d94ce09695db99ba9b2312f0",
+      "bytes": 16837
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/composer.py": {
+      "sha256": "894d7bda783364da92a6a8037a955fb6ff6ce31fc2f73ea33de43f601ee3fec6",
+      "bytes": 12243
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/contracts.py": {
+      "sha256": "69de5c617c093c3d7019092c41bb243487b7222c89d6dec58627d81ca25c6673",
+      "bytes": 890
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/discourse.py": {
+      "sha256": "9aa289b5a0d6f98cc88c48a51211a80e966ca27c54f2dfbeddfac8852cf18eee",
+      "bytes": 5419
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/expression.py": {
+      "sha256": "718b17d83daf4e6f4147f4c9f553332ff09c2e14d4dd0d1c160683ce434caa37",
+      "bytes": 3694
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/grammar.py": {
+      "sha256": "38b90369d4ce63d77ae20e0861fd2a1b277e9438b96ae4f86f1d91555bab159b",
+      "bytes": 45581
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/intent.py": {
+      "sha256": "786b7eceecb2c844c771238533efb3b326fb1909bef459227e0a976411c4786b",
+      "bytes": 29234
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/learning.py": {
+      "sha256": "3fdd5aa793d53e0abb8717072d3a96a3cc0a7f2b67d6481ab720fc7ed34db56d",
+      "bytes": 12229
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/meaning.py": {
+      "sha256": "db3f78ef4445e6813e16dc4421b748b9e818d542b202173a9f6d2c278cf2d104",
+      "bytes": 9347
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/packs.py": {
+      "sha256": "8efa76f20b300ec2dd40d82cb4675db58d8eb47b4e049035de1964881f849fac",
+      "bytes": 13795
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/realizer/source_answer.py": {
+      "sha256": "c865d5e113327b614f2d25b4bb25e0ac505c3456e7da97dd1208fc578758364b",
+      "bytes": 5044
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/relation_hypotheses.py": {
+      "sha256": "bce316241132fec0e3e0ac7d5c4bfee6dbd9a57eb3b1c33f2989c9a246693fad",
+      "bytes": 22352
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/relation_query_hypotheses.py": {
+      "sha256": "b180dcefeb384805c4d0a687d105ed061856a71ed8f9f0bb9422f0d5b8dc9dfa",
+      "bytes": 30593
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/representation.py": {
+      "sha256": "fb775f36c1e66682dab41e2e36149d143bc6ba908774cd6710a45f2a89bb3bb5",
+      "bytes": 16395
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/teaching.py": {
+      "sha256": "2c286d6e8781b7303bd37d3a48eed41dcd8c17238554b018f464bae21f81e9d5",
+      "bytes": 30130
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/language/understanding.py": {
+      "sha256": "f7e2484970df507a465f3e6b178f3f992ca548030146a538233ee61bd5fa72bc",
+      "bytes": 9260
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/authoring.py": {
+      "sha256": "ca04bd9a8de3b353356d7f7dd63abfe22f47efb322cc4b3e9da0836af24c8efd",
+      "bytes": 27811
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/chunking.py": {
+      "sha256": "93ef168faf6f2caae5760a90f4f2c53610279951498c5fe6836bb10a8cb4128a",
+      "bytes": 4769
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/concepts.py": {
+      "sha256": "67d665136189b03d9bd5f222194b35ee8d1f82908b80a2864f62a38e41ec0ea9",
+      "bytes": 27316
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/demo_memory.py": {
+      "sha256": "5b14d3ebd382b7ee594a51265800cc33bc32d41f6479deb9ae888571dd663e00",
+      "bytes": 3762
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/expression_graph.py": {
+      "sha256": "e81b47f370e1fdddf87b55ed6d35dcd58d3153999c5d2e00a7709d5a58255c27",
+      "bytes": 15986
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/expressions.py": {
+      "sha256": "4df76947d674737988ef36d2f9479269b2ddde9c80bb78e2112cc2aa921c2c78",
+      "bytes": 22521
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/feedback.py": {
+      "sha256": "a312cb36e411959ae02912f7f6a7dcad7abe5b9759d07688bcd09f505b754f04",
+      "bytes": 2412
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/memory.py": {
+      "sha256": "11befd370c4e1921422ef4eb642cca487ea89418af29ac655b3e65541d6dda01",
+      "bytes": 162044
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/learning/rules.py": {
+      "sha256": "aaab8d7c5fbe3dc6b8822357353bb8341063abd9c6729813ebc6590c1f851446",
+      "bytes": 14530
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/objects.py": {
+      "sha256": "8b14e10ebd6a607cd3e8dfb0e2c138c17c93ce45895bed9933075e89e23fa5ca",
+      "bytes": 1550
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/pose.py": {
+      "sha256": "e46f8a33c656106e5c6adc28e3affa45534e29f2d678773c8ad704dee0e0dbb3",
+      "bytes": 2450
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/visual.py": {
+      "sha256": "e414bed553e3a0efb7b044bfe105e7c1cec322dbbbb1d2b174b5c161b212fa3c",
+      "bytes": 37716
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/perception/vlm.py": {
+      "sha256": "b552f5a006725c1ce9ffa313094e1d32aa251639bb6bd4493a9a2316df4fff7a",
+      "bytes": 4326
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/progress.py": {
+      "sha256": "3f25fe85665399b7e0aa93bd8ba46e9a03d31dc5c7af5537cfad36dcfaaac9e2",
+      "bytes": 5356
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/actions.py": {
+      "sha256": "ce67419cd1af14100f4b308da8a5b38d36ef4d62d84918062f87d52a731093f3",
+      "bytes": 143729
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/context.py": {
+      "sha256": "3b5da319c13853d0bb8206b20ff1730ee9d48c4d3dcedaec528505ca84084120",
+      "bytes": 828328
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/graph_contract.py": {
+      "sha256": "31dedbf02a28bfb739ccba5628bab33a9a0647e60bb43ff84dbff8c0b0001721",
+      "bytes": 9517
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/graph_vm.py": {
+      "sha256": "50db3bfbc5720e640318e24def47878b08385ffb4a9cfd937e5d769fb5b27b09",
+      "bytes": 28040
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/identity.py": {
+      "sha256": "173b2405cb50dcf850540fc050175e1c4562736dda903c1bd0e2c9b753b83c6d",
+      "bytes": 10099
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/inference.py": {
+      "sha256": "40ec49cdad9963a663b81fae130a0648e6b3584064e0c81e4ea54abdd01008ab",
+      "bytes": 34717
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/proof_graph.py": {
+      "sha256": "19092825ca88e4c30b82a09423389708b5cf3f41541f1718fd57a33a9ca7f3a3",
+      "bytes": 25829
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/query_work.py": {
+      "sha256": "99d3ad4cba90b40f41579fe72beb12857a51e48e968210bda555fc9627ca9b69",
+      "bytes": 94188
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/readings.py": {
+      "sha256": "b16ca42b8565e495b4caa48736d010f4df7fe68b3e12be9a5ea681e6e0e53121",
+      "bytes": 15123
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/relation_hypotheses.py": {
+      "sha256": "c9834ba501c1d97f59a4f0b8bde888581e578ef043c788004899222f6c46c9cd",
+      "bytes": 37953
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/relation_query_hypotheses.py": {
+      "sha256": "6176a5ec1b60eb731a51213c29b34ebcb1c5b979c81d5ee67a8553befe461f58",
+      "bytes": 13214
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/situation.py": {
+      "sha256": "e759a4f74f0c8d0a1d238fb27a5c6c950c2ef7a1160409c72cf95d59b0de8728",
+      "bytes": 596
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/reasoning/state.py": {
+      "sha256": "34f3ed626a810c6ac5e2cab139a9978aa496c4ac8c86cf0787df970561c8f4a8",
+      "bytes": 11008
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/contextual_meaning_host.py": {
+      "sha256": "5dea323a270da62b99b911ae6c95187551d6d5ec1957adf8ce6fdabc71a2e8e2",
+      "bytes": 52558
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/conversation.py": {
+      "sha256": "ba1018351684ea3606b8a323e3681ddd19af7946aaf9afdb9c0f75ff44d661d8",
+      "bytes": 7606
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/dialogue_trace.py": {
+      "sha256": "3d78ebd317821c91a7ea806478bf9587df0ae533461c43e7d7ebecf24aa82aa6",
+      "bytes": 14885
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/explain.py": {
+      "sha256": "70798734166fd09832502c331d80d20eb330ab9938c3524b3a76f25f428298ad",
+      "bytes": 126812
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/graph_dialogue.py": {
+      "sha256": "dee2892b50320b4b7c791ee204206321e55037d92da84de29d6a4069f5e9b6c9",
+      "bytes": 11779
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/graph_route_work.py": {
+      "sha256": "de986200659eb64401a1de1b610b7d85d4b95df5aebdcfd9b19ea151ca059a9d",
+      "bytes": 40661
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/ground_language_work.py": {
+      "sha256": "6083936ccc27f9d1eb8a95afd473fcb345b494ad8778b93a814fe6035797e654",
+      "bytes": 20705
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/learning_dialogue.py": {
+      "sha256": "68a0fdbc04e5116a5fe6806ebd9178e1c31506678ffb14ee85204ae7859a6d16",
+      "bytes": 345012
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/relation_attempt.py": {
+      "sha256": "36a34c88ac23834fa78e6a99386f35bad179bdd19e83613fec737bd9f468e698",
+      "bytes": 35457
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/research.py": {
+      "sha256": "7c601af11da780a36f845a856003f0e45d2158af3d0e15842251746830ae57f8",
+      "bytes": 17788
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/selected_graph.py": {
+      "sha256": "49975d30f3031d63eff878df590e0182fbae6424d9ae7ee63a6418fb206d52cf",
+      "bytes": 18531
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/source_reading.py": {
+      "sha256": "83b9ed21e004affff006a6707ce31df1519b1c404a85b192d2c3dc9eac08b8e7",
+      "bytes": 15738
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/source_research.py": {
+      "sha256": "077c190b41f3d77a65f2abff62f08c7c058b3d53ced88ab33dbc06eef107cdfe",
+      "bytes": 2175
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/source_snapshot.py": {
+      "sha256": "1b97b68a6a494d13bf56f7e629c534b67eb3aba371df638c30db730709320fce",
+      "bytes": 14897
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/runtime/verified_graph_turn.py": {
+      "sha256": "3532bd95e04c0c4fd9dd0674266e71dd98ec7d0a9843679ef61af80dec598d5b",
+      "bytes": 10951
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/conversations.py": {
+      "sha256": "5cb5e5824dae4dc2c18b76a691adb1a75c300b2ec0579800f515272359a5bd1a",
+      "bytes": 11669
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/graph_text.py": {
+      "sha256": "8c0f94db1ddc6f1128bf253b001130930f1797fb981007749c49bc139e68ebf0",
+      "bytes": 18062
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/graph_view.py": {
+      "sha256": "6d49d69b21cbc49c23add1b2c00fdb4e58eba2b54337c10e10ba412780b95d6e",
+      "bytes": 25728
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/ids.py": {
+      "sha256": "0210f6389181dab5fd64a984ad16f9d1a48432b5aec5b695d7b2b29daf3d5b54",
+      "bytes": 2810
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/kgbin.py": {
+      "sha256": "61f66ecff650435b60f6b663868f5add95cb3d588f16ec72665995e0f29d446a",
+      "bytes": 12116
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/kgpack.py": {
+      "sha256": "6c561218629ac151d597c5d8739a28457f4545cdd83974b32df758c24017b4fb",
+      "bytes": 20721
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/overlay.py": {
+      "sha256": "4a95ab63d2e9ce32dea25f69384ecf0ed9826a43beb3f44ce8a9ee7702832740",
+      "bytes": 45801
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/storage/snapshot.py": {
+      "sha256": "e22c0488298a0aefbe1027382563f0d663361d6e715e56cdd4d9862d0bb8b6c0",
+      "bytes": 38966
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/__init__.py": {
+      "sha256": "2b14edbf259e1658067c620ff9146e6d75c0dd0ecf89d999c89f680f67915d9c",
+      "bytes": 1265
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/__main__.py": {
+      "sha256": "20e51512d4d4d8bd1f9760a3e3e25ffbb1e5963b70d9d8518097154ffa63846b",
+      "bytes": 5440
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/drive.py": {
+      "sha256": "26bfa9241df36171cb351199c13154e2c1df339040ccaaec894a1369ca80af01",
+      "bytes": 12117
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/explain.py": {
+      "sha256": "1847b6eb42aafc3f223781a69bb88d20bc929954ae299e89b928d0ded5d401e6",
+      "bytes": 15851
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/from_turn.py": {
+      "sha256": "a6e88461db91cd0b14e32736101532967d514c038fa371cfecf33cc8535d1504",
+      "bytes": 49195
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/ledger.py": {
+      "sha256": "b38ebdac1d320e4c365647d32dd0e0b5271160513184e3a41287f8c291a7d762",
+      "bytes": 18485
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/pretty.py": {
+      "sha256": "15b6468411161df440f72776c413794bd61c277c688766b9b20467315721d35b",
+      "bytes": 3719
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/runtime.py": {
+      "sha256": "b3d9b0f4610603fe164c96383509586f120d4d4bab5ac8e8708bc0d0b7b52784",
+      "bytes": 18726
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/schema.py": {
+      "sha256": "a00deb6e093a117a64a87033865eed6c611baaf3d03467c4c57e644795e3431c",
+      "bytes": 13829
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/stats.py": {
+      "sha256": "c0e9b87f661b324d07e7940d966481834afc55eb28459c6b7d5a174a27a1a3f5",
+      "bytes": 8763
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/marco/trace/why.py": {
+      "sha256": "47183ef46819c1a6cc414b2b81d51bb1b411fe8b329ede7e74026a71472a4670",
+      "bytes": 2888
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_length_fix_20261119/source_snapshot/relational_semantics.py": {
+      "sha256": "5d485caae33eae9f25a7b9a311ccdd1df9de557b5fe68467f8ecfb203a4aa331",
+      "bytes": 467740
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/REPORT.md": {
+      "sha256": "b3431daae0931825b462af96b1431ea741f0d8feb10c528b9a2b16e98b1d3b72",
+      "bytes": 6845
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/audit/result_audit.json": {
+      "sha256": "09e08d9cfac2508aa211dc33667858b3fc95b2656fa345fb9172678f3c28452a",
+      "bytes": 17020
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/audit_report.py": {
+      "sha256": "58ea57d23ce6cc5210d5c2d012bd247d509f3b9ddd3352065eab35f1e31fba22",
+      "bytes": 11290
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/first_results.jsonl": {
+      "sha256": "561dcb87d0f6aee490c5c423ec628d911a2df03e7f47786d37715b57be29579c",
+      "bytes": 3435350
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/manifest.json": {
+      "sha256": "4101e4f80e8ae4269c5f872490172a724f1a5db37c2a2f12cf422c37464a0860",
+      "bytes": 17119
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/postcheck.json": {
+      "sha256": "b26a76216a77d4ef75d787ee301c606eb3ea4a16bb0e60f7f500e4a2627afa61",
+      "bytes": 16923
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/run.py": {
+      "sha256": "968c65e3e29a61cf5a4afeae522adf688cad25e999234a61178aab28acfa1681",
+      "bytes": 4437
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_example_acquisition/acquire.py": {
+      "sha256": "2d9564f11a3f58924437b5d260c1f62ca186a596f26a6819119fe32bbd0f7cb4",
+      "bytes": 10334
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_example_acquisition/driver.py": {
+      "sha256": "4712661557356df145b755c550c6c8c36bddd1c7c70f7b2e87de57ca558f6636",
+      "bytes": 1621
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_example_acquisition/native.py": {
+      "sha256": "2b8a4cb5c9c44caa538592f26c28a54b037fbfef05b422c7a05af65c7e27d8a5",
+      "bytes": 10887
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_example_acquisition/v2.py": {
+      "sha256": "00f83c2b892457922635240fdb7db8b4d4478415bb0eb0284827a616d43daee9",
+      "bytes": 41142
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/__init__.py": {
+      "sha256": "f3347c31aa0c3cc88b4f5dcd7294b68951cfd0215cfbf2b7e1e5d56e4107d095",
+      "bytes": 1421
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/chart.py": {
+      "sha256": "2d26cea4b6944edf2a34c4d43bb5a3b14b49d7b28031b532f07c429f786aa310",
+      "bytes": 19530
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/comparators.py": {
+      "sha256": "8620344f14e2ca9c4f495378775e6a980ad4156e893f9fe230597ff5a97a2d49",
+      "bytes": 13842
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/events.py": {
+      "sha256": "076675b05d3022dc3c025b9c833c28372a6018612074687df22d768116b84663",
+      "bytes": 14630
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/graph_store.py": {
+      "sha256": "c411eeb0312d10a4fbf8079cb825e789f420171e741def1b0e573541001e903f",
+      "bytes": 5597
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/identity.py": {
+      "sha256": "5f9f659c867dfed8e0dab32a4d52f0099f2015c8d6b468ac8318232bc8efcf54",
+      "bytes": 5620
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/mentions.py": {
+      "sha256": "f204f10bbc76ac1acffec260f496f389d3be3908ad0c78c7cdbb623d5d49e0d2",
+      "bytes": 3986
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/morphology.py": {
+      "sha256": "447eb85eb5b9345fb2564180645b6fca5f86e82295b9ad97a26eaa6632d78f8a",
+      "bytes": 11108
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/policy.py": {
+      "sha256": "b271483cf14d074fde4ec9f8a3684f145144c48d8669ba7c77d6e959155fcb8a",
+      "bytes": 2999
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/reading.py": {
+      "sha256": "8fbc0ca7bdc0a231c9d279f9e7114c078f8c09c63087f3e4ab4502acef688ba2",
+      "bytes": 45348
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/rows.py": {
+      "sha256": "18476f2e2fe514a7661ab9a39e4ffcacb7c8862d563b1657e075c676cd71d58d",
+      "bytes": 2316
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/scope.py": {
+      "sha256": "b62ea8a2dcd870d4a3706a304e7a89bd5afac03458ca939cf6d600d90a386dd8",
+      "bytes": 7531
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/search.py": {
+      "sha256": "76b4f117322f049e541a5a4aae0ed23c81f21f9bbf7f8f29c3bf9a2decd53b38",
+      "bytes": 10919
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/core/solver.py": {
+      "sha256": "91d4874f854e959fdbae6db5227264b44750ffe87e099eeb1bad6f45f3ef6424",
+      "bytes": 14961
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compile.py": {
+      "sha256": "0155e00607ced1ab07df6e1054e689a2bff497fadeeb98e98986599a0c4f7ce3",
+      "bytes": 42412
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/compositional.py": {
+      "sha256": "387c29ba1dafc08faa72e0573c22ad168d01e5f31ba594937648cf6c88468f34",
+      "bytes": 37850
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/query_graph.py": {
+      "sha256": "eebaec49cf1b92b7a64736b042129847ec6d616ce525ad4020282bc6e566328c",
+      "bytes": 18047
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/respond.py": {
+      "sha256": "7eb256ca9bd6da9919c03853337e9d7d4f0ea68c406a9856a8fd23cf15416b70",
+      "bytes": 6187
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_language_repair/questions/select.py": {
+      "sha256": "7ee57039b389c9dd91325df346afc7a90b935fa11d10f5ea834f7b4cf69881b0",
+      "bytes": 36308
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/answer.py": {
+      "sha256": "36f819cae43cb91e8263183047bd220840f9861eb2a87a4fcf02ed643b5740bb",
+      "bytes": 14342
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/augment.py": {
+      "sha256": "51c6402d18613ad7791ce2bf06650a5a6257a97fd0c84aa89d3d7daf4367023e",
+      "bytes": 6542
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/driver.py": {
+      "sha256": "a20eae373e4971fdb85dd034b30ba3f55deafc000b032f319cbd9b5cb85dd9c6",
+      "bytes": 4749
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/match.py": {
+      "sha256": "1d8419ba0c43ce61a388f7e48496b1698b67a2504a4c415bebeaa424afdc5332",
+      "bytes": 5571
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/merge.py": {
+      "sha256": "adb86f2824480df536a3cfe770332701f8fcfb9f5c9865a977549a477e696aab",
+      "bytes": 3824
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/reader.py": {
+      "sha256": "bfb06e144099070843317bdb1e0fc813d23f22ab427c376a9413417d3348758f",
+      "bytes": 36883
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/graph_weighted_acquisition/weights.py": {
+      "sha256": "694c60f6f295225d41c3ec9af753219818c9eff409981468553009d4320607b5",
+      "bytes": 9477
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/experiments/tax_graph_trial_20261119/runner.py": {
+      "sha256": "2e090533d7983b46ebc1800947992973d9315786806de4149fde5d68af9a4d8b",
+      "bytes": 6216
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/__init__.py": {
+      "sha256": "42a9154be6d03c7a01a5c4f45ad2e24f6660661fe8700aeb43aace3ef1afd0bb",
+      "bytes": 130
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/host/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/host/act.py": {
+      "sha256": "64e4cc901ea6268467881adc3935000a24dce68cb9b897965ed0d18a753dcc78",
+      "bytes": 17508
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/definitions.py": {
+      "sha256": "ff7cb3c178342eeb69bc5aa06718ee9f10a3a3a856d0018defb5d558998e7f09",
+      "bytes": 9732
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/dictionary.py": {
+      "sha256": "8d6da41c6b0baf89ce4ad4c9f4ac7e3f934d539ceddba3489eea70df9e47cf3f",
+      "bytes": 17936
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/documents.py": {
+      "sha256": "f9b877625de4d4bee2bc56cfa8ff2a7791239bf711c78f16eca884429b4cc8fc",
+      "bytes": 26743
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/retrieval.py": {
+      "sha256": "fd4dda45c07197c411fb524f33f1e7fd0e60564200b8952a47939e5432e9e289",
+      "bytes": 27004
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/text.py": {
+      "sha256": "f6125ebb3bd72d784beee6dff9569b0b306930b4a06f63cfd090d84c5e0237ab",
+      "bytes": 53008
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/knowledge/ingest/web.py": {
+      "sha256": "b94c0e7c48335376ffaae72c2b270935f11ba2b8cb92e0f36a237c1b845e80d0",
+      "bytes": 67498
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/__init__.py": {
+      "sha256": "1e982e1f452dd4289e0492788e93361dea365e12ae0c4b1f0ffb1ebc7fad469c",
+      "bytes": 444
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/arithmetic.py": {
+      "sha256": "f7b5e53e208990a2c672309298bf5934cd1a9a8fa822417ce51c0e0c3aa5b1d1",
+      "bytes": 4180
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/arithmetic_spoken.py": {
+      "sha256": "0a242f3ec7def3680e222a9775347c55113f326d6aad842d1941d448bf5d9961",
+      "bytes": 3372
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/entry_origins.py": {
+      "sha256": "635c8dd0b3a0df1ba920b6633af010ecf9b2b744d8cc46e359dc549b6310f1c6",
+      "bytes": 4395
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/frames.py": {
+      "sha256": "d5ad6eb59aaaef383dbf0bd3c8f9e254f5feb30ef9f274582d79c2e27814348b",
+      "bytes": 112207
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/graph_projection.py": {
+      "sha256": "459a3ad1003d217c26450e7914b7c85e4e8307a7f101272c4fec32ad2f51d463",
+      "bytes": 174368
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/hangul.py": {
+      "sha256": "939e641dd581475de3ef6de8d372d4a7599d3a3a41e281bbc38d611932d1b08c",
+      "bytes": 33381
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/numerals.py": {
+      "sha256": "6bdbcc5c71d15e731ea6247c5f71f01e94e5aff2ec449668da97cba959288dc2",
+      "bytes": 1517
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/passage_components.py": {
+      "sha256": "bc52591ac9bea6b5ce208f09eaacf40d3db63dc5e55e255c959f47b1ce1f0154",
+      "bytes": 1443
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/passages.py": {
+      "sha256": "320aed3682c7de0ce6fd9f12499d316d81681ee72fdcbfd0b1fd6718f1d0df2a",
+      "bytes": 4110
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/__init__.py": {
+      "sha256": "24b67f9e66c90c90fed2b63b5a96ea3dba5a3010b84649eb0b52033bde1ad9ca",
+      "bytes": 26358
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/affect.py": {
+      "sha256": "ceb4c45e60732f8041ad87ab2e83595b854c2a7e63f806af0a4ecd2d5a71ac46",
+      "bytes": 2840
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/check.py": {
+      "sha256": "e87c2a61646bb39ea39cc56db0f5d26e0c4a7906d94ce09695db99ba9b2312f0",
+      "bytes": 16837
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/composer.py": {
+      "sha256": "894d7bda783364da92a6a8037a955fb6ff6ce31fc2f73ea33de43f601ee3fec6",
+      "bytes": 12243
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/contracts.py": {
+      "sha256": "69de5c617c093c3d7019092c41bb243487b7222c89d6dec58627d81ca25c6673",
+      "bytes": 890
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/discourse.py": {
+      "sha256": "9aa289b5a0d6f98cc88c48a51211a80e966ca27c54f2dfbeddfac8852cf18eee",
+      "bytes": 5419
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/expression.py": {
+      "sha256": "718b17d83daf4e6f4147f4c9f553332ff09c2e14d4dd0d1c160683ce434caa37",
+      "bytes": 3694
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/grammar.py": {
+      "sha256": "38b90369d4ce63d77ae20e0861fd2a1b277e9438b96ae4f86f1d91555bab159b",
+      "bytes": 45581
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/intent.py": {
+      "sha256": "786b7eceecb2c844c771238533efb3b326fb1909bef459227e0a976411c4786b",
+      "bytes": 29234
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/learning.py": {
+      "sha256": "3fdd5aa793d53e0abb8717072d3a96a3cc0a7f2b67d6481ab720fc7ed34db56d",
+      "bytes": 12229
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/meaning.py": {
+      "sha256": "db3f78ef4445e6813e16dc4421b748b9e818d542b202173a9f6d2c278cf2d104",
+      "bytes": 9347
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/packs.py": {
+      "sha256": "8efa76f20b300ec2dd40d82cb4675db58d8eb47b4e049035de1964881f849fac",
+      "bytes": 13795
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/realizer/source_answer.py": {
+      "sha256": "c865d5e113327b614f2d25b4bb25e0ac505c3456e7da97dd1208fc578758364b",
+      "bytes": 5044
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/relation_hypotheses.py": {
+      "sha256": "bce316241132fec0e3e0ac7d5c4bfee6dbd9a57eb3b1c33f2989c9a246693fad",
+      "bytes": 22352
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/relation_query_hypotheses.py": {
+      "sha256": "b180dcefeb384805c4d0a687d105ed061856a71ed8f9f0bb9422f0d5b8dc9dfa",
+      "bytes": 30593
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/representation.py": {
+      "sha256": "fb775f36c1e66682dab41e2e36149d143bc6ba908774cd6710a45f2a89bb3bb5",
+      "bytes": 16395
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/teaching.py": {
+      "sha256": "2c286d6e8781b7303bd37d3a48eed41dcd8c17238554b018f464bae21f81e9d5",
+      "bytes": 30130
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/language/understanding.py": {
+      "sha256": "f7e2484970df507a465f3e6b178f3f992ca548030146a538233ee61bd5fa72bc",
+      "bytes": 9260
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/authoring.py": {
+      "sha256": "ca04bd9a8de3b353356d7f7dd63abfe22f47efb322cc4b3e9da0836af24c8efd",
+      "bytes": 27811
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/chunking.py": {
+      "sha256": "93ef168faf6f2caae5760a90f4f2c53610279951498c5fe6836bb10a8cb4128a",
+      "bytes": 4769
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/concepts.py": {
+      "sha256": "67d665136189b03d9bd5f222194b35ee8d1f82908b80a2864f62a38e41ec0ea9",
+      "bytes": 27316
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/demo_memory.py": {
+      "sha256": "5b14d3ebd382b7ee594a51265800cc33bc32d41f6479deb9ae888571dd663e00",
+      "bytes": 3762
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/expression_graph.py": {
+      "sha256": "e81b47f370e1fdddf87b55ed6d35dcd58d3153999c5d2e00a7709d5a58255c27",
+      "bytes": 15986
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/expressions.py": {
+      "sha256": "4df76947d674737988ef36d2f9479269b2ddde9c80bb78e2112cc2aa921c2c78",
+      "bytes": 22521
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/feedback.py": {
+      "sha256": "a312cb36e411959ae02912f7f6a7dcad7abe5b9759d07688bcd09f505b754f04",
+      "bytes": 2412
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/memory.py": {
+      "sha256": "11befd370c4e1921422ef4eb642cca487ea89418af29ac655b3e65541d6dda01",
+      "bytes": 162044
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/learning/rules.py": {
+      "sha256": "aaab8d7c5fbe3dc6b8822357353bb8341063abd9c6729813ebc6590c1f851446",
+      "bytes": 14530
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/objects.py": {
+      "sha256": "8b14e10ebd6a607cd3e8dfb0e2c138c17c93ce45895bed9933075e89e23fa5ca",
+      "bytes": 1550
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/pose.py": {
+      "sha256": "e46f8a33c656106e5c6adc28e3affa45534e29f2d678773c8ad704dee0e0dbb3",
+      "bytes": 2450
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/visual.py": {
+      "sha256": "e414bed553e3a0efb7b044bfe105e7c1cec322dbbbb1d2b174b5c161b212fa3c",
+      "bytes": 37716
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/perception/vlm.py": {
+      "sha256": "b552f5a006725c1ce9ffa313094e1d32aa251639bb6bd4493a9a2316df4fff7a",
+      "bytes": 4326
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/progress.py": {
+      "sha256": "3f25fe85665399b7e0aa93bd8ba46e9a03d31dc5c7af5537cfad36dcfaaac9e2",
+      "bytes": 5356
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/actions.py": {
+      "sha256": "ce67419cd1af14100f4b308da8a5b38d36ef4d62d84918062f87d52a731093f3",
+      "bytes": 143729
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/context.py": {
+      "sha256": "3b5da319c13853d0bb8206b20ff1730ee9d48c4d3dcedaec528505ca84084120",
+      "bytes": 828328
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/graph_contract.py": {
+      "sha256": "31dedbf02a28bfb739ccba5628bab33a9a0647e60bb43ff84dbff8c0b0001721",
+      "bytes": 9517
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/graph_vm.py": {
+      "sha256": "50db3bfbc5720e640318e24def47878b08385ffb4a9cfd937e5d769fb5b27b09",
+      "bytes": 28040
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/identity.py": {
+      "sha256": "173b2405cb50dcf850540fc050175e1c4562736dda903c1bd0e2c9b753b83c6d",
+      "bytes": 10099
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/inference.py": {
+      "sha256": "40ec49cdad9963a663b81fae130a0648e6b3584064e0c81e4ea54abdd01008ab",
+      "bytes": 34717
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/proof_graph.py": {
+      "sha256": "19092825ca88e4c30b82a09423389708b5cf3f41541f1718fd57a33a9ca7f3a3",
+      "bytes": 25829
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/query_work.py": {
+      "sha256": "99d3ad4cba90b40f41579fe72beb12857a51e48e968210bda555fc9627ca9b69",
+      "bytes": 94188
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/readings.py": {
+      "sha256": "b16ca42b8565e495b4caa48736d010f4df7fe68b3e12be9a5ea681e6e0e53121",
+      "bytes": 15123
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/relation_hypotheses.py": {
+      "sha256": "c9834ba501c1d97f59a4f0b8bde888581e578ef043c788004899222f6c46c9cd",
+      "bytes": 37953
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/relation_query_hypotheses.py": {
+      "sha256": "6176a5ec1b60eb731a51213c29b34ebcb1c5b979c81d5ee67a8553befe461f58",
+      "bytes": 13214
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/situation.py": {
+      "sha256": "e759a4f74f0c8d0a1d238fb27a5c6c950c2ef7a1160409c72cf95d59b0de8728",
+      "bytes": 596
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/reasoning/state.py": {
+      "sha256": "34f3ed626a810c6ac5e2cab139a9978aa496c4ac8c86cf0787df970561c8f4a8",
+      "bytes": 11008
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/contextual_meaning_host.py": {
+      "sha256": "5dea323a270da62b99b911ae6c95187551d6d5ec1957adf8ce6fdabc71a2e8e2",
+      "bytes": 52558
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/conversation.py": {
+      "sha256": "ba1018351684ea3606b8a323e3681ddd19af7946aaf9afdb9c0f75ff44d661d8",
+      "bytes": 7606
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/dialogue_trace.py": {
+      "sha256": "3d78ebd317821c91a7ea806478bf9587df0ae533461c43e7d7ebecf24aa82aa6",
+      "bytes": 14885
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/explain.py": {
+      "sha256": "70798734166fd09832502c331d80d20eb330ab9938c3524b3a76f25f428298ad",
+      "bytes": 126812
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/graph_dialogue.py": {
+      "sha256": "dee2892b50320b4b7c791ee204206321e55037d92da84de29d6a4069f5e9b6c9",
+      "bytes": 11779
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/graph_route_work.py": {
+      "sha256": "de986200659eb64401a1de1b610b7d85d4b95df5aebdcfd9b19ea151ca059a9d",
+      "bytes": 40661
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/ground_language_work.py": {
+      "sha256": "6083936ccc27f9d1eb8a95afd473fcb345b494ad8778b93a814fe6035797e654",
+      "bytes": 20705
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/learning_dialogue.py": {
+      "sha256": "68a0fdbc04e5116a5fe6806ebd9178e1c31506678ffb14ee85204ae7859a6d16",
+      "bytes": 345012
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/relation_attempt.py": {
+      "sha256": "36a34c88ac23834fa78e6a99386f35bad179bdd19e83613fec737bd9f468e698",
+      "bytes": 35457
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/research.py": {
+      "sha256": "7c601af11da780a36f845a856003f0e45d2158af3d0e15842251746830ae57f8",
+      "bytes": 17788
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/selected_graph.py": {
+      "sha256": "49975d30f3031d63eff878df590e0182fbae6424d9ae7ee63a6418fb206d52cf",
+      "bytes": 18531
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/source_reading.py": {
+      "sha256": "83b9ed21e004affff006a6707ce31df1519b1c404a85b192d2c3dc9eac08b8e7",
+      "bytes": 15738
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/source_research.py": {
+      "sha256": "077c190b41f3d77a65f2abff62f08c7c058b3d53ced88ab33dbc06eef107cdfe",
+      "bytes": 2175
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/source_snapshot.py": {
+      "sha256": "1b97b68a6a494d13bf56f7e629c534b67eb3aba371df638c30db730709320fce",
+      "bytes": 14897
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/runtime/verified_graph_turn.py": {
+      "sha256": "3532bd95e04c0c4fd9dd0674266e71dd98ec7d0a9843679ef61af80dec598d5b",
+      "bytes": 10951
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/conversations.py": {
+      "sha256": "5cb5e5824dae4dc2c18b76a691adb1a75c300b2ec0579800f515272359a5bd1a",
+      "bytes": 11669
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/graph_text.py": {
+      "sha256": "8c0f94db1ddc6f1128bf253b001130930f1797fb981007749c49bc139e68ebf0",
+      "bytes": 18062
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/graph_view.py": {
+      "sha256": "6d49d69b21cbc49c23add1b2c00fdb4e58eba2b54337c10e10ba412780b95d6e",
+      "bytes": 25728
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/ids.py": {
+      "sha256": "0210f6389181dab5fd64a984ad16f9d1a48432b5aec5b695d7b2b29daf3d5b54",
+      "bytes": 2810
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/kgbin.py": {
+      "sha256": "61f66ecff650435b60f6b663868f5add95cb3d588f16ec72665995e0f29d446a",
+      "bytes": 12116
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/kgpack.py": {
+      "sha256": "6c561218629ac151d597c5d8739a28457f4545cdd83974b32df758c24017b4fb",
+      "bytes": 20721
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/overlay.py": {
+      "sha256": "4a95ab63d2e9ce32dea25f69384ecf0ed9826a43beb3f44ce8a9ee7702832740",
+      "bytes": 45801
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/storage/snapshot.py": {
+      "sha256": "e22c0488298a0aefbe1027382563f0d663361d6e715e56cdd4d9862d0bb8b6c0",
+      "bytes": 38966
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/__init__.py": {
+      "sha256": "2b14edbf259e1658067c620ff9146e6d75c0dd0ecf89d999c89f680f67915d9c",
+      "bytes": 1265
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/__main__.py": {
+      "sha256": "20e51512d4d4d8bd1f9760a3e3e25ffbb1e5963b70d9d8518097154ffa63846b",
+      "bytes": 5440
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/drive.py": {
+      "sha256": "26bfa9241df36171cb351199c13154e2c1df339040ccaaec894a1369ca80af01",
+      "bytes": 12117
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/explain.py": {
+      "sha256": "1847b6eb42aafc3f223781a69bb88d20bc929954ae299e89b928d0ded5d401e6",
+      "bytes": 15851
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/from_turn.py": {
+      "sha256": "a6e88461db91cd0b14e32736101532967d514c038fa371cfecf33cc8535d1504",
+      "bytes": 49195
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/ledger.py": {
+      "sha256": "b38ebdac1d320e4c365647d32dd0e0b5271160513184e3a41287f8c291a7d762",
+      "bytes": 18485
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/pretty.py": {
+      "sha256": "15b6468411161df440f72776c413794bd61c277c688766b9b20467315721d35b",
+      "bytes": 3719
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/runtime.py": {
+      "sha256": "b3d9b0f4610603fe164c96383509586f120d4d4bab5ac8e8708bc0d0b7b52784",
+      "bytes": 18726
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/schema.py": {
+      "sha256": "a00deb6e093a117a64a87033865eed6c611baaf3d03467c4c57e644795e3431c",
+      "bytes": 13829
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/stats.py": {
+      "sha256": "c0e9b87f661b324d07e7940d966481834afc55eb28459c6b7d5a174a27a1a3f5",
+      "bytes": 8763
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/marco/trace/why.py": {
+      "sha256": "47183ef46819c1a6cc414b2b81d51bb1b411fe8b329ede7e74026a71472a4670",
+      "bytes": 2888
+    },
+    "experiments/tax_graph_trial_20261119/rerun_after_sentence_fix_20261119/source_snapshot/relational_semantics.py": {
+      "sha256": "5d485caae33eae9f25a7b9a311ccdd1df9de557b5fe68467f8ecfb203a4aa331",
+      "bytes": 467740
+    },
+    "experiments/tax_graph_trial_20261119/runner.py": {
+      "sha256": "2e090533d7983b46ebc1800947992973d9315786806de4149fde5d68af9a4d8b",
+      "bytes": 6216
+    },
+    "experiments/tax_graph_trial_20261119/supplemental_questions.json": {
+      "sha256": "e1426dfb8d2d1547b5d093060847d04b87a756cb1b2f5d4c9cd6fcb0451863b3",
+      "bytes": 2967
+    },
+    "marco/__init__.py": {
+      "sha256": "42a9154be6d03c7a01a5c4f45ad2e24f6660661fe8700aeb43aace3ef1afd0bb",
+      "bytes": 130
+    },
+    "marco/host/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "marco/host/act.py": {
+      "sha256": "64e4cc901ea6268467881adc3935000a24dce68cb9b897965ed0d18a753dcc78",
+      "bytes": 17508
+    },
+    "marco/knowledge/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "marco/knowledge/definitions.py": {
+      "sha256": "ff7cb3c178342eeb69bc5aa06718ee9f10a3a3a856d0018defb5d558998e7f09",
+      "bytes": 9732
+    },
+    "marco/knowledge/ingest/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "marco/knowledge/ingest/dictionary.py": {
+      "sha256": "8d6da41c6b0baf89ce4ad4c9f4ac7e3f934d539ceddba3489eea70df9e47cf3f",
+      "bytes": 17936
+    },
+    "marco/knowledge/ingest/documents.py": {
+      "sha256": "f9b877625de4d4bee2bc56cfa8ff2a7791239bf711c78f16eca884429b4cc8fc",
+      "bytes": 26743
+    },
+    "marco/knowledge/ingest/retrieval.py": {
+      "sha256": "fd4dda45c07197c411fb524f33f1e7fd0e60564200b8952a47939e5432e9e289",
+      "bytes": 27004
+    },
+    "marco/knowledge/ingest/text.py": {
+      "sha256": "f6125ebb3bd72d784beee6dff9569b0b306930b4a06f63cfd090d84c5e0237ab",
+      "bytes": 53008
+    },
+    "marco/knowledge/ingest/web.py": {
+      "sha256": "b94c0e7c48335376ffaae72c2b270935f11ba2b8cb92e0f36a237c1b845e80d0",
+      "bytes": 67498
+    },
+    "marco/language/__init__.py": {
+      "sha256": "1e982e1f452dd4289e0492788e93361dea365e12ae0c4b1f0ffb1ebc7fad469c",
+      "bytes": 444
+    },
+    "marco/language/arithmetic.py": {
+      "sha256": "f7b5e53e208990a2c672309298bf5934cd1a9a8fa822417ce51c0e0c3aa5b1d1",
+      "bytes": 4180
+    },
+    "marco/language/arithmetic_spoken.py": {
+      "sha256": "0a242f3ec7def3680e222a9775347c55113f326d6aad842d1941d448bf5d9961",
+      "bytes": 3372
+    },
+    "marco/language/entry_origins.py": {
+      "sha256": "635c8dd0b3a0df1ba920b6633af010ecf9b2b744d8cc46e359dc549b6310f1c6",
+      "bytes": 4395
+    },
+    "marco/language/frames.py": {
+      "sha256": "d5ad6eb59aaaef383dbf0bd3c8f9e254f5feb30ef9f274582d79c2e27814348b",
+      "bytes": 112207
+    },
+    "marco/language/graph_projection.py": {
+      "sha256": "459a3ad1003d217c26450e7914b7c85e4e8307a7f101272c4fec32ad2f51d463",
+      "bytes": 174368
+    },
+    "marco/language/hangul.py": {
+      "sha256": "939e641dd581475de3ef6de8d372d4a7599d3a3a41e281bbc38d611932d1b08c",
+      "bytes": 33381
+    },
+    "marco/language/numerals.py": {
+      "sha256": "6bdbcc5c71d15e731ea6247c5f71f01e94e5aff2ec449668da97cba959288dc2",
+      "bytes": 1517
+    },
+    "marco/language/passage_components.py": {
+      "sha256": "bc52591ac9bea6b5ce208f09eaacf40d3db63dc5e55e255c959f47b1ce1f0154",
+      "bytes": 1443
+    },
+    "marco/language/passages.py": {
+      "sha256": "320aed3682c7de0ce6fd9f12499d316d81681ee72fdcbfd0b1fd6718f1d0df2a",
+      "bytes": 4110
+    },
+    "marco/language/realizer/__init__.py": {
+      "sha256": "24b67f9e66c90c90fed2b63b5a96ea3dba5a3010b84649eb0b52033bde1ad9ca",
+      "bytes": 26358
+    },
+    "marco/language/realizer/affect.py": {
+      "sha256": "ceb4c45e60732f8041ad87ab2e83595b854c2a7e63f806af0a4ecd2d5a71ac46",
+      "bytes": 2840
+    },
+    "marco/language/realizer/check.py": {
+      "sha256": "e87c2a61646bb39ea39cc56db0f5d26e0c4a7906d94ce09695db99ba9b2312f0",
+      "bytes": 16837
+    },
+    "marco/language/realizer/composer.py": {
+      "sha256": "894d7bda783364da92a6a8037a955fb6ff6ce31fc2f73ea33de43f601ee3fec6",
+      "bytes": 12243
+    },
+    "marco/language/realizer/contracts.py": {
+      "sha256": "69de5c617c093c3d7019092c41bb243487b7222c89d6dec58627d81ca25c6673",
+      "bytes": 890
+    },
+    "marco/language/realizer/discourse.py": {
+      "sha256": "9aa289b5a0d6f98cc88c48a51211a80e966ca27c54f2dfbeddfac8852cf18eee",
+      "bytes": 5419
+    },
+    "marco/language/realizer/expression.py": {
+      "sha256": "718b17d83daf4e6f4147f4c9f553332ff09c2e14d4dd0d1c160683ce434caa37",
+      "bytes": 3694
+    },
+    "marco/language/realizer/grammar.py": {
+      "sha256": "38b90369d4ce63d77ae20e0861fd2a1b277e9438b96ae4f86f1d91555bab159b",
+      "bytes": 45581
+    },
+    "marco/language/realizer/intent.py": {
+      "sha256": "786b7eceecb2c844c771238533efb3b326fb1909bef459227e0a976411c4786b",
+      "bytes": 29234
+    },
+    "marco/language/realizer/learning.py": {
+      "sha256": "3fdd5aa793d53e0abb8717072d3a96a3cc0a7f2b67d6481ab720fc7ed34db56d",
+      "bytes": 12229
+    },
+    "marco/language/realizer/meaning.py": {
+      "sha256": "db3f78ef4445e6813e16dc4421b748b9e818d542b202173a9f6d2c278cf2d104",
+      "bytes": 9347
+    },
+    "marco/language/realizer/packs.py": {
+      "sha256": "8efa76f20b300ec2dd40d82cb4675db58d8eb47b4e049035de1964881f849fac",
+      "bytes": 13795
+    },
+    "marco/language/realizer/source_answer.py": {
+      "sha256": "c865d5e113327b614f2d25b4bb25e0ac505c3456e7da97dd1208fc578758364b",
+      "bytes": 5044
+    },
+    "marco/language/relation_hypotheses.py": {
+      "sha256": "bce316241132fec0e3e0ac7d5c4bfee6dbd9a57eb3b1c33f2989c9a246693fad",
+      "bytes": 22352
+    },
+    "marco/language/relation_query_hypotheses.py": {
+      "sha256": "b180dcefeb384805c4d0a687d105ed061856a71ed8f9f0bb9422f0d5b8dc9dfa",
+      "bytes": 30593
+    },
+    "marco/language/representation.py": {
+      "sha256": "fb775f36c1e66682dab41e2e36149d143bc6ba908774cd6710a45f2a89bb3bb5",
+      "bytes": 16395
+    },
+    "marco/language/teaching.py": {
+      "sha256": "2c286d6e8781b7303bd37d3a48eed41dcd8c17238554b018f464bae21f81e9d5",
+      "bytes": 30130
+    },
+    "marco/language/understanding.py": {
+      "sha256": "f7e2484970df507a465f3e6b178f3f992ca548030146a538233ee61bd5fa72bc",
+      "bytes": 9260
+    },
+    "marco/learning/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "marco/learning/authoring.py": {
+      "sha256": "ca04bd9a8de3b353356d7f7dd63abfe22f47efb322cc4b3e9da0836af24c8efd",
+      "bytes": 27811
+    },
+    "marco/learning/chunking.py": {
+      "sha256": "93ef168faf6f2caae5760a90f4f2c53610279951498c5fe6836bb10a8cb4128a",
+      "bytes": 4769
+    },
+    "marco/learning/concepts.py": {
+      "sha256": "67d665136189b03d9bd5f222194b35ee8d1f82908b80a2864f62a38e41ec0ea9",
+      "bytes": 27316
+    },
+    "marco/learning/demo_memory.py": {
+      "sha256": "5b14d3ebd382b7ee594a51265800cc33bc32d41f6479deb9ae888571dd663e00",
+      "bytes": 3762
+    },
+    "marco/learning/expression_graph.py": {
+      "sha256": "e81b47f370e1fdddf87b55ed6d35dcd58d3153999c5d2e00a7709d5a58255c27",
+      "bytes": 15986
+    },
+    "marco/learning/expressions.py": {
+      "sha256": "4df76947d674737988ef36d2f9479269b2ddde9c80bb78e2112cc2aa921c2c78",
+      "bytes": 22521
+    },
+    "marco/learning/feedback.py": {
+      "sha256": "a312cb36e411959ae02912f7f6a7dcad7abe5b9759d07688bcd09f505b754f04",
+      "bytes": 2412
+    },
+    "marco/learning/memory.py": {
+      "sha256": "11befd370c4e1921422ef4eb642cca487ea89418af29ac655b3e65541d6dda01",
+      "bytes": 162044
+    },
+    "marco/learning/rules.py": {
+      "sha256": "aaab8d7c5fbe3dc6b8822357353bb8341063abd9c6729813ebc6590c1f851446",
+      "bytes": 14530
+    },
+    "marco/perception/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "marco/perception/objects.py": {
+      "sha256": "8b14e10ebd6a607cd3e8dfb0e2c138c17c93ce45895bed9933075e89e23fa5ca",
+      "bytes": 1550
+    },
+    "marco/perception/pose.py": {
+      "sha256": "e46f8a33c656106e5c6adc28e3affa45534e29f2d678773c8ad704dee0e0dbb3",
+      "bytes": 2450
+    },
+    "marco/perception/visual.py": {
+      "sha256": "e414bed553e3a0efb7b044bfe105e7c1cec322dbbbb1d2b174b5c161b212fa3c",
+      "bytes": 37716
+    },
+    "marco/perception/vlm.py": {
+      "sha256": "b552f5a006725c1ce9ffa313094e1d32aa251639bb6bd4493a9a2316df4fff7a",
+      "bytes": 4326
+    },
+    "marco/progress.py": {
+      "sha256": "3f25fe85665399b7e0aa93bd8ba46e9a03d31dc5c7af5537cfad36dcfaaac9e2",
+      "bytes": 5356
+    },
+    "marco/reasoning/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "marco/reasoning/actions.py": {
+      "sha256": "ce67419cd1af14100f4b308da8a5b38d36ef4d62d84918062f87d52a731093f3",
+      "bytes": 143729
+    },
+    "marco/reasoning/context.py": {
+      "sha256": "3b5da319c13853d0bb8206b20ff1730ee9d48c4d3dcedaec528505ca84084120",
+      "bytes": 828328
+    },
+    "marco/reasoning/graph_contract.py": {
+      "sha256": "31dedbf02a28bfb739ccba5628bab33a9a0647e60bb43ff84dbff8c0b0001721",
+      "bytes": 9517
+    },
+    "marco/reasoning/graph_vm.py": {
+      "sha256": "50db3bfbc5720e640318e24def47878b08385ffb4a9cfd937e5d769fb5b27b09",
+      "bytes": 28040
+    },
+    "marco/reasoning/identity.py": {
+      "sha256": "173b2405cb50dcf850540fc050175e1c4562736dda903c1bd0e2c9b753b83c6d",
+      "bytes": 10099
+    },
+    "marco/reasoning/inference.py": {
+      "sha256": "40ec49cdad9963a663b81fae130a0648e6b3584064e0c81e4ea54abdd01008ab",
+      "bytes": 34717
+    },
+    "marco/reasoning/proof_graph.py": {
+      "sha256": "19092825ca88e4c30b82a09423389708b5cf3f41541f1718fd57a33a9ca7f3a3",
+      "bytes": 25829
+    },
+    "marco/reasoning/query_work.py": {
+      "sha256": "99d3ad4cba90b40f41579fe72beb12857a51e48e968210bda555fc9627ca9b69",
+      "bytes": 94188
+    },
+    "marco/reasoning/readings.py": {
+      "sha256": "b16ca42b8565e495b4caa48736d010f4df7fe68b3e12be9a5ea681e6e0e53121",
+      "bytes": 15123
+    },
+    "marco/reasoning/relation_hypotheses.py": {
+      "sha256": "c9834ba501c1d97f59a4f0b8bde888581e578ef043c788004899222f6c46c9cd",
+      "bytes": 37953
+    },
+    "marco/reasoning/relation_query_hypotheses.py": {
+      "sha256": "6176a5ec1b60eb731a51213c29b34ebcb1c5b979c81d5ee67a8553befe461f58",
+      "bytes": 13214
+    },
+    "marco/reasoning/situation.py": {
+      "sha256": "e759a4f74f0c8d0a1d238fb27a5c6c950c2ef7a1160409c72cf95d59b0de8728",
+      "bytes": 596
+    },
+    "marco/reasoning/state.py": {
+      "sha256": "34f3ed626a810c6ac5e2cab139a9978aa496c4ac8c86cf0787df970561c8f4a8",
+      "bytes": 11008
+    },
+    "marco/runtime/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "marco/runtime/contextual_meaning_host.py": {
+      "sha256": "5dea323a270da62b99b911ae6c95187551d6d5ec1957adf8ce6fdabc71a2e8e2",
+      "bytes": 52558
+    },
+    "marco/runtime/conversation.py": {
+      "sha256": "ba1018351684ea3606b8a323e3681ddd19af7946aaf9afdb9c0f75ff44d661d8",
+      "bytes": 7606
+    },
+    "marco/runtime/dialogue_trace.py": {
+      "sha256": "3d78ebd317821c91a7ea806478bf9587df0ae533461c43e7d7ebecf24aa82aa6",
+      "bytes": 14885
+    },
+    "marco/runtime/explain.py": {
+      "sha256": "70798734166fd09832502c331d80d20eb330ab9938c3524b3a76f25f428298ad",
+      "bytes": 126812
+    },
+    "marco/runtime/graph_dialogue.py": {
+      "sha256": "dee2892b50320b4b7c791ee204206321e55037d92da84de29d6a4069f5e9b6c9",
+      "bytes": 11779
+    },
+    "marco/runtime/graph_route_work.py": {
+      "sha256": "de986200659eb64401a1de1b610b7d85d4b95df5aebdcfd9b19ea151ca059a9d",
+      "bytes": 40661
+    },
+    "marco/runtime/ground_language_work.py": {
+      "sha256": "6083936ccc27f9d1eb8a95afd473fcb345b494ad8778b93a814fe6035797e654",
+      "bytes": 20705
+    },
+    "marco/runtime/learning_dialogue.py": {
+      "sha256": "68a0fdbc04e5116a5fe6806ebd9178e1c31506678ffb14ee85204ae7859a6d16",
+      "bytes": 345012
+    },
+    "marco/runtime/relation_attempt.py": {
+      "sha256": "36a34c88ac23834fa78e6a99386f35bad179bdd19e83613fec737bd9f468e698",
+      "bytes": 35457
+    },
+    "marco/runtime/research.py": {
+      "sha256": "7c601af11da780a36f845a856003f0e45d2158af3d0e15842251746830ae57f8",
+      "bytes": 17788
+    },
+    "marco/runtime/selected_graph.py": {
+      "sha256": "49975d30f3031d63eff878df590e0182fbae6424d9ae7ee63a6418fb206d52cf",
+      "bytes": 18531
+    },
+    "marco/runtime/source_reading.py": {
+      "sha256": "83b9ed21e004affff006a6707ce31df1519b1c404a85b192d2c3dc9eac08b8e7",
+      "bytes": 15738
+    },
+    "marco/runtime/source_research.py": {
+      "sha256": "077c190b41f3d77a65f2abff62f08c7c058b3d53ced88ab33dbc06eef107cdfe",
+      "bytes": 2175
+    },
+    "marco/runtime/source_snapshot.py": {
+      "sha256": "1b97b68a6a494d13bf56f7e629c534b67eb3aba371df638c30db730709320fce",
+      "bytes": 14897
+    },
+    "marco/runtime/verified_graph_turn.py": {
+      "sha256": "3532bd95e04c0c4fd9dd0674266e71dd98ec7d0a9843679ef61af80dec598d5b",
+      "bytes": 10951
+    },
+    "marco/storage/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "marco/storage/conversations.py": {
+      "sha256": "5cb5e5824dae4dc2c18b76a691adb1a75c300b2ec0579800f515272359a5bd1a",
+      "bytes": 11669
+    },
+    "marco/storage/graph_text.py": {
+      "sha256": "8c0f94db1ddc6f1128bf253b001130930f1797fb981007749c49bc139e68ebf0",
+      "bytes": 18062
+    },
+    "marco/storage/graph_view.py": {
+      "sha256": "6d49d69b21cbc49c23add1b2c00fdb4e58eba2b54337c10e10ba412780b95d6e",
+      "bytes": 25728
+    },
+    "marco/storage/ids.py": {
+      "sha256": "0210f6389181dab5fd64a984ad16f9d1a48432b5aec5b695d7b2b29daf3d5b54",
+      "bytes": 2810
+    },
+    "marco/storage/kgbin.py": {
+      "sha256": "61f66ecff650435b60f6b663868f5add95cb3d588f16ec72665995e0f29d446a",
+      "bytes": 12116
+    },
+    "marco/storage/kgpack.py": {
+      "sha256": "6c561218629ac151d597c5d8739a28457f4545cdd83974b32df758c24017b4fb",
+      "bytes": 20721
+    },
+    "marco/storage/overlay.py": {
+      "sha256": "4a95ab63d2e9ce32dea25f69384ecf0ed9826a43beb3f44ce8a9ee7702832740",
+      "bytes": 45801
+    },
+    "marco/storage/snapshot.py": {
+      "sha256": "e22c0488298a0aefbe1027382563f0d663361d6e715e56cdd4d9862d0bb8b6c0",
+      "bytes": 38966
+    },
+    "marco/trace/__init__.py": {
+      "sha256": "2b14edbf259e1658067c620ff9146e6d75c0dd0ecf89d999c89f680f67915d9c",
+      "bytes": 1265
+    },
+    "marco/trace/__main__.py": {
+      "sha256": "20e51512d4d4d8bd1f9760a3e3e25ffbb1e5963b70d9d8518097154ffa63846b",
+      "bytes": 5440
+    },
+    "marco/trace/drive.py": {
+      "sha256": "26bfa9241df36171cb351199c13154e2c1df339040ccaaec894a1369ca80af01",
+      "bytes": 12117
+    },
+    "marco/trace/explain.py": {
+      "sha256": "1847b6eb42aafc3f223781a69bb88d20bc929954ae299e89b928d0ded5d401e6",
+      "bytes": 15851
+    },
+    "marco/trace/from_turn.py": {
+      "sha256": "a6e88461db91cd0b14e32736101532967d514c038fa371cfecf33cc8535d1504",
+      "bytes": 49195
+    },
+    "marco/trace/ledger.py": {
+      "sha256": "b38ebdac1d320e4c365647d32dd0e0b5271160513184e3a41287f8c291a7d762",
+      "bytes": 18485
+    },
+    "marco/trace/pretty.py": {
+      "sha256": "15b6468411161df440f72776c413794bd61c277c688766b9b20467315721d35b",
+      "bytes": 3719
+    },
+    "marco/trace/runtime.py": {
+      "sha256": "b3d9b0f4610603fe164c96383509586f120d4d4bab5ac8e8708bc0d0b7b52784",
+      "bytes": 18726
+    },
+    "marco/trace/schema.py": {
+      "sha256": "a00deb6e093a117a64a87033865eed6c611baaf3d03467c4c57e644795e3431c",
+      "bytes": 13829
+    },
+    "marco/trace/stats.py": {
+      "sha256": "c0e9b87f661b324d07e7940d966481834afc55eb28459c6b7d5a174a27a1a3f5",
+      "bytes": 8763
+    },
+    "marco/trace/why.py": {
+      "sha256": "47183ef46819c1a6cc414b2b81d51bb1b411fe8b329ede7e74026a71472a4670",
+      "bytes": 2888
+    },
+    "relational_semantics.py": {
+      "sha256": "5d485caae33eae9f25a7b9a311ccdd1df9de557b5fe68467f8ecfb203a4aa331",
+      "bytes": 467740
+    }
+  }
+}
