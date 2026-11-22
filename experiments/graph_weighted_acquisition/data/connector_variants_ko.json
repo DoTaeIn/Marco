@@ -1,0 +1,119 @@
+{
+ "schema": "graph-connector-variants-v1",
+ "policy": {
+  "max_ending_chars": 2,
+  "kept_endings": 400,
+  "max_left_share": [
+   1,
+   10
+  ],
+  "min_right_share": [
+   1,
+   5
+  ],
+  "lead_ratio": [
+   3,
+   2
+  ],
+  "min_count": 2000,
+  "min_distinct_before": 250
+ },
+ "source": {
+  "file": "정의문.jsonl",
+  "sha256": "d7cc10175ebc59616e7f25629ce8b4f0a5176f48cd4c3638da8c8b5915a4f63c",
+  "lines": 534198,
+  "field": "정의"
+ },
+ "pairs": [
+  {
+   "forms": [
+    "는",
+    "은"
+   ],
+   "same_following_per_thousand": 444,
+   "next_best_per_thousand": 270,
+   "same_preceding_per_thousand": 20,
+   "seen": {
+    "는": 500450,
+    "은": 295063
+   },
+   "distinct_before": {
+    "는": 697,
+    "은": 1052
+   },
+   "examples_following": [
+    "대한민국의",
+    "미국의",
+    "다음을",
+    "다음과",
+    "다음",
+    "대한민국",
+    "일본",
+    "미국"
+   ],
+   "examples_before": {
+    "는": [
+     "하",
+     "있",
+     "또",
+     "구",
+     "되",
+     "교"
+    ],
+    "은": [
+     "뜻",
+     "같",
+     "적",
+     "션",
+     "혹",
+     "작"
+    ]
+   }
+  },
+  {
+   "forms": [
+    "를",
+    "을"
+   ],
+   "same_following_per_thousand": 547,
+   "next_best_per_thousand": 94,
+   "same_preceding_per_thousand": 7,
+   "seen": {
+    "를": 60553,
+    "을": 109505
+   },
+   "distinct_before": {
+    "를": 318,
+    "을": 887
+   },
+   "examples_following": [
+    "말한다",
+    "잇는",
+    "가리킨다",
+    "통해",
+    "위한",
+    "의미한다",
+    "위해",
+    "가진"
+   ],
+   "examples_before": {
+    "를": [
+     "리",
+     "기",
+     "사",
+     "이",
+     "스",
+     "지"
+    ],
+    "을": [
+     "음",
+     "등",
+     "것",
+     "들",
+     "람",
+     "물"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,67 @@
+{
+ "schema": "graph-field-words-v1",
+ "field": "a made-up city library",
+ "slot": {
+  "type": "relation",
+  "attribute": "kind",
+  "subject_role": "subject",
+  "value_role": "amount"
+ },
+ "properties": [
+  {
+   "word": "대출기간",
+   "means": "대출기간",
+   "also": [
+    "빌리는기간"
+   ]
+  },
+  {
+   "word": "대출권수",
+   "means": "대출권수",
+   "also": []
+  },
+  {
+   "word": "연체료",
+   "means": "연체료",
+   "also": [
+    "늦은값"
+   ]
+  },
+  {
+   "word": "운영시간",
+   "means": "운영시간",
+   "also": [
+    "여는시간"
+   ]
+  },
+  {
+   "word": "휴관일",
+   "means": "휴관일",
+   "also": []
+  },
+  {
+   "word": "문의전화",
+   "means": "문의전화",
+   "also": []
+  },
+  {
+   "word": "반납장소",
+   "means": "반납장소",
+   "also": []
+  }
+ ],
+ "names": [
+  {
+   "name": "어린이회원",
+   "also": [
+    "꼬마회원"
+   ]
+  },
+  {
+   "name": "중앙도서관",
+   "also": [
+    "본관"
+   ]
+  }
+ ]
+}

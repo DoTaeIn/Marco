@@ -1,0 +1,468 @@
+{
+  "schema": "graph-language-repair-question-constructions-v2",
+  "note": "Closed interrogative morphemes and role heads compose with core predicate analyses and particles; action lexemes and inflections are supplied by the shared morphology graph.",
+  "wh_forms": [
+    {
+      "form": "누구에게",
+      "role": "destination"
+    },
+    {
+      "form": "어디로부터",
+      "role": "origin"
+    },
+    {
+      "form": "어디에서",
+      "role": "place"
+    },
+    {
+      "form": "무엇을",
+      "role": "object"
+    },
+    {
+      "form": "누구를",
+      "role": "object"
+    },
+    {
+      "form": "어디로",
+      "role": "destination"
+    },
+    {
+      "form": "어디서",
+      "role": "place"
+    },
+    {
+      "form": "얼마나",
+      "role": "quantity"
+    },
+    {
+      "form": "누가",
+      "role": "grammatical_subject"
+    },
+    {
+      "form": "뭘",
+      "role": "object"
+    },
+    {
+      "form": "언제",
+      "role": "time"
+    },
+    {
+      "form": "어디",
+      "role": "place"
+    },
+    {
+      "form": "몇 개",
+      "role": "quantity"
+    },
+    {
+      "form": "몇 명",
+      "role": "quantity"
+    },
+    {
+      "form": "몇 시",
+      "role": "time"
+    },
+    {
+      "form": "누구에 의해",
+      "role": "actor"
+    },
+    {
+      "form": "무엇이",
+      "role": "grammatical_subject"
+    }
+  ],
+  "relative_heads": [
+    {
+      "form": "사람",
+      "role": "actor"
+    },
+    {
+      "form": "물건",
+      "role": "object"
+    },
+    {
+      "form": "대상",
+      "role": "object"
+    },
+    {
+      "form": "장소",
+      "role": "place"
+    },
+    {
+      "form": "시점",
+      "role": "time"
+    },
+    {
+      "form": "시간",
+      "role": "time"
+    },
+    {
+      "form": "수량",
+      "role": "quantity"
+    },
+    {
+      "form": "문서",
+      "role": "object"
+    },
+    {
+      "form": "기록",
+      "role": "object"
+    },
+    {
+      "form": "행위자",
+      "role": "actor"
+    },
+    {
+      "form": "목적지",
+      "role": "destination"
+    },
+    {
+      "form": "출발지",
+      "role": "origin"
+    },
+    {
+      "form": "날짜",
+      "role": "time"
+    },
+    {
+      "form": "것",
+      "role": "grammatical_subject"
+    },
+    {
+      "form": "이",
+      "role": "actor"
+    }
+  ],
+  "head_particles": [
+    "은",
+    "는",
+    "이",
+    "가",
+    "을",
+    "를"
+  ],
+  "identity_wh": [
+    "누구",
+    "무엇",
+    "어디",
+    "언제",
+    "얼마"
+  ],
+  "identity_endings": [
+    "인가",
+    "입니까",
+    "이야",
+    "였나",
+    "일까",
+    "야",
+    "였는가",
+    "이었나",
+    "이었는가",
+    "지",
+    "인지",
+    "인가요"
+  ],
+  "anaphors": [
+    "그 사건",
+    "그 일",
+    "그때"
+  ],
+  "anchor_priority": [
+    "subject",
+    "object",
+    "destination",
+    "origin",
+    "place",
+    "topic"
+  ],
+  "checking_roles": {
+    "actor": "checking_actor",
+    "object": "checking_object",
+    "grammatical_subject": "grammatical_subject"
+  },
+  "checking_functions": {
+    "subject": "checking_actor",
+    "object": "checking_object",
+    "origin": [
+      "checking_source",
+      "place"
+    ]
+  },
+  "reporting_lemmas": [
+    "보고"
+  ],
+  "who_forms": [
+    "누가",
+    "누구"
+  ],
+  "determiners": [
+    "어떤",
+    "무슨"
+  ],
+  "head_marker_roles": {
+    "을": "object",
+    "를": "object",
+    "이": "grammatical_subject",
+    "가": "grammatical_subject",
+    "에서": "place",
+    "에게": "destination",
+    "로부터": "origin"
+  },
+  "wh_particle_forms": [
+    "을",
+    "를",
+    "이",
+    "가",
+    "은",
+    "는"
+  ],
+  "voice_function_overrides": {
+    "passive": {
+      "subject": "object",
+      "agent": "actor"
+    },
+    "active": {
+      "agent": "actor"
+    }
+  },
+  "checking_voice_function_overrides": {
+    "passive": {
+      "subject": "checking_object",
+      "agent": "checking_actor"
+    },
+    "active": {
+      "agent": "checking_actor"
+    }
+  },
+  "checking_occurrence_goal_forms": [
+    "적이 있나요",
+    "적이 있습니까",
+    "적이 있었나요",
+    "적이 있었습니까"
+  ],
+  "event_heads": [
+    "사건",
+    "일",
+    "행위"
+  ],
+  "terminal_punctuation": [
+    "?",
+    "？",
+    "!",
+    "！",
+    ".",
+    "。"
+  ],
+  "declared_subject_roles": {
+    "active": "actor",
+    "passive": "object",
+    "stative": "actor"
+  },
+  "identity_compatibility": {
+    "누구": [
+      "actor"
+    ],
+    "무엇": [
+      "object",
+      "grammatical_subject"
+    ],
+    "어디": [
+      "place",
+      "origin",
+      "destination"
+    ],
+    "언제": [
+      "time"
+    ],
+    "얼마": [
+      "quantity"
+    ]
+  },
+  "identity_requests": [
+    "알려줘",
+    "알려주세요",
+    "알려 주십시오",
+    "궁금하다",
+    "궁금해",
+    "궁금합니다"
+  ],
+  "identity_property_forms": [
+    "의 이름"
+  ],
+  "nominal_question_heads": [
+    "거야",
+    "것인가",
+    "것이야",
+    "겁니까",
+    "건가요",
+    "건가",
+    "건가요"
+  ],
+  "identity_morphology": [
+    {
+      "copula": "였",
+      "tense": "past_contracted",
+      "moods": [
+        "나",
+        "나요",
+        "는가",
+        "습니까",
+        "는지"
+      ]
+    },
+    {
+      "copula": "이었",
+      "tense": "past",
+      "moods": [
+        "나",
+        "나요",
+        "는가",
+        "습니까",
+        "는지"
+      ]
+    },
+    {
+      "copula": "이",
+      "tense": "present",
+      "moods": [
+        "야",
+        "지",
+        "라니"
+      ]
+    },
+    {
+      "copula": "인",
+      "tense": "present",
+      "moods": [
+        "가",
+        "가요",
+        "지"
+      ]
+    },
+    {
+      "copula": "",
+      "tense": "present_contracted",
+      "moods": [
+        "야",
+        "지"
+      ]
+    },
+    {
+      "copula": "일",
+      "tense": "future",
+      "moods": [
+        "까",
+        "까요"
+      ]
+    }
+  ],
+  "embedded_identity_moods": [
+    "지",
+    "는지"
+  ],
+  "relative_gap_policy": {
+    "candidate_roles": {
+      "actor": [
+        "actor",
+        "object"
+      ],
+      "object": [
+        "object"
+      ],
+      "grammatical_subject": [
+        "actor",
+        "object"
+      ]
+    },
+    "occupied_functions": {
+      "active": {
+        "subject": [
+          "actor"
+        ],
+        "object": [
+          "object"
+        ],
+        "agent": [
+          "actor"
+        ],
+        "topic": [
+          "actor",
+          "object"
+        ]
+      },
+      "passive": {
+        "subject": [
+          "object"
+        ],
+        "object": [
+          "object"
+        ],
+        "agent": [
+          "actor"
+        ],
+        "topic": [
+          "actor",
+          "object"
+        ]
+      },
+      "stative": {
+        "subject": [
+          "actor"
+        ],
+        "object": [
+          "object"
+        ],
+        "agent": [
+          "actor"
+        ],
+        "topic": [
+          "actor",
+          "object"
+        ]
+      }
+    },
+    "voice_head_defaults": {
+      "active": {
+        "actor": "actor",
+        "object": "object"
+      },
+      "passive": {
+        "actor": "object",
+        "object": "object"
+      },
+      "stative": {
+        "actor": "actor",
+        "object": "object"
+      }
+    },
+    "alternative_requires_evidence": true
+  },
+  "active_subject_role_forms": [
+    "누가"
+  ],
+  "role_answer_scope": {
+    "intents": [
+      "event_role_question",
+      "checking_role_question",
+      "source_question"
+    ],
+    "answer_scope": "structural_role",
+    "type_verification": "unknown",
+    "default_requested_type": "unspecified",
+    "type_by_prefix": {
+      "누가": "person",
+      "누구": "person",
+      "어떤 사람": "person",
+      "무엇": "unspecified",
+      "뭘": "unspecified",
+      "어디": "place",
+      "언제": "time",
+      "얼마": "quantity",
+      "몇": "quantity"
+    },
+    "source_type_forms": [
+      "누가",
+      "누구"
+    ]
+  }
+}

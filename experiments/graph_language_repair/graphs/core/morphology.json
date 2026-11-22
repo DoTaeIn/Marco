@@ -1,0 +1,582 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "morphology",
+  "records": [
+    {
+      "key": "morphology:do_verb",
+      "kind": "morphology",
+      "frame": "frame:observed",
+      "action_prefix": "action:observed:",
+      "min_stem_chars": 1,
+      "max_stem_chars": 24,
+      "endings": [
+        {
+          "form": "하지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative"
+        },
+        {
+          "form": "하지 않았습니다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative"
+        },
+        {
+          "form": "하지 않았나요",
+          "voice": "active",
+          "polarity": false,
+          "mood": "interrogative"
+        },
+        {
+          "form": "하지 않았는가",
+          "voice": "active",
+          "polarity": false,
+          "mood": "interrogative"
+        },
+        {
+          "form": "하지 않은",
+          "voice": "active",
+          "polarity": false,
+          "mood": "relative"
+        },
+        {
+          "form": "되었다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "됐다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "되었습니다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "되었나요",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "됐나요",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "된",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "relative"
+        },
+        {
+          "form": "하였다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "했습니다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "했다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "한다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "했나요",
+          "voice": "active",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "했습니까",
+          "voice": "active",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "했는가",
+          "voice": "active",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "하나요",
+          "voice": "active",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "했어",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "했어",
+          "voice": "active",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "했어요",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "했어요",
+          "voice": "active",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "했니",
+          "voice": "active",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "했냐",
+          "voice": "active",
+          "polarity": true,
+          "mood": "interrogative"
+        },
+        {
+          "form": "한",
+          "voice": "active",
+          "polarity": true,
+          "mood": "relative"
+        },
+        {
+          "form": "하지 않았고",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative"
+        },
+        {
+          "form": "하지 않았으며",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative"
+        },
+        {
+          "form": "하였고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "했고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "했으며",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "되었고",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "됐고",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative"
+        },
+        {
+          "form": "했다고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "complement"
+        },
+        {
+          "form": "하였다고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "complement"
+        },
+        {
+          "form": "한다고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "complement"
+        },
+        {
+          "form": "하지 않았다고",
+          "voice": "active",
+          "polarity": false,
+          "mood": "complement"
+        },
+        {
+          "form": "되었다고",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "complement"
+        },
+        {
+          "form": "됐다고",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "complement"
+        },
+        {
+          "form": "되지 않았다고",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "complement"
+        },
+        {
+          "form": "되지 않았다",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "declarative"
+        },
+        {
+          "form": "되지 않았습니다",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "declarative"
+        },
+        {
+          "form": "되지 않았나요",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "interrogative"
+        },
+        {
+          "form": "되지 않은",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "relative"
+        },
+        {
+          "form": "하고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative"
+        }
+      ],
+      "known_stem_field": "event_nouns",
+      "note": "Open stems bind only at declared character boundaries, a complete inflection, and a preceding grammatical marker in document mode. Exact observed stem identity is not semantic synonymy."
+    },
+    {
+      "key": "morphology:regular_verb",
+      "kind": "morphology_jamo",
+      "frame": "frame:observed",
+      "action_prefix": "action:observed:",
+      "min_stem_chars": 1,
+      "max_stem_chars": 24,
+      "endings": [
+        {
+          "form": "었어",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active"
+        },
+        {
+          "form": "았어",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active"
+        },
+        {
+          "form": "었어요",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active"
+        },
+        {
+          "form": "았어요",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active"
+        },
+        {
+          "form": "었어",
+          "mood": "interrogative",
+          "polarity": true,
+          "voice": "active"
+        },
+        {
+          "form": "았어",
+          "mood": "interrogative",
+          "polarity": true,
+          "voice": "active"
+        },
+        {
+          "form": "었어요",
+          "mood": "interrogative",
+          "polarity": true,
+          "voice": "active"
+        },
+        {
+          "form": "았어요",
+          "mood": "interrogative",
+          "polarity": true,
+          "voice": "active"
+        },
+        {
+          "form": "었다",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "았다",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "었습니다",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "았습니다",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "었고",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "았고",
+          "mood": "declarative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "었나요",
+          "mood": "interrogative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "았나요",
+          "mood": "interrogative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "었습니까",
+          "mood": "interrogative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "았습니까",
+          "mood": "interrogative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "었다고",
+          "mood": "complement",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "았다고",
+          "mood": "complement",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "지 않았다",
+          "mood": "declarative",
+          "polarity": false,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "지 않았어",
+          "mood": "declarative",
+          "polarity": false,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "지 않았어",
+          "mood": "interrogative",
+          "polarity": false,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "지 않았어요",
+          "mood": "declarative",
+          "polarity": false,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "지 않았어요",
+          "mood": "interrogative",
+          "polarity": false,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "지 않았습니다",
+          "mood": "declarative",
+          "polarity": false,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "지 않았나요",
+          "mood": "interrogative",
+          "polarity": false,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "지 않았다고",
+          "mood": "complement",
+          "polarity": false,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "지 않은",
+          "mood": "relative",
+          "polarity": false,
+          "voice": "active",
+          "requires_coda": false
+        },
+        {
+          "form": "은",
+          "mood": "relative",
+          "polarity": true,
+          "voice": "active",
+          "requires_coda": true
+        }
+      ],
+      "relative_heads": [
+        "사람",
+        "것",
+        "물건",
+        "대상",
+        "문서",
+        "사건",
+        "항목"
+      ],
+      "contracted_past_endings": [
+        {
+          "form": "어",
+          "mood": "declarative"
+        },
+        {
+          "form": "어요",
+          "mood": "declarative"
+        },
+        {
+          "form": "어",
+          "mood": "interrogative"
+        },
+        {
+          "form": "어요",
+          "mood": "interrogative"
+        },
+        {
+          "form": "니",
+          "mood": "interrogative"
+        },
+        {
+          "form": "냐",
+          "mood": "interrogative"
+        },
+        {
+          "form": "다",
+          "mood": "declarative"
+        },
+        {
+          "form": "나요",
+          "mood": "interrogative"
+        },
+        {
+          "form": "습니까",
+          "mood": "interrogative"
+        },
+        {
+          "form": "다고",
+          "mood": "complement"
+        }
+      ],
+      "contracted_relative_coda": "ᆫ",
+      "past_coda": "ᆻ",
+      "vowel_rewrites": [
+        {
+          "surface": "ᅪ",
+          "stems": [
+            "ᅩ"
+          ]
+        },
+        {
+          "surface": "ᅯ",
+          "stems": [
+            "ᅮ"
+          ]
+        },
+        {
+          "surface": "ᅡ",
+          "stems": [
+            "ᅡ"
+          ]
+        },
+        {
+          "surface": "ᅥ",
+          "stems": [
+            "ᅥ"
+          ]
+        }
+      ],
+      "known_form_field": "forms",
+      "note": "Graph-declared regular inflection and inverse syllable rules."
+    }
+  ],
+  "note": "Finite graph-declared inflection composition with exact character spans and opaque lexical identities."
+}

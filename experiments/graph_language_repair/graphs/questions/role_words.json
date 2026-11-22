@@ -1,0 +1,16 @@
+{
+  "schema": "graph-language-repair-question-role-words-v1",
+  "comment": "Interrogative pronouns that ask for one plain event-role predicate (CONTRACT.md section 4, event-subject rows only: actor/object/origin/destination/time/place). Used only when no source/occurrence/verification cue matched (cues.json), so a specific question never falls through to the generic role question. 'anchor_priority' lists which other grammatical function (markers.json) may identify the event, in preference order, excluding the function that would just restate the asked predicate.",
+  "role_words": {
+    "누가": {"asked_predicate": "actor", "anchor_priority": ["object", "destination", "origin", "topic"]},
+    "누구를": {"asked_predicate": "object", "anchor_priority": ["subject", "destination", "origin", "topic"]},
+    "무엇을": {"asked_predicate": "object", "anchor_priority": ["subject", "destination", "origin", "topic"]},
+    "뭘": {"asked_predicate": "object", "anchor_priority": ["subject", "destination", "origin", "topic"]},
+    "어디로부터": {"asked_predicate": "origin", "anchor_priority": ["subject", "object", "topic"]},
+    "어디서": {"asked_predicate": "origin", "anchor_priority": ["subject", "object", "topic"]},
+    "어디로": {"asked_predicate": "destination", "anchor_priority": ["subject", "object", "topic"]},
+    "누구에게": {"asked_predicate": "destination", "anchor_priority": ["subject", "object", "topic"]},
+    "언제": {"asked_predicate": "time", "anchor_priority": ["subject", "object", "topic"]},
+    "어디에서": {"asked_predicate": "place", "anchor_priority": ["subject", "object", "topic"]}
+  }
+}

@@ -1,0 +1,17 @@
+[
+ {"id": "B01", "text": "일반회원의 대출기간은 얼마인가?", "expect": "14일"},
+ {"id": "B02", "text": "어린이회원의 대출권수는 무엇인가요?", "expect": "10권"},
+ {"id": "B03", "text": "중앙도서관의 운영시간은 언제인가요?", "expect": "9시~22시"},
+ {"id": "B04", "text": "별관의 반납장소는 어디인가?", "expect": "무인반납함"},
+ {"id": "B05", "text": "중앙도서관의 문의전화는 무엇인가?", "expect": "555"},
+ {"id": "B06", "text": "일반회원의 연체료는 얼마인가요?", "expect": "하루100원"},
+ {"id": "B07", "text": "꼬마회원의 대출기간은 얼마인가?", "expect": "21일", "note": "other name for the subject"},
+ {"id": "B08", "text": "본관의 휴관일은 언제인가?", "expect": "매주월요일", "note": "other name for the subject"},
+ {"id": "B09", "text": "일반회원의 빌리는기간은 얼마인가?", "expect": "14일", "note": "other word for the property"},
+ {"id": "B10", "text": "별관의 여는시간은 언제인가요?", "expect": "10시~18시", "note": "other word for the property"},
+ {"id": "B11", "text": "일반회원의 대출권수는 10권이 맞나요?", "expect": "5권", "claim": false},
+ {"id": "B12", "text": "어린이회원의 대출기간은 21일이 맞는가?", "expect": "21일", "claim": true},
+ {"id": "B13", "text": "별관의 휴관일은 언제인가?", "expect": null, "note": "no such fact"},
+ {"id": "B14", "text": "일반회원의 회비는 얼마인가?", "expect": null, "note": "property not in the field"},
+ {"id": "B15", "text": "일반과세자의 세율은 얼마인가?", "expect": null, "note": "a tax question asked of the library"}
+]

@@ -1,0 +1,66 @@
+{
+  "schema": "graph-language-repair-question-markers-v1",
+  "comment": "Korean case/topic particles that bound an argument span. 'function' is an abstract grammatical function, not a semantic role; questions/compile.py and plans.json decide which row predicate a function fills for a given cue. Longer forms are listed before shorter ones sharing a tail so matching prefers the longer form at a boundary.",
+  "markers": [
+    {
+      "id": "marker:에_의해",
+      "forms": [
+        "에 의해"
+      ],
+      "function": "agent"
+    },
+    {
+      "id": "marker:로부터",
+      "forms": [
+        "로부터"
+      ],
+      "function": "origin"
+    },
+    {
+      "id": "marker:에게서",
+      "forms": [
+        "에게서"
+      ],
+      "function": "origin"
+    },
+    {
+      "id": "marker:에게",
+      "forms": [
+        "에게",
+        "한테"
+      ],
+      "function": "destination"
+    },
+    {
+      "id": "marker:에서",
+      "forms": [
+        "에서"
+      ],
+      "function": "origin"
+    },
+    {
+      "id": "marker:을",
+      "forms": [
+        "을",
+        "를"
+      ],
+      "function": "object"
+    },
+    {
+      "id": "marker:이",
+      "forms": [
+        "이",
+        "가"
+      ],
+      "function": "subject"
+    },
+    {
+      "id": "marker:은",
+      "forms": [
+        "은",
+        "는"
+      ],
+      "function": "topic"
+    }
+  ]
+}

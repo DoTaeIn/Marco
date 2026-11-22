@@ -1,0 +1,154 @@
+{
+  "schema": "graph-language-repair-question-cues-v1",
+  "comment": "Character-span lexical cues only, no statistical scoring. Each cue names the intent it signals and the abstract grammatical functions (see markers.json) that intent requires present in the question before the plan counts as resolved. who_words are an independent interrogative-pronoun cue used only by source_question. 'frame_phrases' are reporting-source connective phrases ('X에 따르면' = 'according to X') that frame the whole question rather than name an argument of it; like who_words/role_words they are excluded from the marker scan (opaque spans) so they are never absorbed into a neighboring argument's span -- the thing being asked about, not the question's own framing. A cue's 'role_query_predicates' names, for each required function, the checking-construction predicate that function stands for -- it lets compile.py recognize '그 유물을 누가 확인했나요?' (missing the actor because the actor IS the asked role, via a role_word from role_words.json whose asked_predicate matches 'function_to_plain_predicate' for that function) as a checking_role_question instead of an incomplete verification_question. Only exercised when exactly one required function is missing (not ambiguous) and a matching role word is present; nothing here guesses a role query from mere absence. A cue's 'action' names the CONTRACT.md action key its own verb cue already pins down (checking_role_question reuses it directly instead of re-scanning); event_role_question has no verb cue of its own, so it instead scans the question text against graphs/core/actions.json's own declared event_nouns (read-only; the question side keeps no second action vocabulary) to find the implied action -- zero or more than one match is reported unresolved rather than answered from an action the question never named (AUDITOR.md review 8 item 2).",
+  "who_words": [
+    "누가",
+    "누구가",
+    "누구"
+  ],
+  "frame_phrases": [
+    "에 따르면",
+    "에 의하면",
+    "에서는"
+  ],
+  "cues": [
+    {
+      "id": "cue:report_verb",
+      "forms": [
+        "보고했",
+        "보고한",
+        "보고했다고",
+        "말했다고",
+        "전했다고",
+        "주장했다고",
+        "알렸다고"
+      ],
+      "intent": "source_question",
+      "requires_who_word": true,
+      "requires_functions": []
+    },
+    {
+      "id": "cue:occurrence_verb",
+      "forms": [
+        "실제로 일어났",
+        "정말로 일어났",
+        "진짜로 일어났",
+        "실제로 발생했",
+        "사실인가",
+        "사실이었나",
+        "맞나요",
+        "맞습니까"
+      ],
+      "intent": "occurrence_question",
+      "requires_who_word": false,
+      "requires_functions": []
+    },
+    {
+      "id": "cue:verification_verb",
+      "forms": [
+        "확인했",
+        "확인한",
+        "검증했",
+        "검증한",
+        "점검했",
+        "점검한"
+      ],
+      "intent": "verification_question",
+      "requires_who_word": false,
+      "requires_functions": [
+        "subject",
+        "object"
+      ],
+      "role_query_predicates": {
+        "subject": "checking_actor",
+        "object": "checking_object"
+      },
+      "action": "action:check"
+    }
+  ],
+  "function_to_plain_predicate": {
+    "subject": "actor",
+    "object": "object"
+  },
+  "relative_questions": [
+    {
+      "head_forms": [
+        "사람은 누구",
+        "사람이 누구",
+        "사람은 누가"
+      ],
+      "asked_predicate": "actor",
+      "anchor_priority": [
+        "object",
+        "place",
+        "origin",
+        "destination"
+      ],
+      "cue_intent": "event_role_question",
+      "action_overrides": {
+        "action:check": {
+          "asked_predicate": "checking_actor",
+          "function_to_predicate": {
+            "object": "checking_object",
+            "origin": [
+              "checking_source",
+              "place"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "target_complement_markers": [
+    "다고",
+    "라고"
+  ],
+  "voice_forms": {
+    "passive": [
+      "전달되",
+      "인계되",
+      "이전되",
+      "전송되",
+      "발송되",
+      "수령되",
+      "확인되",
+      "검증되",
+      "점검되"
+    ]
+  },
+  "action_aliases": {
+    "action:receive": [
+      "받았",
+      "받은",
+      "받지",
+      "받아"
+    ]
+  },
+  "target_predicate_endings": [
+    "했다고",
+    "았다고",
+    "었다고",
+    "였다고",
+    "했는지",
+    "았는지",
+    "었는지"
+  ],
+  "negative_target_forms": [
+    "하지 않았",
+    "하지않았",
+    "되지 않았",
+    "되지않았",
+    "받지 않았",
+    "받지않았",
+    "옮기지 않았",
+    "건네지 않았",
+    "보내지 않았",
+    "아니었다",
+    "아니다"
+  ],
+  "unsupported_target_forms": [
+    "하지 못했",
+    "했을 수도",
+    "했는지"
+  ]
+}

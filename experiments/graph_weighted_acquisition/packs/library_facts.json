@@ -1,0 +1,115 @@
+{
+ "schema": "graph-field-facts-v1",
+ "facts": [
+  {
+   "id": "L01",
+   "subject": "일반회원",
+   "property": "대출기간",
+   "value": "14일",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "regular loans"
+   }
+  },
+  {
+   "id": "L02",
+   "subject": "어린이회원",
+   "property": "대출기간",
+   "value": "21일",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "regular loans"
+   }
+  },
+  {
+   "id": "L03",
+   "subject": "일반회원",
+   "property": "대출권수",
+   "value": "5권",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "per card"
+   }
+  },
+  {
+   "id": "L04",
+   "subject": "어린이회원",
+   "property": "대출권수",
+   "value": "10권",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "per card"
+   }
+  },
+  {
+   "id": "L05",
+   "subject": "일반회원",
+   "property": "연체료",
+   "value": "하루100원",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "per book"
+   }
+  },
+  {
+   "id": "L06",
+   "subject": "중앙도서관",
+   "property": "운영시간",
+   "value": "9시~22시",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "weekdays"
+   }
+  },
+  {
+   "id": "L07",
+   "subject": "별관",
+   "property": "운영시간",
+   "value": "10시~18시",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "weekdays"
+   }
+  },
+  {
+   "id": "L08",
+   "subject": "중앙도서관",
+   "property": "휴관일",
+   "value": "매주월요일",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "except holidays"
+   }
+  },
+  {
+   "id": "L09",
+   "subject": "중앙도서관",
+   "property": "문의전화",
+   "value": "555",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "general desk"
+   }
+  },
+  {
+   "id": "L10",
+   "subject": "별관",
+   "property": "반납장소",
+   "value": "무인반납함",
+   "source": {
+    "url": "made-up example, no real source",
+    "as_of": "2026-11-19",
+    "scope": "after hours too"
+   }
+  }
+ ]
+}

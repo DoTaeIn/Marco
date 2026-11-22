@@ -1,0 +1,22 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "limits",
+  "note": "Finite caps. Every cap that bites is reported in reading[\"limits\"], so a truncated reading is visible instead of silent.",
+  "records": [
+    {
+      "key": "limits:reading",
+      "kind": "limits",
+      "max_text_chars": 20000,
+      "max_segments": 64,
+      "max_chunks_per_segment": 96,
+      "max_marker_options_per_segment": 4096,
+      "max_solutions_per_segment": 6,
+      "max_nested_mentions_per_span": 8,
+      "max_event_pairs": 512,
+      "max_mention_pairs": 4096,
+      "max_rows": 4096,
+      "max_rival_readings_per_clause": 4,
+      "note_on_solutions": "Kept below the existing search's _SUPPORT_LIMIT of 8 identical positive supports, so per-reading copies of one row cannot push a projection into support_limit."
+    }
+  ]
+}

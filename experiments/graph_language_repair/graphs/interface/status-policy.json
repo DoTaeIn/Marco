@@ -1,0 +1,162 @@
+{
+  "schema": "graph-language-repair-interface-status-policy-v1",
+  "owner": "public_api.py (integration interface). This is the only graph file the interface owns. It decides nothing about language: it maps selector gates, search completeness and reading-level conflict records onto a status word and an abstention flag. public_api.py performs lookup, set intersection and span overlap only.",
+  "comment": "A status is never a certification of physical truth. 'answered' means one supported, traceable selector value, complete search, and no relevant contradiction; for reading_conflict, the selected requested-role value must be present in every selector-compatible rival. A sibling excluded by query constraints does not veto an answer. Compatible rivals without the asked role remain unresolved. Attribution scope is separate and may be textually definite. Explicit event-polarity and result conflicts remain contradicted.",
+  "precedence": [
+    "error",
+    "unrepresentable",
+    "incomplete_search",
+    "provenance_incomplete",
+    "nonassertive_scope",
+    "reported_only",
+    "gated",
+    "ambiguous_question",
+    "ambiguous_reading",
+    "constraints_unmet",
+    "no_evidence",
+    "ambiguous_answer",
+    "contradicted",
+    "competing_readings",
+    "answered"
+  ],
+  "statuses": {
+    "error": {
+      "abstained": true,
+      "meaning": "compile, execute or render raised, or the reading was not usable; see 'error'"
+    },
+    "unrepresentable": {
+      "abstained": true,
+      "meaning": "the question compiled to no executable plan; see plan.unresolved"
+    },
+    "incomplete_search": {
+      "abstained": true,
+      "meaning": "at least one search hop did not explicitly report complete=true with an assembled world; rivals or support may have been truncated; see search.hops"
+    },
+    "provenance_incomplete": {
+      "abstained": true,
+      "meaning": "the selected support or a cited proof/premise/claim cannot be resolved to the supplied reading; see missing_references and sources"
+    },
+    "nonassertive_scope": {
+      "abstained": true,
+      "meaning": "the selector found supported candidate evidence, but its graph scope is quoted_text or interrogative; see decision_evidence and decision_sources"
+    },
+    "reported_only": {
+      "abstained": true,
+      "meaning": "the selector found only attribution-scoped support for an occurrence question; the text does not establish independent occurrence or non-occurrence"
+    },
+    "gated": {
+      "abstained": true,
+      "meaning": "the selector stopped at a gate this policy does not name; see 'gate'"
+    },
+    "ambiguous_question": {
+      "abstained": true,
+      "meaning": "the question marked a required argument more than once or not at all"
+    },
+    "ambiguous_reading": {
+      "abstained": true,
+      "meaning": "surviving readings disagree on a required answer role; see candidates and conflicts"
+    },
+    "constraints_unmet": {
+      "abstained": true,
+      "meaning": "the question's constraints (roles, action) do not all hold of one event in the reading"
+    },
+    "no_evidence": {
+      "abstained": true,
+      "meaning": "no row answers the question; this is 'not found', never 'false'"
+    },
+    "ambiguous_answer": {
+      "abstained": true,
+      "meaning": "more than one supported value survived; every candidate is listed with its own evidence"
+    },
+    "contradicted": {
+      "abstained": true,
+      "meaning": "a contradiction record in the reading touches the answer's own support and the support does not draw on every side of it"
+    },
+    "competing_readings": {
+      "abstained": true,
+      "meaning": "the answer's support comes from a surviving reading that competes with another surviving reading which does not also support the answer"
+    },
+    "answered": {
+      "abstained": false,
+      "meaning": "one supported value, complete searches, no touching conflict; truth beyond the text is not asserted"
+    }
+  },
+  "gates": {
+    "unresolved": "unrepresentable",
+    "no_event_match": "no_evidence",
+    "no_answer_row": "no_evidence",
+    "multiple_answers": "ambiguous_answer",
+    "ambiguous_reading": "ambiguous_reading",
+    "ambiguous_value_slot": "ambiguous_question",
+    "no_value_slot": "ambiguous_question",
+    "conflicting_constraints": "constraints_unmet",
+    "nonassertive_scope": "nonassertive_scope"
+  },
+  "unknown_gate_status": "gated",
+  "error_status": "error",
+  "incomplete_search_status": "incomplete_search",
+  "answered_status": "answered",
+  "conflict_statuses": {
+    "contradiction": "contradicted",
+    "competing_reading": "competing_readings"
+  },
+  "conflict_detection": {
+    "agreement_kinds": [
+      "reading_conflict"
+    ],
+    "contradiction_touches_support_via": [
+      "shared_row",
+      "shared_reading",
+      "shared_hypothesis",
+      "span_overlap"
+    ],
+    "contradiction_agreed_when": "for kind reading_conflict only: every listed competing reading has selected evidence for the same requested predicate carrying the selected answer value; all other contradiction kinds always conflict",
+    "competing_reading_conflicts_when": "a support reading's competes_with names a reading that contributes no support row to the answer",
+    "dropped_readings": "reported when their span overlaps a support span; informational only, the core already removed them by a declared dominance rule"
+  },
+  "scope_qualifications": {
+    "attribution": "within_report",
+    "reported_claim": "within_report",
+    "checking_action": "within_checking_scope",
+    "quoted_text": "within_quoted_text",
+    "interrogative": "within_interrogative_scope"
+  },
+  "decision_evidence_gates": {
+    "nonassertive_scope": "selector_state"
+  },
+  "conflict_response_policy": {
+    "qualified_result_values": [
+      "event_conflict",
+      "conflicting"
+    ],
+    "qualified_scopes": [
+      "attribution",
+      "reported_claim",
+      "checking_action"
+    ],
+    "suppress_unqualified_answer": true,
+    "suppression_reason": "unqualified_conflict"
+  },
+  "provenance_incomplete_status": "provenance_incomplete",
+  "result_status_values": [
+    {
+      "values": [
+        "event_conflict",
+        "conflicting"
+      ],
+      "status": "contradicted"
+    }
+  ],
+  "result_status_conditions": [
+    {
+      "intent": "occurrence_question",
+      "value": "attribution",
+      "status": "reported_only"
+    }
+  ],
+  "answer_scope_metadata": {
+    "answer_scope": "structural_role",
+    "requested_type": "Question-requested category only; not a document fact. unspecified imposes no disjointness.",
+    "type_verification": "unknown: no entity category proof was evaluated or inferred."
+  }
+}

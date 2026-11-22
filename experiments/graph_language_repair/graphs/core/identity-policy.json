@@ -1,0 +1,132 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "identity-policy",
+  "note": "Mention and identity are two layers (CONTRACT C2). Every surface occurrence is its own mention node with its own character span. An entity is a set of mentions joined by an accepted evidence rule; with no accepted rule a mention is its own entity. comparator names below are generic span and string primitives implemented in core/comparators.py; the sufficiency decision is here, in data.",
+  "records": [
+    {
+      "key": "identity-policy:exact_surface_repeat",
+      "kind": "identity_evidence",
+      "comparator": "exact_surface_equal",
+      "sufficiency": "sufficient",
+      "label": "exact_surface_repeat"
+    },
+    {
+      "key": "identity-policy:demonstrative_plus_repeat",
+      "kind": "identity_evidence",
+      "comparator": "demonstrative_plus_surface",
+      "comparator_args": {
+        "determiner_class": "demonstrative"
+      },
+      "sufficiency": "sufficient",
+      "label": "demonstrative_plus_repeat",
+      "note": "그 부품 points at 부품. The determiner is data, the stripping is mechanics."
+    },
+    {
+      "key": "identity-policy:declared_alias",
+      "kind": "identity_evidence",
+      "comparator": "declared_alias_pair",
+      "sufficiency": "sufficient",
+      "label": "declared_alias",
+      "note": "Only aliases written into alias rows of a graph count. No alias is inferred from a shared key."
+    },
+    {
+      "key": "identity-policy:head_suffix_match",
+      "kind": "identity_evidence",
+      "comparator": "chunk_aligned_suffix",
+      "sufficiency": "insufficient_alone",
+      "label": "head_suffix_match",
+      "note": "생산 라인 책임자 and 책임자 share a head. The saved diagnosis shows string-keyed aliasing merging spans that are not one person, so this never merges on its own (CORE-STATUS F6)."
+    },
+    {
+      "key": "identity-policy:demonstrative_plus_generic_noun",
+      "kind": "identity_evidence",
+      "comparator": "demonstrative_plus_class_form",
+      "comparator_args": {
+        "determiner_class": "demonstrative",
+        "noun_class": "generic_item"
+      },
+      "sufficiency": "insufficient_alone",
+      "label": "demonstrative_plus_generic_noun",
+      "note": "해당 항목 points back without naming the thing. It supports an event link but pins no identity."
+    },
+    {
+      "key": "identity-policy:determiner_head_containment",
+      "kind": "identity_evidence",
+      "comparator": "determiner_head_containment",
+      "comparator_args": {
+        "determiner_class": "demonstrative"
+      },
+      "sufficiency": "sufficient",
+      "label": "determiner_head_containment",
+      "note": "그 부품 and the 부품 inside it are the same thing: the inner span ends where the outer one ends and only a determiner stands before it. This is the one containment that joins, and it is stated separately so that prefix-modifier nesting keeps its veto."
+    },
+    {
+      "key": "identity-policy:nested_containment",
+      "kind": "identity_evidence",
+      "comparator": "span_containment",
+      "sufficiency": "never",
+      "label": "nested_containment",
+      "note": "A mention and a mention inside it are never one entity. 생산 라인 책임자 and 생산 라인 are different things and stay different. The determiner-head case is excluded here and carried by identity-policy:determiner_head_containment instead.",
+      "comparator_args": {
+        "exclude_determiner_head": true,
+        "determiner_class": "demonstrative"
+      }
+    },
+    {
+      "key": "identity-policy:rules",
+      "kind": "policy",
+      "accept_rules": [
+        {
+          "id": "identity-policy:rule_exact",
+          "all_of": [
+            "exact_surface_repeat"
+          ]
+        },
+        {
+          "id": "identity-policy:rule_demonstrative",
+          "all_of": [
+            "demonstrative_plus_repeat"
+          ]
+        },
+        {
+          "id": "identity-policy:rule_determiner_head",
+          "all_of": [
+            "determiner_head_containment"
+          ]
+        },
+        {
+          "id": "identity-policy:rule_alias",
+          "all_of": [
+            "declared_alias"
+          ]
+        },
+        {
+          "id": "identity-policy:rule_title_plus_alias",
+          "all_of": [
+            "head_suffix_match",
+            "declared_alias"
+          ]
+        }
+      ],
+      "reject_rules": [
+        {
+          "id": "identity-policy:reject_nested",
+          "any_of": [
+            "nested_containment"
+          ]
+        }
+      ],
+      "ambiguity_rules": [
+        {
+          "id": "identity-policy:ambiguous_head",
+          "any_of": [
+            "head_suffix_match",
+            "demonstrative_plus_generic_noun"
+          ],
+          "record": "entity_ambiguity"
+        }
+      ],
+      "note": "An ambiguity rule records a candidate identity that was not accepted, so a question about which of two readings is meant has something to read instead of a silent merge (CONTRACT C6)."
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "schema": "question-graph-grammar-v1",
+  "note": "Closed Korean question morphemes and compositional productions. Noun phrases and predicate stems remain open spans; no head vocabulary is used.",
+  "wh_determiners": [
+    "어떤",
+    "무슨",
+    "어느"
+  ],
+  "question_endings": [
+    "나요",
+    "습니까",
+    "어요",
+    "어?",
+    "지",
+    "까",
+    "가요",
+    "해",
+    "인가요",
+    "인가",
+    "입니까",
+    "인지",
+    "이야",
+    "야",
+    "였나",
+    "일까",
+    "였는가",
+    "이었나",
+    "이었는가",
+    "까요"
+  ],
+  "request_endings": [
+    "주세요",
+    "주십시오",
+    "해 주세요",
+    "해 주십시오"
+  ],
+  "case_function_classes": {
+    "subject": "nominative",
+    "object": "accusative"
+  },
+  "query_patterns": {
+    "event_action": [
+      "?event",
+      "action_type",
+      "$action"
+    ],
+    "requested_role": [
+      "?event",
+      "$role",
+      "$answer"
+    ],
+    "polarity": [
+      "?event",
+      "polarity",
+      "$polarity"
+    ],
+    "event_claim": [
+      "?event",
+      "in_claim",
+      "?claim"
+    ],
+    "claim_scope": [
+      "?claim",
+      "scope_kind",
+      "?scope"
+    ],
+    "explicit_role_value": [
+      "?event",
+      "$role",
+      "$value"
+    ]
+  },
+  "productions": [
+    {
+      "id": "event-role-question",
+      "predicate_moods": [
+        "interrogative",
+        "relative",
+        "complement"
+      ],
+      "role_source": "wh_function_or_case_frame"
+    },
+    {
+      "id": "open-wh-np",
+      "head_source": "open_character_span",
+      "role_source": "closing_case_then_frame_voice",
+      "head_type": "unknown"
+    },
+    {
+      "id": "relative-gap",
+      "predicate_mood": "relative",
+      "candidate_roles": "expected_roles_minus_occupied_roles"
+    },
+    {
+      "id": "scoped-event-question",
+      "scope_relation": "claim_scope",
+      "preserve_scope_binding": true
+    },
+    {
+      "id": "copular-question",
+      "endings": [
+        "인가요",
+        "인가",
+        "인까요",
+        "무엇인가요",
+        "무엇인가"
+      ],
+      "coverage": "partial"
+    }
+  ],
+  "query_project_variables": [
+    "?answer",
+    "?answer2"
+  ],
+  "quote_pairs": [
+    [
+      "“",
+      "”"
+    ],
+    [
+      "‘",
+      "’"
+    ],
+    [
+      "「",
+      "」"
+    ],
+    [
+      "『",
+      "』"
+    ],
+    [
+      "\"",
+      "\""
+    ],
+    [
+      "'",
+      "'"
+    ]
+  ],
+  "terminal_punctuation": [
+    "?",
+    "？",
+    ".",
+    "!",
+    "。",
+    "！",
+    "…"
+  ],
+  "max_role_interpretations": 32,
+  "question_moods": [
+    "interrogative",
+    "complement"
+  ],
+  "composing_moods": [
+    "declarative",
+    "nonfinal",
+    "complement",
+    "relative"
+  ],
+  "wh_atomic": [
+    {
+      "form": "누가",
+      "function": "subject",
+      "classes": [
+        "nominative"
+      ],
+      "type": "person",
+      "contracted": true
+    },
+    {
+      "form": "뭘",
+      "function": "object",
+      "classes": [
+        "accusative"
+      ],
+      "type": "thing",
+      "contracted": true
+    }
+  ],
+  "wh_roots": [
+    {
+      "form": "무엇",
+      "type": "thing"
+    },
+    {
+      "form": "누구",
+      "type": "person"
+    },
+    {
+      "form": "뭐",
+      "type": "thing"
+    },
+    {
+      "form": "언제",
+      "role": "time",
+      "type": "temporal"
+    },
+    {
+      "form": "어디",
+      "role_candidates": [
+        "place",
+        "origin",
+        "destination"
+      ],
+      "type": "place"
+    },
+    {
+      "form": "얼마나",
+      "role": "quantity",
+      "type": "quantity"
+    }
+  ],
+  "relative_fallback_roles": "frame_mapping_values_minus_occupied",
+  "literal_prefix_unsupported": "?",
+  "identity_frame_key": "frame:identify",
+  "identity_item_variable": "?item"
+}

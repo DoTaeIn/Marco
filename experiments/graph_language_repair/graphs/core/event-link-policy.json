@@ -1,0 +1,221 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "event-link-policy",
+  "note": "When two clauses describe one happening. The saved diagnosis is explicit that even same-item wording can coexist with a distinct transfer, so item identity can never license a merge (CONTRACT C1, CORE-STATUS F3). Evidence kinds are weighed together; none of them is a precondition for computing the others, which is what the earlier prefix-first gate chain got wrong (F1). An unsatisfied link is kept as same_event_candidate, never discarded and never promoted.",
+  "records": [
+    {
+      "key": "event-link:shared_item_mention",
+      "kind": "link_evidence",
+      "comparator": "shared_role_value",
+      "comparator_args": {
+        "roles": [
+          "object",
+          "checking_object"
+        ]
+      },
+      "sufficiency": "insufficient_alone",
+      "label": "shared_item_mention"
+    },
+    {
+      "key": "event-link:entity_identity",
+      "kind": "link_evidence",
+      "comparator": "shared_role_entity",
+      "comparator_args": {
+        "roles": [
+          "object",
+          "checking_object"
+        ]
+      },
+      "sufficiency": "insufficient_alone",
+      "label": "entity_identity"
+    },
+    {
+      "key": "event-link:explicit_event_reference",
+      "kind": "link_evidence",
+      "comparator": "demonstrative_plus_event_noun",
+      "comparator_args": {
+        "determiner_class": "demonstrative"
+      },
+      "sufficiency": "supporting",
+      "label": "explicit_event_reference",
+      "note": "그 전달 names the earlier happening. One cue among several, deliberately not a gate."
+    },
+    {
+      "key": "event-link:demonstrative_reference_to_prior",
+      "kind": "link_evidence",
+      "comparator": "demonstrative_subject",
+      "comparator_args": {
+        "determiner_class": "demonstrative",
+        "roles": [
+          "object",
+          "actor",
+          "checking_object"
+        ]
+      },
+      "sufficiency": "supporting",
+      "label": "demonstrative_reference_to_prior"
+    },
+    {
+      "key": "event-link:same_action",
+      "kind": "link_evidence",
+      "comparator": "same_action",
+      "sufficiency": "supporting",
+      "label": "same_action"
+    },
+    {
+      "key": "event-link:unique_prior_event_of_same_action",
+      "kind": "link_evidence",
+      "comparator": "unique_prior_same_action",
+      "sufficiency": "supporting",
+      "label": "unique_prior_event_of_same_action",
+      "note": "If two earlier events share the action, the continuation is genuinely ambiguous and this cue is absent, so the link stays a candidate.",
+      "comparator_args": {
+        "count_over": "clause"
+      }
+    },
+    {
+      "key": "event-link:compatible_roles_no_conflict",
+      "kind": "link_evidence",
+      "comparator": "no_role_value_conflict",
+      "sufficiency": "supporting",
+      "label": "compatible_roles_no_conflict",
+      "comparator_args": {
+        "undecided_identity_evidence": [
+          "demonstrative_plus_generic_noun",
+          "head_suffix_match"
+        ]
+      },
+      "note": " A role pair counts as a conflict only when the two values are decidably different. Where the later value is a pointing expression whose head names no particular thing — 해당 항목 — the pair is undecided, not conflicting: the saved diagnosis shows that reading such a continuation as a different event split the event and suppressed a fact that had already been extracted (CORE-STATUS F4). The identity cues that leave a pair undecided are named here so the decision stays auditable."
+    },
+    {
+      "key": "event-link:role_value_conflict",
+      "kind": "link_evidence",
+      "comparator": "role_value_conflict",
+      "sufficiency": "blocking",
+      "label": "role_value_conflict",
+      "note": "A role pair counts as a conflict only when the two values are decidably different. Where the later value is a pointing expression whose head names no particular thing — 해당 항목 — the pair is undecided, not conflicting: the saved diagnosis shows that reading such a continuation as a different event split the event and suppressed a fact that had already been extracted (CORE-STATUS F4). The identity cues that leave a pair undecided are named here so the decision stays auditable.",
+      "comparator_args": {
+        "undecided_identity_evidence": [
+          "demonstrative_plus_generic_noun",
+          "head_suffix_match"
+        ]
+      }
+    },
+    {
+      "key": "event-link:polarity_conflict",
+      "kind": "link_evidence",
+      "comparator": "polarity_conflict",
+      "sufficiency": "blocking",
+      "label": "polarity_conflict"
+    },
+    {
+      "key": "event-link:adjacent_segment",
+      "kind": "link_evidence",
+      "comparator": "adjacent_segment",
+      "sufficiency": "supporting",
+      "label": "adjacent_segment"
+    },
+    {
+      "key": "event-link:rules",
+      "kind": "policy",
+      "link": "same_event",
+      "candidate_link": "same_event_candidate",
+      "insufficient_alone": [
+        "shared_item_mention",
+        "entity_identity"
+      ],
+      "accept_rules": [
+        {
+          "id": "event-link:rule_named_reference",
+          "all_of": [
+            "explicit_event_reference",
+            "same_action",
+            "compatible_roles_no_conflict"
+          ]
+        },
+        {
+          "id": "event-link:rule_referring_expression_and_unique_prior",
+          "all_of": [
+            "same_action",
+            "unique_prior_event_of_same_action",
+            "compatible_roles_no_conflict",
+            "adjacent_segment"
+          ],
+          "any_of": [
+            "explicit_event_reference",
+            "demonstrative_reference_to_prior"
+          ]
+        }
+      ],
+      "reject_rules": [
+        {
+          "id": "event-link:reject_role_conflict",
+          "any_of": [
+            "role_value_conflict"
+          ]
+        },
+        {
+          "id": "event-link:reject_polarity_conflict",
+          "any_of": [
+            "polarity_conflict"
+          ]
+        }
+      ],
+      "candidate_rules": [
+        {
+          "id": "event-link:candidate_shared_item",
+          "all_of": [
+            "same_action"
+          ],
+          "any_of": [
+            "shared_item_mention",
+            "entity_identity",
+            "demonstrative_reference_to_prior",
+            "explicit_event_reference"
+          ]
+        }
+      ],
+      "role_completion": {
+        "proof_kind": "role_completion",
+        "requires_link_status": "accepted",
+        "fills": "missing_roles",
+        "retain_spans": "both",
+        "note": "A role absent from the earlier event may be filled from the later one only on an accepted link, with a proof citing the earlier event span, the later value span and this policy row. Neither span is replaced (CONTRACT C7)."
+      },
+      "candidate_note": "A candidate link still has to be about the same action. Checking a transfer is not the same event as the transfer, however explicitly it names it — that relation is verified_by, not same_event.",
+      "requires_referring_evidence": [
+        "explicit_event_reference",
+        "demonstrative_reference_to_prior"
+      ],
+      "accept_note": "Every accept rule requires an expression that actually points at the earlier happening. The removed rule_identity_and_unique_prior demanded only entity identity, the same action, a unique prior, no conflict and adjacency — every one of which is equally true of two genuinely distinct repeated shipments whose second recipient is simply unstated, and the last of which is satisfied *because* the second clause omits the role. Absence of a contradiction is not positive evidence of identity (CONTRACT C1).",
+      "prior_count_over": "clause",
+      "prior_count_note": "A prior is counted once per clause, not once per surviving reading of a clause, so reading multiplicity can neither manufacture nor remove this cue.",
+      "unique_antecedent_required": true,
+      "on_multiple_antecedents": "candidate",
+      "uniqueness_note": "A referring expression is positive evidence that some earlier happening is meant; it is not proof of which one. Where the same later clause would accept a link to more than one earlier event, every link is kept as a candidate and none is asserted, because the alternatives are mutually exclusive."
+    },
+    {
+      "key": "contradiction:opposing_propositions",
+      "kind": "contradiction_policy",
+      "hypothesis_kind": "event_link",
+      "hypothesis_status": "rejected",
+      "all_of": [
+        "same_action",
+        "polarity_conflict"
+      ],
+      "any_of": [
+        "entity_identity",
+        "shared_item_mention"
+      ],
+      "none_of": [
+        "role_value_conflict"
+      ],
+      "support_predicates": [
+        "action",
+        "polarity"
+      ],
+      "support_source": "clause",
+      "note": "Shared evidence and compatible filled roles support a possible opposing proposition; missing role evidence is not evidence of equality. Preserve support rows for both sides."
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "scope-policy",
+  "note": "Epistemic scope. Every content row is attributed to exactly one claim; meta rows about the text itself (in_claim, scope_kind, reporter, mention_of, contained_by, same_event, same_event_candidate, verified_by, checks, inherited_scope) are attributed to claim:0 because they state what the document says, not what the document asserts to be true. A report never becomes truth and never answers a verification question (CONTRACT C5).",
+  "records": [
+    {
+      "key": "scope:direct_text",
+      "kind": "scope_kind",
+      "verification_eligible": false,
+      "truth_claimed_by_document": true,
+      "label": "direct_text"
+    },
+    {
+      "key": "scope:reported_claim",
+      "kind": "scope_kind",
+      "verification_eligible": false,
+      "truth_claimed_by_document": false,
+      "label": "reported_claim",
+      "note": "The document reports that someone said this. Evidence found inside it attaches here."
+    },
+    {
+      "key": "scope:attribution",
+      "kind": "scope_kind",
+      "verification_eligible": false,
+      "truth_claimed_by_document": false,
+      "label": "attribution",
+      "note": "A named claim object — a report, a statement, an assertion — is the bearer."
+    },
+    {
+      "key": "scope:checking_action",
+      "kind": "scope_kind",
+      "verification_eligible": true,
+      "truth_claimed_by_document": true,
+      "label": "checking_action",
+      "note": "Only a matched checking action is verification-eligible."
+    },
+    {
+      "key": "frame:report_prefix",
+      "kind": "report_frame",
+      "position": "prefix",
+      "forms": [
+        "에 따르면",
+        "에 의하면",
+        "에 따르면,",
+        "의 말에 따르면"
+      ],
+      "scope_kind": "reported_claim",
+      "reporter_from": "span_before_form",
+      "inner_region": "after_form_to_segment_end",
+      "scope_kind_overrides": [
+        {
+          "when_reporter_contains_class": "speech",
+          "scope_kind": "attribution"
+        }
+      ],
+      "reporter_required": true,
+      "reporter_span_starts_at": "previous_consumed_end"
+    },
+    {
+      "key": "frame:report_suffix",
+      "kind": "report_frame",
+      "position": "suffix",
+      "forms": [
+        "라고 밝혔다",
+        "라고 전했다",
+        "라고 말했다",
+        "라고 보고했다",
+        "라고 발표했다",
+        "라고 주장했다",
+        "고 밝혔다",
+        "고 전했다",
+        "고 말했다",
+        "고 보고했다",
+        "고 발표했다",
+        "고 주장했다"
+      ],
+      "scope_kind": "reported_claim",
+      "reporter_from": "leftmost_marker_in_segment",
+      "reporter_marker_classes": [
+        "topic",
+        "nominative"
+      ],
+      "inner_region": "after_reporter_to_form_start",
+      "scope_kind_overrides": [
+        {
+          "when_reporter_contains_class": "speech",
+          "scope_kind": "attribution"
+        }
+      ],
+      "note": "The reporter is taken from the leftmost topic or nominative marker of the segment and the inner clause starts after it, which is why a reported subject span no longer reaches back into the attribution prefix. The reporter span itself starts at the end of the previous closing marker, the same rule chart-marks declares for a value span, so a preceding time or place expression is not swallowed into the reporter.\n다고 한다 was removed from this record: its first character is the final 다 of every declarative predicate form, so the frame span overlapped the predicate and destroyed it. The agentless form lives in frame:report_hearsay.",
+      "reporter_required": true,
+      "reporter_span_starts_at": "previous_consumed_end"
+    },
+    {
+      "key": "frame:report_hearsay",
+      "kind": "report_frame",
+      "position": "suffix",
+      "forms": [
+        "고 한다",
+        "고 전해졌다",
+        "고 알려졌다"
+      ],
+      "scope_kind": "reported_claim",
+      "reporter_from": "none",
+      "reporter_required": false,
+      "inner_region": "segment_start_to_form_start",
+      "note": "Agentless hearsay. The sentence says that something is said without saying who says it, so the claim is reported and carries no reporter row. Taking the inner clause's own subject as the reporter would invent a source."
+    },
+    {
+      "key": "scope:link_inheritance",
+      "kind": "policy",
+      "link": "same_event",
+      "when": "exactly_one_side_in_non_direct_claim",
+      "action": "adopt_non_direct_claim_for_content_rows",
+      "proof_kind": "scope_inheritance",
+      "requires_link_status": "accepted",
+      "never": "promote_a_report_into_direct_text",
+      "note": "When an accepted link joins a reported event and a later continuation, the continuation's content rows adopt the reported claim and carry a scope_inheritance proof citing both spans. The reverse direction — letting a direct continuation launder a report into truth — is not expressible here. A candidate link inherits nothing."
+    },
+    {
+      "key": "scope:quoted_text",
+      "kind": "scope_kind",
+      "verification_eligible": false,
+      "truth_claimed_by_document": false,
+      "label": "quoted_text"
+    },
+    {
+      "key": "scope:interrogative",
+      "kind": "scope_kind",
+      "verification_eligible": false,
+      "truth_claimed_by_document": false,
+      "label": "interrogative"
+    },
+    {
+      "key": "scope:nonassertive_boundaries",
+      "kind": "scope_boundary_policy",
+      "quote_pairs": [
+        [
+          "“",
+          "”"
+        ],
+        [
+          "‘",
+          "’"
+        ],
+        [
+          "\"",
+          "\""
+        ],
+        [
+          "'",
+          "'"
+        ]
+      ],
+      "interrogative_endings": [
+        "?",
+        "？"
+      ],
+      "quoted_kind": "quoted_text",
+      "interrogative_kind": "interrogative",
+      "preserve_enclosing_report_kinds": [
+        "attribution",
+        "reported_claim"
+      ],
+      "note": "A predicate inside balanced quotation is quoted; a standalone quoted object does not enclose the predicate. Interrogative sentence punctuation is nonassertive."
+    }
+  ]
+}

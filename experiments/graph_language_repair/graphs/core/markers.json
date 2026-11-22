@@ -1,0 +1,183 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "markers",
+  "note": "Korean case and topic markers as character forms. A marker carries only syntactic classes. Which role a class fills is decided per frame and per voice in frames.json, never here, so one marker can serve different roles under different predicates. A marker with more than one class produces more than one reading (CONTRACT C6). attachment=closing ends a value span at the marker; attachment=internal is absorbed into the surrounding span, so a possessive or coordinated value stays one multiword span. A class name is never a role name: a marker says what kind of marking it is, a frame says what that marking fills.",
+  "records": [
+    {
+      "key": "marker:가",
+      "kind": "marker",
+      "forms": [
+        "가",
+        "이"
+      ],
+      "classes": [
+        "nominative"
+      ],
+      "attachment": "closing"
+    },
+    {
+      "key": "marker:를",
+      "kind": "marker",
+      "forms": [
+        "를",
+        "을"
+      ],
+      "classes": [
+        "accusative"
+      ],
+      "attachment": "closing"
+    },
+    {
+      "key": "marker:는",
+      "kind": "marker",
+      "forms": [
+        "는",
+        "은"
+      ],
+      "classes": [
+        "topic"
+      ],
+      "attachment": "closing"
+    },
+    {
+      "key": "marker:에게서",
+      "kind": "marker",
+      "forms": [
+        "에게서",
+        "한테서",
+        "으로부터",
+        "로부터",
+        "께서"
+      ],
+      "classes": [
+        "ablative"
+      ],
+      "attachment": "closing"
+    },
+    {
+      "key": "marker:에게",
+      "kind": "marker",
+      "forms": [
+        "에게",
+        "한테",
+        "께"
+      ],
+      "classes": [
+        "dative"
+      ],
+      "attachment": "closing"
+    },
+    {
+      "key": "marker:에_의해",
+      "kind": "marker",
+      "forms": [
+        "에 의해",
+        "에 의하여",
+        "에 의해서"
+      ],
+      "classes": [
+        "agentive"
+      ],
+      "attachment": "closing"
+    },
+    {
+      "key": "marker:에서",
+      "kind": "marker",
+      "forms": [
+        "에서"
+      ],
+      "classes": [
+        "ablative",
+        "locative"
+      ],
+      "attachment": "closing"
+    },
+    {
+      "key": "marker:로",
+      "kind": "marker",
+      "forms": [
+        "로",
+        "으로"
+      ],
+      "classes": [
+        "allative",
+        "instrumental"
+      ],
+      "attachment": "closing"
+    },
+    {
+      "key": "marker:에",
+      "kind": "marker",
+      "forms": [
+        "에"
+      ],
+      "classes": [
+        "allative",
+        "locative"
+      ],
+      "attachment": "closing",
+      "note": "A time reading is not offered: this graph declares no class of time expressions, so a time reading could not be told from a place reading by anything written down here."
+    },
+    {
+      "key": "marker:의",
+      "kind": "marker",
+      "forms": [
+        "의"
+      ],
+      "classes": [
+        "genitive"
+      ],
+      "attachment": "internal"
+    },
+    {
+      "key": "marker:와",
+      "kind": "marker",
+      "forms": [
+        "와",
+        "과",
+        "및"
+      ],
+      "classes": [
+        "conjunctive"
+      ],
+      "attachment": "internal"
+    },
+    {
+      "key": "marker:만",
+      "kind": "marker",
+      "forms": [
+        "만",
+        "도",
+        "까지",
+        "부터"
+      ],
+      "classes": [
+        "focus"
+      ],
+      "attachment": "internal",
+      "note": "Focus particles stack on a host and do not close a value span by themselves."
+    },
+    {
+      "key": "marker-policy:hangul-allomorph",
+      "kind": "marker_phonology_policy",
+      "script": "hangul_syllable_coda",
+      "rules": [
+        {
+          "forms": [
+            "이",
+            "을"
+          ],
+          "coda": "present"
+        },
+        {
+          "forms": [
+            "가",
+            "를"
+          ],
+          "coda": "absent"
+        }
+      ],
+      "note": "For Hangul host syllables, declarative particle allomorphy supplies positive boundary evidence. Other scripts or hosts remain undetermined."
+    }
+  ]
+}

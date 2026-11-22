@@ -1,0 +1,69 @@
+{
+ "schema": "graph-field-words-v1",
+ "field": "Korean national tax basics",
+ "slot": {
+  "type": "relation",
+  "attribute": "kind",
+  "subject_role": "subject",
+  "value_role": "amount"
+ },
+ "properties": [
+  {
+   "word": "과세기간",
+   "means": "과세기간",
+   "also": []
+  },
+  {
+   "word": "상담전화",
+   "means": "상담전화",
+   "also": []
+  },
+  {
+   "word": "세율",
+   "means": "세율",
+   "also": [
+    "부가가치세율",
+    "일반세율"
+   ]
+  },
+  {
+   "word": "신고기간",
+   "means": "신고기간",
+   "also": []
+  },
+  {
+   "word": "신고기한",
+   "means": "신고기한",
+   "also": []
+  },
+  {
+   "word": "신고횟수",
+   "means": "신고횟수",
+   "also": []
+  },
+  {
+   "word": "신청경로",
+   "means": "신청경로",
+   "also": []
+  },
+  {
+   "word": "신청기한",
+   "means": "신청기한",
+   "also": []
+  }
+ ],
+ "names": [
+  {
+   "name": "2025년귀속종합소득세일반신고",
+   "also": [
+    "2025년분종합소득세일반신고"
+   ]
+  },
+  {
+   "name": "국세상담센터",
+   "also": [
+    "국세청상담센터"
+   ]
+  }
+ ]
+}

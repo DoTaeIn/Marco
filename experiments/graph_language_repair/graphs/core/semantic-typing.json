@@ -1,0 +1,39 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "semantic-typing",
+  "note": "Structural argument identification is independent of knowing a predicate's semantic class or intentional agency.",
+  "records": [
+    {
+      "key": "typing:observed_predicate",
+      "kind": "predicate_typing_policy",
+      "frames": [
+        "frame:observed"
+      ],
+      "semantic_status": "unknown",
+      "predicate_kind": "undetermined",
+      "agency_status": "unknown",
+      "role_interpretation": "structural_alias",
+      "marker_grammatical_roles": {
+        "nominative": "grammatical_subject",
+        "accusative": "grammatical_object",
+        "topic": "grammatical_topic",
+        "agentive": "grammatical_oblique"
+      },
+      "note": "Compatibility actor/object labels name syntactic bindings only; no actor, patient, agency, event or state meaning is asserted.",
+      "when_frame_absent": true,
+      "roles_assert_semantics": false,
+      "grammatical_row_interpretation": "grammatical"
+    },
+    {
+      "key": "typing:declared_predicate",
+      "kind": "predicate_typing_policy",
+      "default": true,
+      "semantic_status": "declared",
+      "predicate_kind": "frame_declared",
+      "agency_status": "frame_dependent",
+      "role_interpretation": "declared_semantic",
+      "note": "Known frames retain their graph-declared role mappings, with no inference that an omitted actor occurred.",
+      "roles_assert_semantics": true
+    }
+  ]
+}

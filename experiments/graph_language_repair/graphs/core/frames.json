@@ -1,0 +1,228 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "frames",
+  "note": "A frame maps marker classes to roles, separately per voice. This is where the passive repair lives: the same frame states that a passive subject is the object and that an agent marker, not the subject marker, carries the actor. No ordered gate and no prefix inventory is consulted — a clause is solved as a constraint set, so a missing cue removes one solution instead of aborting the stage (CORE-STATUS F1, F2). expected_roles drives missing_roles, which is what lets later evidence complete an earlier event under CONTRACT C7.",
+  "records": [
+    {
+      "key": "frame:transfer",
+      "kind": "frame",
+      "min_roles": 1,
+      "expected_roles": [
+        "actor",
+        "object",
+        "origin",
+        "destination"
+      ],
+      "final_unmarked_role": null,
+      "roles": {
+        "active": {
+          "nominative": "actor",
+          "topic": "actor",
+          "agentive": "actor",
+          "accusative": "object",
+          "dative": "destination",
+          "allative": "destination",
+          "ablative": "origin",
+          "locative": "place",
+          "time": "time",
+          "instrumental": "instrument"
+        },
+        "passive": {
+          "nominative": "object",
+          "topic": "object",
+          "accusative": "object",
+          "agentive": "actor",
+          "dative": "destination",
+          "allative": "destination",
+          "ablative": "origin",
+          "locative": "place",
+          "time": "time",
+          "instrumental": "instrument"
+        }
+      },
+      "multi_fill_roles": [
+        "place",
+        "time",
+        "instrument"
+      ],
+      "multi_fill_note": "A role not listed here may be filled at most once in one reading. Where a clause offers two fillers for a single-fill role the solver emits one reading per filler and records the others as rival bindings, so no single reading asserts two actors. An adjunct role listed here may legitimately repeat and is kept in one reading.",
+      "bound_form_roles": []
+    },
+    {
+      "key": "frame:check",
+      "kind": "frame",
+      "min_roles": 1,
+      "expected_roles": [
+        "checking_actor",
+        "checking_object"
+      ],
+      "final_unmarked_role": null,
+      "emits_verification": true,
+      "roles": {
+        "active": {
+          "nominative": "checking_actor",
+          "topic": "checking_actor",
+          "accusative": "checking_object",
+          "agentive": "checking_actor",
+          "ablative": "checking_source",
+          "locative": "place",
+          "time": "time",
+          "instrumental": "instrument"
+        },
+        "passive": {
+          "nominative": "checking_object",
+          "topic": "checking_object",
+          "accusative": "checking_object",
+          "agentive": "checking_actor",
+          "locative": "place",
+          "time": "time",
+          "instrumental": "instrument"
+        }
+      },
+      "multi_fill_roles": [
+        "place",
+        "time",
+        "instrument"
+      ],
+      "multi_fill_note": "A role not listed here may be filled at most once in one reading. Where a clause offers two fillers for a single-fill role the solver emits one reading per filler and records the others as rival bindings, so no single reading asserts two actors. An adjunct role listed here may legitimately repeat and is kept in one reading.",
+      "bound_form_roles": [
+        {
+          "form_class": "result_positive",
+          "role": "checking_result_form",
+          "result": "confirmed"
+        },
+        {
+          "form_class": "result_negative",
+          "role": "checking_result_form",
+          "result": "denied"
+        }
+      ],
+      "bound_form_note": "A result expression is part of the checking construction, not an argument of it. The frame binds a form of a declared class to its own role, and the solver consumes that span before it maps markers, so 사실로 in 사실로 확인했다 is a result and 사실로 in 사실로재단을 확인했다 is not a result at all — it fails the attachment test and stays part of the object's name. No word is blacklisted and no sentence is named."
+    },
+    {
+      "key": "frame:receive",
+      "kind": "frame",
+      "min_roles": 1,
+      "expected_roles": [
+        "actor",
+        "object",
+        "origin"
+      ],
+      "final_unmarked_role": null,
+      "roles": {
+        "active": {
+          "nominative": "actor",
+          "topic": "actor",
+          "accusative": "object",
+          "ablative": "origin",
+          "locative": "place",
+          "time": "time",
+          "allative": "destination"
+        }
+      },
+      "multi_fill_roles": [
+        "place",
+        "time"
+      ],
+      "multi_fill_note": "A role not listed here may be filled at most once in one reading. Where a clause offers two fillers for a single-fill role the solver emits one reading per filler and records the others as rival bindings, so no single reading asserts two actors. An adjunct role listed here may legitimately repeat and is kept in one reading.",
+      "bound_form_roles": []
+    },
+    {
+      "key": "frame:discover",
+      "kind": "frame",
+      "min_roles": 1,
+      "expected_roles": [
+        "actor",
+        "object"
+      ],
+      "final_unmarked_role": null,
+      "roles": {
+        "active": {
+          "nominative": "actor",
+          "topic": "actor",
+          "accusative": "object",
+          "locative": "place",
+          "time": "time"
+        },
+        "passive": {
+          "nominative": "object",
+          "topic": "object",
+          "agentive": "actor",
+          "locative": "place",
+          "time": "time"
+        }
+      },
+      "multi_fill_roles": [
+        "place",
+        "time"
+      ],
+      "multi_fill_note": "A role not listed here may be filled at most once in one reading. Where a clause offers two fillers for a single-fill role the solver emits one reading per filler and records the others as rival bindings, so no single reading asserts two actors. An adjunct role listed here may legitimately repeat and is kept in one reading.",
+      "bound_form_roles": []
+    },
+    {
+      "key": "frame:identify",
+      "kind": "frame",
+      "min_roles": 1,
+      "expected_roles": [
+        "item",
+        "identity_value"
+      ],
+      "final_unmarked_role": "identity_value",
+      "note": "The complement of a copula carries no marker, so it is read from the span between the last closing marker and the predicate. final_unmarked_role is the declared, generic way to collect that residue; where no frame declares one the residue is recorded as an unused element and surfaces in unresolved.",
+      "roles": {
+        "stative": {
+          "topic": "item",
+          "nominative": "item",
+          "locative": "place",
+          "time": "time"
+        }
+      },
+      "multi_fill_roles": [
+        "place",
+        "time"
+      ],
+      "multi_fill_note": "A role not listed here may be filled at most once in one reading. Where a clause offers two fillers for a single-fill role the solver emits one reading per filler and records the others as rival bindings, so no single reading asserts two actors. An adjunct role listed here may legitimately repeat and is kept in one reading.",
+      "bound_form_roles": []
+    },
+    {
+      "kind": "frame",
+      "min_roles": 1,
+      "expected_roles": [],
+      "final_unmarked_role": null,
+      "roles": {
+        "active": {
+          "nominative": "actor",
+          "topic": "actor",
+          "agentive": "actor",
+          "accusative": "object",
+          "dative": "destination",
+          "allative": "destination",
+          "ablative": "origin",
+          "locative": "place",
+          "time": "time",
+          "instrumental": "instrument"
+        },
+        "passive": {
+          "nominative": "object",
+          "topic": "object",
+          "accusative": "object",
+          "agentive": "actor",
+          "dative": "destination",
+          "allative": "destination",
+          "ablative": "origin",
+          "locative": "place",
+          "time": "time",
+          "instrumental": "instrument"
+        }
+      },
+      "multi_fill_roles": [
+        "place",
+        "time",
+        "instrument"
+      ],
+      "bound_form_roles": [],
+      "key": "frame:observed",
+      "note": "Generic grammatical roles only; no semantic action identity is inferred."
+    }
+  ]
+}

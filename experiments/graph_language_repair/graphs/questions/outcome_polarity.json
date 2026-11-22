@@ -1,0 +1,44 @@
+{
+  "schema": "graph-language-repair-question-outcome-polarity-v1",
+  "comment": "A checking row's own polarity, read back through the same provenance path as its source_ref (select.py._provenance), decides whether a checking_outcome value is a genuine result or a negated checking action restated as a placeholder value (CONTRACT.md C5: 'checking_outcome: denied from a negated [checking action]'). select.py looks up (intent, case, polarity_key) here for an override; a missing key (notably polarity_true) means pass the literal fact value through unchanged. select.py never branches on the literal outcome string itself. polarity_mixed means the provenance disagreed with itself across merged hops and is reported as its own case rather than guessed.",
+  "verification_question": {
+    "outcome": {
+      "polarity_false": "action_not_performed",
+      "polarity_mixed": "ambiguous_polarity"
+    }
+  },
+  "occurrence_question": {
+    "checked_outcome": {
+      "polarity_false": "action_not_performed",
+      "polarity_mixed": "ambiguous_polarity"
+    }
+  },
+  "event_role_question": {
+    "answer": {
+      "polarity_false": "event_negated",
+      "polarity_mixed": "event_conflict"
+    }
+  },
+  "checking_role_question": {
+    "answer": {
+      "polarity_false": "event_negated",
+      "polarity_mixed": "event_conflict"
+    }
+  },
+  "requested_polarity_passthrough": {
+    "event_role_question": {
+      "answer": {
+        "false": [
+          "polarity_false"
+        ]
+      }
+    },
+    "checking_role_question": {
+      "answer": {
+        "false": [
+          "polarity_false"
+        ]
+      }
+    }
+  }
+}

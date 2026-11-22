@@ -1,0 +1,640 @@
+{
+  "schema": "graph-language-repair-question-plans-v1",
+  "comment": "Declarative hop sequences executed by questions/select.py. Each hop issues exactly one core.search_rows triple with exactly one '?'-asked position and binds its result candidates under 'bind'. '{name}' in a triple is substituted from a prior bind's candidate value (via 'from') or from a question slot (via 'slot'). 'optional' means: a hop with no matches does not cancel the plan, it just leaves that bind empty. 'intersect' means: keep only candidate values present in both named binds, merging provenance from both sides. A plan with no value slot available from the question cannot be anchored to one event without a second asked position in the same triple, which the engine does not support here; select.py reports that explicitly as the 'no_value_slot' gate rather than guessing an event. 'polarity_gate' handles a negated checking action: core.search_rows has no match at all for a checking_outcome row whose own polarity is false (a negative-polarity fact is not retrievable by a plain positive triple query in this engine), but it does expose a queryable synthetic '{event}, polarity, \"true\"|\"false\"' row (verified against the real core 2026-11-11; not yet in CONTRACT.md section 4 -- flagged to model A). select.py checks this bind before the normal case_priority walk and, only when its value is the gate's 'negated_value', reports the gate's named 'case' with the fixed value \"action_not_performed\" instead of falling through to a generic no-answer hold. Predicate names elsewhere are from CONTRACT.md section 4. AUDITOR.md review 8 repairs, both generic and applied wherever a plan declares 'function_to_predicate' (source_question, occurrence_question, event_role_question): after the value_hop anchors on one function, select.py existence-checks every OTHER function the question also named (present in slots, found in the same table) against the SAME candidate event -- a question naming two role constraints that point at two different events now intersects to nothing (gate 'conflicting_constraints'), not silently answering from the anchor alone (review 8 item 1). A plan's 'required_action', when set, is existence-checked the same way against '[event, \"action\", <key>]' (review 8 item 2) -- event_role_question computes it from graphs/core/actions.json's own event_nouns (questions/compile.py.implied_actions), checking_role_question takes it directly from its cue's declared 'action'. 'merge_event_polarity_into_answer' names an optional bind (an '[event, \"polarity\", ...]' hop) whose value, when \"false\", is folded into the answer_bind's own candidates' polarities (review 8 item 3): a role value is not, by itself, evidence that its event occurred, so a negated event's role answer must carry that negation into its own provenance, not just the verification-style checking rows.",
+  "plans": {
+    "source_question": {
+      "value_function_priority": [
+        "object",
+        "topic",
+        "subject"
+      ],
+      "function_to_predicate": {
+        "object": "object",
+        "topic": [
+          "actor",
+          "object"
+        ],
+        "subject": "actor",
+        "destination": "destination",
+        "origin": [
+          "origin",
+          "place"
+        ],
+        "place": "place",
+        "agent": "actor"
+      },
+      "value_hop": {
+        "bind": "event",
+        "triple": [
+          "?event",
+          "{predicate}",
+          "{value}"
+        ]
+      },
+      "hops": [
+        {
+          "bind": "claim",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "in_claim",
+            "?claim"
+          ]
+        },
+        {
+          "bind": "reporter",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "reporter",
+            "?reporter"
+          ]
+        }
+      ],
+      "answer_bind": "reporter",
+      "case_priority": [
+        {
+          "case": "reporter",
+          "bind": "reporter"
+        }
+      ]
+    },
+    "occurrence_question": {
+      "value_function_priority": [
+        "object",
+        "topic",
+        "subject"
+      ],
+      "function_to_predicate": {
+        "object": "object",
+        "topic": [
+          "actor",
+          "object"
+        ],
+        "subject": "actor",
+        "destination": "destination",
+        "origin": [
+          "origin",
+          "place"
+        ],
+        "place": "place",
+        "agent": "actor"
+      },
+      "value_hop": {
+        "bind": "event",
+        "triple": [
+          "?event",
+          "{predicate}",
+          "{value}"
+        ]
+      },
+      "hops": [
+        {
+          "bind": "outcome",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "independent_result",
+            "?outcome"
+          ],
+          "optional": true,
+          "require_relation": "verified_by",
+          "require_dependency_relation": "checks"
+        },
+        {
+          "bind": "claim",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "in_claim",
+            "?claim"
+          ]
+        },
+        {
+          "bind": "scope",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "scope_kind",
+            "?scope"
+          ]
+        },
+        {
+          "bind": "reporter",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "reporter",
+            "?reporter"
+          ],
+          "optional": true
+        }
+      ],
+      "answer_bind": "scope",
+      "case_priority": [
+        {
+          "case": "checked_outcome",
+          "bind": "outcome"
+        },
+        {
+          "case": "scope_kind",
+          "bind": "scope"
+        }
+      ],
+      "contradiction_overrides": {
+        "checked_outcome": {
+          "competing_result_forms": "conflicting"
+        }
+      },
+      "nonassertive_scope": [
+        "quoted_text",
+        "interrogative"
+      ],
+      "independent_evidence_bind": "outcome",
+      "semantic_projection": {
+        "bind": "outcome",
+        "relation": "independent_result",
+        "effective_case": "checked_outcome"
+      }
+    },
+    "verification_question": {
+      "function_to_predicate": {
+        "subject": "checking_actor",
+        "object": "checking_object",
+        "agent": "checking_actor"
+      },
+      "hops": [
+        {
+          "bind": "by_actor",
+          "slot": "subject",
+          "triple": [
+            "?checking_event",
+            "checking_actor",
+            "{value}"
+          ]
+        },
+        {
+          "bind": "by_object",
+          "slot": "object",
+          "triple": [
+            "?checking_event",
+            "checking_object",
+            "{value}"
+          ]
+        },
+        {
+          "bind": "checking_event",
+          "intersect": [
+            "by_actor",
+            "by_object"
+          ]
+        },
+        {
+          "bind": "checking_occurrence",
+          "from": "checking_event",
+          "triple": [
+            "{checking_event}",
+            "checking_occurred",
+            "?checking_occurrence"
+          ],
+          "optional": true
+        },
+        {
+          "bind": "outcome",
+          "from": "checking_event",
+          "triple": [
+            "{checking_event}",
+            "checking_outcome",
+            "?outcome"
+          ],
+          "optional": true
+        },
+        {
+          "bind": "event_polarity",
+          "from": "checking_event",
+          "triple": [
+            "{checking_event}",
+            "polarity",
+            "?event_polarity"
+          ],
+          "optional": true
+        },
+        {
+          "bind": "claim",
+          "from": "checking_event",
+          "triple": [
+            "{checking_event}",
+            "in_claim",
+            "?claim"
+          ]
+        },
+        {
+          "bind": "scope",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "scope_kind",
+            "?scope"
+          ]
+        },
+        {
+          "bind": "reporter",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "reporter",
+            "?reporter"
+          ],
+          "optional": true
+        }
+      ],
+      "answer_bind": "outcome",
+      "case_priority": [
+        {
+          "case": "outcome",
+          "bind": "outcome"
+        }
+      ],
+      "polarity_gate": {
+        "bind": "event_polarity",
+        "negated_value": "false",
+        "case": "outcome"
+      },
+      "voice_filter_bind": "checking_event",
+      "contradiction_overrides": {
+        "outcome": {
+          "competing_result_forms": "conflicting"
+        }
+      },
+      "nonassertive_scope": [
+        "quoted_text",
+        "interrogative"
+      ],
+      "semantic_projection": {
+        "bind": "checking_occurrence",
+        "relation": "checking_occurred"
+      }
+    },
+    "event_role_question": {
+      "function_to_predicate_comment": "topic -> actor matches graphs/core/frames.json's active-voice mapping and is the common case; a passive-voice question (e.g. '...전달되었나요?') would need topic -> object instead, which this table cannot yet tell apart because the question side has no voice-detection cue -- a known simplification, not a silent guess at something undeclared.",
+      "function_to_predicate": {
+        "subject": "actor",
+        "object": "object",
+        "topic": [
+          "actor",
+          "object"
+        ],
+        "origin": "origin",
+        "destination": "destination",
+        "place": "place",
+        "agent": "actor"
+      },
+      "value_hop": {
+        "bind": "event",
+        "triple": [
+          "?event",
+          "{predicate}",
+          "{value}"
+        ]
+      },
+      "hops": [
+        {
+          "bind": "answer",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "{asked_predicate}",
+            "?answer"
+          ]
+        },
+        {
+          "bind": "event_polarity",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "polarity",
+            "?event_polarity"
+          ],
+          "optional": true
+        },
+        {
+          "bind": "claim",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "in_claim",
+            "?claim"
+          ]
+        },
+        {
+          "bind": "scope",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "scope_kind",
+            "?scope"
+          ]
+        },
+        {
+          "bind": "reporter",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "reporter",
+            "?reporter"
+          ],
+          "optional": true
+        }
+      ],
+      "answer_bind": "answer",
+      "case_priority": [
+        {
+          "case": "answer",
+          "bind": "answer"
+        }
+      ],
+      "merge_event_polarity_into_answer": "event_polarity",
+      "nonassertive_scope": [
+        "quoted_text",
+        "interrogative"
+      ],
+      "contradiction_overrides": {
+        "answer": {
+          "polarity_across_events": "event_conflict"
+        }
+      }
+    },
+    "checking_role_question": {
+      "comment": "compile.py already resolved the anchor ('anchor_value'/'anchor_predicate' on the plan itself, from the cue's role_query_predicates) when a verification cue's own missing role is the one being asked about, e.g. '그 유물을 누가 확인했나요?' asks for checking_actor anchored on checking_object. Same two-hop shape as event_role_question.",
+      "value_hop": {
+        "bind": "event",
+        "triple": [
+          "?event",
+          "{predicate}",
+          "{value}"
+        ]
+      },
+      "hops": [
+        {
+          "bind": "answer",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "{asked_predicate}",
+            "?answer"
+          ]
+        },
+        {
+          "bind": "event_polarity",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "polarity",
+            "?event_polarity"
+          ],
+          "optional": true
+        },
+        {
+          "bind": "claim",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "in_claim",
+            "?claim"
+          ]
+        },
+        {
+          "bind": "scope",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "scope_kind",
+            "?scope"
+          ]
+        },
+        {
+          "bind": "reporter",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "reporter",
+            "?reporter"
+          ],
+          "optional": true
+        }
+      ],
+      "answer_bind": "answer",
+      "case_priority": [
+        {
+          "case": "answer",
+          "bind": "answer"
+        }
+      ],
+      "merge_event_polarity_into_answer": "event_polarity",
+      "function_to_predicate": {
+        "subject": "checking_actor",
+        "object": "checking_object",
+        "origin": [
+          "checking_source",
+          "place"
+        ],
+        "destination": "destination",
+        "topic": [
+          "checking_actor",
+          "checking_object"
+        ],
+        "agent": "checking_actor"
+      },
+      "nonassertive_scope": [
+        "quoted_text",
+        "interrogative"
+      ],
+      "contradiction_overrides": {
+        "answer": {
+          "polarity_across_events": "event_conflict"
+        }
+      }
+    },
+    "proposition_question": {
+      "function_to_predicate": {
+        "subject": "actor",
+        "object": "object",
+        "topic": [
+          "actor",
+          "object"
+        ],
+        "origin": "origin",
+        "destination": "destination",
+        "place": "place",
+        "agent": "actor"
+      },
+      "value_function_priority": [
+        "subject",
+        "object",
+        "topic",
+        "destination",
+        "origin",
+        "place"
+      ],
+      "value_hop": {
+        "bind": "event",
+        "triple": [
+          "?event",
+          "{predicate}",
+          "{value}"
+        ]
+      },
+      "hops": [
+        {
+          "bind": "event_polarity",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "polarity",
+            "?event_polarity"
+          ],
+          "optional": true
+        },
+        {
+          "bind": "claim",
+          "from": "event",
+          "triple": [
+            "{event}",
+            "in_claim",
+            "?claim"
+          ]
+        },
+        {
+          "bind": "scope",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "scope_kind",
+            "?scope"
+          ]
+        },
+        {
+          "bind": "reporter",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "reporter",
+            "?reporter"
+          ],
+          "optional": true
+        }
+      ],
+      "answer_bind": "event_polarity",
+      "case_priority": [
+        {
+          "case": "polarity",
+          "bind": "event_polarity"
+        }
+      ],
+      "multiple_case_override": {
+        "polarity": "conflicting"
+      },
+      "nonassertive_scope": [
+        "quoted_text",
+        "interrogative"
+      ]
+    },
+    "checking_occurrence_question": {
+      "function_to_predicate": {
+        "subject": "checking_actor",
+        "object": "checking_object",
+        "agent": "checking_actor"
+      },
+      "hops": [
+        {
+          "bind": "by_actor",
+          "slot": "subject",
+          "triple": [
+            "?checking_event",
+            "checking_actor",
+            "{value}"
+          ]
+        },
+        {
+          "bind": "by_object",
+          "slot": "object",
+          "triple": [
+            "?checking_event",
+            "checking_object",
+            "{value}"
+          ]
+        },
+        {
+          "bind": "checking_event",
+          "intersect": [
+            "by_actor",
+            "by_object"
+          ]
+        },
+        {
+          "bind": "occurrence",
+          "from": "checking_event",
+          "triple": [
+            "{checking_event}",
+            "checking_occurred",
+            "?occurrence"
+          ]
+        },
+        {
+          "bind": "claim",
+          "from": "checking_event",
+          "triple": [
+            "{checking_event}",
+            "in_claim",
+            "?claim"
+          ]
+        },
+        {
+          "bind": "scope",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "scope_kind",
+            "?scope"
+          ]
+        },
+        {
+          "bind": "reporter",
+          "from": "claim",
+          "triple": [
+            "{claim}",
+            "reporter",
+            "?reporter"
+          ],
+          "optional": true
+        }
+      ],
+      "answer_bind": "occurrence",
+      "case_priority": [
+        {
+          "case": "checking_occurrence",
+          "bind": "occurrence"
+        }
+      ],
+      "voice_filter_bind": "checking_event",
+      "nonassertive_scope": [
+        "quoted_text",
+        "interrogative"
+      ],
+      "semantic_projection": {
+        "bind": "occurrence",
+        "relation": "checking_occurred"
+      }
+    }
+  },
+  "goal_intents": {
+    "verification_question": {
+      "checking_occurrence": "checking_occurrence_question"
+    }
+  },
+  "role_typing_relations": {
+    "structural_alias": "structural_argument",
+    "grammatical": "grammatical_argument",
+    "declared_semantic": "declared_role"
+  }
+}

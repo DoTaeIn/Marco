@@ -1,0 +1,115 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "nouns",
+  "note": "Small closed classes of nouns and determiners used as evidence cues. These are cues weighed by a policy, never gates: nothing in the core aborts because a form from this file is absent. That is the direct repair of the fixed event-noun prefix inventory that rejected every continuation before the later tests ran (CORE-STATUS F1). The result classes are what separates a checking action from a checking result: occurrence comes from the predicate, result only from a declared result form.",
+  "records": [
+    {
+      "key": "noun:demonstrative",
+      "kind": "form_class",
+      "class": "demonstrative",
+      "forms": [
+        "그 ",
+        "이 ",
+        "해당 ",
+        "동일한 ",
+        "같은 ",
+        "앞서 ",
+        "위 ",
+        "그것",
+        "이것"
+      ],
+      "note": "A trailing space is part of the form where the determiner is written separately, so matching stays character-exact."
+    },
+    {
+      "key": "noun:generic_item",
+      "kind": "form_class",
+      "class": "generic_item",
+      "forms": [
+        "항목",
+        "물품",
+        "물건",
+        "대상",
+        "건",
+        "것",
+        "자료",
+        "문건"
+      ],
+      "note": "A generic head noun can point back without naming the thing. It supports an event link; by itself it never pins entity identity."
+    },
+    {
+      "key": "noun:speech",
+      "kind": "form_class",
+      "class": "speech",
+      "forms": [
+        "주장",
+        "보고서",
+        "발표",
+        "진술",
+        "보도",
+        "증언",
+        "설명",
+        "제보",
+        "통보"
+      ],
+      "note": "A speech noun inside a reporter span makes the scope an attribution rather than a plain report."
+    },
+    {
+      "key": "noun:title",
+      "kind": "form_class",
+      "class": "title",
+      "forms": [
+        "책임자",
+        "담당자",
+        "팀장",
+        "부장",
+        "과장",
+        "대표",
+        "소장",
+        "검사관",
+        "관리자"
+      ],
+      "note": "A bare title can be a shorter description of a longer named span. Sharing a title is a suffix match, which identity-policy marks insufficient on its own (CONTRACT C2)."
+    },
+    {
+      "key": "noun:result_positive",
+      "kind": "form_class",
+      "class": "result_positive",
+      "forms": [
+        "사실로",
+        "사실임을",
+        "맞는 것으로",
+        "정확한 것으로",
+        "이상 없음을",
+        "일치함을",
+        "정상임을"
+      ],
+      "note": "A checking clause states a result only when it carries one of these. Bare 확인했다 says a check happened and says nothing about what it found."
+    },
+    {
+      "key": "noun:result_negative",
+      "kind": "form_class",
+      "class": "result_negative",
+      "forms": [
+        "허위로",
+        "허위임을",
+        "틀린 것으로",
+        "잘못된 것으로",
+        "이상 있음을",
+        "불일치함을",
+        "누락되었음을"
+      ],
+      "note": "The negative counterpart. A negated checking action is not one of these."
+    },
+    {
+      "key": "noun:event_head",
+      "kind": "form_class",
+      "class": "event_head",
+      "forms": [
+        "일",
+        "행위",
+        "작업"
+      ],
+      "note": "Explicit generic happening heads; competing entity mentions prevent a unique event binding."
+    }
+  ]
+}

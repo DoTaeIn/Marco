@@ -1,0 +1,13 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "aliases",
+  "note": "Declared alias pairs. Deliberately empty: an alias is knowledge about a particular world, not about Korean, so the core ships none and a caller supplies them as an extra graph through read_text(text, extra_graphs=[...]). Nothing in the core infers an alias from a shared string key — that is the aliasing the saved diagnosis caught merging spans that are not one person (CORE-STATUS F6).",
+  "records": [
+    {
+      "key": "alias:example_shape",
+      "kind": "documentation",
+      "example": {"key": "alias:0", "kind": "alias", "surfaces": ["김민수", "김 검사관"]},
+      "note": "A record of kind alias lists surfaces that are the same identity. Pairs are symmetric and are the only sufficient alias evidence."
+    }
+  ]
+}

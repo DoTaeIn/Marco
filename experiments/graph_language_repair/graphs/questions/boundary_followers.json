@@ -1,0 +1,5 @@
+{
+  "schema": "graph-language-repair-question-boundary-followers-v1",
+  "comment": "A marker occurrence is accepted only when the character right after it is one of these (or end of string, encoded as JSON null) -- the declared boundary-follower inventory for questions/compile.py's marker scan. Kept as data, not a Python literal, per CONTRACT.md C10.",
+  "followers": [null, " ", "\t", "\n", "?", "!", ".", ","]
+}

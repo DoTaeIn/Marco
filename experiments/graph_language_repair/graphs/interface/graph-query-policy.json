@@ -1,0 +1,99 @@
+{
+  "schema": "graph-query-response-policy-v1",
+  "soft_unresolved": [
+    "unknown_wh_type",
+    "unknown_predicate_meaning"
+  ],
+  "soft_engine_reasons": [
+    "partial_coverage",
+    "unresolved_descriptors",
+    "unknown_type"
+  ],
+  "direct_scopes": [
+    "direct_text",
+    "checking_action"
+  ],
+  "reported_scopes": [
+    "reported",
+    "reported_text",
+    "attribution",
+    "report",
+    "reported_claim"
+  ],
+  "nonassertive_scopes": [
+    "quoted_text",
+    "interrogative",
+    "negated_report"
+  ],
+  "statuses": {
+    "answered": {
+      "abstained": false,
+      "template": "자료에서 확인된 값은 다음과 같습니다: {value}."
+    },
+    "source_qualified": {
+      "abstained": false,
+      "template": "자료에 따르면 해당 값은 다음과 같습니다: {value}."
+    },
+    "partial": {
+      "abstained": true,
+      "template": null
+    },
+    "no_evidence": {
+      "abstained": true,
+      "template": null
+    },
+    "ambiguous": {
+      "abstained": true,
+      "template": null
+    },
+    "conflict": {
+      "abstained": true,
+      "template": null
+    },
+    "hold": {
+      "abstained": true,
+      "template": null
+    },
+    "error": {
+      "abstained": true,
+      "template": null
+    }
+  },
+  "tuple_separator": ", ",
+  "reporter_template": "{reporter}의 진술에 따르면 해당 값은 다음과 같습니다: {value}.",
+  "value_labels": {
+    "checking_outcome": {
+      "unstated": "현재 근거로 확인 결과를 판단할 수 없습니다.",
+      "confirmed": "사실로 확인되었습니다.",
+      "denied": "사실이 아닌 것으로 확인되었습니다.",
+      "conflicting": "확인 결과가 상충합니다."
+    },
+    "checking_occurred": {
+      "occurred": "확인이 이루어졌습니다.",
+      "not_performed": "확인이 이루어지지 않았습니다."
+    },
+    "independent_result": {
+      "unstated": "현재 근거로 확인 결과를 판단할 수 없습니다.",
+      "confirmed": "사실로 확인되었습니다.",
+      "denied": "사실이 아닌 것으로 확인되었습니다.",
+      "conflicting": "확인 결과가 상충합니다."
+    }
+  },
+  "partial_reasons": [
+    "unknown_descriptor",
+    "unknown_explicit_descriptor",
+    "unknown_relative_head"
+  ],
+  "partial_template": "자료에서 확인된 역할 후보: {value}. 조건 “{condition}”은 확인할 수 없습니다.",
+  "partial_reporter_template": "{reporter}의 진술에서 확인된 역할 후보: {value}. 조건 “{condition}”은 확인할 수 없습니다.",
+  "typed_templates": {
+    "answered": "{value}",
+    "source_qualified": "자료에 따르면 {value}",
+    "reporter": "{reporter}의 진술에 따르면 {value}"
+  },
+  "polarity_predicate": "polarity",
+  "negative_polarity": "false",
+  "negative_template": "자료에서 해당 사건이 일어나지 않았다는 맥락의 역할 값은 다음과 같습니다: {value}.",
+  "negative_reporter_template": "{reporter}의 진술에서 해당 사건이 일어나지 않았다는 맥락의 역할 값은 다음과 같습니다: {value}.",
+  "negative_context_wrapper": "해당 사건이 일어나지 않았다는 맥락입니다. {answer}"
+}

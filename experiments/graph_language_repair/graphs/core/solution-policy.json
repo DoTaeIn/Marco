@@ -1,0 +1,88 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "solution-policy",
+  "note": "Preserve all supported marker-role interpretations; expected roles describe completeness and cannot establish a preference. Exact duplicate solutions may be deduplicated. Single-fill rivals become separate readings.",
+  "records": [
+    {
+      "key": "solution-policy:clause",
+      "kind": "policy",
+      "keep_all_ties": true,
+      "never": "choose_between_surviving_readings",
+      "prefer_expected_roles": false,
+      "record_dropped_solutions": true,
+      "expected_role_note": "Expected roles annotate missing roles only; they do not decide between interpretations.",
+      "expand_single_fill_duplicates_into_rival_readings": true,
+      "removed_policies": {
+        "prefer_more_mapped_roles": "Removed: under the current option construction every combination maps the same number of elements, so the rule could never fire. A declared protection that cannot fire is worse than none.",
+        "drop_duplicate_role_solutions_when_alternatives_exist": "Removed: dropping a duplicate-role solution decided a semantic question syntactically, and when no alternative existed it asserted two fillers of one role in one reading. Replaced by expand_single_fill_duplicates_into_rival_readings, which keeps every filler as a rival reading and drops nothing."
+      },
+      "literal_marker_alternatives": true,
+      "literal_note": "A preceding marker may be literal when the next marker offers a subject class or a later marker may bind the same role. Other marker-versus-literal boundaries are not yet exhaustively analyzed.",
+      "literal_marker_next_classes": [
+        "nominative",
+        "topic"
+      ]
+    },
+    {
+      "key": "adjunct:relative_time",
+      "forms": [
+        "어제",
+        "오늘",
+        "내일",
+        "그저께",
+        "모레"
+      ],
+      "role": "time",
+      "require_whole_boundary": true,
+      "kind": "unmarked_adjunct",
+      "note": "Boundary-attached unmarked adjunct is an alternative to a literal value span."
+    },
+    {
+      "key": "adjunct:calendar_composition",
+      "kind": "unmarked_adjunct",
+      "role": "time",
+      "patterns": [
+        {
+          "parts": [
+            {
+              "forms": [
+                "지난",
+                "이번",
+                "다음",
+                "저번"
+              ]
+            },
+            {
+              "forms": [
+                "주",
+                "달",
+                "해",
+                "주말",
+                "년도"
+              ]
+            }
+          ]
+        },
+        {
+          "parts": [
+            {
+              "character_class": "decimal"
+            },
+            {
+              "forms": [
+                "년",
+                "월",
+                "일",
+                "시",
+                "분",
+                "초",
+                "주"
+              ]
+            }
+          ]
+        }
+      ],
+      "note": "A boundary-attached composed time is a rival of the literal value; it does not determine attachment."
+    }
+  ]
+}

@@ -1,0 +1,4666 @@
+[
+  {
+    "id": "fiction-0-0",
+    "kind": "passage",
+    "text": "푸른별의 세율은 7%이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              9,
+              11
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            11
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-0-1",
+    "kind": "question",
+    "text": "푸른별의 세율은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-1-0",
+    "kind": "passage",
+    "text": "노란달의 세율은 4%이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              9,
+              11
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            11
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-1-1",
+    "kind": "question",
+    "text": "노란달의 세율은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-2-0",
+    "kind": "passage",
+    "text": "하얀숲의 세율은 12%이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            12
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              9,
+              12
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            12
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            12
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-2-1",
+    "kind": "question",
+    "text": "하얀숲의 세율은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-3-0",
+    "kind": "passage",
+    "text": "붉은꽃의 세율은 9%이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              9,
+              11
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            11
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-3-1",
+    "kind": "question",
+    "text": "붉은꽃의 세율은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-4-0",
+    "kind": "passage",
+    "text": "초록산의 세율은 15%이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            12
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              9,
+              12
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            12
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            12
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-4-1",
+    "kind": "question",
+    "text": "초록산의 세율은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-5-0",
+    "kind": "passage",
+    "text": "은빛강의 세율은 3%이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              9,
+              11
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            11
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-5-1",
+    "kind": "question",
+    "text": "은빛강의 세율은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-6-0",
+    "kind": "passage",
+    "text": "파란섬의 세율은 8%이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              9,
+              11
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            11
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-6-1",
+    "kind": "question",
+    "text": "파란섬의 세율은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-7-0",
+    "kind": "passage",
+    "text": "보라집의 세율은 6%이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              9,
+              11
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            9,
+            11
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-7-1",
+    "kind": "question",
+    "text": "보라집의 세율은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            7
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            9,
+            11
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "세율"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ],
+          [
+            9,
+            11
+          ]
+        ],
+        [
+          [
+            5,
+            7
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-과세기간-0-0",
+    "kind": "passage",
+    "text": "푸른별의 과세기간은 열흘이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "과세기간"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-과세기간-0-1",
+    "kind": "question",
+    "text": "푸른별의 과세기간은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "과세기간"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-과세기간-1-0",
+    "kind": "passage",
+    "text": "노란달의 과세기간은 두곳이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "과세기간"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-과세기간-1-1",
+    "kind": "question",
+    "text": "노란달의 과세기간은 얼마인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "과세기간"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신고횟수-0-0",
+    "kind": "passage",
+    "text": "푸른별의 신고횟수은 열흘이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고횟수"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신고횟수-0-1",
+    "kind": "question",
+    "text": "푸른별의 신고횟수은 몇회인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고횟수"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신고횟수-1-0",
+    "kind": "passage",
+    "text": "노란달의 신고횟수은 두곳이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고횟수"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신고횟수-1-1",
+    "kind": "question",
+    "text": "노란달의 신고횟수은 몇회인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고횟수"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신고기간-0-0",
+    "kind": "passage",
+    "text": "푸른별의 신고기간은 열흘이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고기간"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신고기간-0-1",
+    "kind": "question",
+    "text": "푸른별의 신고기간은 언제인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고기간"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신고기간-1-0",
+    "kind": "passage",
+    "text": "노란달의 신고기간은 두곳이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고기간"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신고기간-1-1",
+    "kind": "question",
+    "text": "노란달의 신고기간은 언제인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고기간"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신청기한-0-0",
+    "kind": "passage",
+    "text": "푸른별의 신청기한은 열흘이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신청기한"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신청기한-0-1",
+    "kind": "question",
+    "text": "푸른별의 신청기한은 언제인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신청기한"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신청기한-1-0",
+    "kind": "passage",
+    "text": "노란달의 신청기한은 두곳이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신청기한"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신청기한-1-1",
+    "kind": "question",
+    "text": "노란달의 신청기한은 언제인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신청기한"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신청경로-0-0",
+    "kind": "passage",
+    "text": "푸른별의 신청경로은 열흘이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신청경로"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신청경로-0-1",
+    "kind": "question",
+    "text": "푸른별의 신청경로은 어디인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신청경로"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신청경로-1-0",
+    "kind": "passage",
+    "text": "노란달의 신청경로은 두곳이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신청경로"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신청경로-1-1",
+    "kind": "question",
+    "text": "노란달의 신청경로은 어디인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신청경로"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-상담전화-0-0",
+    "kind": "passage",
+    "text": "푸른별의 상담전화은 열흘이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "상담전화"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-상담전화-0-1",
+    "kind": "question",
+    "text": "푸른별의 상담전화은 무엇인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "상담전화"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-상담전화-1-0",
+    "kind": "passage",
+    "text": "노란달의 상담전화은 두곳이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "상담전화"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-상담전화-1-1",
+    "kind": "question",
+    "text": "노란달의 상담전화은 무엇인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "상담전화"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신고기한-0-0",
+    "kind": "passage",
+    "text": "푸른별의 신고기한은 열흘이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고기한"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신고기한-0-1",
+    "kind": "question",
+    "text": "푸른별의 신고기한은 언제인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고기한"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  },
+  {
+    "id": "fiction-신고기한-1-0",
+    "kind": "passage",
+    "text": "노란달의 신고기한은 두곳이다.",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고기한"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ],
+        [
+          "v",
+          "value",
+          {
+            "copy": [
+              11,
+              13
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            11,
+            13
+          ]
+        ]
+      ],
+      "project": []
+    }
+  },
+  {
+    "id": "fiction-신고기한-1-1",
+    "kind": "question",
+    "text": "노란달의 신고기한은 언제인가?",
+    "graph": {
+      "nodes": [
+        {
+          "id": "s",
+          "type": "subject",
+          "anchor": [
+            0,
+            3
+          ]
+        },
+        {
+          "id": "e",
+          "type": "relation",
+          "anchor": [
+            5,
+            9
+          ]
+        },
+        {
+          "id": "v",
+          "type": "amount",
+          "anchor": [
+            11,
+            13
+          ]
+        }
+      ],
+      "edges": [
+        [
+          "e",
+          "subject",
+          "s"
+        ],
+        [
+          "e",
+          "amount",
+          "v"
+        ],
+        [
+          "e",
+          "kind",
+          {
+            "literal": "신고기한"
+          }
+        ],
+        [
+          "s",
+          "value",
+          {
+            "copy": [
+              0,
+              3
+            ]
+          }
+        ]
+      ],
+      "edge_spans": [
+        [
+          [
+            0,
+            3
+          ],
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ],
+          [
+            11,
+            13
+          ]
+        ],
+        [
+          [
+            5,
+            9
+          ]
+        ],
+        [
+          [
+            0,
+            3
+          ]
+        ]
+      ],
+      "project": [
+        "v"
+      ]
+    }
+  }
+]

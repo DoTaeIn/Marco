@@ -1,0 +1,12354 @@
+[
+ {
+  "id": "lang-000-s",
+  "kind": "passage",
+  "text": "푸른별의 빛깔은 쪽빛이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-000-q",
+  "kind": "question",
+  "text": "푸른별의 빛깔은 무엇인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-001-s",
+  "kind": "passage",
+  "text": "보라집의 빛깔은 감빛입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-001-q",
+  "kind": "question",
+  "text": "보라집의 빛깔은 어떤것인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-002-s",
+  "kind": "passage",
+  "text": "하얀숲의 빛깔은 잿빛이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-002-q",
+  "kind": "question",
+  "text": "하얀숲의 빛깔은 무엇인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-003-s",
+  "kind": "passage",
+  "text": "달무리의 빛깔은 풀빛입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-003-q",
+  "kind": "question",
+  "text": "달무리의 빛깔은 어떤것인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-004-s",
+  "kind": "passage",
+  "text": "초록산제2구역의 빛깔은 쪽빛이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-004-q",
+  "kind": "question",
+  "text": "초록산제2구역의 빛깔은 무엇인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-005-s",
+  "kind": "passage",
+  "text": "새벽길의 빛깔은 감빛입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-005-q",
+  "kind": "question",
+  "text": "새벽길의 빛깔은 어떤것인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-006-c",
+  "kind": "question",
+  "text": "노란달조합의 빛깔은 감빛이 맞는가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      15,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       13
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ],
+     [
+      15,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-007-c",
+  "kind": "question",
+  "text": "2031년파란섬정기모임의 빛깔은 잿빛이 맞나요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      16
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      18,
+      20
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      22,
+      25
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "빛깔"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       18,
+       20
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ],
+     [
+      18,
+      20
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ],
+    [
+     [
+      18,
+      20
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ],
+     [
+      22,
+      25
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-008-s",
+  "kind": "passage",
+  "text": "은빛강의 무게는 3근이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-008-q",
+  "kind": "question",
+  "text": "은빛강의 무게는 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-009-s",
+  "kind": "passage",
+  "text": "푸른별의 무게는 12돈입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-009-q",
+  "kind": "question",
+  "text": "푸른별의 무게는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-010-s",
+  "kind": "passage",
+  "text": "보라집의 무게는 7.5섬이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       13
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-010-q",
+  "kind": "question",
+  "text": "보라집의 무게는 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-011-s",
+  "kind": "passage",
+  "text": "하얀숲의 무게는 40푼입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-011-q",
+  "kind": "question",
+  "text": "하얀숲의 무게는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-012-s",
+  "kind": "passage",
+  "text": "달무리의 무게는 3근이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-012-q",
+  "kind": "question",
+  "text": "달무리의 무게는 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-013-s",
+  "kind": "passage",
+  "text": "초록산제2구역의 무게는 12돈입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       16
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      16
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      16
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-013-q",
+  "kind": "question",
+  "text": "초록산제2구역의 무게는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-014-c",
+  "kind": "question",
+  "text": "초록산제2구역의 무게는 12돈이 맞는가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      16
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      18,
+      21
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       16
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      16
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      16
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      18,
+      21
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-015-c",
+  "kind": "question",
+  "text": "달무리의 무게는 7.5섬이 맞나요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      15,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "무게"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       13
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      15,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-016-s",
+  "kind": "passage",
+  "text": "제7마을공동체의 나이는 9살이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-016-q",
+  "kind": "question",
+  "text": "제7마을공동체의 나이는 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-017-s",
+  "kind": "passage",
+  "text": "은빛강의 나이는 31살입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-017-q",
+  "kind": "question",
+  "text": "은빛강의 나이는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-018-s",
+  "kind": "passage",
+  "text": "푸른별의 나이는 108살이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       13
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-018-q",
+  "kind": "question",
+  "text": "푸른별의 나이는 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-019-s",
+  "kind": "passage",
+  "text": "보라집의 나이는 2살입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-019-q",
+  "kind": "question",
+  "text": "보라집의 나이는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-020-s",
+  "kind": "passage",
+  "text": "하얀숲의 나이는 9살이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-020-q",
+  "kind": "question",
+  "text": "하얀숲의 나이는 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-021-s",
+  "kind": "passage",
+  "text": "달무리의 나이는 31살입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-021-q",
+  "kind": "question",
+  "text": "달무리의 나이는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-022-c",
+  "kind": "question",
+  "text": "보라집의 나이는 31살이 맞는가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      14,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      14,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-023-c",
+  "kind": "question",
+  "text": "푸른별의 나이는 108살이 맞나요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      15,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "나이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       13
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      15,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-024-s",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 높이는 6자이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      12,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-024-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 높이는 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-025-s",
+  "kind": "passage",
+  "text": "제7마을공동체의 높이는 25길입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       16
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      16
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      16
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-025-q",
+  "kind": "question",
+  "text": "제7마을공동체의 높이는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-026-s",
+  "kind": "passage",
+  "text": "은빛강의 높이는 3.2척이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       13
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-026-q",
+  "kind": "question",
+  "text": "은빛강의 높이는 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-027-s",
+  "kind": "passage",
+  "text": "푸른별의 높이는 90치입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-027-q",
+  "kind": "question",
+  "text": "푸른별의 높이는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-028-s",
+  "kind": "passage",
+  "text": "보라집의 높이는 6자이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-028-q",
+  "kind": "question",
+  "text": "보라집의 높이는 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-029-s",
+  "kind": "passage",
+  "text": "하얀숲의 높이는 25길입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-029-q",
+  "kind": "question",
+  "text": "하얀숲의 높이는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-030-c",
+  "kind": "question",
+  "text": "제7마을공동체의 높이는 25길이 맞는가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      16
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      18,
+      21
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       16
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      16
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      16
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      18,
+      21
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-031-c",
+  "kind": "question",
+  "text": "붉은꽃협동회의 높이는 3.2척이 맞나요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      16
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      18,
+      21
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "높이"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       16
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      12,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      12,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      18,
+      21
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-032-s",
+  "kind": "passage",
+  "text": "금빛들판의 절기는 첫서리무렵이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      8
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      10,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       10,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ],
+     [
+      10,
+      15
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ],
+    [
+     [
+      10,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-032-q",
+  "kind": "question",
+  "text": "금빛들판의 절기는 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      8
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      10,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ],
+     [
+      10,
+      12
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-033-s",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 절기는 3월2일~3월9일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      21
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       21
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      12,
+      21
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      12,
+      21
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-033-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 절기는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-034-s",
+  "kind": "passage",
+  "text": "제7마을공동체의 절기는 다음달보름이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       18
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      18
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-034-q",
+  "kind": "question",
+  "text": "제7마을공동체의 절기는 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-035-s",
+  "kind": "passage",
+  "text": "은빛강의 절기는 2031년8월1일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       18
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      18
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-035-q",
+  "kind": "question",
+  "text": "은빛강의 절기는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-036-s",
+  "kind": "passage",
+  "text": "푸른별의 절기는 첫서리무렵이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      14
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-036-q",
+  "kind": "question",
+  "text": "푸른별의 절기는 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-037-s",
+  "kind": "passage",
+  "text": "보라집의 절기는 3월2일~3월9일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       18
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      18
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-037-q",
+  "kind": "question",
+  "text": "보라집의 절기는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-038-c",
+  "kind": "question",
+  "text": "노란달조합의 절기는 3월2일~3월9일이 맞는가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      20
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      22,
+      25
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       20
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ],
+     [
+      11,
+      20
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      11,
+      20
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ],
+     [
+      22,
+      25
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-039-c",
+  "kind": "question",
+  "text": "2031년파란섬정기모임의 절기는 다음달보름이 맞나요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      16
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      18,
+      23
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      25,
+      28
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "절기"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       18,
+       23
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ],
+     [
+      18,
+      23
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ],
+    [
+     [
+      18,
+      23
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ],
+     [
+      25,
+      28
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-040-s",
+  "kind": "passage",
+  "text": "노란달조합의 터전은 구름골이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-040-q",
+  "kind": "question",
+  "text": "노란달조합의 터전은 어디인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-041-s",
+  "kind": "passage",
+  "text": "금빛들판의 터전은 별빛나루입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      8
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      10,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       10,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ],
+     [
+      10,
+      14
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ],
+    [
+     [
+      10,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-041-q",
+  "kind": "question",
+  "text": "금빛들판의 터전은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      8
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      10,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ],
+     [
+      10,
+      12
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-042-s",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 터전은 강변마을이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       16
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      12,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      12,
+      16
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-042-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 터전은 어디인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-043-s",
+  "kind": "passage",
+  "text": "제7마을공동체의 터전은 온누리재입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       17
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-043-q",
+  "kind": "question",
+  "text": "제7마을공동체의 터전은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-044-s",
+  "kind": "passage",
+  "text": "은빛강의 터전은 구름골이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-044-q",
+  "kind": "question",
+  "text": "은빛강의 터전은 어디인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-045-s",
+  "kind": "passage",
+  "text": "푸른별의 터전은 별빛나루입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       13
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-045-q",
+  "kind": "question",
+  "text": "푸른별의 터전은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-046-c",
+  "kind": "question",
+  "text": "초록산제2구역의 터전은 별빛나루가 맞는가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      17
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      19,
+      22
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       17
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      19,
+      22
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-047-c",
+  "kind": "question",
+  "text": "달무리의 터전은 강변마을이 맞나요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      15,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "터전"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       13
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      15,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-048-s",
+  "kind": "passage",
+  "text": "2031년파란섬정기모임의 차례는 셋째이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      16
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      18,
+      20
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       18,
+       20
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ],
+     [
+      18,
+      20
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ],
+    [
+     [
+      18,
+      20
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-048-q",
+  "kind": "question",
+  "text": "2031년파란섬정기모임의 차례는 몇번인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      16
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      18,
+      20
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ],
+     [
+      18,
+      20
+     ]
+    ],
+    [
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-049-s",
+  "kind": "passage",
+  "text": "노란달조합의 차례는 연3회입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-049-q",
+  "kind": "question",
+  "text": "노란달조합의 차례는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      7,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-050-s",
+  "kind": "passage",
+  "text": "금빛들판의 차례는 월2회이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      8
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      10,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       10,
+       13
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ],
+     [
+      10,
+      13
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ],
+    [
+     [
+      10,
+      13
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-050-q",
+  "kind": "question",
+  "text": "금빛들판의 차례는 몇번인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      8
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      10,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ],
+     [
+      10,
+      12
+     ]
+    ],
+    [
+     [
+      6,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-051-s",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 차례는 첫째입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      12,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-051-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 차례는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      8,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-052-s",
+  "kind": "passage",
+  "text": "제7마을공동체의 차례는 셋째이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-052-q",
+  "kind": "question",
+  "text": "제7마을공동체의 차례는 몇번인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-053-s",
+  "kind": "passage",
+  "text": "은빛강의 차례는 연3회입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-053-q",
+  "kind": "question",
+  "text": "은빛강의 차례는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-054-c",
+  "kind": "question",
+  "text": "보라집의 차례는 연3회가 맞는가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      14,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      14,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-055-c",
+  "kind": "question",
+  "text": "푸른별의 차례는 월2회가 맞나요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      14,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "차례"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      14,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-056-s",
+  "kind": "passage",
+  "text": "새벽길의 부름말은 311이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      8
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      10,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       10,
+       13
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      8
+     ]
+    ],
+    [
+     [
+      5,
+      8
+     ],
+     [
+      10,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      10,
+      13
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-056-q",
+  "kind": "question",
+  "text": "새벽길의 부름말은 무엇인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      8
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      10,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      8
+     ]
+    ],
+    [
+     [
+      5,
+      8
+     ],
+     [
+      10,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      8
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-057-s",
+  "kind": "passage",
+  "text": "2031년파란섬정기모임의 부름말은 1588입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      17
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      19,
+      23
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       19,
+       23
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      17
+     ]
+    ],
+    [
+     [
+      14,
+      17
+     ],
+     [
+      19,
+      23
+     ]
+    ],
+    [
+     [
+      14,
+      17
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ],
+    [
+     [
+      19,
+      23
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-057-q",
+  "kind": "question",
+  "text": "2031년파란섬정기모임의 부름말은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      17
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      19,
+      21
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      17
+     ]
+    ],
+    [
+     [
+      14,
+      17
+     ],
+     [
+      19,
+      21
+     ]
+    ],
+    [
+     [
+      14,
+      17
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-058-s",
+  "kind": "passage",
+  "text": "노란달조합의 부름말은 042이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      10
+     ]
+    ],
+    [
+     [
+      7,
+      10
+     ],
+     [
+      12,
+      15
+     ]
+    ],
+    [
+     [
+      7,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      12,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-058-q",
+  "kind": "question",
+  "text": "노란달조합의 부름말은 무엇인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      10
+     ]
+    ],
+    [
+     [
+      7,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      7,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-059-s",
+  "kind": "passage",
+  "text": "금빛들판의 부름말은 909입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      9
+     ]
+    ],
+    [
+     [
+      6,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      6,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-059-q",
+  "kind": "question",
+  "text": "금빛들판의 부름말은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      9
+     ]
+    ],
+    [
+     [
+      6,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      6,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-060-s",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 부름말은 311이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       16
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      11
+     ]
+    ],
+    [
+     [
+      8,
+      11
+     ],
+     [
+      13,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      13,
+      16
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-060-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 부름말은 무엇인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      11
+     ]
+    ],
+    [
+     [
+      8,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      8,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-061-s",
+  "kind": "passage",
+  "text": "제7마을공동체의 부름말은 1588입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       14,
+       18
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ],
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-061-q",
+  "kind": "question",
+  "text": "제7마을공동체의 부름말은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "lang-062-c",
+  "kind": "question",
+  "text": "제7마을공동체의 부름말은 1588가 맞는가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      18
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      20,
+      23
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       14,
+       18
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ],
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ],
+     [
+      20,
+      23
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "lang-063-c",
+  "kind": "question",
+  "text": "붉은꽃협동회의 부름말은 042가 맞나요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      16
+     ]
+    },
+    {
+     "id": "c",
+     "type": "check",
+     "anchor": [
+      18,
+      21
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "부름말"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       16
+      ]
+     }
+    ],
+    [
+     "e",
+     "claim",
+     "c"
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      11
+     ]
+    ],
+    [
+     [
+      8,
+      11
+     ],
+     [
+      13,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      13,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      11
+     ],
+     [
+      18,
+      21
+     ]
+    ]
+   ],
+   "project": []
+  }
+ }
+]

@@ -1,0 +1,653 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "actions",
+  "note": "Predicate surface forms, enumerated. Each form states its voice, polarity and mood as data; the chart scan only matches characters. Forms are enumerated rather than generated because Korean ending contraction is morphophonology this experiment does not model — adding a form is a data change, never a code change. A negative form is matched as a form and emits a row with polarity false; negation is never a dropped row (CONTRACT section 4). Each form also declares its finality: final ends a sentence, nonfinal ends a clause inside one. Both kinds are predicate hits and both close a clause.",
+  "records": [
+    {
+      "key": "action:transfer",
+      "kind": "action",
+      "label": "transfer",
+      "frame": "frame:transfer",
+      "event_nouns": [
+        "전달",
+        "인계",
+        "이전",
+        "전달건",
+        "이동",
+        "전송",
+        "발송"
+      ],
+      "forms": [
+        {
+          "surface": "전달했다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "전달하였다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "전달한다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "인계했다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "넘겼다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "전달하지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "인계하지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "전달되었다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "전달됐다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "전달된다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "인계되었다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "이전되었다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "넘겨졌다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "전달되지 않았다",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "인계되지 않았다",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "전달했고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달하고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달했으며",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달한 뒤",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달한 후",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달하지 않고",
+          "voice": "active",
+          "polarity": false,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "인계했고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "넘겼고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달되었고",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달되고",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달되었으며",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달된 뒤",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "전달되지 않고",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "옮겼다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "옮긴다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "옮기지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "옮겼고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "건넸다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "건네지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "건넸고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "보냈다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "보내지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "보냈고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        }
+      ],
+      "nonfinal_note": "A nonfinal form ends a clause without ending the sentence. Declaring these gives the clause solver a boundary, so a conjoined clause no longer lets the following predicate absorb the preceding clause's arguments. finality is data; the solver only partitions at a predicate hit and never looks at a character itself."
+    },
+    {
+      "key": "action:check",
+      "kind": "action",
+      "label": "check",
+      "frame": "frame:check",
+      "event_nouns": [
+        "확인",
+        "검증",
+        "점검",
+        "확인작업"
+      ],
+      "forms": [
+        {
+          "surface": "확인했다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "확인하였다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "검증했다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "점검했다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "확인하지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "검증하지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "점검하지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "확인되었다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "검증되었다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "확인되지 않았다",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "검증되지 않았다",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "확인했고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "확인하고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "확인했으며",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "확인한 뒤",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "확인한 후",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "확인하지 않고",
+          "voice": "active",
+          "polarity": false,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "검증했고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "점검했고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "확인되었고",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "확인되지 않고",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        }
+      ],
+      "nonfinal_note": "A nonfinal form ends a clause without ending the sentence. Declaring these gives the clause solver a boundary, so a conjoined clause no longer lets the following predicate absorb the preceding clause's arguments. finality is data; the solver only partitions at a predicate hit and never looks at a character itself."
+    },
+    {
+      "key": "action:receive",
+      "kind": "action",
+      "label": "receive",
+      "frame": "frame:receive",
+      "event_nouns": [
+        "수령",
+        "접수"
+      ],
+      "forms": [
+        {
+          "surface": "수령했다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "받았다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "접수했다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "받지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "수령하지 않았다",
+          "voice": "active",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "수령했고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "받았고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "받고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "받은 뒤",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "받지 않고",
+          "voice": "active",
+          "polarity": false,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        }
+      ],
+      "nonfinal_note": "A nonfinal form ends a clause without ending the sentence. Declaring these gives the clause solver a boundary, so a conjoined clause no longer lets the following predicate absorb the preceding clause's arguments. finality is data; the solver only partitions at a predicate hit and never looks at a character itself."
+    },
+    {
+      "key": "action:discover",
+      "kind": "action",
+      "label": "discover",
+      "frame": "frame:discover",
+      "event_nouns": [
+        "발견"
+      ],
+      "forms": [
+        {
+          "surface": "발견했다",
+          "voice": "active",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "발견되었다",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "발견되지 않았다",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "발견했고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "발견하고",
+          "voice": "active",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "발견되었고",
+          "voice": "passive",
+          "polarity": true,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        },
+        {
+          "surface": "발견되지 않고",
+          "voice": "passive",
+          "polarity": false,
+          "mood": "nonfinal",
+          "finality": "nonfinal"
+        }
+      ],
+      "nonfinal_note": "A nonfinal form ends a clause without ending the sentence. Declaring these gives the clause solver a boundary, so a conjoined clause no longer lets the following predicate absorb the preceding clause's arguments. finality is data; the solver only partitions at a predicate hit and never looks at a character itself."
+    },
+    {
+      "key": "action:identify",
+      "kind": "action",
+      "label": "identify",
+      "frame": "frame:identify",
+      "event_nouns": [],
+      "forms": [
+        {
+          "surface": "이다",
+          "voice": "stative",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "였다",
+          "voice": "stative",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "이었다",
+          "voice": "stative",
+          "polarity": true,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "아니다",
+          "voice": "stative",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        },
+        {
+          "surface": "아니었다",
+          "voice": "stative",
+          "polarity": false,
+          "mood": "declarative",
+          "finality": "final"
+        }
+      ],
+      "host_must_not_end_with": [
+        "하",
+        "되",
+        "지",
+        "시",
+        "추",
+        "오",
+        "주",
+        "두"
+      ],
+      "host_note": "이다 and 였다 also end many inflected verbs. A copula hit is dropped when the characters before it inside the same chunk end with one of these stem endings, so 발송하였다 is not read as 발송하 plus a copula. The list is small and admittedly incomplete: an undeclared verb still leaves its clause unresolved rather than producing a wrong copular reading, which is the behaviour CONTRACT C8 asks for.",
+      "requires_nonempty_host": true
+    }
+  ]
+}

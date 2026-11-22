@@ -56,7 +56,7 @@ empty axioms. The original fixed 25 cases and three new prior-cache faults passe
 once on the frozen private candidate and once after byte-exact main relocation.
 These are the same 28 finite developer checks, not 56 independent cases or a
 fresh accuracy score. The initial three faulty wrapper results and HOST setup
-failure are preserved. Both Fable CLI sessions exited on their requested budget
+failure are preserved. Both model C CLI sessions exited on their requested budget
 caps; their completed edits were separately reviewed and tested, and model exits
 were not relabeled successful.
 

@@ -1,0 +1,159 @@
+{
+ "schema": "graph-field-facts-v1",
+ "facts": [
+  {
+   "id": "F01",
+   "subject": "일반과세자",
+   "property": "세율",
+   "value": "10%",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7693&mi=2272",
+    "as_of": "2026-11-19",
+    "scope": "부가가치세 일반세율; 영세율·면세 등 예외 제외"
+   }
+  },
+  {
+   "id": "F02",
+   "subject": "일반과세자",
+   "property": "과세기간",
+   "value": "6개월",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7694&mi=2273",
+    "as_of": "2026-11-19",
+    "scope": "부가가치세 일반 계속사업자 과세기간"
+   }
+  },
+  {
+   "id": "F03",
+   "subject": "개인일반사업자",
+   "property": "신고횟수",
+   "value": "연2회",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7694&mi=2273",
+    "as_of": "2026-11-19",
+    "scope": "통상 부가가치세 정기신고; 특례 제외"
+   }
+  },
+  {
+   "id": "F04",
+   "subject": "법인사업자",
+   "property": "신고횟수",
+   "value": "연4회",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7694&mi=2273",
+    "as_of": "2026-11-19",
+    "scope": "통상 부가가치세 신고; 소규모법인 예정고지 등 특례 제외"
+   }
+  },
+  {
+   "id": "F05",
+   "subject": "일반과세자제1기확정신고",
+   "property": "신고기간",
+   "value": "7월1일~7월25일",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7694&mi=2273",
+    "as_of": "2026-11-19",
+    "scope": "일반 법정기간; 토요일/공휴일/연장 시 실제기한 달라짐"
+   }
+  },
+  {
+   "id": "F06",
+   "subject": "일반과세자제2기확정신고",
+   "property": "신고기간",
+   "value": "다음해1월1일~1월25일",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7694&mi=2273",
+    "as_of": "2026-11-19",
+    "scope": "일반 법정기간; 토요일/공휴일/연장 예외"
+   }
+  },
+  {
+   "id": "F07",
+   "subject": "간이과세자",
+   "property": "신고기간",
+   "value": "다음해1월1일~1월25일",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7694&mi=2273",
+    "as_of": "2026-11-19",
+    "scope": "일반 계속사업자 정기신고; 전환·세금계산서발급 중간신고 예외 별도"
+   }
+  },
+  {
+   "id": "F08",
+   "subject": "사업자등록",
+   "property": "신청기한",
+   "value": "사업개시일부터20일이내",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7776&mi=2444",
+    "as_of": "2026-11-19",
+    "scope": "사업장별 신청; 개시 전 신청도 가능"
+   }
+  },
+  {
+   "id": "F09",
+   "subject": "사업자등록",
+   "property": "신청경로",
+   "value": "홈택스",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7806&mi=2486",
+    "as_of": "2026-11-19",
+    "scope": "온라인 신청경로; 세무서 방문도 가능"
+   }
+  },
+  {
+   "id": "F10",
+   "subject": "국세상담센터",
+   "property": "상담전화",
+   "value": "126",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7776&mi=2444",
+    "as_of": "2026-11-19",
+    "scope": "국번없이 국세상담"
+   }
+  },
+  {
+   "id": "F11",
+   "subject": "종합소득세일반신고",
+   "property": "신고기간",
+   "value": "다음해5월1일~5월31일",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7665&mi=2225",
+    "as_of": "2026-11-19",
+    "scope": "원칙적 법정기간; 성실신고확인서 제출/휴일/연장 예외"
+   }
+  },
+  {
+   "id": "F12",
+   "subject": "2025년귀속종합소득세일반신고",
+   "property": "신고기한",
+   "value": "2026년6월1일",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7665&mi=2225",
+    "as_of": "2026-11-19",
+    "scope": "일반 신고기한; 개별 특수사유 제외; 납부직권연장과 신고 구분"
+   }
+  },
+  {
+   "id": "F13",
+   "subject": "성실신고확인서제출자",
+   "property": "신고기한",
+   "value": "다음해6월30일",
+   "source": {
+    "url": "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7665&mi=2225",
+    "as_of": "2026-11-19",
+    "scope": "종합소득세 일반법정기한; 개별연장 별도"
+   }
+  },
+  {
+   "id": "F14",
+   "subject": "2026년제1기부가가치세확정신고",
+   "property": "신고기한",
+   "value": "2026년7월27일",
+   "source": {
+    "url": "https://www.nts.go.kr/gangseo/na/ntt/selectNttInfo.do?mi=5512&nttSn=1353291",
+    "as_of": "2026-11-19",
+    "scope": "2026년 공지 일반신고납부기한; 개별연장 별도"
+   }
+  }
+ ]
+}

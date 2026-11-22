@@ -1,0 +1,196 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "verification-policy",
+  "note": "What counts as independent checking. Only a matched checking action is verification-eligible; a report of a check is a reported claim and answers nothing (CONTRACT C5). The saved diagnosis reached checker-object binding zero times because the route demanded a single-token actor; here actor and object are ordinary character spans, so a multiword checker binds like any other value (CORE-STATUS F7).",
+  "records": [
+    {
+      "key": "verification:checks_evidence_object_entity",
+      "kind": "verification_evidence",
+      "comparator": "shared_role_entity",
+      "comparator_args": {
+        "roles": [
+          "object",
+          "checking_object"
+        ]
+      },
+      "sufficiency": "insufficient_alone",
+      "label": "checking_object_entity_identity"
+    },
+    {
+      "key": "verification:checks_evidence_object_value",
+      "kind": "verification_evidence",
+      "comparator": "shared_role_value",
+      "comparator_args": {
+        "roles": [
+          "object",
+          "checking_object"
+        ]
+      },
+      "sufficiency": "insufficient_alone",
+      "label": "checking_object_value_match"
+    },
+    {
+      "key": "verification:checks_evidence_event_reference",
+      "kind": "verification_evidence",
+      "comparator": "demonstrative_plus_event_noun",
+      "comparator_args": {
+        "determiner_class": "demonstrative"
+      },
+      "sufficiency": "sufficient",
+      "label": "explicit_event_reference",
+      "note": "그 전달을 확인했다 names what was checked."
+    },
+    {
+      "key": "verification:composed_nominal",
+      "kind": "verification_evidence",
+      "comparator": "demonstrative_composed_stem",
+      "comparator_args": {
+        "determiner_class": "demonstrative",
+        "roles": [
+          "checking_object"
+        ],
+        "grammar": "morphology:do_verb"
+      },
+      "sufficiency": "supporting",
+      "label": "composed_nominal_reference"
+    },
+    {
+      "key": "verification:generic_event_head",
+      "kind": "verification_evidence",
+      "comparator": "demonstrative_event_head",
+      "comparator_args": {
+        "determiner_class": "demonstrative",
+        "noun_class": "event_head",
+        "roles": [
+          "checking_object"
+        ]
+      },
+      "sufficiency": "sufficient",
+      "label": "generic_event_reference"
+    },
+    {
+      "key": "verification:generic_head_entity_rival",
+      "kind": "verification_evidence",
+      "comparator": "event_head_entity_rival",
+      "comparator_args": {
+        "determiner_class": "demonstrative",
+        "noun_class": "event_head",
+        "roles": [
+          "checking_object"
+        ]
+      },
+      "sufficiency": "blocking",
+      "label": "event_head_entity_rival"
+    },
+    {
+      "key": "verification:nominal_entity_rival",
+      "kind": "verification_evidence",
+      "comparator": "demonstrative_nominal_entity_rival",
+      "comparator_args": {
+        "determiner_class": "demonstrative",
+        "roles": [
+          "checking_object"
+        ],
+        "grammar": "morphology:do_verb",
+        "head_boundary_mark": "space"
+      },
+      "sufficiency": "supporting",
+      "label": "nominal_entity_rival"
+    },
+    {
+      "key": "verification:rules",
+      "kind": "policy",
+      "link": "verified_by",
+      "candidate_link": "verified_by_candidate",
+      "checks_link": "checks",
+      "requires_scope_kind": "checking_action",
+      "forbidden_source_scopes": [
+        "reported_claim",
+        "attribution",
+        "quoted_text",
+        "interrogative"
+      ],
+      "accept_rules": [
+        {
+          "id": "verification:rule_named",
+          "all_of": [
+            "explicit_event_reference"
+          ]
+        },
+        {
+          "id": "verification:rule_generic_event",
+          "all_of": [
+            "generic_event_reference"
+          ]
+        },
+        {
+          "id": "verification:rule_composed_nominal",
+          "all_of": [
+            "composed_nominal_reference"
+          ]
+        }
+      ],
+      "candidate_rules": [
+        {
+          "id": "verification:candidate_object",
+          "any_of": [
+            "checking_object_entity_identity",
+            "checking_object_value_match"
+          ]
+        },
+        {
+          "id": "verification:candidate_composed_nominal",
+          "any_of": [
+            "composed_nominal_reference",
+            "event_head_entity_rival"
+          ]
+        },
+        {
+          "id": "verification:candidate_nominal_entity_rival",
+          "all_of": [
+            "nominal_entity_rival"
+          ]
+        }
+      ],
+      "note": "Three channels, kept apart. OCCURRENCE: whether the checking action happened, taken from the predicate's polarity — occurred or not_performed. RESULT: what the text says the check found, taken only from a declared result form that is structurally attached to the checking construction; a bare 확인했다 leaves it unstated, and a negated check is never denied. INDEPENDENT RESULT: the result as evidence about a particular target.\nA check whose occurrence is not_performed produces no verified_by link at all: a check that did not happen is the same epistemic situation as no check, which CONTRACT C5 calls a hold.\nIndependence is a property of the CHECK and of the TARGET BINDING, not of how the target was first introduced. independent_result_requires therefore asks that the check itself be stated directly rather than inside a report, that a result be explicitly expressed, and that the target binding be unique. A directly evidenced explicit result about an event that a report introduced is independent evidence about that event, and is published while the report's own claim and scope are preserved. A reported check is never independent, and a bare check states no result.\nA reference expression can be positive evidence without identifying one target. Where one check reaches more than one target under the same reference, every binding is kept as a candidate — none is asserted — until something distinguishes them.",
+      "occurrence_from_polarity": {
+        "true": "occurred",
+        "false": "not_performed"
+      },
+      "requires_occurrence": "occurred",
+      "result_from_form_class": {
+        "result_positive": "confirmed",
+        "result_negative": "denied"
+      },
+      "result_default": "unstated",
+      "result_when_not_performed": "unstated",
+      "record_target_scope": true,
+      "no_checking_action": "unstated",
+      "result_values": [
+        "confirmed",
+        "denied",
+        "unstated"
+      ],
+      "occurrence_values": [
+        "occurred",
+        "not_performed"
+      ],
+      "channel_note": "checking_outcome is closed over confirmed / denied / unstated and is only ever about a RESULT. A check that did not happen has no result, so its outcome is unstated, not denied and not a value of its own: that the action did not happen is said by checking_occurred = not_performed and by [event, 'polarity', 'false']. Keeping not_performed out of the outcome enumeration stops a consumer reading it as a finding.",
+      "unique_target_required": true,
+      "on_multiple_targets": "candidate",
+      "independent_result_requires": [
+        "check_scope_direct",
+        "explicit_result_form",
+        "unique_target_binding"
+      ],
+      "independent_result_default": "unstated",
+      "on_competing_result_forms": "conflicting",
+      "result_form_attachment": {
+        "must_start_at_chunk_start": true,
+        "must_end_at_declared_boundary": true,
+        "must_not_overlap_a_role_value": true,
+        "note": "A result form counts only where it is attached to the checking construction: it must begin a chunk, end at a declared boundary form or at the predicate, and not lie inside a span already bound as a role value. Without this a name that merely contains a result form — an object called 사실로재단 — invented a finding. The test is structural and character-exact; no word is blacklisted."
+      }
+    }
+  ]
+}

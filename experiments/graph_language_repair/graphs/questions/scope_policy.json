@@ -1,0 +1,154 @@
+{
+  "schema": "graph-language-repair-question-scope-policy-v1",
+  "comment": "Declares, per intent, which response template applies to each gate failure and to each observed value on the 'case' dimension select.py reports (see plans.json case_priority). respond.py performs lookup only: gate name -> template, or (case, observed value) -> template. The mapping is the semantic decision; Python never branches on scope_kind/checking_outcome literals itself.",
+  "gates": {
+    "source_question": {
+      "no_value_slot": "source_question_ambiguous_target",
+      "ambiguous_value_slot": "source_question_ambiguous_target",
+      "no_event_match": "source_question_hold",
+      "conflicting_constraints": "source_question_hold",
+      "no_answer_row": "source_question_hold",
+      "multiple_answers": "source_question_multiple",
+      "multiple_sources": "multiple_sources"
+    },
+    "occurrence_question": {
+      "no_value_slot": "occurrence_ambiguous_target",
+      "ambiguous_value_slot": "occurrence_ambiguous_target",
+      "no_event_match": "occurrence_hold",
+      "conflicting_constraints": "occurrence_hold",
+      "no_answer_row": "occurrence_hold",
+      "multiple_answers": "occurrence_multiple",
+      "multiple_sources": "multiple_sources",
+      "nonassertive_scope": "nonassertive_scope"
+    },
+    "verification_question": {
+      "no_answer_row": "verification_hold",
+      "multiple_answers": "verification_multiple",
+      "multiple_sources": "multiple_sources",
+      "nonassertive_scope": "nonassertive_scope"
+    },
+    "event_role_question": {
+      "no_value_slot": "event_role_hold",
+      "ambiguous_value_slot": "event_role_hold",
+      "no_event_match": "event_role_hold",
+      "conflicting_constraints": "event_role_conflicting_constraints",
+      "no_answer_row": "event_role_hold",
+      "multiple_answers": "event_role_multiple",
+      "ambiguous_reading": "event_role_ambiguous_reading",
+      "multiple_sources": "multiple_sources",
+      "nonassertive_scope": "nonassertive_scope"
+    },
+    "checking_role_question": {
+      "no_value_slot": "event_role_hold",
+      "ambiguous_value_slot": "event_role_hold",
+      "no_event_match": "event_role_hold",
+      "conflicting_constraints": "event_role_conflicting_constraints",
+      "no_answer_row": "event_role_hold",
+      "multiple_answers": "event_role_multiple",
+      "ambiguous_reading": "event_role_ambiguous_reading",
+      "multiple_sources": "multiple_sources",
+      "nonassertive_scope": "nonassertive_scope"
+    },
+    "proposition_question": {
+      "no_value_slot": "event_role_hold",
+      "ambiguous_value_slot": "event_role_hold",
+      "no_event_match": "event_role_hold",
+      "conflicting_constraints": "event_role_hold",
+      "no_answer_row": "event_role_hold",
+      "incomplete_search": "event_role_hold",
+      "ambiguous_reading": "event_role_hold",
+      "multiple_answers": "event_role_multiple",
+      "multiple_sources": "multiple_sources",
+      "nonassertive_scope": "nonassertive_scope"
+    },
+    "checking_occurrence_question": {
+      "no_answer_row": "verification_hold",
+      "multiple_answers": "verification_multiple",
+      "multiple_sources": "multiple_sources",
+      "nonassertive_scope": "nonassertive_scope"
+    }
+  },
+  "by_case": {
+    "source_question": {
+      "reporter": {
+        "any_value": "source_question_answer"
+      }
+    },
+    "occurrence_question": {
+      "checked_outcome": {
+        "confirmed": "occurrence_checked_confirmed",
+        "denied": "occurrence_checked_denied",
+        "unstated": "occurrence_checked_unstated",
+        "action_not_performed": "occurrence_checked_action_not_performed",
+        "ambiguous_polarity": "occurrence_checked_ambiguous_polarity",
+        "conflicting": "occurrence_conflicting"
+      },
+      "scope_kind": {
+        "direct_text": "occurrence_direct_text",
+        "attribution": "occurrence_reported_only_with_reporter",
+        "reported_claim": "occurrence_reported_only_with_reporter",
+        "checking_action": "occurrence_checking_scope_without_outcome"
+      }
+    },
+    "verification_question": {
+      "outcome": {
+        "confirmed": "verification_confirmed",
+        "denied": "verification_denied",
+        "unstated": "verification_unstated",
+        "action_not_performed": "verification_action_not_performed",
+        "ambiguous_polarity": "verification_ambiguous_polarity",
+        "conflicting": "verification_conflicting"
+      }
+    },
+    "event_role_question": {
+      "answer": {
+        "any_value": "event_role_answer",
+        "event_negated": "event_role_answer_negated",
+        "event_conflict": "event_role_conflict"
+      }
+    },
+    "checking_role_question": {
+      "answer": {
+        "any_value": "event_role_answer",
+        "event_negated": "event_role_answer_negated",
+        "event_conflict": "event_role_conflict"
+      }
+    },
+    "proposition_question": {
+      "polarity": {
+        "true": "proposition_true",
+        "false": "proposition_false",
+        "conflicting": "proposition_conflicting"
+      }
+    },
+    "checking_occurrence_question": {
+      "checking_occurrence": {
+        "occurred": "check_occurred",
+        "not_performed": "check_not_performed"
+      }
+    }
+  },
+  "no_reporter_fallback": {
+    "occurrence_reported_only_with_reporter": "occurrence_reported_only_no_reporter"
+  },
+  "attributed_templates": {
+    "event_role_answer": "event_role_reported",
+    "event_role_answer_negated": "event_role_reported_negated",
+    "verification_confirmed": "verification_reported_confirmed",
+    "verification_denied": "verification_reported_denied",
+    "verification_unstated": "verification_reported_unstated",
+    "verification_action_not_performed": "verification_reported_not_performed",
+    "verification_conflicting": "verification_reported_conflicting",
+    "proposition_true": "proposition_reported_true",
+    "proposition_false": "proposition_reported_false",
+    "proposition_conflicting": "proposition_reported_conflicting",
+    "check_occurred": "check_occurred_reported",
+    "check_not_performed": "check_not_performed_reported",
+    "event_role_answer_requested_negative": "event_role_reported_requested_negative"
+  },
+  "requested_polarity_templates": {
+    "false": {
+      "event_role_answer": "event_role_answer_requested_negative"
+    }
+  }
+}

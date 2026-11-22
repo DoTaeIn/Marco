@@ -1,0 +1,150 @@
+{
+  "schema": "graph-language-repair-graph-v1",
+  "file": "chart-marks",
+  "note": "Character-coordinate chart data. Every form here is matched by position over the Unicode code points of the text; nothing is tokenised by whitespace. A form is data, the scan is generic mechanics.",
+  "records": [
+    {
+      "key": "chart:space",
+      "kind": "mark_class",
+      "role": "space",
+      "forms": [
+        " ",
+        "\t",
+        "\n",
+        " ",
+        "　"
+      ]
+    },
+    {
+      "key": "chart:segment_ender",
+      "kind": "mark_class",
+      "role": "segment_ender",
+      "note": "A segment boundary falls after the form. The form itself stays inside the segment.",
+      "forms": [
+        ".",
+        "?",
+        "!",
+        "。",
+        "？",
+        "！"
+      ]
+    },
+    {
+      "key": "chart:trim",
+      "kind": "mark_class",
+      "role": "trim",
+      "note": "Stripped from the edges of a value span before the span is recorded. Trimming only moves the span edges; the retained span is still exact.",
+      "forms": [
+        " ",
+        "\t",
+        "\n",
+        ",",
+        "，",
+        "·",
+        ";",
+        ":",
+        "“",
+        "”",
+        "\"",
+        "'",
+        "‘",
+        "’",
+        "(",
+        ")"
+      ]
+    },
+    {
+      "key": "chart:boundary_after_marker",
+      "kind": "mark_class",
+      "role": "boundary_after_marker",
+      "note": "A marker form is an eligible marker hit only when what follows it is one of these, or the end of the segment. This is a declared boundary cue, not a tokenisation: a value span may still cover many chunks.",
+      "forms": [
+        " ",
+        "\t",
+        "\n",
+        ",",
+        "，",
+        ".",
+        "?",
+        "!",
+        "。",
+        "”",
+        "\"",
+        ")",
+        "·",
+        ";",
+        ":"
+      ]
+    },
+    {
+      "key": "chart:chunk_policy",
+      "kind": "policy",
+      "role": "chunk",
+      "note": "A chunk is a maximal run of non-space characters. Chunks are used for two things only: deciding where a marker may attach, and offering nested mention starts. No role is read off a chunk count.",
+      "marker_requires_boundary_after": true,
+      "marker_requires_nonempty_host": true,
+      "value_span_starts_at": "previous_consumed_end",
+      "value_span_ends_at": "marker_start",
+      "closing_outranks_internal": true,
+      "omit_no_marker_option_when_closing_candidate": true,
+      "resolution_note": "Among overlapping eligible marker hits the longest form is kept, and a closing form outranks an internal one at equal length. This removes only subsumption and spelling alternatives, so a longer case form is never shadowed by a shorter form it contains. Genuine class ambiguity — one marker form carrying several syntactic classes — is never resolved here and still yields competing readings (CONTRACT C6).",
+      "overlap_resolution": "longest_form_wins",
+      "marker_blocking_form_classes": [
+        "demonstrative"
+      ],
+      "blocking_note": "A marker hit is dropped when the chunk it ends is itself a declared form of one of these classes. 같은 and 동일한 end in characters that are also markers; without this the determiner would be split into a bogus value and a case marker. The test is character equality against declared forms, so it adds no guessing.",
+      "extend_closing_marker_over_internal_forms": true,
+      "extension_note": "A closing marker immediately followed by an internal marker takes the internal form into its own span instead of leaving it to the next value. 에서부터 therefore closes a value as an ablative rather than failing the boundary test and losing the origin altogether."
+    },
+    {
+      "key": "chart:marker_host_block",
+      "kind": "marker_host_policy",
+      "role": "marker_host",
+      "note": "A marker form may also be a verb ending. A hit is dropped when the characters before it inside its own chunk end with a declared stem ending, so the adnominal -는 of 있는 is not read as a topic marker leaving the fragment 있 as a value. The inventory is declared, character-exact and admittedly incomplete; what it cannot catch leaves a clause unresolved rather than asserting a morpheme as a value.",
+      "rules": [
+        {
+          "id": "chart:host_block_adnominal",
+          "marker_classes": [
+            "topic"
+          ],
+          "host_ends_with": [
+            "있",
+            "없",
+            "하",
+            "되",
+            "같",
+            "않",
+            "크",
+            "작",
+            "오",
+            "가는",
+            "받",
+            "주",
+            "보"
+          ],
+          "because": "adnominal -는 / -은 on a verb or adjective stem is not a topic marker"
+        },
+        {
+          "id": "chart:host_block_nominaliser",
+          "marker_classes": [
+            "nominative"
+          ],
+          "host_ends_with": [
+            "하",
+            "되",
+            "않"
+          ],
+          "because": "the -이 of a nominalised verb is not a nominative marker"
+        }
+      ]
+    },
+    {
+      "key": "chart:bound_form_attachment",
+      "kind": "policy",
+      "role": "bound_form",
+      "must_start_at_chunk_start": true,
+      "must_end_at_declared_boundary": true,
+      "note": "Where a frame binds a declared form class to a role, the form counts only if it begins a chunk and ends at a declared boundary form or at the predicate. A name that merely contains the form fails both tests, so a finding cannot be invented out of a substring."
+    }
+  ]
+}

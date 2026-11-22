@@ -1,0 +1,57 @@
+{
+ "schema": "graph-reading-recipe-v1",
+ "note": "Which counts decide what, and the conventions the engine follows. This file is copied into every language pack when it is built; the engine reads it from the pack. Editing the pack changes how the system reads without touching code.",
+ "conventions": {
+  "claim_predicate": "claim",
+  "sentence_kinds": [
+   {"kind": "claims", "when": {"has_predicate": "claim"}},
+   {"kind": "asks", "when": {"asks_for_something": true}},
+   {"kind": "states"}
+  ],
+  "name_matching": [
+   {"rule": "same", "meaning": "the same text"},
+   {"rule": "other_name", "meaning": "another name for it, from the word pack"},
+   {"rule": "without_spaces", "meaning": "the same text once blank space is removed", "reported": true},
+   {"rule": "leading_words", "meaning": "the question's name ends with the passage's name after a space; the words in front are reported", "reported": true}
+  ],
+  "executor_search_stops": [
+   "candidate-context search incomplete or no evidence",
+   "projected-role witness incomplete",
+   "structural candidate search incomplete or no evidence",
+   "native search incomplete or no evidence"
+  ]
+ },
+ "recipe": {
+  "connector": [
+   {"what": "connecting piece after a {previous}", "table": "gap_after", "given": "previous", "label": "connector", "piece": "connector", "marks": "follows"},
+   {"what": "what follows this piece", "table": "kind_after", "given": "connector", "label": "next", "piece": "next", "needs": "next"}
+  ],
+  "connector_broader": {"when_unseen": "gap_after", "what": "connecting piece after a {type}", "table": "gap_after_type", "given": "type", "label": "connector", "piece": "connector"},
+  "meaning": {
+   "head": {"candidates": {"table": "head", "given": "surface"}, "rules": [
+    {"what": "meaning of a fixed word", "table": "head", "given": "surface", "label": "meaning", "piece": "surface"}]},
+   "stem": {"candidates": {"table": "stem", "given": "stem"}, "rules": [
+    {"what": "meaning of a fixed word", "table": "stem", "given": "stem", "label": "meaning", "piece": "surface"},
+    {"what": "word ending", "table": "ending", "given": "*", "label": "ending", "piece": "ending"}]},
+   "closed": {"candidates": {"table": "closed", "given": "surface"}, "rules": [
+    {"what": "meaning of a fixed word", "table": "closed", "given": "surface", "label": "meaning", "piece": "surface"}]},
+   "value": {"candidates": {"table": "value_type", "given": "right_connector", "if_none": "unknown", "meaning_is": "type"}, "rules": [
+    {"what": "kind of a free value", "table": "value_type", "given": "right_connector", "label": "meaning", "piece": "surface"},
+    {"special": "length"}]}
+  },
+  "argument": {
+   "always": [
+    {"what": "which head", "table": "attach", "given": "*", "label": "head_offset", "piece": "surface", "shown": "head {head_surface!r} (offset {head_offset})"}],
+   "own": {"applies_to": "closed", "rules": [
+    {"what": "role of this fixed word", "table": "role_surface", "given": "surface", "label": "role", "piece": "surface"}]},
+   "context": [
+    {"what": "role from the piece after it", "table": "role_right", "given": "right_connector", "label": "role", "piece": "surface"},
+    {"what": "role from the piece before it", "table": "role_left", "given": "left_connector", "label": "role", "piece": "surface"}]
+  },
+  "head": [
+   {"what": "set of roles for this head", "table": "frame", "given": "head_meaning", "label": "roles", "piece": "head_surface"}],
+  "sentence": [
+   {"what": "what a sentence closed this way does", "table": "closes", "given": "closing", "label": "does", "piece": "closing"},
+   {"what": "what a sentence with this word does", "table": "head_in", "given": "head_surface", "label": "does", "piece": "head_surface", "only_if_known": true, "each": "head"}]
+ }
+}

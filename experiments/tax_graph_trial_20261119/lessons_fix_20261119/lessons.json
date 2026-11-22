@@ -1,0 +1,10178 @@
+[
+ {
+  "id": "fix-000-p",
+  "kind": "passage",
+  "text": "푸른별의 세율은 7%이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-000-q",
+  "kind": "question",
+  "text": "푸른별의 세율은 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-001-p",
+  "kind": "passage",
+  "text": "보라집의 세율은 4%입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-001-q",
+  "kind": "question",
+  "text": "보라집의 세율은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-002-p",
+  "kind": "passage",
+  "text": "하얀숲의 세율은 12%이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      12
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      12
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      12
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-002-q",
+  "kind": "question",
+  "text": "하얀숲의 세율은 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-003-p",
+  "kind": "passage",
+  "text": "달무리의 세율은 2.5%입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       13
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-003-q",
+  "kind": "question",
+  "text": "달무리의 세율은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-004-p",
+  "kind": "passage",
+  "text": "초록산제2구역의 세율은 7%이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      13,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-004-q",
+  "kind": "question",
+  "text": "초록산제2구역의 세율은 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-005-p",
+  "kind": "passage",
+  "text": "새벽길의 세율은 4%입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       9,
+       11
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      9,
+      11
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-005-q",
+  "kind": "question",
+  "text": "새벽길의 세율은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      7
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      9,
+      11
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "세율"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ],
+     [
+      9,
+      11
+     ]
+    ],
+    [
+     [
+      5,
+      7
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-006-p",
+  "kind": "passage",
+  "text": "은빛강의 과세기간은 3개월이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-006-q",
+  "kind": "question",
+  "text": "은빛강의 과세기간은 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-007-p",
+  "kind": "passage",
+  "text": "푸른별의 과세기간은 1년입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       13
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      13
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-007-q",
+  "kind": "question",
+  "text": "푸른별의 과세기간은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-008-p",
+  "kind": "passage",
+  "text": "보라집의 과세기간은 9개월이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-008-q",
+  "kind": "question",
+  "text": "보라집의 과세기간은 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-009-p",
+  "kind": "passage",
+  "text": "하얀숲의 과세기간은 2주입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       13
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      13
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-009-q",
+  "kind": "question",
+  "text": "하얀숲의 과세기간은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-010-p",
+  "kind": "passage",
+  "text": "달무리의 과세기간은 3개월이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-010-q",
+  "kind": "question",
+  "text": "달무리의 과세기간은 얼마인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-011-p",
+  "kind": "passage",
+  "text": "초록산제2구역의 과세기간은 1년입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       15,
+       17
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      15,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-011-q",
+  "kind": "question",
+  "text": "초록산제2구역의 과세기간은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "과세기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-012-p",
+  "kind": "passage",
+  "text": "제7마을공동체의 신고횟수는 연3회이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       15,
+       18
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      18
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      15,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-012-q",
+  "kind": "question",
+  "text": "제7마을공동체의 신고횟수는 몇회인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-013-p",
+  "kind": "passage",
+  "text": "은빛강의 신고횟수는 연1회입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-013-q",
+  "kind": "question",
+  "text": "은빛강의 신고횟수는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-014-p",
+  "kind": "passage",
+  "text": "푸른별의 신고횟수는 월2회이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-014-q",
+  "kind": "question",
+  "text": "푸른별의 신고횟수는 몇회인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-015-p",
+  "kind": "passage",
+  "text": "보라집의 신고횟수는 연6회입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-015-q",
+  "kind": "question",
+  "text": "보라집의 신고횟수는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-016-p",
+  "kind": "passage",
+  "text": "하얀숲의 신고횟수는 연3회이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-016-q",
+  "kind": "question",
+  "text": "하얀숲의 신고횟수는 몇회인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-017-p",
+  "kind": "passage",
+  "text": "달무리의 신고횟수는 연1회입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       14
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      14
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      14
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-017-q",
+  "kind": "question",
+  "text": "달무리의 신고횟수는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고횟수"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-018-p",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 신고기간은 3월2일~3월9일이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      23
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       14,
+       23
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      23
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      14,
+      23
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-018-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 신고기간은 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-019-p",
+  "kind": "passage",
+  "text": "제7마을공동체의 신고기간은 다음달1일~10일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      24
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       15,
+       24
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      24
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      15,
+      24
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-019-q",
+  "kind": "question",
+  "text": "제7마을공동체의 신고기간은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-020-p",
+  "kind": "passage",
+  "text": "은빛강의 신고기간은 9월1일~9월15일이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      21
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       21
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      21
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      21
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-020-q",
+  "kind": "question",
+  "text": "은빛강의 신고기간은 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-021-p",
+  "kind": "passage",
+  "text": "푸른별의 신고기간은 매년2월입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      15
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-021-q",
+  "kind": "question",
+  "text": "푸른별의 신고기간은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-022-p",
+  "kind": "passage",
+  "text": "보라집의 신고기간은 3월2일~3월9일이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      20
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       20
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      20
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      20
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-022-q",
+  "kind": "question",
+  "text": "보라집의 신고기간은 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-023-p",
+  "kind": "passage",
+  "text": "하얀숲의 신고기간은 다음달1일~10일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      20
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       20
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      20
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      20
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-023-q",
+  "kind": "question",
+  "text": "하얀숲의 신고기간은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기간"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-024-p",
+  "kind": "passage",
+  "text": "금빛들판의 신청기한은 개업일부터7일이내이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      21
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       21
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ],
+     [
+      12,
+      21
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ],
+    [
+     [
+      12,
+      21
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-024-q",
+  "kind": "question",
+  "text": "금빛들판의 신청기한은 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-025-p",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 신청기한은 다음달10일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      20
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       14,
+       20
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      20
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      14,
+      20
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-025-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 신청기한은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-026-p",
+  "kind": "passage",
+  "text": "제7마을공동체의 신청기한은 접수후30일이내이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      23
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       15,
+       23
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      23
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      15,
+      23
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-026-q",
+  "kind": "question",
+  "text": "제7마을공동체의 신청기한은 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-027-p",
+  "kind": "passage",
+  "text": "은빛강의 신청기한은 2031년4월2일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      20
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       20
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      20
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      20
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-027-q",
+  "kind": "question",
+  "text": "은빛강의 신청기한은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-028-p",
+  "kind": "passage",
+  "text": "푸른별의 신청기한은 개업일부터7일이내이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      20
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       20
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      20
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      20
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-028-q",
+  "kind": "question",
+  "text": "푸른별의 신청기한은 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-029-p",
+  "kind": "passage",
+  "text": "보라집의 신청기한은 다음달10일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       17
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      17
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-029-q",
+  "kind": "question",
+  "text": "보라집의 신청기한은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-030-p",
+  "kind": "passage",
+  "text": "노란달조합의 신청경로는 구름창구이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       17
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ],
+     [
+      13,
+      17
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      13,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-030-q",
+  "kind": "question",
+  "text": "노란달조합의 신청경로는 어디인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-031-p",
+  "kind": "passage",
+  "text": "금빛들판의 신청경로는 별빛누리입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       16
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ],
+     [
+      12,
+      16
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ],
+    [
+     [
+      12,
+      16
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-031-q",
+  "kind": "question",
+  "text": "금빛들판의 신청경로는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-032-p",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 신청경로는 강변민원실이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      19
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       14,
+       19
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      19
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      14,
+      19
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-032-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 신청경로는 어디인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-033-p",
+  "kind": "passage",
+  "text": "제7마을공동체의 신청경로는 온누리센터입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      20
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       15,
+       20
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      20
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      15,
+      20
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-033-q",
+  "kind": "question",
+  "text": "제7마을공동체의 신청경로는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-034-p",
+  "kind": "passage",
+  "text": "은빛강의 신청경로는 구름창구이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      15
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-034-q",
+  "kind": "question",
+  "text": "은빛강의 신청경로는 어디인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-035-p",
+  "kind": "passage",
+  "text": "푸른별의 신청경로는 별빛누리입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      15
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-035-q",
+  "kind": "question",
+  "text": "푸른별의 신청경로는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신청경로"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-036-p",
+  "kind": "passage",
+  "text": "2031년파란섬정기모임의 상담전화는 311이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      18
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      20,
+      23
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       20,
+       23
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ],
+     [
+      20,
+      23
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ],
+    [
+     [
+      20,
+      23
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-036-q",
+  "kind": "question",
+  "text": "2031년파란섬정기모임의 상담전화는 무엇인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      18
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      20,
+      22
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ],
+     [
+      20,
+      22
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-037-p",
+  "kind": "passage",
+  "text": "노란달조합의 상담전화는 1588입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       17
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ],
+     [
+      13,
+      17
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      13,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-037-q",
+  "kind": "question",
+  "text": "노란달조합의 상담전화는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-038-p",
+  "kind": "passage",
+  "text": "금빛들판의 상담전화는 042이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ],
+     [
+      12,
+      15
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ],
+    [
+     [
+      12,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-038-q",
+  "kind": "question",
+  "text": "금빛들판의 상담전화는 무엇인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-039-p",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 상담전화는 909입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       14,
+       17
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      17
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      14,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-039-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 상담전화는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-040-p",
+  "kind": "passage",
+  "text": "제7마을공동체의 상담전화는 311이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       15,
+       18
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      18
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      15,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-040-q",
+  "kind": "question",
+  "text": "제7마을공동체의 상담전화는 무엇인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-041-p",
+  "kind": "passage",
+  "text": "은빛강의 상담전화는 1588입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       15
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      15
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      15
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-041-q",
+  "kind": "question",
+  "text": "은빛강의 상담전화는 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "상담전화"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-042-p",
+  "kind": "passage",
+  "text": "새벽길의 신고기한은 다음해4월30일이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      19
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       11,
+       19
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      19
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ],
+    [
+     [
+      11,
+      19
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-042-q",
+  "kind": "question",
+  "text": "새벽길의 신고기한은 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      3
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      5,
+      9
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      11,
+      13
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       3
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      3
+     ],
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ],
+     [
+      11,
+      13
+     ]
+    ],
+    [
+     [
+      5,
+      9
+     ]
+    ],
+    [
+     [
+      0,
+      3
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-043-p",
+  "kind": "passage",
+  "text": "2031년파란섬정기모임의 신고기한은 2031년8월1일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      18
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      20,
+      29
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       20,
+       29
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ],
+     [
+      20,
+      29
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ],
+    [
+     [
+      20,
+      29
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-043-q",
+  "kind": "question",
+  "text": "2031년파란섬정기모임의 신고기한은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      12
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      14,
+      18
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      20,
+      22
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       12
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      12
+     ],
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ],
+     [
+      20,
+      22
+     ]
+    ],
+    [
+     [
+      14,
+      18
+     ]
+    ],
+    [
+     [
+      0,
+      12
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-044-p",
+  "kind": "passage",
+  "text": "노란달조합의 신고기한은 매월15일이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      18
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       13,
+       18
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ],
+     [
+      13,
+      18
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ],
+    [
+     [
+      13,
+      18
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-044-q",
+  "kind": "question",
+  "text": "노란달조합의 신고기한은 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      5
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      7,
+      11
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      13,
+      15
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       5
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      5
+     ],
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ],
+     [
+      13,
+      15
+     ]
+    ],
+    [
+     [
+      7,
+      11
+     ]
+    ],
+    [
+     [
+      0,
+      5
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-045-p",
+  "kind": "passage",
+  "text": "금빛들판의 신고기한은 다음달말일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       12,
+       17
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ],
+     [
+      12,
+      17
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ],
+    [
+     [
+      12,
+      17
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-045-q",
+  "kind": "question",
+  "text": "금빛들판의 신고기한은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      4
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      6,
+      10
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      12,
+      14
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       4
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      4
+     ],
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ],
+     [
+      12,
+      14
+     ]
+    ],
+    [
+     [
+      6,
+      10
+     ]
+    ],
+    [
+     [
+      0,
+      4
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-046-p",
+  "kind": "passage",
+  "text": "붉은꽃협동회의 신고기한은 다음해4월30일이다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      22
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       14,
+       22
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      22
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ],
+    [
+     [
+      14,
+      22
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-046-q",
+  "kind": "question",
+  "text": "붉은꽃협동회의 신고기한은 언제인가?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      6
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      8,
+      12
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      14,
+      16
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       6
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      6
+     ],
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ],
+     [
+      14,
+      16
+     ]
+    ],
+    [
+     [
+      8,
+      12
+     ]
+    ],
+    [
+     [
+      0,
+      6
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ },
+ {
+  "id": "fix-047-p",
+  "kind": "passage",
+  "text": "제7마을공동체의 신고기한은 2031년8월1일입니다.",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      24
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ],
+    [
+     "v",
+     "value",
+     {
+      "copy": [
+       15,
+       24
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      24
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ],
+    [
+     [
+      15,
+      24
+     ]
+    ]
+   ],
+   "project": []
+  }
+ },
+ {
+  "id": "fix-047-q",
+  "kind": "question",
+  "text": "제7마을공동체의 신고기한은 무엇인가요?",
+  "graph": {
+   "nodes": [
+    {
+     "id": "s",
+     "type": "subject",
+     "anchor": [
+      0,
+      7
+     ]
+    },
+    {
+     "id": "e",
+     "type": "relation",
+     "anchor": [
+      9,
+      13
+     ]
+    },
+    {
+     "id": "v",
+     "type": "amount",
+     "anchor": [
+      15,
+      17
+     ]
+    }
+   ],
+   "edges": [
+    [
+     "e",
+     "subject",
+     "s"
+    ],
+    [
+     "e",
+     "amount",
+     "v"
+    ],
+    [
+     "e",
+     "kind",
+     {
+      "literal": "신고기한"
+     }
+    ],
+    [
+     "s",
+     "value",
+     {
+      "copy": [
+       0,
+       7
+      ]
+     }
+    ]
+   ],
+   "edge_spans": [
+    [
+     [
+      0,
+      7
+     ],
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ],
+     [
+      15,
+      17
+     ]
+    ],
+    [
+     [
+      9,
+      13
+     ]
+    ],
+    [
+     [
+      0,
+      7
+     ]
+    ]
+   ],
+   "project": [
+    "v"
+   ]
+  }
+ }
+]
