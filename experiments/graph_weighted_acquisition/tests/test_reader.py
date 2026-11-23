@@ -352,12 +352,23 @@ def test_connectors_are_counted_with_their_spaces():
     assert not [t for t in result['readings'][result['chosen']]['terms'] if t['what'] == 'known piece left unused']
 
 
+def _giving(model):
+    """The same pack with the convention of before 2026-11-23: a partial answer is given, flagged."""
+    return dict(model, conventions=dict(model['conventions'], partial_answers='give'))
+
+
 def test_unknown_words_before_a_fixed_word_give_a_flagged_partial_answer():
     model = R.build(training())
     passage, question = '하늘이 준서를 도왔다.', '누가 준서를 정말 도왔나?'
     reading = R.read(question, model)
     assert reading['status'] == 'complete' and reading['ignored'] == ['정말']
     assert reading['reason'].startswith('partial reading, ignoring "정말"')
+    # By the pack's convention such an answer is withheld: the ignored word may be the one that matters.
+    kept = A.answer(passage, question, model)
+    assert kept['status'] == 'hold' and kept['answers'] == [] and kept['withheld'] == [['하늘']]
+    assert 'passing over part of it' in kept['reason'] and '"정말"' in kept['reason']
+    assert A.explain(passage, question, kept).startswith('# No answer given')
+    model = _giving(model)
     result = A.answer(passage, question, model)
     assert result['status'] == 'answered' and result['answers'] == [['하늘']]
     assert result['verified'] is False and result['partial'] == ['words in the question were ignored: "정말"']
@@ -379,7 +390,10 @@ def test_names_match_exactly_first_then_by_spacing_then_with_leading_words_repor
     assert MT.name_fit('이준서', {'준서'}, 2) is None and MT.name_fit('준서 옆집', {'준서'}, 2) is None
     model = R.build(training())
     passage = '하늘이 준서를 도왔다.'
-    loose = A.answer(passage, '누가 옆집 준서를 도왔나?', model)
+    # Words in front of a name may be what tells two things apart, so by convention no answer is given.
+    kept = A.answer(passage, '누가 옆집 준서를 도왔나?', model)
+    assert kept['status'] == 'hold' and kept['withheld'] == [['하늘']] and '"옆집"' in kept['reason']
+    loose = A.answer(passage, '누가 옆집 준서를 도왔나?', _giving(model))
     assert loose['status'] == 'answered' and loose['answers'] == [['하늘']] and loose['verified'] is False
     assert loose['executor'] == 'not comparable' and '"옆집"' in loose['partial'][0]
     exact = A.answer(passage, '누가 준서를 도왔나?', model)
@@ -639,7 +653,7 @@ def test_answers_come_with_a_full_sentence():
     several = A.answer('하늘이 준서를 도왔다. 소은이 준서를 도왔다.', '누가 준서를 도왔나?', model)
     assert sorted(s['text'] for s in several['sentences']) == ['소은이 준서를 도왔다.', '하늘이 준서를 도왔다.']
     # A loosely matched name is written the way the passage has it.
-    loose = A.answer('하늘이 준서를 도왔다.', '누가 옆집 준서를 도왔나?', model)
+    loose = A.answer('하늘이 준서를 도왔다.', '누가 옆집 준서를 도왔나?', _giving(model))
     assert [s['text'] for s in loose['sentences']] == ['하늘이 준서를 도왔다.']
     assert A.answer('하늘이 준서를 도왔다.', '누가 준서를 돕지 않았나?', model)['sentences'] == []
 
@@ -728,9 +742,12 @@ def test_how_the_system_reads_is_data_in_the_pack_and_editing_it_changes_behavio
     assert 'role from the piece before it' not in terms(fewer) and R.read(passage, fewer)['status'] == 'complete'
     # 2. How names may be compared: switch off "leading words".
     loose = '유진에 따르면, 누가 옆집 준서를 도왔나?'
-    assert A.answer(passage, loose, model)['answers'] == [['하늘']]
+    # (With the convention of before 2026-11-23, where an answer that ignores words is given, flagged.)
+    giving = edited(lambda m: m['conventions'].update(partial_answers='give'))
+    assert A.answer(passage, loose, model)['status'] == 'hold'
+    assert A.answer(passage, loose, giving)['answers'] == [['하늘']]
     strict = edited(lambda m: m['conventions'].update(
-        name_matching=[r for r in m['conventions']['name_matching'] if r['rule'] != 'leading_words']))
+        partial_answers='give', name_matching=[r for r in m['conventions']['name_matching'] if r['rule'] != 'leading_words']))
     assert A.answer(passage, loose, strict)['status'] == 'hold'
     # 3. What a sentence must do: without the sentence rules, an unknown question word is a name again.
     unknown = '누구에 따르면, 하늘이 준서를 도왔나?'

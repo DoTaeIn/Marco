@@ -1,0 +1,5 @@
+check on=HELD off=OTHER | 2030년에 솔잎차의 공급처의 위치는 하동읍이다. | read as [(('공급처',), (('at', '2030년'), ('subject', '솔잎차'))), (('위치',), (('amount', '하동읍'), ('subject', '공급처')))]
+check on=HELD off=OTHER | 솔잎차의 재고가 12병이면 솔잎차의 공급처의 위치는 구례읍이 아니다. | read as [(('공급처',), (('if', '재고'), ('subject', '솔잎차'))), (('위치',), (('amount', '구례읍'), ('denies', '아니'), ('subject', '공급처'))), (('재고',), (('amount', '
+check on=HELD off=OTHER | 2029년에 솔잎차는 공급처의 위치가 하동읍입니다. | read as [(('공급처',), (('at', '2029년'), ('subject', '솔잎차'))), (('위치',), (('amount', '하동읍'), ('subject', '공급처')))]
+(check on, check off): {('OK', 'OK'): 32, ('HELD', 'HELD'): 18, ('PARTIAL', 'PARTIAL'): 7, ('HELD', 'OTHER'): 3}
+old strict conventions: {'HELD': 41, 'OK': 14, 'PARTIAL': 5}

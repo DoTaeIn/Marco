@@ -12,6 +12,7 @@ is a JSON file of counts with the ids of the training examples behind them.
 import itertools
 import json
 import math
+import unicodedata
 from pathlib import Path
 
 from experiments.graph_example_acquisition import native
@@ -132,7 +133,7 @@ def build(examples, policy=None, variants=None):
         if origin not in cell['origins'] and len(cell['origins']) < kept:
             cell['origins'].append(origin)
 
-    head_surfaces, texts = {}, []
+    head_surfaces, texts, parts_seen, closed_surfaces = {}, [], {}, {}
     for ex in examples:
         try:
             graph, text, origin = ex['graph'], ex['text'], ex['id']
@@ -164,6 +165,11 @@ def build(examples, policy=None, variants=None):
                 else:
                     entry = key({'type': node['type'], 'project': node['id'] in graph['project']})
                     rows.append(('closed', surface, entry, origin))
+                    if node['id'] not in graph['project']:
+                        # A fixed word that does not ask (it checks, it denies) is a word that takes endings.
+                        seen_in = closed_surfaces.setdefault(entry, {}).setdefault(surface, [])
+                        if origin not in seen_in and len(seen_in) < kept:
+                            seen_in.append(origin)
             for i, gap in enumerate(gaps):
                 where = 'start' if i == 0 else 'end' if i == len(gaps) - 1 else 'mid'
                 rows.append(('gap', where, gap, origin))
@@ -181,6 +187,23 @@ def build(examples, policy=None, variants=None):
                     # The connector is counted with its spaces: '가 ' is a piece, the letter inside a name is not.
                     used.append((gap, start))
             frames = {i: [] for i in head_order}
+            # A head may stand under another head ("X의 P의 Q", "…이면 …"). What marks its role is the
+            # connector around its whole phrase: the head with everything under it.
+            below = {}
+            for s_, p_, o_ in graph['edges']:
+                if s_ in heads and isinstance(o_, str):
+                    below.setdefault(index_of[s_][0], []).append(index_of[o_][0])
+
+            def phrase(i, seen=()):
+                found = [i]
+                for k in below.get(i, []):
+                    if k not in seen:
+                        found += phrase(k, seen + (i,))
+                return found
+
+            nested = {k for h_, under in below.items() for k in under if k in head_order}
+            for h_ in head_order:
+                rows.append(('stands', gaps[max(phrase(h_)) + 1], 'under' if h_ in nested else 'alone', origin))
             for (s, p, o), evidence in zip(graph['edges'], graph['edge_spans']):
                 if s not in heads:
                     if p == 'value':
@@ -204,8 +227,13 @@ def build(examples, policy=None, variants=None):
                 if None in refs:
                     raise ValueError('role evidence outside argument and head')
                 offset = head_order.index(h) - sum(1 for j in head_order if j < a)
-                rows += [('attach', ANY, str(offset), origin), ('role_right', gaps[a + 1], p, origin),
-                         ('role_left', gaps[a], p, origin), ('evidence', 'role:' + p, key(refs), origin)]
+                reach = phrase(a) if a in head_order else [a]
+                rows += [('attach', ANY, str(offset), origin), ('role_right', gaps[max(reach) + 1], p, origin),
+                         ('role_left', gaps[min(reach)], p, origin), ('evidence', 'role:' + p, key(refs), origin),
+                         # Which type of thing filled this role: a node's type has to agree with its role.
+                         ('fills', p, mentions[a][1]['type'], origin),
+                         # On which side of its head the role was written.
+                         ('side', p, 'before' if a < h else 'after', origin)]
                 if mentions[a][1]['id'] not in opened:
                     rows.append(('role_surface', text[slice(*mentions[a][0])], p, origin))
                 frames[h].append(p)
@@ -223,6 +251,7 @@ def build(examples, policy=None, variants=None):
                 literals = sorted([p, o['literal']] for s, p, o in graph['edges']
                                   if s == node['id'] and isinstance(o, dict) and 'literal' in o)
                 rows.append(('frame', key({'type': node['type'], 'literals': literals}), key(sorted(roles)), origin))
+                parts_seen.setdefault(key({'type': node['type'], 'literals': literals}), []).append((set(roles), origin))
                 rows.append(('repeat_role', ANY, 'yes' if len(set(roles)) < len(roles) else 'no', origin))
             # What this sentence does: asks for something, checks a claim, or states.
             does = sentence_kind(graph, shipped['conventions'])
@@ -234,6 +263,13 @@ def build(examples, policy=None, variants=None):
             texts.append((text, set(used), origin, structure))
         except (ValueError, KeyError, TypeError) as error:
             skipped.append({'example': ex.get('id'), 'reason': str(error)})
+    # Part by part: how often a head had each role, and how often it stood without it. A set of
+    # roles need not have been seen as a whole; each part is judged on its own.
+    for entry, seen in parts_seen.items():
+        every = set().union(*(roles for roles, _ in seen))
+        for roles, origin in seen:
+            for role in sorted(every):
+                count('part', entry, ('+' if role in roles else '-') + role, origin)
     # Stem + ending: two fixed words with the same meaning that share a beginning.
     for entry, surfaces in head_surfaces.items():
         for a, b in itertools.combinations(sorted(surfaces), 2):
@@ -252,6 +288,22 @@ def build(examples, policy=None, variants=None):
                 stem = surface[:len(surface) - len(ending)]
                 if stem and surface.endswith(ending) and entry not in tables.get('stem', {}).get(stem, {}):
                     count('stem', stem, entry, surfaces[surface], forms=(surface,))
+    # The same for fixed words that take endings, compared letter by letter: Korean writes a stem's
+    # last sound and an ending's first sound into one character (아니 + ㅂ니다 = 아닙니다), so the
+    # word forms are compared in Unicode's decomposed form. A stem does not stop on the first
+    # letter of a syllable. Knowledge of the writing system, like the use of a word's last sound.
+    for entry, surfaces in closed_surfaces.items():
+        for a, b in itertools.combinations(sorted(surfaces), 2):
+            x, y = unicodedata.normalize('NFD', a), unicodedata.normalize('NFD', b)
+            n = 0
+            while n < min(len(x), len(y)) and x[n] == y[n]:
+                n += 1
+            while n and '\u1100' <= x[n - 1] <= '\u115f':
+                n -= 1
+            if 0 < n < len(x) and n < len(y):
+                count('closed_stem', x[:n], entry, surfaces[a] + surfaces[b], forms=(a, b))
+                count('closed_ending', ANY, x[n:], surfaces[a], forms=(a,))
+                count('closed_ending', ANY, y[n:], surfaces[b], forms=(b,))
     # Every place a known piece occurs in training text: was it used as structure or not?
     known = {cue for _, used, _, _ in texts for cue, _ in used}
     for text, used, origin, structure in texts:
@@ -409,6 +461,15 @@ def _tilings(text, model, scorer):
     mid += [g for g, info in scorer.alias.items() if info['of'] in mid]
     ends = list(gaps.get('end', {}))
     stems, endings = tables.get('stem', {}), tables.get('ending', {}).get(ANY, {})
+    closed_stems, closed_endings = tables.get('closed_stem', {}), tables.get('closed_ending', {}).get(ANY, {})
+    letter_at, letter_text, char_at = [], '', {}
+    if closed_stems:
+        # The text letter by letter, with where each character starts in it and back.
+        for i, ch in enumerate(text):
+            char_at[len(letter_text)] = i
+            letter_at.append(len(letter_text))
+            letter_text += unicodedata.normalize('NFD', ch)
+        char_at[len(letter_text)] = len(text)
 
     def gain(cue):
         """How much better it is to use a known piece than to leave it unused."""
@@ -445,6 +506,14 @@ def _tilings(text, model, scorer):
         for surface in tables.get('closed', {}):
             if text.startswith(surface, pos):
                 out.append((gain(surface), ('closed', pos, pos + len(surface), 'word')))
+        for stem in closed_stems:
+            # A fixed word's stem with an ending learned from any such word; the word ends on a character.
+            if letter_text.startswith(stem, letter_at[pos]):
+                for ending in closed_endings:
+                    stop = char_at.get(letter_at[pos] + len(stem) + len(ending))
+                    if stop is not None and letter_text.startswith(ending, letter_at[pos] + len(stem)) \
+                            and text[pos:stop] not in tables.get('closed', {}):
+                        out.append((0.0, ('closed', pos, stop, 'stem:' + stem)))
         for end in range(pos + 1, min(n, pos + policy['max_value_chars']) + 1):
             if boundary(end):
                 # A free value pays for its length, so swallowing a clause is never free.
@@ -550,7 +619,14 @@ def _readings(text, model, scorer, tiling_score, pieces):
         return []
     base, used, previous, behind = [], set(), 'start', -1
     structure = [(p[1], p[2]) for p in pieces if p[0] in ('gap', 'head', 'closed')]
+    names, stated = set(model.get('field_names', ())), set(model.get('field_values', ()))
     for index, p in enumerate(pieces):
+        if p[0] == 'value' and text[p[1]:p[2]] in names | stated:
+            # A free value that is exactly a name or a value of the field pack explains itself and
+            # whatever known piece lies inside it. A known name inside any other value is left over.
+            structure.append((p[1], p[2]))
+            if text[p[1]:p[2]] in names:
+                used.add((text[p[1]:p[2]], p[1]))
         if p[0] == 'gap':
             actual = text[p[1]:p[2]]
             gap = scorer.canon(actual)
@@ -580,9 +656,10 @@ def _readings(text, model, scorer, tiling_score, pieces):
     meanings = []
     for i, p in enumerate(mentions):
         surface = text[p[1]:p[2]]
-        how = 'stem' if p[0] == 'head' and p[3] != 'word' else p[0]
-        stem = p[3][5:] if how == 'stem' else ''
-        ctx = {'surface': surface, 'stem': stem, 'ending': surface[len(stem):], 'right_connector': gaps[i + 1]}
+        how = 'stem' if p[0] == 'head' and p[3] != 'word' else 'closed_stem' if p[0] == 'closed' and p[3] != 'word' else p[0]
+        stem = p[3][5:] if how in ('stem', 'closed_stem') else ''
+        ending = unicodedata.normalize('NFD', surface)[len(stem):] if how == 'closed_stem' else surface[len(stem):]
+        ctx = {'surface': surface, 'stem': stem, 'ending': ending, 'right_connector': gaps[i + 1]}
         plan = scorer.recipe['meaning'][how]
         source = plan['candidates']
         labels = sorted(scorer.row(source['table'], ctx[source['given']]))
@@ -641,7 +718,7 @@ def _assign(text, model, scorer, pieces, mentions, spans, gaps, heads, entries, 
         # Most specific evidence first, as the recipe orders it: a fixed word that was itself
         # seen in a role speaks for itself; a free value is read from the pieces around it.
         plan = scorer.recipe['argument']
-        ctx = {'surface': surface, 'left_connector': left, 'right_connector': right}
+        ctx = {'surface': surface, 'left_connector': left, 'right_connector': right, 'arg_type': entries[a]['type']}
         own = plan['own']['rules'] if mentions[a][0] == plan['own']['applies_to'] and all(
             scorer.row(r['table'], ctx[r['given']]) for r in plan['own']['rules']) else None
         deciding = own or plan['context']
@@ -673,41 +750,125 @@ def _assign(text, model, scorer, pieces, mentions, spans, gaps, heads, entries, 
             by_head[h].append((role, a))
         if not repeat_seen and any(len({r for r, _ in roles}) < len(roles) for roles in by_head.values()):
             continue
-        terms = list(base)
-        for _, _, _, _, option_terms in choice:
-            terms += option_terms
-        for h, roles in by_head.items():
-            entry = key({'type': entries[h]['type'], 'literals': entries[h].get('literals', [])})
-            terms += scorer.rules(scorer.recipe['head'], {'head_surface': text[slice(*spans[h])], 'head_meaning': entry,
-                                                          'roles': key(sorted(r for r, _ in roles))})
-        graph, tied = _graph(text, model, mentions, spans, entries, by_head)
-        if graph is None:
-            continue
-        if 'closes' in model['tables']:
-            # A sentence closed like a question must ask or check something; one closed like a
-            # statement must not. Read from what such sentences did in the lessons.
-            does = sentence_kind(graph, scorer.conventions)
-            for r in scorer.recipe['sentence']:
-                for word in ([text[slice(*spans[h])] for h in heads] if r.get('each') == 'head' else [None]):
-                    terms += scorer.rules([r], {'closing': gaps[-1], 'does': does, 'head_surface': word}, 'sentence')
-        merged = None
-        try:
-            merged = M.merge_graph(graph, text, model.get('identity', {}))
-        except ValueError:
-            pass
-        graph = merged or graph
-        score = sum(t['log'] for t in terms)
-        supported = all(t['count'] > 0 for t in terms if not t.get('graded') and not t.get('partial'))
-        ignored = [t['piece'].strip() for t in terms if t.get('partial')]
-        variants = sorted({'"%s" read as "%s" (%s)' % (t['piece'].strip(), t['decision'][9:-1], t['evidence'])
-                           for t in terms if t.get('backoff')})
-        told = {t['learned']['word']: t['learned'] for t in terms if t.get('learned')}
-        variants += sorted({t['fallback'] for t in terms if t.get('fallback')})
-        out.append({'graph': graph, 'score': score, 'supported': supported, 'terms': terms, 'tied_evidence': tied,
-                    'ignored': ignored, 'variants': variants, 'told': [told[w] for w in sorted(told)],
-                    'pieces': [{'kind': p[0], 'text': text[p[1]:p[2]], 'span': [p[1], p[2]], 'how': p[3]}
-                               for p in pieces], 'merged': merged is not None})
+        flat = by_head
+        for nest_terms, links in _nestings(text, scorer, spans, gaps, heads, entries, flat):
+            by_head = {h: list(roles) for h, roles in flat.items()}
+            for parent, role, child in links:
+                by_head[parent].append((role, child))
+            if links and not repeat_seen and any(len({r for r, _ in roles}) < len(roles) for roles in by_head.values()):
+                continue
+            terms = list(base) + nest_terms
+            for _, _, _, _, option_terms in choice:
+                terms += option_terms
+            for h, roles in by_head.items():
+                entry = key({'type': entries[h]['type'], 'literals': entries[h].get('literals', [])})
+                ctx = {'head_surface': text[slice(*spans[h])], 'head_meaning': entry, 'roles': key(sorted(r for r, _ in roles))}
+                has = {r for r, _ in roles}
+                for rule in scorer.recipe['head']:
+                    if rule.get('each') != 'part':
+                        terms += scorer.rules([rule], ctx)
+                        continue
+                    # One decision per part: the head has it, or stands without it.
+                    known = {label[1:] for label in scorer.row(rule['table'], entry)}
+                    for role in sorted(known | has):
+                        terms += scorer.rules([rule], dict(ctx, part=('+' if role in has else '-') + role))
+            graph, tied = _graph(text, model, mentions, spans, entries, by_head)
+            if graph is None:
+                continue
+            if 'closes' in model['tables']:
+                # A sentence closed like a question must ask or check something; one closed like a
+                # statement must not. Read from what such sentences did in the lessons.
+                does = sentence_kind(graph, scorer.conventions)
+                for r in scorer.recipe['sentence']:
+                    for word in ([text[slice(*spans[h])] for h in heads] if r.get('each') == 'head' else [None]):
+                        terms += scorer.rules([r], {'closing': gaps[-1], 'does': does, 'head_surface': word}, 'sentence')
+            merged = None
+            try:
+                merged = M.merge_graph(graph, text, model.get('identity', {}))
+            except ValueError:
+                pass
+            graph = merged or graph
+            score = sum(t['log'] for t in terms)
+            supported = all(t['count'] > 0 for t in terms if not t.get('graded') and not t.get('partial'))
+            ignored = [t['piece'].strip() for t in terms if t.get('partial')]
+            variants = sorted({'"%s" read as "%s" (%s)' % (t['piece'].strip(), t['decision'][9:-1], t['evidence'])
+                               for t in terms if t.get('backoff')})
+            told = {t['learned']['word']: t['learned'] for t in terms if t.get('learned')}
+            variants += sorted({t['fallback'] for t in terms if t.get('fallback')})
+            out.append({'graph': graph, 'score': score, 'supported': supported, 'terms': terms, 'tied_evidence': tied,
+                        'ignored': ignored, 'variants': variants, 'told': [told[w] for w in sorted(told)],
+                        'pieces': [{'kind': p[0], 'text': text[p[1]:p[2]], 'span': [p[1], p[2]], 'how': p[3]}
+                                   for p in pieces], 'merged': merged is not None})
     return out
+
+
+def _nestings(text, scorer, spans, gaps, heads, entries, by_head):
+    """Ways for heads to stand under other heads: (terms, [(parent, role, child)]) for each way.
+
+    Used only when the pack's recipe has a `nesting` part. A head with everything under it is a
+    phrase; the phrase has to be one unbroken stretch, and the connectors at its two ends decide
+    its role, by the same counts that decide the role of any argument. Whether a head stands
+    alone or under another one is counted from the connector that closes its phrase.
+    """
+    plan = scorer.recipe.get('nesting')
+    if not plan or len(heads) < 2:
+        yield [], []
+        return
+    argument = scorer.recipe['argument']
+    rank = {h: i for i, h in enumerate(heads)}
+    for parents in itertools.product(*[[None] + [y for y in heads if y != x] for x in heads]):
+        up = dict(zip(heads, parents))
+        if all(p is not None for p in parents):
+            continue                                    # something has to stand on its own
+
+        def loops(x):
+            seen = set()
+            while up[x] is not None:
+                if x in seen:
+                    return True
+                seen.add(x)
+                x = up[x]
+            return False
+
+        if any(loops(x) for x in heads):
+            continue
+
+        def phrase(x):
+            found = [x] + [a for _, a in by_head[x]]
+            for child in heads:
+                if up[child] == x:
+                    found += phrase(child)
+            return found
+
+        ends = {x: (min(phrase(x)), max(phrase(x)), len(phrase(x))) for x in heads}
+        if any(hi - lo + 1 != size for lo, hi, size in ends.values()):
+            continue                                    # a phrase is one unbroken stretch: no crossing
+        terms, choices = [], []
+        for x in heads:
+            lo, hi, _ = ends[x]
+            terms += scorer.rules(plan, {'surface': text[slice(*spans[x])], 'right_connector': gaps[hi + 1],
+                                         'stands': 'alone' if up[x] is None else 'under'})
+            if up[x] is None:
+                continue
+            ctx = {'surface': text[slice(*spans[x])], 'left_connector': gaps[lo], 'right_connector': gaps[hi + 1],
+                   'arg_type': entries[x]['type'], 'head_surface': text[slice(*spans[up[x]])],
+                   'head_offset': str(rank[up[x]] - sum(1 for j in heads if j < x))}
+            roles = set()
+            for r in argument['context']:
+                roles |= set(scorer.row(r['table'], ctx[r['given']]))
+            found = []
+            for role in sorted(roles):
+                role_terms = scorer.rules(argument['always'] + argument['context'], dict(ctx, role=role))
+                found.append((not all(t['count'] > 0 for t in role_terms), -sum(t['log'] for t in role_terms), role, role_terms))
+            found = [f for f in found if not f[0]] or sorted(found, key=lambda f: f[:3])[:1]
+            if not found:
+                choices = None
+                break
+            choices.append([(up[x], f[2], x, f[3]) for f in found])
+        if choices is None:
+            continue
+        for picked in itertools.product(*choices):
+            yield terms + [t for _, _, _, role_terms in picked for t in role_terms], [(p, r, c) for p, r, c, _ in picked]
 
 
 def _graph(text, model, mentions, spans, entries, by_head):
@@ -812,7 +973,18 @@ def _read_one(text, model):
         partial = [r for r in ranked if r['supported'] and r['ignored']]
         # A reading that ignores text is used only when no reading explains all of it.
         seen = whole or partial
-        unseen = [r for r in ranked if not r['supported']] + (partial if whole else [])
+        # Whether a reading that ignores words may stand in the way of one that explains them all is
+        # a convention of the pack. Before 2026-11-23 it always could.
+        blocks = recipe_of(model)[1].get('partial_reading_blocks_whole', True)
+        unseen = [r for r in ranked if not r['supported']] + (partial if whole and blocks else [])
+        if recipe_of(model)[1].get('contradicted_reading_blocks', True) is False:
+            # "Never seen" is two different things. A count of 0 of 0 is ignorance: nothing was observed
+            # either way. A count of 0 of N is evidence: the lessons had N chances and never did this.
+            # A reading that goes against such evidence (a known piece buried in a name, a clause
+            # left standing alone after a connector that always joined it to another) has fewer
+            # pieces to pay for and so scores high; it may not hold back a fully seen reading.
+            unseen = [r for r in unseen if not any(t['count'] == 0 and t.get('of', 0) > 0 and not t.get('graded')
+                                                   for t in r['terms'])]
         if not seen:
             result.update(status='ambiguous', reason='every reading uses something never seen in training')
             suspects = _unknown_words(ranked, model.get('known_names', []))
@@ -845,11 +1017,82 @@ def _read_one(text, model):
                 if seen[0]['ignored']:
                     why = 'partial reading, ignoring %s; %s' % (', '.join('"%s"' % x for x in seen[0]['ignored']), why)
                 shown, at = _shown(ranked, seen[0])
-                result.update(status='complete', reason=why, graphs=[seen[0]['graph']], readings=shown, chosen=at,
-                              ignored=seen[0]['ignored'], variants=seen[0]['variants'], told=seen[0]['told'])
+                loose = _open_attachments(seen[0]['graph'], text, model) \
+                    if recipe_of(model)[1].get('attachment_check') else []
+                if loose:
+                    # The counts picked a place, but the sentence itself leaves it open. Not accepted: asked.
+                    result.update(status='ambiguous', readings=shown, attachment=loose,
+                                  reason='the sentence alone does not say what %s' % '; '.join(
+                                      '"%s" belongs to: %s' % (x['piece'], ' or '.join('"%s"' % c for c in x['between']))
+                                      for x in loose))
+                else:
+                    result.update(status='complete', reason=why, graphs=[seen[0]['graph']], readings=shown, chosen=at,
+                                  ignored=seen[0]['ignored'], variants=seen[0]['variants'], told=seen[0]['told'])
     if result['status'] != 'complete':
         result['graphs'] = [r['graph'] for r in ranked[:KEPT]] if result['status'] == 'ambiguous' else []
     return result
+
+
+def _open_attachments(graph, text, model):
+    """Parts of a reading that the sentence's structure would equally let belong to another head.
+
+    A part (an argument, or a head with everything under it) could belong to another head when
+    that head has no part in this role yet, heads like it were seen with such a part, the role
+    was seen written on that side of its head, and moving the part there leaves every phrase one
+    unbroken stretch. Which of the two is meant is then a matter of sense, not of form, and a
+    reader without that sense should ask. Returns [{piece, role, between: [head words], ask}].
+    """
+    tables = model['tables']
+    order = sorted((n for n in graph['nodes'] if 'anchor' in n), key=lambda n: n['anchor'])
+    place = {n['id']: i for i, n in enumerate(order)}
+    word = {n['id']: text[slice(*n['anchor'])] for n in order}
+    links = [(s, p, o) for s, p, o in graph['edges'] if isinstance(o, str) and s in place and o in place]
+    heads = sorted({s for s, _, _ in links} | {s for s, _, o in graph['edges'] if isinstance(o, dict) and 'literal' in o},
+                   key=place.get)
+    kinds = {n['id']: n['type'] for n in order}
+
+    def entry(h):
+        literals = sorted([p, o['literal']] for s, p, o in graph['edges'] if s == h and isinstance(o, dict) and 'literal' in o)
+        return key({'type': kinds[h], 'literals': literals})
+
+    def phrases(parent):
+        below = {}
+        for child, (h, _) in parent.items():
+            below.setdefault(h, []).append(child)
+
+        def reach(x, seen=()):
+            found = [place[x]]
+            for k in below.get(x, []):
+                if k not in seen:
+                    found += reach(k, seen + (x,))
+            return found
+        return {h: reach(h) for h in heads}
+
+    def unbroken(parent):
+        return all(max(found) - min(found) + 1 == len(found) for found in phrases(parent).values())
+
+    parent = {}
+    for s, p, o in links:
+        parent.setdefault(o, (s, p))
+    out = []
+    for part, (head, role) in sorted(parent.items(), key=lambda item: place[item[0]]):
+        inside = {order[i]['id'] for i in phrases(parent).get(part, [place[part]])}
+        others = []
+        for other in heads:
+            if other == head or other in inside or any(h == other and r == role for h, r in parent.values()):
+                continue
+            if tables.get('part', {}).get(entry(other), {}).get('+' + role, {}).get('n', 0) == 0:
+                continue
+            side = 'before' if place[part] < place[other] else 'after'
+            if tables.get('side', {}).get(role, {}).get(side, {}).get('n', 0) == 0:
+                continue
+            if unbroken(dict(parent, **{part: (other, role)})):
+                others.append(other)
+        if others:
+            between = [word[h] for h in sorted([head] + others, key=place.get)]
+            out.append({'piece': word[part], 'role': role, 'between': between,
+                        'ask': 'Does "%s" belong to %s?' % (word[part], ' or to '.join('"%s"' % b for b in between))})
+    return out
 
 
 # ---------------------------------------------------------------- sentences

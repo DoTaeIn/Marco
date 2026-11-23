@@ -63,8 +63,9 @@ def with_words(language, words):
 
     in_sentences = pooled('head_in', alike)
     takes = pooled('frame', [label for label, _ in alike.values()])
+    parts = pooled('part', [label for label, _ in alike.values()])
     model = dict(language, tables=dict(tables), cues=dict(language['cues']))
-    for name in ('head', 'head_in', 'frame'):
+    for name in ('head', 'head_in', 'frame', 'part'):
         model['tables'][name] = dict(tables.get(name, {}))
     added = []
     for prop in words['properties']:
@@ -81,8 +82,31 @@ def with_words(language, words):
             added.append(surface)
         model['tables']['frame'][entry] = {label: {'n': n, 'origins': ['word pack: ' + prop['word']]}
                                            for label, n in takes.items()}
+        if parts:
+            model['tables']['part'][entry] = {label: {'n': n, 'origins': ['word pack: ' + prop['word']]}
+                                              for label, n in parts.items()}
     model['field_words'] = added
+    model['field_word_weight'], model['field_names'], model['field_values'] = typical, [], []
+    _know_names(model, [n for name in words.get('names', []) for n in [name['name']] + name.get('also', [])], 'word_pack')
     return model
+
+
+def _know_names(model, names, source):
+    """Make the field's names known pieces, when the pack's conventions say so.
+
+    The reader already refuses a reading that leaves a known piece unused in a way the lessons
+    never did. A known name inside a longer free value is such a piece, so "A와 B" is no longer
+    read as one name. A name that is already a word of the language pack is left alone.
+    """
+    rule = R.recipe_of(model)[1].get('known_names')
+    if not rule or source not in rule['from']:
+        return
+    tables = model['tables']
+    for name in names:
+        if name in model['cues'] or name in tables.get('head', {}) or name in tables.get('closed', {}):
+            continue
+        model['cues'][name] = {'used': {'n': model['field_word_weight'], 'origins': ['field pack: a name']}}
+        model['field_names'].append(name)
 
 
 def load(language, words, facts):
@@ -93,6 +117,10 @@ def load(language, words, facts):
     kind, attribute = words['slot']['type'], words['slot']['attribute']
     subject, value = words['slot']['subject_role'], words['slot']['value_role']
     known = {p['means'] for p in words['properties']}
+    _know_names(model, [fact['subject'] for fact in facts['facts']], 'fact_subjects')
+    if model['field_names']:
+        # A value the pack itself states is explained, even when a known name lies inside it.
+        model['field_values'] = sorted({fact['value'] for fact in facts['facts']})
     sentences, placed, unusable, at = [], [], [], 0
     for fact in facts['facts']:
         if fact['property'] not in known:

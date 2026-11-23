@@ -1,0 +1,43 @@
+properties ['숙박료', '정원', '고도', '관리인', '개장일', '소재지', '기온', '경력'] names ['구름재', '솔바람', '바위골', '달맞이', '노루목', '샘터', '억새마루', '눈꽃봉']
+A10 솔바람의 동절기 기온은 얼마입니까? => [('unknown text ignored', '동절기', ''), ('known piece left unused', '절기', '절기')]
+A12 달맞이의 동절기 기온은 영하8도가 맞는가? => [('unknown text ignored', '동절기', ''), ('known piece left unused', '절기', '절기')]
+A15 억새마루의 소재지의 여름 기온은 18도입니다. => [('unknown text ignored', '소재지의 여름', ''), ('known piece left unused', '의', '의 ')]
+A16 동절기 정원이 30명인 것은 무엇입니까? => [('known piece left unused', '절기', '절기'), ('role from the piece before it', '동절기', '')]
+A20 2025년에 바위골의 정원은 60명이 아닙니다. => [('connecting piece after a value', '다.', 'value'), ('kind of a free value', '아닙니', '다.')]
+A21 달맞이의 정원이 35명이면 2029년에 달맞이의 숙박료는 2만2천원이다. => [('role from the piece before it', '2029년', '이면 ')]
+A23 2032년에 개장일이 5월1일인 것은 무엇인가요? => [('what follows this piece', 'head', '에 ')]
+A31 노루목은 소재지가 덕유마을이 아니야. => [('connecting piece after a closed', '야.', 'closed')]
+A32 샘터 고도는 950미터가 아닙니다. => [('connecting piece after a value', '다.', 'value'), ('kind of a free value', '아닙니', '다.')]
+A40 관리인의 경력이 30년인 것은 무엇이야? => [('unknown text ignored', '30년인 것은', ''), ('known piece left unused', '은', '은 ')]
+A42 2028년에 솔바람의 동절기 정원은 20명이 아니다. => [('unknown text ignored', '동절기', ''), ('known piece left unused', '절기', '절기')]
+A43 바위골의 소재지의 동절기 기온은 영하15도가 맞는가? => [('unknown text ignored', '소재지의 동절기', ''), ('known piece left unused', '의', '의 ')]
+A44 달맞이는 평일 숙박료가 1만원이 아닙니다. => [('unknown text ignored', '평일', ''), ('connecting piece after a value', '다.', 'value')]
+A46 샘터의 고도가 900미터이면 2029년에 샘터의 여름 기온은 얼마인가? => [('unknown text ignored', '여름', ''), ('role from the piece before it', '2029년', '이면 ')]
+A49 2034년에 정원이 40명 이상인 것은 무엇입니까? => [('unknown text ignored', '40명', ''), ('known piece left unused', '에', '에 ')]
+A50 관리인의 경력이 10년 이상인 것은 무엇인가? => [('unknown text ignored', '10년', ''), ('known piece left unused', '관리인', '관리인')]
+A54 바위골의 고도가 1500미터이면 바위골은 동절기 기온이 영하15도입니다. => [('unknown text ignored', '동절기', ''), ('known piece left unused', '절기', '절기')]
+A56 2028년에 노루목의 소재지의 여름 기온은 20도가 맞는가? => [('known piece left unused', '의', '의 '), ('known piece left unused', '소재지', '소재지')]
+A57 샘터의 정원이 20명이면 2030년에 샘터의 주말 숙박료는 2만5천원이 아니다. => [('unknown text ignored', '주말', ''), ('role from the piece before it', '2030년', '이면 ')]
+A58 2029년에 동절기 기온이 5도 이상인 것은 무엇인가? => [('unknown text ignored', '5도', ''), ('known piece left unused', '절기', '절기')]
+A59 억새마루는 소재지의 동절기 기온이 얼마입니까? => [('unknown text ignored', '동절기', ''), ('known piece left unused', '는', '는 ')]
+A60 눈꽃봉 고도가 1400미터이면 눈꽃봉은 정원이 15명이 아니야. => [('connecting piece after a closed', '야.', 'closed'), ('a head standing alone or under another head', '고도', '이면 ')]
+
+(loose, strict) verdict pairs: {('OK', 'HELD'): 18, ('OK', 'OK'): 12, ('HELD', 'HELD'): 22, ('PARTIAL', 'PARTIAL'): 4, ('OTHER', 'HELD'): 4}
+
+held causes:
+  5  unknown text ignored | 동절기
+  2  connecting piece after a value | 다.
+  2  connecting piece after a closed | 야.
+  1  unknown text ignored | 소재지의 여름
+  1  known piece left unused | 절기
+  1  role from the piece before it | 2029년
+  1  what follows this piece | head
+  1  unknown text ignored | 30년인 것은
+  1  unknown text ignored | 소재지의 동절기
+  1  unknown text ignored | 평일
+  1  unknown text ignored | 여름
+  1  unknown text ignored | 40명
+  1  unknown text ignored | 10년
+  1  known piece left unused | 의
+  1  unknown text ignored | 주말
+  1  unknown text ignored | 5도

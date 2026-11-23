@@ -1,0 +1,261 @@
+
+
+# A. shipped language pack (built before today, 112 lessons)
+
+### library: fresh questions
+right    textbook  일반회원의 대출기간은 얼마인가요?  =>  일반회원의 대출기간은 14일입니다.
+right    textbook  별관의 운영시간은 언제인가요?  =>  별관의 운영시간은 10시~18시입니다.
+right    textbook  중앙도서관의 휴관일은 언제인가요?  =>  중앙도서관의 휴관일은 매주월요일입니다.
+right    textbook  별관의 반납장소는 어디인가요?  =>  별관의 반납장소는 무인반납함이다.
+right    textbook  꼬마회원의 대출권수는 무엇인가요?  =>  어린이회원의 대출권수는 10권입니다.
+right    textbook  어린이회원의 대출권수는 10권이 맞나요?  =>  맞다: 어린이회원의 대출권수는 10권입니다.
+right    textbook  일반회원의 대출기간은 21일이 맞나요?  =>  아니다: 일반회원의 대출기간은 14일입니다.
+held     natural   일반회원은 책을 며칠 동안 빌릴 수 있나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   어린이회원은 책을 몇 권까지 빌릴 수 있어요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   어린이는 몇 권 빌릴 수 있나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   책을 늦게 반납하면 연체료가 얼마인가요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   일반회원의 연체료는 하루에 얼마예요?  =>  -- the question was not read with confidence: every reading use
+held     natural   중앙도서관은 몇 시부터 몇 시까지 여나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   중앙도서관 운영시간 알려주세요.  =>  -- the question was not read with confidence: the text cannot b
+held     natural   별관은 몇 시에 닫아요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   중앙도서관은 무슨 요일에 쉬나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   중앙도서관 전화번호가 뭐예요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   별관에서는 책을 어디에 반납하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   본관은 언제 문을 여나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   꼬마회원의 대출권수는 몇 권인가요?  =>  -- the question was not read with confidence: every reading use
+wrong    natural   일반회원과 어린이회원의 대출기간은 얼마인가요?  =>  어린이회원의 대출기간은 21일입니다. ["일반회원과 어린이회원" was taken as "어린이회원"; the words "일반회]
+held ok  no answer 어린이회원의 연체료는 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 별관의 휴관일은 언제인가요?  =>  -- nothing in the passage fits every condition of the question
+wrong    no answer 중앙도서관의 주말 운영시간은 언제인가요?  =>  중앙도서관의 운영시간은 9시~22시입니다. [words in the question were ignored: "주말"]
+held ok  no answer 도서관 회원 가입은 어떻게 하나요?  =>  -- the question was not read with confidence: the text cannot b
+
+### tax: fresh questions
+right    textbook  일반과세자의 세율은 얼마인가요?  =>  일반과세자의 세율은 10%이다.
+right    textbook  개인일반사업자의 신고횟수는 무엇인가요?  =>  개인일반사업자의 신고횟수는 연2회입니다.
+right    textbook  성실신고확인서제출자의 신고기한은 언제인가요?  =>  성실신고확인서제출자의 신고기한은 다음해6월30일입니다.
+right    textbook  국세청상담센터의 상담전화는 무엇인가요?  =>  국세상담센터의 상담전화는 126이다.
+right    textbook  법인사업자의 신고횟수는 연4회가 맞나요?  =>  맞다: 법인사업자의 신고횟수는 연4회입니다.
+right    textbook  일반과세자의 과세기간은 1년이 맞나요?  =>  아니다: 일반과세자의 과세기간은 6개월입니다.
+held     natural   일반과세자는 부가가치세를 몇 퍼센트 내나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   부가가치세 세율이 어떻게 되나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   법인사업자는 부가가치세를 일 년에 몇 번 신고하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   간이과세자는 언제 신고하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   사업자등록은 어디서 신청하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   사업자등록의 신청기한은 언제까지인가요?  =>  -- the question was not read with confidence: every reading use
+held     natural   국세상담센터 전화번호는 몇 번인가요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   종합소득세는 언제 신고하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   2026년 제1기 부가가치세 확정신고는 언제까지 하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   일반과세자 제1기 확정신고 기간이 언제예요?  =>  -- the question was not read with confidence: the text cannot b
+held ok  no answer 간이과세자의 세율은 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 법인세의 신고기한은 언제인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 면세사업자의 세율은 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 일반과세자의 세율은 왜 10%인가요?  =>  -- the question was not read with confidence: every reading use
+
+### tax: the 24 public questions (exposed, regression only)
+right    direct    일반과세자의 세율은 무엇인가?  =>  일반과세자의 세율은 10%이다.
+right    direct    일반과세자의 과세기간은 무엇인가?  =>  일반과세자의 과세기간은 6개월입니다.
+right    direct    개인일반사업자의 신고횟수는 무엇인가?  =>  개인일반사업자의 신고횟수는 연2회입니다.
+right    direct    법인사업자의 신고횟수는 무엇인가?  =>  법인사업자의 신고횟수는 연4회입니다.
+right    direct    일반과세자제1기확정신고의 신고기간은 무엇인가?  =>  일반과세자제1기확정신고의 신고기간은 7월1일~7월25일입니다.
+right    direct    일반과세자제2기확정신고의 신고기간은 무엇인가?  =>  일반과세자제2기확정신고의 신고기간은 다음해1월1일~1월25일입니다.
+right    direct    간이과세자의 신고기간은 무엇인가?  =>  간이과세자의 신고기간은 다음해1월1일~1월25일입니다.
+right    direct    사업자등록의 신청기한은 무엇인가?  =>  사업자등록의 신청기한은 사업개시일부터20일이내이다.
+right    direct    사업자등록의 신청경로는 무엇인가?  =>  사업자등록의 신청경로는 홈택스입니다.
+right    direct    국세상담센터의 상담전화는 무엇인가?  =>  국세상담센터의 상담전화는 126이다.
+right    direct    종합소득세일반신고의 신고기간은 무엇인가?  =>  종합소득세일반신고의 신고기간은 다음해5월1일~5월31일입니다.
+right    direct    2025년귀속종합소득세일반신고의 신고기한은 무엇인가?  =>  2025년귀속종합소득세일반신고의 신고기한은 2026년6월1일입니다.
+right    direct    성실신고확인서제출자의 신고기한은 무엇인가?  =>  성실신고확인서제출자의 신고기한은 다음해6월30일입니다.
+right    direct    2026년제1기부가가치세확정신고의 신고기한은 무엇인가?  =>  2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일입니다.
+held     paraphras 면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?  =>  -- the question was not read with confidence: every reading use
+held     paraphras 사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?  =>  -- the question was not read with confidence: the text cannot b
+flagged  paraphras 2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?  =>  2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일입니다. [words in the question were ignored: "실제 일반"; "2026]
+held     boundary  일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?  =>  -- the question was not read with confidence: the text cannot b
+held ok  boundary  저는 올해 종합소득세 신고 대상인가요?  =>  -- the question was not read with confidence: the text cannot b
+held ok  boundary  상속세의 신고기한은 언제인가요?  =>  -- nothing in the passage fits every condition of the question
+flagged  boundary  일반과세자의 부가가치세 일반세율은 0%가 맞나요?  =>  아니다: 일반과세자의 세율은 10%이다. [words in the question were ignored: "부가가치세"]
+
+
+# B. same lessons rebuilt with today's two reader rules
+
+### library: fresh questions
+right    textbook  일반회원의 대출기간은 얼마인가요?  =>  일반회원의 대출기간은 14일입니다.
+right    textbook  별관의 운영시간은 언제인가요?  =>  별관의 운영시간은 10시~18시입니다.
+right    textbook  중앙도서관의 휴관일은 언제인가요?  =>  중앙도서관의 휴관일은 매주월요일입니다.
+right    textbook  별관의 반납장소는 어디인가요?  =>  별관의 반납장소는 무인반납함이다.
+right    textbook  꼬마회원의 대출권수는 무엇인가요?  =>  어린이회원의 대출권수는 10권입니다.
+right    textbook  어린이회원의 대출권수는 10권이 맞나요?  =>  맞다: 어린이회원의 대출권수는 10권입니다.
+right    textbook  일반회원의 대출기간은 21일이 맞나요?  =>  아니다: 일반회원의 대출기간은 14일입니다.
+held     natural   일반회원은 책을 며칠 동안 빌릴 수 있나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   어린이회원은 책을 몇 권까지 빌릴 수 있어요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   어린이는 몇 권 빌릴 수 있나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   책을 늦게 반납하면 연체료가 얼마인가요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   일반회원의 연체료는 하루에 얼마예요?  =>  -- the question was not read with confidence: every reading use
+held     natural   중앙도서관은 몇 시부터 몇 시까지 여나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   중앙도서관 운영시간 알려주세요.  =>  -- the question was not read with confidence: the text cannot b
+held     natural   별관은 몇 시에 닫아요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   중앙도서관은 무슨 요일에 쉬나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   중앙도서관 전화번호가 뭐예요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   별관에서는 책을 어디에 반납하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   본관은 언제 문을 여나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   꼬마회원의 대출권수는 몇 권인가요?  =>  -- the question was not read with confidence: every reading use
+held     natural   일반회원과 어린이회원의 대출기간은 얼마인가요?  =>  -- the question was not read with confidence: every reading use
+held ok  no answer 어린이회원의 연체료는 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 별관의 휴관일은 언제인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 중앙도서관의 주말 운영시간은 언제인가요?  =>  -- the question could only be answered by passing over part of 
+held ok  no answer 도서관 회원 가입은 어떻게 하나요?  =>  -- the question was not read with confidence: the text cannot b
+
+### tax: fresh questions
+right    textbook  일반과세자의 세율은 얼마인가요?  =>  일반과세자의 세율은 10%이다.
+right    textbook  개인일반사업자의 신고횟수는 무엇인가요?  =>  개인일반사업자의 신고횟수는 연2회입니다.
+right    textbook  성실신고확인서제출자의 신고기한은 언제인가요?  =>  성실신고확인서제출자의 신고기한은 다음해6월30일입니다.
+right    textbook  국세청상담센터의 상담전화는 무엇인가요?  =>  국세상담센터의 상담전화는 126이다.
+right    textbook  법인사업자의 신고횟수는 연4회가 맞나요?  =>  맞다: 법인사업자의 신고횟수는 연4회입니다.
+right    textbook  일반과세자의 과세기간은 1년이 맞나요?  =>  아니다: 일반과세자의 과세기간은 6개월입니다.
+held     natural   일반과세자는 부가가치세를 몇 퍼센트 내나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   부가가치세 세율이 어떻게 되나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   법인사업자는 부가가치세를 일 년에 몇 번 신고하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   간이과세자는 언제 신고하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   사업자등록은 어디서 신청하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   사업자등록의 신청기한은 언제까지인가요?  =>  -- the question was not read with confidence: every reading use
+held     natural   국세상담센터 전화번호는 몇 번인가요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   종합소득세는 언제 신고하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   2026년 제1기 부가가치세 확정신고는 언제까지 하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   일반과세자 제1기 확정신고 기간이 언제예요?  =>  -- the question was not read with confidence: the text cannot b
+held ok  no answer 간이과세자의 세율은 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 법인세의 신고기한은 언제인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 면세사업자의 세율은 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 일반과세자의 세율은 왜 10%인가요?  =>  -- the question was not read with confidence: every reading use
+
+### tax: the 24 public questions (exposed, regression only)
+right    direct    일반과세자의 세율은 무엇인가?  =>  일반과세자의 세율은 10%이다.
+right    direct    일반과세자의 과세기간은 무엇인가?  =>  일반과세자의 과세기간은 6개월입니다.
+right    direct    개인일반사업자의 신고횟수는 무엇인가?  =>  개인일반사업자의 신고횟수는 연2회입니다.
+right    direct    법인사업자의 신고횟수는 무엇인가?  =>  법인사업자의 신고횟수는 연4회입니다.
+right    direct    일반과세자제1기확정신고의 신고기간은 무엇인가?  =>  일반과세자제1기확정신고의 신고기간은 7월1일~7월25일입니다.
+right    direct    일반과세자제2기확정신고의 신고기간은 무엇인가?  =>  일반과세자제2기확정신고의 신고기간은 다음해1월1일~1월25일입니다.
+right    direct    간이과세자의 신고기간은 무엇인가?  =>  간이과세자의 신고기간은 다음해1월1일~1월25일입니다.
+right    direct    사업자등록의 신청기한은 무엇인가?  =>  사업자등록의 신청기한은 사업개시일부터20일이내이다.
+right    direct    사업자등록의 신청경로는 무엇인가?  =>  사업자등록의 신청경로는 홈택스입니다.
+right    direct    국세상담센터의 상담전화는 무엇인가?  =>  국세상담센터의 상담전화는 126이다.
+right    direct    종합소득세일반신고의 신고기간은 무엇인가?  =>  종합소득세일반신고의 신고기간은 다음해5월1일~5월31일입니다.
+right    direct    2025년귀속종합소득세일반신고의 신고기한은 무엇인가?  =>  2025년귀속종합소득세일반신고의 신고기한은 2026년6월1일입니다.
+right    direct    성실신고확인서제출자의 신고기한은 무엇인가?  =>  성실신고확인서제출자의 신고기한은 다음해6월30일입니다.
+right    direct    2026년제1기부가가치세확정신고의 신고기한은 무엇인가?  =>  2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일입니다.
+held     paraphras 면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?  =>  -- the question was not read with confidence: every reading use
+held     paraphras 사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?  =>  -- the question could only be answered by passing over part of 
+held     boundary  일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?  =>  -- the question was not read with confidence: the text cannot b
+held ok  boundary  저는 올해 종합소득세 신고 대상인가요?  =>  -- the question was not read with confidence: the text cannot b
+held ok  boundary  상속세의 신고기한은 언제인가요?  =>  -- nothing in the passage fits every condition of the question
+held     boundary  일반과세자의 부가가치세 일반세율은 0%가 맞나요?  =>  -- the question could only be answered by passing over part of 
+
+
+# C. B plus 128 lessons for more wordings of the plain shape (written by the implementer today)
+
+### library: fresh questions
+right    textbook  일반회원의 대출기간은 얼마인가요?  =>  일반회원의 대출기간은 14일이다.
+right    textbook  별관의 운영시간은 언제인가요?  =>  별관의 운영시간은 10시~18시이다.
+right    textbook  중앙도서관의 휴관일은 언제인가요?  =>  중앙도서관의 휴관일은 매주월요일이다.
+right    textbook  별관의 반납장소는 어디인가요?  =>  별관의 반납장소는 무인반납함이다.
+right    textbook  꼬마회원의 대출권수는 무엇인가요?  =>  어린이회원의 대출권수가 10권이다.
+right    textbook  어린이회원의 대출권수는 10권이 맞나요?  =>  맞다: 어린이회원의 대출권수가 10권이다.
+right    textbook  일반회원의 대출기간은 21일이 맞나요?  =>  아니다: 일반회원의 대출기간은 14일이다.
+held     natural   일반회원은 책을 며칠 동안 빌릴 수 있나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   어린이회원은 책을 몇 권까지 빌릴 수 있어요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   어린이는 몇 권 빌릴 수 있나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   책을 늦게 반납하면 연체료가 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held     natural   일반회원의 연체료는 하루에 얼마예요?  =>  -- the question was not read with confidence: every reading use
+held     natural   중앙도서관은 몇 시부터 몇 시까지 여나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   중앙도서관 운영시간 알려주세요.  =>  -- the question was not read with confidence: the text cannot b
+held     natural   별관은 몇 시에 닫아요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   중앙도서관은 무슨 요일에 쉬나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   중앙도서관 전화번호가 뭐예요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   별관에서는 책을 어디에 반납하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   본관은 언제 문을 여나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   꼬마회원의 대출권수는 몇 권인가요?  =>  -- the question was not read with confidence: every reading use
+held     natural   일반회원과 어린이회원의 대출기간은 얼마인가요?  =>  -- the question was not read with confidence: every reading use
+held ok  no answer 어린이회원의 연체료는 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 별관의 휴관일은 언제인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 중앙도서관의 주말 운영시간은 언제인가요?  =>  -- the question could only be answered by passing over part of 
+held ok  no answer 도서관 회원 가입은 어떻게 하나요?  =>  -- the question was not read with confidence: the text cannot b
+
+### tax: fresh questions
+right    textbook  일반과세자의 세율은 얼마인가요?  =>  일반과세자의 세율은 10%이다.
+right    textbook  개인일반사업자의 신고횟수는 무엇인가요?  =>  개인일반사업자의 신고횟수가 연2회이다.
+right    textbook  성실신고확인서제출자의 신고기한은 언제인가요?  =>  성실신고확인서제출자의 신고기한은 다음해6월30일이다.
+right    textbook  국세청상담센터의 상담전화는 무엇인가요?  =>  국세상담센터의 상담전화는 126이다.
+right    textbook  법인사업자의 신고횟수는 연4회가 맞나요?  =>  맞다: 법인사업자의 신고횟수가 연4회이다.
+right    textbook  일반과세자의 과세기간은 1년이 맞나요?  =>  아니다: 일반과세자의 과세기간은 6개월이다.
+held     natural   일반과세자는 부가가치세를 몇 퍼센트 내나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   부가가치세 세율이 어떻게 되나요?  =>  -- the question was not read with confidence: every reading use
+held     natural   법인사업자는 부가가치세를 일 년에 몇 번 신고하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   간이과세자는 언제 신고하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   사업자등록은 어디서 신청하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   사업자등록의 신청기한은 언제까지인가요?  =>  -- the question was not read with confidence: every reading use
+held     natural   국세상담센터 전화번호는 몇 번인가요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   종합소득세는 언제 신고하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   2026년 제1기 부가가치세 확정신고는 언제까지 하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     natural   일반과세자 제1기 확정신고 기간이 언제예요?  =>  -- the question was not read with confidence: the text cannot b
+held ok  no answer 간이과세자의 세율은 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 법인세의 신고기한은 언제인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 면세사업자의 세율은 얼마인가요?  =>  -- nothing in the passage fits every condition of the question
+held ok  no answer 일반과세자의 세율은 왜 10%인가요?  =>  -- the question was not read with confidence: every reading use
+
+### tax: the 24 public questions (exposed, regression only)
+right    direct    일반과세자의 세율은 무엇인가?  =>  일반과세자의 세율은 10%이다.
+right    direct    일반과세자의 과세기간은 무엇인가?  =>  일반과세자의 과세기간은 6개월이다.
+right    direct    개인일반사업자의 신고횟수는 무엇인가?  =>  개인일반사업자의 신고횟수가 연2회이다.
+right    direct    법인사업자의 신고횟수는 무엇인가?  =>  법인사업자의 신고횟수가 연4회이다.
+right    direct    일반과세자제1기확정신고의 신고기간은 무엇인가?  =>  일반과세자제1기확정신고의 신고기간은 7월1일~7월25일이다.
+right    direct    일반과세자제2기확정신고의 신고기간은 무엇인가?  =>  일반과세자제2기확정신고의 신고기간은 다음해1월1일~1월25일이다.
+right    direct    간이과세자의 신고기간은 무엇인가?  =>  간이과세자의 신고기간은 다음해1월1일~1월25일이다.
+right    direct    사업자등록의 신청기한은 무엇인가?  =>  사업자등록의 신청기한은 사업개시일부터20일이내이다.
+right    direct    사업자등록의 신청경로는 무엇인가?  =>  사업자등록의 신청경로는 홈택스이다.
+right    direct    국세상담센터의 상담전화는 무엇인가?  =>  국세상담센터의 상담전화는 126이다.
+right    direct    종합소득세일반신고의 신고기간은 무엇인가?  =>  종합소득세일반신고의 신고기간은 다음해5월1일~5월31일이다.
+right    direct    2025년귀속종합소득세일반신고의 신고기한은 무엇인가?  =>  2025년귀속종합소득세일반신고의 신고기한은 2026년6월1일이다.
+right    direct    성실신고확인서제출자의 신고기한은 무엇인가?  =>  성실신고확인서제출자의 신고기한은 다음해6월30일이다.
+right    direct    2026년제1기부가가치세확정신고의 신고기한은 무엇인가?  =>  2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일이다.
+held     paraphras 면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?  =>  -- the question was not read with confidence: every reading use
+held     paraphras 사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?  =>  -- the question was not read with confidence: the text cannot b
+held     paraphras 2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?  =>  -- the question could only be answered by passing over part of 
+held     boundary  일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?  =>  -- the question was not read with confidence: every reading use
+held ok  boundary  저는 올해 종합소득세 신고 대상인가요?  =>  -- the question was not read with confidence: the text cannot b
+held ok  boundary  상속세의 신고기한은 언제인가요?  =>  -- nothing in the passage fits every condition of the question
+held     boundary  일반과세자의 부가가치세 일반세율은 0%가 맞나요?  =>  -- the question could only be answered by passing over part of 
+
+
+# Summary
+
+A. shipped language pack (built before today, 112 lessons)
+  fresh        natural    24: right 0, flagged 0, wrong 1, held 23, held ok 0
+  fresh        no answer   8: right 0, flagged 0, wrong 1, held 0, held ok 7
+  fresh        textbook   13: right 13, flagged 0, wrong 0, held 0, held ok 0
+  exposed tax  boundary    4: right 0, flagged 1, wrong 0, held 1, held ok 2
+  exposed tax  direct     14: right 14, flagged 0, wrong 0, held 0, held ok 0
+  exposed tax  paraphrase  6: right 0, flagged 1, wrong 0, held 5, held ok 0
+
+B. same lessons rebuilt with today's two reader rules
+  fresh        natural    24: right 0, flagged 0, wrong 0, held 24, held ok 0
+  fresh        no answer   8: right 0, flagged 0, wrong 0, held 0, held ok 8
+  fresh        textbook   13: right 13, flagged 0, wrong 0, held 0, held ok 0
+  exposed tax  boundary    4: right 0, flagged 0, wrong 0, held 2, held ok 2
+  exposed tax  direct     14: right 14, flagged 0, wrong 0, held 0, held ok 0
+  exposed tax  paraphrase  6: right 0, flagged 0, wrong 0, held 6, held ok 0
+
+C. B plus 128 lessons for more wordings of the plain shape (written by the implementer today)
+  fresh        natural    24: right 0, flagged 0, wrong 0, held 24, held ok 0
+  fresh        no answer   8: right 0, flagged 0, wrong 0, held 0, held ok 8
+  fresh        textbook   13: right 13, flagged 0, wrong 0, held 0, held ok 0
+  exposed tax  boundary    4: right 0, flagged 0, wrong 0, held 2, held ok 2
+  exposed tax  direct     14: right 14, flagged 0, wrong 0, held 0, held ok 0
+  exposed tax  paraphrase  6: right 0, flagged 0, wrong 0, held 6, held ok 0

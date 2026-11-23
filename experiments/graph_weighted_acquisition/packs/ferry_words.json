@@ -1,0 +1,22 @@
+{
+ "schema": "graph-field-words-v2",
+ "field": "a made-up ferry line",
+ "things": [
+  {"id": "t.sand", "type": "배", "names": ["모래섬호", "1호선"]},
+  {"id": "t.wind", "type": "배", "names": ["바람개비호"]},
+  {"id": "t.big", "type": "배", "names": ["큰등대호", "등대호"]},
+  {"id": "t.small", "type": "배", "names": ["작은등대호", "등대호"]},
+  {"id": "t.east", "type": "항구", "names": ["동쪽항"]}
+ ],
+ "relations": [
+  {"p": "정원", "value": "quantity", "single": true},
+  {"p": "선령", "value": "quantity", "single": true},
+  {"p": "출발항", "value": "thing", "single": true},
+  {"p": "문의전화", "value": "text", "single": true},
+  {"p": "자전거적재", "value": "truth"}
+ ],
+ "units": [
+  {"unit": "명"},
+  {"unit": "년"}
+ ]
+}

@@ -14,6 +14,18 @@
    {"rule": "without_spaces", "meaning": "the same text once blank space is removed", "reported": true},
    {"rule": "leading_words", "meaning": "the question's name ends with the passage's name after a space; the words in front are reported", "reported": true}
   ],
+  "partial_reading_blocks_whole": false,
+  "partial_reading_blocks_whole_meaning": "false: a reading that ignores words never stands in the way of a reading that explains every word with pieces seen in the lessons. true: it does when it scores clearly higher, as before 2026-11-23.",
+  "contradicted_reading_blocks": false,
+  "contradicted_reading_blocks_meaning": "false: a higher-scoring reading holds the text back only when what it relies on was never observed either way (0 of 0). One that goes against what the lessons showed (0 of N) does not. true: any higher-scoring reading with a zero count holds the text, as before 2026-11-23.",
+  "attachment_check": true,
+  "attachment_check_meaning": "true: a reading is not accepted when one of its parts could, by the form of the sentence, equally belong to another head (a time in front of a chain, for one). The reader holds and says between which words the choice lies. Absent or false: the place the counts prefer is taken, as before 2026-11-23.",
+  "partial_answers": "withhold",
+  "partial_answers_meaning": "withhold: no answer is given when words of the question were ignored or a name was matched by ignoring the words in front of it; the candidate is kept as withheld. give: the answer is given with a flag, as before 2026-11-23. A name that differs only in spacing is not affected.",
+  "known_names": {
+   "from": ["word_pack", "fact_subjects"],
+   "meaning": "a name the field pack knows is a known piece: found inside a longer free value it is a piece left unused, unless that value is itself a name or a value the pack states"
+  },
   "executor_search_stops": [
    "candidate-context search incomplete or no evidence",
    "projected-role witness incomplete",
@@ -33,6 +45,9 @@
    "stem": {"candidates": {"table": "stem", "given": "stem"}, "rules": [
     {"what": "meaning of a fixed word", "table": "stem", "given": "stem", "label": "meaning", "piece": "surface"},
     {"what": "word ending", "table": "ending", "given": "*", "label": "ending", "piece": "ending"}]},
+   "closed_stem": {"candidates": {"table": "closed_stem", "given": "stem"}, "rules": [
+    {"what": "meaning of a fixed word", "table": "closed_stem", "given": "stem", "label": "meaning", "piece": "surface"},
+    {"what": "word ending", "table": "closed_ending", "given": "*", "label": "ending", "piece": "ending"}]},
    "closed": {"candidates": {"table": "closed", "given": "surface"}, "rules": [
     {"what": "meaning of a fixed word", "table": "closed", "given": "surface", "label": "meaning", "piece": "surface"}]},
    "value": {"candidates": {"table": "value_type", "given": "right_connector", "if_none": "unknown", "meaning_is": "type"}, "rules": [
@@ -41,7 +56,8 @@
   },
   "argument": {
    "always": [
-    {"what": "which head", "table": "attach", "given": "*", "label": "head_offset", "piece": "surface", "shown": "head {head_surface!r} (offset {head_offset})"}],
+    {"what": "which head", "table": "attach", "given": "*", "label": "head_offset", "piece": "surface", "shown": "head {head_surface!r} (offset {head_offset})"},
+    {"what": "kind of thing that fills this role", "table": "fills", "given": "role", "label": "arg_type", "piece": "surface", "only_if_known": true}],
    "own": {"applies_to": "closed", "rules": [
     {"what": "role of this fixed word", "table": "role_surface", "given": "surface", "label": "role", "piece": "surface"}]},
    "context": [
@@ -49,7 +65,9 @@
     {"what": "role from the piece before it", "table": "role_left", "given": "left_connector", "label": "role", "piece": "surface"}]
   },
   "head": [
-   {"what": "set of roles for this head", "table": "frame", "given": "head_meaning", "label": "roles", "piece": "head_surface"}],
+   {"what": "a head with (+) or without (-) this part", "table": "part", "given": "head_meaning", "label": "part", "piece": "head_surface", "each": "part"}],
+  "nesting": [
+   {"what": "a head standing alone or under another head", "table": "stands", "given": "right_connector", "label": "stands", "piece": "surface", "only_if_known": true}],
   "sentence": [
    {"what": "what a sentence closed this way does", "table": "closes", "given": "closing", "label": "does", "piece": "closing"},
    {"what": "what a sentence with this word does", "table": "head_in", "given": "head_surface", "label": "does", "piece": "head_surface", "only_if_known": true, "each": "head"}]

@@ -1,0 +1,47 @@
+# 368 lessons: the base set and wordings, modifier, time, negation, each feature taught on its own
+
+OK       taught   모래섬호의 기본요금은 6000원이다.   
+OK       taught   모래섬호의 기본요금은 6000원입니다.   
+OK       taught   모래섬호의 기본요금은 6000원이야.   
+OK       taught   모래섬호의 기본요금은 얼마인가?   
+OK       taught   모래섬호의 기본요금은 얼마인가요?   
+OK       taught   모래섬호의 기본요금은 얼마입니까?   
+OK       taught   모래섬호의 기본요금은 얼마야?   
+OK       taught   모래섬호의 기본요금은 6000원이 맞는가?   
+OK       taught   모래섬호의 기본요금은 6000원이 맞나요?   
+OK       taught   모래섬호의 기본요금은 6000원이 아니다.   
+OK       taught   모래섬호의 주말 기본요금은 6000원이다.   
+OK       combined 모래섬호의 주말 기본요금은 6000원입니다.   
+OK       combined 모래섬호의 주말 기본요금은 6000원이야.   
+OK       taught   모래섬호의 주말 기본요금은 얼마인가?   
+OK       combined 모래섬호의 주말 기본요금은 얼마인가요?   
+OK       combined 모래섬호의 주말 기본요금은 얼마입니까?   
+OK       combined 모래섬호의 주말 기본요금은 얼마야?   
+OK       combined 모래섬호의 주말 기본요금은 6000원이 맞는가?   
+OK       combined 모래섬호의 주말 기본요금은 6000원이 맞나요?   
+OK       combined 모래섬호의 주말 기본요금은 6000원이 아니다.   
+OK       taught   2027년에 모래섬호의 기본요금은 6000원이다.   
+OK       combined 2027년에 모래섬호의 기본요금은 6000원입니다.   
+OK       combined 2027년에 모래섬호의 기본요금은 6000원이야.   
+OK       taught   2027년에 모래섬호의 기본요금은 얼마인가?   
+OK       combined 2027년에 모래섬호의 기본요금은 얼마인가요?   
+OK       combined 2027년에 모래섬호의 기본요금은 얼마입니까?   
+OK       combined 2027년에 모래섬호의 기본요금은 얼마야?   
+OK       combined 2027년에 모래섬호의 기본요금은 6000원이 맞는가?   
+OK       combined 2027년에 모래섬호의 기본요금은 6000원이 맞나요?   
+OK       combined 2027년에 모래섬호의 기본요금은 6000원이 아니다.   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 6000원이다.   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 6000원입니다.   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 6000원이야.   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 얼마인가?   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 얼마인가요?   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 얼마입니까?   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 얼마야?   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 6000원이 맞는가?   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 6000원이 맞나요?   
+OK       combined 2027년에 모래섬호의 주말 기본요금은 6000원이 아니다.   
+
+taught   14 of 14 read exactly as meant
+
+combined 26 of 26 read exactly as meant
+transfer = 26 / 26

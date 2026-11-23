@@ -1,0 +1,12 @@
+{
+ "schema": "graph-field-facts-v2",
+ "statements": [
+  {"id": "K01", "s": "t.sand", "p": "정원", "o": {"n": "120", "unit": "명"}, "source": {"doc": "made-up example: 운항 안내 3쪽"}, "recorded": 1},
+  {"id": "K02", "s": "t.sand", "p": "출발항", "o": {"thing": "t.east"}, "source": {"doc": "made-up example: 운항 안내 1쪽"}, "recorded": 2},
+  {"id": "K03", "s": "t.sand", "p": "자전거적재", "holds": false, "source": {"doc": "made-up example: 수하물 규정 2조"}, "recorded": 3},
+  {"id": "K06", "s": "t.east", "p": "문의전화", "o": {"text": "0412"}, "source": {"doc": "made-up example: 항구 안내"}, "recorded": 4},
+  {"id": "K07", "s": "t.wind", "p": "출발항", "o": {"thing": "t.east"}, "source": {"doc": "made-up example: 운항 안내 1쪽"}, "recorded": 5},
+  {"id": "K16", "s": "t.big", "p": "정원", "o": {"n": "200", "unit": "명"}, "source": {"doc": "made-up example: 운항 안내 3쪽"}, "recorded": 6},
+  {"id": "K17", "s": "t.small", "p": "정원", "o": {"n": "40", "unit": "명"}, "source": {"doc": "made-up example: 운항 안내 3쪽"}, "recorded": 7}
+ ]
+}

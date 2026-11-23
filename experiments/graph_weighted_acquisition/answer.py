@@ -75,6 +75,8 @@ def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=Non
     out = _blank(passage_result, q)
     if q['status'] != 'complete':
         out['reason'] = 'the question was not read with confidence: ' + q['reason']
+        if q.get('attachment'):
+            out['attachment'] = q['attachment']          # what to ask back, when the form leaves a part's place open
         if q.get('unknown_words'):
             # A word that the passage also uses as a name is a name; the rest are the suspects.
             named = {ptext[slice(*o['copy'])] for s, p, o in pgraph['edges']
@@ -118,6 +120,13 @@ def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=Non
                                   % (note['asked'], note['matched'], note['ignored']))
     spans = sorted({tuple(s) for proof in found['proofs'] for fact in proof['facts'] for s in fact['spans']})
     out['evidence'] = [{'span': list(s), 'text': ptext[s[0]:s[1]]} for s in spans]
+    passed_over = q.get('ignored') or [n for n in found['notes'] if n['level'] == 2]
+    if passed_over and conventions.get('partial_answers') == 'withhold':
+        # Words of the question were passed over, and they may be the ones that change the answer
+        # ("주말 운영시간" read as "운영시간"). The pack says such an answer is not given.
+        out['reason'] = 'the question could only be answered by passing over part of it: ' + '; '.join(out['partial'])
+        out['withheld'] = found['answers']
+        return out
     if found['relaxed'] == 0 and not out['other_names']:
         check = _second_opinion(pgraph, ptext, query, question, found['answers'], conventions['executor_search_stops'])
     else:

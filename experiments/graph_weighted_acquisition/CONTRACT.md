@@ -242,3 +242,179 @@ First step toward "least Python, maximum graph".
 Still in Python, not yet data: the procedures themselves (cutting text into pieces, the
 search, graph building, matching, writing, the report wording), the writer's own use of the
 count tables, and the `value` marker, which the teacher schema fixes.
+
+## A node's type agrees with its role (2026-11-23)
+
+- The lessons are counted for which type of node filled each role (`fills`: role, then type).
+- The recipe's argument rules gain one line: a role may be filled only by a type seen filling
+  it. A reading that breaks this relies on a zero count and is not chosen, like any other.
+- Why: a word's type was chosen from the word or the connector alone. A question word taught
+  for two roles (asking for a value, asking for a subject) then gave two readings with the same
+  edges and different types, and the reader held on sentences it had read before those lessons.
+- The rule is skipped for a pack without the `fills` table, and a pack carries its own recipe,
+  so packs built earlier read exactly as before.
+- Cost: one counted row in `build`, one value in the argument context, one recipe line.
+
+## Names the field pack knows (2026-11-23)
+
+- A free value was any text up to the next connector, so "A와 B" was read as one name and
+  nothing said so. The reader already refuses a reading that leaves a known piece unused in a
+  way the lessons never did; the field's names are now such pieces.
+- Which names: those of the word pack and the subjects of the fact pack, as the pack's
+  conventions list under `known_names`. Removing that entry switches the rule off.
+- A free value that is exactly a known name uses it. A known name found inside any other free
+  value is a piece left unused, with a zero count, so that reading is not chosen. A value that
+  is itself a known name, or a value the fact pack states, explains what lies inside it.
+- A name that is already a word of the language pack is not registered.
+- Packs built earlier carry conventions without `known_names` and read exactly as before.
+- Known limits: a short name blocks any other value that contains it; a longer name the pack
+  does not know is held when it contains one the pack does; a name the pack does not know at
+  all is still read as a name; names told in conversation (`learn.mark_name`) are not included.
+
+## No answer from a question read only in part (2026-11-23)
+
+This changes the rule of 2026-11-19 under "Partial reading, loose names, yes/no checks".
+Owner decision after a wrong answer in a development probe: "중앙도서관의 주말 운영시간은
+언제인가요?" was answered with the plain opening hours, with "주말" ignored and flagged.
+
+- The pack's conventions carry `partial_answers`. With `withhold`, which the shipped recipe now
+  states, no answer is given when words of the question were ignored, or when a name was
+  matched by ignoring the words in front of it. The words passed over may be the ones that
+  change the answer.
+- The reading and the match are still made and reported: the result is a hold whose reason
+  names what was passed over, and the candidate is kept under `withheld`.
+- A name that differs only in spacing is still matched and flagged, as before.
+- `give` restores the earlier behaviour (answer given, flagged, never verified). Packs built
+  earlier have no `partial_answers` entry and behave as before.
+- Cost, measured on the public tax questions with a rebuilt pack: the two answers that had been
+  right only with a flag (Q20, Q24) are now held. No answer that was right without a flag changed.
+
+## Parts one by one, heads under heads, and what may hold a reading back (2026-11-23)
+
+Owner's direction: before anything is taught by asking back, one lesson has to be worth more
+than one sentence. Measured by `probes/transfer.py`: features taught apart, then every
+combination of them on unseen words. Before: 5 of 26 combined sentences read. After: 26 of 26.
+The grid was designed by the implementer and worked on while these rules were made; it shows
+that the mechanism works, not how far it generalises.
+
+- **Parts one by one.** The recipe's `head` rule read the `frame` table: the whole set of a
+  head's roles had to have been seen together. It now reads `part`: for each role a head ever
+  had, how often the head had it (`+role`) and how often it stood without it (`-role`). A role
+  never seen with the head, or a role never missing that is missing, is a zero count.
+- **A head under a head.** With `nesting` in the recipe, a head may fill a role of another
+  head. The head with everything under it is its phrase. A phrase is one unbroken stretch, so
+  phrases never cross. The connectors at the two ends of the phrase decide its role, by the
+  same tables as for any argument; `stands` counts, per closing connector, whether a head stood
+  alone or under another. Lessons could always state such graphs; only reading was closed.
+  "X의 P의 Q": P under Q as its subject. "…V이면 …W이다": the first relation under the second,
+  role `if`.
+- **Negation, comparison:** written as a fixed word under the relation, the shape a claim check
+  already has (`denies` → "아니", `compare` → "이상"). No new role names per modality.
+- **What may hold a reading back.** Two conventions, both `true` in effect for older packs:
+  - `partial_reading_blocks_whole: false` — a reading that ignores words never holds back one
+    that explains every word with seen pieces.
+  - `contradicted_reading_blocks: false` — a higher-scoring reading holds the text back only
+    if what it relies on was never observed either way (0 of 0). One that goes against the
+    lessons (0 of N: a known piece buried in a name, a clause left alone after a connector that
+    always joined it) does not. Reason: a reading with fewer pieces has less to pay for and
+    outscored every longer, fully seen reading; conditionals and modifiers were held for it.
+  **These two loosen a fail-closed rule of 2026-11-18 and need the owner's review.** On the
+  development probes no reading came out different from the meant one (0 of about 190 lines),
+  but those probes were written by the implementer.
+- Not done: a nested graph is read but not yet answered (the matcher compares node types, and
+  the bridge to the structured questions of `know.py` is not built); the writer cannot write
+  nested sentences; evidence descriptions that differ only in the order of their spans count
+  as different and can tie.
+- Packs built earlier carry their own recipe and conventions and read exactly as before.
+
+## Blind test of 2026-11-23 (`probes/blind_20261123/`)
+
+Items by two authors who saw neither lessons nor code; runner and inputs fixed before the
+items existed; one run; nothing changed afterwards. Not the owner's independent examiner.
+
+- Reading, 60 sentences combining the claimed features in an invented domain: 30 read exactly
+  as meant, 22 held, 4 partial, **4 read differently without any flag**.
+- The 4 are one pattern: a chain ("X의 P의 Q") with a time or a condition in front; the time or
+  condition was attached to the inner relation instead of the outer one.
+- With the two conventions of the previous section set back to `true`, the same run gives
+  12 read as meant, 48 held or partial, 0 read differently. So loosening them bought 18
+  sentences and cost 4 silent misreadings. The statement "0 read differently" in the previous
+  section holds only for the implementer's own probes.
+- Answering, an invented field with 50 questions: 0 wrong answers; 8 of 8 questions without
+  an answer were held; 15 of 42 answerable questions were answered right (direct 9 of 12,
+  checks 2 of 6, other names 4 of 6, natural wording 0 of 18).
+
+## A part whose place the sentence leaves open is asked about (2026-11-23)
+
+Made after the blind test above, from its four misread sentences. Those items are therefore
+exposed; what this rule is worth has to be measured on new ones.
+
+- The reader could not know those readings were wrong: every count was nonzero, and a
+  higher-scoring rival of another meaning was just as common among the sentences read right
+  (18 of 30) as among the wrong ones (4 of 4). More search would pick the same reading.
+- The rule (`attachment_check` in the pack's conventions): a chosen reading is not accepted
+  when one of its parts (an argument, or a head with everything under it) could by form
+  belong to another head as well. That is the case when the other head has no part in that
+  role yet, heads like it were seen with such a part (`part`), the role was seen written on
+  that side of its head (`side`, a new counted table), and moving the part leaves every phrase
+  one unbroken stretch.
+- The result is a hold with status `ambiguous`, the candidate reading kept, and under
+  `attachment` what to ask back: the piece, its role, and the head words between which the
+  choice lies. Answering that question back into the reading is not built yet.
+- On the exposed blind items: the 4 misread sentences are held with the right question, the 30
+  read as meant stay read. On the implementer's probes one line changed: a time in front of a
+  condition sentence is now asked about. Packs built earlier read exactly as before.
+- Second blind reading test (`probes/blind2_20261123/`, a new author, a new domain, same brief,
+  one run after this rule): 32 of 60 read exactly as meant, 21 held, 7 partial, **0 read
+  differently**. Three sentences were held by this rule with the right question; with the rule
+  switched off, the same three come out read differently. See `diagnosis_after_the_run.txt`.
+
+## Endings as pieces, first step (2026-11-23)
+
+- Lessons only, no code: where Korean lets a word be cut between two characters, the ending
+  after the fixed words 아니 and 맞 is a piece of its own (아니|야. 아니|에요. 맞|아요? 맞|죠?
+  맞|습니까?). 48 made-up lessons on the plain shape (`endings` in `probes/reading_limits.py`).
+- Measured: the transfer grid, widened by these five endings, reads 41 of 41 combined
+  sentences. On the two exposed blind sets, reading goes from 30 to 32 and from 32 to 34 of 60,
+  checks answered from 2 to 5 of 6; nothing read differently, no wrong answer. Exposed items:
+  a check of the mechanism only.
+- Not covered: endings that fuse into the last character (아닙니다, 아닌가요, 입니다). The plan is
+  to extend the existing stem-and-ending discovery to fixed words and to compare letters
+  instead of characters; see the reader design note, section 2.6. Not built.
+
+## Stems and endings of fixed words, letter by letter (2026-11-23)
+
+This replaces the first step above: the lessons no longer write an ending as a piece of its
+own. They show the word whole (아니다, 아니야, 아닙니다, 맞나요, 맞죠 …) and the reader finds
+stem and ending, as it always did for head words.
+
+- `build` compares the forms of one fixed word (same type, not a word that asks) in Unicode's
+  decomposed form and counts the shared beginning as a stem (`closed_stem`) and the rests as
+  endings (`closed_ending`). Korean writes a stem's last sound and an ending's first sound
+  into one character (아니 + ㅂ니다 = 아닙니다); compared by characters the two never meet.
+- A stem does not stop on the first letter of a syllable (맞나요 and 맞는가 share ㄴ; the stem
+  is 맞). Knowledge of the writing system, used like the last sound of a word already is.
+- A word that asks (무엇, 얼마, 어디 …) is never cut: such words share a meaning and stray
+  letters, and "어" plus an ending must not become a question word.
+- Reading: a stem followed by any ending learned from any such word is a fixed word with the
+  stem's meaning, if it ends on a character of the text. Nodes and evidence stay in the
+  text's own characters. Endings are shared across stems: 죠, shown only in 맞죠, reads 아니죠.
+- The recipe gains `meaning.closed_stem`. Packs without the two tables read as before.
+- Measured on the implementer's grid: 44 of 44 combined sentences. On the two exposed blind
+  sets, reading goes from 32 to 34 and from 34 to 36 of 60; nothing read differently. Exposed
+  items again: a check that the mechanism works.
+- Not done: head words still use the older character-level stems and their own ending table;
+  the copula after a value (이다, 입니다, 인가요) is still a whole connector. Bringing both under
+  this one mechanism is the base for reading predicate sentences.
+- Third blind reading test (`probes/blind3_20261123/`, a new author, a new domain, one run
+  after this rule): 31 of 60 read exactly as meant, 23 held, 6 partial, 0 read differently.
+  Four sentences were held by the attachment rule with the right question. The pack loader
+  refused the author's property word "높이" because the lessons use it as a made-up word; the
+  first attempt stopped there before anything was scored (kept as
+  `output_first_attempt_loader_refused.txt`), the runner was changed to report the clash and
+  go on, and no reader code changed between the two attempts.
+- Across the three blind sets the share read as meant stays near one half (30, 32, 31 of 60)
+  while silent misreadings went 4, 0, 0. The forms added in this section moved the exposed sets
+  by two sentences each and the fresh set not visibly: what is held there is mostly other
+  things (a modifier or a denial inside "…인 것은", a time after a condition clause, a
+  modifier after a topic-marked subject, endings no lesson shows such as 맞아 and 맞니).

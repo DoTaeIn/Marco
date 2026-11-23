@@ -1,0 +1,354 @@
+# Base language pack: 112 lessons, built from the shipped generator and raw-text variants
+
+## 1. One meaning, many wordings (base pack; only the first two wordings were taught)
+OK                                    모래섬호의 정원은 얼마인가?   
+OK                                    모래섬호의 정원은 무엇인가요?   
+HELD                                  모래섬호의 정원은 얼마입니까?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은 얼마예요?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은 얼마야?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원이 얼마인가?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호 정원은 얼마인가?   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호는 정원이 얼마인가?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은 몇 명인가?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은?   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원을 알려줘.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원이 궁금하다.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호에는 몇 명이 탈 수 있나?   unresolved: the text cannot be cut into known pieces
+OK                                    모래섬호의 정원은 120명이다.   
+OK                                    모래섬호의 정원은 120명입니다.   
+HELD                                  모래섬호의 정원은 120명이에요.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원은 120명이야.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원이 120명이다.   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호 정원은 120명이다.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호는 정원이 120명이다.   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은 120명   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호와 바람개비호의 정원은 얼마인가?   ambiguous: every reading uses something never seen in training
+PARTIAL                               모래섬호의 정원은 대략 얼마인가?   ignored ['대략']
+-> HELD 18, OK 4, PARTIAL 1 of 23
+
+## 2. New constructions: before and after lessons that teach the shape (unseen words and names)
+
+### modifier (+48 lessons)
+OK       (before: PARTIAL) 모래섬호의 평일 첫출항은 언제인가?   
+OK       (before: PARTIAL) 모래섬호의 주말 첫출항은 8시30분이다.   
+OK       (before: PARTIAL) 바람개비호의 공휴일 기본요금은 얼마인가?   
+
+### time (+48 lessons)
+OK       (before: HELD   ) 2027년에 모래섬호의 기본요금은 얼마인가?   
+OK       (before: HELD   ) 내년에 모래섬호의 기본요금은 6000원이다.   
+
+### negation (+32 lessons)
+OK       (before: HELD   ) 모래섬호의 출발항은 서쪽항이 아니다.   
+OK       (before: HELD   ) 바람개비호의 정원은 80명이 아니다.   
+
+### conditional (+32 lessons)
+OK       (before: HELD   ) 승객의 연령이 65세이면 승객의 할인율은 50%이다.   
+OK       (before: HELD   ) 배의 정원이 120명이면 배의 기본요금은 6000원이다.   
+
+### inverse (+48 lessons)
+OK       (before: HELD   ) 출발항이 동쪽항인 것은 무엇인가?   
+OK       (before: HELD   ) 정원이 100명 이상인 것은 무엇인가?   
+
+### chain (+48 lessons)
+OK       (before: HELD   ) 모래섬호의 출발항의 문의전화는 무엇인가?   
+OK       (before: HELD   ) 모래섬호의 출발항의 문의전화는 0412이다.   
+
+# All construction sets except chain together: 320 lessons
+
+## 3. Each construction again with every set loaded (do the sets disturb each other?)
+OK       modifier                     모래섬호의 평일 첫출항은 언제인가?   
+OK       modifier                     모래섬호의 주말 첫출항은 8시30분이다.   
+OK       modifier                     바람개비호의 공휴일 기본요금은 얼마인가?   
+OK       time                         2027년에 모래섬호의 기본요금은 얼마인가?   
+OK       time                         내년에 모래섬호의 기본요금은 6000원이다.   
+OK       negation                     모래섬호의 출발항은 서쪽항이 아니다.   
+OK       negation                     바람개비호의 정원은 80명이 아니다.   
+OK       conditional                  승객의 연령이 65세이면 승객의 할인율은 50%이다.   
+OK       conditional                  배의 정원이 120명이면 배의 기본요금은 6000원이다.   
+OK       inverse                      출발항이 동쪽항인 것은 무엇인가?   
+OK       inverse                      정원이 100명 이상인 것은 무엇인가?   
+-> OK 11 of 11
+
+## 4. Two taught things in one sentence, never shown together
+OK       modifier + polite ending     모래섬호의 평일 첫출항은 언제인가요?   
+OK       modifier + polite statement  모래섬호의 주말 첫출항은 8시30분입니다.   
+OK       modifier + claim check       모래섬호의 평일 첫출항은 7시가 맞나요?   
+OK       time + modifier              2027년에 모래섬호의 평일 첫출항은 언제인가?   
+OK       time + negation              2027년에 모래섬호의 출발항은 서쪽항이 아니다.   
+OK       modifier + negation          모래섬호의 주말 출발항은 서쪽항이 아니다.   
+OK       time + claim check           2027년에 모래섬호의 기본요금은 6000원이 맞는가?   
+HELD     time + inverse               2027년에 출발항이 동쪽항인 것은 무엇인가?   ambiguous: every reading uses something never seen in training
+OK       conditional + modifier       승객의 연령이 65세이면 승객의 평일 할인율은 50%이다.   
+OK       conditional + polite ending  승객의 연령이 65세이면 승객의 할인율은 50%입니다.   
+OK       conditional + negation       승객의 연령이 65세이면 승객의 할인율은 50%가 아니다.   
+HELD     conditional + time           2027년에 승객의 연령이 65세이면 승객의 할인율은 50%이다.   ambiguous: the sentence alone does not say what "2027년" belongs to: "연령" or "할인율"
+-> HELD 2, OK 10 of 12
+
+## 5. The wordings of table 1 again with every set loaded
+OK                                    모래섬호의 정원은 얼마인가?   
+OK                                    모래섬호의 정원은 무엇인가요?   
+HELD                                  모래섬호의 정원은 얼마입니까?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은 얼마예요?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은 얼마야?   ambiguous: every reading uses something never seen in training
+OK                                    모래섬호의 정원이 얼마인가?   
+HELD                                  모래섬호 정원은 얼마인가?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호는 정원이 얼마인가?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은 몇 명인가?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은?   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원을 알려줘.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원이 궁금하다.   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호에는 몇 명이 탈 수 있나?   unresolved: the text cannot be cut into known pieces
+OK                                    모래섬호의 정원은 120명이다.   
+OK                                    모래섬호의 정원은 120명입니다.   
+HELD                                  모래섬호의 정원은 120명이에요.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원은 120명이야.   unresolved: the text cannot be cut into known pieces
+OK                                    모래섬호의 정원이 120명이다.   
+HELD                                  모래섬호 정원은 120명이다.   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호는 정원이 120명이다.   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은 120명   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호와 바람개비호의 정원은 얼마인가?   ambiguous: every reading uses something never seen in training
+PARTIAL                               모래섬호의 정원은 대략 얼마인가?   ignored ['대략']
+-> HELD 16, OK 6, PARTIAL 1 of 23
+
+## 6. Library questions (public pack, 15 questions with expected answers): right / wrong / held
+base pack      15 / 0 / 0
+every set      15 / 0 / 0
+
+12 mixed sentences read in 0.35 s with every set loaded
+
+# Base + wordings set: 240 lessons
+
+## 7. The wordings of table 1 after lessons for more wordings (plain shape only)
+OK                                    모래섬호의 정원은 얼마인가?   
+OK                                    모래섬호의 정원은 무엇인가요?   
+OK                                    모래섬호의 정원은 얼마입니까?   
+HELD                                  모래섬호의 정원은 얼마예요?   ambiguous: every reading uses something never seen in training
+OK                                    모래섬호의 정원은 얼마야?   
+OK                                    모래섬호의 정원이 얼마인가?   
+OK                                    모래섬호 정원은 얼마인가?   
+OK                                    모래섬호는 정원이 얼마인가?   
+HELD                                  모래섬호의 정원은 몇 명인가?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은?   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원을 알려줘.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원이 궁금하다.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호에는 몇 명이 탈 수 있나?   unresolved: the text cannot be cut into known pieces
+OK                                    모래섬호의 정원은 120명이다.   
+OK                                    모래섬호의 정원은 120명입니다.   
+OK                                    모래섬호의 정원은 120명이에요.   
+OK                                    모래섬호의 정원은 120명이야.   
+OK                                    모래섬호의 정원이 120명이다.   
+OK                                    모래섬호 정원은 120명이다.   
+OK                                    모래섬호는 정원이 120명이다.   
+HELD                                  모래섬호의 정원은 120명   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호와 바람개비호의 정원은 얼마인가?   ambiguous: every reading uses something never seen in training
+PARTIAL                               모래섬호의 정원은 대략 얼마인가?   ignored ['대략']
+-> HELD 8, OK 14, PARTIAL 1 of 23
+
+# Wordings + every construction set: 448 lessons
+
+## 8. A wording and a construction taught separately, used together
+OK       modifier + 입니까               모래섬호의 평일 첫출항은 언제입니까?   
+OK       modifier + 예요                모래섬호의 주말 첫출항은 8시예요.   
+PARTIAL  modifier + no 의              모래섬호 평일 첫출항은 언제인가?   ignored ['평일']
+OK       time + 야                     2027년에 모래섬호의 기본요금은 얼마야?   
+OK       time + X는 P가                 2027년에 모래섬호는 기본요금이 얼마인가?   
+OK       conditional + 이에요            승객의 연령이 65세이면 승객의 할인율은 50%예요.   
+OK       conditional + X는 P가          승객의 연령이 65세이면 승객은 할인율이 50%이다.   
+-> OK 6, PARTIAL 1 of 7
+
+## 9. Table 1 wordings with everything loaded
+OK                                    모래섬호의 정원은 얼마인가?   
+OK                                    모래섬호의 정원은 무엇인가요?   
+OK                                    모래섬호의 정원은 얼마입니까?   
+HELD                                  모래섬호의 정원은 얼마예요?   ambiguous: every reading uses something never seen in training
+OK                                    모래섬호의 정원은 얼마야?   
+OK                                    모래섬호의 정원이 얼마인가?   
+OK                                    모래섬호 정원은 얼마인가?   
+OK                                    모래섬호는 정원이 얼마인가?   
+HELD                                  모래섬호의 정원은 몇 명인가?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은?   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원을 알려줘.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원이 궁금하다.   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호에는 몇 명이 탈 수 있나?   unresolved: the text cannot be cut into known pieces
+OK                                    모래섬호의 정원은 120명이다.   
+OK                                    모래섬호의 정원은 120명입니다.   
+OK                                    모래섬호의 정원은 120명이에요.   
+OK                                    모래섬호의 정원은 120명이야.   
+OK                                    모래섬호의 정원이 120명이다.   
+OK                                    모래섬호 정원은 120명이다.   
+OK                                    모래섬호는 정원이 120명이다.   
+HELD                                  모래섬호의 정원은 120명   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호와 바람개비호의 정원은 얼마인가?   ambiguous: every reading uses something never seen in training
+PARTIAL                               모래섬호의 정원은 대략 얼마인가?   ignored ['대략']
+-> HELD 8, OK 14, PARTIAL 1 of 23
+library, everything loaded      15 / 0 / 0
+
+# Same lessons, one pack edit: the "set of roles for this head" rule removed from the recipe
+
+## 10. Table 4 again (two taught things together)
+OK       modifier + polite ending     모래섬호의 평일 첫출항은 언제인가요?   
+OK       modifier + polite statement  모래섬호의 주말 첫출항은 8시30분입니다.   
+OK       modifier + claim check       모래섬호의 평일 첫출항은 7시가 맞나요?   
+OK       time + modifier              2027년에 모래섬호의 평일 첫출항은 언제인가?   
+OK       time + negation              2027년에 모래섬호의 출발항은 서쪽항이 아니다.   
+OK       modifier + negation          모래섬호의 주말 출발항은 서쪽항이 아니다.   
+OK       time + claim check           2027년에 모래섬호의 기본요금은 6000원이 맞는가?   
+HELD     time + inverse               2027년에 출발항이 동쪽항인 것은 무엇인가?   ambiguous: every reading uses something never seen in training
+OK       conditional + modifier       승객의 연령이 65세이면 승객의 평일 할인율은 50%이다.   
+OK       conditional + polite ending  승객의 연령이 65세이면 승객의 할인율은 50%입니다.   
+OK       conditional + negation       승객의 연령이 65세이면 승객의 할인율은 50%가 아니다.   
+HELD     conditional + time           2027년에 승객의 연령이 65세이면 승객의 할인율은 50%이다.   ambiguous: the sentence alone does not say what "2027년" belongs to: "연령" or "할인율"
+-> HELD 2, OK 10 of 12
+
+## 11. Table 8 again
+OK       modifier + 입니까               모래섬호의 평일 첫출항은 언제입니까?   
+OK       modifier + 예요                모래섬호의 주말 첫출항은 8시예요.   
+PARTIAL  modifier + no 의              모래섬호 평일 첫출항은 언제인가?   ignored ['평일']
+OK       time + 야                     2027년에 모래섬호의 기본요금은 얼마야?   
+OK       time + X는 P가                 2027년에 모래섬호는 기본요금이 얼마인가?   
+OK       conditional + 이에요            승객의 연령이 65세이면 승객의 할인율은 50%예요.   
+OK       conditional + X는 P가          승객의 연령이 65세이면 승객은 할인율이 50%이다.   
+-> OK 6, PARTIAL 1 of 7
+
+## 12. Each construction again
+OK       modifier                     모래섬호의 평일 첫출항은 언제인가?   
+OK       modifier                     모래섬호의 주말 첫출항은 8시30분이다.   
+OK       modifier                     바람개비호의 공휴일 기본요금은 얼마인가?   
+OK       time                         2027년에 모래섬호의 기본요금은 얼마인가?   
+OK       time                         내년에 모래섬호의 기본요금은 6000원이다.   
+OK       negation                     모래섬호의 출발항은 서쪽항이 아니다.   
+OK       negation                     바람개비호의 정원은 80명이 아니다.   
+OK       conditional                  승객의 연령이 65세이면 승객의 할인율은 50%이다.   
+OK       conditional                  배의 정원이 120명이면 배의 기본요금은 6000원이다.   
+OK       inverse                      출발항이 동쪽항인 것은 무엇인가?   
+OK       inverse                      정원이 100명 이상인 것은 무엇인가?   
+-> OK 11 of 11
+
+## 13. Table 1 wordings again
+OK                                    모래섬호의 정원은 얼마인가?   
+OK                                    모래섬호의 정원은 무엇인가요?   
+OK                                    모래섬호의 정원은 얼마입니까?   
+HELD                                  모래섬호의 정원은 얼마예요?   ambiguous: every reading uses something never seen in training
+OK                                    모래섬호의 정원은 얼마야?   
+OK                                    모래섬호의 정원이 얼마인가?   
+OK                                    모래섬호 정원은 얼마인가?   
+OK                                    모래섬호는 정원이 얼마인가?   
+HELD                                  모래섬호의 정원은 몇 명인가?   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호의 정원은?   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원을 알려줘.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원이 궁금하다.   ambiguous: every reading uses something never seen in training
+HELD                                  모래섬호에는 몇 명이 탈 수 있나?   unresolved: the text cannot be cut into known pieces
+OK                                    모래섬호의 정원은 120명이다.   
+OK                                    모래섬호의 정원은 120명입니다.   
+OK                                    모래섬호의 정원은 120명이에요.   
+OK                                    모래섬호의 정원은 120명이야.   
+OK                                    모래섬호의 정원이 120명이다.   
+OK                                    모래섬호 정원은 120명이다.   
+OK                                    모래섬호는 정원이 120명이다.   
+HELD                                  모래섬호의 정원은 120명   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호와 바람개비호의 정원은 얼마인가?   ambiguous: every reading uses something never seen in training
+PARTIAL                               모래섬호의 정원은 대략 얼마인가?   ignored ['대략']
+-> HELD 8, OK 14, PARTIAL 1 of 23
+library, rule removed           15 / 0 / 0
+
+## 14. Chain with its lessons and the rule removed
+OK       chain                        모래섬호의 출발항의 문의전화는 무엇인가?   
+OK       chain                        모래섬호의 출발항의 문의전화는 0412이다.   
+-> OK 2 of 2
+
+# What-if (patched in this probe only): a role must be filled by a type seen in that role
+
+## 15. Table 8 (wording + construction), whole-set rule kept
+OK       modifier + 입니까               모래섬호의 평일 첫출항은 언제입니까?   
+OK       modifier + 예요                모래섬호의 주말 첫출항은 8시예요.   
+PARTIAL  modifier + no 의              모래섬호 평일 첫출항은 언제인가?   ignored ['평일']
+OK       time + 야                     2027년에 모래섬호의 기본요금은 얼마야?   
+OK       time + X는 P가                 2027년에 모래섬호는 기본요금이 얼마인가?   
+OK       conditional + 이에요            승객의 연령이 65세이면 승객의 할인율은 50%예요.   
+OK       conditional + X는 P가          승객의 연령이 65세이면 승객은 할인율이 50%이다.   
+-> OK 6, PARTIAL 1 of 7
+
+## 16. Table 4 (two constructions), whole-set rule kept
+OK       modifier + polite ending     모래섬호의 평일 첫출항은 언제인가요?   
+OK       modifier + polite statement  모래섬호의 주말 첫출항은 8시30분입니다.   
+OK       modifier + claim check       모래섬호의 평일 첫출항은 7시가 맞나요?   
+OK       time + modifier              2027년에 모래섬호의 평일 첫출항은 언제인가?   
+OK       time + negation              2027년에 모래섬호의 출발항은 서쪽항이 아니다.   
+OK       modifier + negation          모래섬호의 주말 출발항은 서쪽항이 아니다.   
+OK       time + claim check           2027년에 모래섬호의 기본요금은 6000원이 맞는가?   
+HELD     time + inverse               2027년에 출발항이 동쪽항인 것은 무엇인가?   ambiguous: every reading uses something never seen in training
+OK       conditional + modifier       승객의 연령이 65세이면 승객의 평일 할인율은 50%이다.   
+OK       conditional + polite ending  승객의 연령이 65세이면 승객의 할인율은 50%입니다.   
+OK       conditional + negation       승객의 연령이 65세이면 승객의 할인율은 50%가 아니다.   
+HELD     conditional + time           2027년에 승객의 연령이 65세이면 승객의 할인율은 50%이다.   ambiguous: the sentence alone does not say what "2027년" belongs to: "연령" or "할인율"
+-> HELD 2, OK 10 of 12
+
+## 17. Each construction
+OK       modifier                     모래섬호의 평일 첫출항은 언제인가?   
+OK       modifier                     모래섬호의 주말 첫출항은 8시30분이다.   
+OK       modifier                     바람개비호의 공휴일 기본요금은 얼마인가?   
+OK       time                         2027년에 모래섬호의 기본요금은 얼마인가?   
+OK       time                         내년에 모래섬호의 기본요금은 6000원이다.   
+OK       negation                     모래섬호의 출발항은 서쪽항이 아니다.   
+OK       negation                     바람개비호의 정원은 80명이 아니다.   
+OK       conditional                  승객의 연령이 65세이면 승객의 할인율은 50%이다.   
+OK       conditional                  배의 정원이 120명이면 배의 기본요금은 6000원이다.   
+OK       inverse                      출발항이 동쪽항인 것은 무엇인가?   
+OK       inverse                      정원이 100명 이상인 것은 무엇인가?   
+-> OK 11 of 11
+
+## 18. Table 1 wordings
+OK                                    모래섬호의 정원은 얼마인가?   
+OK                                    모래섬호의 정원은 무엇인가요?   
+OK                                    모래섬호의 정원은 얼마입니까?   
+HELD                                  모래섬호의 정원은 얼마예요?   unresolved: the text cannot be cut into known pieces
+OK                                    모래섬호의 정원은 얼마야?   
+OK                                    모래섬호의 정원이 얼마인가?   
+OK                                    모래섬호 정원은 얼마인가?   
+OK                                    모래섬호는 정원이 얼마인가?   
+HELD                                  모래섬호의 정원은 몇 명인가?   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원은?   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원을 알려줘.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호의 정원이 궁금하다.   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호에는 몇 명이 탈 수 있나?   unresolved: the text cannot be cut into known pieces
+OK                                    모래섬호의 정원은 120명이다.   
+OK                                    모래섬호의 정원은 120명입니다.   
+OK                                    모래섬호의 정원은 120명이에요.   
+OK                                    모래섬호의 정원은 120명이야.   
+OK                                    모래섬호의 정원이 120명이다.   
+OK                                    모래섬호 정원은 120명이다.   
+OK                                    모래섬호는 정원이 120명이다.   
+HELD                                  모래섬호의 정원은 120명   unresolved: the text cannot be cut into known pieces
+HELD                                  모래섬호와 바람개비호의 정원은 얼마인가?   ambiguous: every reading uses something never seen in training
+PARTIAL                               모래섬호의 정원은 대략 얼마인가?   ignored ['대략']
+-> HELD 8, OK 14, PARTIAL 1 of 23
+library, what-if                15 / 0 / 0
+
+## 19. Table 4 with the whole-set rule removed as well
+OK       modifier + polite ending     모래섬호의 평일 첫출항은 언제인가요?   
+OK       modifier + polite statement  모래섬호의 주말 첫출항은 8시30분입니다.   
+OK       modifier + claim check       모래섬호의 평일 첫출항은 7시가 맞나요?   
+OK       time + modifier              2027년에 모래섬호의 평일 첫출항은 언제인가?   
+OK       time + negation              2027년에 모래섬호의 출발항은 서쪽항이 아니다.   
+OK       modifier + negation          모래섬호의 주말 출발항은 서쪽항이 아니다.   
+OK       time + claim check           2027년에 모래섬호의 기본요금은 6000원이 맞는가?   
+HELD     time + inverse               2027년에 출발항이 동쪽항인 것은 무엇인가?   ambiguous: every reading uses something never seen in training
+OK       conditional + modifier       승객의 연령이 65세이면 승객의 평일 할인율은 50%이다.   
+OK       conditional + polite ending  승객의 연령이 65세이면 승객의 할인율은 50%입니다.   
+OK       conditional + negation       승객의 연령이 65세이면 승객의 할인율은 50%가 아니다.   
+HELD     conditional + time           2027년에 승객의 연령이 65세이면 승객의 할인율은 50%이다.   ambiguous: the sentence alone does not say what "2027년" belongs to: "연령" or "할인율"
+-> HELD 2, OK 10 of 12
+
+## 20. Each construction with the whole-set rule removed as well
+OK       modifier                     모래섬호의 평일 첫출항은 언제인가?   
+OK       modifier                     모래섬호의 주말 첫출항은 8시30분이다.   
+OK       modifier                     바람개비호의 공휴일 기본요금은 얼마인가?   
+OK       time                         2027년에 모래섬호의 기본요금은 얼마인가?   
+OK       time                         내년에 모래섬호의 기본요금은 6000원이다.   
+OK       negation                     모래섬호의 출발항은 서쪽항이 아니다.   
+OK       negation                     바람개비호의 정원은 80명이 아니다.   
+OK       conditional                  승객의 연령이 65세이면 승객의 할인율은 50%이다.   
+OK       conditional                  배의 정원이 120명이면 배의 기본요금은 6000원이다.   
+OK       inverse                      출발항이 동쪽항인 것은 무엇인가?   
+OK       inverse                      정원이 100명 이상인 것은 무엇인가?   
+-> OK 11 of 11

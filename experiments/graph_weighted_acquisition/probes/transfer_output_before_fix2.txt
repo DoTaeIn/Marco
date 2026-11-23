@@ -1,0 +1,47 @@
+# 368 lessons: the base set and wordings, modifier, time, negation, each feature taught on its own
+
+OK       taught   모래섬호의 기본요금은 6000원이다.   
+OK       taught   모래섬호의 기본요금은 6000원입니다.   
+OK       taught   모래섬호의 기본요금은 6000원이야.   
+OK       taught   모래섬호의 기본요금은 얼마인가?   
+OK       taught   모래섬호의 기본요금은 얼마인가요?   
+OK       taught   모래섬호의 기본요금은 얼마입니까?   
+OK       taught   모래섬호의 기본요금은 얼마야?   
+OK       taught   모래섬호의 기본요금은 6000원이 맞는가?   
+OK       taught   모래섬호의 기본요금은 6000원이 맞나요?   
+OK       taught   모래섬호의 기본요금은 6000원이 아니다.   
+HELD     taught   모래섬호의 주말 기본요금은 6000원이다.   ambiguous: a reading with an unseen piece scores clearly higher
+HELD     combined 모래섬호의 주말 기본요금은 6000원입니다.   ambiguous: a reading with an unseen piece scores clearly higher
+HELD     combined 모래섬호의 주말 기본요금은 6000원이야.   ambiguous: a reading with an unseen piece scores clearly higher
+HELD     taught   모래섬호의 주말 기본요금은 얼마인가?   ambiguous: a reading with an unseen piece scores clearly higher
+HELD     combined 모래섬호의 주말 기본요금은 얼마인가요?   ambiguous: a reading with an unseen piece scores clearly higher
+HELD     combined 모래섬호의 주말 기본요금은 얼마입니까?   ambiguous: a reading with an unseen piece scores clearly higher
+HELD     combined 모래섬호의 주말 기본요금은 얼마야?   ambiguous: a reading with an unseen piece scores clearly higher
+PARTIAL  combined 모래섬호의 주말 기본요금은 6000원이 맞는가?   ignored ['주말']
+PARTIAL  combined 모래섬호의 주말 기본요금은 6000원이 맞나요?   ignored ['주말']
+PARTIAL  combined 모래섬호의 주말 기본요금은 6000원이 아니다.   ignored ['주말']
+OK       taught   2027년에 모래섬호의 기본요금은 6000원이다.   
+OK       combined 2027년에 모래섬호의 기본요금은 6000원입니다.   
+OK       combined 2027년에 모래섬호의 기본요금은 6000원이야.   
+OK       taught   2027년에 모래섬호의 기본요금은 얼마인가?   
+OK       combined 2027년에 모래섬호의 기본요금은 얼마인가요?   
+OK       combined 2027년에 모래섬호의 기본요금은 얼마입니까?   
+OK       combined 2027년에 모래섬호의 기본요금은 얼마야?   
+HELD     combined 2027년에 모래섬호의 기본요금은 6000원이 맞는가?   ambiguous: every reading uses something never seen in training
+HELD     combined 2027년에 모래섬호의 기본요금은 6000원이 맞나요?   ambiguous: every reading uses something never seen in training
+HELD     combined 2027년에 모래섬호의 기본요금은 6000원이 아니다.   ambiguous: every reading uses something never seen in training
+PARTIAL  combined 2027년에 모래섬호의 주말 기본요금은 6000원이다.   ignored ['주말']
+PARTIAL  combined 2027년에 모래섬호의 주말 기본요금은 6000원입니다.   ignored ['주말']
+PARTIAL  combined 2027년에 모래섬호의 주말 기본요금은 6000원이야.   ignored ['주말']
+PARTIAL  combined 2027년에 모래섬호의 주말 기본요금은 얼마인가?   ignored ['주말']
+PARTIAL  combined 2027년에 모래섬호의 주말 기본요금은 얼마인가요?   ignored ['주말']
+PARTIAL  combined 2027년에 모래섬호의 주말 기본요금은 얼마입니까?   ignored ['주말']
+PARTIAL  combined 2027년에 모래섬호의 주말 기본요금은 얼마야?   ignored ['주말']
+HELD     combined 2027년에 모래섬호의 주말 기본요금은 6000원이 맞는가?   ambiguous: every reading uses something never seen in training
+HELD     combined 2027년에 모래섬호의 주말 기본요금은 6000원이 맞나요?   ambiguous: every reading uses something never seen in training
+HELD     combined 2027년에 모래섬호의 주말 기본요금은 6000원이 아니다.   ambiguous: every reading uses something never seen in training
+
+taught   12 of 14 read exactly as meant
+
+combined 5 of 26 read exactly as meant
+transfer = 5 / 26
