@@ -67,11 +67,19 @@ def with_words(language, words):
     model = dict(language, tables=dict(tables), cues=dict(language['cues']))
     for name in ('head', 'head_in', 'frame', 'part'):
         model['tables'][name] = dict(tables.get(name, {}))
+    # The lessons' own words of this slot showed the form of such a word; they are not words of the field.
+    # Left readable, "절기" is a known piece inside the field's "동절기" and "높이" cannot be a field word.
+    makes_way = R.recipe_of(language)[1].get('lesson_words') == 'make_way'
+    if makes_way:
+        for word in alike:
+            for name in ('head', 'head_in'):
+                model['tables'][name].pop(word, None)
+            model['cues'].pop(word, None)
     added = []
     for prop in words['properties']:
         entry = key({'literals': [[attribute, prop['means']]], 'type': kind})
         for surface in [prop['word']] + prop.get('also', []):
-            if surface in tables.get('head', {}) or surface in tables.get('closed', {}):
+            if surface in model['tables']['head'] or surface in tables.get('closed', {}):
                 raise ValueError('"%s" is already a word of the language pack' % surface)
             origin = ['word pack: ' + surface + ('' if surface == prop['word'] else ' = ' + prop['word'])]
             # The field's main word is the one written; another word for it is read just as well.

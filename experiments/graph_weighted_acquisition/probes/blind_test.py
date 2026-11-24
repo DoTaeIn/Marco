@@ -122,7 +122,9 @@ def main():
     # A field word that is also a made-up word of the lessons is refused by the pack loader. Found by the
     # third blind set ("높이"). The clash is reported and the word is left to the language pack, which
     # already reads it as a property of that name; the sentences are scored like the others.
-    clashes = [w for w in a['properties'] if w in full['tables'].get('head', {}) or w in full['tables'].get('closed', {})]
+    # Since 2026-11-24 (`lesson_words: make_way`) the lessons' property words make way; only fixed words clash.
+    way = R.recipe_of(full)[1].get('lesson_words') == 'make_way'
+    clashes = [w for w in a['properties'] if (not way and w in full['tables'].get('head', {})) or w in full['tables'].get('closed', {})]
     if clashes:
         print('FIELD WORDS REFUSED BY THE PACK LOADER (already words of the lessons): %s' % ', '.join(clashes))
         words['properties'] = [x for x in words['properties'] if x['word'] not in clashes]

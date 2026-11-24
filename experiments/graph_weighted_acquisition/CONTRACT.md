@@ -418,3 +418,27 @@ stem and ending, as it always did for head words.
   by two sentences each and the fresh set not visibly: what is held there is mostly other
   things (a modifier or a denial inside "…인 것은", a time after a condition clause, a
   modifier after a topic-marked subject, endings no lesson shows such as 맞아 and 맞니).
+
+## The lessons' own property words make way for the field (2026-11-24)
+
+- Found by two blind sets: a field's "동절기" was held because the lessons' "절기" lay inside it
+  as a known piece left unused, and a field's "높이" was refused by the pack loader because
+  the lessons use that very word. The lessons need some word in the property slot to show the
+  form of a sentence; that word was never meant as vocabulary of every field.
+- Convention `lesson_words: make_way`. When a word pack is put on the language pack
+  (`pack.with_words`), the lessons' words of the pack's slot are taken out of the model's
+  `head` and `head_in` tables and out of its known pieces. Their counts stay where they
+  matter: pooled into the form every field word gets, as before. The language pack itself is
+  not changed, and without a word pack it reads its own lesson sentences as before.
+- A field may now use such a word, or a word that contains it. A field that does not list it
+  does not read it: the sentence is held like any sentence with an unknown property.
+- Still refused: a field word equal to a fixed word of the language (무엇, 얼마, 아니다 …).
+- Packs without the convention behave as before; the shipped packs carry their own. The 81
+  library and tax questions give the same SHA-256 as before (470df3c3…). 90 public checks
+  pass; one existing check was changed to assert both the new rule and the old one.
+- Reruns on the three exposed blind sets (`output_rerun_after_lesson_words.txt` in each
+  folder): 37, 36, 31 of 60 read as meant (before: 34, 36, 31); nothing read differently; the
+  loader refuses no word of the third set. Exposed items: this shows the clash is gone, not
+  how far reading generalises. The implementer's grid stays 44 of 44.
+- Not covered: a field name or value that contains a connector or a fixed word of the
+  language is a different clash and is untouched.

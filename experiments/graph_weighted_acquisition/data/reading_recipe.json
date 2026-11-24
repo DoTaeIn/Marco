@@ -20,6 +20,8 @@
   "contradicted_reading_blocks_meaning": "false: a higher-scoring reading holds the text back only when what it relies on was never observed either way (0 of 0). One that goes against what the lessons showed (0 of N) does not. true: any higher-scoring reading with a zero count holds the text, as before 2026-11-23.",
   "attachment_check": true,
   "attachment_check_meaning": "true: a reading is not accepted when one of its parts could, by the form of the sentence, equally belong to another head (a time in front of a chain, for one). The reader holds and says between which words the choice lies. Absent or false: the place the counts prefer is taken, as before 2026-11-23.",
+  "lesson_words": "make_way",
+  "lesson_words_meaning": "make_way: when a field's word pack is put on the language pack, the lessons' own words of that slot stop being readable words; their counts stay as the pooled form every field word gets. Absent: they stay readable and a field word equal to one is refused, as before 2026-11-24.",
   "partial_answers": "withhold",
   "partial_answers_meaning": "withhold: no answer is given when words of the question were ignored or a name was matched by ignoring the words in front of it; the candidate is kept as withheld. give: the answer is given with a flag, as before 2026-11-23. A name that differs only in spacing is not affected.",
   "known_names": {

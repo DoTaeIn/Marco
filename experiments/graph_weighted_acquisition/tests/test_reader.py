@@ -715,10 +715,33 @@ def test_three_packs_make_one_system_and_the_field_is_swapped_without_lessons():
     assert PK.ask(zoo, '판다의 먹이는 무엇인가?')['answers'] == [['대나무']]
     assert PK.ask(zoo, '사과의 가격은 무엇인가?')['status'] == 'hold'
     assert PK.ask(shop, '판다의 먹이는 무엇인가?')['status'] == 'hold'
-    # A field word may not take over a word of the language pack.
-    clash = dict(shop_words, properties=[{'word': '빛깔', 'means': '빛깔', 'also': []}])
+    # A field word may not take over a fixed word of the language pack.
+    clash = dict(shop_words, properties=[{'word': '무엇', 'means': '무엇', 'also': []}])
     try:
         PK.with_words(language, clash)
+        raise AssertionError('a language word was overridden')
+    except ValueError:
+        pass
+    # Since 2026-11-24 a lesson's own property word makes way for the field (`lesson_words`): it only
+    # showed the form of such a word. The field may use it, or a word that contains it; a field
+    # that does not list it does not read it.
+    assert '빛깔' in language['tables']['head']
+    tinted = dict(shop_words, properties=shop_words['properties'] + [{'word': '빛깔', 'means': '빛깔', 'also': []},
+                                                                     {'word': '겉빛깔', 'means': '겉빛깔', 'also': []}])
+    facts = dict(shop_facts, facts=shop_facts['facts'] + [
+        {'id': 'c1', 'subject': '사과', 'property': '빛깔', 'value': '빨강', 'source': 't'},
+        {'id': 'c2', 'subject': '사과', 'property': '겉빛깔', 'value': '연두', 'source': 't'}])
+    tinted_shop = PK.load(language, tinted, facts)
+    assert tinted_shop['unusable'] == shop['unusable']
+    assert PK.ask(tinted_shop, '사과의 빛깔은 무엇인가?')['answers'] == [['빨강']]
+    assert PK.ask(tinted_shop, '사과의 겉빛깔은 무엇인가?')['answers'] == [['연두']]
+    assert '빛깔' not in shop['model']['tables']['head'] and '빛깔' not in shop['model']['cues']
+    assert PK.ask(shop, '사과의 빛깔은 무엇인가?')['status'] == 'hold'
+    assert '빛깔' in language['tables']['head']            # the language pack itself is not changed
+    # A pack with the convention of before: the lesson word stays and a field word equal to it is refused.
+    before = dict(language, conventions={k: v for k, v in language['conventions'].items() if k != 'lesson_words'})
+    try:
+        PK.with_words(before, tinted)
         raise AssertionError('a language word was overridden')
     except ValueError:
         pass
