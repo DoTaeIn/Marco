@@ -32,6 +32,9 @@
   "name_joins_meaning": "value: X의 P의 Q is answered from two facts stated apart, joined through the name that is the value of the first and stands in that role of the second. Not counted as verified. Absent: only what one sentence states together is matched.",
   "word_kinds": "where_open",
   "word_kinds_meaning": "where_open: what is known about a word's kind is used only where the connector after it leaves its role open (free values were seen in more than one role in front of it). Elsewhere the form decides. Absent: a word of known kind is that kind wherever it stands.",
+  "unread_question_answers": "anchor",
+  "unread_question_answers_meaning": "anchor: a question that is not read is put to the knowledge the other way round (things, property words, circumstances, counter, what its question word asked for before). One plain fact fits and every other piece is accounted for (a taught connector, or wording the user confirmed for that property): status 'assumed'. A piece left over: a proposal, no answer. Several facts: listed. Absent: held.",
+  "counter_question_word": "몇",
   "partial_answers": "withhold",
   "partial_answers_meaning": "withhold: no answer is given when words of the question were ignored or a name was matched by ignoring the words in front of it; the candidate is kept as withheld. give: the answer is given with a flag, as before 2026-11-23. A name that differs only in spacing is not affected.",
   "known_names": {

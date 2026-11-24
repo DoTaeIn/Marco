@@ -96,6 +96,7 @@ def with_words(language, words):
             model['tables']['part'][entry] = {label: {'n': n, 'origins': ['word pack: ' + prop['word']]}
                                               for label, n in parts.items()}
     model['field_words'] = added
+    model['field_slot'] = dict(words['slot'])      # which roles carry the thing and the value: used to find the fact a question asks about
     model['field_word_weight'], model['field_names'], model['field_values'] = typical, [], []
     _know_names(model, [n for name in words.get('names', []) for n in [name['name']] + name.get('also', [])], 'word_pack')
     return model

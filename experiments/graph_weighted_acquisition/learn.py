@@ -90,6 +90,29 @@ def note_kinds(memory, reading, sentence):
             entry['seen'] = (entry['seen'] + [sentence])[-memory['policy']['uses_kept']:]
 
 
+def note_ask(memory, word, prop, question):
+    """Keep that a question word asked for this property in a question that was read and answered."""
+    asks = memory.setdefault('asks', [])
+    entry = next((e for e in asks if e['word'] == word and e['property'] == prop), None)
+    if entry is None:
+        entry = {'word': word, 'property': prop, 'questions': []}
+        asks.append(entry)
+    if question not in entry['questions']:
+        entry['questions'] = (entry['questions'] + [question])[-memory['policy']['uses_kept']:]
+
+
+def note_said(memory, prop, words, by, at):
+    """Keep pieces of wording that the user confirmed were said to ask for this property."""
+    said = memory.setdefault('said', [])
+    entry = next((e for e in said if e['property'] == prop), None)
+    if entry is None:
+        entry = {'property': prop, 'words': [], 'confirmed': []}
+        said.append(entry)
+    entry['words'] = sorted(set(entry['words']) | set(words))
+    entry['confirmed'].append({'by': by, 'at': at, 'words': sorted(words)})
+    return entry
+
+
 def note_assumed(memory, word, kind, question):
     """Keep that a word was read by assumption for a question. This is a record, not knowledge: the
     reader does not use it, and repeating the assumption does not confirm it. Only being told does."""

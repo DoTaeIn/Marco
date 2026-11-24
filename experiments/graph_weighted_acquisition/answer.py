@@ -8,6 +8,7 @@ the question is grounded in passage text.
 """
 import argparse
 import json
+import unicodedata
 from pathlib import Path
 
 from experiments.graph_example_acquisition import native
@@ -80,6 +81,10 @@ def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=Non
                 for item in assumed['assumed']:
                     L.note_assumed(memory, item['word'], item['kind'], question)
             return assumed
+    if q['status'] != 'complete' and R.recipe_of(model)[1].get('unread_question_answers') == 'anchor':
+        anchored = _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q)
+        if anchored is not None:
+            return anchored
     if q['status'] != 'complete':
         out['reason'] = 'the question was not read with confidence: ' + q['reason']
         if q.get('open_roles'):
@@ -142,6 +147,205 @@ def _one_reading(pgraph, ptext, question, model, q, passage_result, aliases):
     return result
 
 
+def _known_facts(pgraph, ptext, slot):
+    """The plain facts of the knowledge: one thing, one property, one value, with what else was said of it."""
+    names = {n['id']: sorted(M._value(pgraph, ptext, n['id'])) for n in pgraph['nodes']}
+    heads = {}
+    for (s, p, o), spans in zip(pgraph['edges'], pgraph['edge_spans']):
+        if p == 'value':
+            continue
+        row = heads.setdefault(s, {'property': None, 'parts': {}, 'spans': [], 'plain': True})
+        row['spans'] += [list(x) for x in spans]
+        if isinstance(o, dict):
+            if p == slot['attribute'] and 'literal' in o:
+                row['property'] = o['literal']
+        elif len(names.get(o, [])) == 1:
+            row['parts'].setdefault(p, []).append(names[o][0])
+        else:
+            row['plain'] = False                       # a part that is itself a relation, or has no single name
+    inside = {o for s, p, o in pgraph['edges'] if isinstance(o, str) and o in heads}
+    out = []
+    for h, row in heads.items():
+        parts = row['parts']
+        if h not in inside and row['plain'] and row['property'] and len(parts.get(slot['subject_role'], [])) == 1 \
+                and len(parts.get(slot['value_role'], [])) == 1 and all(len(v) == 1 for v in parts.values()):
+            others = {r: v[0] for r, v in parts.items() if r not in (slot['subject_role'], slot['value_role'])}
+            out.append({'thing': parts[slot['subject_role']][0], 'property': row['property'],
+                        'value': parts[slot['value_role']][0], 'with': others, 'spans': sorted(map(tuple, row['spans']))})
+    return out
+
+
+def _unit(value):
+    """What a value is counted in: the letters after its last digit ("12명" -> "명"), if any."""
+    for i in range(len(value) - 1, -1, -1):
+        if value[i].isdigit():
+            return value[i + 1:]
+    return ''
+
+
+def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
+    """The question was not read. Which fact of the knowledge does it ask about?
+
+    The knowledge is finite, so the question can be put to it the other way round: the things, the
+    property words and the circumstances it names are looked up among what is known, and so is what
+    its question word asks for (a counter, "몇 명", asks for a value counted in 명; a question word
+    asks for the property it asked for in questions that were read and answered before). Two
+    property words in a row are a chain: the first fact's value is the thing of the second.
+
+    Finding one fact that fits is not understanding the question. Every piece of the question that
+    was not recognised has to be accounted for: a connector or a closing piece the lessons have, or
+    a word that was said before when this very property was asked for and the user said yes
+    (learn.note_said). Then the value is given with status "assumed". With any other piece left,
+    nothing is answered: the result is a hold with a `proposal` (what it was taken to ask, the
+    pieces not accounted for, and the value to give if the user says yes).
+
+    Not done at all when the question checks a claim or states a value the knowledge has, when it
+    names a circumstance the fact does not have, or when an unread word is marked as a noun of the
+    sentence. Returns a result, or None to leave the question as it was.
+    """
+    slot = model.get('field_slot')
+    if not slot or pgraph is None:
+        return None
+    tables, conventions = model['tables'], R.recipe_of(model)[1]
+    facts = _known_facts(pgraph, ptext, slot)
+    if not facts:
+        return None
+    asking = [w for w, row in tables.get('closed', {}).items() if any(json.loads(label).get('project') for label in row)]
+    fixed = [w for w in tables.get('closed', {}) if w not in asking] + list(tables.get('closed_stem', {}))
+    if any(unicodedata.normalize('NFD', w) in unicodedata.normalize('NFD', question) for w in fixed):
+        return None                                    # a check or a denial: the value in it has to be read, not guessed
+    things = {f['thing'] for f in facts} | set(aliases or {})
+    if any(f['value'] in question for f in facts if f['value'] not in things):
+        return None                                    # it states a value the knowledge has: a check, whatever its ending
+    props = {}
+    for surface in model.get('field_words', []):
+        for label in tables['head'].get(surface, {}):
+            props[surface] = dict(json.loads(label)['literals']).get(slot['attribute'])
+    circumstances = {v for f in facts for v in f['with'].values()} | set(tables.get('word_kind', {}))
+    # Longest known word first; a place of the question belongs to one word only.
+    taken, found = [False] * len(question), {'thing': [], 'property': [], 'circumstance': [], 'asks': []}
+    for kind, words in (('thing', things), ('property', props), ('circumstance', circumstances), ('asks', asking)):
+        for word in sorted(words, key=lambda w: (-len(w), w)):
+            start = question.find(word)
+            while start >= 0:
+                if not any(taken[start:start + len(word)]):
+                    taken[start:start + len(word)] = [True] * len(word)
+                    found[kind].append((start, word))
+                start = question.find(word, start + 1)
+    named = {(aliases or {}).get(t, t) for _, t in found['thing']}
+    counter = conventions.get('counter_question_word')
+    units = set()
+    at = question.find(counter) if counter else -1
+    while at >= 0:
+        # Every place the counter stands: "몇 시에 열어서 몇 시에 닫아요". The counter and its unit are read.
+        after = at + len(counter)
+        while after < len(question) and question[after] == ' ':
+            after += 1
+        for u in sorted({_unit(f['value']) for f in facts} - {''}, key=len, reverse=True):
+            if question.startswith(u, after) and not any(taken[at:after + len(u)]):
+                units.add(u)
+                taken[at:after + len(u)] = [True] * (after + len(u) - at)
+                break
+        at = question.find(counter, at + 1)
+    asks = [w for _, w in found['asks']]
+    wanted = []
+    for _, w in sorted(found['property']):
+        if props[w] not in wanted:
+            wanted.append(props[w])                    # in the order the question says them
+    if len(named) != 1 or len(wanted) > 2 or not (wanted or asks or units):
+        return None
+    thing = next(iter(named))
+    # What was not recognised, piece by piece.
+    marks = sorted({g.strip() for g in tables.get('gap', {}).get('mid', {}) if g.strip()}, key=len, reverse=True)
+    pieces_known = set(marks) | {g.strip().rstrip('?.!') for g in tables.get('gap', {}).get('end', {})} \
+        | {g.strip().rstrip('?.!') for g in model.get('alias', {})}
+    unread, pos = [], 0
+    for token in question.split():
+        start = question.index(token, pos)
+        pos = start + len(token)
+        left = ''.join(ch for k, ch in enumerate(token) if not taken[start + k]).strip('?.!,')
+        if not left:
+            continue
+        bare = token.rstrip('?.!,')
+        if not any(taken[start:start + len(token)]) and any(bare.endswith(m) and len(bare) > len(m) for m in marks):
+            return None                                # an unknown word marked as a noun: it may be the property or a thing
+        unread.append(left)
+    said = {(aliases or {}).get(c, c) for _, c in found['circumstance']}
+    history = {e['property'] for e in (memory or {}).get('asks', []) if e['word'] in asks}
+    sure = True                                        # may it be answered, if every piece is accounted for?
+    if len(wanted) == 2:
+        # A chain: the first property's value is the thing the second property is asked of.
+        first = [f for f in facts if f['thing'] == thing and f['property'] == wanted[0] and not f['with']]
+        if len(first) != 1 or said:
+            return None
+        fits = [dict(f, spans=sorted(set(first[0]['spans']) | set(f['spans'])), through=first[0]['value'])
+                for f in facts if f['thing'] == first[0]['value'] and f['property'] == wanted[1] and not f['with']]
+        how = 'two property words, joined through "%s"' % first[0]['value']
+        understood_thing = '%s (the %s of %s)' % (first[0]['value'], wanted[0], thing)
+    else:
+        fits = [f for f in facts if f['thing'] == thing and set(f['with'].values()) == said]
+        understood_thing = thing
+        if wanted:
+            fits, how = [f for f in fits if f['property'] == wanted[0]], 'the property word'
+        elif units:
+            fits = [f for f in fits if _unit(f['value']) in units]
+            how = 'the counter "%s %s"' % (counter, '/'.join(sorted(units)))
+        elif history:
+            # What a question word may ask for is not narrowed by what happens to be known of this thing.
+            fits = [f for f in fits if f['property'] in history]
+            sure = len(history) == 1
+            how = 'what "%s" asked for in questions read before%s' % (
+                '", "'.join(asks), '' if sure else ' (it asked for %s)' % ', '.join(sorted(history)))
+        else:
+            return None                                # a question word with nothing known of what it asks for
+    if not fits:
+        return None
+    out = _blank(passage_result, q)
+    recognised = sorted({w for kind in found.values() for _, w in kind}) + ['%s %s' % (counter, u) for u in sorted(units)]
+    if len(fits) > 1:
+        out['candidates'] = [{'thing': f['thing'], 'property': f['property'], 'with': f['with']} for f in fits]
+        out['reason'] = 'the question was not read; it names "%s", and the knowledge has %d facts it could be asking for: %s' % (
+            thing, len(fits), '; '.join('%s of %s' % (f['property'], f['thing']) for f in fits))
+        return out
+    fact = fits[0]
+    heard = {w for e in (memory or {}).get('said', []) if e['property'] == fact['property'] for w in e['words']}
+    open_pieces = [x for x in unread if x not in pieces_known and x not in heard]
+    understood = {'thing': understood_thing, 'property': fact['property'], 'with': fact['with']}
+    item = {'understood': understood, 'recognised': recognised, 'unread': unread, 'chosen_by': how,
+            'not_accounted_for': open_pieces}
+    evidence = [{'span': list(sp), 'text': ptext[sp[0]:sp[1]]} for sp in fact['spans']]
+    if open_pieces or not sure:
+        # One fact fits what was recognised, but pieces of the question are not accounted for, and one of
+        # them may be what changes the answer. Not answered: put to the user.
+        why = ('these pieces are not accounted for: %s' % ', '.join('"%s"' % x for x in open_pieces)) if open_pieces \
+            else 'the question word has asked for more than one property'
+        out['proposal'] = dict(item, if_confirmed=fact['value'], evidence=evidence,
+                               ask='Did you ask for the %s of %s%s? (%s)' % (
+                                   fact['property'], understood_thing,
+                                   ''.join(', %s: %s' % kv for kv in sorted(fact['with'].items())), why))
+        out['reason'] = 'the question was not read; one fact fits what was recognised, but ' + why
+        return out
+    out.update(status='assumed', answers=[[fact['value']]], verified=False, match={'proofs': []},
+               executor_detail='the question was not read, so there is no question graph to check',
+               evidence=evidence, assumed=[item],
+               reason='the question was not read; one fact of the knowledge fits it, and every piece of it is accounted for')
+    return out
+
+
+def confirm(result, memory, by, at):
+    """The user said yes to a proposal. Returns the answer, and keeps the wording: the pieces that were
+    not accounted for are, from now on, pieces said when this property is asked for."""
+    proposal = result.get('proposal')
+    if not proposal:
+        raise ValueError('there is no proposal to confirm')
+    L.note_said(memory, proposal['understood']['property'], proposal['not_accounted_for'], by, at)
+    out = dict(result, status='assumed', answers=[[proposal['if_confirmed']]], verified=False, match={'proofs': []},
+               evidence=proposal['evidence'], assumed=[dict(proposal, confirmed_by=by)],
+               reason='the question was not read; the user confirmed what it asks for')
+    out.pop('proposal')
+    return out
+
+
 def _answer_read(pgraph, ptext, question, model, q, out, passage_result, memory, aliases):
     """Everything after the question was read completely: match, checks, the answer as a sentence."""
     conventions = R.recipe_of(model)[1]
@@ -189,6 +393,12 @@ def _answer_read(pgraph, ptext, question, model, q, out, passage_result, memory,
         check = {'state': 'not comparable',
                  'detail': 'two facts were joined through a name (%s), which the older executor cannot do'
                            % ', '.join(found['joined_by'])}
+    elif found.get('set_aside'):
+        # Other facts fit the words of the question and have a part it does not state (a weekend fee beside
+        # the plain fee). They were set aside; the older executor has no such rule and would give them too.
+        check = {'state': 'not comparable',
+                 'detail': '%d fact(s) with a part the question does not state were set aside, which the older '
+                           'executor cannot do' % found['set_aside']}
     elif found['relaxed'] == 0 and not out['other_names']:
         # A name the question wrote once for two heads is checked the way it was matched: once per place.
         check = _second_opinion(pgraph, ptext, found.get('as_matched') or query, question, found['answers'],
@@ -215,6 +425,14 @@ def _answer_read(pgraph, ptext, question, model, q, out, passage_result, memory,
         out['sentences'] = []
     else:
         out['sentences'] = W.answer_sentences(model, query, question, found['answers'], found['notes'])
+    if memory is not None and claimed is None and len(query['project']) == 1:
+        asked = query['project'][0]
+        anchors = {n['id']: n.get('anchor') for n in query['nodes']}
+        for s_, p_, o_ in query['edges']:
+            if o_ == asked and anchors.get(asked):
+                kinds = [o2['literal'] for s2, p2, o2 in query['edges'] if s2 == s_ and isinstance(o2, dict) and 'literal' in o2]
+                if len(kinds) == 1:
+                    L.note_ask(memory, question[slice(*anchors[asked])], kinds[0], question)
     out.update(status='answered', answers=found['answers'],
                reason=found['reason'] + ('' if out['verified'] else '; not independently verified')
                + ('; partial reading' if out['partial'] else ''))
@@ -452,7 +670,16 @@ def explain(passage, question, result):
             '- A reading is accepted only if every piece was seen in training and it leads clearly.',
             '- The answer comes from matching the question graph against the passage graph; nothing is generated.',
             '- If a passage event fits the question but does not name what was asked for, no answer is given.', '']
-    for item in result.get('assumed', []):
+    for item in [x for x in result.get('assumed', []) if 'understood' in x]:
+        u = item['understood']
+        tail += ['## How the question was understood', '',
+                 'The question was not read as a sentence. It was taken to ask for the %s of "%s"%s.'
+                 % (u['property'], u['thing'], ''.join(' (%s: %s)' % kv for kv in sorted(u['with'].items()))),
+                 '- recognised: %s' % ', '.join('"%s"' % w for w in item['recognised']),
+                 '- chosen by: %s' % item['chosen_by'],
+                 '- not read: %s' % (', '.join('"%s"' % w for w in item['unread']) or 'nothing'),
+                 '', 'If this is not what was asked, say so: the answer above is withdrawn.', '']
+    for item in [x for x in result.get('assumed', []) if 'understood' not in x]:
         tail += ['## How the question was understood', '',
                  '"%s" is a word no lesson, list or pack knows. In this sentence its connector lets it be: %s.'
                  % (item['word'], ' or '.join(sorted({t['role'] for t in item['tried']}))),

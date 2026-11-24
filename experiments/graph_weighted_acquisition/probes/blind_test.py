@@ -68,6 +68,12 @@ def part_a(data, model):
 
 
 def verdict_b(result, item):
+    if result.get('proposal'):
+        good = item['expect'] is not None and item['kind'] != 'check' and result['proposal']['if_confirmed'] == item['expect']
+        return 'proposed right' if good else 'proposed otherwise'
+    if result['status'] == 'assumed':
+        # Since 2026-11-24: an answer under a stated assumption is counted apart from an answer.
+        return 'assumed right' if item['expect'] is not None and result['answers'] == [[item['expect']]] else 'assumed WRONG'
     if result['status'] != 'answered':
         return 'held ok' if item['expect'] is None else 'held'
     if item['expect'] is None:
@@ -86,12 +92,17 @@ def part_b(data, lang, title):
         print('THE PACK COULD NOT BE LOADED: %r' % error)
         return None
     print('facts loaded %d, not usable %d %s' % (system['counts']['facts'], len(system['unusable']), system['unusable'][:3]))
-    tally = {}
+    tally, memory = {}, L.new_memory()        # what answered questions show is kept for the later ones
     for item in data['questions']:
         try:
-            result = PK.ask(system, item['text'])
+            result = PK.ask(system, item['text'], memory)
             v = verdict_b(result, item)
-            if result['status'] == 'answered':
+            if result['status'] == 'assumed':
+                u = result['assumed'][0].get('understood', {})
+                shown = '%s   [taken to ask for the %s of %s; chosen by %s; not read: %s]' % (
+                    result['answers'], u.get('property'), u.get('thing'), result['assumed'][0].get('chosen_by'),
+                    ', '.join(result['assumed'][0].get('unread', [])) or 'nothing')
+            elif result['status'] == 'answered':
                 said = [s['text'] for s in result.get('sentences', []) if s['status'] == 'said']
                 shown = (('맞다: ' if result['claim']['holds'] else '아니다: ') if result.get('claim') else '') \
                     + (said[0] if said else str(result['answers']))

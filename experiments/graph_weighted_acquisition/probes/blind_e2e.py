@@ -54,6 +54,10 @@ def take_in(model, knowledge):
 
 
 def verdict(result, item, refused):
+    if result.get('proposal'):
+        # Not an answer: the system says what it took the question to ask and waits for a yes.
+        good = item['expect'] is not None and item['kind'] != 'check' and result['proposal']['if_confirmed'] == item['expect']
+        return 'proposed right, asks first' if good else 'proposed otherwise, asks first'
     if result['status'] not in ('answered', 'assumed'):
         if item['expect'] is None:
             return 'held ok'
@@ -72,11 +76,21 @@ def shown(result):
         text = (('맞다: ' if result['claim']['holds'] else '아니다: ') if result.get('claim') else '') \
             + '; '.join(', '.join(row) for row in result['answers']) + (('   (as a sentence: %s)' % said[0]) if said else '')
         for a in result.get('assumed', []):
-            text += '   [assumed: "%s" read as the %s of "%s"]' % (a['word'], a['role'], a['head'])
+            if 'understood' in a:
+                u = a['understood']
+                text += '   [not read as a sentence; taken to ask for the %s of "%s"%s; chosen by %s; not read: %s]' % (
+                    u['property'], u['thing'], ''.join(' %s=%s' % kv for kv in sorted(u['with'].items())), a['chosen_by'],
+                    ', '.join(a['unread']) or 'nothing')
+            else:
+                text += '   [assumed: "%s" read as the %s of "%s"]' % (a['word'], a['role'], a['head'])
         return text
     text = '-- ' + result['reason'][:150]
+    if result.get('proposal'):
+        text = '-- asks: %s   [would then answer %s]' % (result['proposal']['ask'], result['proposal']['if_confirmed'])
     for x in result.get('open_roles', []) + result.get('attachment', []):
         text += '   [asks: %s]' % x['ask']
+    for c in result.get('candidates', []):
+        text += '   [could be: %s of %s]' % (c['property'], c['thing'])
     return text
 
 
@@ -89,39 +103,63 @@ def main():
     print('  %s  C.json (the items)' % hashlib.sha256((folder / 'C.json').read_bytes()).hexdigest()[:16])
     data = json.loads((folder / 'C.json').read_text(encoding='utf8'))
     full, n = BT.language(BT.SETS)
+    # A property word or a name may come with other words for it ({"word": ..., "also": [...]}), or as a plain string.
+    props = [x if isinstance(x, dict) else {'word': x, 'also': []} for x in data['properties']]
+    names = [x if isinstance(x, dict) else {'name': x, 'also': []} for x in data['names']]
     words = {'schema': PK.WORDS, 'field': data['domain'], 'slot': BT.SLOT,
-             'properties': [{'word': w, 'means': w, 'also': []} for w in data['properties']],
-             'names': [{'name': w, 'also': []} for w in data['names']]}
-    clashes = [w for w in data['properties'] if w in full['tables'].get('closed', {})]
+             'properties': [{'word': x['word'], 'means': x['word'], 'also': list(x.get('also', []))} for x in props],
+             'names': [{'name': x['name'], 'also': list(x.get('also', []))} for x in names]}
+    aliases = {other: x['name'] for x in names for other in x.get('also', [])}
+    clashes = [x['word'] for x in props if x['word'] in full['tables'].get('closed', {})]
     if clashes:
         print('FIELD WORDS REFUSED BY THE PACK LOADER (fixed words of the language): %s' % ', '.join(clashes))
         words['properties'] = [x for x in words['properties'] if x['word'] not in clashes]
     model = PK.with_words(full, words)
     print('\nField "%s": %d property words, %d names, %d sentences of knowledge, %d questions. Language pack: %d lessons.'
-          % (data['domain'], len(data['properties']), len(data['names']), len(data['knowledge']), len(data['questions']), n))
+          % (data['domain'], len(props), len(names), len(data['knowledge']), len(data['questions']), n))
     taken, refused, memory = take_in(model, data['knowledge'])
     passage = ' '.join(item['text'] for item in taken)
-    print('\n# 2. Questions and answers')
-    tally = {}
-    for item in data['questions']:
-        try:
-            result = A.answer(passage, item['text'], model, memory)
-            v, text = verdict(result, item, refused), shown(result)
-        except Exception as error:
-            v, text = 'ERROR', repr(error)
-        tally.setdefault(item['kind'], {}).setdefault(v, 0)
-        tally[item['kind']][v] += 1
-        expect = '(no answer)' if item['expect'] is None else \
-            ('%s: %s' % ('yes' if item['claim'] else 'no', item['expect']) if item['kind'] == 'check' else item['expect'])
-        print('\n%s %s [%s]\n  Q: %s\n  expected: %s\n  got:      %s' % (v.upper() if v.endswith('WRONG') else v, item['id'], item['kind'],
-                                                                      item['text'], expect, text))
-    print('\n# Summary')
-    total = {}
-    for kind in sorted(tally):
-        print('   %-12s %s of %d' % (kind, ', '.join('%s %d' % kv for kv in sorted(tally[kind].items())), sum(tally[kind].values())))
-        for k, v in tally[kind].items():
-            total[k] = total.get(k, 0) + v
-    print('   %-12s %s of %d' % ('all', ', '.join('%s %d' % kv for kv in sorted(total.items())), sum(total.values())))
+    read = R.read(passage, model) if passage else None
+    if not read or read['status'] != 'complete':
+        print('THE TAKEN SENTENCES COULD NOT BE READ TOGETHER: %s' % (read or {}).get('reason'))
+    def ask_all(title, feedback, verbose):
+        """One pass over the questions. With `feedback` a user answers each proposal: yes when it is what
+        was asked (the wording is then kept, see answer.confirm), no otherwise. That user is played with
+        the examiner's answers, so this pass is not blind to them; it shows what use would teach."""
+        print('\n# ' + title)
+        memory_q = L.new_memory()
+        memory_q['kinds'] = [dict(k) for k in memory['kinds']]
+        tally = {}
+        for item in data['questions']:
+            try:
+                result = A.answer_graph(read['graphs'][0], passage, item['text'], model, read, memory_q, aliases=aliases) \
+                    if read and read['status'] == 'complete' else A.answer(passage, item['text'], model, memory_q)
+                v, text = verdict(result, item, refused), shown(result)
+                if feedback and result.get('proposal'):
+                    if v.startswith('proposed right'):
+                        A.confirm(result, memory_q, 'the user', 'this run')
+                        v = 'right after a yes'
+                    else:
+                        v = 'declined by the user'
+            except Exception as error:
+                v, text = 'ERROR', repr(error)
+            tally.setdefault(item['kind'], {}).setdefault(v, 0)
+            tally[item['kind']][v] += 1
+            if verbose:
+                expect = '(no answer)' if item['expect'] is None else \
+                    ('%s: %s' % ('yes' if item['claim'] else 'no', item['expect']) if item['kind'] == 'check' else item['expect'])
+                print('\n%s %s [%s]\n  Q: %s\n  expected: %s\n  got:      %s' % (
+                    v.upper() if v.endswith('WRONG') else v, item['id'], item['kind'], item['text'], expect, text))
+        print('\n## Summary: ' + title)
+        total = {}
+        for kind in sorted(tally):
+            print('   %-12s %s of %d' % (kind, ', '.join('%s %d' % kv for kv in sorted(tally[kind].items())), sum(tally[kind].values())))
+            for k, v in tally[kind].items():
+                total[k] = total.get(k, 0) + v
+        print('   %-12s %s of %d' % ('all', ', '.join('%s %d' % kv for kv in sorted(total.items())), sum(total.values())))
+
+    ask_all('2. Questions and answers, as asked (no one answers the system back)', False, True)
+    ask_all('3. The same questions in the same order, a user answering each proposal with yes or no', True, False)
 
 
 if __name__ == '__main__':

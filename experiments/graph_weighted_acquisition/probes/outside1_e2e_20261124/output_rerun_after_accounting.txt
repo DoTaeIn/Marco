@@ -1,0 +1,431 @@
+# Frozen before the items existed
+  a2d18844bc7050ff  reader.py
+  b0208999be1f32fb  match.py
+  eae5a375dabeb14b  answer.py
+  acc269e6f52913a7  write.py
+  3b6886430defecce  pack.py
+  f844167bb0d32dfa  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  860345b353287406  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  b024b3597b19769b  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  040529ba0fb4f406  probes/reading_limits.py
+  37175c23d2fe11e1  probes/blind_e2e.py
+  59eb069c7e671018  C.json (the items)
+
+Field "가상의 달숲휴양구역에 있는 여섯 쉼터의 이용 안내": 8 property words, 10 names, 36 sentences of knowledge, 70 questions. Language pack: 592 lessons.
+
+# 1. Knowledge taken in, sentence by sentence
+TAKEN    K01 별빛쉼터의 관리처는 별빛안내소이다.
+TAKEN    K02 달빛쉼터의 관리처는 달빛안내소이다.
+TAKEN    K03 숲바람쉼터의 관리처는 통합지원실이다.
+TAKEN    K04 2031년에 물결쉼터의 관리처는 생태지원실이다.
+TAKEN    K05 노을쉼터의 예약이 승인완료이면 노을쉼터의 관리처는 통합지원실이다.
+TAKEN    K06 새벽쉼터의 관리처는 달빛안내소가 아니다.
+TAKEN    K07 별빛안내소의 전화는 02-730-1101이다.
+TAKEN    K08 달빛안내소의 전화는 02-730-1102이다.
+TAKEN    K09 통합지원실의 전화는 02-730-1103이다.
+TAKEN    K10 생태지원실의 전화는 02-730-1104이다.
+TAKEN    K11 별빛쉼터의 전화는 02-730-2101이다.
+TAKEN    K12 달빛쉼터의 전화는 02-730-2102이다.
+TAKEN    K13 별빛쉼터의 이용료는 3000원이다.
+TAKEN    K14 달빛쉼터의 이용료는 2000원이다.
+TAKEN    K15 숲바람쉼터의 이용료는 1000원이다.
+TAKEN    K16 물결쉼터의 주말 이용료는 4000원이다.
+TAKEN    K17 물결쉼터의 평일 이용료는 2500원이다.
+TAKEN    K18 2031년에 노을쉼터의 이용료는 5000원이다.
+TAKEN    K19 2032년에 노을쉼터의 이용료는 6000원이다.
+TAKEN    K20 새벽쉼터의 예약이 승인완료이면 새벽쉼터의 이용료는 1500원이다.
+TAKEN    K21 별빛쉼터의 주말 마감은 18시이다.
+TAKEN    K22 별빛쉼터의 평일 마감은 20시이다.
+TAKEN    K23 달빛쉼터의 위치는 동쪽언덕이다.
+TAKEN    K24 숲바람쉼터의 위치는 서쪽숲길이다.
+TAKEN    K25 물결쉼터의 위치는 호수입구이다.
+TAKEN    K26 별빛쉼터의 정원은 30명이다.
+TAKEN    K27 달빛쉼터의 정원은 20명이다.
+TAKEN    K28 숲바람쉼터의 주말 정원은 12명이다.
+TAKEN    K29 노을쉼터의 야간 정원은 8명이다.
+TAKEN    K30 2031년에 새벽쉼터의 정원은 10명이다.
+TAKEN    K31 별빛쉼터의 휴무일은 매주월요일이다.
+TAKEN    K32 달빛쉼터의 휴무일은 매주화요일이다.
+TAKEN    K33 숲바람쉼터의 마감은 17시이다.
+TAKEN    K34 물결쉼터의 휴무일은 매주수요일이다.
+TAKEN    K35 노을쉼터의 예약은 온라인접수이다.
+REFUSED  K36 새벽쉼터의 위치는 남쪽정원이다.   -- every reading uses something never seen in training
+taken 35 of 36. Word kinds the taken sentences showed: none
+
+# 2. Questions and answers, as asked (no one answers the system back)
+
+right Q01 [direct]
+  Q: 별빛쉼터의 이용료는 얼마인가요?
+  expected: 3000원
+  got:      3000원   (as a sentence: 별빛쉼터의 이용료는 3000원이다.)
+
+right Q02 [direct]
+  Q: 달빛쉼터의 위치는 어디인가요?
+  expected: 동쪽언덕
+  got:      동쪽언덕   (as a sentence: 달빛쉼터의 위치는 동쪽언덕이다.)
+
+assumed right Q03 [direct]
+  Q: 숲바람쉼터의 마감은 몇 시인가요?
+  expected: 17시
+  got:      17시   [not read as a sentence; taken to ask for the 마감 of "숲바람쉼터"; chosen by the property word; not read: 의, 은, 인가요]
+
+right Q04 [direct]
+  Q: 물결쉼터의 휴무일은 언제인가요?
+  expected: 매주수요일
+  got:      매주수요일   (as a sentence: 물결쉼터의 휴무일은 매주수요일이다.)
+
+assumed right Q05 [direct]
+  Q: 달빛쉼터의 정원은 몇 명인가요?
+  expected: 20명
+  got:      20명   [not read as a sentence; taken to ask for the 정원 of "달빛쉼터"; chosen by the property word; not read: 의, 은, 인가요]
+
+right Q06 [direct]
+  Q: 숲바람쉼터의 관리처는 어디인가요?
+  expected: 통합지원실
+  got:      통합지원실   (as a sentence: 숲바람쉼터의 관리처는 통합지원실이다.)
+
+right Q07 [direct]
+  Q: 별빛쉼터의 전화는 무엇인가요?
+  expected: 02-730-2101
+  got:      02-730-2101   (as a sentence: 별빛쉼터의 전화는 02-730-2101이다.)
+
+proposed right, asks first Q08 [direct]
+  Q: 노을쉼터의 예약은 어떤 방법인가요?
+  expected: 온라인접수
+  got:      -- asks: Did you ask for the 예약 of 노을쉼터? (these pieces are not accounted for: "어떤", "방법인가요")   [would then answer 온라인접수]
+
+assumed right Q09 [short]
+  Q: 별빛휴게소 요금 얼마?
+  expected: 3000원
+  got:      3000원   [not read as a sentence; taken to ask for the 이용료 of "별빛쉼터"; chosen by the property word; not read: nothing]
+
+assumed right Q10 [short]
+  Q: 달빛쉼터 입장료?
+  expected: 2000원
+  got:      2000원   [not read as a sentence; taken to ask for the 이용료 of "달빛쉼터"; chosen by the property word; not read: nothing]
+
+assumed right Q11 [short]
+  Q: 숲바람쉼터 요금?
+  expected: 1000원
+  got:      1000원   [not read as a sentence; taken to ask for the 이용료 of "숲바람쉼터"; chosen by the property word; not read: nothing]
+
+held Q12 [short]
+  Q: 달빛휴게소 어디야?
+  expected: 동쪽언덕
+  got:      -- the question was not read; it names "달빛쉼터", and the knowledge has 2 facts it could be asking for: 관리처 of 달빛쉼터; 위치 of 달빛쉼터   [could be: 관리처 of 달빛쉼터]   [could be: 위치 of 달빛쉼터]
+
+held Q13 [short]
+  Q: 숲바람쉼터 어디?
+  expected: 서쪽숲길
+  got:      -- the question was not read; it names "숲바람쉼터", and the knowledge has 2 facts it could be asking for: 관리처 of 숲바람쉼터; 위치 of 숲바람쉼터   [could be: 관리처 of 숲바람쉼터]   [could be: 위치 of 숲바람쉼터]
+
+assumed right Q14 [short]
+  Q: 물결쉼터 장소?
+  expected: 호수입구
+  got:      호수입구   [not read as a sentence; taken to ask for the 위치 of "물결쉼터"; chosen by the property word; not read: nothing]
+
+held (its knowledge was refused) Q15 [short]
+  Q: 새벽쉼터 위치?
+  expected: 남쪽정원
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+assumed right Q16 [short]
+  Q: 별빛쉼터 수용인원?
+  expected: 30명
+  got:      30명   [not read as a sentence; taken to ask for the 정원 of "별빛쉼터"; chosen by the property word; not read: nothing]
+
+assumed right Q17 [short]
+  Q: 달빛쉼터 연락처?
+  expected: 02-730-2102
+  got:      02-730-2102   [not read as a sentence; taken to ask for the 전화 of "달빛쉼터"; chosen by the property word; not read: nothing]
+
+assumed right Q18 [short]
+  Q: 별빛안내센터 전화번호?
+  expected: 02-730-1101
+  got:      02-730-1101   [not read as a sentence; taken to ask for the 전화 of "별빛안내소"; chosen by the property word; not read: nothing]
+
+assumed right Q19 [short]
+  Q: 별빛쉼터 쉬는날?
+  expected: 매주월요일
+  got:      매주월요일   [not read as a sentence; taken to ask for the 휴무일 of "별빛쉼터"; chosen by the property word; not read: nothing]
+
+assumed right Q20 [short]
+  Q: 노을쉼터 예약방법?
+  expected: 온라인접수
+  got:      온라인접수   [not read as a sentence; taken to ask for the 예약 of "노을쉼터"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q21 [natural]
+  Q: 별빛쉼터 들어가려면 얼마 내야 해요?
+  expected: 3000원
+  got:      -- asks: Did you ask for the 이용료 of 별빛쉼터? (these pieces are not accounted for: "들어가려면", "내야", "해요")   [would then answer 3000원]
+
+proposed right, asks first Q22 [natural]
+  Q: 달빛쉼터 가면 돈을 얼마나 내나요?
+  expected: 2000원
+  got:      -- asks: Did you ask for the 이용료 of 달빛쉼터? (these pieces are not accounted for: "가면", "돈을", "나", "내나요")   [would then answer 2000원]
+
+proposed right, asks first Q23 [natural]
+  Q: 숲바람쉼터 쓰려면 얼마 준비하면 돼요?
+  expected: 1000원
+  got:      -- asks: Did you ask for the 이용료 of 숲바람쉼터? (these pieces are not accounted for: "쓰려면", "준비하면", "돼요")   [would then answer 1000원]
+
+held Q24 [natural]
+  Q: 달빛쉼터 찾아가려면 어디로 가야 하나요?
+  expected: 동쪽언덕
+  got:      -- the question was not read; it names "달빛쉼터", and the knowledge has 2 facts it could be asking for: 관리처 of 달빛쉼터; 위치 of 달빛쉼터   [could be: 관리처 of 달빛쉼터]   [could be: 위치 of 달빛쉼터]
+
+held Q25 [natural]
+  Q: 숲바람쉼터는 어디에 있어요?
+  expected: 서쪽숲길
+  got:      -- the question was not read; it names "숲바람쉼터", and the knowledge has 2 facts it could be asking for: 관리처 of 숲바람쉼터; 위치 of 숲바람쉼터   [could be: 관리처 of 숲바람쉼터]   [could be: 위치 of 숲바람쉼터]
+
+proposed right, asks first Q26 [natural]
+  Q: 물결쉼터 가려는데 어디로 찾아가면 돼요?
+  expected: 호수입구
+  got:      -- asks: Did you ask for the 위치 of 물결쉼터? (these pieces are not accounted for: "가려는데", "로", "찾아가면", "돼요")   [would then answer 호수입구]
+
+held (its knowledge was refused) Q27 [natural]
+  Q: 새벽쉼터는 어디로 가면 찾을 수 있나요?
+  expected: 남쪽정원
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q28 [natural]
+  Q: 별빛쉼터에는 몇 명까지 들어갈 수 있어요?
+  expected: 30명
+  got:      -- asks: Did you ask for the 정원 of 별빛쉼터? (these pieces are not accounted for: "에는", "까지", "들어갈", "수", "있어요")   [would then answer 30명]
+
+held Q29 [natural]
+  Q: 달빛쉼터는 한 번에 몇 명까지 받아요?
+  expected: 20명
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q30 [natural]
+  Q: 별빛쉼터는 언제 쉬어요?
+  expected: 매주월요일
+  got:      -- asks: Did you ask for the 휴무일 of 별빛쉼터? (these pieces are not accounted for: "쉬어요")   [would then answer 매주월요일]
+
+held Q31 [natural]
+  Q: 달빛쉼터는 무슨 요일마다 문을 닫나요?
+  expected: 매주화요일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q32 [natural]
+  Q: 숲바람쉼터는 몇 시에 문 닫아요?
+  expected: 17시
+  got:      -- asks: Did you ask for the 마감 of 숲바람쉼터? (these pieces are not accounted for: "문", "닫아요")   [would then answer 17시]
+
+held Q33 [natural]
+  Q: 별빛쉼터는 어느 곳에서 맡아 운영하나요?
+  expected: 별빛안내소
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q34 [natural]
+  Q: 노을쉼터에 미리 자리를 잡으려면 어떻게 신청해요?
+  expected: 온라인접수
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+right Q35 [qualified]
+  Q: 물결쉼터의 주말 이용료는 얼마인가요?
+  expected: 4000원
+  got:      4000원   (as a sentence: 물결쉼터의 주말 이용료는 4000원이다.)
+
+right Q36 [qualified]
+  Q: 물결쉼터의 평일 이용료는 얼마인가요?
+  expected: 2500원
+  got:      2500원   (as a sentence: 물결쉼터의 평일 이용료는 2500원이다.)
+
+right Q37 [qualified]
+  Q: 2031년에 노을쉼터의 이용료는 얼마인가요?
+  expected: 5000원
+  got:      5000원   (as a sentence: 2031년에 노을쉼터의 이용료는 5000원이다.)
+
+right Q38 [qualified]
+  Q: 2032년에 노을쉼터의 이용료는 얼마인가요?
+  expected: 6000원
+  got:      6000원   (as a sentence: 2032년에 노을쉼터의 이용료는 6000원이다.)
+
+proposed right, asks first Q39 [qualified]
+  Q: 별빛쉼터 주말 몇 시에 닫아?
+  expected: 18시
+  got:      -- asks: Did you ask for the 마감 of 별빛쉼터, when: 주말? (these pieces are not accounted for: "닫아")   [would then answer 18시]
+
+held Q40 [qualified]
+  Q: 별빛쉼터 평일 언제까지 열어?
+  expected: 20시
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q41 [qualified]
+  Q: 숲바람쉼터 주말 몇 명까지 받아?
+  expected: 12명
+  got:      -- asks: Did you ask for the 정원 of 숲바람쉼터, when: 주말? (these pieces are not accounted for: "까지", "받아")   [would then answer 12명]
+
+held Q42 [qualified]
+  Q: 2031년 새벽쉼터 몇 명까지 들어가?
+  expected: 10명
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+right Q43 [check]
+  Q: 별빛쉼터 이용료가 3000원 맞죠?
+  expected: yes: 3000원
+  got:      맞다: 3000원   (as a sentence: 별빛쉼터의 이용료는 3000원이다.)
+
+held Q44 [check]
+  Q: 달빛쉼터 정원이 20명인가요?
+  expected: yes: 20명
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held Q45 [check]
+  Q: 물결쉼터 주말 이용료가 2500원 맞나요?
+  expected: no: 4000원
+  got:      -- the question was not read with confidence: two readings are too close
+
+held Q46 [check]
+  Q: 별빛쉼터 전화가 02-730-1101인가요?
+  expected: no: 02-730-2101
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+right Q47 [chain]
+  Q: 별빛쉼터 관리처의 전화는 무엇인가요?
+  expected: 02-730-1101
+  got:      02-730-1101
+
+proposed right, asks first Q48 [chain]
+  Q: 달빛쉼터 담당기관 연락처 알려 주세요.
+  expected: 02-730-1102
+  got:      -- asks: Did you ask for the 전화 of 달빛안내소 (the 관리처 of 달빛쉼터)? (these pieces are not accounted for: "알려", "주세요")   [would then answer 02-730-1102]
+
+held Q49 [chain]
+  Q: 숲바람쉼터를 관리하는 곳에 연락하려면 몇 번으로 걸어요?
+  expected: 02-730-1103
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+assumed right Q50 [chain]
+  Q: 별빛휴게소 담당기관 전화번호?
+  expected: 02-730-1101
+  got:      02-730-1101   [not read as a sentence; taken to ask for the 전화 of "별빛안내소 (the 관리처 of 별빛쉼터)"; chosen by two property words, joined through "별빛안내소"; not read: nothing]
+
+held Q51 [chain]
+  Q: 달빛휴게소를 맡아 운영하는 곳은 몇 번으로 연락하면 되나요?
+  expected: 02-730-1102
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+assumed right Q52 [chain]
+  Q: 숲바람쉼터 관리처 연락처?
+  expected: 02-730-1103
+  got:      02-730-1103   [not read as a sentence; taken to ask for the 전화 of "통합지원실 (the 관리처 of 숲바람쉼터)"; chosen by two property words, joined through "통합지원실"; not read: nothing]
+
+held ok Q53 [no_answer]
+  Q: 물결쉼터 이용료는 얼마인가요?
+  expected: (no answer)
+  got:      -- the knowledge has this only together with a part the question does not state: when of "이용료"
+
+held ok Q54 [no_answer]
+  Q: 노을쉼터 들어가려면 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q55 [no_answer]
+  Q: 새벽쉼터 요금 얼마?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q56 [no_answer]
+  Q: 숲바람쉼터에는 몇 명까지 들어가요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q57 [no_answer]
+  Q: 새벽쉼터 정원은 몇 명인가요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q58 [no_answer]
+  Q: 별빛쉼터 어린이 요금?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q59 [no_answer]
+  Q: 달빛쉼터 밤에 들어가면 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed otherwise, asks first Q60 [no_answer]
+  Q: 숲바람쉼터 단체 얼마?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 이용료 of 숲바람쉼터? (these pieces are not accounted for: "단체")   [would then answer 1000원]
+
+held ok Q61 [no_answer]
+  Q: 2032년에 물결쉼터는 언제 쉬나요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q62 [no_answer]
+  Q: 노을쉼터 주말에는 어떻게 미리 신청해요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q63 [no_answer]
+  Q: 새벽쉼터 야간 위치는 어디인가요?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q64 [no_answer]
+  Q: 물결쉼터 관리처 전화번호가 뭐예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q65 [no_answer]
+  Q: 노을쉼터를 관리하는 곳에 연락하려면 몇 번으로 걸어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q66 [no_answer]
+  Q: 새벽쉼터 담당기관 연락처?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+proposed otherwise, asks first Q67 [no_answer]
+  Q: 별빛쉼터는 어디에 있어요?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 관리처 of 별빛쉼터? (these pieces are not accounted for: "있어요")   [would then answer 별빛안내소]
+
+held ok Q68 [no_answer]
+  Q: 달빛쉼터도 온라인으로 미리 신청하면 돼요? 어떻게 신청하나요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: 2 of 2 sentences could not be read; first: "달빛쉼터도 온라인으로 미리 신청하면 돼요?" (the text cannot be cut into known pie
+
+held ok Q69 [no_answer]
+  Q: 숲바람쉼터는 무슨 요일에 쉬어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q70 [no_answer]
+  Q: 새벽쉼터의 관리처는 어디인가요?
+  expected: (no answer)
+  got:      -- the knowledge has this only together with a part the question does not state: denies of "관리처"
+
+## Summary: 2. Questions and answers, as asked (no one answers the system back)
+   chain        assumed right 2, held 2, proposed right, asks first 1, right 1 of 6
+   check        held 3, right 1 of 4
+   direct       assumed right 2, proposed right, asks first 1, right 5 of 8
+   natural      held 6, held (its knowledge was refused) 1, proposed right, asks first 7 of 14
+   no_answer    held ok 16, proposed otherwise, asks first 2 of 18
+   qualified    held 2, proposed right, asks first 2, right 4 of 8
+   short        assumed right 9, held 2, held (its knowledge was refused) 1 of 12
+   all          assumed right 13, held 15, held (its knowledge was refused) 2, held ok 16, proposed otherwise, asks first 2, proposed right, asks first 11, right 11 of 70
+
+# 3. The same questions in the same order, a user answering each proposal with yes or no
+
+## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
+   chain        assumed right 2, held 2, right 1, right after a yes 1 of 6
+   check        held 3, right 1 of 4
+   direct       assumed right 2, right 5, right after a yes 1 of 8
+   natural      held 6, held (its knowledge was refused) 1, right after a yes 7 of 14
+   no_answer    declined by the user 2, held ok 16 of 18
+   qualified    held 2, right 4, right after a yes 2 of 8
+   short        assumed right 9, held 2, held (its knowledge was refused) 1 of 12
+   all          assumed right 13, declined by the user 2, held 15, held (its knowledge was refused) 2, held ok 16, right 11, right after a yes 11 of 70

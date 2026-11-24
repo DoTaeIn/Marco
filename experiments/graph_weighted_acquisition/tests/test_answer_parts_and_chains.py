@@ -42,6 +42,17 @@ def test_what_is_known_with_a_qualifier_does_not_answer_the_plain_question():
     assert old['status'] == 'answered' and old['answers'] == [['9000원']]
 
 
+def test_a_plain_fact_and_a_qualified_fact_of_the_same_thing_each_answer_their_own_question():
+    # Found 2026-11-24 while checking the owner's question about "단체": with both known, the plain
+    # question was held ("a passage event fits the question but does not say what was asked for").
+    m = model()
+    known = '모래섬호의 기본요금은 6000원이다. 모래섬호의 주말 기본요금은 9000원이다. 2031년에 모래섬호의 기본요금은 7000원이다.'
+    assert A.answer(known, '모래섬호의 기본요금은 얼마인가?', m)['answers'] == [['6000원']]
+    assert A.answer(known, '모래섬호의 주말 기본요금은 얼마인가?', m)['answers'] == [['9000원']]
+    assert A.answer(known, '2031년에 모래섬호의 기본요금은 얼마인가?', m)['answers'] == [['7000원']]
+    assert A.answer(known, '모래섬호의 평일 기본요금은 얼마인가?', m)['status'] == 'hold'
+
+
 def test_a_chain_is_answered_from_two_sentences_joined_by_a_name():
     m = model()
     known = '모래섬호의 출발항은 서쪽항이다. 서쪽항의 문의전화는 555-0100이다. 바람개비호의 문의전화는 555-0999이다.'

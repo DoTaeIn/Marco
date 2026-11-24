@@ -696,3 +696,110 @@ stem and ending, as it always did for head words.
   the connector in front of it. That was the list doing by accident what the reader should do
   for every word; see the next step in the design note (2.15).
 - Not measured on a fresh blind set.
+
+## An unread question is put to the knowledge the other way round (2026-11-24, after checkpoint 728dd70)
+
+- Owner's direction: do not try to generalise the language; use the knowledge to make the
+  problem small. What the system can answer is only what it holds, so the meaning of a
+  question is "which of my facts does this ask about", and those can be counted.
+- Convention `unread_question_answers: anchor`, `answer._anchor`. For a question the reader
+  did not read: the things, property words and circumstances it names are looked up among the
+  plain facts of the knowledge (one thing, one property, one value; facts under a condition,
+  denied or with a relation as a part are left out). What narrows the property, in this order:
+  a property word; a counter (convention `counter_question_word`, "몇 명" asks for a value
+  counted in 명, the unit being taken from the values the knowledge has); what the question
+  word asked for in questions that were read and answered before (`learn.note_ask`).
+- One fit: the value is given with status `assumed`, never `answered`, never verified, with
+  what was understood, what was recognised, how the fact was chosen and what was not read.
+  Several: they are listed in `candidates` and nothing is answered. None: as before.
+- Not anchored: a question with a word that checks or denies (the value in it has to be
+  read); a question that names a circumstance the fact does not have, or lacks one the fact
+  has; a question in which an unread word is marked as a noun of the sentence ("수심은").
+- `pack.with_words` keeps the slot of the word pack in the model (`field_slot`).
+- 115 public checks pass (4 new, `tests/test_answer_anchor.py`; one earlier check now expects
+  the candidates in a hold); shipped packs: same SHA-256 (470df3c3…).
+- Exposed first answering set (`probes/blind_20261123`, rerun kept): questions asked freely
+  0 → 8 of 18, all as assumed answers, 0 assumed wrong; 5 more direct and alias questions with
+  untaught endings likewise; the 8 questions without an answer are all still held. Exposed
+  sets nine and ten: unchanged but for 2 more assumed right; 0 wrong.
+- THESE ITEMS WERE IN VIEW WHILE THE RULE WAS MADE. By the owner's own test this is the
+  overfitting case; the numbers show the mechanism runs, nothing more. Known weak points: a
+  verb form ending in 는 is taken for a marked noun and blocks ("빌리는 데"); an unread word
+  that is a qualifier and is not marked, not listed and not in the knowledge is passed over
+  ("어린이" before a verb); 얼마 inside 얼마나 is found as 얼마.
+- `probes/examiner_brief_ko.md`: a brief for an examiner outside this work, who writes the
+  field, 36 sentences of knowledge and 70 questions without form limits (short, particles
+  dropped, verbs), with 18 that have no answer. `probes/blind_e2e.py` runs it; it now takes
+  other words for properties and names. The owner decides who the examiner is.
+
+## First set from an examiner outside this work (2026-11-24)
+
+- `probes/outside1_e2e_20261124/`: field, 36 sentences of knowledge and 70 questions written
+  from `probes/examiner_brief_ko.md` by an examiner who is not the lesson writer and did not
+  see the code; brought by the owner. Questions had no form limits. Code as it stood (the
+  anchored reading uncommitted), one run, nothing changed afterwards.
+- Knowledge taken 35 of 36 (refused: "새벽쉼터의 위치는 남쪽정원이다", a value that contains the
+  property word 정원).
+- 52 questions that have an answer: answered right 11, answered wrong 0; ASSUMED right 19,
+  ASSUMED WRONG 3; held 19. 18 that have none: held 16, ASSUMED WRONG 2.
+  By kind (right as answered + right as assumed, of all): direct 5+2 of 8, short 0+8 of 12,
+  asked freely 0+7 of 14, with a modifier or time 4+2 of 8, checks 1+0 of 4, chains 1+0 of 6.
+- The five wrong assumed answers:
+  1. "숲바람쉼터 관리처 연락처?" → the office, not its phone. Two property words are a chain; the
+     anchor took the one the thing has a fact for.
+  2. "숲바람쉼터 단체 얼마?" → the plain fee. 단체 is unread, unmarked, in no list: the weak point
+     stated beforehand.
+  3. "별빛쉼터는 어디에 있어요?" → its office. 어디 had asked for 위치 and for 관리처; the thing has
+     no 위치, so one fit was left. What a question word may ask for must not be narrowed by
+     what happens to be known of the thing.
+  4, 5. "…정원이 20명인가요?", "…전화가 02-730-1101인가요?" → the true value instead of yes or no.
+     A check without 맞 was not recognised as a check; the stated value was passed over.
+- A defect seen in the output: the relation inside a condition ("노을쉼터의 예약이 승인완료이면 …")
+  is listed by `_known_facts` as a plain fact. Here it only made two candidates of one and
+  held two questions; it could as well give a condition's value as a fact.
+- Reading of the result: the answered tier stays clean (11 right, 0 wrong). The assumed tier
+  is 19 right to 5 wrong; without it 19 fewer questions are answered and none wrongly. As it
+  stands the anchored reading is not fit to be shown as an answer; its report makes each of
+  the five wrong ones visible, which is what the tier is for, but a rate of one in five is
+  not acceptable.
+
+## Every piece of an unread question has to be accounted for (2026-11-24)
+
+- What was wrong with the anchored reading, in one line: it treated what it had not read as
+  what did not matter. In all five wrong answers of the outside set the word that changed the
+  answer was among the unread ones. One fact left over is not the question understood.
+- The rule is turned round. Before: an unread piece blocked only when it was known to be
+  risky. Now: an unread piece is passed only when it is accounted for, and there are two ways
+  to be: a connector or closing piece the lessons have, or wording that was said before for
+  this very property and that the user confirmed (`learn.note_said`).
+- All pieces accounted for: status `assumed`, as before. A piece left over: no answer; the
+  result is a hold with `proposal` (what the question was taken to ask, the pieces not
+  accounted for, the value to give on a yes, a sentence to put to the user).
+  `answer.confirm(result, memory, by, at)` is the yes: it returns the answer and keeps the
+  wording, so the same wording for the same property is read next time.
+- With it, the four causes and one defect of the outside set:
+  two property words are a chain (first fact's value is the thing of the second; both
+  sentences are the grounds), not a choice; a question that states a value the knowledge has
+  is a check whatever its ending and is not anchored; a question word that has asked for
+  more than one property never gives an assumed answer; a relation that stands inside
+  another (the clause of a condition) is not a plain fact; exactly one thing must be named.
+- 116 public checks pass (`tests/test_answer_anchor.py` rewritten, 5 checks); shipped packs:
+  same SHA-256 (470df3c3…).
+- The outside set again (EXPOSED NOW; a mechanism check): assumed wrong 5 → 0. As asked:
+  answered right 11, assumed right 13, proposed right and waiting for a yes 11, proposed
+  otherwise 2 (the two questions without an answer that had been answered wrongly are now
+  put to the user), held 17, held without an answer 16 of 18. With a user saying yes or no to
+  each proposal: 35 of 52 right, 0 wrong, 2 declined. The runner plays that user with the
+  examiner's answers, so that pass is not blind to them.
+- Within the 70 questions a confirmed wording was hardly said again: the yes of one question
+  did not turn a later proposal into an answer. What use teaches shows over more use than this.
+- A new outside set is needed to say what this is worth.
+- A defect found the same day while answering the owner's question about "단체": with a plain
+  fact and a qualified fact of the same thing and property both known ("이용료는 1000원",
+  "단체 이용료는 700원"), the plain question was held, because the qualified fact counted as an
+  event that fits the question without saying what was asked. `match` now applies the
+  unasked-parts rule there too (`_more_than_asked`), and an answer for which other facts were
+  set aside is "not comparable" for the older executor, which has no such rule and gives both
+  values; such an answer is not counted as independently verified. No blind set had a thing
+  with both a plain and a qualified value of one property. 117 public checks pass (1 new);
+  shipped packs: same SHA-256; exposed sets unchanged, 0 wrong.

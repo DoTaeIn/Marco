@@ -127,6 +127,21 @@ def _one_name_many_places(qgraph):
     return (dict(qgraph, nodes=nodes, edges=edges, edge_spans=spans), back) if back else (qgraph, back)
 
 
+def _more_than_asked(m, qgraph, facts, joins):
+    """Parts the matched facts have and the question does not name: {(passage head, role)}. The one part a
+    joined head supplies is what the join is made of and is not counted."""
+    more = set()
+    for q in {s for s, p, o in qgraph['edges'] if isinstance(o, str)}:
+        if q not in m:
+            continue
+        asked_parts = {p for s, p, o in qgraph['edges'] if s == q and isinstance(o, str)}
+        here = {(m[q], p) for s, p, o in facts if s == m[q] and o[0] == 'node' and p not in asked_parts}
+        joined = joins is not None and q in joins and any(
+            s2 in m and o2 == q and (m[s2], p2, ('node', m[q])) not in facts for s2, p2, o2 in qgraph['edges'])
+        more |= set() if joined and len(here) == 1 else here
+    return more
+
+
 def match(pgraph, ptext, qgraph, qtext, limit=200000, max_level=2, aliases=None, rules=None, unasked_parts=None,
           name_joins=None):
     """Answer tuples with the passage facts that ground them, or a reason for none."""
@@ -136,6 +151,7 @@ def match(pgraph, ptext, qgraph, qtext, limit=200000, max_level=2, aliases=None,
         max_level = 2 if 'leading_words' in names else 1 if 'without_spaces' in names else 0
         aliases = aliases if 'other_name' in names else None
     qgraph, back = _one_name_many_places(qgraph)
+    set_aside = 0
     asked = list(qgraph['project'])
     if not asked:
         return {'status': 'hold', 'reason': 'the question asks for nothing'}
@@ -165,13 +181,7 @@ def match(pgraph, ptext, qgraph, qtext, limit=200000, max_level=2, aliases=None,
         # states without one. A fact fits only if the question names every part the fact has.
         kept, extra = [], set()
         for m in full:
-            more = set()
-            for q in {s for s, p, o in qgraph['edges'] if isinstance(o, str)}:
-                asked_parts = {p for s, p, o in qgraph['edges'] if s == q and isinstance(o, str)}
-                here = {(m[q], p) for s, p, o in facts if s == m[q] and o[0] == 'node' and p not in asked_parts}
-                joined = joins is not None and q in joins and any(
-                    s2 in m and o2 == q and (m[s2], p2, ('node', m[q])) not in facts for s2, p2, o2 in qgraph['edges'])
-                more |= set() if joined and len(here) == 1 else here
+            more = _more_than_asked(m, qgraph, facts, joins)
             if more:
                 extra |= more
             else:
@@ -181,6 +191,7 @@ def match(pgraph, ptext, qgraph, qtext, limit=200000, max_level=2, aliases=None,
             parts = sorted({'%s of "%s"' % (p, ptext[slice(*anchor[n])]) for n, p in extra if anchor.get(n)})
             return {'status': 'none', 'reason': 'the knowledge has this only together with a part the question '
                                                  'does not state: ' + ', '.join(parts), 'unasked_parts': parts}
+        set_aside = len(full) - len(kept)
         full = kept
     # Every passage event that fits the stated conditions must also supply the asked-for role.
     core_nodes = [n for n in qgraph['nodes'] if n['id'] not in asked]
@@ -189,6 +200,11 @@ def match(pgraph, ptext, qgraph, qtext, limit=200000, max_level=2, aliases=None,
         core, done = _search(core_nodes, core_edges, qtext, pgraph, facts, values, limit, level, aliases, joins)
         if not done:
             return {'status': 'hold', 'reason': 'search bound reached'}
+        if unasked_parts == 'block':
+            # The same holds here: a fact that has a part the question does not state is not an event that
+            # fits the question. (Without this, a plain fact and a weekend fact of the same thing held the
+            # plain question: the weekend one "fitted and did not say what was asked for".)
+            core = [m for m in core if not _more_than_asked(m, qgraph, facts, joins)]
         for partial in core:
             if not any(all(m[k] == v for k, v in partial.items()) for m in full):
                 return {'status': 'hold',
@@ -239,5 +255,6 @@ def match(pgraph, ptext, qgraph, qtext, limit=200000, max_level=2, aliases=None,
     return {'status': 'answered', 'reason': 'every condition of the question holds in the passage',
             'answers': sorted(list(t) for t in answers), 'relaxed': level, 'notes': notes,
             **({'as_matched': qgraph} if back else {}), **({'joined_by': sorted(joined_by)} if joined_by else {}),
+            **({'set_aside': set_aside} if set_aside else {}),
             'proofs': [{'answer': list(names), 'facts': facts_}
                        for names in sorted(answers) for facts_ in answers[names]]}
