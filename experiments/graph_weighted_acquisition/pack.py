@@ -67,6 +67,8 @@ def with_words(language, words):
     model = dict(language, tables=dict(tables), cues=dict(language['cues']))
     for name in ('head', 'head_in', 'frame', 'part'):
         model['tables'][name] = dict(tables.get(name, {}))
+    if 'word_kind' in tables:
+        model['tables']['word_kind'] = dict(tables['word_kind'])
     # The lessons' own words of this slot showed the form of such a word; they are not words of the field.
     # Left readable, "절기" is a known piece inside the field's "동절기" and "높이" cannot be a field word.
     makes_way = R.recipe_of(language)[1].get('lesson_words') == 'make_way'
@@ -111,6 +113,8 @@ def _know_names(model, names, source):
         return
     tables = model['tables']
     for name in names:
+        # What the field states about its own word outranks the general list of word kinds.
+        tables.get('word_kind', {}).pop(name, None)
         if name in model['cues'] or name in tables.get('head', {}) or name in tables.get('closed', {}):
             continue
         model['cues'][name] = {'used': {'n': model['field_word_weight'], 'origins': ['field pack: a name']}}

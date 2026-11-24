@@ -20,6 +20,7 @@ spec = importlib.util.spec_from_file_location('make_language', HERE / 'packs' / 
 ML = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(ML)
 VARIANTS = json.loads((HERE / 'data' / 'connector_variants_ko.json').read_text(encoding='utf8'))
+KINDS = json.loads((HERE / 'data' / 'word_kinds_ko.json').read_text(encoding='utf8'))     # since 2026-11-24
 
 PROPS = list(ML.PROPERTIES)
 SUBJ = ML.SUBJECTS
@@ -129,6 +130,23 @@ def conditional():
     return out
 
 
+def shared():
+    """X는 P가 V이면 Q가 W이다. / … Q가 얼마인가?   one subject, written once, for both relations."""
+    out = []
+    for i, p in enumerate(PROPS):
+        for k in range(3):
+            q = PROPS[(i + 2 + k) % len(PROPS)]
+            who = SUBJ[(i * 5 + k * 3 + 1) % len(SUBJ)]
+            lead = [('s', 'subject', who), (None, None, topic(who)), ('e1', 'relation', p), (None, None, subj(p)),
+                    ('v', 'amount', value_of(p, k)), (None, None, '이면 '), ('e2', 'relation', q), (None, None, subj(q))]
+            edges = [('e1', 'subject', 's'), ('e1', 'amount', 'v'), ('e1', 'kind', ('lit', p)),
+                     ('e2', 'subject', 's'), ('e2', 'amount', 'w'), ('e2', 'if', 'e1'), ('e2', 'kind', ('lit', q))]
+            out.append(lesson('share-%d-%d-s' % (i, k), 'passage', lead + [('w', 'amount', value_of(q, k + 1)), (None, None, '이다.')], edges))
+            out.append(lesson('share-%d-%d-q' % (i, k), 'question', lead + [('w', 'amount', ask_of(q, k)), (None, None, '인가?')],
+                              edges, project=('w',)))
+    return out
+
+
 def inverse():
     """P가 V인 것은 무엇인가? / P가 V 이상인 것은 무엇인가?   the subject is asked for."""
     out = []
@@ -213,7 +231,7 @@ def endings():
 
 
 SETS = {'wordings': wordings, 'endings': endings, 'modifier': modifier, 'time': at_time, 'negation': negation, 'conditional': conditional, 'inverse': inverse,
-        'chain': chain}
+        'chain': chain, 'shared': shared}      # 'shared' added 2026-11-24
 
 FERRY = {'schema': PK.WORDS, 'field': 'made-up ferry line',
          'slot': {'type': 'relation', 'attribute': 'kind', 'subject_role': 'subject', 'value_role': 'amount'},
@@ -318,9 +336,9 @@ CROSS = [   # a wording taught only on the plain shape, used inside a constructi
 ]
 
 
-def build(*names, recipe=None):
+def build(*names, recipe=None, kinds=KINDS):
     lessons = ML.lessons() + [x for name in names for x in SETS[name]()]
-    language = R.build(lessons, variants=VARIANTS)
+    language = R.build(lessons, variants=VARIANTS, kinds=kinds)
     if recipe:
         language = dict(language, recipe=recipe(json.loads(json.dumps(language['recipe']))))
     return PK.with_words(language, FERRY), language, len(lessons)

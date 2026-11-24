@@ -1,0 +1,270 @@
+# Frozen before the items existed
+  7042ad5cb81b01df  reader.py
+  655c938f2afaa4fd  match.py
+  64d48983c8ebb3e4  answer.py
+  acc269e6f52913a7  write.py
+  7d14e26a34faf4b4  pack.py
+  882126a9a9063768  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  fbafb810c24484f7  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  b024b3597b19769b  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  7393bf8d735b1899  probes/reading_limits.py
+  04489470c1af85af  A.json (the items)
+  29dc79283d318bb1  B.json (the items)
+
+Language packs: "full" = 544 lessons (shipped generator + the seven made-up sets); "base" = 112 lessons
+
+# A. Reading: 60 sentences, domain "산장(산악 대피소)"
+OK       A01 modifier                     구름재의 주말 숙박료는 3만원이다.   
+OK       A02 time                         2033년에 솔바람의 정원은 25명입니다.   
+OK       A03 claim                        바위골의 고도는 1500미터가 맞나요?   
+OK       A04 denial                       달맞이의 관리인은 박씨가 아니다.   
+OK       A05 condition                    노루목의 정원이 30명이면 노루목의 숙박료는 1만8천원이다.   
+OK       A06 chain                        샘터의 관리인의 경력은 얼마인가?   
+OK       A07 ask_thing                    소재지가 설악골인 것은 무엇인가?   
+OK       A08 topic                        억새마루는 개장일이 언제인가요?   
+OK       A09 no_ui                        눈꽃봉 소재지는 한라기슭이다.   
+OK       A10 modifier                     솔바람의 동절기 기온은 얼마입니까?   
+OK       A11 modifier+time                2028년에 바위골의 성수기 숙박료는 4만원이다.   
+OK       A12 modifier+claim               달맞이의 동절기 기온은 영하8도가 맞는가?   
+OK       A13 modifier+denial              노루목의 평일 숙박료는 2만원이 아니다.   
+OK       A14 modifier+condition           샘터의 정원이 20명이면 샘터의 주말 숙박료는 2만5천원이다.   
+HELD     A15 modifier+chain               억새마루의 소재지의 여름 기온은 18도입니다.   ambiguous: two readings are too close
+OK       A16 modifier+ask_thing           동절기 정원이 30명인 것은 무엇입니까?   
+OK       A17 modifier+topic               눈꽃봉은 새벽 기온이 영하3도이다.   
+PARTIAL  A18 modifier+no_ui               구름재 비수기 숙박료는 얼마야?   ignored ['비수기']
+OK       A19 time+claim                   2030년에 솔바람의 관리인은 박씨가 맞나요?   
+OK       A20 time+denial                  2025년에 바위골의 정원은 60명이 아닙니다.   
+HELD     A21 time+condition               달맞이의 정원이 35명이면 2029년에 달맞이의 숙박료는 2만2천원이다.   ambiguous: every reading uses something never seen in training
+HELD     A22 time+chain                   2034년에 노루목의 관리인의 경력은 12년이다.   ambiguous: the sentence alone does not say what "2034년" belongs to: "관리인" or "경력"
+HELD     A23 time+ask_thing               2032년에 개장일이 5월1일인 것은 무엇인가요?   ambiguous: every reading uses something never seen in training
+OK       A24 time+topic                   2026년에 샘터는 숙박료가 1만2천원이다.   
+OK       A25 time+no_ui                   2032년에 억새마루 정원은 얼마입니까?   
+OK       A26 claim+chain                  눈꽃봉의 소재지의 고도는 700미터가 맞는가?   
+OK       A27 claim+topic                  구름재는 관리인이 한노인이 맞나요?   
+OK       A28 claim+no_ui                  솔바람 개장일은 4월15일이 맞나요?   
+OK       A29 claim+condition              바위골의 정원이 60명이면 바위골의 숙박료는 3만원이 맞나요?   
+OK       A30 denial+chain                 달맞이의 관리인의 경력은 30년이 아니다.   
+OK       A31 denial+topic                 노루목은 소재지가 덕유마을이 아니야.   
+OK       A32 denial+no_ui                 샘터 고도는 950미터가 아닙니다.   
+OK       A33 denial+condition             억새마루의 고도가 1300미터이면 억새마루의 개장일은 4월1일이 아니다.   
+HELD     A34 condition+chain              눈꽃봉의 정원이 15명이면 눈꽃봉의 관리인의 경력은 얼마인가요?   ambiguous: the sentence alone does not say what "정원" belongs to: "관리인" or "경력"
+OK       A35 condition+topic              구름재의 고도가 1200미터이면 구름재는 기온이 2도이다.   
+OK       A36 condition+no_ui              솔바람 정원이 25명이면 솔바람 숙박료는 1만5천원입니다.   
+OK       A37 chain+topic                  바위골은 관리인의 경력이 20년이다.   
+OK       A38 chain+no_ui                  달맞이 소재지의 기온은 얼마인가?   
+OK       A39 ask_thing+compare            고도가 1000미터 이상인 것은 무엇인가?   
+HELD     A40 ask_thing+chain              관리인의 경력이 30년인 것은 무엇이야?   ambiguous: every reading uses something never seen in training
+OK       A41 modifier+time+claim          2033년에 구름재의 주말 숙박료는 3만원이 맞나요?   
+OK       A42 modifier+time+denial         2028년에 솔바람의 동절기 정원은 20명이 아니다.   
+HELD     A43 modifier+chain+claim         바위골의 소재지의 동절기 기온은 영하15도가 맞는가?   ambiguous: two readings are too close
+OK       A44 modifier+topic+denial        달맞이는 평일 숙박료가 1만원이 아닙니다.   
+HELD     A45 time+chain+denial            2030년에 노루목의 관리인의 경력은 12년이 아니다.   ambiguous: the sentence alone does not say what "2030년" belongs to: "관리인" or "경력"
+HELD     A46 condition+modifier+time      샘터의 고도가 900미터이면 2029년에 샘터의 여름 기온은 얼마인가?   ambiguous: every reading uses something never seen in training
+OK       A47 condition+claim+no_ui        억새마루 정원이 50명이면 억새마루 숙박료는 2만8천원이 맞나요?   
+OK       A48 ask_thing+compare+modifier   주말 숙박료가 3만원 이상인 것은 무엇인가요?   
+HELD     A49 ask_thing+compare+time       2034년에 정원이 40명 이상인 것은 무엇입니까?   ambiguous: every reading uses something never seen in training
+HELD     A50 ask_thing+chain+compare      관리인의 경력이 10년 이상인 것은 무엇인가?   ambiguous: every reading uses something never seen in training
+OK       A51 time+topic+claim             2026년에 눈꽃봉은 개장일이 6월1일이 맞나요?   
+PARTIAL  A52 time+no_ui+modifier          2033년에 구름재 성수기 정원은 45명이다.   ignored ['성수기']
+HELD     A53 condition+chain+denial       솔바람의 정원이 25명이면 솔바람의 관리인의 경력은 5년이 아니다.   ambiguous: the sentence alone does not say what "정원" belongs to: "관리인" or "경력"
+OK       A54 condition+topic+modifier     바위골의 고도가 1500미터이면 바위골은 동절기 기온이 영하15도입니다.   
+OK       A55 chain+no_ui+claim            달맞이 소재지의 고도는 600미터가 맞나요?   
+HELD     A56 time+modifier+chain+claim    2028년에 노루목의 소재지의 여름 기온은 20도가 맞는가?   ambiguous: two readings are too close
+HELD     A57 condition+time+modifier+deni 샘터의 정원이 20명이면 2030년에 샘터의 주말 숙박료는 2만5천원이 아니다.   ambiguous: every reading uses something never seen in training
+OK       A58 ask_thing+modifier+time+comp 2029년에 동절기 기온이 5도 이상인 것은 무엇인가?   
+HELD     A59 topic+chain+modifier         억새마루는 소재지의 동절기 기온이 얼마입니까?   ambiguous: two readings are too close
+OK       A60 condition+no_ui+topic+denial 눈꽃봉 고도가 1400미터이면 눈꽃봉은 정원이 15명이 아니야.   
+
+Word kinds kept from the completely read sentences: 1000미터=amount, 3만원=amount, 5도=amount
+
+# A. Reading: 60 sentences, domain "산장(산악 대피소)"
+OK       A01 modifier                     구름재의 주말 숙박료는 3만원이다.   
+OK       A02 time                         2033년에 솔바람의 정원은 25명입니다.   
+OK       A03 claim                        바위골의 고도는 1500미터가 맞나요?   
+OK       A04 denial                       달맞이의 관리인은 박씨가 아니다.   
+OK       A05 condition                    노루목의 정원이 30명이면 노루목의 숙박료는 1만8천원이다.   
+OK       A06 chain                        샘터의 관리인의 경력은 얼마인가?   
+OK       A07 ask_thing                    소재지가 설악골인 것은 무엇인가?   
+OK       A08 topic                        억새마루는 개장일이 언제인가요?   
+OK       A09 no_ui                        눈꽃봉 소재지는 한라기슭이다.   
+OK       A10 modifier                     솔바람의 동절기 기온은 얼마입니까?   
+OK       A11 modifier+time                2028년에 바위골의 성수기 숙박료는 4만원이다.   
+OK       A12 modifier+claim               달맞이의 동절기 기온은 영하8도가 맞는가?   
+OK       A13 modifier+denial              노루목의 평일 숙박료는 2만원이 아니다.   
+OK       A14 modifier+condition           샘터의 정원이 20명이면 샘터의 주말 숙박료는 2만5천원이다.   
+HELD     A15 modifier+chain               억새마루의 소재지의 여름 기온은 18도입니다.   ambiguous: two readings are too close
+OK       A16 modifier+ask_thing           동절기 정원이 30명인 것은 무엇입니까?   
+OK       A17 modifier+topic               눈꽃봉은 새벽 기온이 영하3도이다.   
+PARTIAL  A18 modifier+no_ui               구름재 비수기 숙박료는 얼마야?   ignored ['비수기']
+OK       A19 time+claim                   2030년에 솔바람의 관리인은 박씨가 맞나요?   
+OK       A20 time+denial                  2025년에 바위골의 정원은 60명이 아닙니다.   
+HELD     A21 time+condition               달맞이의 정원이 35명이면 2029년에 달맞이의 숙박료는 2만2천원이다.   ambiguous: every reading uses something never seen in training
+HELD     A22 time+chain                   2034년에 노루목의 관리인의 경력은 12년이다.   ambiguous: the sentence alone does not say what "2034년" belongs to: "관리인" or "경력"
+HELD     A23 time+ask_thing               2032년에 개장일이 5월1일인 것은 무엇인가요?   ambiguous: every reading uses something never seen in training
+OK       A24 time+topic                   2026년에 샘터는 숙박료가 1만2천원이다.   
+OK       A25 time+no_ui                   2032년에 억새마루 정원은 얼마입니까?   
+OK       A26 claim+chain                  눈꽃봉의 소재지의 고도는 700미터가 맞는가?   
+OK       A27 claim+topic                  구름재는 관리인이 한노인이 맞나요?   
+OK       A28 claim+no_ui                  솔바람 개장일은 4월15일이 맞나요?   
+OK       A29 claim+condition              바위골의 정원이 60명이면 바위골의 숙박료는 3만원이 맞나요?   
+OK       A30 denial+chain                 달맞이의 관리인의 경력은 30년이 아니다.   
+OK       A31 denial+topic                 노루목은 소재지가 덕유마을이 아니야.   
+OK       A32 denial+no_ui                 샘터 고도는 950미터가 아닙니다.   
+OK       A33 denial+condition             억새마루의 고도가 1300미터이면 억새마루의 개장일은 4월1일이 아니다.   
+HELD     A34 condition+chain              눈꽃봉의 정원이 15명이면 눈꽃봉의 관리인의 경력은 얼마인가요?   ambiguous: the sentence alone does not say what "정원" belongs to: "관리인" or "경력"
+OK       A35 condition+topic              구름재의 고도가 1200미터이면 구름재는 기온이 2도이다.   
+OK       A36 condition+no_ui              솔바람 정원이 25명이면 솔바람 숙박료는 1만5천원입니다.   
+OK       A37 chain+topic                  바위골은 관리인의 경력이 20년이다.   
+OK       A38 chain+no_ui                  달맞이 소재지의 기온은 얼마인가?   
+OK       A39 ask_thing+compare            고도가 1000미터 이상인 것은 무엇인가?   
+HELD     A40 ask_thing+chain              관리인의 경력이 30년인 것은 무엇이야?   ambiguous: every reading uses something never seen in training
+OK       A41 modifier+time+claim          2033년에 구름재의 주말 숙박료는 3만원이 맞나요?   
+OK       A42 modifier+time+denial         2028년에 솔바람의 동절기 정원은 20명이 아니다.   
+HELD     A43 modifier+chain+claim         바위골의 소재지의 동절기 기온은 영하15도가 맞는가?   ambiguous: two readings are too close
+OK       A44 modifier+topic+denial        달맞이는 평일 숙박료가 1만원이 아닙니다.   
+HELD     A45 time+chain+denial            2030년에 노루목의 관리인의 경력은 12년이 아니다.   ambiguous: the sentence alone does not say what "2030년" belongs to: "관리인" or "경력"
+HELD     A46 condition+modifier+time      샘터의 고도가 900미터이면 2029년에 샘터의 여름 기온은 얼마인가?   ambiguous: every reading uses something never seen in training
+OK       A47 condition+claim+no_ui        억새마루 정원이 50명이면 억새마루 숙박료는 2만8천원이 맞나요?   
+OK       A48 ask_thing+compare+modifier   주말 숙박료가 3만원 이상인 것은 무엇인가요?   
+HELD     A49 ask_thing+compare+time       2034년에 정원이 40명 이상인 것은 무엇입니까?   ambiguous: every reading uses something never seen in training
+HELD     A50 ask_thing+chain+compare      관리인의 경력이 10년 이상인 것은 무엇인가?   ambiguous: every reading uses something never seen in training
+OK       A51 time+topic+claim             2026년에 눈꽃봉은 개장일이 6월1일이 맞나요?   
+PARTIAL  A52 time+no_ui+modifier          2033년에 구름재 성수기 정원은 45명이다.   ignored ['성수기']
+HELD     A53 condition+chain+denial       솔바람의 정원이 25명이면 솔바람의 관리인의 경력은 5년이 아니다.   ambiguous: the sentence alone does not say what "정원" belongs to: "관리인" or "경력"
+OK       A54 condition+topic+modifier     바위골의 고도가 1500미터이면 바위골은 동절기 기온이 영하15도입니다.   
+OK       A55 chain+no_ui+claim            달맞이 소재지의 고도는 600미터가 맞나요?   
+HELD     A56 time+modifier+chain+claim    2028년에 노루목의 소재지의 여름 기온은 20도가 맞는가?   ambiguous: two readings are too close
+HELD     A57 condition+time+modifier+deni 샘터의 정원이 20명이면 2030년에 샘터의 주말 숙박료는 2만5천원이 아니다.   ambiguous: every reading uses something never seen in training
+OK       A58 ask_thing+modifier+time+comp 2029년에 동절기 기온이 5도 이상인 것은 무엇인가?   
+HELD     A59 topic+chain+modifier         억새마루는 소재지의 동절기 기온이 얼마입니까?   ambiguous: two readings are too close
+OK       A60 condition+no_ui+topic+denial 눈꽃봉 고도가 1400미터이면 눈꽃봉은 정원이 15명이 아니야.   
+
+# B. Answering, full language pack: field "가상의 구민체육센터 시설 이용 안내 (시설별 이용료, 운영시간, 휴관일, 위치, 정원, 준비물, 예약방법)", 20 facts, 50 questions
+facts loaded 20, not usable 0 []
+right    B01 direct    수영장의 이용료는 얼마인가요?  (expected 1회4000원)  =>  수영장의 이용료는 1회4000원이다.
+right    B02 direct    헬스장의 운영시간은 언제인가요?  (expected 6시~22시)  =>  헬스장의 운영시간은 6시~22시이다.
+right    B03 direct    수영장의 휴관일은 언제입니까?  (expected 매주월요일)  =>  수영장의 휴관일은 매주월요일이다.
+right    B04 direct    탁구장의 위치는 어디인가요?  (expected 3층)  =>  탁구장의 위치는 3층이다.
+held     B05 direct    암벽장의 정원은 몇 명인가요?  (expected 12명)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B06 direct    헬스장의 준비물은 무엇인가요?  (expected 실내운동화)  =>  헬스장의 준비물은 실내운동화이다.
+right    B07 direct    배드민턴장의 예약방법은 무엇입니까?  (expected 전화예약)  =>  배드민턴장의 예약방법은 전화예약이다.
+held     B08 direct    탁구장의 이용료는 얼마예요?  (expected 시간당2000원)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B09 direct    요가실의 위치는 어디입니까?  (expected 4층)  =>  요가실의 위치는 4층이다.
+held     B10 direct    수영장의 정원은 몇 명이죠?  (expected 80명)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B11 direct    배드민턴장의 휴관일은 언제인가요?  (expected 둘째일요일)  =>  배드민턴장의 휴관일은 둘째일요일이다.
+right    B12 direct    암벽장의 예약방법은 무엇인가요?  (expected 현장접수)  =>  암벽장의 예약방법은 현장접수이다.
+right    B13 check     수영장의 운영시간은 6시~21시가 맞나요?  (expected 6시~21시)  =>  맞다: 수영장의 운영시간은 6시~21시이다.
+right    B14 check     헬스장의 이용료는 월30000원이 맞습니까?  (expected 월30000원)  =>  맞다: 헬스장의 이용료는 월30000원이다.
+right    B15 check     탁구장 정원이 16명 맞죠?  (expected 16명)  =>  맞다: 탁구장의 정원은 16명이다.
+right    B16 check     암벽장의 이용료는 1회5000원이 맞나요?  (expected 1회7000원)  =>  아니다: 암벽장의 이용료는 1회7000원이다.
+held     B17 check     수영장은 지하2층에 있는 게 맞나요?  (expected 지하1층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+right    B18 check     배드민턴장의 휴관일이 매주월요일 맞아요?  (expected 둘째일요일)  =>  아니다: 배드민턴장의 휴관일은 둘째일요일이다.
+held     B19 natural   수영장 몇 시에 열어서 몇 시에 닫아요?  (expected 6시~21시)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B20 natural   헬스장 한 달 다니려면 얼마 내야 해요?  (expected 월30000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B21 natural   수영장 갈 때 뭐 챙겨가야 하나요?  (expected 수영모)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B22 natural   탁구장 몇 층에 있어요?  (expected 3층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B23 natural   암벽장에 한 번에 몇 명까지 들어갈 수 있나요?  (expected 12명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B24 natural   배드민턴장 어떻게 예약하면 되나요?  (expected 전화예약)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B25 natural   수영장 언제 쉬어요?  (expected 매주월요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B26 natural   헬스장 어디로 가면 돼요?  (expected 2층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B27 natural   탁구 치려면 돈 얼마나 들어요?  (expected 시간당2000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B28 natural   요가실 어디 있는지 좀 알려주세요.  (expected 4층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B29 natural   헬스장 몇 시까지 해요?  (expected 6시~22시)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B30 natural   배드민턴장 한 시간 빌리는 데 얼마죠?  (expected 시간당5000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B31 natural   암벽장 한 번 타는 데 얼마 받아요?  (expected 1회7000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B32 natural   수영장은 사람을 몇 명까지 받나요?  (expected 80명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B33 natural   헬스장 갈 때 따로 가져가야 하는 거 있나요?  (expected 실내운동화)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B34 natural   암벽장 이용하고 싶은데 접수는 어떻게 해요?  (expected 현장접수)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B35 natural   배드민턴장 문 닫는 날이 언제예요?  (expected 둘째일요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B36 natural   수영장 가려면 몇 층으로 내려가야 돼요?  (expected 지하1층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+right    B37 alias     풀장 요금이 얼마인가요?  (expected 1회4000원)  =>  수영장의 이용료는 1회4000원이다.
+right    B38 alias     체력단련실의 개방시간은 언제인가요?  (expected 6시~22시)  =>  헬스장의 운영시간은 6시~22시이다.
+held     B39 alias     클라이밍장 수용인원은 몇 명이에요?  (expected 12명)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B40 alias     배드민턴코트 쉬는날은 언제죠?  (expected 둘째일요일)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B41 alias     요가룸 장소가 어디인가요?  (expected 4층)  =>  요가실의 위치는 4층이다.
+right    B42 alias     수영장 지참물은 무엇인가요?  (expected 수영모)  =>  수영장의 준비물은 수영모이다.
+held ok  B43 no_answer 수영장 주말 이용료는 얼마인가요?  (expected None)  =>  -- the question could only be answered by passing over part of it: words in the que
+held ok  B44 no_answer 헬스장 공휴일에는 몇 시부터 몇 시까지 해요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B45 no_answer 탁구장 어린이 요금은 얼마예요?  (expected None)  =>  -- the question was not read with confidence: every reading uses something never se
+held ok  B46 no_answer 암벽장 저녁 시간대 정원은 몇 명인가요?  (expected None)  =>  -- the question was not read with confidence: every reading uses something never se
+held ok  B47 no_answer 요가실 이용료는 얼마인가요?  (expected None)  =>  -- nothing in the passage fits every condition of the question
+held ok  B48 no_answer 스쿼시장은 몇 층에 있나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B49 no_answer 수영장 수심은 얼마나 되나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B50 no_answer 수영장은 왜 매주 월요일에 쉬나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+
+# B. Answering, base language pack: field "가상의 구민체육센터 시설 이용 안내 (시설별 이용료, 운영시간, 휴관일, 위치, 정원, 준비물, 예약방법)", 20 facts, 50 questions
+facts loaded 20, not usable 0 []
+right    B01 direct    수영장의 이용료는 얼마인가요?  (expected 1회4000원)  =>  수영장의 이용료는 1회4000원입니다.
+right    B02 direct    헬스장의 운영시간은 언제인가요?  (expected 6시~22시)  =>  헬스장의 운영시간은 6시~22시입니다.
+held     B03 direct    수영장의 휴관일은 언제입니까?  (expected 매주월요일)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B04 direct    탁구장의 위치는 어디인가요?  (expected 3층)  =>  탁구장의 위치는 3층이다.
+held     B05 direct    암벽장의 정원은 몇 명인가요?  (expected 12명)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B06 direct    헬스장의 준비물은 무엇인가요?  (expected 실내운동화)  =>  헬스장의 준비물은 실내운동화입니다.
+held     B07 direct    배드민턴장의 예약방법은 무엇입니까?  (expected 전화예약)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B08 direct    탁구장의 이용료는 얼마예요?  (expected 시간당2000원)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B09 direct    요가실의 위치는 어디입니까?  (expected 4층)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B10 direct    수영장의 정원은 몇 명이죠?  (expected 80명)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B11 direct    배드민턴장의 휴관일은 언제인가요?  (expected 둘째일요일)  =>  배드민턴장의 휴관일은 둘째일요일입니다.
+right    B12 direct    암벽장의 예약방법은 무엇인가요?  (expected 현장접수)  =>  암벽장의 예약방법은 현장접수입니다.
+right    B13 check     수영장의 운영시간은 6시~21시가 맞나요?  (expected 6시~21시)  =>  맞다: 수영장의 운영시간은 6시~21시입니다.
+held     B14 check     헬스장의 이용료는 월30000원이 맞습니까?  (expected 월30000원)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B15 check     탁구장 정원이 16명 맞죠?  (expected 16명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+right    B16 check     암벽장의 이용료는 1회5000원이 맞나요?  (expected 1회7000원)  =>  아니다: 암벽장의 이용료는 1회7000원입니다.
+held     B17 check     수영장은 지하2층에 있는 게 맞나요?  (expected 지하1층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B18 check     배드민턴장의 휴관일이 매주월요일 맞아요?  (expected 둘째일요일)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B19 natural   수영장 몇 시에 열어서 몇 시에 닫아요?  (expected 6시~21시)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B20 natural   헬스장 한 달 다니려면 얼마 내야 해요?  (expected 월30000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B21 natural   수영장 갈 때 뭐 챙겨가야 하나요?  (expected 수영모)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B22 natural   탁구장 몇 층에 있어요?  (expected 3층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B23 natural   암벽장에 한 번에 몇 명까지 들어갈 수 있나요?  (expected 12명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B24 natural   배드민턴장 어떻게 예약하면 되나요?  (expected 전화예약)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B25 natural   수영장 언제 쉬어요?  (expected 매주월요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B26 natural   헬스장 어디로 가면 돼요?  (expected 2층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B27 natural   탁구 치려면 돈 얼마나 들어요?  (expected 시간당2000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B28 natural   요가실 어디 있는지 좀 알려주세요.  (expected 4층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B29 natural   헬스장 몇 시까지 해요?  (expected 6시~22시)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B30 natural   배드민턴장 한 시간 빌리는 데 얼마죠?  (expected 시간당5000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B31 natural   암벽장 한 번 타는 데 얼마 받아요?  (expected 1회7000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B32 natural   수영장은 사람을 몇 명까지 받나요?  (expected 80명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B33 natural   헬스장 갈 때 따로 가져가야 하는 거 있나요?  (expected 실내운동화)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B34 natural   암벽장 이용하고 싶은데 접수는 어떻게 해요?  (expected 현장접수)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B35 natural   배드민턴장 문 닫는 날이 언제예요?  (expected 둘째일요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B36 natural   수영장 가려면 몇 층으로 내려가야 돼요?  (expected 지하1층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B37 alias     풀장 요금이 얼마인가요?  (expected 1회4000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+right    B38 alias     체력단련실의 개방시간은 언제인가요?  (expected 6시~22시)  =>  헬스장의 운영시간은 6시~22시입니다.
+held     B39 alias     클라이밍장 수용인원은 몇 명이에요?  (expected 12명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B40 alias     배드민턴코트 쉬는날은 언제죠?  (expected 둘째일요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B41 alias     요가룸 장소가 어디인가요?  (expected 4층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B42 alias     수영장 지참물은 무엇인가요?  (expected 수영모)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B43 no_answer 수영장 주말 이용료는 얼마인가요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B44 no_answer 헬스장 공휴일에는 몇 시부터 몇 시까지 해요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B45 no_answer 탁구장 어린이 요금은 얼마예요?  (expected None)  =>  -- the question was not read with confidence: every reading uses something never se
+held ok  B46 no_answer 암벽장 저녁 시간대 정원은 몇 명인가요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B47 no_answer 요가실 이용료는 얼마인가요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B48 no_answer 스쿼시장은 몇 층에 있나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B49 no_answer 수영장 수심은 얼마나 되나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B50 no_answer 수영장은 왜 매주 월요일에 쉬나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+
+# Summary
+A. reading (by number of features; 3 = three or more)
+   1: OK 10 of 10
+   2: HELD 6, OK 23, PARTIAL 1 of 30
+   3: HELD 9, OK 10, PARTIAL 1 of 20
+   all: HELD 15, OK 43, PARTIAL 2 of 60
+   all, second reading with the word kinds kept from the first: HELD 15, OK 43, PARTIAL 2 of 60
+B. answering, full pack
+   alias      held 2, right 4 of 6
+   check      held 1, right 5 of 6
+   direct     held 3, right 9 of 12
+   natural    held 18 of 18
+   no_answer  held ok 8 of 8
+B. answering, base pack
+   alias      held 5, right 1 of 6
+   check      held 4, right 2 of 6
+   direct     held 6, right 6 of 12
+   natural    held 18 of 18
+   no_answer  held ok 8 of 8

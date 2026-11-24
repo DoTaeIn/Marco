@@ -1,0 +1,205 @@
+# Frozen before the items existed
+  21225a3688cc66e1  reader.py
+  655c938f2afaa4fd  match.py
+  c19820ff8dc40cfe  answer.py
+  acc269e6f52913a7  write.py
+  de718e20ab96c323  pack.py
+  fca15949b26f9f36  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  1df30b9841bc070c  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  67fb3756bbb38bf2  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  7393bf8d735b1899  probes/reading_limits.py
+  c54c67782ade11d8  A.json (the items)
+  29dc79283d318bb1  B.json (the items)
+
+Language packs: "full" = 544 lessons (shipped generator + the seven made-up sets); "base" = 112 lessons
+
+# A. Reading: 60 sentences, domain "악기 공방 (전통 악기의 재료·보관·대여)"
+OK       A01 modifier                     달무리북의 주말 대여료는 하루9천원이다.   
+OK       A02 modifier                     참나무장구의 긴급 수리비는 얼마인가요?   
+OK       A03 time                         2029년에 물결가야금의 보관처는 유리장입니다.   
+OK       A04 claim                        새벽종의 재료는 놋쇠가 맞나요?   
+OK       A05 denial                       솔바람피리의 산지는 봉화가 아니다.   
+OK       A06 condition                    구름해금의 재료가 박달나무이면 구름해금의 산지는 봉화이다.   
+OK       A07 chain                        은여울거문고의 재료의 산지는 어디인가?   
+OK       A08 askthing                     제작자가 한솔인 것은 무엇인가?   
+OK       A09 topic                        밤나무나팔은 길이가 석자이다.   
+OK       A10 bare                         솔바람피리 출고일은 언제입니까?   
+HELD     A11 modifier+time                올해 달무리북의 평일 대여료는 얼마야?   ambiguous: every reading uses something never seen in training
+OK       A12 modifier+claim               새벽종의 여름 보관처는 지하창고가 맞습니까?   
+OK       A13 modifier+denial              구름해금의 주말 대여료는 주당3만원이 아닙니다.   
+OK       A14 modifier+topic               참나무장구는 긴급 수리비가 12만원이야.   
+PARTIAL  A15 modifier+bare                물결가야금 여름 보관처는 어디인가요?   ignored ['여름']
+OK       A16 modifier+askthing            긴급 수리비가 5만원 이상인 것은 무엇입니까?   
+OK       A17 modifier+condition           밤나무나팔의 재료가 놋쇠이면 밤나무나팔의 긴급 수리비는 12만원이다.   
+OK       A18 modifier+chain               은여울거문고의 여름 보관처의 대여료는 얼마인가?   
+OK       A19 time+claim                   내년에 솔바람피리의 보관처는 북쪽선반이 맞는가?   
+OK       A20 time+denial                  9월에 달무리북의 보관처는 지하창고가 아니야.   
+OK       A21 time+topic                   2033년에 은여울거문고는 대여료가 주당3만원입니다.   
+OK       A22 time+bare                    내년에 새벽종 수리비는 얼마입니까?   
+HELD     A23 time+askthing                올해 수리비가 5만원 이상인 것은 무엇인가요?   ambiguous: every reading uses something never seen in training
+HELD     A24 time+chain                   2029년에 구름해금의 보관처의 대여료는 하루9천원이다.   ambiguous: the sentence alone does not say what "2029년" belongs to: "보관처" or "대여료
+HELD     A25 time+condition               물결가야금의 재료가 오동나무이면 내년에 물결가야금의 수리비는 4만원이다.   ambiguous: the sentence alone does not say what "내년" belongs to: "재료" or "수리비"
+HELD     A26 claim+topic                  달무리북은 재료가 쇠가죽이 맞아?   ambiguous: every reading uses something never seen in training
+OK       A27 claim+bare                   밤나무나팔 제작자는 도담이 맞나요?   
+OK       A28 claim+chain                  솔바람피리의 재료의 산지는 담양이 맞습니까?   
+OK       A29 claim+condition              새벽종의 재료가 놋쇠이면 새벽종의 산지는 안성이 맞는가?   
+OK       A30 denial+topic                 은여울거문고는 재료가 대나무가 아니다.   
+OK       A31 denial+bare                  참나무장구 출고일은 5월3일이 아닙니다.   
+OK       A32 denial+chain                 달무리북의 재료의 산지는 담양이 아니에요.   
+HELD     A33 denial+askthing              재료가 놋쇠가 아닌 것은 무엇인가?   ambiguous: every reading uses something never seen in training
+HELD     A34 denial+condition             구름해금의 제작자가 한솔이 아니면 구름해금의 수리비는 12만원이다.   ambiguous: every reading uses something never seen in training
+HELD     A35 chain+askthing               재료의 산지가 봉화인 것은 무엇입니까?   ambiguous: every reading uses something never seen in training
+OK       A36 chain+topic                  물결가야금은 재료의 산지가 어디야?   
+OK       A37 chain+bare                   새벽종 보관처의 대여료는 얼마인가요?   
+HELD     A38 chain+condition              밤나무나팔의 제작자가 도담이면 밤나무나팔의 재료의 산지는 안성이다.   ambiguous: the sentence alone does not say what "제작자" belongs to: "재료" or "산지"
+HELD     A39 condition+topic              솔바람피리는 길이가 두뼘이면 대여료가 하루9천원이다.   ambiguous: every reading uses something never seen in training
+OK       A40 condition+bare               참나무장구 재료가 쇠가죽이면 참나무장구 산지는 안성입니다.   
+HELD     A41 modifier+time+claim          올해 달무리북의 주말 대여료는 하루9천원이 맞나요?   ambiguous: every reading uses something never seen in training
+OK       A42 modifier+time+denial         2033년에 참나무장구의 긴급 수리비는 4만원이 아니다.   
+OK       A43 modifier+topic+claim         새벽종은 여름 보관처가 지하창고가 맞습니까?   
+PARTIAL  A44 modifier+bare+denial         구름해금 평일 대여료는 주당3만원이 아니야.   ignored ['평일']
+OK       A45 time+topic+modifier          내년에 물결가야금은 여름 보관처가 어디입니까?   
+OK       A46 time+askthing+modifier       9월에 주말 대여료가 하루9천원인 것은 무엇인가?   
+HELD     A47 askthing+denial+modifier     주말 대여료가 하루9천원이 아닌 것은 무엇인가요?   ambiguous: every reading uses something never seen in training
+HELD     A48 chain+claim+time             2029년에 은여울거문고의 보관처의 대여료는 주당3만원이 맞는가?   ambiguous: the sentence alone does not say what "2029년" belongs to: "보관처" or "대여료
+OK       A49 chain+denial+bare            솔바람피리 재료의 산지는 봉화가 아닙니다.   
+OK       A50 chain+modifier+claim         달무리북의 여름 보관처의 대여료는 하루9천원이 맞아요?   
+OK       A51 condition+modifier+claim     밤나무나팔의 재료가 놋쇠이면 밤나무나팔의 긴급 수리비는 12만원이 맞나요?   
+HELD     A52 condition+time+denial        새벽종의 보관처가 유리장이면 내년에 새벽종의 대여료는 하루9천원이 아니다.   ambiguous: the sentence alone does not say what "내년" belongs to: "보관처" or "대여료"
+HELD     A53 condition+topic+modifier     참나무장구는 재료가 쇠가죽이면 긴급 수리비가 얼마야?   ambiguous: the sentence alone does not say what "긴급" belongs to: "재료" or "수리비"
+HELD     A54 condition+denial+claim       구름해금의 재료가 박달나무가 아니면 구름해금의 산지는 봉화가 맞습니까?   ambiguous: every reading uses something never seen in training
+HELD     A55 condition+chain+time         물결가야금의 제작자가 한솔이면 2033년에 물결가야금의 보관처의 대여료는 주당3만원이다.   ambiguous: every reading uses something never seen in training
+OK       A56 topic+time+denial            9월에 솔바람피리는 보관처가 북쪽선반이 아니에요.   
+HELD     A57 bare+time+claim              올해 은여울거문고 출고일은 9월12일이 맞습니까?   ambiguous: every reading uses something never seen in training
+OK       A58 askthing+time+modifier       내년에 평일 대여료가 주당3만원 이상인 것은 무엇입니까?   
+HELD     A59 condition+topic+denial+modif 달무리북은 재료가 쇠가죽이면 주말 대여료가 하루9천원이 아니다.   ambiguous: the sentence alone does not say what "주말" belongs to: "재료" or "대여료"
+HELD     A60 chain+topic+claim+time       올해 밤나무나팔은 재료의 산지가 안성이 맞나요?   ambiguous: every reading uses something never seen in training
+
+# B. Answering, full language pack: field "가상의 구민체육센터 시설 이용 안내 (시설별 이용료, 운영시간, 휴관일, 위치, 정원, 준비물, 예약방법)", 20 facts, 50 questions
+facts loaded 20, not usable 0 []
+right    B01 direct    수영장의 이용료는 얼마인가요?  (expected 1회4000원)  =>  수영장의 이용료는 1회4000원이다.
+right    B02 direct    헬스장의 운영시간은 언제인가요?  (expected 6시~22시)  =>  헬스장의 운영시간은 6시~22시이다.
+right    B03 direct    수영장의 휴관일은 언제입니까?  (expected 매주월요일)  =>  수영장의 휴관일은 매주월요일이다.
+right    B04 direct    탁구장의 위치는 어디인가요?  (expected 3층)  =>  탁구장의 위치는 3층이다.
+held     B05 direct    암벽장의 정원은 몇 명인가요?  (expected 12명)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B06 direct    헬스장의 준비물은 무엇인가요?  (expected 실내운동화)  =>  헬스장의 준비물은 실내운동화이다.
+right    B07 direct    배드민턴장의 예약방법은 무엇입니까?  (expected 전화예약)  =>  배드민턴장의 예약방법은 전화예약이다.
+held     B08 direct    탁구장의 이용료는 얼마예요?  (expected 시간당2000원)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B09 direct    요가실의 위치는 어디입니까?  (expected 4층)  =>  요가실의 위치는 4층이다.
+held     B10 direct    수영장의 정원은 몇 명이죠?  (expected 80명)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B11 direct    배드민턴장의 휴관일은 언제인가요?  (expected 둘째일요일)  =>  배드민턴장의 휴관일은 둘째일요일이다.
+right    B12 direct    암벽장의 예약방법은 무엇인가요?  (expected 현장접수)  =>  암벽장의 예약방법은 현장접수이다.
+right    B13 check     수영장의 운영시간은 6시~21시가 맞나요?  (expected 6시~21시)  =>  맞다: 수영장의 운영시간은 6시~21시이다.
+right    B14 check     헬스장의 이용료는 월30000원이 맞습니까?  (expected 월30000원)  =>  맞다: 헬스장의 이용료는 월30000원이다.
+right    B15 check     탁구장 정원이 16명 맞죠?  (expected 16명)  =>  맞다: 탁구장의 정원은 16명이다.
+right    B16 check     암벽장의 이용료는 1회5000원이 맞나요?  (expected 1회7000원)  =>  아니다: 암벽장의 이용료는 1회7000원이다.
+held     B17 check     수영장은 지하2층에 있는 게 맞나요?  (expected 지하1층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+right    B18 check     배드민턴장의 휴관일이 매주월요일 맞아요?  (expected 둘째일요일)  =>  아니다: 배드민턴장의 휴관일은 둘째일요일이다.
+held     B19 natural   수영장 몇 시에 열어서 몇 시에 닫아요?  (expected 6시~21시)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B20 natural   헬스장 한 달 다니려면 얼마 내야 해요?  (expected 월30000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B21 natural   수영장 갈 때 뭐 챙겨가야 하나요?  (expected 수영모)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B22 natural   탁구장 몇 층에 있어요?  (expected 3층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B23 natural   암벽장에 한 번에 몇 명까지 들어갈 수 있나요?  (expected 12명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B24 natural   배드민턴장 어떻게 예약하면 되나요?  (expected 전화예약)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B25 natural   수영장 언제 쉬어요?  (expected 매주월요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B26 natural   헬스장 어디로 가면 돼요?  (expected 2층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B27 natural   탁구 치려면 돈 얼마나 들어요?  (expected 시간당2000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B28 natural   요가실 어디 있는지 좀 알려주세요.  (expected 4층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B29 natural   헬스장 몇 시까지 해요?  (expected 6시~22시)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B30 natural   배드민턴장 한 시간 빌리는 데 얼마죠?  (expected 시간당5000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B31 natural   암벽장 한 번 타는 데 얼마 받아요?  (expected 1회7000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B32 natural   수영장은 사람을 몇 명까지 받나요?  (expected 80명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B33 natural   헬스장 갈 때 따로 가져가야 하는 거 있나요?  (expected 실내운동화)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B34 natural   암벽장 이용하고 싶은데 접수는 어떻게 해요?  (expected 현장접수)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B35 natural   배드민턴장 문 닫는 날이 언제예요?  (expected 둘째일요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B36 natural   수영장 가려면 몇 층으로 내려가야 돼요?  (expected 지하1층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+right    B37 alias     풀장 요금이 얼마인가요?  (expected 1회4000원)  =>  수영장의 이용료는 1회4000원이다.
+right    B38 alias     체력단련실의 개방시간은 언제인가요?  (expected 6시~22시)  =>  헬스장의 운영시간은 6시~22시이다.
+held     B39 alias     클라이밍장 수용인원은 몇 명이에요?  (expected 12명)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B40 alias     배드민턴코트 쉬는날은 언제죠?  (expected 둘째일요일)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B41 alias     요가룸 장소가 어디인가요?  (expected 4층)  =>  요가실의 위치는 4층이다.
+right    B42 alias     수영장 지참물은 무엇인가요?  (expected 수영모)  =>  수영장의 준비물은 수영모이다.
+held ok  B43 no_answer 수영장 주말 이용료는 얼마인가요?  (expected None)  =>  -- the question could only be answered by passing over part of it: words in the que
+held ok  B44 no_answer 헬스장 공휴일에는 몇 시부터 몇 시까지 해요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B45 no_answer 탁구장 어린이 요금은 얼마예요?  (expected None)  =>  -- the question was not read with confidence: every reading uses something never se
+held ok  B46 no_answer 암벽장 저녁 시간대 정원은 몇 명인가요?  (expected None)  =>  -- the question was not read with confidence: every reading uses something never se
+held ok  B47 no_answer 요가실 이용료는 얼마인가요?  (expected None)  =>  -- nothing in the passage fits every condition of the question
+held ok  B48 no_answer 스쿼시장은 몇 층에 있나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B49 no_answer 수영장 수심은 얼마나 되나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B50 no_answer 수영장은 왜 매주 월요일에 쉬나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+
+# B. Answering, base language pack: field "가상의 구민체육센터 시설 이용 안내 (시설별 이용료, 운영시간, 휴관일, 위치, 정원, 준비물, 예약방법)", 20 facts, 50 questions
+facts loaded 20, not usable 0 []
+right    B01 direct    수영장의 이용료는 얼마인가요?  (expected 1회4000원)  =>  수영장의 이용료는 1회4000원입니다.
+right    B02 direct    헬스장의 운영시간은 언제인가요?  (expected 6시~22시)  =>  헬스장의 운영시간은 6시~22시입니다.
+held     B03 direct    수영장의 휴관일은 언제입니까?  (expected 매주월요일)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B04 direct    탁구장의 위치는 어디인가요?  (expected 3층)  =>  탁구장의 위치는 3층이다.
+held     B05 direct    암벽장의 정원은 몇 명인가요?  (expected 12명)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B06 direct    헬스장의 준비물은 무엇인가요?  (expected 실내운동화)  =>  헬스장의 준비물은 실내운동화입니다.
+held     B07 direct    배드민턴장의 예약방법은 무엇입니까?  (expected 전화예약)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B08 direct    탁구장의 이용료는 얼마예요?  (expected 시간당2000원)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B09 direct    요가실의 위치는 어디입니까?  (expected 4층)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B10 direct    수영장의 정원은 몇 명이죠?  (expected 80명)  =>  -- the question was not read with confidence: every reading uses something never se
+right    B11 direct    배드민턴장의 휴관일은 언제인가요?  (expected 둘째일요일)  =>  배드민턴장의 휴관일은 둘째일요일입니다.
+right    B12 direct    암벽장의 예약방법은 무엇인가요?  (expected 현장접수)  =>  암벽장의 예약방법은 현장접수입니다.
+right    B13 check     수영장의 운영시간은 6시~21시가 맞나요?  (expected 6시~21시)  =>  맞다: 수영장의 운영시간은 6시~21시입니다.
+held     B14 check     헬스장의 이용료는 월30000원이 맞습니까?  (expected 월30000원)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B15 check     탁구장 정원이 16명 맞죠?  (expected 16명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+right    B16 check     암벽장의 이용료는 1회5000원이 맞나요?  (expected 1회7000원)  =>  아니다: 암벽장의 이용료는 1회7000원입니다.
+held     B17 check     수영장은 지하2층에 있는 게 맞나요?  (expected 지하1층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B18 check     배드민턴장의 휴관일이 매주월요일 맞아요?  (expected 둘째일요일)  =>  -- the question was not read with confidence: every reading uses something never se
+held     B19 natural   수영장 몇 시에 열어서 몇 시에 닫아요?  (expected 6시~21시)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B20 natural   헬스장 한 달 다니려면 얼마 내야 해요?  (expected 월30000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B21 natural   수영장 갈 때 뭐 챙겨가야 하나요?  (expected 수영모)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B22 natural   탁구장 몇 층에 있어요?  (expected 3층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B23 natural   암벽장에 한 번에 몇 명까지 들어갈 수 있나요?  (expected 12명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B24 natural   배드민턴장 어떻게 예약하면 되나요?  (expected 전화예약)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B25 natural   수영장 언제 쉬어요?  (expected 매주월요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B26 natural   헬스장 어디로 가면 돼요?  (expected 2층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B27 natural   탁구 치려면 돈 얼마나 들어요?  (expected 시간당2000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B28 natural   요가실 어디 있는지 좀 알려주세요.  (expected 4층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B29 natural   헬스장 몇 시까지 해요?  (expected 6시~22시)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B30 natural   배드민턴장 한 시간 빌리는 데 얼마죠?  (expected 시간당5000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B31 natural   암벽장 한 번 타는 데 얼마 받아요?  (expected 1회7000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B32 natural   수영장은 사람을 몇 명까지 받나요?  (expected 80명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B33 natural   헬스장 갈 때 따로 가져가야 하는 거 있나요?  (expected 실내운동화)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B34 natural   암벽장 이용하고 싶은데 접수는 어떻게 해요?  (expected 현장접수)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B35 natural   배드민턴장 문 닫는 날이 언제예요?  (expected 둘째일요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B36 natural   수영장 가려면 몇 층으로 내려가야 돼요?  (expected 지하1층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B37 alias     풀장 요금이 얼마인가요?  (expected 1회4000원)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+right    B38 alias     체력단련실의 개방시간은 언제인가요?  (expected 6시~22시)  =>  헬스장의 운영시간은 6시~22시입니다.
+held     B39 alias     클라이밍장 수용인원은 몇 명이에요?  (expected 12명)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B40 alias     배드민턴코트 쉬는날은 언제죠?  (expected 둘째일요일)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B41 alias     요가룸 장소가 어디인가요?  (expected 4층)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held     B42 alias     수영장 지참물은 무엇인가요?  (expected 수영모)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B43 no_answer 수영장 주말 이용료는 얼마인가요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B44 no_answer 헬스장 공휴일에는 몇 시부터 몇 시까지 해요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B45 no_answer 탁구장 어린이 요금은 얼마예요?  (expected None)  =>  -- the question was not read with confidence: every reading uses something never se
+held ok  B46 no_answer 암벽장 저녁 시간대 정원은 몇 명인가요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B47 no_answer 요가실 이용료는 얼마인가요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B48 no_answer 스쿼시장은 몇 층에 있나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B49 no_answer 수영장 수심은 얼마나 되나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+held ok  B50 no_answer 수영장은 왜 매주 월요일에 쉬나요?  (expected None)  =>  -- the question was not read with confidence: the text cannot be cut into known pie
+
+# Summary
+A. reading (by number of features; 3 = three or more)
+   1: OK 10 of 10
+   2: HELD 10, OK 19, PARTIAL 1 of 30
+   3: HELD 10, OK 9, PARTIAL 1 of 20
+   all: HELD 20, OK 38, PARTIAL 2 of 60
+B. answering, full pack
+   alias      held 2, right 4 of 6
+   check      held 1, right 5 of 6
+   direct     held 3, right 9 of 12
+   natural    held 18 of 18
+   no_answer  held ok 8 of 8
+B. answering, base pack
+   alias      held 5, right 1 of 6
+   check      held 4, right 2 of 6
+   direct     held 6, right 6 of 12
+   natural    held 18 of 18
+   no_answer  held ok 8 of 8

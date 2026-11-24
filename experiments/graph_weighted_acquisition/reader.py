@@ -109,8 +109,9 @@ def _ref(span, mentions, text, arg, head):
     return None
 
 
-def build(examples, policy=None, variants=None):
-    """Count pieces over the lessons. `variants` (from variants.py) adds raw-text connector variants."""
+def build(examples, policy=None, variants=None, kinds=None):
+    """Count pieces over the lessons. `variants` (from variants.py) adds raw-text connector variants.
+    `kinds` (a word-kinds file) lists which kind of thing some words name."""
     policy = dict(DEFAULT_POLICY, **(policy or {}))
     shipped = default_recipe()
     kept = policy['origins_kept']
@@ -134,6 +135,9 @@ def build(examples, policy=None, variants=None):
             cell['origins'].append(origin)
 
     head_surfaces, texts, parts_seen, closed_surfaces = {}, [], {}, {}
+    for kind, group in sorted((kinds or {}).get('kinds', {}).items()):
+        for word in group['words']:
+            count('word_kind', word, kind, 'word kinds: ' + kind)
     for ex in examples:
         try:
             graph, text, origin = ex['graph'], ex['text'], ex['id']
@@ -202,6 +206,20 @@ def build(examples, policy=None, variants=None):
                 return found
 
             nested = {k for h_, under in below.items() for k in under if k in head_order}
+            # One part under two heads ("X는 P가 V이면 Q가 W이다": X is the subject of both). It is an ordinary
+            # part of the head nearer to it; for the other head it is shared through whatever joins the two.
+            shared_edges, heads_of = {}, {}
+            for s_, p_, o_ in graph['edges']:
+                if s_ in heads and isinstance(o_, str) and o_ not in heads:
+                    heads_of.setdefault(o_, set()).add(s_)
+            for o_, over in heads_of.items():
+                if len(over) > 1:
+                    near = min(over, key=lambda x: (abs(index_of[x][0] - index_of[o_][0]), index_of[x][0]))
+                    for x in over - {near}:
+                        joined = [p_ for s_, p_, t_ in graph['edges'] if (s_, t_) in ((x, near), (near, x))]
+                        if len(joined) != 1:
+                            raise ValueError('a part under two heads that are not joined to each other')
+                        shared_edges[(x, o_)] = joined[0]
             for h_ in head_order:
                 rows.append(('stands', gaps[max(phrase(h_)) + 1], 'under' if h_ in nested else 'alone', origin))
             for (s, p, o), evidence in zip(graph['edges'], graph['edge_spans']):
@@ -226,6 +244,10 @@ def build(examples, policy=None, variants=None):
                 refs = [_ref(e, mentions, text, a, h) for e in evidence]
                 if None in refs:
                     raise ValueError('role evidence outside argument and head')
+                if (s, o) in shared_edges:
+                    rows += [('share', shared_edges[(s, o)], p, origin), ('evidence', 'role:' + p, key(refs), origin)]
+                    frames[h].append(p)
+                    continue
                 offset = head_order.index(h) - sum(1 for j in head_order if j < a)
                 reach = phrase(a) if a in head_order else [a]
                 rows += [('attach', ANY, str(offset), origin), ('role_right', gaps[max(reach) + 1], p, origin),
@@ -368,6 +390,15 @@ class _Scorer:
         if section:
             term['section'] = section
         return term
+
+    def leaves_open(self, connector):
+        """Does the connector written after a word leave its role open? It does when free values were
+        seen in more than one role in front of it. Where it does not ("…이다.", "…의 ", "…에 "), the form
+        has said what the word is there, and what is known about the word is not asked."""
+        kinds = {kind for row in self.model['tables'].get('value_type', {}).values() for kind in row}
+        fills = self.model['tables'].get('fills', {})
+        return sum(1 for role, cell in self.row('role_right', connector).items()
+                   if cell['n'] > 0 and kinds & set(fills.get(role, {}))) > 1
 
     def rules(self, rules, ctx, section=None):
         return [t for t in (self.rule(r, ctx, section) for r in rules) if t is not None]
@@ -659,6 +690,9 @@ def _readings(text, model, scorer, tiling_score, pieces):
         how = 'stem' if p[0] == 'head' and p[3] != 'word' else 'closed_stem' if p[0] == 'closed' and p[3] != 'word' else p[0]
         stem = p[3][5:] if how in ('stem', 'closed_stem') else ''
         ending = unicodedata.normalize('NFD', surface)[len(stem):] if how == 'closed_stem' else surface[len(stem):]
+        if how == 'value' and 'known_kind' in scorer.recipe['meaning'] and scorer.row('word_kind', surface) \
+                and (scorer.conventions.get('word_kinds') != 'where_open' or scorer.leaves_open(gaps[i + 1])):
+            how = 'known_kind'                              # what is known about the word decides where the form does not
         ctx = {'surface': surface, 'stem': stem, 'ending': ending, 'right_connector': gaps[i + 1]}
         plan = scorer.recipe['meaning'][how]
         source = plan['candidates']
@@ -730,9 +764,23 @@ def _assign(text, model, scorer, pieces, mentions, spans, gaps, heads, entries, 
             offset = str(rank - sum(1 for j in heads if j < a))
             for role in sorted(roles):
                 terms = scorer.rules(plan['always'] + deciding, dict(ctx, role=role, head_offset=offset,
+                                                                    side='before' if a < h else 'after',
                                                                     head_surface=text[slice(*spans[h])]))
                 found.append((sum(t['log'] for t in terms), all(t['count'] > 0 for t in terms), h, role, terms))
         supported = [f for f in found if f[1]]
+        by_kind = plan.get('by_kind')
+        if not supported and by_kind and mentions[a][0] == 'value' and scorer.row(by_kind['table'], surface) \
+                and (scorer.conventions.get('word_kinds') != 'where_open' or scorer.leaves_open(right)):
+            # A word whose kind is listed is judged by fewer pieces around it (the recipe says which):
+            # its kind already says what it is.
+            for rank, h in enumerate(heads):
+                offset = str(rank - sum(1 for j in heads if j < a))
+                for role in sorted(roles):
+                    terms = scorer.rules(plan['always'] + by_kind['rules'], dict(ctx, role=role, head_offset=offset,
+                                                                                  side='before' if a < h else 'after',
+                                                                                  head_surface=text[slice(*spans[h])]))
+                    if all(t['count'] > 0 for t in terms):
+                        supported.append((sum(t['log'] for t in terms), True, h, role, terms))
         found = supported or sorted(found, key=lambda f: -f[0])[:2]
         if not found:
             return []
@@ -758,6 +806,15 @@ def _assign(text, model, scorer, pieces, mentions, spans, gaps, heads, entries, 
             if links and not repeat_seen and any(len({r for r, _ in roles}) < len(roles) for roles in by_head.values()):
                 continue
             terms = list(base) + nest_terms
+            for parent, role, child in links:
+                seen_shared = scorer.row('share', role)
+                for lacking, having in ((parent, child), (child, parent)):
+                    for r, a in list(by_head[having]):
+                        if a not in heads and seen_shared.get(r, {}).get('n', 0) > 0 and r not in {x for x, _ in by_head[lacking]}:
+                            # Joined this way, heads were seen sharing this part: the one without it has it too.
+                            by_head[lacking].append((r, a))
+                            terms.append(scorer.term('a part shared with the head it is joined to', text[slice(*spans[a])],
+                                                     'share', role, r))
             for _, _, _, _, option_terms in choice:
                 terms += option_terms
             for h, roles in by_head.items():
@@ -852,6 +909,7 @@ def _nestings(text, scorer, spans, gaps, heads, entries, by_head):
                 continue
             ctx = {'surface': text[slice(*spans[x])], 'left_connector': gaps[lo], 'right_connector': gaps[hi + 1],
                    'arg_type': entries[x]['type'], 'head_surface': text[slice(*spans[up[x]])],
+                   'side': 'before' if x < up[x] else 'after',
                    'head_offset': str(rank[up[x]] - sum(1 for j in heads if j < x))}
             roles = set()
             for r in argument['context']:
@@ -1019,7 +1077,14 @@ def _read_one(text, model):
                 shown, at = _shown(ranked, seen[0])
                 loose = _open_attachments(seen[0]['graph'], text, model) \
                     if recipe_of(model)[1].get('attachment_check') else []
-                if loose:
+                unsure = _open_roles(seen[0], text, model) if recipe_of(model)[1].get('role_check') and not loose else []
+                if unsure:
+                    # The connector after the word marks more than one role and nothing says what kind of
+                    # word it is. Which role is meant is knowledge about the word, not form: asked.
+                    result.update(status='ambiguous', readings=shown, open_roles=unsure,
+                                  reason='the sentence alone does not say what %s' % '; '.join(
+                                      '"%s" is: %s' % (x['piece'], ' or '.join(x['between'])) for x in unsure))
+                elif loose:
                     # The counts picked a place, but the sentence itself leaves it open. Not accepted: asked.
                     result.update(status='ambiguous', readings=shown, attachment=loose,
                                   reason='the sentence alone does not say what %s' % '; '.join(
@@ -1028,9 +1093,67 @@ def _read_one(text, model):
                 else:
                     result.update(status='complete', reason=why, graphs=[seen[0]['graph']], readings=shown, chosen=at,
                                   ignored=seen[0]['ignored'], variants=seen[0]['variants'], told=seen[0]['told'])
+                    if recipe_of(model)[1].get('role_check') and not seen[0]['ignored']:
+                        shown_kinds = _kinds_seen(seen[0], text, model)
+                        if shown_kinds:
+                            result['kinds_seen'] = shown_kinds
     if result['status'] != 'complete':
         result['graphs'] = [r['graph'] for r in ranked[:KEPT]] if result['status'] == 'ambiguous' else []
     return result
+
+
+def _role_choices(reading, text, model):
+    """For every free value of a reading whose own connector marks more than one role:
+    (word, kind, head word, role read, other roles the connector allows, those the head does not have yet).
+
+    Another role counts when the connector written after the word was seen marking it, it was seen
+    written on that side of a head, and free values were seen filling it. A word whose kind is
+    listed, a name or a value the field pack knows, is left out.
+    """
+    tables, graph = model['tables'], reading['graph']
+    known = set(tables.get('word_kind', {})) | set(model.get('field_names', ())) | set(model.get('field_values', ()))
+    after = {p['span'][0]: p['text'] for p in reading['pieces'] if p['kind'] == 'gap'}
+    # Kinds a free value was ever read as: a role only fixed words filled (a comparison) is no choice for one.
+    open_kinds = {kind for row in tables.get('value_type', {}).values() for kind in row}
+    anchor = {n['id']: n['anchor'] for n in graph['nodes'] if 'anchor' in n}
+    kind = {n['id']: n['type'] for n in graph['nodes']}
+    free = {s for s, p, o in graph['edges'] if p == 'value' and isinstance(o, dict) and 'copy' in o}
+    has = {}
+    for s, p, o in graph['edges']:
+        if isinstance(o, str):
+            has.setdefault(s, set()).add(p)
+    for s, p, o in graph['edges']:
+        if not isinstance(o, str) or o not in free or o not in anchor or s not in anchor:
+            continue
+        word = text[slice(*anchor[o])]
+        if word in known:
+            continue
+        gap = after.get(anchor[o][1], '')
+        gap = model.get('alias', {}).get(gap, {}).get('of', gap)
+        side = 'before' if anchor[o] < anchor[s] else 'after'
+        others = sorted(r for r, cell in tables.get('role_right', {}).get(gap, {}).items()
+                        if r != p and cell['n'] > 0
+                        and open_kinds & set(tables.get('fills', {}).get(r, {}))
+                        and tables.get('side', {}).get(r, {}).get(side, {}).get('n', 0) > 0)
+        if others:
+            yield word, kind[o], text[slice(*anchor[s])], p, others, [r for r in others if r not in has[s]]
+
+
+def _open_roles(reading, text, model):
+    """Words of a reading whose role the form of the sentence leaves open: the connector after the
+    word marks another role too, and the head does not have that role yet. What decides then is
+    what kind of word it is. Returns [{piece, role, between: [roles], head, ask}].
+    """
+    return [{'piece': word, 'role': role, 'between': [role] + left, 'head': head,
+             'ask': 'What is "%s" to "%s": %s?' % (word, head, ' or '.join([role] + left))}
+            for word, _, head, role, _, left in _role_choices(reading, text, model) if left]
+
+
+def _kinds_seen(reading, text, model):
+    """Words whose kind this sentence showed: the connector after the word leaves the role open, the
+    rest of the sentence does not (the head already has the other role). [{word, kind, role, head}]."""
+    return [{'word': word, 'kind': kind, 'role': role, 'head': head}
+            for word, kind, head, role, _, left in _role_choices(reading, text, model) if not left]
 
 
 def _open_attachments(graph, text, model):
@@ -1071,15 +1194,23 @@ def _open_attachments(graph, text, model):
     def unbroken(parent):
         return all(max(found) - min(found) + 1 == len(found) for found in phrases(parent).values())
 
-    parent = {}
+    parent, shared = {}, set()
     for s, p, o in links:
-        parent.setdefault(o, (s, p))
+        if o in parent:
+            # A part two heads share stands with the nearer one, and its place is not in question.
+            shared.add(o)
+            if abs(place[s] - place[o]) < abs(place[parent[o][0]] - place[o]):
+                parent[o] = (s, p)
+        else:
+            parent[o] = (s, p)
     out = []
     for part, (head, role) in sorted(parent.items(), key=lambda item: place[item[0]]):
+        if part in shared:
+            continue
         inside = {order[i]['id'] for i in phrases(parent).get(part, [place[part]])}
         others = []
         for other in heads:
-            if other == head or other in inside or any(h == other and r == role for h, r in parent.values()):
+            if other == head or other in inside or any(h == other and r == role for h, r, _ in links):
                 continue
             if tables.get('part', {}).get(entry(other), {}).get('+' + role, {}).get('n', 0) == 0:
                 continue

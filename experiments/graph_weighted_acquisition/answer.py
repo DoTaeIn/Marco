@@ -73,8 +73,17 @@ def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=Non
     lessons_only, model = model, L.overlay(model, memory)
     q = R.read(question, model)
     out = _blank(passage_result, q)
+    if q['status'] != 'complete' and q.get('open_roles') and R.recipe_of(model)[1].get('open_role_answers') == 'assume':
+        assumed = _one_reading(pgraph, ptext, question, model, q, passage_result, aliases)
+        if assumed:
+            if memory is not None:
+                for item in assumed['assumed']:
+                    L.note_assumed(memory, item['word'], item['kind'], question)
+            return assumed
     if q['status'] != 'complete':
         out['reason'] = 'the question was not read with confidence: ' + q['reason']
+        if q.get('open_roles'):
+            out['open_roles'] = q['open_roles']          # what to ask back, when the form leaves a word's role open
         if q.get('attachment'):
             out['attachment'] = q['attachment']          # what to ask back, when the form leaves a part's place open
         if q.get('unknown_words'):
@@ -88,6 +97,53 @@ def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=Non
                                 % (', '.join('"%s"' % w for w in out['unknown_words']), q['expected'])
                 out['proposals'] = L.propose(lessons_only, memory, question, out['unknown_words'], R.read)
         return out
+    if memory is not None:
+        L.note_kinds(memory, q, question)      # what the form of this question showed about its words
+    return _answer_read(pgraph, ptext, question, model, q, out, passage_result, memory, aliases)
+
+
+def _one_reading(pgraph, ptext, question, model, q, passage_result, aliases):
+    """A word's role is open and nothing says what kind of word it is: try each reading against the knowledge.
+
+    For one open word, each role the form allows is tried: the word is taken as the kind of thing
+    that fills the role, the question is read again, and the knowledge is asked. A reading counts
+    only if every word of the question is read and the knowledge answers it, which it can do only
+    where it uses that word in that role itself. Exactly one such reading: that answer is returned
+    with status "assumed" and with what was assumed. None, or more than one: nothing is returned
+    and the question is put to the user as before. Nothing is stored here.
+    """
+    if len(q['open_roles']) != 1:
+        return None
+    item = q['open_roles'][0]
+    tables = model['tables']
+    open_kinds = {kind for row in tables.get('value_type', {}).values() for kind in row}
+    tried, answered = [], []
+    for role in item['between']:
+        for kind in sorted(open_kinds & set(tables.get('fills', {}).get(role, {}))):
+            row = {kind: {'n': 1, 'origins': ['assumed for this question']}}
+            trial = dict(model, tables=dict(tables, word_kind=dict(tables.get('word_kind', {}), **{item['piece']: row})))
+            reading = R.read(question, trial)
+            if reading['status'] != 'complete' or reading.get('ignored'):
+                tried.append({'role': role, 'kind': kind, 'result': 'the question is not read that way: ' + reading['reason']})
+                continue
+            result = _answer_read(pgraph, ptext, question, trial, reading, _blank(passage_result, reading),
+                                  passage_result, None, aliases)
+            if result['status'] != 'answered':
+                tried.append({'role': role, 'kind': kind, 'result': 'the knowledge has no answer that way: ' + result['reason']})
+                continue
+            tried.append({'role': role, 'kind': kind, 'result': 'the knowledge answers that way'})
+            answered.append((role, kind, result))
+    if len(answered) != 1:
+        return None
+    role, kind, result = answered[0]
+    result.update(status='assumed', verified=False, asked=q['open_roles'],
+                  assumed=[{'word': item['piece'], 'head': item['head'], 'role': role, 'kind': kind, 'tried': tried}],
+                  reason=result['reason'] + '; one word was read by assumption')
+    return result
+
+
+def _answer_read(pgraph, ptext, question, model, q, out, passage_result, memory, aliases):
+    """Everything after the question was read completely: match, checks, the answer as a sentence."""
     conventions = R.recipe_of(model)[1]
     query, claimed = q['graphs'][0], None
     if not query['project']:
@@ -96,7 +152,8 @@ def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=Non
             out['reason'] = 'the question does not ask for anything the reader recognises'
             return out
         query, claimed = turned
-    found = M.match(pgraph, ptext, query, question, aliases=aliases, rules=conventions['name_matching'])
+    found = M.match(pgraph, ptext, query, question, aliases=aliases, rules=conventions['name_matching'],
+                    unasked_parts=conventions.get('unasked_parts'), name_joins=conventions.get('name_joins'))
     out['match'], out['query'] = found, query
     if found['status'] != 'answered':
         out['reason'] = found['reason']
@@ -127,8 +184,15 @@ def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=Non
         out['reason'] = 'the question could only be answered by passing over part of it: ' + '; '.join(out['partial'])
         out['withheld'] = found['answers']
         return out
-    if found['relaxed'] == 0 and not out['other_names']:
-        check = _second_opinion(pgraph, ptext, query, question, found['answers'], conventions['executor_search_stops'])
+    if found.get('joined_by'):
+        out['joined_by'] = found['joined_by']       # two sentences of the knowledge joined through these names
+        check = {'state': 'not comparable',
+                 'detail': 'two facts were joined through a name (%s), which the older executor cannot do'
+                           % ', '.join(found['joined_by'])}
+    elif found['relaxed'] == 0 and not out['other_names']:
+        # A name the question wrote once for two heads is checked the way it was matched: once per place.
+        check = _second_opinion(pgraph, ptext, found.get('as_matched') or query, question, found['answers'],
+                                conventions['executor_search_stops'])
     else:
         # The older executor compares names exactly, so it has nothing to say about a loose match.
         check = {'state': 'not comparable',
@@ -144,7 +208,13 @@ def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=Non
         out['claim'] = {'claimed': claimed, 'holds': found['answers'] == [[claimed]]}
     # The answer as a full sentence: the question's meaning with the answer put in, written from
     # the same counts and kept only if the reader reads it back as that meaning.
-    out['sentences'] = W.answer_sentences(model, query, question, found['answers'], found['notes'])
+    heads = {s for s, p, o in query['edges'] if isinstance(o, dict) and 'literal' in o}
+    if conventions.get('unasked_parts') == 'block' and any(isinstance(o, str) and o in heads for s, p, o in query['edges']):
+        # One relation under another (a condition, a chain): the writer puts the answer into one clause and
+        # would state the condition as a fact. No sentence is written; the value and its grounds are the answer.
+        out['sentences'] = []
+    else:
+        out['sentences'] = W.answer_sentences(model, query, question, found['answers'], found['notes'])
     out.update(status='answered', answers=found['answers'],
                reason=found['reason'] + ('' if out['verified'] else '; not independently verified')
                + ('; partial reading' if out['partial'] else ''))
@@ -299,13 +369,15 @@ def _reading_section(title, result, text):
 
 def explain(passage, question, result):
     """A full plain-text account of how the answer was reached, or why none was given."""
-    if result['status'] == 'answered':
+    answered = result['status'] in ('answered', 'assumed')
+    if answered:
         shown = '; '.join(', '.join(row) for row in result['answers'])
         if result['claim']:
             said = result['claim']['claimed']
             shown = ('Yes, %s' % shown) if result['claim']['holds'] else 'No. The passage says %s, not %s' % (shown, said)
         flags = (['partial reading'] if result['partial'] else []) + (['uses raw-text variants'] if result['raw_text_variants'] else []) \
-            + (['uses words told in conversation'] if result['told_words'] else []) + ([] if result['verified'] else ['not independently verified'])
+            + (['uses words told in conversation'] if result['told_words'] else []) + ([] if result['verified'] else ['not independently verified']) \
+            + (['UNDER AN ASSUMPTION, see the end'] if result['status'] == 'assumed' else [])
         head = ['# Answer: %s%s' % (shown, ' (%s)' % '; '.join(flags) if flags else ''), '']
         said = [x for x in result['sentences'] if x['status'] == 'said']
         if said:
@@ -344,7 +416,7 @@ def explain(passage, question, result):
                 '; '.join(', '.join(row) for row in result['withheld']),
                 ', '.join('"%s"' % e['text'] for e in result['evidence'])), '']
     head += ['Question: `%s`' % question, '', 'Passage: `%s`' % passage, '']
-    if result['status'] == 'answered':
+    if answered:
         head += ['## Why this answer', '',
                  'The question was turned into a small graph with one unknown. The passage graph was searched '
                  'for a place where every condition of the question holds. The unknown there is the answer.', '']
@@ -380,6 +452,15 @@ def explain(passage, question, result):
             '- A reading is accepted only if every piece was seen in training and it leads clearly.',
             '- The answer comes from matching the question graph against the passage graph; nothing is generated.',
             '- If a passage event fits the question but does not name what was asked for, no answer is given.', '']
+    for item in result.get('assumed', []):
+        tail += ['## How the question was understood', '',
+                 '"%s" is a word no lesson, list or pack knows. In this sentence its connector lets it be: %s.'
+                 % (item['word'], ' or '.join(sorted({t['role'] for t in item['tried']}))),
+                 'It was read as the %s of "%s" (a %s). Each reading was tried against the knowledge:'
+                 % (item['role'], item['head'], item['kind']), '']
+        tail += ['- as %s (a %s): %s' % (t['role'], t['kind'], t['result']) for t in item['tried']]
+        tail += ['', 'If this is wrong, say what "%s" is: the answer above is withdrawn and the word is kept as told.'
+                 % item['word'], '']
     return '\n'.join(head + body + tail)
 
 

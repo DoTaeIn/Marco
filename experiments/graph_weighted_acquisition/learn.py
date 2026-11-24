@@ -19,7 +19,7 @@ DEFAULT_POLICY = {'promote_after': 3, 'uses_kept': 50}
 
 
 def new_memory(policy=None):
-    return {'schema': SCHEMA, 'policy': dict(DEFAULT_POLICY, **(policy or {})), 'entries': [], 'names': []}
+    return {'schema': SCHEMA, 'policy': dict(DEFAULT_POLICY, **(policy or {})), 'entries': [], 'names': [], 'kinds': []}
 
 
 def _taught_by_lessons(model, word):
@@ -73,9 +73,46 @@ def mark_name(memory, word, by, at):
     return memory['names'][-1]
 
 
+def _kind_entry(memory, word, kind):
+    entry = next((e for e in memory.setdefault('kinds', []) if e['word'] == word and e['kind'] == kind), None)
+    if entry is None:
+        entry = {'word': word, 'kind': kind, 'seen': [], 'told': []}
+        memory['kinds'].append(entry)
+    return entry
+
+
+def note_kinds(memory, reading, sentence):
+    """Keep what a completely read sentence showed about the kind of its words (reading['kinds_seen']):
+    the word stood where its connector leaves the role open, and the rest of the sentence decided."""
+    for item in reading.get('kinds_seen', []):
+        entry = _kind_entry(memory, item['word'], item['kind'])
+        if sentence not in entry['seen']:
+            entry['seen'] = (entry['seen'] + [sentence])[-memory['policy']['uses_kept']:]
+
+
+def note_assumed(memory, word, kind, question):
+    """Keep that a word was read by assumption for a question. This is a record, not knowledge: the
+    reader does not use it, and repeating the assumption does not confirm it. Only being told does."""
+    entry = _kind_entry(memory, word, kind)
+    if question not in entry.setdefault('assumed', []):
+        entry['assumed'] = (entry['assumed'] + [question])[-memory['policy']['uses_kept']:]
+
+
+def tell_kind(memory, word, kind, by, at):
+    """Record the answer to the reader's question about a word: `by` said it names this kind of thing."""
+    if not word or word != word.strip():
+        raise ValueError('a word must be non-empty text without surrounding blanks')
+    entry = _kind_entry(memory, word, kind)
+    if by not in [t['by'] for t in entry['told']]:
+        entry['told'].append({'by': by, 'at': at})
+    return entry
+
+
 def forget(memory, word):
     """Remove everything stored about a word. Returns what was removed, with the questions it was used for."""
-    removed = [e for e in memory['entries'] if e['word'] == word] + [n for n in memory['names'] if n['word'] == word]
+    removed = [e for e in memory['entries'] if e['word'] == word] + [n for n in memory['names'] if n['word'] == word] \
+        + [k for k in memory.get('kinds', []) if k['word'] == word]
+    memory['kinds'] = [k for k in memory.get('kinds', []) if k['word'] != word]
     memory['entries'] = [e for e in memory['entries'] if e['word'] != word]
     memory['names'] = [n for n in memory['names'] if n['word'] != word]
     return removed
@@ -83,7 +120,7 @@ def forget(memory, word):
 
 def overlay(model, memory):
     """The model as the reader should see it: lessons plus usable stored words. The model is not changed."""
-    if not memory or (not memory['entries'] and not memory['names']):
+    if not memory or (not memory['entries'] and not memory['names'] and not memory.get('kinds')):
         return model
     out = dict(model, tables=dict(model['tables']), cues=dict(model['cues']))
     closed = out['tables']['closed'] = dict(out['tables'].get('closed', {}))
@@ -96,6 +133,18 @@ def overlay(model, memory):
                 'learned': {'word': entry['word'], 'status': entry['status'], 'confirmed_by': people}}
         closed[entry['word']] = {label: cell}
         out['cues'][entry['word']] = {'used': {'n': len(people), 'origins': cell['origins']}}
+    if memory.get('kinds'):
+        kinds = out['tables']['word_kind'] = dict(out['tables'].get('word_kind', {}))
+        stored = {}
+        for entry in memory['kinds']:
+            if entry['told'] or entry['seen']:          # an assumption alone is not knowledge
+                stored.setdefault(entry['word'], []).append(entry)
+        for word, entries in stored.items():
+            if len(entries) > 1 or word in kinds:
+                continue                    # two kinds for one word: in dispute, not used. A listed word keeps its kind.
+            entry = entries[0]
+            origins = ['told by ' + t['by'] for t in entry['told']] + ['seen in: ' + x for x in entry['seen']]
+            kinds[word] = {entry['kind']: {'n': len(origins), 'origins': origins[:5]}}
     out['known_names'] = [n['word'] for n in memory['names']]
     return out
 

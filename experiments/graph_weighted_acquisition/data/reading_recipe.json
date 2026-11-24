@@ -22,6 +22,16 @@
   "attachment_check_meaning": "true: a reading is not accepted when one of its parts could, by the form of the sentence, equally belong to another head (a time in front of a chain, for one). The reader holds and says between which words the choice lies. Absent or false: the place the counts prefer is taken, as before 2026-11-23.",
   "lesson_words": "make_way",
   "lesson_words_meaning": "make_way: when a field's word pack is put on the language pack, the lessons' own words of that slot stop being readable words; their counts stay as the pooled form every field word gets. Absent: they stay readable and a field word equal to one is refused, as before 2026-11-24.",
+  "role_check": true,
+  "role_check_meaning": "true: a reading is not accepted when the connector after one of its words was also seen marking another role that its head does not have, and nothing says what kind of word it is (no listed kind, not a name or a value of the field pack). The reader holds and says between which roles the choice lies. Absent or false: the role the counts prefer is taken, as before 2026-11-24.",
+  "open_role_answers": "assume",
+  "open_role_answers_meaning": "assume: one word's role is open and its kind unknown: each reading the form allows is tried against the knowledge; if exactly one is answered, it is given with status 'assumed' and a report. Otherwise, and when absent, the user is asked. Questions only.",
+  "unasked_parts": "block",
+  "unasked_parts_meaning": "block: a fact answers a question only if the question names every part the fact has (circumstance, time, condition, denial). Absent: a fact with more parts than asked about still answers.",
+  "name_joins": "value",
+  "name_joins_meaning": "value: X의 P의 Q is answered from two facts stated apart, joined through the name that is the value of the first and stands in that role of the second. Not counted as verified. Absent: only what one sentence states together is matched.",
+  "word_kinds": "where_open",
+  "word_kinds_meaning": "where_open: what is known about a word's kind is used only where the connector after it leaves its role open (free values were seen in more than one role in front of it). Elsewhere the form decides. Absent: a word of known kind is that kind wherever it stands.",
   "partial_answers": "withhold",
   "partial_answers_meaning": "withhold: no answer is given when words of the question were ignored or a name was matched by ignoring the words in front of it; the candidate is kept as withheld. give: the answer is given with a flag, as before 2026-11-23. A name that differs only in spacing is not affected.",
   "known_names": {
@@ -54,14 +64,20 @@
     {"what": "meaning of a fixed word", "table": "closed", "given": "surface", "label": "meaning", "piece": "surface"}]},
    "value": {"candidates": {"table": "value_type", "given": "right_connector", "if_none": "unknown", "meaning_is": "type"}, "rules": [
     {"what": "kind of a free value", "table": "value_type", "given": "right_connector", "label": "meaning", "piece": "surface"},
+    {"special": "length"}]},
+   "known_kind": {"candidates": {"table": "word_kind", "given": "surface", "meaning_is": "type"}, "rules": [
+    {"what": "kind of a word the word-kinds file lists", "table": "word_kind", "given": "surface", "label": "meaning", "piece": "surface"},
     {"special": "length"}]}
   },
   "argument": {
    "always": [
     {"what": "which head", "table": "attach", "given": "*", "label": "head_offset", "piece": "surface", "shown": "head {head_surface!r} (offset {head_offset})"},
-    {"what": "kind of thing that fills this role", "table": "fills", "given": "role", "label": "arg_type", "piece": "surface", "only_if_known": true}],
+    {"what": "kind of thing that fills this role", "table": "fills", "given": "role", "label": "arg_type", "piece": "surface", "only_if_known": true},
+    {"what": "side of its head this role is written on", "table": "side", "given": "role", "label": "side", "piece": "surface", "only_if_known": true}],
    "own": {"applies_to": "closed", "rules": [
     {"what": "role of this fixed word", "table": "role_surface", "given": "surface", "label": "role", "piece": "surface"}]},
+   "by_kind": {"table": "word_kind", "rules": [
+    {"what": "role from the piece after it (a word whose kind is listed: the piece before it is not asked)", "table": "role_right", "given": "right_connector", "label": "role", "piece": "surface"}]},
    "context": [
     {"what": "role from the piece after it", "table": "role_right", "given": "right_connector", "label": "role", "piece": "surface"},
     {"what": "role from the piece before it", "table": "role_left", "given": "left_connector", "label": "role", "piece": "surface"}]

@@ -442,3 +442,257 @@ stem and ending, as it always did for head words.
   how far reading generalises. The implementer's grid stays 44 of 44.
 - Not covered: a field name or value that contains a connector or a fixed word of the
   language is a different clash and is untouched.
+- Fourth blind reading test (`probes/blind4_20261124/`, a new author, a new domain, code frozen
+  at the commit of this rule, one run, nothing changed afterwards): 32 of 60 read exactly as
+  meant, 18 held, 8 partial, 2 READ DIFFERENTLY WITHOUT A FLAG. No field word was refused.
+  The answering set is the same exposed one as before and says nothing new.
+- The two misreadings are one pattern: a topic-marked subject, a condition clause, then a
+  result clause with no subject of its own and a modifier in front of its property
+  ("참나무장구는 재료가 쇠가죽이면 긴급 수리비가 얼마야?"). The modifier was read as the subject of
+  the result. The attachment check did not see it: it asks when a part could belong to another
+  head, not when a word could fill another role of the same head. Not fixed.
+- Across the four blind sets: read as meant 30, 32, 31, 32 of 60; silent misreadings 4, 0, 0, 2.
+
+## Word kinds: what kind of thing a word names (2026-11-24)
+
+- `data/word_kinds_ko.json` lists words by kind: 25 words of time (올해, 내년, 지난달 …) and 68
+  words for a circumstance (season, kind of day, part of the day, grade, group). Chosen by
+  category, not from failed sentences. `reader.build(..., kinds=)` puts them in the table
+  `word_kind`; they are not known pieces, so a longer word that contains one is its own word.
+- Recipe `meaning.known_kind`: a free value that is a listed word has the listed kind, whatever
+  connector follows it. With the rule that a node's type agrees with its role, such a word can
+  no longer be read as a thing or a value.
+- Recipe `argument.by_kind`: when the pieces on both sides of a listed word do not together
+  support a role, the piece after it alone may (a modifier after "는 " instead of "의 "). The
+  piece after the word still has to have been seen marking that role: "오전에", a circumstance
+  marked as a time, is held, not read either way.
+- One kind per word. Listing words of time under both kinds was tried and gave ties and four
+  misreadings on exposed sets; taken back before the blind run.
+- Packs without the table or the recipe parts read as before; shipped packs: same SHA-256 for
+  the 81 library and tax questions (470df3c3…). 94 public checks pass (4 new,
+  `tests/test_reader_kinds.py`). The implementer's grid stays 44 of 44.
+- Exposed blind sets, read as meant before → after: 37 → 43, 36 → 41, 31 → 35, 32 → 38 of 60;
+  the two silent misreadings of the fourth set are now held. Exposed: a mechanism check.
+- Fifth blind reading test (`probes/blind5_20261124/`, a new author, a new domain, written after
+  the word list and the rule were fixed, one run, nothing changed afterwards): 42 of 60 read
+  exactly as meant, 15 held, 3 partial, 0 read differently. A control run of the same items
+  without the word-kinds file: 36 of 60, 0 read differently. So the file is worth 6 sentences
+  on this set; the rest of the difference to earlier sets (30 to 32) is the set itself.
+- Limits: a word the file does not list is read as before, including the misreading of the
+  fourth set ("특급 기본요금" after a topic and a condition clause; asserted in the checks). A
+  time without "에" at the start of a sentence ("올해 X의 …") is still held: no lesson shows
+  that form. A listed modifier after a bare subject ("밤식빵 명절 값은") is still passed over.
+
+## A word whose role the form leaves open is asked about (2026-11-24)
+
+- Made from the two misreadings of the fourth blind set and the limit stated above: a word no
+  list knows, in front of a property whose clause has no subject of its own, was read as the
+  subject ("…이면 특급 기본요금이 얼마야?"). By form the sentence is the same as one that names
+  another thing there; what differs is what kind of word it is.
+- Convention `role_check: true`, `reader._open_roles`. A reading is not accepted when the
+  connector after one of its free values was also seen marking another role, that role was
+  seen written on that side of a head, free values were seen filling it, and the head does not
+  have it yet. Not asked about: a word whose kind is listed, a name or a value the field pack
+  knows. The result is a hold with `open_roles`: the word, its head, the roles between which
+  the choice lies. Feeding the answer back (it is one line of the word-kinds file) is not built.
+- First version asked about ten "…인 것은" sentences on the exposed sets: the role of a
+  comparison, which only fixed words fill, was offered as a choice. Corrected before the blind
+  run by the condition that free values were seen filling the role.
+- 95 public checks pass (1 new); shipped packs: same SHA-256 (470df3c3…); the grid stays 44 of
+  44. Exposed blind sets unchanged in what is read as meant (43, 41, 35, 38, 42); one sentence
+  is now asked about ("포장 용량이": subject or modifier).
+- Sixth blind reading test (`probes/blind6_20261124/`, a new author, a new domain, one run,
+  nothing changed afterwards): 37 of 60 read exactly as meant, 21 held, 2 partial, 0 read
+  differently. Control without the check on the same items: the same numbers. The check did
+  not fire: on this set it cost nothing and its use was not shown.
+- What the sixth set did show: the author named a thing "새벽", a word the word-kinds file
+  lists as a circumstance. Every sentence with that name in it is held. A name the field pack
+  states has to outrank the general list; not changed after the run. Also held: "…5만마리면"
+  (the condition ending after a vowel, which no lesson shows).
+
+## Where the kind of a field's word comes from (2026-11-24)
+
+- Owner's question: words never stop being made, so what becomes of a list? Decided: no list
+  of open-class words is written ahead. `data/word_kinds_ko.json` keeps closed classes of the
+  language only (words of the calendar seen from now, seasons, kinds of day, days of the week,
+  parts of the day: 61 words); the 32 words of grade and group listed earlier the same day
+  were taken out.
+- A name the field pack states outranks the file (`pack._know_names` takes it out of the
+  field model's `word_kind`; the language pack is not changed). Made from the sixth blind set,
+  where a thing was named "새벽".
+- A sentence whose form decides teaches the kind of its word. `reader._role_choices` finds
+  free values whose own connector marks more than one role; where the head already has the
+  other role, the form decided, and the complete reading reports the word and its kind in
+  `kinds_seen`. `learn.note_kinds` keeps it in the conversation's memory with the sentence it
+  was seen in; `learn.overlay` shows it to the reader as a `word_kind` row whose origin is that
+  sentence. `answer.answer_graph` does this for every question read completely.
+- The answer to the reader's question about a word is one line: `learn.tell_kind(memory, word,
+  kind, by, at)`. Two kinds stored for one word are a dispute and the word is not used; a word
+  the file lists keeps its kind; `learn.forget` removes what was stored.
+- 99 public checks pass (4 new, `tests/test_word_kinds_learned.py`); shipped packs: same
+  SHA-256 (470df3c3…); the grid stays 44 of 44. Exposed sets: nothing read differently.
+- The blind runner now reads each set twice: as it is, and after keeping what the completely
+  read sentences showed (no label of the author is used for that).
+- Seventh blind reading test (`probes/blind7_20261124/`, a new author, a new domain, one run,
+  nothing changed afterwards): 38 of 60 read exactly as meant, 15 held, 7 partial, 0 read
+  differently; second reading 39. Control without the word-kinds file on the same items: 32,
+  1 READ DIFFERENTLY ("햇살마루의 품종은 작년 수확량이 40톤이 맞습니까?", 작년 taken for a value);
+  second reading 38, the misreading stays. From the sentences alone the reader kept 주말, 단체,
+  평일 as circumstances and 작년 under two kinds (a dispute, not used).
+- What this says: the closed-class file is worth 6 sentences on a first reading and one
+  misreading prevented; reading the set once makes up the 6 without the file but not the
+  misreading. The file stays.
+- Cost seen: 작년 is listed as a time, and the author wrote it as a modifier ("작년 수확량")
+  four times; those are passed over or held, with a flag. One kind per word is too narrow for
+  words of the calendar. Not changed after the run.
+- Not built: kinds from a fact pack's own statements (the fact format has no circumstance
+  yet), and carrying the memory from one conversation to the field pack.
+
+## An open word: each reading is tried against the knowledge, one survivor is answered (2026-11-24)
+
+- Owner's decision: rather than only asking, the system answers by its own understanding and
+  reports at the end how it understood, for the user to correct. Bounded by four conditions
+  agreed with it:
+  1. the answer has its own status, `assumed`, never `answered`, and is never `verified`;
+  2. only when exactly one reading survives; none or two: the question is put to the user;
+  3. questions only: a sentence taken in as knowledge is never read by assumption;
+  4. a question read by passing over words is still withheld (`partial_answers`).
+- Convention `open_role_answers: assume`, `answer._one_reading`. For one open word, each role
+  the form allows is tried: the word is taken as the kind that fills the role, the question is
+  read again, the knowledge is asked. A reading counts only if every word is read and the
+  knowledge answers, which it can do only where it uses that word in that role itself.
+- The result carries `assumed` (word, head, role, kind, and for every reading tried how it
+  went) and `asked` (the question that would have been put). `explain` marks the first line
+  "UNDER AN ASSUMPTION" and ends with "How the question was understood".
+- Memory: `learn.note_assumed` records the assumption. It is a record, not knowledge: the
+  reader does not use it, and repeating an assumption does not confirm it. `learn.tell_kind`
+  confirms or corrects.
+- 102 public checks pass (3 new, `tests/test_answer_assumed.py`); shipped packs: same SHA-256
+  (470df3c3…); the grid stays 44 of 44; the exposed answering set is unchanged (no assumed
+  answer occurs in it).
+- Limit, found while building: of the two readings of an open word, only "a thing" can
+  currently succeed. The other, a modifier of a clause that has no subject of its own
+  ("모래섬호는 정원이 30명이면 특급 기본요금이 얼마야?"), is a sentence the reader cannot read
+  under any assumption: it has no way to give one subject to two clauses. So the mechanism
+  answers "특급 is a thing" when the knowledge has such a thing and otherwise asks.
+- Not measured on blind items: no blind answering set with unknown words exists yet. Assumed
+  answers are to be counted apart from answers, with how many of them were right.
+
+## One part under two heads (2026-11-24)
+
+- "X는 P가 V이면 Q가 W이다": X is the subject of both relations and is written once. A part could
+  belong to one head only, so such a sentence was held, and with a word in front of Q that word
+  was read as Q's subject (the misreadings of the fourth blind set).
+- Lessons (`probes/reading_limits.py`, set `shared`, 48 lessons) show one node under two heads.
+  `reader.build`: the part is an ordinary part of the head nearer to it; for the other head it
+  is counted in the table `share`, under the role that joins the two heads (`if` → `subject`).
+  A part under two heads that are not joined is refused.
+- Reading (`_assign`): where two heads are joined and lessons showed that role shared through
+  that join, the head without the part has the part of the other. One node, two edges. The
+  attachment check treats a shared part as standing with the nearer head and does not ask
+  about it.
+- Recipe `argument.always` gains the side of its head a role is written on (table `side`, kept
+  since the attachment check). Without it a listed modifier could be attached behind the head
+  of the clause before it, and the sentence was held.
+- Matching (`match._one_name_many_places`): a name the question writes once for two heads is
+  matched at each place on its own, since the knowledge may write the name twice. The second
+  answer method is given the question in that form (`as_matched`), so it still checks.
+- With this, the assumed answer of the section before works both ways: the knowledge uses the
+  open word as a modifier (answer under that assumption), as a thing (likewise), or not at all
+  (the question is put to the user).
+- 107 public checks pass (5 new, `tests/test_reader_shared.py`); shipped packs: same SHA-256
+  (470df3c3…) — it changed once while building, because a result field was added even when
+  empty; the field is now added only when it applies. The grid stays 44 of 44.
+- Exposed blind sets, read as meant: 46, 43, 37, 40, 45, 40, 38 of 60; nothing read differently.
+- Eighth blind reading test (`probes/blind8_20261124/`, a new author, a new domain, one run,
+  nothing changed afterwards): 45 of 60 read exactly as meant, 13 held, 2 partial, 0 read
+  differently. Control without the `shared` lessons on the same items: 44, 0 read differently.
+  The set has few such sentences: the lessons are worth one sentence here. What is held: a time
+  in front of a chain or a condition (asked about, 6), a time or a denial with "…인 것은" (4),
+  a time after a condition clause (3), a modifier after a bare subject (2, passed over).
+- Blind sets so far, read as meant on the first reading: 30, 32, 31, 32, 42, 37, 38, 45 of 60;
+  read differently: 4, 0, 0, 2, 0, 0, 0, 0. The sets differ in difficulty; only the controls
+  on the same items say what a change is worth.
+
+## A fact answers only a question that names all its parts; first blind test from knowledge to answer (2026-11-24)
+
+- Found on the implementer's own practice items while writing the runner below, before any
+  blind item existed: with only "모래섬호의 주말 기본요금은 9000원이다" known, the plain question
+  "모래섬호의 기본요금은 얼마입니까?" was answered 9000원. A qualifier of the knowledge was
+  dropped: a wrong answer.
+- Convention `unasked_parts: block`, in `match.match`. A fact fits a question only if the
+  question names every part the fact has (a circumstance, a time, a condition, a denial). The
+  hold says which part is missing ("when of 요금"). Packs without the convention: as before.
+- `probes/blind_e2e.py`: knowledge is given as sentences and taken in one by one (only a
+  sentence read completely, with no word passed over, is knowledge; the others are refused out
+  loud); what the taken sentences showed about word kinds is kept; then every question is
+  asked. Answered, assumed and held are counted apart. Written and frozen before the items.
+- Ninth blind set, the first from knowledge to answer (`probes/blind9_e2e_20261124/`, a new
+  author, field and 30 sentences and 50 questions of its own, one run, nothing changed
+  afterwards): knowledge taken 30 of 30. Of 38 questions that have an answer: 32 right, 0
+  wrong, 6 held. Of 12 that have none: 12 held. No answer was given under an assumption.
+  By kind: direct 10 of 10, with a modifier or a time 8 of 8, yes/no checks 6 of 6, under a
+  condition 5 of 5, asking for the thing 3 of 4, through a chain 0 of 5.
+- What is held: every chain question (the knowledge says X's office in one sentence and the
+  office's phone in another; nothing joins the two mentions of the office: the known limit
+  "a nested graph is read but not answered"), and "…인 것은 어디인가요?" (어디 asking for the
+  thing, no lesson).
+- A defect seen in the output and not changed after the run: for a question under a condition
+  the value is right, but the answer written as a sentence states the condition as a fact
+  ("은행골의 상태가 공사중이다."). The scoring uses the value; the sentence is wrong and must
+  not be shown as the answer until this is fixed.
+- How far this goes: the author was told which forms the system claims to read and to stay
+  within them. This measures those forms on unseen words and unseen knowledge, not questions
+  asked freely (those were 0 of 18 on the first blind set and have not been measured since).
+- 107 public checks pass; shipped packs: same SHA-256 (470df3c3…).
+
+## A chain is answered from two facts joined by a name; second blind test from knowledge to answer (2026-11-24)
+
+- Convention `name_joins: value`, in `match` (`_through`). A question that puts one relation in
+  a role of another ("X의 P의 Q") is answered from two facts stated apart: the first relation's
+  value and the thing in that role of the second carry the same name. The first relation must
+  have exactly one part the question does not name; so a first link known only for a year,
+  only under a condition or only as a denial gives no join. Both sentences are the grounds.
+  Such an answer says `joined_by` and is never counted as independently verified (the older
+  executor cannot join; `executor` is "not comparable").
+- No sentence is written for an answer whose question has one relation under another (a
+  condition, a chain): the writer stated the condition as a fact. The value and its grounds
+  are the answer.
+- 111 public checks pass (4 new, `tests/test_answer_parts_and_chains.py`); shipped packs: same
+  SHA-256 (470df3c3…); the grid stays 44 of 44. The exposed ninth set: chains 0 → 5 of 5, 37 of
+  38 right, 0 wrong.
+- Tenth blind set (`probes/blind10_e2e_20261124/`, a new author, a museum, 36 sentences and
+  60 questions with more traps, one run, nothing changed afterwards): knowledge taken 30 of
+  36. Of 42 questions that have an answer: 27 right, 0 WRONG, 15 held (8 of them because their
+  knowledge was refused). Of 18 that have none: 18 held, among them 5 chain traps and 5 plain
+  questions about what is known only with a qualifier. Chains: 6 of 10 right, 0 wrong.
+- What was refused or held, by cause:
+  1. A day of the week as a value ("동관의 휴관일은 화요일이다", 5 sentences): the word-kinds file
+     lists days as circumstances and a listed word is not read as a value. This is the file's
+     doing; it cost 5 sentences of knowledge and 8 questions.
+  2. "어린이 관람료" (1 sentence): a word ending in 이 followed by a space is cut as the particle.
+  3. 누구 (6 questions): no lesson has that question word.
+  4. A time in front of a chain (1): asked about, as it should be.
+- Not changed after the run.
+
+## The form decides first; what is known about a word is asked only where the form is silent (2026-11-24)
+
+- Three times a piece of knowledge about words, put in to read more, made the reader read
+  less: the lessons' own words blocked a field's words; the list blocked a field's name
+  (새벽); the list blocked a value ("동관의 휴관일은 화요일이다", tenth blind set: 5 sentences of
+  knowledge and 8 questions lost). Each time the knowledge said what a word is and was used as
+  a veto on anything else. Changing the entries of the list does not end that.
+- Convention `word_kinds: where_open`, `_Scorer.leaves_open`. The kind of a word (from the
+  file, from sentences, from being told) is used only where the connector written after the
+  word leaves its role open, that is where free values were seen in more than one role in
+  front of that connector. Before "이다" a word is a value, before "의" a subject, before "에" a
+  time: the form has decided, and nothing known about the word can refuse it.
+- 111 public checks pass (two changed to the new behaviour: "오전에" is a time, "새벽의" a
+  subject in any field); shipped packs: same SHA-256 (470df3c3…); the grid stays 44 of 44.
+- Exposed sets: tenth, knowledge taken 30 → 35 of 36 and answers right 27 → 34 of 42, 0 wrong;
+  ninth unchanged (37 of 38). Reading sets: 46, 43, 37, 38, 44, 40, 38, 45; nothing read
+  differently. Two sets lose sentences (fourth 40 → 38, fifth 45 → 44): a listed word of time
+  after a condition clause ("…이면 내년에 …") had been read only because a listed word skipped
+  the connector in front of it. That was the list doing by accident what the reader should do
+  for every word; see the next step in the design note (2.15).
+- Not measured on a fresh blind set.

@@ -35,9 +35,10 @@ def _module(name, path):
 
 P = _module('reading_limits', HERE / 'reading_limits.py')
 R, PK, ML = P.R, P.PK, P.ML
-SETS = ['wordings', 'endings', 'modifier', 'time', 'negation', 'conditional', 'inverse', 'chain']   # 'endings' added after the two blind runs of 2026-11-23
+from experiments.graph_weighted_acquisition import learn as L
+SETS = ['wordings', 'endings', 'modifier', 'time', 'negation', 'conditional', 'inverse', 'chain', 'shared']   # 'endings' added after the two blind runs of 2026-11-23
 FROZEN = ['reader.py', 'match.py', 'answer.py', 'write.py', 'pack.py', 'learn.py', 'merge.py', 'weights.py',
-          'data/reading_recipe.json', 'data/connector_variants_ko.json', 'packs/make_language.py', 'probes/reading_limits.py']
+          'data/reading_recipe.json', 'data/connector_variants_ko.json', 'data/word_kinds_ko.json', 'packs/make_language.py', 'probes/reading_limits.py']
 SLOT = {'type': 'relation', 'attribute': 'kind', 'subject_role': 'subject', 'value_role': 'amount'}
 
 
@@ -47,7 +48,7 @@ def frozen():
 
 def language(sets):
     lessons = ML.lessons() + [x for name in sets for x in P.SETS[name]()]
-    return R.build(lessons, variants=P.VARIANTS), len(lessons)
+    return R.build(lessons, variants=P.VARIANTS, kinds=P.KINDS if sets else None), len(lessons)
 
 
 def part_a(data, model):
@@ -128,7 +129,20 @@ def main():
     if clashes:
         print('FIELD WORDS REFUSED BY THE PACK LOADER (already words of the lessons): %s' % ', '.join(clashes))
         words['properties'] = [x for x in words['properties'] if x['word'] not in clashes]
-    tally_a = part_a(a, PK.with_words(full, words))
+    field = PK.with_words(full, words)
+    tally_a = part_a(a, field)
+    # Since 2026-11-24: the same sentences once more, after the reader has kept what the completely read
+    # ones showed about the kind of their words (learn.note_kinds). No label of the author is used for that.
+    memory = L.new_memory()
+    for item in a['sentences']:
+        try:
+            L.note_kinds(memory, R.read(item['text'], field), item['text'])
+        except Exception:
+            pass
+    print()
+    print('Word kinds kept from the completely read sentences: %s'
+          % (', '.join('%s=%s' % (k['word'], k['kind']) for k in memory['kinds']) or 'none'))
+    tally_a2 = part_a(a, L.overlay(field, memory))
     tally_b = part_b(b, full, 'full language pack')
     tally_b0 = part_b(b, base, 'base language pack')
     print('\n# Summary')
@@ -140,6 +154,12 @@ def main():
         for k, v in row.items():
             total[k] = total.get(k, 0) + v
     print('   all: %s of %d' % (', '.join('%s %d' % kv for kv in sorted(total.items())), sum(total.values())))
+    again = {}
+    for row in tally_a2.values():
+        for k, v in row.items():
+            again[k] = again.get(k, 0) + v
+    print('   all, second reading with the word kinds kept from the first: %s of %d'
+          % (', '.join('%s %d' % kv for kv in sorted(again.items())), sum(again.values())))
     for title, tally in (('B. answering, full pack', tally_b), ('B. answering, base pack', tally_b0)):
         print(title)
         for kind in sorted(tally or {}):
