@@ -972,3 +972,19 @@ stem and ending, as it always did for head words.
      measured on a new set.
 - Still unread on this set: all 6 chains ("…가 있는 건물의 …"), 10 of 14 questions in natural
   wording, 3 of 4 checks asked with verbs. This set is now exposed.
+
+### Tried and set aside (2026-11-25): wording counts from ordinary text
+
+- Tried: count, in 2.1 million ordinary sentences, the words standing near a field's property
+  words (first 1–3 letters of each word, integer counts, no vectors, no list of endings), and
+  use them, for proposals only, to say which property an unread word of a question is about.
+  Light: 11–14 s and 300–500 KB per field, a table look-up when answering.
+- It does tie some wording to properties (걸다 → 전화, 건물 → 위치). On the four exposed outside
+  sets it added 6 right proposals and 6 that were not what was asked; no answer changed; 0 wrong.
+- Why it is not kept: standing near a property word is not asking for it (어린이, 주차장 stand
+  near 요금); a field's own property words are rare in ordinary text (대여기간 8 sentences,
+  관리처 30 of 2.1 million); common verbs (있다, 가다) stand near everything.
+- Kept, with the code and the full record, on the local branch `failed/goal1-wording-counts`.
+  Not on this branch: the code here is that of `2c3944f`.
+- Also ruled out the same day, by the owner: a graph of dictionary definitions. It was tried
+  early in this project and dropped because it does nothing for new words.
