@@ -68,11 +68,8 @@ def totals(text):
     """The 'all' line of each summary: [{verdict: count}] in the order the passes were made."""
     out = []
     for line in re.findall(r'^   all\s+(.*) of \d+$', text, flags=re.M):
-        row = {}
-        for part in re.split(r', (?=[A-Za-z(])', line):
-            name, _, count = part.rpartition(' ')
-            row[name.strip()] = int(count)
-        out.append(row)
+        # A verdict's name may itself hold a comma ("proposed right, asks first 11"): a name ends at its count.
+        out.append({name.strip(): int(count) for name, count in re.findall(r'(.+?) (\d+)(?:, |$)', line)})
     return out
 
 
