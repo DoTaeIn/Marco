@@ -946,3 +946,29 @@ stem and ending, as it always did for head words.
   ("관리하는 센터에 전화하려면"); two checks asked with verbs.
 - Of the 18 held without an answer, most are held because the question was not read, not
   because the missing qualifier was seen. Whether they would be held once read is not shown.
+
+### Fourth outside set (2026-11-25); step 2 of the structure note tried and set aside
+
+- `probes/outside4_e2e_20261125/C.json`, made outside from `probes/examiner_brief_ko.md`: a new
+  field (instrument rental desks), 36 sentences, 70 questions (52 with an answer, 18 without).
+  The values of 위치 are buildings that have a phone and an office of their own. Run once on
+  five checkpoints with `probes/compare_checkpoints.py`; outputs in `by_checkpoint/`.
+- Of 52, as asked: `ded9098` 8 right, 1 WRONG, 43 held. `728dd70` 8 right, 44 held.
+  `05955b1` 9 right, 12 assumed right, 6 proposed right, 25 held.
+  `2c3944f` 9 right, 13 assumed right, 7 proposed right, 23 held, 0 wrong; 29 of 52 with yes/no.
+  Questions without an answer: 18 of 18 held on every checkpoint.
+- `ad18b1e` was step 2 of the structure note (basic concepts thing / quantity / name told from
+  the knowledge; 어디 asks for a name). On this set it gave **1 assumed WRONG**: "현악창구 어디?"
+  → 현악지원팀. Where a place has facts of its own, 위치 turns into kind thing and 관리처 into
+  kind name. `2c3944f` holds that question with both candidates. Its gains on the second and
+  third sets had come from rules made while looking at those sets.
+- Step 2 is not on this branch. It is kept, with its record, on the local branch
+  `failed/goal1-step2-basic-concepts`. This branch continues from the behaviour of `2c3944f`.
+- Rules kept from this:
+  1. What is guessed (word kinds, basic concepts, the look of a value) never makes an answer
+     and never takes a candidate away.
+  2. A step that tidies the structure must leave behaviour as it is (same pack digest, same
+     outputs on the outside sets). A change of behaviour is put forward on its own and
+     measured on a new set.
+- Still unread on this set: all 6 chains ("…가 있는 건물의 …"), 10 of 14 questions in natural
+  wording, 3 of 4 checks asked with verbs. This set is now exposed.

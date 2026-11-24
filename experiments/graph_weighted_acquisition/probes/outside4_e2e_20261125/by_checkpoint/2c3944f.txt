@@ -1,0 +1,431 @@
+# Frozen before the items existed
+  9b90e9fad0adb061  reader.py
+  4b31f9b07d48adc2  match.py
+  9ac8a19b189d1645  answer.py
+  acc269e6f52913a7  write.py
+  d619cbe65ef70645  pack.py
+  949d2db9fc08e702  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  224e234ae133d55f  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  0635849c898f97f6  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  0953e41efd3c7416  probes/reading_limits.py
+  18916370ec9f8032  probes/blind_e2e.py
+  3e1f69c3994b295a  C.json (the items)
+
+Field "가상의 악기대여소 안내 창구. 악기대여소의 대여 조건과 입주 건물의 연락처 및 관리처를 안내한다.": 8 property words, 10 names, 36 sentences of knowledge, 70 questions. Language pack: 640 lessons.
+
+# 1. Knowledge taken in, sentence by sentence
+TAKEN    K01 현악대여소의 위치는 소리회관이다.
+TAKEN    K02 관악대여소의 위치는 가락회관이다.
+TAKEN    K03 타악대여소의 위치는 소리회관이다.
+TAKEN    K04 2033년에 건반대여소의 위치는 가락회관이다.
+TAKEN    K05 국악대여소의 신청방식이 방문신청이면 국악대여소의 위치는 울림회관이다.
+TAKEN    K06 전자악기대여소의 위치는 장단회관이 아니다.
+TAKEN    K07 소리회관의 전화는 02-830-1100이다.
+TAKEN    K08 가락회관의 전화는 02-830-2200이다.
+TAKEN    K09 울림회관의 전화는 02-830-3300이다.
+TAKEN    K10 장단회관의 전화는 02-830-4400이다.
+TAKEN    K11 소리회관의 관리처는 회관운영팀이다.
+TAKEN    K12 가락회관의 관리처는 문화시설팀이다.
+TAKEN    K13 울림회관의 관리처는 공연지원팀이다.
+TAKEN    K14 현악대여소의 전화는 02-831-1100이다.
+TAKEN    K15 관악대여소의 전화는 02-831-2200이다.
+TAKEN    K16 현악대여소의 이용료는 하루2000원이다.
+TAKEN    K17 관악대여소는 이용료가 하루3000원이다.
+TAKEN    K18 타악대여소 대여기간은 7일이다.
+TAKEN    K19 현악대여소의 휴무일은 매주수요일이다.
+TAKEN    K20 관악대여소의 수량은 24대이다.
+TAKEN    K21 타악대여소의 신청방식은 온라인신청이다.
+TAKEN    K22 현악대여소의 관리처는 현악지원팀이다.
+TAKEN    K23 관악대여소의 관리처는 관악지원팀이다.
+TAKEN    K24 타악대여소의 이용료는 무료이다.
+TAKEN    K25 현악대여소의 주말 이용료는 하루4000원이다.
+TAKEN    K26 현악대여소의 평일 이용료는 하루2000원이다.
+TAKEN    K27 2033년에 건반대여소의 이용료는 하루5000원이다.
+TAKEN    K28 2034년에 건반대여소의 이용료는 하루6000원이다.
+TAKEN    K29 국악대여소의 주말 수량은 10대이다.
+TAKEN    K30 국악대여소의 평일 수량은 16대이다.
+TAKEN    K31 전자악기대여소의 단기 대여기간은 3일이다.
+TAKEN    K32 전자악기대여소의 장기 대여기간은 14일이다.
+TAKEN    K33 건반대여소의 휴무일은 매주목요일이 아니다.
+TAKEN    K34 국악대여소는 신청방식이 방문신청이면 이용료가 하루1000원이다.
+TAKEN    K35 전자악기대여소의 수량은 8대이다.
+TAKEN    K36 건반대여소의 관리처는 건반지원팀이다.
+taken 36 of 36. Word kinds the taken sentences showed: 단기=condition, 장기=condition
+
+# 2. Questions and answers, as asked (no one answers the system back)
+
+right Q01 [direct]
+  Q: 현악대여소의 이용료는 얼마인가요?
+  expected: 하루2000원
+  got:      하루2000원   (as a sentence: 현악대여소의 이용료는 하루2000원이다.)
+
+assumed right Q02 [direct]
+  Q: 관악대여소의 수량은 몇 대인가요?
+  expected: 24대
+  got:      24대   [not read as a sentence; taken to ask for the 수량 of "관악대여소"; chosen by the property word; not read: 의, 은, 인가요]
+
+right Q03 [direct]
+  Q: 타악대여소의 신청방식은 무엇인가요?
+  expected: 온라인신청
+  got:      온라인신청   (as a sentence: 타악대여소의 신청방식은 온라인신청이다.)
+
+right Q04 [direct]
+  Q: 현악대여소의 휴무일은 언제인가요?
+  expected: 매주수요일
+  got:      매주수요일   (as a sentence: 현악대여소의 휴무일은 매주수요일이다.)
+
+right Q05 [direct]
+  Q: 관악대여소의 위치는 어디인가요?
+  expected: 가락회관
+  got:      가락회관   (as a sentence: 관악대여소의 위치는 가락회관이다.)
+
+proposed right, asks first Q06 [direct]
+  Q: 현악대여소의 전화는 몇 번인가요?
+  expected: 02-831-1100
+  got:      -- asks: Did you ask for the 전화 of 현악대여소? (these pieces are not accounted for: "몇", "번인가요")   [would then answer 02-831-1100]
+
+right Q07 [direct]
+  Q: 건반대여소의 관리처는 어디인가요?
+  expected: 건반지원팀
+  got:      건반지원팀   (as a sentence: 건반대여소의 관리처는 건반지원팀이다.)
+
+proposed right, asks first Q08 [direct]
+  Q: 타악대여소의 대여기간은 며칠인가요?
+  expected: 7일
+  got:      -- asks: Did you ask for the 대여기간 of 타악대여소? (these pieces are not accounted for: "며칠인가요")   [would then answer 7일]
+
+assumed right Q09 [short]
+  Q: 관악대여소 요금 얼마?
+  expected: 하루3000원
+  got:      하루3000원   [not read as a sentence; taken to ask for the 이용료 of "관악대여소"; chosen by the property word; not read: nothing]
+
+held Q10 [short]
+  Q: 현악창구 어디?
+  expected: 소리회관
+  got:      -- the question was not read; it names "현악대여소", and the knowledge has 2 facts it could be asking for: 위치 of 현악대여소; 관리처 of 현악대여소   [could be: 위치 of 현악대여소]   [could be: 관리처 of 현악대여소]
+
+assumed right Q11 [short]
+  Q: 타악대여소 대여료?
+  expected: 무료
+  got:      무료   [not read as a sentence; taken to ask for the 이용료 of "타악대여소"; chosen by the property word; not read: nothing]
+
+assumed right Q12 [short]
+  Q: 전자악기창구 보유수량?
+  expected: 8대
+  got:      8대   [not read as a sentence; taken to ask for the 수량 of "전자악기대여소"; chosen by the property word; not read: nothing]
+
+assumed right Q13 [short]
+  Q: 소리회관 전화번호?
+  expected: 02-830-1100
+  got:      02-830-1100   [not read as a sentence; taken to ask for the 전화 of "소리회관"; chosen by the property word; not read: nothing]
+
+assumed right Q14 [short]
+  Q: 가락관 담당부서?
+  expected: 문화시설팀
+  got:      문화시설팀   [not read as a sentence; taken to ask for the 관리처 of "가락회관"; chosen by the property word; not read: nothing]
+
+assumed right Q15 [short]
+  Q: 울림회관 연락처?
+  expected: 02-830-3300
+  got:      02-830-3300   [not read as a sentence; taken to ask for the 전화 of "울림회관"; chosen by the property word; not read: nothing]
+
+assumed right Q16 [short]
+  Q: 장단관 전화?
+  expected: 02-830-4400
+  got:      02-830-4400   [not read as a sentence; taken to ask for the 전화 of "장단회관"; chosen by the property word; not read: nothing]
+
+assumed right Q17 [short]
+  Q: 관악창구 관리처?
+  expected: 관악지원팀
+  got:      관악지원팀   [not read as a sentence; taken to ask for the 관리처 of "관악대여소"; chosen by the property word; not read: nothing]
+
+assumed right Q18 [short]
+  Q: 타악창구 신청방법?
+  expected: 온라인신청
+  got:      온라인신청   [not read as a sentence; taken to ask for the 신청방식 of "타악대여소"; chosen by the property word; not read: nothing]
+
+assumed right Q19 [short]
+  Q: 타악대여소 대여기한?
+  expected: 7일
+  got:      7일   [not read as a sentence; taken to ask for the 대여기간 of "타악대여소"; chosen by the property word; not read: nothing]
+
+assumed right Q20 [short]
+  Q: 현악대여소 쉬는날?
+  expected: 매주수요일
+  got:      매주수요일   [not read as a sentence; taken to ask for the 휴무일 of "현악대여소"; chosen by the property word; not read: nothing]
+
+held Q21 [natural]
+  Q: 현악대여소에서 빌리면 하루에 얼마 내요?
+  expected: 하루2000원
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q22 [natural]
+  Q: 관악대여소에서 하루 빌리는 데 돈이 얼마나 들어요?
+  expected: 하루3000원
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q23 [natural]
+  Q: 타악대여소에서 빌리려면 얼마 내면 돼요?
+  expected: 무료
+  got:      -- asks: Did you ask for the 이용료 of 타악대여소? (these pieces are not accounted for: "에서", "빌리려면", "내면", "돼요")   [would then answer 무료]
+
+proposed right, asks first Q24 [natural]
+  Q: 현악대여소는 언제 쉬어요?
+  expected: 매주수요일
+  got:      -- asks: Did you ask for the 휴무일 of 현악대여소? (these pieces are not accounted for: "쉬어요")   [would then answer 매주수요일]
+
+proposed right, asks first Q25 [natural]
+  Q: 관악대여소에서는 악기를 모두 몇 대 가지고 있나요?
+  expected: 24대
+  got:      -- asks: Did you ask for the 수량 of 관악대여소? (these pieces are not accounted for: "에서는", "악기를", "모두", "가지고", "있나요")   [would then answer 24대]
+
+held Q26 [natural]
+  Q: 전자악기대여소가 갖고 있는 악기는 총 몇 대예요?
+  expected: 8대
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q27 [natural]
+  Q: 타악대여소에서 악기를 빌리려면 어떻게 접수해요?
+  expected: 온라인신청
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q28 [natural]
+  Q: 현악대여소를 찾아가려면 어느 건물로 가면 돼요?
+  expected: 소리회관
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q29 [natural]
+  Q: 관악대여소는 어느 건물에 있어요?
+  expected: 가락회관
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q30 [natural]
+  Q: 타악대여소에서 빌린 악기는 며칠 동안 가지고 있어도 되나요?
+  expected: 7일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q31 [natural]
+  Q: 현악대여소에 바로 통화하려면 몇 번으로 걸어요?
+  expected: 02-831-1100
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q32 [natural]
+  Q: 관악대여소에 직접 걸려면 몇 번을 눌러야 하나요?
+  expected: 02-831-2200
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q33 [natural]
+  Q: 소리회관은 어느 팀에서 맡아 운영해요?
+  expected: 회관운영팀
+  got:      -- asks: Did you ask for the 관리처 of 소리회관? (these pieces are not accounted for: "어느", "팀에서", "맡아", "운영해요")   [would then answer 회관운영팀]
+
+held Q34 [natural]
+  Q: 울림회관을 맡아서 운영하는 팀은 어디예요?
+  expected: 공연지원팀
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+right Q35 [qualified]
+  Q: 현악대여소의 주말 이용료는 얼마인가요?
+  expected: 하루4000원
+  got:      하루4000원   (as a sentence: 현악대여소의 주말 이용료는 하루4000원이다.)
+
+right Q36 [qualified]
+  Q: 현악대여소의 평일 이용료는 얼마인가요?
+  expected: 하루2000원
+  got:      하루2000원   (as a sentence: 현악대여소의 평일 이용료는 하루2000원이다.)
+
+right Q37 [qualified]
+  Q: 2033년에 건반대여소의 이용료는 얼마인가요?
+  expected: 하루5000원
+  got:      하루5000원   (as a sentence: 2033년에 건반대여소의 이용료는 하루5000원이다.)
+
+right Q38 [qualified]
+  Q: 2034년에 건반대여소의 이용료는 얼마인가요?
+  expected: 하루6000원
+  got:      하루6000원   (as a sentence: 2034년에 건반대여소의 이용료는 하루6000원이다.)
+
+held Q39 [qualified]
+  Q: 주말에 국악대여소가 갖고 있는 악기는 몇 대예요?
+  expected: 10대
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q40 [qualified]
+  Q: 국악창구 평일 악기 몇 대?
+  expected: 16대
+  got:      -- asks: Did you ask for the 수량 of 국악대여소, when: 평일? (these pieces are not accounted for: "악기")   [would then answer 16대]
+
+held Q41 [qualified]
+  Q: 전자악기대여소에서 단기로 빌리면 며칠 쓸 수 있어요?
+  expected: 3일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q42 [qualified]
+  Q: 전자악기창구 장기로 며칠까지 빌려?
+  expected: 14일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q43 [check]
+  Q: 관악대여소가 가진 악기는 24대 맞아요?
+  expected: yes: 24대
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q44 [check]
+  Q: 현악대여소는 매주수요일에 쉬는 게 맞나요?
+  expected: yes: 매주수요일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+assumed right Q45 [check]
+  Q: 전자악기대여소의 수량은 24대인가요?
+  expected: no: 8대
+  got:      아니다: 8대   [not read as a sentence; taken to ask for the 수량 of "전자악기대여소"; chosen by the property word; not read: 의, 은, 인가요]
+
+held Q46 [check]
+  Q: 관악대여소가 소리회관에 있다는 게 맞아요?
+  expected: no: 가락회관
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q47 [chain]
+  Q: 현악대여소가 있는 건물의 전화번호를 알려 주세요.
+  expected: 02-830-1100
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q48 [chain]
+  Q: 관악대여소가 들어가 있는 회관에 전화하려면 몇 번으로 걸어요?
+  expected: 02-830-2200
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q49 [chain]
+  Q: 타악대여소 있는 건물 연락처?
+  expected: 02-830-1100
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held Q50 [chain]
+  Q: 현악대여소가 입주한 건물은 어느 팀이 관리하나요?
+  expected: 회관운영팀
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q51 [chain]
+  Q: 관악대여소가 있는 회관의 담당부서는 어디예요?
+  expected: 문화시설팀
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held Q52 [chain]
+  Q: 타악대여소가 있는 건물을 맡아 운영하는 팀을 알려 주세요.
+  expected: 회관운영팀
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q53 [no_answer]
+  Q: 건반대여소에서 빌리면 하루에 얼마예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q54 [no_answer]
+  Q: 국악대여소는 악기를 모두 몇 대 가지고 있어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q55 [no_answer]
+  Q: 전자악기대여소에서는 며칠 동안 빌릴 수 있나요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q56 [no_answer]
+  Q: 국악대여소에서 하루 빌리는 데 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q57 [no_answer]
+  Q: 건반대여소는 어느 건물에 있어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q58 [no_answer]
+  Q: 현악대여소 야간 요금?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q59 [no_answer]
+  Q: 어린이가 관악대여소에서 빌리면 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q60 [no_answer]
+  Q: 타악대여소 단체로 빌리려면 어떻게 접수해요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q61 [no_answer]
+  Q: 2034년에 현악대여소의 전화는 몇 번인가요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q62 [no_answer]
+  Q: 관악대여소 주말에는 악기 몇 대 있어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q63 [no_answer]
+  Q: 건반대여소가 있는 건물의 전화번호가 뭐예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q64 [no_answer]
+  Q: 국악대여소가 입주한 회관에 전화하려면 몇 번으로 걸어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q65 [no_answer]
+  Q: 전자악기대여소가 있는 건물 연락처 알려 주세요.
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q66 [no_answer]
+  Q: 합주대여소에서 빌리려면 하루에 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q67 [no_answer]
+  Q: 현악대여소 주차장은 어디예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q68 [no_answer]
+  Q: 관악대여소의 보증금은 얼마인가요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q69 [no_answer]
+  Q: 건반대여소는 언제 쉬어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q70 [no_answer]
+  Q: 국악대여소가 있는 건물은 어느 팀에서 관리해요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+## Summary: 2. Questions and answers, as asked (no one answers the system back)
+   chain        held 6 of 6
+   check        assumed right 1, held 3 of 4
+   direct       assumed right 1, proposed right, asks first 2, right 5 of 8
+   natural      held 10, proposed right, asks first 4 of 14
+   no_answer    held ok 18 of 18
+   qualified    held 3, proposed right, asks first 1, right 4 of 8
+   short        assumed right 11, held 1 of 12
+   all          assumed right 13, held 23, held ok 18, proposed right, asks first 7, right 9 of 70
+
+# 3. The same questions in the same order, a user answering each proposal with yes or no
+
+## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
+   chain        held 6 of 6
+   check        assumed right 1, held 3 of 4
+   direct       assumed right 1, right 5, right after a yes 2 of 8
+   natural      held 10, right after a yes 4 of 14
+   no_answer    held ok 18 of 18
+   qualified    held 3, right 4, right after a yes 1 of 8
+   short        assumed right 11, held 1 of 12
+   all          assumed right 13, held 23, held ok 18, right 9, right after a yes 7 of 70
