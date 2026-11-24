@@ -1,0 +1,381 @@
+# Frozen before the items existed
+  a2d18844bc7050ff  reader.py
+  b0208999be1f32fb  match.py
+  4d9b2bea1c48029d  answer.py
+  acc269e6f52913a7  write.py
+  3b6886430defecce  pack.py
+  f844167bb0d32dfa  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  b949bd2afe37c83e  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  b024b3597b19769b  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  8f0d540460d43b78  probes/reading_limits.py
+  ce8d9abe82767a34  probes/blind_e2e.py
+  98c201e9a156b9e1  C.json (the items)
+
+Field "시립 박물관 전시실 안내 (전시실·건물·해설 담당자)": 8 property words, 12 names, 36 sentences of knowledge, 60 questions. Language pack: 640 lessons.
+
+# 1. Knowledge taken in, sentence by sentence
+TAKEN    K01 토기실의 위치는 동관이다.
+TAKEN    K02 금속실의 위치는 서관이다.
+TAKEN    K03 토기실의 담당자는 한서윤이다.
+TAKEN    K04 금속실의 담당자는 구민석이다.
+TAKEN    K05 한서윤의 전화번호는 내선201번이다.
+TAKEN    K06 토기실의 전화번호는 내선110번이다.
+TAKEN    K07 동관의 휴관일은 화요일이다.
+TAKEN    K08 토기실 휴관일은 목요일이다.
+TAKEN    K09 서관의 개관시각은 오전10시이다.
+TAKEN    K10 토기실은 주제가 선사시대이다.
+TAKEN    K11 동관의 담당자는 오다영이다.
+TAKEN    K12 오다영은 전화번호가 내선305번이다.
+TAKEN    K13 서화실의 정원은 40명이다.
+TAKEN    K14 체험실은 위치가 별관이다.
+TAKEN    K15 별관 휴관일은 월요일이다.
+TAKEN    K16 구민석의 위치는 별관이다.
+TAKEN    K17 한서윤 위치는 서관이다.
+TAKEN    K18 금속실의 평일 관람료는 3000원이다.
+TAKEN    K19 금속실의 주말 관람료는 5000원이다.
+REFUSED  K20 토기실의 어린이 관람료는 1000원이다.   -- every reading uses something never seen in training
+TAKEN    K21 동관의 야간 개관시각은 오후6시이다.
+TAKEN    K22 체험실의 단체 정원은 25명이다.
+TAKEN    K23 체험실의 평일 정원은 12명이다.
+TAKEN    K24 2029년에 서화실의 담당자는 구민석이다.
+TAKEN    K25 2030년에 서화실의 담당자는 오다영이다.
+TAKEN    K26 2030년에 민속실의 위치는 별관이다.
+TAKEN    K27 2029년에 직물실의 관람료는 2000원이다.
+TAKEN    K28 2030년에 서관의 정원은 300명이다.
+TAKEN    K29 체험실의 주제가 염색이면 체험실의 관람료는 4000원이다.
+TAKEN    K30 체험실의 주제가 매듭이면 체험실의 관람료는 2500원이다.
+TAKEN    K31 직물실은 주제가 한복이면 담당자가 한서윤이다.
+TAKEN    K32 서화실의 휴관일이 금요일이면 서화실의 개관시각은 오전11시이다.
+TAKEN    K33 민속실은 주제가 탈춤이면 정원이 20명이다.
+TAKEN    K34 금속실의 휴관일은 화요일이 아니다.
+TAKEN    K35 직물실의 위치는 동관이 아니다.
+TAKEN    K36 구민석의 전화번호는 내선201번이 아니다.
+taken 35 of 36. Word kinds the taken sentences showed: 단체=condition
+
+# 2. Questions and answers, as asked (no one answers the system back)
+
+right Q01 [direct]
+  Q: 토기실의 위치는 어디인가?
+  expected: 동관
+  got:      동관   (as a sentence: 토기실의 위치는 동관이다.)
+
+right Q02 [direct]
+  Q: 토기실의 전화번호는 무엇인가요?
+  expected: 내선110번
+  got:      내선110번   (as a sentence: 토기실의 전화번호는 내선110번이다.)
+
+right Q03 [direct]
+  Q: 동관의 휴관일은 언제입니까?
+  expected: 화요일
+  got:      화요일   (as a sentence: 동관의 휴관일은 화요일이다.)
+
+right Q04 [direct]
+  Q: 토기실 휴관일은 언제야?
+  expected: 목요일
+  got:      목요일   (as a sentence: 토기실의 휴관일은 목요일이다.)
+
+right Q05 [direct]
+  Q: 서관의 개관시각은 언제인가요?
+  expected: 오전10시
+  got:      오전10시   (as a sentence: 서관의 개관시각은 오전10시이다.)
+
+right Q06 [direct]
+  Q: 서화실의 정원은 얼마인가?
+  expected: 40명
+  got:      40명   (as a sentence: 서화실의 정원은 40명이다.)
+
+right Q07 [direct]
+  Q: 토기실의 주제는 무엇입니까?
+  expected: 선사시대
+  got:      선사시대   (as a sentence: 토기실의 주제는 선사시대이다.)
+
+proposed right, asks first Q08 [direct]
+  Q: 금속실의 담당자는 누구인가?
+  expected: 구민석
+  got:      -- asks: Did you ask for the 담당자 of 금속실? (these pieces are not accounted for: "누구인가")   [would then answer 구민석]
+
+right Q09 [modifier_or_time]
+  Q: 금속실의 평일 관람료는 얼마인가요?
+  expected: 3000원
+  got:      3000원   (as a sentence: 금속실의 평일 관람료는 3000원이다.)
+
+right Q10 [modifier_or_time]
+  Q: 금속실의 주말 관람료는 얼마야?
+  expected: 5000원
+  got:      5000원   (as a sentence: 금속실의 주말 관람료는 5000원이다.)
+
+held (its knowledge was refused) Q11 [modifier_or_time]
+  Q: 토기실의 어린이 관람료는 얼마입니까?
+  expected: 1000원
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+right Q12 [modifier_or_time]
+  Q: 동관의 야간 개관시각은 언제인가?
+  expected: 오후6시
+  got:      오후6시   (as a sentence: 동관의 야간 개관시각은 오후6시이다.)
+
+right Q13 [modifier_or_time]
+  Q: 체험실의 단체 정원은 얼마인가요?
+  expected: 25명
+  got:      25명   (as a sentence: 체험실의 단체 정원은 25명이다.)
+
+proposed right, asks first Q14 [modifier_or_time]
+  Q: 2029년에 서화실의 담당자는 누구인가요?
+  expected: 구민석
+  got:      -- asks: Did you ask for the 담당자 of 서화실, at: 2029년? (these pieces are not accounted for: "누구인가요")   [would then answer 구민석]
+
+proposed right, asks first Q15 [modifier_or_time]
+  Q: 2030년에 서화실의 담당자는 누구입니까?
+  expected: 오다영
+  got:      -- asks: Did you ask for the 담당자 of 서화실, at: 2030년? (these pieces are not accounted for: "누구입니까")   [would then answer 오다영]
+
+right Q16 [modifier_or_time]
+  Q: 2029년에 직물실의 관람료는 얼마인가?
+  expected: 2000원
+  got:      2000원   (as a sentence: 2029년에 직물실의 관람료는 2000원이다.)
+
+right Q17 [check]
+  Q: 동관의 휴관일은 화요일이 맞나요?
+  expected: yes: 화요일
+  got:      맞다: 화요일   (as a sentence: 동관의 휴관일은 화요일이다.)
+
+right Q18 [check]
+  Q: 금속실의 주말 관람료는 5000원이 맞습니까?
+  expected: yes: 5000원
+  got:      맞다: 5000원   (as a sentence: 금속실의 주말 관람료는 5000원이다.)
+
+right Q19 [check]
+  Q: 한서윤의 전화번호는 내선201번이 맞나요?
+  expected: yes: 내선201번
+  got:      맞다: 내선201번   (as a sentence: 한서윤의 전화번호는 내선201번이다.)
+
+right Q20 [check]
+  Q: 토기실의 휴관일은 화요일이 맞나요?
+  expected: no: 목요일
+  got:      아니다: 목요일   (as a sentence: 토기실의 휴관일은 목요일이다.)
+
+right Q21 [check]
+  Q: 서화실의 정원은 25명이 맞습니까?
+  expected: no: 40명
+  got:      아니다: 40명   (as a sentence: 서화실의 정원은 40명이다.)
+
+right Q22 [check]
+  Q: 토기실의 전화번호는 내선201번이 맞나요?
+  expected: no: 내선110번
+  got:      아니다: 내선110번   (as a sentence: 토기실의 전화번호는 내선110번이다.)
+
+right Q23 [condition]
+  Q: 체험실의 주제가 염색이면 체험실의 관람료는 얼마인가요?
+  expected: 4000원
+  got:      4000원
+
+right Q24 [condition]
+  Q: 체험실은 주제가 매듭이면 관람료가 얼마인가요?
+  expected: 2500원
+  got:      2500원
+
+held Q25 [condition]
+  Q: 직물실은 주제가 한복이면 담당자가 누구인가요?
+  expected: 한서윤
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+right Q26 [condition]
+  Q: 서화실의 휴관일이 금요일이면 서화실의 개관시각은 언제입니까?
+  expected: 오전11시
+  got:      오전11시
+
+right Q27 [condition]
+  Q: 민속실은 주제가 탈춤이면 정원이 얼마야?
+  expected: 20명
+  got:      20명
+
+held Q28 [condition]
+  Q: 직물실의 주제가 한복이면 직물실의 담당자는 누구입니까?
+  expected: 한서윤
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+right Q29 [chain]
+  Q: 토기실의 위치의 휴관일은 언제인가요?
+  expected: 화요일
+  got:      화요일
+
+right Q30 [chain]
+  Q: 토기실의 담당자의 전화번호는 무엇인가?
+  expected: 내선201번
+  got:      내선201번
+
+proposed right, asks first Q31 [chain]
+  Q: 토기실의 위치의 담당자는 누구인가요?
+  expected: 오다영
+  got:      -- asks: Did you ask for the 담당자 of 동관 (the 위치 of 토기실)? (these pieces are not accounted for: "누구인가요")   [would then answer 오다영]
+
+right Q32 [chain]
+  Q: 금속실의 위치의 개관시각은 언제입니까?
+  expected: 오전10시
+  got:      오전10시
+
+right Q33 [chain]
+  Q: 동관의 담당자의 전화번호는 무엇인가요?
+  expected: 내선305번
+  got:      내선305번
+
+right Q34 [chain]
+  Q: 체험실의 위치의 휴관일은 언제야?
+  expected: 월요일
+  got:      월요일
+
+right Q35 [chain]
+  Q: 금속실의 담당자의 위치는 어디인가요?
+  expected: 별관
+  got:      별관
+
+right Q36 [chain]
+  Q: 토기실의 담당자의 위치는 어디입니까?
+  expected: 서관
+  got:      서관
+
+right Q37 [chain]
+  Q: 토기실의 위치의 야간 개관시각은 언제인가요?
+  expected: 오후6시
+  got:      오후6시
+
+held Q38 [chain]
+  Q: 2030년에 금속실의 위치의 정원은 얼마인가?
+  expected: 300명
+  got:      -- the question was not read with confidence: the sentence alone does not say what "2030년" belongs to: "위치" or "정원"   [asks: Does "2030년" belong to "위치" or to "정원"?]
+
+right Q39 [ask_thing]
+  Q: 주제가 선사시대인 것은 무엇인가?
+  expected: 토기실
+  got:      토기실   (as a sentence: 토기실의 주제는 선사시대이다.)
+
+right Q40 [ask_thing]
+  Q: 전화번호가 내선305번인 것은 무엇입니까?
+  expected: 오다영
+  got:      오다영   (as a sentence: 오다영의 전화번호는 내선305번이다.)
+
+right Q41 [ask_thing]
+  Q: 정원이 40명인 것은 무엇인가요?
+  expected: 서화실
+  got:      서화실   (as a sentence: 서화실의 정원은 40명이다.)
+
+right Q42 [ask_thing]
+  Q: 개관시각이 오전10시인 것은 무엇이야?
+  expected: 서관
+  got:      서관   (as a sentence: 서관의 개관시각은 오전10시이다.)
+
+held ok Q43 [no_answer]
+  Q: 금속실의 관람료는 얼마인가요?
+  expected: (no answer)
+  got:      -- the knowledge has this only together with a part the question does not state: when of "관람료"
+
+held ok Q44 [no_answer]
+  Q: 토기실의 관람료는 얼마입니까?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q45 [no_answer]
+  Q: 서화실의 담당자는 누구인가요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q46 [no_answer]
+  Q: 직물실의 관람료는 얼마인가?
+  expected: (no answer)
+  got:      -- the knowledge has this only together with a part the question does not state: at of "관람료"
+
+held ok Q47 [no_answer]
+  Q: 체험실의 관람료는 얼마야?
+  expected: (no answer)
+  got:      -- the knowledge has this only together with a part the question does not state: if of "관람료"
+
+held ok Q48 [no_answer]
+  Q: 동관의 개관시각은 언제인가요?
+  expected: (no answer)
+  got:      -- the knowledge has this only together with a part the question does not state: when of "개관시각"
+
+held ok Q49 [no_answer]
+  Q: 금속실의 야간 관람료는 얼마인가요?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q50 [no_answer]
+  Q: 2028년에 서화실의 담당자는 누구입니까?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q51 [no_answer]
+  Q: 체험실의 주말 정원은 얼마인가요?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q52 [no_answer]
+  Q: 금속실의 휴관일은 언제인가요?
+  expected: (no answer)
+  got:      -- the knowledge has this only together with a part the question does not state: denies of "휴관일"
+
+held ok Q53 [no_answer]
+  Q: 민속실의 위치의 휴관일은 언제인가요?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q54 [no_answer]
+  Q: 직물실의 담당자의 전화번호는 무엇인가요?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q55 [no_answer]
+  Q: 직물실의 위치의 휴관일은 언제입니까?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q56 [no_answer]
+  Q: 서화실의 담당자의 전화번호는 무엇인가?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q57 [no_answer]
+  Q: 토기실의 위치의 개관시각은 언제인가요?
+  expected: (no answer)
+  got:      -- the knowledge has this only together with a part the question does not state: when of "개관시각"
+
+held ok Q58 [no_answer]
+  Q: 금속실의 담당자의 전화번호는 무엇입니까?
+  expected: (no answer)
+  got:      -- the knowledge has this only together with a part the question does not state: denies of "전화번호"
+
+held ok Q59 [no_answer]
+  Q: 별관의 전화번호는 무엇인가요?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q60 [no_answer]
+  Q: 서관의 휴관일은 언제인가요?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+## Summary: 2. Questions and answers, as asked (no one answers the system back)
+   ask_thing    right 4 of 4
+   chain        held 1, proposed right, asks first 1, right 8 of 10
+   check        right 6 of 6
+   condition    held 2, right 4 of 6
+   direct       proposed right, asks first 1, right 7 of 8
+   modifier_or_time held (its knowledge was refused) 1, proposed right, asks first 2, right 5 of 8
+   no_answer    held ok 18 of 18
+   all          held 3, held (its knowledge was refused) 1, held ok 18, proposed right, asks first 4, right 34 of 60
+
+# 3. The same questions in the same order, a user answering each proposal with yes or no
+
+## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
+   ask_thing    right 4 of 4
+   chain        assumed right 1, held 1, right 8 of 10
+   check        right 6 of 6
+   condition    held 2, right 4 of 6
+   direct       right 7, right after a yes 1 of 8
+   modifier_or_time held (its knowledge was refused) 1, right 5, right after a yes 2 of 8
+   no_answer    held ok 18 of 18
+   all          assumed right 1, held 3, held (its knowledge was refused) 1, held ok 18, right 34, right after a yes 3 of 60

@@ -22,7 +22,11 @@ AS_THING = '모래섬호의 정원이 30명이면 특급의 기본요금은 4000
 
 
 def model():
-    return P.build(*SETS)[0]
+    # These checks are about a word nothing knows. Since 2026-11-24 a question is read with the words of the
+    # knowledge (`reading_uses_knowledge`), which would make 특급 known here; that is switched off, and
+    # checked on its own at the end.
+    m = P.build(*SETS)[0]
+    return dict(m, conventions={k: v for k, v in m['conventions'].items() if k != 'reading_uses_knowledge'})
 
 
 def test_one_reading_fits_the_knowledge_and_is_answered_as_an_assumption():
@@ -70,3 +74,12 @@ def test_an_assumption_is_a_record_and_being_told_is_what_teaches():
     L.note_assumed(other, '특급', 'condition', QUESTION)
     L.tell_kind(other, '특급', 'subject', by='owner', at='2026-11-24')
     assert list(L.overlay(m, other)['tables']['word_kind']['특급']) == ['subject']
+
+
+def test_with_the_words_of_the_knowledge_the_question_is_simply_read():
+    m = P.build(*SETS)[0]
+    got = A.answer(AS_THING, QUESTION, m)
+    assert got['status'] == 'answered' and got['answers'] == [['4000원']] and not got.get('assumed')
+    reading = got['question']
+    term = [t for t in reading['readings'][reading['chosen']]['terms'] if t['what'].startswith('kind of a word')]
+    assert term and term[0]['piece'] == '특급' and term[0]['origins'] == ['the knowledge uses "특급" as a subject']

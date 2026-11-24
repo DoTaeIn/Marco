@@ -36,7 +36,7 @@ def _module(name, path):
 P = _module('reading_limits', HERE / 'reading_limits.py')
 R, PK, ML = P.R, P.PK, P.ML
 from experiments.graph_weighted_acquisition import learn as L
-SETS = ['wordings', 'endings', 'modifier', 'time', 'negation', 'conditional', 'inverse', 'chain', 'shared']   # 'endings' added after the two blind runs of 2026-11-23
+SETS = ['wordings', 'endings', 'modifier', 'time', 'negation', 'conditional', 'inverse', 'chain', 'shared', 'bare_modifier']   # 'endings' added after the two blind runs of 2026-11-23
 FROZEN = ['reader.py', 'match.py', 'answer.py', 'write.py', 'pack.py', 'learn.py', 'merge.py', 'weights.py',
           'data/reading_recipe.json', 'data/connector_variants_ko.json', 'data/word_kinds_ko.json', 'packs/make_language.py', 'probes/reading_limits.py']
 SLOT = {'type': 'relation', 'attribute': 'kind', 'subject_role': 'subject', 'value_role': 'amount'}

@@ -44,19 +44,24 @@ def take_in(model, knowledge):
             got, ok, why = None, False, repr(error)
         if ok:
             taken.append(item)
-            L.note_kinds(memory, got, item['text'])
+            if hasattr(L, 'note_kinds'):                 # an older checkpoint does not keep word kinds
+                L.note_kinds(memory, got, item['text'])
         else:
             refused.append(item['id'])
         print('%-8s %s %s%s' % ('TAKEN' if ok else 'REFUSED', item['id'], item['text'], '' if ok else '   -- ' + why[:110]))
     print('taken %d of %d. Word kinds the taken sentences showed: %s'
-          % (len(taken), len(knowledge), ', '.join('%s=%s' % (k['word'], k['kind']) for k in memory['kinds']) or 'none'))
+          % (len(taken), len(knowledge), ', '.join('%s=%s' % (k['word'], k['kind']) for k in memory.get('kinds', [])) or 'none'))
     return taken, set(refused), memory
 
 
 def verdict(result, item, refused):
     if result.get('proposal'):
         # Not an answer: the system says what it took the question to ask and waits for a yes.
-        good = item['expect'] is not None and item['kind'] != 'check' and result['proposal']['if_confirmed'] == item['expect']
+        claim = result['proposal'].get('claim')
+        if item['kind'] == 'check':
+            good = claim is not None and claim['holds'] == item['claim']
+        else:
+            good = item['expect'] is not None and claim is None and result['proposal']['if_confirmed'] == item['expect']
         return 'proposed right, asks first' if good else 'proposed otherwise, asks first'
     if result['status'] not in ('answered', 'assumed'):
         if item['expect'] is None:
@@ -81,6 +86,8 @@ def shown(result):
                 text += '   [not read as a sentence; taken to ask for the %s of "%s"%s; chosen by %s; not read: %s]' % (
                     u['property'], u['thing'], ''.join(' %s=%s' % kv for kv in sorted(u['with'].items())), a['chosen_by'],
                     ', '.join(a['unread']) or 'nothing')
+            elif 'readings' in a:
+                text += '   [the reader could not choose between %d readings; the knowledge answered one way only]' % len(a['readings'])
             else:
                 text += '   [assumed: "%s" read as the %s of "%s"]' % (a['word'], a['role'], a['head'])
         return text
@@ -114,7 +121,14 @@ def main():
     if clashes:
         print('FIELD WORDS REFUSED BY THE PACK LOADER (fixed words of the language): %s' % ', '.join(clashes))
         words['properties'] = [x for x in words['properties'] if x['word'] not in clashes]
-    model = PK.with_words(full, words)
+    try:
+        model = PK.with_words(full, words)
+    except ValueError as error:
+        # An older checkpoint refuses a field word that is also a word of its lessons. Said, and the word left out.
+        print('THE PACK LOADER OF THIS CHECKPOINT REFUSED THE WORD PACK: %s' % error)
+        refused_words = [x['word'] for x in words['properties'] if x['word'] in full['tables'].get('head', {})]
+        words['properties'] = [x for x in words['properties'] if x['word'] not in refused_words]
+        model = PK.with_words(full, words)
     print('\nField "%s": %d property words, %d names, %d sentences of knowledge, %d questions. Language pack: %d lessons.'
           % (data['domain'], len(props), len(names), len(data['knowledge']), len(data['questions']), n))
     taken, refused, memory = take_in(model, data['knowledge'])
@@ -128,7 +142,7 @@ def main():
         the examiner's answers, so this pass is not blind to them; it shows what use would teach."""
         print('\n# ' + title)
         memory_q = L.new_memory()
-        memory_q['kinds'] = [dict(k) for k in memory['kinds']]
+        memory_q['kinds'] = [dict(k) for k in memory.get('kinds', [])]
         tally = {}
         for item in data['questions']:
             try:
@@ -137,7 +151,8 @@ def main():
                 v, text = verdict(result, item, refused), shown(result)
                 if feedback and result.get('proposal'):
                     if v.startswith('proposed right'):
-                        A.confirm(result, memory_q, 'the user', 'this run')
+                        if hasattr(A, 'confirm'):
+                            A.confirm(result, memory_q, 'the user', 'this run')
                         v = 'right after a yes'
                     else:
                         v = 'declined by the user'

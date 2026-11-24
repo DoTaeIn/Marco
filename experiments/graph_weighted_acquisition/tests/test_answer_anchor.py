@@ -79,9 +79,13 @@ def test_the_five_wrong_answers_of_the_outside_set_are_not_given():
     assert chain['assumed'][0]['chosen_by'] == 'two property words, joined through "서쪽항"'
     assert {e['text'] for e in chain['evidence']} >= {'서쪽항', '555-0100'}
     assert PK.ask(f, '바람개비호 출발항 문의전화?', memory)['status'] == 'hold'              # no first link: nothing
-    # 3. A question that states a value the knowledge has is a check, whatever its ending.
-    assert PK.ask(f, '모래섬호 정원이 30명인가요?', memory).get('assumed') is None
-    assert PK.ask(f, '모래섬호 정원이 50명인가요?', memory)['status'] == 'hold'
+    # 3. A question that states a value the knowledge has is a check, whatever its ending: it is answered
+    #    with yes or no, not with the value alone ("정원이 20명인가요?" had been given "20명").
+    yes = PK.ask(f, '모래섬호 정원이 30명인가요?', memory)
+    assert yes['status'] == 'assumed' and yes['claim'] == {'claimed': '30명', 'holds': True}
+    no = PK.ask(f, '모래섬호 정원이 50명인가요?', memory)
+    assert no['status'] == 'assumed' and no['claim'] == {'claimed': '50명', 'holds': False} and no['answers'] == [['30명']]
+    assert PK.ask(f, '모래섬호 30명인가요?', memory).get('assumed') is None           # no property word: nothing to check it against
     # 4. What a question word may ask for is not narrowed by what is known of the thing.
     assert PK.ask(f, '서쪽항의 문의전화는 어디인가?', memory)['status'] in ('answered', 'hold')
     L.note_ask(memory, '어디', '문의전화', 'made up for this check')
@@ -107,3 +111,24 @@ def test_what_is_not_anchored_at_all():
     f['model'] = dict(f['model'], conventions={k: v for k, v in f['model']['conventions'].items() if k != 'unread_question_answers'})
     old = PK.ask(f, '모래섬호 출발항?')
     assert old['status'] == 'hold' and not old.get('proposal') and not old.get('assumed')
+
+
+def test_letters_shared_with_a_property_word_or_a_value_lead_to_a_proposal_only():
+    f, memory = field(), L.new_memory()
+    # No property word, no counter, no known question word. "출발하는" shares letters with 출발항.
+    got = PK.ask(f, '모래섬호 어느 곳에서 출발하는지 알려줘', memory)
+    assert got['status'] == 'hold' and got['proposal']['understood']['property'] == '출발항'
+    assert got['proposal']['chosen_by'] == 'letters an unread word shares with a property word or a value'
+    assert got['proposal']['if_confirmed'] == '서쪽항'
+    # Even after a yes that makes every piece accounted for, shared letters alone never give an answer.
+    A.confirm(got, memory, by='owner', at='2026-11-24')
+    again = PK.ask(f, '모래섬호 어느 곳에서 출발하는지 알려줘', memory)
+    assert again['status'] == 'hold' and again['proposal']['not_accounted_for'] == []
+
+
+def test_the_last_word_of_a_question_is_its_predicate_whatever_it_ends_in():
+    f = field()
+    # "들어가" ends in 가, which also marks a noun. Standing last it is the predicate, and the question is not given up.
+    got = PK.ask(f, '모래섬호 몇 명까지 들어가?')
+    assert got['proposal']['understood']['property'] == '정원' and got['proposal']['if_confirmed'] == '30명'
+    assert PK.ask(f, '모래섬호 수심은 몇 명이에요?').get('proposal') is None          # not last: still a marked noun

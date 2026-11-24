@@ -803,3 +803,77 @@ stem and ending, as it always did for head words.
   values; such an answer is not counted as independently verified. No blind set had a thing
   with both a plain and a qualified value of one property. 117 public checks pass (1 new);
   shipped packs: same SHA-256; exposed sets unchanged, 0 wrong.
+
+## A question is read with the knowledge (2026-11-24, after checkpoint 05955b1)
+
+- Owner's instruction: understanding a sentence has to use the knowledge graph. Until now the
+  reader read a question from lessons, lists and packs, and the knowledge came in afterwards
+  (matching) or as a rescue (an open word, an unread question).
+- `reading_uses_knowledge: true`, `answer._with_knowledge`. The model a question is read with
+  gets what the knowledge shows about its own words: a word the knowledge uses (a thing, a
+  value, a circumstance, a time) is known as the kind it was read as there, origin "the
+  knowledge uses … as a …". It outranks the general list, and like every word kind it is
+  asked only where the form leaves a role open. A field whose knowledge states a "단체 이용료"
+  knows 단체 with no lesson and no list.
+- `close_readings: ask_knowledge`, `answer._decided_by_knowledge`. When the reader cannot
+  choose between fully seen readings of a question, each is put to the knowledge; if those
+  that are answered agree, that answer is given with status `assumed` and every reading
+  tried. If they differ, or none is answered, the question stays held.
+- A form that was missing, found while trying this: a subject without 의 followed by a
+  modifier ("물결쉼터 주말 이용료는 …"). The modifier was passed over however well the word was
+  known, because no lesson showed a free value after " " after a free value. Lesson set
+  `bare_modifier` (48 lessons). With both words unknown the order alone decides which is the
+  thing; within a field the knowledge and the pack name the things.
+- Consequence for earlier checks: an open word that the knowledge itself uses is now simply
+  read, and the answer is `answered`, not `assumed`. The checks of the assumed path switch
+  the convention off; one new check asserts the new behaviour and its origin.
+- 118 public checks pass (1 new); shipped packs: same SHA-256 (470df3c3…); the grid stays 44
+  of 44. Exposed reading sets, read as meant: 48, 45, 39, 40, 47, 42, 40, 47 of 60 (before:
+  46, 43, 37, 38, 44, 40, 38, 45); nothing read differently. Exposed sets from knowledge to
+  answer: the outside set 11 → 12 answered right (the weekend check without particles), the
+  rest as before; ninth and tenth unchanged; 0 wrong on all three.
+- What this did not do: on the outside set it changed one question. The questions that are
+  not read there fail on verbs and endings no lesson has, and those go to the anchored
+  reading, which already used the knowledge. Knowledge still enters the reader as word kinds
+  and as a judge between finished readings; it does not yet take part in cutting the
+  sentence into pieces or in building a reading. Not measured on a fresh outside set.
+
+## The knowledge used more deeply when a question is not read (2026-11-24)
+
+- Owner's instruction: go deeper and see how much it gains. Three more uses of the knowledge
+  in `answer._anchor`, each made from a held question of the (exposed) outside set:
+  1. A value the knowledge has, stated in the question, makes it a check of that value,
+     whatever its ending: with a property word, the answer is yes or no (`claim`) and the
+     true value. Before, such a question was given up.
+  2. Letters an unread word shares with a property word ("관리하는", 관리처) or with the value a
+     fact of the thing has ("요일마다", 매주화요일) point at a property. A pointer, not a
+     reading: it can lead to a proposal and never to an answer, even after every piece of
+     the wording has been confirmed.
+  3. The last word of a question is its predicate whatever it ends in ("들어가?"); only an
+     unknown word that is not last and is marked as a noun makes the question be given up.
+- A defect of the day before, found here: the words of the knowledge that `_with_knowledge`
+  adds to the word kinds made every value of the knowledge a "circumstance" for the anchored
+  reading, so a question stating a value named a circumstance no fact had. Only words known
+  as something other than a thing or a value count as circumstances now.
+- 120 public checks pass (2 new, 1 changed to yes/no); shipped packs: same SHA-256.
+- The outside set, EXPOSED, step by step (52 questions with an answer, 18 without):
+
+      step                                   answered  assumed  proposed  proposed   held  wrong
+                                             right     right    right     otherwise
+      one fit is answered (first run, blind)    11        19        -         -       19     5
+      every piece accounted for                 11        13       11         2       17     0
+      a question is read with the knowledge     12        13       11         2       14     0
+      the three deeper uses                     12        15       13         2       10     0
+
+  With a user answering each proposal: 35, 36 and 40 of 52 right for the last three rows,
+  0 wrong; the 2 other proposals are declined. Of the 18 without an answer, 16 are held and
+  2 are put to the user, in every row but the first.
+- Ninth and tenth sets: unchanged but for one more proposal; 0 wrong. First answering set:
+  questions asked freely, 9 of 18 proposed right, 0 answered, 0 wrong.
+- What the rows say: going deeper moved 7 questions out of "held", 3 of them into answers and
+  4 into proposals. The largest step was not depth but the rule that every piece be accounted
+  for. All of it on items that were in view; a fresh outside set is needed.
+- Still held on that set, by cause: 어디 has asked for two properties (위치, 관리처) and nothing
+  in the question separates them (4); verbs with no shared letters and no known question word
+  ("맡아 운영하나요", "어떻게 신청해요", "언제까지 열어", 4); "한 번에" marked as a noun (1); one
+  whose knowledge was refused (2).

@@ -65,6 +65,8 @@ def test_a_question_that_writes_the_name_once_is_answered_from_knowledge_that_wr
 
 def test_an_unknown_word_there_is_read_both_ways_and_the_knowledge_decides():
     model, _, _ = P.build(*SETS)
+    # Without the words of the knowledge (`reading_uses_knowledge`), which would make the word known.
+    model = dict(model, conventions={k: v for k, v in model['conventions'].items() if k != 'reading_uses_knowledge'})
     question = '모래섬호는 정원이 30명이면 특급 기본요금이 얼마야?'
     assert [x['between'] for x in R.read(question, model)['open_roles']] == [['subject', 'when']]
     as_modifier = A.answer('모래섬호의 정원이 30명이면 모래섬호의 특급 기본요금은 9000원이다.', question, model)

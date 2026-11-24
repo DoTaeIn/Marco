@@ -72,8 +72,16 @@ def _claim_query(graph, text, predicate='claim'):
 def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=None, aliases=None):
     """Answer a question from a given passage graph. Used by both arms."""
     lessons_only, model = model, L.overlay(model, memory)
+    conventions_ = R.recipe_of(model)[1]
+    if conventions_.get('reading_uses_knowledge') and pgraph is not None:
+        model = _with_knowledge(model, pgraph, ptext)
     q = R.read(question, model)
     out = _blank(passage_result, q)
+    if q['status'] == 'ambiguous' and conventions_.get('close_readings') == 'ask_knowledge' \
+            and not q.get('open_roles') and not q.get('attachment'):
+        decided = _decided_by_knowledge(pgraph, ptext, question, model, q, passage_result, aliases)
+        if decided is not None:
+            return decided
     if q['status'] != 'complete' and q.get('open_roles') and R.recipe_of(model)[1].get('open_role_answers') == 'assume':
         assumed = _one_reading(pgraph, ptext, question, model, q, passage_result, aliases)
         if assumed:
@@ -105,6 +113,65 @@ def answer_graph(pgraph, ptext, question, model, passage_result=None, memory=Non
     if memory is not None:
         L.note_kinds(memory, q, question)      # what the form of this question showed about its words
     return _answer_read(pgraph, ptext, question, model, q, out, passage_result, memory, aliases)
+
+
+def _with_knowledge(model, pgraph, ptext):
+    """The model the question is read with: what the knowledge shows about its own words is added.
+
+    A word that the knowledge uses (the name of a thing, a value, a circumstance, a time) is known as
+    the kind it was read as there, with the knowledge as origin. So "단체", in no lesson and no list, is
+    a circumstance for a field whose knowledge states a "단체 이용료". This outranks the general list of
+    word kinds, and like every word kind it is asked only where the form of the question leaves a
+    role open (convention `word_kinds: where_open`).
+    """
+    seen = {}
+    named = {s: ptext[slice(*o['copy'])] for s, p, o in pgraph['edges'] if p == 'value' and isinstance(o, dict) and 'copy' in o}
+    for node in pgraph['nodes']:
+        if node['id'] in named:
+            row = seen.setdefault(named[node['id']], {})
+            row[node['type']] = row.get(node['type'], 0) + 1
+    if not seen:
+        return model
+    kinds = dict(model['tables'].get('word_kind', {}))
+    for word, row in seen.items():
+        kinds[word] = {kind: {'n': n, 'origins': ['the knowledge uses "%s" as a %s' % (word, kind)]} for kind, n in sorted(row.items())}
+    return dict(model, tables=dict(model['tables'], word_kind=kinds))
+
+
+def _decided_by_knowledge(pgraph, ptext, question, model, q, passage_result, aliases):
+    """The reader could not choose between readings of the question. The knowledge is asked.
+
+    Each reading whose every piece was seen in the lessons and that passes over no word is tried:
+    the knowledge is asked as if it were the reading. If the readings that are answered all give the
+    same answer, that answer is returned with status "assumed", with every reading tried and how it
+    went. If they give different answers, or none is answered, nothing is returned and the question
+    stays held: the knowledge does not decide between two things it can both answer.
+    """
+    tried, answered, seen = [], [], set()
+    for reading in q.get('readings', []):
+        mark = json.dumps(reading['graph'], ensure_ascii=False, sort_keys=True)
+        if not reading.get('supported') or reading.get('ignored') or mark in seen:
+            continue
+        seen.add(mark)
+        as_read = dict(q, status='complete', graphs=[reading['graph']], ignored=[], variants=reading.get('variants', []),
+                       told=reading.get('told', []))
+        result = _answer_read(pgraph, ptext, question, model, as_read, _blank(passage_result, as_read),
+                              passage_result, None, aliases)
+        meaning = '; '.join(line[2:] for line in _facts(reading['graph'], question))
+        ok = result['status'] == 'answered'
+        tried.append({'meaning': meaning, 'result': 'the knowledge answers that way' if ok
+                      else 'the knowledge has no answer that way: ' + result['reason']})
+        if ok:
+            answered.append(result)
+    if len(tried) < 2 or not answered:
+        return None
+    first = answered[0]
+    if any(r['answers'] != first['answers'] or (r['claim'] or {}).get('holds') != (first['claim'] or {}).get('holds')
+           for r in answered[1:]):
+        return None
+    first.update(status='assumed', verified=False, assumed=[{'readings': tried, 'reader_said': q['reason']}],
+                 reason=first['reason'] + '; the reader could not choose between readings, the knowledge answered one way only')
+    return first
 
 
 def _one_reading(pgraph, ptext, question, model, q, passage_result, aliases):
@@ -183,6 +250,11 @@ def _unit(value):
     return ''
 
 
+def _shares(a, b, least=2):
+    """Do two words share a run of at least `least` characters ("관리하는" and "관리처", "요일마다" and "매주화요일")?"""
+    return any(a[i:i + least] in b for i in range(len(a) - least + 1))
+
+
 def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     """The question was not read. Which fact of the knowledge does it ask about?
 
@@ -215,16 +287,19 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     if any(unicodedata.normalize('NFD', w) in unicodedata.normalize('NFD', question) for w in fixed):
         return None                                    # a check or a denial: the value in it has to be read, not guessed
     things = {f['thing'] for f in facts} | set(aliases or {})
-    if any(f['value'] in question for f in facts if f['value'] not in things):
-        return None                                    # it states a value the knowledge has: a check, whatever its ending
     props = {}
     for surface in model.get('field_words', []):
         for label in tables['head'].get(surface, {}):
             props[surface] = dict(json.loads(label)['literals']).get(slot['attribute'])
-    circumstances = {v for f in facts for v in f['with'].values()} | set(tables.get('word_kind', {}))
+    # Words known as a circumstance or a time. A word known only as a thing or a value (the knowledge's own
+    # names and values are in that table too) is not one.
+    plain_kinds = set(tables.get('fills', {}).get(slot['subject_role'], {})) | set(tables.get('fills', {}).get(slot['value_role'], {}))
+    circumstances = {v for f in facts for v in f['with'].values()}         | {w for w, row in tables.get('word_kind', {}).items() if set(row) - plain_kinds}
     # Longest known word first; a place of the question belongs to one word only.
-    taken, found = [False] * len(question), {'thing': [], 'property': [], 'circumstance': [], 'asks': []}
-    for kind, words in (('thing', things), ('property', props), ('circumstance', circumstances), ('asks', asking)):
+    stated_values = {f['value'] for f in facts} - things - circumstances
+    taken, found = [False] * len(question), {'thing': [], 'property': [], 'circumstance': [], 'asks': [], 'stated': []}
+    for kind, words in (('thing', things), ('property', props), ('circumstance', circumstances), ('asks', asking),
+                        ('stated', stated_values)):
         for word in sorted(words, key=lambda w: (-len(w), w)):
             start = question.find(word)
             while start >= 0:
@@ -252,27 +327,50 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     for _, w in sorted(found['property']):
         if props[w] not in wanted:
             wanted.append(props[w])                    # in the order the question says them
-    if len(named) != 1 or len(wanted) > 2 or not (wanted or asks or units):
+    stated = sorted({w for _, w in found['stated']})
+    if len(named) != 1 or len(wanted) > 2 or len(stated) > 1:
         return None
     thing = next(iter(named))
     # What was not recognised, piece by piece.
     marks = sorted({g.strip() for g in tables.get('gap', {}).get('mid', {}) if g.strip()}, key=len, reverse=True)
     pieces_known = set(marks) | {g.strip().rstrip('?.!') for g in tables.get('gap', {}).get('end', {})} \
         | {g.strip().rstrip('?.!') for g in model.get('alias', {})}
-    unread, pos = [], 0
-    for token in question.split():
+    unread, pos, tokens = [], 0, question.split()
+    for n, token in enumerate(tokens):
         start = question.index(token, pos)
         pos = start + len(token)
         left = ''.join(ch for k, ch in enumerate(token) if not taken[start + k]).strip('?.!,')
         if not left:
             continue
         bare = token.rstrip('?.!,')
-        if not any(taken[start:start + len(token)]) and any(bare.endswith(m) and len(bare) > len(m) for m in marks):
-            return None                                # an unknown word marked as a noun: it may be the property or a thing
+        # An unknown word marked as a noun may be the property or a thing. The last word of a sentence is
+        # its predicate, whatever it ends in ("들어가?"): the language puts the predicate last.
+        if n < len(tokens) - 1 and not any(taken[start:start + len(token)]) \
+                and any(bare.endswith(m) and len(bare) > len(m) for m in marks):
+            return None
         unread.append(left)
+    weak = False
+    if not wanted and not units:
+        # No property word and no counter. A word that was not read may still point at a property: it shares
+        # letters with a property word ("관리하는", 관리처) or with the value a fact of this thing has
+        # ("요일마다", 매주화요일). This is a pointer, not a reading: it can only lead to a proposal.
+        for piece in unread:
+            if len(piece) < 2:
+                continue
+            for surface, prop in sorted(props.items()):
+                if _shares(piece, surface) and prop not in wanted:
+                    wanted.append(prop)
+            for f in facts:
+                if f['thing'] == thing and _shares(piece, f['value']) and f['property'] not in wanted:
+                    wanted.append(f['property'])
+        weak = bool(wanted)
+        if len(wanted) > 2:
+            return None
+    if not (wanted or asks or units):
+        return None
     said = {(aliases or {}).get(c, c) for _, c in found['circumstance']}
     history = {e['property'] for e in (memory or {}).get('asks', []) if e['word'] in asks}
-    sure = True                                        # may it be answered, if every piece is accounted for?
+    sure = not weak                                    # may it be answered, if every piece is accounted for?
     if len(wanted) == 2:
         # A chain: the first property's value is the thing the second property is asked of.
         first = [f for f in facts if f['thing'] == thing and f['property'] == wanted[0] and not f['with']]
@@ -286,7 +384,8 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         fits = [f for f in facts if f['thing'] == thing and set(f['with'].values()) == said]
         understood_thing = thing
         if wanted:
-            fits, how = [f for f in fits if f['property'] == wanted[0]], 'the property word'
+            fits = [f for f in fits if f['property'] == wanted[0]]
+            how = 'letters an unread word shares with a property word or a value' if weak else 'the property word'
         elif units:
             fits = [f for f in fits if _unit(f['value']) in units]
             how = 'the counter "%s %s"' % (counter, '/'.join(sorted(units)))
@@ -314,18 +413,26 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     item = {'understood': understood, 'recognised': recognised, 'unread': unread, 'chosen_by': how,
             'not_accounted_for': open_pieces}
     evidence = [{'span': list(sp), 'text': ptext[sp[0]:sp[1]]} for sp in fact['spans']]
+    claim = None
+    if stated:
+        # The question states a value the knowledge has: it asks whether that is the value, whatever its ending.
+        if not found['property'] or len(wanted) != 1:
+            return None
+        claim = {'claimed': stated[0], 'holds': stated[0] == fact['value']}
+        item['claim'] = claim
     if open_pieces or not sure:
         # One fact fits what was recognised, but pieces of the question are not accounted for, and one of
         # them may be what changes the answer. Not answered: put to the user.
         why = ('these pieces are not accounted for: %s' % ', '.join('"%s"' % x for x in open_pieces)) if open_pieces \
             else 'the question word has asked for more than one property'
         out['proposal'] = dict(item, if_confirmed=fact['value'], evidence=evidence,
-                               ask='Did you ask for the %s of %s%s? (%s)' % (
-                                   fact['property'], understood_thing,
-                                   ''.join(', %s: %s' % kv for kv in sorted(fact['with'].items())), why))
+                               ask='Did you ask %s the %s of %s%s%s? (%s)' % (
+                                   'whether' if claim else 'for', fact['property'], understood_thing,
+                                   ''.join(', %s: %s' % kv for kv in sorted(fact['with'].items())),
+                                   ' is %s' % claim['claimed'] if claim else '', why))
         out['reason'] = 'the question was not read; one fact fits what was recognised, but ' + why
         return out
-    out.update(status='assumed', answers=[[fact['value']]], verified=False, match={'proofs': []},
+    out.update(status='assumed', answers=[[fact['value']]], verified=False, match={'proofs': []}, claim=claim,
                executor_detail='the question was not read, so there is no question graph to check',
                evidence=evidence, assumed=[item],
                reason='the question was not read; one fact of the knowledge fits it, and every piece of it is accounted for')
@@ -340,6 +447,7 @@ def confirm(result, memory, by, at):
         raise ValueError('there is no proposal to confirm')
     L.note_said(memory, proposal['understood']['property'], proposal['not_accounted_for'], by, at)
     out = dict(result, status='assumed', answers=[[proposal['if_confirmed']]], verified=False, match={'proofs': []},
+               claim=proposal.get('claim'),
                evidence=proposal['evidence'], assumed=[dict(proposal, confirmed_by=by)],
                reason='the question was not read; the user confirmed what it asks for')
     out.pop('proposal')
@@ -679,7 +787,12 @@ def explain(passage, question, result):
                  '- chosen by: %s' % item['chosen_by'],
                  '- not read: %s' % (', '.join('"%s"' % w for w in item['unread']) or 'nothing'),
                  '', 'If this is not what was asked, say so: the answer above is withdrawn.', '']
-    for item in [x for x in result.get('assumed', []) if 'understood' not in x]:
+    for item in [x for x in result.get('assumed', []) if 'readings' in x]:
+        tail += ['## How the question was understood', '',
+                 'The reader could not choose between readings (%s). Each was put to the knowledge:' % item['reader_said'], '']
+        tail += ['- %s: %s' % (t['meaning'], t['result']) for t in item['readings']]
+        tail += ['', 'If the question meant something else, say so: the answer above is withdrawn.', '']
+    for item in [x for x in result.get('assumed', []) if 'understood' not in x and 'readings' not in x]:
         tail += ['## How the question was understood', '',
                  '"%s" is a word no lesson, list or pack knows. In this sentence its connector lets it be: %s.'
                  % (item['word'], ' or '.join(sorted({t['role'] for t in item['tried']}))),

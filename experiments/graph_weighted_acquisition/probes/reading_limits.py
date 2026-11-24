@@ -130,6 +130,21 @@ def conditional():
     return out
 
 
+def bare_modifier():
+    """X M P는 V이다. / X M P는 무엇인가?   the subject without 의, then the modifier, then the property."""
+    out = []
+    for i, p in enumerate(PROPS):
+        for k in range(3):
+            who, m = SUBJ[(i * 5 + k * 3 + 3) % len(SUBJ)], MODS[(i * 2 + k) % len(MODS)]
+            lead = [('s', 'subject', who), (None, None, ' '), ('m', 'condition', m), (None, None, ' '),
+                    ('e', 'relation', p), (None, None, topic(p))]
+            edges = [('e', 'subject', 's'), ('e', 'when', 'm'), ('e', 'amount', 'v'), ('e', 'kind', ('lit', p))]
+            out.append(lesson('baremod-%d-%d-s' % (i, k), 'passage', lead + [('v', 'amount', value_of(p, k)), (None, None, '이다.')], edges))
+            out.append(lesson('baremod-%d-%d-q' % (i, k), 'question', lead + [('v', 'amount', ask_of(p, k)), (None, None, '인가?')],
+                              edges, project=('v',)))
+    return out
+
+
 def shared():
     """X는 P가 V이면 Q가 W이다. / … Q가 얼마인가?   one subject, written once, for both relations."""
     out = []
@@ -231,7 +246,7 @@ def endings():
 
 
 SETS = {'wordings': wordings, 'endings': endings, 'modifier': modifier, 'time': at_time, 'negation': negation, 'conditional': conditional, 'inverse': inverse,
-        'chain': chain, 'shared': shared}      # 'shared' added 2026-11-24
+        'chain': chain, 'shared': shared, 'bare_modifier': bare_modifier}      # 'shared' added 2026-11-24
 
 FERRY = {'schema': PK.WORDS, 'field': 'made-up ferry line',
          'slot': {'type': 'relation', 'attribute': 'kind', 'subject_role': 'subject', 'value_role': 'amount'},
