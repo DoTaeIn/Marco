@@ -1,0 +1,431 @@
+# Frozen before the items existed
+  9b90e9fad0adb061  reader.py
+  4b31f9b07d48adc2  match.py
+  d0663997387f7c5b  answer.py
+  acc269e6f52913a7  write.py
+  d619cbe65ef70645  pack.py
+  949d2db9fc08e702  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  31e2cfd0da585ac2  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  0635849c898f97f6  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  ad6bcfedeaf1bd58  probes/reading_limits.py
+  18916370ec9f8032  probes/blind_e2e.py
+  da40e594d7ad879f  C.json (the items)
+
+Field "가상의 유리정원 안내 창구. 여섯 온실의 방문 정보와 네 안내센터의 연락 정보를 안내한다.": 8 property words, 10 names, 36 sentences of knowledge, 70 questions. Language pack: 592 lessons.
+
+# 1. Knowledge taken in, sentence by sentence
+TAKEN    K01 달빛온실의 관리처는 새봄센터이다.
+TAKEN    K02 별숲온실의 관리처는 푸른센터이다.
+TAKEN    K03 물결온실의 관리처는 새봄센터이다.
+TAKEN    K04 2031년에 노을온실의 관리처는 푸른센터이다.
+TAKEN    K05 이슬온실의 예약방식이 단체예약이면 이슬온실의 관리처는 한결센터이다.
+TAKEN    K06 바람온실의 관리처는 온누리센터가 아니다.
+TAKEN    K07 새봄센터의 전화는 02-700-1000이다.
+TAKEN    K08 푸른센터의 전화는 02-700-2000이다.
+TAKEN    K09 한결센터의 전화는 02-700-3000이다.
+TAKEN    K10 온누리센터의 전화는 02-700-4000이다.
+TAKEN    K11 새봄센터의 위치는 동문동이다.
+TAKEN    K12 푸른센터의 위치는 서문동이다.
+TAKEN    K13 한결센터의 위치는 남문동이다.
+TAKEN    K14 달빛온실의 전화는 02-711-1000이다.
+TAKEN    K15 별숲온실의 전화는 02-711-2000이다.
+TAKEN    K16 달빛온실의 이용료는 하루3000원이다.
+TAKEN    K17 별숲온실은 이용료가 하루4000원이다.
+TAKEN    K18 물결온실 운영시간은 오전9시이다.
+TAKEN    K19 달빛온실의 휴무일은 매주월요일이다.
+TAKEN    K20 별숲온실의 정원은 20명이다.
+TAKEN    K21 물결온실의 예약방식은 온라인예약이다.
+TAKEN    K22 달빛온실의 위치는 중앙뜰이다.
+TAKEN    K23 별숲온실의 위치는 북쪽뜰이다.
+TAKEN    K24 물결온실의 이용료는 무료이다.
+TAKEN    K25 달빛온실의 주말 이용료는 하루5000원이다.
+TAKEN    K26 달빛온실의 평일 이용료는 하루3000원이다.
+TAKEN    K27 2031년에 노을온실의 이용료는 하루6000원이다.
+TAKEN    K28 2032년에 노을온실의 이용료는 하루7000원이다.
+TAKEN    K29 이슬온실의 주말 정원은 12명이다.
+TAKEN    K30 이슬온실의 평일 정원은 18명이다.
+TAKEN    K31 바람온실의 야간 운영시간은 오후8시이다.
+TAKEN    K32 바람온실의 주간 운영시간은 오전10시이다.
+TAKEN    K33 노을온실의 휴무일은 매주화요일이 아니다.
+TAKEN    K34 이슬온실은 예약방식이 단체예약이면 이용료가 하루2000원이다.
+TAKEN    K35 바람온실의 정원은 15명이다.
+TAKEN    K36 노을온실의 위치는 남쪽뜰이다.
+taken 36 of 36. Word kinds the taken sentences showed: none
+
+# 2. Questions and answers, as asked (no one answers the system back)
+
+right Q01 [direct]
+  Q: 달빛온실의 이용료는 얼마인가요?
+  expected: 하루3000원
+  got:      하루3000원   (as a sentence: 달빛온실의 이용료는 하루3000원이다.)
+
+assumed right Q02 [direct]
+  Q: 별숲온실의 정원은 몇 명인가요?
+  expected: 20명
+  got:      20명   [not read as a sentence; taken to ask for the 정원 of "별숲온실"; chosen by the property word; not read: 의, 은, 인가요]
+
+right Q03 [direct]
+  Q: 물결온실의 예약방식은 무엇인가요?
+  expected: 온라인예약
+  got:      온라인예약   (as a sentence: 물결온실의 예약방식은 온라인예약이다.)
+
+right Q04 [direct]
+  Q: 달빛온실의 휴무일은 언제인가요?
+  expected: 매주월요일
+  got:      매주월요일   (as a sentence: 달빛온실의 휴무일은 매주월요일이다.)
+
+right Q05 [direct]
+  Q: 별숲온실의 위치는 어디인가요?
+  expected: 북쪽뜰
+  got:      북쪽뜰   (as a sentence: 별숲온실의 위치는 북쪽뜰이다.)
+
+proposed right, asks first Q06 [direct]
+  Q: 달빛온실의 전화는 몇 번인가요?
+  expected: 02-711-1000
+  got:      -- asks: Did you ask for the 전화 of 달빛온실? (these pieces are not accounted for: "몇", "번인가요")   [would then answer 02-711-1000]
+
+right Q07 [direct]
+  Q: 물결온실의 관리처는 어디인가요?
+  expected: 새봄센터
+  got:      새봄센터   (as a sentence: 물결온실의 관리처는 새봄센터이다.)
+
+assumed right Q08 [direct]
+  Q: 물결온실의 운영시간은 몇 시인가요?
+  expected: 오전9시
+  got:      오전9시   [not read as a sentence; taken to ask for the 운영시간 of "물결온실"; chosen by the property word; not read: 의, 은, 인가요]
+
+assumed right Q09 [short]
+  Q: 별숲온실 요금 얼마?
+  expected: 하루4000원
+  got:      하루4000원   [not read as a sentence; taken to ask for the 이용료 of "별숲온실"; chosen by the property word; not read: nothing]
+
+held Q10 [short]
+  Q: 달빛관 어디야?
+  expected: 중앙뜰
+  got:      -- the question was not read; it names "달빛온실", and the knowledge has 2 facts it could be asking for: 관리처 of 달빛온실; 위치 of 달빛온실   [could be: 관리처 of 달빛온실]   [could be: 위치 of 달빛온실]
+
+assumed right Q11 [short]
+  Q: 물결관 입장료?
+  expected: 무료
+  got:      무료   [not read as a sentence; taken to ask for the 이용료 of "물결온실"; chosen by the property word; not read: nothing]
+
+assumed right Q12 [short]
+  Q: 바람온실 수용인원?
+  expected: 15명
+  got:      15명   [not read as a sentence; taken to ask for the 정원 of "바람온실"; chosen by the property word; not read: nothing]
+
+assumed right Q13 [short]
+  Q: 새봄센터 전화번호?
+  expected: 02-700-1000
+  got:      02-700-1000   [not read as a sentence; taken to ask for the 전화 of "새봄센터"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q14 [short]
+  Q: 푸른안내소 어디?
+  expected: 서문동
+  got:      -- asks: Did you ask for the 위치 of 푸른센터? (the question word has asked for more than one property)   [would then answer 서문동]
+
+assumed right Q15 [short]
+  Q: 한결센터 연락처?
+  expected: 02-700-3000
+  got:      02-700-3000   [not read as a sentence; taken to ask for the 전화 of "한결센터"; chosen by the property word; not read: nothing]
+
+assumed right Q16 [short]
+  Q: 온누리센터 전화?
+  expected: 02-700-4000
+  got:      02-700-4000   [not read as a sentence; taken to ask for the 전화 of "온누리센터"; chosen by the property word; not read: nothing]
+
+assumed right Q17 [short]
+  Q: 별숲관 담당센터?
+  expected: 푸른센터
+  got:      푸른센터   [not read as a sentence; taken to ask for the 관리처 of "별숲온실"; chosen by the property word; not read: nothing]
+
+assumed right Q18 [short]
+  Q: 물결온실 예약방법?
+  expected: 온라인예약
+  got:      온라인예약   [not read as a sentence; taken to ask for the 예약방식 of "물결온실"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q19 [short]
+  Q: 노을관 어디?
+  expected: 남쪽뜰
+  got:      -- asks: Did you ask for the 위치 of 노을온실? (the question word has asked for more than one property)   [would then answer 남쪽뜰]
+
+assumed right Q20 [short]
+  Q: 달빛온실 쉬는날?
+  expected: 매주월요일
+  got:      매주월요일   [not read as a sentence; taken to ask for the 휴무일 of "달빛온실"; chosen by the property word; not read: nothing]
+
+held Q21 [natural]
+  Q: 달빛온실에 들어가려면 하루에 얼마를 내야 해요?
+  expected: 하루3000원
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q22 [natural]
+  Q: 별숲온실은 하루 구경하는 데 돈이 얼마나 들어요?
+  expected: 하루4000원
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q23 [natural]
+  Q: 물결온실 들어갈 때 얼마 내면 돼요?
+  expected: 무료
+  got:      -- asks: Did you ask for the 이용료 of 물결온실? (these pieces are not accounted for: "들어갈", "때", "내면", "돼요")   [would then answer 무료]
+
+proposed right, asks first Q24 [natural]
+  Q: 달빛온실은 언제 쉬어요?
+  expected: 매주월요일
+  got:      -- asks: Did you ask for the 휴무일 of 달빛온실? (these pieces are not accounted for: "쉬어요")   [would then answer 매주월요일]
+
+proposed right, asks first Q25 [natural]
+  Q: 별숲온실에는 몇 명까지 들어갈 수 있어요?
+  expected: 20명
+  got:      -- asks: Did you ask for the 정원 of 별숲온실? (these pieces are not accounted for: "에는", "까지", "들어갈", "수", "있어요")   [would then answer 20명]
+
+proposed right, asks first Q26 [natural]
+  Q: 바람온실은 몇 명까지 받아요?
+  expected: 15명
+  got:      -- asks: Did you ask for the 정원 of 바람온실? (these pieces are not accounted for: "까지", "받아요")   [would then answer 15명]
+
+held Q27 [natural]
+  Q: 물결온실에 가려면 어떻게 미리 신청해요?
+  expected: 온라인예약
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q28 [natural]
+  Q: 달빛온실을 찾아가려면 어느 곳으로 가야 해요?
+  expected: 중앙뜰
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q29 [natural]
+  Q: 별숲온실은 어디에 있어요?
+  expected: 북쪽뜰
+  got:      -- the question was not read; it names "별숲온실", and the knowledge has 2 facts it could be asking for: 관리처 of 별숲온실; 위치 of 별숲온실   [could be: 관리처 of 별숲온실]   [could be: 위치 of 별숲온실]
+
+held Q30 [natural]
+  Q: 노을온실 찾아가는 중인데 어디로 가면 되나요?
+  expected: 남쪽뜰
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q31 [natural]
+  Q: 달빛온실에 바로 통화하려면 몇 번으로 걸어요?
+  expected: 02-711-1000
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q32 [natural]
+  Q: 별숲온실에 바로 걸려면 몇 번을 눌러야 해요?
+  expected: 02-711-2000
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q33 [natural]
+  Q: 새봄센터를 직접 찾아가려는데 어디에 있나요?
+  expected: 동문동
+  got:      -- asks: Did you ask for the 위치 of 새봄센터? (these pieces are not accounted for: "를", "직접", "찾아가려는데", "있나요")   [would then answer 동문동]
+
+proposed right, asks first Q34 [natural]
+  Q: 한결센터를 찾아가려면 어디로 가야 하나요?
+  expected: 남문동
+  got:      -- asks: Did you ask for the 위치 of 한결센터? (these pieces are not accounted for: "를", "찾아가려면", "로", "가야", "하나요")   [would then answer 남문동]
+
+right Q35 [qualified]
+  Q: 달빛온실의 주말 이용료는 얼마인가요?
+  expected: 하루5000원
+  got:      하루5000원   (as a sentence: 달빛온실의 주말 이용료는 하루5000원이다.)
+
+right Q36 [qualified]
+  Q: 달빛온실의 평일 이용료는 얼마인가요?
+  expected: 하루3000원
+  got:      하루3000원   (as a sentence: 달빛온실의 평일 이용료는 하루3000원이다.)
+
+right Q37 [qualified]
+  Q: 2031년에 노을온실의 이용료는 얼마인가요?
+  expected: 하루6000원
+  got:      하루6000원   (as a sentence: 2031년에 노을온실의 이용료는 하루6000원이다.)
+
+right Q38 [qualified]
+  Q: 2032년에 노을온실의 이용료는 얼마인가요?
+  expected: 하루7000원
+  got:      하루7000원   (as a sentence: 2032년에 노을온실의 이용료는 하루7000원이다.)
+
+proposed right, asks first Q39 [qualified]
+  Q: 주말에 이슬온실은 몇 명까지 받아요?
+  expected: 12명
+  got:      -- asks: Did you ask for the 정원 of 이슬온실, when: 주말? (these pieces are not accounted for: "까지", "받아요")   [would then answer 12명]
+
+proposed right, asks first Q40 [qualified]
+  Q: 이슬관 평일 몇 명까지?
+  expected: 18명
+  got:      -- asks: Did you ask for the 정원 of 이슬온실, when: 평일? (these pieces are not accounted for: "까지")   [would then answer 18명]
+
+proposed right, asks first Q41 [qualified]
+  Q: 바람온실 야간 몇 시부터 열어요?
+  expected: 오후8시
+  got:      -- asks: Did you ask for the 운영시간 of 바람온실, when: 야간? (these pieces are not accounted for: "부터", "열어요")   [would then answer 오후8시]
+
+proposed right, asks first Q42 [qualified]
+  Q: 바람관 주간 몇 시에 열어?
+  expected: 오전10시
+  got:      -- asks: Did you ask for the 운영시간 of 바람온실, when: 주간? (these pieces are not accounted for: "열어")   [would then answer 오전10시]
+
+right Q43 [check]
+  Q: 별숲온실 정원이 20명 맞아요?
+  expected: yes: 20명
+  got:      맞다: 20명   (as a sentence: 별숲온실의 정원은 20명이다.)
+
+held Q44 [check]
+  Q: 달빛온실은 매주월요일에 쉬는 게 맞나요?
+  expected: yes: 매주월요일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q45 [check]
+  Q: 바람온실 정원은 20명인가요?
+  expected: no: 15명
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held Q46 [check]
+  Q: 별숲온실이 중앙뜰에 있다는 게 맞아요?
+  expected: no: 북쪽뜰
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q47 [chain]
+  Q: 달빛온실을 관리하는 센터에 전화하려면 몇 번으로 걸어야 해요?
+  expected: 02-700-1000
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q48 [chain]
+  Q: 별숲온실 담당센터 전화번호 알려 주세요.
+  expected: 02-700-2000
+  got:      -- asks: Did you ask for the 전화 of 푸른센터 (the 관리처 of 별숲온실)? (these pieces are not accounted for: "알려", "주세요")   [would then answer 02-700-2000]
+
+proposed right, asks first Q49 [chain]
+  Q: 물결온실 관리처 연락처는요?
+  expected: 02-700-1000
+  got:      -- asks: Did you ask for the 전화 of 새봄센터 (the 관리처 of 물결온실)? (these pieces are not accounted for: "는요")   [would then answer 02-700-1000]
+
+held Q50 [chain]
+  Q: 달빛온실을 관리하는 곳에 직접 가려면 어디로 가요?
+  expected: 동문동
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed otherwise, asks first Q51 [chain]
+  Q: 별숲온실 담당센터는 어디에 있나요?
+  expected: 서문동
+  got:      -- asks: Did you ask for the 관리처 of 별숲온실? (these pieces are not accounted for: "있나요")   [would then answer 푸른센터]
+
+proposed right, asks first Q52 [chain]
+  Q: 물결온실 관리처 위치 좀 알려 주세요.
+  expected: 동문동
+  got:      -- asks: Did you ask for the 위치 of 새봄센터 (the 관리처 of 물결온실)? (these pieces are not accounted for: "좀", "알려", "주세요")   [would then answer 동문동]
+
+held ok Q53 [no_answer]
+  Q: 노을온실 이용료는 얼마예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q54 [no_answer]
+  Q: 이슬온실은 몇 명까지 들어가요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q55 [no_answer]
+  Q: 바람온실 몇 시에 열어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q56 [no_answer]
+  Q: 이슬온실 입장하려면 하루에 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q57 [no_answer]
+  Q: 노을온실 관리처가 어디예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q58 [no_answer]
+  Q: 달빛온실 야간 입장료?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q59 [no_answer]
+  Q: 별숲온실에 어린이가 들어가면 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q60 [no_answer]
+  Q: 물결온실 단체로 가려면 어떻게 신청해요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q61 [no_answer]
+  Q: 2032년에 달빛온실의 전화는 몇 번인가요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q62 [no_answer]
+  Q: 별숲온실 주말에는 몇 명까지 받아요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q63 [no_answer]
+  Q: 노을온실 담당센터 전화번호가 뭐예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q64 [no_answer]
+  Q: 이슬온실 관리처에 전화하려면 몇 번으로 걸어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q65 [no_answer]
+  Q: 바람온실 담당센터 연락처 알려 주세요.
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q66 [no_answer]
+  Q: 유리온실에 들어가려면 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q67 [no_answer]
+  Q: 달빛온실 주차장은 어디예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q68 [no_answer]
+  Q: 별숲온실 식당은 어디에 있어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q69 [no_answer]
+  Q: 노을온실은 언제 쉬어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q70 [no_answer]
+  Q: 이슬온실을 관리하는 센터는 어디에 있어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+## Summary: 2. Questions and answers, as asked (no one answers the system back)
+   chain        held 2, proposed otherwise, asks first 1, proposed right, asks first 3 of 6
+   check        held 3, right 1 of 4
+   direct       assumed right 2, proposed right, asks first 1, right 5 of 8
+   natural      held 8, proposed right, asks first 6 of 14
+   no_answer    held ok 18 of 18
+   qualified    proposed right, asks first 4, right 4 of 8
+   short        assumed right 9, held 1, proposed right, asks first 2 of 12
+   all          assumed right 11, held 14, held ok 18, proposed otherwise, asks first 1, proposed right, asks first 16, right 10 of 70
+
+# 3. The same questions in the same order, a user answering each proposal with yes or no
+
+## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
+   chain        declined by the user 1, held 2, right after a yes 3 of 6
+   check        held 3, right 1 of 4
+   direct       assumed right 2, right 5, right after a yes 1 of 8
+   natural      held 8, right after a yes 6 of 14
+   no_answer    held ok 18 of 18
+   qualified    assumed right 2, right 4, right after a yes 2 of 8
+   short        assumed right 9, held 1, right after a yes 2 of 12
+   all          assumed right 13, declined by the user 1, held 14, held ok 18, right 10, right after a yes 14 of 70

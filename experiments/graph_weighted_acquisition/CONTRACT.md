@@ -877,3 +877,72 @@ stem and ending, as it always did for head words.
   in the question separates them (4); verbs with no shared letters and no known question word
   ("맡아 운영하나요", "어떻게 신청해요", "언제까지 열어", 4); "한 번에" marked as a noun (1); one
   whose knowledge was refused (2).
+
+## A second set from the owner's outside examiner, on four checkpoints (2026-11-25)
+
+- `probes/outside2_e2e_20261125/`, run once with `compare_checkpoints.py`. It is not a fresh
+  set: its 36 sentences of knowledge are the same as the first outside set's, and 54 of its 70
+  questions have the same text. 16 questions are new (`new_question_ids.json`): 9 with an
+  answer, 7 without. Only those 16 are blind; the other 54 were in view while the rules of
+  05955b1 and 2c3944f were made.
+- All 70, as asked (52 with an answer, 18 without):
+
+      commit   answered  assumed  proposed  proposed   held  wrong  no-answer
+               right     right    right     otherwise               held
+      ded9098      9        0        0         0        43     2      16
+      728dd70      9        0        0         0        43     0      18
+      05955b1      9       12       14         2        17     0      16
+      2a2d0b0     10       14       16         2        12     0      16
+
+- The 16 new questions alone:
+
+      commit   assumed  proposed  proposed   held  wrong  no-answer held (of 7)
+               right    right     otherwise
+      ded9098     0        0         0         9     0        7
+      728dd70     0        0         0         9     0        7
+      05955b1     1        3         1         5     0        6
+      2a2d0b0     1        3         1         5     0        6
+
+- What the new 16 say. The anchored reading with every piece accounted for (05955b1) carries
+  over to questions it had not seen: of 9 with an answer, 1 answered and 3 proposed rightly,
+  none wrong; of 7 without, none answered, one put to the user with the unread word named
+  ("단체로"). The deeper uses of 2c3944f add nothing on the new questions: its gain of the day
+  before was on the items it was made from. No checkpoint gives a wrong answer on the new 16.
+- Held among the new ones: 어디 alone (2; it has asked for 위치 and for 관리처), two long chain
+  questions asked with verbs, one whose knowledge sentence is refused.
+
+## A third set from the owner's outside examiner: a new field and new knowledge (2026-11-25)
+
+- `probes/outside3_e2e_20261125/` (greenhouses and their centres; 36 sentences, 70 questions
+  without form limits), run once on four checkpoints with `compare_checkpoints.py`, code as
+  committed (2a2d0b0), nothing changed afterwards. The property words are much the same as in
+  the earlier outside sets; the things, the values, the knowledge and the questions are new.
+  This is the first run in which every item is blind for 05955b1 and for 2c3944f.
+- As asked (52 questions with an answer, 18 without):
+
+      commit   knowledge  answered  assumed  proposed  proposed   held  wrong  no-answer
+               taken      right     right    right     otherwise               held
+      ded9098  35 of 36      9         0        0         0        42     1      18
+      728dd70  36 of 36      9         0        0         0        43     0      18
+      05955b1  36 of 36     10        11       16         1        14     0      18
+      2a2d0b0  36 of 36     10        12       16         1        13     0      18
+
+  With a user answering each proposal: 38 of 52 right at 2a2d0b0 (10 answered, 14 assumed,
+  14 after a yes), 0 wrong, 1 proposal declined. Two proposals became assumed answers within
+  the run, because wording confirmed earlier in it was said again.
+- What it says:
+  1. No wrong answer from 728dd70 on. The one wrong answer of ded9098 gives the plain fee and
+     the weekend fee together for the plain question: the defect the unasked-parts rule ended.
+  2. The step of 05955b1 holds on a new field: from 9 answered and 43 held to 21 answered or
+     assumed, 16 proposed rightly and 14 held, with all 18 questions without an answer held.
+  3. The deeper uses of 2c3944f are worth one question here (a check that states a value
+     without 맞: "바람온실 정원은 20명인가요?" → no, 15명). The pointer by shared letters and the
+     final-predicate rule changed nothing on this set.
+  4. The one proposal that is not what was asked: "별숲온실 담당센터는 어디에 있나요?" is taken to
+     ask for the centre, not where the centre is; "어디에 있나요" is not understood as 위치.
+- Still held (13): verbs with no property word and no counter for what is asked ("얼마를 내야
+  해요" with "하루에" in between, "몇 번으로 걸어요" where the phone number has no unit, "어떻게
+  미리 신청해요"); 어디 where the thing has both a place and a centre; chains asked with verbs
+  ("관리하는 센터에 전화하려면"); two checks asked with verbs.
+- Of the 18 held without an answer, most are held because the question was not read, not
+  because the missing qualifier was seen. Whether they would be held once read is not shown.
