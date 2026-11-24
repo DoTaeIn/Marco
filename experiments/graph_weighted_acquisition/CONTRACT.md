@@ -988,3 +988,38 @@ stem and ending, as it always did for head words.
   Not on this branch: the code here is that of `2c3944f`.
 - Also ruled out the same day, by the owner: a graph of dictionary definitions. It was tried
   early in this project and dropped because it does nothing for new words.
+
+### Counted, not built (2026-11-25): one step through the dictionary and hanja readings
+
+- Asked for by the owner as a second look at a method dropped early in this project. Then it
+  was open-ended (understand every word; it found meanings and stopped there). Here it has two
+  ends and one step: from each property word of the field to its dictionary definition and to
+  the native reading of its hanja (休務日 → 쉴, 貸與 → 빌릴), and from there to an unread word of
+  the question. Data: the standard dictionary of the national language institute (434,361
+  entries, with the hanja of each word) and a table of 5,978 hanja readings; both deleted after
+  the count. No project code was written.
+- The bridges are real: 휴무일 "직무를 보지 아니하고 쉬는 날", 이용료 "이용한 값으로 내는 요금",
+  소재지 "… 자리 잡고 있는 곳", 예약 豫 미리, 운영 … 開 열, 대여 貸 빌릴.
+- Count on the 50 held questions that have an answer, in the four exposed outside sets
+  (a stem that leads to two properties of the field is not used):
+  every word of the definitions: right 6, wrong 9, several 13, none 22;
+  hanja readings and the definitions' "-는" verbs only: right 5, wrong 7, several 6, none 32.
+  On the 58 held questions without an answer it points at one property for 16–21 of them.
+- The same half and half as the wording counts from ordinary text, with different words
+  (쉬다, 내다, 미리, 열다 here; 걸다, 통화, 건물, 얼마 there). What goes wrong: one-letter stems
+  (하-, 되-, 들-) land everywhere; a word's other senses come along (전화 as 轉化 gives 될);
+  in a chain the bridge finds the first link, not what is asked ("관리하는 곳에 연락하려면" →
+  관리처, asked: 전화); and nothing says which word of the question is the one that asks.
+- Both together (counted the same day, same 50 held questions; the files were fetched again and
+  deleted again). A pointer is used only where the dictionary step and the counts from ordinary
+  text name the same property for the question:
+  every word of the definitions: right 11, wrong 2, none 37 (alone: dictionary 6 right / 9
+  wrong, text 10 / 10); hanja readings and "-는" verbs only: right 6, wrong 0, none 44.
+  The two wrong ones are chains ("…가 있는 건물의 전화번호"): both sources name 위치, which is the
+  first link of what is asked, not a wrong property.
+  On the 58 held questions without an answer the two agree for 15–20, and in each of them on
+  the property that is in fact asked ("언제 쉬어요" → 휴무일, "얼마 내요" → 이용료); that there
+  is no answer is for the graph to find (a qualifier, a condition, an unknown thing).
+- Reading: either source alone is right as often as wrong; where two unrelated sources agree
+  the wrong ones nearly vanish, at a quarter of the questions. Exposed sets, thresholds set on
+  them, 50 questions: a reason to build and measure on a new set, not a result.
