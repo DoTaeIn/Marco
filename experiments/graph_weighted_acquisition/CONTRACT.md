@@ -1083,3 +1083,40 @@ stem and ending, as it always did for head words.
   181 MB of outside sources. The code is kept on `failed/goal1-dictionary-text-bridge`;
   `answer.py` and `probes/blind_e2e.py` are back as at `1732237`, and the sources are deleted.
   The `word`, `between` and `question` outputs of the fifth set cannot be reproduced from here.
+
+## Basic words (2026-11-25, built; not measured)
+
+- The owner's direction after three attempts to learn without teaching: teach. A teacher wrote, for
+  the first 1,000 words of a frequency list (942 distinct), which concepts each word points at
+  (`packs/basic_words_ko.tsv`: 163 concepts, 942 words; brief in
+  `probes/teacher_brief_basic_words_ko.md`). The words were cut by frequency rank, not picked from
+  held questions. The teacher saw no outside set. The builder checked form and consistency only and
+  sent faults back; it did not write or change a meaning.
+- A field may explain a property in plain words (`explained` in the word pack). `basic.py` reads
+  the lessons; `pack.with_words(language, words, basic)` keeps the concepts each explanation
+  reaches and the words of it no lesson knows.
+- `answer._anchor`: where a question names one thing and nothing in it points at a property by
+  form (no property word, no counter, no shared letters, nothing the question word asked for
+  before), the pieces not read and the question word are put next to the explanations. A property
+  is found when every piece has a sense wholly inside its explanation's concepts or a light use,
+  and at least one piece meets it by meaning. One property: a proposal, never an answer. Several:
+  candidates. A piece no lesson knows, or a taught word no explanation has, finds nothing.
+- Without the lessons nothing is in the model and nothing changes: the five outside sets give the
+  same lines as the committed code, the hashes of the changed files apart. 128 checks pass.
+- Shapes. The language pack has 9 endings and 6 connectors, so most inflected words did not reach
+  their lesson: of 308 distinct question words of the five exposed sets, 69 did (a mechanism check
+  on exposed sets, not a measure). The teacher then wrote, for the 290 basic words in -다, three
+  stems each, and four lists of 80: endings after each stem and connectors after a noun
+  (`packs/word_ends_ko.tsv`; brief in `probes/teacher_brief_word_ends_ko.md`).
+  `basic.load(words, ends)` makes every stem with every ending of its kind a form of the word
+  (64,970 forms, compared letter by letter); an ending of several words is cut at its first word.
+  With them 138 of the 308 reach a lesson. Taught connectors are used only to find a word and
+  inside the worked-out step; they do not make a piece "accounted for" where form decides, so no
+  proposal turns into an answer because of them.
+- The examiner brief now asks for `explained`, one plain line per property, written before the
+  questions. Sets made from it are not comparable with the first five as they stand; a new set is
+  to be run once without and once with the lessons (`blind_e2e.py <folder> [words] [ends]`).
+- Known limits. Not taught: endings that go under a stem as ㅂ니다, ㅂ니까, ㄴ다, and the bare
+  third stem as a whole word (해, 가). The stems hold forms that are not used (갖으, 갖아) and the
+  other verb written 걷다; they add forms and remove none. A yes to a worked-out proposal is not
+  kept yet. No outside set has been run with explanations: whether this answers more is unknown.

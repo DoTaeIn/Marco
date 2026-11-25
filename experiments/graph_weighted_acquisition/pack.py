@@ -17,6 +17,7 @@ Changing the field means changing the word pack and the fact pack. The language 
 import json
 
 from . import answer as A
+from . import basic as B
 from . import reader as R
 from . import write as W
 
@@ -33,12 +34,16 @@ def language_pack(lessons, variants=None):
     return R.build(lessons, variants=variants)
 
 
-def with_words(language, words):
+def with_words(language, words, basic=None):
     """The language pack with the field's property words made readable and writable.
 
     A field word gets the counts that the lessons' own words of the same slot have, pooled:
     what such a word means, what sentences it appears in, and which arguments it takes.
     The language pack itself is not changed.
+
+    With `basic` (basic.load), a property may come with `explained`, one line in plain words
+    ("쉬는 날"). The concepts that line reaches are kept, and so are its words no lesson knows,
+    for the one who wrote the field to see. Without `basic` nothing of this is in the model.
     """
     if words.get('schema') != WORDS:
         raise ValueError('unsupported word pack')
@@ -99,6 +104,15 @@ def with_words(language, words):
     model['field_slot'] = dict(words['slot'])      # which roles carry the thing and the value: used to find the fact a question asks about
     model['field_word_weight'], model['field_names'], model['field_values'] = typical, [], []
     _know_names(model, [n for name in words.get('names', []) for n in [name['name']] + name.get('also', [])], 'word_pack')
+    if basic is not None:
+        marks, endings = A.word_ends(model['tables'])
+        model['basic'], model['field_explained'], model['field_unexplained'] = basic, {}, []
+        for prop in words['properties']:
+            if prop.get('explained'):
+                reached, unknown = B.concepts_of(basic, prop['explained'], marks, endings)
+                model['field_explained'][prop['means']] = sorted(reached)
+                if unknown:
+                    model['field_unexplained'].append({'property': prop['means'], 'words': unknown})
     return model
 
 
@@ -122,11 +136,11 @@ def _know_names(model, names, source):
         model['field_names'].append(name)
 
 
-def load(language, words, facts):
+def load(language, words, facts, basic=None):
     """Put the three packs together. Returns the system that `ask` and `tell` use."""
     if facts.get('schema') != FACTS:
         raise ValueError('unsupported fact pack')
-    model = with_words(language, words)
+    model = with_words(language, words, basic)
     kind, attribute = words['slot']['type'], words['slot']['attribute']
     subject, value = words['slot']['subject_role'], words['slot']['value_role']
     known = {p['means'] for p in words['properties']}

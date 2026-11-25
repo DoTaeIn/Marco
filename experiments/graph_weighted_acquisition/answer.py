@@ -13,6 +13,7 @@ from pathlib import Path
 
 from experiments.graph_example_acquisition import native
 from experiments.graph_language_repair.questions.query_graph import execute_query_graph
+from . import basic as B
 from . import learn as L
 from . import match as M
 from . import reader as R
@@ -255,6 +256,12 @@ def _shares(a, b, least=2):
     return any(a[i:i + least] in b for i in range(len(a) - least + 1))
 
 
+def word_ends(tables):
+    """What the language pack has that may follow a word: its connectors, and the endings of its fixed words."""
+    marks = sorted({g.strip() for g in tables.get('gap', {}).get('mid', {}) if g.strip()}, key=len, reverse=True)
+    return marks, set(tables.get('closed_ending', {}).get(R.ANY, {}))
+
+
 def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     """The question was not read. Which fact of the knowledge does it ask about?
 
@@ -332,7 +339,8 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         return None
     thing = next(iter(named))
     # What was not recognised, piece by piece.
-    marks = sorted({g.strip() for g in tables.get('gap', {}).get('mid', {}) if g.strip()}, key=len, reverse=True)
+    marks, endings = word_ends(tables)
+    basic = model.get('basic')
     pieces_known = set(marks) | {g.strip().rstrip('?.!') for g in tables.get('gap', {}).get('end', {})} \
         | {g.strip().rstrip('?.!') for g in model.get('alias', {})}
     unread, pos, tokens = [], 0, question.split()
@@ -346,7 +354,8 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         # An unknown word marked as a noun may be the property or a thing. The last word of a sentence is
         # its predicate, whatever it ends in ("들어가?"): the language puts the predicate last.
         if n < len(tokens) - 1 and not any(taken[start:start + len(token)]) \
-                and any(bare.endswith(m) and len(bare) > len(m) for m in marks):
+                and any(bare.endswith(m) and len(bare) > len(m) for m in marks) \
+                and not (basic and B.lookup(basic, bare, marks, endings)):     # a taught word is not an unknown noun
             return None
         unread.append(left)
     weak = False
@@ -366,10 +375,19 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         weak = bool(wanted)
         if len(wanted) > 2:
             return None
-    if not (wanted or asks or units):
-        return None
     said = {(aliases or {}).get(c, c) for _, c in found['circumstance']}
     history = {e['property'] for e in (memory or {}).get('asks', []) if e['word'] in asks}
+    worked = []
+    if basic and not (wanted or units or history):
+        # Nothing in the question points at a property by form. Taught basic words may: the pieces that
+        # were not read are put next to the plain-words explanation of every property (basic.explained_by).
+        # Worked out, not read: it can only lead to a proposal or to candidates.
+        worked = B.explained_by(basic, [x for x in unread if x not in pieces_known and x not in basic['marks']] + asks,
+                                model.get('field_explained', {}), marks, endings)
+        if not worked:
+            return None
+    if not (wanted or asks or units or worked):
+        return None
     sure = not weak                                    # may it be answered, if every piece is accounted for?
     if len(wanted) == 2:
         # A chain: the first property's value is the thing the second property is asked of.
@@ -389,6 +407,10 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         elif units:
             fits = [f for f in fits if _unit(f['value']) in units]
             how = 'the counter "%s %s"' % (counter, '/'.join(sorted(units)))
+        elif worked:
+            fits = [f for f in fits if f['property'] in worked]
+            sure = False
+            how = 'taught basic words that meet the explanation of the property'
         elif history:
             # What a question word may ask for is not narrowed by what happens to be known of this thing.
             fits = [f for f in fits if f['property'] in history]
@@ -408,7 +430,7 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         return out
     fact = fits[0]
     heard = {w for e in (memory or {}).get('said', []) if e['property'] == fact['property'] for w in e['words']}
-    open_pieces = [x for x in unread if x not in pieces_known and x not in heard]
+    open_pieces = [] if worked else [x for x in unread if x not in pieces_known and x not in heard]
     understood = {'thing': understood_thing, 'property': fact['property'], 'with': fact['with']}
     item = {'understood': understood, 'recognised': recognised, 'unread': unread, 'chosen_by': how,
             'not_accounted_for': open_pieces}
@@ -424,6 +446,7 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         # One fact fits what was recognised, but pieces of the question are not accounted for, and one of
         # them may be what changes the answer. Not answered: put to the user.
         why = ('these pieces are not accounted for: %s' % ', '.join('"%s"' % x for x in open_pieces)) if open_pieces \
+            else 'it was worked out from taught basic words, not read' if worked \
             else 'the question word has asked for more than one property'
         out['proposal'] = dict(item, if_confirmed=fact['value'], evidence=evidence,
                                ask='Did you ask %s the %s of %s%s%s? (%s)' % (

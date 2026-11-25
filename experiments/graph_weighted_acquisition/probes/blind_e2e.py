@@ -113,8 +113,17 @@ def main():
     # A property word or a name may come with other words for it ({"word": ..., "also": [...]}), or as a plain string.
     props = [x if isinstance(x, dict) else {'word': x, 'also': []} for x in data['properties']]
     names = [x if isinstance(x, dict) else {'name': x, 'also': []} for x in data['names']]
+    # With a second argument, the taught basic words (packs/basic_words_ko.tsv) and the plain-words
+    # explanation the examiner gave each property are used. Without it the run is as it always was.
+    basic = None
+    if len(sys.argv) > 2:
+        from experiments.graph_weighted_acquisition import basic as B
+        basic = B.load(*sys.argv[2:4])                  # the words, and how they change their shape
+        for path in sys.argv[2:4]:
+            print('  %s  %s (taught)' % (hashlib.sha256(Path(path).read_bytes()).hexdigest()[:16], Path(path).name))
     words = {'schema': PK.WORDS, 'field': data['domain'], 'slot': BT.SLOT,
-             'properties': [{'word': x['word'], 'means': x['word'], 'also': list(x.get('also', []))} for x in props],
+             'properties': [dict({'word': x['word'], 'means': x['word'], 'also': list(x.get('also', []))},
+                                 **({'explained': x['explained']} if basic and x.get('explained') else {})) for x in props],
              'names': [{'name': x['name'], 'also': list(x.get('also', []))} for x in names]}
     aliases = {other: x['name'] for x in names for other in x.get('also', [])}
     clashes = [x['word'] for x in props if x['word'] in full['tables'].get('closed', {})]
@@ -122,7 +131,11 @@ def main():
         print('FIELD WORDS REFUSED BY THE PACK LOADER (fixed words of the language): %s' % ', '.join(clashes))
         words['properties'] = [x for x in words['properties'] if x['word'] not in clashes]
     try:
-        model = PK.with_words(full, words)
+        model = PK.with_words(full, words, basic) if basic else PK.with_words(full, words)
+        if basic:
+            print('Explanations taken: %d of %d properties. Words of them no lesson knows: %s' % (
+                len(model['field_explained']), len(props),
+                '; '.join('%s: %s' % (u['property'], ', '.join(u['words'])) for u in model['field_unexplained']) or 'none'))
     except ValueError as error:
         # An older checkpoint refuses a field word that is also a word of its lessons. Said, and the word left out.
         print('THE PACK LOADER OF THIS CHECKPOINT REFUSED THE WORD PACK: %s' % error)

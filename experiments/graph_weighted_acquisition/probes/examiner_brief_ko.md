@@ -19,6 +19,7 @@ PYTHONPATH=. python experiments/graph_weighted_acquisition/probes/blind_e2e.py <
 1. 안내 창구에서 물어볼 만한 가상의 분야를 하나 지어냅니다. 속성 낱말 8개(명사), 대상 이름 10개 안팎을 정합니다.
    - 형식 제약: 대상 이름, 속성 낱말, 값, 꾸밈말, 시점은 각각 **띄어쓰기 없는 한 덩어리**입니다(예: `하루100원`, `2027년`, `매주월요일`).
    - 속성 낱말과 대상 이름에는 사람들이 실제로 쓸 다른 말이 있으면 `also`에 적습니다(예: 속성 `이용료`의 다른 말 `요금`).
+   - 속성마다 `explained`에 **쉬운 말 한 줄 풀이**를 적습니다. 그 분야를 모르는 아이에게 말해 주듯이, 흔한 낱말만 써서 그 속성이 무엇인지 적습니다(예: `이용료` → `쓰려고 내는 돈`). 속성 낱말 자신과 `also`의 낱말은 풀이에 쓰지 않습니다. 풀이는 질문을 쓰기 전에 먼저 적고, 질문을 쓴 뒤에 고치지 않습니다.
 
 2. 그 분야의 지식 36문장을 씁니다. 안내문에 적을 법한 평서문으로, 아래 형태 안에서 씁니다. 지식은 엄격하게 받아들이기 때문에 형태를 정해 둡니다.
    - `X의 P는 V이다.` / `X는 P가 V이다.` / `X P는 V이다.`
@@ -59,7 +60,7 @@ PYTHONPATH=. python experiments/graph_weighted_acquisition/probes/blind_e2e.py <
 
 ```
 {"domain": "분야 설명",
- "properties": [{"word": "이용료", "also": ["요금"]}, ...],
+ "properties": [{"word": "이용료", "also": ["요금"], "explained": "쓰려고 내는 돈"}, ...],
  "names": [{"name": "수영장", "also": ["풀장"]}, ...],
  "knowledge": [{"id": "K01", "text": "..."}, ... 36개],
  "questions": [{"id": "Q01", "kind": "direct|short|natural|qualified|check|chain|no_answer",
