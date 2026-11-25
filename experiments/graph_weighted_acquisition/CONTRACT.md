@@ -1023,3 +1023,46 @@ stem and ending, as it always did for head words.
 - Reading: either source alone is right as often as wrong; where two unrelated sources agree
   the wrong ones nearly vanish, at a quarter of the questions. Exposed sets, thresholds set on
   them, 50 questions: a reason to build and measure on a new set, not a result.
+
+### Two sources that must agree (2026-11-25): built, not yet measured on a new set
+
+- `lexicon.py`: one step through a dictionary from the field's property words (definition and the
+  native reading of each hanja; a word that is no headword is cut into headwords; of several
+  senses those that share something with the property's other words; a stem leading to two
+  properties of the field is left out). `wording.py`: the counts from ordinary text, as on the
+  set-aside branch. Both are plain integer or string data with where each step came from.
+- `answer._both_point`: the properties both sources tie to unread words (and question words) of
+  a question. Used in `_anchor` in three places, each leading to a proposal only:
+  1. nothing else points anywhere and the question word asked for nothing before: the one
+     property both agree on is proposed;
+  2. a property word is there and both sources lead to another property whose value is a thing
+     that has the asked property: proposed as a chain ("…있는 건물 연락처" → 위치, then 전화);
+  3. an unread word marked as a noun stops the question as before, unless both sources agree on
+     what that very word is about (`bridge['stop']` = `word`, the default) or on what the
+     question is about (`question`).
+- A model without `bridge` behaves as before: 123 public checks pass (3 new,
+  `tests/test_bridge.py`), shipped packs same SHA-256 (470df3c3…), and the four outside sets give
+  the output of `2c3944f` line for line.
+- Sources, outside the repository (`.worktrees/data/`, 181 MB): 269,281 noun senses of the
+  standard dictionary (36 MB, CC BY-SA), 5,978 hanja readings (0.3 MB, no licence stated),
+  2,106,219 sentences of a public Q&A site (145 MB, no licence stated). Nothing derived from
+  them is committed. `probes/blind_e2e.py` builds both tables when `GOAL1_BRIDGE_DIR` names the
+  folder (`GOAL1_BRIDGE_STOP=question` for the looser rule); about 15 s per field.
+- On the four exposed sets, against no sources (a check of the mechanism, not a measurement;
+  the first and second set share their knowledge):
+  stop by word: right proposals +4, proposals that are not what was asked +0, answers the same;
+  stop by question: right proposals +14 (four of them chains, the first chains ever proposed),
+  not what was asked +6, two questions without an answer now put to the user (어린이 … 이용료);
+  0 wrong answers either way.
+- The rules and thresholds were made while looking at these sets. To be measured on a new outside
+  set, both stop rules, before anything is claimed.
+- A stop rule between the two (`bridge['stop']` = `between`, added the same day after the
+  owner asked for the middle): as `question`, but where an unexplained noun was let pass, a
+  property word put straight to the thing stays stopped (in "N의 P" an unknown N is likely whose
+  P is asked); the agreed property, a chain, shared letters, a counter and a question word's
+  history go on. On the four exposed sets, against no sources: right proposals +14 (the same as
+  `question`), not what was asked +3 (`question`: +6), 0 wrong answers. The three left: one chain
+  taken as the thing's own phone, and "어린이가 … 얼마 내요" twice (the fee is what is asked; that
+  there is no children's fee is not seen, and the word is shown as not accounted for).
+  Third rule made on the same exposed sets. All three (`word`, `between`, `question`) are to be
+  run once on a new outside set.

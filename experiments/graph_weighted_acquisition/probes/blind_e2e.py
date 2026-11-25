@@ -19,6 +19,7 @@ Run from the repository root:
 import hashlib
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -129,6 +130,20 @@ def main():
         refused_words = [x['word'] for x in words['properties'] if x['word'] in full['tables'].get('head', {})]
         words['properties'] = [x for x in words['properties'] if x['word'] not in refused_words]
         model = PK.with_words(full, words)
+    sources = os.environ.get('GOAL1_BRIDGE_DIR')
+    if sources:
+        # Built from the field's property words and three files kept outside the repository; the questions are not used.
+        from experiments.graph_weighted_acquisition import lexicon as LX
+        from experiments.graph_weighted_acquisition import wording as WD
+        field_words = {x['word']: [x['word']] + list(x.get('also', [])) for x in props if x['word'] not in clashes}
+        sources = Path(sources)
+        model['bridge'] = {'text': WD.build(str(sources / 'sentences_qa.txt'), field_words, 'questions and answers of a public site'),
+                           'dictionary': LX.build(str(sources / 'dictionary_nouns.tsv'), str(sources / 'hanja_readings.csv'),
+                                                  field_words, 'standard dictionary and hanja readings'),
+                           'stop': os.environ.get('GOAL1_BRIDGE_STOP', 'word')}
+        print('Bridge: text counts over %d sentences (%d forms kept); dictionary steps: %s' % (
+            model['bridge']['text']['sentences'], len(model['bridge']['text']['forms']),
+            ', '.join('%s %d' % (p, len(v)) for p, v in model['bridge']['dictionary']['properties'].items())))
     print('\nField "%s": %d property words, %d names, %d sentences of knowledge, %d questions. Language pack: %d lessons.'
           % (data['domain'], len(props), len(names), len(data['knowledge']), len(data['questions']), n))
     taken, refused, memory = take_in(model, data['knowledge'])

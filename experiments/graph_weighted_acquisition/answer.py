@@ -14,6 +14,8 @@ from pathlib import Path
 from experiments.graph_example_acquisition import native
 from experiments.graph_language_repair.questions.query_graph import execute_query_graph
 from . import learn as L
+from . import lexicon as LX
+from . import wording as WD
 from . import match as M
 from . import reader as R
 from . import write as W
@@ -255,6 +257,23 @@ def _shares(a, b, least=2):
     return any(a[i:i + least] in b for i in range(len(a) - least + 1))
 
 
+def _both_point(model, pieces):
+    """The properties that two unrelated sources both tie to words of the question: one step through the
+    dictionary (lexicon.py) and counts from ordinary text (wording.py). Either alone is right about as often
+    as wrong; each goes wrong in its own way, so they seldom go wrong together. Still a guess: it leads to
+    a proposal only. Returns {property: [what pointed]}; empty for a model without `bridge`."""
+    bridge = model.get('bridge')
+    if not bridge:
+        return {}
+    by_dictionary, by_text = {}, {}
+    for piece in pieces:
+        for prop, where in LX.points(bridge['dictionary'], piece).items():
+            by_dictionary.setdefault(prop, []).append('"%s" by the dictionary (%s)' % (piece, where[0]))
+        for prop, (times, form) in WD.points(bridge['text'], piece).items():
+            by_text.setdefault(prop, []).append('"%s" by text (%s-, %d times chance)' % (piece, form, times))
+    return {prop: by_dictionary[prop] + by_text[prop] for prop in by_dictionary if prop in by_text}
+
+
 def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     """The question was not read. Which fact of the knowledge does it ask about?
 
@@ -335,7 +354,7 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     marks = sorted({g.strip() for g in tables.get('gap', {}).get('mid', {}) if g.strip()}, key=len, reverse=True)
     pieces_known = set(marks) | {g.strip().rstrip('?.!') for g in tables.get('gap', {}).get('end', {})} \
         | {g.strip().rstrip('?.!') for g in model.get('alias', {})}
-    unread, pos, tokens = [], 0, question.split()
+    unread, stopped, pos, tokens = [], [], 0, question.split()
     for n, token in enumerate(tokens):
         start = question.index(token, pos)
         pos = start + len(token)
@@ -347,8 +366,19 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         # its predicate, whatever it ends in ("들어가?"): the language puts the predicate last.
         if n < len(tokens) - 1 and not any(taken[start:start + len(token)]) \
                 and any(bare.endswith(m) and len(bare) > len(m) for m in marks):
-            return None
+            stopped.append(bare)
         unread.append(left)
+    # Where two unrelated sources agree on a property for this question (model['bridge'], see _both_point).
+    pointed = _both_point(model, unread + asks)
+    # Such a word stops the question, unless the two sources agree on what that very word is about
+    # (bridge 'stop': 'word', the default) or on what the question is about ('question').
+    # 'between': as 'question', but then only what the two sources themselves explain may go on (see below).
+    stop = (model.get('bridge') or {}).get('stop', 'word')
+    explained = bool(model.get('bridge')) and all(_both_point(model, [w]) for w in stopped)
+    if stopped and not (explained or (pointed and stop in ('question', 'between'))):
+        return None
+    opened = bool(stopped) and not explained and stop == 'between'
+    bridged = False
     weak = False
     if not wanted and not units:
         # No property word and no counter. A word that was not read may still point at a property: it shares
@@ -363,10 +393,26 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
             for f in facts:
                 if f['thing'] == thing and _shares(piece, f['value']) and f['property'] not in wanted:
                     wanted.append(f['property'])
+        if not wanted and len(pointed) == 1 and not any(e['word'] in asks for e in (memory or {}).get('asks', [])):
+            # Nothing else points anywhere and the question would be held. The two sources agree on one property.
+            wanted.append(next(iter(pointed)))
+            bridged = True
         weak = bool(wanted)
         if len(wanted) > 2:
             return None
+    elif len(wanted) == 1 and len(pointed) == 1 and wanted[0] not in pointed:
+        # A property word, and other words that lead to another property ("…가 있는 건물의 전화번호": 위치, then
+        # 전화). If that other property's value is a thing that has the asked property, this may be a chain.
+        link = next(iter(pointed))
+        first = [f for f in facts if f['thing'] == thing and f['property'] == link and not f['with']]
+        if len(first) == 1 and sum(1 for f in facts if f['thing'] == first[0]['value']
+                                   and f['property'] == wanted[0] and not f['with']) == 1:
+            wanted, weak, bridged = [link, wanted[0]], True, True
     if not (wanted or asks or units):
+        return None
+    if opened and wanted and not weak:
+        # The two sources let an unexplained noun pass, and what is left is a property word put straight to
+        # the thing. That stays stopped: in "N의 P" an unknown N is likely whose P is asked.
         return None
     said = {(aliases or {}).get(c, c) for _, c in found['circumstance']}
     history = {e['property'] for e in (memory or {}).get('asks', []) if e['word'] in asks}
@@ -378,14 +424,17 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
             return None
         fits = [dict(f, spans=sorted(set(first[0]['spans']) | set(f['spans'])), through=first[0]['value'])
                 for f in facts if f['thing'] == first[0]['value'] and f['property'] == wanted[1] and not f['with']]
-        how = 'two property words, joined through "%s"' % first[0]['value']
+        how = ('a property word, and words the dictionary and ordinary text both tie to %s (%s); joined through "%s"' % (
+                   wanted[0], '; '.join(pointed[wanted[0]]), first[0]['value'])) if bridged else \
+            'two property words, joined through "%s"' % first[0]['value']
         understood_thing = '%s (the %s of %s)' % (first[0]['value'], wanted[0], thing)
     else:
         fits = [f for f in facts if f['thing'] == thing and set(f['with'].values()) == said]
         understood_thing = thing
         if wanted:
             fits = [f for f in fits if f['property'] == wanted[0]]
-            how = 'letters an unread word shares with a property word or a value' if weak else 'the property word'
+            how = ('words the dictionary and ordinary text both tie to this property: %s' % '; '.join(pointed[wanted[0]])) \
+                if bridged else 'letters an unread word shares with a property word or a value' if weak else 'the property word'
         elif units:
             fits = [f for f in fits if _unit(f['value']) in units]
             how = 'the counter "%s %s"' % (counter, '/'.join(sorted(units)))
