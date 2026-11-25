@@ -1,0 +1,432 @@
+# Frozen before the items existed
+  9b90e9fad0adb061  reader.py
+  b0208999be1f32fb  match.py
+  9a3700e732251052  answer.py
+  acc269e6f52913a7  write.py
+  3b6886430defecce  pack.py
+  f844167bb0d32dfa  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  b949bd2afe37c83e  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  b024b3597b19769b  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  0953e41efd3c7416  probes/reading_limits.py
+  f90fe6ddca01cf56  probes/blind_e2e.py
+  d1036ddcaef796dc  C.json (the items)
+Bridge: text counts over 2106219 sentences (5307 forms kept); dictionary steps: 이용료 29, 운영시간 116, 휴관일 51, 정원 44, 위치 38, 관리처 306, 전화번호 67, 예약방법 51
+
+Field "가상의 해안생태체험단지 내 체험시설 이용 및 관리 안내": 8 property words, 10 names, 36 sentences of knowledge, 70 questions. Language pack: 640 lessons.
+
+# 1. Knowledge taken in, sentence by sentence
+TAKEN    K01 산호관의 이용료는 5000원이다.
+TAKEN    K02 산호관의 주말 이용료는 7000원이다.
+TAKEN    K03 산호관의 관리처는 바다센터이다.
+TAKEN    K04 산호관의 전화번호는 000-0000-1101이다.
+TAKEN    K05 산호관은 정원이 30명이다.
+TAKEN    K06 갯벌관의 관리처는 생태센터이다.
+TAKEN    K07 갯벌관의 위치는 동쪽해변이다.
+TAKEN    K08 갯벌관의 평일 운영시간은 09시~16시이다.
+TAKEN    K09 갯벌관의 주말 운영시간은 10시~18시이다.
+TAKEN    K10 갯벌관 휴관일은 화요일이다.
+TAKEN    K11 해파리관의 관리처는 해안센터이다.
+TAKEN    K12 해파리관의 이용료는 4000원이다.
+TAKEN    K13 해파리관의 예약방법은 온라인예약이다.
+TAKEN    K14 2031년에 해파리관의 이용료는 6000원이다.
+TAKEN    K15 해파리관의 위치는 북쪽부두이다.
+TAKEN    K16 2031년에 조개관의 관리처는 바다센터이다.
+REFUSED  K17 조개관의 어린이 이용료는 2000원이다.   -- every reading uses something never seen in training
+TAKEN    K18 조개관의 휴관일은 수요일이다.
+REFUSED  K19 등대관의 예약방법이 전화예약이면 등대관의 관리처는 생태센터이다.   -- every reading uses something never seen in training
+TAKEN    K20 등대관의 야간 이용료는 8000원이다.
+TAKEN    K21 등대관의 주간 이용료는 3000원이다.
+TAKEN    K22 등대관은 위치가 남쪽방파제이다.
+TAKEN    K23 해초관의 관리처는 해안센터가 아니다.
+TAKEN    K24 해초관의 단체 정원은 40명이다.
+TAKEN    K25 해초관은 휴관일이 목요일이다.
+TAKEN    K26 파도관의 예약방법이 현장접수이면 파도관의 이용료는 9000원이다.
+TAKEN    K27 2032년에 파도관의 정원은 50명이다.
+TAKEN    K28 파도관의 위치는 서쪽광장이다.
+TAKEN    K29 바다센터의 전화번호는 000-0000-2101이다.
+TAKEN    K30 바다센터의 휴관일은 월요일이다.
+TAKEN    K31 생태센터의 전화번호는 000-0000-2201이다.
+TAKEN    K32 생태센터의 위치는 중앙광장이다.
+TAKEN    K33 해안센터의 전화번호는 000-0000-2301이다.
+TAKEN    K34 해안센터의 위치는 해안입구이다.
+TAKEN    K35 해안센터의 예약방법은 방문접수이다.
+REFUSED  K36 산호관의 예약방법는 전화예약이다.   -- every reading uses something never seen in training
+taken 33 of 36. Word kinds the taken sentences showed: 단체=condition
+
+# 2. Questions and answers, as asked (no one answers the system back)
+
+right Q01 [direct]
+  Q: 산호관의 이용료는 얼마입니까?
+  expected: 5000원
+  got:      5000원   (as a sentence: 산호관의 이용료는 5000원이다.)
+
+proposed right, asks first Q02 [direct]
+  Q: 갯벌관의 휴관일은 무슨 요일입니까?
+  expected: 화요일
+  got:      -- asks: Did you ask for the 휴관일 of 갯벌관? (these pieces are not accounted for: "무슨", "요일입니까")   [would then answer 화요일]
+
+proposed right, asks first Q03 [direct]
+  Q: 산호관의 정원을 알려주시겠습니까?
+  expected: 30명
+  got:      -- asks: Did you ask for the 정원 of 산호관? (these pieces are not accounted for: "을", "알려주시겠습니까")   [would then answer 30명]
+
+right Q04 [direct]
+  Q: 해파리관의 위치는 어디입니까?
+  expected: 북쪽부두
+  got:      북쪽부두   (as a sentence: 해파리관의 위치는 북쪽부두이다.)
+
+right Q05 [direct]
+  Q: 갯벌관의 관리처는 어디입니까?
+  expected: 생태센터
+  got:      생태센터   (as a sentence: 갯벌관의 관리처는 생태센터이다.)
+
+proposed right, asks first Q06 [direct]
+  Q: 바다센터의 전화번호를 알려주세요.
+  expected: 000-0000-2101
+  got:      -- asks: Did you ask for the 전화번호 of 바다센터? (these pieces are not accounted for: "를", "알려주세요")   [would then answer 000-0000-2101]
+
+right Q07 [direct]
+  Q: 해파리관의 예약방법은 무엇입니까?
+  expected: 온라인예약
+  got:      온라인예약   (as a sentence: 해파리관의 예약방법은 온라인예약이다.)
+
+proposed right, asks first Q08 [direct]
+  Q: 해안센터의 예약방법을 안내해 주시겠습니까?
+  expected: 방문접수
+  got:      -- asks: Did you ask for the 예약방법 of 해안센터? (these pieces are not accounted for: "을", "안내해", "주시겠습니까")   [would then answer 방문접수]
+
+assumed right Q09 [short]
+  Q: 산호전시관 요금 얼마?
+  expected: 5000원
+  got:      5000원   [not read as a sentence; taken to ask for the 이용료 of "산호관"; chosen by the property word; not read: nothing]
+
+held Q10 [short]
+  Q: 갯벌체험관 어디야?
+  expected: 동쪽해변
+  got:      -- the question was not read; it names "갯벌관", and the knowledge has 2 facts it could be asking for: 관리처 of 갯벌관; 위치 of 갯벌관   [could be: 관리처 of 갯벌관]   [could be: 위치 of 갯벌관]
+
+assumed right Q11 [short]
+  Q: 해파리관 입장료?
+  expected: 4000원
+  got:      4000원   [not read as a sentence; taken to ask for the 이용료 of "해파리관"; chosen by the property word; not read: nothing]
+
+assumed right Q12 [short]
+  Q: 조개전시관 휴무일?
+  expected: 수요일
+  got:      수요일   [not read as a sentence; taken to ask for the 휴관일 of "조개관"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q13 [short]
+  Q: 산호관 연락처 좀
+  expected: 000-0000-1101
+  got:      -- asks: Did you ask for the 전화번호 of 산호관? (these pieces are not accounted for: "좀")   [would then answer 000-0000-1101]
+
+assumed right Q14 [short]
+  Q: 등대체험관 위치?
+  expected: 남쪽방파제
+  got:      남쪽방파제   [not read as a sentence; taken to ask for the 위치 of "등대관"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q15 [short]
+  Q: 해초관 쉬는 날?
+  expected: 목요일
+  got:      -- asks: Did you ask for the 휴관일 of 해초관? (these pieces are not accounted for: "쉬는", "날")   [would then answer 목요일]
+
+assumed right Q16 [short]
+  Q: 파도체험관 장소 어디?
+  expected: 서쪽광장
+  got:      서쪽광장   [not read as a sentence; taken to ask for the 위치 of "파도관"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q17 [short]
+  Q: 생태관리센터 전화 좀
+  expected: 000-0000-2201
+  got:      -- asks: Did you ask for the 전화번호 of 생태센터? (these pieces are not accounted for: "좀")   [would then answer 000-0000-2201]
+
+assumed right Q18 [short]
+  Q: 해안관리센터 소재지?
+  expected: 해안입구
+  got:      해안입구   [not read as a sentence; taken to ask for the 위치 of "해안센터"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q19 [short]
+  Q: 산호관 최대 몇 명?
+  expected: 30명
+  got:      -- asks: Did you ask for the 정원 of 산호관? (these pieces are not accounted for: "최대")   [would then answer 30명]
+
+proposed right, asks first Q20 [short]
+  Q: 바다센터 휴무 언제?
+  expected: 월요일
+  got:      -- asks: Did you ask for the 휴관일 of 바다센터? (these pieces are not accounted for: "휴무")   [would then answer 월요일]
+
+proposed right, asks first Q21 [natural]
+  Q: 산호관에 들어가려면 얼마를 내야 해요?
+  expected: 5000원
+  got:      -- asks: Did you ask for the 이용료 of 산호관? (these pieces are not accounted for: "들어가려면", "를", "내야", "해요")   [would then answer 5000원]
+
+held Q22 [natural]
+  Q: 산호관에는 한꺼번에 몇 명까지 들어갈 수 있나요?
+  expected: 30명
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q23 [natural]
+  Q: 갯벌관은 무슨 요일에 문을 닫나요?
+  expected: 화요일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q24 [natural]
+  Q: 갯벌을 체험하려면 단지 안에서 어느 쪽으로 가야 하나요?
+  expected: 동쪽해변
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q25 [natural]
+  Q: 해파리관에 미리 가겠다고 신청하려면 어떻게 해야 하나요?
+  expected: 온라인예약
+  got:      -- asks: Did you ask for the 예약방법 of 해파리관? (these pieces are not accounted for: "미리", "가겠다고", "신청하려면", "어떻게", "해야", "하나요")   [would then answer 온라인예약]
+
+held Q26 [natural]
+  Q: 해파리 구경하려면 돈을 얼마나 내야 하나요?
+  expected: 4000원
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q27 [natural]
+  Q: 조개관에 헛걸음하지 않으려면 무슨 요일을 피해야 할까요?
+  expected: 수요일
+  got:      -- asks: Did you ask for the 휴관일 of 조개관? (these pieces are not accounted for: "헛걸음하지", "않으려면", "무슨", "요일을", "피해야", "할까요")   [would then answer 수요일]
+
+held Q28 [natural]
+  Q: 등대를 체험하고 싶은데 단지 안에서 어디로 찾아가면 돼요?
+  expected: 남쪽방파제
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q29 [natural]
+  Q: 해초관은 매주 무슨 요일에 쉬어요?
+  expected: 목요일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q30 [natural]
+  Q: 파도관에 가려는데 단지의 어느 쪽으로 가면 찾을 수 있죠?
+  expected: 서쪽광장
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q31 [natural]
+  Q: 산호관은 어느 기관에서 맡아서 운영하나요?
+  expected: 바다센터
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q32 [natural]
+  Q: 해파리관을 관리하는 곳이 따로 있다던데 어디인가요?
+  expected: 해안센터
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q33 [natural]
+  Q: 생태센터에 직접 전화를 걸려면 몇 번을 눌러야 하나요?
+  expected: 000-0000-2201
+  got:      -- asks: Did you ask for the 전화번호 of 생태센터? (these pieces are not accounted for: "직접", "를", "걸려면", "몇", "번을", "눌러야", "하나요")   [would then answer 000-0000-2201]
+
+held Q34 [natural]
+  Q: 해안센터를 이용하기 전에 미리 신청하려면 어떻게 해야 해요?
+  expected: 방문접수
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+right Q35 [qualified]
+  Q: 산호관의 주말 이용료는 얼마입니까?
+  expected: 7000원
+  got:      7000원   (as a sentence: 산호관의 주말 이용료는 7000원이다.)
+
+proposed right, asks first Q36 [qualified]
+  Q: 갯벌관 평일 몇 시부터 몇 시까지 해?
+  expected: 09시~16시
+  got:      -- asks: Did you ask for the 운영시간 of 갯벌관, when: 평일? (these pieces are not accounted for: "부터", "까지", "해")   [would then answer 09시~16시]
+
+proposed right, asks first Q37 [qualified]
+  Q: 갯벌관은 주말에 몇 시부터 몇 시까지 문을 열어요?
+  expected: 10시~18시
+  got:      -- asks: Did you ask for the 운영시간 of 갯벌관, when: 주말? (these pieces are not accounted for: "부터", "까지", "문을", "열어요")   [would then answer 10시~18시]
+
+proposed right, asks first Q38 [qualified]
+  Q: 2031년 해파리관의 이용료를 알려주세요.
+  expected: 6000원
+  got:      -- asks: Did you ask for the 이용료 of 해파리관, at: 2031년? (these pieces are not accounted for: "를", "알려주세요")   [would then answer 6000원]
+
+held (its knowledge was refused) Q39 [qualified]
+  Q: 조개관에 아이가 들어가려면 얼마 내야 돼요?
+  expected: 2000원
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q40 [qualified]
+  Q: 등대관 밤에 가면 얼마예요?
+  expected: 8000원
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+right Q41 [qualified]
+  Q: 등대관의 주간 이용료는 얼마입니까?
+  expected: 3000원
+  got:      3000원   (as a sentence: 등대관의 주간 이용료는 3000원이다.)
+
+assumed right Q42 [qualified]
+  Q: 2032년 파도관의 정원은 몇 명입니까?
+  expected: 50명
+  got:      50명   [not read as a sentence; taken to ask for the 정원 of "파도관" at=2032년; chosen by the property word; not read: 의, 은, 입니까]
+
+held Q43 [check]
+  Q: 산호관은 30명까지 수용할 수 있는 게 맞나요?
+  expected: yes: 30명
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q44 [check]
+  Q: 갯벌관은 중앙광장에 있는 거 맞죠?
+  expected: no: 동쪽해변
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q45 [check]
+  Q: 해파리관은 인터넷으로 예약하는 곳이 맞나요?
+  expected: yes: 온라인예약
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+assumed right Q46 [check]
+  Q: 조개관은 목요일이 휴관일인가요?
+  expected: no: 수요일
+  got:      아니다: 수요일   [not read as a sentence; taken to ask for the 휴관일 of "조개관"; chosen by the property word; not read: 은, 이, 인가요]
+
+held Q47 [chain]
+  Q: 산호관을 관리하는 기관의 전화번호가 어떻게 되나요?
+  expected: 000-0000-2101
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held Q48 [chain]
+  Q: 산호관 관리처는 무슨 요일에 쉬나요?
+  expected: 월요일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held Q49 [chain]
+  Q: 갯벌관 담당 기관에 전화하고 싶은데 몇 번인가요?
+  expected: 000-0000-2201
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q50 [chain]
+  Q: 갯벌관 자체 말고 갯벌관을 관리하는 곳은 단지 내 어디에 있나요?
+  expected: 중앙광장
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q51 [chain]
+  Q: 해파리전시관 관리기관 연락처 좀 알려주세요.
+  expected: 000-0000-2301
+  got:      -- asks: Did you ask for the 전화번호 of 해안센터 (the 관리처 of 해파리관)? (these pieces are not accounted for: "좀", "알려주세요")   [would then answer 000-0000-2301]
+
+held Q52 [chain]
+  Q: 해파리관을 담당하는 기관에서는 어떤 방식으로 예약을 받나요?
+  expected: 방문접수
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q53 [no_answer]
+  Q: 갯벌관의 운영시간은 어떻게 되나요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q54 [no_answer]
+  Q: 조개관 입장료 얼마예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q55 [no_answer]
+  Q: 등대관에 들어가려면 얼마를 내야 하나요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q56 [no_answer]
+  Q: 해초관의 정원은 몇 명입니까?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q57 [no_answer]
+  Q: 파도관 요금 얼마?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q58 [no_answer]
+  Q: 파도관에는 최대 몇 명까지 들어갈 수 있어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q59 [no_answer]
+  Q: 산호관 어린이 요금 얼마?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q60 [no_answer]
+  Q: 해파리관 밤에 들어가면 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q61 [no_answer]
+  Q: 산호관 단체 몇 명까지 받아?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed otherwise, asks first Q62 [no_answer]
+  Q: 2033년 해파리관의 이용료는 얼마입니까?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 이용료 of 해파리관? (these pieces are not accounted for: "2033년")   [would then answer 4000원]
+
+held ok Q63 [no_answer]
+  Q: 등대관의 주말 이용료는 얼마인가요?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q64 [no_answer]
+  Q: 조개관 관리처 전화번호 좀 알려주세요.
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q65 [no_answer]
+  Q: 등대관을 관리하는 기관은 어디에 있나요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q66 [no_answer]
+  Q: 해초관 담당 기관에 전화하려면 몇 번으로 걸어야 하나요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q67 [no_answer]
+  Q: 산호관은 무슨 요일에 문을 닫나요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q68 [no_answer]
+  Q: 갯벌관 전화번호가 어떻게 되죠?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q69 [no_answer]
+  Q: 불가사리관 입장료는 얼마인가요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the sentence alone does not say what "불가사리관" is: subject or when   [asks: What is "불가사리관" to "입장료": subject or when?]
+
+held ok Q70 [no_answer]
+  Q: 해초관은 해안센터가 아니라던데 그러면 정확히 어느 기관이 관리하나요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+## Summary: 2. Questions and answers, as asked (no one answers the system back)
+   chain        held 5, proposed right, asks first 1 of 6
+   check        assumed right 1, held 3 of 4
+   direct       proposed right, asks first 4, right 4 of 8
+   natural      held 10, proposed right, asks first 4 of 14
+   no_answer    held ok 17, proposed otherwise, asks first 1 of 18
+   qualified    assumed right 1, held 1, held (its knowledge was refused) 1, proposed right, asks first 3, right 2 of 8
+   short        assumed right 6, held 1, proposed right, asks first 5 of 12
+   all          assumed right 8, held 20, held (its knowledge was refused) 1, held ok 17, proposed otherwise, asks first 1, proposed right, asks first 17, right 6 of 70
+
+# 3. The same questions in the same order, a user answering each proposal with yes or no
+
+## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
+   chain        assumed right 1, held 5 of 6
+   check        assumed right 1, held 3 of 4
+   direct       right 4, right after a yes 4 of 8
+   natural      held 10, right after a yes 4 of 14
+   no_answer    declined by the user 1, held ok 17 of 18
+   qualified    assumed right 1, held 1, held (its knowledge was refused) 1, right 2, right after a yes 3 of 8
+   short        assumed right 7, held 1, right after a yes 4 of 12
+   all          assumed right 10, declined by the user 1, held 20, held (its knowledge was refused) 1, held ok 17, right 6, right after a yes 15 of 70

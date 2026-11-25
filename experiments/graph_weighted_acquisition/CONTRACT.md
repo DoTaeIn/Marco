@@ -1066,3 +1066,16 @@ stem and ending, as it always did for head words.
   there is no children's fee is not seen, and the word is shown as not accounted for).
   Third rule made on the same exposed sets. All three (`word`, `between`, `question`) are to be
   run once on a new outside set.
+- Fifth outside set (`probes/outside5_e2e_20261125`, a coastal visitor park; 52 questions with an
+  answer, 18 without), run once at `8f58739` on each configuration, nothing changed afterwards;
+  outputs in `by_configuration/`. 33 of 36 sentences taken (refused: a modifier never met, one
+  conditional, one sentence with a wrong particle).
+  No sources: right 6, assumed right 8, proposed right 16, proposed otherwise 1, held 22, held
+  rightly 17, 0 wrong answers.
+  `word`: proposed right +1 ("쉬는 날"). `between`: +2 (also "무슨 요일에 쉬어요"), nothing else
+  changed. `question`: +2 and one more proposal that is not what was asked (a chain taken as its
+  first link only). 0 wrong answers on all four.
+  The +14 seen on the exposed sets did not come back: on a new field the two sources agreed on
+  two questions. Of 14 questions asked with a verb, 10 are held without sources and 9 with them.
+  The one proposal that is not what was asked on every configuration (a year the knowledge does
+  not have, shown as not accounted for) does not come from the bridge.
