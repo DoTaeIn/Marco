@@ -1120,3 +1120,25 @@ stem and ending, as it always did for head words.
   third stem as a whole word (해, 가). The stems hold forms that are not used (갖으, 갖아) and the
   other verb written 걷다; they add forms and remove none. A yes to a worked-out proposal is not
   kept yet. No outside set has been run with explanations: whether this answers more is unknown.
+- Sixth outside set (`probes/outside6_e2e_20261125`, a made-up luggage store; 52 answerable, 18
+  without answer; made from the brief with `explained`), run once at `53c1e5b` without and with
+  the lessons (`by_configuration/none.txt`, `taught.txt`). All 36 sentences taken.
+
+  | | right | assumed right | proposed right | proposed otherwise | held | held rightly | wrong |
+  | --- | --- | --- | --- | --- | --- | --- | --- |
+  | without | 9 | 13 | 9 | 2 | 21 | 16 | 0 |
+  | with | 9 | 13 | 11 | 4 | 17 | 16 | 0 |
+
+  The worked-out step found nothing: not one of the four changed questions was chosen by
+  taught words meeting an explanation. All four come from the other change that rode along, a
+  taught word in front of a connector no longer stopping the look-up ("하루에", "건물의"): two
+  right proposals (Q21, Q22, chosen by what 얼마 asked for before) and two chains proposed as
+  their first link (Q47, Q50). That change was not measured apart, against the rule that a
+  change of behaviour goes alone.
+  Why nothing was worked out, looked at after the run and not used to change anything: 7 of 8
+  explanations and 12 of 14 natural questions have a word no lesson reaches. Outside the first
+  1,000 words: 짐, 맡기다, 신청하다, 통화하다, 누르다, 돌보다, 찾아가다, 번호, 날수, 운영하다,
+  입주하다. Taught words in a shape nobody taught: the third stem alone (맡아, 알려, 들어가) and
+  어디예요. Where every word is known (Q29 "어느 건물에 있어요") the rule itself does not meet:
+  건물 is not among the concepts of "찾아가면 만날 수 있는 곳". A building being a place is
+  knowledge between concepts, which the lessons do not have.
