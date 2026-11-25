@@ -1079,3 +1079,7 @@ stem and ending, as it always did for head words.
   two questions. Of 14 questions asked with a verb, 10 are held without sources and 9 with them.
   The one proposal that is not what was asked on every configuration (a year the knowledge does
   not have, shown as not accounted for) does not come from the bridge.
+- Set aside after the fifth set (owner's decision): +2 proposals did not pay for two modules and
+  181 MB of outside sources. The code is kept on `failed/goal1-dictionary-text-bridge`;
+  `answer.py` and `probes/blind_e2e.py` are back as at `1732237`, and the sources are deleted.
+  The `word`, `between` and `question` outputs of the fifth set cannot be reproduced from here.
