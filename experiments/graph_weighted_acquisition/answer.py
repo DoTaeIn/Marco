@@ -14,6 +14,7 @@ from pathlib import Path
 from experiments.graph_example_acquisition import native
 from experiments.graph_language_repair.questions.query_graph import execute_query_graph
 from . import basic as B
+from . import relate as RL
 from . import learn as L
 from . import match as M
 from . import reader as R
@@ -341,6 +342,9 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     # What was not recognised, piece by piece.
     marks, endings = word_ends(tables)
     basic = model.get('basic')
+    hear = model.get('hear')                           # a trial: something outside that puts the properties in order
+    # Words no lesson knows, where the explanation of a property places them (relate.placed).
+    placed = RL.placed(basic, question, model.get('field_explained_words', {}), model.get('places')) if basic and basic.get('shape') else {}
     pieces_known = set(marks) | {g.strip().rstrip('?.!') for g in tables.get('gap', {}).get('end', {})} \
         | {g.strip().rstrip('?.!') for g in model.get('alias', {})}
     unread, pos, tokens = [], 0, question.split()
@@ -355,9 +359,11 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         # its predicate, whatever it ends in ("들어가?"): the language puts the predicate last.
         if n < len(tokens) - 1 and not any(taken[start:start + len(token)]) \
                 and any(bare.endswith(m) and len(bare) > len(m) for m in marks) \
-                and not (basic and B.lookup(basic, bare, marks, endings)):     # a taught word is not an unknown noun
+                and not (basic and B.lookup(basic, bare, marks, endings)) and not hear                 and not any(bare in row for row in placed.values()):   # a taught word, or one that was placed, is not an unknown noun
             return None
         unread.append(left)
+    # A name or a property word of the field is known: only a word left whole is placed.
+    placed = {p: {w: v for w, v in row.items() if w in unread} for p, row in placed.items()}
     weak = False
     if not wanted and not units:
         # No property word and no counter. A word that was not read may still point at a property: it shares
@@ -378,12 +384,21 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     said = {(aliases or {}).get(c, c) for _, c in found['circumstance']}
     history = {e['property'] for e in (memory or {}).get('asks', []) if e['word'] in asks}
     worked = []
-    if basic and not (wanted or units or history):
+    if hear and not (wanted or units or history):
+        # The trial: the question as a whole is put next to the words of every property by a model from
+        # outside, and the properties come back nearest first. Chosen by nearness, not read and not
+        # worked out: the nearest one is put to the user with every piece that was not read.
+        left = [x for x in unread if x not in pieces_known]
+        worked = [{'property': p, 'met': [], 'unmet': left, 'score': s} for p, s in hear(question, model.get('field_texts', {}))]
+        if not worked:
+            return None
+    elif basic and not (wanted or units or history):
         # Nothing in the question points at a property by form. Taught basic words may: the pieces that
-        # were not read are put next to the plain-words explanation of every property (basic.explained_by).
-        # Worked out, not read: it can only lead to a proposal or to candidates.
-        worked = B.explained_by(basic, [x for x in unread if x not in pieces_known and x not in basic['marks']] + asks,
-                                model.get('field_explained', {}), marks, endings)
+        # were not read are put next to the plain-words explanation of every property (basic.ranked), and
+        # the properties come back in order of how many pieces they meet. Worked out, not read: it can
+        # only lead to a proposal or to candidates in that order.
+        worked = B.ranked(basic, [x for x in unread if x not in pieces_known and x not in basic['marks']] + asks,
+                          model.get('field_explained', {}), marks, endings, placed)
         if not worked:
             return None
     if not (wanted or asks or units or worked):
@@ -408,9 +423,17 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
             fits = [f for f in fits if _unit(f['value']) in units]
             how = 'the counter "%s %s"' % (counter, '/'.join(sorted(units)))
         elif worked:
-            fits = [f for f in fits if f['property'] in worked]
+            order = [row['property'] for row in worked]
+            fits = sorted((f for f in fits if f['property'] in order), key=lambda f: order.index(f['property']))
+            whole = [f for f in fits if not worked[order.index(f['property'])]['unmet']]
+            if len(whole) == 1:
+                fits = whole                           # the one property that leaves no piece over
             sure = False
             how = 'taught basic words that meet the explanation of the property'
+            if hear and fits:
+                scores = [worked[order.index(f['property'])]['score'] for f in fits]
+                how = 'nearness by a vector model (%.2f%s)' % (scores[0], ', next %.2f' % scores[1] if len(scores) > 1 else '')
+                fits = fits[:1]
         elif history:
             # What a question word may ask for is not narrowed by what happens to be known of this thing.
             fits = [f for f in fits if f['property'] in history]
@@ -425,15 +448,23 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     recognised = sorted({w for kind in found.values() for _, w in kind}) + ['%s %s' % (counter, u) for u in sorted(units)]
     if len(fits) > 1:
         out['candidates'] = [{'thing': f['thing'], 'property': f['property'], 'with': f['with']} for f in fits]
+        if worked:
+            # In order, the one most pieces meet first, with what it would give and what speaks for it.
+            for c, f in zip(out['candidates'], fits):
+                row = worked[order.index(f['property'])]
+                c.update(if_confirmed=f['value'], met=row['met'], unmet=row['unmet'], **({'placed': row['placed']} if row.get('placed') else {}))
         out['reason'] = 'the question was not read; it names "%s", and the knowledge has %d facts it could be asking for: %s' % (
             thing, len(fits), '; '.join('%s of %s' % (f['property'], f['thing']) for f in fits))
         return out
     fact = fits[0]
     heard = {w for e in (memory or {}).get('said', []) if e['property'] == fact['property'] for w in e['words']}
-    open_pieces = [] if worked else [x for x in unread if x not in pieces_known and x not in heard]
+    open_pieces = worked[order.index(fact['property'])]['unmet'] if worked         else [x for x in unread if x not in pieces_known and x not in heard]
     understood = {'thing': understood_thing, 'property': fact['property'], 'with': fact['with']}
     item = {'understood': understood, 'recognised': recognised, 'unread': unread, 'chosen_by': how,
             'not_accounted_for': open_pieces}
+    if worked and worked[order.index(fact['property'])].get('placed'):
+        # Said with the proposal: which word was taken for which, and that it is a guess by place or shape.
+        item['placed'] = {w: dict({'how': h, 'as': o}, **({'shared_places_per_thousand': n} if n else {})) for w, (h, o, n) in worked[order.index(fact['property'])]['placed'].items()}
     evidence = [{'span': list(sp), 'text': ptext[sp[0]:sp[1]]} for sp in fact['spans']]
     claim = None
     if stated:
@@ -446,7 +477,7 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         # One fact fits what was recognised, but pieces of the question are not accounted for, and one of
         # them may be what changes the answer. Not answered: put to the user.
         why = ('these pieces are not accounted for: %s' % ', '.join('"%s"' % x for x in open_pieces)) if open_pieces \
-            else 'it was worked out from taught basic words, not read' if worked \
+            else 'it was chosen by nearness, not read' if hear and worked             else 'it was worked out from taught basic words, not read' if worked \
             else 'the question word has asked for more than one property'
         out['proposal'] = dict(item, if_confirmed=fact['value'], evidence=evidence,
                                ask='Did you ask %s the %s of %s%s%s? (%s)' % (

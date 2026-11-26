@@ -132,6 +132,9 @@ def main():
         words['properties'] = [x for x in words['properties'] if x['word'] not in clashes]
     try:
         model = PK.with_words(full, words, basic) if basic else PK.with_words(full, words)
+        if len(sys.argv) > 4:                           # who stands where in ordinary text (relate.places)
+            from experiments.graph_weighted_acquisition import relate as RL
+            model['places'] = RL.load(sys.argv[4])
         if basic:
             print('Explanations taken: %d of %d properties. Words of them no lesson knows: %s' % (
                 len(model['field_explained']), len(props),
@@ -142,6 +145,22 @@ def main():
         refused_words = [x['word'] for x in words['properties'] if x['word'] in full['tables'].get('head', {})]
         words['properties'] = [x for x in words['properties'] if x['word'] not in refused_words]
         model = PK.with_words(full, words)
+    # A trial of the hearing side, chosen by the environment: MARCO_HEAR=vector puts a sentence vector
+    # model there (probes/hear_vector.py); MARCO_HEAR=veto puts nothing there and only lifts the stop
+    # on an unknown word in front of a connector, to see that change alone.
+    import os
+    trial = os.environ.get('MARCO_HEAR')
+    if trial:
+        model['field_texts'] = {x['word']: ' '.join([x['word']] + list(x.get('also', [])) + [x.get('explained', '')]).strip()
+                                for x in props if x['word'] not in clashes}
+        if trial == 'vector':
+            _hv = importlib.util.spec_from_file_location('hear_vector', HERE / 'hear_vector.py')
+            HV = importlib.util.module_from_spec(_hv)
+            _hv.loader.exec_module(HV)
+            model['hear'] = HV.load()
+        else:
+            model['hear'] = lambda question, properties: []
+        print('TRIAL on the hearing side: %s' % trial)
     print('\nField "%s": %d property words, %d names, %d sentences of knowledge, %d questions. Language pack: %d lessons.'
           % (data['domain'], len(props), len(names), len(data['knowledge']), len(data['questions']), n))
     taken, refused, memory = take_in(model, data['knowledge'])
@@ -156,12 +175,18 @@ def main():
         print('\n# ' + title)
         memory_q = L.new_memory()
         memory_q['kinds'] = [dict(k) for k in memory.get('kinds', [])]
-        tally = {}
+        tally, order = {}, {}
         for item in data['questions']:
             try:
                 result = A.answer_graph(read['graphs'][0], passage, item['text'], model, read, memory_q, aliases=aliases) \
                     if read and read['status'] == 'complete' else A.answer(passage, item['text'], model, memory_q)
                 v, text = verdict(result, item, refused), shown(result)
+                if any('if_confirmed' in c for c in result.get('candidates', [])) and item['kind'] != 'check':
+                    # Candidates worked out from taught words come in order. Where is the right one?
+                    values = [c['if_confirmed'] for c in result['candidates']]
+                    place = 'shown where there is no answer' if item['expect'] is None else                         'right one first' if values[0] == item['expect'] else                         'right one listed, not first' if item['expect'] in values else 'right one not listed'
+                    order[place] = order.get(place, 0) + 1
+                    text += '   [in order: %s]' % ', '.join('%s (%d met)' % (c['property'], len(c['met'])) for c in result['candidates'])
                 if feedback and result.get('proposal'):
                     if v.startswith('proposed right'):
                         if hasattr(A, 'confirm'):
@@ -185,6 +210,8 @@ def main():
             for k, v in tally[kind].items():
                 total[k] = total.get(k, 0) + v
         print('   %-12s %s of %d' % ('all', ', '.join('%s %d' % kv for kv in sorted(total.items())), sum(total.values())))
+        if order:
+            print('   candidates in order (counted among the held): %s' % ', '.join('%s %d' % kv for kv in sorted(order.items())))
 
     ask_all('2. Questions and answers, as asked (no one answers the system back)', False, True)
     ask_all('3. The same questions in the same order, a user answering each proposal with yes or no', True, False)

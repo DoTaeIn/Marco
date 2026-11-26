@@ -30,7 +30,8 @@ def load_ends(path, words):
     A word that takes endings has three stems, and each stem its own endings; a word that does not
     has connectors. Every stem with every ending of its kind is a form of the word. An ending of
     several words is cut at its first word: the others are words of their own ("ㄹ 수 있나요").
-    Returns the forms, letter by letter, and the connectors.
+    Returns the forms, letter by letter, the connectors, and the shapes: the endings of each stem and
+    the ways a later stem differs from the first (used for a word no lesson has, relate.words).
     """
     blocks, name = {}, None
     for line in Path(path).read_text(encoding='utf8').splitlines():
@@ -41,17 +42,24 @@ def load_ends(path, words):
             blocks[name].append(line.strip())
     kinds = ['바탕줄기 뒤', '으줄기 뒤', '어줄기 뒤']
     endings = [sorted({_letters(e.split()[0].strip('?.!,')) for e in blocks.get(k, [])}) for k in kinds]
-    forms = {}
+    forms, rules = {}, [set(), set(), set()]
     for n, line in enumerate(blocks.get('줄기', []), 1):
         cells = line.split('\t')
         if len(cells) != 4 or cells[0] not in words:
             raise ValueError('line %d of the stems is not a taught word with three stems' % n)
-        for stems, ends in zip(cells[1:], endings):
+        firsts = [unicodedata.normalize('NFD', s) for s in cells[1].split('/') if s != '-']
+        for k, (stems, ends) in enumerate(zip(cells[1:], endings)):
             for stem in stems.split('/'):
                 if stem != '-':
+                    stem = unicodedata.normalize('NFD', stem)
                     for end in ends:
-                        forms.setdefault(unicodedata.normalize('NFD', stem) + end, set()).add(cells[0])
-    return {k: sorted(v) for k, v in forms.items()}, sorted(set(blocks.get('이름씨 뒤', [])), key=len, reverse=True)
+                        forms.setdefault(stem + end, set()).add(cells[0])
+                    for first in firsts:
+                        # How this stem differs from the first one, after what they share: the way back.
+                        same = next((i for i, (a, b) in enumerate(zip(stem, first)) if a != b), min(len(stem), len(first)))
+                        rules[k].add((stem[same:], first[same:]))
+    shape = {'endings': endings, 'rules': [sorted(r) for r in rules]}
+    return {k: sorted(v) for k, v in forms.items()}, sorted(set(blocks.get('이름씨 뒤', [])), key=len, reverse=True), shape
 
 
 def load(path, ends=None):
@@ -78,8 +86,8 @@ def load(path, ends=None):
             raise ValueError('line %d of the basic words uses concepts that are not listed: %s' % (n, ', '.join(unknown)))
         words[cells[0]] = entry
     if ends:
-        forms, marks = load_ends(ends, words)
-        return {'concepts': concepts, 'words': words, 'stems': {}, 'forms': forms, 'marks': marks}
+        forms, marks, shape = load_ends(ends, words)
+        return {'concepts': concepts, 'words': words, 'stems': {}, 'forms': forms, 'marks': marks, 'shape': shape}
     # Without the lessons on shapes: a word listed in its -다 form is taken to take endings (wrong for a
     # noun such as 바다), and only the endings the language pack learned are known.
     stems = {}
@@ -121,27 +129,32 @@ def concepts_of(basic, text, marks=(), endings=()):
     return reached, unknown
 
 
-def explained_by(basic, pieces, explanations, marks=(), endings=()):
-    """The properties whose explanation accounts for every piece.
+def ranked(basic, pieces, explanations, marks=(), endings=(), placed=None):
+    """The properties a question may be asking for, the one its pieces meet most first.
 
-    A piece is accounted for by a property when one of its senses lies wholly inside the concepts of
-    that property's explanation, or when it has a light use. A piece no lesson knows, or a known
-    word whose meaning the explanation does not have ("어린이" next to a fee), is accounted for by
-    nothing, so no property is found. At least one piece must meet the explanation by meaning:
-    light words alone point at nothing.
+    A piece meets a property when one of its senses lies wholly inside the concepts of that
+    property's explanation. A piece with a light use meets nothing and is not missed. A piece no
+    lesson knows, or a known word whose meaning the explanation does not have ("어린이" next to a
+    fee), is not met: it is listed, because it may be what changes the answer. A piece no lesson
+    knows is met where the explanation places it (`placed`, relate.placed). The number of pieces
+    met only puts the properties in order. There is no number above which one is taken: what comes
+    of this is put to the user, never answered.
+
+    Returns, for every property that at least one piece meets: its name, the pieces met, the
+    pieces not met.
     """
-    read = [lookup(basic, piece, marks, endings) for piece in pieces]
-    if not read or not all(read):
-        return []
+    read = [(piece, lookup(basic, piece, marks, endings)) for piece in pieces]
     out = []
-    for prop, reached in sorted(explanations.items()):
-        met, reached = 0, set(reached)
-        for entries in read:
+    for prop, reached in explanations.items():
+        reached, met, unmet = set(reached), [], []
+        for piece, entries in read:
             if any(set(sense) <= reached for e in entries for sense in e['senses']):
-                met += 1
+                met.append(piece)
+            elif piece in (placed or {}).get(prop, {}):
+                met.append(piece)
             elif not any(e['light'] for e in entries):
-                break
-        else:
-            if met:
-                out.append(prop)
-    return out
+                unmet.append(piece)
+        if met:
+            out.append({'property': prop, 'met': met, 'unmet': unmet,
+                        'placed': {p: v for p, v in (placed or {}).get(prop, {}).items() if p in met}})
+    return sorted(out, key=lambda row: (-len(row['met']), row['property']))

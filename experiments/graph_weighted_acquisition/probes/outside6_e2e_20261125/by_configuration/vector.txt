@@ -1,0 +1,432 @@
+# Frozen before the items existed
+  9b90e9fad0adb061  reader.py
+  b0208999be1f32fb  match.py
+  6cc624a70ab1a43c  answer.py
+  acc269e6f52913a7  write.py
+  8d33463235fc1afd  pack.py
+  f844167bb0d32dfa  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  b949bd2afe37c83e  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  b024b3597b19769b  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  0953e41efd3c7416  probes/reading_limits.py
+  2707cc85e24e3260  probes/blind_e2e.py
+  4d60b30069b49a60  C.json (the items)
+TRIAL on the hearing side: vector
+
+Field "가상의 여행짐 보관소 안내 창구. 여섯 보관소의 짐 보관 조건과 입주 건물의 연락 정보를 안내한다.": 8 property words, 10 names, 36 sentences of knowledge, 70 questions. Language pack: 640 lessons.
+
+# 1. Knowledge taken in, sentence by sentence
+TAKEN    K01 솔길보관소의 위치는 여행회관이다.
+TAKEN    K02 들꽃보관소의 위치는 나들이회관이다.
+TAKEN    K03 강변보관소의 위치는 여행회관이다.
+TAKEN    K04 2035년에 언덕보관소의 위치는 나들이회관이다.
+TAKEN    K05 호수보관소의 접수방식이 방문접수이면 호수보관소의 위치는 마실회관이다.
+TAKEN    K06 숲길보관소의 위치는 길벗회관이 아니다.
+TAKEN    K07 여행회관의 전화는 02-940-1100이다.
+TAKEN    K08 나들이회관의 전화는 02-940-2200이다.
+TAKEN    K09 마실회관의 전화는 02-940-3300이다.
+TAKEN    K10 길벗회관의 전화는 02-940-4400이다.
+TAKEN    K11 여행회관의 관리처는 건물운영팀이다.
+TAKEN    K12 나들이회관의 관리처는 시설지원팀이다.
+TAKEN    K13 마실회관의 관리처는 방문지원팀이다.
+TAKEN    K14 솔길보관소의 전화는 02-941-1100이다.
+TAKEN    K15 들꽃보관소의 전화는 02-941-2200이다.
+TAKEN    K16 솔길보관소의 보관료는 하루2000원이다.
+TAKEN    K17 들꽃보관소는 보관료가 하루3000원이다.
+TAKEN    K18 강변보관소 보관기간은 5일이다.
+TAKEN    K19 솔길보관소의 휴무일은 매주화요일이다.
+TAKEN    K20 들꽃보관소의 용량은 40개이다.
+TAKEN    K21 강변보관소의 접수방식은 온라인접수이다.
+TAKEN    K22 솔길보관소의 관리처는 솔길서비스팀이다.
+TAKEN    K23 들꽃보관소의 관리처는 들꽃서비스팀이다.
+TAKEN    K24 강변보관소의 보관료는 무료이다.
+TAKEN    K25 솔길보관소의 주말 보관료는 하루4000원이다.
+TAKEN    K26 솔길보관소의 평일 보관료는 하루2000원이다.
+TAKEN    K27 2035년에 언덕보관소의 보관료는 하루5000원이다.
+TAKEN    K28 2036년에 언덕보관소의 보관료는 하루6000원이다.
+TAKEN    K29 호수보관소의 주말 용량은 20개이다.
+TAKEN    K30 호수보관소의 평일 용량은 30개이다.
+TAKEN    K31 숲길보관소의 단기 보관기간은 2일이다.
+TAKEN    K32 숲길보관소의 장기 보관기간은 10일이다.
+TAKEN    K33 언덕보관소의 휴무일은 매주금요일이 아니다.
+TAKEN    K34 호수보관소는 접수방식이 방문접수이면 보관료가 하루1000원이다.
+TAKEN    K35 숲길보관소의 용량은 15개이다.
+TAKEN    K36 언덕보관소의 관리처는 언덕서비스팀이다.
+taken 36 of 36. Word kinds the taken sentences showed: 단기=condition, 장기=condition
+
+# 2. Questions and answers, as asked (no one answers the system back)
+
+right Q01 [direct]
+  Q: 솔길보관소의 보관료는 얼마인가요?
+  expected: 하루2000원
+  got:      하루2000원   (as a sentence: 솔길보관소의 보관료는 하루2000원이다.)
+
+proposed right, asks first Q02 [direct]
+  Q: 강변보관소의 보관기간은 며칠인가요?
+  expected: 5일
+  got:      -- asks: Did you ask for the 보관기간 of 강변보관소? (these pieces are not accounted for: "며칠인가요")   [would then answer 5일]
+
+right Q03 [direct]
+  Q: 솔길보관소의 휴무일은 언제인가요?
+  expected: 매주화요일
+  got:      매주화요일   (as a sentence: 솔길보관소의 휴무일은 매주화요일이다.)
+
+assumed right Q04 [direct]
+  Q: 들꽃보관소의 용량은 몇 개인가요?
+  expected: 40개
+  got:      40개   [not read as a sentence; taken to ask for the 용량 of "들꽃보관소"; chosen by the property word; not read: 의, 은, 인가요]
+
+right Q05 [direct]
+  Q: 들꽃보관소의 위치는 어디인가요?
+  expected: 나들이회관
+  got:      나들이회관   (as a sentence: 들꽃보관소의 위치는 나들이회관이다.)
+
+right Q06 [direct]
+  Q: 언덕보관소의 관리처는 어디인가요?
+  expected: 언덕서비스팀
+  got:      언덕서비스팀   (as a sentence: 언덕보관소의 관리처는 언덕서비스팀이다.)
+
+proposed right, asks first Q07 [direct]
+  Q: 솔길보관소의 전화는 몇 번인가요?
+  expected: 02-941-1100
+  got:      -- asks: Did you ask for the 전화 of 솔길보관소? (these pieces are not accounted for: "몇", "번인가요")   [would then answer 02-941-1100]
+
+right Q08 [direct]
+  Q: 강변보관소의 접수방식은 무엇인가요?
+  expected: 온라인접수
+  got:      온라인접수   (as a sentence: 강변보관소의 접수방식은 온라인접수이다.)
+
+assumed right Q09 [short]
+  Q: 들꽃보관소 요금 얼마?
+  expected: 하루3000원
+  got:      하루3000원   [not read as a sentence; taken to ask for the 보관료 of "들꽃보관소"; chosen by the property word; not read: nothing]
+
+held Q10 [short]
+  Q: 솔길짐센터 어디?
+  expected: 여행회관
+  got:      -- the question was not read; it names "솔길보관소", and the knowledge has 2 facts it could be asking for: 위치 of 솔길보관소; 관리처 of 솔길보관소   [could be: 위치 of 솔길보관소]   [could be: 관리처 of 솔길보관소]
+
+assumed right Q11 [short]
+  Q: 강변보관소 이용료?
+  expected: 무료
+  got:      무료   [not read as a sentence; taken to ask for the 보관료 of "강변보관소"; chosen by the property word; not read: nothing]
+
+assumed right Q12 [short]
+  Q: 숲길짐센터 수용량?
+  expected: 15개
+  got:      15개   [not read as a sentence; taken to ask for the 용량 of "숲길보관소"; chosen by the property word; not read: nothing]
+
+assumed right Q13 [short]
+  Q: 여행회관 전화번호?
+  expected: 02-940-1100
+  got:      02-940-1100   [not read as a sentence; taken to ask for the 전화 of "여행회관"; chosen by the property word; not read: nothing]
+
+assumed right Q14 [short]
+  Q: 나들이관 담당부서?
+  expected: 시설지원팀
+  got:      시설지원팀   [not read as a sentence; taken to ask for the 관리처 of "나들이회관"; chosen by the property word; not read: nothing]
+
+assumed right Q15 [short]
+  Q: 마실회관 연락처?
+  expected: 02-940-3300
+  got:      02-940-3300   [not read as a sentence; taken to ask for the 전화 of "마실회관"; chosen by the property word; not read: nothing]
+
+assumed right Q16 [short]
+  Q: 길벗관 전화?
+  expected: 02-940-4400
+  got:      02-940-4400   [not read as a sentence; taken to ask for the 전화 of "길벗회관"; chosen by the property word; not read: nothing]
+
+assumed right Q17 [short]
+  Q: 들꽃짐센터 관리처?
+  expected: 들꽃서비스팀
+  got:      들꽃서비스팀   [not read as a sentence; taken to ask for the 관리처 of "들꽃보관소"; chosen by the property word; not read: nothing]
+
+assumed right Q18 [short]
+  Q: 강변짐센터 신청방법?
+  expected: 온라인접수
+  got:      온라인접수   [not read as a sentence; taken to ask for the 접수방식 of "강변보관소"; chosen by the property word; not read: nothing]
+
+assumed right Q19 [short]
+  Q: 강변보관소 보관기한?
+  expected: 5일
+  got:      5일   [not read as a sentence; taken to ask for the 보관기간 of "강변보관소"; chosen by the property word; not read: nothing]
+
+assumed right Q20 [short]
+  Q: 솔길보관소 쉬는날?
+  expected: 매주화요일
+  got:      매주화요일   [not read as a sentence; taken to ask for the 휴무일 of "솔길보관소"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q21 [natural]
+  Q: 솔길보관소에 짐을 맡기면 하루에 얼마 내요?
+  expected: 하루2000원
+  got:      -- asks: Did you ask for the 보관료 of 솔길보관소? (these pieces are not accounted for: "짐을", "맡기면", "하루에", "내요")   [would then answer 하루2000원]
+
+proposed right, asks first Q22 [natural]
+  Q: 들꽃보관소에서 하루 맡아 주는 데 돈이 얼마나 들어요?
+  expected: 하루3000원
+  got:      -- asks: Did you ask for the 보관료 of 들꽃보관소? (these pieces are not accounted for: "에서", "하루", "맡아", "주는", "데", "돈이", "나", "들어요")   [would then answer 하루3000원]
+
+proposed right, asks first Q23 [natural]
+  Q: 강변보관소에 짐을 두려면 얼마 내면 돼요?
+  expected: 무료
+  got:      -- asks: Did you ask for the 보관료 of 강변보관소? (these pieces are not accounted for: "짐을", "두려면", "내면", "돼요")   [would then answer 무료]
+
+proposed right, asks first Q24 [natural]
+  Q: 솔길보관소는 언제 쉬어요?
+  expected: 매주화요일
+  got:      -- asks: Did you ask for the 휴무일 of 솔길보관소? (these pieces are not accounted for: "쉬어요")   [would then answer 매주화요일]
+
+proposed right, asks first Q25 [natural]
+  Q: 들꽃보관소에서는 짐을 모두 몇 개까지 맡아 줘요?
+  expected: 40개
+  got:      -- asks: Did you ask for the 용량 of 들꽃보관소? (these pieces are not accounted for: "에서는", "짐을", "모두", "까지", "맡아", "줘요")   [would then answer 40개]
+
+proposed right, asks first Q26 [natural]
+  Q: 숲길보관소에는 짐이 총 몇 개까지 들어갈 수 있어요?
+  expected: 15개
+  got:      -- asks: Did you ask for the 용량 of 숲길보관소? (these pieces are not accounted for: "에는", "짐이", "총", "까지", "들어갈", "수", "있어요")   [would then answer 15개]
+
+proposed right, asks first Q27 [natural]
+  Q: 강변보관소에 짐을 맡기려면 어떻게 신청해요?
+  expected: 온라인접수
+  got:      -- asks: Did you ask for the 접수방식 of 강변보관소? (these pieces are not accounted for: "짐을", "맡기려면", "어떻게", "신청해요")   [would then answer 온라인접수]
+
+proposed right, asks first Q28 [natural]
+  Q: 솔길보관소를 찾아가려면 어느 건물로 가야 해요?
+  expected: 여행회관
+  got:      -- asks: Did you ask for the 위치 of 솔길보관소? (these pieces are not accounted for: "를", "찾아가려면", "어느", "건물로", "가야", "해요")   [would then answer 여행회관]
+
+proposed right, asks first Q29 [natural]
+  Q: 들꽃보관소는 어느 건물에 있어요?
+  expected: 나들이회관
+  got:      -- asks: Did you ask for the 위치 of 들꽃보관소? (these pieces are not accounted for: "어느", "건물에", "있어요")   [would then answer 나들이회관]
+
+proposed right, asks first Q30 [natural]
+  Q: 강변보관소에는 짐을 며칠 동안 둘 수 있나요?
+  expected: 5일
+  got:      -- asks: Did you ask for the 보관기간 of 강변보관소? (these pieces are not accounted for: "에는", "짐을", "며칠", "동안", "둘", "수", "있나요")   [would then answer 5일]
+
+proposed right, asks first Q31 [natural]
+  Q: 솔길보관소에 바로 통화하려면 몇 번으로 걸어요?
+  expected: 02-941-1100
+  got:      -- asks: Did you ask for the 전화 of 솔길보관소? (these pieces are not accounted for: "바로", "통화하려면", "몇", "번으로", "걸어요")   [would then answer 02-941-1100]
+
+proposed otherwise, asks first Q32 [natural]
+  Q: 들꽃보관소에 직접 걸려면 몇 번을 눌러야 하나요?
+  expected: 02-941-2200
+  got:      -- asks: Did you ask for the 용량 of 들꽃보관소? (these pieces are not accounted for: "직접", "걸려면", "몇", "번을", "눌러야", "하나요")   [would then answer 40개]
+
+proposed right, asks first Q33 [natural]
+  Q: 여행회관은 어느 팀에서 맡아 운영해요?
+  expected: 건물운영팀
+  got:      -- asks: Did you ask for the 관리처 of 여행회관? (these pieces are not accounted for: "어느", "팀에서", "맡아", "운영해요")   [would then answer 건물운영팀]
+
+proposed right, asks first Q34 [natural]
+  Q: 마실회관을 맡아서 돌보는 팀은 어디예요?
+  expected: 방문지원팀
+  got:      -- asks: Did you ask for the 관리처 of 마실회관? (these pieces are not accounted for: "을", "맡아서", "돌보는", "팀은")   [would then answer 방문지원팀]
+
+right Q35 [qualified]
+  Q: 솔길보관소의 주말 보관료는 얼마인가요?
+  expected: 하루4000원
+  got:      하루4000원   (as a sentence: 솔길보관소의 주말 보관료는 하루4000원이다.)
+
+right Q36 [qualified]
+  Q: 솔길보관소의 평일 보관료는 얼마인가요?
+  expected: 하루2000원
+  got:      하루2000원   (as a sentence: 솔길보관소의 평일 보관료는 하루2000원이다.)
+
+right Q37 [qualified]
+  Q: 2035년에 언덕보관소의 보관료는 얼마인가요?
+  expected: 하루5000원
+  got:      하루5000원   (as a sentence: 2035년에 언덕보관소의 보관료는 하루5000원이다.)
+
+right Q38 [qualified]
+  Q: 2036년에 언덕보관소의 보관료는 얼마인가요?
+  expected: 하루6000원
+  got:      하루6000원   (as a sentence: 2036년에 언덕보관소의 보관료는 하루6000원이다.)
+
+proposed right, asks first Q39 [qualified]
+  Q: 주말에 호수보관소는 짐을 몇 개까지 맡아 줘요?
+  expected: 20개
+  got:      -- asks: Did you ask for the 용량 of 호수보관소, when: 주말? (these pieces are not accounted for: "짐을", "까지", "맡아", "줘요")   [would then answer 20개]
+
+proposed right, asks first Q40 [qualified]
+  Q: 호수짐센터 평일 짐 몇 개까지?
+  expected: 30개
+  got:      -- asks: Did you ask for the 용량 of 호수보관소, when: 평일? (these pieces are not accounted for: "짐", "까지")   [would then answer 30개]
+
+proposed right, asks first Q41 [qualified]
+  Q: 숲길보관소에 단기로 맡기면 며칠 둘 수 있어요?
+  expected: 2일
+  got:      -- asks: Did you ask for the 보관기간 of 숲길보관소, when: 단기? (these pieces are not accounted for: "로", "맡기면", "며칠", "둘", "수", "있어요")   [would then answer 2일]
+
+proposed right, asks first Q42 [qualified]
+  Q: 숲길짐센터 장기로 며칠까지 맡겨?
+  expected: 10일
+  got:      -- asks: Did you ask for the 보관기간 of 숲길보관소, when: 장기? (these pieces are not accounted for: "로", "며칠까지", "맡겨")   [would then answer 10일]
+
+held Q43 [check]
+  Q: 들꽃보관소에는 짐을 40개까지 맡길 수 있는 게 맞아요?
+  expected: yes: 40개
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q44 [check]
+  Q: 솔길보관소는 매주화요일에 쉬는 게 맞나요?
+  expected: yes: 매주화요일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+assumed right Q45 [check]
+  Q: 숲길보관소의 용량은 40개인가요?
+  expected: no: 15개
+  got:      아니다: 15개   [not read as a sentence; taken to ask for the 용량 of "숲길보관소"; chosen by the property word; not read: 의, 은, 인가요]
+
+held Q46 [check]
+  Q: 들꽃보관소가 여행회관에 있다는 게 맞아요?
+  expected: no: 나들이회관
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed otherwise, asks first Q47 [chain]
+  Q: 솔길보관소가 있는 건물의 전화번호를 알려 주세요.
+  expected: 02-940-1100
+  got:      -- asks: Did you ask for the 전화 of 솔길보관소? (these pieces are not accounted for: "있는", "건물의", "를", "알려", "주세요")   [would then answer 02-941-1100]
+
+proposed otherwise, asks first Q48 [chain]
+  Q: 들꽃보관소가 들어가 있는 회관에 전화하려면 몇 번으로 걸어요?
+  expected: 02-940-2200
+  got:      -- asks: Did you ask for the 전화 of 들꽃보관소? (these pieces are not accounted for: "들어가", "있는", "회관에", "하려면", "몇", "번으로", "걸어요")   [would then answer 02-941-2200]
+
+held Q49 [chain]
+  Q: 강변보관소 있는 건물 연락처?
+  expected: 02-940-1100
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+proposed otherwise, asks first Q50 [chain]
+  Q: 솔길보관소가 입주한 건물은 어느 팀이 관리하나요?
+  expected: 건물운영팀
+  got:      -- asks: Did you ask for the 관리처 of 솔길보관소? (these pieces are not accounted for: "입주한", "건물은", "어느", "팀이", "관리하나요")   [would then answer 솔길서비스팀]
+
+proposed otherwise, asks first Q51 [chain]
+  Q: 들꽃보관소가 있는 회관의 담당부서는 어디예요?
+  expected: 시설지원팀
+  got:      -- asks: Did you ask for the 관리처 of 들꽃보관소? (these pieces are not accounted for: "있는", "회관의")   [would then answer 들꽃서비스팀]
+
+proposed otherwise, asks first Q52 [chain]
+  Q: 강변보관소가 있는 건물을 맡아 운영하는 팀을 알려 주세요.
+  expected: 건물운영팀
+  got:      -- asks: Did you ask for the 위치 of 강변보관소? (these pieces are not accounted for: "있는", "건물을", "맡아", "운영하는", "팀을", "알려", "주세요")   [would then answer 여행회관]
+
+held ok Q53 [no_answer]
+  Q: 언덕보관소에 짐을 맡기면 하루에 얼마예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q54 [no_answer]
+  Q: 호수보관소는 짐을 모두 몇 개까지 맡아 줘요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed otherwise, asks first Q55 [no_answer]
+  Q: 숲길보관소에는 짐을 며칠 동안 둘 수 있나요?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 용량 of 숲길보관소? (these pieces are not accounted for: "에는", "짐을", "며칠", "동안", "둘", "수", "있나요")   [would then answer 15개]
+
+held ok Q56 [no_answer]
+  Q: 호수보관소에 하루 맡기는 데 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed otherwise, asks first Q57 [no_answer]
+  Q: 언덕보관소는 어느 건물에 있어요?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 관리처 of 언덕보관소? (these pieces are not accounted for: "어느", "건물에", "있어요")   [would then answer 언덕서비스팀]
+
+held ok Q58 [no_answer]
+  Q: 솔길보관소 야간 요금?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+proposed otherwise, asks first Q59 [no_answer]
+  Q: 들꽃보관소에 대형 짐 맡기면 얼마 내요?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 보관료 of 들꽃보관소? (these pieces are not accounted for: "대형", "짐", "맡기면", "내요")   [would then answer 하루3000원]
+
+proposed otherwise, asks first Q60 [no_answer]
+  Q: 강변보관소 단체로 맡기려면 어떻게 신청해요?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 접수방식 of 강변보관소? (these pieces are not accounted for: "단체로", "맡기려면", "어떻게", "신청해요")   [would then answer 온라인접수]
+
+held ok Q61 [no_answer]
+  Q: 2036년에 솔길보관소의 전화는 몇 번인가요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q62 [no_answer]
+  Q: 들꽃보관소 주말에는 짐 몇 개까지 받아요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q63 [no_answer]
+  Q: 언덕보관소가 있는 건물의 전화번호가 뭐예요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q64 [no_answer]
+  Q: 호수보관소가 입주한 회관에 전화하려면 몇 번으로 걸어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q65 [no_answer]
+  Q: 숲길보관소가 있는 건물 연락처 알려 주세요.
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q66 [no_answer]
+  Q: 바닷길보관소에 짐을 맡기려면 하루에 얼마 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q67 [no_answer]
+  Q: 솔길보관소 주차장은 어디예요?
+  expected: (no answer)
+  got:      -- the question was not read; it names "솔길보관소", and the knowledge has 2 facts it could be asking for: 위치 of 솔길보관소; 관리처 of 솔길보관소   [could be: 위치 of 솔길보관소]   [could be: 관리처 of 솔길보관소]
+
+proposed otherwise, asks first Q68 [no_answer]
+  Q: 들꽃보관소의 분실보상금은 얼마인가요?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 보관료 of 들꽃보관소? (these pieces are not accounted for: "분실보상금은")   [would then answer 하루3000원]
+
+held ok Q69 [no_answer]
+  Q: 언덕보관소는 언제 쉬어요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q70 [no_answer]
+  Q: 호수보관소가 있는 건물은 어느 팀에서 관리해요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+## Summary: 2. Questions and answers, as asked (no one answers the system back)
+   chain        held 1, proposed otherwise, asks first 5 of 6
+   check        assumed right 1, held 3 of 4
+   direct       assumed right 1, proposed right, asks first 2, right 5 of 8
+   natural      proposed otherwise, asks first 1, proposed right, asks first 13 of 14
+   no_answer    held ok 13, proposed otherwise, asks first 5 of 18
+   qualified    proposed right, asks first 4, right 4 of 8
+   short        assumed right 11, held 1 of 12
+   all          assumed right 13, held 5, held ok 13, proposed otherwise, asks first 11, proposed right, asks first 19, right 9 of 70
+
+# 3. The same questions in the same order, a user answering each proposal with yes or no
+
+## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
+   chain        declined by the user 5, held 1 of 6
+   check        assumed right 1, held 3 of 4
+   direct       assumed right 1, right 5, right after a yes 2 of 8
+   natural      declined by the user 1, right after a yes 13 of 14
+   no_answer    declined by the user 5, held ok 13 of 18
+   qualified    assumed right 1, right 4, right after a yes 3 of 8
+   short        assumed right 11, held 1 of 12
+   all          assumed right 14, declined by the user 11, held 5, held ok 13, right 9, right after a yes 18 of 70

@@ -107,6 +107,7 @@ def with_words(language, words, basic=None):
     if basic is not None:
         marks, endings = A.word_ends(model['tables'])
         model['basic'], model['field_explained'], model['field_unexplained'] = basic, {}, []
+        model['field_explained_words'] = {p['means']: p['explained'] for p in words['properties'] if p.get('explained')}
         for prop in words['properties']:
             if prop.get('explained'):
                 reached, unknown = B.concepts_of(basic, prop['explained'], marks, endings)

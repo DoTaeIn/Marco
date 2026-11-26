@@ -1142,3 +1142,107 @@ stem and ending, as it always did for head words.
   어디예요. Where every word is known (Q29 "어느 건물에 있어요") the rule itself does not meet:
   건물 is not among the concepts of "찾아가면 만날 수 있는 곳". A building being a place is
   knowledge between concepts, which the lessons do not have.
+
+## Worked out by degree (2026-11-25, built after the sixth set; not measured)
+
+- The owner's question after the sixth set: is too little compared by number? The reader counts;
+  the step from a question to a property did not. It was all or nothing, and one piece the
+  explanation lacked ("건물") left a question with nothing.
+- `basic.ranked` replaces the all-or-nothing rule. Every property a piece meets comes back with
+  the pieces met and the pieces not met, most pieces met first. The number only orders. Nothing
+  is taken above some number, and nothing worked out is answered: one property that leaves no
+  piece over, or the only property any piece meets, is a proposal that names the pieces not
+  met; otherwise the properties are shown as candidates in order (`candidates` carry
+  `if_confirmed`, `met`, `unmet`). The runner counts where the right one stands.
+- Without the lessons the six outside sets give the same lines as before. 130 checks pass.
+- On the sixth set, which is exposed now, so this shows the step running and measures nothing:
+  against the frozen run with lessons, one more right proposal, three more that are not what
+  was asked (two of them where there is no answer), and four questions with candidates: the
+  right one first twice, listed once, missing once. 0 wrong answers.
+  What it shows about the number: in the two lists where one property met more pieces than the
+  rest (3 against 2, 2 against 1) it was the right one. In the other two every candidate met one
+  piece, the order was that of the names, and the right one was not first. The three new
+  proposals that are not what was asked each rest on one common piece (수, 있다, 곳) that many
+  explanations have. A piece that meets every explanation says nothing and counts the same as
+  one that meets a single explanation. Weighing a piece by how few explanations it meets would
+  be a number from the field itself; it was thought of after looking at these lines, so it is
+  not built, and if built it has to be measured on a new set.
+
+## A trial: a vector model on the hearing side (2026-11-25, the owner's request, once)
+
+- Not part of the system. `probes/hear_vector.py` reads a Korean sentence encoder that was already
+  on the machine (jhgan/ko-sroberta-multitask, 423 MB, network off). Where nothing in a question
+  points at a property by form, the whole question is put next to each property's words (its
+  word, other words, its explanation where the set has one) and the nearest property the thing
+  has is put to the user as a proposal with every piece that was not read. Nothing it picks is
+  answered. No number decides anything. `MARCO_HEAR=vector` on the runner; `MARCO_HEAR=veto` puts
+  nothing there and only lifts the stop on an unknown word in front of a connector.
+- Run once on all six outside sets (420 questions), all of them exposed before; the first five
+  have no explanations. What was compared was fixed before the run. 0 wrong answers everywhere.
+
+  | all six sets | proposed right | proposed otherwise | held | held rightly |
+  | --- | --- | --- | --- | --- |
+  | as committed | 77 | 8 | 98 | 101 |
+  | stop lifted only | 99 | 29 | 62 | 94 |
+  | stop lifted + vector | 119 | 47 | 35 | 82 |
+
+- The stop lifted, alone: of questions about one fact, 18 more right proposals and none that is
+  not what was asked. Its cost is elsewhere: 14 chains proposed as their first link (4 right) and
+  7 questions without an answer proposed.
+- The vector, on top of that: of questions about one fact it newly decided 25, 20 of them right.
+  It cannot tell that there is no answer: 11 such questions got a proposal, and 2 chains. One
+  question crashed in the trial's own code (a thing with no fact left to order); fixed after
+  the run, not run again.
+
+## Relations inside a sentence (2026-11-26, built; not measured)
+
+The owner's direction: a sentence is made into a small graph of its own words, and a word no lesson
+knows is guessed from where it stands. First of three steps (this graph; then the same graph read
+over ordinary text to count who stands where; then both together).
+
+`relate.words(basic, text)` cuts every word by form: a taught connector after a noun, or a taught
+ending after a stem. A stem is brought back to its first shape by the ways the taught words change
+theirs (`basic.load_ends` now also returns these, 3 + 8 + 23 of them): 맡겨, 맡길 and 맡기면 give one
+stem though no lesson has the word. A word with a connector hangs on the next word that can take
+endings; any other word hangs on the next word. A cut that could go two ways is kept both ways.
+
+`relate.placed(basic, question, explanations)` looks only at words no lesson knows. Such a word is
+"same" when it is a word of a property's explanation in another shape, and "place" when it stands
+where a word of the explanation stands: same connector, same head ("짐을 맡기면" next to "물건을
+맡길 때"). In `answer._anchor` a placed word counts as met in `basic.ranked`, is named in the
+proposal (`placed`: the word, how, the word it was taken for), and no longer stops the look-up as
+an unknown noun. Place says what part a word plays, not what it means: nothing here is answered.
+
+Not done: 을 and 를 are two connectors to this (the lessons do not say they are one); the bare
+third stem (맡아, 알려) and ㅂ니다, ㅂ니까, ㄴ다 are still untaught; a word that stands in several
+explanations (맡다 in three of eight) points at all of them alike.
+
+Mechanism check only, on the sixth set, which was seen (the design was made with its questions in
+view, so this says nothing about a new field): 23 of 46 natural, qualified, chain and no-answer
+questions have a word placed. Verdicts: two held questions became right proposals, nothing else
+moved, 0 wrong answers (`outside6_e2e_20261125/by_configuration/placed.txt`). Both came from the
+unknown noun no longer stopping the look-up, not from the order of properties. Without the lessons
+all six sets give the same lines as before. 133 checks pass. A seventh set is needed to measure it.
+
+### Who stands where in ordinary text (2026-11-26, second step; built, no gain seen)
+
+`relate.places(basic, sentences)` runs the same cut over ordinary sentences and counts, for every
+place (connector, head), the nouns seen there; `probes/places_from_text.py` writes the table,
+`relate.load` reads it, and the runner takes it as a fourth argument (`model['places']`). With it,
+`relate.placed` has a third way, "like": ordinary text has a noun of the explanation in the very
+place the unknown word stands in here, and the two share other places; the number (how many of a
+thousand places of either both stand in) only orders. Without a table nothing changes.
+
+Text used: the first 1,000,000 sentences of a Korean encyclopedia dump of 2023-11 that was already
+on this machine (CC BY-SA / GFDL), 56 s, 278,234 places kept (a noun seen twice or more), 40 MB,
+kept outside the repository (`.worktrees/corpus/places_wiki_ko_1m.tsv`). Nothing of it is committed.
+
+The table itself looks right: (를, 마시) holds 차, 커피, 맥주, 홍차, 우유; (에, 살) holds 지역, 곳, 마을, 섬.
+
+Mechanism check on the sixth set (seen): no verdict changed, and what "like" said was not right.
+"짐을" came out like 돈, 날, 곳, 방법 and 사람, one for nearly every explanation, with numbers of
+5 to 27 per thousand. Why: a common verb takes nearly any noun (돈을 두다, 곳을 두다), so the place
+prunes little; common nouns share places with everything; everyday words are thin in this text
+(가방 was kept in no place); and with no number above which a likeness counts, the faintest one
+passes. The same was seen with the wording counts: standing near is not meaning the same.
+Not tuned on this set. Left in, off unless a table is given. 134 checks pass.

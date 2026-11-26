@@ -62,15 +62,19 @@ def test_without_the_lessons_nothing_changes(tmp_path):
         assert got['status'] == 'assumed' and got['assumed'][0]['chosen_by'] == 'the property word'
 
 
-def test_a_known_word_the_explanation_does_not_have_stays_a_condition(tmp_path):
+def test_a_piece_the_explanation_does_not_have_is_listed_not_swallowed(tmp_path):
     f = field(tmp_path, PLAIN)
-    # 아이 is taught, and it is in no explanation: it may change the answer, so nothing is proposed.
+    # 아이 is taught, and it is in no explanation. 돈 points at the fee, so the fee is proposed, and 아이
+    # is named as the piece that may change the answer. Nothing is answered.
     got = PK.ask(f, '모래섬호 아이 돈?')
-    assert got['status'] == 'hold' and 'proposal' not in got and 'candidates' not in got
-    # A word no lesson knows is not explained by anything either.
-    assert 'proposal' not in PK.ask(f, '모래섬호 단체 돈?')
-    # A light word alone points at nothing.
-    assert 'proposal' not in PK.ask(f, '모래섬호 것?')
+    assert got['status'] == 'hold' and not got['answers']
+    assert got['proposal']['understood']['property'] == '기본요금' and got['proposal']['not_accounted_for'] == ['아이']
+    assert 'these pieces are not accounted for: "아이"' in got['proposal']['ask']
+    # The same for a word no lesson knows.
+    assert PK.ask(f, '모래섬호 단체 돈?')['proposal']['not_accounted_for'] == ['단체']
+    # A light word alone points at nothing, and neither does a word that meets no explanation.
+    assert 'proposal' not in PK.ask(f, '모래섬호 것?') and 'candidates' not in PK.ask(f, '모래섬호 것?')
+    assert 'proposal' not in PK.ask(f, '모래섬호 아이?') and 'candidates' not in PK.ask(f, '모래섬호 아이?')
 
 
 def test_two_explanations_that_fit_are_shown_as_candidates(tmp_path):
@@ -78,6 +82,18 @@ def test_two_explanations_that_fit_are_shown_as_candidates(tmp_path):
     got = PK.ask(f, '모래섬호 어디?')
     assert got['status'] == 'hold' and 'proposal' not in got
     assert sorted(c['property'] for c in got['candidates']) == ['기본요금', '출발항']
+
+
+def test_candidates_come_in_order_of_how_many_pieces_they_meet(tmp_path):
+    f = field(tmp_path, dict(PLAIN, 기본요금='돈 곳'))
+    got = PK.ask(f, '모래섬호 사람 돈 어디?')
+    assert got['status'] == 'hold' and not got['answers'] and 'proposal' not in got
+    # The fee meets two pieces, the others one each. No number decides: all three are shown, in order.
+    assert [(c['property'], len(c['met'])) for c in got['candidates']] == [('기본요금', 2), ('정원', 1), ('출발항', 1)]
+    assert got['candidates'][0]['unmet'] == ['사람'] and got['candidates'][0]['if_confirmed'] == '6000원'
+    # One property that leaves no piece over is proposed, though others meet a piece too.
+    whole = PK.ask(f, '모래섬호 돈 어디?')
+    assert whole['proposal']['understood']['property'] == '기본요금' and whole['proposal']['not_accounted_for'] == []
 
 
 def test_a_word_is_found_in_front_of_a_connector_and_with_a_learned_ending(tmp_path):
