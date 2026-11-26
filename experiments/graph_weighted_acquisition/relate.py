@@ -113,8 +113,8 @@ def placed(basic, question, explanations, text=None):
     "same": a word of the explanation in another shape. "place": it stands where a word of the
     explanation stands. "like", only with `text` (load): ordinary text has a noun of the
     explanation in the very place the word stands in here, and the two were seen in other places
-    together; the number is how many of a thousand places of either both stand in, and it only
-    puts things in order.
+    together; the number is the weighed share of their places that both stand in (a place few
+    nouns stand in weighs more), and it only puts things in order.
     """
     marks = basic['marks']
     asked = words(basic, question)
@@ -142,9 +142,12 @@ def placed(basic, question, explanations, text=None):
                     noun, other = min(q['keys'], key=len), min(t['keys'], key=len)
                     if any(other in text['at'].get(place, {}) for place in here):
                         mine, theirs = text['of'].get(noun, set()), text['of'].get(other, set())
-                        # Of a thousand places either stands in, how many both do: a common word shares
-                        # places with everything, so the count alone would say nothing.
-                        shared = 1000 * len(mine & theirs) // max(1, len(mine | theirs))
+                        # A place weighs one over the number of nouns seen in it: where anything may
+                        # stand ("…을 두다") says little, where few may ("…를 마시다") says much. The number
+                        # is the weight of the places both stand in, per thousand of the weight of all
+                        # the places of either.
+                        weigh = lambda places: sum(1.0 / len(text['at'][p]) for p in places)
+                        shared = int(1000 * weigh(mine & theirs) / max(weigh(mine | theirs), 1e-9))
                         if shared and (best is None or shared > best[2]):
                             best = ('like', t['text'], shared)
             if best:

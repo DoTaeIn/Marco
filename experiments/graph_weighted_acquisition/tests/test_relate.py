@@ -73,10 +73,10 @@ def test_ordinary_text_says_which_word_of_the_explanation_an_unknown_word_is_lik
     text = RL.load(tmp_path / 'places.tsv')
     # The head here ("들면") is not in the explanation, so nothing is placed without the text.
     assert RL.placed(basic, '우산을 들면 돈?', EXPLAINED) == {}
-    assert RL.placed(basic, '우산을 들면 돈?', EXPLAINED, text) == {'기본요금': {'우산을': ('like', '책을', 666)}}
+    assert RL.placed(basic, '우산을 들면 돈?', EXPLAINED, text) == {'기본요금': {'우산을': ('like', '책을', 500)}}
     # A word the text never saw where 책 stands is like nothing.
     assert RL.placed(basic, '구름을 보면 돈?', EXPLAINED, text) == {}
     f['model']['places'] = text
     got = PK.ask(f, '모래섬호 우산을 들면 돈?')
-    assert not got['answers'] and got['proposal']['placed']['우산을'] == {'how': 'like', 'as': '책을', 'shared_places_per_thousand': 666}
+    assert not got['answers'] and got['proposal']['placed']['우산을'] == {'how': 'like', 'as': '책을', 'shared_places_per_thousand': 500}
     assert got['proposal']['not_accounted_for'] == ['들면']

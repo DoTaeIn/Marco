@@ -157,4 +157,7 @@ def ranked(basic, pieces, explanations, marks=(), endings=(), placed=None):
         if met:
             out.append({'property': prop, 'met': met, 'unmet': unmet,
                         'placed': {p: v for p, v in (placed or {}).get(prop, {}).items() if p in met}})
-    return sorted(out, key=lambda row: (-len(row['met']), row['property']))
+    # Among properties that meet as many pieces, the one whose placed words are most like its
+    # explanation's comes first (the number relate.placed gives; 0 without ordinary text).
+    likeness = lambda row: sum(v[2] for v in row['placed'].values())
+    return sorted(out, key=lambda row: (-len(row['met']), -likeness(row), row['property']))

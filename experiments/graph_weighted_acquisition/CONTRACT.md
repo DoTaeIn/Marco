@@ -1246,3 +1246,11 @@ prunes little; common nouns share places with everything; everyday words are thi
 (가방 was kept in no place); and with no number above which a likeness counts, the faintest one
 passes. The same was seen with the wording counts: standing near is not meaning the same.
 Not tuned on this set. Left in, off unless a table is given. 134 checks pass.
+
+### Places weighed (2026-11-26, the owner's request; a checkpoint of its own)
+
+A place weighs one over the number of nouns seen in it. The likeness of two nouns is the weight of
+the places both stand in, per thousand of the weight of all the places of either. Among properties
+that meet as many pieces, `basic.ranked` puts first the one whose placed words are most like its
+explanation's. Still no number above which a likeness counts, and nothing is answered.
+Checkpoints to compare: `0d21618` (places counted, not weighed) and the one after it (weighed).
