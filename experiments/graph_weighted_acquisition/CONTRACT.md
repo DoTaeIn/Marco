@@ -1540,3 +1540,28 @@ Before the change what was understood fell as use grew (43, 38, 41); after it, i
 45) and the share answered without asking grows (5, 8, 16 of 80). Use turns proposals into
 answers; it has not yet made a question understood that was not understood before. The eleven
 questions still held do not move with use.
+
+## The tax knowledge flatters the numbers: one property per thing (2026-11-26)
+
+Looked at after reading of work that asks the same question again of an altered table, so that
+readings which were right by chance give themselves away. In the tax knowledge ten of twelve
+things have exactly one fact. Once the thing is named, putting forward its only property is
+"right" whatever the question asked.
+
+Checked without changing any code: every thing was given every one of the eight properties, the
+missing ones with made-up values, and the answerable questions of four sets were asked again
+(lessons and listed ways of asking; the sets were seen, the altered knowledge is new).
+
+| set | natural proposed or assumed right, real knowledge | the same, every thing with every property | proposed otherwise, dense |
+| --- | --- | --- | --- |
+| thirteenth (30) | 23 | 17 | 4 |
+| fourteenth (30) | 24 | 18 | 6 |
+| fifteenth (40) | 32 | 21 | 8 |
+| sixteenth (40) | 33 | 23 | 8 |
+| all (140) | 112 | 79 | 26 |
+
+About three in ten of the natural questions counted as understood were understood only because
+the thing had nothing else to offer. With a choice of eight, 79 of 140 are right and 26 are put to
+the user as another property. No wrong answer in either. Every number above this section that
+counts proposals on the tax sets has to be read with this. A set meant to measure hearing needs
+things with several properties (the outside sets one to six had them).
