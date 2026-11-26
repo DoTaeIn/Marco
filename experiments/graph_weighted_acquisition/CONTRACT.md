@@ -1565,3 +1565,62 @@ the thing had nothing else to offer. With a choice of eight, 79 of 140 are right
 the user as another property. No wrong answer in either. Every number above this section that
 counts proposals on the tax sets has to be read with this. A set meant to measure hearing needs
 things with several properties (the outside sets one to six had them).
+
+
+## Field-word lessons on a new tax set (2026-11-26, data only)
+
+`probes/tax17_e2e_20261126/`: the same 14 facts, 80 new questions by a separate examiner
+(40 natural, 24 without an answer). The examiner saw no lessons or code; the teacher saw only
+the field brief and the 163 concepts. Lessons were frozen before the examiner was started.
+The original set's keys other than `questions` are unchanged. One natural question in the
+examiner's draft used a property alias; the examiner rephrased that one before any run,
+keeping its meaning, answer and evidence. Both versions are kept.
+
+The first teacher returned 99 word rows with prose where the literal kind `뜻` belongs;
+all were rejected and kept. The owner then asked for a fresh teacher with that format made
+explicit. That teacher returned 100 rows: 44 admitted, 56 rejected (51 already taught, five
+using an unlisted concept, by the first rejection reason). Seven stem rows were added.
+No meaning or stem was corrected. The merged lessons load 986 words, 942 plus 44.
+
+No existing `.py` was edited. The checkout is `c8e2e489`, which adds the hand-over, the
+sixteenth set and preparation tools; the execution code is unchanged from `91822fb`.
+Each configuration ran once from this worktree's root with `PYTHONPATH=.` and the same
+`MARCO_ASKED=probes/tax8_e2e_20261126/asked.json` (under this package). Code, lessons and
+questions stayed byte-identical after the runs. No benchmark or private evaluation was
+opened. Only the first Summary, before simulated user feedback, is reported:
+
+| configuration | natural proposed right (of 40) | proposed right, all | proposed otherwise | held | held rightly (of 24) | WRONG |
+| --- | --- | --- | --- | --- | --- | --- |
+| general lessons | 27 | 35 | 3 | 18 | 22 | 0 |
+| plus field words | 29 | 38 | 4 | 15 | 21 | 0 |
+
+Each row is 80 questions. Both also answer or assume right twice; `held` above excludes
+`held rightly`. No wrong answer in either run, not a claim of no wrong proposals.
+Q04, Q37 and Q50 move from held to proposed right. Q69 moves from held rightly to proposed
+otherwise: the question says disaster-related extension was approved, but the system asks
+whether it wants the ordinary filing period and would offer `다음해5월1일~5월31일`.
+
+The gain on natural questions is two of 40; correct holds on unknown questions fall by one.
+This does not establish that missing field vocabulary is the main bottleneck or justify a
+large vocabulary expansion by itself. A distinction absent from the knowledge still needs
+protecting. Teacher and examiner are the same kind of writer, so even this gain may be
+optimistic. Inputs, rejected rows, original outputs, both first summaries and per-item
+transitions are kept. No rerun, commit or push; goal 1 is not declared complete.
+
+## Property selection and the weak letter match (2026-11-26)
+
+The first change collects the existing fallback signals in one priority table. The
+corpus-position and vector trials were retired. The general word lessons and the wording
+listed for each property remain. Claim comparison, the kind check and the user's rejection
+are outside the table. The reader is unchanged.
+
+On sets one through sixteen and the four dense sets (1,250 questions), both passes of the
+runner gave byte-identical output apart from the two checked source fingerprints. The
+second change moves only the weak letter signal from 40 to 80. Lower numbers go first.
+
+On the new three-subject, eight-property set, correct proposals on 30 natural questions
+rose from 17 to 25, wrong proposals from 2 to 3, and holds fell from 11 to 2. On the original
+24-question tax replay, 14 answers remained strictly correct and correct proposals rose
+from one to three. The four supplemental results stayed the same. The receipts are in
+`probes/signal_priority_audit_20261126/`. Their published manifest paths are relative to
+the checkout used in each run. Original runner output is stored losslessly.

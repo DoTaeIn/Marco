@@ -1,0 +1,3054 @@
+[
+ {
+  "id": "C1-1-1",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "10%"
+   ]
+  ],
+  "claim": {
+   "claimed": "10%",
+   "holds": true
+  },
+  "source_ids": [
+   "F01"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        5
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        7,
+        9
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        11,
+        14
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "세율"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         5
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        5
+       ],
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ],
+       [
+        11,
+        14
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "10%"
+   ],
+   "compare": {
+    "input": "10%",
+    "lookup": [
+     [
+      "10%"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "C1-1-0",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "10%"
+   ]
+  ],
+  "claim": {
+   "claimed": "89%",
+   "holds": false
+  },
+  "source_ids": [
+   "F01"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        5
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        7,
+        9
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        11,
+        14
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "세율"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         5
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        5
+       ],
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ],
+       [
+        11,
+        14
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "89%"
+   ],
+   "compare": {
+    "input": "89%",
+    "lookup": [
+     [
+      "10%"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "C1-2-1",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "10%"
+   ]
+  ],
+  "claim": {
+   "claimed": "10%",
+   "holds": true
+  },
+  "source_ids": [
+   "F01"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        5
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        7,
+        9
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        11,
+        14
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "세율"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         5
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        5
+       ],
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ],
+       [
+        11,
+        14
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "10%"
+   ],
+   "compare": {
+    "input": "10%",
+    "lookup": [
+     [
+      "10%"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "C1-2-0",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "10%"
+   ]
+  ],
+  "claim": {
+   "claimed": "89%",
+   "holds": false
+  },
+  "source_ids": [
+   "F01"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        5
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        7,
+        9
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        11,
+        14
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "세율"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         5
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        5
+       ],
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ],
+       [
+        11,
+        14
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "89%"
+   ],
+   "compare": {
+    "input": "89%",
+    "lookup": [
+     [
+      "10%"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "C1-3-1",
+  "series": "unseen construction",
+  "state": "proposal",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read; one fact fits what was recognised, but these pieces are not accounted for: \"이라는\", \"얘기가\", \"있던데\", \"정확한가요\"",
+  "calls": {}
+ },
+ {
+  "id": "C1-3-0",
+  "series": "unseen construction",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read with confidence: every reading uses something never seen in training",
+  "calls": {}
+ },
+ {
+  "id": "C2-1-1",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "126"
+   ]
+  ],
+  "claim": {
+   "claimed": "126",
+   "holds": true
+  },
+  "source_ids": [
+   "F10"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        6
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        8,
+        12
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        14,
+        17
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "상담전화"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         6
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        6
+       ],
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ],
+       [
+        14,
+        17
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "126"
+   ],
+   "compare": {
+    "input": "126",
+    "lookup": [
+     [
+      "126"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "C2-1-0",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "126"
+   ]
+  ],
+  "claim": {
+   "claimed": "994",
+   "holds": false
+  },
+  "source_ids": [
+   "F10"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        6
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        8,
+        12
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        14,
+        17
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "상담전화"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         6
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        6
+       ],
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ],
+       [
+        14,
+        17
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "994"
+   ],
+   "compare": {
+    "input": "994",
+    "lookup": [
+     [
+      "126"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "C2-2-1",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "126"
+   ]
+  ],
+  "claim": {
+   "claimed": "126",
+   "holds": true
+  },
+  "source_ids": [
+   "F10"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        6
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        8,
+        12
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        14,
+        17
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "상담전화"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         6
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        6
+       ],
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ],
+       [
+        14,
+        17
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "126"
+   ],
+   "compare": {
+    "input": "126",
+    "lookup": [
+     [
+      "126"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "C2-2-0",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "126"
+   ]
+  ],
+  "claim": {
+   "claimed": "994",
+   "holds": false
+  },
+  "source_ids": [
+   "F10"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        6
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        8,
+        12
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        14,
+        17
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "상담전화"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         6
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        6
+       ],
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ],
+       [
+        14,
+        17
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "994"
+   ],
+   "compare": {
+    "input": "994",
+    "lookup": [
+     [
+      "126"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "C2-3-1",
+  "series": "unseen construction",
+  "state": "proposal",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read; one fact fits what was recognised, but these pieces are not accounted for: \"이라는\", \"얘기가\", \"있던데\", \"정확한가요\"",
+  "calls": {}
+ },
+ {
+  "id": "C2-3-0",
+  "series": "unseen construction",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read with confidence: every reading uses something never seen in training",
+  "calls": {}
+ },
+ {
+  "id": "C3-1-1",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "다음해6월30일"
+   ]
+  ],
+  "claim": {
+   "claimed": "다음해6월30일",
+   "holds": true
+  },
+  "source_ids": [
+   "F13"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        10
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        12,
+        16
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        18,
+        26
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         10
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        10
+       ],
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ],
+       [
+        18,
+        26
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "다음해6월30일"
+   ],
+   "compare": {
+    "input": "다음해6월30일",
+    "lookup": [
+     [
+      "다음해6월30일"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "C3-1-0",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "다음해6월30일"
+   ]
+  ],
+  "claim": {
+   "claimed": "다음해6월29일",
+   "holds": false
+  },
+  "source_ids": [
+   "F13"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        10
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        12,
+        16
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        18,
+        26
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         10
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        10
+       ],
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ],
+       [
+        18,
+        26
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "다음해6월29일"
+   ],
+   "compare": {
+    "input": "다음해6월29일",
+    "lookup": [
+     [
+      "다음해6월30일"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "C3-2-1",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "다음해6월30일"
+   ]
+  ],
+  "claim": {
+   "claimed": "다음해6월30일",
+   "holds": true
+  },
+  "source_ids": [
+   "F13"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        10
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        12,
+        16
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        18,
+        26
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         10
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        10
+       ],
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ],
+       [
+        18,
+        26
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "다음해6월30일"
+   ],
+   "compare": {
+    "input": "다음해6월30일",
+    "lookup": [
+     [
+      "다음해6월30일"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "C3-2-0",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "다음해6월30일"
+   ]
+  ],
+  "claim": {
+   "claimed": "다음해6월29일",
+   "holds": false
+  },
+  "source_ids": [
+   "F13"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        10
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        12,
+        16
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        18,
+        26
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         10
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        10
+       ],
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ],
+       [
+        18,
+        26
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "다음해6월29일"
+   ],
+   "compare": {
+    "input": "다음해6월29일",
+    "lookup": [
+     [
+      "다음해6월30일"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "C3-3-1",
+  "series": "unseen construction",
+  "state": "proposal",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read; one fact fits what was recognised, but these pieces are not accounted for: \"이라는\", \"얘기가\", \"있던데\", \"정확한가요\"",
+  "calls": {}
+ },
+ {
+  "id": "C3-3-0",
+  "series": "unseen construction",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read with confidence: every reading uses something never seen in training",
+  "calls": {}
+ },
+ {
+  "id": "C4-1-1",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "2026년7월27일"
+   ]
+  ],
+  "claim": {
+   "claimed": "2026년7월27일",
+   "holds": true
+  },
+  "source_ids": [
+   "F14"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        17
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        19,
+        23
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        25,
+        35
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         17
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        17
+       ],
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ],
+       [
+        25,
+        35
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        0,
+        17
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "2026년7월27일"
+   ],
+   "compare": {
+    "input": "2026년7월27일",
+    "lookup": [
+     [
+      "2026년7월27일"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "C4-1-0",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "2026년7월27일"
+   ]
+  ],
+  "claim": {
+   "claimed": "2026년7월25일",
+   "holds": false
+  },
+  "source_ids": [
+   "F14"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        17
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        19,
+        23
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        25,
+        35
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         17
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        17
+       ],
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ],
+       [
+        25,
+        35
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        0,
+        17
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "2026년7월25일"
+   ],
+   "compare": {
+    "input": "2026년7월25일",
+    "lookup": [
+     [
+      "2026년7월27일"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "C4-2-1",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "2026년7월27일"
+   ]
+  ],
+  "claim": {
+   "claimed": "2026년7월27일",
+   "holds": true
+  },
+  "source_ids": [
+   "F14"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        17
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        19,
+        23
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        25,
+        35
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         17
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        17
+       ],
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ],
+       [
+        25,
+        35
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        0,
+        17
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "2026년7월27일"
+   ],
+   "compare": {
+    "input": "2026년7월27일",
+    "lookup": [
+     [
+      "2026년7월27일"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "C4-2-0",
+  "series": "seen construction / new slots",
+  "state": "right",
+  "answer": [
+   [
+    "2026년7월27일"
+   ]
+  ],
+  "claim": {
+   "claimed": "2026년7월25일",
+   "holds": false
+  },
+  "source_ids": [
+   "F14"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        17
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        19,
+        23
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        25,
+        35
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         17
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        17
+       ],
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ],
+       [
+        25,
+        35
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        0,
+        17
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "2026년7월25일"
+   ],
+   "compare": {
+    "input": "2026년7월25일",
+    "lookup": [
+     [
+      "2026년7월27일"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "C4-3-1",
+  "series": "unseen construction",
+  "state": "proposal",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read; one fact fits what was recognised, but these pieces are not accounted for: \"이라는\", \"얘기가\", \"있던데\", \"정확한가요\"",
+  "calls": {}
+ },
+ {
+  "id": "C4-3-0",
+  "series": "unseen construction",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read with confidence: every reading uses something never seen in training",
+  "calls": {}
+ },
+ {
+  "id": "Q53",
+  "series": "original natural check",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+  "calls": {}
+ },
+ {
+  "id": "O-Q53",
+  "series": "manually supplied subject and property",
+  "state": "right",
+  "answer": [
+   [
+    "126"
+   ]
+  ],
+  "claim": {
+   "claimed": "126",
+   "holds": true
+  },
+  "source_ids": [
+   "F10"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        6
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        8,
+        12
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        14,
+        17
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "상담전화"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         6
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        6
+       ],
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ],
+       [
+        14,
+        17
+       ]
+      ],
+      [
+       [
+        8,
+        12
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "126"
+   ],
+   "compare": {
+    "input": "126",
+    "lookup": [
+     [
+      "126"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "Q54",
+  "series": "original natural check",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+  "calls": {}
+ },
+ {
+  "id": "O-Q54",
+  "series": "manually supplied subject and property",
+  "state": "right",
+  "answer": [
+   [
+    "10%"
+   ]
+  ],
+  "claim": {
+   "claimed": "8%",
+   "holds": false
+  },
+  "source_ids": [
+   "F01"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        5
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        7,
+        9
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        11,
+        13
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "세율"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         5
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        5
+       ],
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ],
+       [
+        11,
+        13
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "8%"
+   ],
+   "compare": {
+    "input": "8%",
+    "lookup": [
+     [
+      "10%"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "Q55",
+  "series": "original natural check",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read with confidence: 2 of 2 sentences could not be read; first: \"제 수첩에는 성실신고확인서제출자는 다음해6월30일까지라고 적혀 있습니다.\" (the text cannot be cut into known pieces)",
+  "calls": {}
+ },
+ {
+  "id": "O-Q55",
+  "series": "manually supplied subject and property",
+  "state": "right",
+  "answer": [
+   [
+    "다음해6월30일"
+   ]
+  ],
+  "claim": {
+   "claimed": "다음해6월30일",
+   "holds": true
+  },
+  "source_ids": [
+   "F13"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        10
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        12,
+        16
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        18,
+        26
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         10
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        10
+       ],
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ],
+       [
+        18,
+        26
+       ]
+      ],
+      [
+       [
+        12,
+        16
+       ]
+      ],
+      [
+       [
+        0,
+        10
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "다음해6월30일"
+   ],
+   "compare": {
+    "input": "다음해6월30일",
+    "lookup": [
+     [
+      "다음해6월30일"
+     ]
+    ],
+    "holds": true
+   }
+  }
+ },
+ {
+  "id": "Q56",
+  "series": "original natural check",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read with confidence: the text cannot be cut into known pieces",
+  "calls": {}
+ },
+ {
+  "id": "O-Q56",
+  "series": "manually supplied subject and property",
+  "state": "right",
+  "answer": [
+   [
+    "2026년7월27일"
+   ]
+  ],
+  "claim": {
+   "claimed": "2026년7월25일",
+   "holds": false
+  },
+  "source_ids": [
+   "F14"
+  ],
+  "reason": "every condition of the question holds in the passage; not independently verified",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        17
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        19,
+        23
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        25,
+        35
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "신고기한"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         17
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        17
+       ],
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ],
+       [
+        25,
+        35
+       ]
+      ],
+      [
+       [
+        19,
+        23
+       ]
+      ],
+      [
+       [
+        0,
+        17
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "2026년7월25일"
+   ],
+   "compare": {
+    "input": "2026년7월25일",
+    "lookup": [
+     [
+      "2026년7월27일"
+     ]
+    ],
+    "holds": false
+   }
+  }
+ },
+ {
+  "id": "N1",
+  "series": "unsupported control",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "nothing in the passage fits every condition of the question",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        5
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "relation",
+       "anchor": [
+        7,
+        9
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "amount",
+       "anchor": [
+        11,
+        14
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m1",
+       "subject",
+       "m0"
+      ],
+      [
+       "m1",
+       "amount",
+       "m2"
+      ],
+      [
+       "m1",
+       "kind",
+       {
+        "literal": "세율"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         5
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        5
+       ],
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ],
+       [
+        11,
+        14
+       ]
+      ],
+      [
+       [
+        7,
+        9
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ]
+     ],
+     "project": [
+      "m2"
+     ]
+    },
+    "89%"
+   ]
+  }
+ },
+ {
+  "id": "N2",
+  "series": "unsupported control",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "nothing in the passage fits every condition of the question",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        6
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "condition",
+       "anchor": [
+        8,
+        10
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "relation",
+       "anchor": [
+        11,
+        15
+       ]
+      },
+      {
+       "id": "m3",
+       "type": "amount",
+       "anchor": [
+        17,
+        21
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m2",
+       "subject",
+       "m0"
+      ],
+      [
+       "m2",
+       "when",
+       "m1"
+      ],
+      [
+       "m2",
+       "amount",
+       "m3"
+      ],
+      [
+       "m2",
+       "kind",
+       {
+        "literal": "상담전화"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         6
+        ]
+       }
+      ],
+      [
+       "m1",
+       "value",
+       {
+        "copy": [
+         8,
+         10
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        6
+       ],
+       [
+        11,
+        15
+       ]
+      ],
+      [
+       [
+        8,
+        10
+       ],
+       [
+        11,
+        15
+       ]
+      ],
+      [
+       [
+        11,
+        15
+       ],
+       [
+        17,
+        21
+       ]
+      ],
+      [
+       [
+        11,
+        15
+       ]
+      ],
+      [
+       [
+        0,
+        6
+       ]
+      ],
+      [
+       [
+        8,
+        10
+       ]
+      ]
+     ],
+     "project": [
+      "m3"
+     ]
+    },
+    "126이"
+   ]
+  }
+ },
+ {
+  "id": "N3",
+  "series": "unsupported control",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "nothing in the passage fits every condition of the question",
+  "calls": {
+   "query": [
+    {
+     "nodes": [
+      {
+       "id": "m0",
+       "type": "subject",
+       "anchor": [
+        0,
+        5
+       ]
+      },
+      {
+       "id": "m1",
+       "type": "condition",
+       "anchor": [
+        7,
+        11
+       ]
+      },
+      {
+       "id": "m2",
+       "type": "relation",
+       "anchor": [
+        12,
+        14
+       ]
+      },
+      {
+       "id": "m3",
+       "type": "amount",
+       "anchor": [
+        16,
+        19
+       ]
+      }
+     ],
+     "edges": [
+      [
+       "m2",
+       "subject",
+       "m0"
+      ],
+      [
+       "m2",
+       "when",
+       "m1"
+      ],
+      [
+       "m2",
+       "amount",
+       "m3"
+      ],
+      [
+       "m2",
+       "kind",
+       {
+        "literal": "세율"
+       }
+      ],
+      [
+       "m0",
+       "value",
+       {
+        "copy": [
+         0,
+         5
+        ]
+       }
+      ],
+      [
+       "m1",
+       "value",
+       {
+        "copy": [
+         7,
+         11
+        ]
+       }
+      ]
+     ],
+     "edge_spans": [
+      [
+       [
+        0,
+        5
+       ],
+       [
+        12,
+        14
+       ]
+      ],
+      [
+       [
+        7,
+        11
+       ],
+       [
+        12,
+        14
+       ]
+      ],
+      [
+       [
+        12,
+        14
+       ],
+       [
+        16,
+        19
+       ]
+      ],
+      [
+       [
+        12,
+        14
+       ]
+      ],
+      [
+       [
+        0,
+        5
+       ]
+      ],
+      [
+       [
+        7,
+        11
+       ]
+      ]
+     ],
+     "project": [
+      "m3"
+     ]
+    },
+    "10%"
+   ]
+  }
+ },
+ {
+  "id": "N4",
+  "series": "unsupported control",
+  "state": "hold",
+  "answer": [],
+  "claim": null,
+  "source_ids": [],
+  "reason": "the question was not read with confidence: every reading uses something never seen in training",
+  "calls": {}
+ }
+]

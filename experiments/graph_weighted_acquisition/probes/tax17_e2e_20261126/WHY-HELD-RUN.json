@@ -1,0 +1,12 @@
+{
+  "diagnostic_only": true,
+  "owner_requested_diagnostic_replay": true,
+  "configuration": "with_field_words",
+  "diagnostic_source_sha256": "e16220869c86680bbdd708c198b29e6552511a1f2b7344e2133e813d1fe8abca",
+  "started_at_utc": "2026-11-26T06:47:16.827069+00:00",
+  "finished_at_utc": "2026-11-26T06:47:20.378414+00:00",
+  "returncode": 0,
+  "original_source_lessons_questions_and_outputs_unchanged": true,
+  "stdout_sha256": "3023b758d97ceda58910a0bc4459b84f81374279f94867d03dce65aeaac10c7f",
+  "note": "Supplied tracer executed from a temporary file with __file__ pointing to the probe directory; no .py file in the package was added or edited. Runner itself is unchanged. Its normal first and simulated-feedback passes both execute; stopped keeps one return line per question, overwritten by a later None return."
+}

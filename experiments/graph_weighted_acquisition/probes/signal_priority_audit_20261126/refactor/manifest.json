@@ -1,0 +1,367 @@
+{
+ "phase": "refactor",
+ "questions": 1250,
+ "cwd": ".",
+ "verified_import": "./experiments/graph_weighted_acquisition/answer.py",
+ "sources": {
+  "pack.py": "94442597aa13b22fe95e3a4a6ec8af4c9421b0c3018a26d486f96c935478afda",
+  "know.py": "6672f4d452a67cab0c71b83c97658d9743d6ae82545d590f7a4044e190816c8b",
+  "merge.py": "adb86f2824480df536a3cfe770332701f8fcfb9f5c9865a977549a477e696aab",
+  "answer.py": "3d6cc4e299604f3b0105c0de1beb6fccd297249eeb0db2dfa4ffb8838cb3ace7",
+  "variants.py": "ceb56e1f6a45ad532f076c48cba1a6fca85738acae74f3e7941de2d7890beb17",
+  "write.py": "7f68eea059409b6ef7f48dcea3a51bc24e62ed024e613ca4c42cda5017d1c4b7",
+  "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "augment.py": "51c6402d18613ad7791ce2bf06650a5a6257a97fd0c84aa89d3d7daf4367023e",
+  "reader.py": "a2d18844bc7050ff0a5e41eb6aca979ecea8d879d67bef3dc895fbba20bacd7e",
+  "basic.py": "9effa735e6a9ca113115ab540f32b71694d22ca7980a95f4c0ef34476d5c45bc",
+  "learn.py": "f631f7fa6ee2f9f87c680423feb86b2ef01f6758542f3bc70bf2e332cd43117a",
+  "relate.py": "186253268f7a623694faf230494ae21ead1056940adafecf9a3a39831c2f28c4",
+  "driver.py": "a20eae373e4971fdb85dd034b30ba3f55deafc000b032f319cbd9b5cb85dd9c6",
+  "weights.py": "694c60f6f295225d41c3ec9af753219818c9eff409981468553009d4320607b5",
+  "match.py": "b0208999be1f32fbb710e437d05225305c8acfc869c58fadfe224392f1e077a7",
+  "probes/blind_e2e.py": "b1986a25da7cb539d1281ce57b4b50e76ba5b7307fa6f63f5e0825704112db8a"
+ },
+ "stdout": "both passes; gzip files contain complete, unedited stdout",
+ "sets": [
+  {
+   "set": "outside1_e2e_20261124",
+   "questions": 70,
+   "stdout_sha256": "6bd9f85d86f13ec8c08d17d6d2bef09190f05b35719f49a72020ca1856ad3c3f",
+   "bytes": 21895,
+   "input_sha256": "59eb069c7e671018a4af02c5b15229844d4b2a0329f068a7fe6aafcb0031b26e",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "outside2_e2e_20261125",
+   "questions": 70,
+   "stdout_sha256": "c2234c8480b689afd4227a28dbf2f6334d187d7e91a7eb0904537092489878a1",
+   "bytes": 22127,
+   "input_sha256": "0b13ead5ecac027a0f8606e9acadf8018d1ef530a0e3c8f0a2d9f66549d7776a",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "outside3_e2e_20261125",
+   "questions": 70,
+   "stdout_sha256": "6203749784e5d661f7847422ec1ef9ea59bfdd43d63e9ca536c339551bd9971d",
+   "bytes": 21490,
+   "input_sha256": "da40e594d7ad879f066be8f7abeaee6ee5cbea7ae618463977ba41ed4c0cbabe",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "outside4_e2e_20261125",
+   "questions": 70,
+   "stdout_sha256": "b0ffc278eb6f0ad9257bd3a954caefa9786df917b03a29223a7833213b438006",
+   "bytes": 21368,
+   "input_sha256": "3e1f69c3994b295aaa0754a54610080530a7b83d24be82cd1c19da7a5086d190",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "outside5_e2e_20261125",
+   "questions": 70,
+   "stdout_sha256": "316ed75dc4135e911597ee3273139d66825b416ed356073736c5e4c9d620c2d8",
+   "bytes": 21674,
+   "input_sha256": "d1036ddcaef796dc7593071d284e29171d9db46858bbb7e5446529955c8b8eef",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "outside6_e2e_20261125",
+   "questions": 70,
+   "stdout_sha256": "19950b778951d01937dfc5b9e3eb760c9dc6970b4aff46678f7e39fc38076360",
+   "bytes": 24718,
+   "input_sha256": "4d60b30069b49a6036273c618df629a17f520ca4102b88017b0bff76a1fae75a",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax10_e2e_20261126",
+   "questions": 46,
+   "stdout_sha256": "ad93f8a9fb6b716ae6a9a4423ca39029b3b3ab67649870459715689200efcc84",
+   "bytes": 13841,
+   "input_sha256": "720874cc8cb7443e863cea81a1c77ff97bc4830be82d2c8f61f4bf7d1c1e961d",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax11_e2e_20261126",
+   "questions": 46,
+   "stdout_sha256": "0dfdd72ad8292c6a64adefe711861f93947cf4ce20285cb7d0cd6b8edd85161c",
+   "bytes": 15367,
+   "input_sha256": "3888475d2f37372611f969ee4b3f1a40d85c5851d27faccb9778d10027114873",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax12_e2e_20261126",
+   "questions": 70,
+   "stdout_sha256": "abb575c8b17cd5694cdda8d7fc650208586c6e371ef9e919c5a73f88635d2f12",
+   "bytes": 24436,
+   "input_sha256": "d479884f3db8b86ab1b7a87d6639d6f772e6922377ed8c2fcd6b9025caae450a",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax13_e2e_20261126",
+   "questions": 70,
+   "stdout_sha256": "dba9befeb2e4b7d1cbc40a5e27d26867caf00352a3ed4b4f4f60e67105e00c7a",
+   "bytes": 24010,
+   "input_sha256": "a128386fcc1b15899b76e2a38442bcd9293e0ac6a19c7dfec874fc5da8798275",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax14_e2e_20261126",
+   "questions": 70,
+   "stdout_sha256": "4c207b285433b8bdbffc56c99501e9e0d821ee7436366baa2fa617294af70dea",
+   "bytes": 25510,
+   "input_sha256": "752e4694d1306e87dacc6941a5a99050aa48719cec0bf6dd966d1568e13cfaea",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax15_e2e_20261126",
+   "questions": 80,
+   "stdout_sha256": "305c7b26ae3166f7a55dbf9d8eb69830a74c73edb0a23211c36520ae3c90b6d5",
+   "bytes": 25937,
+   "input_sha256": "7af297306cceabf4b2125b63bd4cd0efee6b747878bb80dd99626a55a6883c66",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax16_e2e_20261126",
+   "questions": 80,
+   "stdout_sha256": "a9c63d009e12ba62e9b32a8ff681a89ab3ec5085b3c6871ac1a26c6ed12ec3fa",
+   "bytes": 26963,
+   "input_sha256": "ceafcc48dec06cbc4411028a73aecf5a64d125f3c549b81ab6d3baa97e268ca1",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax7_e2e_20261126",
+   "questions": 44,
+   "stdout_sha256": "5cf866690b57c2c5d496cea9511996711d80a8d55dd02ef06b1214ab461852ea",
+   "bytes": 15494,
+   "input_sha256": "e5841cfd3d4e8f7978804d7f7e3cfd83f6440b4106ddfcf441921a79f124b2b3",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax8_e2e_20261126",
+   "questions": 60,
+   "stdout_sha256": "fe8069b6504bc986d9622e4eed387467eb22aa0569c93f88351f84a4109ca640",
+   "bytes": 20708,
+   "input_sha256": "d8f1686b65b645a1674a5c2ba2c02d48e41f990f4b7594cd5af7030276c69907",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "tax9_e2e_20261126",
+   "questions": 60,
+   "stdout_sha256": "4d7d901d2b88db7095a8aafc65781552c6c7a540fb137dc8a4a32c302694e555",
+   "bytes": 21878,
+   "input_sha256": "6234f2b41093ef2b85ca98ddb3d9cc19c2f218aee1e7c0f8baa6d7b8b077c652",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "dense_tax13_e2e_20261126",
+   "questions": 46,
+   "stdout_sha256": "3e957260be3d1f3185370823e22f44b03e2f89e6838aa34d6c1c542e98a9aae8",
+   "bytes": 24731,
+   "input_sha256": "44e9f7cb5747ec92af079a75a6cfb6aa86fc7451492e4951b0e2e0f682aae250",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "dense_tax14_e2e_20261126",
+   "questions": 46,
+   "stdout_sha256": "ac04aa8f3c38751690093741250814af42aee48b5cb73b5e362c8cb4a45dda3f",
+   "bytes": 25244,
+   "input_sha256": "e87e088ce95c6830df745b6deba1e18324ae7d3d481230c84e506c4440e3a317",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "dense_tax15_e2e_20261126",
+   "questions": 56,
+   "stdout_sha256": "fa44a01d7197a3452a94772122cd266f861a214979f847e84794963db968dc30",
+   "bytes": 27702,
+   "input_sha256": "b13819f0618d1ad8624ce76d335411245932cc9998de4bc25a230f69efbc9012",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  },
+  {
+   "set": "dense_tax16_e2e_20261126",
+   "questions": 56,
+   "stdout_sha256": "e0967947e1f4ac7b5208b417971f9c093846f32e4dab052b6f5833f4e8b55b44",
+   "bytes": 27563,
+   "input_sha256": "ac67c66140f555eee86bbaa0c1e4cf1f2448163b3dd12305b267e25c13def8a5",
+   "differences": [
+    [
+     4,
+     "answer.py"
+    ],
+    [
+     15,
+     "probes/blind_e2e.py"
+    ]
+   ]
+  }
+ ]
+}

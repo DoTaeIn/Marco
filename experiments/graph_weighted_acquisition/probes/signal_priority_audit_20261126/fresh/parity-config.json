@@ -1,0 +1,585 @@
+{
+ "code": "dfb12828994a1f6833c7c5539ef3bf459f158f5357fd0aeb26a4a118e1730f32",
+ "input_sha256": "a0a465c2e52bab7266869eb77872cfd6e88c202d483db30684baa3af4fce723c",
+ "weak": 40,
+ "records": [
+  {
+   "id": "Q01",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q02",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "4개월",
+   "source_ids": [
+    "F02"
+   ],
+   "rendered": "-- asks: Did you ask for the 과세기간 of 가람조합? (these pieces are not accounted for: \"몇\", \"달을\", \"한\", \"과세\", \"단위로\", \"잡나요\")   [would then answer 4개월]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q03",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연3회",
+   "source_ids": [
+    "F03"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 가람조합? (it was worked out from taught basic words, not read)   [would then answer 연3회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q04",
+   "kind": "natural",
+   "metric": "proposal_wrong",
+   "value": "4월22일",
+   "source_ids": [
+    "F05"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 가람조합? (it was worked out from taught basic words, not read)   [would then answer 4월22일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q05",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "4월22일",
+   "source_ids": [
+    "F05"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 가람조합? (it was worked out from taught basic words, not read)   [would then answer 4월22일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q06",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q07",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q08",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "7312",
+   "source_ids": [
+    "F08"
+   ],
+   "rendered": "-- asks: Did you ask for the 상담전화 of 가람조합? (these pieces are not accounted for: \"문의하려면\", \"몇\", \"번으로\", \"전화하나요\")   [would then answer 7312]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q09",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "17%",
+   "source_ids": [
+    "F09"
+   ],
+   "rendered": "-- asks: Did you ask for the 세율 of 누리조합? (it was worked out from taught basic words, not read)   [would then answer 17%]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q10",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "5개월",
+   "source_ids": [
+    "F10"
+   ],
+   "rendered": "-- asks: Did you ask for the 과세기간 of 누리조합? (these pieces are not accounted for: \"한\", \"과세\", \"단위는\")   [would then answer 5개월]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q11",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연2회",
+   "source_ids": [
+    "F11"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 누리조합? (it was worked out from taught basic words, not read)   [would then answer 연2회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q12",
+   "kind": "natural",
+   "metric": "proposal_wrong",
+   "value": "8월19일",
+   "source_ids": [
+    "F13"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 누리조합? (these pieces are not accounted for: \"까지인가요\")   [would then answer 8월19일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q13",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "8월19일",
+   "source_ids": [
+    "F13"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 누리조합? (it was worked out from taught basic words, not read)   [would then answer 8월19일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q14",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q15",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q16",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "8413",
+   "source_ids": [
+    "F16"
+   ],
+   "rendered": "-- asks: Did you ask for the 상담전화 of 누리조합? (these pieces are not accounted for: \"관련\", \"상담을\", \"받으려면\", \"로\", \"전화하죠\")   [would then answer 8413]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q17",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q18",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "8개월",
+   "source_ids": [
+    "F18"
+   ],
+   "rendered": "-- asks: Did you ask for the 과세기간 of 다온조합? (these pieces are not accounted for: \"씩\", \"끊어서\", \"과세하나요\")   [would then answer 8개월]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q19",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연4회",
+   "source_ids": [
+    "F19"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 다온조합? (it was worked out from taught basic words, not read)   [would then answer 연4회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q20",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "9월3일~9월21일",
+   "source_ids": [
+    "F20"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 다온조합? (these pieces are not accounted for: \"신고를\")   [would then answer 9월3일~9월21일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q21",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "9월21일",
+   "source_ids": [
+    "F21"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 다온조합? (it was worked out from taught basic words, not read)   [would then answer 9월21일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q22",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q23",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q24",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "7312",
+   "source_ids": [
+    "F24"
+   ],
+   "rendered": "-- asks: Did you ask for the 상담전화 of 다온조합? (these pieces are not accounted for: \"상담하려면\", \"몇\", \"번으로\", \"전화하면\", \"되나요\")   [would then answer 7312]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q25",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read; the one fact that fits what was recognised (과세기간 of 가람조합) is not of the kind its question word asks for",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q26",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연3회",
+   "source_ids": [
+    "F03"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 가람조합? (it was worked out from taught basic words, not read)   [would then answer 연3회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q27",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q28",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "5개월",
+   "source_ids": [
+    "F10"
+   ],
+   "rendered": "-- asks: Did you ask for the 과세기간 of 누리조합? (these pieces are not accounted for: \"과세할\", \"때\", \"몇\", \"달을\", \"한\", \"묶음으로\", \"보나요\")   [would then answer 5개월]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q29",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연4회",
+   "source_ids": [
+    "F19"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 다온조합? (these pieces are not accounted for: \"건\", \"총\", \"차례예요\")   [would then answer 연4회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q30",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q31",
+   "kind": "direct",
+   "metric": "answered_right",
+   "value": "4월2일~4월22일",
+   "source_ids": [
+    "F04"
+   ],
+   "rendered": "4월2일~4월22일   (as a sentence: 가람조합의 신고기간은 4월2일~4월22일이다.)",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q32",
+   "kind": "direct",
+   "metric": "answered_right",
+   "value": "17%",
+   "source_ids": [
+    "F09"
+   ],
+   "rendered": "17%   (as a sentence: 누리조합의 세율은 17%이다.)",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q33",
+   "kind": "direct",
+   "metric": "answered_right",
+   "value": "단풍창구",
+   "source_ids": [
+    "F15"
+   ],
+   "rendered": "단풍창구   (as a sentence: 누리조합의 신청경로는 단풍창구이다.)",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q34",
+   "kind": "direct",
+   "metric": "answered_right",
+   "value": "9월21일",
+   "source_ids": [
+    "F21"
+   ],
+   "rendered": "9월21일   (as a sentence: 다온조합의 신고기한은 9월21일이다.)",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q35",
+   "kind": "check",
+   "metric": "assumed_right",
+   "value": "4개월",
+   "source_ids": [
+    "F02"
+   ],
+   "rendered": "맞다: 4개월   [not read as a sentence; taken to ask for the 과세기간 of \"가람조합\"; chosen by the property word; not read: 의, 이, 인가요]",
+   "candidates": [],
+   "claim": {
+    "claimed": "4개월",
+    "holds": true
+   }
+  },
+  {
+   "id": "Q36",
+   "kind": "check",
+   "metric": "assumed_right",
+   "value": "8413",
+   "source_ids": [
+    "F16"
+   ],
+   "rendered": "맞다: 8413   [not read as a sentence; taken to ask for the 상담전화 of \"누리조합\"; chosen by the property word; not read: 가, 인가요]",
+   "candidates": [],
+   "claim": {
+    "claimed": "8413",
+    "holds": true
+   }
+  },
+  {
+   "id": "Q37",
+   "kind": "check",
+   "metric": "proposal_wrong",
+   "value": "8월19일",
+   "source_ids": [
+    "F13"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 누리조합? (these pieces are not accounted for: \"8월\", \"1일인가요\")   [would then answer 8월19일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q38",
+   "kind": "check",
+   "metric": "assumed_right",
+   "value": "구름창구",
+   "source_ids": [
+    "F23"
+   ],
+   "rendered": "아니다: 구름창구   [not read as a sentence; taken to ask for the 신청경로 of \"다온조합\"; chosen by the property word; not read: 가, 인가요]",
+   "candidates": [],
+   "claim": {
+    "claimed": "별빛창구",
+    "holds": false
+   }
+  },
+  {
+   "id": "Q39",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- nothing in the passage fits every condition of the question",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q40",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q41",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read; it names \"누리조합\", and the knowledge has 2 facts it could be asking for: 과세기간 of 누리조합; 상담전화 of 누리조합   [could be: 과세기간 of 누리조합]   [could be: 상담전화 of 누리조합]",
+   "candidates": [
+    {
+     "thing": "누리조합",
+     "property": "과세기간",
+     "with": {},
+     "if_confirmed": "5개월",
+     "met": [
+      "무엇"
+     ],
+     "unmet": [
+      "담당자",
+      "이름은"
+     ]
+    },
+    {
+     "thing": "누리조합",
+     "property": "상담전화",
+     "with": {},
+     "if_confirmed": "8413",
+     "met": [
+      "무엇"
+     ],
+     "unmet": [
+      "담당자",
+      "이름은"
+     ]
+    }
+   ],
+   "claim": null
+  },
+  {
+   "id": "Q42",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q43",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: every reading uses something never seen in training",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q44",
+   "kind": "no_answer",
+   "metric": "proposal_wrong",
+   "value": "17%",
+   "source_ids": [
+    "F09"
+   ],
+   "rendered": "-- asks: Did you ask for the 세율 of 누리조합? (these pieces are not accounted for: \"신규\", \"가입자에게\", \"다른\", \"을\", \"적용하나요\")   [would then answer 17%]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q45",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q46",
+   "kind": "no_answer",
+   "metric": "proposal_wrong",
+   "value": "4월22일",
+   "source_ids": [
+    "F05"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 가람조합? (these pieces are not accounted for: \"필요한\", \"무엇\")   [would then answer 4월22일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q47",
+   "kind": "no_answer",
+   "metric": "proposal_wrong",
+   "value": "8413",
+   "source_ids": [
+    "F16"
+   ],
+   "rendered": "-- asks: Did you ask for the 상담전화 of 누리조합? (these pieces are not accounted for: \"상담\", \"가능\", \"시간은\")   [would then answer 8413]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q48",
+   "kind": "no_answer",
+   "metric": "proposal_wrong",
+   "value": "접수일부터11일이내",
+   "source_ids": [
+    "F22"
+   ],
+   "rendered": "-- asks: Did you ask for the 신청기한 of 다온조합? (these pieces are not accounted for: \"을\", \"놓치면\", \"연장받을\", \"수\", \"있나요\")   [would then answer 접수일부터11일이내]",
+   "candidates": [],
+   "claim": null
+  }
+ ]
+}

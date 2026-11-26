@@ -1,0 +1,151 @@
+{
+  "diagnostic_replay_requested_by_owner": true,
+  "source": "experiments/graph_weighted_acquisition/answer.py",
+  "all_questions_recorded_by_tracer": 35,
+  "original_first_summary_held_count": 15,
+  "selected_stop_counts": {
+    "337": 4,
+    "419": 5,
+    "482": 1,
+    "528": 5
+  },
+  "rows": [
+    {
+      "id": "Q06",
+      "kind": "direct",
+      "question": "수첩 맨 앞장에 써 두려는데, 국세상담센터 상담전화는 몇 번입니까?",
+      "trace_line": 419,
+      "stop": "미수록 명사가 조사와 붙은 위치에서 중단",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q13",
+      "kind": "natural",
+      "question": "일반과세자는 부가가치세를 몇 퍼센트로 계산해요?",
+      "trace_line": 528,
+      "stop": "조건을 적용한 뒤 맞는 사실이 하나도 남지 않음",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q24",
+      "kind": "natural",
+      "question": "2025년귀속종합소득세일반신고를 달력 맨 끝 경고 칸에 적으려 합니다. 마지막으로 가능한 날짜가 언제입니까?",
+      "trace_line": 419,
+      "stop": "미수록 명사가 조사와 붙은 위치에서 중단",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q25",
+      "kind": "natural",
+      "question": "성실신고확인서제출자는 달력 어느 날짜에 마감이라고 적어 두면 되겠습니까?",
+      "trace_line": 528,
+      "stop": "조건을 적용한 뒤 맞는 사실이 하나도 남지 않음",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q27",
+      "kind": "natural",
+      "question": "일반과세자 부가세는 몇 퍼센트예요?",
+      "trace_line": 419,
+      "stop": "미수록 명사가 조사와 붙은 위치에서 중단",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q32",
+      "kind": "natural",
+      "question": "일반과세자제2기확정신고는 언제 열리고 언제 마감해요?",
+      "trace_line": 482,
+      "stop": "두 속성의 사슬 처리 중 첫 연결의 유일성/조건 검사에서 중단",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q35",
+      "kind": "natural",
+      "question": "사업자등록 신청서를 인터넷으로 보내려는데 길 안내가 필요합니다. 사이트 이름 하나만 일러 주세요.",
+      "trace_line": 419,
+      "stop": "미수록 명사가 조사와 붙은 위치에서 중단",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q36",
+      "kind": "natural",
+      "question": "전화기에 국세상담센터를 저장하려 합니다. 이름 옆에 어떤 번호를 써야 하지요?",
+      "trace_line": 419,
+      "stop": "미수록 명사가 조사와 붙은 위치에서 중단",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q38",
+      "kind": "natural",
+      "question": "2025년분종합소득세일반신고를 아직 달력에 못 적었습니다. 최종 마감 날짜 한 칸을 골라 주십시오.",
+      "trace_line": 528,
+      "stop": "조건을 적용한 뒤 맞는 사실이 하나도 남지 않음",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q39",
+      "kind": "natural",
+      "question": "성실신고확인서제출자는 어느 날까지 제출을 마쳐야 지각이 아닙니까?",
+      "trace_line": 337,
+      "stop": "확인·부정 표현이 있어 일반 되짚기에서 제외",
+      "return_source": "return None                                    # a check or a denial: the value in it has to be read, not guessed",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q41",
+      "kind": "natural",
+      "question": "일반과세자는 부가세 계산할 때 몇 퍼센트를 적용하나요?",
+      "trace_line": 528,
+      "stop": "조건을 적용한 뒤 맞는 사실이 하나도 남지 않음",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q53",
+      "kind": "check",
+      "question": "국세상담센터는 126으로 전화하면 되는 거 맞죠?",
+      "trace_line": 337,
+      "stop": "확인·부정 표현이 있어 일반 되짚기에서 제외",
+      "return_source": "return None                                    # a check or a denial: the value in it has to be read, not guessed",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q54",
+      "kind": "check",
+      "question": "일반과세자는 부가세를 8%로 계산하는 게 맞나요?",
+      "trace_line": 337,
+      "stop": "확인·부정 표현이 있어 일반 되짚기에서 제외",
+      "return_source": "return None                                    # a check or a denial: the value in it has to be read, not guessed",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q55",
+      "kind": "check",
+      "question": "제 수첩에는 성실신고확인서제출자는 다음해6월30일까지라고 적혀 있습니다. 옮겨 쓴 날짜가 맞습니까?",
+      "trace_line": 337,
+      "stop": "확인·부정 표현이 있어 일반 되짚기에서 제외",
+      "return_source": "return None                                    # a check or a denial: the value in it has to be read, not guessed",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    },
+    {
+      "id": "Q56",
+      "kind": "check",
+      "question": "2026년제1기부가가치세확정신고 마감에 2026년7월25일이라고 도장을 찍어 놨는데, 이 날짜가 옳은가요?",
+      "trace_line": 528,
+      "stop": "조건을 적용한 뒤 맞는 사실이 하나도 남지 않음",
+      "return_source": "return None",
+      "scope": "last None-return recorded for this question during the full runner, which includes the feedback pass"
+    }
+  ],
+  "limit": "The supplied script runs both normal and simulated-feedback passes and overwrites stopped[question] on a later None return. These are observed return sites, not a first-pass-only trace and not proof that stopping is semantically justified. Local variables such as the exact unknown token and pre-filter facts are not recorded.",
+  "original_results_and_input_hashes_unchanged": true
+}

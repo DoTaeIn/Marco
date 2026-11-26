@@ -1,0 +1,907 @@
+{
+ "code": "dfb12828994a1f6833c7c5539ef3bf459f158f5357fd0aeb26a4a118e1730f32",
+ "input_sha256": "7d53c55be5943cbd2df73419182a87db84cd079a60875578959a3ffbfbce7d26",
+ "weak": 80,
+ "records": [
+  {
+   "id": "Q01",
+   "kind": "direct",
+   "metric": "answered_right",
+   "value": "10%",
+   "source_ids": [
+    "F01"
+   ],
+   "rendered": "10%   (as a sentence: 일반과세자 세율은 10%이다.)",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q02",
+   "kind": "direct",
+   "metric": "proposal_right",
+   "value": "6개월",
+   "source_ids": [
+    "F02"
+   ],
+   "rendered": "-- asks: Did you ask for the 과세기간 of 일반과세자? (these pieces are not accounted for: \"을\", \"알려\", \"주세요\")   [would then answer 6개월]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q03",
+   "kind": "direct",
+   "metric": "proposal_right",
+   "value": "연2회",
+   "source_ids": [
+    "F03"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 개인일반사업자? (these pieces are not accounted for: \"어떻게\", \"되나요\")   [would then answer 연2회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q04",
+   "kind": "direct",
+   "metric": "proposal_right",
+   "value": "7월1일~7월25일",
+   "source_ids": [
+    "F05"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 일반과세자제1기확정신고? (these pieces are not accounted for: \"달력에\", \"옮겨\", \"적겠습니다\", \"어떻게\", \"되지요\")   [would then answer 7월1일~7월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q05",
+   "kind": "direct",
+   "metric": "proposal_right",
+   "value": "사업개시일부터20일이내",
+   "source_ids": [
+    "F08"
+   ],
+   "rendered": "-- asks: Did you ask for the 신청기한 of 사업자등록? (these pieces are not accounted for: \"날짜\", \"세는\", \"기준까지\", \"정확히\", \"부탁드립니다\")   [would then answer 사업개시일부터20일이내]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q06",
+   "kind": "direct",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: every reading uses something never seen in training",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q07",
+   "kind": "short",
+   "metric": "assumed_right",
+   "value": "연4회",
+   "source_ids": [
+    "F04"
+   ],
+   "rendered": "연4회   [not read as a sentence; taken to ask for the 신고횟수 of \"법인사업자\"; chosen by the property word; not read: nothing]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q08",
+   "kind": "short",
+   "metric": "proposal_right",
+   "value": "다음해1월1일~1월25일",
+   "source_ids": [
+    "F06"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 일반과세자제2기확정신고? (these pieces are not accounted for: \"좀\")   [would then answer 다음해1월1일~1월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q09",
+   "kind": "short",
+   "metric": "proposal_right",
+   "value": "다음해1월1일~1월25일",
+   "source_ids": [
+    "F07"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 간이과세자? (these pieces are not accounted for: \"확인\")   [would then answer 다음해1월1일~1월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q10",
+   "kind": "short",
+   "metric": "proposal_right",
+   "value": "홈택스",
+   "source_ids": [
+    "F09"
+   ],
+   "rendered": "-- asks: Did you ask for the 신청경로 of 사업자등록? (these pieces are not accounted for: \"메모용:\")   [would then answer 홈택스]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q11",
+   "kind": "short",
+   "metric": "proposal_right",
+   "value": "다음해5월1일~5월31일",
+   "source_ids": [
+    "F11"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: \"—시작\", \"끝\")   [would then answer 다음해5월1일~5월31일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q12",
+   "kind": "short",
+   "metric": "proposal_right",
+   "value": "2026년6월1일",
+   "source_ids": [
+    "F12"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 2025년귀속종합소득세일반신고? (these pieces are not accounted for: \"날짜만\")   [would then answer 2026년6월1일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q13",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "10%",
+   "source_ids": [
+    "F01"
+   ],
+   "rendered": "-- asks: Did you ask for the 세율 of 일반과세자? (these pieces are not accounted for: \"부가가치세를\")   [would then answer 10%]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q14",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "6개월",
+   "source_ids": [
+    "F02"
+   ],
+   "rendered": "-- asks: Did you ask for the 과세기간 of 일반과세자? (these pieces are not accounted for: \"씩\", \"묶어서\", \"세금을\", \"따지나요\")   [would then answer 6개월]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q15",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연2회",
+   "source_ids": [
+    "F03"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 개인일반사업자? (it was worked out from taught basic words, not read)   [would then answer 연2회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q16",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연4회",
+   "source_ids": [
+    "F04"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 법인사업자? (it was worked out from taught basic words, not read)   [would then answer 연4회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q17",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "7월1일~7월25일",
+   "source_ids": [
+    "F05"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 일반과세자제1기확정신고? (it was worked out from taught basic words, not read)   [would then answer 7월1일~7월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q18",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해1월1일~1월25일",
+   "source_ids": [
+    "F06"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 일반과세자제2기확정신고? (it was worked out from taught basic words, not read)   [would then answer 다음해1월1일~1월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q19",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해1월1일~1월25일",
+   "source_ids": [
+    "F07"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 간이과세자? (these pieces are not accounted for: \"신고하면\")   [would then answer 다음해1월1일~1월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q20",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "사업개시일부터20일이내",
+   "source_ids": [
+    "F08"
+   ],
+   "rendered": "-- asks: Did you ask for the 신청기한 of 사업자등록? (these pieces are not accounted for: \"문을\", \"연\", \"손가락으로\", \"세려는데요\")   [would then answer 사업개시일부터20일이내]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q21",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "홈택스",
+   "source_ids": [
+    "F09"
+   ],
+   "rendered": "-- asks: Did you ask for the 신청경로 of 사업자등록? (these pieces are not accounted for: \"온라인으로\", \"첫\", \"단추부터\", \"막히네요\", \"들어갑니까\")   [would then answer 홈택스]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q22",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "126",
+   "source_ids": [
+    "F10"
+   ],
+   "rendered": "-- asks: Did you ask for the 상담전화 of 국세상담센터? (these pieces are not accounted for: \"전화기\", \"앞에\", \"앉았습니다\", \"숫자를\", \"주시겠어요\")   [would then answer 126]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q23",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해5월1일~5월31일",
+   "source_ids": [
+    "F11"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: \"달력에서\", \"동그라미\", \"치면\")   [would then answer 다음해5월1일~5월31일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q24",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"2025년귀속종합소득세일반신고를 달력 맨 끝 경고 칸에 적으려 합니다.\" (the text cannot be cu",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q25",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해6월30일",
+   "source_ids": [
+    "F13"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 성실신고확인서제출자? (these pieces are not accounted for: \"달력\", \"어느\", \"마감이라고\", \"적어\", \"되겠습니까\")   [would then answer 다음해6월30일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q26",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "2026년7월27일",
+   "source_ids": [
+    "F14"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 2026년제1기부가가치세확정신고? (these pieces are not accounted for: \"제출할\", \"하루를\", \"콕\", \"집어\", \"주실래요\")   [would then answer 2026년7월27일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q27",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q28",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "6개월",
+   "source_ids": [
+    "F02"
+   ],
+   "rendered": "-- asks: Did you ask for the 과세기간 of 일반과세자? (these pieces are not accounted for: \"한\", \"번에\", \"분을\", \"계산하는\", \"거예요\")   [would then answer 6개월]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q29",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연2회",
+   "source_ids": [
+    "F03"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 개인일반사업자? (it was worked out from taught basic words, not read)   [would then answer 연2회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q30",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연4회",
+   "source_ids": [
+    "F04"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 법인사업자? (it was worked out from taught basic words, not read)   [would then answer 연4회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q31",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "7월1일~7월25일",
+   "source_ids": [
+    "F05"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 일반과세자제1기확정신고? (it was worked out from taught basic words, not read)   [would then answer 7월1일~7월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q32",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해1월1일~1월25일",
+   "source_ids": [
+    "F06"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 일반과세자제2기확정신고? (these pieces are not accounted for: \"마감해요\")   [would then answer 다음해1월1일~1월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q33",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해1월1일~1월25일",
+   "source_ids": [
+    "F07"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 간이과세자? (these pieces are not accounted for: \"신고는\")   [would then answer 다음해1월1일~1월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q34",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "사업개시일부터20일이내",
+   "source_ids": [
+    "F08"
+   ],
+   "rendered": "-- asks: Did you ask for the 신청기한 of 사업자등록? (these pieces are not accounted for: \"사업\", \"시작한\", \"출발선으로\", \"잡으면\", \"선을\")   [would then answer 사업개시일부터20일이내]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q35",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"사업자등록 신청서를 인터넷으로 보내려는데 길 안내가 필요합니다.\" (the text cannot be cut in",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q36",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"전화기에 국세상담센터를 저장하려 합니다.\" (the text cannot be cut into known piec",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q37",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해5월1일~5월31일",
+   "source_ids": [
+    "F11"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: \"문을\", \"열고\", \"문을\", \"닫는\", \"셈인가요\")   [would then answer 다음해5월1일~5월31일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q38",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "2026년6월1일",
+   "source_ids": [
+    "F12"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 2025년귀속종합소득세일반신고? (these pieces are not accounted for: \"아직\", \"달력에\", \"못\", \"적었습니다\", \"최종\", \"마감\", \"칸을\", \"골라\")   [would then answer 2026년6월1일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q39",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q40",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "2026년7월27일",
+   "source_ids": [
+    "F14"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 2026년제1기부가가치세확정신고? (these pieces are not accounted for: \"연도까지\", \"붙여\", \"적어\", \"주시겠어요\")   [would then answer 2026년7월27일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q41",
+   "kind": "natural",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read; the one fact that fits what was recognised (과세기간 of 일반과세자) is not of the kind its question word asks for",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q42",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "6개월",
+   "source_ids": [
+    "F02"
+   ],
+   "rendered": "-- asks: Did you ask for the 과세기간 of 일반과세자? (it was worked out from taught basic words, not read)   [would then answer 6개월]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q43",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연2회",
+   "source_ids": [
+    "F03"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 개인일반사업자? (it was worked out from taught basic words, not read)   [would then answer 연2회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q44",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "연4회",
+   "source_ids": [
+    "F04"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고횟수 of 법인사업자? (these pieces are not accounted for: \"총\")   [would then answer 연4회]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q45",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "7월1일~7월25일",
+   "source_ids": [
+    "F05"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 일반과세자제1기확정신고? (it was worked out from taught basic words, not read)   [would then answer 7월1일~7월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q46",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해1월1일~1월25일",
+   "source_ids": [
+    "F06"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 일반과세자제2기확정신고? (these pieces are not accounted for: \"범위를\")   [would then answer 다음해1월1일~1월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q47",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해1월1일~1월25일",
+   "source_ids": [
+    "F07"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 간이과세자? (these pieces are not accounted for: \"신고를\")   [would then answer 다음해1월1일~1월25일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q48",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "사업개시일부터20일이내",
+   "source_ids": [
+    "F08"
+   ],
+   "rendered": "-- asks: Did you ask for the 신청기한 of 사업자등록? (these pieces are not accounted for: \"개업일\", \"옆에\", \"적어\", \"두려는데요\", \"시작하고\", \"마무리해야\")   [would then answer 사업개시일부터20일이내]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q49",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "홈택스",
+   "source_ids": [
+    "F09"
+   ],
+   "rendered": "-- asks: Did you ask for the 신청경로 of 사업자등록? (these pieces are not accounted for: \"집\", \"컴퓨터에서\", \"처리하려\", \"합니다\", \"주소창으로\", \"찾아갈\", \"이름이\")   [would then answer 홈택스]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q50",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "126",
+   "source_ids": [
+    "F10"
+   ],
+   "rendered": "-- asks: Did you ask for the 상담전화 of 국세상담센터? (these pieces are not accounted for: \"종이에\", \"크게\", \"써\", \"붙일\", \"참입니다\", \"숫자를\", \"쓰면\", \"되겠습니까\")   [would then answer 126]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q51",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "다음해5월1일~5월31일",
+   "source_ids": [
+    "F11"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: \"나란히\", \"써\")   [would then answer 다음해5월1일~5월31일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q52",
+   "kind": "natural",
+   "metric": "proposal_right",
+   "value": "2026년6월1일",
+   "source_ids": [
+    "F12"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 2025년귀속종합소득세일반신고? (these pieces are not accounted for: \"빨간\", \"별표를\", \"달아\")   [would then answer 2026년6월1일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q53",
+   "kind": "check",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q54",
+   "kind": "check",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q55",
+   "kind": "check",
+   "metric": "held",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"제 수첩에는 성실신고확인서제출자는 다음해6월30일까지라고 적혀 있습니다.\" (the text cannot be c",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q56",
+   "kind": "check",
+   "metric": "proposal_wrong",
+   "value": "2026년7월27일",
+   "source_ids": [
+    "F14"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 2026년제1기부가가치세확정신고? (these pieces are not accounted for: \"마감에\", \"2026년7월25일이라고\", \"도장을\", \"찍어\", \"옳은가요\")   [would then answer 2026년7월27일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q57",
+   "kind": "no_answer",
+   "metric": "proposal_wrong",
+   "value": "6개월",
+   "source_ids": [
+    "F02"
+   ],
+   "rendered": "-- asks: Did you ask for the 과세기간 of 일반과세자? (these pieces are not accounted for: \"사이트에서\", \"신고하면\")   [would then answer 6개월]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q58",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q59",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read; the one fact that fits what was recognised (신고횟수 of 법인사업자) is not of the kind its question word asks for",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q60",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read; the one fact that fits what was recognised (신고기간 of 간이과세자) is not of the kind its question word asks for",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q61",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q62",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q63",
+   "kind": "no_answer",
+   "metric": "proposal_wrong",
+   "value": "다음해6월30일",
+   "source_ids": [
+    "F13"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기한 of 성실신고확인서제출자? (these pieces are not accounted for: \"몇\", \"손가락으로\", \"꼽아\", \"주실래요\")   [would then answer 다음해6월30일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q64",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"2026년제1기부가가치세확정신고를 가장 먼저 낼 수 있는 날에 표시하려 \" (the text cannot be c",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q65",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q66",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q67",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q68",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q69",
+   "kind": "no_answer",
+   "metric": "proposal_wrong",
+   "value": "다음해5월1일~5월31일",
+   "source_ids": [
+    "F11"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: \"재해로\", \"따로\", \"연장을\", \"승인받았습니다\", \"제\", \"달력에는\", \"고쳐\", \"적어야\")   [would then answer 다음해5월1일~5월31일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q70",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q71",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"사업자등록을 인터넷으로 하려는데 본인 인증 수단이 하나도 없습니다.\" (the text cannot be cut ",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q72",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"2025년귀속종합소득세일반신고를 기한 안에 못 내고 넘겼습니다.\" (the text cannot be cut in",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q73",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q74",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q75",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q76",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q77",
+   "kind": "no_answer",
+   "metric": "proposal_wrong",
+   "value": "다음해5월1일~5월31일",
+   "source_ids": [
+    "F11"
+   ],
+   "rendered": "-- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: \"2024년귀속의\", \"마감에\", \"빨간\", \"긋고\", \"정확한\", \"적어\", \"주실래요\")   [would then answer 다음해5월1일~5월31일]",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q78",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"2027년제1기부가가치세확정신고를 끝내야 할 마지막 날을 미리 벽에 붙이\" (the text cannot be c",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q79",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+   "candidates": [],
+   "claim": null
+  },
+  {
+   "id": "Q80",
+   "kind": "no_answer",
+   "metric": "held_no_answer",
+   "value": null,
+   "source_ids": [],
+   "rendered": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"통신판매업신고를 집에서 마무리하고 싶은데요.\" (the text cannot be cut into known pi",
+   "candidates": [],
+   "claim": null
+  }
+ ]
+}

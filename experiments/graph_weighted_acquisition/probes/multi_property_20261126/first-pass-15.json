@@ -1,0 +1,7077 @@
+[
+ {
+  "id": "Q01",
+  "text": "일반과세자의 세율은 얼마입니까?",
+  "kind": "direct",
+  "gold": [
+   "F01"
+  ],
+  "expected_property": "세율",
+  "result": "answered_right",
+  "value": "10%",
+  "claim": null,
+  "chosen": {},
+  "source_ids": [
+   "F01"
+  ],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q02",
+  "text": "일반과세자의 과세기간은 얼마나 됩니까?",
+  "kind": "direct",
+  "gold": [
+   "F02"
+  ],
+  "expected_property": "과세기간",
+  "result": "proposal_right",
+  "value": "6개월",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자",
+   "property": "과세기간",
+   "with": {}
+  },
+  "source_ids": [
+   "F02"
+  ],
+  "decision": {
+   "why": "the property word",
+   "weak": false,
+   "wanted": [
+    "과세기간"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "과세기간": {},
+    "세율": {
+     "됩니까": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "상담전화": {
+     "됩니까": [
+      "asked",
+      "",
+      500
+     ]
+    }
+   },
+   "unread": [
+    "의",
+    "은",
+    "나",
+    "됩니까"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q03",
+  "text": "법인사업자의 신고횟수는 몇 번인가요?",
+  "kind": "direct",
+  "gold": [
+   "F04"
+  ],
+  "expected_property": "신고횟수",
+  "result": "proposal_right",
+  "value": "연4회",
+  "claim": null,
+  "chosen": {
+   "thing": "법인사업자",
+   "property": "신고횟수",
+   "with": {}
+  },
+  "source_ids": [
+   "F04"
+  ],
+  "decision": {
+   "why": "the property word",
+   "weak": false,
+   "wanted": [
+    "신고횟수"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "과세기간": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ],
+     "번인가요": [
+      "asked",
+      "",
+      333
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "신고기간": {
+     "몇": [
+      "asked",
+      "",
+      29
+     ]
+    },
+    "신고횟수": {
+     "몇": [
+      "asked",
+      "",
+      298
+     ],
+     "번인가요": [
+      "asked",
+      "",
+      1000
+     ]
+    }
+   },
+   "unread": [
+    "의",
+    "는",
+    "몇",
+    "번인가요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q04",
+  "text": "사업자등록의 신청기한을 알려주세요.",
+  "kind": "direct",
+  "gold": [
+   "F08"
+  ],
+  "expected_property": "신청기한",
+  "result": "proposal_right",
+  "value": "사업개시일부터20일이내",
+  "claim": null,
+  "chosen": {
+   "thing": "사업자등록",
+   "property": "신청기한",
+   "with": {}
+  },
+  "source_ids": [
+   "F08"
+  ],
+  "decision": {
+   "why": "the property word",
+   "weak": false,
+   "wanted": [
+    "신청기한"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "과세기간": {
+     "알려주세요": [
+      "asked",
+      "",
+      71
+     ]
+    },
+    "상담전화": {
+     "알려주세요": [
+      "asked",
+      "",
+      285
+     ]
+    },
+    "세율": {
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "신고기간": {
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "신고기한": {
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "신고횟수": {
+     "알려주세요": [
+      "asked",
+      "",
+      71
+     ]
+    },
+    "신청경로": {
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "신청기한": {
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    }
+   },
+   "unread": [
+    "의",
+    "을",
+    "알려주세요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q05",
+  "text": "국세상담센터의 상담전화는 몇 번입니까?",
+  "kind": "direct",
+  "gold": [
+   "F10"
+  ],
+  "expected_property": "상담전화",
+  "result": "proposal_right",
+  "value": "126",
+  "claim": null,
+  "chosen": {
+   "thing": "국세상담센터",
+   "property": "상담전화",
+   "with": {}
+  },
+  "source_ids": [
+   "F10"
+  ],
+  "decision": {
+   "why": "the property word",
+   "weak": false,
+   "wanted": [
+    "상담전화"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "과세기간": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "신고기간": {
+     "몇": [
+      "asked",
+      "",
+      29
+     ]
+    },
+    "신고횟수": {
+     "몇": [
+      "asked",
+      "",
+      298
+     ]
+    }
+   },
+   "unread": [
+    "의",
+    "는",
+    "몇",
+    "번입니까"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q06",
+  "text": "성실신고확인서제출자의 신고기한은 언제인지 알고 싶습니다.",
+  "kind": "direct",
+  "gold": [
+   "F13"
+  ],
+  "expected_property": "신고기한",
+  "result": "proposal_right",
+  "value": "다음해6월30일",
+  "claim": null,
+  "chosen": {
+   "thing": "성실신고확인서제출자",
+   "property": "신고기한",
+   "with": {}
+  },
+  "source_ids": [
+   "F13"
+  ],
+  "decision": {
+   "why": "the property word",
+   "weak": false,
+   "wanted": [
+    "신고기한"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "과세기간": {
+     "알고": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "상담전화": {
+     "알고": [
+      "asked",
+      "",
+      111
+     ],
+     "싶습니다": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "세율": {
+     "알고": [
+      "asked",
+      "",
+      222
+     ]
+    },
+    "신고기간": {
+     "알고": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "신고기한": {
+     "알고": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "신고횟수": {
+     "알고": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "신청경로": {
+     "알고": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "신청기한": {
+     "알고": [
+      "asked",
+      "",
+      111
+     ]
+    }
+   },
+   "unread": [
+    "의",
+    "은",
+    "인지",
+    "알고",
+    "싶습니다"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q07",
+  "text": "간이과세자 신고기간?",
+  "kind": "short",
+  "gold": [
+   "F07"
+  ],
+  "expected_property": "신고기간",
+  "result": "assumed_right",
+  "value": "다음해1월1일~1월25일",
+  "claim": null,
+  "chosen": {},
+  "source_ids": [
+   "F07"
+  ],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q08",
+  "text": "사업자등록 신청경로",
+  "kind": "short",
+  "gold": [
+   "F09"
+  ],
+  "expected_property": "신청경로",
+  "result": "assumed_right",
+  "value": "홈택스",
+  "claim": null,
+  "chosen": {},
+  "source_ids": [
+   "F09"
+  ],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q09",
+  "text": "개인일반사업자 신고횟수 몇 번",
+  "kind": "short",
+  "gold": [
+   "F03"
+  ],
+  "expected_property": "신고횟수",
+  "result": "proposal_right",
+  "value": "연2회",
+  "claim": null,
+  "chosen": {
+   "thing": "개인일반사업자",
+   "property": "신고횟수",
+   "with": {}
+  },
+  "source_ids": [
+   "F03"
+  ],
+  "decision": {
+   "why": "the property word",
+   "weak": false,
+   "wanted": [
+    "신고횟수"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "과세기간": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ],
+     "번": [
+      "asked",
+      "",
+      160
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ],
+     "번": [
+      "asked",
+      "",
+      280
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "신고기간": {
+     "몇": [
+      "asked",
+      "",
+      29
+     ]
+    },
+    "신고횟수": {
+     "몇": [
+      "asked",
+      "",
+      298
+     ],
+     "번": [
+      "asked",
+      "",
+      560
+     ]
+    }
+   },
+   "unread": [
+    "몇",
+    "번"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q10",
+  "text": "종합소득세일반신고 신고기간 언제",
+  "kind": "short",
+  "gold": [
+   "F11"
+  ],
+  "expected_property": "신고기간",
+  "result": "assumed_right",
+  "value": "다음해5월1일~5월31일",
+  "claim": null,
+  "chosen": {},
+  "source_ids": [
+   "F11"
+  ],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q11",
+  "text": "2026년제1기부가가치세확정신고 신고기한",
+  "kind": "short",
+  "gold": [
+   "F14"
+  ],
+  "expected_property": "신고기한",
+  "result": "assumed_right",
+  "value": "2026년7월27일",
+  "claim": null,
+  "chosen": {},
+  "source_ids": [
+   "F14"
+  ],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q12",
+  "text": "일반과세자제1기확정신고 신고기간 좀",
+  "kind": "short",
+  "gold": [
+   "F05"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_right",
+  "value": "7월1일~7월25일",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자제1기확정신고",
+   "property": "신고기간",
+   "with": {}
+  },
+  "source_ids": [
+   "F05"
+  ],
+  "decision": {
+   "why": "the property word",
+   "weak": false,
+   "wanted": [
+    "신고기간"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "상담전화": {
+     "좀": [
+      "asked",
+      "",
+      333
+     ]
+    },
+    "세율": {
+     "좀": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "신고기간": {
+     "좀": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "신고기한": {
+     "좀": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "신청기한": {
+     "좀": [
+      "asked",
+      "",
+      166
+     ]
+    }
+   },
+   "unread": [
+    "좀"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q13",
+  "text": "일반과세자는 부가세를 몇 퍼센트 내나요?",
+  "kind": "natural",
+  "gold": [
+   "F01"
+  ],
+  "expected_property": "세율",
+  "result": "proposal_right",
+  "value": "10%",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자",
+   "property": "세율",
+   "with": {}
+  },
+  "source_ids": [
+   "F01"
+  ],
+  "decision": {
+   "why": "letters an unread word shares with a property word or a value",
+   "weak": true,
+   "wanted": [
+    "세율"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "신고기간": {
+     "부가세를": [
+      "place",
+      "서류를",
+      0
+     ],
+     "몇": [
+      "asked",
+      "",
+      29
+     ]
+    },
+    "신고횟수": {
+     "부가세를": [
+      "place",
+      "서류를",
+      0
+     ],
+     "몇": [
+      "asked",
+      "",
+      298
+     ]
+    },
+    "과세기간": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ],
+     "퍼센트": [
+      "asked",
+      "",
+      1000
+     ],
+     "내나요": [
+      "asked",
+      "",
+      1000
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "부가세를",
+    "몇",
+    "퍼센트",
+    "내나요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q14",
+  "text": "제가 일반과세자인데요, 손님한테 물건값에 몇 프로 얹어서 받아야 되는 거예요?",
+  "kind": "natural",
+  "gold": [
+   "F01"
+  ],
+  "expected_property": "세율",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q15",
+  "text": "일반과세자한테 매기는 비율이 얼마인지 궁금합니다.",
+  "kind": "natural",
+  "gold": [
+   "F01"
+  ],
+  "expected_property": "세율",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q16",
+  "text": "일반과세자는 몇 개월 단위로 끊어서 세금을 계산하나요?",
+  "kind": "natural",
+  "gold": [
+   "F02"
+  ],
+  "expected_property": "과세기간",
+  "result": "proposal_right",
+  "value": "6개월",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자",
+   "property": "과세기간",
+   "with": {}
+  },
+  "source_ids": [
+   "F02"
+  ],
+  "decision": {
+   "why": "the counter \"몇 개월\"",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "과세기간": {
+     "단위로": [
+      "asked",
+      "",
+      1000
+     ],
+     "끊어서": [
+      "asked",
+      "",
+      1000
+     ],
+     "세금을": [
+      "asked",
+      "",
+      666
+     ],
+     "계산하나요": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "상담전화": {},
+    "세율": {
+     "세금을": [
+      "asked",
+      "",
+      370
+     ],
+     "계산하나요": [
+      "asked",
+      "",
+      333
+     ]
+    },
+    "신고기간": {},
+    "신고횟수": {}
+   },
+   "unread": [
+    "는",
+    "단위로",
+    "끊어서",
+    "세금을",
+    "계산하나요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q17",
+  "text": "일반과세자 한 기가 몇 달이에요?",
+  "kind": "natural",
+  "gold": [
+   "F02"
+  ],
+  "expected_property": "과세기간",
+  "result": "proposal_right",
+  "value": "6개월",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자",
+   "property": "과세기간",
+   "with": {}
+  },
+  "source_ids": [
+   "F02"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "과세기간",
+     "met": [
+      "한",
+      "기가",
+      "몇",
+      "달이에요"
+     ],
+     "unmet": [],
+     "placed": {
+      "한": [
+       "asked",
+       "",
+       700
+      ],
+      "기가": [
+       "asked",
+       "",
+       1000
+      ],
+      "몇": [
+       "asked",
+       "",
+       268
+      ],
+      "달이에요": [
+       "asked",
+       "",
+       1000
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "한",
+      "몇"
+     ],
+     "unmet": [
+      "기가",
+      "달이에요"
+     ],
+     "placed": {
+      "한": [
+       "asked",
+       "",
+       300
+      ],
+      "몇": [
+       "asked",
+       "",
+       298
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "한",
+      "몇"
+     ],
+     "unmet": [
+      "기가",
+      "달이에요"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       29
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "몇"
+     ],
+     "unmet": [
+      "기가",
+      "달이에요"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       268
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "몇"
+     ],
+     "unmet": [
+      "기가",
+      "달이에요"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       134
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "한"
+     ],
+     "unmet": [
+      "기가",
+      "몇",
+      "달이에요"
+     ],
+     "placed": {}
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "한"
+     ],
+     "unmet": [
+      "기가",
+      "몇",
+      "달이에요"
+     ],
+     "placed": {}
+    }
+   ],
+   "placed": {
+    "과세기간": {
+     "한": [
+      "asked",
+      "",
+      700
+     ],
+     "기가": [
+      "asked",
+      "",
+      1000
+     ],
+     "몇": [
+      "asked",
+      "",
+      268
+     ],
+     "달이에요": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "신고횟수": {
+     "한": [
+      "asked",
+      "",
+      300
+     ],
+     "몇": [
+      "asked",
+      "",
+      298
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "신고기간": {
+     "몇": [
+      "asked",
+      "",
+      29
+     ]
+    }
+   },
+   "unread": [
+    "한",
+    "기가",
+    "몇",
+    "달이에요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q18",
+  "text": "개인일반사업자는 1년에 몇 번 신고해요?",
+  "kind": "natural",
+  "gold": [
+   "F03"
+  ],
+  "expected_property": "신고횟수",
+  "result": "proposal_right",
+  "value": "연2회",
+  "claim": null,
+  "chosen": {
+   "thing": "개인일반사업자",
+   "property": "신고횟수",
+   "with": {}
+  },
+  "source_ids": [
+   "F03"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고횟수",
+     "met": [
+      "1년에",
+      "몇",
+      "번",
+      "신고해요"
+     ],
+     "unmet": [],
+     "placed": {
+      "1년에": [
+       "asked",
+       "",
+       1000
+      ],
+      "몇": [
+       "asked",
+       "",
+       298
+      ],
+      "번": [
+       "asked",
+       "",
+       560
+      ],
+      "신고해요": [
+       "asked",
+       "",
+       1000
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "몇",
+      "번"
+     ],
+     "unmet": [
+      "1년에",
+      "신고해요"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       268
+      ],
+      "번": [
+       "asked",
+       "",
+       160
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "몇",
+      "번"
+     ],
+     "unmet": [
+      "1년에",
+      "신고해요"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       134
+      ],
+      "번": [
+       "asked",
+       "",
+       280
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "신고해요"
+     ],
+     "unmet": [
+      "1년에",
+      "몇",
+      "번"
+     ],
+     "placed": {
+      "신고해요": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "몇"
+     ],
+     "unmet": [
+      "1년에",
+      "번",
+      "신고해요"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       268
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "몇"
+     ],
+     "unmet": [
+      "1년에",
+      "번",
+      "신고해요"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       29
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고횟수": {
+     "1년에": [
+      "asked",
+      "",
+      1000
+     ],
+     "몇": [
+      "asked",
+      "",
+      298
+     ],
+     "번": [
+      "asked",
+      "",
+      560
+     ],
+     "신고해요": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "과세기간": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ],
+     "번": [
+      "asked",
+      "",
+      160
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ],
+     "번": [
+      "asked",
+      "",
+      280
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "신고기간": {
+     "몇": [
+      "asked",
+      "",
+      29
+     ]
+    },
+    "신고기한": {
+     "신고해요": [
+      "asked",
+      "",
+      500
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "1년에",
+    "몇",
+    "번",
+    "신고해요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q19",
+  "text": "개인일반사업자인데요, 한 해에 신고를 몇 차례나 치러야 하는지요.",
+  "kind": "natural",
+  "gold": [
+   "F03"
+  ],
+  "expected_property": "신고횟수",
+  "result": "proposal_right",
+  "value": "연2회",
+  "claim": null,
+  "chosen": {
+   "thing": "개인일반사업자",
+   "property": "신고횟수",
+   "with": {}
+  },
+  "source_ids": [
+   "F03"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고횟수",
+     "met": [
+      "한",
+      "해에",
+      "신고를",
+      "몇",
+      "차례나",
+      "하는지요"
+     ],
+     "unmet": [
+      "인데요",
+      "치러야"
+     ],
+     "placed": {
+      "한": [
+       "asked",
+       "",
+       300
+      ],
+      "해에": [
+       "asked",
+       "",
+       1000
+      ],
+      "신고를": [
+       "asked",
+       "",
+       444
+      ],
+      "몇": [
+       "asked",
+       "",
+       298
+      ],
+      "차례나": [
+       "asked",
+       "",
+       1000
+      ],
+      "하는지요": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "한",
+      "해에",
+      "신고를",
+      "차례나",
+      "하는지요"
+     ],
+     "unmet": [
+      "인데요",
+      "몇",
+      "치러야"
+     ],
+     "placed": {
+      "하는지요": [
+       "same",
+       "하는",
+       0
+      ],
+      "해에": [
+       "asked",
+       "",
+       142
+      ],
+      "신고를": [
+       "asked",
+       "",
+       566
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "한",
+      "해에",
+      "몇",
+      "차례나",
+      "하는지요"
+     ],
+     "unmet": [
+      "인데요",
+      "신고를",
+      "치러야"
+     ],
+     "placed": {
+      "해에": [
+       "asked",
+       "",
+       47
+      ],
+      "몇": [
+       "asked",
+       "",
+       29
+      ],
+      "하는지요": [
+       "asked",
+       "",
+       400
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "한",
+      "해에",
+      "차례나",
+      "하는지요"
+     ],
+     "unmet": [
+      "인데요",
+      "신고를",
+      "몇",
+      "치러야"
+     ],
+     "placed": {
+      "하는지요": [
+       "same",
+       "하는",
+       0
+      ],
+      "해에": [
+       "asked",
+       "",
+       190
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "한",
+      "몇",
+      "치러야"
+     ],
+     "unmet": [
+      "인데요",
+      "해에",
+      "신고를",
+      "차례나",
+      "하는지요"
+     ],
+     "placed": {
+      "한": [
+       "asked",
+       "",
+       700
+      ],
+      "몇": [
+       "asked",
+       "",
+       268
+      ],
+      "치러야": [
+       "asked",
+       "",
+       1000
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "해에",
+      "차례나",
+      "하는지요"
+     ],
+     "unmet": [
+      "인데요",
+      "신고를",
+      "몇",
+      "치러야"
+     ],
+     "placed": {
+      "해에": [
+       "asked",
+       "",
+       190
+      ],
+      "하는지요": [
+       "asked",
+       "",
+       200
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "몇"
+     ],
+     "unmet": [
+      "인데요",
+      "해에",
+      "신고를",
+      "차례나",
+      "치러야",
+      "하는지요"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       268
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "몇"
+     ],
+     "unmet": [
+      "인데요",
+      "해에",
+      "신고를",
+      "차례나",
+      "치러야",
+      "하는지요"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       134
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고기한": {
+     "하는지요": [
+      "same",
+      "하는",
+      0
+     ],
+     "해에": [
+      "asked",
+      "",
+      142
+     ],
+     "신고를": [
+      "asked",
+      "",
+      566
+     ]
+    },
+    "신청기한": {
+     "하는지요": [
+      "same",
+      "하는",
+      0
+     ],
+     "해에": [
+      "asked",
+      "",
+      190
+     ]
+    },
+    "과세기간": {
+     "한": [
+      "asked",
+      "",
+      700
+     ],
+     "몇": [
+      "asked",
+      "",
+      268
+     ],
+     "치러야": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "신고횟수": {
+     "한": [
+      "asked",
+      "",
+      300
+     ],
+     "해에": [
+      "asked",
+      "",
+      1000
+     ],
+     "신고를": [
+      "asked",
+      "",
+      444
+     ],
+     "몇": [
+      "asked",
+      "",
+      298
+     ],
+     "차례나": [
+      "asked",
+      "",
+      1000
+     ],
+     "하는지요": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "신고기간": {
+     "해에": [
+      "asked",
+      "",
+      47
+     ],
+     "몇": [
+      "asked",
+      "",
+      29
+     ],
+     "하는지요": [
+      "asked",
+      "",
+      400
+     ]
+    },
+    "신청경로": {
+     "해에": [
+      "asked",
+      "",
+      190
+     ],
+     "하는지요": [
+      "asked",
+      "",
+      200
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    }
+   },
+   "unread": [
+    "인데요",
+    "한",
+    "해에",
+    "신고를",
+    "몇",
+    "차례나",
+    "치러야",
+    "하는지요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q20",
+  "text": "개인일반사업자 신고 얼마나 자주 함?",
+  "kind": "natural",
+  "gold": [
+   "F03"
+  ],
+  "expected_property": "신고횟수",
+  "result": "proposal_right",
+  "value": "연2회",
+  "claim": null,
+  "chosen": {
+   "thing": "개인일반사업자",
+   "property": "신고횟수",
+   "with": {}
+  },
+  "source_ids": [
+   "F03"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고횟수",
+     "met": [
+      "신고",
+      "자주",
+      "함",
+      "얼마"
+     ],
+     "unmet": [],
+     "placed": {
+      "신고": [
+       "asked",
+       "",
+       444
+      ],
+      "자주": [
+       "asked",
+       "",
+       1000
+      ],
+      "함": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "신고"
+     ],
+     "unmet": [
+      "자주",
+      "함",
+      "얼마"
+     ],
+     "placed": {
+      "신고": [
+       "asked",
+       "",
+       566
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "함"
+     ],
+     "unmet": [
+      "신고",
+      "자주",
+      "얼마"
+     ],
+     "placed": {
+      "함": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "얼마"
+     ],
+     "unmet": [
+      "신고",
+      "자주",
+      "함"
+     ],
+     "placed": {}
+    },
+    {
+     "property": "세율",
+     "met": [
+      "얼마"
+     ],
+     "unmet": [
+      "신고",
+      "자주",
+      "함"
+     ],
+     "placed": {}
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "얼마"
+     ],
+     "unmet": [
+      "신고",
+      "자주",
+      "함"
+     ],
+     "placed": {}
+    }
+   ],
+   "placed": {
+    "신고기한": {
+     "신고": [
+      "asked",
+      "",
+      566
+     ]
+    },
+    "신고횟수": {
+     "신고": [
+      "asked",
+      "",
+      444
+     ],
+     "자주": [
+      "asked",
+      "",
+      1000
+     ],
+     "함": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "과세기간": {},
+    "세율": {},
+    "신청경로": {
+     "함": [
+      "asked",
+      "",
+      500
+     ]
+    }
+   },
+   "unread": [
+    "신고",
+    "나",
+    "자주",
+    "함"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q21",
+  "text": "법인사업자는 일 년에 신고 몇 번 하죠?",
+  "kind": "natural",
+  "gold": [
+   "F04"
+  ],
+  "expected_property": "신고횟수",
+  "result": "proposal_right",
+  "value": "연4회",
+  "claim": null,
+  "chosen": {
+   "thing": "법인사업자",
+   "property": "신고횟수",
+   "with": {}
+  },
+  "source_ids": [
+   "F04"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고횟수",
+     "met": [
+      "일",
+      "년에",
+      "신고",
+      "몇",
+      "번",
+      "하죠"
+     ],
+     "unmet": [],
+     "placed": {
+      "일": [
+       "asked",
+       "",
+       1000
+      ],
+      "년에": [
+       "asked",
+       "",
+       1000
+      ],
+      "신고": [
+       "asked",
+       "",
+       444
+      ],
+      "몇": [
+       "asked",
+       "",
+       298
+      ],
+      "번": [
+       "asked",
+       "",
+       560
+      ],
+      "하죠": [
+       "asked",
+       "",
+       189
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "일",
+      "몇",
+      "번",
+      "하죠"
+     ],
+     "unmet": [
+      "년에",
+      "신고"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       268
+      ],
+      "번": [
+       "asked",
+       "",
+       160
+      ],
+      "하죠": [
+       "asked",
+       "",
+       45
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "일",
+      "신고",
+      "하죠"
+     ],
+     "unmet": [
+      "년에",
+      "몇",
+      "번"
+     ],
+     "placed": {
+      "신고": [
+       "asked",
+       "",
+       566
+      ],
+      "하죠": [
+       "asked",
+       "",
+       227
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "몇",
+      "번",
+      "하죠"
+     ],
+     "unmet": [
+      "일",
+      "년에",
+      "신고"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       134
+      ],
+      "번": [
+       "asked",
+       "",
+       280
+      ],
+      "하죠": [
+       "asked",
+       "",
+       45
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "일",
+      "몇",
+      "하죠"
+     ],
+     "unmet": [
+      "년에",
+      "신고",
+      "번"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       29
+      ],
+      "하죠": [
+       "asked",
+       "",
+       227
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "일",
+      "하죠"
+     ],
+     "unmet": [
+      "년에",
+      "신고",
+      "몇",
+      "번"
+     ],
+     "placed": {
+      "하죠": [
+       "asked",
+       "",
+       272
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "몇"
+     ],
+     "unmet": [
+      "일",
+      "년에",
+      "신고",
+      "번"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       268
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "하죠"
+     ],
+     "unmet": [
+      "일",
+      "년에",
+      "신고",
+      "몇",
+      "번"
+     ],
+     "placed": {
+      "하죠": [
+       "asked",
+       "",
+       162
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고횟수": {
+     "일": [
+      "asked",
+      "",
+      1000
+     ],
+     "년에": [
+      "asked",
+      "",
+      1000
+     ],
+     "신고": [
+      "asked",
+      "",
+      444
+     ],
+     "몇": [
+      "asked",
+      "",
+      298
+     ],
+     "번": [
+      "asked",
+      "",
+      560
+     ],
+     "하죠": [
+      "asked",
+      "",
+      189
+     ]
+    },
+    "신고기한": {
+     "신고": [
+      "asked",
+      "",
+      566
+     ],
+     "하죠": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "과세기간": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ],
+     "번": [
+      "asked",
+      "",
+      160
+     ],
+     "하죠": [
+      "asked",
+      "",
+      45
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ],
+     "번": [
+      "asked",
+      "",
+      280
+     ],
+     "하죠": [
+      "asked",
+      "",
+      45
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "신고기간": {
+     "몇": [
+      "asked",
+      "",
+      29
+     ],
+     "하죠": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신청경로": {
+     "하죠": [
+      "asked",
+      "",
+      162
+     ]
+    },
+    "신청기한": {
+     "하죠": [
+      "asked",
+      "",
+      272
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "일",
+    "년에",
+    "신고",
+    "몇",
+    "번",
+    "하죠"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q22",
+  "text": "저희는 법인사업자인데 해마다 몇 번씩 신고해야 됩니까?",
+  "kind": "natural",
+  "gold": [
+   "F04"
+  ],
+  "expected_property": "신고횟수",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q23",
+  "text": "법인사업자가 신고를 연간 몇 회 해야 하는지 여쭙니다.",
+  "kind": "natural",
+  "gold": [
+   "F04"
+  ],
+  "expected_property": "신고횟수",
+  "result": "proposal_right",
+  "value": "연4회",
+  "claim": null,
+  "chosen": {
+   "thing": "법인사업자",
+   "property": "신고횟수",
+   "with": {}
+  },
+  "source_ids": [
+   "F04"
+  ],
+  "decision": {
+   "why": "the counter \"몇 회\"",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "신고기한": {
+     "신고를": [
+      "asked",
+      "",
+      566
+     ],
+     "해야": [
+      "asked",
+      "",
+      230
+     ],
+     "하는지": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신고횟수": {
+     "신고를": [
+      "asked",
+      "",
+      444
+     ],
+     "해야": [
+      "asked",
+      "",
+      428
+     ],
+     "하는지": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "과세기간": {
+     "해야": [
+      "asked",
+      "",
+      27
+     ],
+     "하는지": [
+      "asked",
+      "",
+      71
+     ]
+    },
+    "상담전화": {
+     "해야": [
+      "asked",
+      "",
+      27
+     ],
+     "하는지": [
+      "asked",
+      "",
+      71
+     ]
+    },
+    "세율": {},
+    "신고기간": {
+     "해야": [
+      "asked",
+      "",
+      135
+     ],
+     "하는지": [
+      "asked",
+      "",
+      400
+     ]
+    },
+    "신청기한": {
+     "해야": [
+      "asked",
+      "",
+      307
+     ],
+     "하는지": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "신청경로": {
+     "해야": [
+      "asked",
+      "",
+      222
+     ],
+     "하는지": [
+      "asked",
+      "",
+      200
+     ]
+    }
+   },
+   "unread": [
+    "가",
+    "신고를",
+    "연간",
+    "해야",
+    "하는지",
+    "여쭙니다"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q24",
+  "text": "일반과세자제1기확정신고는 언제부터 언제까지 하나요?",
+  "kind": "natural",
+  "gold": [
+   "F05"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_wrong",
+  "value": "신청일부터7일이내",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자제1기확정신고",
+   "property": "신청기한",
+   "with": {}
+  },
+  "source_ids": [
+   "X24"
+  ],
+  "decision": {
+   "why": "letters an unread word shares with a property word or a value",
+   "weak": true,
+   "wanted": [
+    "신청기한"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "신고기간": {
+     "하나요": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신고기한": {
+     "하나요": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신청기한": {
+     "하나요": [
+      "asked",
+      "",
+      272
+     ]
+    },
+    "과세기간": {
+     "하나요": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "상담전화": {
+     "하나요": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "신고횟수": {
+     "하나요": [
+      "asked",
+      "",
+      189
+     ]
+    },
+    "신청경로": {
+     "하나요": [
+      "asked",
+      "",
+      162
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "부터",
+    "까지",
+    "하나요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q25",
+  "text": "일반과세자제1기확정신고 그거 언제 하는 거였죠? 맨날 헷갈려서요.",
+  "kind": "natural",
+  "gold": [
+   "F05"
+  ],
+  "expected_property": "신고기간",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q26",
+  "text": "일반과세자제1기확정신고 날짜가 어떻게 되는지 알려주시겠어요?",
+  "kind": "natural",
+  "gold": [
+   "F05"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_right",
+  "value": "7월1일~7월25일",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자제1기확정신고",
+   "property": "신고기간",
+   "with": {}
+  },
+  "source_ids": [
+   "F05"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고기간",
+     "met": [
+      "날짜가",
+      "어떻게",
+      "되는지"
+     ],
+     "unmet": [
+      "알려주시겠어요"
+     ],
+     "placed": {
+      "날짜가": [
+       "asked",
+       "",
+       1000
+      ],
+      "어떻게": [
+       "asked",
+       "",
+       500
+      ],
+      "되는지": [
+       "asked",
+       "",
+       285
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "날짜가",
+      "되는지"
+     ],
+     "unmet": [
+      "어떻게",
+      "알려주시겠어요"
+     ],
+     "placed": {
+      "날짜가": [
+       "asked",
+       "",
+       500
+      ],
+      "되는지": [
+       "asked",
+       "",
+       250
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "어떻게",
+      "되는지"
+     ],
+     "unmet": [
+      "날짜가",
+      "알려주시겠어요"
+     ],
+     "placed": {
+      "어떻게": [
+       "asked",
+       "",
+       500
+      ],
+      "되는지": [
+       "asked",
+       "",
+       181
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "되는지"
+     ],
+     "unmet": [
+      "날짜가",
+      "어떻게",
+      "알려주시겠어요"
+     ],
+     "placed": {
+      "되는지": [
+       "asked",
+       "",
+       285
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "되는지"
+     ],
+     "unmet": [
+      "날짜가",
+      "어떻게",
+      "알려주시겠어요"
+     ],
+     "placed": {
+      "되는지": [
+       "asked",
+       "",
+       250
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "되는지"
+     ],
+     "unmet": [
+      "날짜가",
+      "어떻게",
+      "알려주시겠어요"
+     ],
+     "placed": {
+      "되는지": [
+       "asked",
+       "",
+       90
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고기간": {
+     "날짜가": [
+      "asked",
+      "",
+      1000
+     ],
+     "어떻게": [
+      "asked",
+      "",
+      500
+     ],
+     "되는지": [
+      "asked",
+      "",
+      285
+     ]
+    },
+    "신고기한": {
+     "날짜가": [
+      "asked",
+      "",
+      500
+     ],
+     "되는지": [
+      "asked",
+      "",
+      250
+     ]
+    },
+    "상담전화": {
+     "어떻게": [
+      "asked",
+      "",
+      500
+     ],
+     "되는지": [
+      "asked",
+      "",
+      181
+     ]
+    },
+    "신청경로": {
+     "되는지": [
+      "asked",
+      "",
+      285
+     ]
+    },
+    "신청기한": {
+     "되는지": [
+      "asked",
+      "",
+      250
+     ]
+    },
+    "신고횟수": {
+     "되는지": [
+      "asked",
+      "",
+      90
+     ]
+    }
+   },
+   "unread": [
+    "날짜가",
+    "어떻게",
+    "되는지",
+    "알려주시겠어요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q27",
+  "text": "일반과세자제2기확정신고는 언제 하면 되나요?",
+  "kind": "natural",
+  "gold": [
+   "F06"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_right",
+  "value": "다음해1월1일~1월25일",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자제2기확정신고",
+   "property": "신고기간",
+   "with": {}
+  },
+  "source_ids": [
+   "F06"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고기간",
+     "met": [
+      "하면",
+      "되나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "언제": [
+       "asked",
+       "",
+       500
+      ],
+      "하면": [
+       "asked",
+       "",
+       333
+      ],
+      "되나요": [
+       "asked",
+       "",
+       333
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "하면",
+      "되나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "언제": [
+       "asked",
+       "",
+       350
+      ],
+      "하면": [
+       "asked",
+       "",
+       333
+      ],
+      "되나요": [
+       "asked",
+       "",
+       181
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "하면",
+      "되나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "언제": [
+       "asked",
+       "",
+       150
+      ],
+      "하면": [
+       "asked",
+       "",
+       333
+      ],
+      "되나요": [
+       "asked",
+       "",
+       181
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "하면",
+      "되나요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "하면": [
+       "asked",
+       "",
+       162
+      ],
+      "되나요": [
+       "asked",
+       "",
+       333
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "하면",
+      "되나요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "하면": [
+       "asked",
+       "",
+       45
+      ],
+      "되나요": [
+       "asked",
+       "",
+       333
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "하면",
+      "되나요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "하면": [
+       "asked",
+       "",
+       230
+      ],
+      "되나요": [
+       "asked",
+       "",
+       90
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "하면",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "하면": [
+       "asked",
+       "",
+       45
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고기간": {
+     "언제": [
+      "asked",
+      "",
+      500
+     ],
+     "하면": [
+      "asked",
+      "",
+      333
+     ],
+     "되나요": [
+      "asked",
+      "",
+      333
+     ]
+    },
+    "신고기한": {
+     "언제": [
+      "asked",
+      "",
+      150
+     ],
+     "하면": [
+      "asked",
+      "",
+      333
+     ],
+     "되나요": [
+      "asked",
+      "",
+      181
+     ]
+    },
+    "신청기한": {
+     "언제": [
+      "asked",
+      "",
+      350
+     ],
+     "하면": [
+      "asked",
+      "",
+      333
+     ],
+     "되나요": [
+      "asked",
+      "",
+      181
+     ]
+    },
+    "과세기간": {
+     "하면": [
+      "asked",
+      "",
+      45
+     ]
+    },
+    "상담전화": {
+     "하면": [
+      "asked",
+      "",
+      45
+     ],
+     "되나요": [
+      "asked",
+      "",
+      333
+     ]
+    },
+    "신고횟수": {
+     "하면": [
+      "asked",
+      "",
+      230
+     ],
+     "되나요": [
+      "asked",
+      "",
+      90
+     ]
+    },
+    "신청경로": {
+     "하면": [
+      "asked",
+      "",
+      162
+     ],
+     "되나요": [
+      "asked",
+      "",
+      333
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "하면",
+    "되나요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q28",
+  "text": "일반과세자제2기확정신고 날짜 좀 알려주실래요",
+  "kind": "natural",
+  "gold": [
+   "F06"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_wrong",
+  "value": "110",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자제2기확정신고",
+   "property": "상담전화",
+   "with": {}
+  },
+  "source_ids": [
+   "X33"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "상담전화",
+     "met": [
+      "좀",
+      "알려주실래요"
+     ],
+     "unmet": [
+      "날짜"
+     ],
+     "placed": {
+      "좀": [
+       "asked",
+       "",
+       333
+      ],
+      "알려주실래요": [
+       "asked",
+       "",
+       1000
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "날짜",
+      "좀"
+     ],
+     "unmet": [
+      "알려주실래요"
+     ],
+     "placed": {
+      "날짜": [
+       "asked",
+       "",
+       500
+      ],
+      "좀": [
+       "asked",
+       "",
+       166
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "날짜",
+      "좀"
+     ],
+     "unmet": [
+      "알려주실래요"
+     ],
+     "placed": {
+      "날짜": [
+       "asked",
+       "",
+       500
+      ],
+      "좀": [
+       "asked",
+       "",
+       166
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "좀"
+     ],
+     "unmet": [
+      "날짜",
+      "알려주실래요"
+     ],
+     "placed": {
+      "좀": [
+       "asked",
+       "",
+       166
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "좀"
+     ],
+     "unmet": [
+      "날짜",
+      "알려주실래요"
+     ],
+     "placed": {
+      "좀": [
+       "asked",
+       "",
+       166
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "좀"
+     ],
+     "unmet": [
+      "날짜",
+      "알려주실래요"
+     ],
+     "placed": {}
+    }
+   ],
+   "placed": {
+    "신고기간": {
+     "날짜": [
+      "asked",
+      "",
+      500
+     ],
+     "좀": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "신고기한": {
+     "날짜": [
+      "asked",
+      "",
+      500
+     ],
+     "좀": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "상담전화": {
+     "좀": [
+      "asked",
+      "",
+      333
+     ],
+     "알려주실래요": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "세율": {
+     "좀": [
+      "asked",
+      "",
+      166
+     ]
+    },
+    "신청기한": {
+     "좀": [
+      "asked",
+      "",
+      166
+     ]
+    }
+   },
+   "unread": [
+    "날짜",
+    "좀",
+    "알려주실래요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q29",
+  "text": "일반과세자제2기확정신고, 그건 어느 날부터 어느 날 사이에 넣어야 합니까?",
+  "kind": "natural",
+  "gold": [
+   "F06"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_wrong",
+  "value": "신청일부터7일이내",
+  "claim": null,
+  "chosen": {
+   "thing": "일반과세자제2기확정신고",
+   "property": "신청기한",
+   "with": {}
+  },
+  "source_ids": [
+   "X31"
+  ],
+  "decision": {
+   "why": "letters an unread word shares with a property word or a value",
+   "weak": true,
+   "wanted": [
+    "신청기한"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "상담전화": {
+     "어느": [
+      "asked",
+      "",
+      333
+     ],
+     "합니까": [
+      "asked",
+      "",
+      125
+     ]
+    },
+    "신고기간": {
+     "어느": [
+      "asked",
+      "",
+      333
+     ],
+     "날부터": [
+      "asked",
+      "",
+      1000
+     ],
+     "날": [
+      "asked",
+      "",
+      375
+     ],
+     "사이에": [
+      "asked",
+      "",
+      1000
+     ],
+     "합니까": [
+      "asked",
+      "",
+      125
+     ]
+    },
+    "신청경로": {
+     "어느": [
+      "asked",
+      "",
+      333
+     ],
+     "넣어야": [
+      "asked",
+      "",
+      1000
+     ],
+     "합니까": [
+      "asked",
+      "",
+      125
+     ]
+    },
+    "신고기한": {
+     "날부터": [
+      "asked",
+      "",
+      375
+     ],
+     "날": [
+      "asked",
+      "",
+      375
+     ],
+     "합니까": [
+      "asked",
+      "",
+      250
+     ]
+    },
+    "신청기한": {
+     "날부터": [
+      "asked",
+      "",
+      250
+     ],
+     "날": [
+      "asked",
+      "",
+      250
+     ],
+     "합니까": [
+      "asked",
+      "",
+      250
+     ]
+    },
+    "세율": {
+     "넣어야": [
+      "asked",
+      "",
+      500
+     ],
+     "합니까": [
+      "asked",
+      "",
+      125
+     ]
+    }
+   },
+   "unread": [
+    "그건",
+    "어느",
+    "날부터",
+    "어느",
+    "날",
+    "사이에",
+    "넣어야",
+    "합니까"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q30",
+  "text": "간이과세자는 언제 신고해요?",
+  "kind": "natural",
+  "gold": [
+   "F07"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_wrong",
+  "value": "2027년3월2일",
+  "claim": null,
+  "chosen": {
+   "thing": "간이과세자",
+   "property": "신고기한",
+   "with": {}
+  },
+  "source_ids": [
+   "X37"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고기한",
+     "met": [
+      "신고해요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "언제": [
+       "asked",
+       "",
+       150
+      ],
+      "신고해요": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "신고해요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "신고해요": [
+       "asked",
+       "",
+       1000
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "언제"
+     ],
+     "unmet": [
+      "신고해요"
+     ],
+     "placed": {
+      "언제": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "언제"
+     ],
+     "unmet": [
+      "신고해요"
+     ],
+     "placed": {
+      "언제": [
+       "asked",
+       "",
+       350
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "언제"
+     ],
+     "unmet": [
+      "신고해요"
+     ],
+     "placed": {}
+    }
+   ],
+   "placed": {
+    "신고기간": {
+     "언제": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "신고기한": {
+     "언제": [
+      "asked",
+      "",
+      150
+     ],
+     "신고해요": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "신청기한": {
+     "언제": [
+      "asked",
+      "",
+      350
+     ]
+    },
+    "신고횟수": {
+     "신고해요": [
+      "asked",
+      "",
+      1000
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "신고해요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q31",
+  "text": "간이과세자인데 신고를 어느 때 해야 하는지 통 모르겠어요.",
+  "kind": "natural",
+  "gold": [
+   "F07"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_wrong",
+  "value": "2027년3월2일",
+  "claim": null,
+  "chosen": {
+   "thing": "간이과세자",
+   "property": "신고기한",
+   "with": {}
+  },
+  "source_ids": [
+   "X37"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고기한",
+     "met": [
+      "신고를",
+      "때",
+      "해야",
+      "하는지"
+     ],
+     "unmet": [
+      "인데",
+      "어느",
+      "통",
+      "모르겠어요"
+     ],
+     "placed": {
+      "신고를": [
+       "asked",
+       "",
+       566
+      ],
+      "해야": [
+       "asked",
+       "",
+       230
+      ],
+      "하는지": [
+       "asked",
+       "",
+       227
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "어느",
+      "때",
+      "해야",
+      "하는지"
+     ],
+     "unmet": [
+      "인데",
+      "신고를",
+      "통",
+      "모르겠어요"
+     ],
+     "placed": {
+      "어느": [
+       "asked",
+       "",
+       333
+      ],
+      "해야": [
+       "asked",
+       "",
+       135
+      ],
+      "하는지": [
+       "asked",
+       "",
+       400
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "어느",
+      "때",
+      "해야",
+      "하는지"
+     ],
+     "unmet": [
+      "인데",
+      "신고를",
+      "통",
+      "모르겠어요"
+     ],
+     "placed": {
+      "때": [
+       "asked",
+       "",
+       500
+      ],
+      "해야": [
+       "asked",
+       "",
+       27
+      ],
+      "하는지": [
+       "asked",
+       "",
+       71
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "신고를",
+      "해야",
+      "하는지"
+     ],
+     "unmet": [
+      "인데",
+      "어느",
+      "때",
+      "통",
+      "모르겠어요"
+     ],
+     "placed": {
+      "신고를": [
+       "asked",
+       "",
+       444
+      ],
+      "해야": [
+       "asked",
+       "",
+       428
+      ],
+      "하는지": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "때",
+      "해야",
+      "하는지"
+     ],
+     "unmet": [
+      "인데",
+      "신고를",
+      "어느",
+      "통",
+      "모르겠어요"
+     ],
+     "placed": {
+      "때": [
+       "asked",
+       "",
+       500
+      ],
+      "해야": [
+       "asked",
+       "",
+       307
+      ],
+      "하는지": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "어느",
+      "해야",
+      "하는지"
+     ],
+     "unmet": [
+      "인데",
+      "신고를",
+      "때",
+      "통",
+      "모르겠어요"
+     ],
+     "placed": {
+      "어느": [
+       "asked",
+       "",
+       333
+      ],
+      "해야": [
+       "asked",
+       "",
+       222
+      ],
+      "하는지": [
+       "asked",
+       "",
+       200
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "어느",
+      "해야",
+      "하는지"
+     ],
+     "unmet": [
+      "인데",
+      "신고를",
+      "때",
+      "통",
+      "모르겠어요"
+     ],
+     "placed": {
+      "어느": [
+       "asked",
+       "",
+       333
+      ],
+      "해야": [
+       "asked",
+       "",
+       27
+      ],
+      "하는지": [
+       "asked",
+       "",
+       71
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고기한": {
+     "신고를": [
+      "asked",
+      "",
+      566
+     ],
+     "해야": [
+      "asked",
+      "",
+      230
+     ],
+     "하는지": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신고횟수": {
+     "신고를": [
+      "asked",
+      "",
+      444
+     ],
+     "해야": [
+      "asked",
+      "",
+      428
+     ],
+     "하는지": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "상담전화": {
+     "어느": [
+      "asked",
+      "",
+      333
+     ],
+     "해야": [
+      "asked",
+      "",
+      27
+     ],
+     "하는지": [
+      "asked",
+      "",
+      71
+     ]
+    },
+    "신고기간": {
+     "어느": [
+      "asked",
+      "",
+      333
+     ],
+     "해야": [
+      "asked",
+      "",
+      135
+     ],
+     "하는지": [
+      "asked",
+      "",
+      400
+     ]
+    },
+    "신청경로": {
+     "어느": [
+      "asked",
+      "",
+      333
+     ],
+     "해야": [
+      "asked",
+      "",
+      222
+     ],
+     "하는지": [
+      "asked",
+      "",
+      200
+     ]
+    },
+    "과세기간": {
+     "때": [
+      "asked",
+      "",
+      500
+     ],
+     "해야": [
+      "asked",
+      "",
+      27
+     ],
+     "하는지": [
+      "asked",
+      "",
+      71
+     ]
+    },
+    "신청기한": {
+     "때": [
+      "asked",
+      "",
+      500
+     ],
+     "해야": [
+      "asked",
+      "",
+      307
+     ],
+     "하는지": [
+      "asked",
+      "",
+      500
+     ]
+    }
+   },
+   "unread": [
+    "인데",
+    "신고를",
+    "어느",
+    "때",
+    "해야",
+    "하는지",
+    "통",
+    "모르겠어요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q32",
+  "text": "간이과세자 신고 언제부터 언제까지임",
+  "kind": "natural",
+  "gold": [
+   "F07"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_wrong",
+  "value": "2027년3월2일",
+  "claim": null,
+  "chosen": {
+   "thing": "간이과세자",
+   "property": "신고기한",
+   "with": {}
+  },
+  "source_ids": [
+   "X37"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고기한",
+     "met": [
+      "신고",
+      "언제",
+      "언제"
+     ],
+     "unmet": [
+      "까지임"
+     ],
+     "placed": {
+      "신고": [
+       "asked",
+       "",
+       566
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "언제",
+      "언제"
+     ],
+     "unmet": [
+      "신고",
+      "까지임"
+     ],
+     "placed": {}
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "언제",
+      "언제"
+     ],
+     "unmet": [
+      "신고",
+      "까지임"
+     ],
+     "placed": {}
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "언제",
+      "언제"
+     ],
+     "unmet": [
+      "신고",
+      "까지임"
+     ],
+     "placed": {}
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "신고"
+     ],
+     "unmet": [
+      "까지임",
+      "언제",
+      "언제"
+     ],
+     "placed": {
+      "신고": [
+       "asked",
+       "",
+       444
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고기한": {
+     "신고": [
+      "asked",
+      "",
+      566
+     ]
+    },
+    "신고횟수": {
+     "신고": [
+      "asked",
+      "",
+      444
+     ]
+    },
+    "신고기간": {},
+    "신청기한": {}
+   },
+   "unread": [
+    "신고",
+    "부터",
+    "까지임"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q33",
+  "text": "사업자등록은 언제까지 해야 하나요?",
+  "kind": "natural",
+  "gold": [
+   "F08"
+  ],
+  "expected_property": "신청기한",
+  "result": "proposal_right",
+  "value": "사업개시일부터20일이내",
+  "claim": null,
+  "chosen": {
+   "thing": "사업자등록",
+   "property": "신청기한",
+   "with": {}
+  },
+  "source_ids": [
+   "F08"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신청기한",
+     "met": [
+      "해야",
+      "하나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       307
+      ],
+      "하나요": [
+       "asked",
+       "",
+       272
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "해야",
+      "하나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       230
+      ],
+      "하나요": [
+       "asked",
+       "",
+       227
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "해야",
+      "하나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       135
+      ],
+      "하나요": [
+       "asked",
+       "",
+       227
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "해야",
+      "하나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       27
+      ],
+      "하나요": [
+       "asked",
+       "",
+       111
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "해야",
+      "하나요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       428
+      ],
+      "하나요": [
+       "asked",
+       "",
+       189
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "해야",
+      "하나요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       222
+      ],
+      "하나요": [
+       "asked",
+       "",
+       162
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "해야",
+      "하나요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       27
+      ],
+      "하나요": [
+       "asked",
+       "",
+       111
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고기간": {
+     "해야": [
+      "asked",
+      "",
+      135
+     ],
+     "하나요": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신고기한": {
+     "해야": [
+      "asked",
+      "",
+      230
+     ],
+     "하나요": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신청기한": {
+     "해야": [
+      "asked",
+      "",
+      307
+     ],
+     "하나요": [
+      "asked",
+      "",
+      272
+     ]
+    },
+    "신고횟수": {
+     "해야": [
+      "asked",
+      "",
+      428
+     ],
+     "하나요": [
+      "asked",
+      "",
+      189
+     ]
+    },
+    "신청경로": {
+     "해야": [
+      "asked",
+      "",
+      222
+     ],
+     "하나요": [
+      "asked",
+      "",
+      162
+     ]
+    },
+    "과세기간": {
+     "해야": [
+      "asked",
+      "",
+      27
+     ],
+     "하나요": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "상담전화": {
+     "해야": [
+      "asked",
+      "",
+      27
+     ],
+     "하나요": [
+      "asked",
+      "",
+      111
+     ]
+    }
+   },
+   "unread": [
+    "은",
+    "까지",
+    "해야",
+    "하나요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q34",
+  "text": "가게 막 열었는데 사업자등록 며칠 안에 해야 돼요?",
+  "kind": "natural",
+  "gold": [
+   "F08"
+  ],
+  "expected_property": "신청기한",
+  "result": "proposal_right",
+  "value": "사업개시일부터20일이내",
+  "claim": null,
+  "chosen": {
+   "thing": "사업자등록",
+   "property": "신청기한",
+   "with": {}
+  },
+  "source_ids": [
+   "F08"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신청기한",
+     "met": [
+      "며칠",
+      "안에",
+      "해야",
+      "돼요"
+     ],
+     "unmet": [
+      "막",
+      "열었는데"
+     ],
+     "placed": {
+      "며칠": [
+       "asked",
+       "",
+       294
+      ],
+      "안에": [
+       "asked",
+       "",
+       1000
+      ],
+      "해야": [
+       "asked",
+       "",
+       307
+      ],
+      "돼요": [
+       "asked",
+       "",
+       250
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "며칠",
+      "안에",
+      "해야",
+      "돼요"
+     ],
+     "unmet": [
+      "막",
+      "열었는데"
+     ],
+     "placed": {
+      "며칠": [
+       "asked",
+       "",
+       470
+      ],
+      "안에": [
+       "asked",
+       "",
+       375
+      ],
+      "해야": [
+       "asked",
+       "",
+       230
+      ],
+      "돼요": [
+       "asked",
+       "",
+       250
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "열었는데",
+      "해야",
+      "돼요"
+     ],
+     "unmet": [
+      "막",
+      "며칠",
+      "안에"
+     ],
+     "placed": {
+      "열었는데": [
+       "asked",
+       "",
+       1000
+      ],
+      "해야": [
+       "asked",
+       "",
+       428
+      ],
+      "돼요": [
+       "asked",
+       "",
+       250
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "가게",
+      "해야",
+      "돼요"
+     ],
+     "unmet": [
+      "막",
+      "열었는데",
+      "며칠",
+      "안에"
+     ],
+     "placed": {
+      "가게": [
+       "asked",
+       "",
+       500
+      ],
+      "해야": [
+       "asked",
+       "",
+       222
+      ],
+      "돼요": [
+       "asked",
+       "",
+       181
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "며칠",
+      "해야",
+      "돼요"
+     ],
+     "unmet": [
+      "막",
+      "열었는데",
+      "안에"
+     ],
+     "placed": {
+      "며칠": [
+       "asked",
+       "",
+       235
+      ],
+      "해야": [
+       "asked",
+       "",
+       135
+      ],
+      "돼요": [
+       "asked",
+       "",
+       181
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "가게",
+      "안에"
+     ],
+     "unmet": [
+      "막",
+      "열었는데",
+      "며칠"
+     ],
+     "placed": {
+      "가게": [
+       "asked",
+       "",
+       1000
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "해야",
+      "돼요"
+     ],
+     "unmet": [
+      "막",
+      "열었는데",
+      "며칠",
+      "안에"
+     ],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       27
+      ],
+      "돼요": [
+       "asked",
+       "",
+       250
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "며칠",
+      "해야"
+     ],
+     "unmet": [
+      "막",
+      "열었는데",
+      "안에"
+     ],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       27
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "세율": {
+     "가게": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "신청경로": {
+     "가게": [
+      "asked",
+      "",
+      500
+     ],
+     "해야": [
+      "asked",
+      "",
+      222
+     ],
+     "돼요": [
+      "asked",
+      "",
+      181
+     ]
+    },
+    "신고횟수": {
+     "열었는데": [
+      "asked",
+      "",
+      1000
+     ],
+     "해야": [
+      "asked",
+      "",
+      428
+     ],
+     "돼요": [
+      "asked",
+      "",
+      250
+     ]
+    },
+    "신고기간": {
+     "며칠": [
+      "asked",
+      "",
+      235
+     ],
+     "해야": [
+      "asked",
+      "",
+      135
+     ],
+     "돼요": [
+      "asked",
+      "",
+      181
+     ]
+    },
+    "신고기한": {
+     "며칠": [
+      "asked",
+      "",
+      470
+     ],
+     "안에": [
+      "asked",
+      "",
+      375
+     ],
+     "해야": [
+      "asked",
+      "",
+      230
+     ],
+     "돼요": [
+      "asked",
+      "",
+      250
+     ]
+    },
+    "신청기한": {
+     "며칠": [
+      "asked",
+      "",
+      294
+     ],
+     "안에": [
+      "asked",
+      "",
+      1000
+     ],
+     "해야": [
+      "asked",
+      "",
+      307
+     ],
+     "돼요": [
+      "asked",
+      "",
+      250
+     ]
+    },
+    "과세기간": {
+     "해야": [
+      "asked",
+      "",
+      27
+     ]
+    },
+    "상담전화": {
+     "해야": [
+      "asked",
+      "",
+      27
+     ],
+     "돼요": [
+      "asked",
+      "",
+      250
+     ]
+    }
+   },
+   "unread": [
+    "가게",
+    "막",
+    "열었는데",
+    "며칠",
+    "안에",
+    "해야",
+    "돼요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q35",
+  "text": "사업자등록을 늦어도 언제까지는 마쳐야 탈이 없는지요.",
+  "kind": "natural",
+  "gold": [
+   "F08"
+  ],
+  "expected_property": "신청기한",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q36",
+  "text": "사업자등록은 어디서 하나요?",
+  "kind": "natural",
+  "gold": [
+   "F09"
+  ],
+  "expected_property": "신청경로",
+  "result": "proposal_right",
+  "value": "홈택스",
+  "claim": null,
+  "chosen": {
+   "thing": "사업자등록",
+   "property": "신청경로",
+   "with": {}
+  },
+  "source_ids": [
+   "F09"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신청경로",
+     "met": [
+      "하나요",
+      "어디"
+     ],
+     "unmet": [
+      "서"
+     ],
+     "placed": {
+      "하나요": [
+       "asked",
+       "",
+       162
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "하나요",
+      "어디"
+     ],
+     "unmet": [
+      "서"
+     ],
+     "placed": {
+      "하나요": [
+       "asked",
+       "",
+       111
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "하나요"
+     ],
+     "unmet": [
+      "서",
+      "어디"
+     ],
+     "placed": {
+      "하나요": [
+       "asked",
+       "",
+       272
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "하나요"
+     ],
+     "unmet": [
+      "서",
+      "어디"
+     ],
+     "placed": {
+      "하나요": [
+       "asked",
+       "",
+       227
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "하나요"
+     ],
+     "unmet": [
+      "서",
+      "어디"
+     ],
+     "placed": {
+      "하나요": [
+       "asked",
+       "",
+       227
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "하나요"
+     ],
+     "unmet": [
+      "서",
+      "어디"
+     ],
+     "placed": {
+      "하나요": [
+       "asked",
+       "",
+       189
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "하나요"
+     ],
+     "unmet": [
+      "서",
+      "어디"
+     ],
+     "placed": {
+      "하나요": [
+       "asked",
+       "",
+       111
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신청경로": {
+     "하나요": [
+      "asked",
+      "",
+      162
+     ]
+    },
+    "과세기간": {
+     "하나요": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "상담전화": {
+     "하나요": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "신고기간": {
+     "하나요": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신고기한": {
+     "하나요": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신고횟수": {
+     "하나요": [
+      "asked",
+      "",
+      189
+     ]
+    },
+    "신청기한": {
+     "하나요": [
+      "asked",
+      "",
+      272
+     ]
+    }
+   },
+   "unread": [
+    "은",
+    "서",
+    "하나요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q37",
+  "text": "사업자등록 어디로 들어가서 신청하면 돼요?",
+  "kind": "natural",
+  "gold": [
+   "F09"
+  ],
+  "expected_property": "신청경로",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q38",
+  "text": "사업자등록 하려는데 서류를 어디다 내야 하죠?",
+  "kind": "natural",
+  "gold": [
+   "F09"
+  ],
+  "expected_property": "신청경로",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q39",
+  "text": "국세상담센터 몇 번으로 걸어야 해요?",
+  "kind": "natural",
+  "gold": [
+   "F10"
+  ],
+  "expected_property": "상담전화",
+  "result": "proposal_right",
+  "value": "126",
+  "claim": null,
+  "chosen": {
+   "thing": "국세상담센터",
+   "property": "상담전화",
+   "with": {}
+  },
+  "source_ids": [
+   "F10"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "상담전화",
+     "met": [
+      "몇",
+      "번으로",
+      "걸어야",
+      "해요"
+     ],
+     "unmet": [],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       134
+      ],
+      "번으로": [
+       "asked",
+       "",
+       1000
+      ],
+      "걸어야": [
+       "asked",
+       "",
+       1000
+      ],
+      "해요": [
+       "asked",
+       "",
+       27
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "몇",
+      "번으로",
+      "걸어야",
+      "해요"
+     ],
+     "unmet": [],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       268
+      ],
+      "번으로": [
+       "asked",
+       "",
+       160
+      ],
+      "걸어야": [
+       "asked",
+       "",
+       300
+      ],
+      "해요": [
+       "asked",
+       "",
+       27
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "몇",
+      "번으로",
+      "해요"
+     ],
+     "unmet": [
+      "걸어야"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       298
+      ],
+      "번으로": [
+       "asked",
+       "",
+       560
+      ],
+      "해요": [
+       "asked",
+       "",
+       428
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "몇",
+      "해요"
+     ],
+     "unmet": [
+      "번으로",
+      "걸어야"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       29
+      ],
+      "해요": [
+       "asked",
+       "",
+       135
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "해요"
+     ],
+     "unmet": [
+      "몇",
+      "번으로",
+      "걸어야"
+     ],
+     "placed": {
+      "해요": [
+       "asked",
+       "",
+       571
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "해요"
+     ],
+     "unmet": [
+      "몇",
+      "번으로",
+      "걸어야"
+     ],
+     "placed": {
+      "해요": [
+       "asked",
+       "",
+       269
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "몇"
+     ],
+     "unmet": [
+      "번으로",
+      "걸어야"
+     ],
+     "placed": {
+      "몇": [
+       "asked",
+       "",
+       268
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "해요"
+     ],
+     "unmet": [
+      "몇",
+      "번으로",
+      "걸어야"
+     ],
+     "placed": {
+      "해요": [
+       "asked",
+       "",
+       230
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "과세기간": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ],
+     "번으로": [
+      "asked",
+      "",
+      160
+     ],
+     "걸어야": [
+      "asked",
+      "",
+      300
+     ],
+     "해요": [
+      "asked",
+      "",
+      27
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ],
+     "번으로": [
+      "asked",
+      "",
+      1000
+     ],
+     "걸어야": [
+      "asked",
+      "",
+      1000
+     ],
+     "해요": [
+      "asked",
+      "",
+      27
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ]
+    },
+    "신고기간": {
+     "몇": [
+      "asked",
+      "",
+      29
+     ],
+     "해요": [
+      "asked",
+      "",
+      135
+     ]
+    },
+    "신고횟수": {
+     "몇": [
+      "asked",
+      "",
+      298
+     ],
+     "번으로": [
+      "asked",
+      "",
+      560
+     ],
+     "해요": [
+      "asked",
+      "",
+      428
+     ]
+    },
+    "신고기한": {
+     "해요": [
+      "asked",
+      "",
+      230
+     ]
+    },
+    "신청경로": {
+     "해요": [
+      "asked",
+      "",
+      571
+     ]
+    },
+    "신청기한": {
+     "해요": [
+      "asked",
+      "",
+      269
+     ]
+    }
+   },
+   "unread": [
+    "몇",
+    "번으로",
+    "걸어야",
+    "해요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q40",
+  "text": "국세청상담센터 번호가 뭐였죠?",
+  "kind": "natural",
+  "gold": [
+   "F10"
+  ],
+  "expected_property": "상담전화",
+  "result": "proposal_right",
+  "value": "126",
+  "claim": null,
+  "chosen": {
+   "thing": "국세상담센터",
+   "property": "상담전화",
+   "with": {}
+  },
+  "source_ids": [
+   "F10"
+  ],
+  "decision": {
+   "why": "letters an unread word shares with a property word or a value",
+   "weak": true,
+   "wanted": [
+    "상담전화"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "상담전화": {
+     "번호가": [
+      "same",
+      "번호",
+      0
+     ]
+    }
+   },
+   "unread": [
+    "번호가",
+    "뭐였죠"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q41",
+  "text": "국세상담센터에 전화하려면 몇 번을 누르면 됩니까?",
+  "kind": "natural",
+  "gold": [
+   "F10"
+  ],
+  "expected_property": "상담전화",
+  "result": "proposal_right",
+  "value": "126",
+  "claim": null,
+  "chosen": {
+   "thing": "국세상담센터",
+   "property": "상담전화",
+   "with": {}
+  },
+  "source_ids": [
+   "F10"
+  ],
+  "decision": {
+   "why": "letters an unread word shares with a property word or a value",
+   "weak": true,
+   "wanted": [
+    "상담전화"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "과세기간": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ],
+     "번을": [
+      "asked",
+      "",
+      160
+     ]
+    },
+    "상담전화": {
+     "몇": [
+      "asked",
+      "",
+      134
+     ],
+     "번을": [
+      "asked",
+      "",
+      1000
+     ],
+     "누르면": [
+      "asked",
+      "",
+      1000
+     ],
+     "됩니까": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "세율": {
+     "몇": [
+      "asked",
+      "",
+      268
+     ],
+     "됩니까": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "신고기간": {
+     "몇": [
+      "asked",
+      "",
+      29
+     ]
+    },
+    "신고횟수": {
+     "몇": [
+      "asked",
+      "",
+      298
+     ],
+     "번을": [
+      "asked",
+      "",
+      560
+     ]
+    }
+   },
+   "unread": [
+    "에",
+    "전화하려면",
+    "몇",
+    "번을",
+    "누르면",
+    "됩니까"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q42",
+  "text": "종합소득세일반신고는 언제 하는 거예요?",
+  "kind": "natural",
+  "gold": [
+   "F11"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_right",
+  "value": "다음해5월1일~5월31일",
+  "claim": null,
+  "chosen": {
+   "thing": "종합소득세일반신고",
+   "property": "신고기간",
+   "with": {}
+  },
+  "source_ids": [
+   "F11"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고기간",
+     "met": [
+      "하는",
+      "거예요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "언제": [
+       "asked",
+       "",
+       500
+      ],
+      "하는": [
+       "asked",
+       "",
+       400
+      ],
+      "거예요": [
+       "asked",
+       "",
+       200
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "하는",
+      "거예요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "언제": [
+       "asked",
+       "",
+       350
+      ],
+      "하는": [
+       "asked",
+       "",
+       272
+      ],
+      "거예요": [
+       "asked",
+       "",
+       200
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "하는",
+      "거예요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "언제": [
+       "asked",
+       "",
+       150
+      ],
+      "하는": [
+       "asked",
+       "",
+       227
+      ],
+      "거예요": [
+       "asked",
+       "",
+       200
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "하는",
+      "거예요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "하는": [
+       "asked",
+       "",
+       200
+      ],
+      "거예요": [
+       "asked",
+       "",
+       200
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "하는",
+      "언제"
+     ],
+     "unmet": [
+      "거예요"
+     ],
+     "placed": {
+      "하는": [
+       "asked",
+       "",
+       71
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "거예요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "거예요": [
+       "asked",
+       "",
+       200
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "하는"
+     ],
+     "unmet": [
+      "거예요",
+      "언제"
+     ],
+     "placed": {
+      "하는": [
+       "asked",
+       "",
+       200
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "하는"
+     ],
+     "unmet": [
+      "거예요",
+      "언제"
+     ],
+     "placed": {
+      "하는": [
+       "asked",
+       "",
+       71
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고기간": {
+     "언제": [
+      "asked",
+      "",
+      500
+     ],
+     "하는": [
+      "asked",
+      "",
+      400
+     ],
+     "거예요": [
+      "asked",
+      "",
+      200
+     ]
+    },
+    "신고기한": {
+     "언제": [
+      "asked",
+      "",
+      150
+     ],
+     "하는": [
+      "asked",
+      "",
+      227
+     ],
+     "거예요": [
+      "asked",
+      "",
+      200
+     ]
+    },
+    "신청기한": {
+     "언제": [
+      "asked",
+      "",
+      350
+     ],
+     "하는": [
+      "asked",
+      "",
+      272
+     ],
+     "거예요": [
+      "asked",
+      "",
+      200
+     ]
+    },
+    "신고횟수": {
+     "하는": [
+      "asked",
+      "",
+      200
+     ]
+    },
+    "신청경로": {
+     "하는": [
+      "asked",
+      "",
+      200
+     ],
+     "거예요": [
+      "asked",
+      "",
+      200
+     ]
+    },
+    "과세기간": {
+     "하는": [
+      "asked",
+      "",
+      71
+     ]
+    },
+    "상담전화": {
+     "하는": [
+      "asked",
+      "",
+      71
+     ]
+    },
+    "세율": {
+     "거예요": [
+      "asked",
+      "",
+      200
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "하는",
+    "거예요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q43",
+  "text": "종합소득세일반신고 언제부터 언제까지 받나요",
+  "kind": "natural",
+  "gold": [
+   "F11"
+  ],
+  "expected_property": "신고기간",
+  "result": "proposal_wrong",
+  "value": "신청일부터7일이내",
+  "claim": null,
+  "chosen": {
+   "thing": "종합소득세일반신고",
+   "property": "신청기한",
+   "with": {}
+  },
+  "source_ids": [
+   "X58"
+  ],
+  "decision": {
+   "why": "letters an unread word shares with a property word or a value",
+   "weak": true,
+   "wanted": [
+    "신청기한"
+   ],
+   "exact": null,
+   "ranked": [],
+   "placed": {
+    "신고기간": {
+     "받나요": [
+      "asked",
+      "",
+      666
+     ]
+    },
+    "신고기한": {},
+    "신청기한": {},
+    "신청경로": {
+     "받나요": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "상담전화": {
+     "받나요": [
+      "asked",
+      "",
+      200
+     ]
+    }
+   },
+   "unread": [
+    "부터",
+    "까지",
+    "받나요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q44",
+  "text": "종합소득세일반신고 철이 언제쯤인지 날짜로 좀 짚어 주세요.",
+  "kind": "natural",
+  "gold": [
+   "F11"
+  ],
+  "expected_property": "신고기간",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q45",
+  "text": "2025년귀속종합소득세일반신고는 언제까지 해야 하나요?",
+  "kind": "natural",
+  "gold": [
+   "F12"
+  ],
+  "expected_property": "신고기한",
+  "result": "proposal_wrong",
+  "value": "신청일부터7일이내",
+  "claim": null,
+  "chosen": {
+   "thing": "2025년귀속종합소득세일반신고",
+   "property": "신청기한",
+   "with": {}
+  },
+  "source_ids": [
+   "X65"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신청기한",
+     "met": [
+      "해야",
+      "하나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       307
+      ],
+      "하나요": [
+       "asked",
+       "",
+       272
+      ]
+     }
+    },
+    {
+     "property": "신고기한",
+     "met": [
+      "해야",
+      "하나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       230
+      ],
+      "하나요": [
+       "asked",
+       "",
+       227
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "해야",
+      "하나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       135
+      ],
+      "하나요": [
+       "asked",
+       "",
+       227
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "해야",
+      "하나요",
+      "언제"
+     ],
+     "unmet": [],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       27
+      ],
+      "하나요": [
+       "asked",
+       "",
+       111
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "해야",
+      "하나요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       428
+      ],
+      "하나요": [
+       "asked",
+       "",
+       189
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "해야",
+      "하나요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       222
+      ],
+      "하나요": [
+       "asked",
+       "",
+       162
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "해야",
+      "하나요"
+     ],
+     "unmet": [
+      "언제"
+     ],
+     "placed": {
+      "해야": [
+       "asked",
+       "",
+       27
+      ],
+      "하나요": [
+       "asked",
+       "",
+       111
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고기간": {
+     "해야": [
+      "asked",
+      "",
+      135
+     ],
+     "하나요": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신고기한": {
+     "해야": [
+      "asked",
+      "",
+      230
+     ],
+     "하나요": [
+      "asked",
+      "",
+      227
+     ]
+    },
+    "신청기한": {
+     "해야": [
+      "asked",
+      "",
+      307
+     ],
+     "하나요": [
+      "asked",
+      "",
+      272
+     ]
+    },
+    "신고횟수": {
+     "해야": [
+      "asked",
+      "",
+      428
+     ],
+     "하나요": [
+      "asked",
+      "",
+      189
+     ]
+    },
+    "신청경로": {
+     "해야": [
+      "asked",
+      "",
+      222
+     ],
+     "하나요": [
+      "asked",
+      "",
+      162
+     ]
+    },
+    "과세기간": {
+     "해야": [
+      "asked",
+      "",
+      27
+     ],
+     "하나요": [
+      "asked",
+      "",
+      111
+     ]
+    },
+    "상담전화": {
+     "해야": [
+      "asked",
+      "",
+      27
+     ],
+     "하나요": [
+      "asked",
+      "",
+      111
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "까지",
+    "해야",
+    "하나요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q46",
+  "text": "2025년분종합소득세일반신고 마감이 며칠이에요?",
+  "kind": "natural",
+  "gold": [
+   "F12"
+  ],
+  "expected_property": "신고기한",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q47",
+  "text": "2025년귀속종합소득세일반신고 막날이 언제인지 알려주세요.",
+  "kind": "natural",
+  "gold": [
+   "F12"
+  ],
+  "expected_property": "신고기한",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": [
+   {
+    "thing": "2025년귀속종합소득세일반신고",
+    "property": "신고기한",
+    "with": {},
+    "if_confirmed": "2026년6월1일",
+    "met": [
+     "막날이",
+     "알려주세요",
+     "언제"
+    ],
+    "unmet": [
+     "인지"
+    ],
+    "placed": {
+     "막날이": [
+      "asked",
+      "",
+      500
+     ],
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    }
+   },
+   {
+    "thing": "2025년귀속종합소득세일반신고",
+    "property": "신청기한",
+    "with": {},
+    "if_confirmed": "신청일부터7일이내",
+    "met": [
+     "막날이",
+     "알려주세요",
+     "언제"
+    ],
+    "unmet": [
+     "인지"
+    ],
+    "placed": {
+     "막날이": [
+      "asked",
+      "",
+      500
+     ],
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    }
+   },
+   {
+    "thing": "2025년귀속종합소득세일반신고",
+    "property": "신고기간",
+    "with": {},
+    "if_confirmed": "3월1일~3월31일",
+    "met": [
+     "알려주세요",
+     "언제"
+    ],
+    "unmet": [
+     "막날이",
+     "인지"
+    ],
+    "placed": {
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    }
+   },
+   {
+    "thing": "2025년귀속종합소득세일반신고",
+    "property": "과세기간",
+    "with": {},
+    "if_confirmed": "3개월",
+    "met": [
+     "알려주세요",
+     "언제"
+    ],
+    "unmet": [
+     "막날이",
+     "인지"
+    ],
+    "placed": {
+     "알려주세요": [
+      "asked",
+      "",
+      71
+     ]
+    }
+   },
+   {
+    "thing": "2025년귀속종합소득세일반신고",
+    "property": "상담전화",
+    "with": {},
+    "if_confirmed": "110",
+    "met": [
+     "알려주세요"
+    ],
+    "unmet": [
+     "막날이",
+     "인지",
+     "언제"
+    ],
+    "placed": {
+     "알려주세요": [
+      "asked",
+      "",
+      285
+     ]
+    }
+   },
+   {
+    "thing": "2025년귀속종합소득세일반신고",
+    "property": "세율",
+    "with": {},
+    "if_confirmed": "7%",
+    "met": [
+     "알려주세요"
+    ],
+    "unmet": [
+     "막날이",
+     "인지",
+     "언제"
+    ],
+    "placed": {
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    }
+   },
+   {
+    "thing": "2025년귀속종합소득세일반신고",
+    "property": "신청경로",
+    "with": {},
+    "if_confirmed": "세무서",
+    "met": [
+     "알려주세요"
+    ],
+    "unmet": [
+     "막날이",
+     "인지",
+     "언제"
+    ],
+    "placed": {
+     "알려주세요": [
+      "asked",
+      "",
+      166
+     ]
+    }
+   },
+   {
+    "thing": "2025년귀속종합소득세일반신고",
+    "property": "신고횟수",
+    "with": {},
+    "if_confirmed": "연1회",
+    "met": [
+     "알려주세요"
+    ],
+    "unmet": [
+     "막날이",
+     "인지",
+     "언제"
+    ],
+    "placed": {
+     "알려주세요": [
+      "asked",
+      "",
+      71
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "Q48",
+  "text": "성실신고확인서제출자는 언제까지 신고하면 됩니까?",
+  "kind": "natural",
+  "gold": [
+   "F13"
+  ],
+  "expected_property": "신고기한",
+  "result": "proposal_right",
+  "value": "다음해6월30일",
+  "claim": null,
+  "chosen": {
+   "thing": "성실신고확인서제출자",
+   "property": "신고기한",
+   "with": {}
+  },
+  "source_ids": [
+   "F13"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고기한",
+     "met": [
+      "신고하면",
+      "언제"
+     ],
+     "unmet": [
+      "됩니까"
+     ],
+     "placed": {
+      "신고하면": [
+       "asked",
+       "",
+       333
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "신고하면"
+     ],
+     "unmet": [
+      "됩니까",
+      "언제"
+     ],
+     "placed": {
+      "신고하면": [
+       "asked",
+       "",
+       1000
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "됩니까"
+     ],
+     "unmet": [
+      "신고하면",
+      "언제"
+     ],
+     "placed": {
+      "됩니까": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "됩니까"
+     ],
+     "unmet": [
+      "신고하면",
+      "언제"
+     ],
+     "placed": {
+      "됩니까": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "언제"
+     ],
+     "unmet": [
+      "신고하면",
+      "됩니까"
+     ],
+     "placed": {}
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "언제"
+     ],
+     "unmet": [
+      "신고하면",
+      "됩니까"
+     ],
+     "placed": {}
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "언제"
+     ],
+     "unmet": [
+      "신고하면",
+      "됩니까"
+     ],
+     "placed": {}
+    }
+   ],
+   "placed": {
+    "신고기간": {},
+    "신고기한": {
+     "신고하면": [
+      "asked",
+      "",
+      333
+     ]
+    },
+    "신청기한": {},
+    "신고횟수": {
+     "신고하면": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "상담전화": {
+     "됩니까": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "세율": {
+     "됩니까": [
+      "asked",
+      "",
+      500
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "까지",
+    "신고하면",
+    "됩니까"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q49",
+  "text": "성실신고확인서제출자 마감일이 언제예요",
+  "kind": "natural",
+  "gold": [
+   "F13"
+  ],
+  "expected_property": "신고기한",
+  "result": "assumed_right",
+  "value": "다음해6월30일",
+  "claim": null,
+  "chosen": {},
+  "source_ids": [
+   "F13"
+  ],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q50",
+  "text": "2026년제1기부가가치세확정신고 언제까지예요?",
+  "kind": "natural",
+  "gold": [
+   "F14"
+  ],
+  "expected_property": "신고기한",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": [
+   {
+    "thing": "2026년제1기부가가치세확정신고",
+    "property": "과세기간",
+    "with": {},
+    "if_confirmed": "3개월",
+    "met": [
+     "언제"
+    ],
+    "unmet": [
+     "까지예요"
+    ]
+   },
+   {
+    "thing": "2026년제1기부가가치세확정신고",
+    "property": "신고기간",
+    "with": {},
+    "if_confirmed": "3월1일~3월31일",
+    "met": [
+     "언제"
+    ],
+    "unmet": [
+     "까지예요"
+    ]
+   },
+   {
+    "thing": "2026년제1기부가가치세확정신고",
+    "property": "신고기한",
+    "with": {},
+    "if_confirmed": "2026년7월27일",
+    "met": [
+     "언제"
+    ],
+    "unmet": [
+     "까지예요"
+    ]
+   },
+   {
+    "thing": "2026년제1기부가가치세확정신고",
+    "property": "신청기한",
+    "with": {},
+    "if_confirmed": "신청일부터7일이내",
+    "met": [
+     "언제"
+    ],
+    "unmet": [
+     "까지예요"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "Q51",
+  "text": "2026년제1기부가가치세확정신고는 며칠까지 내면 안 늦는 건가요?",
+  "kind": "natural",
+  "gold": [
+   "F14"
+  ],
+  "expected_property": "신고기한",
+  "result": "proposal_right",
+  "value": "2026년7월27일",
+  "claim": null,
+  "chosen": {
+   "thing": "2026년제1기부가가치세확정신고",
+   "property": "신고기한",
+   "with": {}
+  },
+  "source_ids": [
+   "F14"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고기한",
+     "met": [
+      "며칠까지",
+      "내면",
+      "안",
+      "늦는"
+     ],
+     "unmet": [
+      "건가요"
+     ],
+     "placed": {
+      "며칠까지": [
+       "asked",
+       "",
+       750
+      ],
+      "안": [
+       "asked",
+       "",
+       375
+      ],
+      "늦는": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "며칠까지",
+      "안",
+      "늦는"
+     ],
+     "unmet": [
+      "건가요"
+     ],
+     "placed": {
+      "며칠까지": [
+       "asked",
+       "",
+       294
+      ],
+      "안": [
+       "asked",
+       "",
+       625
+      ],
+      "늦는": [
+       "asked",
+       "",
+       500
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "며칠까지",
+      "내면",
+      "건가요"
+     ],
+     "unmet": [
+      "안",
+      "늦는"
+     ],
+     "placed": {
+      "건가요": [
+       "asked",
+       "",
+       1000
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "내면",
+      "안",
+      "건가요"
+     ],
+     "unmet": [
+      "며칠까지",
+      "늦는"
+     ],
+     "placed": {
+      "건가요": [
+       "asked",
+       "",
+       700
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "내면",
+      "안"
+     ],
+     "unmet": [
+      "며칠까지",
+      "늦는",
+      "건가요"
+     ],
+     "placed": {
+      "내면": [
+       "asked",
+       "",
+       1000
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "며칠까지",
+      "내면"
+     ],
+     "unmet": [
+      "안",
+      "늦는",
+      "건가요"
+     ],
+     "placed": {
+      "며칠까지": [
+       "asked",
+       "",
+       250
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "내면"
+     ],
+     "unmet": [
+      "며칠까지",
+      "안",
+      "늦는",
+      "건가요"
+     ],
+     "placed": {}
+    }
+   ],
+   "placed": {
+    "신고기간": {
+     "며칠까지": [
+      "asked",
+      "",
+      250
+     ]
+    },
+    "신고기한": {
+     "며칠까지": [
+      "asked",
+      "",
+      750
+     ],
+     "안": [
+      "asked",
+      "",
+      375
+     ],
+     "늦는": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "신청기한": {
+     "며칠까지": [
+      "asked",
+      "",
+      294
+     ],
+     "안": [
+      "asked",
+      "",
+      625
+     ],
+     "늦는": [
+      "asked",
+      "",
+      500
+     ]
+    },
+    "세율": {
+     "내면": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "과세기간": {
+     "건가요": [
+      "asked",
+      "",
+      1000
+     ]
+    },
+    "상담전화": {
+     "건가요": [
+      "asked",
+      "",
+      700
+     ]
+    }
+   },
+   "unread": [
+    "는",
+    "며칠까지",
+    "내면",
+    "안",
+    "늦는",
+    "건가요"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q52",
+  "text": "2026년제1기부가가치세확정신고 마지막 날 알려줘",
+  "kind": "natural",
+  "gold": [
+   "F14"
+  ],
+  "expected_property": "신고기한",
+  "result": "proposal_right",
+  "value": "2026년7월27일",
+  "claim": null,
+  "chosen": {
+   "thing": "2026년제1기부가가치세확정신고",
+   "property": "신고기한",
+   "with": {}
+  },
+  "source_ids": [
+   "F14"
+  ],
+  "decision": {
+   "why": "words of the ways of asking the field listed for the property",
+   "weak": false,
+   "wanted": [],
+   "exact": null,
+   "ranked": [
+    {
+     "property": "신고기한",
+     "met": [
+      "마지막",
+      "날",
+      "알려줘"
+     ],
+     "unmet": [],
+     "placed": {
+      "마지막": [
+       "asked",
+       "",
+       600
+      ],
+      "날": [
+       "asked",
+       "",
+       375
+      ],
+      "알려줘": [
+       "asked",
+       "",
+       142
+      ]
+     }
+    },
+    {
+     "property": "신청기한",
+     "met": [
+      "마지막",
+      "날",
+      "알려줘"
+     ],
+     "unmet": [],
+     "placed": {
+      "마지막": [
+       "asked",
+       "",
+       400
+      ],
+      "날": [
+       "asked",
+       "",
+       250
+      ],
+      "알려줘": [
+       "asked",
+       "",
+       142
+      ]
+     }
+    },
+    {
+     "property": "신고기간",
+     "met": [
+      "마지막",
+      "날",
+      "알려줘"
+     ],
+     "unmet": [],
+     "placed": {
+      "날": [
+       "asked",
+       "",
+       375
+      ],
+      "알려줘": [
+       "asked",
+       "",
+       142
+      ]
+     }
+    },
+    {
+     "property": "세율",
+     "met": [
+      "날",
+      "알려줘"
+     ],
+     "unmet": [
+      "마지막"
+     ],
+     "placed": {
+      "알려줘": [
+       "asked",
+       "",
+       142
+      ]
+     }
+    },
+    {
+     "property": "과세기간",
+     "met": [
+      "날",
+      "알려줘"
+     ],
+     "unmet": [
+      "마지막"
+     ],
+     "placed": {
+      "알려줘": [
+       "asked",
+       "",
+       125
+      ]
+     }
+    },
+    {
+     "property": "신고횟수",
+     "met": [
+      "날",
+      "알려줘"
+     ],
+     "unmet": [
+      "마지막"
+     ],
+     "placed": {
+      "알려줘": [
+       "asked",
+       "",
+       125
+      ]
+     }
+    },
+    {
+     "property": "상담전화",
+     "met": [
+      "알려줘"
+     ],
+     "unmet": [
+      "마지막",
+      "날"
+     ],
+     "placed": {
+      "알려줘": [
+       "asked",
+       "",
+       142
+      ]
+     }
+    },
+    {
+     "property": "신청경로",
+     "met": [
+      "알려줘"
+     ],
+     "unmet": [
+      "마지막",
+      "날"
+     ],
+     "placed": {
+      "알려줘": [
+       "asked",
+       "",
+       142
+      ]
+     }
+    }
+   ],
+   "placed": {
+    "신고기한": {
+     "마지막": [
+      "asked",
+      "",
+      600
+     ],
+     "날": [
+      "asked",
+      "",
+      375
+     ],
+     "알려줘": [
+      "asked",
+      "",
+      142
+     ]
+    },
+    "신청기한": {
+     "마지막": [
+      "asked",
+      "",
+      400
+     ],
+     "날": [
+      "asked",
+      "",
+      250
+     ],
+     "알려줘": [
+      "asked",
+      "",
+      142
+     ]
+    },
+    "신고기간": {
+     "날": [
+      "asked",
+      "",
+      375
+     ],
+     "알려줘": [
+      "asked",
+      "",
+      142
+     ]
+    },
+    "과세기간": {
+     "알려줘": [
+      "asked",
+      "",
+      125
+     ]
+    },
+    "상담전화": {
+     "알려줘": [
+      "asked",
+      "",
+      142
+     ]
+    },
+    "세율": {
+     "알려줘": [
+      "asked",
+      "",
+      142
+     ]
+    },
+    "신고횟수": {
+     "알려줘": [
+      "asked",
+      "",
+      125
+     ]
+    },
+    "신청경로": {
+     "알려줘": [
+      "asked",
+      "",
+      142
+     ]
+    }
+   },
+   "unread": [
+    "마지막",
+    "날",
+    "알려줘"
+   ]
+  },
+  "candidates": []
+ },
+ {
+  "id": "Q53",
+  "text": "국세상담센터 전화번호가 126번 맞죠?",
+  "kind": "check",
+  "gold": [
+   "F10"
+  ],
+  "expected_property": "상담전화",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [
+   "F10"
+  ],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q54",
+  "text": "일반과세자는 부가세 10퍼센트 내는 거 맞나요?",
+  "kind": "check",
+  "gold": [
+   "F01"
+  ],
+  "expected_property": "세율",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q55",
+  "text": "법인사업자는 1년에 두 번만 신고하면 되는 거 맞죠?",
+  "kind": "check",
+  "gold": [
+   "F04"
+  ],
+  "expected_property": "신고횟수",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ },
+ {
+  "id": "Q56",
+  "text": "사업자등록은 사업 시작하고 30일 안에만 하면 된다던데 맞아요?",
+  "kind": "check",
+  "gold": [
+   "F08"
+  ],
+  "expected_property": "신청기한",
+  "result": "held",
+  "value": null,
+  "claim": null,
+  "chosen": {},
+  "source_ids": [],
+  "decision": null,
+  "candidates": []
+ }
+]

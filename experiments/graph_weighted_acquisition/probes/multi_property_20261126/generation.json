@@ -1,0 +1,46 @@
+{
+  "source_sha256": "7d53c55be5943cbd2df73419182a87db84cd079a60875578959a3ffbfbce7d26",
+  "source": "../tax17_e2e_20261126/C.json",
+  "preserve": [
+    "all original facts and IDs",
+    "all 80 questions verbatim, including their gold fields",
+    "properties and names"
+  ],
+  "method": "Cross every subject with all eight properties except the missing properties needed for the six controls. Add a fresh value for each missing cell, in subject and property declaration order. Use facts.json as the exact fill manifest. Keep original equal values and score by source fact too. Added values are fictitious. All original exceptional circumstances remain unsupported.",
+  "excluded_cells": {
+    "일반과세자": [
+      "신청경로"
+    ],
+    "개인일반사업자": [
+      "과세기간"
+    ],
+    "법인사업자": [
+      "세율"
+    ],
+    "간이과세자": [
+      "신고횟수"
+    ],
+    "성실신고확인서제출자": [
+      "신고횟수"
+    ],
+    "2026년제1기부가가치세확정신고": [
+      "신고기간"
+    ]
+  },
+  "counts": {
+    "일반과세자": 7,
+    "개인일반사업자": 7,
+    "법인사업자": 7,
+    "일반과세자제1기확정신고": 8,
+    "일반과세자제2기확정신고": 8,
+    "간이과세자": 7,
+    "사업자등록": 8,
+    "국세상담센터": 8,
+    "종합소득세일반신고": 8,
+    "2025년귀속종합소득세일반신고": 8,
+    "성실신고확인서제출자": 7,
+    "2026년제1기부가가치세확정신고": 7
+  },
+  "primary_score": "first pass only; separate answered / assumed / proposal / held and expected-unanswerable; compare gold fact ID, value, and claim where present; show candidates separately",
+  "check_probe": "natural 4 unchanged; compare with explicit lookup and independent literal. Also include paired unknown-condition and novel-literal controls. No score pooling with original questions."
+}

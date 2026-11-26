@@ -309,7 +309,7 @@ _PROPERTY_PRIORITY = {
     'confirmed': 10,
     'property': 20,
     'unit': 30,
-    'weak': 40,
+    'weak': 80,
     'exact': 50,
     'ranked': 60,
     'history': 70,

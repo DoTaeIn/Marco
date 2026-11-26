@@ -1,0 +1,290 @@
+[
+ {
+  "id": "C1-1-1",
+  "series": "seen construction / new slots",
+  "text": "일반과세자의 세율은 10%라고 들었는데 맞을까요?",
+  "need": "F01",
+  "claim": true,
+  "literal": "10%"
+ },
+ {
+  "id": "C1-1-0",
+  "series": "seen construction / new slots",
+  "text": "일반과세자의 세율은 89%라고 들었는데 맞을까요?",
+  "need": "F01",
+  "claim": false,
+  "literal": "89%"
+ },
+ {
+  "id": "C1-2-1",
+  "series": "seen construction / new slots",
+  "text": "일반과세자의 세율은 10%라는 말이 사실인가요?",
+  "need": "F01",
+  "claim": true,
+  "literal": "10%"
+ },
+ {
+  "id": "C1-2-0",
+  "series": "seen construction / new slots",
+  "text": "일반과세자의 세율은 89%라는 말이 사실인가요?",
+  "need": "F01",
+  "claim": false,
+  "literal": "89%"
+ },
+ {
+  "id": "C1-3-1",
+  "series": "unseen construction",
+  "text": "일반과세자의 세율은 10%이라는 얘기가 있던데 정확한가요?",
+  "need": "F01",
+  "claim": true,
+  "literal": "10%"
+ },
+ {
+  "id": "C1-3-0",
+  "series": "unseen construction",
+  "text": "일반과세자의 세율은 89%이라는 얘기가 있던데 정확한가요?",
+  "need": "F01",
+  "claim": false,
+  "literal": "89%"
+ },
+ {
+  "id": "C2-1-1",
+  "series": "seen construction / new slots",
+  "text": "국세상담센터의 상담전화는 126라고 들었는데 맞을까요?",
+  "need": "F10",
+  "claim": true,
+  "literal": "126"
+ },
+ {
+  "id": "C2-1-0",
+  "series": "seen construction / new slots",
+  "text": "국세상담센터의 상담전화는 994라고 들었는데 맞을까요?",
+  "need": "F10",
+  "claim": false,
+  "literal": "994"
+ },
+ {
+  "id": "C2-2-1",
+  "series": "seen construction / new slots",
+  "text": "국세상담센터의 상담전화는 126라는 말이 사실인가요?",
+  "need": "F10",
+  "claim": true,
+  "literal": "126"
+ },
+ {
+  "id": "C2-2-0",
+  "series": "seen construction / new slots",
+  "text": "국세상담센터의 상담전화는 994라는 말이 사실인가요?",
+  "need": "F10",
+  "claim": false,
+  "literal": "994"
+ },
+ {
+  "id": "C2-3-1",
+  "series": "unseen construction",
+  "text": "국세상담센터의 상담전화는 126이라는 얘기가 있던데 정확한가요?",
+  "need": "F10",
+  "claim": true,
+  "literal": "126"
+ },
+ {
+  "id": "C2-3-0",
+  "series": "unseen construction",
+  "text": "국세상담센터의 상담전화는 994이라는 얘기가 있던데 정확한가요?",
+  "need": "F10",
+  "claim": false,
+  "literal": "994"
+ },
+ {
+  "id": "C3-1-1",
+  "series": "seen construction / new slots",
+  "text": "성실신고확인서제출자의 신고기한은 다음해6월30일라고 들었는데 맞을까요?",
+  "need": "F13",
+  "claim": true,
+  "literal": "다음해6월30일"
+ },
+ {
+  "id": "C3-1-0",
+  "series": "seen construction / new slots",
+  "text": "성실신고확인서제출자의 신고기한은 다음해6월29일라고 들었는데 맞을까요?",
+  "need": "F13",
+  "claim": false,
+  "literal": "다음해6월29일"
+ },
+ {
+  "id": "C3-2-1",
+  "series": "seen construction / new slots",
+  "text": "성실신고확인서제출자의 신고기한은 다음해6월30일라는 말이 사실인가요?",
+  "need": "F13",
+  "claim": true,
+  "literal": "다음해6월30일"
+ },
+ {
+  "id": "C3-2-0",
+  "series": "seen construction / new slots",
+  "text": "성실신고확인서제출자의 신고기한은 다음해6월29일라는 말이 사실인가요?",
+  "need": "F13",
+  "claim": false,
+  "literal": "다음해6월29일"
+ },
+ {
+  "id": "C3-3-1",
+  "series": "unseen construction",
+  "text": "성실신고확인서제출자의 신고기한은 다음해6월30일이라는 얘기가 있던데 정확한가요?",
+  "need": "F13",
+  "claim": true,
+  "literal": "다음해6월30일"
+ },
+ {
+  "id": "C3-3-0",
+  "series": "unseen construction",
+  "text": "성실신고확인서제출자의 신고기한은 다음해6월29일이라는 얘기가 있던데 정확한가요?",
+  "need": "F13",
+  "claim": false,
+  "literal": "다음해6월29일"
+ },
+ {
+  "id": "C4-1-1",
+  "series": "seen construction / new slots",
+  "text": "2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일라고 들었는데 맞을까요?",
+  "need": "F14",
+  "claim": true,
+  "literal": "2026년7월27일"
+ },
+ {
+  "id": "C4-1-0",
+  "series": "seen construction / new slots",
+  "text": "2026년제1기부가가치세확정신고의 신고기한은 2026년7월25일라고 들었는데 맞을까요?",
+  "need": "F14",
+  "claim": false,
+  "literal": "2026년7월25일"
+ },
+ {
+  "id": "C4-2-1",
+  "series": "seen construction / new slots",
+  "text": "2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일라는 말이 사실인가요?",
+  "need": "F14",
+  "claim": true,
+  "literal": "2026년7월27일"
+ },
+ {
+  "id": "C4-2-0",
+  "series": "seen construction / new slots",
+  "text": "2026년제1기부가가치세확정신고의 신고기한은 2026년7월25일라는 말이 사실인가요?",
+  "need": "F14",
+  "claim": false,
+  "literal": "2026년7월25일"
+ },
+ {
+  "id": "C4-3-1",
+  "series": "unseen construction",
+  "text": "2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일이라는 얘기가 있던데 정확한가요?",
+  "need": "F14",
+  "claim": true,
+  "literal": "2026년7월27일"
+ },
+ {
+  "id": "C4-3-0",
+  "series": "unseen construction",
+  "text": "2026년제1기부가가치세확정신고의 신고기한은 2026년7월25일이라는 얘기가 있던데 정확한가요?",
+  "need": "F14",
+  "claim": false,
+  "literal": "2026년7월25일"
+ },
+ {
+  "id": "Q53",
+  "series": "original natural check",
+  "text": "국세상담센터는 126으로 전화하면 되는 거 맞죠?",
+  "need": "F10",
+  "claim": true,
+  "literal": "126"
+ },
+ {
+  "id": "O-Q53",
+  "series": "manually supplied subject and property",
+  "text": "국세상담센터의 상담전화는 126이 맞나요?",
+  "need": "F10",
+  "claim": true,
+  "literal": "126"
+ },
+ {
+  "id": "Q54",
+  "series": "original natural check",
+  "text": "일반과세자는 부가세를 8%로 계산하는 게 맞나요?",
+  "need": "F01",
+  "claim": false,
+  "literal": "8%"
+ },
+ {
+  "id": "O-Q54",
+  "series": "manually supplied subject and property",
+  "text": "일반과세자의 세율은 8%이 맞나요?",
+  "need": "F01",
+  "claim": false,
+  "literal": "8%"
+ },
+ {
+  "id": "Q55",
+  "series": "original natural check",
+  "text": "제 수첩에는 성실신고확인서제출자는 다음해6월30일까지라고 적혀 있습니다. 옮겨 쓴 날짜가 맞습니까?",
+  "need": "F13",
+  "claim": true,
+  "literal": "다음해6월30일"
+ },
+ {
+  "id": "O-Q55",
+  "series": "manually supplied subject and property",
+  "text": "성실신고확인서제출자의 신고기한은 다음해6월30일이 맞나요?",
+  "need": "F13",
+  "claim": true,
+  "literal": "다음해6월30일"
+ },
+ {
+  "id": "Q56",
+  "series": "original natural check",
+  "text": "2026년제1기부가가치세확정신고 마감에 2026년7월25일이라고 도장을 찍어 놨는데, 이 날짜가 옳은가요?",
+  "need": "F14",
+  "claim": false,
+  "literal": "2026년7월25일"
+ },
+ {
+  "id": "O-Q56",
+  "series": "manually supplied subject and property",
+  "text": "2026년제1기부가가치세확정신고의 신고기한은 2026년7월25일이 맞나요?",
+  "need": "F14",
+  "claim": false,
+  "literal": "2026년7월25일"
+ },
+ {
+  "id": "N1",
+  "series": "unsupported control",
+  "text": "면세사업자의 세율은 89%라고 들었는데 맞을까요?",
+  "need": null,
+  "claim": null,
+  "literal": null
+ },
+ {
+  "id": "N2",
+  "series": "unsupported control",
+  "text": "국세상담센터의 야간 상담전화는 126이라는 말이 사실인가요?",
+  "need": null,
+  "claim": null,
+  "literal": null
+ },
+ {
+  "id": "N3",
+  "series": "unsupported control",
+  "text": "일반과세자의 폐업 후 세율은 10%라고 들었는데 맞을까요?",
+  "need": null,
+  "claim": null,
+  "literal": null
+ },
+ {
+  "id": "N4",
+  "series": "unsupported control",
+  "text": "외국인의 사업자등록 신청기한은 개업일부터20일이내라는 말이 사실인가요?",
+  "need": null,
+  "claim": null,
+  "literal": null
+ }
+]

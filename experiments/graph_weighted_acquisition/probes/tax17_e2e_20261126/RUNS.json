@@ -1,0 +1,38 @@
+[
+  {
+    "configuration": "general",
+    "command": [
+      "python",
+      "experiments/graph_weighted_acquisition/probes/blind_e2e.py",
+      "experiments/graph_weighted_acquisition/probes/tax17_e2e_20261126",
+      "experiments/graph_weighted_acquisition/packs/basic_words_ko.tsv",
+      "experiments/graph_weighted_acquisition/packs/word_ends_ko.tsv"
+    ],
+    "cwd": ".",
+    "started_at_utc": "2026-11-26T06:30:05.143418+00:00",
+    "status": "finished",
+    "attempt": 1,
+    "returncode": 0,
+    "finished_at_utc": "2026-11-26T06:30:07.003551+00:00",
+    "stdout_sha256": "4adb8e4c2d8b28fd1d1278e9d9982870fc99f9f6d0c7de36c9326d6789485ea9",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "configuration": "with_field_words",
+    "command": [
+      "python",
+      "experiments/graph_weighted_acquisition/probes/blind_e2e.py",
+      "experiments/graph_weighted_acquisition/probes/tax17_e2e_20261126",
+      "experiments/graph_weighted_acquisition/packs/tax_words_merged_ko.tsv",
+      "experiments/graph_weighted_acquisition/packs/tax_ends_merged_ko.tsv"
+    ],
+    "cwd": ".",
+    "started_at_utc": "2026-11-26T06:30:07.017437+00:00",
+    "status": "finished",
+    "attempt": 1,
+    "returncode": 0,
+    "finished_at_utc": "2026-11-26T06:30:08.843129+00:00",
+    "stdout_sha256": "e815b01f04bfda9cd1ef4b71e9cedeb16da5c23ca1e43b995bdd74ad8327ae3a",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

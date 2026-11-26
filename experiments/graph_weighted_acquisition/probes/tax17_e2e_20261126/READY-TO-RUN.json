@@ -1,0 +1,16 @@
+{
+  "ready_at_utc": "2026-11-26T06:29:29.192933+00:00",
+  "C_sha256": "7d53c55be5943cbd2df73419182a87db84cd079a60875578959a3ffbfbce7d26",
+  "frozen_manifest_sha256": "79881cc047ccebe0e4d07865e0390b7e6bec6696c0b666262b5347fc75472fd3",
+  "kind_counts": {
+    "direct": 6,
+    "short": 6,
+    "natural": 40,
+    "check": 4,
+    "no_answer": 24
+  },
+  "other_C_keys_unchanged": true,
+  "semantic_gold_changes": 0,
+  "teacher_and_examiner": "separate new sessions, no tools, no access to each other or code; only owner-supplied briefs",
+  "notes": "First teacher failure retained; second teacher authorised by owner. Only Q52 wording constraint corrected by examiner before execution."
+}

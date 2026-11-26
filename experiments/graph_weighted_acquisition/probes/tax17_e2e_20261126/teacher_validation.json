@@ -1,0 +1,509 @@
+{
+  "teacher_first_word_rows": 99,
+  "teacher_first_discarded": 99,
+  "first_failure": "all kind cells contain prose instead of literal 뜻; owner requested a fresh teacher with the format clarified",
+  "teacher_second_word_rows": 100,
+  "accepted_words": [
+    "세금",
+    "매출",
+    "가게",
+    "장사",
+    "서비스",
+    "수입",
+    "지출",
+    "이익",
+    "손해",
+    "비용",
+    "영수증",
+    "계산서",
+    "서류",
+    "종이",
+    "주소",
+    "번호",
+    "인터넷",
+    "화면",
+    "사무실",
+    "통장",
+    "카드",
+    "현금",
+    "날짜",
+    "달력",
+    "주말",
+    "평일",
+    "휴일",
+    "내일",
+    "어제",
+    "마감",
+    "횟수",
+    "절반",
+    "전부",
+    "준비",
+    "질문",
+    "대답",
+    "연락",
+    "벌다",
+    "더하다",
+    "세다",
+    "답하다",
+    "가져가다",
+    "가져오다",
+    "닫다"
+  ],
+  "accepted_count": 44,
+  "discarded_count": 56,
+  "discarded": [
+    {
+      "line": 4,
+      "word": "돈",
+      "text": "돈\t뜻\t물건+값+기준; 줌+얻음+도구",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 8,
+      "word": "사업",
+      "text": "사업\t뜻\t목적+계속+관리+일",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 9,
+      "word": "회사",
+      "text": "회사\t뜻\t사람+무리+돈+얻음+일+관리",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 10,
+      "word": "사장",
+      "text": "사장\t뜻\t사업+관리+사람",
+      "reasons": [
+        "unlisted concepts: 사업"
+      ]
+    },
+    {
+      "line": 11,
+      "word": "손님",
+      "text": "손님\t뜻\t돈+줌+물건+얻음+사람; 곳+옴+남",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 12,
+      "word": "물건",
+      "text": "물건\t뜻\t물건",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 14,
+      "word": "가격",
+      "text": "가격\t뜻\t물건+돈+값; 일+돈+값",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 15,
+      "word": "값",
+      "text": "값\t뜻\t값",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 25,
+      "word": "이름",
+      "text": "이름\t뜻\t이름",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 28,
+      "word": "전화",
+      "text": "전화\t뜻\t거리+소리+말+이음+도구",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 31,
+      "word": "창구",
+      "text": "창구\t뜻\t물음+답+서류+줌+얻음+곳",
+      "reasons": [
+        "unlisted concepts: 서류"
+      ]
+    },
+    {
+      "line": 33,
+      "word": "세무서",
+      "text": "세무서\t뜻\t나라+세금+관리+곳",
+      "reasons": [
+        "unlisted concepts: 세금"
+      ]
+    },
+    {
+      "line": 34,
+      "word": "은행",
+      "text": "은행\t뜻\t돈+가짐+지킴+줌+얻음+관리+곳",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 36,
+      "word": "계좌",
+      "text": "계좌\t뜻\t돈+가짐+관리+이름+번호+관계",
+      "reasons": [
+        "unlisted concepts: 번호"
+      ]
+    },
+    {
+      "line": 41,
+      "word": "하루",
+      "text": "하루\t뜻\t때+하나+반복",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 42,
+      "word": "해",
+      "text": "해\t뜻\t연",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 43,
+      "word": "달",
+      "text": "달\t뜻\t월",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 44,
+      "word": "아침",
+      "text": "아침\t뜻\t잠+이후+일+시작+때",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 45,
+      "word": "저녁",
+      "text": "저녁\t뜻\t일+끝+잠+이전+때",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 49,
+      "word": "오늘",
+      "text": "오늘\t뜻\t현재+때",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 52,
+      "word": "다음",
+      "text": "다음\t뜻\t순서+이후+가까움",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 53,
+      "word": "처음",
+      "text": "처음\t뜻\t시작+때; 순서+앞",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 54,
+      "word": "마지막",
+      "text": "마지막\t뜻\t순서+끝; 때+끝",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 57,
+      "word": "퍼센트",
+      "text": "퍼센트\t뜻\t전체+부분+수+비교+정도",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 60,
+      "word": "일부",
+      "text": "일부\t뜻\t전체+부분",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 64,
+      "word": "설명",
+      "text": "설명\t뜻\t내용+앎+목적+말; 내용+앎+목적+글",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 65,
+      "word": "도움",
+      "text": "도움\t뜻\t남+일+쉬움+힘+줌",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 67,
+      "word": "방문",
+      "text": "방문\t뜻\t사람+곳+감+만남",
+      "reasons": [
+        "unlisted concepts: 만남"
+      ]
+    },
+    {
+      "line": 68,
+      "word": "내다",
+      "text": "내다\t뜻\t돈+줌; 서류+줌; 안+밖+움직임",
+      "reasons": [
+        "already taught",
+        "unlisted concepts: 서류"
+      ]
+    },
+    {
+      "line": 69,
+      "word": "받다",
+      "text": "받다\t뜻\t남+줌+자신+얻음",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 71,
+      "word": "팔다",
+      "text": "팔다\t뜻\t물건+줌+돈+얻음",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 72,
+      "word": "사다",
+      "text": "사다\t뜻\t돈+줌+물건+얻음",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 73,
+      "word": "쓰다",
+      "text": "쓰다\t뜻\t씀; 글+만듦; 돈+줌",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 74,
+      "word": "주다",
+      "text": "주다\t뜻\t줌",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 75,
+      "word": "빼다",
+      "text": "빼다\t뜻\t전체+부분+나눔+밖+움직임; 수+적음+변화",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 77,
+      "word": "나누다",
+      "text": "나누다\t뜻\t나눔",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 79,
+      "word": "묻다",
+      "text": "묻다\t뜻\t물음; 물건+안+감춤",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 81,
+      "word": "알다",
+      "text": "알다\t뜻\t앎",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 82,
+      "word": "모르다",
+      "text": "모르다\t뜻\t앎+없음",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 83,
+      "word": "찾다",
+      "text": "찾다\t뜻\t찾음",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 84,
+      "word": "적다",
+      "text": "적다\t뜻\t글+만듦; 적음",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 85,
+      "word": "보내다",
+      "text": "보내다\t뜻\t자신+남+방향+움직임",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 88,
+      "word": "시작하다",
+      "text": "시작하다\t뜻\t시작+행동",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 89,
+      "word": "끝나다",
+      "text": "끝나다\t뜻\t일+끝",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 90,
+      "word": "기다리다",
+      "text": "기다리다\t뜻\t이후+일+바람+현재+계속",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 91,
+      "word": "늦다",
+      "text": "늦다\t뜻\t기준+때+이후; 빠름+부정",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 92,
+      "word": "빠르다",
+      "text": "빠르다\t뜻\t빠름; 기준+때+이전",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 93,
+      "word": "많다",
+      "text": "많다\t뜻\t많음",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 94,
+      "word": "필요하다",
+      "text": "필요하다\t뜻\t필요",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 95,
+      "word": "다르다",
+      "text": "다르다\t뜻\t다름",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 96,
+      "word": "같다",
+      "text": "같다\t뜻\t같음",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 97,
+      "word": "가능하다",
+      "text": "가능하다\t뜻\t가능",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 98,
+      "word": "어렵다",
+      "text": "어렵다\t뜻\t어려움",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 99,
+      "word": "쉽다",
+      "text": "쉽다\t뜻\t쉬움",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 100,
+      "word": "바꾸다",
+      "text": "바꾸다\t뜻\t변화+행동; 가짐+남+가짐+나눔",
+      "reasons": [
+        "already taught"
+      ]
+    },
+    {
+      "line": 101,
+      "word": "열다",
+      "text": "열다\t뜻\t안+밖+이음+가능+변화; 일+시작",
+      "reasons": [
+        "already taught"
+      ]
+    }
+  ],
+  "accepted_stem_count": 7,
+  "malformed_stems": [],
+  "loaded_words": 986,
+  "semantic_corrections": 0
+}

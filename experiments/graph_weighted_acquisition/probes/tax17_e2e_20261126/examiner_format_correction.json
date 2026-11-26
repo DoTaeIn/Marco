@@ -1,0 +1,21 @@
+{
+  "reason": "Q52 natural contained a listed property alias; examiner replaced only that wording before any system run",
+  "original": {
+    "id": "Q52",
+    "kind": "natural",
+    "text": "2025년귀속종합소득세일반신고, 마감일에 빨간 별표를 달겠습니다. 정확히 어느 날짜인가요?",
+    "expect": "2026년6월1일",
+    "needs": [
+      "F12"
+    ]
+  },
+  "corrected": {
+    "id": "Q52",
+    "kind": "natural",
+    "text": "2025년귀속종합소득세일반신고는 언제까지 내면 되나요? 그 날짜에 빨간 별표를 달아 두려고요.",
+    "expect": "2026년6월1일",
+    "needs": [
+      "F12"
+    ]
+  }
+}

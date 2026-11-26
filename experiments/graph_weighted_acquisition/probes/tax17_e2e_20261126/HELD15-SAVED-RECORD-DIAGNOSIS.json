@@ -1,0 +1,184 @@
+{
+  "method": "Saved first-pass outputs and static source/lesson inspection only. No imports of the system, no inference, no replay. Truncated reasons and omitted anchor-exit traces limit causal attribution.",
+  "teacher_counts": {
+    "teacher_first_word_rows": 99,
+    "teacher_first_discarded": 99,
+    "teacher_second_word_rows": 100,
+    "accepted_count": 44,
+    "discarded_count": 56,
+    "accepted_stem_count": 7,
+    "loaded_words": 986
+  },
+  "held_kind_counts": {
+    "direct": 1,
+    "natural": 10,
+    "check": 4
+  },
+  "rows": [
+    {
+      "id": "Q06",
+      "verdict": "held",
+      "kind": "direct",
+      "question": "수첩 맨 앞장에 써 두려는데, 국세상담센터 상담전화는 몇 번입니까?",
+      "expected": "126",
+      "got": "-- the question was not read with confidence: every reading uses something never seen in training",
+      "confirmed_from_saved_output": "해석 후보마다 미학습 조건이 남음",
+      "static_inspection_only_not_causal_trace": "수첩·앞장은 합친 수업에도 없음. 앞장에 같은 조사 붙은 미수록 명사가 되짚기를 막았을 가능성.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q13",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "일반과세자는 부가가치세를 몇 퍼센트로 계산해요?",
+      "expected": "10%",
+      "got": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+      "confirmed_from_saved_output": "알려진 조각으로 질문 분해 실패",
+      "static_inspection_only_not_causal_trace": "부가가치세·계산하다는 합친 수업에 없음. 부가가치세를 같은 명사구가 조사를 앞에 두고 중단시켰을 가능성.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q24",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "2025년귀속종합소득세일반신고를 달력 맨 끝 경고 칸에 적으려 합니다. 마지막으로 가능한 날짜가 언제입니까?",
+      "expected": "2026년6월1일",
+      "got": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"2025년귀속종합소득세일반신고를 달력 맨 끝 경고 칸에 적으려 합니다.\" (the text cannot be cu",
+      "confirmed_from_saved_output": "두 문장 모두 해석 미완료",
+      "static_inspection_only_not_causal_trace": "달력·날짜는 추가됐지만 경고·칸은 없음. 칸에가 중단 단서일 가능성.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q25",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "성실신고확인서제출자는 달력 어느 날짜에 마감이라고 적어 두면 되겠습니까?",
+      "expected": "다음해6월30일",
+      "got": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+      "confirmed_from_saved_output": "알려진 조각으로 질문 분해 실패",
+      "static_inspection_only_not_causal_trace": "달력·날짜·마감은 모두 배웠음. 마감은 신고기한과 신청기한의 별칭에 모두 글자가 겹쳐 두 속성의 사슬로 처리될 가능성. 실제 중단 분기는 미기록.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q27",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "일반과세자 부가세는 몇 퍼센트예요?",
+      "expected": "10%",
+      "got": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+      "confirmed_from_saved_output": "알려진 조각으로 질문 분해 실패",
+      "static_inspection_only_not_causal_trace": "부가세는 합친 수업에도 없음. 부가세는에서 되짚기가 중단됐을 가능성.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q32",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "일반과세자제2기확정신고는 언제 열리고 언제 마감해요?",
+      "expected": "다음해1월1일~1월25일",
+      "got": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+      "confirmed_from_saved_output": "알려진 조각으로 질문 분해 실패",
+      "static_inspection_only_not_causal_trace": "열리다·마감은 배웠음. 마감해요가 두 기한 속성에 걸려 사슬 처리되는 가능성. 실제 중단 분기는 미기록.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q35",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "사업자등록 신청서를 인터넷으로 보내려는데 길 안내가 필요합니다. 사이트 이름 하나만 일러 주세요.",
+      "expected": "홈택스",
+      "got": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"사업자등록 신청서를 인터넷으로 보내려는데 길 안내가 필요합니다.\" (the text cannot be cut in",
+      "confirmed_from_saved_output": "두 문장 모두 해석 미완료",
+      "static_inspection_only_not_causal_trace": "인터넷은 추가됐지만 신청서·안내·사이트는 수업에 없음. 특히 안내가 같은 조사 붙은 미수록 명사가 중단 단서일 가능성. 수업 미수록만으로 실패 원인이라고 단정하지 않음.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q36",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "전화기에 국세상담센터를 저장하려 합니다. 이름 옆에 어떤 번호를 써야 하지요?",
+      "expected": "126",
+      "got": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"전화기에 국세상담센터를 저장하려 합니다.\" (the text cannot be cut into known piec",
+      "confirmed_from_saved_output": "두 문장 모두 해석 미완료",
+      "static_inspection_only_not_causal_trace": "번호는 추가됐지만 전화기·저장하다는 수업에 없음. 첫 전화기에에서 되짚기가 중단됐을 가능성.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q38",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "2025년분종합소득세일반신고를 아직 달력에 못 적었습니다. 최종 마감 날짜 한 칸을 골라 주십시오.",
+      "expected": "2026년6월1일",
+      "got": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"2025년분종합소득세일반신고를 아직 달력에 못 적었습니다.\" (the text cannot be cut into ",
+      "confirmed_from_saved_output": "두 문장 모두 해석 미완료",
+      "static_inspection_only_not_causal_trace": "달력·마감·날짜는 추가됐지만 최종·칸은 없음. 칸을이 중단 단서일 가능성.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q39",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "성실신고확인서제출자는 어느 날까지 제출을 마쳐야 지각이 아닙니까?",
+      "expected": "다음해6월30일",
+      "got": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+      "confirmed_from_saved_output": "알려진 조각으로 질문 분해 실패",
+      "static_inspection_only_not_causal_trace": "제출·지각은 수업에 없음. 아닙니까의 부정 어간이 되짚기 제외 조건에 걸리는 가능성도 있음.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q41",
+      "verdict": "held",
+      "kind": "natural",
+      "question": "일반과세자는 부가세 계산할 때 몇 퍼센트를 적용하나요?",
+      "expected": "10%",
+      "got": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+      "confirmed_from_saved_output": "알려진 조각으로 질문 분해 실패",
+      "static_inspection_only_not_causal_trace": "부가세·계산하다·적용하다는 수업에 없음. 어휘와 말끝/구조 중 어느 중단인지 기록으로 분리 불가.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q53",
+      "verdict": "held",
+      "kind": "check",
+      "question": "국세상담센터는 126으로 전화하면 되는 거 맞죠?",
+      "expected": "yes: 126",
+      "got": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+      "confirmed_from_saved_output": "알려진 조각으로 확인 질문 분해 실패",
+      "static_inspection_only_not_causal_trace": "값 126과 맞죠를 관계에 연결하는 구조가 미완료. 확인/부정 어간이 있으면 일반 되짚기를 하지 않는 규칙이 있음.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q54",
+      "verdict": "held",
+      "kind": "check",
+      "question": "일반과세자는 부가세를 8%로 계산하는 게 맞나요?",
+      "expected": "no: 10%",
+      "got": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+      "confirmed_from_saved_output": "알려진 조각으로 확인 질문 분해 실패",
+      "static_inspection_only_not_causal_trace": "부가세·계산하다는 수업에 없고 맞나요가 있음. 확인 질문의 값/속성 연결 실패와 되짚기 제외 가능성.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q55",
+      "verdict": "held",
+      "kind": "check",
+      "question": "제 수첩에는 성실신고확인서제출자는 다음해6월30일까지라고 적혀 있습니다. 옮겨 쓴 날짜가 맞습니까?",
+      "expected": "yes: 다음해6월30일",
+      "got": "-- the question was not read with confidence: 2 of 2 sentences could not be read; first: \"제 수첩에는 성실신고확인서제출자는 다음해6월30일까지라고 적혀 있습니다.\" (the text cannot be c",
+      "confirmed_from_saved_output": "두 문장 모두 해석 미완료",
+      "static_inspection_only_not_causal_trace": "적혀 있습니다/옮겨 쓴 날짜가 맞습니까의 두 문장 연결이 미완료. 맞습니까가 일반 되짚기를 제외할 가능성.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    },
+    {
+      "id": "Q56",
+      "verdict": "held",
+      "kind": "check",
+      "question": "2026년제1기부가가치세확정신고 마감에 2026년7월25일이라고 도장을 찍어 놨는데, 이 날짜가 옳은가요?",
+      "expected": "no: 2026년7월27일",
+      "got": "-- the question was not read with confidence: the text cannot be cut into known pieces",
+      "confirmed_from_saved_output": "알려진 조각으로 확인 질문 분해 실패",
+      "static_inspection_only_not_causal_trace": "날짜 뒤 설명과 옳은가요를 값 확인에 연결하는 구조가 미완료. 수업에 옳다는 없음. 실제 최초 중단 조건은 미기록.",
+      "exact_anchor_exit": "not recorded; no re-execution performed"
+    }
+  ]
+}

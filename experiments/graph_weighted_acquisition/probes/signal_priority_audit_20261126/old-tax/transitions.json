@@ -1,0 +1,5162 @@
+[
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q01",
+    "question": "일반과세자의 세율은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q02",
+    "question": "일반과세자의 과세기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q03",
+    "question": "개인일반사업자의 신고횟수는 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q04",
+    "question": "법인사업자의 신고횟수는 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q05",
+    "question": "일반과세자제1기확정신고의 신고기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q06",
+    "question": "일반과세자제2기확정신고의 신고기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q07",
+    "question": "간이과세자의 신고기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q08",
+    "question": "사업자등록의 신청기한은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q09",
+    "question": "사업자등록의 신청경로는 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q10",
+    "question": "국세상담센터의 상담전화는 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q11",
+    "question": "종합소득세일반신고의 신고기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q12",
+    "question": "2025년귀속종합소득세일반신고의 신고기한은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q13",
+    "question": "성실신고확인서제출자의 신고기한은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q14",
+    "question": "2026년제1기부가가치세확정신고의 신고기한은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q15",
+    "question": "면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q16",
+    "question": "사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q17",
+    "question": "사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q18",
+    "question": "국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q19",
+    "question": "2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q20",
+    "question": "2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q21",
+    "question": "일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q22",
+    "question": "저는 올해 종합소득세 신고 대상인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q23",
+    "question": "상속세의 신고기한은 언제인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "Q24",
+    "question": "일반과세자의 부가가치세 일반세율은 0%가 맞나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "C01",
+    "question": "일반과세자의 세율은 얼마인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "C02",
+    "question": "법인사업자의 신고횟수은 몇회인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "C03",
+    "question": "사업자등록의 신청경로은 어디인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "text",
+    "id": "C04",
+    "question": "국세상담센터의 상담전화은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q01",
+    "question": "일반과세자의 세율은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q02",
+    "question": "일반과세자의 과세기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q03",
+    "question": "개인일반사업자의 신고횟수는 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q04",
+    "question": "법인사업자의 신고횟수는 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q05",
+    "question": "일반과세자제1기확정신고의 신고기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q06",
+    "question": "일반과세자제2기확정신고의 신고기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q07",
+    "question": "간이과세자의 신고기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q08",
+    "question": "사업자등록의 신청기한은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q09",
+    "question": "사업자등록의 신청경로는 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q10",
+    "question": "국세상담센터의 상담전화는 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q11",
+    "question": "종합소득세일반신고의 신고기간은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q12",
+    "question": "2025년귀속종합소득세일반신고의 신고기한은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q13",
+    "question": "성실신고확인서제출자의 신고기한은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q14",
+    "question": "2026년제1기부가가치세확정신고의 신고기한은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q15",
+    "question": "면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q16",
+    "question": "사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q17",
+    "question": "사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q18",
+    "question": "국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q19",
+    "question": "2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q20",
+    "question": "2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q21",
+    "question": "일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q22",
+    "question": "저는 올해 종합소득세 신고 대상인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q23",
+    "question": "상속세의 신고기한은 언제인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q24",
+    "question": "일반과세자의 부가가치세 일반세율은 0%가 맞나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "C01",
+    "question": "일반과세자의 세율은 얼마인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "C02",
+    "question": "법인사업자의 신고횟수은 몇회인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "C03",
+    "question": "사업자등록의 신청경로은 어디인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "current_language",
+    "route": "supplied_graph_diagnostic",
+    "id": "C04",
+    "question": "국세상담센터의 상담전화은 무엇인가?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q01",
+    "question": "일반과세자의 세율은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q02",
+    "question": "일반과세자의 과세기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "final_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q03",
+    "question": "개인일반사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q04",
+    "question": "법인사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q05",
+    "question": "일반과세자제1기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q06",
+    "question": "일반과세자제2기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q07",
+    "question": "간이과세자의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q08",
+    "question": "사업자등록의 신청기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "final_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q09",
+    "question": "사업자등록의 신청경로는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q10",
+    "question": "국세상담센터의 상담전화는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q11",
+    "question": "종합소득세일반신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q12",
+    "question": "2025년귀속종합소득세일반신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q13",
+    "question": "성실신고확인서제출자의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q14",
+    "question": "2026년제1기부가가치세확정신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q15",
+    "question": "면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q16",
+    "question": "사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q17",
+    "question": "사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q18",
+    "question": "국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q19",
+    "question": "2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q20",
+    "question": "2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q21",
+    "question": "일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q22",
+    "question": "저는 올해 종합소득세 신고 대상인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q23",
+    "question": "상속세의 신고기한은 언제인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "Q24",
+    "question": "일반과세자의 부가가치세 일반세율은 0%가 맞나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "C01",
+    "question": "일반과세자의 세율은 얼마인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "C02",
+    "question": "법인사업자의 신고횟수은 몇회인가?",
+    "before": "partial_right",
+    "final": "partial_right",
+    "before_status": "assumed",
+    "final_status": "assumed",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "C03",
+    "question": "사업자등록의 신청경로은 어디인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "text",
+    "id": "C04",
+    "question": "국세상담센터의 상담전화은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q01",
+    "question": "일반과세자의 세율은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q02",
+    "question": "일반과세자의 과세기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "final_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q03",
+    "question": "개인일반사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q04",
+    "question": "법인사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q05",
+    "question": "일반과세자제1기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q06",
+    "question": "일반과세자제2기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q07",
+    "question": "간이과세자의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q08",
+    "question": "사업자등록의 신청기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "final_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q09",
+    "question": "사업자등록의 신청경로는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q10",
+    "question": "국세상담센터의 상담전화는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q11",
+    "question": "종합소득세일반신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q12",
+    "question": "2025년귀속종합소득세일반신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q13",
+    "question": "성실신고확인서제출자의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q14",
+    "question": "2026년제1기부가가치세확정신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q15",
+    "question": "면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q16",
+    "question": "사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q17",
+    "question": "사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q18",
+    "question": "국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q19",
+    "question": "2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q20",
+    "question": "2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q21",
+    "question": "일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q22",
+    "question": "저는 올해 종합소득세 신고 대상인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q23",
+    "question": "상속세의 신고기한은 언제인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q24",
+    "question": "일반과세자의 부가가치세 일반세율은 0%가 맞나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "C01",
+    "question": "일반과세자의 세율은 얼마인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "C02",
+    "question": "법인사업자의 신고횟수은 몇회인가?",
+    "before": "partial_right",
+    "final": "partial_right",
+    "before_status": "assumed",
+    "final_status": "assumed",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "C03",
+    "question": "사업자등록의 신청경로은 어디인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "original_field_words",
+    "route": "supplied_graph_diagnostic",
+    "id": "C04",
+    "question": "국세상담센터의 상담전화은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q01",
+    "question": "일반과세자의 세율은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q02",
+    "question": "일반과세자의 과세기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "final_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q03",
+    "question": "개인일반사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q04",
+    "question": "법인사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q05",
+    "question": "일반과세자제1기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q06",
+    "question": "일반과세자제2기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q07",
+    "question": "간이과세자의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q08",
+    "question": "사업자등록의 신청기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "final_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q09",
+    "question": "사업자등록의 신청경로는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q10",
+    "question": "국세상담센터의 상담전화는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q11",
+    "question": "종합소득세일반신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q12",
+    "question": "2025년귀속종합소득세일반신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q13",
+    "question": "성실신고확인서제출자의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q14",
+    "question": "2026년제1기부가가치세확정신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q15",
+    "question": "면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?",
+    "before": "proposal_right",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": {
+      "understood": {
+        "thing": "일반과세자",
+        "property": "세율",
+        "with": {}
+      },
+      "recognised": [
+        "부가가치세율",
+        "세율",
+        "일반과세자"
+      ],
+      "unread": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "의",
+        "은",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "chosen_by": "the property word",
+      "not_accounted_for": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "wording": "면세나 영세율에 해당하지 않는 X의 부가가치세율은 몇 퍼센트인가요?",
+      "if_confirmed": "10%",
+      "evidence": [
+        {
+          "span": [
+            0,
+            5
+          ],
+          "text": "일반과세자"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            11,
+            14
+          ],
+          "text": "10%"
+        }
+      ],
+      "ask": "Did you ask for the 세율 of 일반과세자? (these pieces are not accounted for: \"면세나\", \"영에\", \"해당하지\", \"않는\", \"몇\", \"퍼센트인가요\")"
+    },
+    "final_proposal": {
+      "understood": {
+        "thing": "일반과세자",
+        "property": "세율",
+        "with": {}
+      },
+      "recognised": [
+        "부가가치세율",
+        "세율",
+        "일반과세자"
+      ],
+      "unread": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "의",
+        "은",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "chosen_by": "the property word",
+      "not_accounted_for": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "wording": "면세나 영세율에 해당하지 않는 X의 부가가치세율은 몇 퍼센트인가요?",
+      "if_confirmed": "10%",
+      "evidence": [
+        {
+          "span": [
+            0,
+            5
+          ],
+          "text": "일반과세자"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            11,
+            14
+          ],
+          "text": "10%"
+        }
+      ],
+      "ask": "Did you ask for the 세율 of 일반과세자? (these pieces are not accounted for: \"면세나\", \"영에\", \"해당하지\", \"않는\", \"몇\", \"퍼센트인가요\")"
+    }
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q16",
+    "question": "사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?",
+    "before": "held",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": {
+      "understood": {
+        "thing": "사업자등록",
+        "property": "신청기한",
+        "with": {}
+      },
+      "recognised": [
+        "사업자등록",
+        "언제"
+      ],
+      "unread": [
+        "사업을",
+        "시작하고",
+        "은",
+        "까지",
+        "신청해야",
+        "하나요"
+      ],
+      "chosen_by": "words of the ways of asking the field listed for the property",
+      "not_accounted_for": [
+        "사업을",
+        "시작하고"
+      ],
+      "wording": "사업을 시작하고 X은 언제까지 신청해야 하나요?",
+      "placed": {
+        "신청해야": {
+          "how": "asked",
+          "as": "",
+          "number": 500
+        },
+        "하나요": {
+          "how": "asked",
+          "as": "",
+          "number": 272
+        }
+      },
+      "if_confirmed": "사업개시일부터20일이내",
+      "evidence": [
+        {
+          "span": [
+            181,
+            186
+          ],
+          "text": "사업자등록"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            194,
+            206
+          ],
+          "text": "사업개시일부터20일이내"
+        }
+      ],
+      "ask": "Did you ask for the 신청기한 of 사업자등록? (these pieces are not accounted for: \"사업을\", \"시작하고\")"
+    }
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q17",
+    "question": "사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+    "before": "held",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": {
+      "understood": {
+        "thing": "사업자등록",
+        "property": "신청경로",
+        "with": {}
+      },
+      "recognised": [
+        "사업자등록",
+        "어디"
+      ],
+      "unread": [
+        "을",
+        "온라인으로",
+        "신청하려면",
+        "를",
+        "이용하면",
+        "되나요"
+      ],
+      "chosen_by": "words of the ways of asking the field listed for the property",
+      "not_accounted_for": [
+        "온라인으로",
+        "이용하면"
+      ],
+      "wording": "X을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+      "placed": {
+        "신청하려면": {
+          "how": "asked",
+          "as": "",
+          "number": 1000
+        },
+        "되나요": {
+          "how": "asked",
+          "as": "",
+          "number": 333
+        }
+      },
+      "if_confirmed": "홈택스",
+      "evidence": [
+        {
+          "span": [
+            210,
+            215
+          ],
+          "text": "사업자등록"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            223,
+            226
+          ],
+          "text": "홈택스"
+        }
+      ],
+      "ask": "Did you ask for the 신청경로 of 사업자등록? (these pieces are not accounted for: \"온라인으로\", \"이용하면\")"
+    }
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q18",
+    "question": "국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q19",
+    "question": "2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q20",
+    "question": "2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q21",
+    "question": "일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q22",
+    "question": "저는 올해 종합소득세 신고 대상인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q23",
+    "question": "상속세의 신고기한은 언제인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "Q24",
+    "question": "일반과세자의 부가가치세 일반세율은 0%가 맞나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "C01",
+    "question": "일반과세자의 세율은 얼마인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "C02",
+    "question": "법인사업자의 신고횟수은 몇회인가?",
+    "before": "partial_right",
+    "final": "partial_right",
+    "before_status": "assumed",
+    "final_status": "assumed",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "C03",
+    "question": "사업자등록의 신청경로은 어디인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "text",
+    "id": "C04",
+    "question": "국세상담센터의 상담전화은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q01",
+    "question": "일반과세자의 세율은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q02",
+    "question": "일반과세자의 과세기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "final_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q03",
+    "question": "개인일반사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q04",
+    "question": "법인사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q05",
+    "question": "일반과세자제1기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q06",
+    "question": "일반과세자제2기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q07",
+    "question": "간이과세자의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q08",
+    "question": "사업자등록의 신청기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "final_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q09",
+    "question": "사업자등록의 신청경로는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q10",
+    "question": "국세상담센터의 상담전화는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q11",
+    "question": "종합소득세일반신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q12",
+    "question": "2025년귀속종합소득세일반신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q13",
+    "question": "성실신고확인서제출자의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q14",
+    "question": "2026년제1기부가가치세확정신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q15",
+    "question": "면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?",
+    "before": "proposal_right",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": {
+      "understood": {
+        "thing": "일반과세자",
+        "property": "세율",
+        "with": {}
+      },
+      "recognised": [
+        "부가가치세율",
+        "세율",
+        "일반과세자"
+      ],
+      "unread": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "의",
+        "은",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "chosen_by": "the property word",
+      "not_accounted_for": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "wording": "면세나 영세율에 해당하지 않는 X의 부가가치세율은 몇 퍼센트인가요?",
+      "if_confirmed": "10%",
+      "evidence": [
+        {
+          "span": [
+            0,
+            5
+          ],
+          "text": "일반과세자"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            11,
+            14
+          ],
+          "text": "10%"
+        }
+      ],
+      "ask": "Did you ask for the 세율 of 일반과세자? (these pieces are not accounted for: \"면세나\", \"영에\", \"해당하지\", \"않는\", \"몇\", \"퍼센트인가요\")"
+    },
+    "final_proposal": {
+      "understood": {
+        "thing": "일반과세자",
+        "property": "세율",
+        "with": {}
+      },
+      "recognised": [
+        "부가가치세율",
+        "세율",
+        "일반과세자"
+      ],
+      "unread": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "의",
+        "은",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "chosen_by": "the property word",
+      "not_accounted_for": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "wording": "면세나 영세율에 해당하지 않는 X의 부가가치세율은 몇 퍼센트인가요?",
+      "if_confirmed": "10%",
+      "evidence": [
+        {
+          "span": [
+            0,
+            5
+          ],
+          "text": "일반과세자"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            11,
+            14
+          ],
+          "text": "10%"
+        }
+      ],
+      "ask": "Did you ask for the 세율 of 일반과세자? (these pieces are not accounted for: \"면세나\", \"영에\", \"해당하지\", \"않는\", \"몇\", \"퍼센트인가요\")"
+    }
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q16",
+    "question": "사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?",
+    "before": "held",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": {
+      "understood": {
+        "thing": "사업자등록",
+        "property": "신청기한",
+        "with": {}
+      },
+      "recognised": [
+        "사업자등록",
+        "언제"
+      ],
+      "unread": [
+        "사업을",
+        "시작하고",
+        "은",
+        "까지",
+        "신청해야",
+        "하나요"
+      ],
+      "chosen_by": "words of the ways of asking the field listed for the property",
+      "not_accounted_for": [
+        "사업을",
+        "시작하고"
+      ],
+      "wording": "사업을 시작하고 X은 언제까지 신청해야 하나요?",
+      "placed": {
+        "신청해야": {
+          "how": "asked",
+          "as": "",
+          "number": 500
+        },
+        "하나요": {
+          "how": "asked",
+          "as": "",
+          "number": 272
+        }
+      },
+      "if_confirmed": "사업개시일부터20일이내",
+      "evidence": [
+        {
+          "span": [
+            181,
+            186
+          ],
+          "text": "사업자등록"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            194,
+            206
+          ],
+          "text": "사업개시일부터20일이내"
+        }
+      ],
+      "ask": "Did you ask for the 신청기한 of 사업자등록? (these pieces are not accounted for: \"사업을\", \"시작하고\")"
+    }
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q17",
+    "question": "사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+    "before": "held",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": {
+      "understood": {
+        "thing": "사업자등록",
+        "property": "신청경로",
+        "with": {}
+      },
+      "recognised": [
+        "사업자등록",
+        "어디"
+      ],
+      "unread": [
+        "을",
+        "온라인으로",
+        "신청하려면",
+        "를",
+        "이용하면",
+        "되나요"
+      ],
+      "chosen_by": "words of the ways of asking the field listed for the property",
+      "not_accounted_for": [
+        "온라인으로",
+        "이용하면"
+      ],
+      "wording": "X을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+      "placed": {
+        "신청하려면": {
+          "how": "asked",
+          "as": "",
+          "number": 1000
+        },
+        "되나요": {
+          "how": "asked",
+          "as": "",
+          "number": 333
+        }
+      },
+      "if_confirmed": "홈택스",
+      "evidence": [
+        {
+          "span": [
+            210,
+            215
+          ],
+          "text": "사업자등록"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            223,
+            226
+          ],
+          "text": "홈택스"
+        }
+      ],
+      "ask": "Did you ask for the 신청경로 of 사업자등록? (these pieces are not accounted for: \"온라인으로\", \"이용하면\")"
+    }
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q18",
+    "question": "국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q19",
+    "question": "2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q20",
+    "question": "2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q21",
+    "question": "일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q22",
+    "question": "저는 올해 종합소득세 신고 대상인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q23",
+    "question": "상속세의 신고기한은 언제인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q24",
+    "question": "일반과세자의 부가가치세 일반세율은 0%가 맞나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "C01",
+    "question": "일반과세자의 세율은 얼마인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "C02",
+    "question": "법인사업자의 신고횟수은 몇회인가?",
+    "before": "partial_right",
+    "final": "partial_right",
+    "before_status": "assumed",
+    "final_status": "assumed",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "C03",
+    "question": "사업자등록의 신청경로은 어디인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "general",
+    "route": "supplied_graph_diagnostic",
+    "id": "C04",
+    "question": "국세상담센터의 상담전화은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q01",
+    "question": "일반과세자의 세율은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q02",
+    "question": "일반과세자의 과세기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "final_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q03",
+    "question": "개인일반사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q04",
+    "question": "법인사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q05",
+    "question": "일반과세자제1기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q06",
+    "question": "일반과세자제2기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q07",
+    "question": "간이과세자의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q08",
+    "question": "사업자등록의 신청기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "final_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q09",
+    "question": "사업자등록의 신청경로는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q10",
+    "question": "국세상담센터의 상담전화는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q11",
+    "question": "종합소득세일반신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q12",
+    "question": "2025년귀속종합소득세일반신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q13",
+    "question": "성실신고확인서제출자의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q14",
+    "question": "2026년제1기부가가치세확정신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q15",
+    "question": "면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?",
+    "before": "proposal_right",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": {
+      "understood": {
+        "thing": "일반과세자",
+        "property": "세율",
+        "with": {}
+      },
+      "recognised": [
+        "부가가치세율",
+        "세율",
+        "일반과세자"
+      ],
+      "unread": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "의",
+        "은",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "chosen_by": "the property word",
+      "not_accounted_for": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "wording": "면세나 영세율에 해당하지 않는 X의 부가가치세율은 몇 퍼센트인가요?",
+      "if_confirmed": "10%",
+      "evidence": [
+        {
+          "span": [
+            0,
+            5
+          ],
+          "text": "일반과세자"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            11,
+            14
+          ],
+          "text": "10%"
+        }
+      ],
+      "ask": "Did you ask for the 세율 of 일반과세자? (these pieces are not accounted for: \"면세나\", \"영에\", \"해당하지\", \"않는\", \"몇\", \"퍼센트인가요\")"
+    },
+    "final_proposal": {
+      "understood": {
+        "thing": "일반과세자",
+        "property": "세율",
+        "with": {}
+      },
+      "recognised": [
+        "부가가치세율",
+        "세율",
+        "일반과세자"
+      ],
+      "unread": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "의",
+        "은",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "chosen_by": "the property word",
+      "not_accounted_for": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "wording": "면세나 영세율에 해당하지 않는 X의 부가가치세율은 몇 퍼센트인가요?",
+      "if_confirmed": "10%",
+      "evidence": [
+        {
+          "span": [
+            0,
+            5
+          ],
+          "text": "일반과세자"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            11,
+            14
+          ],
+          "text": "10%"
+        }
+      ],
+      "ask": "Did you ask for the 세율 of 일반과세자? (these pieces are not accounted for: \"면세나\", \"영에\", \"해당하지\", \"않는\", \"몇\", \"퍼센트인가요\")"
+    }
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q16",
+    "question": "사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?",
+    "before": "held",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": {
+      "understood": {
+        "thing": "사업자등록",
+        "property": "신청기한",
+        "with": {}
+      },
+      "recognised": [
+        "사업자등록",
+        "언제"
+      ],
+      "unread": [
+        "사업을",
+        "시작하고",
+        "은",
+        "까지",
+        "신청해야",
+        "하나요"
+      ],
+      "chosen_by": "words of the ways of asking the field listed for the property",
+      "not_accounted_for": [
+        "사업을",
+        "시작하고"
+      ],
+      "wording": "사업을 시작하고 X은 언제까지 신청해야 하나요?",
+      "placed": {
+        "신청해야": {
+          "how": "asked",
+          "as": "",
+          "number": 500
+        },
+        "하나요": {
+          "how": "asked",
+          "as": "",
+          "number": 272
+        }
+      },
+      "if_confirmed": "사업개시일부터20일이내",
+      "evidence": [
+        {
+          "span": [
+            181,
+            186
+          ],
+          "text": "사업자등록"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            194,
+            206
+          ],
+          "text": "사업개시일부터20일이내"
+        }
+      ],
+      "ask": "Did you ask for the 신청기한 of 사업자등록? (these pieces are not accounted for: \"사업을\", \"시작하고\")"
+    }
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q17",
+    "question": "사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+    "before": "held",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": {
+      "understood": {
+        "thing": "사업자등록",
+        "property": "신청경로",
+        "with": {}
+      },
+      "recognised": [
+        "사업자등록",
+        "어디"
+      ],
+      "unread": [
+        "을",
+        "온라인으로",
+        "신청하려면",
+        "를",
+        "이용하면",
+        "되나요"
+      ],
+      "chosen_by": "words of the ways of asking the field listed for the property",
+      "not_accounted_for": [
+        "온라인으로",
+        "이용하면"
+      ],
+      "wording": "X을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+      "placed": {
+        "신청하려면": {
+          "how": "asked",
+          "as": "",
+          "number": 1000
+        },
+        "되나요": {
+          "how": "asked",
+          "as": "",
+          "number": 333
+        }
+      },
+      "if_confirmed": "홈택스",
+      "evidence": [
+        {
+          "span": [
+            210,
+            215
+          ],
+          "text": "사업자등록"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            223,
+            226
+          ],
+          "text": "홈택스"
+        }
+      ],
+      "ask": "Did you ask for the 신청경로 of 사업자등록? (these pieces are not accounted for: \"온라인으로\", \"이용하면\")"
+    }
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q18",
+    "question": "국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q19",
+    "question": "2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q20",
+    "question": "2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q21",
+    "question": "일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q22",
+    "question": "저는 올해 종합소득세 신고 대상인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q23",
+    "question": "상속세의 신고기한은 언제인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "Q24",
+    "question": "일반과세자의 부가가치세 일반세율은 0%가 맞나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "C01",
+    "question": "일반과세자의 세율은 얼마인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "C02",
+    "question": "법인사업자의 신고횟수은 몇회인가?",
+    "before": "partial_right",
+    "final": "partial_right",
+    "before_status": "assumed",
+    "final_status": "assumed",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "C03",
+    "question": "사업자등록의 신청경로은 어디인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "text",
+    "id": "C04",
+    "question": "국세상담센터의 상담전화은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q01",
+    "question": "일반과세자의 세율은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q02",
+    "question": "일반과세자의 과세기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "final_answers": [
+      [
+        "6개월"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q03",
+    "question": "개인일반사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연2회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q04",
+    "question": "법인사업자의 신고횟수는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q05",
+    "question": "일반과세자제1기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "7월1일~7월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q06",
+    "question": "일반과세자제2기확정신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q07",
+    "question": "간이과세자의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해1월1일~1월25일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q08",
+    "question": "사업자등록의 신청기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "final_answers": [
+      [
+        "사업개시일부터20일이내"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q09",
+    "question": "사업자등록의 신청경로는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q10",
+    "question": "국세상담센터의 상담전화는 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q11",
+    "question": "종합소득세일반신고의 신고기간은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해5월1일~5월31일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q12",
+    "question": "2025년귀속종합소득세일반신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년6월1일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q13",
+    "question": "성실신고확인서제출자의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "다음해6월30일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q14",
+    "question": "2026년제1기부가가치세확정신고의 신고기한은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "final_answers": [
+      [
+        "2026년7월27일"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q15",
+    "question": "면세나 영세율에 해당하지 않는 일반과세자의 부가가치세율은 몇 퍼센트인가요?",
+    "before": "proposal_right",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": {
+      "understood": {
+        "thing": "일반과세자",
+        "property": "세율",
+        "with": {}
+      },
+      "recognised": [
+        "부가가치세율",
+        "세율",
+        "일반과세자"
+      ],
+      "unread": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "의",
+        "은",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "chosen_by": "the property word",
+      "not_accounted_for": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "wording": "면세나 영세율에 해당하지 않는 X의 부가가치세율은 몇 퍼센트인가요?",
+      "if_confirmed": "10%",
+      "evidence": [
+        {
+          "span": [
+            0,
+            5
+          ],
+          "text": "일반과세자"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            11,
+            14
+          ],
+          "text": "10%"
+        }
+      ],
+      "ask": "Did you ask for the 세율 of 일반과세자? (these pieces are not accounted for: \"면세나\", \"영에\", \"해당하지\", \"않는\", \"몇\", \"퍼센트인가요\")"
+    },
+    "final_proposal": {
+      "understood": {
+        "thing": "일반과세자",
+        "property": "세율",
+        "with": {}
+      },
+      "recognised": [
+        "부가가치세율",
+        "세율",
+        "일반과세자"
+      ],
+      "unread": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "의",
+        "은",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "chosen_by": "the property word",
+      "not_accounted_for": [
+        "면세나",
+        "영에",
+        "해당하지",
+        "않는",
+        "몇",
+        "퍼센트인가요"
+      ],
+      "wording": "면세나 영세율에 해당하지 않는 X의 부가가치세율은 몇 퍼센트인가요?",
+      "if_confirmed": "10%",
+      "evidence": [
+        {
+          "span": [
+            0,
+            5
+          ],
+          "text": "일반과세자"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            7,
+            9
+          ],
+          "text": "세율"
+        },
+        {
+          "span": [
+            11,
+            14
+          ],
+          "text": "10%"
+        }
+      ],
+      "ask": "Did you ask for the 세율 of 일반과세자? (these pieces are not accounted for: \"면세나\", \"영에\", \"해당하지\", \"않는\", \"몇\", \"퍼센트인가요\")"
+    }
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q16",
+    "question": "사업을 시작하고 사업자등록은 언제까지 신청해야 하나요?",
+    "before": "held",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": {
+      "understood": {
+        "thing": "사업자등록",
+        "property": "신청기한",
+        "with": {}
+      },
+      "recognised": [
+        "사업자등록",
+        "언제"
+      ],
+      "unread": [
+        "사업을",
+        "시작하고",
+        "은",
+        "까지",
+        "신청해야",
+        "하나요"
+      ],
+      "chosen_by": "words of the ways of asking the field listed for the property",
+      "not_accounted_for": [
+        "사업을",
+        "시작하고"
+      ],
+      "wording": "사업을 시작하고 X은 언제까지 신청해야 하나요?",
+      "placed": {
+        "신청해야": {
+          "how": "asked",
+          "as": "",
+          "number": 500
+        },
+        "하나요": {
+          "how": "asked",
+          "as": "",
+          "number": 272
+        }
+      },
+      "if_confirmed": "사업개시일부터20일이내",
+      "evidence": [
+        {
+          "span": [
+            181,
+            186
+          ],
+          "text": "사업자등록"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            188,
+            192
+          ],
+          "text": "신청기한"
+        },
+        {
+          "span": [
+            194,
+            206
+          ],
+          "text": "사업개시일부터20일이내"
+        }
+      ],
+      "ask": "Did you ask for the 신청기한 of 사업자등록? (these pieces are not accounted for: \"사업을\", \"시작하고\")"
+    }
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q17",
+    "question": "사업자등록을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+    "before": "held",
+    "final": "proposal_right",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": {
+      "understood": {
+        "thing": "사업자등록",
+        "property": "신청경로",
+        "with": {}
+      },
+      "recognised": [
+        "사업자등록",
+        "어디"
+      ],
+      "unread": [
+        "을",
+        "온라인으로",
+        "신청하려면",
+        "를",
+        "이용하면",
+        "되나요"
+      ],
+      "chosen_by": "words of the ways of asking the field listed for the property",
+      "not_accounted_for": [
+        "온라인으로",
+        "이용하면"
+      ],
+      "wording": "X을 온라인으로 신청하려면 어디를 이용하면 되나요?",
+      "placed": {
+        "신청하려면": {
+          "how": "asked",
+          "as": "",
+          "number": 1000
+        },
+        "되나요": {
+          "how": "asked",
+          "as": "",
+          "number": 333
+        }
+      },
+      "if_confirmed": "홈택스",
+      "evidence": [
+        {
+          "span": [
+            210,
+            215
+          ],
+          "text": "사업자등록"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            217,
+            221
+          ],
+          "text": "신청경로"
+        },
+        {
+          "span": [
+            223,
+            226
+          ],
+          "text": "홈택스"
+        }
+      ],
+      "ask": "Did you ask for the 신청경로 of 사업자등록? (these pieces are not accounted for: \"온라인으로\", \"이용하면\")"
+    }
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q18",
+    "question": "국세 관련 상담을 받으려면 국번 없이 몇 번으로 전화하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q19",
+    "question": "2025년에 발생한 소득에 대한 종합소득세 일반 신고는 2026년 언제까지 해야 하나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q20",
+    "question": "2026년 제1기 부가가치세 확정신고의 실제 일반 신고기한은 언제인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q21",
+    "question": "일반과세자가 공급가액 100만원인 과세 거래에 일반세율 10%를 적용하면 부가가치세는 얼마인가요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q22",
+    "question": "저는 올해 종합소득세 신고 대상인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q23",
+    "question": "상속세의 신고기한은 언제인가요?",
+    "before": "held_expected",
+    "final": "held_expected",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "Q24",
+    "question": "일반과세자의 부가가치세 일반세율은 0%가 맞나요?",
+    "before": "held",
+    "final": "held",
+    "before_status": "hold",
+    "final_status": "hold",
+    "before_answers": [],
+    "final_answers": [],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "C01",
+    "question": "일반과세자의 세율은 얼마인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "final_answers": [
+      [
+        "10%"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "C02",
+    "question": "법인사업자의 신고횟수은 몇회인가?",
+    "before": "partial_right",
+    "final": "partial_right",
+    "before_status": "assumed",
+    "final_status": "assumed",
+    "before_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "final_answers": [
+      [
+        "연4회"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "C03",
+    "question": "사업자등록의 신청경로은 어디인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "final_answers": [
+      [
+        "홈택스"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  },
+  {
+    "configuration": "field",
+    "route": "supplied_graph_diagnostic",
+    "id": "C04",
+    "question": "국세상담센터의 상담전화은 무엇인가?",
+    "before": "strict_right",
+    "final": "strict_right",
+    "before_status": "answered",
+    "final_status": "answered",
+    "before_answers": [
+      [
+        "126"
+      ]
+    ],
+    "final_answers": [
+      [
+        "126"
+      ]
+    ],
+    "before_proposal": null,
+    "final_proposal": null
+  }
+]
