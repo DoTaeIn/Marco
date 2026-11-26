@@ -120,10 +120,14 @@ def test_letters_shared_with_a_property_word_or_a_value_lead_to_a_proposal_only(
     assert got['status'] == 'hold' and got['proposal']['understood']['property'] == '출발항'
     assert got['proposal']['chosen_by'] == 'letters an unread word shares with a property word or a value'
     assert got['proposal']['if_confirmed'] == '서쪽항'
-    # Even after a yes that makes every piece accounted for, shared letters alone never give an answer.
+    # After a yes, this very way of asking is answered: it was told. Shared letters alone still never give
+    # an answer: other words with the same pieces accounted for are put to the user again.
     A.confirm(got, memory, by='owner', at='2026-11-24')
     again = PK.ask(f, '모래섬호 어느 곳에서 출발하는지 알려줘', memory)
-    assert again['status'] == 'hold' and again['proposal']['not_accounted_for'] == []
+    assert again['status'] == 'assumed' and again['answers'] == [['서쪽항']]
+    assert again['assumed'][0]['chosen_by'] == 'a way of asking a user confirmed for this property'
+    other = PK.ask(f, '모래섬호 출발하는지 어느 곳에서 알려줘', memory)
+    assert other['status'] == 'hold' and other['proposal']['not_accounted_for'] == []
 
 
 def test_the_last_word_of_a_question_is_its_predicate_whatever_it_ends_in():

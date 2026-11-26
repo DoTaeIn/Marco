@@ -187,14 +187,24 @@ def asked(basic, listed):
     return {'exact': {k: p for k, p in exact.items() if k not in clash}, 'clash': sorted(clash), 'words': counts}
 
 
+def wording(question, names):
+    """A question as a way of asking: the thing it names written as X."""
+    for name in sorted(names, key=len, reverse=True):
+        question = question.replace(name, THING)
+    return question
+
+
+def same_wording(a, b):
+    """Are two ways of asking the same, spaces and marks apart?"""
+    return _plain(a) == _plain(b)
+
+
 def heard(basic, question, table, names):
     """What the listed ways of asking say of a question: the property whose wording it is, word for
     word (or None), and for every property the words of the question that stood in its wordings:
     {property: {word: ("asked", "", number)}}. The number is, of a thousand wordings the word stood
     in, how many were this property's: a word every property is asked with says little."""
-    whole = question
-    for name in sorted(names, key=len, reverse=True):
-        whole = whole.replace(name, THING)
+    whole = wording(question, names)
     out = {}
     for row in words(basic, question):
         best = {}

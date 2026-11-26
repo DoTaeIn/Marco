@@ -1451,3 +1451,66 @@ On a clash nothing is put forward: a hold that says why. The kind never chooses 
 takes one out of several; it only stops the one that was left. This is the same knowledge that
 gave a wrong assumed answer when it was allowed to choose (the fourth set, `ad18b1e`); here it can
 only make the system say less. 140 checks pass. Without lessons nothing changes.
+
+### The two changes measured apart (2026-11-26, thirteenth and fourteenth sets)
+
+`probes/tax13_e2e_20261126/`, `probes/tax14_e2e_20261126/`: the tax knowledge, 70 questions each by
+a fifth and a sixth examiner (30 natural and 24 without an answer in each), written after both
+changes were committed. Each configuration ran once in a clean git worktree of its commit, with
+lessons and the ways of asking; `second_only` is `691ac6d` with the first change taken out.
+140 questions, of them 60 natural and 48 without an answer:
+
+| configuration | natural proposed right (of 60) | proposed right, all | proposed otherwise | held rightly (of 48) | WRONG |
+| --- | --- | --- | --- | --- | --- |
+| no lessons (`none`) | 6 | 15 | 1 | 47 | 0 |
+| neither change (`3756a67`) | 36 | 45 | 10 | 39 | 0 |
+| first only (`966f8d9`) | 47 | 56 | 15 | 34 | 0 |
+| second only | 36 | 45 | 8 | 41 | 0 |
+| both (`691ac6d`) | 47 | 56 | 10 | 39 | 0 |
+
+The first change hears more: 11 more natural questions proposed right, and 5 more questions
+without an answer put to the user. The second takes no right proposal away and gives back 2 of
+those alone, 5 together with the first. Both together: +11 right at no cost in questions without
+an answer. The ten still put to the user are of kinds the second change does not look at: a
+distinction the knowledge does not have (폐업한, 수출만 하는, 2024년귀속), a question word with
+several senses or a bare count (몇 퍼센트, 몇 시), a value without a number (홈택스).
+
+## A user's yes and no are remembered (2026-11-26, built; measured once on a fifteenth set)
+
+Until now everything worked out ended as a question to the user, every time. Now:
+
+- `answer.confirm` also keeps the way of asking (the thing written as X) with its property
+  (`learn.note_wording`), and `answer.decline` keeps a no.
+- The same way of asking, spaces and marks apart, of this thing or another, is then answered
+  (status `assumed`, chosen by "a way of asking a user confirmed for this property"): it was told,
+  not worked out. Not when the question states a value, and not when two properties were confirmed
+  for one wording.
+- A property a user said no to is not put forward for that way of asking again.
+- A confirmed wording is one more listed way of asking (`answer._asked_table`): its words point at
+  its property for other questions, which only ever leads to something put to the user.
+- Without a memory nothing changes. 141 checks pass; one older check expected the same question to
+  be put to the user again after a yes and now expects the answer, and a hold for other words.
+
+The runner plays a no as well as a yes, and with `MARCO_MEMORY_FROM=<folder>` a user first answers
+the proposals made for another set's questions; this set is then asked with what was kept and no
+one answers back.
+
+Fifteenth set, `probes/tax15_e2e_20261126/` (80 questions by a seventh examiner: 40 natural, 24
+without an answer), written after the code was frozen. Earlier use is played from sets seven to
+fourteen (their examiners' answers decide yes and no).
+
+| earlier use | kept yes / no | answered or assumed right | proposed right | proposed otherwise | held | held rightly (of 24) | WRONG |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| none | 0 / 0 | 6 | 38 | 3 | 12 | 21 | 0 |
+| 70 questions | 28 / 5 | 8 | 36 | 3 | 12 | 21 | 0 |
+| 210 questions | 76 / 15 | 11 | 28 | 2 | 17 | 22 | 0 |
+| 330 questions | 125 / 16 | 16 | 24 | 2 | 16 | 22 | 0 |
+| 374 questions | 139 / 16 | 17 | 27 | 2 | 12 | 22 | 0 |
+
+Answers without asking rise from 6 to 17 of 80 new questions: eleven of them are, word for word, a
+way of asking someone used before. Nothing wrong in any run. But what is understood in all
+(answered or proposed right) does not rise: 44, 44, 39, 40, 44. Looked at after the run, not
+changed: the fall comes from an older memory, what a question word asked for in questions that
+were read (`learn.note_ask`). Once it holds anything for a question word, `_anchor` takes that
+path and never asks the taught words or the listed ways. With that memory not kept, the same runs
+give 45 (210 questions) and 46 (374 questions) understood. A change for another checkpoint.

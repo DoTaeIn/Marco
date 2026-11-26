@@ -50,6 +50,26 @@ def _blank(passage_result, question_result):
             'other_names': []}
 
 
+_ASKED = {}                                             # the listed ways of asking with the confirmed ones, per model and memory
+
+
+def _asked_table(model, basic, memory):
+    """The ways of asking the field listed, and with them every wording a user said yes to. A
+    confirmed wording is one more listed way: its words then point at its property for other
+    questions too, which only ever leads to something put to the user."""
+    kept = tuple(sorted((e['property'], e['wording']) for e in (memory or {}).get('wordings', []) if e['yes']))
+    if not kept:
+        return model.get('field_asked')
+    key = (id(model), kept)
+    if key not in _ASKED:
+        listed = {p: list(v) for p, v in model.get('field_asked_listed', {}).items()}
+        for prop, text in kept:
+            listed.setdefault(prop, []).append(text)
+        _ASKED.clear()
+        _ASKED[key] = RL.asked(basic, listed)
+    return _ASKED[key]
+
+
 def _claim_holds(claimed, answers, known):
     """Does the value a question states hold? True, False, or None when that cannot be said.
 
@@ -368,8 +388,15 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     placed = RL.placed(basic, question, model.get('field_explained_words', {}), model.get('places')) if basic and basic.get('shape') else {}
     # Ways of asking the field listed per property (relate.asked): the wording as a whole, and its words.
     exact = None
-    if placed is not None and basic and basic.get('shape') and model.get('field_asked'):
-        exact, listed = RL.heard(basic, question, model['field_asked'], [w for _, w in found['thing']])
+    # What a user answered before, when this very way of asking was put to them (learn.note_wording).
+    way = RL.wording(question, [w for _, w in found['thing']])
+    told = [e for e in (memory or {}).get('wordings', []) if RL.same_wording(e['wording'], way)]
+    yes, no = sorted({e['property'] for e in told if e['yes']}), {e['property'] for e in told if not e['yes']}
+    confirmed = yes[0] if len(yes) == 1 and not stated else None
+    by_user = False
+    table = _asked_table(model, basic, memory) if basic and basic.get('shape') else None
+    if table:
+        exact, listed = RL.heard(basic, question, table, [w for _, w in found['thing']])
         for prop, row in listed.items():
             for word, how in row.items():
                 placed.setdefault(prop, {}).setdefault(word, how)
@@ -387,12 +414,17 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         # its predicate, whatever it ends in ("들어가?"): the language puts the predicate last.
         if n < len(tokens) - 1 and not any(taken[start:start + len(token)]) \
                 and any(bare.endswith(m) and len(bare) > len(m) for m in marks) \
-                and not (basic and B.lookup(basic, bare, marks, endings)) and not hear                 and not any(bare in row for row in placed.values()):   # a taught word, or one that was placed, is not an unknown noun
+                and not (basic and B.lookup(basic, bare, marks, endings)) and not hear and not confirmed \
+                and not any(bare in row for row in placed.values()):   # a taught word, or one that was placed, is not an unknown noun
             return None
         unread.append(left)
     # A name or a property word of the field is known: only a word left whole is placed.
     placed = {p: {w: v for w, v in row.items() if w in unread or w in asks} for p, row in placed.items()}
     weak = False
+    if confirmed and not wanted and not units:
+        # A user said yes when this way of asking was put to them as a question about this property.
+        # The same way of asking, of this thing or another, is now answered: it was told, not worked out.
+        wanted, by_user = [confirmed], True
     if not wanted and not units:
         # No property word and no counter. A word that was not read may still point at a property: it shares
         # letters with a property word ("관리하는", 관리처) or with the value a fact of this thing has
@@ -454,7 +486,8 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         understood_thing = thing
         if wanted:
             fits = [f for f in fits if f['property'] == wanted[0]]
-            how = 'letters an unread word shares with a property word or a value' if weak else 'the property word'
+            how = 'letters an unread word shares with a property word or a value' if weak \
+                else 'a way of asking a user confirmed for this property' if by_user else 'the property word'
         elif units:
             fits = [f for f in fits if _unit(f['value']) in units]
             how = 'the counter "%s %s"' % (counter, '/'.join(sorted(units)))
@@ -487,6 +520,7 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
                 '", "'.join(asks), '' if sure else ' (it asked for %s)' % ', '.join(sorted(history)))
         else:
             return None                                # a question word with nothing known of what it asks for
+    fits = [f for f in fits if f['property'] not in no]    # a user said no to this for this very way of asking
     if not fits:
         return None
     out = _blank(passage_result, q)
@@ -502,7 +536,7 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
             thing, len(fits), '; '.join('%s of %s' % (f['property'], f['thing']) for f in fits))
         return out
     fact = fits[0]
-    if basic and B.kinds_clash(B.asked_kinds(basic, question), B.value_kinds(basic, fact['value'])):
+    if basic and not by_user and B.kinds_clash(B.asked_kinds(basic, question), B.value_kinds(basic, fact['value'])):
         # The one fact left is not of the kind the question word asks for ("몇 번" next to a date): the
         # question is about something the knowledge does not have of this thing. The kind never
         # chooses a fact and never takes one from several; it only stops this one from being put forward.
@@ -512,8 +546,10 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     heard = {w for e in (memory or {}).get('said', []) if e['property'] == fact['property'] for w in e['words']}
     open_pieces = worked[order.index(fact['property'])]['unmet'] if worked         else [x for x in unread if x not in pieces_known and x not in heard]
     understood = {'thing': understood_thing, 'property': fact['property'], 'with': fact['with']}
+    if by_user:
+        open_pieces = []
     item = {'understood': understood, 'recognised': recognised, 'unread': unread, 'chosen_by': how,
-            'not_accounted_for': open_pieces}
+            'not_accounted_for': open_pieces, 'wording': way}
     if worked and worked[order.index(fact['property'])].get('placed'):
         # Said with the proposal: which word was taken for which, and that it is a guess by place or shape.
         item['placed'] = {w: dict({'how': h, 'as': o}, **({'number': n} if n else {})) for w, (h, o, n) in worked[order.index(fact['property'])]['placed'].items()}
@@ -552,10 +588,25 @@ def confirm(result, memory, by, at):
     if not proposal:
         raise ValueError('there is no proposal to confirm')
     L.note_said(memory, proposal['understood']['property'], proposal['not_accounted_for'], by, at)
+    if proposal.get('wording'):
+        L.note_wording(memory, proposal['wording'], proposal['understood']['property'], True, by, at)
     out = dict(result, status='assumed', answers=[[proposal['if_confirmed']]], verified=False, match={'proofs': []},
                claim=proposal.get('claim'),
                evidence=proposal['evidence'], assumed=[dict(proposal, confirmed_by=by)],
                reason='the question was not read; the user confirmed what it asks for')
+    out.pop('proposal')
+    return out
+
+
+def decline(result, memory, by, at):
+    """The user said no to a proposal. Nothing is answered; this way of asking is not put to a user as
+    a question about this property again."""
+    proposal = result.get('proposal')
+    if not proposal:
+        raise ValueError('there is no proposal to decline')
+    if proposal.get('wording'):
+        L.note_wording(memory, proposal['wording'], proposal['understood']['property'], False, by, at)
+    out = dict(result, reason='the question was not read; the user said it does not ask for what was proposed')
     out.pop('proposal')
     return out
 

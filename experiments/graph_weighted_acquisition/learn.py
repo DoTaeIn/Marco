@@ -214,3 +214,13 @@ def propose(model, memory, question, unknown_words, read):
                                   'ask': 'Is "%s" %s, like %s? Or is it a name?'
                                          % (word, what, ', '.join('"%s"' % a for a in alike[:3]))})
     return proposals
+
+
+def note_wording(memory, wording, prop, yes, by, at):
+    """Keep what a user answered when a way of asking (the thing written as X) was put to them as a
+    question about this property: yes or no. Kept as it was said; nothing is made of it here."""
+    kept = memory.setdefault('wordings', [])
+    entry = {'wording': wording, 'property': prop, 'yes': bool(yes), 'by': by, 'at': at}
+    if not any(e['wording'] == wording and e['property'] == prop and e['yes'] == entry['yes'] for e in kept):
+        kept.append(entry)
+    return entry

@@ -127,3 +127,28 @@ def test_letters_shared_with_three_property_words_do_not_stop_the_listed_ways(tm
     got = PK.ask(field(tmp_path, ASKED), question)
     assert not got['answers'] and got['proposal']['understood']['property'] == '기본요금'
     assert got['proposal']['not_accounted_for'] == ['출발출항전화']
+
+
+def test_a_yes_is_remembered_for_that_way_of_asking_and_a_no_too(tmp_path):
+    from experiments.graph_weighted_acquisition import answer as A
+    from experiments.graph_weighted_acquisition import learn as L
+    f, memory = field(tmp_path, ASKED), L.new_memory()
+    first = PK.ask(f, '모래섬호 표값 궁금해요?', memory)
+    assert not first['answers'] and first['proposal']['understood']['property'] == '기본요금'
+    said = A.confirm(first, memory, by='a user', at='today')
+    assert said['answers'] == [['6000원']]
+    # The same way of asking is now answered, with spaces and marks apart, and it says why.
+    again = PK.ask(f, '모래섬호  표값 궁금해요', memory)
+    assert again['status'] == 'assumed' and again['answers'] == [['6000원']]
+    assert again['assumed'][0]['chosen_by'] == 'a way of asking a user confirmed for this property'
+    # Its words now point at the property for other questions, which are still put to the user.
+    near = PK.ask(f, '모래섬호 궁금해요?', memory)
+    assert not near['answers'] and near['proposal']['understood']['property'] == '기본요금'
+    # Without the memory nothing was learned.
+    assert not PK.ask(f, '모래섬호 표값 궁금해요?')['answers']
+    # A no: that property is not put forward for that way of asking again.
+    wrong = PK.ask(f, '모래섬호 타려면 떠나요?', memory)
+    assert wrong['proposal']['understood']['property'] == '출발항'
+    A.decline(wrong, memory, by='a user', at='today')
+    after = PK.ask(f, '모래섬호 타려면 떠나요?', memory)
+    assert not after['answers'] and (after.get('proposal') or {}).get('understood', {}).get('property') != '출발항'

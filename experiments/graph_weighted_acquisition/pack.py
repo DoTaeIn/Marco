@@ -112,6 +112,7 @@ def with_words(language, words, basic=None):
         listed = {p['means']: p['asked'] for p in words['properties'] if p.get('asked')}
         if listed and basic.get('shape'):               # ways of asking the field lists per property (relate.asked)
             model['field_asked'] = RL.asked(basic, listed)
+            model['field_asked_listed'] = listed
         for prop in words['properties']:
             if prop.get('explained'):
                 reached, unknown = B.concepts_of(basic, prop['explained'], marks, endings)

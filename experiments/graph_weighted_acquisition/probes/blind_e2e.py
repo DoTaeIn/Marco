@@ -176,15 +176,16 @@ def main():
     read = R.read(passage, model) if passage else None
     if not read or read['status'] != 'complete':
         print('THE TAKEN SENTENCES COULD NOT BE READ TOGETHER: %s' % (read or {}).get('reason'))
-    def ask_all(title, feedback, verbose):
+    def ask_all(title, feedback, verbose, items=None, start=None):
         """One pass over the questions. With `feedback` a user answers each proposal: yes when it is what
         was asked (the wording is then kept, see answer.confirm), no otherwise. That user is played with
         the examiner's answers, so this pass is not blind to them; it shows what use would teach."""
         print('\n# ' + title)
-        memory_q = L.new_memory()
-        memory_q['kinds'] = [dict(k) for k in memory.get('kinds', [])]
+        memory_q = start if start is not None else L.new_memory()
+        if start is None:
+            memory_q['kinds'] = [dict(k) for k in memory.get('kinds', [])]
         tally, order = {}, {}
-        for item in data['questions']:
+        for item in (items if items is not None else data['questions']):
             try:
                 result = A.answer_graph(read['graphs'][0], passage, item['text'], model, read, memory_q, aliases=aliases) \
                     if read and read['status'] == 'complete' else A.answer(passage, item['text'], model, memory_q)
@@ -201,6 +202,8 @@ def main():
                             A.confirm(result, memory_q, 'the user', 'this run')
                         v = 'right after a yes'
                     else:
+                        if hasattr(A, 'decline'):
+                            A.decline(result, memory_q, 'the user', 'this run')
                         v = 'declined by the user'
             except Exception as error:
                 v, text = 'ERROR', repr(error)
@@ -220,9 +223,23 @@ def main():
         print('   %-12s %s of %d' % ('all', ', '.join('%s %d' % kv for kv in sorted(total.items())), sum(total.values())))
         if order:
             print('   candidates in order (counted among the held): %s' % ', '.join('%s %d' % kv for kv in sorted(order.items())))
+        return memory_q
 
     ask_all('2. Questions and answers, as asked (no one answers the system back)', False, True)
     ask_all('3. The same questions in the same order, a user answering each proposal with yes or no', True, False)
+    # MARCO_MEMORY_FROM names another set on the same knowledge. A user first answers the proposals made
+    # for that set's questions (played with its examiner's answers); what was kept is then all this
+    # set's questions are asked with, and no one answers back. This shows what earlier use is worth
+    # for questions never asked before.
+    other = os.environ.get('MARCO_MEMORY_FROM')
+    if other:
+        earlier = json.loads((Path(other) / 'C.json').read_text(encoding='utf8'))['questions']
+        kept = ask_all('4a. Before: a user answers each proposal made for the questions of %s' % Path(other).name,
+                       True, False, items=earlier)
+        print('   kept: %d ways of asking with a yes, %d with a no' % (
+            sum(1 for e in kept.get('wordings', []) if e['yes']), sum(1 for e in kept.get('wordings', []) if not e['yes'])))
+        ask_all('4b. This set, as asked, with what was kept from %s (no one answers back)' % Path(other).name,
+                False, True, start=kept)
 
 
 if __name__ == '__main__':
