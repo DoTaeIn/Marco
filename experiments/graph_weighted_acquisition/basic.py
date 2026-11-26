@@ -161,3 +161,47 @@ def ranked(basic, pieces, explanations, marks=(), endings=(), placed=None):
     # explanation's comes first (the number relate.placed gives; 0 without ordinary text).
     likeness = lambda row: sum(v[2] for v in row['placed'].values())
     return sorted(out, key=lambda row: (-len(row['met']), -likeness(row), row['property']))
+
+
+COUNT = '수'                                             # the concept the lessons give every counting word
+
+
+def asked_kinds(basic, question):
+    """What kind of value the question words of a question ask for: a list of concept sets.
+
+    Only a question word the lessons give one sense is used ("언제" asks for a time, "어디" for a
+    place); one with several ("무엇", "얼마") asks for anything and says nothing here. A bare count
+    ("몇") takes the kind of the counting word after it ("몇 번": a count of times).
+    """
+    asking = sorted((w for w, e in basic['words'].items() if e['kind'] == 'asks' and len(e['senses']) == 1), key=len, reverse=True)
+    tokens = [t.strip('?.!,') for t in question.split()]
+    out = []
+    for n, token in enumerate(tokens):
+        word = next((w for w in asking if token.startswith(w)), None)
+        if not word:
+            continue
+        sense = set(basic['words'][word]['senses'][0])
+        if sense == {COUNT}:
+            rest = token[len(word):] or (tokens[n + 1] if n + 1 < len(tokens) else '')
+            units = [set(x) for e in lookup(basic, rest) if e['kind'] == 'means' for x in e['senses'] if COUNT in x]
+            out += units or [sense]
+        else:
+            out.append(sense)
+    return out
+
+
+def value_kinds(basic, value):
+    """What kind of value a written value is, by its form: the senses of the counting word after its
+    last number ("연2회": a count of times; "7월25일": a count of days, a time). Nothing for a value
+    without a number or with an ending no lesson has: such a value is not judged."""
+    last = max((i for i, ch in enumerate(value) if ch.isdigit()), default=-1)
+    unit = value[last + 1:] if last >= 0 else ''
+    return [set(x) for e in lookup(basic, unit) if e['kind'] == 'means' for x in e['senses'] if COUNT in x] if unit else []
+
+
+def kinds_clash(asked, value):
+    """Is the value plainly not of a kind the question asks for? Only when both say more than
+    "a count" and no sense of one shares a concept with a sense of the other."""
+    if not asked or not value:
+        return False
+    return not any(not (q - {COUNT}) or (q - {COUNT}) & (v - {COUNT}) for q in asked for v in value)

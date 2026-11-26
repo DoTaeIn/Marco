@@ -147,3 +147,18 @@ def test_a_stated_value_is_denied_only_when_it_is_plainly_another_value():
     # The value with words after it, or other words altogether, is not judged: saying no is an answer too.
     assert holds('10%라던데', '10%') is None and holds('10%가 아니라던데', '10%') is None
     assert holds('십프로', '10%') is None and holds('연2회라고 들었는데', '연4회') is None
+
+
+def test_a_question_word_and_a_value_of_another_kind_clash_and_nothing_else_does():
+    basic = B.load(HERE / 'packs' / 'basic_words_ko.tsv', HERE / 'packs' / 'word_ends_ko.tsv')
+    clash = lambda question, value: B.kinds_clash(B.asked_kinds(basic, question), B.value_kinds(basic, value))
+    # A count of times is asked for and the value is a day; a place is asked for and the value is a day.
+    assert clash('일 년에 몇 번 해야 해요?', '다음해1월1일~1월25일') and clash('어디서 내면 됩니까?', '다음해6월30일')
+    assert clash('언제 하면 돼요?', '연2회')
+    # The same kind does not clash.
+    assert not clash('일 년에 몇 번 해야 해요?', '연2회') and not clash('언제까지 하면 돼요?', '2026년6월1일')
+    assert not clash('며칠부터 며칠까지예요?', '7월1일~7월25일')
+    # A bare count asks for any number. A question word with several senses says nothing.
+    assert not clash('몇 프로예요?', '6개월') and not clash('뭐예요?', '2026년6월1일') and not clash('얼마 내요?', '하루2000원')
+    # A value without a number, or with an ending no lesson has, is not judged.
+    assert not clash('언제 해요?', '홈택스') and not clash('어디예요?', '126') and not clash('몇 번이에요?', '사업개시일부터20일이내')

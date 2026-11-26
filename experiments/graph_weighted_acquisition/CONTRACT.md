@@ -1431,3 +1431,23 @@ The change described after the eighth set is in again, alone, so that it can be 
 where an unread word shares letters with three property words or more and the model has taught
 words, the look-up no longer stops; the taught words and the listed ways of asking decide. Measured
 once before on the twelfth set (then new to it): proposed right 24 → 29, held rightly 12 → 10.
+
+### A question word and a value of another kind (2026-11-26, a checkpoint of its own; not measured)
+
+Hearing more had a cost: questions about something the knowledge does not have of a thing were put
+to the user as the one property it does have ("일 년에 몇 번 신고해요" of a thing with only a
+filing period). Now, with taught words in the model, the one fact about to be put forward or
+assumed is checked against the question word:
+
+- `basic.asked_kinds`: what the question words ask for. Only a question word the lessons give one
+  sense is used (언제: a time; 어디: a place); one with several (무엇, 얼마) says nothing. A bare
+  count (몇) takes the kind of the counting word after it (몇 번: a count of times).
+- `basic.value_kinds`: what a written value is, by its form: the senses of the counting word after
+  its last number (연2회, 7월25일). A value without a number, or with an ending no lesson has, is
+  not judged.
+- `basic.kinds_clash`: only when both say more than "a count" and share no concept.
+
+On a clash nothing is put forward: a hold that says why. The kind never chooses a fact and never
+takes one out of several; it only stops the one that was left. This is the same knowledge that
+gave a wrong assumed answer when it was allowed to choose (the fourth set, `ad18b1e`); here it can
+only make the system say less. 140 checks pass. Without lessons nothing changes.

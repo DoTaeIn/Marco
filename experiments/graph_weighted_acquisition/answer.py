@@ -502,6 +502,13 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
             thing, len(fits), '; '.join('%s of %s' % (f['property'], f['thing']) for f in fits))
         return out
     fact = fits[0]
+    if basic and B.kinds_clash(B.asked_kinds(basic, question), B.value_kinds(basic, fact['value'])):
+        # The one fact left is not of the kind the question word asks for ("몇 번" next to a date): the
+        # question is about something the knowledge does not have of this thing. The kind never
+        # chooses a fact and never takes one from several; it only stops this one from being put forward.
+        out['reason'] = ('the question was not read; the one fact that fits what was recognised (%s of %s) is not of the kind '
+                         'its question word asks for' % (fact['property'], understood_thing))
+        return out
     heard = {w for e in (memory or {}).get('said', []) if e['property'] == fact['property'] for w in e['words']}
     open_pieces = worked[order.index(fact['property'])]['unmet'] if worked         else [x for x in unread if x not in pieces_known and x not in heard]
     understood = {'thing': understood_thing, 'property': fact['property'], 'with': fact['with']}
