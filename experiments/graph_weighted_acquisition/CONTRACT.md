@@ -1521,3 +1521,22 @@ give 45 (210 questions) and 46 (374 questions) understood. A change for another 
 anything for a question word of the question, and then never asked the taught words or the listed
 ways of asking. Now those are asked first (`not (wanted or units)`); the history is used where they
 find nothing. 142 checks pass. Not measured before it was committed.
+
+Measured on a sixteenth set, `probes/tax16_e2e_20261126/` (80 questions by an eighth examiner, 40
+natural, 24 without an answer; written after both commits). `bfc7030` (before) and `91822fb`
+(after), each in a clean git worktree, with lessons and listed ways; earlier use is played from
+sets twelve to fourteen (210 questions) or seven to fifteen without the two check sets (454).
+
+| earlier use | commit | answered or assumed right | proposed right | understood in all | proposed otherwise | held | held rightly (of 24) | WRONG |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| none | before | 5 | 38 | 43 | 3 | 13 | 21 | 0 |
+| none | after | 5 | 40 | 45 | 3 | 11 | 21 | 0 |
+| 210 questions | before | 9 | 29 | 38 | 4 | 18 | 20 | 0 |
+| 210 questions | after | 8 | 37 | 45 | 4 | 11 | 20 | 0 |
+| 454 questions | before | 15 | 26 | 41 | 4 | 15 | 20 | 0 |
+| 454 questions | after | 16 | 29 | 45 | 4 | 11 | 20 | 0 |
+
+Before the change what was understood fell as use grew (43, 38, 41); after it, it stays (45, 45,
+45) and the share answered without asking grows (5, 8, 16 of 80). Use turns proposals into
+answers; it has not yet made a question understood that was not understood before. The eleven
+questions still held do not move with use.
