@@ -1380,3 +1380,47 @@ run once each:
   the reader before the rule.
 So on new questions the rule has not yet been seen to change a verdict; what it is known to do is
 remove the one wrong answer found. 92 new check questions, 0 wrong either way.
+
+## Every checkpoint on the tax knowledge (2026-11-26), and a correction
+
+**Correction first.** Several "before" runs of 2026-11-25 and 26 were made from a copy of
+`experiments/graph_weighted_acquisition` outside the repository with the repository appended to
+the path. `experiments` is a package there, so Python took the working tree's code and the copy
+was never used: those runs compared the new code with itself. Wrong, and withdrawn:
+- "the eleventh set is the same before and after the claim rule". In a clean copy of `a975516`
+  the eleventh set gives **8 wrong answers** (every one a true value written freely and denied:
+  "여섯 달이 맞죠?" → 아니다) and the new code none.
+- "the change after the eighth set did nothing on the ninth". Measured properly on the twelfth
+  set, which did not exist when it was made: proposed right 24 → 29, and two more questions without
+  an answer are put to the user (held rightly 12 → 10). It stays taken out until the owner decides.
+- The seventh set's `counted` output and the sixth-set baseline comparison of 2026-11-25. Redone
+  for the seventh set: `0d21618` and `a975516` do give the same lines there.
+From now on another checkpoint is run only in a git worktree of that commit, and the run asserts
+where the code was imported from.
+
+**The table.** Six sets on the tax knowledge (seventh to twelfth, 326 questions: 104 natural, 54
+without an answer, 70 checks), each checkpoint with what it could use at the time. The twelfth set
+(70 questions, a fourth examiner) was written after the last commit. Earlier sets were seen before
+`c12ae76`, and the claim rule was made after the ninth.
+
+| checkpoint | what it adds | right | assumed right | proposed right | proposed otherwise | held | held rightly (of 54) | WRONG |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `ded9098` | structured look-up, reader rules | 38 | 0 | 0 | 0 | 225 | 54 | 9 |
+| `728dd70` | word kinds, open roles, chains | 38 | 0 | 0 | 0 | 225 | 54 | 9 |
+| `05955b1` | unread questions put to the knowledge | 38 | 25 | 31 | 3 | 166 | 54 | 9 |
+| `2c3944f` | question read with the knowledge | 38 | 29 | 38 | 6 | 154 | 52 | 9 |
+| `ad18b1e` (set aside) | basic concepts | 38 | 29 | 40 | 6 | 152 | 52 | 9 |
+| `7be51fb`, `8f58739` (set aside) | text counts; dictionary bridge (their data is gone) | 38 | 29 | 38 | 6 | 154 | 52 | 9 |
+| `53c1e5b` + lessons | taught basic words | 38 | 29 | 45 | 6 | 147 | 52 | 9 |
+| `0d21618` + lessons, places | worked out by degree, sentence relations | 38 | 29 | 68 | 9 | 124 | 49 | 9 |
+| `a975516` + lessons, places | places weighed | 38 | 29 | 67 | 9 | 125 | 49 | 9 |
+| `c12ae76`, no lessons | claim rule alone | 27 | 29 | 38 | 6 | 174 | 52 | 0 |
+| `c12ae76` + lessons | | 27 | 29 | 67 | 9 | 145 | 49 | 0 |
+| `c12ae76` + lessons, ways of asking | ways of asking | 27 | 29 | 82 | 12 | 129 | 47 | 0 |
+| `c12ae76` + lessons, vector trial | a vector model on the hearing side (crash fixed, not committed) | 27 | 29 | 83 | 19 | 124 | 44 | 0 |
+
+All nine wrong answers of the older checkpoints are true stated values denied (eight in the
+eleventh set, one in the ninth). The claim rule removes them and turns eleven right denials into
+holds. Natural questions proposed, assumed or answered right, of 104: 0, 0, 9, 16, 18, 16, 23,
+45, 44, 16, 44, 58, 59 in the order of the rows. The vector trial crashed on 46 questions at
+`c12ae76` (a row without the key the new code reads); fixed in the working tree and rerun.

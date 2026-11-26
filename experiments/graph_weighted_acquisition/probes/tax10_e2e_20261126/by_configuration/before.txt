@@ -12,7 +12,7 @@
   0635849c898f97f6  data/word_kinds_ko.json
   30b3e17c16ce7551  packs/make_language.py
   0953e41efd3c7416  probes/reading_limits.py
-  3482383805da7ab5  probes/blind_e2e.py
+  88b1fc81af7640c3  probes/blind_e2e.py
   720874cc8cb7443e  C.json (the items)
 
 Field "Korean national tax basics (the knowledge of packs/tax_facts.json; explanations by the seventh set's examiner, questions by a second examiner by an examiner who saw no code)": 8 property words, 12 names, 14 sentences of knowledge, 46 questions. Language pack: 640 lessons.

@@ -1,15 +1,15 @@
 # Frozen before the items existed
   9b90e9fad0adb061  reader.py
-  b0208999be1f32fb  match.py
-  9a40d9b5f1027db4  answer.py
+  4b31f9b07d48adc2  match.py
+  f1114e92b47f9d31  answer.py
   acc269e6f52913a7  write.py
-  cc6f01bd2e065e03  pack.py
-  f844167bb0d32dfa  learn.py
+  65ba7e03c86de376  pack.py
+  949d2db9fc08e702  learn.py
   4a55e173d59c903e  merge.py
   1bb2e804b8837063  weights.py
-  b949bd2afe37c83e  data/reading_recipe.json
+  224e234ae133d55f  data/reading_recipe.json
   617c48ae9784de0a  data/connector_variants_ko.json
-  b024b3597b19769b  data/word_kinds_ko.json
+  0635849c898f97f6  data/word_kinds_ko.json
   30b3e17c16ce7551  packs/make_language.py
   0953e41efd3c7416  probes/reading_limits.py
   88b1fc81af7640c3  probes/blind_e2e.py
@@ -255,20 +255,20 @@ right Q43 [check]
   expected: yes: 126
   got:      맞다: 126   (as a sentence: 국세상담센터의 상담전화는 126이다.)
 
-right Q44 [check]
+held Q44 [check]
   Q: 법인사업자 신고횟수가 연2회라고 들었는데 맞습니까?
   expected: no: 연4회
-  got:      아니다: 연4회   (as a sentence: 법인사업자 신고횟수가 연4회이다.)
+  got:      -- the question states "연2회라고 들었는데", which was not read as one value: it is neither confirmed nor denied
 
-WRONG Q45 [check]
+right Q45 [check]
   Q: 사업자등록 신청기한이 사업개시일부터 20일 이내 맞나요?
   expected: yes: 사업개시일부터20일이내
-  got:      아니다: 사업개시일부터20일이내   (as a sentence: 사업자등록의 신청기한은 사업개시일부터20일이내이다.)
+  got:      맞다: 사업개시일부터20일이내   (as a sentence: 사업자등록의 신청기한은 사업개시일부터20일이내이다.)
 
-right Q46 [check]
+held Q46 [check]
   Q: 일반과세자 세율이 15%라던데 맞아요?
   expected: no: 10%
-  got:      아니다: 10%   (as a sentence: 일반과세자 세율은 10%이다.)
+  got:      -- the question states "15%라던데", which was not read as one value: it is neither confirmed nor denied
 
 held ok Q47 [no_answer]
   Q: 간이과세자는 세금을 몇 퍼센트 내요?
@@ -341,19 +341,19 @@ held ok Q60 [no_answer]
   got:      -- the question was not read with confidence: every reading uses something never seen in training
 
 ## Summary: 2. Questions and answers, as asked (no one answers the system back)
-   check        WRONG 1, right 3 of 4
+   check        held 2, right 2 of 4
    direct       assumed right 1, proposed right, asks first 4, right 1 of 6
    natural      held 8, proposed right, asks first 22 of 30
    no_answer    held ok 10, proposed otherwise, asks first 4 of 14
    short        assumed right 4, proposed right, asks first 2 of 6
-   all          WRONG 1, assumed right 5, held 8, held ok 10, proposed otherwise, asks first 4, proposed right, asks first 28, right 4 of 60
+   all          assumed right 5, held 10, held ok 10, proposed otherwise, asks first 4, proposed right, asks first 28, right 3 of 60
 
 # 3. The same questions in the same order, a user answering each proposal with yes or no
 
 ## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
-   check        WRONG 1, right 3 of 4
+   check        held 2, right 2 of 4
    direct       assumed right 1, right 1, right after a yes 4 of 6
    natural      held 8, right after a yes 22 of 30
    no_answer    declined by the user 4, held ok 10 of 14
    short        assumed right 4, right after a yes 2 of 6
-   all          WRONG 1, assumed right 5, declined by the user 4, held 8, held ok 10, right 4, right after a yes 28 of 60
+   all          assumed right 5, declined by the user 4, held 10, held ok 10, right 3, right after a yes 28 of 60

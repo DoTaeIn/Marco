@@ -417,7 +417,7 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         # outside, and the properties come back nearest first. Chosen by nearness, not read and not
         # worked out: the nearest one is put to the user with every piece that was not read.
         left = [x for x in unread if x not in pieces_known]
-        worked = [{'property': p, 'met': [], 'unmet': left, 'score': s} for p, s in hear(question, model.get('field_texts', {}))]
+        worked = [{'property': p, 'met': [], 'unmet': left, 'score': s, 'placed': {}} for p, s in hear(question, model.get('field_texts', {}))]
         if not worked:
             return None
     elif exact and not (wanted or units or history):

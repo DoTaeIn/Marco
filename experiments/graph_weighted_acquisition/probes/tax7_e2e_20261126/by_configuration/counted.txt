@@ -12,10 +12,10 @@
   0635849c898f97f6  data/word_kinds_ko.json
   30b3e17c16ce7551  packs/make_language.py
   0953e41efd3c7416  probes/reading_limits.py
-  3482383805da7ab5  probes/blind_e2e.py
+  88b1fc81af7640c3  probes/blind_e2e.py
   e5841cfd3d4e8f79  C.json (the items)
-  d8c893fd0af644d1  basic_words_ko.tsv (taught)
-  1c4483abad84cd31  word_ends_ko.tsv (taught)
+  7d9a77aa6f9d0225  basic_words_ko.tsv (taught)
+  a6f7da88eda19c4b  word_ends_ko.tsv (taught)
 Explanations taken: 8 of 8 properties. Words of them no lesson knows: 과세기간: 셈할, 묶음으로; 상담전화: 물어보려고, 번호; 세율: 얼마만큼인지, 숫자; 신고기간: 서류를, 첫날부터; 신고기한: 서류를; 신고횟수: 서류를
 
 Field "Korean national tax basics (the knowledge of packs/tax_facts.json; explanations and questions by an examiner who saw no code)": 8 property words, 12 names, 14 sentences of knowledge, 44 questions. Language pack: 640 lessons.

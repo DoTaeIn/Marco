@@ -12,7 +12,7 @@
   0635849c898f97f6  data/word_kinds_ko.json
   30b3e17c16ce7551  packs/make_language.py
   0953e41efd3c7416  probes/reading_limits.py
-  3482383805da7ab5  probes/blind_e2e.py
+  88b1fc81af7640c3  probes/blind_e2e.py
   3888475d2f373726  C.json (the items)
 
 Field "Korean national tax basics (the knowledge of packs/tax_facts.json; explanations by the seventh set's examiner, questions by a second examiner by an examiner who saw no code)": 8 property words, 12 names, 14 sentences of knowledge, 46 questions. Language pack: 640 lessons.
@@ -86,15 +86,15 @@ right A10 [check]
   expected: yes: 사업개시일부터20일이내
   got:      맞다: 사업개시일부터20일이내   (as a sentence: 사업자등록의 신청기한은 사업개시일부터20일이내이다.)
 
-held B01 [check]
+WRONG B01 [check]
   Q: 일반과세자의 세율이 십 퍼센트라고 들었는데 맞나요?
   expected: yes: 10%
-  got:      -- the question states "십 퍼센트라고 들었는데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 10%   (as a sentence: 일반과세자 세율은 10%이다.)
 
-held B02 [check]
+WRONG B02 [check]
   Q: 일반과세자의 과세기간은 여섯 달이 맞죠?
   expected: yes: 6개월
-  got:      -- the question states "여섯 달", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 6개월   (as a sentence: 일반과세자 과세기간은 6개월이다.)
 
 held B03 [check]
   Q: 개인일반사업자의 신고횟수가 일 년에 두 번이라던데 맞습니까?
@@ -106,35 +106,35 @@ held B04 [check]
   expected: yes: 연4회
   got:      -- the question was not read with confidence: every reading uses something never seen in training
 
-held B05 [check]
+WRONG B05 [check]
   Q: 일반과세자제2기확정신고의 신고기간이 다음 해 1월 1일부터 1월 25일까지 맞나요?
   expected: yes: 다음해1월1일~1월25일
-  got:      -- the question states "다음 해 1월 1일부터 1월 25일까지", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 다음해1월1일~1월25일   (as a sentence: 일반과세자제2기확정신고의 신고기간은 다음해1월1일~1월25일이다.)
 
-held B06 [check]
+WRONG B06 [check]
   Q: 간이과세자의 신고기간은 이듬해 1월 1일에서 1월 25일 사이라고 알고 있는데 맞죠?
   expected: yes: 다음해1월1일~1월25일
-  got:      -- the question states "이듬해 1월 1일에서 1월 25일 사이라고 알고 있는데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 다음해1월1일~1월25일   (as a sentence: 간이과세자 신고기간은 다음해1월1일~1월25일이다.)
 
-held B07 [check]
+WRONG B07 [check]
   Q: 사업자등록의 신청기한이 사업 개시일부터 20일 이내라고 알고 있는데 맞습니까?
   expected: yes: 사업개시일부터20일이내
-  got:      -- the question states "사업 개시일부터 20일 이내라고 알고 있는데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 사업개시일부터20일이내   (as a sentence: 사업자등록의 신청기한은 사업개시일부터20일이내이다.)
 
-held B08 [check]
+WRONG B08 [check]
   Q: 국세상담센터의 상담전화는 126번이라던데 맞나요?
   expected: yes: 126
-  got:      -- the question states "126번이라던데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 126   (as a sentence: 국세상담센터의 상담전화는 126이다.)
 
-held B09 [check]
+WRONG B09 [check]
   Q: 종합소득세일반신고의 신고기간이 다음 해 5월 1일부터 5월 31일까지라고 들었는데 맞아요?
   expected: yes: 다음해5월1일~5월31일
-  got:      -- the question states "다음 해 5월 1일부터 5월 31일까지라고 들었는데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 다음해5월1일~5월31일   (as a sentence: 종합소득세일반신고의 신고기간은 다음해5월1일~5월31일이다.)
 
-right B10 [check]
+WRONG B10 [check]
   Q: 2026년제1기부가가치세확정신고의 신고기한은 2026년 7월 27일이 맞습니까?
   expected: yes: 2026년7월27일
-  got:      맞다: 2026년7월27일   (as a sentence: 2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일이다.)
+  got:      아니다: 2026년7월27일   (as a sentence: 2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일이다.)
 
 right C01 [check]
   Q: 일반과세자의 세율은 15%가 맞습니까?
@@ -156,10 +156,10 @@ right C04 [check]
   expected: no: 연4회
   got:      아니다: 연4회   (as a sentence: 법인사업자 신고횟수가 연4회이다.)
 
-held C05 [check]
+right C05 [check]
   Q: 사업자등록의 신청경로는 손택스가 맞아요?
   expected: no: 홈택스
-  got:      -- the question states "손택스", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 홈택스   (as a sentence: 사업자등록의 신청경로는 홈택스이다.)
 
 right C06 [check]
   Q: 국세상담센터의 상담전화가 110 맞습니까?
@@ -186,55 +186,55 @@ held C10 [check]
   expected: no: 2026년7월27일
   got:      -- the question was not read with confidence: every reading uses something never seen in training
 
-held D01 [check]
+right D01 [check]
   Q: 일반과세자의 세율이 열다섯 프로라던데 맞나요?
   expected: no: 10%
-  got:      -- the question states "열다섯 프로라던데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 10%   (as a sentence: 일반과세자 세율은 10%이다.)
 
-held D02 [check]
+right D02 [check]
   Q: 일반과세자의 과세기간은 석 달이라고 들었는데 맞습니까?
   expected: no: 6개월
-  got:      -- the question states "석 달이라고 들었는데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 6개월   (as a sentence: 일반과세자 과세기간은 6개월이다.)
 
-held D03 [check]
+right D03 [check]
   Q: 사업자등록의 신청기한이 사업개시일부터 30일 이내라고 들었는데 맞죠?
   expected: no: 사업개시일부터20일이내
-  got:      -- the question states "사업개시일부터 30일 이내라고 들었는데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 사업개시일부터20일이내   (as a sentence: 사업자등록의 신청기한은 사업개시일부터20일이내이다.)
 
 held D04 [check]
   Q: 법인사업자의 신고횟수는 일 년에 두 번이라던데 맞아요?
   expected: no: 연4회
   got:      -- the question was not read with confidence: every reading uses something never seen in training
 
-held D05 [check]
+right D05 [check]
   Q: 일반과세자제2기확정신고의 신고기간이 다음 해 1월 1일부터 1월 31일까지 맞나요?
   expected: no: 다음해1월1일~1월25일
-  got:      -- the question states "다음 해 1월 1일부터 1월 31일까지", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 다음해1월1일~1월25일   (as a sentence: 일반과세자제2기확정신고의 신고기간은 다음해1월1일~1월25일이다.)
 
-held D06 [check]
+right D06 [check]
   Q: 간이과세자의 신고기간은 다음 해 2월 1일부터 2월 25일까지라고 알고 있는데 맞습니까?
   expected: no: 다음해1월1일~1월25일
-  got:      -- the question states "다음 해 2월 1일부터 2월 25일까지라고 알고 있는데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 다음해1월1일~1월25일   (as a sentence: 간이과세자 신고기간은 다음해1월1일~1월25일이다.)
 
-held D07 [check]
+right D07 [check]
   Q: 국세상담센터의 상담전화가 120번이라던데 맞죠?
   expected: no: 126
-  got:      -- the question states "120번이라던데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 126   (as a sentence: 국세상담센터의 상담전화는 126이다.)
 
-held D08 [check]
+right D08 [check]
   Q: 종합소득세일반신고의 신고기간은 다음 해 6월 1일부터 6월 30일까지 맞아요?
   expected: no: 다음해5월1일~5월31일
-  got:      -- the question states "다음 해 6월 1일부터 6월 30일까지", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 다음해5월1일~5월31일   (as a sentence: 종합소득세일반신고의 신고기간은 다음해5월1일~5월31일이다.)
 
-held D09 [check]
+right D09 [check]
   Q: 사업자등록의 신청경로가 정부24 사이트라고 들었는데 맞나요?
   expected: no: 홈택스
-  got:      -- the question states "정부24 사이트라고 들었는데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 홈택스   (as a sentence: 사업자등록의 신청경로는 홈택스이다.)
 
-held D10 [check]
+right D10 [check]
   Q: 성실신고확인서제출자의 신고기한은 다음 해 5월 31일까지라던데 맞습니까?
   expected: no: 다음해6월30일
-  got:      -- the question states "다음 해 5월 31일까지라던데", which was not read as one value: it is neither confirmed nor denied
+  got:      아니다: 다음해6월30일   (as a sentence: 성실신고확인서제출자 신고기한은 다음해6월30일이다.)
 
 held N01 [check]
   Q: 일반과세자의 세율이 10%가 아니죠?
@@ -267,11 +267,11 @@ held N06 [check]
   got:      -- the question was not read with confidence: every reading uses something never seen in training
 
 ## Summary: 2. Questions and answers, as asked (no one answers the system back)
-   check        assumed right 3, held 28, proposed otherwise, asks first 2, right 13 of 46
-   all          assumed right 3, held 28, proposed otherwise, asks first 2, right 13 of 46
+   check        WRONG 8, assumed right 3, held 11, proposed otherwise, asks first 2, right 22 of 46
+   all          WRONG 8, assumed right 3, held 11, proposed otherwise, asks first 2, right 22 of 46
 
 # 3. The same questions in the same order, a user answering each proposal with yes or no
 
 ## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
-   check        assumed right 3, declined by the user 2, held 28, right 13 of 46
-   all          assumed right 3, declined by the user 2, held 28, right 13 of 46
+   check        WRONG 8, assumed right 3, declined by the user 2, held 11, right 22 of 46
+   all          WRONG 8, assumed right 3, declined by the user 2, held 11, right 22 of 46
