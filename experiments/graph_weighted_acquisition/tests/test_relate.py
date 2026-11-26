@@ -65,22 +65,6 @@ def test_a_word_in_another_place_is_not_placed(tmp_path):
     assert RL.placed(f['model']['basic'], '우산을 마시면 돈?', EXPLAINED) == {}
 
 
-def test_ordinary_text_says_which_word_of_the_explanation_an_unknown_word_is_like(tmp_path):
-    f = field(tmp_path)
-    basic = f['model']['basic']
-    # Made-up text: 우산 and 책 are both borrowed and both carried; 구름 is only looked at.
-    RL.save(RL.places(basic, ['우산을 빌리면', '우산을 빌리면', '책을 빌리면', '책을 빌리면', '우산을 들면', '우산을 들면',
-                              '책을 들면', '책을 들면', '구름을 보면', '구름을 보면', '책을 사면', '책을 사면']), tmp_path / 'places.tsv')
-    text = RL.load(tmp_path / 'places.tsv')
-    # The head here ("들면") is not in the explanation, so nothing is placed without the text.
-    assert RL.placed(basic, '우산을 들면 돈?', EXPLAINED) == {}
-    assert RL.placed(basic, '우산을 들면 돈?', EXPLAINED, text) == {'기본요금': {'우산을': ('like', '책을', 500)}}
-    # A word the text never saw where 책 stands is like nothing.
-    assert RL.placed(basic, '구름을 보면 돈?', EXPLAINED, text) == {}
-    f['model']['places'] = text
-    got = PK.ask(f, '모래섬호 우산을 들면 돈?')
-    assert not got['answers'] and got['proposal']['placed']['우산을'] == {'how': 'like', 'as': '책을', 'number': 500}
-    assert got['proposal']['not_accounted_for'] == ['들면']
 
 
 ASKED = {'기본요금': ['X 타려면 얼마 내요', 'X 표값 알려줘'], '출발항': ['X 타려면 어디로 가요', 'X 어디서 떠나요']}

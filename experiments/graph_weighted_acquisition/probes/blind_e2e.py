@@ -18,6 +18,7 @@ Run from the repository root:
 """
 import hashlib
 import importlib.util
+import os
 import json
 import sys
 from pathlib import Path
@@ -102,6 +103,8 @@ def shown(result):
 
 
 def main():
+    if len(sys.argv) > 4 or os.environ.get('MARCO_HEAR'):
+        raise SystemExit('The optional position and hearing trials are retired.')
     folder = Path(sys.argv[1])
     print('# Frozen before the items existed')
     for name, digest in BT.frozen().items():
@@ -123,7 +126,6 @@ def main():
             print('  %s  %s (taught)' % (hashlib.sha256(Path(path).read_bytes()).hexdigest()[:16], Path(path).name))
     # MARCO_ASKED names a file of ways of asking, per property word, written by a teacher who saw
     # neither the questions nor the code ({"휴무일": ["X는 언제 쉬어요", ...]}).
-    import os
     ways = json.loads(Path(os.environ['MARCO_ASKED']).read_text(encoding='utf8')) if basic and os.environ.get('MARCO_ASKED') else {}
     words = {'schema': PK.WORDS, 'field': data['domain'], 'slot': BT.SLOT,
              'properties': [dict({'word': x['word'], 'means': x['word'], 'also': list(x.get('also', []))},
@@ -137,9 +139,6 @@ def main():
         words['properties'] = [x for x in words['properties'] if x['word'] not in clashes]
     try:
         model = PK.with_words(full, words, basic) if basic else PK.with_words(full, words)
-        if len(sys.argv) > 4:                           # who stands where in ordinary text (relate.places)
-            from experiments.graph_weighted_acquisition import relate as RL
-            model['places'] = RL.load(sys.argv[4])
         if model.get('field_asked'):
             print('Ways of asking taken: %d for %d properties; listed under two properties and left out: %d' % (
                 sum(map(len, ways.values())), len(ways), len(model['field_asked']['clash'])))
@@ -153,22 +152,6 @@ def main():
         refused_words = [x['word'] for x in words['properties'] if x['word'] in full['tables'].get('head', {})]
         words['properties'] = [x for x in words['properties'] if x['word'] not in refused_words]
         model = PK.with_words(full, words)
-    # A trial of the hearing side, chosen by the environment: MARCO_HEAR=vector puts a sentence vector
-    # model there (probes/hear_vector.py); MARCO_HEAR=veto puts nothing there and only lifts the stop
-    # on an unknown word in front of a connector, to see that change alone.
-    import os
-    trial = os.environ.get('MARCO_HEAR')
-    if trial:
-        model['field_texts'] = {x['word']: ' '.join([x['word']] + list(x.get('also', [])) + [x.get('explained', '')]).strip()
-                                for x in props if x['word'] not in clashes}
-        if trial == 'vector':
-            _hv = importlib.util.spec_from_file_location('hear_vector', HERE / 'hear_vector.py')
-            HV = importlib.util.module_from_spec(_hv)
-            _hv.loader.exec_module(HV)
-            model['hear'] = HV.load()
-        else:
-            model['hear'] = lambda question, properties: []
-        print('TRIAL on the hearing side: %s' % trial)
     print('\nField "%s": %d property words, %d names, %d sentences of knowledge, %d questions. Language pack: %d lessons.'
           % (data['domain'], len(props), len(names), len(data['knowledge']), len(data['questions']), n))
     taken, refused, memory = take_in(model, data['knowledge'])

@@ -9,9 +9,6 @@ A stem is brought back to its first shape by the ways the taught words change th
 (basic.load_ends): "맡겨" and "맡길" both give "맡기", though no lesson has the word. A cut that
 could go two ways is kept both ways.
 
-The same cut, run over ordinary sentences, counts who stands where (`places`): the numbers sit on
-the edges and only put things in order.
-
 This is used for a word no lesson knows (`placed`). The word is put next to the plain-words
 explanation of every property: it may be a word of the explanation in another shape, or it may
 stand where a word of the explanation stands, under the same head and by the same connector
@@ -64,57 +61,12 @@ def words(basic, text):
     return out
 
 
-def places(basic, sentences):
-    """Who stands where, counted over ordinary sentences: {(connector, head): {noun: times}}.
-
-    Only a word that is plainly a noun with a connector, hanging on a word that takes endings, is
-    counted ("가방을 맡기면" -> (을, 맡기): 가방). Nothing is chosen: every shape the head may come
-    back to is a place of its own.
-    """
-    out = {}
-    for sentence in sentences:
-        rows = words(basic, sentence)
-        for row in rows:
-            if row['pred'] or not row['marks'] or row['head'] is None or not rows[row['head']]['pred']:
-                continue
-            head = rows[row['head']]
-            noun = min(row['keys'], key=len)
-            for mark in row['marks']:
-                for key in head['keys'] - {unicodedata.normalize('NFD', head['text'])}:
-                    place = out.setdefault((mark, key), {})
-                    place[noun] = place.get(noun, 0) + 1
-    return out
-
-
-def save(table, path, least=2):
-    """One line per place and noun seen there at least `least` times."""
-    with open(path, 'w', encoding='utf8', newline='\n') as f:
-        for (mark, key), nouns in sorted(table.items()):
-            for noun, n in sorted(nouns.items()):
-                if n >= least:
-                    f.write('%s\t%s\t%s\t%d\n' % (mark, key, noun, n))
-
-
-def load(path):
-    """The places, and for every noun the places it was seen in."""
-    table, seen = {}, {}
-    with open(path, encoding='utf8') as f:
-        for line in f:
-            mark, key, noun, n = line.rstrip('\n').split('\t')
-            table.setdefault((mark, key), {})[noun] = int(n)
-            seen.setdefault(noun, set()).add((mark, key))
-    return {'at': table, 'of': seen}
-
-
-def placed(basic, question, explanations, text=None):
+def placed(basic, question, explanations):
     """For every property, the words of the question that no lesson knows and that its explanation
     places: {property: {word: (how, word of the explanation, number)}}.
 
     "same": a word of the explanation in another shape. "place": it stands where a word of the
-    explanation stands. "like", only with `text` (load): ordinary text has a noun of the
-    explanation in the very place the word stands in here, and the two were seen in other places
-    together; the number is the weighed share of their places that both stand in (a place few
-    nouns stand in weighs more), and it only puts things in order.
+    explanation stands. These are guesses, used only to order proposals.
     """
     marks = basic['marks']
     asked = words(basic, question)
@@ -130,7 +82,6 @@ def placed(basic, question, explanations, text=None):
                 continue
             if q['head'] is None or q['pred']:
                 continue
-            here = {(m, k) for m in q['marks'] for k in asked[q['head']]['keys']}
             best = None
             for t in told:
                 if t['pred']:
@@ -138,18 +89,6 @@ def placed(basic, question, explanations, text=None):
                 if t['head'] is not None and q['marks'] & t['marks'] and asked[q['head']]['keys'] & told[t['head']]['keys']:
                     best = ('place', t['text'], 0)
                     break
-                if text and not any(e['light'] for e in B.lookup(basic, t['text'], marks)):
-                    noun, other = min(q['keys'], key=len), min(t['keys'], key=len)
-                    if any(other in text['at'].get(place, {}) for place in here):
-                        mine, theirs = text['of'].get(noun, set()), text['of'].get(other, set())
-                        # A place weighs one over the number of nouns seen in it: where anything may
-                        # stand ("…을 두다") says little, where few may ("…를 마시다") says much. The number
-                        # is the weight of the places both stand in, per thousand of the weight of all
-                        # the places of either.
-                        weigh = lambda places: sum(1.0 / len(text['at'][p]) for p in places)
-                        shared = int(1000 * weigh(mine & theirs) / max(weigh(mine | theirs), 1e-9))
-                        if shared and (best is None or shared > best[2]):
-                            best = ('like', t['text'], shared)
             if best:
                 out.setdefault(prop, {})[q['text']] = best
     return out
