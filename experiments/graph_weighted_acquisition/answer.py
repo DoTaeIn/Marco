@@ -8,6 +8,7 @@ the question is grounded in passage text.
 """
 import argparse
 import json
+import re
 import unicodedata
 from pathlib import Path
 
@@ -47,6 +48,26 @@ def _blank(passage_result, question_result):
             'verified': False, 'executor': 'not run', 'executor_detail': '', 'partial': [], 'claim': None,
             'raw_text_variants': [], 'unknown_words': [], 'told_words': [], 'proposals': [], 'sentences': [],
             'other_names': []}
+
+
+def _claim_holds(claimed, answers, known):
+    """Does the value a question states hold? True, False, or None when that cannot be said.
+
+    What stands in front of the claim word is a stretch of text, not a value that was read
+    ("사업개시일부터 20일 이내", "10%라던데"). It holds when it is the value, spaces apart. It is denied
+    only when it is plainly another value: the same shape with other numbers ("15%" next to "10%"),
+    or a name or value the knowledge has. Anything else may be the same value in other words, or
+    the value with words after it: not said.
+    """
+    if len(answers) != 1 or len(answers[0]) != 1:
+        return None
+    value, said = ''.join(answers[0][0].split()), ''.join(claimed.split())
+    if said == value:
+        return True
+    shape = lambda text: re.sub(r'[0-9]+', '#', text)
+    if ('#' in shape(value) and shape(said) == shape(value)) or said in known:
+        return False
+    return None
 
 
 def _claim_query(graph, text, predicate='claim'):
@@ -345,6 +366,13 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
     hear = model.get('hear')                           # a trial: something outside that puts the properties in order
     # Words no lesson knows, where the explanation of a property places them (relate.placed).
     placed = RL.placed(basic, question, model.get('field_explained_words', {}), model.get('places')) if basic and basic.get('shape') else {}
+    # Ways of asking the field listed per property (relate.asked): the wording as a whole, and its words.
+    exact = None
+    if placed is not None and basic and basic.get('shape') and model.get('field_asked'):
+        exact, listed = RL.heard(basic, question, model['field_asked'], [w for _, w in found['thing']])
+        for prop, row in listed.items():
+            for word, how in row.items():
+                placed.setdefault(prop, {}).setdefault(word, how)
     pieces_known = set(marks) | {g.strip().rstrip('?.!') for g in tables.get('gap', {}).get('end', {})} \
         | {g.strip().rstrip('?.!') for g in model.get('alias', {})}
     unread, pos, tokens = [], 0, question.split()
@@ -363,7 +391,7 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
             return None
         unread.append(left)
     # A name or a property word of the field is known: only a word left whole is placed.
-    placed = {p: {w: v for w, v in row.items() if w in unread} for p, row in placed.items()}
+    placed = {p: {w: v for w, v in row.items() if w in unread or w in asks} for p, row in placed.items()}
     weak = False
     if not wanted and not units:
         # No property word and no counter. A word that was not read may still point at a property: it shares
@@ -392,13 +420,16 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         worked = [{'property': p, 'met': [], 'unmet': left, 'score': s} for p, s in hear(question, model.get('field_texts', {}))]
         if not worked:
             return None
+    elif exact and not (wanted or units or history):
+        # The question is, word for word, a way of asking the field listed for one property.
+        worked = [{'property': exact, 'met': [x for x in unread if x not in pieces_known], 'unmet': [], 'placed': {}, 'exact': True}]
     elif basic and not (wanted or units or history):
         # Nothing in the question points at a property by form. Taught basic words may: the pieces that
         # were not read are put next to the plain-words explanation of every property (basic.ranked), and
         # the properties come back in order of how many pieces they meet. Worked out, not read: it can
         # only lead to a proposal or to candidates in that order.
         worked = B.ranked(basic, [x for x in unread if x not in pieces_known and x not in basic['marks']] + asks,
-                          model.get('field_explained', {}), marks, endings, placed)
+                          dict({p: [] for p in placed}, **model.get('field_explained', {})), marks, endings, placed)
         if not worked:
             return None
     if not (wanted or asks or units or worked):
@@ -430,6 +461,15 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
                 fits = whole                           # the one property that leaves no piece over
             sure = False
             how = 'taught basic words that meet the explanation of the property'
+            rows = [worked[order.index(f['property'])] for f in fits]
+            by_asking = lambda row: any(v[0] == 'asked' for v in row['placed'].values())
+            ahead = lambda row: (len(row['met']), sum(v[2] for v in row['placed'].values()))
+            if rows and rows[0].get('exact'):
+                how = 'a way of asking the field listed for the property, word for word'
+            elif rows and by_asking(rows[0]):
+                how = 'words of the ways of asking the field listed for the property'
+                if len(rows) > 1 and ahead(rows[0]) > ahead(rows[1]):
+                    fits = fits[:1]                    # the first in order is the one put to the user; no number says it is right
             if hear and fits:
                 scores = [worked[order.index(f['property'])]['score'] for f in fits]
                 how = 'nearness by a vector model (%.2f%s)' % (scores[0], ', next %.2f' % scores[1] if len(scores) > 1 else '')
@@ -464,7 +504,7 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
             'not_accounted_for': open_pieces}
     if worked and worked[order.index(fact['property'])].get('placed'):
         # Said with the proposal: which word was taken for which, and that it is a guess by place or shape.
-        item['placed'] = {w: dict({'how': h, 'as': o}, **({'shared_places_per_thousand': n} if n else {})) for w, (h, o, n) in worked[order.index(fact['property'])]['placed'].items()}
+        item['placed'] = {w: dict({'how': h, 'as': o}, **({'number': n} if n else {})) for w, (h, o, n) in worked[order.index(fact['property'])]['placed'].items()}
     evidence = [{'span': list(sp), 'text': ptext[sp[0]:sp[1]]} for sp in fact['spans']]
     claim = None
     if stated:
@@ -577,7 +617,15 @@ def _answer_read(pgraph, ptext, question, model, q, out, passage_result, memory,
         out['withheld'] = found['answers']
         return out
     if claimed is not None:
-        out['claim'] = {'claimed': claimed, 'holds': found['answers'] == [[claimed]]}
+        known = {''.join(v.split()) for n in pgraph['nodes'] for v in M._value(pgraph, ptext, n['id'])} | set(aliases or {})
+        holds = _claim_holds(claimed, found['answers'], known)
+        if holds is None:
+            # Saying no is an answer too. What stands in front of the claim word was not read as one
+            # value, so it is neither confirmed nor denied.
+            out['reason'] = 'the question states "%s", which was not read as one value: it is neither confirmed nor denied' % claimed
+            out['withheld'] = found['answers']
+            return out
+        out['claim'] = {'claimed': claimed, 'holds': holds}
     # The answer as a full sentence: the question's meaning with the answer put in, written from
     # the same counts and kept only if the reader reads it back as that meaning.
     heads = {s for s, p, o in query['edges'] if isinstance(o, dict) and 'literal' in o}

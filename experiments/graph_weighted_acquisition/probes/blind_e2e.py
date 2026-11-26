@@ -121,9 +121,14 @@ def main():
         basic = B.load(*sys.argv[2:4])                  # the words, and how they change their shape
         for path in sys.argv[2:4]:
             print('  %s  %s (taught)' % (hashlib.sha256(Path(path).read_bytes()).hexdigest()[:16], Path(path).name))
+    # MARCO_ASKED names a file of ways of asking, per property word, written by a teacher who saw
+    # neither the questions nor the code ({"휴무일": ["X는 언제 쉬어요", ...]}).
+    import os
+    ways = json.loads(Path(os.environ['MARCO_ASKED']).read_text(encoding='utf8')) if basic and os.environ.get('MARCO_ASKED') else {}
     words = {'schema': PK.WORDS, 'field': data['domain'], 'slot': BT.SLOT,
              'properties': [dict({'word': x['word'], 'means': x['word'], 'also': list(x.get('also', []))},
-                                 **({'explained': x['explained']} if basic and x.get('explained') else {})) for x in props],
+                                 **({'explained': x['explained']} if basic and x.get('explained') else {}),
+                                 **({'asked': ways[x['word']]} if ways.get(x['word']) else {})) for x in props],
              'names': [{'name': x['name'], 'also': list(x.get('also', []))} for x in names]}
     aliases = {other: x['name'] for x in names for other in x.get('also', [])}
     clashes = [x['word'] for x in props if x['word'] in full['tables'].get('closed', {})]
@@ -135,6 +140,9 @@ def main():
         if len(sys.argv) > 4:                           # who stands where in ordinary text (relate.places)
             from experiments.graph_weighted_acquisition import relate as RL
             model['places'] = RL.load(sys.argv[4])
+        if model.get('field_asked'):
+            print('Ways of asking taken: %d for %d properties; listed under two properties and left out: %d' % (
+                sum(map(len, ways.values())), len(ways), len(model['field_asked']['clash'])))
         if basic:
             print('Explanations taken: %d of %d properties. Words of them no lesson knows: %s' % (
                 len(model['field_explained']), len(props),

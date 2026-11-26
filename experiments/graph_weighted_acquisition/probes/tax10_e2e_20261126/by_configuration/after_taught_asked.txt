@@ -1,0 +1,281 @@
+# Frozen before the items existed
+  9b90e9fad0adb061  reader.py
+  b0208999be1f32fb  match.py
+  369b1f386707c64d  answer.py
+  acc269e6f52913a7  write.py
+  cc6f01bd2e065e03  pack.py
+  f844167bb0d32dfa  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  b949bd2afe37c83e  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  b024b3597b19769b  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  0953e41efd3c7416  probes/reading_limits.py
+  88b1fc81af7640c3  probes/blind_e2e.py
+  720874cc8cb7443e  C.json (the items)
+  7d9a77aa6f9d0225  basic_words_ko.tsv (taught)
+  a6f7da88eda19c4b  word_ends_ko.tsv (taught)
+Ways of asking taken: 156 for 8 properties; listed under two properties and left out: 0
+Explanations taken: 8 of 8 properties. Words of them no lesson knows: 과세기간: 셈할, 묶음으로; 상담전화: 물어보려고, 번호; 세율: 얼마만큼인지, 숫자; 신고기간: 서류를, 첫날부터; 신고기한: 서류를; 신고횟수: 서류를
+
+Field "Korean national tax basics (the knowledge of packs/tax_facts.json; explanations by the seventh set's examiner, questions by a second examiner by an examiner who saw no code)": 8 property words, 12 names, 14 sentences of knowledge, 46 questions. Language pack: 640 lessons.
+
+# 1. Knowledge taken in, sentence by sentence
+TAKEN    F01 일반과세자의 세율은 10%이다.
+TAKEN    F02 일반과세자의 과세기간은 6개월이다.
+TAKEN    F03 개인일반사업자의 신고횟수는 연2회이다.
+TAKEN    F04 법인사업자의 신고횟수는 연4회이다.
+TAKEN    F05 일반과세자제1기확정신고의 신고기간은 7월1일~7월25일이다.
+TAKEN    F06 일반과세자제2기확정신고의 신고기간은 다음해1월1일~1월25일이다.
+TAKEN    F07 간이과세자의 신고기간은 다음해1월1일~1월25일이다.
+TAKEN    F08 사업자등록의 신청기한은 사업개시일부터20일이내이다.
+TAKEN    F09 사업자등록의 신청경로는 홈택스이다.
+TAKEN    F10 국세상담센터의 상담전화는 126이다.
+TAKEN    F11 종합소득세일반신고의 신고기간은 다음해5월1일~5월31일이다.
+TAKEN    F12 2025년귀속종합소득세일반신고의 신고기한은 2026년6월1일이다.
+TAKEN    F13 성실신고확인서제출자의 신고기한은 다음해6월30일이다.
+TAKEN    F14 2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일이다.
+taken 14 of 14. Word kinds the taken sentences showed: none
+
+# 2. Questions and answers, as asked (no one answers the system back)
+
+held A01 [check]
+  Q: 국세상담센터 상담전화 126 맞죠?
+  expected: yes: 126
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held A02 [check]
+  Q: 안녕하세요, 일반과세자 세율 10% 맞나요?
+  expected: yes: 10%
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held A03 [check]
+  Q: 일반과세자 과세기간 6개월 맞습니까?
+  expected: yes: 6개월
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held A04 [check]
+  Q: 개인일반사업자 신고횟수 연2회 맞아요?
+  expected: yes: 연2회
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held A05 [check]
+  Q: 저희 회사 때문에 여쭤보는데요, 법인사업자 신고횟수 연4회 맞죠?
+  expected: yes: 연4회
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held A06 [check]
+  Q: 사업자등록 신청경로 홈택스 맞나요?
+  expected: yes: 홈택스
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held A07 [check]
+  Q: 사업자등록 신청기한 사업개시일부터20일이내 맞습니까?
+  expected: yes: 사업개시일부터20일이내
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held A08 [check]
+  Q: 확인 좀 부탁드려요. 2025년귀속종합소득세일반신고 신고기한 2026년6월1일 맞죠?
+  expected: yes: 2026년6월1일
+  got:      -- the question was not read with confidence: 2 of 2 sentences could not be read; first: "확인 좀 부탁드려요." (the text cannot be cut into known pieces)
+
+held A09 [check]
+  Q: 성실신고확인서제출자 신고기한 다음해6월30일 맞는 거죠?
+  expected: yes: 다음해6월30일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held A10 [check]
+  Q: 일반과세자제1기확정신고 신고기간 7월1일~7월25일 맞나요?
+  expected: yes: 7월1일~7월25일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B01 [check]
+  Q: 일반과세자 세율 10프로 맞죠?
+  expected: yes: 10%
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B02 [check]
+  Q: 일반과세자 과세기간 여섯 달이라고 알고 있는데 맞나요?
+  expected: yes: 6개월
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B03 [check]
+  Q: 개인일반사업자 신고횟수 일 년에 두 번 맞아요?
+  expected: yes: 연2회
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B04 [check]
+  Q: 사업자등록 신청기한 사업개시일부터 20일 이내 맞습니까?
+  expected: yes: 사업개시일부터20일이내
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B05 [check]
+  Q: 국세상담센터 상담전화 126번이라던데 맞아요?
+  expected: yes: 126
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B06 [check]
+  Q: 법인사업자 신고횟수 1년에 네 번이라고 들었는데 맞나요?
+  expected: yes: 연4회
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B07 [check]
+  Q: 종합소득세일반신고 신고기간 다음 해 5월 1일부터 5월 31일까지 맞죠?
+  expected: yes: 다음해5월1일~5월31일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B08 [check]
+  Q: 2026년제1기부가가치세확정신고 신고기한 2026년 7월 27일이라고 들었는데 맞습니까?
+  expected: yes: 2026년7월27일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B09 [check]
+  Q: 일반과세자제2기확정신고 신고기간 다음 해 1월 1일부터 1월 25일까지 맞나요?
+  expected: yes: 다음해1월1일~1월25일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held B10 [check]
+  Q: 성실신고확인서제출자 신고기한 다음 해 6월 30일까지라던데 맞아요?
+  expected: yes: 다음해6월30일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C01 [check]
+  Q: 일반과세자 세율 15% 맞나요?
+  expected: no: 10%
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C02 [check]
+  Q: 사업자등록 신청경로 손택스 맞죠?
+  expected: no: 홈택스
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C03 [check]
+  Q: 국세상담센터 상담전화 120 맞습니까?
+  expected: no: 126
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C04 [check]
+  Q: 일반과세자 과세기간 3개월 맞아요?
+  expected: no: 6개월
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C05 [check]
+  Q: 개인일반사업자 신고횟수 연4회 맞죠?
+  expected: no: 연2회
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C06 [check]
+  Q: 법인사업자 신고횟수 연2회 맞나요?
+  expected: no: 연4회
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C07 [check]
+  Q: 사업자등록 신청기한 사업개시일부터30일이내 맞습니까?
+  expected: no: 사업개시일부터20일이내
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C08 [check]
+  Q: 2025년귀속종합소득세일반신고 신고기한 2026년5월31일 맞죠?
+  expected: no: 2026년6월1일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C09 [check]
+  Q: 간이과세자 신고기간 다음해2월1일~2월25일 맞나요?
+  expected: no: 다음해1월1일~1월25일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held C10 [check]
+  Q: 성실신고확인서제출자 신고기한 다음해5월31일 맞아요?
+  expected: no: 다음해6월30일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D01 [check]
+  Q: 일반과세자 세율 열다섯 프로라던데 맞아요?
+  expected: no: 10%
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D02 [check]
+  Q: 사업자등록 신청기한 사업개시일부터 30일 이내라고 들었는데요, 맞나요?
+  expected: no: 사업개시일부터20일이내
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D03 [check]
+  Q: 일반과세자 과세기간 석 달이라고 하던데 맞습니까?
+  expected: no: 6개월
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D04 [check]
+  Q: 개인일반사업자 신고횟수 일 년에 한 번 맞죠?
+  expected: no: 연2회
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D05 [check]
+  Q: 국세상담센터 상담전화 110번이라던데 맞아요?
+  expected: no: 126
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D06 [check]
+  Q: 일반과세자제1기확정신고 신고기간 7월 1일부터 7월 31일까지 맞나요?
+  expected: no: 7월1일~7월25일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D07 [check]
+  Q: 종합소득세일반신고 신고기간 다음 해 3월 1일부터 3월 31일까지라고 들었는데 맞습니까?
+  expected: no: 다음해5월1일~5월31일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D08 [check]
+  Q: 2026년제1기부가가치세확정신고 신고기한 2026년 7월 25일이라던데 맞죠?
+  expected: no: 2026년7월27일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D09 [check]
+  Q: 일반과세자제2기확정신고 신고기간 다음 해 2월 1일부터 2월 10일까지 맞아요?
+  expected: no: 다음해1월1일~1월25일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held D10 [check]
+  Q: 사업자등록 신청경로 정부24라고 들었는데 맞나요?
+  expected: no: 홈택스
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held N01 [check]
+  Q: 일반과세자 세율 10%가 아니죠?
+  expected: yes: 10%
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held N02 [check]
+  Q: 국세상담센터 상담전화 126 아닌가요?
+  expected: yes: 126
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held N03 [check]
+  Q: 사업자등록 신청경로 홈택스가 아닙니까?
+  expected: yes: 홈택스
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held N04 [check]
+  Q: 일반과세자 과세기간 1년이 아니죠?
+  expected: no: 6개월
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held N05 [check]
+  Q: 성실신고확인서제출자 신고기한 다음해5월31일 아닌가요?
+  expected: no: 다음해6월30일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held N06 [check]
+  Q: 간이과세자 신고기간 다음 해 7월 1일부터 7월 25일까지가 아니에요?
+  expected: no: 다음해1월1일~1월25일
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+## Summary: 2. Questions and answers, as asked (no one answers the system back)
+   check        held 46 of 46
+   all          held 46 of 46
+
+# 3. The same questions in the same order, a user answering each proposal with yes or no
+
+## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
+   check        held 46 of 46
+   all          held 46 of 46

@@ -18,6 +18,7 @@ import json
 
 from . import answer as A
 from . import basic as B
+from . import relate as RL
 from . import reader as R
 from . import write as W
 
@@ -108,6 +109,9 @@ def with_words(language, words, basic=None):
         marks, endings = A.word_ends(model['tables'])
         model['basic'], model['field_explained'], model['field_unexplained'] = basic, {}, []
         model['field_explained_words'] = {p['means']: p['explained'] for p in words['properties'] if p.get('explained')}
+        listed = {p['means']: p['asked'] for p in words['properties'] if p.get('asked')}
+        if listed and basic.get('shape'):               # ways of asking the field lists per property (relate.asked)
+            model['field_asked'] = RL.asked(basic, listed)
         for prop in words['properties']:
             if prop.get('explained'):
                 reached, unknown = B.concepts_of(basic, prop['explained'], marks, endings)

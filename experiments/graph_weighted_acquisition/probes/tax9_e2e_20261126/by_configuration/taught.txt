@@ -1,0 +1,360 @@
+# Frozen before the items existed
+  9b90e9fad0adb061  reader.py
+  b0208999be1f32fb  match.py
+  38f747ec7bfda8d1  answer.py
+  acc269e6f52913a7  write.py
+  cc6f01bd2e065e03  pack.py
+  f844167bb0d32dfa  learn.py
+  4a55e173d59c903e  merge.py
+  1bb2e804b8837063  weights.py
+  b949bd2afe37c83e  data/reading_recipe.json
+  617c48ae9784de0a  data/connector_variants_ko.json
+  b024b3597b19769b  data/word_kinds_ko.json
+  30b3e17c16ce7551  packs/make_language.py
+  0953e41efd3c7416  probes/reading_limits.py
+  88b1fc81af7640c3  probes/blind_e2e.py
+  6234f2b41093ef2b  C.json (the items)
+  7d9a77aa6f9d0225  basic_words_ko.tsv (taught)
+  a6f7da88eda19c4b  word_ends_ko.tsv (taught)
+Explanations taken: 8 of 8 properties. Words of them no lesson knows: 과세기간: 셈할, 묶음으로; 상담전화: 물어보려고, 번호; 세율: 얼마만큼인지, 숫자; 신고기간: 서류를, 첫날부터; 신고기한: 서류를; 신고횟수: 서류를
+
+Field "Korean national tax basics (the knowledge of packs/tax_facts.json; explanations by the seventh set's examiner, questions by a second examiner by an examiner who saw no code)": 8 property words, 12 names, 14 sentences of knowledge, 60 questions. Language pack: 640 lessons.
+
+# 1. Knowledge taken in, sentence by sentence
+TAKEN    F01 일반과세자의 세율은 10%이다.
+TAKEN    F02 일반과세자의 과세기간은 6개월이다.
+TAKEN    F03 개인일반사업자의 신고횟수는 연2회이다.
+TAKEN    F04 법인사업자의 신고횟수는 연4회이다.
+TAKEN    F05 일반과세자제1기확정신고의 신고기간은 7월1일~7월25일이다.
+TAKEN    F06 일반과세자제2기확정신고의 신고기간은 다음해1월1일~1월25일이다.
+TAKEN    F07 간이과세자의 신고기간은 다음해1월1일~1월25일이다.
+TAKEN    F08 사업자등록의 신청기한은 사업개시일부터20일이내이다.
+TAKEN    F09 사업자등록의 신청경로는 홈택스이다.
+TAKEN    F10 국세상담센터의 상담전화는 126이다.
+TAKEN    F11 종합소득세일반신고의 신고기간은 다음해5월1일~5월31일이다.
+TAKEN    F12 2025년귀속종합소득세일반신고의 신고기한은 2026년6월1일이다.
+TAKEN    F13 성실신고확인서제출자의 신고기한은 다음해6월30일이다.
+TAKEN    F14 2026년제1기부가가치세확정신고의 신고기한은 2026년7월27일이다.
+taken 14 of 14. Word kinds the taken sentences showed: none
+
+# 2. Questions and answers, as asked (no one answers the system back)
+
+right Q01 [direct]
+  Q: 일반과세자의 세율은 얼마입니까?
+  expected: 10%
+  got:      10%   (as a sentence: 일반과세자 세율은 10%이다.)
+
+proposed right, asks first Q02 [direct]
+  Q: 법인사업자의 신고횟수는 어떻게 되나요?
+  expected: 연4회
+  got:      -- asks: Did you ask for the 신고횟수 of 법인사업자? (these pieces are not accounted for: "어떻게", "되나요")   [would then answer 연4회]
+
+proposed right, asks first Q03 [direct]
+  Q: 사업자등록의 신청기한을 알려주세요.
+  expected: 사업개시일부터20일이내
+  got:      -- asks: Did you ask for the 신청기한 of 사업자등록? (these pieces are not accounted for: "을", "알려주세요")   [would then answer 사업개시일부터20일이내]
+
+proposed right, asks first Q04 [direct]
+  Q: 국세상담센터의 상담전화는 몇 번인가요?
+  expected: 126
+  got:      -- asks: Did you ask for the 상담전화 of 국세상담센터? (these pieces are not accounted for: "몇", "번인가요")   [would then answer 126]
+
+proposed right, asks first Q05 [direct]
+  Q: 종합소득세일반신고의 신고기간이 언제인지 알고 싶습니다.
+  expected: 다음해5월1일~5월31일
+  got:      -- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: "인지", "알고", "싶습니다")   [would then answer 다음해5월1일~5월31일]
+
+assumed right Q06 [direct]
+  Q: 성실신고확인서제출자의 신고기한은 언제예요?
+  expected: 다음해6월30일
+  got:      다음해6월30일   [not read as a sentence; taken to ask for the 신고기한 of "성실신고확인서제출자"; chosen by the property word; not read: 의, 은, 예요]
+
+assumed right Q07 [short]
+  Q: 일반과세자 과세기간?
+  expected: 6개월
+  got:      6개월   [not read as a sentence; taken to ask for the 과세기간 of "일반과세자"; chosen by the property word; not read: nothing]
+
+assumed right Q08 [short]
+  Q: 개인일반사업자 신고횟수
+  expected: 연2회
+  got:      연2회   [not read as a sentence; taken to ask for the 신고횟수 of "개인일반사업자"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q09 [short]
+  Q: 간이과세자 신고기간 좀
+  expected: 다음해1월1일~1월25일
+  got:      -- asks: Did you ask for the 신고기간 of 간이과세자? (these pieces are not accounted for: "좀")   [would then answer 다음해1월1일~1월25일]
+
+assumed right Q10 [short]
+  Q: 사업자등록 신청경로
+  expected: 홈택스
+  got:      홈택스   [not read as a sentence; taken to ask for the 신청경로 of "사업자등록"; chosen by the property word; not read: nothing]
+
+assumed right Q11 [short]
+  Q: 2026년제1기부가가치세확정신고 신고기한?
+  expected: 2026년7월27일
+  got:      2026년7월27일   [not read as a sentence; taken to ask for the 신고기한 of "2026년제1기부가가치세확정신고"; chosen by the property word; not read: nothing]
+
+proposed right, asks first Q12 [short]
+  Q: 일반과세자제1기확정신고 신고기간 급함
+  expected: 7월1일~7월25일
+  got:      -- asks: Did you ask for the 신고기간 of 일반과세자제1기확정신고? (these pieces are not accounted for: "급함")   [would then answer 7월1일~7월25일]
+
+held Q13 [natural]
+  Q: 제가 식당을 삼십 년 했는데 아직도 헷갈려서요, 일반과세자는 부가세를 몇 퍼센트 내는 겁니까?
+  expected: 10%
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q14 [natural]
+  Q: 일반과세자면 물건 팔 때 몇 프로 붙여서 받아야 되는교?
+  expected: 10%
+  got:      -- the question was not read; it names "일반과세자", and the knowledge has 2 facts it could be asking for: 과세기간 of 일반과세자; 세율 of 일반과세자   [could be: 과세기간 of 일반과세자]   [could be: 세율 of 일반과세자]   [in order: 과세기간 (4 met), 세율 (1 met)]
+
+proposed right, asks first Q15 [natural]
+  Q: 일반과세자는 몇 달치를 한 번에 묶어서 계산해요?
+  expected: 6개월
+  got:      -- asks: Did you ask for the 과세기간 of 일반과세자? (these pieces are not accounted for: "몇", "달치를", "한", "번에", "묶어서", "계산해요")   [would then answer 6개월]
+
+proposed right, asks first Q16 [natural]
+  Q: 처음 창업해서 잘 모르는데요, 일반과세자는 세금 매길 때 몇 개월 단위로 끊어서 보나요?
+  expected: 6개월
+  got:      -- asks: Did you ask for the 과세기간 of 일반과세자? (these pieces are not accounted for: "처음", "창업해서", "잘", "모르는데요", "세금", "매길", "때", "단위로", "끊어서", "보나요")   [would then answer 6개월]
+
+proposed right, asks first Q17 [natural]
+  Q: 개인일반사업자는 일 년에 몇 번 신고해야 돼요?
+  expected: 연2회
+  got:      -- asks: Did you ask for the 신고횟수 of 개인일반사업자? (these pieces are not accounted for: "신고해야")   [would then answer 연2회]
+
+proposed right, asks first Q18 [natural]
+  Q: 개인일반사업자인데 한 해 동안 신고를 몇 차례나 해야 하는지 모르겠네요. 알려주실 수 있습니까?
+  expected: 연2회
+  got:      -- asks: Did you ask for the 신고횟수 of 개인일반사업자? (these pieces are not accounted for: "인데", "동안", "신고를", "차례나", "모르겠네요", "알려주실")   [would then answer 연2회]
+
+held Q19 [natural]
+  Q: 경리 담당입니다. 법인사업자는 1년에 몇 번 신고하는지 확인 부탁드립니다.
+  expected: 연4회
+  got:      -- the question was not read with confidence: 2 of 2 sentences could not be read; first: "경리 담당입니다." (the text cannot be cut into known pieces)
+
+proposed right, asks first Q20 [natural]
+  Q: 법인사업자는 한 해에 신고 몇 번 함?
+  expected: 연4회
+  got:      -- asks: Did you ask for the 신고횟수 of 법인사업자? (these pieces are not accounted for: "신고", "함")   [would then answer 연4회]
+
+proposed right, asks first Q21 [natural]
+  Q: 일반과세자제1기확정신고는 언제부터 언제까지 하면 됩니까?
+  expected: 7월1일~7월25일
+  got:      -- asks: Did you ask for the 신고기간 of 일반과세자제1기확정신고? (these pieces are not accounted for: "됩니까")   [would then answer 7월1일~7월25일]
+
+held Q22 [natural]
+  Q: 일반과세자제1기확정신고 그거 며칠부터 며칠 사이에 해야 되는 거예요? 달력에 적어두려고요.
+  expected: 7월1일~7월25일
+  got:      -- the question was not read with confidence: 2 of 2 sentences could not be read; first: "일반과세자제1기확정신고 그거 며칠부터 며칠 사이에 해야 되는 거예요?" (the text cannot be cut
+
+proposed right, asks first Q23 [natural]
+  Q: 일반과세자제2기확정신고는 언제 하는 건가요?
+  expected: 다음해1월1일~1월25일
+  got:      -- asks: Did you ask for the 신고기간 of 일반과세자제2기확정신고? (these pieces are not accounted for: "건가요")   [would then answer 다음해1월1일~1월25일]
+
+proposed right, asks first Q24 [natural]
+  Q: 하반기 장사한 거 정리하려는데, 일반과세자제2기확정신고는 언제부터 언제까지 받아줍니까?
+  expected: 다음해1월1일~1월25일
+  got:      -- asks: Did you ask for the 신고기간 of 일반과세자제2기확정신고? (these pieces are not accounted for: "하반기", "장사한", "정리하려는데", "받아줍니까")   [would then answer 다음해1월1일~1월25일]
+
+proposed right, asks first Q25 [natural]
+  Q: 간이과세자는 언제 신고해요?
+  expected: 다음해1월1일~1월25일
+  got:      -- asks: Did you ask for the 신고기간 of 간이과세자? (these pieces are not accounted for: "신고해요")   [would then answer 다음해1월1일~1월25일]
+
+proposed right, asks first Q26 [natural]
+  Q: 조그만 분식집 하는 간이과세자인데요, 신고를 며칠부터 며칠까지 하면 되는지 좀 알려주이소.
+  expected: 다음해1월1일~1월25일
+  got:      -- asks: Did you ask for the 신고기간 of 간이과세자? (these pieces are not accounted for: "조그만", "분식집", "인데요", "신고를", "알려주이소")   [would then answer 다음해1월1일~1월25일]
+
+held Q27 [natural]
+  Q: 사업자등록은 가게 열고 나서 며칠 안에 해야 하나요?
+  expected: 사업개시일부터20일이내
+  got:      -- the question was not read; it names "사업자등록", and the knowledge has 2 facts it could be asking for: 신청기한 of 사업자등록; 신청경로 of 사업자등록   [could be: 신청기한 of 사업자등록]   [could be: 신청경로 of 사업자등록]   [in order: 신청기한 (3 met), 신청경로 (2 met)]
+
+held Q28 [natural]
+  Q: 지난주에 카페 오픈했는데 사업자등록 아직 안 했거든요ㅠ 언제까지 해야 안 늦는 거예요?
+  expected: 사업개시일부터20일이내
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q29 [natural]
+  Q: 사업자등록 늦으면 안 된다던데, 장사 시작하고 얼마 안에 넣어야 됩니까?
+  expected: 사업개시일부터20일이내
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q30 [natural]
+  Q: 사업자등록은 어디서 하면 돼요?
+  expected: 홈택스
+  got:      -- the question was not read; it names "사업자등록", and the knowledge has 2 facts it could be asking for: 신청경로 of 사업자등록; 신청기한 of 사업자등록   [could be: 신청경로 of 사업자등록]   [could be: 신청기한 of 사업자등록]   [in order: 신청경로 (1 met), 신청기한 (1 met)]
+
+held Q31 [natural]
+  Q: 세무서까지 갈 시간이 없어서 그러는데, 사업자등록을 어디로 들어가서 넣으면 되는지요?
+  expected: 홈택스
+  got:      -- the question was not read; it names "사업자등록", and the knowledge has 2 facts it could be asking for: 신청경로 of 사업자등록; 신청기한 of 사업자등록   [could be: 신청경로 of 사업자등록]   [could be: 신청기한 of 사업자등록]   [in order: 신청경로 (2 met), 신청기한 (1 met)]
+
+proposed right, asks first Q32 [natural]
+  Q: 국세상담센터에 전화하려면 몇 번 눌러야 해요?
+  expected: 126
+  got:      -- asks: Did you ask for the 상담전화 of 국세상담센터? (these pieces are not accounted for: "전화하려면", "몇", "번", "눌러야", "해요")   [would then answer 126]
+
+proposed right, asks first Q33 [natural]
+  Q: 국세청상담센터 번호가 뭐였더라, 몇 번으로 걸면 됩니까?
+  expected: 126
+  got:      -- asks: Did you ask for the 상담전화 of 국세상담센터? (these pieces are not accounted for: "번호가", "뭐였더라", "몇", "번으로", "걸면", "됩니까")   [would then answer 126]
+
+proposed right, asks first Q34 [natural]
+  Q: 종합소득세일반신고는 언제 하는 거예요?
+  expected: 다음해5월1일~5월31일
+  got:      -- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: "거예요")   [would then answer 다음해5월1일~5월31일]
+
+proposed right, asks first Q35 [natural]
+  Q: 프리랜서로 일한 지 일 년 됐습니다. 종합소득세일반신고를 몇 월 며칠부터 며칠까지 해야 하는지 궁금합니다.
+  expected: 다음해5월1일~5월31일
+  got:      -- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: "프리랜서로", "일한", "년", "됐습니다", "월", "궁금합니다")   [would then answer 다음해5월1일~5월31일]
+
+proposed right, asks first Q36 [natural]
+  Q: 2025년귀속종합소득세일반신고는 언제까지 끝내야 하나요?
+  expected: 2026년6월1일
+  got:      -- asks: Did you ask for the 신고기한 of 2025년귀속종합소득세일반신고? (these pieces are not accounted for: "끝내야")   [would then answer 2026년6월1일]
+
+held Q37 [natural]
+  Q: 2025년분종합소득세일반신고 마감이 며칠임? 급해요
+  expected: 2026년6월1일
+  got:      -- the question was not read with confidence: 2 of 2 sentences could not be read; first: "2025년분종합소득세일반신고 마감이 며칠임?" (the text cannot be cut into known pi
+
+held Q38 [natural]
+  Q: 작년에 번 돈 신고해야 하는데요, 2025년귀속종합소득세일반신고는 늦어도 며칠까지 넣어야 합니까?
+  expected: 2026년6월1일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q39 [natural]
+  Q: 성실신고확인서제출자는 언제까지 신고하면 되나요?
+  expected: 다음해6월30일
+  got:      -- asks: Did you ask for the 신고기한 of 성실신고확인서제출자? (these pieces are not accounted for: "신고하면")   [would then answer 다음해6월30일]
+
+held Q40 [natural]
+  Q: 우리 사장님이 성실신고확인서제출자라고 하시는데, 이 경우엔 마감이 며칠입니까?
+  expected: 다음해6월30일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held Q41 [natural]
+  Q: 2026년제1기부가가치세확정신고 마감이 며칠이에요?
+  expected: 2026년7월27일
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed right, asks first Q42 [natural]
+  Q: 2026년제1기부가가치세확정신고는 언제까지 내야 가산세 안 물어요?
+  expected: 2026년7월27일
+  got:      -- asks: Did you ask for the 신고기한 of 2026년제1기부가가치세확정신고? (these pieces are not accounted for: "가산세", "물어요")   [would then answer 2026년7월27일]
+
+right Q43 [check]
+  Q: 국세상담센터 상담전화가 126 맞죠?
+  expected: yes: 126
+  got:      맞다: 126   (as a sentence: 국세상담센터의 상담전화는 126이다.)
+
+right Q44 [check]
+  Q: 법인사업자 신고횟수가 연2회라고 들었는데 맞습니까?
+  expected: no: 연4회
+  got:      아니다: 연4회   (as a sentence: 법인사업자 신고횟수가 연4회이다.)
+
+WRONG Q45 [check]
+  Q: 사업자등록 신청기한이 사업개시일부터 20일 이내 맞나요?
+  expected: yes: 사업개시일부터20일이내
+  got:      아니다: 사업개시일부터20일이내   (as a sentence: 사업자등록의 신청기한은 사업개시일부터20일이내이다.)
+
+right Q46 [check]
+  Q: 일반과세자 세율이 15%라던데 맞아요?
+  expected: no: 10%
+  got:      아니다: 10%   (as a sentence: 일반과세자 세율은 10%이다.)
+
+held ok Q47 [no_answer]
+  Q: 간이과세자는 세금을 몇 퍼센트 내요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q48 [no_answer]
+  Q: 법인사업자는 어디서 신청해요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q49 [no_answer]
+  Q: 국세상담센터 밤에는 몇 번으로 전화해야 받아요? 야간 번호가 따로 있다던데.
+  expected: (no answer)
+  got:      -- the question was not read with confidence: 2 of 2 sentences could not be read; first: "국세상담센터 밤에는 몇 번으로 전화해야 받아요?" (the text cannot be cut into known 
+
+held ok Q50 [no_answer]
+  Q: 외국인이 사업자등록 하려면 어디로 가야 됩니까?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed otherwise, asks first Q51 [no_answer]
+  Q: 2024년귀속종합소득세일반신고는 언제까지 끝냈어야 했나요?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 신고기간 of 종합소득세일반신고? (these pieces are not accounted for: "2024년귀속는", "끝냈어야")   [would then answer 다음해5월1일~5월31일]
+
+held ok Q52 [no_answer]
+  Q: 법인사업자는 몇 달치를 한 번에 묶어서 계산합니까?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed otherwise, asks first Q53 [no_answer]
+  Q: 간이과세자는 일 년에 몇 번 신고해야 해요?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 신고기간 of 간이과세자? (these pieces are not accounted for: "년에", "번", "신고해야")   [would then answer 다음해1월1일~1월25일]
+
+held ok Q54 [no_answer]
+  Q: 가게 접으려고 하는데 폐업신고는 며칠 안에 해야 하는교?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+held ok Q55 [no_answer]
+  Q: 2026년제2기부가가치세확정신고는 며칠까지 내면 돼요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: the text cannot be cut into known pieces
+
+proposed otherwise, asks first Q56 [no_answer]
+  Q: 성실신고확인서제출자는 확인서를 어디서 내면 됩니까?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 신고기한 of 성실신고확인서제출자? (these pieces are not accounted for: "확인서를", "서", "됩니까", "어디")   [would then answer 다음해6월30일]
+
+proposed otherwise, asks first Q57 [no_answer]
+  Q: 일반과세자제1기예정신고는 언제부터 언제까지 하나요?
+  expected: (no answer)
+  got:      -- asks: Did you ask for the 과세기간 of 일반과세자? (these pieces are not accounted for: "제1기예정신고는")   [would then answer 6개월]
+
+held ok Q58 [no_answer]
+  Q: 개인일반사업자의 세율은 얼마인가요?
+  expected: (no answer)
+  got:      -- nothing in the passage fits every condition of the question
+
+held ok Q59 [no_answer]
+  Q: 홈택스 상담전화 몇 번이에요?
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+held ok Q60 [no_answer]
+  Q: 법인세 신고기한 알려주세요.
+  expected: (no answer)
+  got:      -- the question was not read with confidence: every reading uses something never seen in training
+
+## Summary: 2. Questions and answers, as asked (no one answers the system back)
+   check        WRONG 1, right 3 of 4
+   direct       assumed right 1, proposed right, asks first 4, right 1 of 6
+   natural      held 13, proposed right, asks first 17 of 30
+   no_answer    held ok 10, proposed otherwise, asks first 4 of 14
+   short        assumed right 4, proposed right, asks first 2 of 6
+   all          WRONG 1, assumed right 5, held 13, held ok 10, proposed otherwise, asks first 4, proposed right, asks first 23, right 4 of 60
+   candidates in order (counted among the held): right one first 3, right one listed, not first 1
+
+# 3. The same questions in the same order, a user answering each proposal with yes or no
+
+## Summary: 3. The same questions in the same order, a user answering each proposal with yes or no
+   check        WRONG 1, right 3 of 4
+   direct       assumed right 1, right 1, right after a yes 4 of 6
+   natural      held 13, right after a yes 17 of 30
+   no_answer    declined by the user 4, held ok 10 of 14
+   short        assumed right 4, right after a yes 2 of 6
+   all          WRONG 1, assumed right 5, declined by the user 4, held 13, held ok 10, right 4, right after a yes 23 of 60
+   candidates in order (counted among the held): right one first 3, right one listed, not first 1

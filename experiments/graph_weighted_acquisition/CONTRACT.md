@@ -1254,3 +1254,129 @@ the places both stand in, per thousand of the weight of all the places of either
 that meet as many pieces, `basic.ranked` puts first the one whose placed words are most like its
 explanation's. Still no number above which a likeness counts, and nothing is answered.
 Checkpoints to compare: `0d21618` (places counted, not weighed) and the one after it (weighed).
+
+### Seventh set: the tax knowledge, questions by an examiner who saw no code (2026-11-26)
+
+`probes/tax7_e2e_20261126/`. The knowledge is the 14 facts of `packs/tax_facts.json`, written out
+as "X의 P는 V이다." by form. A fresh examiner, given only the facts (12 of them) and the kinds of
+question, wrote the plain-words explanation of the 8 properties and 44 questions (8 direct, 8
+short, 14 natural, 4 check, 10 without an answer). Both checkpoints were committed before the
+items existed. The first run stopped on the form of the check items (my brief had asked for
+예/아니오 where the runner wants the true value and `claim`); the items were put in that form by
+rule and all runs repeated. No code was changed.
+
+| configuration | right | assumed right | proposed right | proposed otherwise | held | held rightly | wrong |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| no lessons (`none`) | 7 | 8 | 10 | 1 | 8 | 10 | 0 |
+| lessons, nothing placed (`taught`) | 7 | 8 | 12 | 1 | 6 | 10 | 0 |
+| + unknown words placed (`placed`) | 7 | 8 | 12 | 1 | 6 | 10 | 0 |
+| + places counted, `0d21618` (`counted`) | 7 | 8 | 12 | 1 | 6 | 10 | 0 |
+| + places weighed, `a975516` (`weighed`) | 7 | 8 | 12 | 1 | 6 | 10 | 0 |
+
+The last three give the same lines as `taught`, question for question. Placing an unknown word,
+with or without ordinary text, weighed or not, changed nothing here. In all 44 questions no word
+was the "same" as a word of an explanation, none stood in the "place" of one, and three were
+"like" one (세금을 like 돈을 or 값에). The questions say 신고, 세금, 전화; the explanations say
+알리다, 돈, 번호: they share neither words nor places. The two questions the lessons moved were
+moved by the worked-out step, not by this.
+Of 14 natural questions: 7 proposed right, 1 proposed for another property, 6 held (5 of them
+before the look-up: "the text cannot be cut into known pieces").
+
+## Ways of asking, listed per property (2026-11-26, built; measured once on an eighth set)
+
+After a survey of how others close the gap between a user's words and stored words
+(`reports/`, not committed): what works everywhere is pairs of "this wording asks for that", not
+the form they are kept in. So the pairs are asked for when a field is prepared, and kept as edges.
+
+- A property may come with `asked`: ways people ask for it, the thing written as X
+  (`probes/teacher_brief_asked_ko.md`; the runner takes a file through `MARCO_ASKED`).
+- `relate.asked` keeps every wording as it is (`exact`), cuts it into words by form and counts, per
+  shape a word may come back to, in how many wordings of each property it stood (`words`). A
+  wording listed under two properties points at neither and is named (`clash`).
+- `relate.heard`: a question that is a listed wording word for word points at its property; a word
+  of the question points at the properties whose wordings it stood in, with a number: of a
+  thousand wordings it stood in, how many were that property's.
+- In `answer._anchor` these words count as met in `basic.ranked` beside the taught ones. Where the
+  first property is ahead of the second (pieces met, then the numbers) it alone is put to the
+  user. Everything here is a proposal: nothing is answered, and no number says a thing is right.
+- Without `asked` nothing changes (the sixth and seventh sets give the same lines). 137 checks pass.
+
+Eighth set, `probes/tax8_e2e_20261126/`: the tax knowledge and the seventh set's explanations;
+60 new questions by a second examiner (30 natural, 14 without an answer); 156 ways of asking by a
+teacher (160 written, 4 left out by the form rule for using another word of the property). Neither
+saw the code or the other's text. Code frozen before both; one run each; nothing changed after.
+
+| configuration | right | assumed right | proposed right | proposed otherwise | held | held rightly | wrong |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| no lessons | 3 | 4 | 10 | 1 | 29 | 13 | 0 |
+| lessons | 3 | 4 | 21 | 1 | 18 | 13 | 0 |
+| lessons + ways of asking | 3 | 4 | 24 | 2 | 14 | 13 | 0 |
+
+Natural questions (30): proposed right 3 → 14 → 17; with the ways one more is proposed for another
+property (the rate asked as "세금이 몇 프로 붙는", proposed as 과세기간). No question was a listed
+wording word for word. The 12 natural questions still held never reached this step: each has a
+word that shares letters with three property words (신고해야 with 신고횟수, 신고기간, 신고기한), and
+the look-up gives up there before the listed ways are asked. Seen after the run; not changed.
+Teacher and examiner are the same kind of writer, so their wordings may be nearer to each other
+than a real user's would be: the gain is an upper reading.
+
+### Letters shared with three property words no longer stop the look-up; ninth set (2026-11-26)
+
+One change after the eighth set: where an unread word shares letters with three property words or
+more, `answer._anchor` used to return nothing. With taught words in the model it now drops those
+pointers and lets the taught words and the listed ways of asking decide. 138 checks pass; runs
+without lessons are unchanged.
+
+Ninth set, `probes/tax9_e2e_20261126/`: the tax knowledge, 60 questions by a third examiner told
+to write as different people (30 natural, 14 without an answer), the same 156 ways of asking.
+Code frozen before the items; one run each; `asked_before_fix` is a copy with the change taken out.
+
+| configuration | right | assumed right | proposed right | proposed otherwise | held | held rightly | WRONG |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| no lessons | 4 | 5 | 8 | 0 | 28 | 14 | 1 |
+| lessons | 4 | 5 | 23 | 4 | 13 | 10 | 1 |
+| lessons + ways of asking, before the change | 4 | 5 | 28 | 4 | 8 | 10 | 1 |
+| lessons + ways of asking | 4 | 5 | 28 | 4 | 8 | 10 | 1 |
+
+- **A wrong answer, in every configuration, the one without lessons included.** "사업자등록
+  신청기한이 사업개시일부터 20일 이내 맞나요?" was answered "아니다: 사업개시일부터20일이내". The
+  question writes the value with spaces; the claim was compared with the stored value letter for
+  letter and denied. Older than today's work (the code of `2c3944f` does it too); no earlier set
+  had a check question with a spaced value. Not fixed after the run.
+- Natural questions (30): proposed right 2 → 17 → 22. The ways of asking gave 5, none otherwise.
+- The change itself moved nothing on this set: the two last rows are the same, line for line.
+  The 8 natural questions still held leave the look-up elsewhere (an unknown word in front of a
+  connector; no fact left that fits). On the eighth set, which was seen, the change moves natural
+  17 → 24 and makes 2 more questions without an answer into proposals: a mechanism check only.
+- With lessons, 4 of 14 questions without an answer are put to the user as another property of
+  the same thing ("일 년에 몇 번 신고해야 해요" of a thing that has only 신고기간). Without lessons
+  none is. Hearing more also proposes more where nothing is known.
+
+### A stated value is denied only when it is plainly another value (2026-11-26)
+
+The wrong answer of the ninth set came from `_answer_read`: what stands in front of the claim word
+is a stretch of text ("사업개시일부터 20일 이내", "15%라던데", "연2회라고 들었는데"), and it was
+compared with the stored value letter for letter; any difference was answered "아니다". So a true
+value written with spaces, with words after it, or in other words would all have been denied.
+
+Now (`answer._claim_holds`): it holds when it is the value, spaces apart. It is denied only when
+it is plainly another value: the same shape with other numbers, or a name or value the knowledge
+has. Anything else is a hold that says so ("neither confirmed nor denied"): saying no is an answer
+too. The change after the eighth set (letters shared with three property words) was taken out
+again: it did nothing on the ninth set. 138 checks pass; one older check expected "만원이 맞나?" to
+be denied against 천원 and now expects a hold.
+
+Effect on sets already run (all seen): of nine sets only the ninth changes. Its wrong answer is
+now "맞다"; two right denials ("연2회라고 들었는데", "15%라던데") became holds.
+
+Two new sets of 46 check questions each, by two more examiners, old code (`a975516`) and new code
+run once each:
+- `probes/tax10_e2e_20261126/`: free wording. All 46 held, before and after. The examiner left the
+  connector off the property ("상담전화 126 맞죠?") and no such question is read at all, so the
+  rule was never reached. Nothing wrong, and nothing learned about the rule.
+- `probes/tax11_e2e_20261126/`: the front of the question fixed as "X의 P가/는", the value written
+  freely. Before and after are the same lines: right 13, assumed right 3, proposed otherwise 2,
+  held 28, wrong 0. Values written freely (20) and questions asked by denial (6) were all held by
+  the reader before the rule.
+So on new questions the rule has not yet been seen to change a verdict; what it is known to do is
+remove the one wrong answer found. 92 new check questions, 0 wrong either way.

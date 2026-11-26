@@ -709,8 +709,11 @@ def test_three_packs_make_one_system_and_the_field_is_swapped_without_lessons():
     assert other['answers'] == [['천원']] and other['other_names'] == ['"능금" is another name for "사과" (word pack)']
     # A yes/no check works on a field word that no lesson ever showed.
     assert PK.ask(shop, '사과의 가격은 천원이 맞나?')['claim'] == {'claimed': '천원', 'holds': True}
+    # "만원" is not the value, and it is not plainly another value either (no number to compare, no name
+    # the knowledge has): it may be the same price in other words. Neither confirmed nor denied.
     wrong = PK.ask(shop, '사과의 가격은 만원이 맞나?')
-    assert wrong['claim'] == {'claimed': '만원', 'holds': False} and wrong['answers'] == [['천원']]
+    assert wrong['claim'] is None and not wrong['answers'] and wrong['withheld'] == [['천원']]
+    assert 'neither confirmed nor denied' in wrong['reason']
     # Each field answers its own questions and holds on the other's.
     assert PK.ask(zoo, '판다의 먹이는 무엇인가?')['answers'] == [['대나무']]
     assert PK.ask(zoo, '사과의 가격은 무엇인가?')['status'] == 'hold'

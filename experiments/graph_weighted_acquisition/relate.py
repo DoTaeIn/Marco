@@ -153,3 +153,56 @@ def placed(basic, question, explanations, text=None):
             if best:
                 out.setdefault(prop, {})[q['text']] = best
     return out
+
+
+THING = 'X'                                             # where the thing stands in a listed way of asking
+
+
+def _plain(text):
+    return ''.join(ch for ch in text if ch.isalnum())
+
+
+def asked(basic, listed):
+    """Ways of asking, listed per property by the one who prepared the field ("X는 언제 쉬어요").
+
+    They are kept as they are (`exact`: the wording, without spaces and marks, to its property), and
+    cut into words (`words`: for every shape a word may come back to, in how many of each
+    property's wordings it stood). A wording listed under two properties points at neither: it is
+    left out of `exact` and named in `clash`.
+    """
+    exact, clash, counts = {}, set(), {}
+    for prop, wordings in listed.items():
+        for wording in wordings:
+            key = _plain(wording)
+            if exact.get(key, prop) != prop:
+                clash.add(key)
+            exact[key] = prop
+            seen = set()
+            for row in words(basic, wording):
+                if THING not in row['text']:
+                    seen |= row['keys']
+            for k in seen:
+                counts.setdefault(k, {})
+                counts[k][prop] = counts[k].get(prop, 0) + 1
+    return {'exact': {k: p for k, p in exact.items() if k not in clash}, 'clash': sorted(clash), 'words': counts}
+
+
+def heard(basic, question, table, names):
+    """What the listed ways of asking say of a question: the property whose wording it is, word for
+    word (or None), and for every property the words of the question that stood in its wordings:
+    {property: {word: ("asked", "", number)}}. The number is, of a thousand wordings the word stood
+    in, how many were this property's: a word every property is asked with says little."""
+    whole = question
+    for name in sorted(names, key=len, reverse=True):
+        whole = whole.replace(name, THING)
+    out = {}
+    for row in words(basic, question):
+        best = {}
+        for key in row['keys']:
+            by_prop = table['words'].get(key, {})
+            total = sum(by_prop.values())
+            for prop, n in by_prop.items():
+                best[prop] = max(best.get(prop, 0), 1000 * n // total)
+        for prop, share in best.items():
+            out.setdefault(prop, {})[row['text']] = ('asked', '', share)
+    return table['exact'].get(_plain(whole)), out

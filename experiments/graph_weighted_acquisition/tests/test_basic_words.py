@@ -134,3 +134,16 @@ def test_taught_stems_and_endings_find_a_word_in_its_changed_shape():
     # 바다 is listed as a word that takes no endings: it is found as itself, not as a stem.
     assert found('바다') == ['바다'] and found('바고') == []
     assert found('들어가겠사옵니다') == []                   # an ending nobody taught
+
+
+def test_a_stated_value_is_denied_only_when_it_is_plainly_another_value():
+    from experiments.graph_weighted_acquisition import answer as A
+    holds = lambda said, value, known=(): A._claim_holds(said, [[value]], set(known))
+    # The value with spaces in it is the value.
+    assert holds('사업개시일부터 20일 이내', '사업개시일부터20일이내') is True
+    # The same shape with another number, or a name the knowledge has, is another value.
+    assert holds('15%', '10%') is False and holds('사업개시일부터 30일 이내', '사업개시일부터20일이내') is False
+    assert holds('서쪽항', '동쪽항', ['서쪽항']) is False
+    # The value with words after it, or other words altogether, is not judged: saying no is an answer too.
+    assert holds('10%라던데', '10%') is None and holds('10%가 아니라던데', '10%') is None
+    assert holds('십프로', '10%') is None and holds('연2회라고 들었는데', '연4회') is None

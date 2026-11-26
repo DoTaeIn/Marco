@@ -27,11 +27,12 @@ ENDS = '\n'.join(['# 줄기', '내다\t내\t내\t내', '마시다\t마시\t마�
 EXPLAINED = {'기본요금': '책을 빌릴 때 내는 돈', '출발항': '곳'}
 
 
-def field(tmp_path):
+def field(tmp_path, asked=None):
     (tmp_path / 'basic.tsv').write_text(LESSONS, encoding='utf8')
     (tmp_path / 'ends.tsv').write_text(ENDS, encoding='utf8')
     _, language, _ = P.build('wordings', 'endings', 'modifier', 'time', 'negation', 'conditional')
-    words = dict(P.FERRY, properties=[dict(p, explained=EXPLAINED[p['word']]) if p['word'] in EXPLAINED else p
+    words = dict(P.FERRY, properties=[dict(p, **({'explained': EXPLAINED[p['word']]} if p['word'] in EXPLAINED else {}),
+                                           **({'asked': asked[p['word']]} if p['word'] in (asked or {}) else {}))
                                       for p in P.FERRY['properties']])
     return PK.load(language, words, FACTS, B.load(tmp_path / 'basic.tsv', tmp_path / 'ends.tsv'))
 
@@ -78,5 +79,41 @@ def test_ordinary_text_says_which_word_of_the_explanation_an_unknown_word_is_lik
     assert RL.placed(basic, '구름을 보면 돈?', EXPLAINED, text) == {}
     f['model']['places'] = text
     got = PK.ask(f, '모래섬호 우산을 들면 돈?')
-    assert not got['answers'] and got['proposal']['placed']['우산을'] == {'how': 'like', 'as': '책을', 'shared_places_per_thousand': 500}
+    assert not got['answers'] and got['proposal']['placed']['우산을'] == {'how': 'like', 'as': '책을', 'number': 500}
     assert got['proposal']['not_accounted_for'] == ['들면']
+
+
+ASKED = {'기본요금': ['X 타려면 얼마 내요', 'X 표값 알려줘'], '출발항': ['X 타려면 어디로 가요', 'X 어디서 떠나요']}
+
+
+def test_a_listed_way_of_asking_is_put_to_the_user_not_answered(tmp_path):
+    f = field(tmp_path, ASKED)
+    got = PK.ask(f, '모래섬호 표값 알려줘?')
+    assert got['status'] == 'hold' and not got['answers']
+    p = got['proposal']
+    assert p['understood']['property'] == '기본요금' and p['if_confirmed'] == '6000원' and p['not_accounted_for'] == []
+    assert p['chosen_by'] == 'a way of asking the field listed for the property, word for word'
+    # Without the listed ways the same question leads nowhere.
+    plain = PK.ask(field(tmp_path), '모래섬호 표값 알려줘?')
+    assert 'proposal' not in plain and 'candidates' not in plain
+
+
+def test_a_word_of_a_listed_way_points_at_its_property_and_the_rest_is_named(tmp_path):
+    f = field(tmp_path, ASKED)
+    got = PK.ask(f, '모래섬호 표값 궁금해요?')
+    p = got['proposal']
+    assert not got['answers'] and p['understood']['property'] == '기본요금' and p['not_accounted_for'] == ['궁금해요']
+    assert p['chosen_by'] == 'words of the ways of asking the field listed for the property'
+    assert p['placed']['표값'] == {'how': 'asked', 'as': '', 'number': 1000}
+    # A word both properties are asked with says as much for one as for the other: both are shown, none is put first.
+    both = PK.ask(f, '모래섬호 타려면?')
+    assert 'proposal' not in both and sorted(c['property'] for c in both['candidates']) == ['기본요금', '출발항']
+    # One word more for one of them, and that one is put to the user.
+    assert PK.ask(f, '모래섬호 타려면 떠나요?')['proposal']['understood']['property'] == '출발항'
+
+
+def test_a_wording_listed_under_two_properties_points_at_neither(tmp_path):
+    f = field(tmp_path, {'기본요금': ['X 알려줘'], '출발항': ['X 알려줘', 'X 어디서 떠나요']})
+    table = f['model']['field_asked']
+    assert table['clash'] == ['X알려줘'] and list(table['exact']) == ['X어디서떠나요']
+
