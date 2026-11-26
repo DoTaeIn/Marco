@@ -1514,3 +1514,10 @@ changed: the fall comes from an older memory, what a question word asked for in 
 were read (`learn.note_ask`). Once it holds anything for a question word, `_anchor` takes that
 path and never asks the taught words or the listed ways. With that memory not kept, the same runs
 give 45 (210 questions) and 46 (374 questions) understood. A change for another checkpoint.
+
+### What a question word asked for before no longer comes first (2026-11-26, a checkpoint of its own)
+
+`answer._anchor` used to take the path of the question-word history as soon as the memory held
+anything for a question word of the question, and then never asked the taught words or the listed
+ways of asking. Now those are asked first (`not (wanted or units)`); the history is used where they
+find nothing. 142 checks pass. Not measured before it was committed.

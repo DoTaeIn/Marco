@@ -457,17 +457,20 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
         worked = [{'property': p, 'met': [], 'unmet': left, 'score': s, 'placed': {}} for p, s in hear(question, model.get('field_texts', {}))]
         if not worked:
             return None
-    elif exact and not (wanted or units or history):
+    elif exact and not (wanted or units):
         # The question is, word for word, a way of asking the field listed for one property.
         worked = [{'property': exact, 'met': [x for x in unread if x not in pieces_known], 'unmet': [], 'placed': {}, 'exact': True}]
-    elif basic and not (wanted or units or history):
+    elif basic and not (wanted or units):
+        # What a question word asked for in questions read before (`history`) no longer comes first: it
+        # says less than taught words and listed ways of asking, and used to keep them from being asked
+        # at all. It is used only where they find nothing.
         # Nothing in the question points at a property by form. Taught basic words may: the pieces that
         # were not read are put next to the plain-words explanation of every property (basic.ranked), and
         # the properties come back in order of how many pieces they meet. Worked out, not read: it can
         # only lead to a proposal or to candidates in that order.
         worked = B.ranked(basic, [x for x in unread if x not in pieces_known and x not in basic['marks']] + asks,
                           dict({p: [] for p in placed}, **model.get('field_explained', {})), marks, endings, placed)
-        if not worked:
+        if not worked and not history:
             return None
     if not (wanted or asks or units or worked):
         return None

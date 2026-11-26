@@ -152,3 +152,19 @@ def test_a_yes_is_remembered_for_that_way_of_asking_and_a_no_too(tmp_path):
     A.decline(wrong, memory, by='a user', at='today')
     after = PK.ask(f, '모래섬호 타려면 떠나요?', memory)
     assert not after['answers'] and (after.get('proposal') or {}).get('understood', {}).get('property') != '출발항'
+
+
+def test_what_a_question_word_asked_for_before_does_not_come_before_the_listed_ways(tmp_path):
+    from experiments.graph_weighted_acquisition import answer as A
+    from experiments.graph_weighted_acquisition import learn as L
+    f = field(tmp_path, ASKED)
+    asking = [w for w, row in f['model']['tables']['closed'].items() if any('project' in label for label in row)]
+    assert asking
+    memory = L.new_memory()
+    L.note_ask(memory, asking[0], '출발항', '모래섬호의 출발항은 %s인가?' % asking[0])
+    # The question word asked for the port before. Here "표값" is a word the fee is asked with.
+    got = PK.ask(f, '모래섬호 표값 %s?' % asking[0], memory)
+    assert not got['answers'] and got['proposal']['understood']['property'] == '기본요금'
+    # Where the listed ways and the taught words find nothing, what it asked for before is still used.
+    alone = PK.ask(f, '모래섬호 %s?' % asking[0], memory)
+    assert (alone.get('assumed') or [alone.get('proposal')])[0]['understood']['property'] == '출발항'
