@@ -1424,3 +1424,10 @@ eleventh set, one in the ninth). The claim rule removes them and turns eleven ri
 holds. Natural questions proposed, assumed or answered right, of 104: 0, 0, 9, 16, 18, 16, 23,
 45, 44, 16, 44, 58, 59 in the order of the rows. The vector trial crashed on 46 questions at
 `c12ae76` (a row without the key the new code reads); fixed in the working tree and rerun.
+
+### Put back, as a checkpoint of its own: letters shared with three property words (2026-11-26)
+
+The change described after the eighth set is in again, alone, so that it can be measured apart:
+where an unread word shares letters with three property words or more and the model has taught
+words, the look-up no longer stops; the taught words and the listed ways of asking decide. Measured
+once before on the twelfth set (then new to it): proposed right 24 → 29, held rightly 12 → 10.

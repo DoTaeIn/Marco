@@ -408,7 +408,12 @@ def _anchor(pgraph, ptext, question, model, memory, aliases, passage_result, q):
                     wanted.append(f['property'])
         weak = bool(wanted)
         if len(wanted) > 2:
-            return None
+            # Shared letters point at three properties or more ("신고해야" next to 신고횟수, 신고기간,
+            # 신고기한): they say nothing. With taught words or listed ways of asking, those decide;
+            # without them there is nothing else to ask.
+            if not basic:
+                return None
+            wanted, weak = [], False
     said = {(aliases or {}).get(c, c) for _, c in found['circumstance']}
     history = {e['property'] for e in (memory or {}).get('asks', []) if e['word'] in asks}
     worked = []

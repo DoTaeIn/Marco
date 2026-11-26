@@ -117,3 +117,13 @@ def test_a_wording_listed_under_two_properties_points_at_neither(tmp_path):
     table = f['model']['field_asked']
     assert table['clash'] == ['X알려줘'] and list(table['exact']) == ['X어디서떠나요']
 
+
+
+def test_letters_shared_with_three_property_words_do_not_stop_the_listed_ways(tmp_path):
+    # "출발출항전화" shares letters with 출발항, 첫출항 and 문의전화: that alone says nothing.
+    question = '모래섬호 출발출항전화 표값?'
+    plain = PK.ask(field(tmp_path), question)
+    assert not plain['answers'] and 'proposal' not in plain
+    got = PK.ask(field(tmp_path, ASKED), question)
+    assert not got['answers'] and got['proposal']['understood']['property'] == '기본요금'
+    assert got['proposal']['not_accounted_for'] == ['출발출항전화']
